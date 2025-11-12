@@ -26,6 +26,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -44,6 +45,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -57,6 +59,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.LogBlockSet;
@@ -66,14 +69,8 @@ import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
-import org.confluence.mod.common.init.block.ChestBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
@@ -159,6 +156,7 @@ public final class ModEvents {
                     GlobalCloakData.INSTANCE
             );
             GlobalCloakData.INSTANCE.initialize();
+            ModLoader.postEvent(new RegisterEvilMaterialReplacesEvent());
         });
     }
 
@@ -303,7 +301,8 @@ public final class ModEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
-            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) return null;
+            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED))
+                return null;
             Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
             return container == null ? null : new InvWrapper(container);
         }, ChestBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new));
@@ -316,7 +315,7 @@ public final class ModEvents {
 //        for (BlockEntityType<? extends BaseContainerBlockEntity> type : invBlockEntities) {
 //            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, type, (container, side) -> new InvWrapper(container));
 //        }
-//        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FunctionalBlocks.HELLFORGE_ENTITY.get(), SidedInvWrapper::new);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FunctionalBlocks.HELLFORGE_ENTITY.get(), SidedInvWrapper::new);
 
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBottomlessBucketWrapper(stack),
                 ToolItems.BOTTOMLESS_WATER_BUCKET,
@@ -339,7 +338,7 @@ public final class ModEvents {
             return false;
         }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
-        RegisterBestiaryKeyEvent.postEvent(); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
+        ModLoader.postEvent(new RegisterBestiaryKeyEvent()); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
     }
 
     @SubscribeEvent
@@ -529,5 +528,11 @@ public final class ModEvents {
             }
             return type.getDescriptionId();
         });
+    }
+
+    @SubscribeEvent
+    public static void registerEvilMaterialReplaces(RegisterEvilMaterialReplacesEvent event) {
+        event.register(MaterialItems.DEMONITE_INGOT, MaterialItems.CRIMTANE_INGOT);
+        event.register(NatureBlocks.VILE_MUSHROOM, NatureBlocks.VICIOUS_MUSHROOM);
     }
 }

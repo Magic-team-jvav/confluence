@@ -4,14 +4,16 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
-import org.confluence.mod.network.IPacket;
 
 public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding) implements IPacketS2C {
-    public static final Type<MeteoriteLocationPacketS2C> TYPE = IPacket.createType("meteorite_location");
+    public static final Type<MeteoriteLocationPacketS2C> TYPE = Confluence.createType("meteorite_location");
     public static final StreamCodec<ByteBuf, MeteoriteLocationPacketS2C> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, MeteoriteLocationPacketS2C::location,
             ByteBufCodecs.VAR_INT, MeteoriteLocationPacketS2C::tickUntilLanding,
@@ -36,5 +38,10 @@ public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding
         if (ServerLifecycleHooks.getCurrentServer() != null && !BlockPos.ZERO.equals(location)) {
             PacketDistributor.sendToAllPlayers(new MeteoriteLocationPacketS2C(location, tickUntilLanding));
         }
+    }
+
+    public static void sendToClient(ServerPlayer player, BlockPos location, int tickUntilLanding) {
+        if (BlockPos.ZERO.equals(location)) return;
+        PacketDistributor.sendToPlayer(player, new MeteoriteLocationPacketS2C(location, tickUntilLanding));
     }
 }

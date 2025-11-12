@@ -51,8 +51,8 @@ public final class AchievementUtils {
         }
     }
 
-    public static void youCanDoIt(ServerPlayer player, ServerLevel level) {
-        if (level.getGameTime() % 1200 == 0L) { // 每分钟检查一次
+    public static void youCanDoIt(ServerPlayer player, ServerLevel level, long gameTime) {
+        if (gameTime % 1200 == 0L) { // 每分钟检查一次
             byte firstNight = LibUtils.getOrCreatePersistedData(player).getByte("confluence:you_can_do_it");
             if (firstNight == -1) return;
             int dayTime = LibDateUtils.getDayTime(level);
@@ -133,8 +133,8 @@ public final class AchievementUtils {
         }
     }
 
-    public static void quietNeighborhood(ServerPlayer player, ServerLevel level) {
-        if (level.getGameTime() % 40 == 2) {
+    public static void quietNeighborhood(ServerPlayer player, ServerLevel level, long gameTime) {
+        if (gameTime % 40 == 2) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
             if (iSection != null && iSection.confluence$isGraveyard()) {
                 awardAchievement(player, "quiet_neighborhood");
@@ -142,8 +142,8 @@ public final class AchievementUtils {
         }
     }
 
-    public static void aRareRealm(ServerPlayer player, ServerLevel level) {
-        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED) && level.getGameTime() % 40 == 3) {
+    public static void aRareRealm(ServerPlayer player, ServerLevel level, long gameTime) {
+        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED) && gameTime % 40 == 3) {
             awardAchievement(player, "a_rare_realm");
         }
     }

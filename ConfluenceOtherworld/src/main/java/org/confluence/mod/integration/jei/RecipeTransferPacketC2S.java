@@ -15,8 +15,8 @@ import org.confluence.lib.common.menu.EitherAmountContainerMenu4x;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
-import org.confluence.mod.network.IPacket;
-import org.confluence.mod.network.c2s.IPacketC2S;
+import org.confluence.lib.network.IPacketC2S;
+import org.confluence.mod.Confluence;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public record RecipeTransferPacketC2S(ResourceLocation recipeId, boolean maxTransfer, boolean isFake) implements IPacketC2S {
-    public static final Type<RecipeTransferPacketC2S> TYPE = IPacket.createType("recipe_transfer");
+    public static final Type<RecipeTransferPacketC2S> TYPE = Confluence.createType("recipe_transfer");
     public static final StreamCodec<RegistryFriendlyByteBuf, RecipeTransferPacketC2S> STREAM_CODEC = StreamCodec.composite(
             ResourceLocation.STREAM_CODEC, RecipeTransferPacketC2S::recipeId,
             ByteBufCodecs.BOOL, RecipeTransferPacketC2S::maxTransfer,

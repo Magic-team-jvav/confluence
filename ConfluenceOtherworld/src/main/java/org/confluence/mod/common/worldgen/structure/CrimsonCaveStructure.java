@@ -92,7 +92,7 @@ public class CrimsonCaveStructure extends Structure {
                 posPoint = new Vector3d((i == 0) ? xStart : (xStart + i * xDis + random.nextInt(-20, 21)), yStart + i * yDis, (i == 0) ? zStart : (zStart + i * zDis + random.nextInt(-20, 21)));
                 VctList.add(posPoint);
             }
-            VectorUtils.lightningPathList(VctList, 1, 5, random);
+            VectorUtils.lightningPathList(VctList, 1, 0.2F, random);
             lineSet(VctList, 4, 8, 1, false, blockMap);
             lineSet(VctList, 2, 6, 0, true, blockMap);
 
@@ -110,7 +110,7 @@ public class CrimsonCaveStructure extends Structure {
                 VctList.clear();
                 VctList.add(new Vector3d(endPos.getX() + (3.0D + 1.5D * random.nextDouble()) * radiusEnd * Mth.cos(fingerRotate + i * fingerRotateStep), endPos.getY() + (random.nextDouble() - 0.5D) * 4 * radiusEnd, endPos.getZ() + (3.0D + 1.5D * random.nextDouble()) * radiusEnd * Mth.sin(fingerRotate + i * fingerRotateStep)));
                 VctList.add(new Vector3d(endPos.getX(), endPos.getY(), endPos.getZ()));
-                VectorUtils.lightningPathList(VctList, 1, 5, random);
+                VectorUtils.lightningPathList(VctList, 1, 0.2F, random);
                 lineSet(VctList, 4, 8, 1, false, blockMap);
                 lineSet(VctList, 2, 6, 0, true, blockMap);
                 pos = VectorUtils.fromVector3d(VctList.getFirst());

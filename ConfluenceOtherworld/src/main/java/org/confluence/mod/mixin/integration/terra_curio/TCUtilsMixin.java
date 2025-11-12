@@ -1,14 +1,18 @@
 package org.confluence.mod.mixin.integration.terra_curio;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FluidState;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
+import org.confluence.terra_curio.api.primitive.PrimitiveValue;
+import org.confluence.terra_curio.api.primitive.UnitValue;
+import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.util.TCUtils;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,11 +27,35 @@ public abstract class TCUtilsMixin {
         }
     }
 
-    @ModifyReturnValue(method = "applyFrozenImmune", at = @At(value = "RETURN", ordinal = 1))
-    private static boolean modify(boolean original, @Local(argsOnly = true) LivingEntity living) {
-        if (original && living instanceof Player player && PlayerUtils.hasPrimitiveType(player, TCItems.FROZEN$IMMUNE)) {
-            return false;
+    @WrapMethod(method = "getValue")
+    private static <T, V extends PrimitiveValue<T>> T wrap1(LivingEntity living, ValueType<T, V> type, Operation<T> original) {
+        T called = original.call(living, type);
+        if (living instanceof Player player) {
+            T t = ModArmorBonus.getValue(player, type);
+            if (called == null) return t;
+            return type.combineRule().combine(called, t);
         }
-        return original;
+        return called;
+    }
+
+    @WrapMethod(method = "hasType")
+    private static boolean wrap2(LivingEntity living, ValueType<Unit, UnitValue> type, Operation<Boolean> original) {
+        boolean called = original.call(living, type);
+        if (living instanceof Player player) {
+            return called || ModArmorBonus.hasType(player, type);
+        }
+        return called;
+    }
+
+    @WrapMethod(method = "getPrimitiveValue")
+    private static <T, V extends PrimitiveValue<T>> @Nullable V wrap3(LivingEntity living, ValueType<T, V> type, Operation<V> original) {
+        V called = original.call(living, type);
+        if (living instanceof Player player) {
+            V v = ModArmorBonus.getPrimitiveValue(player, type);
+            if (called == null) return v;
+            if (v == null) return null;
+            return type.newInstance(type.combineRule().combineValue(called, v));
+        }
+        return called;
     }
 }

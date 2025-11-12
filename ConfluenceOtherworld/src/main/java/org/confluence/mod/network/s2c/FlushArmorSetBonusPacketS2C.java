@@ -6,11 +6,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.network.IPacket;
 
 public record FlushArmorSetBonusPacketS2C(int playerId) implements IPacketS2C {
-    public static final Type<FlushArmorSetBonusPacketS2C> TYPE = IPacket.createType("flush_armor_set_bonus");
+    public static final Type<FlushArmorSetBonusPacketS2C> TYPE = Confluence.createType("flush_armor_set_bonus");
     public static final StreamCodec<ByteBuf, FlushArmorSetBonusPacketS2C> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(FlushArmorSetBonusPacketS2C::new, FlushArmorSetBonusPacketS2C::playerId);
 
     @Override

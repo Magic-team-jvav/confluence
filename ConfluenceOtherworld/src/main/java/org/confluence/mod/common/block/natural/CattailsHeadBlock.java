@@ -29,8 +29,8 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
     public static final IntegerProperty AGE = BlockStateProperties.AGE_25;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty PLACE = BooleanProperty.create("place");
-    protected static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 10.0, 14.0);
-    private static final int MAX_AGE = 3;
+    protected static final VoxelShape SHAPE = box(2.0, 0.0, 2.0, 14.0, 10.0, 14.0);
+    protected static final int MAX_AGE = 3;
 
     public CattailsHeadBlock(Properties properties) {
         super(properties, Direction.UP, SHAPE, true, 0.20);
@@ -44,19 +44,18 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
         BlockState aboveState = level.getBlockState(pos.above());
         boolean isAirUp = aboveState.isAir();
         boolean isAirNow = level.getBlockState(pos).getValue(WATERLOGGED);
-        if (!((!aboveState.isAir() && !aboveState.is(Blocks.WATER)) || currentAge >= 3)) {
-            if (isAirUp && isAirNow) {
-                level.setBlock(pos.above(), state.trySetValue(WATERLOGGED, false).trySetValue(AGE, random.nextInt(1, 4)), 3);
-            } else {
-                level.setBlock(pos.above(), state.trySetValue(WATERLOGGED, !isAirUp).trySetValue(AGE, isAirUp ? (currentAge + 1) : 0), 3);
-            }
-            level.setBlock(pos, lastState.trySetValue(WATERLOGGED, isAirNow), 3);
+        if (currentAge >= 3 || !(aboveState.isAir() || aboveState.is(Blocks.WATER))) return;
+        if (isAirUp && isAirNow) {
+            level.setBlock(pos.above(), state.trySetValue(WATERLOGGED, false).trySetValue(AGE, random.nextInt(1, 4)), 3);
+        } else {
+            level.setBlock(pos.above(), state.trySetValue(WATERLOGGED, !isAirUp).trySetValue(AGE, isAirUp ? (currentAge + 1) : 0), 3);
         }
+        level.setBlock(pos, lastState.trySetValue(WATERLOGGED, isAirNow), 3);
     }
 
     @Override
     public BlockState getStateForPlacement(LevelAccessor level) {
-        return this.defaultBlockState().setValue(AGE, level.getRandom().nextInt(MAX_AGE));
+        return defaultBlockState().setValue(AGE, level.getRandom().nextInt(MAX_AGE));
     }
 
     @Override

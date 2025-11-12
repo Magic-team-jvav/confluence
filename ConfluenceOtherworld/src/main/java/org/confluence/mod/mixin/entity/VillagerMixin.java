@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class VillagerMixin {
     @ModifyExpressionValue(method = "updateSpecialPrices", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hasEffect(Lnet/minecraft/core/Holder;)Z"))
     private boolean hasSpecialOffer(boolean original, @Local(argsOnly = true) Player player, @Share("specialPrice") LocalIntRef specialPrice) {
-        int value = TCUtils.getAccessoriesValue(player, AccessoryItems.SPECIAL$PRICE);
+        int value = TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE);
         specialPrice.set(value);
         return original || value > 0;
     }

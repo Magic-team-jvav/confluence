@@ -7,13 +7,13 @@ import org.confluence.mod.common.init.item.FoodItems;
 import org.jetbrains.annotations.NotNull;
 
 public class Daybloom extends BaseHerbBlock {
-	@Override
-	protected @NotNull ItemLike getBaseSeedId(){
-		return FoodItems.DAYBLOOM_SEED.get();
-	}
+    @Override
+    protected @NotNull ItemLike getBaseSeedId() {
+        return FoodItems.DAYBLOOM_SEED.get();
+    }
 
-	@Override
-	public boolean canBloom(ServerLevel world, BlockState state){
-		return world.isDay();
-	}
+    @Override
+    public boolean canBloom(ServerLevel level, BlockState state) {
+        return level.isDay();
+    }
 }

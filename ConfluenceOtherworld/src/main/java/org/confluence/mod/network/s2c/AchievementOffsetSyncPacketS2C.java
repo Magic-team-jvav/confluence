@@ -8,15 +8,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibStreamCodecUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
-import org.confluence.mod.network.IPacket;
 
 import java.util.Map;
 
 public record AchievementOffsetSyncPacketS2C(Object2BooleanMap<ResourceLocation> value) implements IPacketS2C {
-    public static final Type<AchievementOffsetSyncPacketS2C> TYPE = IPacket.createType("achievement_offset_sync");
+    public static final Type<AchievementOffsetSyncPacketS2C> TYPE = Confluence.createType("achievement_offset_sync");
     public static final StreamCodec<ByteBuf, AchievementOffsetSyncPacketS2C> STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ResourceLocation.STREAM_CODEC)
             .map(AchievementOffsetSyncPacketS2C::new, AchievementOffsetSyncPacketS2C::value);
 

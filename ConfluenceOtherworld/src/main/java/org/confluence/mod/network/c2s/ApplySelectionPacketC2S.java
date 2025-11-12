@@ -6,8 +6,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketC2S;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.SelectionsScreen;
-import org.confluence.mod.network.IPacket;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
  * @see org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C
  */
 public record ApplySelectionPacketC2S(byte selected) implements IPacketC2S {
-    public static final Type<ApplySelectionPacketC2S> TYPE = IPacket.createType("apply_selection_c2s");
+    public static final Type<ApplySelectionPacketC2S> TYPE = Confluence.createType("apply_selection_c2s");
     public static final StreamCodec<ByteBuf, ApplySelectionPacketC2S> STREAM_CODEC = ByteBufCodecs.BYTE.map(ApplySelectionPacketC2S::new, ApplySelectionPacketC2S::selected);
 
     @Override

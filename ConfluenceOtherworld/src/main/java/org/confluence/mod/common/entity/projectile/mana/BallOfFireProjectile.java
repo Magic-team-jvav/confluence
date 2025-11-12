@@ -6,11 +6,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -41,7 +39,7 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
         super.baseTick();
 
         Vec3 vec3 = getDeltaMovement();
-        move(MoverType.SELF, vec3.add(0.0, -0.04, 0.0));
+        move(MoverType.SELF, vec3.add(0.0, -getGravity(), 0.0));
         Vec3 motion = getDeltaMovement();
         if (!vec3.equals(motion)) {
             if (motion.x != vec3.x) motion = new Vec3(-vec3.x, vec3.y, vec3.z);
@@ -52,27 +50,37 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
                 return;
             }
         }
-        setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));
+        setDeltaMovement(motion.scale(0.99).add(0.0, -getGravity(), 0.0));
 
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire"));
             emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
-        if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
-            Entity entity = entityHitResult.getEntity();
-            boolean ddu = ModSecretSeeds.DONT_DIG_UP.match();
-            if (random.nextBoolean()) {
-                if (ddu && entity instanceof LivingEntity living) {
-                    living.addEffect(new MobEffectInstance(TEEffects.HELLFIRE, 100));
-                } else {
-                    entity.setRemainingFireTicks(100);
-                }
-            }
-            if (entity.hurt(getDamagesource(), ddu ? getCalculatedDamage() * 1.5F : getCalculatedDamage())) {
-                VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
+    }
+
+    @Override
+    protected double getDefaultGravity() {
+        return 0.04;
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        Entity entity = result.getEntity();
+        if (random.nextBoolean()) {
+            if (ModSecretSeeds.DONT_DIG_UP.match() && entity instanceof LivingEntity living) {
+                living.addEffect(new MobEffectInstance(TEEffects.HELLFIRE, 100));
+            } else {
+                entity.setRemainingFireTicks(100);
             }
         }
+        doHurtAndKnockback(entity, 0.6, 0.2);
+    }
+
+    @Override
+    public float getCalculatedDamage() {
+        float damage = super.getCalculatedDamage();
+        return ModSecretSeeds.DONT_DIG_UP.match() ? damage * 1.5F : damage;
     }
 
     @Override

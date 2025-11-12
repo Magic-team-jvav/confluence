@@ -52,7 +52,7 @@ public class ShimmerEffect extends MobEffect {
 
     public static void applyShimmerEffect(LivingEntity living) {
         if (!living.level().isClientSide && living.getEyeInFluidType() == ModFluids.SHIMMER.type().get() && !living.hasEffect(ModEffects.SHIMMER)) {
-            if (living.isCrouching() || !TCUtils.getAccessoriesValue(living, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER)) {
+            if (living.isCrouching() || !TCUtils.getValue(living, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER)) {
                 living.addEffect(new MobEffectInstance(ModEffects.SHIMMER, MobEffectInstance.INFINITE_DURATION));
             }
         }

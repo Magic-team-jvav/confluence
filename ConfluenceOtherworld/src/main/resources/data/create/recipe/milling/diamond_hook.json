@@ -1,25 +1,25 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "create"
-    }
-  ],
-  "type": "create:milling",
-  "ingredients": [
-    {
-      "item": "confluence:diamond_hook"
-    }
-  ],
-  "processing_time": 100,
-  "results": [
-    {
-      "count": 13,
-      "id": "minecraft:diamond"
-    },
-    {
-      "chance": 0.5,
-      "id": "minecraft:diamond"
-    }
-  ]
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "type": "create:milling",
+    "ingredients": [
+        {
+            "item": "confluence:diamond_hook"
+        }
+    ],
+    "processing_time": 100,
+    "results": [
+        {
+            "count": 13,
+            "id": "minecraft:diamond"
+        },
+        {
+            "chance": 0.5,
+            "id": "minecraft:diamond"
+        }
+    ]
 }

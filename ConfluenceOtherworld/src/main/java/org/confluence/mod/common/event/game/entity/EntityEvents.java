@@ -24,14 +24,15 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.terra_curio.common.init.TCItems;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class EntityEvents {
     @SubscribeEvent
     public static void mount(EntityMountEvent event) {
         Entity beingMounted = event.getEntityBeingMounted();
-        if (beingMounted.isRemoved() || !(event.getEntityMounting() instanceof ServerPlayer player)) return;
+        if (beingMounted.isRemoved() || !(event.getEntityMounting() instanceof ServerPlayer player)) {
+            return;
+        }
         if (beingMounted instanceof LivingEntity) {
             AchievementUtils.awardAchievement(player, "the_cavalry");
         }
@@ -58,15 +59,19 @@ public final class EntityEvents {
         if (ILivingEntity.of(living).confluence$getExtraInvulnerableTicks() > 0) return;
 
         DamageSource damageSource = event.getSource();
-        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
+        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
+            return;
+        }
 
         if (damageSource.is(ModDamageTypes.BOULDER) && living.getType().is(Tags.EntityTypes.BOSSES)) {
             event.setInvulnerable(true); // boss 免疫巨石
         } else if ((damageSource.getEntity() == null || !damageSource.getEntity().getType().is(Tags.EntityTypes.BOSSES)) && living.hasEffect(ModEffects.SHIMMER)) {
-            event.setInvulnerable(true); // 微光状态时免疫小怪和环境伤害
-        } else if (damageSource.is(DamageTypeTags.IS_FIRE) && (living.hasEffect(ModEffects.OBSIDIAN_SKIN) || (living instanceof Player player && ModArmorBonus.hasType(player, TCItems.FIRE$IMMUNE)))) {
-            living.clearFire();
-            event.setInvulnerable(true); // 免疫着火
+            event.setInvulnerable(true); // 微光状态时免疫非Boss和环境伤害
+        } else if (damageSource.is(DamageTypeTags.IS_FIRE)) {
+            if (living.hasEffect(ModEffects.OBSIDIAN_SKIN) || (living instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
+                living.clearFire();
+                event.setInvulnerable(true); // 免疫熔岩/着火
+            }
         }
     }
 }

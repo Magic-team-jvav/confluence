@@ -20,23 +20,22 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.terraentity.init.TEEffects;
 
 public class CorruptedOvariesBlock extends Block {
-
     public CorruptedOvariesBlock() {
         super(BlockBehaviour.Properties.of().noCollission().pushReaction(PushReaction.DESTROY));
     }
 
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (entity instanceof LivingEntity livingEntity) {
-            if (!livingEntity.getItemBySlot(EquipmentSlot.LEGS).isEmpty()) return;
+        if (entity instanceof LivingEntity living) {
+            if (!living.getItemBySlot(EquipmentSlot.LEGS).isEmpty()) return;
             entity.makeStuckInBlock(state, new Vec3(0.8F, 0.75, 0.8F));
             if (!level.isClientSide && (entity.xOld != entity.getX() || entity.zOld != entity.getZ())) {
                 double d0 = Math.abs(entity.getX() - entity.xOld);
                 double d1 = Math.abs(entity.getZ() - entity.zOld);
                 if (d0 >= 0.003F || d1 >= 0.003F) {
                     entity.hurt(level.damageSources().magic(), 3.0F);
-                    if (level.random.nextFloat() < 0.15F) {
-                        livingEntity.addEffect(new MobEffectInstance(TEEffects.DEMONIC_THOUGHTS, 200));
+                    if (living.getRandom().nextFloat() < 0.15F) {
+                        living.addEffect(new MobEffectInstance(TEEffects.DEMONIC_THOUGHTS, 200));
                     }
                 }
             }
@@ -59,5 +58,4 @@ public class CorruptedOvariesBlock extends Block {
         BlockState stateBelow = level.getBlockState(pos.below());
         return stateBelow.is(NatureBlocks.CORRUPT_GRASS_BLOCK) || stateBelow.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK);
     }
-
 }

@@ -8,15 +8,16 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.network.IPacket;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 
 public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, short platinum, byte gold, byte silver, byte copper) implements IPacketS2C {
-    public static final Type<PlayerDeathInfoPacketS2C> TYPE = IPacket.createType("player_death_info");
+    public static final Type<PlayerDeathInfoPacketS2C> TYPE = Confluence.createType("player_death_info");
     public static final StreamCodec<RegistryFriendlyByteBuf, PlayerDeathInfoPacketS2C> STREAM_CODEC = StreamCodec.composite(
             ComponentSerialization.TRUSTED_STREAM_CODEC, PlayerDeathInfoPacketS2C::deathMessage,
             ByteBufCodecs.VAR_INT, PlayerDeathInfoPacketS2C::respawnTime,

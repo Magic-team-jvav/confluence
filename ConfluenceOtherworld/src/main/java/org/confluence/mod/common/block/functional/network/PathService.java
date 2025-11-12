@@ -2,8 +2,10 @@ package org.confluence.mod.common.block.functional.network;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import org.confluence.lib.util.LibUtils;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -62,17 +64,21 @@ public class PathService {
             NetworkNode cur = queue.remove();
             cur.inQueue = false;
             INetworkEntity entity = cur.getEntity();
-            Level level = entity.getSelf().getLevel();
-            if (level == null || !level.isLoaded(cur.getPos()) || entity.getSelf().isRemoved()) continue;
+            if (!(entity.getSelf().getLevel() instanceof ServerLevel level) ||
+                    !level.isLoaded(cur.getPos()) ||
+                    entity.getSelf().isRemoved()
+            ) continue;
 
+            ServerChunkCache chunkSource = level.getChunkSource();
             for (Int2ObjectMap.Entry<Set<BlockPos>> entry1 : entity.getConnectedPoses().int2ObjectEntrySet()) {
                 int color = entry1.getIntKey();
                 Iterator<BlockPos> iterator = entry1.getValue().iterator();
                 while (iterator.hasNext()) {
                     BlockPos pos = iterator.next();
-                    if (!level.isLoaded(pos)) continue;
+                    ChunkAccess chunk = LibUtils.getChunkIfLoaded(chunkSource, pos);
+                    if (chunk == null) continue;
                     Network curNetwork = null;
-                    if (level.getBlockEntity(pos) instanceof INetworkEntity blockEntity) {
+                    if (chunk.getBlockEntity(pos) instanceof INetworkEntity blockEntity) {
                         curNetwork = cur.getOrCreateNetwork(color);
                         NetworkNode next = blockEntity.getOrCreateNetworkNode();
                         Network nextNetwork = next.getNetwork(color);
@@ -109,10 +115,10 @@ public class PathService {
                     network.schedule = false;
                     network.getNodes().stream()
 //                        .peek(node -> Confluence.LOGGER.debug("Scheduled Node#{}: {}", node.getId(), node.getPos().toShortString()))
-                        .filter(node -> node.cachedSignal != network.hasSignal())
-                        .map(NetworkNode::getEntity)
-                        .collect(Collectors.toSet())
-                        .forEach(entity -> internalExecute((ServerLevel) entity.getSelf().getLevel(), null, -1, network.hasSignal(), entity));
+                            .filter(node -> node.cachedSignal != network.hasSignal())
+                            .map(NetworkNode::getEntity)
+                            .collect(Collectors.toSet())
+                            .forEach(entity -> internalExecute((ServerLevel) entity.getSelf().getLevel(), null, -1, network.hasSignal(), entity));
                 }/* else {
                     for (NetworkNode node : network.getNodes()) {
                         Confluence.LOGGER.debug("Node#{}: {}", node.getId(), node.getPos().toShortString());

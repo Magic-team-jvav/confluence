@@ -15,7 +15,6 @@ import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
@@ -292,7 +291,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To4))
-                        // todo 镇静药水
+                        .add(LootItem.lootTableItem(PotionItems.CALMING_POTION.get()).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.FLIPPER_POTION.get()).apply(count2To4))
 
                         .add(EmptyLootItem.emptyItem().setWeight(42))
@@ -1029,7 +1028,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
 
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/classic"), HealingPotionCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/classic"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS).setWeight(105))
@@ -1038,8 +1037,11 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
                 ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/expert"), HealingPotionCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/expert"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BONE_GLOVE)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
@@ -1052,8 +1054,11 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/master"), HealingPotionCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/master"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BONE_GLOVE)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
@@ -1067,6 +1072,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.SKELETRON_RELIC)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                ))
         );
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/queen_bee/classic"), queenBeeTreasureBagCommon()

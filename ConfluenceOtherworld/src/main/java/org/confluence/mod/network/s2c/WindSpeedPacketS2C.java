@@ -7,11 +7,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WeatherHandler;
-import org.confluence.mod.network.IPacket;
 
 public record WindSpeedPacketS2C(float x, float z) implements IPacketS2C {
-    public static final Type<WindSpeedPacketS2C> TYPE = IPacket.createType("wind_speed");
+    public static final Type<WindSpeedPacketS2C> TYPE = Confluence.createType("wind_speed");
     public static final StreamCodec<ByteBuf, WindSpeedPacketS2C> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.FLOAT, WindSpeedPacketS2C::x,
             ByteBufCodecs.FLOAT, WindSpeedPacketS2C::z,

@@ -25,7 +25,7 @@ public final class ClientConfigs {
     public static int showWindParticles = 90;
     public static boolean achievementToast = true;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
-    public static boolean ectoMistEffect = true;
+    public static float minEctoMistEffectRadius = 10;
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -50,7 +50,7 @@ public final class ClientConfigs {
     private static IntValue SHOW_WIND_PARTICLES;
     private static BooleanValue ACHIEVEMENT_TOAST;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
-    private static BooleanValue ECTO_MIST_EFFECT;
+    private static IntValue MIN_ECTO_MIST_EFFECT_RADIUS;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
@@ -76,7 +76,7 @@ public final class ClientConfigs {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         achievementToast = ACHIEVEMENT_TOAST.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
-        ectoMistEffect = ECTO_MIST_EFFECT.get();
+        minEctoMistEffectRadius = MIN_ECTO_MIST_EFFECT_RADIUS.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -106,7 +106,7 @@ public final class ClientConfigs {
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
         ACHIEVEMENT_TOAST = BUILDER.define("achievementToast", true);
         SELL_PRICE_DISPLAY = BUILDER.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
-        ECTO_MIST_EFFECT = BUILDER.define("ectoMistEffect", true);
+        MIN_ECTO_MIST_EFFECT_RADIUS = BUILDER.defineInRange("minEctoMistEffectRadius", 10, 0, 100);
         {
             BUILDER.push("HUD");
             {

@@ -1,19 +1,19 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "create"
-    }
-  ],
-  "type": "create:haunting",
-  "ingredients": [
-    {
-      "item": "confluence:gel"
-    }
-  ],
-  "results": [
-    {
-      "id": "minecraft:slime_ball"
-    }
-  ]
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "type": "create:haunting",
+    "ingredients": [
+        {
+            "item": "confluence:gel"
+        }
+    ],
+    "results": [
+        {
+            "id": "minecraft:slime_ball"
+        }
+    ]
 }

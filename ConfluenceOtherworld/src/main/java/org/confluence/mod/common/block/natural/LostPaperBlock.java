@@ -35,8 +35,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class LostPaperBlock extends Block implements EntityBlock {
-    private static final IntegerProperty LAYER = IntegerProperty.create("layer", 0, 3);
-    private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 1, 15);
+    protected static final IntegerProperty LAYER = IntegerProperty.create("layer", 0, 3);
+    protected static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 1, 15);
 
     public LostPaperBlock() {
         super(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).noCollission());

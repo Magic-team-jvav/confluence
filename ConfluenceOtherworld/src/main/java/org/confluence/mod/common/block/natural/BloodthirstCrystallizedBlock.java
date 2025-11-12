@@ -31,16 +31,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BloodthirstCrystallizedBlock extends Block implements EntityBlock {
     public static final Set<BlockPos> ALL_BLOCKS = ConcurrentHashMap.newKeySet();
     public static final BooleanProperty VISIBLE = StateProperties.VISIBLE;
-    private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
+    protected static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
 
     public BloodthirstCrystallizedBlock() {
         super(BlockBehaviour.Properties.of().randomTicks());
         registerDefaultState(stateDefinition.any().setValue(VISIBLE, false));
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return defaultBlockState();
     }
 
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -68,7 +63,6 @@ public class BloodthirstCrystallizedBlock extends Block implements EntityBlock {
     protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
         return !state.getValue(VISIBLE);
     }
-
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
@@ -103,13 +97,12 @@ public class BloodthirstCrystallizedBlock extends Block implements EntityBlock {
         Iterator<BlockPos> iterator = ALL_BLOCKS.iterator();
         while (iterator.hasNext()) {
             BlockPos pos = iterator.next();
-            if (pos.distSqr(blockPos) <= 400) {
-                BlockState state = level.getBlockState(pos);
-                if (state.is(this)) {
-                    level.setBlockAndUpdate(pos.immutable(), state.setValue(VISIBLE, true));
-                } else {
-                    iterator.remove();
-                }
+            if (pos.distSqr(blockPos) > 400) continue;
+            BlockState state = level.getBlockState(pos);
+            if (state.is(this)) {
+                level.setBlockAndUpdate(pos.immutable(), state.setValue(VISIBLE, true));
+            } else {
+                iterator.remove();
             }
         }
     }

@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 
 public class SpreadingIceBlock extends IceBlock implements ISpreadable {
-    private final Type type;
+    protected final Type type;
 
     public SpreadingIceBlock(Type type, Properties properties) {
         super(properties);

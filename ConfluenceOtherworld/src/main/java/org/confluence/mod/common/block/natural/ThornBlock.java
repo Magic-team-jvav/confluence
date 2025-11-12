@@ -28,15 +28,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ThornBlock extends PipeBlock {
-    public static final MapCodec<ThornBlock> CODEC = RecordCodecBuilder.mapCodec(
-        builder -> builder.group(Codec.FLOAT.fieldOf("damage_amount").forGetter(thornBlock -> thornBlock.damageAmount),
-                Block.CODEC.fieldOf("ground_block").forGetter(thornBlock -> thornBlock.ground))
-            .apply(builder, ThornBlock::new)
-    );
+    public static final MapCodec<ThornBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.FLOAT.fieldOf("damage_amount").forGetter(block -> block.damageAmount),
+            Block.CODEC.fieldOf("ground_block").forGetter(block -> block.ground)
+    ).apply(instance, ThornBlock::new));
+    public static final IntegerProperty PROP_AGE = IntegerProperty.create("age", 0, 7);
 
-    private final float damageAmount;
-    private static final IntegerProperty PROP_AGE = IntegerProperty.create("age", 0, 7);
-    private final Block ground;
+    protected final float damageAmount;
+    protected final Block ground;
 
     public ThornBlock(float damageAmount, Block ground) {
         super(0.3125f, Properties.of().replaceable().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY).randomTicks());
@@ -47,7 +46,7 @@ public class ThornBlock extends PipeBlock {
 
     @Override
     @NotNull
-    protected MapCodec<? extends PipeBlock> codec(){
+    protected MapCodec<? extends PipeBlock> codec() {
         return CODEC;
     }
 
@@ -57,9 +56,9 @@ public class ThornBlock extends PipeBlock {
         return getStateForPlacement(pContext.getLevel(), pContext.getClickedPos());
     }
 
-    public BlockState getStateForPlacement(BlockGetter pLevel, BlockPos pPos){
+    public BlockState getStateForPlacement(BlockGetter pLevel, BlockPos pPos) {
         BlockState blockState = defaultBlockState();
-        for(Direction direction : Direction.values()){
+        for (Direction direction : Direction.values()) {
             BlockState nearState = pLevel.getBlockState(pPos.relative(direction));
             blockState = blockState.setValue(PROPERTY_BY_DIRECTION.get(direction), nearState.is(this) || nearState.is(ground));
         }
@@ -91,7 +90,7 @@ public class ThornBlock extends PipeBlock {
 
     @Override
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if(this == NatureBlocks.PLANTERA_THORN.get() || pRandom.nextInt(50) != 0) return;
+        if (this == NatureBlocks.PLANTERA_THORN.get() || pRandom.nextInt(50) != 0) return;
         Direction dir = Direction.getRandom(pRandom);
         BlockPos targetPos = pPos.relative(dir);
         if (!pLevel.getBlockState(targetPos).isAir() || checkBorder(pLevel, targetPos, dir)) return;

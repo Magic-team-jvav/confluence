@@ -31,7 +31,7 @@ public final class ModBiomes {
     public static void registerRegionAndSurface() {
         Regions.register(new TheCrimsonRegion(Confluence.asResource("the_crimson"), 1));
         Regions.register(new TheCorruptionRegion(Confluence.asResource("the_corruption"), 1));
-        Regions.register(new GlowingMushroomRegion(Confluence.asResource("glowing_mushroom"), 1));
+        Regions.register(new GlowingMushroomRegion(Confluence.asResource("glowing_mushroom"), 2));
         Regions.register(new AshForestRegion(Confluence.asResource("ash_forest"), 1));
         Regions.register(new AshWastelandRegion(Confluence.asResource("ash_wasteland"), 1));
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, SurfaceRuleData.makeConfluenceOverWorldRules());

@@ -21,8 +21,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketC2S;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.*;
-import org.confluence.mod.network.IPacket;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
 
@@ -39,7 +40,7 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPacket
         map.put(DYE_VAT_MENU, new Tuple<>((containerId, playerInventory, player) -> new DyeVatMenu(containerId, playerInventory, getAccess(player)), Component.translatable("container.confluence.dye_vat")));
         map.put(DYE_MIX_MENU, new Tuple<>((containerId, playerInventory, player) -> new DyeMixMenu(containerId, playerInventory, getAccess(player)), Component.translatable("container.confluence.dye_mix")));
     });
-    public static final Type<OpenMenuPacketC2S> TYPE = IPacket.createType("open_menu");
+    public static final Type<OpenMenuPacketC2S> TYPE = Confluence.createType("open_menu");
     public static final StreamCodec<RegistryFriendlyByteBuf, OpenMenuPacketC2S> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.BYTE, OpenMenuPacketC2S::menuId,
             ItemStack.OPTIONAL_STREAM_CODEC, OpenMenuPacketC2S::stack,

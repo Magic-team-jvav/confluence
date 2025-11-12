@@ -1,6 +1,8 @@
 package org.confluence.mod.integration.jei;
 
 import com.mojang.datafixers.util.Either;
+import it.unimi.dsi.fastutil.ints.IntObjectMutablePair;
+import it.unimi.dsi.fastutil.ints.IntObjectPair;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -56,7 +58,7 @@ public class EitherRecipe4xHelper {
             S extends ToggleAmountResultSlot<R>,
             A extends ContainerLevelAccess,
             C extends EitherAmountContainerMenu4x<I, R, S, A>
-    > void register(
+            > void register(
             IRecipeTransferRegistration registration,
             Class<R> recipeClazz,
             Class<C> containerClazz,
@@ -180,46 +182,50 @@ public class EitherRecipe4xHelper {
         public @Nullable IRecipeTransferError transferRecipe(C container, RecipeHolder<R> recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
             IStackHelper stackHelper = jeiHelpers.getStackHelper();
             List<IRecipeSlotView> slotViews = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT).stream().filter(view -> !view.isEmpty()).toList();
-            Map<IRecipeSlotView, Set<Object>> slotUidCache = new IdentityHashMap<>();
 
-            Object2IntOpenHashMap<Object> total = new Object2IntOpenHashMap<>();
-            int[] requires = new int[slotViews.size()];
-            Arrays.fill(requires, -1);
-            for (Slot slot : container.slots) {
-                if (slot.isFake() || slot.getItem().isEmpty()) continue;
-                ItemStack slotItemStack = slot.getItem();
-                for (int i = 0; i < slotViews.size(); i++) {
-                    IRecipeSlotView slotView = slotViews.get(i);
-                    Object slotItemStackUid = stackHelper.getUidForStack(slotItemStack, UidContext.Ingredient);
-                    if (slotUidCache.computeIfAbsent(slotView, s -> calculateUids(s, stackHelper)).contains(slotItemStackUid)) {
-                        total.put(slotItemStackUid, slot.getItem().getCount());
-                        requires[i] = slotView.getItemStacks().findAny().map(ItemStack::getCount).orElse(1);
-                    }
+            Map<IRecipeSlotView, IntObjectPair<Set<Object>>> slotUidCache = new IdentityHashMap<>();
+            Set<Object> uids = new HashSet<>();
+            for (IRecipeSlotView slotView : slotViews) {
+                ItemStack itemStack = slotView.getItemStacks().findAny().orElseThrow();
+                IntObjectPair<Set<Object>> pair = slotUidCache.computeIfAbsent(slotView, s -> calculateUids(s, stackHelper));
+                Object uid = stackHelper.getUidForStack(itemStack, UidContext.Ingredient);
+                if (pair.right().contains(uid)) {
+                    uids.add(uid);
+                    pair.left(pair.leftInt() + itemStack.getCount());
                 }
             }
+
+            Object2IntOpenHashMap<Object> total = new Object2IntOpenHashMap<>();
+            for (Slot slot : container.slots) {
+                if (slot.isFake()) continue;
+                ItemStack itemStack = slot.getItem();
+                if (itemStack.isEmpty()) continue;
+                Object uid = stackHelper.getUidForStack(itemStack, UidContext.Ingredient);
+                if (uids.contains(uid)) {
+                    total.addTo(uid, itemStack.getCount());
+                }
+            }
+
             if (total.isEmpty()) {
                 return transferHelper.createUserErrorForMissingSlots(Component.translatable("jei.tooltip.error.recipe.transfer.missing"), slotViews);
             }
 
             List<IRecipeSlotView> missing = new ArrayList<>();
-            for (int i = 0; i < slotViews.size(); i++) {
-                IRecipeSlotView slotView = slotViews.get(i);
-                int require = requires[i];
-                if (require < 0) {
-                    missing.add(slotView);
-                    continue;
-                }
-                Set<Object> objects = slotUidCache.computeIfAbsent(slotView, s -> calculateUids(s, stackHelper));
-                for (Object object : objects) {
-                    if (total.containsKey(object)) {
-                        if (total.getInt(object) < require) {
-                            missing.add(slotView);
-                        }
-                        total.addTo(object, -require);
-                        break;
+            for (Map.Entry<IRecipeSlotView, IntObjectPair<Set<Object>>> entry : slotUidCache.entrySet()) {
+                IntObjectPair<Set<Object>> pair = entry.getValue();
+                int require = pair.leftInt();
+                boolean mismatch = false;
+                for (Object uid : pair.right()) {
+                    int i = total.getInt(uid);
+                    if (i != 0 && i >= require) {
+                        total.addTo(uid, -require);
+                    } else {
+                        mismatch = true;
                     }
                 }
+                if (mismatch) missing.add(entry.getKey());
             }
+
             if (!missing.isEmpty()) {
                 return transferHelper.createUserErrorForMissingSlots(Component.translatable("jei.tooltip.error.recipe.transfer.missing"), missing);
             }
@@ -230,7 +236,7 @@ public class EitherRecipe4xHelper {
             return null;
         }
 
-        private static Set<Object> calculateUids(IRecipeSlotView recipeSlotView, IStackHelper stackhelper) {
+        private static IntObjectPair<Set<Object>> calculateUids(IRecipeSlotView recipeSlotView, IStackHelper stackhelper) {
             List<@Nullable ITypedIngredient<?>> allIngredientsList = recipeSlotView.getAllIngredientsList();
             Set<Object> uids = new HashSet<>(allIngredientsList.size());
             for (ITypedIngredient<?> typedIngredient : allIngredientsList) {
@@ -240,7 +246,7 @@ public class EitherRecipe4xHelper {
                     uids.add(stackhelper.getUidForStack(typedItemStack, UidContext.Ingredient));
                 }
             }
-            return uids;
+            return new IntObjectMutablePair<>(0, uids);
         }
     }
 

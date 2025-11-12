@@ -6,11 +6,14 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.Unit;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -41,11 +44,10 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.mixed.ILevelChunkSection;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.*;
-import org.confluence.terra_curio.api.primitive.PrimitiveValue;
-import org.confluence.terra_curio.api.primitive.UnitValue;
-import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
@@ -91,7 +93,8 @@ public final class PlayerUtils {
         int delay = manaStorage.getRegenerateDelay();
         boolean notMove = isNotMove(player);
         if (delay > 0) {
-            if (manaStorage.isArcaneCrystalUsed()) delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
+            if (manaStorage.isArcaneCrystalUsed())
+                delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
             if (delay > 20 && player.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
             int delayReduce = notMove ? 2 : 1;
             if (manaStorage.isFastManaRegeneration()) delayReduce += 1;
@@ -148,22 +151,33 @@ public final class PlayerUtils {
         }
         KillBoardSyncPacketS2C.sendToClient(player);
         GlobalCloakSyncPacketS2C.sendToClient(player);
-        MeteoriteLocationPacketS2C.sendToAll(data.getMeteoriteLocation(), 0);
+        MeteoriteLocationPacketS2C.sendToClient(player, data.getMeteoriteLocation(), 0);
         BestiarySyncPacketS2C.syncEntries(player);
+        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        PiggyBankTotalMoneyPacket.sendToClient(player, PlayerPiggyBankContainer.of(player), true);
+        FishingPowerInfoPacketS2C.sendAndGet(player);
+        VisibilityPacketS2C.sendEcho(player);
+        syncMana2Client(player);
+        VisibilityPacketS2C.sendTheConstantPostEffect(player);
+        SecretFlagSyncPacketS2C.sendToClient(player, IMinecraftServer.of(player.server).confluence$getSecretFlag());
+        CompatibilitySyncPacketS2c.sendToClient(player);
     }
 
     public static float getFishingPower(ServerPlayer player) {
-        float base = getPrimitiveValue(player, AccessoryItems.FISHING$POWER);
+        float base = TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
         if (EverBeneficial.of(player).isGummyWormUsed()) base += 3.0F;
-        if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
+        if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE))
+            base += 5.0F;
         if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
         Level level = player.level();
         if (level.isRaining()) base *= 1.1F;
         else if (level.isThundering()) base *= 1.2F;
         int dayTime = LibDateUtils.getDayTime(level);
-        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime)) base *= 1.3F;
+        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime))
+            base *= 1.3F;
         else if (LibDateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) base *= 0.8F;
-        else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime)) base *= 1.3F;
+        else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime))
+            base *= 1.3F;
         else if (LibDateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) base *= 0.8F;
         base *= switch (level.getMoonPhase()) {
             case 0 -> 1.1F; // 满月
@@ -392,13 +406,14 @@ public final class PlayerUtils {
      */
     public static boolean applyAutoGetMana(ServerPlayer player, float currentMana, float extract) {
         if (currentMana < extract) {
-            if (!TCUtils.hasAccessoriesType(player, AccessoryItems.AUTO$GET$MANA)) return true;
+            if (!TCUtils.hasType(player, AccessoryItems.AUTO$GET$MANA)) return true;
             ItemStack toUse = null;
             for (ItemStack itemStack : player.getInventory().items) {
                 if (itemStack.getItem() instanceof ManaPotionItem manaPotion) {
                     int amount = manaPotion.getAmount();
                     if (currentMana + amount < extract) continue;
-                    if (toUse == null || amount < ((ManaPotionItem) toUse.getItem()).getAmount()) toUse = itemStack;
+                    if (toUse == null || amount < ((ManaPotionItem) toUse.getItem()).getAmount())
+                        toUse = itemStack;
                     if (amount == 50) break;
                 }
             }
@@ -435,13 +450,28 @@ public final class PlayerUtils {
         return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
     }
 
-    public static <T, V extends PrimitiveValue<T>> T getPrimitiveValue(Player player, ValueType<T, V> type) {
-        T t1 = TCUtils.getAccessoriesValue(player, type);
-        T t2 = ModArmorBonus.getValue(player, type);
-        return type.combineRule().combine(t1, t2);
+    public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
+        ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
+        FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
     }
 
-    public static boolean hasPrimitiveType(Player player, ValueType<Unit, UnitValue> type) {
-        return TCUtils.hasAccessoriesType(player, type) && ModArmorBonus.hasType(player, type);
+    public static boolean skipHealIfOnFire(Player player) {
+        return CommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && player.isOnFire();
+    }
+
+    public static float applyTerraFire(DamageSource damageSource, float amount) {
+        if (CommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && damageSource.is(DamageTypeTags.IS_FIRE)) {
+            return amount * 4;
+        }
+        return amount;
+    }
+
+    public static void applySunflowerEffect(ServerPlayer player, ServerLevel level, long gameTime) {
+        if (gameTime % 200 == 0) {
+            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
+            if (iSection != null && iSection.confluence$getBlockCounts().sunflower.get() > 0) {
+                player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 220));
+            }
+        }
     }
 }

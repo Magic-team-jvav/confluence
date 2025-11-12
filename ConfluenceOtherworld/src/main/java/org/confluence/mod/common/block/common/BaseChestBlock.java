@@ -10,6 +10,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -67,7 +68,7 @@ public class BaseChestBlock extends ChestBlock {
     @Override
     protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
         ItemStack stack = asItem().getDefaultInstance();
-        stack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", state.getValue(UNLOCKED) ? "true" : "false")));
+        setupComponent(stack, state.getValue(UNLOCKED));
         return Collections.singletonList(stack);
     }
 
@@ -112,7 +113,7 @@ public class BaseChestBlock extends ChestBlock {
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
-        stack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", state.getValue(UNLOCKED) ? "true" : "false")));
+        setupComponent(stack, state.getValue(UNLOCKED));
         return stack;
     }
 
@@ -124,6 +125,21 @@ public class BaseChestBlock extends ChestBlock {
     @Override
     protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
         return state.getValue(UNLOCKED) ? super.getDestroyProgress(state, player, level, pos) : 0;
+    }
+
+    public static void setupComponent(ItemStack stack, boolean unlocked) {
+        stack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", unlocked ? "true" : "false")));
+    }
+
+    public static class BItem extends BlockItem {
+        public BItem(Block block, Properties properties) {
+            super(block, properties.component(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", "true"))));
+        }
+
+        @Override
+        public void onCraftedPostProcess(ItemStack stack, Level level) {
+            setupComponent(stack, true);
+        }
     }
 
     public static class BEntity extends ChestBlockEntity {

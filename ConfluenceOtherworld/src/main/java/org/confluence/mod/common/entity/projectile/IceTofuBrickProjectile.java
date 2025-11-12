@@ -1,6 +1,8 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -11,9 +13,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.neoforge.common.Tags;
-import org.confluence.lib.mixed.LibLivingEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.terraentity.init.TEEffects;
 
 public class IceTofuBrickProjectile extends ThrowableItemProjectile {
     public IceTofuBrickProjectile(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
@@ -43,10 +45,9 @@ public class IceTofuBrickProjectile extends ThrowableItemProjectile {
     private void freezeTarget() {
         DamageSource source = damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null);
         for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, new AABB(position().add(-1, -1, -1), position().add(1, 1, 1)), living -> !(living instanceof Player))) {
-            living.hurt(source, 9);
-            if (!living.getType().is(Tags.EntityTypes.BOSSES)) {
-                ((LibLivingEntity) living).confluence$setTickFreezeTime(100);
-            }
+            living.hurt(source, 4);
+            living.addEffect(new MobEffectInstance(TEEffects.FROST_BURN.getDelegate(), 200, 0));
+            living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN.getDelegate(), 200, 1));
         }
     }
 

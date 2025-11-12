@@ -68,25 +68,25 @@ public class BowItems {
             .setRarity(ModRarity.BLUE)
             .setOnHitEffect(TEEffectStrategies.Components.HUNTING_RIFLE_EFFECT.get())
     );
-    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", 4.7F, m->m
+    public static final DeferredItem<TerraBowItem> DEMON_BOW = register("demon_bow", 4.9F, m->m
             .setRarity(ModRarity.BLUE)
             .setFullPullHitEffect(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get())
     );
-    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  4.8F, m->m
+    public static final DeferredItem<TerraBowItem> TENDON_BOW = register("tendon_bow",  5.2F, m->m
             .setRarity(ModRarity.BLUE)
             .setFullPullHitEffect(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get())
     );
-    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  5.3F, m->m
+    public static final DeferredItem<TerraBowItem> MOLTEN_FURY = register("molten_fury",  5.8F, m->m
             .setRarity(ModRarity.ORANGE)
             .setArrowTransform(ArrowItems.HELLFIRE_ARROW.get())
     );
-    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  6.0F, m->m
+    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  6.7F, m->m
             .setRarity(ModRarity.YELLOW)
             .setMultiShoot(3, (i, c)->new Vec3(-i*0.25f,0,0))
             .setCanMultiShoot(ammo->!(ammo.getItem() instanceof BaseArrowItem))
             .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.BEE_ARROW.get(), BeeArrow::new))
     );
-    public static final DeferredItem<TerraBowItem> HELLWING_BOW = register("hellwing_bow",  6.3f, m->m
+    public static final DeferredItem<TerraBowItem> HELLWING_BOW = register("hellwing_bow",  7.5f, m->m
             .setRarity(ModRarity.RED)
             .setInaccuracy(1f)
             .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.HELL_BAT_ARROW.get(), HellBatArrowEntity::new))

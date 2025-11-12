@@ -54,7 +54,7 @@ public class EverBeneficialItem extends TooltipItem {
         attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, 4.0, AttributeModifier.Operation.ADD_VALUE));
     });
     public static final Beneficial AMBROSIA = new Beneficial(Confluence.asResource("ambrosia"), EverBeneficial::setAmbrosiaUsed, (id, player, everBeneficial, isRespawn) -> {
-        int value = TCUtils.getAccessoriesValue(player, TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR);
+        int value = TCUtils.getValue(player, TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR);
         PacketDistributor.sendToPlayer(player, new RightClickSubtractorPacketS2C((byte) Math.min(value + 1, 4)));
         AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.BLOCK_BREAK_SPEED);
         if (attributeInstance == null) return;

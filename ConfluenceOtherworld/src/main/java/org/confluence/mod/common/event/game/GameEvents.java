@@ -14,7 +14,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -29,10 +28,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.event.SwitchItemFunctionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
-import org.confluence.mod.api.event.AdditionalManaEvent;
-import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
-import org.confluence.mod.api.event.MinecartAbilityEvent;
-import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
+import org.confluence.mod.api.event.*;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
@@ -47,7 +43,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
@@ -107,7 +102,7 @@ public final class GameEvents {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOW)
+    @SubscribeEvent(priority = EventPriority.LOW) // 需要晚于Curios Api
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer from = event.getPlayer();
         if (from == null) {
@@ -115,7 +110,7 @@ public final class GameEvents {
                 ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(to, to, ExtraInventory.of(to));
             }
         } else {
-            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from)); // 需要晚于Curios Api
+            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from));
             AchievementOffsetSyncPacketS2C.sendToClient(from);
         }
     }
@@ -149,24 +144,23 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
-        MinecraftServer currentServer;
-        if (event.getTargets() != null && (currentServer = ServerLifecycleHooks.getCurrentServer()) != null) {
-            boolean corruption = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
-            boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
-            if (corruption != crimson) {
-                List<ItemStack> targets = new ArrayList<>();
-                for (ItemStack target : event.getTargets()) {
-                    if (corruption && target.is(MaterialItems.CRIMTANE_INGOT)) {
-                        targets.add(MaterialItems.DEMONITE_INGOT.toStack(target.getCount()));
-                    } else if (crimson && target.is(MaterialItems.DEMONITE_INGOT)) {
-                        targets.add(MaterialItems.CRIMTANE_INGOT.toStack(target.getCount()));
-                    } else {
-                        targets.add(target);
-                    }
-                }
-                event.setTargets(targets);
+        if (event.getTargets() == null) return;
+        MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+        if (currentServer == null) return;
+
+        boolean corrupt = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
+        boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
+        if (corrupt == crimson) return;
+        List<ItemStack> targets = new ArrayList<>();
+        for (ItemStack targetStack : event.getTargets()) {
+            Item target = RegisterEvilMaterialReplacesEvent.getPossible(targetStack.getItem(), corrupt, crimson);
+            if (target == null) {
+                targets.add(targetStack);
+            } else {
+                targets.add(new ItemStack(target, targetStack.getCount()));
             }
         }
+        event.setTargets(targets);
     }
 
     @SubscribeEvent
@@ -218,10 +212,9 @@ public final class GameEvents {
         ItemStack minecartItem = event.getMinecartItem();
 
         if (minecartItem.isEmpty()) {
-            BaseMinecartEntity baseMinecart = new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.WOODEN);
-            event.setMinecart(baseMinecart);
+            event.setMinecart(new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.WOODEN));
         } else if (minecartItem.getItem() == Items.MINECART) {
-            event.setMinecart(new Minecart(level, x, y, z));
+            event.setMinecart(new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.VANILLA));
         } else if (minecartItem.getItem() instanceof BaseMinecartItem baseMinecartItem) {
             event.setMinecart(Objects.requireNonNull(baseMinecartItem.createMinecart(level, x, y, z, AbstractMinecart.Type.RIDEABLE, minecartItem, event.getEntity())));
         }
@@ -252,7 +245,7 @@ public final class GameEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void getArmorSetBonus(GetArmorSetBonusDataEvent event) {
         ArmorSetBonusKey key = event.getKey();
-        if (key.head() != null && key.chest() != null && key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
+        if (key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
             if (key.chest() == ArmorItems.WIZARD_HAT.get()) {
                 event.setNeoData(ModArmorBonus.WIZARD_HAT_SET_BONUS);
             } else if (key.chest() == ArmorItems.MAGIC_HAT.get()) {

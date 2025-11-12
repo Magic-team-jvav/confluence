@@ -40,7 +40,7 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
         int max = level.getMaxBuildHeight() - length;
         int min = level.getMinBuildHeight() + length + BEDROCK;
         BlockPos.MutableBlockPos chunkCenter = new ChunkPos(origin).getBlockAt(7, max, 7).mutable();
-        while (chunkCenter.getY() > min && level.getBlockState(chunkCenter).isAir()) {
+        while (chunkCenter.getY() > min && level.getBlockState(chunkCenter).canBeReplaced()) {
             chunkCenter.move(0, -1, 0);
         }
         BlockState air = Blocks.AIR.defaultBlockState();
@@ -54,7 +54,7 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
                     float dist = Mth.sqrt(x * x + y * y + z * z);
                     if (dist > radius) continue;
                     BlockPos offset = chunkCenter.offset(x, y, z);
-                    if (!level.getBlockState(offset).isCollisionShapeFullBlock(level, offset)) continue;
+                    if (level.getBlockState(offset).canBeReplaced()) continue;
                     float point = CURVE.getPoint((1.0F + dist * invRadius * c) / (c + 2.0F));
                     float v = random.nextFloat();
                     if (point < sparse) {

@@ -40,7 +40,7 @@ public abstract class FishingRodItemMixin {
                     curio.variant
             );
         }
-        if (TCUtils.hasAccessoriesType(playerOwner, AccessoryItems.LAVAPROOF$FISHING$HOOK)) {
+        if (TCUtils.hasType(playerOwner, AccessoryItems.LAVAPROOF$FISHING$HOOK)) {
             ((IFishingHook) fishingHook).confluence$setIsLavaHook();
         }
         return fishingHook;

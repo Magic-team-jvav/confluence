@@ -62,8 +62,10 @@ public class ZombieArmRenderer {
         ModelPart rendererArm;
         if (humanoidArm == HumanoidArm.RIGHT && player.getItemInHand(InteractionHand.MAIN_HAND).is(SwordItems.ZOMBIE_ARM)) {
             rendererArm = zombieModel.rightArm;
+            zombieModel.rightArm.visible = true;
         } else if (humanoidArm == HumanoidArm.LEFT && player.getItemInHand(InteractionHand.OFF_HAND).is(SwordItems.ZOMBIE_ARM)) {
             rendererArm = zombieModel.leftArm;
+            zombieModel.leftArm.visible = true;
         } else {
             return false;
         }

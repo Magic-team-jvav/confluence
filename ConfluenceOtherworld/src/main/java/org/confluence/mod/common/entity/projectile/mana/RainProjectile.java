@@ -13,12 +13,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.mixed.Immunity;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 public class RainProjectile extends AbstractManaProjectile implements Immunity {
-    protected final Set<UUID> penetrateSet = new HashSet<>();
     private int maxPenetrate = 2;
 
     public RainProjectile(EntityType<? extends RainProjectile> entityType, Level level) {
@@ -43,31 +38,39 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
         }
         super.baseTick();
 
-        HitResult hitresult = ProjectileUtil.getHitResult(position(), this, this::canHitEntity, getDeltaMovement(), level(), 0.6F, ClipContext.Block.COLLIDER);
-        checkInsideBlocks();
-        HitResult.Type hitresult$type = hitresult.getType();
-        if (hitresult$type == HitResult.Type.BLOCK) {
-            onHitBlock((BlockHitResult) hitresult);
-            discard();
-            return;
-        } else if (!level().isClientSide && hitresult$type == HitResult.Type.ENTITY) {
-            Entity entity = ((EntityHitResult) hitresult).getEntity();
-            if (!penetrateSet.contains(entity.getUUID())) {
-                entity.hurt(getDamagesource(), getCalculatedDamage());
-                penetrateSet.add(entity.getUUID());
-                if (penetrateSet.size() == maxPenetrate) {
-                    discard();
-                    return;
-                }
-            }
-        }
-
         Vec3 vec3 = getDeltaMovement();
         double offX = getX() + vec3.x;
         double offY = getY() + vec3.y;
         double offZ = getZ() + vec3.z;
         setPos(offX, offY, offZ);
         setDeltaMovement(vec3.add(0, -0.08, 0));
+    }
+
+    @Override
+    protected void doHitCheck() {
+        HitResult hitResult = ProjectileUtil.getHitResult(position(), this, this::canHitEntity, getDeltaMovement(), level(), 0.6F, ClipContext.Block.COLLIDER);
+        checkInsideBlocks();
+        HitResult.Type hitresult$type = hitResult.getType();
+        if (hitresult$type == HitResult.Type.BLOCK) {
+            onHitBlock((BlockHitResult) hitResult);
+        } else if (hitresult$type == HitResult.Type.ENTITY) {
+            onHitEntity((EntityHitResult) hitResult);
+        }
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        discard();
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        Entity entity = result.getEntity();
+        if (doPenetrateCheck(entity)) {
+            doHurtAndKnockback(entity, 0, 0);
+            doDiscardInMaxPenetrate(maxPenetrate);
+        }
     }
 
     @Override

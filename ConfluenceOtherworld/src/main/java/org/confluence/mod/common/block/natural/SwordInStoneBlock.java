@@ -14,8 +14,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SwordInStoneBlock extends Block {
     public static final EnumProperty<SwordType> SWORD_TYPE = EnumProperty.create("sword_type", SwordType.class);
-    private static final VoxelShape NULL_SHAPE = Shapes.or(box(2, 0, 2, 14, 3, 14), box(3, 3, 3, 13, 6, 13));
-    private static final VoxelShape SHAPE = Shapes.or(box(2, 0, 2, 14, 3, 14), box(3, 3, 3, 13, 6, 13), box(5, 6, 5, 11, 16, 11));
+    protected static final VoxelShape NULL_SHAPE = Shapes.or(box(2, 0, 2, 14, 3, 14), box(3, 3, 3, 13, 6, 13));
+    protected static final VoxelShape SHAPE = Shapes.or(box(2, 0, 2, 14, 3, 14), box(3, 3, 3, 13, 6, 13), box(5, 6, 5, 11, 16, 11));
 
     public SwordInStoneBlock() {
         super(Properties.of().mapColor(MapColor.COLOR_BLACK).instabreak());

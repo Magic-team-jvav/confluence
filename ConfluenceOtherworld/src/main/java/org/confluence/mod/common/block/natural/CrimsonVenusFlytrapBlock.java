@@ -15,7 +15,6 @@ import net.minecraft.world.level.material.PushReaction;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class CrimsonVenusFlytrapBlock extends Block {
-
     public CrimsonVenusFlytrapBlock() {
         super(BlockBehaviour.Properties.of().strength(1.0f).noCollission().pushReaction(PushReaction.DESTROY));
     }
@@ -23,7 +22,6 @@ public class CrimsonVenusFlytrapBlock extends Block {
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide) entity.hurt(level.damageSources().magic(), 2.0F);
-
     }
 
     @Override

@@ -58,7 +58,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             return InteractionResult.SUCCESS;
         } else {
             if (level.getBlockEntity(pos) instanceof EnhancedForgeBlock.BEntity<?> entity) {
-                player.openMenu(entity);
+                player.openMenu(entity.getBasePart());
             }
             return InteractionResult.CONSUME;
         }
@@ -76,16 +76,15 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moveByPiston) {
-        if (!state.is(newState.getBlock())) {
-            if (level.getBlockEntity(pos) instanceof EnhancedForgeBlock.BEntity<?> entity && state.getValue(PART).isBase()) {
-                if (level instanceof ServerLevel serverLevel) {
-                    Containers.dropContents(level, pos, entity);
-                    entity.getRecipesToAwardAndPopExperience(serverLevel, Vec3.atCenterOf(pos));
-                }
-                level.updateNeighbourForOutputSignal(pos, this);
+        if (state.is(newState.getBlock())) return;
+        if (state.getValue(PART).isBase() && level.getBlockEntity(pos) instanceof EnhancedForgeBlock.BEntity<?> entity) {
+            if (level instanceof ServerLevel serverLevel) {
+                Containers.dropContents(level, pos, entity);
+                entity.getRecipesToAwardAndPopExperience(serverLevel, Vec3.atCenterOf(pos));
             }
-            super.onRemove(state, level, pos, newState, moveByPiston);
+            level.updateNeighbourForOutputSignal(pos, this);
         }
+        super.onRemove(state, level, pos, newState, moveByPiston);
     }
 
     @Override
@@ -233,6 +232,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         protected final RecipeManager.CachedCheck<SingleRecipeInput, BlastingRecipe> blasting;
         protected final ItemStack[] itemStacks = new ItemStack[4];
         protected int lastCheckSlot = 0;
+        protected BEntity<?> basePart = null;
 
         public BEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
             super(type, pos, blockState);
@@ -275,17 +275,6 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             };
         }
 
-//        @Override
-//        public void onLoad() {
-//            super.onLoad();
-//            invalidateCapabilities();
-//        }
-//
-//        @Override
-//        public void onChunkUnloaded() {
-//            invalidateCapabilities();
-//        }
-
         protected void doBlasting(RecipeHolder<BlastingRecipe> recipeholder, ItemStack lastInput, boolean[] data) {
             if (!isLit() && canBlastingBurn(recipeholder, lastInput)) {
                 data[0] = doUpdateStatus();
@@ -299,10 +288,10 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         }
 
         protected <R extends Recipe<?>> boolean doUpdateProgress(RecipeHolder<R> recipeholder, Predicate<RecipeHolder<R>> predicate) {
-            if (++this.cookingProgress >= cookingTotalTime) {
-                this.cookingProgress = 0;
+            if (++getBasePart().cookingProgress >= cookingTotalTime) {
+                getBasePart().cookingProgress = 0;
                 if (!isLit()) {
-                    this.cookingTotalTime = getTotalCookTime();
+                    getBasePart().cookingTotalTime = getTotalCookTime();
                 }
                 if (predicate.test(recipeholder)) {
                     setRecipeUsed(recipeholder);
@@ -314,18 +303,18 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         protected boolean doUpdateStatus() {
             ItemStack fuel = getItem(FUEL_SLOT);
-            this.litTime = getBurnDuration(fuel);
-            this.litDuration = litTime;
+            getBasePart().litTime = getBurnDuration(fuel);
+            getBasePart().litDuration = litTime;
             if (fuel.hasCraftingRemainingItem()) {
-                items.set(FUEL_SLOT, fuel.getCraftingRemainingItem());
+                getItems().set(FUEL_SLOT, fuel.getCraftingRemainingItem());
             } else if (fuel.isEmpty()) {
-                this.useFuel = 0;
+                getBasePart().useFuel = 0;
             } else {
                 fuel.shrink(1);
                 if (fuel.isEmpty()) {
-                    items.set(FUEL_SLOT, fuel.getCraftingRemainingItem());
+                    getItems().set(FUEL_SLOT, fuel.getCraftingRemainingItem());
                 }
-                this.useFuel = 1;
+                getBasePart().useFuel = 1;
             }
             return true;
         }
@@ -340,7 +329,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
                 resetCookTime();
                 setChanged();
             } else if (index == FUEL_SLOT) {
-                this.useFuel = stack.isEmpty() ? 0 : 1;
+                getBasePart().useFuel = stack.isEmpty() ? 0 : 1;
                 resetCookTime();
                 setChanged();
             }
@@ -348,9 +337,9 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         protected void resetCookTime() {
             if (!isLit()) {
-                this.cookingTotalTime = getTotalCookTime();
-                if (items.get(FUEL_SLOT).isEmpty()) {
-                    this.cookingProgress = 0;
+                getBasePart().cookingTotalTime = getTotalCookTime();
+                if (getItems().get(FUEL_SLOT).isEmpty()) {
+                    getBasePart().cookingProgress = 0;
                 }
             }
         }
@@ -368,7 +357,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             if (neoResult.isEmpty()) {
                 return false;
             } else {
-                ItemStack oldResult = items.get(RESULT_SLOT);
+                ItemStack oldResult = getItems().get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     return true;
                 } else if (!ItemStack.isSameItemSameComponents(oldResult, neoResult)) {
@@ -382,15 +371,15 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         protected boolean burnBlasting(RecipeHolder<BlastingRecipe> recipe, ItemStack input) {
             if (canBlastingBurn(recipe, input)) {
                 ItemStack neoResult = recipe.value().assemble(new SingleRecipeInput(input), level.registryAccess());
-                ItemStack oldResult = items.get(RESULT_SLOT);
+                ItemStack oldResult = getItems().get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
-                    items.set(RESULT_SLOT, neoResult.copy());
+                    getItems().set(RESULT_SLOT, neoResult.copy());
                 } else if (ItemStack.isSameItemSameComponents(oldResult, neoResult)) {
                     oldResult.grow(neoResult.getCount());
                 }
 
-                if (input.is(Blocks.WET_SPONGE.asItem()) && items.get(FUEL_SLOT).is(Items.BUCKET)) {
-                    items.set(FUEL_SLOT, Items.WATER_BUCKET.getDefaultInstance());
+                if (input.is(Blocks.WET_SPONGE.asItem()) && getItems().get(FUEL_SLOT).is(Items.BUCKET)) {
+                    getItems().set(FUEL_SLOT, Items.WATER_BUCKET.getDefaultInstance());
                 }
 
                 input.shrink(1);
@@ -411,17 +400,17 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         protected boolean burnForge(RecipeHolder<T> recipe) {
             if (canForgeBurn(recipe)) {
-                if (items.get(FUEL_SLOT).is(Items.BUCKET)) {
+                if (getItems().get(FUEL_SLOT).is(Items.BUCKET)) {
                     for (ItemStack input : itemStacks) {
                         if (input.is(Items.WET_SPONGE)) {
-                            items.set(FUEL_SLOT, Items.WATER_BUCKET.getDefaultInstance());
+                            getItems().set(FUEL_SLOT, Items.WATER_BUCKET.getDefaultInstance());
                         }
                     }
                 }
                 ItemStack neoResult = recipe.value().assembleAndExtract(new ArrayRecipeInput(itemStacks), level.registryAccess());
-                ItemStack oldResult = items.get(RESULT_SLOT);
+                ItemStack oldResult = getItems().get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
-                    items.set(RESULT_SLOT, neoResult.copy());
+                    getItems().set(RESULT_SLOT, neoResult.copy());
                 } else if (ItemStack.isSameItemSameComponents(oldResult, neoResult)) {
                     oldResult.grow(neoResult.getCount());
                 }
@@ -448,17 +437,19 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         }
 
         protected ItemStack[] getItemStacks() {
-            this.itemStacks[0] = items.get(0);
-            this.itemStacks[1] = items.get(1);
-            this.itemStacks[2] = items.get(2);
-            this.itemStacks[3] = items.get(3);
+            NonNullList<ItemStack> stacks = getItems();
+            this.itemStacks[0] = stacks.get(0);
+            this.itemStacks[1] = stacks.get(1);
+            this.itemStacks[2] = stacks.get(2);
+            this.itemStacks[3] = stacks.get(3);
             return itemStacks;
         }
 
         protected int getTotalCookTime() {
+            if (level == null) return 100;
             int time = forge.getRecipeFor(new ArrayRecipeInput(getItemStacks()), level)
                     .map(holder -> holder.value().getCookingTime()).orElse(100);
-            return items.get(FUEL_SLOT).isEmpty() ? time * 8 : time;
+            return getItems().get(FUEL_SLOT).isEmpty() ? time * 8 : time;
         }
 
         @Override
@@ -482,36 +473,37 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         @Override
         public int getContainerSize() {
-            return items.size();
+            return getItems().size();
         }
 
         @Override
         protected NonNullList<ItemStack> getItems() {
-            if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isRight()) {
-                return level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof EnhancedForgeBlock.BEntity<?> entity ? entity.items : items;
+            return getBasePart().items;
+        }
+
+        protected BEntity<?> getBasePart() {
+            if (basePart == null) {
+                if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
+                    return this.basePart = this;
+                }
+                if (level == null) return this;
+                BlockPos relative = getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()));
+                if (level.isLoaded(relative) && level.getBlockEntity(relative) instanceof BEntity<?> entity) {
+                    return this.basePart = entity;
+                }
+                return this;
             }
-            return items;
+            return basePart;
         }
 
         @Override
         protected void setItems(NonNullList<ItemStack> items) {
-            if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isRight()) {
-                if (level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof EnhancedForgeBlock.BEntity<?> entity) {
-                    entity.items = items;
-                    return;
-                }
-            }
-            this.items = items;
+            getBasePart().items = items;
         }
 
         @Override
         protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
-            if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
-                return newMenu(containerId, inventory, this, dataAccess);
-            } else if (level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof EnhancedForgeBlock.BEntity<?> entity) {
-                return newMenu(containerId, inventory, entity, entity.dataAccess);
-            }
-            throw new UnsupportedOperationException("Base block entity not found");
+            return newMenu(containerId, inventory, getBasePart(), getBasePart().dataAccess);
         }
 
         protected abstract AbstractContainerMenu newMenu(int containerId, Inventory inventory, Container forgeContainer, ContainerData forgeData);
@@ -572,7 +564,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
                 this.litTime = tag.getInt("BurnTime");
                 this.cookingProgress = tag.getInt("CookTime");
                 this.cookingTotalTime = tag.getInt("CookTimeTotal");
-                this.litDuration = getBurnDuration(items.get(FUEL_SLOT));
+                this.litDuration = getBurnDuration(getItems().get(FUEL_SLOT));
                 CompoundTag compoundtag = tag.getCompound("RecipesUsed");
 
                 for (String s : compoundtag.getAllKeys()) {

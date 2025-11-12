@@ -42,15 +42,25 @@ jobs:
           FULL_VERSION="${BASE_VERSION}-alpha-${DATE_SUFFIX}"
           echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_OUTPUT
       
+      - name: Delete previous nightly release
+        run: |
+          releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases?per_page=100")
+          echo "$releases" | jq -r '.[] | select(.prerelease == true and .name == "Nightly Build") | "\(.id)"' | while read release_id; do
+            if [ ! -z "$release_id" ]; then
+              echo "Deleting previous nightly release: $release_id"
+              curl -s -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                "https://api.github.com/repos/${{ github.repository }}/releases/$release_id"
+            fi
+          done
+      
       - name: Upload to Nightly Release
         uses: softprops/action-gh-release@v1
         with:
           files: ./ConfluenceOtherworld/build/libs/*.jar
           tag_name: nightly
           name: Nightly Build
-          body: |
-            **Pre-release**
           prerelease: true
-          keep_latest: true
+          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

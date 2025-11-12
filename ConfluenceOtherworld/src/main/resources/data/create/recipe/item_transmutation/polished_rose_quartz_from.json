@@ -1,18 +1,18 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "create"
-    }
-  ],
-  "type": "confluence:item_transmutation",
-  "source": {
-    "item": "create:polished_rose_quartz"
-  },
-  "target": [
-    {
-      "count": 1,
-      "id": "create:rose_quartz"
-    }
-  ]
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "type": "confluence:item_transmutation",
+    "source": {
+        "item": "create:polished_rose_quartz"
+    },
+    "target": [
+        {
+            "count": 1,
+            "id": "create:rose_quartz"
+        }
+    ]
 }

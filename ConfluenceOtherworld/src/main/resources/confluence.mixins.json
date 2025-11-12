@@ -17,6 +17,7 @@
         "RecipeManagerMixin",
         "RegistryDataLoaderMixin",
         "ServerAdvancementManagerMixin",
+        "ServerGamePacketListenerImplMixin",
         "ServerPlayerAccessor",
         "ServerPlayerGameModeMixin",
         "StructureStartMixin",
@@ -58,8 +59,10 @@
         "integration.apothic_attributes.AttributeEventsMixin",
         "integration.ars_nouveau.LivingCasterMixin",
         "integration.ars_nouveau.ManaCapMixin",
+        "integration.better_combat.ServerNetworkMixin",
         "integration.carryon.PickupHandlerMixin",
         "integration.curios.CuriosServerPayloadHandlerMixin",
+        "integration.curios.CuriosUtilMixinHooksMixin",
         "integration.ftbchunks.LongRangePlayerTrackerMixin",
         "integration.irons_spell.AbstractSpellMixin",
         "integration.irons_spell.MagicManagerMixin",
@@ -107,7 +110,6 @@
         "level.WorldOptionsMixin"
     ],
     "client": [
-        "accessor.KeyMappingAccessor",
         "client.BlockClientMixin",
         "client.ClientItemStackMixin",
         "client.ClientLevelMixin",

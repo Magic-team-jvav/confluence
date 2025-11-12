@@ -12,15 +12,16 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketC2S;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
-import org.confluence.mod.network.IPacket;
 
 public record HookThrowingPacketC2S(boolean throwing, int id) implements IPacketC2S {
-    public static final Type<HookThrowingPacketC2S> TYPE = IPacket.createType("hook_throwing");
+    public static final Type<HookThrowingPacketC2S> TYPE = Confluence.createType("hook_throwing");
     public static final StreamCodec<FriendlyByteBuf, HookThrowingPacketC2S> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public HookThrowingPacketC2S decode(FriendlyByteBuf buffer) {

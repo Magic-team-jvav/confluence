@@ -73,7 +73,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.holdersets.AndHolderSet;
 import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
@@ -105,7 +104,7 @@ import java.util.stream.Stream;
 
 public class ModDataProvider {
     public static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap) // todo
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
             .add(Registries.BIOME, Biomes::boostrap)
             .add(Registries.PROCESSOR_LIST, ProcessorListz::bootstrap)
             .add(Registries.TEMPLATE_POOL, TemplatePools::bootstrap)
@@ -910,7 +909,7 @@ public class ModDataProvider {
             register(context, DEATH_CHEST_TRAP, configured.getOrThrow(ConfiguredFeatures.DEATH_CHEST_TRAP), RarityFilter.onAverageOnceEvery(20), inSquare, throughCave, biome);
             register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), count3, inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
             register(context, WATER_CHESTS, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
-                    RarityFilter.onAverageOnceEvery(6), inSquare, bottomThroughSurface,
+                    RarityFilter.onAverageOnceEvery(8), inSquare, bottomThroughSurface,
                     EnvironmentScanPlacement.scanningFor(
                             Direction.DOWN,
                             BlockPredicate.hasSturdyFace(new Vec3i(0, -1, 0), Direction.UP),
@@ -1204,9 +1203,9 @@ public class ModDataProvider {
             register(context, createModifierKey("common_icy"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     snowyIcy,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_BAT.get(), 80, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.UNDEAD_VIKING.get(), 80, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNOW_FLINX.get(), 80, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_BAT.get(), 100, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.UNDEAD_VIKING.get(), 100, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNOW_FLINX.get(), 100, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_SLIME.get(), 15, 1, 2)
                     )
             ));
@@ -1222,14 +1221,12 @@ public class ModDataProvider {
                     )
             ));
             register(context, createModifierKey("common_overworld"), new BiomeModifiers.AddSpawnsBiomeModifier(
-                    snowyIcy,
+                    overworld,
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 4, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.FAIRY.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.FAIRY.get(), 3, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 60, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 5, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.POSSESS_ARMOR.get(), 65, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WRAITH.get(), 65, 1, 2)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 5, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_swamp"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1254,8 +1251,8 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLACK_SLIME.get(), 60, 1, 3),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 30, 2, 4),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 110, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 80, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 120, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 90, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_WORM.get(), 60, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), 30, 1, 3),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 45, 3, 3),
@@ -1264,6 +1261,8 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.RED_SLIME.get(), 45, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.YELLOW_SLIME.get(), 45, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON_EYE.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.POSSESS_ARMOR.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WRAITH.get(), 65, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.FLYING_FISH.get(), 60, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEAnimals.BUNNY.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEAnimals.SQUIRREL.get(), 10, 1, 2),

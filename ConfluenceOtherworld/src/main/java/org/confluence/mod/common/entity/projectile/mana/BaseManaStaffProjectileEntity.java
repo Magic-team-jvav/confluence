@@ -14,11 +14,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.util.VectorUtils;
@@ -28,12 +26,13 @@ import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     protected static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(BaseManaStaffProjectileEntity.class, EntityDataSerializers.INT);
     protected int penetrateCount = 2;
-    protected final Set<UUID> penetrateSet = new HashSet<>();
 
     protected ParticleEmitter emitter;
 
@@ -69,18 +68,6 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
-
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        checkInsideBlocks();
-        HitResult.Type hitresult$type = hitresult.getType();
-        if (hitresult$type == HitResult.Type.BLOCK) {
-            onHitBlock((BlockHitResult) hitresult);
-            discard();
-            return;
-        } else if (hitresult$type == HitResult.Type.ENTITY) {
-            onHitEntity((EntityHitResult) hitresult);
-            if (isRemoved()) return;
-        }
 
         Vec3 vec3 = getDeltaMovement();
         double offX = getX() + vec3.x;
@@ -118,21 +105,35 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     }
 
     @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        discard();
+    }
+
+    @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
-        if (level().isClientSide) return;
         Entity entity = entityHitResult.getEntity();
-        if (!penetrateSet.contains(entity.getUUID())) {
-            float damage = getCalculatedDamage() * (1.0F + getAttackBonus());
-            if (entity.hurt(getDamagesource(), damage)) {
-                float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
-                if (attackKnockback > 0.0F) {
-                    VectorUtils.knockBackA2B(this, entity, attackKnockback * 0.5, 0.2);
-                }
-            }
-            penetrateSet.add(entity.getUUID());
-            if (penetrateSet.size() == penetrateCount) discard();
+        if (doPenetrateCheck(entity)) {
+            doHurtAndKnockback(entity, 0.5, 0.2);
+            doDiscardInMaxPenetrate(penetrateCount);
         }
     }
+
+    @Override
+    protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
+        float damage = getCalculatedDamage() * (1.0F + getAttackBonus());
+        if (target.hurt(getDamagesource(), damage)) {
+            float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
+            if ((attackKnockback > 0.0F && knockbackStrength > 0) || knockbackMotionY > 0) {
+                VectorUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
+            }
+            afterHurtTarget(target);
+            return true;
+        }
+        return false;
+    }
+
+    protected void afterHurtTarget(Entity target) {}
 
     protected float getAttackBonus() {
         return 0.0F;

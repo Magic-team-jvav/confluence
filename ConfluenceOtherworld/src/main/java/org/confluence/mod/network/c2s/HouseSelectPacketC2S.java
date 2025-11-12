@@ -9,9 +9,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketC2S;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
-import org.confluence.mod.network.IPacket;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.house.House;
@@ -26,7 +27,7 @@ import java.util.Comparator;
  * @see org.confluence.terraentity.network.c2s.ServerBoundHousePacket
  */
 public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPacketC2S {
-    public static final Type<HouseSelectPacketC2S> TYPE = IPacket.createType("house_select");
+    public static final Type<HouseSelectPacketC2S> TYPE = Confluence.createType("house_select");
     public static final StreamCodec<ByteBuf, HouseSelectPacketC2S> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, HouseSelectPacketC2S::selected,
             BlockPos.STREAM_CODEC, HouseSelectPacketC2S::pos,

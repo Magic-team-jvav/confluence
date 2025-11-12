@@ -12,10 +12,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.*;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -95,11 +93,17 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
             } else {
                 AABB boundingBox = getBoundingBox().inflate(1.0);
                 EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
+                checkInsideBlocks();
                 if (hitResult != null) {
                     onTouchEntity(hitResult);
                 }
             }
         }
+    }
+
+    @Override
+    protected void onInsideBlock(BlockState state) {
+        state.onProjectileHit(level(), state, new BlockHitResult(position(), getDirection(), blockPosition(), true), this);
     }
 
     @Override

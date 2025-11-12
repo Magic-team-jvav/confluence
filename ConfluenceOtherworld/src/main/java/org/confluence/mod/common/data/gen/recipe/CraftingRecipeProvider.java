@@ -1042,6 +1042,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
         shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
         shapeless(output, ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.toStack(), Ingredient.of(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP), Ingredient.of(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION));
+
+
+        shapeless(output, ToolItems.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2,ModTags.Items.GOLD_AND_PLATINUM),Ingredient.of(MaterialItems.PINK_GEL));
+        // 暗影蜡烛 shapeless(output, ToolItems.SHADOW_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3,ModTags.Items.EVIL_INGOT));
         // 钱币
         shapeless(output, ModItems.COPPER_COIN.toStack(100), Ingredient.of(ModItems.SILVER_COIN));
         shapeless(output, ModItems.SILVER_COIN.toStack(100), Ingredient.of(ModItems.GOLD_COIN));

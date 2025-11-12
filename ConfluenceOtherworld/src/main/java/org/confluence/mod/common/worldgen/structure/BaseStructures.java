@@ -74,7 +74,7 @@ public class BaseStructures {
         locationList.add(locationEnd);
         List<Vector3d> leavesTop = ellipsoidPos(trunkLeafGenerationRadiusXZ, trunkLeafGenerationRadiusY, trunkLeafGenerationRadiusXZ, VectorUtils.fromVector3d(locationEnd), leafPosDensity, random);
         lineSetEllipsoid(leavesTop, leafBlobGenerationRadiusXZ, leafBlobGenerationRadiusY, leafBlobGenerationRadiusXZ, leafBlocks, true, blockMap, leafDensity, random);
-        lightningPathList(locationList, 1, 8, random);
+        lightningPathList(locationList, 1, 0.125F, random);
 
         lineSet(locationList, treeTrunkStartRadius, treeTrunkEndRadius, treeTrunkBlocks, true, blockMap);
 
@@ -134,7 +134,7 @@ public class BaseStructures {
             locationEnd.z = (centerPos.getZ() + random.nextInt(-largeTreeRootEndOffset, largeTreeRootEndOffset + 1));
             locationList.add(locationStart);
             locationList.add(locationEnd);
-            lightningPathList(locationList, 1, 12, random);
+            lightningPathList(locationList, 1, 0.083F, random);
             lineSet(locationList, largeTreeRootStartRadius, largeTreeRootEndRadius, largeTreeRootBlocks, true, blockMap);
             ball(4.9, centerPos, 0, true, blockMap);
             lineSet(locationList, largeTreeRootStartRadius * 2.0D / 5.0D, largeTreeRootEndRadius - 0.1D, 0, true, blockMap);
@@ -191,7 +191,7 @@ public class BaseStructures {
             List<Vector3d> stickList = new ArrayList<>();
             stickList.add(stickStart);
             stickList.add(stickEnd);
-            lightningPathList(stickList, 1.0, 8, random);
+            lightningPathList(stickList, 1.0, 0.125F, random);
 
             lineSet(stickList, startRadius + random.nextInt(startRadiusRandomAddition), endRadius, blocks, true, blockMap);
             if (branch) {

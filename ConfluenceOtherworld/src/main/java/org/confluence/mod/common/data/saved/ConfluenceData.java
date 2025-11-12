@@ -10,6 +10,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
@@ -133,14 +134,18 @@ public final class ConfluenceData extends SavedData {
     }
 
     public boolean increaseRevealStep() {
-        if (revealStep < 8) {
-            GlobalCloakData.INSTANCE.reveal(StepRevealingBlock.PAIRS.get()[++this.revealStep]);
+        BlockState[][] pairs = StepRevealingBlock.PAIRS.get();
+        if (revealStep < pairs.length - 1) {
+            GlobalCloakData.INSTANCE.reveal(pairs[++this.revealStep]);
             setDirty();
             return true;
         }
         return false;
     }
 
+    /**
+     * 一般为[-1, 8]
+     */
     public int getRevealStep() {
         return revealStep;
     }

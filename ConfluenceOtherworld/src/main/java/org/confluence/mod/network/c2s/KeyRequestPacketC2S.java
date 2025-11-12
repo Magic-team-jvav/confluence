@@ -6,17 +6,18 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketC2S;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
-import org.confluence.mod.network.IPacket;
 
 public record KeyRequestPacketC2S(byte key) implements IPacketC2S {
     public static final byte KEY_HEALING = 0;
     public static final byte KEY_MANA = 1;
     public static final byte KEY_CLAIRVOYANCE = 2; // 水晶球给予的灵视
-    public static final Type<KeyRequestPacketC2S> TYPE = IPacket.createType("key_request");
+    public static final Type<KeyRequestPacketC2S> TYPE = Confluence.createType("key_request");
     public static final StreamCodec<ByteBuf, KeyRequestPacketC2S> STREAM_CODEC = ByteBufCodecs.BYTE.map(KeyRequestPacketC2S::new, KeyRequestPacketC2S::key);
 
     @Override

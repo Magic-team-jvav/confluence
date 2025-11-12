@@ -19,48 +19,48 @@ import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class BaseTallPlantBlock extends TallGrassBlock {
-    public static final MapCodec<BaseTallPlantBlock> CODEC = RecordCodecBuilder.mapCodec(
-            builder -> builder.group(propertiesCodec(),
-                            BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("ground").forGetter(basePlantBlock ->
-                                    Arrays.asList(basePlantBlock.survive)))
-                    .apply(builder, (prop, ground) -> new BaseTallPlantBlock(prop, ground.toArray(new Block[0])))
-    );
+    public static final MapCodec<BaseTallPlantBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(propertiesCodec(),
+            BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("ground").forGetter(block -> block.survive)
+    ).apply(instance, BaseTallPlantBlock::new));
 
-    private final Block[] survive;
+    protected final List<Block> survive;
+    private transient Set<Block> cache;
 
     public BaseTallPlantBlock(Block... survive) {
-        super(Properties.ofFullCopy(Blocks.TALL_GRASS).replaceable());
-        this.survive = survive;
+        this(Properties.ofFullCopy(Blocks.TALL_GRASS).replaceable(), Arrays.stream(survive).toList());
     }
 
-    public BaseTallPlantBlock(Properties prop, Block... survive) {
+    public BaseTallPlantBlock(Properties prop, List<Block> survive) {
         super(prop);
         this.survive = survive;
     }
 
     @Override
-    public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos) {
-        return Arrays.stream(survive).anyMatch(state -> state == groundState.getBlock());
+    public boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        if (cache == null) this.cache = new HashSet<>(survive);
+        return cache.contains(state.getBlock());
     }
 
     @Override
-    public boolean canSurvive(BlockState blockstate, LevelReader worldIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos blockpos = pos.below();
-        BlockState groundState = worldIn.getBlockState(blockpos);
-        return mayPlaceOn(groundState, worldIn, blockpos) &&
-                worldIn.isEmptyBlock(pos.above());
+        BlockState groundState = level.getBlockState(blockpos);
+        return mayPlaceOn(groundState, level, blockpos) && level.isEmptyBlock(pos.above());
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         LevelReader level = context.getLevel();
         BlockPos pos = context.getClickedPos();
-        if (!canSurvive(this.defaultBlockState(), level, pos)) {
-            return Blocks.AIR.defaultBlockState();
+        if (canSurvive(defaultBlockState(), level, pos)) {
+            return defaultBlockState();
         }
-        return this.defaultBlockState();
+        return Blocks.AIR.defaultBlockState();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class BaseTallPlantBlock extends TallGrassBlock {
 
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide()) {
+        if (!level.isClientSide) {
             BlockPos abovePos = pos.above();
             BlockState aboveState = level.getBlockState(abovePos);
             if (aboveState.getBlock() == this) {

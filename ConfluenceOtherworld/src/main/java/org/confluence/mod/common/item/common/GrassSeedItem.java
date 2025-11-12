@@ -43,7 +43,7 @@ public class GrassSeedItem extends Item {
                 stack.shrink(1);
                 return InteractionResult.SUCCESS;
             }
-            if (tagMapping != null) {
+            if (!tagMapping.isEmpty()) {
                 for (Map.Entry<TagKey<Block>, Block> entry : tagMapping.entrySet()) {
                     if (state.is(entry.getKey())) {
                         Block tagMappedBlock = entry.getValue();

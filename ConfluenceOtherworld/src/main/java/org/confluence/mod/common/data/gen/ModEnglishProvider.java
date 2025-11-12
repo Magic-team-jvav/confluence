@@ -146,6 +146,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.ammo_box.0", "20% chance to save ammo");
         add("tooltip.item.confluence.bewitching_table.0", "Right click to have more minions");
         add("tooltip.item.confluence.keg.0", "Used for brewing ale");
+        add("tooltip.item.confluence.meteor_compass.0", "Only the position of the last meteorite are saved");
         add("tooltip.item.confluence.chlorophyte_extractinator.0", "Placing silt/slush/fossil/gravel/marine_gravel piles into the extractinator turns them into something more useful");
         add("tooltip.item.confluence.chlorophyte_extractinator.1", "Place contaminated blocks into the extractinator to purify them");
         add("tooltip.item.confluence.chlorophyte_extractinator.2", "Other items placed inside may have interesting effects");
@@ -693,7 +694,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.wrappedCrimsonHeart", "Wrapped Crimson Heart");
         add("confluence.configuration.wrappedCrimsonHeart.tooltip", "When enabled, newly generated Crimson Caverns will contain Wrapped Crimson Hearts.");
         add("confluence.configuration.terraStyleExplosion", "Terra Style Explosion");
-        add("confluence.configuration.terraStyleExplosion.tooltip", "Once activated, the bombs in confluence will simulate the blast radius of a Terra explosion.");
+        add("confluence.configuration.terraStyleExplosion.tooltip", "When enabled, the bombs in confluence will simulate the blast radius of a Terra explosion.");
+        add("confluence.configuration.terraStyleFireDamage", "Terra Style Fire Damage");
+        add("confluence.configuration.terraStyleFireDamage.tooltip", "When enabled, fire damage will be multiplied by 4 and healing will be blocked. It only affects players.");
+        add("confluence.configuration.npcInvulnerableToPlayer", "NPC Invulnerable To Player");
+        add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "When enabled, NPCs can no longer be attacked by players (including vanilla villagers).");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes", "Allows Vanilla Entities To Perform Stage Attributes");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes.tooltip", "When enabled, the attributes of the vanilla entities will be modified in Hard mode or other stages.");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");
@@ -718,6 +725,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.section.confluence.client.toml.title", "Client-side Configuration");
         add("confluence.configuration.Entity.tooltip", "Entity-related Visual Effects");
         add("confluence.configuration.section.confluence.common.toml.title", "Common Configuration");
+        add("confluence.configuration.minEctoMistEffectRadius", "Min Ecto Mist Effect Radius");
+        add("confluence.configuration.minEctoMistEffectRadius.tooltip", "Disables ecto mist effect when set to 0.");
 
         add("biome.confluence.ash_forest", "Ash Forest");
         add("biome.confluence.ash_wasteland", "Ash Wasteland");
@@ -2386,7 +2395,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.angler_hat.0", "Increases fishing power by 5");
         add("tooltip.item.confluence.angler_vest.0", "Increases fishing power by 5");
         add("tooltip.item.confluence.angler_pants.0", "Increases fishing power by 5");
-        add("armor_set_bonus.confluence.angler_set.0", "Decreased enemy spawn rate（WIP）");
+        add("armor_set_bonus.confluence.angler_set.0", "Decreased enemy spawn rate");
         // Cactus Set
         add("armor_set_bonus.confluence.cactus_set.0", "Attackers take damage from the cactus spines");
         // Pumpkin Set
@@ -2403,7 +2412,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.spore_root_set.0", "Increases your max number of minions by 1");
         // Heim Set
         add("tooltip.item.confluence.heim_helmet.0", "Extend underwater breathing time by 5%");
-        add("tooltip.item.confluence.heim_boots.0", "Increase underwater movement speed by 5%");
         add("armor_set_bonus.confluence.heim_set.0", "Grant you 4 health of absorption, and grant it again every 5 seconds");
         // Bee Set
         add("armor_set_bonus.confluence.bee_set.0", "Increases summon damage by 10%");
@@ -2445,7 +2453,15 @@ public class ModEnglishProvider extends LanguageProvider {
         // Crimson Set
         add("armor_set_bonus.confluence.crimson_set.0", "Greatly increased life regen");
         // Molten Set
-        add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage,Cannot be set on fire");
+        add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage");
+        add("armor_set_bonus.confluence.molten_set.1", "Cannot be set on fire");
+        // Diamond Set
+        add("armor_set_bonus.confluence.diamond_set.0", "Grant Fortune II");
+        // Netherite Set
+        add("armor_set_bonus.confluence.netherite_set.0", "Cannot be set on fire and immune to lava");
+        add("armor_set_bonus.confluence.netherite_set.1", "5% increased movement speed");
+        add("armor_set_bonus.confluence.netherite_set.2", "8% increased damage");
+        add("armor_set_bonus.confluence.netherite_set.3", "Restores durability when submerged in lava");
         // Spider Set
         add("armor_set_bonus.confluence.spider_set.0", "Increases summon damage by 12%");
         // HardMode Ore
@@ -2570,7 +2586,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addPotion(PotionItems.ARCHERY_POTION.get(), "10% increased bow damage and 20% increased arrow speed");
         addPotion(PotionItems.HEART_REACH_POTION.get(), "Increased heart pickup range");
         addPotion(PotionItems.GILLS_POTION.get(), "Breathe water instead of air");
-        addPotion(PotionItems.INVISIBILITY_POTION.get(), "Grants invisibility");
+        addPotion(PotionItems.INVISIBILITY_POTION.get(), "Grants invisibility and lowers the spawn rate of enemies");
         addPotion(PotionItems.WORMHOLE_POTION.get(), "Teleports the player to a teammate when they click their icon on the map.");
         addPotion(PotionItems.MINING_POTION.get(), "Increases mining speed by 25%");
         addPotion(PotionItems.RECALL_POTION.get(), "Teleports you home");
@@ -2650,6 +2666,11 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.WEAPON_IMBUE_GOLD.get(), "Melee attacks make enemies drop more gold");
         addEffect(ModEffects.FROSTBITE.get(), "Slowly losing life");
         addEffect(ModEffects.SHADOWFLAME.get(), "Losing life");
+        addEffect(ModEffects.WATER_CANDLE.get(), "Increased monster spawn rate");
+        addEffect(ModEffects.PEACE_CANDLE.get(), "Decreased monster spawn rate");
+        addEffect(ModEffects.BATTLE.get(), "Increased enemy spawn rate");
+        addEffect(ModEffects.CALM.get(), "Decreased enemy spawn rate");
+        addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
         addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");

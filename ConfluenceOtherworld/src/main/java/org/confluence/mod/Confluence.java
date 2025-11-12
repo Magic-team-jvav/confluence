@@ -1,6 +1,7 @@
 package org.confluence.mod;
 
 import net.minecraft.core.Registry;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -11,6 +12,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.network.IPacket;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
@@ -95,5 +97,9 @@ public final class Confluence {
 
     public static <T> TagKey<T> asTagKey(ResourceKey<Registry<T>> registryKey, String path) {
         return TagKey.create(registryKey, asResource(path));
+    }
+
+    public static <P extends IPacket> CustomPacketPayload.Type<P> createType(String id) {
+        return new CustomPacketPayload.Type<>(asResource(id));
     }
 }

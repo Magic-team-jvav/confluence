@@ -10,14 +10,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.common.data.saved.StarPhase;
-import org.confluence.mod.network.IPacket;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
 public record StarPhasesPacketS2C(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap.Entry<StarPhase>> starPhases) implements IPacketS2C {
-    public static final Type<StarPhasesPacketS2C> TYPE = IPacket.createType("star_phases");
+    public static final Type<StarPhasesPacketS2C> TYPE = Confluence.createType("star_phases");
     public static final StreamCodec<ByteBuf, StarPhasesPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         public StarPhasesPacketS2C decode(ByteBuf buffer) {
             boolean isLeft = buffer.readBoolean();

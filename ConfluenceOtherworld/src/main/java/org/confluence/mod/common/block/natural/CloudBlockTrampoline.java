@@ -20,17 +20,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Map;
 
 public class CloudBlockTrampoline extends CloudBlock {
-    public static final IntegerProperty HIGH = IntegerProperty.create("high", 0, 10);
-    public static final BooleanProperty NORTH = PipeBlock.NORTH;
-    public static final BooleanProperty EAST = PipeBlock.EAST;
-    public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
-    public static final BooleanProperty WEST = PipeBlock.WEST;
-    private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
+    protected static final IntegerProperty HIGH = IntegerProperty.create("high", 0, 10);
+    protected static final BooleanProperty NORTH = PipeBlock.NORTH;
+    protected static final BooleanProperty EAST = PipeBlock.EAST;
+    protected static final BooleanProperty SOUTH = PipeBlock.SOUTH;
+    protected static final BooleanProperty WEST = PipeBlock.WEST;
     protected static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = ImmutableMap.copyOf(Util.make(Maps.newEnumMap(Direction.class), map -> {
         map.put(Direction.NORTH, NORTH);
         map.put(Direction.EAST, EAST);
@@ -40,7 +38,7 @@ public class CloudBlockTrampoline extends CloudBlock {
 
     public CloudBlockTrampoline(Properties properties) {
         super(properties);
-        this.registerDefaultState(defaultBlockState()
+        registerDefaultState(defaultBlockState()
                 .setValue(HIGH, 0)
                 .setValue(NORTH, false)
                 .setValue(EAST, false)
@@ -56,13 +54,9 @@ public class CloudBlockTrampoline extends CloudBlock {
         for (Map.Entry<Direction, BooleanProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
             BlockPos adjacentPos = blockpos.relative(entry.getKey());
             BlockState adjacentState = blockgetter.getBlockState(adjacentPos);
-            state = state.setValue(entry.getValue(), connectsTo(adjacentState, entry.getKey().getOpposite()));
+            state = state.setValue(entry.getValue(), adjacentState.is(this));
         }
         return state;
-    }
-
-    public boolean connectsTo(BlockState state, Direction direction) {
-        return state.is(this);
     }
 
     @Override
@@ -71,13 +65,12 @@ public class CloudBlockTrampoline extends CloudBlock {
             for (Map.Entry<Direction, BooleanProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
                 BlockPos adjacentPos = currentPos.relative(entry.getKey());
                 BlockState adjacentState = level.getBlockState(adjacentPos);
-                boolean connected = this.connectsTo(adjacentState, entry.getKey().getOpposite());
+                boolean connected = adjacentState.is(this);
                 state = state.setValue(entry.getValue(), connected);
             }
             return state;
-        } else {
-            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -101,19 +94,12 @@ public class CloudBlockTrampoline extends CloudBlock {
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         AABB detectionArea = new AABB(pos.getX(), pos.getY() + 1, pos.getZ(), pos.getX() + 1, pos.getY() + 513, pos.getZ() + 1);
-        boolean hasPlayer = level.getEntitiesOfClass(LivingEntity.class, detectionArea)
-                .stream()
-                .anyMatch(LivingEntity::isAlive);
+        boolean hasPlayer = level.getEntitiesOfClass(LivingEntity.class, detectionArea).stream().anyMatch(LivingEntity::isAlive);
         if (!hasPlayer) {
             level.setBlockAndUpdate(pos, state.setValue(HIGH, 0));
         }
         level.scheduleTick(pos, this, 20);
     }
-
-//    @Override
-//    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-//        return SHAPE;
-//    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

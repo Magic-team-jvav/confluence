@@ -8,11 +8,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
@@ -56,19 +54,18 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
             emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
-        if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
-            Entity entity = entityHitResult.getEntity();
-            if (entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(ModEffects.FROSTBITE, Mth.randomBetweenInclusive(living.getRandom(), 100, 280)));
-            }
-            if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
-                VectorUtils.knockBackA2B(this, entity, 0.65, 0.2);
-            }
-        }
 
         if (tickCount > 1200) discard();
     }
 
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        Entity entity = result.getEntity();
+        if (entity instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(ModEffects.FROSTBITE, Mth.randomBetweenInclusive(living.getRandom(), 100, 280)));
+        }
+        doHurtAndKnockback(entity, 0.65, 0.2);
+    }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {

@@ -211,7 +211,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 7 -> GRAVITATION_POTION.get();
                     case 8 -> THORNS_POTION.get();
                     case 9 -> WATER_WALKING_POTION.get();
-                    // todo 战斗
+                    case 10 -> BATTLE_POTION.get();
                     case 11 -> HEART_REACH_POTION.get();
                     case 12 -> TITAN_POTION.get();
                     default -> null;
@@ -255,7 +255,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 2 -> NIGHT_OWL_POTION.get();
                     case 3 -> SWIFTNESS_POTION.get();
                     case 4 -> MINING_POTION.get();
-                    // todo 镇静
+                    case 5 -> CALMING_POTION.get();
                     case 6 -> BUILDER_POTION.get();
                     default -> RECALL_POTION.get();
                 };

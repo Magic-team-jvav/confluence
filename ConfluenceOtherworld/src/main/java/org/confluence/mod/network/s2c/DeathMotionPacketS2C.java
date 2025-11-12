@@ -9,12 +9,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IEntity;
-import org.confluence.mod.network.IPacket;
 
 public record DeathMotionPacketS2C(int entityId, float x, float y, float z) implements IPacketS2C {
-    public static final Type<DeathMotionPacketS2C> TYPE = IPacket.createType("death_motion");
+    public static final Type<DeathMotionPacketS2C> TYPE = Confluence.createType("death_motion");
     public static final StreamCodec<ByteBuf, DeathMotionPacketS2C> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, DeathMotionPacketS2C::entityId,
             ByteBufCodecs.FLOAT, DeathMotionPacketS2C::x,

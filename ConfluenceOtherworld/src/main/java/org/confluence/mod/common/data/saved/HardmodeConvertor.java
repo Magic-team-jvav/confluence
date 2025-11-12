@@ -22,12 +22,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -127,7 +127,7 @@ public final class HardmodeConvertor implements IGlobalData {
                     AchievementUtils.awardAchievement(player, "its_hard");
                 }
                 KillBoard.onUnlockHardmode(server);
-                print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), !FMLEnvironment.production);
+                print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), LibUtils.isDev());
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);
                 NeoForge.EVENT_BUS.post(new EnterHardmodeEvent(server));

@@ -84,6 +84,7 @@ public final class ModTabs {
                         output.accept(TFBlocks.LIVING_LOOM.get());
                         output.accept(TFBlocks.ICE_MACHINE.get());
                         output.accept(TFBlocks.TRASH_CAN.get());
+                        output.accept(FunctionalBlocks.WATER_CANDLE.get());
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
                     .build());

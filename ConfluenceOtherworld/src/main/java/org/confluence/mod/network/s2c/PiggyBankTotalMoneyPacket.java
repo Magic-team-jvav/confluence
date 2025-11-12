@@ -6,11 +6,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
-import org.confluence.mod.network.IPacket;
 
 public record PiggyBankTotalMoneyPacket(long totalMoney) implements IPacketS2C {
-    public static final Type<PiggyBankTotalMoneyPacket> TYPE = IPacket.createType("piggy_bank_total_money");
+    public static final Type<PiggyBankTotalMoneyPacket> TYPE = Confluence.createType("piggy_bank_total_money");
     public static final StreamCodec<ByteBuf, PiggyBankTotalMoneyPacket> STREAM_CODEC = ByteBufCodecs.VAR_LONG.map(PiggyBankTotalMoneyPacket::new, PiggyBankTotalMoneyPacket::totalMoney);
 
     @Override

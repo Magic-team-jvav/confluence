@@ -25,18 +25,22 @@ public class BoulderBreadBlock extends Block {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (player.hasEffect(ModEffects.CHOKING)) {
-            if (!level.isClientSide) player.sendSystemMessage(Component.translatable("message.confluence.choking"));
+            if (!level.isClientSide) {
+                player.sendSystemMessage(Component.translatable("message.confluence.choking"));
+            }
             return InteractionResult.FAIL;
         }
         if (!level.isClientSide) {
-            InteractionResult result = eat(level, pos, state, player);
+            InteractionResult result = eat(level, pos, player);
             if (result.consumesAction()) return InteractionResult.SUCCESS;
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) return InteractionResult.CONSUME;
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+                return InteractionResult.CONSUME;
+            }
         }
-        return eat(level, pos, state, player);
+        return InteractionResult.SUCCESS;
     }
 
-    protected static InteractionResult eat(LevelAccessor level, BlockPos pos, BlockState state, Player player) {
+    protected static InteractionResult eat(LevelAccessor level, BlockPos pos, Player player) {
         if (!player.canEat(false)) return InteractionResult.PASS;
         player.getFoodData().eat(20, 10.0F);
         player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 6000));
@@ -46,5 +50,4 @@ public class BoulderBreadBlock extends Block {
         level.gameEvent(player, GameEvent.BLOCK_DESTROY, pos);
         return InteractionResult.SUCCESS;
     }
-
 }

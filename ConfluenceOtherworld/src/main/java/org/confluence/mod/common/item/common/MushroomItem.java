@@ -20,39 +20,39 @@ import org.confluence.mod.common.item.food.ModFoodProperties;
 public class MushroomItem extends BlockItem {
     private final float amount;
 
-    public MushroomItem(Block pBlock, float amount) {
-        super(pBlock, new Properties());
+    public MushroomItem(Block block, float amount) {
+        super(block, new Properties());
         this.amount = amount;
     }
 
     @Override
-    protected boolean canPlace(BlockPlaceContext pContext, BlockState pState) {
-        return pState.is(NatureBlocks.GLOWING_MUSHROOM);
+    protected boolean canPlace(BlockPlaceContext context, BlockState state) {
+        return state.is(NatureBlocks.GLOWING_MUSHROOM);
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        InteractionResult interactionresult = place(new BlockPlaceContext(context));
-        if (!interactionresult.consumesAction() && context.getPlayer() != null) {
-            InteractionResult interactionresult1 = super.use(context.getLevel(), context.getPlayer(), context.getHand()).getResult();
-            return interactionresult1 == InteractionResult.CONSUME ? InteractionResult.CONSUME_PARTIAL : interactionresult1;
+        InteractionResult result = place(new BlockPlaceContext(context));
+        if (!result.consumesAction() && context.getPlayer() != null) {
+            result = use(context.getLevel(), context.getPlayer(), context.getHand()).getResult();
+            return result == InteractionResult.CONSUME ? InteractionResult.CONSUME_PARTIAL : result;
         } else {
-            return interactionresult;
+            return result;
         }
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        ItemStack itemStack = pPlayer.getMainHandItem();
-        if (pPlayer.hasEffect(ModEffects.POTION_SICKNESS)) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (player.hasEffect(ModEffects.POTION_SICKNESS)) {
             return InteractionResultHolder.fail(itemStack);
         }
         if (itemStack.is(MaterialItems.LIFE_MUSHROOM.get())) {
-            pPlayer.startUsingItem(pUsedHand);
-            pPlayer.heal(amount);
-            pPlayer.getFoodData().eat(ModFoodProperties.LIFE_MUSHROOM);
+            player.startUsingItem(hand);
+            player.heal(amount);
+            player.getFoodData().eat(ModFoodProperties.LIFE_MUSHROOM);
             itemStack.shrink(1);
-            PotionSicknessEffect.addTo(pPlayer, 600);
+            PotionSicknessEffect.addTo(player, 600);
             return InteractionResultHolder.consume(itemStack);
         } else {
             return InteractionResultHolder.fail(itemStack);

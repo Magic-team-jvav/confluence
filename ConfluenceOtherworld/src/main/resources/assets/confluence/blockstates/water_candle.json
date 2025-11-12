@@ -1,0 +1,34 @@
+{
+    "variants": {
+        "facing=east,bloom=true": {
+            "model": "confluence:block/water_candle",
+            "y": 90
+        },
+        "facing=north,bloom=true": {
+            "model": "confluence:block/water_candle"
+        },
+        "facing=south,bloom=true": {
+            "model": "confluence:block/water_candle",
+            "y": 180
+        },
+        "facing=west,bloom=true": {
+            "model": "confluence:block/water_candle",
+            "y": 270
+        },
+        "facing=east,bloom=false": {
+            "model": "confluence:block/extinguished_candle",
+            "y": 90
+        },
+        "facing=north,bloom=false": {
+            "model": "confluence:block/extinguished_candle"
+        },
+        "facing=south,bloom=false": {
+            "model": "confluence:block/extinguished_candle",
+            "y": 180
+        },
+        "facing=west,bloom=false": {
+            "model": "confluence:block/extinguished_candle",
+            "y": 270
+        }
+    }
+}

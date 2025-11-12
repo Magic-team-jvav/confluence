@@ -20,7 +20,18 @@
         },
         {
             "type": "reference",
-            "id": "minecraft:default"
+            "id": "minecraft:include/default"
+        },
+        {
+            "type": "reference",
+            "id": "minecraft:include/unifont",
+            "filter": {
+                "uniform": false
+            }
+        },
+        {
+            "type": "reference",
+            "id": "minecraft:include/space"
         }
     ]
 }

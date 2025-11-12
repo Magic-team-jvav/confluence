@@ -91,9 +91,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         return couldDamageEnvironment;
     }
 
-    /**
-     * @see LivingEntity#collectEquipmentChanges()
-     */
+    /// @see LivingEntity#collectEquipmentChanges()
     public void flushArmorSetBonus(Player player) {
         Inventory inventory = player.getInventory();
         ItemStack head = inventory.getArmor(EquipmentSlot.HEAD.getIndex());

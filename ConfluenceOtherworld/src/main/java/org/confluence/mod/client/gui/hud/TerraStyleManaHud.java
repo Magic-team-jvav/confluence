@@ -57,7 +57,7 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
                         guiGraphics.pose().pushPose();
                         guiGraphics.pose().translate(widthMana + 2 + 6.5F * (1 - ts), heightMana + i * 12 + 8.5F * (1 - ts), 0.0F);
                         guiGraphics.pose().scale(ts, ts, 1.0F);
-                        guiGraphics.blitSprite(LEGACY_TEXTURE, 0, 0, 18, 34, 13, 16, LEGACY_SIZE, LEGACY_SIZE);
+                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 18, 34, 0, 0, 13, 16);
                         guiGraphics.pose().popPose();
                     }
                 }

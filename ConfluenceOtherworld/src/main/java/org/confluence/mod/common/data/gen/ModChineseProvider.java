@@ -4935,6 +4935,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.THE_DOCTORS_SHIRT.get(), "博士衣");
         add(VanityArmorItems.THE_DOCTORS_PANTS.get(), "博士裤");
         add(VanityArmorItems.THE_DOCTORS_SHOES.get(), "博士鞋");
+        add(VanityArmorItems.GUY_FAWKES_MASK.get(), "盖伊·福克斯面具");
+        add(VanityArmorItems.GUY_FAWKES_HAT.get(), "盖伊·福克斯帽");
+        add(VanityArmorItems.GUY_FAWKES_MASK_SET.get(), "盖伊·福克斯面具套装");
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
         add(VanityArmorItems.DYE.get(), "染料");

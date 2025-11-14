@@ -1056,7 +1056,6 @@ public class ModDataProvider {
             HolderSet<Biome> snowyIcy = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_SNOWY), biome.getOrThrow(Tags.Biomes.IS_ICY));
             HolderSet<Biome> desertBadlands = new OrHolderSet<>(desert, biome.getOrThrow(Tags.Biomes.IS_BADLANDS));
             HolderSet<Biome> forestLike = biome.getOrThrow(ModTags.Biomes.IS_FOREST);
-            HolderSet<Biome> swamp = biome.getOrThrow(Tags.Biomes.IS_SWAMP);
             HolderSet<Biome> overworld = biome.getOrThrow(Tags.Biomes.IS_OVERWORLD);
             HolderSet<Biome> jungle = biome.getOrThrow(Tags.Biomes.IS_JUNGLE);
             HolderSet<Biome> jungleLike = new OrHolderSet<>(jungle, biome.getOrThrow(Tags.Biomes.IS_LUSH));

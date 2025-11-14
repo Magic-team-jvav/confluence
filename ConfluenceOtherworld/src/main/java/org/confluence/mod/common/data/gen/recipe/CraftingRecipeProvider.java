@@ -626,6 +626,9 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, HoeItems.GOLDEN_HOE.toStack(), Ingredient.of(Items.GOLDEN_HOE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
         shapeless(output, ShovelItems.GOLDEN_SHOVEL.toStack(), Ingredient.of(Items.GOLDEN_SHOVEL), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
 
+        shapeless(output, VanityArmorItems.GUY_FAWKES_MASK_SET.toStack(), Ingredient.of(VanityArmorItems.GUY_FAWKES_HAT), Ingredient.of(VanityArmorItems.GUY_FAWKES_MASK));
+
+
         shapeless(output, new ItemStack(Items.STRING, 2), Ingredient.of(ItemTags.WOOL));
         shapeless(output, "", "_from_stony_log", new ItemStack(Items.COBBLESTONE, 2), Ingredient.of(NatureBlocks.STONY_LOG));
         shapeless(output, "", "_from_gel", new ItemStack(Items.TORCH, 3), Ingredient.of(MaterialItems.GEL), Ingredient.of(Items.STICK));

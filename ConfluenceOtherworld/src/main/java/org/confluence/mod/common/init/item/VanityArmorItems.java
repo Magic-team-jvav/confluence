@@ -54,6 +54,9 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> THE_DOCTORS_PANTS = registerVanityArmor("the_doctors_pants", "vanity_armor/the_doctors_pants", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> THE_DOCTORS_SHOES = registerVanityArmor("the_doctors_shoes", "vanity_armor/the_doctors_shoes", ArmorItem.Type.BOOTS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> DEAD_MANS_SWEATER = registerVanityArmor("dead_mans_seater", "vanity_armor/dead_mans_seater", ArmorItem.Type.CHESTPLATE, ModRarity.GREEN);
+    public static final DeferredItem<BaseVanityArmorItem> GUY_FAWKES_MASK = registerVanityArmor("guy_fawkes_mask", "vanity_armor/guy_fawkes_mask", ArmorItem.Type.HELMET, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> GUY_FAWKES_HAT = registerVanityArmor("guy_fawkes_hat", "vanity_armor/guy_fawkes_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> GUY_FAWKES_MASK_SET = registerVanityArmor("guy_fawkes_mask_set", "vanity_armor/guy_fawkes_mask_set", ArmorItem.Type.HELMET, ModRarity.WHITE);
 
     public static final DeferredItem<BaseDyeItem> DYE = registerColoredDye("dye", 0x39C5BB);
     public static final DeferredItem<BaseDyeItem> RED_DYE = registerColoredDye("red_dye", 0xDB0909);

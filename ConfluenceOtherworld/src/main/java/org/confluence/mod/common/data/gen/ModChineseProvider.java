@@ -3554,6 +3554,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHROOMITE_INGOT.get(), "蘑菇矿锭");
         add(MaterialItems.ECTOPLASM.get(), "灵气");
         add(MaterialItems.FORBIDDEN_FRAGMENT.get(), "禁忌碎片");
+        add(MaterialItems.FROST_CORE.get(), "寒霜核");
         add(MaterialItems.SPECTRE_INGOT.get(), "幽灵锭");
         add(MaterialItems.RUBY.get(), "红玉");
         add(MaterialItems.AMBER.get(), "琥珀");
@@ -3693,6 +3694,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.BEE_KEEPER.get(), "养蜂人");
         add(SwordItems.BLADE_OF_GRASS.get(), "草剑");
         add(SwordItems.NIGHTS_EDGE.get(), "永夜刃");
+        add(SwordItems.WAFFLES_IRON.get(), "华夫饼烘烤模");
         add(SwordItems.BREAKER_BLADE.get(), "毁灭刃");
 
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");

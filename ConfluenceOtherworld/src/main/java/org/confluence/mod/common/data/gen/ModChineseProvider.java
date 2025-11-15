@@ -4150,6 +4150,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
         add(FunctionalBlocks.LOOM.get(), "织布机");
         add(FunctionalBlocks.DYE_VAT.get(), "染缸");
+        add(FunctionalBlocks.HEART_LANTERN.get(), "红心灯笼");
+        add(FunctionalBlocks.STAR_IN_A_BOTTLE.get(), "星星瓶");
         add(ModBlocks.AETHERIUM_CAULDRON.get(), "装有微光的炼药锅");
         add(ModBlocks.HONEY_CAULDRON.get(), "装有蜂蜜的炼药锅");
 

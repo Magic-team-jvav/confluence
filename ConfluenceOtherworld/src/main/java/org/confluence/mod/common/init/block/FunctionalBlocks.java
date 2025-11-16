@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static net.minecraft.world.level.block.Blocks.*;
 import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class FunctionalBlocks {
@@ -176,6 +177,15 @@ public class FunctionalBlocks {
     // 有效果的蜡烛
     public static final DeferredBlock<EffectiveCandleBlock> WATER_CANDLE = registerCandle("water_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 0));
     public static final DeferredBlock<EffectiveCandleBlock> PEACE_CANDLE = registerCandle("peace_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
+
+    // 心灯，星星瓶
+    public static final DeferredBlock<Block> HEART_LANTERN   = registerWithItem("heart_lantern", () -> new Block(BlockBehaviour.Properties.ofFullCopy(LANTERN).mapColor(MapColor.COLOR_PINK)));
+    public static final DeferredBlock<Block> STAR_IN_A_BOTTLE = registerWithItem("star_in_a_bottle", () -> new Block(BlockBehaviour.Properties.ofFullCopy(LANTERN).mapColor(MapColor.COLOR_YELLOW)));
+
+    // test block 要测试直接复制下面这一行改名
+    public static final DeferredBlock<Block> TEST_BLOCK   = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.COLOR_BLUE)));
+
+
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier) {
         DeferredBlock<B> block = BLOCKS.register(id, supplier);

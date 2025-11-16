@@ -141,6 +141,8 @@ public class SwordItems {
             .apply(SwordProjectileComponent.GRASS_PROJ).hasImage()));
     public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.NIGHT_PROJ).hasImage());
+    public static final DeferredItem<BaseSwordItem> WAFFLES_IRON = register("waffles_iron", ModTiers.UNBREAKABLE, 27, 2.5F, ModRarity.PINK, PROJ_SWORD
+            .apply(SwordProjectileComponent.ICE_PROJ).hasImage());
 
     public static final DeferredItem<BaseSwordItem> RED_PHASEBLADE = register("red_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "red"));
     public static final DeferredItem<BaseSwordItem> ORANGE_PHASEBLADE = register("orange_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "orange"));

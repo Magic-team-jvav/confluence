@@ -232,7 +232,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.paradox_interactive_medal.0", "Proof of having played Hearts of Iron, Victoria, Europa Universalis, Crusader Kings, and Cities: Skylines at the same time.");
         add("tooltip.item.confluence.kind_miside_ring.0", "“The ring will lead you to the right direction, dear”");
         add("tooltip.item.confluence.failed_skull.0", "A creeper had its body forcibly transformed by piglins and can explode multiple times. The piglins wanted to use it as a biological weapon to invade the Overworld, but it escaped unexpectedly.");
-        add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
+        add("tooltip.item.confluence.ice_tofu_brick.0", "It’s not just about ramming things head-on to take them down.");
         add("tooltip.item.confluence.pink_cola.0", "An ordinary bottle of pink cola. Maybe there was a whole case originally?");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "Freshly baked flatbread on the Netherrack. Come and have a taste!");
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "(Boredom's Pact - Falling Resolve)");

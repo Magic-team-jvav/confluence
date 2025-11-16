@@ -221,7 +221,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paradox_interactive_medal.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
         add("tooltip.item.confluence.kind_miside_ring.0", "“戒指会带你找到正确的方向，亲爱的”");
         add("tooltip.item.confluence.failed_skull.0", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
-        add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
+        add("tooltip.item.confluence.ice_tofu_brick.0", "不止可以一头撞死");
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上烤好的饼，快来尝尝吧！");
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
@@ -3554,6 +3554,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHROOMITE_INGOT.get(), "蘑菇矿锭");
         add(MaterialItems.ECTOPLASM.get(), "灵气");
         add(MaterialItems.FORBIDDEN_FRAGMENT.get(), "禁忌碎片");
+        add(MaterialItems.FROST_CORE.get(), "寒霜核");
         add(MaterialItems.SPECTRE_INGOT.get(), "幽灵锭");
         add(MaterialItems.RUBY.get(), "红玉");
         add(MaterialItems.AMBER.get(), "琥珀");
@@ -3693,6 +3694,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.BEE_KEEPER.get(), "养蜂人");
         add(SwordItems.BLADE_OF_GRASS.get(), "草剑");
         add(SwordItems.NIGHTS_EDGE.get(), "永夜刃");
+        add(SwordItems.WAFFLES_IRON.get(), "华夫饼烘烤模");
         add(SwordItems.BREAKER_BLADE.get(), "毁灭刃");
 
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
@@ -4150,6 +4152,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
         add(FunctionalBlocks.LOOM.get(), "织布机");
         add(FunctionalBlocks.DYE_VAT.get(), "染缸");
+        add(FunctionalBlocks.HEART_LANTERN.get(), "红心灯笼");
+        add(FunctionalBlocks.STAR_IN_A_BOTTLE.get(), "星星瓶");
         add(ModBlocks.AETHERIUM_CAULDRON.get(), "装有微光的炼药锅");
         add(ModBlocks.HONEY_CAULDRON.get(), "装有蜂蜜的炼药锅");
 

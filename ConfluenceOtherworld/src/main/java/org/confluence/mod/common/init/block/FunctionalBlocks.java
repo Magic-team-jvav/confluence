@@ -28,6 +28,7 @@ import org.confluence.mod.common.block.functional.boulder.RollingCactusBoulderBl
 import org.confluence.mod.common.block.functional.crafting.*;
 import org.confluence.mod.common.block.functional.crafting.LoomBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
+import org.confluence.mod.common.block.natural.LifeCrystalBlock;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.TreeHolesBlock;
 import org.confluence.mod.common.entity.projectile.boulder.AbstractBoulderEntity;
@@ -180,7 +181,10 @@ public class FunctionalBlocks {
 
     // 心灯，星星瓶
     public static final DeferredBlock<HeartLanternBlock> HEART_LANTERN   = registerWithItem("heart_lantern",  () -> new HeartLanternBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_RED)));
+    public static final Supplier<BlockEntityType<HeartLanternBlock.BEntity>> HEART_LANTERN_ENTITY = ModBlocks.BLOCK_ENTITIES.register("heart_lantern_entity", () -> BlockEntityType.Builder.of(HeartLanternBlock.BEntity::new, HEART_LANTERN.get()).build(DSL.remainderType()));
+
     public static final DeferredBlock<StarInABottleBlock> STAR_IN_A_BOTTLE = registerWithItem("star_in_a_bottle", () -> new StarInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_YELLOW)));
+    public static final Supplier<BlockEntityType<StarInABottleBlock.BEntity>> STAR_IN_A_BOTTLE_ENTITY = ModBlocks.BLOCK_ENTITIES.register("star_in_a_bottle_entity", () -> BlockEntityType.Builder.of(StarInABottleBlock.BEntity::new, STAR_IN_A_BOTTLE.get()).build(DSL.remainderType()));
 
     // test block 要测试直接复制下面这一行改名
     public static final DeferredBlock<Block> TEST_BLOCK   = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.COLOR_BLUE)));

@@ -170,6 +170,9 @@ public final class LivingEntityEvents {
         if (living.hasEffect(ModEffects.COZY_FIRE)) {
             amount *= 1.1F;
         }
+        if (living.hasEffect(ModEffects.HEART_LANTERN)) {
+            amount *= 1.2F;
+        }
         event.setAmount(amount);
 
         DamageIndicatorOptions.sendHealParticle(amount, level, living);

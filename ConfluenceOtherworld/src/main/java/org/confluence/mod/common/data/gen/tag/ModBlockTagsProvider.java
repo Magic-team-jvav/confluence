@@ -355,6 +355,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GRANITE.get(),
                 MARBLE.get(),
 
+                HEART_LANTERN.get(),
+                STAR_IN_A_BOTTLE.get(),
+
                 CrateBlocks.IRON_CRATE.get(),
                 CrateBlocks.GOLDEN_CRATE.get(),
                 CrateBlocks.SKY_CRATE.get(),
@@ -674,6 +677,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GELSTONE_BLOCK.get(),
                 STURDY_FOSSIL_BLOCK.get(),
                 COLD_CRYSTAL_BLOCK.get(),
+
+                HEART_LANTERN.get(),
+                STAR_IN_A_BOTTLE.get(),
 
                 KING_SLIME_RELIC.get(),
                 EYE_OF_CTHULHU_RELIC.get(),

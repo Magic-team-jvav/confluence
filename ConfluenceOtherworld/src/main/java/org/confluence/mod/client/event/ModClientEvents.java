@@ -550,4 +550,9 @@ public final class ModClientEvents {
             });
         }
     }
+
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(FunctionalBlocks.SOUL_BOTTLE_ENTITY.get(), SoulBottleBlockRenderer::new);
+    }
 }

@@ -1,19 +1,29 @@
 package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.jetbrains.annotations.Nullable;
 
 public class StarInABottleBlock extends LanternBlock implements EntityBlock {
@@ -52,5 +62,11 @@ public class StarInABottleBlock extends LanternBlock implements EntityBlock {
                 }
             }
         };
+    }
+
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        Direction direction = getConnectedDirection(state).getOpposite();
+        BlockPos checkPos = pos.relative(direction);
+        return (Block.canSupportCenter(level, checkPos, direction.getOpposite()) || ((direction == Direction.UP) && level.getBlockState(checkPos).is(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ropes")))));
     }
 }

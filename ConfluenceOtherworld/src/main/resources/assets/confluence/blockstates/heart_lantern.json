@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "confluence:block/heart_lantern"
+    },
+    "hanging=true": {
+      "model": "confluence:block/heart_lantern_hanging"
+    }
+  }
+}

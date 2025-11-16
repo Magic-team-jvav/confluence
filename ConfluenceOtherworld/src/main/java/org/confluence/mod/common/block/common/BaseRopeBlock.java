@@ -29,6 +29,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.jetbrains.annotations.NotNull;
 
 public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
@@ -91,7 +93,7 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
     }
 
     private static boolean shouldConnect(LevelAccessor level, BlockState facingState, BlockPos facingPos, Direction facing) {
-        return facingState.is(ModTags.Blocks.ROPE) || (!facingState.isAir() && facingState.isFaceSturdy(level, facingPos, facing.getOpposite()));
+        return facingState.is(ModTags.Blocks.ROPE) || (!facingState.isAir() && facingState.isFaceSturdy(level, facingPos, facing.getOpposite())) || ((facing == Direction.DOWN) && level.getBlockState(facingPos).is(FunctionalBlocks.STAR_IN_A_BOTTLE));
     }
 
     @Override

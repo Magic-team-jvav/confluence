@@ -82,6 +82,7 @@
         "integration.terra_entity.SpawnPlacementChecksMixin",
         "integration.terra_entity.TEUtilsMixin",
         "integration.terra_entity.TravelingMerchantNPCMixin",
+        "integration.terra_furniture.TFPinWheelMixin",
         "integration.terra_furniture.TFSwayingBEMixin",
         "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
         "integration.touhoulittlemaid.EntityMaidMixin",

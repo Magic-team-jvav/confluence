@@ -16,6 +16,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -45,6 +46,7 @@ public final class TickEvents {
         BossDelaySpawner.INSTANCE.tick(serverLevel);
 
         int dayTime = LibDateUtils.getDayTime(serverLevel);
+        WeatherHandler.tick();
         if (dayTime == LibDateUtils._06$00) {
             float factorX = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);

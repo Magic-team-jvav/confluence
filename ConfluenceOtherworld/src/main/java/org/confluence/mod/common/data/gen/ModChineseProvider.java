@@ -5074,6 +5074,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.FISHING.get(), "钓鱼", "提高渔力");
         addEffect(ModEffects.LUCK_EFFECT.get(), "幸运", "你觉得自己很幸运");
         addEffect(ModEffects.MANA_REGENERATION.get(), "魔力再生", "提高魔力再生速度");
+        addEffect(ModEffects.STAR_IN_A_BOTTLE.get(), "星星瓶", "提高魔力再生速度");
         addEffect(ModEffects.WATER_WALKING.get(), "水上漂", "能在液体上行走。");
         addEffect(ModEffects.MAGIC_POWER.get(), "魔能", "魔法伤害提高20%");
         addEffect(ModEffects.FLIPPER.get(), "脚蹼", "在水中移动如常");
@@ -5089,6 +5090,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.HEART_REACH.get(), "拾心", "扩大心的拾取范围");
         addEffect(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮", "对熔岩免疫");
         addEffect(ModEffects.COZY_FIRE.get(), "温馨之火", "生命再生速度略有提高");
+        addEffect(ModEffects.HEART_LANTERN.get(), "心灯", "生命再生速度提高");
         addEffect(ModEffects.BEWITCHED.get(), "着魔", "提高仆从数量上限");
         addEffect(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓", "延缓饥饿值下降速度");
         addEffect(ModEffects.CHOKING.get(), "干噎", "你需要喝水！");

@@ -101,13 +101,16 @@ public final class PlayerUtils {
             manaStorage.setRegenerateDelay(delay - delayReduce);
             return;
         }
+        boolean hasStarBottle = player.hasEffect(ModEffects.STAR_IN_A_BOTTLE);
+        float starBottleBonusPerTick = hasStarBottle ? 0.25F : 0.0F;
 
         FloatSupplier receive = () -> {
             // 1.0F / 7.0F = 0.14285715F
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
             float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
-            return a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(player);
+            float baseRegen = a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(player);
+            return baseRegen + starBottleBonusPerTick;
         };
 
         if (manaStorage.receiveMana(receive)) syncMana2Client(player, manaStorage);

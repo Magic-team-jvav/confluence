@@ -2641,6 +2641,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.FISHING.get(), "Increased fishing power");
         addEffect(ModEffects.LUCK_EFFECT.get(), "You are feeling pretty lucky");
         addEffect(ModEffects.MANA_REGENERATION.get(), "Increased mana regeneration");
+        addEffect(ModEffects.STAR_IN_A_BOTTLE.get(), "Increased mana regeneration");
         addEffect(ModEffects.WATER_WALKING.get(), "Can walk on liquids.");
         addEffect(ModEffects.MAGIC_POWER.get(), "20% increased magic damage");
         addEffect(ModEffects.FLIPPER.get(), "Move like normal in water");
@@ -2656,6 +2657,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.HEART_REACH.get(), "Increased heart pickup range");
         addEffect(ModEffects.OBSIDIAN_SKIN.get(), "Immune to lava");
         addEffect(ModEffects.COZY_FIRE.get(), "Life regen is slightly increased");
+        addEffect(ModEffects.HEART_LANTERN.get(), "Life regen is increased ");
         addEffect(ModEffects.BEWITCHED.get(), "Increased max number of minions");
         addEffect(ModEffects.HUNGER_DELAYED.get(), "Slows hunger depletion rate");
         addEffect(ModEffects.CHOKING.get(), "You need water!");

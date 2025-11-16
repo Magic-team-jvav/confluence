@@ -179,8 +179,8 @@ public class FunctionalBlocks {
     public static final DeferredBlock<EffectiveCandleBlock> PEACE_CANDLE = registerCandle("peace_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
 
     // 心灯，星星瓶
-    public static final DeferredBlock<Block> HEART_LANTERN   = registerWithItem("heart_lantern", () -> new Block(BlockBehaviour.Properties.ofFullCopy(LANTERN).mapColor(MapColor.COLOR_PINK)));
-    public static final DeferredBlock<Block> STAR_IN_A_BOTTLE = registerWithItem("star_in_a_bottle", () -> new Block(BlockBehaviour.Properties.ofFullCopy(LANTERN).mapColor(MapColor.COLOR_YELLOW)));
+    public static final DeferredBlock<HeartLanternBlock> HEART_LANTERN   = registerWithItem("heart_lantern",  () -> new HeartLanternBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_RED)));
+    public static final DeferredBlock<StarInABottleBlock> STAR_IN_A_BOTTLE = registerWithItem("star_in_a_bottle", () -> new StarInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_YELLOW)));
 
     // test block 要测试直接复制下面这一行改名
     public static final DeferredBlock<Block> TEST_BLOCK   = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.COLOR_BLUE)));

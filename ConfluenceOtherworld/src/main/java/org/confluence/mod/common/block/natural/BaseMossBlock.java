@@ -35,31 +35,10 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
     protected final int lightLevel;
     protected final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
-    private BaseMossBlock(int lightLevel, Properties properties) {
-        super(properties);
+    public BaseMossBlock(int lightLevel, Properties properties) {
+        super(properties.lightLevel(emission(lightLevel)));
         this.lightLevel = lightLevel;
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
-    }
-
-    public static BaseMossBlock createNormal(int lightLevel) {
-        return new BaseMossBlock(lightLevel, BlockBehaviour.Properties.of()
-                .lightLevel(emission(lightLevel))
-                .noCollission()
-                .ignitedByLava()
-                .pushReaction(PushReaction.DESTROY)
-                .strength(0.2F)
-                .sound(SoundType.GLOW_LICHEN)
-                .replaceable());
-    }
-
-    public static BaseMossBlock createLavaImmune(int lightLevel) {
-        return new BaseMossBlock(lightLevel, BlockBehaviour.Properties.of()
-                .lightLevel(emission(lightLevel))
-                .noCollission()
-                .pushReaction(PushReaction.DESTROY)
-                .strength(0.2F)
-                .sound(SoundType.GLOW_LICHEN)
-                .replaceable());
     }
 
     @Override

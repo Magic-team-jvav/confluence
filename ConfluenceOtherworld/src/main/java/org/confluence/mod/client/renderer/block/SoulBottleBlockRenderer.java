@@ -60,10 +60,6 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
             ROTATE01 += 0.1;
             ROTATE10 += 0.07;
             ROTATE11 += 0.07;
-            if (ROTATE00 > 360) ROTATE00 -= 360;
-            if (ROTATE01 > 360) ROTATE01 -= 360;
-            if (ROTATE10 > 360) ROTATE10 -= 360;
-            if (ROTATE11 > 360) ROTATE11 -= 360;
         }
 
         BlockPos blockPos = blockEntity.getBlockPos();

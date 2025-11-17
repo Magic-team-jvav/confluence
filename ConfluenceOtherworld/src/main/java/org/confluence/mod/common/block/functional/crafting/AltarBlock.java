@@ -195,7 +195,10 @@ public class AltarBlock extends BaseEntityBlock {
                     ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
                     LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 }
-                if (crafted) entity.playAnimation(serverLevel, pos);
+                if (crafted) {
+                    entity.playAnimation(serverLevel, pos);
+                    entity.markUpdated();
+                }
             } else {
                 List<RecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level);
                 if (recipes.isEmpty()) return;
@@ -203,6 +206,7 @@ public class AltarBlock extends BaseEntityBlock {
                 ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
                 LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 entity.playAnimation(serverLevel, pos);
+                entity.markUpdated();
             }
         }
     }
@@ -246,12 +250,14 @@ public class AltarBlock extends BaseEntityBlock {
                 if (ItemStack.isSameItemSameComponents(stack, toAdd)) {
                     ItemStack result = itemHandler.insertItem(i, toAdd, false);
                     setChanged();
+                    markUpdated();
                     return result;
                 }
             }
             if (firstEmptySlot != -1) {
                 itemHandler.setStackInSlot(firstEmptySlot, toAdd);
                 setChanged();
+                markUpdated();
                 return ItemStack.EMPTY;
             }
             return toAdd;
@@ -264,6 +270,7 @@ public class AltarBlock extends BaseEntityBlock {
                     if (!stack.isEmpty()) {
                         stack = itemHandler.extractItem(i, stack.getMaxStackSize(), false);
                         setChanged();
+                        markUpdated();
                         return stack;
                     }
                 }
@@ -272,6 +279,7 @@ public class AltarBlock extends BaseEntityBlock {
                 ItemStack stack = itemHandler.getStackInSlot(slot).copy();
                 itemHandler.setStackInSlot(slot, ItemStack.EMPTY);
                 setChanged();
+                markUpdated();
                 return stack;
             }
         }

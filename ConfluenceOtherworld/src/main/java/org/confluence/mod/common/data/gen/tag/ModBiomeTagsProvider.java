@@ -49,7 +49,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModTags.Biomes.THE_CORRUPTION,
                 ModTags.Biomes.THE_CRIMSON,
                 ModTags.Biomes.THE_HALLOW
-        );
+        ).add(ModBiomes.GLOWING_MUSHROOM);
         tag(ModTags.Biomes.IS_CONFLUENCE).add(
                 ModBiomes.THE_CORRUPTION,
                 ModBiomes.THE_CORRUPTION_DESERT,

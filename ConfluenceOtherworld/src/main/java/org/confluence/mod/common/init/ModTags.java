@@ -437,6 +437,7 @@ public final class ModTags {
     public static class Fluids {
         public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
         public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
+        public static final TagKey<Fluid> C_WATER = FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", "water"));
     }
 
     public static class EntityTypes {

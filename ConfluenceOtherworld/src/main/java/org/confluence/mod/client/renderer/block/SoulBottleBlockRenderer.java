@@ -103,14 +103,20 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
                 SIZE_UP[i] = sizeUp;
             }
 
+            RANDOM.setSeed(blockPos.getX());
+            RANDOM.setSeed(blockPos.getY() + RANDOM.nextInt(100));
+            RANDOM.setSeed(blockPos.getZ() + RANDOM.nextInt(100));
+
             double pi = 1 - 2 * i;
             double radius = 0.125;
             double cubeSize = 0.125;
-            Vector3d offset = new Vector3d((Math.cos(ROTATE10) * Math.cos(ROTATE11) * radius) * pi, Math.sin(ROTATE10) * radius * pi, (-Math.cos(ROTATE10) * Math.sin(ROTATE11) * radius) * pi).add(offsetPos);
+            Vector3d offset = new Vector3d((Math.cos(ROTATE10 + RANDOM.nextDouble() * 10) * Math.cos(ROTATE11 + RANDOM.nextDouble() * 10) * radius) * pi, Math.sin(ROTATE10 + RANDOM.nextDouble() * 10) * radius * pi, (-Math.cos(ROTATE10 + RANDOM.nextDouble() * 10) * Math.sin(ROTATE11 + RANDOM.nextDouble() * 10) * radius) * pi).add(offsetPos);
 
-            drawCube(poseStack, bufferSource, sizeGet * cubeSize, r0, g0, b0, 255, entityMainPos, offset, true, ROTATE00 * pi * ROTATE1OFFSET, ROTATE01 * pi * ROTATE1OFFSET);
-            drawCube(poseStack, bufferSource, sizeGet * cubeSize + 0.015625, r1, g1, b1, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET, ROTATE01 * pi * ROTATE1OFFSET);
-            drawCube(poseStack, bufferSource, sizeGet * cubeSize + 0.078125, r2, g2, b2, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET, ROTATE01 * pi * ROTATE1OFFSET);
+            double rotate0 = RANDOM.nextDouble() * 10;
+            double rotate1 = RANDOM.nextDouble() * 10;
+            drawCube(poseStack, bufferSource, sizeGet * cubeSize, r0, g0, b0, 255, entityMainPos, offset, true, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1);
+            drawCube(poseStack, bufferSource, sizeGet * cubeSize + 0.015625, r1, g1, b1, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1);
+            drawCube(poseStack, bufferSource, sizeGet * cubeSize + 0.078125, r2, g2, b2, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1);
         }
     }
 }

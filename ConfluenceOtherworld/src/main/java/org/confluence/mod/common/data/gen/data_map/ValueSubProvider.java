@@ -1997,6 +1997,7 @@ public final class ValueSubProvider {
 
                 .add(Blocks.FLOWER_POT, 20)
                 .add(TFBlocks.HANGING_POT, 250)
+                .add(TFBlocks.PIN_WHEEL, 400)
 
 
         ;

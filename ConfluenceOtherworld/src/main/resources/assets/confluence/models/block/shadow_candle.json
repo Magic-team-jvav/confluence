@@ -6,7 +6,7 @@
 	"textures": {
 		"1": "confluence:block/shadow_candle_fire",
 		"2": "confluence:block/shadow_candle",
-		"particle": "confluence:block/shadow_candle"
+		"particle": "confluence:block/particle/shadow_candle_particle"
 	},
 	"elements": [
 		{

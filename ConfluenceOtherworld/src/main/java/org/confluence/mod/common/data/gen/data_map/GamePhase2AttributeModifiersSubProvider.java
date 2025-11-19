@@ -228,6 +228,9 @@ public final class GamePhase2AttributeModifiersSubProvider {
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
+                .add(TEMonsterEntities.METEOR_HEAD, Map.of(
+                        GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
+                ))
                 .add(TEMonsterEntities.HARPY, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))

@@ -1,4 +1,4 @@
-// 在 TuffBoothBlockRenderer.java 文件中
+
 package org.confluence.mod.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,13 +13,17 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.block.functional.TuffBoothBlock;
 import org.joml.Vector3d;
+
+import java.util.Objects;
 
 import static org.confluence.lib.util.RenderUtils.drawCube;
 
@@ -176,6 +180,7 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
             LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), -0.26, -0.135, -0.26, 0.26, 0.385, 0.26, r, g, b, (cubeAlpha + 1F) / 4F);
         }
 
+        boolean pop = true;
         if (!itemStack.isEmpty()) {
             Minecraft.getInstance().getItemRenderer().render(
                     itemStack,
@@ -187,41 +192,62 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
                     packedOverlay,
                     Minecraft.getInstance().getItemRenderer().getModel(itemStack, null, null, 0)
             );
+            poseStack.popPose();
+            pop = false;
+
+            if (boothEntity.getBlockState().getValue(TuffBoothBlock.SHOW_NAME)) {
+                poseStack.pushPose();
+
+                poseStack.translate(0.5D, 1.83D + yOffset, 0.5D);
+
+                Minecraft minecraft = Minecraft.getInstance();
+
+                poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+                float scale1 = 0.02F;
+                poseStack.scale(scale1, -scale1, scale1);
+
+                Font font = minecraft.font;
+                Component text = itemStack.getDisplayName();
+                String plainText = text.getString();
+                String cleanText = plainText.replaceAll("^\\[|\\]$", "");
+                Component cleanComponent = Component.literal(cleanText).withStyle(text.getStyle().withColor((TextColor) null));
+                int textColor = Objects.requireNonNull(ModRarity.getRarity(itemStack)).color();
+
+                int textWidth = font.width(cleanComponent);
+                float xOffset = -textWidth / 2.0F;
+                int backColor = 0x40000000;
+                float alpha = ((backColor >> 24) & 0xFF) / 255F;
+                float red = ((backColor >> 16) & 0xFF) / 255F;
+                float green = ((backColor >> 8) & 0xFF) / 255F;
+                float blue = (backColor & 0xFF) / 255F;
+
+                PoseStack.Pose pose = poseStack.last();
+                VertexConsumer consumer = bufferSource.getBuffer(RenderType.debugQuads());
+                consumer.addVertex(pose, -xOffset + 1, -1, -0.1F)
+                        .setColor(red, green, blue, alpha);
+                consumer.addVertex(pose, xOffset - 1, -1, -0.1F)
+                        .setColor(red, green, blue, alpha);
+                consumer.addVertex(pose, xOffset - 1, 9, -0.1F)
+                        .setColor(red, green, blue, alpha);
+                consumer.addVertex(pose, -xOffset + 1, 9, -0.1F)
+                        .setColor(red, green, blue, alpha);
+
+                font.drawInBatch(
+                        cleanComponent,
+                        xOffset,
+                        0,
+                        textColor,
+                        false,
+                        poseStack.last().pose(),
+                        bufferSource,
+                        Font.DisplayMode.NORMAL,
+                        0,
+                        255
+                );
+
+                poseStack.popPose();
+            }
         }
-
-        poseStack.popPose();
-        if (boothEntity.getBlockState().getValue(TuffBoothBlock.SHOW_NAME)) {
-            poseStack.pushPose();
-
-            poseStack.translate(0.5D, 1.8D, 0.5D);
-
-            Minecraft minecraft = Minecraft.getInstance();
-
-            poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
-            float scale1 = 0.015F;
-            poseStack.scale(scale1, -scale1, scale1);
-
-            Font font = minecraft.font;
-            Component text = itemStack.getDisplayName();
-            int textColor = 0xFFFFFF;
-
-            int textWidth = font.width(text);
-            float xOffset = -textWidth / 2.0F;
-
-            font.drawInBatch(
-                    text,
-                    xOffset,
-                    0,
-                    textColor,
-                    false,
-                    poseStack.last().pose(),
-                    bufferSource,
-                    Font.DisplayMode.NORMAL,
-                    0,
-                    packedLight
-            );
-
-            poseStack.popPose(); // 结束操作，恢复PoseStack
-        }
+        if (pop) poseStack.popPose();
     }
 }

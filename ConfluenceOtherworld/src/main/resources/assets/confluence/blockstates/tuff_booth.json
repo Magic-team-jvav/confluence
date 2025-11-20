@@ -1,0 +1,55 @@
+{
+    "variants": {
+        "color=0": {
+            "model": "confluence:block/tuff_booth/tuff_booth"
+        },
+        "color=1": {
+            "model": "confluence:block/tuff_booth/tuff_booth_white"
+        },
+        "color=2": {
+            "model": "confluence:block/tuff_booth/tuff_booth_light_gray"
+        },
+        "color=3": {
+            "model": "confluence:block/tuff_booth/tuff_booth_gray"
+        },
+        "color=4": {
+            "model": "confluence:block/tuff_booth/tuff_booth_black"
+        },
+        "color=5": {
+            "model": "confluence:block/tuff_booth/tuff_booth_brown"
+        },
+        "color=6": {
+            "model": "confluence:block/tuff_booth/tuff_booth_red"
+        },
+        "color=7": {
+            "model": "confluence:block/tuff_booth/tuff_booth_orange"
+        },
+        "color=8": {
+            "model": "confluence:block/tuff_booth/tuff_booth_yellow"
+        },
+        "color=9": {
+            "model": "confluence:block/tuff_booth/tuff_booth_lime"
+        },
+        "color=10": {
+            "model": "confluence:block/tuff_booth/tuff_booth_green"
+        },
+        "color=11": {
+            "model": "confluence:block/tuff_booth/tuff_booth_cyan"
+        },
+        "color=12": {
+            "model": "confluence:block/tuff_booth/tuff_booth_light_blue"
+        },
+        "color=13": {
+            "model": "confluence:block/tuff_booth/tuff_booth_blue"
+        },
+        "color=14": {
+            "model": "confluence:block/tuff_booth/tuff_booth_purple"
+        },
+        "color=15": {
+            "model": "confluence:block/tuff_booth/tuff_booth_magenta"
+        },
+        "color=16": {
+            "model": "confluence:block/tuff_booth/tuff_booth_pink"
+        }
+    }
+}

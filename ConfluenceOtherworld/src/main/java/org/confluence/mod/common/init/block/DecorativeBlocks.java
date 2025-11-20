@@ -19,6 +19,7 @@ import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
 import org.confluence.mod.common.block.palettes.ConnectedStainedGlassBlock;
 import org.confluence.mod.common.init.item.ModItems;
+import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -277,6 +278,9 @@ public class DecorativeBlocks {
     public static final DeferredBlock<ChainBlock> AMETHYST_CHAIN = copyBlockRegister("amethyst_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.COLOR_PURPLE)));
     public static final DeferredBlock<ChainBlock> SILK_CHAIN = copyBlockRegister("silk_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<ChainBlock> BONE_CHAIN = copyBlockRegister("bone_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
+
+
+    public static final DeferredBlock<SoulGlassBlock> SOUL_GALSS = registerWithItem("soul_glass", () -> new SoulGlassBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
 
     // 圣物
     public static final DeferredBlock<RelicBlock> KING_SLIME_RELIC = registerRelic("king_slime_relic");

@@ -50,7 +50,6 @@ import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.ArrowInBowHandler;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.WrappedBakedModel;
-import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
@@ -241,7 +240,9 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-				event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new);// 牢枕专用
+		event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new);// 牢枕专用
+        event.registerBlockEntityRenderer(FunctionalBlocks.SOUL_BOTTLE_ENTITY.get(), SoulBottleBlockRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.TUFF_BOOTH_ENTITY.get(), TuffBoothBlockRenderer::new);
 
         event.registerEntityRenderer(BOMB_ENTITY.get(), BaseBombEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
@@ -549,10 +550,5 @@ public final class ModClientEvents {
                 return false;
             });
         }
-    }
-
-    @SubscribeEvent
-    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(FunctionalBlocks.SOUL_BOTTLE_ENTITY.get(), SoulBottleBlockRenderer::new);
     }
 }

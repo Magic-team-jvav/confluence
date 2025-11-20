@@ -43,7 +43,6 @@ public class AltarBlockRenderer extends GeoBlockRenderer<AltarBlock.BEntity> {
 
 
         final long timeVariable = (System.currentTimeMillis() / 20) % 10000;
-        boolean updata = (TIME_BEFORE != timeVariable);
         TIME_BEFORE = timeVariable;
 
         final List<ItemStack> items = new ArrayList<>();

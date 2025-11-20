@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -23,8 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -32,15 +29,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
-import java.util.List;
 import java.util.Map;
 
 public class TuffBoothBlock extends BaseEntityBlock {
 
-    private static final VoxelShape SHAPE = Shapes.or(box(1, 0, 1, 15, 3, 15), box(3, 3, 3, 13, 13, 13), box(0, 13, 0, 16, 16, 16), box(1, 3, 12, 4, 5, 15), box(12, 3, 12, 15, 5, 15), box(12, 3, 1, 15, 5, 4), box(1, 3, 1, 4, 5, 4));
-
     public static final IntegerProperty COLOR = IntegerProperty.create("color", 0, 16); // 名字为 "color"，范围 0-15
     public static final BooleanProperty SHOW_NAME = BooleanProperty.create("show_name"); // 复用Minecraft原版的 "show_name" 属性
+    private static final VoxelShape SHAPE = Shapes.or(box(1, 0, 1, 15, 3, 15), box(3, 3, 3, 13, 13, 13), box(0, 13, 0, 16, 16, 16), box(1, 3, 12, 4, 5, 15), box(12, 3, 12, 15, 5, 15), box(12, 3, 1, 15, 5, 4), box(1, 3, 1, 4, 5, 4));
     private static final Map<Item, Integer> CARPET_TO_COLOR = Map.ofEntries(
             Map.entry(Items.WHITE_CARPET, 1),
             Map.entry(Items.LIGHT_GRAY_CARPET, 2),
@@ -60,6 +55,7 @@ public class TuffBoothBlock extends BaseEntityBlock {
             Map.entry(Items.PINK_CARPET, 16)
     );
     private static final Item[] COLOR_TO_CARPET = new Item[17];
+
     static {
         COLOR_TO_CARPET[1] = Items.WHITE_CARPET;
         COLOR_TO_CARPET[2] = Items.LIGHT_GRAY_CARPET;
@@ -79,17 +75,17 @@ public class TuffBoothBlock extends BaseEntityBlock {
         COLOR_TO_CARPET[16] = Items.PINK_CARPET;
     }
 
-    @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return SHAPE;
-    }
-
     public TuffBoothBlock(Properties p_309186_) {
         super(p_309186_);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(COLOR, 0)
                 .setValue(SHOW_NAME, false)
         );
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @Override
@@ -121,8 +117,10 @@ public class TuffBoothBlock extends BaseEntityBlock {
             if (!stackToDrop.isEmpty()) {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stackToDrop);
             }
-            if (state.getValue(SHOW_NAME)) Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.NAME_TAG));
-            if (state.getValue(COLOR) != 0) Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(COLOR_TO_CARPET[state.getValue(COLOR)]));
+            if (state.getValue(SHOW_NAME))
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.NAME_TAG));
+            if (state.getValue(COLOR) != 0)
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(COLOR_TO_CARPET[state.getValue(COLOR)]));
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
@@ -230,13 +228,13 @@ public class TuffBoothBlock extends BaseEntityBlock {
             }
         };
 
+        public TuffBoothBlockEntity(BlockPos pos, BlockState state) {
+            super(FunctionalBlocks.TUFF_BOOTH_ENTITY.get(), pos, state);
+        }
+
         @Override
         public ClientboundBlockEntityDataPacket getUpdatePacket() {
             return ClientboundBlockEntityDataPacket.create(this);
-        }
-
-        public TuffBoothBlockEntity(BlockPos pos, BlockState state) {
-            super(FunctionalBlocks.TUFF_BOOTH_ENTITY.get(), pos, state);
         }
 
         public ItemStackHandler getItemHandler() {

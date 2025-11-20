@@ -823,6 +823,17 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 )),
                 FunctionalBlocks.WEATHER_VANE.toStack()
         );
+        // 凝灰岩展台
+        shaped(output, "", "",
+                ShapedRecipePattern.of(Map.of(
+                        '#', Ingredient.of(Items.TUFF)
+                ), List.of(
+                        "###",
+                        " # ",
+                        "###"
+                )),
+                FunctionalBlocks.TUFF_BOOTH.toStack(7)
+        );
         // 瞬爆tnt
         shaped(output,
                 ShapedRecipePattern.of(Map.of(
@@ -1050,6 +1061,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
         shapeless(output, FunctionalBlocks.HEART_LANTERN.toStack(), Ingredient.of(Items.CHAIN),Ingredient.of(ConsumableItems.LIFE_CRYSTAL));
         shapeless(output, FunctionalBlocks.STAR_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_LIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_SIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_MIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_FRIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_BRIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_NIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_VOIGHT));
+
 
         shapeless(output, ConsumableItems.DRY_BOMB.toStack(), Ingredient.of(ConsumableItems.WET_BOMB,ConsumableItems.HONEY_BOMB,ConsumableItems.LAVA_BOMB));
 

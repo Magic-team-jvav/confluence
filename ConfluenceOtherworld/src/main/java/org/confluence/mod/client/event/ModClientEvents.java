@@ -420,6 +420,8 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_LIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_NIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FLIGHT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_VOIGHT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_BRIGHT);
         if (GroupItem.enable) {
             event.registerItem(GroupItemExtension.INSTANCE, GroupItem.getInstance());
         }
@@ -475,6 +477,8 @@ public final class ModClientEvents {
         modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_LIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
         modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_NIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
         modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_FLIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
+        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_BRIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
+        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_VOIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
         TreasureBagItems.ITEMS.getEntries().forEach(holder -> modelRegistry.compute(ModelResourceLocation.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model)));
 
         ModConnectives.MODEL_SWAPPER.onModelBake(modelRegistry);

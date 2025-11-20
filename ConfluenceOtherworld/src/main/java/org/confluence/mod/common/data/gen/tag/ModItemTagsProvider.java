@@ -656,6 +656,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_NIGHT.get(),
                 MaterialItems.SOUL_OF_LIGHT.get(),
                 MaterialItems.SOUL_OF_SIGHT.get(),
+                MaterialItems.SOUL_OF_BRIGHT.get(),
 
                 MaterialItems.CRYSTAL_SHARDS.get(),
                 MaterialItems.CURSED_FLAME.get(),
@@ -1447,7 +1448,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_FLIGHT.get(),
                 MaterialItems.SOUL_OF_FRIGHT.get(),
                 MaterialItems.SOUL_OF_MIGHT.get(),
-                MaterialItems.SOUL_OF_SIGHT.get()
+                MaterialItems.SOUL_OF_SIGHT.get(),
+                MaterialItems.SOUL_OF_BRIGHT.get(),
+                MaterialItems.SOUL_OF_VOIGHT.get()
         );
 
         tag(ModTags.Items.SHOW_SIGNAL).add(

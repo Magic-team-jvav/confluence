@@ -476,6 +476,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.soul_of_might.0", "“毁灭者的精华”");
         add("tooltip.item.confluence.soul_of_sight.0", "“全知看守者的精华”");
         add("tooltip.item.confluence.soul_of_fright.0", "“纯粹恐惧的精华”");
+        add("tooltip.item.confluence.soul_of_bright.0", "“于重铸中智能的精华”");
+        add("tooltip.item.confluence.soul_of_voight.0", "“虚空中诞生巨龙的精华”");
         add("tooltip.item.confluence.golden_dungeon_key.0", "“打开一个锁住的地牢箱或金锁盒”");
         add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱”");
         add("tooltip.item.confluence.shadow_key.0", "“打开所有暗影箱和黑曜石锁盒”");
@@ -3612,6 +3614,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SOUL_OF_MIGHT.get(), "力量之魂");
         add(MaterialItems.SOUL_OF_SIGHT.get(), "视域之魂");
         add(MaterialItems.SOUL_OF_FRIGHT.get(), "恐惧之魂");
+        add(MaterialItems.SOUL_OF_VOIGHT.get(), "虚空之魂");
+        add(MaterialItems.SOUL_OF_BRIGHT.get(), "启迪之魂");
         add(MaterialItems.SPELL_TOME.get(), "魔法书");
         add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
         add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
@@ -4154,6 +4158,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.DYE_VAT.get(), "染缸");
         add(FunctionalBlocks.HEART_LANTERN.get(), "红心灯笼");
         add(FunctionalBlocks.STAR_IN_A_BOTTLE.get(), "星星瓶");
+        add(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get(), "启迪之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.get(), "飞翔之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.get(), "恐惧之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.get(), "光明之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.get(), "力量之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.get(), "视域之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.get(), "暗影之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.get(), "虚空之魂瓶");
+        add(FunctionalBlocks.TUFF_BOOTH.get(), "凝灰岩展台");
         add(ModBlocks.AETHERIUM_CAULDRON.get(), "装有微光的炼药锅");
         add(ModBlocks.HONEY_CAULDRON.get(), "装有蜂蜜的炼药锅");
 

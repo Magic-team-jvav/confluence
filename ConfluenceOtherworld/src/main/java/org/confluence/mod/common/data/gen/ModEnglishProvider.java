@@ -487,6 +487,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.soul_of_might.0", "'The essence of the destroyer'");
         add("tooltip.item.confluence.soul_of_sight.0", "'The essence of omniscient watchers'");
         add("tooltip.item.confluence.soul_of_fright.0", "'The essence of pure terror'");
+        add("tooltip.item.confluence.soul_of_bright.0", "The essence of wisdom forged in rebirth");
+        add("tooltip.item.confluence.soul_of_voight.0", "The essence of the dragon born from the void");
         add("tooltip.item.confluence.golden_key.0", "“Opens one locked Gold Chest”");
         add("tooltip.item.confluence.golden_dungeon_key.0", "“Open a locked dungeon chest or a golden lockbox”");
         add("tooltip.item.confluence.shadow_key.0", "“Opens all Shadow Chests and Obsidian Lock Boxes”");

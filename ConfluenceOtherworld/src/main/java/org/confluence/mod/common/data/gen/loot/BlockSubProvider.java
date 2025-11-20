@@ -161,6 +161,15 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SAWMILL.get());
         dropSelf(HEART_LANTERN.get());
         dropSelf(STAR_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_FLIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_LIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_FRIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_NIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_MIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_SIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_BRIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_VOIGHT_IN_A_BOTTLE.get());
+        dropSelf(TUFF_BOOTH.get());
 
         add(SANCTIFICATION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(CORRUPTION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));

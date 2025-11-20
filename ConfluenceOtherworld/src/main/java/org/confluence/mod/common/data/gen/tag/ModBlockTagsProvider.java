@@ -355,8 +355,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GRANITE.get(),
                 MARBLE.get(),
 
+                TUFF_BOOTH.get(),
                 HEART_LANTERN.get(),
                 STAR_IN_A_BOTTLE.get(),
+                SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_NIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_MIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_SIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_BRIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_VOIGHT_IN_A_BOTTLE.get(),
 
                 CrateBlocks.IRON_CRATE.get(),
                 CrateBlocks.GOLDEN_CRATE.get(),
@@ -680,6 +689,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 HEART_LANTERN.get(),
                 STAR_IN_A_BOTTLE.get(),
+                TUFF_BOOTH.get(),
+                SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_NIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_MIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_SIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_BRIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_VOIGHT_IN_A_BOTTLE.get(),
 
                 KING_SLIME_RELIC.get(),
                 EYE_OF_CTHULHU_RELIC.get(),

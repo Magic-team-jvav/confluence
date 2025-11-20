@@ -274,6 +274,8 @@ public final class ValueSubProvider {
                 .add(MaterialItems.SOUL_OF_MIGHT, 8000)
                 .add(MaterialItems.SOUL_OF_SIGHT, 8000)
                 .add(MaterialItems.SOUL_OF_FRIGHT, 8000)
+                .add(MaterialItems.SOUL_OF_BRIGHT, 8000)
+                .add(MaterialItems.SOUL_OF_VOIGHT, 8000)
                 .add(MaterialItems.SPELL_TOME, gold1);
         builder
                 .add(SwordItems.ASH_WOOD_SWORD, 20)
@@ -1870,6 +1872,17 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.DYE_VAT, gold1)
                 .add(FunctionalBlocks.EXTRACTINATOR, gold2)
                 .add(FunctionalBlocks.LEAD_ANVIL, 100)
+
+                .add(FunctionalBlocks.HEART_LANTERN, 20)
+                .add(FunctionalBlocks.STAR_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE,20)
                 .add(TFBlocks.GLASS_KILN, silver50 + silver2 + silver2)
                 .add(TFBlocks.LIVING_LOOM, gold2);
         builder

@@ -40,7 +40,8 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
             FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.get(), new Vector3i(0xa25fea, 0xfdd4ff, 0xe08dff),
             FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.get(), new Vector3i(0x4babff, 0xffffeb, 0xb4deff),
             FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.get(), new Vector3i(0x26d17b, 0xffffeb, 0xc7ffcc),
-            FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get(), new Vector3i(0xffca49, 0xfdffdb, 0xfff594)
+            FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get(), new Vector3i(0xffca49, 0xfdffdb, 0xfff594),
+            FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.get(), new Vector3i(0x1e0034, 0xe3bbff, 0x9f1bff)
     );
 
     public SoulBottleBlockRenderer(BlockEntityRendererProvider.Context context) {

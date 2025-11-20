@@ -678,12 +678,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.METEOR_HEAD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/meteor_head"), LootTable.lootTable()
+        /*add(TEMonsterEntities.METEOR_HEAD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/meteor_head"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().when(beforeSkeletronBehindWallOfFlesh)
                         .add(LootItem.lootTableItem(MaterialItems.RAW_METEORITE).setWeight(2))
                         .add(emptyWeight98).apply(random0To1)
                 )
-        );
+        );*/
         add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon(-10644993));
         add(TEMonsterEntities.DESERT_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/desert_slime"), slimeCommon(-2727));
         add(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_dumpling_slime"), slimeCommon(-8470674)

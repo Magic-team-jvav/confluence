@@ -65,6 +65,7 @@ public class CookingPotRecipeProvider extends AbstractRecipeProvider {
         cookingPot(recipeOutput, FoodItems.TROPICAL_SMOOTHIE.toStack(), bottleContainer, HeatSourcePredicate.EMPTY, 100, Ingredient.of(FoodItems.MANGO), Ingredient.of(FoodItems.PINEAPPLE));
         cookingPot(recipeOutput, FoodItems.ZONGZI.toStack(), Ingredient.of(Items.LILY_PAD), campfireHeatSource, 200, Ingredient.of(Items.SUGAR), Ingredient.of(Items.STRING), Ingredient.of(Items.WHEAT));
         cookingPot(recipeOutput, FoodItems.MEAT_STUFFED_ZONGZI.toStack(), Ingredient.of(Items.LILY_PAD), campfireHeatSource, 200, Ingredient.of(Tags.Items.FOODS_RAW_MEAT), Ingredient.of(Items.STRING), Ingredient.of(Items.WHEAT));
+        cookingPot(recipeOutput, FoodItems.COOKED_MARSHMALLOW.toStack(), Ingredient.of(Items.STICK), campfireHeatSource, 200, Ingredient.of(FoodItems.MARSHMALLOW));
     }
 
     protected void cookingPot(RecipeOutput recipeOutput, ItemStack result, Ingredient container, HeatSourcePredicate heatSource, int cookingTime, Ingredient... ingredients) {

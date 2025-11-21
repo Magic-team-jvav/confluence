@@ -216,6 +216,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.hardmode_forge.0", "Used to smelt adamantite and titanium ore");
         add("tooltip.item.confluence.loom.0", "Used for crafting cloth");
         add("tooltip.item.confluence.dye_vat.0", "Used to Craft Dyes");
+        add("tooltip.item.confluence.tuff_booth.0", "Right-click the upper part to place items, right-click the lower part with a carpet to lay it, and right-click the lower part with a name tag to display the item name");
+        add("tooltip.item.confluence.heart_lantern.0", "Increases life regeneration when placed nearby");
+        add("tooltip.item.confluence.star_in_a_bottle.0", "Increases mana regeneration when placed nearby");
         add("tooltip.item.confluence.jousting_lance.0", "Build momentum to increase attack power");
         add("tooltip.item.confluence.jousting_lance.1", "'Have at thee!'");
         add("tooltip.item.confluence.hallowed_jousting_lance.0", "Build momentum to increase attack power");

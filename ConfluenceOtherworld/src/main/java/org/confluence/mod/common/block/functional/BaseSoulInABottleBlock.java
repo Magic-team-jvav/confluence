@@ -27,13 +27,17 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
 public class BaseSoulInABottleBlock extends LanternBlock implements EntityBlock {
-    private static final VoxelShape SHAPE = Shapes.or(
-          box(4, 0.03125, 4, 12, 10.03125, 12),
-          box(5, 10, 5, 11, 12, 11)
+    private static final VoxelShape NORMAL_SHAPE = Shapes.or(
+            box(4, 0.03125, 4, 12, 10.03125, 12),
+            box(5, 10, 5, 11, 12, 11)
+    );
+    private static final VoxelShape HANGING_SHAPE = Shapes.or(
+            box(4, 4.03125, 4, 12, 14.03125, 12),
+            box(5, 14, 5, 11, 16, 11)
     );
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE;
+        return pState.getValue(HANGING) ? HANGING_SHAPE : NORMAL_SHAPE;
     }
     public static class BEntity extends BlockEntity {
         public BEntity(BlockPos pos, BlockState state) {

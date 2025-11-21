@@ -1,10 +1,12 @@
 {
-  "variants": {
-    "hanging=false": {
-      "model": "confluence:block/star_in_a_bottle"
-    },
-    "hanging=true": {
-      "model": "confluence:block/star_in_a_bottle_hanging"
+    "variants": {
+        "hanging=false,facing=north": { "model": "confluence:block/star_in_a_bottle_normal_north" },
+        "hanging=false,facing=east": { "model": "confluence:block/star_in_a_bottle_normal_west" },
+        "hanging=false,facing=south": { "model": "confluence:block/star_in_a_bottle_normal_north" },
+        "hanging=false,facing=west": { "model": "confluence:block/star_in_a_bottle_normal_west" },
+        "hanging=true,facing=north": { "model": "confluence:block/star_in_a_bottle_hanging_north" },
+        "hanging=true,facing=east": { "model": "confluence:block/star_in_a_bottle_hanging_west" },
+        "hanging=true,facing=south": { "model": "confluence:block/star_in_a_bottle_hanging_north" },
+        "hanging=true,facing=west": { "model": "confluence:block/star_in_a_bottle_hanging_west" }
     }
-  }
 }

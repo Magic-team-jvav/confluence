@@ -1,10 +1,12 @@
 {
-  "variants": {
-    "hanging=false": {
-      "model": "confluence:block/heart_lantern"
-    },
-    "hanging=true": {
-      "model": "confluence:block/heart_lantern_hanging"
+    "variants": {
+        "hanging=false,facing=north": { "model": "confluence:block/heart_lantern_normal_north" },
+        "hanging=false,facing=east": { "model": "confluence:block/heart_lantern_normal_west" },
+        "hanging=false,facing=south": { "model": "confluence:block/heart_lantern_normal_north" },
+        "hanging=false,facing=west": { "model": "confluence:block/heart_lantern_normal_west" },
+        "hanging=true,facing=north": { "model": "confluence:block/heart_lantern_hanging_north" },
+        "hanging=true,facing=east": { "model": "confluence:block/heart_lantern_hanging_west" },
+        "hanging=true,facing=south": { "model": "confluence:block/heart_lantern_hanging_north" },
+        "hanging=true,facing=west": { "model": "confluence:block/heart_lantern_hanging_west" }
     }
-  }
 }

@@ -205,6 +205,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.hardmode_forge.0", "用于熔炼精金矿和钛金矿");
         add("tooltip.item.confluence.loom.0", "用于制作衣物");
         add("tooltip.item.confluence.dye_vat.0", "用于制作染料");
+        add("tooltip.item.confluence.tuff_booth.0", "右键上半部分放置物品，使用地毯右键下半部分铺设，使用命名牌右键下半部分显示物品名称");
+        add("tooltip.item.confluence.heart_lantern.0", "放在附近时提高生命再生速度");
+        add("tooltip.item.confluence.star_in_a_bottle.0", "放在附近时提高魔力再生速度");
         add("tooltip.item.confluence.jousting_lance.0", "提升速度来加强攻击力");
         add("tooltip.item.confluence.jousting_lance.1", "“纳命来！”");
         add("tooltip.item.confluence.hallowed_jousting_lance.0", "提升速度来加强攻击力");

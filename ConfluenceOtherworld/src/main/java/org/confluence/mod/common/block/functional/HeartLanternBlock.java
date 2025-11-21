@@ -1,17 +1,21 @@
 package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.LanternBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -21,14 +25,50 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
 public class HeartLanternBlock extends LanternBlock implements EntityBlock {
-    private static final VoxelShape SHAPE = Shapes.or(
-            box(4, 0.03125, 4, 12, 10.03125, 12),
-            box(5, 10, 5, 11, 12, 11)
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+    private static final VoxelShape NORMAL_SHAPE = Shapes.or(
+            box(5, 0, 5, 11, 2, 11),
+            box(4, 2, 4, 12, 9, 12),
+            box(5, 9, 5, 11, 11, 11)
     );
+
+    private static final VoxelShape HANGING_SHAPE = Shapes.or(
+            box(5, 2, 5, 11, 4, 11),
+            box(4, 4, 4, 12, 11, 12),
+            box(5, 11, 5, 11, 13, 11)
+    );
+
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE;
+        return pState.getValue(HANGING) ? HANGING_SHAPE : NORMAL_SHAPE;
     }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rot) {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.setValue(FACING, mirror.getRotation(state.getValue(FACING)).rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState baseState = super.getStateForPlacement(context);
+        if (baseState == null) return null;
+
+        Direction playerFacing = context.getHorizontalDirection().getOpposite();
+        return baseState.setValue(FACING, playerFacing);
+    }
+
     public static class BEntity extends BlockEntity {
         public BEntity(BlockPos pos, BlockState state) {
             super(FunctionalBlocks.HEART_LANTERN_ENTITY.get(), pos, state);
@@ -37,6 +77,10 @@ public class HeartLanternBlock extends LanternBlock implements EntityBlock {
 
     public HeartLanternBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(HANGING, false)
+                .setValue(WATERLOGGED, false)
+                .setValue(FACING, Direction.NORTH));
     }
 
     @Nullable

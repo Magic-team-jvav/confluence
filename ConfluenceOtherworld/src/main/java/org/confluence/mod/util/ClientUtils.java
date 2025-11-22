@@ -251,6 +251,13 @@ public final class ClientUtils {
         return -1;
     }
 
+    public static void flattenBone(Collection<GeoBone> collection, GeoBone parent) {
+        collection.add(parent);
+        for (GeoBone child : parent.getChildBones()) {
+            flattenBone(collection, child);
+        }
+    }
+
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static void livingDeath(LivingEntity entity) {
         if (!(entity.level() instanceof ClientLevel level)) return;
@@ -277,6 +284,14 @@ public final class ClientUtils {
             poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));
             Matrix4f pose = poseStack.last().pose();
             Collection<GeoBone> bones = geoRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones();
+            // 如果bone名字是_death，说明这个bone是专门为尸体做的，只用这里面的模型
+            for (GeoBone bone : bones) {
+                if ("_death".equals(bone.getName())) {
+                    bones = new ArrayList<>();
+                    flattenBone(bones, bone);
+                    break;
+                }
+            }
             skipBone:
             for (GeoBone bone : bones) {
                 if (bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;

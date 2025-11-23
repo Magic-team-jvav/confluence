@@ -1,0 +1,16 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "org.confluence.mod.mixin.combat",
+    "compatibilityLevel": "JAVA_21",
+    "refmap": "confluence.refmap.json",
+    "plugin": "org.confluence.mod.mixin.combat.lithium.LithiumIntegrationMixinPlugin",
+    "mixins": [
+        "lithium.MixinLevelSquared"
+    ],
+    "client": [
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

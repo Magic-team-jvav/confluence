@@ -217,6 +217,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(ShurikenProjectileModel.LAYER_LOCATION, ShurikenProjectileModel::createBodyLayer);
         event.registerLayerDefinition(ThrownKniveProjectileModel.LAYER_LOCATION, ThrownKniveProjectileModel::createBodyLayer);
         event.registerLayerDefinition(BoneThrownKnivesProjectileModel.LAYER_LOCATION, BoneThrownKnivesProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(DungeonDemonBoneProjectileModel.LAYER_LOCATION, DungeonDemonBoneProjectileModel::createBodyLayer);
         event.registerLayerDefinition(FrostDaggerfishProjectileModel.LAYER_LOCATION, FrostDaggerfishProjectileModel::createBodyLayer);
         event.registerLayerDefinition(VilethronProjectileModel.LAYER_LOCATION, VilethronProjectileModel::createBodyLayer);
         event.registerLayerDefinition(DemonScytheProjectileModel.LAYER_LOCATION, DemonScytheProjectileModel::createBodyLayer);
@@ -292,7 +293,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(THROWN_KNIVE_PROJECTILE.get(), ThrownKniveProjectileRenderer::new);
         event.registerEntityRenderer(BONE_THROWN_KNIVE_PROJECTILE.get(), BoneThrownKniveProjectileRenderer::new);
         event.registerEntityRenderer(FROST_DAGGERFISH_PROJECTILE.get(), FrostDaggerfishProjectileRenderer::new);
-        event.registerEntityRenderer(DUNGEON_DEMON_BONE_PROJECTILE.get(), NoopRenderer::new);// todo 模型
+        event.registerEntityRenderer(DUNGEON_DEMON_BONE_PROJECTILE.get(), DungeonDemonBoneProjectileRenderer::new);
         event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), SpearRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), SpikyBallProjectileRenderer::new);

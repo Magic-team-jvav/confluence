@@ -340,7 +340,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("key.confluence.mana", "Quick Use Mana Potion");
         add("key.confluence.extra_inventory", "Quick Open Extra Slot");
 
-        add("death.attack.dungeon_altar", "Steve died when he was about to click on the bottom block with a meteor compass");
+        add("death.attack.dungeon_altar", "Steve was just one step away from uncovering the secret by right-clicking the block under his feet with the Meteor Compass, but he was interrupted by a Creeper. Now this warm compass is in your hands—hurry up and finish what he started!");
 
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s is crushed by boulder");

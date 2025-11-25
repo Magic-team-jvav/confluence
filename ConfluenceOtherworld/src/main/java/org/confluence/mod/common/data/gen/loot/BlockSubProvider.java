@@ -329,6 +329,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(WEB_ROPE.get());
         dropSelf(VINE_ROPE.get());
 
+        dropSelf(WATER_CANDLE.get());
+        dropSelf(PEACE_CANDLE.get());
+
         dropSelf(TOMBSTONE.get());
         dropSelf(GRAVE_MARKER.get());
         dropSelf(CROSS_GRAVE_MARKER.get());

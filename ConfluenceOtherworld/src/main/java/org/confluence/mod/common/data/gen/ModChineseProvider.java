@@ -3523,20 +3523,28 @@ public class ModChineseProvider extends LanguageProvider {
         //region items
         add(MaterialItems.RAW_TIN.get(), "粗锡");
         add(MaterialItems.TIN_INGOT.get(), "锡锭");
+        add(MaterialItems.TIN_NUGGET.get(), "锡粒");
         add(MaterialItems.RAW_LEAD.get(), "粗铅");
         add(MaterialItems.LEAD_INGOT.get(), "铅锭");
+        add(MaterialItems.LEAD_NUGGET.get(), "铅粒");
         add(MaterialItems.RAW_SILVER.get(), "粗银");
         add(MaterialItems.SILVER_INGOT.get(), "银锭");
+        add(MaterialItems.SILVER_NUGGET.get(), "银粒");
         add(MaterialItems.RAW_TUNGSTEN.get(), "粗钨");
         add(MaterialItems.TUNGSTEN_INGOT.get(), "钨锭");
+        add(MaterialItems.TUNGSTEN_NUGGET.get(), "钨粒");
         add(MaterialItems.RAW_PLATINUM.get(), "粗铂金");
         add(MaterialItems.PLATINUM_INGOT.get(), "铂金锭");
+        add(MaterialItems.PLATINUM_NUGGET.get(), "铂金粒");
         add(MaterialItems.RAW_METEORITE.get(), "粗陨铁");
         add(MaterialItems.METEORITE_INGOT.get(), "陨铁锭");
+        add(MaterialItems.METEORITE_NUGGET.get(), "陨铁粒");
         add(MaterialItems.RAW_DEMONITE.get(), "粗魔矿");
         add(MaterialItems.DEMONITE_INGOT.get(), "魔矿锭");
+        add(MaterialItems.DEMONITE_NUGGET.get(), "魔矿粒");
         add(MaterialItems.RAW_CRIMTANE.get(), "粗猩红矿");
         add(MaterialItems.CRIMTANE_INGOT.get(), "猩红矿锭");
+        add(MaterialItems.CRIMTANE_NUGGET.get(), "猩红矿粒");
         add(MaterialItems.RAW_HELLSTONE.get(), "粗狱石矿");
         add(MaterialItems.HELLSTONE_INGOT.get(), "狱石矿锭");
         add(MaterialItems.RAW_COBALT.get(), "粗钴");
@@ -3557,6 +3565,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.LUMINITE_INGOT.get(), "夜明锭");
         add(MaterialItems.HALLOWED_INGOT.get(), "神圣锭");
         add(MaterialItems.SHROOMITE_INGOT.get(), "蘑菇矿锭");
+        add(MaterialItems.CRUSHED_RAW_TUNGSTEN.get(), "粉碎钨矿石");
         add(MaterialItems.ECTOPLASM.get(), "灵气");
         add(MaterialItems.FORBIDDEN_FRAGMENT.get(), "禁忌碎片");
         add(MaterialItems.FROST_CORE.get(), "寒霜核");
@@ -3608,7 +3617,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SPORE_ROOT.get(), "孢根");
         add(MaterialItems.WINTER_MARROW.get(), "霜髓");
         add(MaterialItems.COLD_CRYSTAL.get(), "寒晶");
-        add(MaterialItems.LEAD_NUGGET.get(), "铅粒");
         add(MaterialItems.RAW_ASPHALT.get(), "生沥青");
         add(MaterialItems.TATTERED_CLOTH.get(), "破布");
         add(MaterialItems.SOUL_OF_LIGHT.get(), "光明之魂");

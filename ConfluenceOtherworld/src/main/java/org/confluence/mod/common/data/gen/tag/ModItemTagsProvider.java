@@ -417,9 +417,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModTags.Items.GEMS_AMETHYST
         );
 
-        tag(ModTags.Items.NUGGETS_LEAD).add(
-                MaterialItems.LEAD_NUGGET.get()
-        );
         tag(Tags.Items.INGOTS).add(
                 MaterialItems.TIN_INGOT.get(),
                 MaterialItems.LEAD_INGOT.get(),
@@ -449,7 +446,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.VILE_MUSHROOM.get()
         );
         tag(Tags.Items.NUGGETS).add(
-                MaterialItems.LEAD_NUGGET.get()
+                MaterialItems.TIN_NUGGET.get(),
+                MaterialItems.LEAD_NUGGET.get(),
+                MaterialItems.SILVER_NUGGET.get(),
+                MaterialItems.TUNGSTEN_NUGGET.get(),
+                MaterialItems.PLATINUM_NUGGET.get(),
+                MaterialItems.METEORITE_NUGGET.get(),
+                MaterialItems.DEMONITE_NUGGET.get(),
+                MaterialItems.CRIMTANE_NUGGET.get()
         );
 
         tag(Tags.Items.SEEDS).add(
@@ -696,6 +700,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INGOTS_ADAMANTITE).add(MaterialItems.ADAMANTITE_INGOT.get());
         tag(ModTags.Items.INGOTS_TITANIUM).add(MaterialItems.TITANIUM_INGOT.get());
         tag(ModTags.Items.INGOTS_CHLOROPHYTE).add(MaterialItems.CHLOROPHYTE_INGOT.get());
+
+        tag(ModTags.Items.NUGGETS_TIN).add(MaterialItems.TIN_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_LEAD).add(MaterialItems.LEAD_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_SILVER).add(MaterialItems.SILVER_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_TUNGSTEN).add(MaterialItems.TUNGSTEN_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_PLATINUM).add(MaterialItems.PLATINUM_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_METEORITE).add(MaterialItems.METEORITE_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_DEMONITE).add(MaterialItems.DEMONITE_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_CRIMTANE).add(MaterialItems.CRIMTANE_NUGGET.get());
         {
             copy(ModTags.Blocks.STORAGE_BLOCKS_TIN, ModTags.Items.STORAGE_BLOCKS_TIN);
             copy(ModTags.Blocks.STORAGE_BLOCKS_LEAD, ModTags.Items.STORAGE_BLOCKS_LEAD);

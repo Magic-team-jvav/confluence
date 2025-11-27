@@ -101,6 +101,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         // 飘飘麦捆
         compressAndDecompressNine(output, MaterialItems.FLOATING_WHEAT_HEADS, ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT, DecorativeBlocks.FLOATING_WHEAT_BALE, ModTags.Items.STORAGE_BLOCKS_FLOATING_WHEAT_BALE);
         // 矿物粒
+        compressAndDecompressNine(output, MaterialItems.TIN_NUGGET, ModTags.Items.NUGGETS_TIN, MaterialItems.TIN_INGOT, ModTags.Items.INGOTS_TIN);
+        compressAndDecompressNine(output, MaterialItems.LEAD_NUGGET, ModTags.Items.NUGGETS_LEAD, MaterialItems.LEAD_INGOT, ModTags.Items.INGOTS_LEAD);
+        compressAndDecompressNine(output, MaterialItems.SILVER_NUGGET, ModTags.Items.NUGGETS_SILVER, MaterialItems.SILVER_INGOT, ModTags.Items.INGOTS_SILVER);
+        compressAndDecompressNine(output, MaterialItems.TUNGSTEN_NUGGET, ModTags.Items.NUGGETS_TUNGSTEN, MaterialItems.TUNGSTEN_INGOT, ModTags.Items.INGOTS_TUNGSTEN);
+        compressAndDecompressNine(output, MaterialItems.PLATINUM_NUGGET, ModTags.Items.NUGGETS_PLATINUM, MaterialItems.PLATINUM_INGOT, ModTags.Items.INGOTS_PLATINUM);
+        compressAndDecompressNine(output, MaterialItems.METEORITE_NUGGET, ModTags.Items.NUGGETS_METEORITE, MaterialItems.METEORITE_INGOT, ModTags.Items.INGOTS_METEORITE);
+        compressAndDecompressNine(output, MaterialItems.DEMONITE_NUGGET, ModTags.Items.NUGGETS_DEMONITE, MaterialItems.DEMONITE_INGOT, ModTags.Items.INGOTS_DEMONITE);
+        compressAndDecompressNine(output, MaterialItems.CRIMTANE_NUGGET, ModTags.Items.NUGGETS_CRIMTANE, MaterialItems.CRIMTANE_INGOT, ModTags.Items.INGOTS_CRIMTANE);
         // 铅砧
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(ModTags.Items.STORAGE_BLOCKS_LEAD),
@@ -1047,7 +1055,6 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 )),
                 new ItemStack(Items.TRIPWIRE_HOOK, 2)
         );
-        shapeless(output, MaterialItems.LEAD_NUGGET.toStack(9), Ingredient.of(MaterialItems.LEAD_INGOT));
         shapeless(output, new ItemStack(Items.FLINT_AND_STEEL), Ingredient.of(ModTags.Items.LEAD_AND_IRON), Ingredient.of(Items.FLINT));
 
         // 石头及深板岩压力板
@@ -1112,10 +1119,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
     // 九原料合成一块的合成及分解配方
     protected void compressAndDecompressNine(RecipeOutput recipeOutput, ItemLike decompressed, TagKey<Item> decompressedTag, ItemLike compressed, TagKey<Item> compressedTag) {
-        ResourceLocation id1 = Confluence.asResource(getItemName(decompressed));
+        ResourceLocation id1 = Confluence.asResource(getItemName(decompressed).concat("_from_decompacting"));
         NonNullList<Ingredient> ingredients = NonNullList.of(Ingredient.EMPTY, Ingredient.of(compressedTag));
         recipeOutput.accept(id1, new ShapelessRecipe("", CraftingBookCategory.BUILDING, new ItemStack(decompressed, 9), ingredients), createAdvancementHolder(recipeOutput, id1, ingredients));
-        ResourceLocation id2 = Confluence.asResource(getItemName(compressed));
+        ResourceLocation id2 = Confluence.asResource(getItemName(compressed).concat("_from_compacting"));
         ShapedRecipePattern pattern = ShapedRecipePattern.of(Map.of('A', Ingredient.of(decompressedTag)), List.of("AAA", "AAA", "AAA"));
         recipeOutput.accept(id2, new ShapedRecipe("", CraftingBookCategory.BUILDING, pattern, compressed.asItem().getDefaultInstance()), createAdvancementHolder(recipeOutput, id2, pattern.ingredients()));
     }

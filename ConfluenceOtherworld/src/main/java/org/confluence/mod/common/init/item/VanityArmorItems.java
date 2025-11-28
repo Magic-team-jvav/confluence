@@ -45,10 +45,10 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> CLOTHIERS_PANTS = registerVanityArmor("clothiers_pants", "vanity_armor/clothiers_pants", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> CLOTHIERS_SHOES = registerVanityArmor("clothiers_shoes", "vanity_armor/clothiers_shoes", ArmorItem.Type.BOOTS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> ROBOT_HAT = registerVanityArmor("robot_hat", "vanity_armor/robot_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> FAMILIAR_WIG = registerVanityArmor("familiar_wig", "vanity_armor/familiar_wig", ArmorItem.Type.HELMET, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> FAMILIAR_SHIRT = registerVanityArmor("familiar_shirt", "vanity_armor/familiar_shirt", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> FAMILIAR_PANTS = registerVanityArmor("familiar_pants", "vanity_armor/familiar_pants", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> FAMILIAR_SHOES = registerVanityArmor("familiar_shoes", "vanity_armor/familiar_shoes", ArmorItem.Type.BOOTS, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> FAMILIAR_WIG = registerVanityArmor("familiar_wig", "vanity_armor/familiar_set", ArmorItem.Type.HELMET, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> FAMILIAR_SHIRT = registerVanityArmor("familiar_shirt", "vanity_armor/familiar_set", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> FAMILIAR_PANTS = registerVanityArmor("familiar_pants", "vanity_armor/familiar_set", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> FAMILIAR_SHOES = registerVanityArmor("familiar_shoes", "vanity_armor/familiar_set", ArmorItem.Type.BOOTS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> MIME_MASK = registerVanityArmor("mime_mask", "vanity_armor/mime_mask", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> THE_DOCTORS_SHIRT = registerVanityArmor("the_doctors_shirt", "vanity_armor/the_doctors_shirt", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> THE_DOCTORS_PANTS = registerVanityArmor("the_doctors_pants", "vanity_armor/the_doctors_pants", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);

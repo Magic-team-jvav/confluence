@@ -40,13 +40,16 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 public final class TickEvents {
     @SubscribeEvent
     public static void levelTick$Post(LevelTickEvent.Post event) {
+        if (event.getLevel().isClientSide) {
+            WeatherHandler.tick();
+            return;
+        }
         if (!(event.getLevel() instanceof ServerLevel serverLevel) || serverLevel.dimension() != OverworldUtils.dimension()) return;
         FallingStarItemEntity.summon(serverLevel);
         MeteoriteTracker.INSTANCE.tick(serverLevel);
         BossDelaySpawner.INSTANCE.tick(serverLevel);
 
         int dayTime = LibDateUtils.getDayTime(serverLevel);
-        WeatherHandler.tick();
         if (dayTime == LibDateUtils._06$00) {
             float factorX = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);

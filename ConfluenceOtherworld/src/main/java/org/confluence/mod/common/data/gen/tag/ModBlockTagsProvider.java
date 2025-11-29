@@ -1670,6 +1670,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DAYBLOOM.get(),
                 DEATHWEED.get()
         );
+        tag(BlockTags.CAMPFIRES).add(
+                LIFE_CAMPFIRE.get()
+        );
         WaystonesHelper.blockTags(this::tag);
     }
 }

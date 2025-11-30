@@ -10,6 +10,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCEffects;
@@ -3565,7 +3566,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.LUMINITE_INGOT.get(), "夜明锭");
         add(MaterialItems.HALLOWED_INGOT.get(), "神圣锭");
         add(MaterialItems.SHROOMITE_INGOT.get(), "蘑菇矿锭");
-        add(MaterialItems.CRUSHED_RAW_TUNGSTEN.get(), "粉碎钨矿石");
         add(MaterialItems.ECTOPLASM.get(), "灵气");
         add(MaterialItems.FORBIDDEN_FRAGMENT.get(), "禁忌碎片");
         add(MaterialItems.FROST_CORE.get(), "寒霜核");
@@ -5159,6 +5159,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         PonderHelper.addTranslateKeys(this::add, false);
         WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), false);
+        CreateHelper.addTranslateKeys((item, s) -> add(Util.makeDescriptionId("item", item.getId()), s), false);
     }
 
     private void addPotion(Item potion, String name, String tooltip) {

@@ -14,6 +14,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCEffects;
@@ -2706,6 +2707,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         PonderHelper.addTranslateKeys(this::add, true);
         WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), true);
+        CreateHelper.addTranslateKeys((item,s) -> add(Util.makeDescriptionId("item", item.getId()), s), true);
     }
 
     @Override

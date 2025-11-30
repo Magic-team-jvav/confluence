@@ -36,7 +36,6 @@ public class MaterialItems {
     public static final DeferredItem<Item> RAW_TUNGSTEN = register("raw_tungsten");
     public static final DeferredItem<Item> TUNGSTEN_INGOT = register("tungsten_ingot");
     public static final DeferredItem<Item> TUNGSTEN_NUGGET = register("tungsten_nugget");
-    public static final DeferredItem<Item> CRUSHED_RAW_TUNGSTEN = register("crushed_raw_tungsten");
     public static final DeferredItem<Item> RAW_PLATINUM = register("raw_platinum", ModRarity.BLUE);
     public static final DeferredItem<Item> PLATINUM_INGOT = register("platinum_ingot", ModRarity.BLUE);
     public static final DeferredItem<Item> PLATINUM_NUGGET = register("platinum_nugget", ModRarity.BLUE);

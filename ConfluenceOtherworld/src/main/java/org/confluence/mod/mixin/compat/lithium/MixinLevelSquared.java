@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.combat.lithium;
+package org.confluence.mod.mixin.compat.lithium;
 
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;

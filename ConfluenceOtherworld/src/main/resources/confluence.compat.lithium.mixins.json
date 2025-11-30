@@ -1,10 +1,10 @@
 {
     "required": true,
     "minVersion": "0.8",
-    "package": "org.confluence.mod.mixin.combat",
+    "package": "org.confluence.mod.mixin.compat",
     "compatibilityLevel": "JAVA_21",
     "refmap": "confluence.refmap.json",
-    "plugin": "org.confluence.mod.mixin.combat.lithium.LithiumIntegrationMixinPlugin",
+    "plugin": "org.confluence.mod.mixin.compat.lithium.LithiumIntegrationMixinPlugin",
     "mixins": [
         "lithium.MixinLevelSquared"
     ],

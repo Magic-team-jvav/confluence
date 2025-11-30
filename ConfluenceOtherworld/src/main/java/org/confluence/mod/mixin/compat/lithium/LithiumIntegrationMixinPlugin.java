@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.combat.lithium;
+package org.confluence.mod.mixin.compat.lithium;
 
 import net.neoforged.fml.loading.LoadingModList;
 import org.objectweb.asm.tree.ClassNode;

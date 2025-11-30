@@ -330,7 +330,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("key.confluence.hook", "使用钩爪");
         add("key.confluence.specular_detail", "视觉药水细节观测");
 
-        add("death.attack.dungeon_altar", "Steve差一步就用陨石指南针右击脚下方块揭开秘密，却被苦力怕打断，现在这枚发烫的指南针在你手中，快完成他未竟的操作");
+        add("death.attack.dungeon_altar", "Steve差一步就用陨石指南针右击凝灰岩揭开秘密");
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");

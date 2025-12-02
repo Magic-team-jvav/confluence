@@ -12,6 +12,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.client.renderer.entity.bestiary.GeoWormBestiaryEntryRenderer;
 import org.confluence.terraentity.entity.monster.BaseWorm;
 import org.confluence.terraentity.entity.monster.BaseWormPart;
+import org.confluence.terraentity.entity.monster.BoneSerpent;
 
 import java.util.Map;
 
@@ -34,6 +35,10 @@ public class RegisterCustomBestiaryEntryRendererEvent extends Event implements I
     public void registerBaseWorm(DeferredHolder<EntityType<?>, EntityType<BaseWorm<BaseWormPart>>> holder) {
         register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer<>(context, holder.getId()));
     }
+    public void registerBoneSerpent(DeferredHolder<EntityType<?>, EntityType<BoneSerpent<BaseWormPart>>> holder) {
+        register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer<>(context, holder.getId()));
+    }
+
 
     public static void postEvent(EntityRendererProvider.Context context) {
         ModLoader.postEvent(new RegisterCustomBestiaryEntryRendererEvent(context));

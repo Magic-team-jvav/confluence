@@ -280,7 +280,7 @@ public class DecorativeBlocks {
     public static final DeferredBlock<ChainBlock> BONE_CHAIN = copyBlockRegister("bone_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
 
 
-    public static final DeferredBlock<SoulGlassBlock> SOUL_GALSS = registerWithItem("soul_glass", () -> new SoulGlassBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
+    public static final DeferredBlock<SoulGlassBlock> SOUL_GLASS = registerWithItem("soul_glass", () -> new SoulGlassBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
 
     // 圣物
     public static final DeferredBlock<RelicBlock> KING_SLIME_RELIC = registerRelic("king_slime_relic");

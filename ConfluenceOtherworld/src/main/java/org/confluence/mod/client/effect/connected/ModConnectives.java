@@ -53,6 +53,8 @@ public final class ModConnectives {
         registerWeighted(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MAGENTA_PURE_GLASS), 1, 5);
         registerWeighted(DecorativeBlocks.PINK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PINK_PURE_GLASS), 1, 5);
         registerWeighted(DecorativeBlocks.PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PURE_GLASS), 1, 5);
+
+        register(DecorativeBlocks.SOUL_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.SOUL_GLASS));
     }
 
     /**

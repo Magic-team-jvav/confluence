@@ -27,10 +27,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -84,6 +81,15 @@ public final class PlayerUtils {
 
     public static void syncMana2Client(ServerPlayer player) {
         syncMana2Client(player, ManaStorage.of(player));
+    }
+
+    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
+        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
+        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
+    }
+
+    public static void syncSoul2Client(ServerPlayer player) {
+        syncSoul2Client(player, SoulStorage.of(player));
     }
 
     public static void regenerateMana(ServerPlayer player) {

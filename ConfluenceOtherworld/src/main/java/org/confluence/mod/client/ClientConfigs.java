@@ -10,10 +10,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
-import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
-import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
-import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
+import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
@@ -36,6 +33,9 @@ public final class ClientConfigs {
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
     public static int manaOffsetX = 0;
     public static int manaOffsetY = 0;
+    public static TerraStyleSoulHud.Soul soulStyle = TerraStyleSoulHud.Soul.OVERLAY;
+    public static int soulOffsetX = 0;
+    public static int soulOffsetY = 0;
     public static boolean terraStyleArmor = true;
     public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
     public static boolean leftEffectIcon = true;
@@ -61,6 +61,9 @@ public final class ClientConfigs {
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
     private static IntValue MANA_OFFSET_X;
     private static IntValue MANA_OFFSET_Y;
+    private static EnumValue<TerraStyleSoulHud.Soul> SOUL_STYLE;
+    private static IntValue SOUL_OFFSET_X;
+    private static IntValue SOUL_OFFSET_Y;
     private static BooleanValue TERRA_STYLE_ARMOR;
     private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
@@ -86,6 +89,9 @@ public final class ClientConfigs {
         manaStyle = MANA_STYLE.get();
         manaOffsetX = MANA_OFFSET_X.get();
         manaOffsetY = MANA_OFFSET_Y.get();
+        soulStyle = SOUL_STYLE.get();
+        soulOffsetX = SOUL_OFFSET_X.get();
+        soulOffsetY = SOUL_OFFSET_Y.get();
         terraStyleArmor = TERRA_STYLE_ARMOR.get();
         armorStyle = ARMOR_STYLE.get();
         terraStyleFood = TERRA_STYLE_FOOD.get();
@@ -128,6 +134,13 @@ public final class ClientConfigs {
                 MANA_STYLE = BUILDER.defineEnum("manaStyle", TerraStyleManaHud.Mana.OVERLAY);
                 MANA_OFFSET_X = BUILDER.defineInRange("manaOffsetX", 0, -256, 256);
                 MANA_OFFSET_Y = BUILDER.defineInRange("manaOffsetY", 0, -256, 256);
+                BUILDER.pop();
+            }
+            {
+                BUILDER.push("Soul");
+                SOUL_STYLE = BUILDER.defineEnum("soulStyle", TerraStyleSoulHud.Soul.OVERLAY);
+                SOUL_OFFSET_X = BUILDER.defineInRange("soulOffsetX", 0, -256, 256);
+                SOUL_OFFSET_Y = BUILDER.defineInRange("soulOffsetY", 0, -256, 256);
                 BUILDER.pop();
             }
             {

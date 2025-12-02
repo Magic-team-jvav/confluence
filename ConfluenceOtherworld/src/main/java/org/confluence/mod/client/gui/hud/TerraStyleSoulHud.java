@@ -21,10 +21,10 @@ import static org.confluence.mod.util.ClientUtils.*;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class TerraStyleManaHud implements LayeredDraw.Layer {
-    private static final int[] MANA = new int[]{0x5a82e2, 0xa248d7};
-    private static final int[] MANA_LOW = new int[]{0x5d11ba, 0xac1a91};
-    private static final int[] MANA_HIGH = new int[]{0x90aff8, 0xff94bd};
+public class TerraStyleSoulHud implements LayeredDraw.Layer {
+    private static final int[] SOUL = new int[]{0xa7d0e9};
+    private static final int[] SOUL_LOW = new int[]{0x74a5c2};
+    private static final int[] SOUL_HIGH = new int[]{0xfefff9};
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -33,17 +33,16 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
         LibClientUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
-        ClientConfigs.manaStyle.render(guiGraphics, minecraft);
+        ClientConfigs.soulStyle.render(guiGraphics, minecraft);
 
         minecraft.getProfiler().pop();
     }
 
-    public enum Mana implements TranslatableEnum {
+    public enum Soul implements TranslatableEnum {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                if (minecraft.player != null && ClientPacketHandler.isFallenSoulCoreActive()) return;
-                int widthMana = guiGraphics.guiWidth() - 21 + ClientConfigs.manaOffsetX;
+                /*int widthMana = guiGraphics.guiWidth() - 21 + ClientConfigs.manaOffsetX;
                 int heightMana = 4 + ClientConfigs.manaOffsetY;
                 float currentMana = ClientPacketHandler.getCurrentMana();
                 int maxManaCount = ClientPacketHandler.getMaxMana() / 20;
@@ -62,20 +61,20 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
                         guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 18, 34, 0, 0, 13, 16);
                         guiGraphics.pose().popPose();
                     }
-                }
+                }*/
             }
         },
         OVERLAY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                if (minecraft.player != null && ClientPacketHandler.isFallenSoulCoreActive()) return;
-                float currentMana = ClientPacketHandler.getCurrentMana() / 10.0F;
-                float maxMana = ClientPacketHandler.getMaxMana() / 10.0F;
-                int widthMana = guiGraphics.guiWidth() / 2 + 10 + ClientConfigs.manaOffsetX;
-                int heightMana = guiGraphics.guiHeight() - minecraft.gui.rightHeight + ClientConfigs.manaOffsetY;
+                if (minecraft.player != null && !ClientPacketHandler.isFallenSoulCoreActive()) return;
+                float currentSoul = ClientPacketHandler.getCurrentSoul() / 5.0F;
+                float maxSoul = ClientPacketHandler.getMaxSoul() / 5.0F;
+                int widthSoul = guiGraphics.guiWidth() / 2 + 10 + ClientConfigs.soulOffsetX;
+                int heightSoul = guiGraphics.guiHeight() - minecraft.gui.rightHeight + ClientConfigs.soulOffsetY;
                 minecraft.gui.rightHeight += 10;
-                RandomSource random = RandomSource.create(1919810);
-                colorDraw(guiGraphics, minecraft, random, ClientUtils.OVERLAY_TEXTURE, MANA, MANA_HIGH, MANA_LOW, maxMana, currentMana, widthMana, heightMana, ClientUtils.OVERLAY_SIZE, 10, false);
+                RandomSource random = RandomSource.create(1234329);
+                colorDraw(guiGraphics, minecraft, random, ClientUtils.OVERLAY_TEXTURE, SOUL, SOUL_HIGH, SOUL_LOW, maxSoul, currentSoul, widthSoul, heightSoul, ClientUtils.OVERLAY_SIZE, 60, false);
             }
         };
 
@@ -83,7 +82,7 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
 
         @Override
         public Component getTranslatedName() {
-            return Component.translatable("confluence.configuration.manaStyle." + name().toLowerCase(Locale.ROOT));
+            return Component.translatable("confluence.configuration.soulStyle." + name().toLowerCase(Locale.ROOT));
         }
     }
 }

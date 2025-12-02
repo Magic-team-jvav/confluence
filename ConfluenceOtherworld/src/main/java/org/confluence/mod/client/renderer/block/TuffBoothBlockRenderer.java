@@ -14,7 +14,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.HitResult;
@@ -85,11 +87,14 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
     @Override
     public void render(TuffBoothBlock.TuffBoothBlockEntity boothEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
+        Player player = Minecraft.getInstance().player;
+
         int posX = boothEntity.getBlockPos().getX();
         int posY = boothEntity.getBlockPos().getY();
         int posZ = boothEntity.getBlockPos().getZ();
 
         Minecraft mc = Minecraft.getInstance();
+        boolean showUI = !mc.options.hideGui;
         Vec3 exactHitLocation = null;
         if (mc.hitResult != null && mc.hitResult.getType() == HitResult.Type.BLOCK) {
             net.minecraft.world.phys.BlockHitResult blockHitResult = (net.minecraft.world.phys.BlockHitResult) mc.hitResult;
@@ -107,7 +112,7 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
         float g = ((lineColor >> 8) & 0xFF) / 255F;
         float b = (lineColor & 0xFF) / 255F;
 
-        if (exactHitLocation != null) {
+        if (showUI && (exactHitLocation != null) && !player.isSpectator()) {
             if (exactHitLocation.y > 0.5) {
                 poseStack.pushPose();
                 LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), 0.1865, 0.499, 0.1865, 0.8135, 0.8135, 0.8135, r, g, b, a);
@@ -134,13 +139,15 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
                 renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), 0.1865, 0.1885, 0.1865, 0.251, 0.3135, 0.251, r, g, b, a, r, g, b, false);
                 poseStack.popPose();
             }
-            poseStack.pushPose();
-            poseStack.translate(0.5, 0, 0.5);
-            poseStack.mulPose(Axis.YP.rotation((float) (Math.PI / 4)));
-            LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), -0.5625, 0.5625, -0.125, 0.5625, 0.8125, 0.125, 0, 0, 0, 0.5F);
-            poseStack.mulPose(Axis.YP.rotation((float) (Math.PI / 2)));
-            LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), -0.5625, 0.5625, -0.125, 0.5625, 0.8125, 0.125, 0, 0, 0, 0.5F);
-            poseStack.popPose();
+            if (player.getAbilities().mayBuild) {
+                poseStack.pushPose();
+                poseStack.translate(0.5, 0, 0.5);
+                poseStack.mulPose(Axis.YP.rotation((float) (Math.PI / 4)));
+                LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), -0.5625, 0.5625, -0.125, 0.5625, 0.8125, 0.125, 0, 0, 0, 0.5F);
+                poseStack.mulPose(Axis.YP.rotation((float) (Math.PI / 2)));
+                LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), -0.5625, 0.5625, -0.125, 0.5625, 0.8125, 0.125, 0, 0, 0, 0.5F);
+                poseStack.popPose();
+            }
         }
 
         float scale = 1;
@@ -171,8 +178,8 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
         poseStack.scale(scale, scale, scale);
 
         ItemStack handItems = null;
-        if (Minecraft.getInstance().player != null) {
-            handItems = Minecraft.getInstance().player.getItemInHand(InteractionHand.MAIN_HAND);
+        if (player != null) {
+            handItems = player.getItemInHand(InteractionHand.MAIN_HAND);
         }
 
         if ((handItems != null) && (!handItems.isEmpty()) && (exactHitLocation != null) && (exactHitLocation.y > 0.5)) {
@@ -209,7 +216,7 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
                 Font font = minecraft.font;
                 Component text = itemStack.getDisplayName();
                 String plainText = text.getString();
-                String cleanText = plainText.replaceAll("^\\[|\\]$", "");
+                String cleanText = plainText.replaceAll("^\\[|]$", "");
                 Component cleanComponent = Component.literal(cleanText).withStyle(text.getStyle().withColor((TextColor) null));
                 int textColor = Objects.requireNonNull(ModRarity.getRarity(itemStack)).color();
 

@@ -218,7 +218,16 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
                 String plainText = text.getString();
                 String cleanText = plainText.replaceAll("^\\[|]$", "");
                 Component cleanComponent = Component.literal(cleanText).withStyle(text.getStyle().withColor((TextColor) null));
-                int textColor = Objects.requireNonNull(ModRarity.getRarity(itemStack)).color();
+                Component component = Component.literal(cleanText).withStyle(text.getStyle());
+                ModRarity rarity = ModRarity.getRarity(itemStack);
+                int textColor;
+                boolean useTextColor = true;
+                if (rarity != null) {
+                    textColor = rarity.color();
+                } else {
+                    textColor = 0xFFFFFF;
+                    useTextColor = false;
+                }
 
                 int textWidth = font.width(cleanComponent);
                 float xOffset = -textWidth / 2.0F;
@@ -240,7 +249,7 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
                         .setColor(red, green, blue, alpha);
 
                 font.drawInBatch(
-                        cleanComponent,
+                        useTextColor ? cleanComponent : component,
                         xOffset,
                         0,
                         textColor,

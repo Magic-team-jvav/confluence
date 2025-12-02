@@ -2,13 +2,16 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.dispenser.BoatDispenseItemBehavior;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.item.common.SpongeItem;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,5 +66,16 @@ public class DispenserRegistration {
         DispenserBlock.registerBehavior(ToolItems.HONEY_ABSORBANT_SPONGE.asItem(), spongeAbsorbLiquid);
         DispenserBlock.registerBehavior(ToolItems.LAVA_ABSORBANT_SPONGE.asItem(), spongeAbsorbLiquid);
         DispenserBlock.registerBehavior(ToolItems.ULTRA_ABSORBANT_SPONGE.asItem(), spongeAbsorbLiquid);
+
+        BoatItems.BOAT_ITEMS.getEntries().stream()
+                .map(DeferredHolder::get)
+                .forEach(boatItem ->
+                        DispenserBlock.registerBehavior(boatItem, new BoatDispenseItemBehavior(((BoatItem) boatItem).type))
+                );
+        BoatItems.CHEST_BOAT_ITEMS.getEntries().stream()
+                .map(DeferredHolder::get)
+                .forEach(chestBoatItem ->
+                        DispenserBlock.registerBehavior(chestBoatItem, new BoatDispenseItemBehavior(((BoatItem) chestBoatItem).type, true))
+                );
     }
 }

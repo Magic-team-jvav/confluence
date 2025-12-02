@@ -1,6 +1,5 @@
 package org.confluence.mod.common.event;
 
-import net.blay09.mods.waystones.block.entity.ModBlockEntities;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -158,6 +157,7 @@ public final class ModEvents {
             );
             GlobalCloakData.INSTANCE.initialize();
             ModLoader.postEvent(new RegisterEvilMaterialReplacesEvent());
+            DispenserRegistration.boostrap();
         });
     }
 

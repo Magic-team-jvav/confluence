@@ -77,5 +77,8 @@ public class DispenserRegistration {
                 .forEach(chestBoatItem ->
                         DispenserBlock.registerBehavior(chestBoatItem, new BoatDispenseItemBehavior(((BoatItem) chestBoatItem).type, true))
                 );
+        ArrowItems.ITEMS.getEntries().stream()
+                .map(DeferredHolder::get)
+                .forEach(DispenserBlock::registerProjectileBehavior);
     }
 }

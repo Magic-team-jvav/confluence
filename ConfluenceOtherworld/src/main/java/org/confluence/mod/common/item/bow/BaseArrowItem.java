@@ -1,9 +1,12 @@
 package org.confluence.mod.common.item.bow;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -53,6 +56,15 @@ public class BaseArrowItem extends ArrowItem {
             return arrow;
         }
         return super.createArrow(level, stack, shooter, weapon);
+    }
+
+    @Override
+    public Projectile asProjectile(Level level, Position pos, ItemStack stack, Direction direction) {
+        if (stack.getItem() instanceof BaseArrowItem arrowItem && arrowItem.modifier != null) {
+            //arrow.setEffectsFromItem(stack); -- 暂时简化代码，需要时再拆回来
+            return new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), pos.x(), pos.y(), pos.z(), level, stack.copyWithCount(1), null, this);
+        }
+        return super.asProjectile(level, pos, stack, direction);
     }
 
     @Override

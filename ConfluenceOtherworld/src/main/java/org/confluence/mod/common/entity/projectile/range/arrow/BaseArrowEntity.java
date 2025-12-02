@@ -111,6 +111,22 @@ public class BaseArrowEntity extends AbstractArrow {
         }
     }
 
+    /**
+     * 自定义箭矢
+     *
+     * @param pickupItemStack 捡起的物品
+     * @param firedFromWeapon 发射的武器
+     * @param arrow           预定义的箭的类型
+     */
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, double x, double y, double z, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseArrowItem arrow) {
+        super(pEntityType, x, y, z, level, pickupItemStack, firedFromWeapon);
+        this.arrowItem = arrow;
+        this.baseArrowFactory = arrow == null ? null : arrow.getModifier();
+        if (baseArrowFactory == null)// 这时候应该为实体的木箭转化 -- 保留注释
+            this.modify = new Builder();
+        else
+            this.modify = baseArrowFactory.attr.get();
+    }
 
     public void modify(Consumer<Builder> consumer) {
         consumer.accept(modify);

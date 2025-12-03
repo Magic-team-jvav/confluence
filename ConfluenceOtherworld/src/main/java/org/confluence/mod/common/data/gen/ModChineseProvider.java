@@ -173,6 +173,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "放在物品栏中时能防止你伤害小动物");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "放在物品栏中时能防止你意外破坏环境");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "右键点击停用/激活其效果");
+        add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -4016,6 +4017,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.PEDDLERS_SATCHEL.get(), "商贩背包");
         add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
         add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
+        add(ConsumableItems.FALLEN_SOUL_CORE.get(), "堕魂星核");
 
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
@@ -4072,6 +4074,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.LIVING_MAHOGANY_WAND.get(), "生命红木魔棒");
         add(ModItems.RICH_MAHOGANY_LEAF_WAND.get(), "红木树叶魔棒");
         add(ModItems.HIVE_WAND.get(), "蜂巢魔棒");
+
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");
@@ -4178,6 +4181,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.get(), "暗影之魂瓶");
         add(FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.get(), "虚空之魂瓶");
         add(FunctionalBlocks.TUFF_BOOTH.get(), "凝灰岩展台");
+        add(DecorativeBlocks.SOUL_GLASS.get(), "灵魂玻璃");
         add(ModBlocks.AETHERIUM_CAULDRON.get(), "装有微光的炼药锅");
         add(ModBlocks.HONEY_CAULDRON.get(), "装有蜂蜜的炼药锅");
 

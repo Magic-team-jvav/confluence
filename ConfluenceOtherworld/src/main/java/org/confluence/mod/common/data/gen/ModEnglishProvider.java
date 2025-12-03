@@ -183,6 +183,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "Prevents you from hurting critters while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "Prevents you from accidentally destroying the environment while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "Right click to deactivate/reactivate effects");
+        add("tooltip.item.confluence.fallen_soul_core.0", "Channel spirits through the celestial stars; right-click to switch magic types");
 
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
@@ -547,7 +548,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_bug_net.0", "Used to catch critters");
         add("tooltip.item.confluence.golden_bug_net.1", "Can catch lava critters too!");
         add("tooltip.item.confluence.dev_bug_net.0", "Can catch most creatures!");
-
         // configuration
         add("confluence.configuration.Compatibility", "Compatibility Mechanism");
         add("confluence.configuration.Compatibility.button", "Settings for compatibility with other mods");

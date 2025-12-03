@@ -12,8 +12,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +20,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
@@ -124,7 +123,7 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
                 double impactSpeed = projectedVelocity.length() * 30;
 
                 victim.hurt(damageSource, Mth.floor(baseAttackDamage * (impactSpeed * 6 / 175 + 0.1F)));
-                if (!(victim instanceof EnderDragon) && !(victim instanceof WitherBoss)) {
+                if (!victim.getType().is(Tags.EntityTypes.BOSSES)) {
                     double kb = impactSpeed * baseKnockback * 4 / 105;
                     VectorUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
                 }

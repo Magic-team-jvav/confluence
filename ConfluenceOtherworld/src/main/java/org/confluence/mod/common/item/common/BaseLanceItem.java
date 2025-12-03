@@ -12,6 +12,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -122,8 +124,10 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
                 double impactSpeed = projectedVelocity.length() * 30;
 
                 victim.hurt(damageSource, Mth.floor(baseAttackDamage * (impactSpeed * 6 / 175 + 0.1F)));
-                double kb = impactSpeed * baseKnockback * 4 / 105;
-                VectorUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
+                if (!(victim instanceof EnderDragon) && !(victim instanceof WitherBoss)) {
+                    double kb = impactSpeed * baseKnockback * 4 / 105;
+                    VectorUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
+                }
                 EnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
             }
         }

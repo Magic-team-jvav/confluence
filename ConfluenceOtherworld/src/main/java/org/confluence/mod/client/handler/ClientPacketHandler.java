@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -105,6 +106,10 @@ public final class ClientPacketHandler {
         maxSoul = packet.maxSoul();
         currentSoul = packet.currentSoul();
         fallenSoulCoreActive = packet.fallenSoulCoreActive();
+        EverBeneficial beneficial = EverBeneficial.of(player);
+        beneficial.setFallenSoulCore(fallenSoulCoreActive);
+        PlayerSpecialData data = PlayerSpecialData.of(player);
+        data.setFallenSoulCoreActive(beneficial.getFallenSoulCore());
     }
 
     public static void handleFishingPower(FishingPowerInfoPacketS2C packet) {

@@ -130,6 +130,10 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
 
     public void changeFallenSoulCore() {this.fallenSoulCore = !fallenSoulCore;}
 
+    public void setFallenSoulCore(boolean fallenSoulCore) {
+        this.fallenSoulCore = fallenSoulCore;
+    }
+
     public boolean getFallenSoulCore() {return fallenSoulCore;}
 
     @Override

@@ -77,6 +77,7 @@ public final class PlayerEvents {
         if (CommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
+        PlayerUtils.syncSoul2Client(player);
     }
 
     @SubscribeEvent

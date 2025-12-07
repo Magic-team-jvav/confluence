@@ -16,7 +16,7 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 
 public class SpikeBlock extends Block {
-    public static final VoxelShape SHAPE = box(4.0, 4.0, 4.0, 12.0, 12.0, 12.0);
+    public static final VoxelShape SHAPE = box(1, 1, 1, 15.0, 15.0, 15.0);
     private final float damage;
 
     public SpikeBlock(Properties properties, float damage) {

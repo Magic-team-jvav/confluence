@@ -453,7 +453,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.PLATINUM_NUGGET.get(),
                 MaterialItems.METEORITE_NUGGET.get(),
                 MaterialItems.DEMONITE_NUGGET.get(),
-                MaterialItems.CRIMTANE_NUGGET.get()
+                MaterialItems.CRIMTANE_NUGGET.get(),
+                MaterialItems.HELLSTONE_NUGGET.get()
         );
 
         tag(Tags.Items.SEEDS).add(
@@ -709,6 +710,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.NUGGETS_METEORITE).add(MaterialItems.METEORITE_NUGGET.get());
         tag(ModTags.Items.NUGGETS_DEMONITE).add(MaterialItems.DEMONITE_NUGGET.get());
         tag(ModTags.Items.NUGGETS_CRIMTANE).add(MaterialItems.CRIMTANE_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_HELLSTONE).add(MaterialItems.HELLSTONE_NUGGET.get());
         {
             copy(ModTags.Blocks.STORAGE_BLOCKS_TIN, ModTags.Items.STORAGE_BLOCKS_TIN);
             copy(ModTags.Blocks.STORAGE_BLOCKS_LEAD, ModTags.Items.STORAGE_BLOCKS_LEAD);

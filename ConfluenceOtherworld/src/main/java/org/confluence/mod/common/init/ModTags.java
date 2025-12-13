@@ -294,6 +294,7 @@ public final class ModTags {
         public static final TagKey<Item> NUGGETS_METEORITE = c("nuggets/meteorite");
         public static final TagKey<Item> NUGGETS_DEMONITE = c("nuggets/demonite");
         public static final TagKey<Item> NUGGETS_CRIMTANE = c("nuggets/crimtane");
+        public static final TagKey<Item> NUGGETS_HELLSTONE = c("nuggets/hellstone");
 
         public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
         public static final TagKey<Item> RAW_MATERIALS_LEAD = c("raw_materials/lead");

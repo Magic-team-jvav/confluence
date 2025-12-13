@@ -50,6 +50,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> CRIMTANE_NUGGET = register("crimtane_nugget", ModRarity.BLUE);
     public static final DeferredItem<Item> RAW_HELLSTONE = ITEMS.registerSimpleItem("raw_hellstone", new Item.Properties().fireResistant());
     public static final DeferredItem<Item> HELLSTONE_INGOT = ITEMS.registerSimpleItem("hellstone_ingot", new Item.Properties().fireResistant());
+    public static final DeferredItem<Item> HELLSTONE_NUGGET = ITEMS.registerSimpleItem("hellstone_nugget", new Item.Properties().fireResistant());
 
     public static final DeferredItem<Item> RAW_COBALT = register("raw_cobalt", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> COBALT_INGOT = register("cobalt_ingot", ModRarity.LIGHT_RED);

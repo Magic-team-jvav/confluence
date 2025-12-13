@@ -3549,6 +3549,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.CRIMTANE_NUGGET.get(), "猩红矿粒");
         add(MaterialItems.RAW_HELLSTONE.get(), "粗狱石矿");
         add(MaterialItems.HELLSTONE_INGOT.get(), "狱石矿锭");
+        add(MaterialItems.HELLSTONE_NUGGET.get(), "狱石矿粒");
         add(MaterialItems.RAW_COBALT.get(), "粗钴");
         add(MaterialItems.COBALT_INGOT.get(), "钴锭");
         add(MaterialItems.RAW_PALLADIUM.get(), "粗钯金");

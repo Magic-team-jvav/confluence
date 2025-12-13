@@ -21,6 +21,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.paint.PaintItem;
+import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.*;

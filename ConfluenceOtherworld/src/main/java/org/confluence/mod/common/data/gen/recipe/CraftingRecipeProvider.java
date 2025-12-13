@@ -109,6 +109,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(output, MaterialItems.METEORITE_NUGGET, ModTags.Items.NUGGETS_METEORITE, MaterialItems.METEORITE_INGOT, ModTags.Items.INGOTS_METEORITE);
         compressAndDecompressNine(output, MaterialItems.DEMONITE_NUGGET, ModTags.Items.NUGGETS_DEMONITE, MaterialItems.DEMONITE_INGOT, ModTags.Items.INGOTS_DEMONITE);
         compressAndDecompressNine(output, MaterialItems.CRIMTANE_NUGGET, ModTags.Items.NUGGETS_CRIMTANE, MaterialItems.CRIMTANE_INGOT, ModTags.Items.INGOTS_CRIMTANE);
+        compressAndDecompressNine(output, MaterialItems.HELLSTONE_NUGGET, ModTags.Items.NUGGETS_HELLSTONE, MaterialItems.HELLSTONE_INGOT, ModTags.Items.INGOTS_HELLSTONE);
         // 铅砧
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(ModTags.Items.STORAGE_BLOCKS_LEAD),

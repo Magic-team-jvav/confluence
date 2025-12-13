@@ -28,7 +28,7 @@
 	branch = neoforge-dev/1.21.1
 [submodule "TerraEntity"]
 	path = TerraEntity
-	url = https://github.com/EDGtheXu/TerraEntity
+	url = https://github.com/Magic-team-jvav/TerraEntity
 	branch = neoforge-dev/1.21.1
 [submodule "EntityTrackerHUD"]
 	path = EntityTrackerHUD

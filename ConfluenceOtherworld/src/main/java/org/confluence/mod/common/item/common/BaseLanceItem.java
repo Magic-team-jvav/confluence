@@ -50,7 +50,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
-
+/** 通用骑枪类。需要注意的是baseAttackDamage*0.1才是基础伤害，原算法是有问题的，后面可能会改动。 */
 public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateItem, GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackInterval;
@@ -121,11 +121,11 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
                 DamageSource damageSource = ModDamageTypes.of(level, DamageTypes.STING, owner);
 
                 Vec3 attackerVelocity = new Vec3(IServerPlayer.of(owner).confluence$getMovementSpeed()); // 使用者速度
-                Vec3 relativeVelocity = attackerVelocity.subtract(victim.getDeltaMovement()); // 计算相对速度(实际上是用的加速度)
+                Vec3 relativeVelocity = attackerVelocity.subtract(victim.getPosition(1).subtract(victim.getPosition(0))); // 计算相对速度，不再使用加速度
                 Vec3 projectedVelocity = VectorUtils.vectorProjection(relativeVelocity, lanceDirection); // 计算投影速度(投影到剑的方向上)
                 double impactSpeed = projectedVelocity.length() * 30; // 获得向量长度，第一次乘系数
 
-                victim.hurt(damageSource, Mth.floor(baseAttackDamage * (impactSpeed * 6 / 175 + 0.1F))); // 第二次乘系数，+0.1f估计是防0伤的
+                victim.hurt(damageSource, Mth.floor(baseAttackDamage * (impactSpeed * 6 / 175 + 0.1F))); // 第二次乘系数，+0.1f在乘baseAttackDamage后得到的是基础数值(其实这里的计算逻辑有点问题)
 
                 /* 不击退BOSS类生物 */
                 if (!victim.getType().is(Tags.EntityTypes.BOSSES)) {

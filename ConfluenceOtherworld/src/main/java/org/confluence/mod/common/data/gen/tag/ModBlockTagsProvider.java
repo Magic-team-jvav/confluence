@@ -445,7 +445,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MOISTENED_EBONSAND_BLOCK.get(),
                 ASH_PATH.get(),
                 JUNGLE_PATH.get(),
-                MUSHROOM_PATH.get()
+                MUSHROOM_PATH.get(),
+                POO.get(),
+                POO_BLOCK.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);

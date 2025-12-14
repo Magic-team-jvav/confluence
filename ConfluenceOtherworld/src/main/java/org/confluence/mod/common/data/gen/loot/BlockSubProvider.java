@@ -323,6 +323,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(AETHERIUM_CAULDRON.get());
         dropSelf(CURSED_FLAME_BLOCK.get());
         dropSelf(POO.get());
+        dropSelf(POO_BLOCK.get());
 
         dropSelf(ROPE.get());
         dropSelf(SILK_ROPE.get());

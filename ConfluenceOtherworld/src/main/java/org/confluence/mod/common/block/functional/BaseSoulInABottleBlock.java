@@ -32,8 +32,8 @@ public class BaseSoulInABottleBlock extends LanternBlock implements EntityBlock 
             box(5, 10, 5, 11, 12, 11)
     );
     private static final VoxelShape HANGING_SHAPE = Shapes.or(
-            box(4, 4.03125, 4, 12, 14.03125, 12),
-            box(5, 14, 5, 11, 16, 11)
+            box(4, 1.03125, 4, 12, 11.03125, 12),
+            box(5, 11, 5, 11, 13, 11)
     );
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {

@@ -3422,7 +3422,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.EATER_OF_WORLDS_RELIC.get(), "世界吞噬怪圣物");
         add(DecorativeBlocks.SKELETRON_RELIC.get(), "骷髅王圣物");
 
-
+        add(DecorativeBlocks.POO_BLOCK.get(), "臭臭块");
         add(ModBlocks.POO.get(), "臭臭");
         add(ModBlocks.WATERLEAF.get(), "水叶草");
         add(ModBlocks.FIREBLOSSOM.get(), "火焰花");

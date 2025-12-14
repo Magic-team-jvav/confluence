@@ -18,7 +18,7 @@ import java.util.function.BiConsumer;
 public class CreateHelper {
     public static final String MODID = "create";
     public static final boolean IS_LOADED = ModList.get().isLoaded(MODID);
-    private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
     public static final DeferredItem<Item> CRUSHED_RAW_TUNGSTEN = ITEMS.register("crushed_raw_tungsten", () -> new Item(new Item.Properties()));
     public static void register(IEventBus eventBus) {
         if (IS_LOADED) {

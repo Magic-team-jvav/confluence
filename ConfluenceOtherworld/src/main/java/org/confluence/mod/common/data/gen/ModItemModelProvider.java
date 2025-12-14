@@ -144,6 +144,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
 
+        customModels.add(createDir(CreateHelper.ITEMS,"materials/"));
+
         genModels(customModels, "item/generated");
 
         // 手持物品

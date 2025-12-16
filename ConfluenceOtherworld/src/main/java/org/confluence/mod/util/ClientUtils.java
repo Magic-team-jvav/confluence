@@ -505,7 +505,7 @@ public final class ClientUtils {
             }
             float scaledMin = min * finalScale;
 
-            DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, cube, deathSpeed);
+            DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, cube, deathSpeed, scaledMin);
             part.texture = texture;
             float xOffset = ((minX + maxX) / 2) / 16;
 //            float yOffset = centerY + min / 2;
@@ -533,7 +533,6 @@ public final class ClientUtils {
             part.yOffset = transformedOffset.y - scaledMin / 2;
             part.zOffset = transformedOffset.z;
             part.modelPart = modelPart;
-            part.minSide = scaledMin;
             DeathAnimUtils.tellAddEntity(level, part);
         }
 //        System.out.println("--\n");

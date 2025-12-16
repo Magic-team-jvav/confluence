@@ -22,10 +22,7 @@ import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.cache.object.GeoCube;
-import software.bernie.geckolib.cache.object.GeoQuad;
-import software.bernie.geckolib.cache.object.GeoVertex;
+import software.bernie.geckolib.cache.object.*;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.List;
@@ -48,68 +45,86 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
         Object cube = entity.cube;
         EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(dying);
         // Geo生物
-        if(cube instanceof GeoCube geoCube && renderer instanceof GeoEntityRenderer geoRenderer && dying instanceof GeoAnimatable animatable){
-            // 把计算Y轴中心放到前面，如果cube有问题就提前返回
-            GeoQuad[] twoQuads = new GeoQuad[2];
-            for (GeoQuad quad : geoCube.quads()) {
-                if (quad == null) continue;
-                if (twoQuads[0] == null) {
-                    twoQuads[0] = quad;
-                } else {
-                    twoQuads[1] = quad;
-                    break;
+        if(renderer instanceof GeoEntityRenderer geoRenderer && dying instanceof GeoAnimatable animatable){
+            if (cube instanceof GeoCube geoCube) {
+                // 把计算Y轴中心放到前面，如果cube有问题就提前返回
+                GeoQuad[] twoQuads = new GeoQuad[2];
+                for (GeoQuad quad : geoCube.quads()) {
+                    if (quad == null) continue;
+                    if (twoQuads[0] == null) {
+                        twoQuads[0] = quad;
+                    } else {
+                        twoQuads[1] = quad;
+                        break;
+                    }
                 }
-            }
-            if (twoQuads[0] == null) {
-                return;
-            }
-            if (twoQuads[1] == null) {
-                twoQuads[1] = twoQuads[0];
-            }
-            float minY = Float.MAX_VALUE;
-            float maxY = -Float.MAX_VALUE;
-            for (GeoVertex vertex : twoQuads[0].vertices()) {
-                minY = Math.min(minY, vertex.position().y);
-                maxY = Math.max(maxY, vertex.position().y);
-            }
+                if (twoQuads[0] == null) {
+                    return;
+                }
+                if (twoQuads[1] == null) {
+                    twoQuads[1] = twoQuads[0];
+                }
+                float minY = Float.MAX_VALUE;
+                float maxY = -Float.MAX_VALUE;
+                for (GeoVertex vertex : twoQuads[0].vertices()) {
+                    minY = Math.min(minY, vertex.position().y);
+                    maxY = Math.max(maxY, vertex.position().y);
+                }
 
-            float centerY = (minY + maxY) / 2;
+                float centerY = (minY + maxY) / 2;
 
-            poseStack.pushPose();
+                poseStack.pushPose();
 
-            BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
-            geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0);
-            // GeoGeo的奇妙Y轴旋转
-            poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
-            poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
-            // GeoGeo的奇妙Y轴偏移
-            poseStack.translate(0, 0.01f, 0);
-            // 还原bone的各级旋转
-            List<Vector3f> rots = entity.boneRots;
-            List<Vector3f> pivots = entity.bonePivots;
-            for (int i = rots.size() - 1; i >= 0; i--) {
-                Vector3f boneRot = rots.get(i);
-                Vector3f bonePivot = pivots.get(i);
-                poseStack.translate(bonePivot.x, bonePivot.y, bonePivot.z);
-                poseStack.mulPose(Axis.ZP.rotation(boneRot.z));
-                poseStack.mulPose(Axis.YP.rotation(boneRot.y));
-                poseStack.mulPose(Axis.XP.rotation(boneRot.x));
-                poseStack.translate(-bonePivot.x, -bonePivot.y, -bonePivot.z);
+                BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
+                geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0);
+                // GeoGeo的奇妙Y轴旋转
+                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
+                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
+                // GeoGeo的奇妙Y轴偏移
+                poseStack.translate(0, 0.01f, 0);
+                // 还原bone的各级旋转
+                List<Vector3f> rots = entity.boneRots;
+                List<Vector3f> pivots = entity.bonePivots;
+                for (int i = rots.size() - 1; i >= 0; i--) {
+                    Vector3f boneRot = rots.get(i);
+                    Vector3f bonePivot = pivots.get(i);
+                    poseStack.translate(bonePivot.x, bonePivot.y, bonePivot.z);
+                    poseStack.mulPose(Axis.ZP.rotation(boneRot.z));
+                    poseStack.mulPose(Axis.YP.rotation(boneRot.y));
+                    poseStack.mulPose(Axis.XP.rotation(boneRot.x));
+                    poseStack.translate(-bonePivot.x, -bonePivot.y, -bonePivot.z);
+                }
+
+                // 模拟打飞的旋转
+                poseStack.translate(0, centerY, 0);
+                applyRandomRotation(entity, poseStack, partialTick);
+                poseStack.translate(0, -centerY, 0);
+
+                ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
+                RenderType renderType = geoRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
+                geoRenderer.renderCube(poseStack, geoCube,
+                    bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
+                    packedLight,
+                    OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)),
+                    geoRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
+                poseStack.popPose();
+            } else if (cube instanceof GeoBone geoBone) {
+                BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
+                geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0);
+                // GeoGeo的奇妙Y轴旋转
+//                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
+//                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
+                // GeoGeo的奇妙Y轴偏移
+//                poseStack.translate(0, 0.01f, 0);
+                applyRandomRotation(entity, poseStack, partialTick);
+                ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
+                RenderType renderType = geoRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
+                geoRenderer.renderRecursively(poseStack,dying,geoBone,renderType, bufferSource,
+                    bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
+                    false,partialTick,packedLight,
+                    OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)),
+                    geoRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
             }
-
-            // 模拟打飞的旋转
-            poseStack.translate(0, centerY, 0);
-            applyRandomRotation(entity, poseStack, partialTick);
-            poseStack.translate(0, -centerY, 0);
-
-            ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
-            RenderType renderType = geoRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
-            geoRenderer.renderCube(poseStack, geoCube,
-                bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
-                packedLight,
-                OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)),
-                geoRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
-            poseStack.popPose();
         }else if(cube instanceof ModelPart.Cube partCube && renderer instanceof LivingEntityRenderer livingRenderer && dying instanceof LivingEntity living){ // 原版生物
             LivingEntityRendererAccessor ra=(LivingEntityRendererAccessor) livingRenderer;
             boolean visible = ra.callIsBodyVisible(living);

@@ -12,6 +12,7 @@ import org.confluence.terraentity.api.entity.Boss;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class DeadBodyPartEntity extends Entity {
     public ModelPart modelPart;
     /** 目前如果非空则说明是盔甲 */
     public ResourceLocation texture;
+    protected final EntityDimensions dimensions;
 
     public DeadBodyPartEntity(EntityType<?> entityType, Level level){
         this(entityType, level, null, null, 0);
@@ -68,6 +70,31 @@ public class DeadBodyPartEntity extends Entity {
         if(stay != 2){
             rotZ = level.random.nextFloat() * speed * 2 - speed;
         }
+
+        // 根据cube大小调整碰撞箱大小
+        switch (cube) {
+            case GeoCube geoCube -> {
+                Vec3 size = geoCube.size();
+                float min = (float) Math.max(0.1, Math.min(Math.min(size.x, size.y), size.z) / 16);
+                this.dimensions = EntityDimensions.fixed(min, min);
+            }
+            case ModelPart.Cube ignored -> this.dimensions = EntityDimensions.fixed(minSide, minSide);
+            case GeoBone bone -> {
+                float finalMin = Float.POSITIVE_INFINITY;
+                for (GeoCube boneCube : bone.getCubes()) {
+                    Vec3 size = boneCube.size();
+                    float min = (float) Math.max(0.1, Math.min(Math.min(size.x, size.y), size.z) / 16);
+                    if (min <= 0.1) {
+                        finalMin = 0.1f;
+                        break;
+                    }
+                    finalMin = Math.min(finalMin, min);
+                }
+                this.dimensions = EntityDimensions.fixed(finalMin, finalMin);
+            }
+            case null, default -> this.dimensions = EntityDimensions.fixed(0.4f, 0.4f);
+        }
+//        still();
     }
 
     public void still(){
@@ -112,16 +139,7 @@ public class DeadBodyPartEntity extends Entity {
 
     @Override
     public EntityDimensions getDimensions(Pose pose){
-        // 根据cube大小调整碰撞箱大小
-        if(cube instanceof GeoCube geoCube){
-            Vec3 size = geoCube.size();
-            float min = (float) Math.max(0.1, Math.min(Math.min(size.x, size.y), size.z) / 16);
-            return EntityDimensions.fixed(min, min);
-        }else if(cube instanceof ModelPart.Cube){
-            return EntityDimensions.fixed(minSide, minSide);
-        }
-
-        return EntityDimensions.fixed(0.4f, 0.4f);
+        return this.dimensions;
     }
 
     @Override

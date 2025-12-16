@@ -88,6 +88,10 @@ public final class ClientUtils {
     private static final Set<ResourceLocation> failed = new HashSet<>();
     public static final int LEGACY_SIZE = 128;
     public static final int OVERLAY_SIZE = 128;
+    /** 以这个命名的bone就是专门的死亡模型 */
+    public static final String DEATH_BONE_NAME = "_death";
+    /** 以这个后缀命名的bone需要爆整个bone */
+    public static final String ENTIRE_BONE_SUFFIX = "_entire";
 
     public static void clearCache() {
         failed.clear();
@@ -251,11 +255,28 @@ public final class ClientUtils {
         return -1;
     }
 
+    /** 先序遍历，把树里的节点全部摊平到一个集合里面 */
     public static void flattenBone(Collection<GeoBone> collection, GeoBone parent) {
         collection.add(parent);
         for (GeoBone child : parent.getChildBones()) {
             flattenBone(collection, child);
         }
+    }
+
+    public static void filterDeathBone(Collection<GeoBone> collection) {
+        ArrayList<GeoBone> suffixed = new ArrayList<>();
+        for (GeoBone geoBone : collection) {
+            if (geoBone.getName().endsWith(ENTIRE_BONE_SUFFIX)) {
+                suffixed.add(geoBone);
+            }
+        }
+        ArrayList<GeoBone> toRemove = new ArrayList<>();
+        for (GeoBone geoBone : suffixed) {
+            for (GeoBone child : geoBone.getChildBones()) {
+                flattenBone(toRemove, child);
+            }
+        }
+        collection.removeAll(toRemove);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -283,15 +304,16 @@ public final class ClientUtils {
             poseStack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
             poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));
             Matrix4f pose = poseStack.last().pose();
-            Collection<GeoBone> bones = geoRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones();
+            Collection<GeoBone> bones = new ArrayList<>(geoRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones());
             // 如果bone名字是_death，说明这个bone是专门为尸体做的，只用这里面的模型
             for (GeoBone bone : bones) {
-                if ("_death".equals(bone.getName())) {
-                    bones = new ArrayList<>();
+                if (DEATH_BONE_NAME.equals(bone.getName())) {
+                    bones.clear();
                     flattenBone(bones, bone);
                     break;
                 }
             }
+            filterDeathBone(bones);
             skipBone:
             for (GeoBone bone : bones) {
                 if (bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;
@@ -308,35 +330,42 @@ public final class ClientUtils {
                     parent = parent.getParent();
                 }
                 boneOffset.div(16);
-                for (GeoCube cube : bone.getCubes()) {
-//                    GeoCube copyCube = DeathAnimUtils.duplicateGeoCube(cube);
-                    GeoCube copyCube = IGeoCube.of(cube).confluence$getCopy();
-                    if (copyCube == null) continue;
-
-                    DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, deathSpeed);
-
-                    float[] min = IGeoCube.of(copyCube).confluence$getMinCoords();
-                    float[] max = IGeoCube.of(copyCube).confluence$getMaxCoords();
-                    float xOffset = ((min[0] + max[0]) / 2) + boneOffset.x;
-                    float yOffset = min[1] + boneOffset.y;
-                    float zOffset = ((min[2] + max[2]) / 2) + boneOffset.z;
-                    part.boneRots = rots;
-                    ArrayList<Vector3f> bonePivots = new ArrayList<>();
-                    bonePivots.add(new Vector3f(bone.getPivotX(), bone.getPivotY(), bone.getPivotZ()).sub(new Vector3f(xOffset, yOffset, zOffset).mul(16)).div(16));
-                    parent = bone.getParent();
-                    while (parent != null) {
-                        bonePivots.add(new Vector3f(parent.getPivotX(), parent.getPivotY(), parent.getPivotZ()).sub(new Vector3f(xOffset, yOffset, zOffset).mul(16)).div(16));
-                        parent = parent.getParent();
-                    }
-
-                    part.bonePivots = bonePivots;
-                    part.boneOffset = boneOffset;
-
-                    Vector4f transformed = pose.transform(new Vector4f(xOffset, yOffset, zOffset, 0));
-
-                    part.setPos(entityPos.add(transformed.x, transformed.y, transformed.z));
+                if (bone.getName().endsWith(ENTIRE_BONE_SUFFIX)) {
+                    DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, bone, deathSpeed);
+                    part.setPos(entityPos);
                     part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.5 + 0.2)).multiply(1, 1.05f, 1));
                     DeathAnimUtils.tellAddEntity(level, part);
+                } else {
+                    for (GeoCube cube : bone.getCubes()) {
+//                    GeoCube copyCube = DeathAnimUtils.duplicateGeoCube(cube);
+                        GeoCube copyCube = IGeoCube.of(cube).confluence$getCopy();
+                        if (copyCube == null) continue;
+
+                        DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, deathSpeed);
+
+                        float[] min = IGeoCube.of(copyCube).confluence$getMinCoords();
+                        float[] max = IGeoCube.of(copyCube).confluence$getMaxCoords();
+                        float xOffset = ((min[0] + max[0]) / 2) + boneOffset.x;
+                        float yOffset = min[1] + boneOffset.y;
+                        float zOffset = ((min[2] + max[2]) / 2) + boneOffset.z;
+                        part.boneRots = rots;
+                        ArrayList<Vector3f> bonePivots = new ArrayList<>();
+                        bonePivots.add(new Vector3f(bone.getPivotX(), bone.getPivotY(), bone.getPivotZ()).sub(new Vector3f(xOffset, yOffset, zOffset).mul(16)).div(16));
+                        parent = bone.getParent();
+                        while (parent != null) {
+                            bonePivots.add(new Vector3f(parent.getPivotX(), parent.getPivotY(), parent.getPivotZ()).sub(new Vector3f(xOffset, yOffset, zOffset).mul(16)).div(16));
+                            parent = parent.getParent();
+                        }
+
+                        part.bonePivots = bonePivots;
+                        part.boneOffset = boneOffset;
+
+                        Vector4f transformed = pose.transform(new Vector4f(xOffset, yOffset, zOffset, 0));
+
+                        part.setPos(entityPos.add(transformed.x, transformed.y, transformed.z));
+                        part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.5 + 0.2)).multiply(1, 1.05f, 1));
+                        DeathAnimUtils.tellAddEntity(level, part);
+                    }
                 }
             }
         } else if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {

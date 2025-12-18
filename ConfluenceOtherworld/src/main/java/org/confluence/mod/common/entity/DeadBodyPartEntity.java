@@ -87,7 +87,6 @@ public class DeadBodyPartEntity extends Entity {
                 float min = (float) Math.max(0.1, Math.min(Math.min(size.x, size.y), size.z) / 16);
                 this.dimensions = EntityDimensions.fixed(min, min);
             }
-            case ModelPart.Cube ignored -> this.dimensions = EntityDimensions.fixed(minSide, minSide);
             case GeoBone bone -> {
                 float finalMin = Float.POSITIVE_INFINITY;
                 for (GeoCube boneCube : bone.getCubes()) {
@@ -101,7 +100,7 @@ public class DeadBodyPartEntity extends Entity {
                 }
                 this.dimensions = EntityDimensions.fixed(finalMin, finalMin);
             }
-            case null, default -> this.dimensions = EntityDimensions.fixed(0.4f, 0.4f);
+            case null, default -> this.dimensions = EntityDimensions.fixed(minSide, minSide);
         }
 //        still();
     }

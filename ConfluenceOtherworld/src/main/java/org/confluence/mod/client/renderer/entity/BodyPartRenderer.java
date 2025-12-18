@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.AgeableHierarchicalModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -15,15 +16,21 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Equipable;
+import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.cache.object.*;
+import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.util.Color;
 
 import java.util.List;
 
@@ -125,51 +132,79 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                     OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)),
                     geoRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
             }
-        }else if(cube instanceof ModelPart.Cube partCube && renderer instanceof LivingEntityRenderer livingRenderer && dying instanceof LivingEntity living){ // 原版生物
-            LivingEntityRendererAccessor ra=(LivingEntityRendererAccessor) livingRenderer;
-            boolean visible = ra.callIsBodyVisible(living);
-            boolean translucent = !visible && !entity.isInvisibleTo(Minecraft.getInstance().player);
-            boolean glowing = Minecraft.getInstance().shouldEntityAppearGlowing(entity);
-            poseStack.pushPose();
-            float halfMinSide = entity.minSide / 2;
-            poseStack.translate(0, halfMinSide, 0);
-            applyRandomRotation(entity, poseStack, partialTick);
-            poseStack.translate(-entity.xOffset, -entity.yOffset - halfMinSide, -entity.zOffset);
+        }else if(renderer instanceof LivingEntityRenderer livingRenderer && dying instanceof LivingEntity living){ // 原版生物
+            if (cube instanceof ModelPart.Cube partCube) {
+                LivingEntityRendererAccessor ra=(LivingEntityRendererAccessor) livingRenderer;
+                boolean visible = ra.callIsBodyVisible(living);
+                boolean translucent = !visible && !entity.isInvisibleTo(Minecraft.getInstance().player);
+                boolean glowing = Minecraft.getInstance().shouldEntityAppearGlowing(entity);
+                poseStack.pushPose();
+                float halfMinSide = entity.minSide / 2;
+                poseStack.translate(0, halfMinSide, 0);
+                applyRandomRotation(entity, poseStack, partialTick);
+                poseStack.translate(-entity.xOffset, -entity.yOffset - halfMinSide, -entity.zOffset);
 
-            if(livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young){
-                poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
-            }else if(livingRenderer.getModel().young && livingRenderer.getModel() instanceof AgeableListModelAccessor model){
-                for(ModelPart bodyPart : model.callBodyParts()){
-                    if(entity.modelPart == bodyPart){  // FIXME: 父模型
-                        float scale = 1.0F / model.getBabyBodyScale();
-                        poseStack.scale(scale, scale, scale);
-                        break;
-                    }
-                }
-                for(ModelPart headPart : model.callHeadParts()){
-                    if(entity.modelPart == headPart){
-                        if (model.getScaleHead()) {
-                            float scale = 1.5F / model.getBabyHeadScale();
+                if(livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young){
+                    poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
+                }else if(livingRenderer.getModel().young && livingRenderer.getModel() instanceof AgeableListModelAccessor model){
+                    for(ModelPart bodyPart : model.callBodyParts()){
+                        if(entity.modelPart == bodyPart){  // FIXME: 父模型
+                            float scale = 1.0F / model.getBabyBodyScale();
                             poseStack.scale(scale, scale, scale);
+                            break;
                         }
-                        break;
+                    }
+                    for(ModelPart headPart : model.callHeadParts()){
+                        if(entity.modelPart == headPart){
+                            if (model.getScaleHead()) {
+                                float scale = 1.5F / model.getBabyHeadScale();
+                                poseStack.scale(scale, scale, scale);
+                            }
+                            break;
+                        }
                     }
                 }
-            }
-            float scale = living.getScale();
-            poseStack.scale(scale, scale, scale);
-            ra.callSetupRotations(living, poseStack, 0, living.yBodyRot, 1, scale);
-            Vector3f modelPartRot = entity.modelPartRot;
-            poseStack.mulPose(Axis.ZP.rotation(modelPartRot.z));
-            poseStack.mulPose(Axis.YP.rotation(-modelPartRot.y));
-            poseStack.mulPose(Axis.XP.rotation(-modelPartRot.x));
-            poseStack.scale(-1.0F, -1.0F, 1.0F);
-            ra.callScale(living, poseStack, 1);
+                float scale = living.getScale();
+                poseStack.scale(scale, scale, scale);
+                ra.callSetupRotations(living, poseStack, 0, living.yBodyRot, 1, scale);
+                Vector3f modelPartRot = entity.modelPartRot;
+                poseStack.mulPose(Axis.ZP.rotation(modelPartRot.z));
+                poseStack.mulPose(Axis.YP.rotation(-modelPartRot.y));
+                poseStack.mulPose(Axis.XP.rotation(-modelPartRot.x));
+                poseStack.scale(-1.0F, -1.0F, 1.0F);
+                ra.callScale(living, poseStack, 1);
 
-            RenderType renderType = entity.texture != null ? RenderType.armorCutoutNoCull(entity.texture) : ra.callGetRenderType(living, visible, translucent, glowing);
-            partCube.compile(poseStack.last(), bufferSource.getBuffer(renderType),
-                packedLight, 655360, translucent ? 654311423 : -1);
-            poseStack.popPose();
+                RenderType renderType = entity.texture != null ? RenderType.armorCutoutNoCull(entity.texture) : ra.callGetRenderType(living, visible, translucent, glowing);
+                partCube.compile(poseStack.last(), bufferSource.getBuffer(renderType),
+                    packedLight, 655360, translucent ? 654311423 : -1);
+                poseStack.popPose();
+            } else if (cube instanceof ItemStack itemStack && itemStack.getItem() instanceof Equipable equipable && livingRenderer.getModel() instanceof HumanoidModel baseModel){
+                HumanoidModel<?> geoModel = GeoRenderProvider.of(itemStack.getItem()).getGeoArmorRenderer(living, itemStack, null, baseModel);
+                if (!(geoModel instanceof GeoArmorRenderer<?> geoArmorRenderer)) {
+                    return;
+                }
+                baseModel.setupAnim(living,0, 0,0, living.getYHeadRot(), living.getXRot());
+                poseStack.pushPose();
+                EquipmentSlot equipmentSlot = equipable.getEquipmentSlot();
+                applyRandomRotation(entity, poseStack, partialTick);
+                boolean baby = living.isBaby();
+                if (equipmentSlot == EquipmentSlot.CHEST) {
+                    poseStack.translate(0, baby ? 1.1 : 0.5, baby ? -0.1 : -0.2);
+                } else if (equipmentSlot == EquipmentSlot.LEGS) {
+                    poseStack.translate(0, baby ? 1.4 : 1.25, 0);
+                } else if (equipmentSlot == EquipmentSlot.FEET) {
+                    poseStack.translate(0, 1.5, 0);
+                }else if (equipmentSlot == EquipmentSlot.HEAD) {
+                    poseStack.translate(0, baby ? 0.8 : -0.25, 0);
+                }
+                poseStack.scale(-1.0F, -1.0F, 1.0F);
+                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
+                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
+                geoArmorRenderer.prepForRender(dying, itemStack, equipable.getEquipmentSlot(), baseModel, bufferSource, partialTick, 0, 0, living.getYHeadRot(), living.getXRot());
+                geoModel.renderToBuffer(poseStack, null, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
+                poseStack.popPose();
+                geoArmorRenderer.doPostRenderCleanup();
+            }
         }
     }
 

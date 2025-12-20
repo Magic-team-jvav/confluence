@@ -40,7 +40,8 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.GREEN_JELLYFISH, TCEffects.CONFUSED)
                 // TODO 血水母 蘑菇鱼
                 .add(TEMonsterEntities.BLUE_SLIME, MobEffects.POISON)
-                // TODO 骨蛇 胭脂虫 螃蟹 龙虾
+                .add(TEMonsterEntities.BONE_SERPENT, MobEffects.POISON, TCEffects.CONFUSED, TEEffects.HELLFIRE)
+                // TODO 胭脂虫 螃蟹 龙虾
                 .add(TEMonsterEntities.CRIMERA, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.CURSED_SKULL, MobEffects.POISON, TCEffects.CONFUSED)
                 .add(TEBossEntities.DUNGEON_GUARDIAN, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)), LivingInvulnerableEffects.Category.HARMFUL)
@@ -66,7 +67,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 // TODO 紫胶虫
                 .add(TEMonsterEntities.LAVA_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.MAN_EATER, MobEffects.POISON, TCEffects.CONFUSED)
-                // TODO 流星头
+                .add(TEMonsterEntities.METEOR_HEAD, MobEffects.POISON, TCEffects.CONFUSED, TEEffects.HELLFIRE)
                 .add(TEMonsterEntities.PINK_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.PIRANHA, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.PURPLE_SLIME, MobEffects.POISON)

@@ -114,7 +114,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
-                //旅商的       
+                //旅商的
                 //动物学家的              .add(TEWhipItems.LEATHER_WHIP)
                 .build());
 
@@ -134,6 +134,13 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .setResult(ArrowItems.HELLFIRE_ARROW.toStack())
                         .setProperties(hardmode)
                         .build())
+                // 毒刺矢 石巨人后
+                // 地雷 世纪之花且海盗后
+                //.add(ConsumableItems.DRY_BOMB) todo当持有干炸弹时
+                //.add(ConsumableItems.WET_BOMB) todo当持有湿炸弹时
+                //.add(ConsumableItems.HONEY_BOMB) todo当持有蜂蜜炸弹时
+                //.add(ConsumableItems.LAVA_BOMB) todo当持有熔岩炸弹时
+
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -153,6 +160,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(PotionItems.LESSER_HEALING_POTION)
                 .add(PotionItems.LESSER_MANA_POTION)
                 .add(FoodItems.MARSHMALLOW) // todo当在雪原时
+                .add(TFBlocks.PIN_WHEEL) // todo当在大风天时
 
                 .add(new MoneyTradeItem.Builder()
                         .setResult(PotionItems.HEALING_POTION.toStack())
@@ -171,6 +179,14 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .setProperties(hardmode)
                         .build())
                 .add(SellTrade.INSTANCE)
+                // 照明弹
+                // 蓝照明弹
+                // 迪斯科球 困难模式后
+                // 镰刀
+                // 钉子 拥有钉枪时
+                // 鼓组 boss后
+                // 鼓槌 boss后
+                // 荧光棒
                 .build());
 
         shop(TENpcEntities.GOBLIN_TINKERER.getId()).addRecipe(withDefaultPylon()
@@ -180,6 +196,9 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TCItems.WORKSHOP)
                 .add(ConsumableItems.SPIKY_BALL)
                 .add(SellTrade.INSTANCE)
+                // 标尺
+                // 堆石器 （困难模式）
+
                 .build());
 
         shop(TENpcEntities.NURSE.getId()).addRecipe(withDefaultPylon()
@@ -217,6 +236,19 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .setResult(TGItems.SHOTGUN.toStack())
                         .setProperties(hardmode)
                         .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(ArrowItems.UNHOLY_ARROW.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                // 钉子 当拥有钉枪时
+                // 玉米糖 当拥有玉米发射器时
+                // 毒刺矢 当拥有毒刺发射器时
+                // 杰克南瓜灯 当拥有杰克南瓜灯发射器时
+                // 四管霰弹枪 骷髅王后且灵雾
+                // 护士帽 万圣节
+                // 护士衣服 万圣节
+                // 护士短裙 万圣节
+                // 护士高跟鞋 万圣节
                 .add(TGItems.FLINTLOCK_PISTOL)
                 .add(TGItems.MINISHARK)
                 .add(SellTrade.INSTANCE)
@@ -268,6 +300,12 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(VanityArmorItems.SILVER_DYE)
                 .add(VanityArmorItems.BROWN_DYE)
                 .add(VanityArmorItems.TEAM_DYE)
+                // 染料商长袍
+                // 染料商头巾
+                // 暗影染料
+                // 阴暗染料
+                // 灰雾染料
+                // 大屠杀染料
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -407,6 +445,12 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(Items.STICKY_PISTON)
                 .add(Items.REDSTONE_LAMP)
                 .add(Items.DAYLIGHT_DETECTOR)
+                // 控制杆
+                // 7色的压力板
+                // 青绿压力垫板
+                // 机械标尺
+                // 工程头盔
+                // 彩线灯泡
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -423,7 +467,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .addTrade(new MoneyTradeItem.Builder().setResult(FoodItems.PAD_THAI).build(), 1)
                         .addTrade(new MoneyTradeItem.Builder().setResult(TEYoyosItems.CODE_1).build(), 1)
                         .addTrade(new MoneyTradeItem.Builder().setResult(NatureBlocks.DYNASTY_LOG_BLOCKS.LOG).build(), 1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(FishingPoleItems.SITTING_DUCKS_FISHING_POLE).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(FishingPoleItems.SITTING_DUCKS_FISHING_POLE).build(), 1) //todo骷髅王后
                         .build()
                 )
         );
@@ -433,6 +477,18 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(VanityArmorItems.FAMILIAR_SHIRT)
                 .add(VanityArmorItems.FAMILIAR_PANTS)
                 .add(VanityArmorItems.FAMILIAR_SHOES)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(VanityArmorItems.GUY_FAWKES_HAT.toStack())
+                        .setProperties(halloweens)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(VanityArmorItems.GUY_FAWKES_MASK.toStack())
+                        .setProperties(halloweens)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(VanityArmorItems.GUY_FAWKES_MASK_SET.toStack())
+                        .setProperties(halloweens)
+                        .build())
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -454,6 +510,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .setResult(AccessoryItems.PYGMY_NECKLACE.toStack())
                         .setProperties(night)
                         .build())
+                // 毒刺矢
+                // 尖桩
+                // .add(MaterialItems.VIAL_OF_VENOM) 世纪之花后
+                //   .add(AccessoryItems.HERCULES_BEETLE) 世纪之花后，丛林
+                // 各种喷泉
                 .add(SellTrade.INSTANCE)
                 .build());
 

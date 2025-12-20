@@ -45,6 +45,7 @@ public final class ModEffects {
     );
     public static final DeferredHolder<MobEffect, MobEffect> THORNS = EFFECTS.register("thorns", ThornsEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> MANA_REGENERATION = EFFECTS.register("mana_regeneration", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x6600CC));
+    public static final DeferredHolder<MobEffect, MobEffect> STAR_IN_A_BOTTLE = EFFECTS.register("star_in_a_bottle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF66));
     public static final DeferredHolder<MobEffect, MobEffect> TITAN = EFFECTS.register("titan", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xD2B48C)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, Confluence.asResource("titan"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> BUILDER = EFFECTS.register("builder", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8B6914)
@@ -92,6 +93,7 @@ public final class ModEffects {
             .addAttributeModifier(TEAttributes.MINION_CAPACITY, Confluence.asResource("bewitched"), 1.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> AMMO_BOX = EFFECTS.register("ammo_box", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x119911));
     public static final DeferredHolder<MobEffect, MobEffect> COZY_FIRE = EFFECTS.register("cozy_fire", CozyFireEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> HEART_LANTERN = EFFECTS.register("heart_lantern", HeartLanternEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> HUNGER_DELAYED = EFFECTS.register("hunger_delayed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xdd6e20));
     public static final DeferredHolder<MobEffect, MobEffect> DELICIOUS = EFFECTS.register("delicious", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xf25778));
     public static final DeferredHolder<MobEffect, MobEffect> CHOKING = EFFECTS.register("choking", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x708090)

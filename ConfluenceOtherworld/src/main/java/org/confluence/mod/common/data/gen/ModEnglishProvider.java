@@ -14,6 +14,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCEffects;
@@ -182,6 +183,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "Prevents you from hurting critters while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "Prevents you from accidentally destroying the environment while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "Right click to deactivate/reactivate effects");
+        add("tooltip.item.confluence.fallen_soul_core.0", "Channel spirits through the celestial stars; right-click to switch magic types");
 
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
@@ -216,6 +218,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.hardmode_forge.0", "Used to smelt adamantite and titanium ore");
         add("tooltip.item.confluence.loom.0", "Used for crafting cloth");
         add("tooltip.item.confluence.dye_vat.0", "Used to Craft Dyes");
+        add("tooltip.item.confluence.tuff_booth.0", "Right-click the upper part to place items, right-click the lower part with a carpet to lay it, and right-click the lower part with a name tag to display the item name");
+        add("tooltip.item.confluence.heart_lantern.0", "Increases life regeneration when placed nearby");
+        add("tooltip.item.confluence.star_in_a_bottle.0", "Increases mana regeneration when placed nearby");
         add("tooltip.item.confluence.jousting_lance.0", "Build momentum to increase attack power");
         add("tooltip.item.confluence.jousting_lance.1", "'Have at thee!'");
         add("tooltip.item.confluence.hallowed_jousting_lance.0", "Build momentum to increase attack power");
@@ -232,7 +237,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.paradox_interactive_medal.0", "Proof of having played Hearts of Iron, Victoria, Europa Universalis, Crusader Kings, and Cities: Skylines at the same time.");
         add("tooltip.item.confluence.kind_miside_ring.0", "“The ring will lead you to the right direction, dear”");
         add("tooltip.item.confluence.failed_skull.0", "A creeper had its body forcibly transformed by piglins and can explode multiple times. The piglins wanted to use it as a biological weapon to invade the Overworld, but it escaped unexpectedly.");
-        add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
+        add("tooltip.item.confluence.ice_tofu_brick.0", "It’s not just about ramming things head-on to take them down.");
         add("tooltip.item.confluence.pink_cola.0", "An ordinary bottle of pink cola. Maybe there was a whole case originally?");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "Freshly baked flatbread on the Netherrack. Come and have a taste!");
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "(Boredom's Pact - Falling Resolve)");
@@ -337,7 +342,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("key.confluence.mana", "Quick Use Mana Potion");
         add("key.confluence.extra_inventory", "Quick Open Extra Slot");
 
-        add("death.attack.dungeon_altar", "Steve died when he was about to click on the bottom block with a meteor compass");
+        add("death.attack.dungeon_altar", "Steve was one step away from uncovering the secret by right-clicking tuff with the meteor compass.");
 
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s is crushed by boulder");
@@ -460,6 +465,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.knockback", "Knockback: %s");
         add("tooltip.confluence.disabled", "Disabled");
 
+        add("tooltip.confluence.pickaxe_power", "PickaxePower:");
+        add("tooltip.confluence.hammer_power", "HammerPower:");
+
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
 
@@ -484,6 +492,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.soul_of_might.0", "'The essence of the destroyer'");
         add("tooltip.item.confluence.soul_of_sight.0", "'The essence of omniscient watchers'");
         add("tooltip.item.confluence.soul_of_fright.0", "'The essence of pure terror'");
+        add("tooltip.item.confluence.soul_of_bright.0", "The essence of wisdom forged in rebirth");
+        add("tooltip.item.confluence.soul_of_voight.0", "The essence of the dragon born from the void");
         add("tooltip.item.confluence.golden_key.0", "“Opens one locked Gold Chest”");
         add("tooltip.item.confluence.golden_dungeon_key.0", "“Open a locked dungeon chest or a golden lockbox”");
         add("tooltip.item.confluence.shadow_key.0", "“Opens all Shadow Chests and Obsidian Lock Boxes”");
@@ -538,7 +548,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_bug_net.0", "Used to catch critters");
         add("tooltip.item.confluence.golden_bug_net.1", "Can catch lava critters too!");
         add("tooltip.item.confluence.dev_bug_net.0", "Can catch most creatures!");
-
         // configuration
         add("confluence.configuration.Compatibility", "Compatibility Mechanism");
         add("confluence.configuration.Compatibility.button", "Settings for compatibility with other mods");
@@ -1102,6 +1111,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.npc.slain", "%2$s the %1$s was slain...");
         add("event.confluence.npc.left", "%s has left!");
         add("event.confluence.traveling_merchant.departed", "%s the Traveling Merchant has departed!");
+        add("event.confluence.npc_invitation.use", "Invitation delivered! A new batch of NPCs will be added!");
 
         add("event.confluence.reveal_step0", "Your world has been blessed with Cobalt and Palladium!");
         add("event.confluence.reveal_step1", "Your world has been blessed with Mythril and Orichalcum!");
@@ -2637,6 +2647,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.FISHING.get(), "Increased fishing power");
         addEffect(ModEffects.LUCK_EFFECT.get(), "You are feeling pretty lucky");
         addEffect(ModEffects.MANA_REGENERATION.get(), "Increased mana regeneration");
+        addEffect(ModEffects.STAR_IN_A_BOTTLE.get(), "Increased mana regeneration");
         addEffect(ModEffects.WATER_WALKING.get(), "Can walk on liquids.");
         addEffect(ModEffects.MAGIC_POWER.get(), "20% increased magic damage");
         addEffect(ModEffects.FLIPPER.get(), "Move like normal in water");
@@ -2652,6 +2663,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.HEART_REACH.get(), "Increased heart pickup range");
         addEffect(ModEffects.OBSIDIAN_SKIN.get(), "Immune to lava");
         addEffect(ModEffects.COZY_FIRE.get(), "Life regen is slightly increased");
+        addEffect(ModEffects.HEART_LANTERN.get(), "Life regen is increased ");
         addEffect(ModEffects.BEWITCHED.get(), "Increased max number of minions");
         addEffect(ModEffects.HUNGER_DELAYED.get(), "Slows hunger depletion rate");
         addEffect(ModEffects.CHOKING.get(), "You need water!");
@@ -2695,6 +2707,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         PonderHelper.addTranslateKeys(this::add, true);
         WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), true);
+        CreateHelper.addTranslateKeys((item,s) -> add(Util.makeDescriptionId("item", item.getId()), s), true);
     }
 
     @Override

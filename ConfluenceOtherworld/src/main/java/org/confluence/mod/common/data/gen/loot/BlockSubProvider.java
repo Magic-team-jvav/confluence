@@ -159,6 +159,17 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(TREE_HOLES_BLOCK.get());
         dropSelf(MAGIC_MAIL_BOX.get());
         dropSelf(SAWMILL.get());
+        dropSelf(HEART_LANTERN.get());
+        dropSelf(STAR_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_FLIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_LIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_FRIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_NIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_MIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_SIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_BRIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_VOIGHT_IN_A_BOTTLE.get());
+        dropSelf(TUFF_BOOTH.get());
 
         add(SANCTIFICATION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(CORRUPTION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
@@ -312,11 +323,15 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(AETHERIUM_CAULDRON.get());
         dropSelf(CURSED_FLAME_BLOCK.get());
         dropSelf(POO.get());
+        dropSelf(POO_BLOCK.get());
 
         dropSelf(ROPE.get());
         dropSelf(SILK_ROPE.get());
         dropSelf(WEB_ROPE.get());
         dropSelf(VINE_ROPE.get());
+
+        dropSelf(WATER_CANDLE.get());
+        dropSelf(PEACE_CANDLE.get());
 
         dropSelf(TOMBSTONE.get());
         dropSelf(GRAVE_MARKER.get());

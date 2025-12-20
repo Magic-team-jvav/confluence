@@ -89,6 +89,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 EntityType.BAT
         );
         tag(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST).add(
+                EntityType.HOGLIN,
                 TEAnimals.CRAB.get(),
                 TEMonsterEntities.PIRANHA.get()
         );

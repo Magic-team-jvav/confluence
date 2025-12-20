@@ -355,6 +355,18 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GRANITE.get(),
                 MARBLE.get(),
 
+                TUFF_BOOTH.get(),
+                HEART_LANTERN.get(),
+                STAR_IN_A_BOTTLE.get(),
+                SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_NIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_MIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_SIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_BRIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_VOIGHT_IN_A_BOTTLE.get(),
+
                 CrateBlocks.IRON_CRATE.get(),
                 CrateBlocks.GOLDEN_CRATE.get(),
                 CrateBlocks.SKY_CRATE.get(),
@@ -433,7 +445,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MOISTENED_EBONSAND_BLOCK.get(),
                 ASH_PATH.get(),
                 JUNGLE_PATH.get(),
-                MUSHROOM_PATH.get()
+                MUSHROOM_PATH.get(),
+                POO.get(),
+                POO_BLOCK.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
@@ -674,6 +688,18 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GELSTONE_BLOCK.get(),
                 STURDY_FOSSIL_BLOCK.get(),
                 COLD_CRYSTAL_BLOCK.get(),
+
+                HEART_LANTERN.get(),
+                STAR_IN_A_BOTTLE.get(),
+                TUFF_BOOTH.get(),
+                SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_NIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_MIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_SIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_BRIGHT_IN_A_BOTTLE.get(),
+                SOUL_OF_VOIGHT_IN_A_BOTTLE.get(),
 
                 KING_SLIME_RELIC.get(),
                 EYE_OF_CTHULHU_RELIC.get(),
@@ -1458,7 +1484,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SHADOW_LOG_BLOCKS.LOG.get(),
                 SHADOW_LOG_BLOCKS.LEAVES.get(),
                 CRIMSTONE.get(),
-                CRIMSAND.get(),
                 COBBLED_CRIMSTONE.get(),
                 CRIMSON_GRASS.get(),
                 FLESHIFICATION_REDSTONE_ORE.get(),
@@ -1485,7 +1510,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONY_LOG_BLOCKS.LOG.get(),
                 EBONY_LOG_BLOCKS.LEAVES.get(),
                 EBONSTONE.get(),
-                EBONSAND.get(),
                 COBBLED_EBONSTONE.get(),
                 CORRUPT_GRASS.get(),
                 CORRUPTION_REDSTONE_ORE.get(),
@@ -1512,7 +1536,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.LOG.get(),
                 PEARL_LOG_BLOCKS.LEAVES.get(),
                 PEARLSTONE.get(),
-                PEARLSAND.get(),
                 COBBLED_PEARLSTONE.get(),
                 HALLOW_GRASS.get(),
                 SANCTIFICATION_REDSTONE_ORE.get(),
@@ -1543,13 +1566,37 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(ModTags.Blocks.RELIC).add(RELIC_BLOCKS.stream().map(DeferredHolder::get).toArray(Block[]::new));
         { // 没沙子是防止河流里的沙子被误判成沙漠
-            tag(ModTags.Blocks.HALLOW_DESERT_BLOCKS).add(PEARLSANDSTONE.get(), HARDENED_PEARLSAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get());
+            tag(ModTags.Blocks.HALLOW_DESERT_BLOCKS).add(
+                PEARLSAND.get(),
+                PEARLSANDSTONE.get(),
+                HARDENED_PEARLSAND_BLOCK.get(),
+                MOISTENED_PEARLSAND_BLOCK.get());
             tag(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS).add(PINK_ICE.get(), PINK_PACKED_ICE.get());
-            tag(ModTags.Blocks.CRIMSON_DESERT_BLOCKS).add(CRIMSANDSTONE.get(), HARDENED_CRIMSAND_BLOCK.get(), MOISTENED_CRIMSAND_BLOCK.get());
+            tag(ModTags.Blocks.CRIMSON_DESERT_BLOCKS).add(
+                CRIMSAND.get(),
+                CRIMSANDSTONE.get(),
+                HARDENED_CRIMSAND_BLOCK.get(),
+                MOISTENED_CRIMSAND_BLOCK.get());
             tag(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS).add(RED_ICE.get(), RED_PACKED_ICE.get());
-            tag(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS).add(EBONSANDSTONE.get(), HARDENED_EBONSAND_BLOCK.get(), MOISTENED_EBONSAND_BLOCK.get());
+            tag(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS).add(
+                EBONSAND.get(),
+                EBONSANDSTONE.get(),
+                HARDENED_EBONSAND_BLOCK.get(),
+                MOISTENED_EBONSAND_BLOCK.get());
             tag(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS).add(PURPLE_ICE.get(), PURPLE_PACKED_ICE.get());
         }
+        tag(ModTags.Blocks.GLOWING_MUSHROOM_BLOCKS).add(
+            MUSHROOM_GRASS_BLOCK.get(),
+            MUSHROOM_PATH.get(),
+            GLOWING_MUSHROOM.get(),
+            GLOWING_MUSHROOM_CATTAILS_BODY.get(),
+            GLOWING_MUSHROOM_CATTAILS_HEAD.get(),
+            GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(),
+            GLOWING_MUSHROOM_STEM_BLOCK.get(),
+            GLOWING_MUSHROOM_PILEUS_BLOCK.get(),
+            GLOWING_MUSHROOM_VINE.get(),
+            GLOWING_MUSHROOM_MOSS.get()
+        );
         tag(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION).add(
                         Blocks.BAMBOO,
                         Blocks.SHORT_GRASS, Blocks.TALL_GRASS,
@@ -1624,6 +1671,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SHIVERTHORN.get(),
                 DAYBLOOM.get(),
                 DEATHWEED.get()
+        );
+        tag(BlockTags.CAMPFIRES).add(
+                LIFE_CAMPFIRE.get()
         );
         WaystonesHelper.blockTags(this::tag);
     }

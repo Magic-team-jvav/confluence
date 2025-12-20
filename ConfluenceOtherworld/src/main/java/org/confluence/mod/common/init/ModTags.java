@@ -286,6 +286,15 @@ public final class ModTags {
         public static final TagKey<Item> INGOTS_TITANIUM = c("ingots/titanium");
 
         public static final TagKey<Item> INGOTS_CHLOROPHYTE = c("ingots/chlorophyte");
+        public static final TagKey<Item> NUGGETS_TIN = c("nuggets/tin");
+        public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");
+        public static final TagKey<Item> NUGGETS_SILVER = c("nuggets/silver");
+        public static final TagKey<Item> NUGGETS_TUNGSTEN = c("nuggets/tungsten");
+        public static final TagKey<Item> NUGGETS_PLATINUM = c("nuggets/platinum");
+        public static final TagKey<Item> NUGGETS_METEORITE = c("nuggets/meteorite");
+        public static final TagKey<Item> NUGGETS_DEMONITE = c("nuggets/demonite");
+        public static final TagKey<Item> NUGGETS_CRIMTANE = c("nuggets/crimtane");
+        public static final TagKey<Item> NUGGETS_HELLSTONE = c("nuggets/hellstone");
 
         public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
         public static final TagKey<Item> RAW_MATERIALS_LEAD = c("raw_materials/lead");
@@ -319,8 +328,6 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_COLD_CRYSTAL = c("raw_materials/cold_crystal");
 
         public static final TagKey<Item> RAW_MATERIALS_FLOATING_WHEAT = c("raw_materials/raw_materials_floating_wheat");
-
-        public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");
 
         public static final TagKey<Item> TOOLS_HAMMER = c("tools/hammer");
         public static final TagKey<Item> TOOLS_LANCE = c("tools/lance");
@@ -437,6 +444,7 @@ public final class ModTags {
     public static class Fluids {
         public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
         public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
+        public static final TagKey<Fluid> C_WATER = FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", "water"));
     }
 
     public static class EntityTypes {

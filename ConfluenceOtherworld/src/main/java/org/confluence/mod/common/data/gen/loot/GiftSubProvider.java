@@ -592,7 +592,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To4))
-                        // todo 镇静药水
+                        .add(LootItem.lootTableItem(PotionItems.CALMING_POTION.get()).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.FLIPPER_POTION.get()).apply(count2To4))
                         .add(EmptyLootItem.emptyItem().setWeight(42))
                 )

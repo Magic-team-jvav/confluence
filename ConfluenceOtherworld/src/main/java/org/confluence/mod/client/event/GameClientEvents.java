@@ -282,7 +282,9 @@ public final class GameClientEvents {
         ) return;
         boolean dead = living.isDeadOrDying();
         if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
-            ClientUtils.livingDeath(living);
+            living.level().getProfiler().push("entity_dismemberment");
+            DeathAnimUtils.livingDeath(living);
+            living.level().getProfiler().pop();
         }
         IClientLivingEntity.of(living).confluence$deadO(dead);
     }
@@ -299,7 +301,9 @@ public final class GameClientEvents {
         if (entity instanceof LivingEntity living) {
             boolean dead = living.isDeadOrDying();
             if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
-                ClientUtils.livingDeath(living);
+                living.level().getProfiler().push("geo_dismemberment");
+                DeathAnimUtils.livingDeath(living);
+                living.level().getProfiler().pop();
             }
             IClientLivingEntity.of(living).confluence$deadO(dead);
         }

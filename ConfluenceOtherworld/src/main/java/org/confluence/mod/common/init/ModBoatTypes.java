@@ -34,7 +34,7 @@ public final class ModBoatTypes {
     public static final EnumProxy<Boat.Type> GLOWING_MUSHROOM = register(
             NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.PLANKS,
             "glowing_mushroom",
-            BoatItems.GLOWING_MUSHROOM_CHEST_BOAT,
+            BoatItems.GLOWING_MUSHROOM_BOAT,
             BoatItems.GLOWING_MUSHROOM_CHEST_BOAT
     );
     public static final EnumProxy<Boat.Type> LIVING = register(

@@ -10,6 +10,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCEffects;
@@ -172,6 +173,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "放在物品栏中时能防止你伤害小动物");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "放在物品栏中时能防止你意外破坏环境");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "右键点击停用/激活其效果");
+        add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -205,6 +207,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.hardmode_forge.0", "用于熔炼精金矿和钛金矿");
         add("tooltip.item.confluence.loom.0", "用于制作衣物");
         add("tooltip.item.confluence.dye_vat.0", "用于制作染料");
+        add("tooltip.item.confluence.tuff_booth.0", "右键上半部分放置物品，使用地毯右键下半部分铺设，使用命名牌右键下半部分显示物品名称");
+        add("tooltip.item.confluence.heart_lantern.0", "放在附近时提高生命再生速度");
+        add("tooltip.item.confluence.star_in_a_bottle.0", "放在附近时提高魔力再生速度");
         add("tooltip.item.confluence.jousting_lance.0", "提升速度来加强攻击力");
         add("tooltip.item.confluence.jousting_lance.1", "“纳命来！”");
         add("tooltip.item.confluence.hallowed_jousting_lance.0", "提升速度来加强攻击力");
@@ -221,7 +226,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paradox_interactive_medal.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
         add("tooltip.item.confluence.kind_miside_ring.0", "“戒指会带你找到正确的方向，亲爱的”");
         add("tooltip.item.confluence.failed_skull.0", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
-        add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
+        add("tooltip.item.confluence.ice_tofu_brick.0", "不止可以一头撞死");
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上烤好的饼，快来尝尝吧！");
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
@@ -326,7 +331,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("key.confluence.hook", "使用钩爪");
         add("key.confluence.specular_detail", "视觉药水细节观测");
 
-        add("death.attack.dungeon_altar", "Steve在准备用陨石指南针右击正下方方块时死于非命");
+        add("death.attack.dungeon_altar", "Steve差一步就用陨石指南针右击凝灰岩揭开秘密");
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
@@ -449,6 +454,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.confluence.knockback", "击退：%s");
         add("tooltip.confluence.disabled", "已禁用");
 
+        add("tooltip.confluence.pickaxe_power", "镐力：");
+        add("tooltip.confluence.hammer_power", "锤力：");
+
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 
@@ -473,6 +481,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.soul_of_might.0", "“毁灭者的精华”");
         add("tooltip.item.confluence.soul_of_sight.0", "“全知看守者的精华”");
         add("tooltip.item.confluence.soul_of_fright.0", "“纯粹恐惧的精华”");
+        add("tooltip.item.confluence.soul_of_bright.0", "“于重铸中智能的精华”");
+        add("tooltip.item.confluence.soul_of_voight.0", "“虚空中诞生巨龙的精华”");
         add("tooltip.item.confluence.golden_dungeon_key.0", "“打开一个锁住的地牢箱或金锁盒”");
         add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱”");
         add("tooltip.item.confluence.shadow_key.0", "“打开所有暗影箱和黑曜石锁盒”");
@@ -1144,7 +1154,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.npc.slain", "%1$s%2$s被杀死了……");
         add("event.confluence.npc.left", "%s已离开！");
         add("event.confluence.traveling_merchant.departed", "旅商%s已离去！");
-        add("event.confluence.reveal_step1.departed", "旅商%s已离去！");
+        add("event.confluence.npc_invitation.use", "请柬已送达，将会添加一批新的NPC！");
 
         add("event.confluence.reveal_step0", "你的世界已赐钴，钯金！");
         add("event.confluence.reveal_step1", "你的世界已赐秘银，山铜！");
@@ -3412,7 +3422,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.EATER_OF_WORLDS_RELIC.get(), "世界吞噬怪圣物");
         add(DecorativeBlocks.SKELETRON_RELIC.get(), "骷髅王圣物");
 
-
+        add(DecorativeBlocks.POO_BLOCK.get(), "臭臭块");
         add(ModBlocks.POO.get(), "臭臭");
         add(ModBlocks.WATERLEAF.get(), "水叶草");
         add(ModBlocks.FIREBLOSSOM.get(), "火焰花");
@@ -3515,22 +3525,31 @@ public class ModChineseProvider extends LanguageProvider {
         //region items
         add(MaterialItems.RAW_TIN.get(), "粗锡");
         add(MaterialItems.TIN_INGOT.get(), "锡锭");
+        add(MaterialItems.TIN_NUGGET.get(), "锡粒");
         add(MaterialItems.RAW_LEAD.get(), "粗铅");
         add(MaterialItems.LEAD_INGOT.get(), "铅锭");
+        add(MaterialItems.LEAD_NUGGET.get(), "铅粒");
         add(MaterialItems.RAW_SILVER.get(), "粗银");
         add(MaterialItems.SILVER_INGOT.get(), "银锭");
+        add(MaterialItems.SILVER_NUGGET.get(), "银粒");
         add(MaterialItems.RAW_TUNGSTEN.get(), "粗钨");
         add(MaterialItems.TUNGSTEN_INGOT.get(), "钨锭");
+        add(MaterialItems.TUNGSTEN_NUGGET.get(), "钨粒");
         add(MaterialItems.RAW_PLATINUM.get(), "粗铂金");
         add(MaterialItems.PLATINUM_INGOT.get(), "铂金锭");
+        add(MaterialItems.PLATINUM_NUGGET.get(), "铂金粒");
         add(MaterialItems.RAW_METEORITE.get(), "粗陨铁");
         add(MaterialItems.METEORITE_INGOT.get(), "陨铁锭");
+        add(MaterialItems.METEORITE_NUGGET.get(), "陨铁粒");
         add(MaterialItems.RAW_DEMONITE.get(), "粗魔矿");
         add(MaterialItems.DEMONITE_INGOT.get(), "魔矿锭");
+        add(MaterialItems.DEMONITE_NUGGET.get(), "魔矿粒");
         add(MaterialItems.RAW_CRIMTANE.get(), "粗猩红矿");
         add(MaterialItems.CRIMTANE_INGOT.get(), "猩红矿锭");
+        add(MaterialItems.CRIMTANE_NUGGET.get(), "猩红矿粒");
         add(MaterialItems.RAW_HELLSTONE.get(), "粗狱石矿");
         add(MaterialItems.HELLSTONE_INGOT.get(), "狱石矿锭");
+        add(MaterialItems.HELLSTONE_NUGGET.get(), "狱石矿粒");
         add(MaterialItems.RAW_COBALT.get(), "粗钴");
         add(MaterialItems.COBALT_INGOT.get(), "钴锭");
         add(MaterialItems.RAW_PALLADIUM.get(), "粗钯金");
@@ -3551,6 +3570,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHROOMITE_INGOT.get(), "蘑菇矿锭");
         add(MaterialItems.ECTOPLASM.get(), "灵气");
         add(MaterialItems.FORBIDDEN_FRAGMENT.get(), "禁忌碎片");
+        add(MaterialItems.FROST_CORE.get(), "寒霜核");
         add(MaterialItems.SPECTRE_INGOT.get(), "幽灵锭");
         add(MaterialItems.RUBY.get(), "红玉");
         add(MaterialItems.AMBER.get(), "琥珀");
@@ -3599,7 +3619,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SPORE_ROOT.get(), "孢根");
         add(MaterialItems.WINTER_MARROW.get(), "霜髓");
         add(MaterialItems.COLD_CRYSTAL.get(), "寒晶");
-        add(MaterialItems.LEAD_NUGGET.get(), "铅粒");
         add(MaterialItems.RAW_ASPHALT.get(), "生沥青");
         add(MaterialItems.TATTERED_CLOTH.get(), "破布");
         add(MaterialItems.SOUL_OF_LIGHT.get(), "光明之魂");
@@ -3608,6 +3627,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SOUL_OF_MIGHT.get(), "力量之魂");
         add(MaterialItems.SOUL_OF_SIGHT.get(), "视域之魂");
         add(MaterialItems.SOUL_OF_FRIGHT.get(), "恐惧之魂");
+        add(MaterialItems.SOUL_OF_VOIGHT.get(), "虚空之魂");
+        add(MaterialItems.SOUL_OF_BRIGHT.get(), "启迪之魂");
         add(MaterialItems.SPELL_TOME.get(), "魔法书");
         add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
         add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
@@ -3690,6 +3711,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.BEE_KEEPER.get(), "养蜂人");
         add(SwordItems.BLADE_OF_GRASS.get(), "草剑");
         add(SwordItems.NIGHTS_EDGE.get(), "永夜刃");
+        add(SwordItems.WAFFLES_IRON.get(), "华夫饼烘烤模");
         add(SwordItems.BREAKER_BLADE.get(), "毁灭刃");
 
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
@@ -3996,6 +4018,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.PEDDLERS_SATCHEL.get(), "商贩背包");
         add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
         add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
+        add(ConsumableItems.FALLEN_SOUL_CORE.get(), "堕魂星核");
 
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
@@ -4052,6 +4075,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.LIVING_MAHOGANY_WAND.get(), "生命红木魔棒");
         add(ModItems.RICH_MAHOGANY_LEAF_WAND.get(), "红木树叶魔棒");
         add(ModItems.HIVE_WAND.get(), "蜂巢魔棒");
+
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");
@@ -4147,6 +4171,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
         add(FunctionalBlocks.LOOM.get(), "织布机");
         add(FunctionalBlocks.DYE_VAT.get(), "染缸");
+        add(FunctionalBlocks.HEART_LANTERN.get(), "红心灯笼");
+        add(FunctionalBlocks.STAR_IN_A_BOTTLE.get(), "星星瓶");
+        add(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get(), "启迪之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.get(), "飞翔之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.get(), "恐惧之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.get(), "光明之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.get(), "力量之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.get(), "视域之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.get(), "暗影之魂瓶");
+        add(FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.get(), "虚空之魂瓶");
+        add(FunctionalBlocks.TUFF_BOOTH.get(), "凝灰岩展台");
+        add(DecorativeBlocks.SOUL_GLASS.get(), "灵魂玻璃");
         add(ModBlocks.AETHERIUM_CAULDRON.get(), "装有微光的炼药锅");
         add(ModBlocks.HONEY_CAULDRON.get(), "装有蜂蜜的炼药锅");
 
@@ -4932,6 +4968,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.THE_DOCTORS_SHIRT.get(), "博士衣");
         add(VanityArmorItems.THE_DOCTORS_PANTS.get(), "博士裤");
         add(VanityArmorItems.THE_DOCTORS_SHOES.get(), "博士鞋");
+        add(VanityArmorItems.GUY_FAWKES_MASK.get(), "盖伊·福克斯面具");
+        add(VanityArmorItems.GUY_FAWKES_HAT.get(), "盖伊·福克斯帽");
+        add(VanityArmorItems.GUY_FAWKES_MASK_SET.get(), "盖伊·福克斯面具套装");
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
         add(VanityArmorItems.DYE.get(), "染料");
@@ -5064,6 +5103,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.FISHING.get(), "钓鱼", "提高渔力");
         addEffect(ModEffects.LUCK_EFFECT.get(), "幸运", "你觉得自己很幸运");
         addEffect(ModEffects.MANA_REGENERATION.get(), "魔力再生", "提高魔力再生速度");
+        addEffect(ModEffects.STAR_IN_A_BOTTLE.get(), "星星瓶", "提高魔力再生速度");
         addEffect(ModEffects.WATER_WALKING.get(), "水上漂", "能在液体上行走。");
         addEffect(ModEffects.MAGIC_POWER.get(), "魔能", "魔法伤害提高20%");
         addEffect(ModEffects.FLIPPER.get(), "脚蹼", "在水中移动如常");
@@ -5079,6 +5119,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.HEART_REACH.get(), "拾心", "扩大心的拾取范围");
         addEffect(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮", "对熔岩免疫");
         addEffect(ModEffects.COZY_FIRE.get(), "温馨之火", "生命再生速度略有提高");
+        addEffect(ModEffects.HEART_LANTERN.get(), "心灯", "生命再生速度提高");
         addEffect(ModEffects.BEWITCHED.get(), "着魔", "提高仆从数量上限");
         addEffect(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓", "延缓饥饿值下降速度");
         addEffect(ModEffects.CHOKING.get(), "干噎", "你需要喝水！");
@@ -5123,6 +5164,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         PonderHelper.addTranslateKeys(this::add, false);
         WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), false);
+        CreateHelper.addTranslateKeys((item, s) -> add(Util.makeDescriptionId("item", item.getId()), s), false);
     }
 
     private void addPotion(Item potion, String name, String tooltip) {

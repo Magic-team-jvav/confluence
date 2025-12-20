@@ -267,12 +267,15 @@ public final class ValueSubProvider {
                 .add(MaterialItems.ICHOR, silver10 - silver1)
                 .add(MaterialItems.PIXIE_DUST, silver1)
                 .add(MaterialItems.FORBIDDEN_FRAGMENT, gold1)
+                .add(MaterialItems.FROST_CORE, gold1)
                 .add(MaterialItems.SOUL_OF_LIGHT, 2000)
                 .add(MaterialItems.SOUL_OF_FLIGHT, 2000)
                 .add(MaterialItems.SOUL_OF_NIGHT, 2000)
                 .add(MaterialItems.SOUL_OF_MIGHT, 8000)
                 .add(MaterialItems.SOUL_OF_SIGHT, 8000)
                 .add(MaterialItems.SOUL_OF_FRIGHT, 8000)
+                .add(MaterialItems.SOUL_OF_BRIGHT, 8000)
+                .add(MaterialItems.SOUL_OF_VOIGHT, 8000)
                 .add(MaterialItems.SPELL_TOME, gold1);
         builder
                 .add(SwordItems.ASH_WOOD_SWORD, 20)
@@ -305,6 +308,7 @@ public final class ValueSubProvider {
                 .add(SwordItems.MANDIBLE_BLADE, silver10)
                 .add(SwordItems.MURAMASA, gold1 + silver50 + silver20 + silver5)
                 .add(SwordItems.NIGHTS_EDGE, gold2 + gold2)
+                .add(SwordItems.WAFFLES_IRON, gold2 + gold1)
                 .add(SwordItems.ORANGE_PHASEBLADE, silver50 + silver2 + silver2)
                 .add(SwordItems.PEARLWOOD_SWORD, 20)
                 .add(SwordItems.PLATINUM_BROADSWORD, silver20 + silver5 + silver2)
@@ -1088,9 +1092,45 @@ public final class ValueSubProvider {
                 .add(ArmorItems.GREEN_CAP, silver50)
                 .add(ArmorItems.VIKING_HELMET, silver50)
                 .add(ArmorItems.FLINX_FUR_COAT, silver50 + gold2)
-                .add(VanityArmorItems.ROBE, silver5 - silver1)
-                .add(VanityArmorItems.DEAD_MANS_SWEATER, silver20)
+
                 .add(TCItems.DIVING_HELMET, silver2);
+        builder
+                .add(VanityArmorItems.ROBE, silver5 - silver1)
+                .add(VanityArmorItems.TOP_HAT, silver50 - silver10)
+                .add(VanityArmorItems.TUXEDO_SHIRT, silver20)
+                .add(VanityArmorItems.TUXEDO_PANTS, silver10)
+                .add(VanityArmorItems.TUXEDO_SHOES, silver10)
+                .add(VanityArmorItems.SUMMER_HAT, silver20)
+                .add(VanityArmorItems.BUNNY_HOOD, silver20 + silver20)
+                .add(VanityArmorItems.PLUMBERS_HAT, silver20)
+                .add(VanityArmorItems.PLUMBERS_SHIRT, gold5)
+                .add(VanityArmorItems.PLUMBERS_PANTS, gold2)
+                .add(VanityArmorItems.PLUMBERS_SHOES, gold2)
+                .add(VanityArmorItems.HEROS_HAT, silver50)
+                .add(VanityArmorItems.HEROS_SHIRT, silver50)
+                .add(VanityArmorItems.HEROS_PANTS, silver20)
+                .add(VanityArmorItems.HEROS_SHOES, silver20)
+                .add(VanityArmorItems.ARCHAEOLOGISTS_HAT, silver10)
+                .add(VanityArmorItems.ARCHAEOLOGISTS_JACKET, silver10)
+                .add(VanityArmorItems.ARCHAEOLOGISTS_PANTS, silver10)
+                .add(VanityArmorItems.ARCHAEOLOGISTS_SHOES, silver10)
+                .add(VanityArmorItems.CLOTHIERS_HAT, silver2)
+                .add(VanityArmorItems.CLOTHIERS_JACKET, silver20)
+                .add(VanityArmorItems.CLOTHIERS_PANTS, silver20)
+                .add(VanityArmorItems.CLOTHIERS_SHOES, silver20)
+                .add(VanityArmorItems.ROBOT_HAT, silver20)
+                .add(VanityArmorItems.FAMILIAR_WIG, silver20)
+                .add(VanityArmorItems.FAMILIAR_SHIRT, silver20)
+                .add(VanityArmorItems.FAMILIAR_PANTS, silver20)
+                .add(VanityArmorItems.FAMILIAR_SHOES, silver20)
+                .add(VanityArmorItems.MIME_MASK, silver20 + silver20)
+                .add(VanityArmorItems.THE_DOCTORS_SHIRT, gold1)
+                .add(VanityArmorItems.THE_DOCTORS_PANTS, gold1)
+                .add(VanityArmorItems.THE_DOCTORS_SHOES, gold1)
+                .add(VanityArmorItems.GUY_FAWKES_MASK, silver20 + silver20)
+                .add(VanityArmorItems.GUY_FAWKES_HAT, silver20 + silver20)
+                .add(VanityArmorItems.GUY_FAWKES_MASK_SET, silver50 + silver10)
+                .add(VanityArmorItems.DEAD_MANS_SWEATER, silver20);
         builder
                 .add(Items.LEATHER_HORSE_ARMOR, 14)
                 .add(Items.IRON_HORSE_ARMOR, silver2 + silver2)
@@ -1832,6 +1872,17 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.DYE_VAT, gold1)
                 .add(FunctionalBlocks.EXTRACTINATOR, gold2)
                 .add(FunctionalBlocks.LEAD_ANVIL, 100)
+
+                .add(FunctionalBlocks.HEART_LANTERN, 20)
+                .add(FunctionalBlocks.STAR_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE,20)
                 .add(TFBlocks.GLASS_KILN, silver50 + silver2 + silver2)
                 .add(TFBlocks.LIVING_LOOM, gold2);
         builder
@@ -1959,6 +2010,7 @@ public final class ValueSubProvider {
 
                 .add(Blocks.FLOWER_POT, 20)
                 .add(TFBlocks.HANGING_POT, 250)
+                .add(TFBlocks.PIN_WHEEL, 400)
 
 
         ;

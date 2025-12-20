@@ -14,6 +14,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.AltImageComponent;
 import org.confluence.mod.common.item.common.BaseAxeItem;
+import org.confluence.mod.common.item.common.StaffOfRegrowthItem;
 
 import java.util.Optional;
 
@@ -42,16 +43,7 @@ public class AxeItems {
     public static final DeferredItem<BaseAxeItem> CHLOROPHYTE_GREATAXE = ITEMS.register("chlorophyte_greataxe", () -> new BaseAxeItem(ModTiers.CHLOROPHYTE, 26, 2.5F, unbreakable(), attributes(1, 0.7), ModRarity.LIME));
     public static final DeferredItem<BaseAxeItem> LUCY_THE_AXE = ITEMS.register("lucy_the_axe", () -> new BaseAxeItem(Tiers.IRON, 11, 4, unbreakable(), attributes(0, 0.5), ModRarity.GREEN));
 
-    public static final DeferredItem<Item> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", () -> new Item(new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN).component(DataComponents.ATTRIBUTE_MODIFIERS, DiggerItem.createAttributes(ModTiers.PLATINUM, (3 - ModTiers.PLATINUM.getAttackDamageBonus() - 1), 1 - 4))) {
-        private TooltipComponent component;
+    public static final DeferredItem<StaffOfRegrowthItem> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", StaffOfRegrowthItem::new); // 再生法杖
 
-        @Override
-        public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-            if (component == null) {
-                this.component = AltImageComponent.of(stack.getItem());
-            }
-            return Optional.of(component);
-        }
-    }); // 再生法杖
     public static final DeferredItem<BaseAxeItem> AXE_OF_REGROWTH = ITEMS.register("axe_of_regrowth", () -> new BaseAxeItem(ModTiers.PLATINUM, 7, 1f, unbreakable(), ModRarity.LIGHT_RED)); // 再生之斧
 }

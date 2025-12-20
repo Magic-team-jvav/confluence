@@ -16,6 +16,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -39,6 +40,10 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 public final class TickEvents {
     @SubscribeEvent
     public static void levelTick$Post(LevelTickEvent.Post event) {
+        if (event.getLevel().isClientSide) {
+            WeatherHandler.tick();
+            return;
+        }
         if (!(event.getLevel() instanceof ServerLevel serverLevel) || serverLevel.dimension() != OverworldUtils.dimension()) return;
         FallingStarItemEntity.summon(serverLevel);
         MeteoriteTracker.INSTANCE.tick(serverLevel);

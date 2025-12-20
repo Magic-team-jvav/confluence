@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "confluence:block/soul_of_fright_in_a_bottle"
+    },
+    "hanging=true": {
+      "model": "confluence:block/soul_of_fright_in_a_bottle_hanging"
+    }
+  }
+}

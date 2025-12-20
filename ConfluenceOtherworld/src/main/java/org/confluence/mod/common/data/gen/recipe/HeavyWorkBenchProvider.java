@@ -1300,6 +1300,15 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#",
                 "#"
         )), MaterialItems.PEARLWOOD_STICK.toStack(6));
+
+        // 垃圾桶
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+        ), List.of(
+                "####",
+                " ## ",
+                " ## "
+        )), TFBlocks.TRASH_CAN.toStack());
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(30),Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(2, MaterialItems.ROTTEN_BONE), AmountIngredient.of(2, MaterialItems.WORM_TOOTH), AmountIngredient.of(4, MaterialItems.ROTTEN_CHUNK));

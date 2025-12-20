@@ -2083,7 +2083,7 @@ public class ModChineseProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.arapaima.desc", "巨骨舌鱼在靠近不稳定魔法矿脉的丛林水域中生存，这种环境让它们变得异常强壮且充满敌意。");
 //        add("bestiary.entity.terra_entity.giant_tortoise.desc", "没人会把巨型陆龟当回事——直到它们像个旋转的死亡刺球一样，从空中猛冲下来。");
 //        add("bestiary.entity.terra_entity.jungle_creeper.desc", "“小小蜘蛛爬藤蔓，倒霉探险掉下来，蜘蛛饱餐真痛快。故事完。”");
-//        add("bestiary.entity.terra_entity.meteor_head.desc", "陨石撞击地表后，碎片会散落各处等待拾取。但有些碎片是“活的”，会主动发起攻击。");
+        add("bestiary.entity.terra_entity.meteor_head.desc", "陨石撞击地表后，碎片会散落各处等待拾取。但有些碎片是“活的”，会主动发起攻击。");
         add("bestiary.entity.terra_entity.dungeon_slime.desc", "地牢史莱姆通过吸收地牢中的诅咒能量变得强大，且似乎对钥匙有着特殊的吸引力。");
         add("bestiary.entity.terra_entity.angry_bones.desc", "愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
         add("bestiary.entity.terra_entity.angry_bones_big.desc", "大型愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
@@ -2119,7 +2119,8 @@ public class ModChineseProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.dungeon_spirit.desc", "在地牢中，部分实力较强的被诅咒住民体内，有时会聚集起高浓度的灵气，最终化为地牢幽魂。");
         add("bestiary.entity.terra_entity.lava_slime.desc", "受地狱高温影响，熔岩史莱姆已具备熔岩的特性——不仅体表灼热，且韧性极强，想要击杀它们既困难又危险。");
 //        add("bestiary.entity.terra_entity.tortured_soul.desc", "痛苦亡魂因毕生贪婪的野心，被判处永恒的惩罚，在漫长岁月中早已被腐化，沦为彻底的恶魔形态。");
-//        add("bestiary.entity.terra_entity.bone_serpent.desc", "曾有威猛的蛇形巨龙统治地狱，但很久以前它们便蜕去了黑曜石龙鳞，如今仅剩下一具具骨骼残骸，化为骨蛇游荡。");
+        add("bestiary.entity.terra_entity.bone_serpent.desc", "曾有威猛的蛇形巨龙统治地狱，但很久以前它们便蜕去了黑曜石龙鳞，如今仅剩下一具具骨骼残骸，化为骨蛇游荡。");
+        add("bestiary.entity.terra_entity.wither_bone_serpent.desc", "灵魂沙峡谷的高浓度灵魂使得这些蛇形巨龙的残骸变得更加致命");
         add("bestiary.entity.terra_entity.fire_imp.desc", "火焰小鬼是蕴含地狱魔法的低级恶魔，既能施展瞬移躲避攻击，又能向敌人投掷幻影火球造成伤害。");
         add("bestiary.entity.terra_entity.hellbat.desc", "狂躁易怒、飞行迅捷又惹人厌烦的飞行动物已够麻烦，而浑身燃烧着地狱之火的地狱蝙蝠，无疑是雪上加霜！");
         add("bestiary.entity.terra_entity.demon.desc", "恶魔是地狱的主力步兵，与火焰小鬼等低级同类不同，它们掌握的是暗影魔法，而非基础的地狱火焰魔法。");
@@ -2355,7 +2356,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.minecraft.skeleton_horse.desc", "骷髅马是亡灵生物，通常在雷暴中生成，可被驯服。");
         add("bestiary.entity.minecraft.sniffer.desc", "嗅探兽是古老的生物，能嗅出埋藏在地下的种子。");
         add("bestiary.entity.minecraft.squid.desc", "鱿鱼是海洋中的头足类生物，会喷墨来躲避危险。");
-        add("bestiary.entity.minecraft.strider.desc", "炽足兽是下届中能在熔岩上行走的生物，可作为坐骑。");
+        add("bestiary.entity.minecraft.strider.desc", "炽足兽是下界中能在熔岩上行走的生物，可作为坐骑。");
         add("bestiary.entity.minecraft.tadpole.desc", "蝌蚪是青蛙的幼体，生活在水中，会逐渐发育为成体。");
         add("bestiary.entity.minecraft.tropical_fish.desc", "热带鱼是色彩斑斓的海洋生物，可作为装饰性宠物。");
         add("bestiary.entity.minecraft.wandering_trader.desc", "流浪商人会随机出现在世界中，出售稀有物品。");
@@ -2415,7 +2416,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("bestiary.entity.terra_entity.decayeder.desc", "被腐化之地重组的骸骨，脆弱但是擅长传播邪念。");
         add("bestiary.entity.terra_entity.bloody_spore.desc", "猩红之地知道苦力怕这种生物最容易将它的肉体撒播。");
-        add("bestiary.entity.terra_entity.hill_of_flesh.desc", "世界的双相，造就了血肉墙对世界另一适应形态的出现，血肉山是世界的核心与守护者，这尊高大的恶魔领主存在的意义，便是将强大的远古灵魂封印起来。");
+        add("bestiary.entity.terra_entity.hill_of_flesh.desc", "世界的双相，造就了血肉墙对世界另一适应形态的出现。血肉山是世界的核心与守护者，这尊高大的恶魔领主存在的意义，便是将强大的远古灵魂封印起来。");
 
         // 套装效果
         add("armor_set_bonus.when_applied", "套装奖励：");

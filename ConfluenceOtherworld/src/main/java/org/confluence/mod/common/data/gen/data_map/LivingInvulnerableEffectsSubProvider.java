@@ -41,6 +41,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 // TODO 血水母 蘑菇鱼
                 .add(TEMonsterEntities.BLUE_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.BONE_SERPENT, MobEffects.POISON, TCEffects.CONFUSED, TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.WITHER_BONE_SERPENT, MobEffects.POISON, MobEffects.WITHER, TCEffects.CONFUSED, TEEffects.HELLFIRE)
                 // TODO 胭脂虫 螃蟹 龙虾
                 .add(TEMonsterEntities.CRIMERA, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.CURSED_SKULL, MobEffects.POISON, TCEffects.CONFUSED)

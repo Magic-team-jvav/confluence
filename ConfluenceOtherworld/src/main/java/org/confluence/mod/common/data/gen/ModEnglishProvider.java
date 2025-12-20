@@ -2050,7 +2050,7 @@ public class ModEnglishProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.arapaima.desc", "These enormous fish thrive in the jungle waters near veins of unstable magicks, which make them unusually strong and hostile.");
 //        add("bestiary.entity.terra_entity.giant_tortoise.desc", "No one takes the giant tortoises seriously. Not until they come hurtling through the air, a spinning, spiky ball of death.");
 //        add("bestiary.entity.terra_entity.jungle_creeper.desc", "The itsy bitsy spider climbed up a jungle vine, down came a hapless explorer and the spider got to dine. The End.");
-//        add("bestiary.entity.terra_entity.meteor_head.desc", "When meteorites strike the surface, their fragments lay scattered for the taking. Some pieces are alive, and will attack.");
+        add("bestiary.entity.terra_entity.meteor_head.desc", "When meteorites strike the surface, their fragments lay scattered for the taking. Some pieces are alive, and will attack.");
         add("bestiary.entity.terra_entity.dungeon_slime.desc", "Slimes in the Dungeon became powerful by feeding off the cursed energy throughout the place. They seem particularly attracted to keys.");
         add("bestiary.entity.terra_entity.angry_bones.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
         add("bestiary.entity.terra_entity.angry_bones_big.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
@@ -2086,7 +2086,8 @@ public class ModEnglishProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.dungeon_spirit.desc", "Sometimes, highly concentrated ectoplasm gathers inside the more powerful of the cursed inhabitants of the Dungeon.");
         add("bestiary.entity.terra_entity.lava_slime.desc", "Due to the heat of the underworld, these slimes have taken on the properties of lava. Slaying them is difficult and dangerous.");
 //        add("bestiary.entity.terra_entity.tortured_soul.desc", "Sentenced to an eternity of punishment for his lifelong greedy ambitions, this man has long been corrupted into a demonic state.");
-//        add("bestiary.entity.terra_entity.bone_serpent.desc", "Mighty serpentine dragons once ruled hell, but long ago shed their obsidian scales. A skeletal husk is all that remains.");
+        add("bestiary.entity.terra_entity.bone_serpent.desc", "Mighty serpentine dragons once ruled hell, but long ago shed their obsidian scales. A skeletal husk is all that remains.");
+        add("bestiary.entity.terra_entity.wither_bone_serpent.desc", "The high concentration of souls in the Soul Sand Valley has turned the remains of these serpentine dragons into deadlier threats.");
         add("bestiary.entity.terra_entity.fire_imp.desc", "A lesser demon imbued with hell magic. Capable of teleporting and hurling phantom fireballs towards their foes.");
         add("bestiary.entity.terra_entity.hellbat.desc", "What's worse than a rabid, fast-flying, and annoying flying rodent? One that is on fire, of course!");
         add("bestiary.entity.terra_entity.demon.desc", "Demons are the infantry of the underworld. Unlike their lesser brothers, they cast shadow magic rather than hell magic.");

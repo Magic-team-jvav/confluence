@@ -535,6 +535,7 @@ public final class ModClientEvents {
         event.registerBaseWorm(TEMonsterEntities.GIANT_WORM);
         event.registerBaseWorm(TEMonsterEntities.LEECH);
         event.registerBoneSerpent(TEMonsterEntities.BONE_SERPENT);
+        event.registerBoneSerpent(TEMonsterEntities.WITHER_BONE_SERPENT);
         event.register("entity.minecraft.zombie.slime", new SlimeZombieRenderer(context));
     }
 

@@ -150,7 +150,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
             }
             WallOfFlesh wallOfFlesh = wof.spawn(level, blockPos.relative(direction, 64), MobSpawnType.MOB_SUMMONED);
             if (wallOfFlesh != null) {
-                wallOfFlesh.setForward(direction.getOpposite());
+                wallOfFlesh.setForward(direction);
             }
         } else {
             hof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);

@@ -1093,6 +1093,11 @@ public final class ValueSubProvider {
                 .add(ArmorItems.VIKING_HELMET, silver50)
                 .add(ArmorItems.FLINX_FUR_COAT, silver50 + gold2)
 
+                .add(ArmorItems.TIKI_MASK, silver50 + gold5+ gold2)
+                .add(ArmorItems.TIKI_SHIRT, silver50 + gold5+ gold2)
+                .add(ArmorItems.TIKI_LEGGINGS, silver50 + gold5+ gold2)
+                .add(ArmorItems.TIKI_BOOTS, silver50 + gold5+ gold2)
+
                 .add(TCItems.DIVING_HELMET, silver2);
         builder
                 .add(VanityArmorItems.ROBE, silver5 - silver1)

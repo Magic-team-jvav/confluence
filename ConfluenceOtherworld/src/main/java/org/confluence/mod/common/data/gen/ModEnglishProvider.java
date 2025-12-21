@@ -2506,6 +2506,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.titanium_helmet_set.0", "Attacking generates a defensive barrier of titanium shards");
         add("armor_set_bonus.confluence.titanium_headgear_set.0", "Attacking generates a defensive barrier of titanium shards");
 
+        // Tiki Set
+        add("armor_set_bonus.confluence.tiki_set.0", "Increases your max number of minions by 1");
+        add("armor_set_bonus.confluence.tiki_set.1", "Increases whip range by 20%");
+
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);

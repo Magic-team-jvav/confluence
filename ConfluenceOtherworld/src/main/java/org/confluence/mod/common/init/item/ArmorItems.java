@@ -742,6 +742,26 @@ public class ArmorItems {
             .geo("armor/hallowed_armor", true)
             .rarity(ModRarity.PINK));
 
+    public static final DeferredItem<BaseArmorItem> TIKI_MASK = register("tiki_mask", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/tiki_armor")
+            .rarity(ModRarity.LIME)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .summonDamage(0.10));
+    public static final DeferredItem<BaseArmorItem> TIKI_SHIRT = register("tiki_shirt", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/tiki_armor")
+            .rarity(ModRarity.LIME)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .summonDamage(0.10));
+    public static final DeferredItem<BaseArmorItem> TIKI_LEGGINGS = register("tiki_leggings", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/tiki_armor")
+            .rarity(ModRarity.LIME)
+            .attribute(TEAttributes.WHIP_RANGE,0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    public static final DeferredItem<BaseArmorItem> TIKI_BOOTS = register("tiki_boots", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/tiki_armor")
+            .rarity(ModRarity.LIME)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .summonDamage(0.10));
+
     public static final DeferredItem<BaseArmorItem> WIZARD_HAT = register("wizard_hat", ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/wizard_hat")
             .rarity(ModRarity.GREEN)

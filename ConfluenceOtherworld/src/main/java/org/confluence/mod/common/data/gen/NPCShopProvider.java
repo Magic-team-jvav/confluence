@@ -515,6 +515,24 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 // .add(MaterialItems.VIAL_OF_VENOM) 世纪之花后
                 //   .add(AccessoryItems.HERCULES_BEETLE) 世纪之花后，丛林
                 // 各种喷泉
+                // 提基套  todo 花后
+//                .add(new MoneyTradeItem.Builder()
+//                        .setResult(ArmorItems.TIKI_MASK.toStack())
+//                        .setProperties(hardmode)
+//                        .build())
+//                .add(new MoneyTradeItem.Builder()
+//                        .setResult(ArmorItems.TIKI_SHIRT.toStack())
+//                        .setProperties(hardmode)
+//                        .build())
+//                .add(new MoneyTradeItem.Builder()
+//                        .setResult(ArmorItems.TIKI_LEGGINGS.toStack())
+//                        .setProperties(hardmode)
+//                        .build())
+//                .add(new MoneyTradeItem.Builder()
+//                        .setResult(ArmorItems.TIKI_BOOTS.toStack())
+//                        .setProperties(hardmode)
+//                        .build())
+
                 .add(SellTrade.INSTANCE)
                 .build());
 

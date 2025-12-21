@@ -2542,6 +2542,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.titanium_helmet_set.0", "攻击生成钛金碎片防御屏障");
         add("armor_set_bonus.confluence.titanium_headgear_set.0", "攻击生成钛金碎片防御屏障");
 
+        // 提基
+        add("armor_set_bonus.confluence.tiki_set.0", "仆从数量上限增加1");
+        add("armor_set_bonus.confluence.tiki_set.1", "鞭子攻击范围扩大20%");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");
@@ -4532,6 +4535,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.SPIDER_CHESTPLATE.get(), "蜘蛛胸甲");
         add(ArmorItems.SPIDER_LEGGINGS.get(), "蜘蛛护腿");
         add(ArmorItems.SPIDER_BOOTS.get(), "蜘蛛靴子");
+        add(ArmorItems.TIKI_MASK.get(), "提基面具");
+        add(ArmorItems.TIKI_SHIRT.get(), "提基衣");
+        add(ArmorItems.TIKI_LEGGINGS.get(), "提基裤");
+        add(ArmorItems.TIKI_BOOTS.get(), "提基靴子");
 
         add(ArmorItems.COBALT_MASK.get(), "钴面具");
         add(ArmorItems.COBALT_HAT.get(), "钴帽");

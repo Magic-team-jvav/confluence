@@ -262,6 +262,14 @@ public final class ModArmorBonus {
                     .build());
         });
 
+        // 提基套装
+        register("tiki_set", 2, TIKI_MASK, TIKI_SHIRT, TIKI_LEGGINGS, TIKI_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
+                    .add(TEAttributes.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
+                    .add(TEAttributes.WHIP_RANGE, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .build());
+        });
+
         /// 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
 

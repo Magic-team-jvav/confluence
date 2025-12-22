@@ -325,6 +325,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
 //            putTarget(BoulderBlock.Variant.NORMAL.get(), 0xff4600,true, ShowType.DANGER);
         putTarget(SWITCH.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
+        putTarget(STONE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
+        putTarget(DEEPSLATE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(DEEPSLATE_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(Blocks.TNT, 0xff4600, true, ShowType.DANGER);
         putTarget(Blocks.TRIPWIRE, 0xff4600, true, ShowType.DANGER);

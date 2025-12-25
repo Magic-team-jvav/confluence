@@ -6,13 +6,13 @@
             "type": "terra_entity:bone_serpent",
             "maxCount": 1,
             "minCount": 1,
-            "weight": 4
+            "weight": 3
         },
         {
             "type": "terra_entity:wither_bone_serpent",
             "maxCount": 1,
             "minCount": 1,
-            "weight": 2
+            "weight": 1
         }
     ]
 }

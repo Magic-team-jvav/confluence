@@ -58,5 +58,19 @@ public class TreasureBagItems {
             }
         }
     });
+    public static final DeferredItem<TreasureBagItem> HILL_OF_FLESH_TREASURE_BAG = ITEMS.register("hill_of_flesh_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/hill_of_flesh"), ModRarity.LIGHT_RED) {
+        @ParametersAreNonnullByDefault
+        @Override
+        protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {
+            if (LibUtils.isAtLeastExpert(serverLevel, player.blockPosition())) {
+                CuriosApi.getCuriosInventory(player).ifPresent(iCuriosItemHandler -> {
+                    ICurioStacksHandler iCurioStacksHandler = iCuriosItemHandler.getCurios().get(TerraCurio.CURIO_SLOT);
+                    if (TCCommonConfigs.MAX_ACCESSORIES.get() - iCurioStacksHandler.getSlots() > 0) {
+                        items.add(TCItems.DEMON_HEART.toStack());
+                    }
+                });
+            }
+        }
+    });
     //public static final DeferredItem<TreasureBagItem> QUEEN_SLIME_TREASURE_BAG =
 }

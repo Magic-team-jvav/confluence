@@ -3424,7 +3424,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.EYE_OF_CTHULHU_RELIC.get(), "克苏鲁之眼圣物");
         add(DecorativeBlocks.BRAIN_OF_CTHULHU_RELIC.get(), "克苏鲁之脑圣物");
         add(DecorativeBlocks.EATER_OF_WORLDS_RELIC.get(), "世界吞噬怪圣物");
+        add(DecorativeBlocks.QUEEN_BEE_RELIC.get(), "蜂王圣物");
         add(DecorativeBlocks.SKELETRON_RELIC.get(), "骷髅王圣物");
+        add(DecorativeBlocks.WALL_OF_FLESH_RELIC.get(), "血肉墙圣物");
+        add(DecorativeBlocks.HILL_OF_FLESH_RELIC.get(), "血肉山圣物");
 
         add(DecorativeBlocks.POO_BLOCK.get(), "臭臭块");
         add(ModBlocks.POO.get(), "臭臭");
@@ -4032,6 +4035,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.SKELETRON_TREASURE_BAG.get(), "骷髅王宝藏袋");
         //add(TreasureBagItems.DEERCLOPS_TREASURE_BAG.get(), "独眼巨鹿宝藏袋");
         add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(), "血肉墙宝藏袋");
+        add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG.get(), "血肉山宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");

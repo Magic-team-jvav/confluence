@@ -1025,6 +1025,24 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(28)))
                 ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.WALL_OF_FLESH_RELIC)))
+        );
+
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/hill_of_flesh/classic"), wallOfFleshTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(8)))
+                ))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/hill_of_flesh/expert"), wallOfFleshTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(28)))
+                ))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/hill_of_flesh/master"), wallOfFleshTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(28)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.HILL_OF_FLESH_RELIC)))
         );
 
 
@@ -1140,6 +1158,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(22)))
                 ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.QUEEN_BEE_RELIC)))
         );
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon()

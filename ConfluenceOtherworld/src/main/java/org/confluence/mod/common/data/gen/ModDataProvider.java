@@ -1223,7 +1223,7 @@ public class ModDataProvider {
             register(context, createModifierKey("common_overworld"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     overworld,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 4, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 2, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEAnimals.FAIRY.get(), 3, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 60, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 5, 1, 1)

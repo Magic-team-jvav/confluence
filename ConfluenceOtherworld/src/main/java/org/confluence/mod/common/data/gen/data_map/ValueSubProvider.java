@@ -841,6 +841,7 @@ public final class ValueSubProvider {
                 .add(TGItems.SHOTGUN, gold5)
                 .add(TGItems.TACTICAL_SHOTGUN, gold10 - gold2)
                 .add(TGItems.THE_UNDERTAKER, gold1 + silver50)
+                .add(TGItems.PHOENIX_BLASTER, gold2 + gold1 + silver50)
                 .add(GunItems.STAR_CANNON, gold10)
                 .add(TGItems.MUSKET_BULLET, 1)
                 .add(TGItems.METEOR_SHOT, 1)

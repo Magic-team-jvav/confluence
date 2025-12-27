@@ -9,6 +9,7 @@ import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.terra_curio.api.primitive.IntegerValue;
+import org.confluence.terraentity.init.entity.TEProjectileEntities;
 
 public class SodiumDynamicLightsHelper {
     public static final boolean IS_LOADED = ModList.get().isLoaded("sodiumdynamiclights");
@@ -18,6 +19,7 @@ public class SodiumDynamicLightsHelper {
             DynamicLightHandlers.registerDynamicLightHandler(ModEntities.ARROW_PROJECTILE.get(), entity -> entity.modify.getLuminance());
             DynamicLightHandlers.registerDynamicLightHandler(ModEntities.CURSED_FLAMES_PROJECTILE.get(), entity -> 15);
             DynamicLightHandlers.registerDynamicLightHandler(ModEntities.STAR_CANNON_BULLET.get(), entity -> 10);
+            DynamicLightHandlers.registerDynamicLightHandler(TEProjectileEntities.BOOMERANG_PROJECTILE.get(), entity -> entity.getModifier().luminance);
         }
     }
 

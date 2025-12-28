@@ -2,29 +2,16 @@ package org.confluence.mod.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LanternBlock;
 import org.confluence.mod.client.model.block.AltarBlockModel;
-import org.confluence.mod.common.block.functional.BaseSoulInABottleBlock;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.joml.Vector3d;
-import org.joml.Vector3i;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import static org.confluence.lib.util.RenderUtils.drawCube;
 
 public class AltarBlockRenderer extends GeoBlockRenderer<AltarBlock.BEntity> {
 

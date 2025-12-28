@@ -141,6 +141,6 @@ public final class OverworldUtils {
      * default -64
      */
     public static int getCaveY() {
-        return -64;
+        return -60;
     }
 }

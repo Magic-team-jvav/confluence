@@ -25,6 +25,8 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_furniture.common.init.TFBlocks;
+import org.confluence.terra_furniture.common.init.TFTags;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
@@ -239,6 +241,23 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###",
                 "###"
         )), NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.HANGING_SIGN.toStack());
+
+        // 木椅
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.OAK_PLANKS)
+        ), List.of(
+                "#  ",
+                "#  ",
+                "## "
+        )), TFBlocks.WOODEN_CHAIR.toStack());
+
+        // 木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.OAK_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.WOODEN_TABLE.toStack());
 
         // 船
         registerBoatRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, BoatItems.EBONY_BOAT, BoatItems.EBONY_CHEST_BOAT);

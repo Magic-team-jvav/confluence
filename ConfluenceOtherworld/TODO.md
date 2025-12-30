@@ -165,6 +165,43 @@
 
 - 补全流程武器需要的粒子和简单的弹幕模型
 - 等咖啡回来后调整召唤物索敌，射速
+- en_us缺的翻译：
+  confluence.configuration.ArsNouveau.tooltip
+  enchantment.terra_entity.summoner_pact.desc
+  item.terra_entity.chester_staff
+  tooltip.item.confluence.calming_potion.0
+  bestiary.entity.terra_entity.pink_jellyfish.desc
+  item.terra_entity.wallet
+  enchantment.terra_entity.summoner_pact
+  item.terra_entity.malaise
+  item.terra_entity.guide_voodoo_doll_wall
+  item.terra_entity.cascade
+  item.terra_entity.valor
+  item.terra_entity.code_1
+  item.terra_entity.clothier_voodoo_doll
+  item.terra_entity.hive_five
+  container.confluence.adamantite_forge
+  confluence.configuration.Waystones.tooltip
+  item.terra_entity.bloody_spine
+  item.terra_curio.base_point
+  item.terra_entity.slime_crown
+  item.terra_entity.suspicious_looking_eye
+  bestiary.entity.terra_entity.gold_dragonfly.desc
+  item.terra_entity.amazon
+  bestiary.entity.minecraft.rabbit.desc
+  item.terra_entity.rally
+  item.terra_entity.worm_food
+  confluence.configuration.IronsSpell.tooltip
+  item.terra_entity.abeemination
+  item.terra_entity.wooden_yoyo
+  confluence.configuration.FTB.tooltip
+  terra_entity.effect.strategy.forzen_burn_5_sec
+  armor_set_bonus.confluence.ash_set.1
+  tooltip.item.confluence.satiety_potion.0
+  item.terra_entity.artery
+  confluence.configuration.Xaero.tooltip
+  tooltip.item.confluence.battle_potion.0
+  item.terra_entity.guide_voodoo_doll_hill
 
 ## 牢MK(MakerTechno)
 

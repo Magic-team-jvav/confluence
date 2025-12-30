@@ -318,6 +318,11 @@ dependencies {
     //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
     //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
+    if (false) {
+        runtimeOnly "curse.maven:enhanced-celestials-438447:7093308"
+        runtimeOnly "curse.maven:corgilib-693313:6808264"
+        runtimeOnly "curse.maven:data-anchor-1203668:7256604"
+    }
     if (advancementPlaques) {
         runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
     }

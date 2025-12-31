@@ -48,6 +48,7 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
         return name().toLowerCase(Locale.ROOT);
     }
 
+    /// @see org.confluence.mod.mixed.IMinecraftServer#isHardmode
     public boolean isHardmode() {
         return isAtLeast(WALL_OF_FLESH);
     }

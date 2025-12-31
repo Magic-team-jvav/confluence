@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class PureConversionTable extends ConversionTable {
     @Override
-    protected @Nullable Block getTarget(BlockState source) {
+    protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
         Block block = source.getBlock();
 
         if (block == Blocks.TALL_GRASS) {
@@ -30,9 +30,6 @@ public class PureConversionTable extends ConversionTable {
 
         if (holder.is(BlockTags.LOGS)) return Blocks.OAK_LOG;
         if (holder.is(BlockTags.LEAVES)) return Blocks.OAK_LEAVES;
-        if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return Blocks.STONE;
-        if (holder.is(Tags.Blocks.COBBLESTONES)) return Blocks.COBBLESTONE;
-
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_GRASS_BLOCK)) return Blocks.GRASS_BLOCK;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_JUNGLE_GRASS_BLOCK)) return NatureBlocks.JUNGLE_GRASS_BLOCK.get();
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SHORT_GRASS)) return Blocks.SHORT_GRASS;
@@ -44,6 +41,8 @@ public class PureConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_SAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_CACTUS)) return Blocks.CACTUS;
 
+        if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return Blocks.STONE;
+        if (holder.is(Tags.Blocks.COBBLESTONES)) return Blocks.COBBLESTONE;
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return Blocks.REDSTONE_ORE;
         if (holder.is(Tags.Blocks.ORES_COAL)) return Blocks.COAL_ORE;
         if (holder.is(Tags.Blocks.ORES_LAPIS)) return Blocks.LAPIS_ORE;

@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class TheCrimsonConversionTable extends ConversionTable {
     @Override
-    protected @Nullable Block getTarget(BlockState source) {
+    protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
         Block block = source.getBlock();
 
         if (block == Blocks.TALL_GRASS) {
@@ -27,11 +27,9 @@ public class TheCrimsonConversionTable extends ConversionTable {
         if (block instanceof CattailsBodyBlock) return NatureBlocks.CRIMSON_CATTAILS_BODY.get();
 
         Holder<Block> holder = block.builtInRegistryHolder();
+
         if (holder.is(BlockTags.LOGS)) return NatureBlocks.SHADOW_LOG_BLOCKS.LOG.get();
         if (holder.is(BlockTags.LEAVES)) return NatureBlocks.SHADOW_LOG_BLOCKS.LEAVES.get();
-        if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.CRIMSTONE.get();
-        if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_CRIMSTONE.get();
-
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_DIRT)) return Blocks.DIRT;
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_GRASS_BLOCK)) return NatureBlocks.CRIMSON_GRASS_BLOCK.get();
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_JUNGLE_GRASS_BLOCK)) return NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK.get();
@@ -44,6 +42,10 @@ public class TheCrimsonConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_CACTUS)) return NatureBlocks.CRIMSON_CACTUS.get();
 
+        if (!hardmode) return null;
+
+        if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.CRIMSTONE.get();
+        if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_CRIMSTONE.get();
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return OreBlocks.FLESHIFICATION_REDSTONE_ORE.get();
         if (holder.is(Tags.Blocks.ORES_COAL)) return OreBlocks.FLESHIFICATION_COAL_ORE.get();
         if (holder.is(Tags.Blocks.ORES_LAPIS)) return OreBlocks.FLESHIFICATION_LAPIS_ORE.get();

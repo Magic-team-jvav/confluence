@@ -22,7 +22,7 @@ import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
@@ -50,11 +50,12 @@ public interface ISpreadable {
         }
         if (chance != 100 && (chance == 0 || randomSource.nextInt(100) >= chance)) return;
 
+        boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
             if (!serverLevel.isLoaded(targetPos)) continue;
 
-            BlockState target = getSpreadType().getNullable(serverLevel.getBlockState(targetPos));
+            BlockState target = getSpreadType().getNullable(serverLevel.getBlockState(targetPos), hardmode);
             if (target == null) continue;
 
             if (target.is(ModTags.Blocks.SPREADABLE_GRASS_BLOCK)) {
@@ -85,13 +86,14 @@ public interface ISpreadable {
     }
 
     default void spreadTree(ServerLevel serverLevel, BlockPos targetPos) {
+        boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
         BlockState blockState = serverLevel.getBlockState(targetPos.above());
         if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
             Map<BlockPos, BlockState> map = searchFace(serverLevel, targetPos, new Hashtable<>(), 0);
             for (Map.Entry<BlockPos, BlockState> entry : map.entrySet()) {
                 BlockState source = entry.getValue();
                 if (source == AIR) continue;
-                BlockState target = getSpreadType().getNullable(source);
+                BlockState target = getSpreadType().getNullable(source, hardmode);
                 if (target != null) {
                     serverLevel.setBlockAndUpdate(entry.getKey(), target);
                 }
@@ -165,21 +167,39 @@ public interface ISpreadable {
             this.conversionTable = conversionTable;
         }
 
-        public @NotNull BlockState getNotNull(BlockState source) {
-            BlockState target = conversionTable.get(source);
+        public BlockState getNotNull(BlockState source, boolean hardmode) {
+            BlockState target = conversionTable.get(source, hardmode);
             return target == null ? source : target;
         }
 
-        public @Nullable BlockState getNullable(BlockState source) {
-            return conversionTable.get(source);
+        @Deprecated(forRemoval = true, since = "1.2.0")
+        @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
+        public BlockState getNotNull(BlockState source) {
+            return getNotNull(source, true);
         }
 
-        public boolean spread(Level level, BlockPos pos) {
-            BlockState target = getNullable(level.getBlockState(pos));
+        public @Nullable BlockState getNullable(BlockState source, boolean hardmode) {
+            return conversionTable.get(source, hardmode);
+        }
+
+        @Deprecated(forRemoval = true, since = "1.2.0")
+        @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
+        public @Nullable BlockState getNullable(BlockState source) {
+            return getNullable(source, true);
+        }
+
+        public boolean spread(Level level, BlockPos pos, boolean hardmode) {
+            BlockState target = getNullable(level.getBlockState(pos), hardmode);
             if (target != null) {
                 return level.setBlockAndUpdate(pos, target);
             }
             return false;
+        }
+
+        @Deprecated(forRemoval = true, since = "1.2.0")
+        @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
+        public boolean spread(Level level, BlockPos pos) {
+            return spread(level, pos, true);
         }
 
         @Override

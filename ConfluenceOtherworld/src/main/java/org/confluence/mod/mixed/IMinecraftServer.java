@@ -39,6 +39,7 @@ public interface IMinecraftServer {
         return server != null && matchesSecretFlag(server, flag);
     }
 
+    /// @see org.confluence.mod.common.data.saved.GamePhase#isHardmode
     static boolean isHardmode(MinecraftServer server) {
         return IMinecraftServer.of(server).confluence$matchesSecretFlag(IWorldOptions.HARDMODE);
     }

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class JungleConversionTable extends ConversionTable {
     @Override
-    protected @Nullable Block getTarget(BlockState source) {
+    protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
         Block block = source.getBlock();
         if (block == Blocks.TALL_GRASS) {
             return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.SHORT_GRASS : Blocks.AIR;

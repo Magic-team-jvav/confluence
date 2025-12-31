@@ -186,7 +186,8 @@ public final class LivingEntityEvents {
         if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
                 living instanceof Npc &&
                 !damageSource.is(ModDamageTypes.BYPASS_NPC_INVULNERABLE_TO_PLAYER) &&
-                LibUtils.getOwner(damageSource) instanceof Player
+                LibUtils.getOwner(damageSource) instanceof Player player &&
+                !player.isCreative()
         ) {
             event.setCanceled(true);
             return;

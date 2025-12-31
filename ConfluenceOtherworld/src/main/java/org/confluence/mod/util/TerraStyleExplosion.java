@@ -74,7 +74,7 @@ public class TerraStyleExplosion extends Explosion {
             if (entity.ignoreExplosion(this)) continue;
 
             if (damageCalculator.shouldDamageEntity(this, entity)) {
-                entity.hurt(damageSource, Math.max(damageCalculator.getEntityDamageAmount(this, entity), radius * 10));
+                entity.hurt(damageSource, Math.min(damageCalculator.getEntityDamageAmount(this, entity), radius * 10));
             }
             if (entity instanceof Player player && !player.isSpectator() && (!player.isCreative() || !player.getAbilities().flying)) {
                 hitPlayers.put(player, Vec3.ZERO);

@@ -215,9 +215,6 @@ dependencies {
         runtimeOnly "curse.maven:ftb-xmod-compat-889915:6979171"
     }
 
-    compileOnly "curse.maven:better-advancements-272515:5850587"
-    runtimeOnly "curse.maven:better-advancements-272515:5850587"
-
     compileOnly "curse.maven:sodium-394468:6382651"
     compileOnly "curse.maven:irisshaders-455508:6661598"
     if (sodium) {

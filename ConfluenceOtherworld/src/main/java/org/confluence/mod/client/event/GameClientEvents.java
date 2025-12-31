@@ -67,6 +67,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
@@ -76,6 +77,7 @@ import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
+import org.confluence.mod.network.c2s.SwordProjectilePacketC2S;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
@@ -124,6 +126,11 @@ public final class GameClientEvents {
             XaeroHelper.handle(player);
             DropletsHandler.handle(minecraft, player);
             DeathAnimUtils.handle();
+            if (Minecraft.getInstance().options.keyAttack.isDown() &&
+                    player.getMainHandItem().getItem() instanceof BaseSwordItem sword &&
+                    !player.getCooldowns().isOnCooldown(sword)) {
+                SwordProjectilePacketC2S.sendToServer();
+            }
         }
         DeathAnimUtils.clear();
     }
@@ -193,7 +200,8 @@ public final class GameClientEvents {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
-        if (PrismLibHelper.shouldSkipOriginalPrefixGather(itemStack, tooltipElements) || tooltipElements.isEmpty()) return;
+        if (PrismLibHelper.shouldSkipOriginalPrefixGather(itemStack, tooltipElements) || tooltipElements.isEmpty())
+            return;
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
         if (displayName.isPresent() && displayName.get() instanceof Component component) {
             PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
@@ -276,7 +284,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event) {
         if (IPoseStack.isAntiPush(event.getPoseStack()) || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF
-            || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE) return;
+                || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE) return;
         LivingEntity living = event.getEntity();
         if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
                 && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())
@@ -348,7 +356,8 @@ public final class GameClientEvents {
         Optional<ResourceKey<MobEffect>> optional = event.getEffectInstance().getEffect().unwrapKey();
         if (optional.isPresent()) {
             String key = Util.makeDescriptionId("tooltip.effect", optional.get().location()) + ".0";
-            if (I18n.exists(key)) event.getTooltip().add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+            if (I18n.exists(key))
+                event.getTooltip().add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
         }
         if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {
             event.getTooltip().add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));

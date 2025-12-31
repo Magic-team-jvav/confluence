@@ -27,6 +27,7 @@ public class ChlorophyteOreBlock extends Block {
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!GlobalCloakData.INSTANCE.isRevealed(state)) return;
+        if (level.random.nextInt(100) != 0) return;
         for (int i = 0; i < 4; i++) {
             Direction direction = Util.getRandom(LibUtils.DIRECTIONS, random);
             BlockPos relative = pos.relative(direction);

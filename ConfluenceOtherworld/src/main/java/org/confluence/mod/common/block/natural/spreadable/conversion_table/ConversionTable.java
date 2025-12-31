@@ -32,6 +32,7 @@ public abstract class ConversionTable {
         return get(source, true);
     }
 
+    @ApiStatus.OverrideOnly
     protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
         return getTarget(source);
     }

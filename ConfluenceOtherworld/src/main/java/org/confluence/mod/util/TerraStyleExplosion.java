@@ -104,7 +104,7 @@ public class TerraStyleExplosion extends Explosion {
 
     public static void handleClientExplode(Level level, double x, double y, double z, float radius) {
         level.playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 4.0F, (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F, false);
-        PSGameClient.LOADER.addEmitter(new ParticleEmitter(level, new Vec3(x, y, z), PARTICLE_ID, new MolangExp("radius", radius)), false);
+        PSGameClient.LOADER.addEmitter(new ParticleEmitter(level, new Vec3(x, y, z), PARTICLE_ID, new MolangExp("variable.radius", radius)), false);
     }
 
     public static Explosion terraExplode(

@@ -95,6 +95,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
+            TombstoneBoulderEntity.createTombstone(victim);
             Entity attacker = LibUtils.getOwner(damageSource);
 
             if (attacker instanceof ServerPlayer) {
@@ -113,7 +114,6 @@ public final class LivingEntityEvents {
             }
             if (victim instanceof ServerPlayer player) {
                 PlayerUtils.dropMoney(player);
-                TombstoneBoulderEntity.createTombstone(player);
             }
             for (ServerPlayer player : level.players()) {
                 if (player.position().distanceToSqr(victim.position()) > 32 * 32) continue;

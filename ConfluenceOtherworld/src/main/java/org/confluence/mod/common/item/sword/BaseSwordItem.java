@@ -115,25 +115,22 @@ public class BaseSwordItem extends SwordItem {
         }
     }
 
-    public void genProjectile(LivingEntity living, ItemStack weapon) {
-        SwordProjectileComponent data = weapon.get(ModDataComponentTypes.SWORD_PROJECTILE);
-        if (data != null) {
-            living.level().playSound(null, living.getX(), living.getY(), living.getZ(), data.getSoundEvent(), SoundSource.AMBIENT, 1.0F, 1.0F);
+    public void genProjectile(LivingEntity living, ItemStack weapon, SwordProjectileComponent data) {
+        living.level().playSound(null, living.getX(), living.getY(), living.getZ(), data.getSoundEvent(), SoundSource.AMBIENT, 1.0F, 1.0F);
 
-            try {
-                data.generation().genProjectile(living, weapon, data.getVelocity(living), () -> {
-                    if (BuiltInRegistries.ENTITY_TYPE.get(data.projType()).create(living.level()) instanceof SwordProjectile projectile) {
-                        projectile.setProjComponent(data);
-                        projectile.addAttackDamage((float) (data.damageFactor() * living.getAttributeValue(Attributes.ATTACK_DAMAGE)));
-                        return projectile;
-                    } else {
-                        living.sendSystemMessage(Component.literal("Error DataComponent sword_projectile: projType must be a SwordProjectile"));
-                        return null;
-                    }
-                });
-            } catch (Exception e) {
-                Confluence.LOGGER.error("Error DataComponent sword_projectile: projType must be a SwordProjectile");
-            }
+        try {
+            data.generation().genProjectile(living, weapon, data.getVelocity(living), () -> {
+                if (BuiltInRegistries.ENTITY_TYPE.get(data.projType()).create(living.level()) instanceof SwordProjectile projectile) {
+                    projectile.setProjComponent(data);
+                    projectile.addAttackDamage((float) (data.damageFactor() * living.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+                    return projectile;
+                } else {
+                    living.sendSystemMessage(Component.literal("Error DataComponent sword_projectile: projType must be a SwordProjectile"));
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            Confluence.LOGGER.error("Error DataComponent sword_projectile: projType must be a SwordProjectile");
         }
     }
 
@@ -332,7 +329,8 @@ public class BaseSwordItem extends SwordItem {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (modifier != null && modifier.inventoryTick != null) modifier.inventoryTick.accept(stack, level, entity, isSelected);
+        if (modifier != null && modifier.inventoryTick != null)
+            modifier.inventoryTick.accept(stack, level, entity, isSelected);
     }
 
     @FunctionalInterface

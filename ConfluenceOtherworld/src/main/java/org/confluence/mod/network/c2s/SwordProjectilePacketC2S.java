@@ -30,7 +30,7 @@ public class SwordProjectilePacketC2S implements IPacketC2S {
         if (stack.getItem() instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(sword)) {
             SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
             if (data == null) return;
-            sword.genProjectile(player, stack);
+            sword.genProjectile(player, stack, data);
             player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
         }
     }

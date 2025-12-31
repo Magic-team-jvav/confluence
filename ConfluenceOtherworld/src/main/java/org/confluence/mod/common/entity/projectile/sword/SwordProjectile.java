@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.PartEntity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -237,10 +237,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 return true;
             }
 
+            Entity victim = LibUtils.getOwner(target);
             LivingEntity hurter;
-            if (target instanceof LivingEntity living) {
-                hurter = living;
-            } else if (target instanceof PartEntity<?> partEntity && partEntity.getParent() instanceof LivingEntity living) {
+            if (victim instanceof LivingEntity living) {
                 hurter = living;
             } else {
                 return false;

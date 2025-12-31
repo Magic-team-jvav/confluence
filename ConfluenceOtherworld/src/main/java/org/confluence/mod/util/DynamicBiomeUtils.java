@@ -18,6 +18,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import org.confluence.lib.util.ReturnException;
+import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.ILevelChunkSection;
@@ -31,6 +32,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
+@ScheduledForMove(inVersion = "1.2.0", since = "2.0.0")
 public final class DynamicBiomeUtils {
     public static final int BIOME_THRESHOLD = 256;
     // 要维护两个优先级

@@ -454,8 +454,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.confluence.knockback", "击退：%s");
         add("tooltip.confluence.disabled", "已禁用");
 
-        add("tooltip.confluence.pickaxe_power", "镐力：");
-        add("tooltip.confluence.hammer_power", "锤力：");
+        add("tooltip.confluence.pickaxe_power", "镐力：%s%%");
+        add("tooltip.confluence.hammer_power", "锤力：%s%%");
 
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
@@ -1154,7 +1154,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.npc.slain", "%1$s%2$s被杀死了……");
         add("event.confluence.npc.left", "%s已离开！");
         add("event.confluence.traveling_merchant.departed", "旅商%s已离去！");
-        add("event.confluence.npc_invitation.use", "请柬已送达，将会添加一批新的NPC！");
+        add("event.confluence.npc_invitation", "请柬已送达，区块坐标为[%1$s, %2$s]到[%3$s, %4$s]的区域将会添加一批新的NPC！");
 
         add("event.confluence.reveal_step0", "你的世界已赐钴，钯金！");
         add("event.confluence.reveal_step1", "你的世界已赐秘银，山铜！");

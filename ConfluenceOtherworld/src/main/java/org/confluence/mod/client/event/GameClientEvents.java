@@ -24,6 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.stats.StatsCounter;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
@@ -60,6 +61,7 @@ import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
+import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -215,13 +217,23 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void itemToolTip(ItemTooltipEvent event) {
+        List<Component> toolTip = event.getToolTip();
+        ItemStack itemStack = event.getItemStack();
         if (ClientConfigs.sellPriceDisplay.test()) {
-            int price = ValueComponent.getValue(event.getItemStack(), 0);
+            int price = ValueComponent.getValue(itemStack, 0);
             if (price > 0) {
-                event.getToolTip().add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
+                toolTip.add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
             }
         }
-        ModArmorBonus.addBonusTooltip(event.getEntity(), event.getItemStack(), event.getToolTip());
+        ModArmorBonus.addBonusTooltip(event.getEntity(), itemStack, toolTip);
+        int power = DiggingPower.getPower(itemStack);
+        if (power > 0) {
+            if (itemStack.is(ItemTags.PICKAXES) || itemStack.is(ModTags.Items.TOOLS_DRILL)) {
+                toolTip.add(Component.translatable("tooltip.confluence.pickaxe_power", power).withStyle(ChatFormatting.GRAY));
+            } else if (itemStack.is(ModTags.Items.TOOLS_HAMMER)) {
+                toolTip.add(Component.translatable("tooltip.confluence.hammer_power", power).withStyle(ChatFormatting.GRAY));
+            }
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

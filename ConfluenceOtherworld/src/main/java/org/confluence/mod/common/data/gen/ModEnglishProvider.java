@@ -465,8 +465,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.knockback", "Knockback: %s");
         add("tooltip.confluence.disabled", "Disabled");
 
-        add("tooltip.confluence.pickaxe_power", "PickaxePower:");
-        add("tooltip.confluence.hammer_power", "HammerPower:");
+        add("tooltip.confluence.pickaxe_power", "Pickaxe Power: %s%%");
+        add("tooltip.confluence.hammer_power", "Hammer Power: %s%%");
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
@@ -1111,7 +1111,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.npc.slain", "%2$s the %1$s was slain...");
         add("event.confluence.npc.left", "%s has left!");
         add("event.confluence.traveling_merchant.departed", "%s the Traveling Merchant has departed!");
-        add("event.confluence.npc_invitation.use", "Invitation delivered! A new batch of NPCs will be added!");
+        add("event.confluence.npc_invitation", "Invitation delivered! A new batch of NPCs will be added in the region from chunk pos [%1$s, %2$s] to [%3$s, %4$s]!");
 
         add("event.confluence.reveal_step0", "Your world has been blessed with Cobalt and Palladium!");
         add("event.confluence.reveal_step1", "Your world has been blessed with Mythril and Orichalcum!");

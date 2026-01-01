@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.*;
@@ -21,6 +22,7 @@ import net.neoforged.neoforge.client.ClientHooks;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.client.DummyMultiBufferSource;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.integration.geckolib.IGeoCube;
@@ -344,7 +346,10 @@ public final class DeathAnimUtils {
                                       ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion){
         ItemStack armorItemStack = entity.getItemBySlot(slot);
         Item armorItemStackItem = armorItemStack.getItem();
-        if (!(armorItemStackItem instanceof Equipable equipable) || equipable.getEquipmentSlot() != slot) {
+        boolean fromConfluence = ModUtils.isFromConfluence(BuiltInRegistries.ITEM, armorItemStackItem);
+        if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE && !fromConfluence
+            || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA && !(fromConfluence || ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ITEM.getKey(armorItemStackItem).getNamespace()))
+            || !(armorItemStackItem instanceof Equipable equipable) || equipable.getEquipmentSlot() != slot) {
             return;
         }
         if (GeoRenderProvider.of(armorItemStackItem).getGeoArmorRenderer(entity, armorItemStack, slot, null) != null) {
@@ -362,6 +367,7 @@ public final class DeathAnimUtils {
     private static void makeChestArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, ItemStack armorItemStack,
                                            ArmorItem armorItem, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
                                            ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+        if (armorLayer.outerModel == null) return;
         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.CHEST, armorLayer.outerModel);
         if (model instanceof HumanoidModel<?> outerModel) {
             outerModel.setAllVisible(true);
@@ -378,6 +384,7 @@ public final class DeathAnimUtils {
     private static void makeHeadArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, ItemStack armorItemStack,
                                           ArmorItem armorItem, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
                                           ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+        if (armorLayer.outerModel == null) return;
         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.HEAD, armorLayer.outerModel);
         if (model instanceof HumanoidModel<?> outerModel) {
             outerModel.setAllVisible(true);
@@ -393,6 +400,7 @@ public final class DeathAnimUtils {
     private static void makeLegsArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, ItemStack armorItemStack,
                                           ArmorItem armorItem, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
                                           ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+        if (armorLayer.innerModel == null) return;
         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.LEGS, armorLayer.innerModel);
         if (model instanceof HumanoidModel<?> humanoidModel) {
             humanoidModel.setAllVisible(true);
@@ -408,6 +416,7 @@ public final class DeathAnimUtils {
     private static void makeFeetArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, ItemStack armorItemStack,
                                           ArmorItem armorItem, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
                                           ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+        if (armorLayer.outerModel == null) return;
         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.FEET, armorLayer.outerModel);
         if (model instanceof HumanoidModel<?> outerModel) {
             outerModel.setAllVisible(true);

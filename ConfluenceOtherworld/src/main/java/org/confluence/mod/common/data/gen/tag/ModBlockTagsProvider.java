@@ -418,6 +418,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BRAIN_OF_CTHULHU_RELIC.get(),
                 EATER_OF_WORLDS_RELIC.get(),
                 QUEEN_BEE_RELIC.get(),
+                DEERCLOPS_RELIC.get(),
                 SKELETRON_RELIC.get(),
                 WALL_OF_FLESH_RELIC.get(),
                 HILL_OF_FLESH_RELIC.get()
@@ -719,6 +720,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BRAIN_OF_CTHULHU_RELIC.get(),
                 EATER_OF_WORLDS_RELIC.get(),
                 QUEEN_BEE_RELIC.get(),
+                DEERCLOPS_RELIC.get(),
                 SKELETRON_RELIC.get(),
                 WALL_OF_FLESH_RELIC.get(),
                 HILL_OF_FLESH_RELIC.get()

@@ -530,6 +530,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(BRAIN_OF_CTHULHU_RELIC.get());
         dropSelf(EATER_OF_WORLDS_RELIC.get());
         dropSelf(QUEEN_BEE_RELIC.get());
+        dropSelf(DEERCLOPS_RELIC.get());
         dropSelf(SKELETRON_RELIC.get());
         dropSelf(WALL_OF_FLESH_RELIC.get());
         dropSelf(HILL_OF_FLESH_RELIC.get());

@@ -290,6 +290,7 @@ public class DecorativeBlocks {
     public static final DeferredBlock<RelicBlock> BRAIN_OF_CTHULHU_RELIC = registerRelic("brain_of_cthulhu_relic");
     public static final DeferredBlock<RelicBlock> EATER_OF_WORLDS_RELIC = registerRelic("eater_of_worlds_relic");
     public static final DeferredBlock<RelicBlock> QUEEN_BEE_RELIC = registerRelic("queen_bee_relic");
+    public static final DeferredBlock<RelicBlock> DEERCLOPS_RELIC = registerRelic("deerclops_relic");
     public static final DeferredBlock<RelicBlock> SKELETRON_RELIC = registerRelic("skeletron_relic");
     public static final DeferredBlock<RelicBlock> WALL_OF_FLESH_RELIC = registerRelic("wall_of_flesh_relic");
     public static final DeferredBlock<RelicBlock> HILL_OF_FLESH_RELIC = registerRelic("hill_of_flesh_relic");

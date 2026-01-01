@@ -30,10 +30,7 @@ import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TERideableItems;
-import org.confluence.terraentity.init.item.TEWhipItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
+import org.confluence.terraentity.init.item.*;
 
 import java.util.Calendar;
 import java.util.function.BiConsumer;
@@ -1161,6 +1158,29 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.QUEEN_BEE_RELIC)))
         );
 
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/deerclops/classic"), deerclopsTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
+                ))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/deerclops/expert"), deerclopsTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(22)))
+                ))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/deerclops/master"), deerclopsTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(22)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.DEERCLOPS_RELIC)))
+        );
+
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 90)))
@@ -1491,6 +1511,26 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.HONEY_BOTTLE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ));
+    }
+
+    private static LootTable.Builder deerclopsTreasureBagCommon() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                ))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.RADIO_THING))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TEPetItems.CHESTER_STAFF))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ManaWeaponItems.WEATHER_PAIN))
+                        .add(LootItem.lootTableItem(AxeItems.LUCY_THE_AXE))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                );
     }
 
 

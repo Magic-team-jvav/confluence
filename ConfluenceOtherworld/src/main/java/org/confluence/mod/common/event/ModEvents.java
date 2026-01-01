@@ -281,7 +281,7 @@ public final class ModEvents {
             AccessoryItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
         } else if (event.getTab() == ModTabs.MISC.get()) {
             ItemStack clothierVoodooDollStack = AccessoryItems.CLOTHIER_VOODOO_DOLL.toStack();
-            event.insertAfter(ConsumableItems.ABEEMINATION.toStack(), clothierVoodooDollStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(ConsumableItems.DEER_THING.toStack(), clothierVoodooDollStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(clothierVoodooDollStack, AccessoryItems.GUIDE_VOODOO_DOLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }

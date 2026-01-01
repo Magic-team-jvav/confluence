@@ -681,6 +681,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.WORM_FOOD.get(),
                 ConsumableItems.BLOODY_SPINE.get(),
                 ConsumableItems.ABEEMINATION.get(),
+                ConsumableItems.DEER_THING.get(),
                 AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
                 AccessoryItems.GUIDE_VOODOO_DOLL.get()
         );

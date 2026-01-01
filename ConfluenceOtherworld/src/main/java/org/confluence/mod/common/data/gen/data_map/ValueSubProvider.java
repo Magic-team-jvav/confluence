@@ -1463,6 +1463,7 @@ public final class ValueSubProvider {
                 .add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG, gold5)
                 .add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG, gold5 + gold2)
                 .add(TreasureBagItems.SKELETRON_TREASURE_BAG, gold1 + gold2)
+                .add(TreasureBagItems.DEERCLOPS_TREASURE_BAG, gold5)
                 .add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG, gold10 - silver50)
                 .add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG, gold10 - silver50);
         builder

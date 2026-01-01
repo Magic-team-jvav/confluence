@@ -165,6 +165,7 @@
 
 - 补全流程武器需要的粒子和简单的弹幕模型
 - 等咖啡回来后调整召唤物索敌，射速
+- 独眼巨鹿宝藏袋战利品表
 - en_us缺的翻译：
   confluence.configuration.ArsNouveau.tooltip
   enchantment.terra_entity.summoner_pact.desc

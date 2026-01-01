@@ -1,23 +1,17 @@
 package org.confluence.mod.common.event.game;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
-import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WeatherHandler;
-import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
@@ -33,8 +27,6 @@ import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class TickEvents {
@@ -44,42 +36,25 @@ public final class TickEvents {
             WeatherHandler.tick();
             return;
         }
-        if (!(event.getLevel() instanceof ServerLevel serverLevel) || serverLevel.dimension() != OverworldUtils.dimension()) return;
-        FallingStarItemEntity.summon(serverLevel);
-        MeteoriteTracker.INSTANCE.tick(serverLevel);
-        BossDelaySpawner.INSTANCE.tick(serverLevel);
-
-        int dayTime = LibDateUtils.getDayTime(serverLevel);
-        if (dayTime == LibDateUtils._06$00) {
-            float factorX = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
-            float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
-            ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
-        } else if (dayTime == LibDateUtils._19$30) {
-            EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
-            if (!KillBoard.INSTANCE.isDefeated(type) && !BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
-                for (ServerPlayer player : serverLevel.players()) {
-                    boolean attributeFactor = player.getMaxHealth() >= 40 && player.getArmorValue() >= 10;
-                    boolean npcFactor = NPCSpawner.INSTANCE.getAliveNpcCount(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player)), entityType -> true/* todo 骷髅商人不计入 */) >= 4;
-                    if (attributeFactor && npcFactor) {
-                        if (serverLevel.random.nextFloat() < 0.3333F) {
-                            BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), LibDateUtils::isNight);
-                            serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()), false);
-                        }
-                        break;
-                    }
-                }
-            }
-            if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {
-                MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
-            }
+        if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
+            return;
         }
-        if (CommonConfigs.DO_NPC_SPAWNING.get() &&
-                LibDateUtils.isDay(dayTime) &&
-                serverLevel.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
-                serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
-        ) NPCSpawner.INSTANCE.checkNpcRespawn(serverLevel);
+        FallingStarItemEntity.summon(level);
+        MeteoriteTracker.INSTANCE.tick(level);
+        BossDelaySpawner.INSTANCE.tick(level);
 
-        HardmodeConvertor.INSTANCE.scheduleRefill(serverLevel);
+        int dayTime = LibDateUtils.getDayTime(level);
+        if (dayTime == LibDateUtils._06$00) {
+            ConfluenceData.updateWind(level);
+        } else if (dayTime == LibDateUtils._19$30) {
+            BossDelaySpawner.spawnEyeOfCthulhu(level);
+            MeteoriteTracker.spawnMeteor(level);
+        } else if (dayTime == LibDateUtils._00$00) {
+            BossDelaySpawner.spawnDeerClops(level);
+        }
+        NPCSpawner.respawnNPC(level, dayTime);
+
+        HardmodeConvertor.INSTANCE.scheduleRefill(level);
     }
 
     @SubscribeEvent

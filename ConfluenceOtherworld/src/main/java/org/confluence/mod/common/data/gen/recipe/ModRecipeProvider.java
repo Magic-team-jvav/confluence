@@ -371,6 +371,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         altar(recipeOutput, SwordItems.NIGHTS_EDGE.toStack(), Ingredient.of(SwordItems.BLOOD_BUTCHERER, SwordItems.LIGHTS_BANE), Ingredient.of(SwordItems.MURAMASA), Ingredient.of(SwordItems.BLADE_OF_GRASS), Ingredient.of(SwordItems.VOLCANO));
         altar(recipeOutput, ToolItems.METEOR_COMPASS.toStack(), AmountIngredient.of(4, ModTags.Items.EVIL_INGOT), AmountIngredient.of(4, MaterialItems.FALLING_STAR));
         altar(recipeOutput, ConsumableItems.SLIME_CROWN.toStack(), AmountIngredient.of(20, MaterialItems.GEL), Ingredient.of(VanityArmorItems.GOLD_CROWN, VanityArmorItems.PLATINUM_CROWN));
+        altar(recipeOutput, ConsumableItems.DEER_THING.toStack(), AmountIngredient.of(3, MaterialItems.FLINX_FUR), AmountIngredient.of(5, Ingredient.of(ModTags.Items.EVIL_MATERIAL)));
 
         alchemyTable(recipeOutput, PotionItems.ARCHERY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.LENS), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.SWIFTNESS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.CACTUS));

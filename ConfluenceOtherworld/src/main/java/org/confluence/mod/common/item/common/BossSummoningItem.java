@@ -36,7 +36,7 @@ public class BossSummoningItem extends TooltipItem {
                 itemStack.shrink(1);
             }
             Mob mob = factory.apply(level);
-            if (Streams.stream(serverLevel.getEntities().getAll()).anyMatch(mob.getClass()::isInstance)) {
+            if (Streams.stream(serverLevel.getAllEntities()).anyMatch(mob.getClass()::isInstance)) {
                 return InteractionResultHolder.fail(itemStack);
             }
             mob.setPos(

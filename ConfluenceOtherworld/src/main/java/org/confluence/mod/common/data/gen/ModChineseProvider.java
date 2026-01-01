@@ -3996,6 +3996,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.WORM_FOOD.get(), "蠕虫诱饵");
         add(ConsumableItems.BLOODY_SPINE.get(), "血腥脊椎");
         add(ConsumableItems.ABEEMINATION.get(), "憎恶之蜂");
+        add(ConsumableItems.DEER_THING.get(), "鹿华");
         add(ConsumableItems.BOMB.get(), "炸弹");
         add(ConsumableItems.BOUNCY_BOMB.get(), "弹力炸弹");
         add(ConsumableItems.STICKY_BOMB.get(), "黏性炸弹");
@@ -4033,7 +4034,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
         add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get(), "蜂王宝藏袋");
         add(TreasureBagItems.SKELETRON_TREASURE_BAG.get(), "骷髅王宝藏袋");
-        //add(TreasureBagItems.DEERCLOPS_TREASURE_BAG.get(), "独眼巨鹿宝藏袋");
+        add(TreasureBagItems.DEERCLOPS_TREASURE_BAG.get(), "独眼巨鹿宝藏袋");
         add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(), "血肉墙宝藏袋");
         add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG.get(), "血肉山宝藏袋");
 

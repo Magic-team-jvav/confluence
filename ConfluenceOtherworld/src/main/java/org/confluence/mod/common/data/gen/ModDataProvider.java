@@ -818,23 +818,23 @@ public class ModDataProvider {
             register(context, COLD_CRYSTAL_ORE, configured.getOrThrow(ConfiguredFeatures.COLD_CRYSTAL_ORE), inSquare, heightRangeTriangle(-52, 160), biome);
             register(context, CRIMTANE_ORE, configured.getOrThrow(ConfiguredFeatures.CRIMTANE_ORE), SecretFlagPlacement.of(IWorldOptions.THE_CRIMSON), count2, inSquare, heightRangeTriangle(-50, 30), biome);
             // 标记生成次数
-            register(context, DEEPSLATE_ADAMANTITE_ORE_STEP_0, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ADAMANTITE_ORE_STEP_0), RarityFilter.onAverageOnceEvery(6),inSquare, heightRangeTriangle(-60, -40), biome);
-            register(context, DEEPSLATE_ADAMANTITE_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ADAMANTITE_ORE_STEP_1), RarityFilter.onAverageOnceEvery(6),inSquare, heightRangeTriangle(-60, -40), biome);
-            register(context, DEEPSLATE_ADAMANTITE_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ADAMANTITE_ORE_STEP_2), RarityFilter.onAverageOnceEvery(6),inSquare, heightRangeTriangle(-60, -40), biome);
+            register(context, DEEPSLATE_ADAMANTITE_ORE_STEP_0, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ADAMANTITE_ORE_STEP_0), RarityFilter.onAverageOnceEvery(6), inSquare, heightRangeTriangle(-60, -40), biome);
+            register(context, DEEPSLATE_ADAMANTITE_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ADAMANTITE_ORE_STEP_1), RarityFilter.onAverageOnceEvery(6), inSquare, heightRangeTriangle(-60, -40), biome);
+            register(context, DEEPSLATE_ADAMANTITE_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ADAMANTITE_ORE_STEP_2), RarityFilter.onAverageOnceEvery(6), inSquare, heightRangeTriangle(-60, -40), biome);
             register(context, DEEPSLATE_COBALT_ORE_STEP_0, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_COBALT_ORE_STEP_0), RarityFilter.onAverageOnceEvery(2), inSquare, heightRangeTriangle(-60, -10), biome);
-            register(context, DEEPSLATE_COBALT_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_COBALT_ORE_STEP_1), RarityFilter.onAverageOnceEvery(2),inSquare, heightRangeTriangle(-60, -10), biome);
-            register(context, DEEPSLATE_COBALT_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_COBALT_ORE_STEP_2), RarityFilter.onAverageOnceEvery(2),inSquare, heightRangeTriangle(-60, -10), biome);
+            register(context, DEEPSLATE_COBALT_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_COBALT_ORE_STEP_1), RarityFilter.onAverageOnceEvery(2), inSquare, heightRangeTriangle(-60, -10), biome);
+            register(context, DEEPSLATE_COBALT_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_COBALT_ORE_STEP_2), RarityFilter.onAverageOnceEvery(2), inSquare, heightRangeTriangle(-60, -10), biome);
             register(context, DEEPSLATE_MYTHRIL_ORE_STEP_0, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_MYTHRIL_ORE_STEP_0), RarityFilter.onAverageOnceEvery(4), inSquare, heightRangeTriangle(-60, -25), biome);
             register(context, DEEPSLATE_MYTHRIL_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_MYTHRIL_ORE_STEP_1), RarityFilter.onAverageOnceEvery(4), inSquare, heightRangeTriangle(-60, -25), biome);
             register(context, DEEPSLATE_MYTHRIL_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_MYTHRIL_ORE_STEP_2), RarityFilter.onAverageOnceEvery(4), inSquare, heightRangeTriangle(-60, -25), biome);
-            register(context, DEEPSLATE_ORICHALCUM_ORE_STEP_0, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ORICHALCUM_ORE_STEP_0),RarityFilter.onAverageOnceEvery(4), inSquare, heightRangeTriangle(-60, -25), biome);
+            register(context, DEEPSLATE_ORICHALCUM_ORE_STEP_0, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ORICHALCUM_ORE_STEP_0), RarityFilter.onAverageOnceEvery(4), inSquare, heightRangeTriangle(-60, -25), biome);
             register(context, DEEPSLATE_ORICHALCUM_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ORICHALCUM_ORE_STEP_1), RarityFilter.onAverageOnceEvery(4), inSquare, heightRangeTriangle(-60, -25), biome);
-            register(context, DEEPSLATE_ORICHALCUM_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ORICHALCUM_ORE_STEP_2),RarityFilter.onAverageOnceEvery(4), inSquare, heightRangeTriangle(-60, -25), biome);
-            register(context, DEEPSLATE_PALLADIUM_ORE_STEP_0, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_PALLADIUM_ORE_STEP_0), RarityFilter.onAverageOnceEvery(2),inSquare, heightRangeTriangle(-60, -10), biome);
-            register(context, DEEPSLATE_PALLADIUM_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_PALLADIUM_ORE_STEP_1), RarityFilter.onAverageOnceEvery(2),inSquare, heightRangeTriangle(-60, -10), biome);
-            register(context, DEEPSLATE_PALLADIUM_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_PALLADIUM_ORE_STEP_2),RarityFilter.onAverageOnceEvery(2),inSquare, heightRangeTriangle(-60, -10), biome);
+            register(context, DEEPSLATE_ORICHALCUM_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_ORICHALCUM_ORE_STEP_2), RarityFilter.onAverageOnceEvery(4), inSquare, heightRangeTriangle(-60, -25), biome);
+            register(context, DEEPSLATE_PALLADIUM_ORE_STEP_0, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_PALLADIUM_ORE_STEP_0), RarityFilter.onAverageOnceEvery(2), inSquare, heightRangeTriangle(-60, -10), biome);
+            register(context, DEEPSLATE_PALLADIUM_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_PALLADIUM_ORE_STEP_1), RarityFilter.onAverageOnceEvery(2), inSquare, heightRangeTriangle(-60, -10), biome);
+            register(context, DEEPSLATE_PALLADIUM_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_PALLADIUM_ORE_STEP_2), RarityFilter.onAverageOnceEvery(2), inSquare, heightRangeTriangle(-60, -10), biome);
             register(context, DEEPSLATE_TITANIUM_ORE_STEP_0, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_TITANIUM_ORE_STEP_0), RarityFilter.onAverageOnceEvery(6), inSquare, heightRangeTriangle(-60, -40), biome);
-            register(context, DEEPSLATE_TITANIUM_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_TITANIUM_ORE_STEP_1), RarityFilter.onAverageOnceEvery(6),inSquare, heightRangeTriangle(-60, -40), biome);
+            register(context, DEEPSLATE_TITANIUM_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_TITANIUM_ORE_STEP_1), RarityFilter.onAverageOnceEvery(6), inSquare, heightRangeTriangle(-60, -40), biome);
             register(context, DEEPSLATE_TITANIUM_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_TITANIUM_ORE_STEP_2), RarityFilter.onAverageOnceEvery(6), inSquare, heightRangeTriangle(-60, -40), biome);
             register(context, DEMONITE_ORE, configured.getOrThrow(ConfiguredFeatures.DEMONITE_ORE), SecretFlagPlacement.of(IWorldOptions.THE_CORRUPTION), count2, inSquare, heightRangeTriangle(-50, 30), biome);
             register(context, GELSTONE_ORE, configured.getOrThrow(ConfiguredFeatures.GELSTONE_ORE), inSquare, heightRangeTriangle(-52, 160), biome);
@@ -1059,8 +1059,6 @@ public class ModDataProvider {
             HolderSet<Biome> overworld = biome.getOrThrow(Tags.Biomes.IS_OVERWORLD);
             HolderSet<Biome> jungle = biome.getOrThrow(Tags.Biomes.IS_JUNGLE);
             HolderSet<Biome> jungleLike = new OrHolderSet<>(jungle, biome.getOrThrow(Tags.Biomes.IS_LUSH));
-
-            HolderSet<Biome> desertAndBadlands = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_DESERT), biome.getOrThrow(Tags.Biomes.IS_BADLANDS));
             HolderSet<Biome> jungleAndLush = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_JUNGLE), biome.getOrThrow(Tags.Biomes.IS_LUSH));
 
 
@@ -1124,7 +1122,7 @@ public class ModDataProvider {
                     PlacedFeatures.CRIMSON_ALTAR_WORLD, PlacedFeatures.DEMON_ALTAR_WORLD,
                     PlacedFeatures.NO_TRAPS_GRAVITATION_TRAP, PlacedFeatures.NO_TRAPS_PNEUMATIC_TRAP, PlacedFeatures.NO_TRAPS_SCULK_TRAP, PlacedFeatures.NO_TRAPS_SHIMMER_TRAP,
                     PlacedFeatures.DART_TRAP, PlacedFeatures.BOULDER_TRAP, PlacedFeatures.DEATH_CHEST_TRAP,
-                    PlacedFeatures.LIFE_CRYSTAL, PlacedFeatures.WATER_CHESTS,PlacedFeatures.PLATINUM_VEIN_WITH_DETONATOR, PlacedFeatures.GOLD_VEIN_WITH_DETONATOR
+                    PlacedFeatures.LIFE_CRYSTAL, PlacedFeatures.WATER_CHESTS, PlacedFeatures.PLATINUM_VEIN_WITH_DETONATOR, PlacedFeatures.GOLD_VEIN_WITH_DETONATOR
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
             addFeatures(context, "overworld_vd", overworld, HolderSet.direct(factory,
                     PlacedFeatures.LIFE_MUSHROOM
@@ -1191,7 +1189,7 @@ public class ModDataProvider {
                     )
             ));
             register(context, createModifierKey("common_desert"), new BiomeModifiers.AddSpawnsBiomeModifier(
-                    desertAndBadlands,
+                    desertBadlands,
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEAnimals.SCORPION.get(), 15, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.DESERT_SLIME.get(), 15, 1, 2),
@@ -1296,7 +1294,7 @@ public class ModDataProvider {
                     biome.getOrThrow(Tags.Biomes.IS_FLOWER_FOREST),
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEAnimals.BUTTERFLY.get(), 30, 1, 3)
-                            )
+                    )
             ));
         }
 
@@ -1308,12 +1306,13 @@ public class ModDataProvider {
             context.register(Confluence.asResourceKey(NeoForgeRegistries.Keys.BIOME_MODIFIERS, path), new BiomeModifiers.AddCarversBiomeModifier(biomes, carvers, step));
         }
 
-        private static  ResourceKey<BiomeModifier>  createModifierKey(String name) {return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Confluence.asResource("mob_spawner/" + name));}
+        private static ResourceKey<BiomeModifier> createModifierKey(String name) {return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Confluence.asResource("mob_spawner/" + name));}
 
         private static Holder.Reference<BiomeModifier> register(BootstrapContext<BiomeModifier> context, ResourceKey<BiomeModifier> key, BiomeModifier value) {
             return context.register(key, value, Lifecycle.stable());
         }
-        private HolderSet.Direct<Biome> getHolderSet(HolderGetter<Biome> biomeLookup, ResourceKey<Biome>... biomeNames){
+
+        private HolderSet.Direct<Biome> getHolderSet(HolderGetter<Biome> biomeLookup, ResourceKey<Biome>... biomeNames) {
             return HolderSet.direct(Arrays.stream(biomeNames).map(biomeLookup::getOrThrow).toList());
         }
     }

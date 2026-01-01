@@ -16,6 +16,7 @@ public final class BlockCounts {
     public final AtomicInteger glowing_mushroom = new AtomicInteger();
     public final AtomicInteger tomb = new AtomicInteger();
     public final AtomicInteger water = new AtomicInteger();
+    public final AtomicInteger chlorophyte = new AtomicInteger();
 
     public boolean isGraveyard() {
         return tomb.get() - sunflower.get() >= 7;
@@ -37,6 +38,7 @@ public final class BlockCounts {
                ", glowing_mushroom=" + glowing_mushroom +
                ", tomb=" + tomb +
                ", water=" + water +
+               ", chlorophyte=" + chlorophyte +
                '}';
     }
 }

@@ -21,6 +21,7 @@ import org.confluence.lib.util.ReturnException;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IPalettedContainer;
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +50,7 @@ public final class DynamicBiomeUtils {
         .put(block -> block.is(ModTags.Blocks.GLOWING_MUSHROOM_BLOCKS), (counter, count) -> counter.glowing_mushroom.addAndGet(count))
         .put(block -> block.is(Blocks.SUNFLOWER), (counter, count) -> counter.sunflower.addAndGet(count))
         .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (counter, count) -> counter.tomb.addAndGet(count))
+        .put(block -> block.is(OreBlocks.CHLOROPHYTE_ORE), (counter, count) -> counter.chlorophyte.addAndGet(count))
         .put(block -> block.getFluidState().is(ModTags.Fluids.C_WATER), (counter, count) -> counter.water.addAndGet(count))
         .build();
 

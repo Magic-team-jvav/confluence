@@ -38,7 +38,7 @@ import java.util.stream.Stream;
  * Generates entities loot tables into loot_modifier path specified by ModLootModifiersProvider i.e. confluence/loot_table/with/entities/bat.json
  * @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
  */
-public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider {
+public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider implements SyntheticLootTableProvider {
     public AddEntityLootConfluenceSubProvider(HolderLookup.Provider registries) {
         super(FeatureFlags.REGISTRY.allFlags(), registries);
     }
@@ -273,6 +273,16 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider {
         if (!accessor.getMap().isEmpty()) {
             throw new IllegalStateException("Created loot tables for entities not supported by datapack: " + accessor.getMap().keySet());
         }
+    }
+
+    @Override
+    public List<String> getSyntheticLootTablePaths() {
+        var entries = getAddedEntitiesLoot();
+        List<String> paths = new ArrayList<>();
+        for (var entry : entries) {
+            paths.add(Confluence.asResource(getPath(entry.entityType)).toString());
+        }
+        return paths;
     }
 
     public record AddedEntityLoot(EntityType<?> entityType, LootTable.Builder lootTableBuilder) {}

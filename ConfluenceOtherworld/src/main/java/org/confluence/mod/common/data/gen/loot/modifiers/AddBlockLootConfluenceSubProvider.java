@@ -35,7 +35,7 @@ import java.util.function.BiConsumer;
  *
  * @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
  */
-public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider {
+public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider implements SyntheticLootTableProvider {
     private HolderLookup.Provider provider;
 
     public AddBlockLootConfluenceSubProvider(HolderLookup.Provider provider) {
@@ -214,6 +214,16 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider {
 
     public String getPath(ResourceLocation location) {
         return "with/" + location.getPath();
+    }
+
+    @Override
+    public List<String> getSyntheticLootTablePaths() {
+        var entries = getAddedBlocksLoot();
+        List<String> paths = new ArrayList<>();
+        for (var entry : entries) {
+            paths.add(Confluence.asResource(getPath(entry.block.getLootTable().location())).toString());
+        }
+        return paths;
     }
 
     public record AddedBlockLoot(Block block, LootTable.Builder lootTableBuilder) {}

@@ -548,6 +548,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_bug_net.0", "Used to catch critters");
         add("tooltip.item.confluence.golden_bug_net.1", "Can catch lava critters too!");
         add("tooltip.item.confluence.dev_bug_net.0", "Can catch most creatures!");
+        add("tooltip.item.confluence.lucy_the_axe.0", "'I love Lucy!'");
+
         // configuration
         add("confluence.configuration.Compatibility", "Compatibility Mechanism");
         add("confluence.configuration.Compatibility.button", "Settings for compatibility with other mods");
@@ -1176,6 +1178,40 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.terra_entity.angler.item.confluence.unicorn_fish", "Unicorns and rainbows are absolutely great! They're everywhere, even in the water. No, really, I actually saw a unicorn fish in the Hallowed lake! Your job is to reel it up and let me have it as a pet!(Caught in Hallow)");
         add("dialogs.terra_entity.angler.item.confluence.wyverntail", "I know something youuuuu don't! Fine, I'll tell you, there's a terrifying creature that flies among the stars! I'm not making this up! It's called a Wyvern! But, but, you knew that already, right? Well what you don't know is that they are born and raised as tadpoles! So, they're actually like.. well, a frog! Hop to it and get me one!(Caught in Sky Lakes)");
         add("dialogs.terra_entity.angler.item.confluence.zombie_fish", "You won't believe it! I caught a fish in the forest at night that was already dead! Then it tried to eat me! I threw it away and ran! Now I want to stick it in someone's dresser to see what happens, so go fish it back up for me will ya?!(Caught in Surface)");
+
+        add("dialogs.terra_entity.guide.jei_check", "In Minecraft, I can't help you look up recipes, but I know a mod called JEI that can help you.");
+        add("dialogs.terra_entity.nurse.player_killed_by", "Have you been killed %2$s times by %1$s? I'm curious who took your flag");
+
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.0", "Again! Let's chop another!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.1", "This is AWESOME!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.2", "Die! Die!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.3", "This is what I live for!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.4", "Stupid tree!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.5", "I feel ALIVE!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.6", "We did it!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.7", "HaHAHA!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.8", "Woooooo!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.9", "YEEEESS!");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_gem_tree.0", "So, stone trees... what's up with that?");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_cactus.0", "When you think about it, cacti are just prickly trees!");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.0", "This sucks.");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.1", "It's dark in here!");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.2", "Help! Get me out!");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.3", "There's nothing to chop in here!");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.4", "I'm claustrophobic!");
+        add("dialogs.confluence.lucy_the_axe.placed_back_into_the_inventory.0", "Oh, thank goodness!");
+        add("dialogs.confluence.lucy_the_axe.placed_back_into_the_inventory.1", "From now on we'll be inseparable.");
+        add("dialogs.confluence.lucy_the_axe.placed_back_into_the_inventory.2", "Ahh, I'm back where I belong.");
+        add("dialogs.confluence.lucy_the_axe.idle.0", "Hey! Chop some trees!");
+        add("dialogs.confluence.lucy_the_axe.idle.1", "This is perfect chopping weather.");
+        add("dialogs.confluence.lucy_the_axe.idle.2", "Chop chop chop. Heh.");
+        add("dialogs.confluence.lucy_the_axe.idle.3", "We make a good team!");
+        add("dialogs.confluence.lucy_the_axe.idle.4", "Let's find a small grove and just go nuts!");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.0", "You'll come back, right?");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.1", "Hey! I'd never throw you away!");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.2", "Don't forget about me!");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.3", "Aren't we friends?");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.4", "You're abandoning me?!");
 
         // Patchouli Guide
         add("patchouli.confluence.otherworld_note.name", "Otherworld Note");

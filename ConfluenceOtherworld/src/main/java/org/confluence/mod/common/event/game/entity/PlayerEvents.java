@@ -38,6 +38,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
@@ -56,6 +57,7 @@ import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -163,9 +165,28 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void itemEntityPickup$Pre(ItemEntityPickupEvent.Pre event) {
+        ServerPlayer player = (ServerPlayer) event.getPlayer();
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = itemEntity.getItem();
-        Player player = event.getPlayer();
+        if (IServerPlayer.of(player).confluence$isCouldPickupItem()) {
+            if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
+                Item gel = MaterialItems.GEL.get();
+                if (!itemStack.is(gel)) break autoStackGelsColor;
+                int defaultMaxStackSize = gel.getDefaultMaxStackSize();
+                for (ItemStack stack : player.getInventory().items) {
+                    if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
+                        ColoredItem.setRGBA(itemStack, ColoredItem.getRGBA(stack));
+                        break;
+                    }
+                }
+            }
+            if (itemEntity instanceof TreasureBagItemEntity entity) {
+                if (!entity.isOwner(player)) event.setCanPickup(TriState.FALSE);
+            }
+        } else {
+            event.setCanPickup(TriState.FALSE);
+        }
+
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
             ManaStorage.of(player).receiveMana(() -> itemStack.getCount() * 100.0F);
             itemEntity.discard();
@@ -174,13 +195,12 @@ public final class PlayerEvents {
             player.heal(itemStack.getCount() * 4.0F);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
-        } else if (itemEntity instanceof TreasureBagItemEntity entity) {
-            if (!entity.isOwner(player)) event.setCanPickup(TriState.FALSE);
         }
     }
 
     @SubscribeEvent
     public static void itemEntityPickup$Post(ItemEntityPickupEvent.Post event) {
+        ServerPlayer player = (ServerPlayer) event.getPlayer();
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = event.getOriginalStack();
         if (itemStack.is(ModTags.Items.COINS)) {
@@ -192,6 +212,7 @@ public final class PlayerEvents {
                 itemEntity.playSound(ModSoundEvents.COINS_LARGE.get());
             }
         }
+        LucyTheAxeDialogPacketS2C.checkAndBroadcast(player, itemStack, LucyTheAxeDialogCategory.PLACED_BACK_INTO_THE_INVENTORY);
     }
 
     @SubscribeEvent
@@ -261,27 +282,6 @@ public final class PlayerEvents {
         ItemStack itemStack = event.getEntity().getMainHandItem();
         if (!itemStack.isEmpty() && itemStack.is(ItemTags.PICKAXES)) {
             event.setCanHarvest(ModTiers.isCorrectToolForDrops(DiggingPower.getPower(itemStack), itemStack, event.getTargetBlock()));
-        }
-    }
-
-    @SubscribeEvent
-    public static void itemPickup(ItemEntityPickupEvent.Pre event) {
-        ServerPlayer player = (ServerPlayer) event.getPlayer();
-        if (IServerPlayer.of(player).confluence$isCouldPickupItem()) {
-            if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
-                ItemStack itemStack = event.getItemEntity().getItem();
-                Item gel = MaterialItems.GEL.get();
-                if (!itemStack.is(gel)) break autoStackGelsColor;
-                int defaultMaxStackSize = gel.getDefaultMaxStackSize();
-                for (ItemStack stack : player.getInventory().items) {
-                    if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
-                        ColoredItem.setRGBA(itemStack, ColoredItem.getRGBA(stack));
-                        break;
-                    }
-                }
-            }
-        } else {
-            event.setCanPickup(TriState.FALSE);
         }
     }
 

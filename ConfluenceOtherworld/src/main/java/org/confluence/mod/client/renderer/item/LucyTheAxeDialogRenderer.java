@@ -1,0 +1,107 @@
+package org.confluence.mod.client.renderer.item;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.LucyTheAxeHandler;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+
+import java.util.Queue;
+
+public class LucyTheAxeDialogRenderer implements IClientItemExtensions {
+    private static final ResourceLocation background = Confluence.asResource("dialog_background");
+    private static final ResourceLocation tail = Confluence.asResource("dialog_tail");
+    private static final Quaternionf quaternion = new Quaternionf();
+    private static final Matrix4f matrix = new Matrix4f();
+    public static final int COLOR = 0xFFAA0000;
+    public static Component dialog;
+
+    private static void renderInGui(Minecraft minecraft, PoseStack poseStack) {
+        int textW = minecraft.font.width(dialog);
+        float itemX = poseStack.last().pose().m30();
+        float itemY = poseStack.last().pose().m31();
+        float x = itemX - textW * 0.5F;
+        float y = itemY - 48;
+        MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+
+        GuiGraphics graphics = new GuiGraphics(minecraft, bufferSource);
+        graphics.pose().translate(0, 0, 1000);
+        int y1 = (int) y - 5;
+        graphics.blitSprite(background, (int) x - 4, y1, textW + 8, minecraft.font.lineHeight + 9);
+        graphics.blitSprite(tail, (int) itemX + 8, y1 + 17, 8, 8);
+
+        minecraft.font.renderText(
+                dialog.getVisualOrderText(), x, y,
+                COLOR, false, matrix,
+                bufferSource, Font.DisplayMode.SEE_THROUGH,
+                0, 0xF000F0
+        );
+    }
+
+    public static void renderInWorld(Minecraft minecraft, PoseStack poseStack) {
+        Queue<LucyTheAxeHandler.Stack> stacks = LucyTheAxeHandler.getStacks();
+        if (stacks.isEmpty()) return;
+        poseStack.pushPose();
+        Camera camera = minecraft.gameRenderer.getMainCamera();
+        float x = (float) camera.getPosition().x;
+        float y = (float) camera.getPosition().y;
+        float z = (float) camera.getPosition().z;
+        Quaternionf rotation = camera.rotation();
+        quaternion.set(0, rotation.y, 0, rotation.w).rotateY(Mth.PI);
+        MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+        float scale = 20;
+        for (LucyTheAxeHandler.Stack stack : stacks) {
+            poseStack.pushPose();
+            poseStack.translate(stack.x - x, stack.y - y, stack.z - z);
+            poseStack.mulPose(quaternion);
+            poseStack.scale(-1 / scale, -1 / scale, -1 / scale);
+            minecraft.font.renderText(
+                    stack.dialog.getVisualOrderText(),
+                    minecraft.font.width(stack.dialog) * -0.5F, 0,
+                    COLOR, false, poseStack.last().pose(),
+                    bufferSource, Font.DisplayMode.NORMAL,
+                    0, 0xF000F0
+            );
+            poseStack.popPose();
+        }
+        poseStack.popPose();
+    }
+
+    private BlockEntityWithoutLevelRenderer renderer;
+
+    @Override
+    public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+        if (renderer == null) {
+            Minecraft minecraft = Minecraft.getInstance();
+            this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
+                @Override
+                public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+                    minecraft.getItemRenderer().renderModelLists(
+                            minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 260102),
+                            stack, packedLight, packedOverlay, poseStack,
+                            ItemRenderer.getFoilBufferDirect(buffer, Sheets.translucentCullBlockSheet(), true, stack.hasFoil())
+                    );
+
+                    if (dialog != null && displayContext == ItemDisplayContext.GUI) {
+                        renderInGui(minecraft, poseStack);
+                    }
+                }
+            };
+        }
+        return renderer;
+    }
+}

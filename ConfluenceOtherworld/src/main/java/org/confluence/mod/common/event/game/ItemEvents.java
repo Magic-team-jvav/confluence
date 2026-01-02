@@ -1,6 +1,7 @@
 package org.confluence.mod.common.event.game;
 
 import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -19,14 +20,17 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
+import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.AxeItems;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.gun.ManaGunItem;
+import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -41,11 +45,15 @@ public final class ItemEvents {
     public static void itemStackedOnOther(ItemStackedOnOtherEvent event) {
         ItemStack carried = event.getCarriedItem();
         ItemStack stackedOn = event.getStackedOnItem();
-        if (event.getClickAction() == ClickAction.SECONDARY && ModUtils.useKey(carried, stackedOn, event.getPlayer())) {
+        Player player = event.getPlayer();
+        if (event.getClickAction() == ClickAction.SECONDARY && ModUtils.useKey(carried, stackedOn, player)) {
             event.setCanceled(true);
         }
         if (carried.is(MaterialItems.GEL)) {
             ColoredItem.merge(carried, stackedOn);
+        }
+        if (player instanceof ServerPlayer serverPlayer && carried.is(AxeItems.LUCY_THE_AXE)) {
+            LucyTheAxeDialogPacketS2C.inventory(serverPlayer, event.getSlot());
         }
     }
 
@@ -79,6 +87,9 @@ public final class ItemEvents {
             itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
         }
         ModUtils.makeItemAntigravity(itemEntity);
+        if (event.getPlayer() instanceof ServerPlayer player) {
+            LucyTheAxeDialogPacketS2C.checkAndBroadcast(player, itemStack, LucyTheAxeDialogCategory.THROWN_ON_THE_GROUND);
+        }
     }
 
     @SubscribeEvent

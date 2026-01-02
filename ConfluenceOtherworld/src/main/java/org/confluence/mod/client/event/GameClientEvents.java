@@ -8,7 +8,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
@@ -29,7 +28,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -57,6 +55,7 @@ import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
+import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -128,7 +127,8 @@ public final class GameClientEvents {
             XaeroHelper.handle(player);
             DropletsHandler.handle(minecraft, player);
             DeathAnimUtils.handle();
-            if (Minecraft.getInstance().options.keyAttack.isDown() &&
+            LucyTheAxeHandler.handle(player.getId());
+            if (minecraft.options.keyAttack.isDown() &&
                     player.getMainHandItem().getItem() instanceof BaseSwordItem sword &&
                     !player.getCooldowns().isOnCooldown(sword)) {
                 SwordProjectilePacketC2S.sendToServer();
@@ -152,6 +152,7 @@ public final class GameClientEvents {
         DropletsHandler.reset();
         EctoMistHelper.reset();
         ClientBestiary.reset();
+        LucyTheAxeHandler.reset();
     }
 
     @SubscribeEvent
@@ -202,8 +203,9 @@ public final class GameClientEvents {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
-        if (PrismLibHelper.shouldSkipOriginalPrefixGather(itemStack, tooltipElements) || tooltipElements.isEmpty())
+        if (PrismLibHelper.shouldSkipOriginalPrefixGather(itemStack, tooltipElements) || tooltipElements.isEmpty()) {
             return;
+        }
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
         if (displayName.isPresent() && displayName.get() instanceof Component component) {
             PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
@@ -258,28 +260,35 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
-        LocalPlayer player = Minecraft.getInstance().player;
+        Minecraft minecraft = Minecraft.getInstance();
+        LocalPlayer player = minecraft.player;
         if (player == null) return;
-        ClientLevel level = player.clientLevel;
-        level.getProfiler().push("Spelunker");
-        SpelunkerHelper.renderLevel(event);
-        level.getProfiler().pop();
+        SpelunkerHelper.renderLevel(event, player);
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
-            level.getProfiler().push("StarPhase");
             StarPhaseHandler.render(event);
-            level.getProfiler().pop();
             MeteorLandingHandler.render(event);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
-            if (!headItem.isEmpty() && headItem.is(ToolItems.DUNGEON_COMPASS)) {
-                CompoundTag tag = LibUtils.getItemStackNbtIfPresent(headItem);
-                if (tag != null) {
-                    int[] pos = tag.getIntArray("pos");
-                    if (pos.length == 3) {
-                        DungeonCompassRenderer.getInstance().render(event.getPoseStack(), Minecraft.getInstance().renderBuffers().bufferSource(), player, pos[0], pos[1], pos[2]);
-                    }
+            dungeonCompass:
+            {
+                ItemStack headItem = player.getInventory().armor.get(3);
+                if (headItem.isEmpty() || !headItem.is(ToolItems.DUNGEON_COMPASS)) {
+                    break dungeonCompass;
                 }
+                CompoundTag tag = LibUtils.getItemStackNbtIfPresent(headItem);
+                if (tag == null) break dungeonCompass;
+                int[] pos = tag.getIntArray("pos");
+                if (pos.length != 3) break dungeonCompass;
+                DungeonCompassRenderer.getInstance().render(
+                        event.getPoseStack(),
+                        minecraft.renderBuffers().bufferSource(),
+                        player,
+                        pos[0],
+                        pos[1],
+                        pos[2]
+                );
             }
+
+            LucyTheAxeDialogRenderer.renderInWorld(minecraft, event.getPoseStack());
         }
     }
 
@@ -349,14 +358,14 @@ public final class GameClientEvents {
         if (player == null) return;
         EntityType<?> type = event.getNPC().getType();
         if (!ModClientSetups.guideCheckedJEI && type == TENpcEntities.GUIDE.get()) {
-            event.setNeoDialog(Component.translatable("dialogs.confluence.guide.jei_check"));
+            event.setNeoDialog(Component.translatable("dialogs.terra_entity.guide.jei_check"));
             ModClientSetups.guideCheckedJEI = true;
         } else if (type == TENpcEntities.NURSE.get() && event.getNPC().getRandom().nextInt(25) == 0) {
             StatsCounter stats = player.getStats();
             for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
                 int value = stats.getValue(stat);
                 if (value >= 50) {
-                    event.setNeoDialog(Component.translatable("dialogs.confluence.nurse.player_killed_by", stat.getValue().getDescription(), value));
+                    event.setNeoDialog(Component.translatable("dialogs.terra_entity.nurse.player_killed_by", stat.getValue().getDescription(), value));
                     break;
                 }
             }

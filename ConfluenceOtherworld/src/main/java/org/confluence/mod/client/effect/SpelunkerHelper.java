@@ -1,29 +1,23 @@
 package org.confluence.mod.client.effect;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -33,13 +27,12 @@ import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.terraentity.client.buffer.AbstractBufferManager;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Quaternionf;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLOCK;
@@ -504,7 +497,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     boolean south = !(player.level().getBlockState(blockProps.south()).getBlock() == self);
                     boolean east = !(player.level().getBlockState(blockProps.east()).getBlock() == self);
                     boolean west = !(player.level().getBlockState(blockProps.west()).getBlock() == self);
-                    if (up || down || north || south || east || west) renderDebugBlock(buffer, blockProps, size, r, g, b, a, up, down, north, south, east, west);
+                    if (up || down || north || south || east || west)
+                        renderDebugBlock(buffer, blockProps, size, r, g, b, a, up, down, north, south, east, west);
                 } else renderDebugBlock(buffer, blockProps, size, r, g, b, a);
             }
         }
@@ -519,27 +513,14 @@ public class SpelunkerHelper extends AbstractBufferManager {
     }
 
     @Override
-    protected void afterRender(PoseStack poseStack) {
-    }
+    protected void afterRender(PoseStack poseStack) {}
 
-
-    public static void renderLevel(RenderLevelStageEvent event) {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (
-//                event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER ||
-                event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_BLOCKS
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_MIPPED_BLOCKS_BLOCKS
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES
-                        || player == null
-        ) return;
+    public static void renderLevel(RenderLevelStageEvent event, LocalPlayer player) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
         SpelunkerHelper blockGen = SpelunkerHelper.getSingleton();
         //效果消失，清除缓存
-        if (!player.hasEffect(ModEffects.SPELUNKER)
-                && !player.hasEffect(ModEffects.DANGER_SENSE)
+        if (!player.hasEffect(ModEffects.SPELUNKER) &&
+                !player.hasEffect(ModEffects.DANGER_SENSE)
         ) {
             blockGen.centerCache.clear();
             blockGen.centers.clear();
@@ -565,9 +546,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
             float f2 = Mth.lerp(partialTicks, player.oBob, player.bob);
 
             // 注意这里的符号和顺序都与原版相反
-            poseStack.mulPose(Axis.XP.rotationDegrees(-Math.abs(Mth.cos(f1 * (float)Math.PI - 0.2F) * f2) * 5.0F));
-            poseStack.mulPose(Axis.ZP.rotationDegrees(-Mth.sin(f1 * (float)Math.PI) * f2 * 3.0F));
-            poseStack.translate(-Mth.sin(f1 * (float)Math.PI) * f2 * 0.5F, Math.abs(Mth.cos(f1 * (float)Math.PI) * f2), 0.0F);
+            poseStack.mulPose(Axis.XP.rotationDegrees(-Math.abs(Mth.cos(f1 * (float) Math.PI - 0.2F) * f2) * 5.0F));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(-Mth.sin(f1 * (float) Math.PI) * f2 * 3.0F));
+            poseStack.translate(-Mth.sin(f1 * (float) Math.PI) * f2 * 0.5F, Math.abs(Mth.cos(f1 * (float) Math.PI) * f2), 0.0F);
         }
     }
 }

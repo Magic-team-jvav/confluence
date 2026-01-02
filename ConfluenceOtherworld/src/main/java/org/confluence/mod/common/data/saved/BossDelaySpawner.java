@@ -62,9 +62,9 @@ public final class BossDelaySpawner {
     }
 
     /// @param predicate 等于[BossDelaySpawner#SUCCESS]时成功
-    ///                                                    等于[BossDelaySpawner#CONTINUE]时跳过该玩家
-    ///                                                    等于[BossDelaySpawner#CANCEL]时取消生成
-    ///                                                    大于0时设置下次检测延时
+    ///                  等于[BossDelaySpawner#CONTINUE]时跳过该玩家
+    ///                  等于[BossDelaySpawner#CANCEL]时取消生成
+    ///                  大于0时设置下次检测延时
     public void pushBoss(int delay, EntityType<? extends AbstractTerraBossBase> boss, ToIntFunction<ServerPlayer> predicate) {
         if (bossQueue.size() == 8) bossQueue.removeFirst();
         bossQueue.add(new Delayed<>(delay, boss, predicate));
@@ -80,22 +80,23 @@ public final class BossDelaySpawner {
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
         EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
-        if (!KillBoard.INSTANCE.isDefeated(type) && !BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
-            for (ServerPlayer player : level.players()) {
-                if (!BossDelaySpawner.eyeOfCthulhuChecker(player) || level.random.nextFloat() >= 0.3333F) {
-                    continue;
-                }
-                BossDelaySpawner.INSTANCE.pushBoss(1350, TEBossEntities.EYE_OF_CTHULHU.get(), player1 ->
-                        player1.getY() > OverworldUtils.getSurfaceY() && LibDateUtils.isNight(player1.level()) && BossDelaySpawner.eyeOfCthulhuChecker(player1)
-                                ? BossDelaySpawner.SUCCESS
-                                : 20
-                );
-                level.getServer().getPlayerList().broadcastSystemMessage(
-                        Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()),
-                        false
-                );
-                break;
+        if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
+            return;
+        }
+        for (ServerPlayer player : level.players()) {
+            if (!BossDelaySpawner.eyeOfCthulhuChecker(player) || level.random.nextFloat() >= 0.3333F) {
+                continue;
             }
+            BossDelaySpawner.INSTANCE.pushBoss(1350, TEBossEntities.EYE_OF_CTHULHU.get(), player1 ->
+                    player1.getY() > OverworldUtils.getSurfaceY() && LibDateUtils.isNight(player1.level()) && BossDelaySpawner.eyeOfCthulhuChecker(player1)
+                            ? BossDelaySpawner.SUCCESS
+                            : 20
+            );
+            level.getServer().getPlayerList().broadcastSystemMessage(
+                    Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()),
+                    false
+            );
+            break;
         }
     }
 
@@ -106,16 +107,15 @@ public final class BossDelaySpawner {
     }
 
     public static void spawnDeerClops(ServerLevel level) {
-        if (!BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.DEERCLOPS.get())) {
-            for (ServerPlayer player : level.players()) {
-                if (!BossDelaySpawner.deerclopsChecker(player)) continue;
-                BossDelaySpawner.INSTANCE.pushBoss(0, TEBossEntities.DEERCLOPS.get(), player1 ->
-                        BossDelaySpawner.deerclopsChecker(player1)
-                                ? BossDelaySpawner.SUCCESS
-                                : BossDelaySpawner.CONTINUE
-                );
-                break;
-            }
+        if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.DEERCLOPS.get())) return;
+        for (ServerPlayer player : level.players()) {
+            if (!BossDelaySpawner.deerclopsChecker(player)) continue;
+            BossDelaySpawner.INSTANCE.pushBoss(0, TEBossEntities.DEERCLOPS.get(), player1 ->
+                    BossDelaySpawner.deerclopsChecker(player1)
+                            ? BossDelaySpawner.SUCCESS
+                            : BossDelaySpawner.CONTINUE
+            );
+            break;
         }
     }
 

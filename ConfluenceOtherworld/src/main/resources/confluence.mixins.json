@@ -91,6 +91,7 @@
         "integration.waystones.WaystoneBlockEntityMixin",
         "integration.xaero.MinecraftServerDataInitializerMixin",
         "integration.xaero.SyncedPlayerTrackerMixin",
+        "item.AbstractContainerMenuMixin",
         "item.ArrowItemMixin",
         "item.BowItemMixin",
         "item.ContainerMixin",

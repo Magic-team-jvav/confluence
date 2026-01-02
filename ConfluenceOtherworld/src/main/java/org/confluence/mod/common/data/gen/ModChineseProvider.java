@@ -537,8 +537,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_bug_net.0", "用来捕捉小动物");
         add("tooltip.item.confluence.golden_bug_net.1", "也可以捕捉熔岩小动物！");
         add("tooltip.item.confluence.dev_bug_net.0", "可以捕捉绝大部分生物！");
+        add("tooltip.item.confluence.lucy_the_axe.0", "“我爱露西！”");
 
-        //设置
+        // 设置
         add("confluence.configuration.Compatibility", "兼容性机制");
         add("confluence.configuration.Compatibility.button", "关于与其他模组的兼容性设置");
         add("confluence.configuration.ArsNouveau", "新生魔艺");
@@ -1219,6 +1220,40 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.terra_entity.angler.item.confluence.unicorn_fish", "独角兽和彩虹都是好东西！它们无处不在，甚至在水中。真的，我居然在圣湖中看到一条独角兽鱼！你的任务就是把它钓起来，我会拿它当宠物！（抓捕位置：神圣之地）");
         add("dialogs.terra_entity.angler.item.confluence.wyverntail", "我知道一些你……你不知道的事！好吧，我告诉你，有一只可怕的怪物在星空中飞来飞去！这不是我自己编出来的！它叫飞龙！可是，可是，你已经知道了，是不是？你不知道的是，它们就像蝌蚪那样出生和成长！所以，它们实际上像……像青蛙！开始行动，给我抓一只！（抓捕位置：天湖）");
         add("dialogs.terra_entity.angler.item.confluence.zombie_fish", "你相信吗？！我晚上在森林里抓到一条已经死了的鱼！然后，它想吃我！我把它扔掉，然后扭头就跑！现在，我要把它钉在别人的梳妆台上，看看会发生什么，所以你去把那条鱼给我抓回来，好吗？！（抓捕位置：地表）");
+
+        add("dialogs.terra_entity.guide.jei_check", "在Minecraft里，我帮不到你查询配方，但是我知道一个叫JEI的模组可以帮到你。");
+        add("dialogs.terra_entity.nurse.player_killed_by", "你已经被%1$s杀死%2$s次了？我很好奇是谁拿走了你的旗子。");
+
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.0", "咱们再去砍棵树吧！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.1", "这真是太棒了！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.2", "去死！去死！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.3", "我活着就是为了这个！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.4", "愚蠢的树！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.5", "我活力四射！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.6", "我们成功了！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.7", "哈哈哈！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.8", "哇哦！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_tree.9", "太好了！");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_gem_tree.0", "所以，石头树……那是怎么回事？");
+        add("dialogs.confluence.lucy_the_axe.cutting_down_a_cactus.0", "你想想看，仙人掌就是带刺的树而已！");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.0", "真是糟透了。");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.1", "这里好黑！");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.2", "救命！快把我弄出去！");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.3", "这里没什么可砍的！");
+        add("dialogs.confluence.lucy_the_axe.placed_in_other_container.4", "我有幽闭恐惧症！");
+        add("dialogs.confluence.lucy_the_axe.placed_back_into_the_inventory.0", "哦，谢天谢地！");
+        add("dialogs.confluence.lucy_the_axe.placed_back_into_the_inventory.1", "从现在开始，我们形影不离。");
+        add("dialogs.confluence.lucy_the_axe.placed_back_into_the_inventory.2", "啊，我回到了我该待的地方。");
+        add("dialogs.confluence.lucy_the_axe.idle.0", "嘿！砍些树吧！");
+        add("dialogs.confluence.lucy_the_axe.idle.1", "今天的天气非常适合砍树。");
+        add("dialogs.confluence.lucy_the_axe.idle.2", "砍砍砍。嘿嘿。");
+        add("dialogs.confluence.lucy_the_axe.idle.3", "我们合作得很好！");
+        add("dialogs.confluence.lucy_the_axe.idle.4", "咱们找片小树林疯砍一通吧！");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.0", "你会回来的对吧？");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.1", "嘿！我绝对不会丢下你的！");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.2", "别把我给忘了！");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.3", "我们不是朋友吗？");
+        add("dialogs.confluence.lucy_the_axe.throw_on_the_ground.4", "你要抛弃我？！");
 
         // 帕秋莉手册
         add("patchouli.confluence.otherworld_note.name", "来世手记");

@@ -1154,7 +1154,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TCItems.EVERLASTING.get(),
                 TCItems.BASE_POINT.get(),
                 AxeItems.CHLOROPHYTE_GREATAXE.get(),
-                AxeItems.LUCY_THE_AXE.get(),
                 ArmorItems.GOGGLES.get(),
                 ArmorItems.GREEN_CAP.get(),
                 ArmorItems.WIZARD_HAT.get(),

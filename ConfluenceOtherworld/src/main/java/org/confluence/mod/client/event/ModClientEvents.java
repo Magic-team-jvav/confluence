@@ -49,7 +49,6 @@ import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.ArrowInBowHandler;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
@@ -82,6 +81,8 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProj
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
 import org.confluence.mod.client.renderer.item.GroupItemExtension;
+import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
+import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
@@ -105,6 +106,7 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.confluence.mod.common.init.ModEntities.*;
@@ -407,13 +409,14 @@ public final class ModClientEvents {
         event.registerFluidType(ModClientSetups.SHIMMER_CLIENT_EXTENSIONS, ModFluids.SHIMMER.type());
         event.registerBlock(ModClientSetups.NO_HIT_EFFECTS, ModBlocks.ROPE.get(), ModBlocks.VINE_ROPE.get(), ModBlocks.SILK_ROPE.get(), ModBlocks.WEB_ROPE.get());
         event.registerItem(ModClientSetups.ENTITY_DISPLAY, ModItems.ENTITY_DISPLAY.get());
+        event.registerItem(new LucyTheAxeDialogRenderer(), AxeItems.LUCY_THE_AXE.get());
         event.registerItem(ModClientSetups.BREATHING_REED, SwordItems.BREATHING_REED);
         event.registerItem(ModClientSetups.SPEAR, SpearItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.UMBRELLA, SwordItems.UMBRELLA, SwordItems.TRAGIC_UMBRELLA);
         event.registerItem(ModClientSetups.DRILL_O_CHAINSAW, Streams.stream(Iterables.concat(
                 DrillItems.ITEMS.getEntries(),
                 ChainsawItems.ITEMS.getEntries()
-        )).map(DeferredHolder::get).toArray(Item[]::new));
+        )).filter(Objects::nonNull).map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.LANCE, LanceItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);
         event.registerItem(ModClientSetups.GUIDE_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL);
@@ -473,16 +476,19 @@ public final class ModClientEvents {
     public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
 
-        modelRegistry.compute(ModelResourceLocation.inventory(AccessoryItems.GUIDE_VOODOO_DOLL.getId()), (k, model) -> new WrappedBakedModel(model));
-        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_FRIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
-        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_MIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
-        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_SIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
-        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_LIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
-        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_NIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
-        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_FLIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
-        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_BRIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
-        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_VOIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
-        TreasureBagItems.ITEMS.getEntries().forEach(holder -> modelRegistry.compute(ModelResourceLocation.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model)));
+        ModClientSetups.asCustomModel(modelRegistry,
+                AccessoryItems.GUIDE_VOODOO_DOLL,
+                MaterialItems.SOUL_OF_FRIGHT,
+                MaterialItems.SOUL_OF_MIGHT,
+                MaterialItems.SOUL_OF_SIGHT,
+                MaterialItems.SOUL_OF_LIGHT,
+                MaterialItems.SOUL_OF_NIGHT,
+                MaterialItems.SOUL_OF_FLIGHT,
+                MaterialItems.SOUL_OF_BRIGHT,
+                MaterialItems.SOUL_OF_VOIGHT,
+                AxeItems.LUCY_THE_AXE
+        );
+        ModClientSetups.asCustomModel(modelRegistry, TreasureBagItems.ITEMS.getEntries().toArray(DeferredHolder[]::new));
 
         ModConnectives.MODEL_SWAPPER.onModelBake(modelRegistry);
 
@@ -525,6 +531,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(ClientBestiary.getInstance());
+        event.registerReloadListener(LucyTheAxeDialogCategory.Loader.getInstance());
     }
 
     @SubscribeEvent

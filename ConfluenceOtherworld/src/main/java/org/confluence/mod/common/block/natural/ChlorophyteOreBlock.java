@@ -2,15 +2,15 @@ package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.material.MapColor;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -34,11 +34,11 @@ public class ChlorophyteOreBlock extends Block {
             Direction direction = Direction.getRandom(random);
             BlockPos relative = pos.relative(direction);
             BlockState relState = level.getBlockState(relative);
-            LevelChunk chunk = level.getChunkSource().getChunkNow(SectionPos.blockToSectionCoord(relative.getX()),SectionPos.blockToSectionCoord(relative.getZ()));
-            if (chunk == null) {
+            ChunkAccess chunk;
+            if (level.isOutsideBuildHeight(pos) || ((chunk = LibUtils.getChunkIfLoaded(level.getChunkSource(), relative)) == null)) {
                 continue;
             }
-            ILevelChunkSection section = ILevelChunkSection.of(chunk.getSection(level.getSectionIndexFromSectionY(SectionPos.blockToSectionCoord(relative.getY()))));
+            ILevelChunkSection section = ILevelChunkSection.of(chunk.getSection(level.getSectionIndex(relative.getY())));
             if (section.confluence$getBlockCounts().chlorophyte.get() > 125) {
                 continue;
             }

@@ -146,8 +146,6 @@
 
 ## 哈基尽(Wang Xiao Jin)
 
-- 肉墙优化
-
 ## 小胡闹(Xiao Hu Nao)
 
 - 各种特殊月亮

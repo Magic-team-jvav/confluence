@@ -51,7 +51,8 @@ public class TombstoneBoulderEntity extends AbstractBoulderEntity {
 
     @Override
     public void onRemoveBroken() {
-        if (!level().getBlockState(blockPosition()).canBeReplaced()) {
+        Level level = level();
+        if (!Block.canSupportRigidBlock(level, blockPosition().offset(0, -1, 0)) || !level.getBlockState(blockPosition()).canBeReplaced()) {
             return;
         }
         super.onRemoveBroken();

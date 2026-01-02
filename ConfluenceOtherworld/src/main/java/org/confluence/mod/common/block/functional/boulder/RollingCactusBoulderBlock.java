@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.entity.projectile.boulder.AbstractBoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.RollingCactusBoulderEntity;
 
 /**

@@ -59,5 +59,7 @@ public final class ModDataGenerator {
         generator.addProvider(server, new ModLootTableProvider(output, lookup));
         generator.addProvider(server, new ModEnchantmentTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModRecipeSerializerTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new EMILootDirectDropsProvider(output, lookup));
+        generator.addProvider(server, new ModLootModifiersProvider(output, lookup));
     }
 }

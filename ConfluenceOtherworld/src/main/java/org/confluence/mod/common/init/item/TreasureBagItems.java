@@ -23,8 +23,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class TreasureBagItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final DeferredItem<TreasureBagItem> KING_SLIME_TREASURE_BAG = ITEMS.register("king_slime_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/king_slime"), ModRarity.EXPERT));
-    public static final DeferredItem<TreasureBagItem> EYE_OF_CTHULHU_TREASURE_BAG = ITEMS.register("eye_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eye_of_cthulhu"), ModRarity.EXPERT, (level, pos) -> {
+    public static final DeferredItem<TreasureBagItem> KING_SLIME_TREASURE_BAG = ITEMS.register("king_slime_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/king_slime"), ModRarity.BLUE));
+    public static final DeferredItem<TreasureBagItem> EYE_OF_CTHULHU_TREASURE_BAG = ITEMS.register("eye_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eye_of_cthulhu"), ModRarity.BLUE, (level, pos) -> {
         String difficulty = LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master");
         long secretFlag = IMinecraftServer.of(level.getServer()).confluence$getSecretFlag();
         String biome;
@@ -39,12 +39,12 @@ public class TreasureBagItems {
         }
         return difficulty + biome;
     }));
-    public static final DeferredItem<TreasureBagItem> EATER_OF_WORLDS_TREASURE_BAG = ITEMS.register("eater_of_worlds_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eater_of_worlds"), ModRarity.EXPERT));
-    public static final DeferredItem<TreasureBagItem> BRAIN_OF_CTHULHU_TREASURE_BAG = ITEMS.register("brain_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/brain_of_cthulhu"), ModRarity.EXPERT));
-    public static final DeferredItem<TreasureBagItem> QUEEN_BEE_TREASURE_BAG = ITEMS.register("queen_bee_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/queen_bee"), ModRarity.EXPERT));
-    public static final DeferredItem<TreasureBagItem> DEERCLOPS_TREASURE_BAG = ITEMS.register("deerclops_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/deerclops"), ModRarity.EXPERT));
-    public static final DeferredItem<TreasureBagItem> SKELETRON_TREASURE_BAG = ITEMS.register("skeletron_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/skeletron"), ModRarity.EXPERT));
-    public static final DeferredItem<TreasureBagItem> WALL_OF_FLESH_TREASURE_BAG = ITEMS.register("wall_of_flesh_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/wall_of_flesh"), ModRarity.EXPERT) {
+    public static final DeferredItem<TreasureBagItem> EATER_OF_WORLDS_TREASURE_BAG = ITEMS.register("eater_of_worlds_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eater_of_worlds"), ModRarity.GREEN));
+    public static final DeferredItem<TreasureBagItem> BRAIN_OF_CTHULHU_TREASURE_BAG = ITEMS.register("brain_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/brain_of_cthulhu"), ModRarity.GREEN));
+    public static final DeferredItem<TreasureBagItem> QUEEN_BEE_TREASURE_BAG = ITEMS.register("queen_bee_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/queen_bee"), ModRarity.ORANGE));
+    public static final DeferredItem<TreasureBagItem> DEERCLOPS_TREASURE_BAG = ITEMS.register("deerclops_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/deerclops"), ModRarity.ORANGE));
+    public static final DeferredItem<TreasureBagItem> SKELETRON_TREASURE_BAG = ITEMS.register("skeletron_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/skeletron"), ModRarity.ORANGE));
+    public static final DeferredItem<TreasureBagItem> WALL_OF_FLESH_TREASURE_BAG = ITEMS.register("wall_of_flesh_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/wall_of_flesh"), ModRarity.LIGHT_RED) {
         @ParametersAreNonnullByDefault
         @Override
         protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {
@@ -58,7 +58,7 @@ public class TreasureBagItems {
             }
         }
     });
-    public static final DeferredItem<TreasureBagItem> HILL_OF_FLESH_TREASURE_BAG = ITEMS.register("hill_of_flesh_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/hill_of_flesh"), ModRarity.EXPERT) {
+    public static final DeferredItem<TreasureBagItem> HILL_OF_FLESH_TREASURE_BAG = ITEMS.register("hill_of_flesh_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/hill_of_flesh"), ModRarity.LIGHT_RED) {
         @ParametersAreNonnullByDefault
         @Override
         protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {
@@ -72,6 +72,6 @@ public class TreasureBagItems {
             }
         }
     });
-    public static final DeferredItem<TreasureBagItem> THE_TWINS_TREASURE_BAG = ITEMS.register("the_twins_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/the_twins"), ModRarity.EXPERT));
+    public static final DeferredItem<TreasureBagItem> THE_TWINS_TREASURE_BAG = ITEMS.register("the_twins_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/the_twins"), ModRarity.PINK));
 
 }

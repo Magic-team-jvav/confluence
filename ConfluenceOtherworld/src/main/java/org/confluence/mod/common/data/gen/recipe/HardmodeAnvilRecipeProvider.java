@@ -540,7 +540,14 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "#aaa",
                 "pppp"
         )));
-
+        // 矿车升级包
+        hardmodeAnvil(recipeOutput, ConsumableItems.MINECART_UPGRADE_KIT.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.MECHANICAL_WHEEL_PIECE),
+                'b', Ingredient.of(MaterialItems.MECHANICAL_WAGON_PIECE),
+                'c', Ingredient.of(MaterialItems.MECHANICAL_BATTERY_PIECE)
+        ), List.of(
+                "abc"
+        )));
         // 翅膀
         hardmodeAnvil(recipeOutput, AccessoryItems.FAIRY_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),

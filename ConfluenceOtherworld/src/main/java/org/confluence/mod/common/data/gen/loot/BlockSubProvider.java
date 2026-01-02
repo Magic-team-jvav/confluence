@@ -534,6 +534,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SKELETRON_RELIC.get());
         dropSelf(WALL_OF_FLESH_RELIC.get());
         dropSelf(HILL_OF_FLESH_RELIC.get());
+        dropSelf(THE_TWINS_RELIC.get());
         // 片
         dropWhenSilkTouch(SAND_LAYER_BLOCK.get());
         dropWhenSilkTouch(RED_SAND_LAYER_BLOCK.get());

@@ -3428,6 +3428,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SKELETRON_RELIC.get(), "骷髅王圣物");
         add(DecorativeBlocks.WALL_OF_FLESH_RELIC.get(), "血肉墙圣物");
         add(DecorativeBlocks.HILL_OF_FLESH_RELIC.get(), "血肉山圣物");
+        add(DecorativeBlocks.THE_TWINS_RELIC.get(), "双子魔眼圣物");
 
         add(DecorativeBlocks.POO_BLOCK.get(), "臭臭块");
         add(ModBlocks.POO.get(), "臭臭");
@@ -3578,6 +3579,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.ECTOPLASM.get(), "灵气");
         add(MaterialItems.FORBIDDEN_FRAGMENT.get(), "禁忌碎片");
         add(MaterialItems.FROST_CORE.get(), "寒霜核");
+        add(MaterialItems.MECHANICAL_WHEEL_PIECE.get(), "机械车轮片");
+        add(MaterialItems.MECHANICAL_WAGON_PIECE.get(), "机械车体片");
+        add(MaterialItems.MECHANICAL_BATTERY_PIECE.get(), "机械电池片");
         add(MaterialItems.SPECTRE_INGOT.get(), "幽灵锭");
         add(MaterialItems.RUBY.get(), "红玉");
         add(MaterialItems.AMBER.get(), "琥珀");
@@ -4039,6 +4043,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.DEERCLOPS_TREASURE_BAG.get(), "独眼巨鹿宝藏袋");
         add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(), "血肉墙宝藏袋");
         add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG.get(), "血肉山宝藏袋");
+        add(TreasureBagItems.THE_TWINS_TREASURE_BAG.get(), "双子魔眼宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");

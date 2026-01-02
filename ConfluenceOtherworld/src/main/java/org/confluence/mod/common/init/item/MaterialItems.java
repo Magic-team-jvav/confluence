@@ -168,6 +168,9 @@ public class MaterialItems {
     public static final DeferredItem<Item> ECTOPLASM = register("ectoplasm", ModRarity.YELLOW);
     public static final DeferredItem<Item> FORBIDDEN_FRAGMENT = register("forbidden_fragment", ModRarity.PINK);
     public static final DeferredItem<Item> FROST_CORE = register("frost_core", ModRarity.PINK);
+    public static final DeferredItem<Item> MECHANICAL_WHEEL_PIECE = register("mechanical_wheel_piece", ModRarity.MASTER);
+    public static final DeferredItem<Item> MECHANICAL_WAGON_PIECE = register("mechanical_wagon_piece", ModRarity.MASTER);
+    public static final DeferredItem<Item> MECHANICAL_BATTERY_PIECE = register("mechanical_battery_piece", ModRarity.MASTER);
 
     public static DeferredItem<Item> register(String id) {
         return ITEMS.register(id, () -> new Item(new Item.Properties()));

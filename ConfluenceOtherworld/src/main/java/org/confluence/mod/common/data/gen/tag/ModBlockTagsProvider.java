@@ -421,7 +421,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEERCLOPS_RELIC.get(),
                 SKELETRON_RELIC.get(),
                 WALL_OF_FLESH_RELIC.get(),
-                HILL_OF_FLESH_RELIC.get()
+                HILL_OF_FLESH_RELIC.get(),
+                THE_TWINS_RELIC.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -723,7 +724,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEERCLOPS_RELIC.get(),
                 SKELETRON_RELIC.get(),
                 WALL_OF_FLESH_RELIC.get(),
-                HILL_OF_FLESH_RELIC.get()
+                HILL_OF_FLESH_RELIC.get(),
+                THE_TWINS_RELIC.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_METEORITE,

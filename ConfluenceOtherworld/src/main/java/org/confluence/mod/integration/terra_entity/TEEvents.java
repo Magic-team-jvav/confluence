@@ -41,6 +41,11 @@ public final class TEEvents {
                 .register(TEMonsterEntities.CORRUPT_SLIME.get(), 8)
                 .register(TEMonsterEntities.LUMINOUS_SLIME.get(), 8)
                 .register(TEMonsterEntities.CRIMSLIME.get(), 8)
+                .register(TEBossEntities.RETINAZER.get(), 8)
+                .register(TEBossEntities.SPAZMATISM.get(), 8)
+                .register(TEBossEntities.PLANTERA.get(), 8)
+                .register(TEBossEntities.PLANTERA_TENTACLE.get(), 8)
+                .register(TEBossEntities.PLANTERA_HOOK.get(), 8)
 
 
                 .set(Attributes.ARMOR_TOUGHNESS)
@@ -51,6 +56,11 @@ public final class TEEvents {
                 .register(TEMonsterEntities.CORRUPT_SLIME.get(), 2)
                 .register(TEMonsterEntities.LUMINOUS_SLIME.get(), 2)
                 .register(TEMonsterEntities.CRIMSLIME.get(), 2)
+                .register(TEBossEntities.RETINAZER.get(), 2)
+                .register(TEBossEntities.SPAZMATISM.get(), 2)
+                .register(TEBossEntities.PLANTERA.get(), 2)
+                .register(TEBossEntities.PLANTERA_TENTACLE.get(), 2)
+                .register(TEBossEntities.PLANTERA_HOOK.get(), 2)
         ;
     }
 }

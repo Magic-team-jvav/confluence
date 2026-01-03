@@ -46,6 +46,10 @@ public record LucyTheAxeDialogPacketS2C(
         return false;
     }
 
+    public static boolean checkAndBroadcast(ServerPlayer source, ResourceLocation category) {
+        return checkAndBroadcast(source, source.getInventory().getSelected(), category);
+    }
+
     public static void broadcast(ServerPlayer source, ResourceLocation category) {
         LucyTheAxeDialogCategory dialogCategory = LucyTheAxeDialogCategory.Loader.getInstance().getCategories().get(category);
         if (dialogCategory == null) return;

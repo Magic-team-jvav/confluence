@@ -20,5 +20,17 @@
     },
     "confluence:throw_on_the_ground": {
         "entries": 5
+    },
+    "confluence:attack_entity": {
+        "entries": 15,
+        "cycle": true
+    },
+    "confluence:kill_entity": {
+        "entries": 14,
+        "cycle": true
+    },
+    "confluence:destroy_wrong_block": {
+        "entries": 17,
+        "cycle": true
     }
 }

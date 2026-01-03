@@ -33,6 +33,9 @@ public record LucyTheAxeDialogCategory(int entries, boolean cycle) {
     public static final ResourceLocation PLACED_BACK_INTO_THE_INVENTORY = Confluence.asResource("placed_back_into_the_inventory");
     public static final ResourceLocation IDLE = Confluence.asResource("idle");
     public static final ResourceLocation THROWN_ON_THE_GROUND = Confluence.asResource("throw_on_the_ground");
+    public static final ResourceLocation ATTACK_ENTITY = Confluence.asResource("attack_entity");
+    public static final ResourceLocation KILL_ENTITY = Confluence.asResource("kill_entity");
+    public static final ResourceLocation DESTROY_WRONG_BLOCK = Confluence.asResource("destroy_wrong_block");
 
     public static class Loader extends SingleJsonFileReloadListener {
         private static Loader INSTANCE;

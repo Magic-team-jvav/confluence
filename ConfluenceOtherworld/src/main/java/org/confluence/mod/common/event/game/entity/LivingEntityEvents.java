@@ -38,6 +38,7 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.Bestiary;
@@ -66,6 +67,7 @@ import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
+import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -285,6 +287,11 @@ public final class LivingEntityEvents {
         }
         if (attacker instanceof ServerPlayer player) {
             ModArmorBonus.onAttacked(player, damageSource, victim);
+            if (victim.isDeadOrDying()) {
+                LucyTheAxeDialogPacketS2C.checkAndBroadcast(player, LucyTheAxeDialogCategory.KILL_ENTITY);
+            } else {
+                LucyTheAxeDialogPacketS2C.checkAndBroadcast(player, LucyTheAxeDialogCategory.ATTACK_ENTITY);
+            }
         }
     }
 

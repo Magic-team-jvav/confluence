@@ -113,7 +113,13 @@ public final class LevelEvents {
             BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, state, pos);
             BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, state);
             if (state.is(BlockTags.LOGS)) {
-                LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, serverPlayer.getInventory().getSelected(), LucyTheAxeDialogCategory.CUTTING_DOWN_A_TREE);
+                LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.CUTTING_DOWN_A_TREE);
+            } else if (state.is(NatureBlocks.STONY_LOG)) {
+                LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.CUTTING_DOWN_A_GEM_TREE);
+            } else if (state.is(ModTags.Blocks.CACTUS)) {
+                LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.CUTTING_DOWN_A_CACTUS);
+            } else {
+                LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.DESTROY_WRONG_BLOCK);
             }
         }
     }

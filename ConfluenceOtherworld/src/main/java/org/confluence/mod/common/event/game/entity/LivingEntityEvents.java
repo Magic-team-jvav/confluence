@@ -97,7 +97,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
-            TombstoneBoulderEntity.createTombstone(victim);
+            TombstoneBoulderEntity.createTombstoneEntity(victim);
             Entity attacker = LibUtils.getOwner(damageSource);
 
             if (attacker instanceof ServerPlayer) {

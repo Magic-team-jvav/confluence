@@ -22,7 +22,10 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.boulder.AbstractBoulderBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -189,7 +192,7 @@ public abstract class AbstractBoulderEntity extends Projectile {
         onHit(getHitResult());
         var clipped = level().clip(new ClipContext(position(), position(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         if (clipped.isInside() || this.stillTick >= 20) {
-            onRemoveBroken();
+            onRemoveBroken(true);
         }
 
         // 在地上速度过慢删除
@@ -221,21 +224,23 @@ public abstract class AbstractBoulderEntity extends Projectile {
 
     /**
      * 移除巨石
+     * @param timeoutUrNot 是否因为超时导致触发
      */
-    public void onRemoveBroken() {
+    public void onRemoveBroken(boolean timeoutUrNot) {
         if (!(level() instanceof ServerLevel serverLevel) || isRemoved()) {
             return;
         }
-        brokenFunction(serverLevel);
+        brokenFunction(serverLevel, timeoutUrNot);
         discard();
     }
 
     /**
      * 破碎时执行的功能
      *
-     * @param serverLevel 服务端世界
+     * @param serverLevel  服务端世界
+     * @param timeoutUrNot 是否因为超时导致触发
      */
-    protected void brokenFunction(final ServerLevel serverLevel) {
+    protected void brokenFunction(final ServerLevel serverLevel, boolean timeoutUrNot) {
         var pos = blockPosition();
         brokenParticles(serverLevel, pos);
         brokenSound(serverLevel, pos);
@@ -301,7 +306,7 @@ public abstract class AbstractBoulderEntity extends Projectile {
         }
         if (hitResult instanceof BlockHitResult blockHitResult) {
             if (blockHitResult.isInside()) {
-                onRemoveBroken();
+                onRemoveBroken(false);
                 return;
             }
             onHitBlock(blockHitResult);
@@ -394,7 +399,7 @@ public abstract class AbstractBoulderEntity extends Projectile {
      * @param blockHitResult 方块碰撞结果
      */
     protected void onHorizontalBlockHit(final BlockHitResult blockHitResult) {
-        onRemoveBroken();
+        onRemoveBroken(false);
     }
 
     /**
@@ -404,7 +409,7 @@ public abstract class AbstractBoulderEntity extends Projectile {
      */
     protected void onVerticalBlockHit(final BlockHitResult blockHitResult) {
         if (this.landingCount <= 0 || blockHitResult.getDirection() != Direction.UP) {
-            onRemoveBroken();
+            onRemoveBroken(false);
             return;
         }
         var vec3 = blockHitResult.getLocation();
@@ -530,7 +535,7 @@ public abstract class AbstractBoulderEntity extends Projectile {
         if (targetPos.y > currentPos.y) {
             return false;
         }
-        
+
         // 构建3D曼哈顿路径（L型路径）
         Vec3 cornerPos1, cornerPos2;
         var dx = targetPos.x - currentPos.x;
@@ -542,7 +547,7 @@ public abstract class AbstractBoulderEntity extends Projectile {
         var absDx = Math.abs(dx);
         var absDy = Math.abs(dy);
         var absDz = Math.abs(dz);
-        
+
         if (absDx >= absDy && absDx >= absDz) {
             // X轴方向距离最大
             if (absDy >= absDz) {
@@ -588,12 +593,12 @@ public abstract class AbstractBoulderEntity extends Projectile {
         if (pathBlocked) {
             return false;
         }
-        
+
         // 设置移动方向
         setDeltaMovement(orientationHorizontal(targetPos).scale(this.speed));
         return true;
     }
-    
+
     /**
      * 检查两点间路径是否被阻挡
      */

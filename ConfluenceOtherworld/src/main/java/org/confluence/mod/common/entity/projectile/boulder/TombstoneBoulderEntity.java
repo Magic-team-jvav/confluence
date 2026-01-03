@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
 import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -50,22 +51,18 @@ public class TombstoneBoulderEntity extends AbstractBoulderEntity {
     }
 
     @Override
-    public void onRemoveBroken() {
-        Level level = level();
-        if (!Block.canSupportRigidBlock(level, blockPosition().offset(0, -1, 0)) || !level.getBlockState(blockPosition()).canBeReplaced()) {
-            return;
+    protected void brokenFunction(final ServerLevel serverLevel, boolean timeoutUrNot) {
+        if (!timeoutUrNot) {
+            BlockPos blockPos = blockPosition();
+            if (Block.canSupportRigidBlock(serverLevel, blockPos.offset(0, -1, 0)) &&
+                    serverLevel.getBlockState(blockPos).canBeReplaced()) {
+                serverLevel.setBlock(blockPos, getBlockState(), Block.UPDATE_ALL);
+                if (serverLevel.getBlockEntity(blockPos) instanceof TombstoneBlock.BEntity entity) {
+                    entity.setText(text, true);
+                }
+            }
         }
-        super.onRemoveBroken();
-    }
-
-    @Override
-    protected void brokenFunction(final ServerLevel serverLevel) {
-        var level = level();
-        level.setBlock(blockPosition(), getBlockState(), Block.UPDATE_ALL);
-        if (!(level.getBlockEntity(blockPosition()) instanceof TombstoneBlock.BEntity entity)) {
-            return;
-        }
-        entity.setText(text, true);
+        super.brokenFunction(serverLevel, timeoutUrNot);
     }
 
     @Override
@@ -93,7 +90,7 @@ public class TombstoneBoulderEntity extends AbstractBoulderEntity {
         this.text = SignText.DIRECT_CODEC.parse(NbtOps.INSTANCE, tag.get("text")).getOrThrow();
     }
 
-    public static void createTombstone(LivingEntity living) {
+    public static void createTombstoneEntity(LivingEntity living) {
         if (!CommonConfigs.DROPS_TOMBSTONE.get()) {
             return;
         }

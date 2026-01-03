@@ -41,7 +41,7 @@ public class RollingCactusBoulderEntity extends AbstractBoulderEntity {
 		super(ModEntities.ROLLING_CACTUS_BOULDER.get(), level, pos, blockState, BUILDER.inherit(builder));
 	}
 
-	protected void brokenFunction(final ServerLevel serverLevel) {
+	protected void brokenFunction(final ServerLevel serverLevel, boolean timeoutUrNot) {
 		int count = random.nextInt(6, 13);
 		float y = random.nextFloat() * Mth.PI;
 		float d = Mth.TWO_PI / count;
@@ -57,7 +57,7 @@ public class RollingCactusBoulderEntity extends AbstractBoulderEntity {
 			level().addFreshEntity(projectile);
 			y += d;
 		}
-		super.brokenFunction(serverLevel);
+		super.brokenFunction(serverLevel, timeoutUrNot);
 	}
 
 	/**

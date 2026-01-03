@@ -32,7 +32,7 @@ public class FollowerBoulderEntity extends AbstractBoulderEntity {
 	public void tick() {
 		super.tick();
 		if (this.tick++ >= 20 * 20 || (this.target != null && distanceTo(this.target) >= 30)) {
-			onRemoveBroken();
+            onRemoveBroken(true);
 		}
 	}
 
@@ -50,7 +50,7 @@ public class FollowerBoulderEntity extends AbstractBoulderEntity {
 	protected void onHitEntity(EntityHitResult entityHitResult) {
 		super.onHitEntity(entityHitResult);
 		if (entityHitResult.getEntity().equals(target)) {
-			onRemoveBroken();
+            onRemoveBroken(false);
 		}
 	}
 

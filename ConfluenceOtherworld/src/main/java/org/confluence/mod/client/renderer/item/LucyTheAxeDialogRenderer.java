@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +22,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
 import java.util.Queue;
+import java.util.function.Consumer;
 
 public class LucyTheAxeDialogRenderer implements IClientItemExtensions {
     private static final ResourceLocation background = Confluence.asResource("dialog_background");
@@ -29,6 +31,7 @@ public class LucyTheAxeDialogRenderer implements IClientItemExtensions {
     private static final Matrix4f matrix = new Matrix4f();
     public static final int COLOR = 0xFFAA0000;
     public static Component dialog;
+    private static Consumer<GuiGraphics> delayed;
 
     private static void renderInGui(Minecraft minecraft, PoseStack poseStack) {
         int textW = minecraft.font.width(dialog);
@@ -37,19 +40,31 @@ public class LucyTheAxeDialogRenderer implements IClientItemExtensions {
         float x = itemX - textW * 0.5F;
         float y = itemY - 48;
         MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+        FormattedCharSequence text = dialog.getVisualOrderText();
 
-        GuiGraphics graphics = new GuiGraphics(minecraft, bufferSource);
-        graphics.pose().translate(0, 0, 1000);
-        int y1 = (int) y - 5;
-        graphics.blitSprite(background, (int) x - 4, y1, textW + 8, minecraft.font.lineHeight + 9);
-        graphics.blitSprite(tail, (int) itemX + 8, y1 + 17, 8, 8);
+        delayed = graphics -> {
+            int y1 = (int) y - 5;
+            graphics.blitSprite(background, (int) x - 4, y1, textW + 8, minecraft.font.lineHeight + 9);
+            graphics.blitSprite(tail, (int) itemX + 8, y1 + 17, 8, 8);
 
-        minecraft.font.renderText(
-                dialog.getVisualOrderText(), x, y,
-                COLOR, false, matrix,
-                bufferSource, Font.DisplayMode.SEE_THROUGH,
-                0, 0xF000F0
-        );
+            minecraft.font.renderText(
+                    text, x, y, COLOR, false, matrix,
+                    bufferSource, Font.DisplayMode.SEE_THROUGH,
+                    0, 0xF000F0
+            );
+        };
+    }
+
+    public static void reset() {
+        dialog = null;
+        delayed = null;
+    }
+
+    public static void renderDelayed(GuiGraphics graphics) {
+        if (delayed != null) {
+            delayed.accept(graphics);
+            delayed = null;
+        }
     }
 
     public static void renderInWorld(Minecraft minecraft, PoseStack poseStack) {

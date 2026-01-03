@@ -52,8 +52,8 @@ public record LucyTheAxeDialogPacketS2C(
         PacketDistributor.sendToPlayersTrackingEntityAndSelf(source, new LucyTheAxeDialogPacketS2C(category, dialogCategory, source.getId()));
     }
 
-    public static void inventory(ServerPlayer source, Slot slot) {
-        if (slot.container == source.getInventory()) {
+    public static void inventory(ServerPlayer source, Slot slot, boolean invert) {
+        if ((slot.container == source.getInventory()) != invert) {
             broadcast(source, LucyTheAxeDialogCategory.PLACED_BACK_INTO_THE_INVENTORY);
         } else {
             broadcast(source, LucyTheAxeDialogCategory.PLACED_IN_OTHER_CONTAINER);

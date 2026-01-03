@@ -58,6 +58,7 @@ public class LucyTheAxeHandler {
 
     public static void reset() {
         queue.clear();
+        LucyTheAxeDialogRenderer.reset();
     }
 
     public static void handle(int id) {
@@ -68,7 +69,7 @@ public class LucyTheAxeHandler {
             Stack stack = iterator.next();
             if (stack.remainTime <= 0) {
                 if (stack.senderId == id) {
-                    LucyTheAxeDialogRenderer.dialog = null;
+                    LucyTheAxeDialogRenderer.reset();
                 }
                 iterator.remove();
             } else {

@@ -25,7 +25,8 @@ public abstract class AbstractContainerMenuMixin {
     private ItemStack checkLucyTheAxe(AbstractContainerMenu instance, Player player, int slotId, Operation<ItemStack> original) {
         ItemStack stack = original.call(instance, player, slotId);
         if (player instanceof ServerPlayer serverPlayer && stack.is(AxeItems.LUCY_THE_AXE)) {
-            LucyTheAxeDialogPacketS2C.inventory(serverPlayer, slots.get(slotId));
+            Slot slot = slots.get(slotId);
+            LucyTheAxeDialogPacketS2C.inventory(serverPlayer, slot, !slot.hasItem());
         }
         return stack;
     }

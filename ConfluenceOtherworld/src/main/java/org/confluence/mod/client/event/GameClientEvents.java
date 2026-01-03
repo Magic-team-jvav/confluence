@@ -293,6 +293,18 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
+    public static void screen$Render$Post(ScreenEvent.Render.Post event) {
+        LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
+    }
+
+    @SubscribeEvent
+    public static void renderGui$Post(RenderGuiEvent.Post event) {
+        if (Minecraft.getInstance().screen == null) {
+            LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
+        }
+    }
+
+    @SubscribeEvent
     public static void screen$Init$Post(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
         boolean isInventoryScreen = screen instanceof InventoryScreen;

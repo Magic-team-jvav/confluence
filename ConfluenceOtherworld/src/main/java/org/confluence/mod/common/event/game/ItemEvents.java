@@ -53,7 +53,7 @@ public final class ItemEvents {
             ColoredItem.merge(carried, stackedOn);
         }
         if (player instanceof ServerPlayer serverPlayer && carried.is(AxeItems.LUCY_THE_AXE)) {
-            LucyTheAxeDialogPacketS2C.inventory(serverPlayer, event.getSlot());
+            LucyTheAxeDialogPacketS2C.inventory(serverPlayer, event.getSlot(), false);
         }
     }
 

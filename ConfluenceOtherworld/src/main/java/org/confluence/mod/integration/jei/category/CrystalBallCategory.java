@@ -9,12 +9,16 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.CrystalBallRecipe;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
+import org.confluence.terra_furniture.TerraFurniture;
+import org.jetbrains.annotations.Nullable;
 
 public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<CrystalBallRecipe>> {
     public static final RecipeType<RecipeHolder<CrystalBallRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("crystal_ball"));
@@ -63,5 +67,10 @@ public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<Crystal
     @Override
     public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<CrystalBallRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         tooltip.addAll(recipe.value().getEnvironment().toDescriptions());
+    }
+
+    @Override
+    public @Nullable ResourceLocation getRegistryName(RecipeHolder<CrystalBallRecipe> recipe) {
+        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

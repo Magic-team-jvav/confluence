@@ -11,6 +11,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -18,6 +19,8 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
+import org.confluence.terra_furniture.TerraFurniture;
+import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
@@ -82,5 +85,10 @@ public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillReci
     @Override
     public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<SkyMillRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         tooltip.addAll(recipe.value().getEnvironment().toDescriptions());
+    }
+
+    @Override
+    public @Nullable ResourceLocation getRegistryName(RecipeHolder<SkyMillRecipe> recipe) {
+        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

@@ -21,8 +21,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -34,6 +36,7 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.IdentityHashMap;
@@ -186,5 +189,10 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
         public ItemStack copy() {
             return new DataItemStack(getItem(), min, max, chance);
         }
+    }
+
+    @Override
+    public @Nullable ResourceLocation getRegistryName(IngredientPair recipe) {
+        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, "extractinator/" + BuiltInRegistries.ITEM.getKey(recipe.ingredient.getItem()).getPath());
     }
 }

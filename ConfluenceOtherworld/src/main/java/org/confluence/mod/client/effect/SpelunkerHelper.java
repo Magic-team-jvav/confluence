@@ -7,12 +7,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
@@ -21,25 +18,20 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.terraentity.client.buffer.AbstractBufferManager;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
@@ -326,6 +318,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
 //            putTarget(BoulderBlock.Variant.NORMAL.get(), 0xff4600,true, ShowType.DANGER);
         putTarget(SWITCH.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
+        putTarget(STONE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
+        putTarget(DEEPSLATE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(DEEPSLATE_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(Blocks.TNT, 0xff4600, true, ShowType.DANGER);
         putTarget(Blocks.TRIPWIRE, 0xff4600, true, ShowType.DANGER);
@@ -495,8 +489,17 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 a = (int) ((255 - Math.min(player.distanceToSqr(blockProps.getX(), blockProps.getY(), blockProps.getZ()) / (blockGen.range * blockGen.range) * 255, 255)) * blockGen.maxAlpha);
                 if (a <= 0) continue;
 
-                renderDebugBlock(buffer, blockProps, size, r, g, b, a);
-
+                if (SHOW_DETAIL_SPECULAR.get().isDown()) {
+                    Block self = player.level().getBlockState(blockProps).getBlock();
+                    boolean up = !(player.level().getBlockState(blockProps.above()).getBlock() == self);
+                    boolean down = !(player.level().getBlockState(blockProps.below()).getBlock() == self);
+                    boolean north = !(player.level().getBlockState(blockProps.north()).getBlock() == self);
+                    boolean south = !(player.level().getBlockState(blockProps.south()).getBlock() == self);
+                    boolean east = !(player.level().getBlockState(blockProps.east()).getBlock() == self);
+                    boolean west = !(player.level().getBlockState(blockProps.west()).getBlock() == self);
+                    if (up || down || north || south || east || west)
+                        renderDebugBlock(buffer, blockProps, size, r, g, b, a, up, down, north, south, east, west);
+                } else renderDebugBlock(buffer, blockProps, size, r, g, b, a);
             }
         }
     }
@@ -510,93 +513,14 @@ public class SpelunkerHelper extends AbstractBufferManager {
     }
 
     @Override
-    protected void afterRender(PoseStack poseStack) {
-        Player player = Minecraft.getInstance().player;
-        if (player == null) return;
+    protected void afterRender(PoseStack poseStack) {}
 
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
-        poseStack.pushPose();
-        Vec3 playerPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-        poseStack.translate(-playerPos.x(), -playerPos.y(), -playerPos.z());
-
-        var map = blockGen.targets;
-        int textRange = blockGen.textRange;
-        AtomicInteger count = new AtomicInteger();
-        float scale = 20;
-        int textDir = blockGen.textRenderType;
-        for (var n : centerCacheFrame.entrySet()) {
-            var pos = n.getKey();
-            var block = n.getValue();
-            if (block.asItem() == Blocks.ANCIENT_DEBRIS.asItem()) count.getAndIncrement();
-            if (playerPos.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < textRange * textRange) {
-                Entry entry;
-                if (SHOW_DETAIL_SPECULAR.get().isDown() && (entry = map.get(block)) != null && entry.showText()) {
-                    double x = pos.getX() + 0.5;
-                    double y = pos.getY() + 0.5;
-                    double z = pos.getZ() + 0.5;
-
-                    var dir = playerPos.subtract(x, y, z).scale(-1);
-                    var pf = player.getForward();
-
-                    double angle = Math.acos(dir.dot(pf) / dir.length() / pf.length());
-                    if (angle < 60 * Math.PI / 180) {
-                        poseStack.pushPose();
-                        poseStack.translate(x, y, z);//调整到中心位置
-                        poseStack.scale(-1 / scale, -1 / scale, -1 / scale);
-
-                        if (textDir == 0) {
-                            var fs = VectorUtils.dirToRot(dir.scale(-1), false);
-                            Matrix4f m = new Matrix4f().rotate(Axis.YP.rotation(Mth.PI - fs[0])).rotate(Axis.XN.rotation(fs[1]));
-                            poseStack.mulPose(m);
-
-                        } else {
-                            //Quaternionf quaternionf = new Quaternionf().rotateTo( new Vector3f(0,1,0),dir.toVector3f());
-                            Quaternionf q1 = new Quaternionf(Minecraft.getInstance().gameRenderer.getMainCamera().rotation());//旋转到摄像机视角
-                            poseStack.mulPose(q1);
-                        }
-
-                        Component component = block.asItem().getDefaultInstance().getDisplayName();
-                        poseStack.translate(-component.getString().length() / 5.0 * scale, 0.7 * scale, 0);//旋转后偏移
-
-
-                        Minecraft.getInstance().font.renderText(Component.literal(component.getString()).withColor(entry.color()).getVisualOrderText(),
-                                0, -16, FastColor.ARGB32.opaque(entry.color()),
-                                false, poseStack.last().pose(), Minecraft.getInstance().renderBuffers().bufferSource(), Font.DisplayMode.SEE_THROUGH, 0, 15 << 20 | 15 << 4);
-
-                        poseStack.popPose();
-
-                    }
-                }
-            }
-
-        }
-
-        poseStack.popPose();
-//        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_LINE_SMOOTH);
-    }
-
-
-    public static void renderLevel(RenderLevelStageEvent event) {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (
-//                event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER ||
-                event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_BLOCKS
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_MIPPED_BLOCKS_BLOCKS
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES
-//                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES
-                        || player == null
-        ) return;
+    public static void renderLevel(RenderLevelStageEvent event, LocalPlayer player) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
         SpelunkerHelper blockGen = SpelunkerHelper.getSingleton();
         //效果消失，清除缓存
-        if (!player.hasEffect(ModEffects.SPELUNKER)
-                && !player.hasEffect(ModEffects.DANGER_SENSE)
+        if (!player.hasEffect(ModEffects.SPELUNKER) &&
+                !player.hasEffect(ModEffects.DANGER_SENSE)
         ) {
             blockGen.centerCache.clear();
             blockGen.centers.clear();
@@ -612,5 +536,19 @@ public class SpelunkerHelper extends AbstractBufferManager {
 //         获取json数据  /confluence reload spelunker
 //        JsonElement element = Tuple.BLOCK_MAP_CODEC.codec().encodeStart(JsonOps.INSTANCE, blockGen.targets).result().get();
 //        System.out.println(element);
+    }
+
+    private void reverseBobView(PoseStack poseStack, float partialTicks) {
+        if (Minecraft.getInstance().player != null) {
+            Player player = Minecraft.getInstance().player;
+            float f = player.walkDist - player.walkDistO;
+            float f1 = -(player.walkDist + f * partialTicks);
+            float f2 = Mth.lerp(partialTicks, player.oBob, player.bob);
+
+            // 注意这里的符号和顺序都与原版相反
+            poseStack.mulPose(Axis.XP.rotationDegrees(-Math.abs(Mth.cos(f1 * (float) Math.PI - 0.2F) * f2) * 5.0F));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(-Mth.sin(f1 * (float) Math.PI) * f2 * 3.0F));
+            poseStack.translate(-Mth.sin(f1 * (float) Math.PI) * f2 * 0.5F, Math.abs(Mth.cos(f1 * (float) Math.PI) * f2), 0.0F);
+        }
     }
 }

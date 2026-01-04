@@ -63,7 +63,7 @@ public class FlowerPetalProjectile extends Projectile {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        result.getEntity().hurt(damageSources().mobProjectile(this, (LivingEntity) getOwner()), 7.2F);
+        result.getEntity().hurt(damageSources().mobProjectile(this, (LivingEntity) getOwner()), 18.2F);
     }
 
     @Override

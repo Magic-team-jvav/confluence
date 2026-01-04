@@ -39,6 +39,7 @@ public class ConsumableItems {
     public static final DeferredItem<AdvancedCombatTechniquesItem> ADVANCED_COMBAT_TECHNIQUES = ITEMS.register("advanced_combat_techniques", AdvancedCombatTechniquesItem::new);
     public static final DeferredItem<AdvancedCombatTechniquesVolumeTwoItem> ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO = ITEMS.register("advanced_combat_techniques_volume_two", AdvancedCombatTechniquesVolumeTwoItem::new);
     public static final DeferredItem<PeddlersSatchelItem> PEDDLERS_SATCHEL = ITEMS.register("peddlers_satchel", PeddlersSatchelItem::new);
+    public static final DeferredItem<EverBeneficialItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new EverBeneficialItem(ModRarity.BLUE, EverBeneficialItem.FALLEN_SOUL_CORE, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("fallen_soul_core", 1, ChatFormatting.GREEN)));
 
     public static final DeferredItem<ThrowableItem<BaseBombEntity>> BOMB = ITEMS.register("bomb", () -> new ThrowableItem<>(0.8F, BaseBombEntity::new));
     public static final DeferredItem<ThrowableItem<BouncyBombEntity>> BOUNCY_BOMB = ITEMS.register("bouncy_bomb", () -> new ThrowableItem<>(0.8F, BouncyBombEntity::new));
@@ -94,6 +95,10 @@ public class ConsumableItems {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(Tags.Biomes.IS_JUNGLE) || biome.is(Tags.Biomes.IS_LUSH);
     }, QueenBee::new, BossSummoningItem.getTooltipsFromString("abeemination", 4, ChatFormatting.YELLOW)));
+    public static final DeferredItem<BossSummoningItem> DEER_THING = ITEMS.register("deer_thing", () -> new BossSummoningItem(player -> {
+        Holder<Biome> biome = player.level().getBiome(player.blockPosition());
+        return biome.is(Tags.Biomes.IS_SNOWY) || biome.is(Tags.Biomes.IS_ICY);
+    }, Deerclops::new, BossSummoningItem.getTooltipsFromString("deer_thing", 4, ChatFormatting.GRAY)));
 
     public static final DeferredItem<TooltipItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("golden_lock_box", 2, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));

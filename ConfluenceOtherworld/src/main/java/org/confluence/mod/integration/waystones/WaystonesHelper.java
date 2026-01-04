@@ -23,7 +23,6 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -40,7 +39,6 @@ import org.confluence.mod.common.data.gen.data_map.ValueSubProvider;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTabs;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.integration.xaero.PylonWaypointElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -168,13 +166,5 @@ public class WaystonesHelper {
                 WaystonesAPI.removeWaystoneFromDatabase(serverPlayer.server, waystone);
             });
         });
-    }
-
-    public static boolean teleport(Object o) {
-        if (o instanceof PylonWaypointElement element) {
-            PacketDistributor.sendToServer(new PlayerToPylonPacketC2S(element.getWaystone().getWaystoneUid()));
-            return true;
-        }
-        return false;
     }
 }

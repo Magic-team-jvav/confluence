@@ -6,6 +6,7 @@ import com.mojang.serialization.Dynamic;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -79,6 +80,8 @@ public class Bestiary implements IGlobalData {
 
     public void updateEntry(LivingEntity living, boolean killed) {
         if (NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled()) return;
+        // if (living.getType().create(living.level()) == null) return;
+        if (living.getType().equals(EntityType.PLAYER)) return;
 
         BestiaryEntry entry = getOrCreateEntry(living);
         if (killed) entry.killedByCount++;

@@ -22,6 +22,8 @@ import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -47,12 +49,14 @@ import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
+import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.client.renderer.item.MutableRenderTypeItemExtension;
@@ -77,6 +81,7 @@ import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -200,6 +205,14 @@ public final class ModClientSetups {
     static final IClientItemExtensions GUIDE_VOODOO_DOLL = new MutableRenderTypeItemExtension(stack -> GuideVooDooDollItem.isWall(LibUtils.getItemStackNbtIfPresent(stack)) ? ModClientSetups.GLINT_FF0000.renderType() : RenderType.glint());
     static final IClientItemExtensions GLINT_RAINBOW_EXTENSIONS = new MutableRenderTypeItemExtension(stack -> ModClientSetups.GLINT_RAINBOW.renderType());
     static final IClientItemExtensions FULL_LIGHT = new CustomLightItemExtension(15);
+
+    /// 对于使用原版json模型，且使用了Extensions来自定义渲染的物品，需使用该方法标记为自定义模型
+    static void asCustomModel(Map<ModelResourceLocation, BakedModel> modelRegistry, DeferredHolder<?, ?>... deferredItems) {
+        for (DeferredHolder<?, ?> holder : deferredItems) {
+            modelRegistry.compute(ModelResourceLocation.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model));
+        }
+    }
+
     static final IClientMobEffectExtensions TRANSLUCENT_EFFECT_ICON = new IClientMobEffectExtensions() {
         @Override
         public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
@@ -324,7 +337,8 @@ public final class ModClientSetups {
         ClampedItemPropertyFunction bowPulling = (itemStack, clientLevel, living, speed) -> living != null && living.isUsingItem() && living.getUseItem() == itemStack ? 1.0F : 0.0F;
 
         BowItems.ITEMS.getEntries().forEach(item -> {
-            if (item.get() instanceof ShortBowItem) ItemProperties.register(item.get(), pull, shortBowPull);
+            if (item.get() instanceof ShortBowItem)
+                ItemProperties.register(item.get(), pull, shortBowPull);
             else ItemProperties.register(item.get(), pull, bowPull);
             ItemProperties.register(item.get(), pulling, bowPulling);
         });

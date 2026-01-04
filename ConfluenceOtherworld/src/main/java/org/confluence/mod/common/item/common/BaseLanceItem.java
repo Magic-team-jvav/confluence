@@ -20,6 +20,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
@@ -49,7 +50,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
-
+/** 通用骑枪类。需要注意的是baseAttackDamage*0.1才是基础伤害，原算法是有问题的，后面可能会改动。 */
 public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateItem, GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackInterval;
@@ -104,26 +105,33 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
                 !owner.getCooldowns().isOnCooldown(this) &&
                 (attackInterval <= 1 || owner.level().getGameTime() % attackInterval == 0)
         ) {
-            Vec3 startVec = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
-            Vec3 lanceDirection = owner.getViewVector(1.0F);
-            Vec3 endVec = startVec.add(lanceDirection.scale(attackDistance));
+            Vec3 startVec = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ()); // 手持位置(起始位置)
+            Vec3 lanceDirection = owner.getViewVector(1.0F); // 玩家视向量作骑枪方向向量
+            Vec3 endVec = startVec.add(lanceDirection.scale(attackDistance)); // 末位置
 
+            /* 选择矩形框选区域内可被攻击的实体 */
             for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> ModUtils.canHitEntity(target, owner))) {
-                if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
+                if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue; // 排除骑枪实际攻击范围碰不到的实体
                 owner.setLastHurtMob(victim);
+
+                /* 对多结构实体设置伤害目标为其本体 */
                 if (victim instanceof PartEntity<?> partEntity) {
                     victim = partEntity.getParent();
                 }
                 DamageSource damageSource = ModDamageTypes.of(level, DamageTypes.STING, owner);
 
-                Vec3 attackerVelocity = new Vec3(IServerPlayer.of(owner).confluence$getMovementSpeed());
-                Vec3 relativeVelocity = attackerVelocity.subtract(victim.getDeltaMovement());
-                Vec3 projectedVelocity = VectorUtils.vectorProjection(relativeVelocity, lanceDirection);
-                double impactSpeed = projectedVelocity.length() * 30;
+                Vec3 attackerVelocity = new Vec3(IServerPlayer.of(owner).confluence$getMovementSpeed()); // 使用者速度
+                Vec3 relativeVelocity = attackerVelocity.subtract(victim.getPosition(1).subtract(victim.getPosition(0))); // 计算相对速度，不再使用加速度
+                Vec3 projectedVelocity = VectorUtils.vectorProjection(relativeVelocity, lanceDirection); // 计算投影速度(投影到剑的方向上)
+                double impactSpeed = projectedVelocity.length() * 30; // 获得向量长度，第一次乘系数
 
-                victim.hurt(damageSource, Mth.floor(baseAttackDamage * (impactSpeed * 6 / 175 + 0.1F)));
-                double kb = impactSpeed * baseKnockback * 4 / 105;
-                VectorUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
+                victim.hurt(damageSource, Mth.floor(baseAttackDamage * (impactSpeed * 6 / 175 + 0.1F))); // 第二次乘系数，+0.1f在乘baseAttackDamage后得到的是基础数值(其实这里的计算逻辑有点问题)
+
+                /* 不击退BOSS类生物 */
+                if (!victim.getType().is(Tags.EntityTypes.BOSSES)) {
+                    double kb = impactSpeed * baseKnockback * 4 / 105;
+                    VectorUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
+                }
                 EnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
             }
         }

@@ -23,7 +23,7 @@ import java.util.Optional;
 
 public class JungleGrassBlock extends SpreadingGrassBlock implements BonemealableBlock {
     public JungleGrassBlock(ISpreadable.Type type, Properties properties) {
-        super(type, properties.mapColor(DyeColor.byId(0x59C93C)));
+        super(type, properties);
     }
 
     @Override

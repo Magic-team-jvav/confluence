@@ -1,0 +1,36 @@
+{
+    "confluence:cutting_down_a_tree": {
+        "entries": 10,
+        "cycle": true
+    },
+    "confluence:cutting_down_a_gem_tree": {
+        "entries": 1
+    },
+    "confluence:cutting_down_a_cactus": {
+        "entries": 1
+    },
+    "confluence:placed_in_other_container": {
+        "entries": 5
+    },
+    "confluence:placed_back_into_the_inventory": {
+        "entries": 3
+    },
+    "confluence:idle": {
+        "entries": 5
+    },
+    "confluence:throw_on_the_ground": {
+        "entries": 5
+    },
+    "confluence:attack_entity": {
+        "entries": 15,
+        "cycle": true
+    },
+    "confluence:kill_entity": {
+        "entries": 14,
+        "cycle": true
+    },
+    "confluence:destroy_wrong_block": {
+        "entries": 17,
+        "cycle": true
+    }
+}

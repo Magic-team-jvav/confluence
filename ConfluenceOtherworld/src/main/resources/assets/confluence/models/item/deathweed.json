@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/deathweed"
+    "layer0": "confluence:item/materials/deathweed"
   }
 }

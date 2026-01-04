@@ -178,7 +178,7 @@ public final class HardmodeConvertor implements IGlobalData {
                 BlockPosColumn column = columns[z];
                 if (column == null || column == BlockPosColumn.ZERO) continue;
                 for (BlockPos blockPos : column.iterable(cx + x, cz + z)) {
-                    BlockState target = ISpreadable.Type.HALLOW.getNullable(chunkAccess.getBlockState(blockPos));
+                    BlockState target = ISpreadable.Type.HALLOW.getNullable(chunkAccess.getBlockState(blockPos), true);
                     if (target == null) continue;
                     if (cachedState != target) {
                         cachedState = target;

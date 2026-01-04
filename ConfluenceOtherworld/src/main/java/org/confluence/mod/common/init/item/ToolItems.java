@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -61,6 +60,9 @@ public class ToolItems {
     public static final DeferredItem<TooltipItem> UNIVERSE_KEY = ITEMS.register("universe_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("universe_key", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> RUST_IRON_KEY = ITEMS.register("rust_iron_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("rust_iron_key", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> MECHANIC_SAFE_KEY = ITEMS.register("mechanic_safe_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("mechanic_safe_key", 1, ChatFormatting.GRAY)));
+
+    public static final DeferredItem<TooltipItem> KEY_OF_LIGHT = ITEMS.register("key_of_light", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("key_of_light", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<TooltipItem> KEY_OF_NIGHT = ITEMS.register("key_of_night", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("key_of_night", 1, ChatFormatting.GRAY)));
 
     public static final DeferredItem<WrenchItem> RED_WRENCH = ITEMS.register("red_wrench", () -> new WrenchItem(0xFF0000));
     public static final DeferredItem<WrenchItem> GREEN_WRENCH = ITEMS.register("green_wrench", () -> new WrenchItem(0x00FF00));

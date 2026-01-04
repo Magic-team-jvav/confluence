@@ -107,7 +107,7 @@ public class SwordItems {
 
     // 改横扫大小的宽剑(由 ENTITY_INTERACTION_RANGE 属性控制)
     public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 7, 7, ModRarity.ORANGE, BOARD_SWORD.apply(0.0F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, -1.8F, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, -1.4F, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F).hasImage()
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 9, AttributeModifier.Operation.ADD_VALUE)
@@ -120,7 +120,7 @@ public class SwordItems {
             .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()).hasImage()));
     public static final DeferredItem<BaseSwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 25, 1.2f, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get()).hasImage()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4f, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)));
     public static final DeferredItem<BaseSwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE, 21, 0.6F, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()).hasImage()
@@ -138,9 +138,13 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 9, 2.0F, ModRarity.ORANGE, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4))));
     public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
-            .apply(SwordProjectileComponent.GRASS_PROJ).hasImage()));
-    public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
-            .apply(SwordProjectileComponent.NIGHT_PROJ).hasImage());
+            .apply(SwordProjectileComponent.GRASS_PROJ).hasImage()
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)));
+    public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
+            .apply(SwordProjectileComponent.NIGHT_PROJ).hasImage()
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)));
+    public static final DeferredItem<BaseSwordItem> WAFFLES_IRON = register("waffles_iron", ModTiers.UNBREAKABLE, 27, 2.5F, ModRarity.PINK, PROJ_SWORD
+            .apply(SwordProjectileComponent.ICE_PROJ).hasImage());
 
     public static final DeferredItem<BaseSwordItem> RED_PHASEBLADE = register("red_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "red"));
     public static final DeferredItem<BaseSwordItem> ORANGE_PHASEBLADE = register("orange_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "orange"));

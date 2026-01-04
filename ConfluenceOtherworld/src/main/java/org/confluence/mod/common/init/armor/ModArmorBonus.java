@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -262,6 +261,14 @@ public final class ModArmorBonus {
                     .build());
         });
 
+        // 提基套装
+        register("tiki_set", 2, TIKI_MASK, TIKI_SHIRT, TIKI_LEGGINGS, TIKI_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
+                    .add(TEAttributes.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
+                    .add(TEAttributes.WHIP_RANGE, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .build());
+        });
+
         /// 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
 
@@ -318,7 +325,7 @@ public final class ModArmorBonus {
      * <p>
      * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#hasType(LivingEntity, ValueType)}
      */
-    public static boolean hasType(Player player, ValueType<Unit, UnitValue> type) {
+    public static <T, V extends PrimitiveValue<T>> boolean hasType(Player player, ValueType<T, V> type) {
         return PlayerSpecialData.of(player).contains(type);
     }
 

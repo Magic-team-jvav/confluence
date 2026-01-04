@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static net.minecraft.world.level.block.Blocks.*;
 import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class FunctionalBlocks {
@@ -51,9 +52,11 @@ public class FunctionalBlocks {
 
     public static final DeferredBlock<ExtractinatorBlock> EXTRACTINATOR = registerWithItem("extractinator", () -> new ExtractinatorBlock(BlockBehaviour.Properties.of().strength(2.2F, 5.0F).requiresCorrectToolForDrops()), ExtractinatorBlock.BItem::new);
     public static final Supplier<BlockEntityType<ExtractinatorBlock.BEntity>> EXTRACTINATOR_ENTITY = BLOCK_ENTITIES.register("extractinator_entity", () -> BlockEntityType.Builder.of(ExtractinatorBlock.BEntity::new, EXTRACTINATOR.get()).build(DSL.remainderType()));
+
     public static final DeferredBlock<AltarBlock> DEMON_ALTAR = registerWithItem("demon_altar", () -> new AltarBlock(BlockBehaviour.Properties.of().strength(3.0F, 18000.0F).lightLevel(state -> 5), AltarBlock.Variant.DEMON), AltarBlock.BItem::new);
     public static final DeferredBlock<AltarBlock> CRIMSON_ALTAR = registerWithItem("crimson_altar", () -> new AltarBlock(BlockBehaviour.Properties.of().strength(3.0F, 18000.0F).lightLevel(state -> 5), AltarBlock.Variant.CRIMSON), AltarBlock.BItem::new);
     public static final Supplier<BlockEntityType<AltarBlock.BEntity>> ALTAR_BLOCK_ENTITY = BLOCK_ENTITIES.register("altar_block_entity", () -> BlockEntityType.Builder.of(AltarBlock.BEntity::new, DEMON_ALTAR.get(), CRIMSON_ALTAR.get()).build(DSL.remainderType()));
+
     public static final DeferredBlock<SkyMillBlock> SKY_MILL = registerWithItem("sky_mill", () -> new SkyMillBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRINDSTONE)), SkyMillBlock.BItem::new);
     public static final Supplier<BlockEntityType<SkyMillBlock.BEntity>> SKY_MILL_ENTITY = BLOCK_ENTITIES.register("sky_mill_entity", () -> BlockEntityType.Builder.of(SkyMillBlock.BEntity::new, SKY_MILL.get()).build(DSL.remainderType()));
     public static final DeferredBlock<HeavyWorkBenchBlock> HEAVY_WORK_BENCH = registerWithItem("heavy_work_bench", () -> new HeavyWorkBenchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICKS)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.heavy_work_bench.0"));
@@ -68,6 +71,13 @@ public class FunctionalBlocks {
     public static final DeferredBlock<SolidifierBlock> SOLIDIFIER = registerWithItem("solidifier", () -> new SolidifierBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.solidifier.0"));
     public static final DeferredBlock<WeatherVaneBlock> WEATHER_VANE = registerWithItem("weather_vane", () -> new WeatherVaneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)), block -> new BlockItem(block, new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
     public static final Supplier<BlockEntityType<WeatherVaneBlock.BEntity>> WEATHER_VANE_ENTITY = BLOCK_ENTITIES.register("weather_vane_entity", () -> BlockEntityType.Builder.of(WeatherVaneBlock.BEntity::new, WEATHER_VANE.get()).build(DSL.remainderType()));
+    public static final DeferredBlock<TuffBoothBlock> TUFF_BOOTH = registerWithItem("tuff_booth", () -> new TuffBoothBlock(BlockBehaviour.Properties.ofFullCopy(TUFF_BRICKS)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.tuff_booth.0"));
+    public static final Supplier<BlockEntityType<TuffBoothBlock.TuffBoothBlockEntity>> TUFF_BOOTH_ENTITY =
+            BLOCK_ENTITIES.register("tuff_booth_entity", () ->
+                    BlockEntityType.Builder.of(TuffBoothBlock.TuffBoothBlockEntity::new, TUFF_BOOTH.get()).build(DSL.remainderType())
+            );
+
+
     /**
      * @see org.confluence.mod.mixin.block.AnvilBlockMixin
      */
@@ -176,6 +186,41 @@ public class FunctionalBlocks {
     // 有效果的蜡烛
     public static final DeferredBlock<EffectiveCandleBlock> WATER_CANDLE = registerCandle("water_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 0));
     public static final DeferredBlock<EffectiveCandleBlock> PEACE_CANDLE = registerCandle("peace_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
+
+    // 心灯，星星瓶
+    public static final DeferredBlock<HeartLanternBlock> HEART_LANTERN   = registerWithItem("heart_lantern",  () -> new HeartLanternBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_RED)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.heart_lantern.0"));
+    public static final Supplier<BlockEntityType<HeartLanternBlock.BEntity>> HEART_LANTERN_ENTITY = ModBlocks.BLOCK_ENTITIES.register("heart_lantern_entity", () -> BlockEntityType.Builder.of(HeartLanternBlock.BEntity::new, HEART_LANTERN.get()).build(DSL.remainderType()));
+
+    public static final DeferredBlock<StarInABottleBlock> STAR_IN_A_BOTTLE = registerWithItem("star_in_a_bottle", () -> new StarInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_YELLOW)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.star_in_a_bottle.0"));
+    public static final Supplier<BlockEntityType<StarInABottleBlock.BEntity>> STAR_IN_A_BOTTLE_ENTITY = ModBlocks.BLOCK_ENTITIES.register("star_in_a_bottle_entity", () -> BlockEntityType.Builder.of(StarInABottleBlock.BEntity::new, STAR_IN_A_BOTTLE.get()).build(DSL.remainderType()));
+
+    public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_FLIGHT_IN_A_BOTTLE = registerWithItem("soul_of_flight_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_CYAN)));
+    public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_LIGHT_IN_A_BOTTLE = registerWithItem("soul_of_light_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_PINK)));
+    public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_FRIGHT_IN_A_BOTTLE = registerWithItem("soul_of_fright_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_RED)));
+    public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_NIGHT_IN_A_BOTTLE = registerWithItem("soul_of_night_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_PURPLE)));
+    public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_MIGHT_IN_A_BOTTLE = registerWithItem("soul_of_might_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_BLUE)));
+    public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_SIGHT_IN_A_BOTTLE = registerWithItem("soul_of_sight_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_LIGHT_GREEN)));
+    public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_BRIGHT_IN_A_BOTTLE = registerWithItem("soul_of_bright_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_YELLOW)));
+    public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_VOIGHT_IN_A_BOTTLE = registerWithItem("soul_of_voight_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_PURPLE)));
+    public static final Supplier<BlockEntityType<BaseSoulInABottleBlock.BEntity>> SOUL_BOTTLE_ENTITY =
+            BLOCK_ENTITIES.register("soul_bottle_entity", () ->
+                    BlockEntityType.Builder.of(BaseSoulInABottleBlock.BEntity::new,
+                            SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
+                            SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
+                            SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),
+                            SOUL_OF_NIGHT_IN_A_BOTTLE.get(),
+                            SOUL_OF_MIGHT_IN_A_BOTTLE.get(),
+                            SOUL_OF_SIGHT_IN_A_BOTTLE.get(),
+                            SOUL_OF_VOIGHT_IN_A_BOTTLE.get(),
+                            SOUL_OF_BRIGHT_IN_A_BOTTLE.get()
+                    ).build(DSL.remainderType())
+            );
+
+
+    // test block 要测试直接复制下面这一行改名
+    public static final DeferredBlock<Block> TEST_BLOCK   = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.COLOR_BLUE)));
+
+
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier) {
         DeferredBlock<B> block = BLOCKS.register(id, supplier);

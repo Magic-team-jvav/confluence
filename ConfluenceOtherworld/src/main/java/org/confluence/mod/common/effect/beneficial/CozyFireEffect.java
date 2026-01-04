@@ -10,9 +10,15 @@ public class CozyFireEffect extends MobEffect {
     }
 
     @Override
+    public boolean shouldApplyEffectTickThisTick(int tickCount, int amplifier) {
+        int interval = 20 >> amplifier;
+        return interval > 0 ? tickCount % interval == 0 : true;
+    }
+
+    @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        if (livingEntity.level().getGameTime() % 20 == 0) {
-            livingEntity.heal(0.5F);
+        if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
+            livingEntity.heal(0.1F);
         }
         return true;
     }

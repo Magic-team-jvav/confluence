@@ -215,9 +215,6 @@ dependencies {
         runtimeOnly "curse.maven:ftb-xmod-compat-889915:6979171"
     }
 
-    compileOnly "curse.maven:better-advancements-272515:5850587"
-    runtimeOnly "curse.maven:better-advancements-272515:5850587"
-
     compileOnly "curse.maven:sodium-394468:6382651"
     compileOnly "curse.maven:irisshaders-455508:6661598"
     if (sodium) {
@@ -260,11 +257,11 @@ dependencies {
         runtimeOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
     }
 
-    compileOnly "curse.maven:xaeros-minimap-263420:6515043"
-    compileOnly "curse.maven:xaeros-world-map-317780:6538359"
+    compileOnly "curse.maven:xaeros-minimap-263420:7412188"
+    compileOnly "curse.maven:xaeros-world-map-317780:7412262"
     if (true) {
-        runtimeOnly "curse.maven:xaeros-minimap-263420:6515043"
-        runtimeOnly "curse.maven:xaeros-world-map-317780:6538359"
+        runtimeOnly "curse.maven:xaeros-minimap-263420:7412188"
+        runtimeOnly "curse.maven:xaeros-world-map-317780:7412262"
     }
 
     compileOnly "maven.modrinth:loot-beams-refork:neoforge-1.21.1-3.2.5"
@@ -292,9 +289,14 @@ dependencies {
         runtimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
     }
 
+    compileOnly "curse.maven:lithium-360438:6290413"
+
+    if (false) {
+        runtimeOnly "curse.maven:lithium-360438:6290413"
+    }
     /**********************************************************/
 
-    //runtimeOnly "curse.maven:worldedit-225608:5830452"
+    runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"
@@ -313,6 +315,11 @@ dependencies {
     //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
     //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
+    if (false) {
+        runtimeOnly "curse.maven:enhanced-celestials-438447:7093308"
+        runtimeOnly "curse.maven:corgilib-693313:6808264"
+        runtimeOnly "curse.maven:data-anchor-1203668:7256604"
+    }
     if (advancementPlaques) {
         runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
     }

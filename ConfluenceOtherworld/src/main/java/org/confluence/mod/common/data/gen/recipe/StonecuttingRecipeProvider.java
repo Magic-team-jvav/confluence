@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
@@ -49,6 +50,8 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
 
         stonecutting(recipeOutput, MaterialItems.CHINA_BOWL.toStack(3), Ingredient.of(Items.WHITE_GLAZED_TERRACOTTA));
         stonecutting(recipeOutput, MaterialItems.CHINA_PLATE.toStack(5), Ingredient.of(Items.WHITE_GLAZED_TERRACOTTA));
+
+        stonecutting(recipeOutput, FunctionalBlocks.TUFF_BOOTH.toStack(), Ingredient.of(Items.TUFF));
 
 
         stonecutting(recipeOutput, DecorativeBlocks.GRANITE_COLUMN.toStack(), Ingredient.of(DecorativeBlocks.GRANITE_BRICKS));

@@ -21,7 +21,7 @@
             "conditions": {
                 "items": [
                     {
-                        "items": "#c:tools/hammers"
+                        "items": "#c:tools/hammer"
                     }
                 ]
             }

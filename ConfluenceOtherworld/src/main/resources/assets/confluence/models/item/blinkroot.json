@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/blinkroot"
+    "layer0": "confluence:item/materials/blinkroot"
   }
 }

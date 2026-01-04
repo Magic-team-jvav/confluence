@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class TheHallowConversionTable extends ConversionTable {
     @Override
-    protected @Nullable Block getTarget(BlockState source) {
+    protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
         Block block = source.getBlock();
 
         if (block == Blocks.TALL_GRASS) {
@@ -30,9 +30,6 @@ public class TheHallowConversionTable extends ConversionTable {
 
         if (holder.is(BlockTags.LOGS)) return NatureBlocks.PEARL_LOG_BLOCKS.LOG.get();
         if (holder.is(BlockTags.LEAVES)) return NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get();
-        if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.PEARLSTONE.get();
-        if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_PEARLSTONE.get();
-
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK)) return NatureBlocks.HALLOW_GRASS_BLOCK.get();
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_SHORT_GRASS)) return NatureBlocks.HALLOW_GRASS.get();
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_PACKED_ICE)) return NatureBlocks.PINK_PACKED_ICE.get();
@@ -43,6 +40,10 @@ public class TheHallowConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_CACTUS)) return NatureBlocks.HALLOW_CACTUS.get();
 
+        if (!hardmode) return null;
+
+        if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.PEARLSTONE.get();
+        if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_PEARLSTONE.get();
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return OreBlocks.SANCTIFICATION_REDSTONE_ORE.get();
         if (holder.is(Tags.Blocks.ORES_COAL)) return OreBlocks.SANCTIFICATION_COAL_ORE.get();
         if (holder.is(Tags.Blocks.ORES_LAPIS)) return OreBlocks.SANCTIFICATION_LAPIS_ORE.get();

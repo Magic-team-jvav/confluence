@@ -1,5 +1,6 @@
 package org.confluence.mod.common.menu;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -13,8 +14,10 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.confluence.lib.common.menu.ToggleSlot;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
@@ -96,7 +99,15 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                 int y = j == MOUNT_INDEX ? 8 : j * 18 + 8;
                 addSlot(new DyeToggleSlot(extraInventory, i, x, y));
             } else if (i < ACCESSORY_DYE_START) { // 26
-                addSlot(new Slot(extraInventory, i, 152, 166));
+                addSlot(new Slot(extraInventory, i, 152, 166) {
+                    @Override
+                    public void set(ItemStack stack) {
+                        super.set(stack);
+                        if (player instanceof ServerPlayer serverPlayer) {
+                            LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, stack, LucyTheAxeDialogCategory.PLACED_IN_OTHER_CONTAINER);
+                        }
+                    }
+                });
             } else { // 27...
                 addSlot(new DyeToggleSlot(extraInventory, i, -25, (i - ACCESSORY_DYE_START) * 18 + 8));
             }

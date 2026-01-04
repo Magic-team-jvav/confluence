@@ -41,6 +41,20 @@ public final class TEEvents {
                 .register(TEMonsterEntities.CORRUPT_SLIME.get(), 8)
                 .register(TEMonsterEntities.LUMINOUS_SLIME.get(), 8)
                 .register(TEMonsterEntities.CRIMSLIME.get(), 8)
+                .register(TEMonsterEntities.WOODEN_MIMIC.get(), 8)
+                .register(TEMonsterEntities.GOLDEN_MIMIC.get(), 8)
+                .register(TEMonsterEntities.SHADOW_MIMIC.get(), 8)
+                .register(TEMonsterEntities.ICE_MIMIC.get(), 8)
+                .register(TEMonsterEntities.CRIMSON_MIMIC.get(), 8)
+                .register(TEMonsterEntities.CORRUPT_MIMIC.get(), 8)
+                .register(TEMonsterEntities.HALLOWED_MIMIC.get(), 8)
+                .register(TEMonsterEntities.JUNGLE_MIMIC.get(), 8)
+
+                .register(TEBossEntities.RETINAZER.get(), 8)
+                .register(TEBossEntities.SPAZMATISM.get(), 8)
+                .register(TEBossEntities.PLANTERA.get(), 8)
+                .register(TEBossEntities.PLANTERA_TENTACLE.get(), 8)
+                .register(TEBossEntities.PLANTERA_HOOK.get(), 8)
 
 
                 .set(Attributes.ARMOR_TOUGHNESS)
@@ -51,6 +65,20 @@ public final class TEEvents {
                 .register(TEMonsterEntities.CORRUPT_SLIME.get(), 2)
                 .register(TEMonsterEntities.LUMINOUS_SLIME.get(), 2)
                 .register(TEMonsterEntities.CRIMSLIME.get(), 2)
+                .register(TEMonsterEntities.WOODEN_MIMIC.get(), 8)
+                .register(TEMonsterEntities.GOLDEN_MIMIC.get(), 8)
+                .register(TEMonsterEntities.SHADOW_MIMIC.get(), 8)
+                .register(TEMonsterEntities.ICE_MIMIC.get(), 8)
+                .register(TEMonsterEntities.CRIMSON_MIMIC.get(), 8)
+                .register(TEMonsterEntities.CORRUPT_MIMIC.get(), 8)
+                .register(TEMonsterEntities.HALLOWED_MIMIC.get(), 8)
+                .register(TEMonsterEntities.JUNGLE_MIMIC.get(), 8)
+
+                .register(TEBossEntities.RETINAZER.get(), 2)
+                .register(TEBossEntities.SPAZMATISM.get(), 2)
+                .register(TEBossEntities.PLANTERA.get(), 2)
+                .register(TEBossEntities.PLANTERA_TENTACLE.get(), 2)
+                .register(TEBossEntities.PLANTERA_HOOK.get(), 2)
         ;
     }
 }

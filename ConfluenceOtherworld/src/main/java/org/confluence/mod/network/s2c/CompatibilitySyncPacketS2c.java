@@ -12,7 +12,6 @@ import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.CommonConfigs;
-import org.jetbrains.annotations.NotNull;
 
 public record CompatibilitySyncPacketS2c(int data) implements IPacketS2C {
     private static ModConfigSpec.BooleanValue[] configs;
@@ -40,7 +39,7 @@ public record CompatibilitySyncPacketS2c(int data) implements IPacketS2C {
         PacketDistributor.sendToPlayer(player, packet);
     }
 
-    private static @NotNull CompatibilitySyncPacketS2c collectPacket() {
+    private static CompatibilitySyncPacketS2c collectPacket() {
         int data = 0;
         ModConfigSpec.BooleanValue[] arr = getConfigs();
         for (int i = 0; i < arr.length; i++) {
@@ -55,8 +54,6 @@ public record CompatibilitySyncPacketS2c(int data) implements IPacketS2C {
                     CommonConfigs.CONVERT_ARS_NOUVEAU_MANA,
                     CommonConfigs.CONVERT_IRONS_SPELL_MANA,
                     CommonConfigs.FTB_CHUNKS_WORMHOLE_POTION,
-                    CommonConfigs.XAEROS_MAP_WORMHOLE_POTION,
-                    CommonConfigs.XAEROS_MAP_PYLON_WAYPOINT,
                     CommonConfigs.WAYSTONES_PYLON_NON_COST
             };
         }

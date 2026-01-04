@@ -1,0 +1,6 @@
+{
+    "parent": "confluence:block/template_soul_bottle",
+    "textures": {
+        "texture": "confluence:block/soul_bottle/soul_of_flight_in_a_bottle"
+    }
+}

@@ -24,6 +24,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -579,6 +580,10 @@ public final class NPCSpawner implements IGlobalData {
         return player.getRespawnPosition() == null ? player.serverLevel().getSharedSpawnPos() : player.getRespawnPosition();
     }
 
+    public static Region getNpcSpawnRegion(ServerPlayer player) {
+        return new Region(getNpcSpawnPos(player));
+    }
+
     public static void broadcastMessageToRegion(Level level, AbstractTerraNPC npc, Component message) {
         Region region = ((IAbstractTerraNPC) npc).confluence$getRegion();
         for (Player player : level.players()) {
@@ -600,6 +605,14 @@ public final class NPCSpawner implements IGlobalData {
         if (attackDamage != null) {
             attackDamage.addOrReplacePermanentModifier(new AttributeModifier(id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         }
+    }
+
+    public static void respawnNPC(ServerLevel level, int dayTime) {
+        if (CommonConfigs.DO_NPC_SPAWNING.get() &&
+                LibDateUtils.isDay(dayTime) &&
+                level.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
+                level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
+        ) NPCSpawner.INSTANCE.checkNpcRespawn(level);
     }
 
     public record Region(int x, int z) {

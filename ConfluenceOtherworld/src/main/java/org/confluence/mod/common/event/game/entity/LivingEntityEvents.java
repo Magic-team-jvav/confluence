@@ -38,6 +38,7 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.Bestiary;
@@ -66,6 +67,7 @@ import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
+import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -95,6 +97,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
+            TombstoneBoulderEntity.createTombstoneEntity(victim);
             Entity attacker = LibUtils.getOwner(damageSource);
 
             if (attacker instanceof ServerPlayer) {
@@ -113,7 +116,6 @@ public final class LivingEntityEvents {
             }
             if (victim instanceof ServerPlayer player) {
                 PlayerUtils.dropMoney(player);
-                TombstoneBoulderEntity.createTombstone(player);
             }
             for (ServerPlayer player : level.players()) {
                 if (player.position().distanceToSqr(victim.position()) > 32 * 32) continue;
@@ -170,6 +172,9 @@ public final class LivingEntityEvents {
         if (living.hasEffect(ModEffects.COZY_FIRE)) {
             amount *= 1.1F;
         }
+        if (living.hasEffect(ModEffects.HEART_LANTERN)) {
+            amount *= 1.2F;
+        }
         event.setAmount(amount);
 
         DamageIndicatorOptions.sendHealParticle(amount, level, living);
@@ -183,7 +188,8 @@ public final class LivingEntityEvents {
         if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
                 living instanceof Npc &&
                 !damageSource.is(ModDamageTypes.BYPASS_NPC_INVULNERABLE_TO_PLAYER) &&
-                LibUtils.getOwner(damageSource) instanceof Player
+                LibUtils.getOwner(damageSource) instanceof Player player &&
+                !player.isCreative()
         ) {
             event.setCanceled(true);
             return;
@@ -207,7 +213,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
@@ -218,7 +224,6 @@ public final class LivingEntityEvents {
         @Nullable Entity attacker = damageSource.getEntity();
 
         amount = ArcheryEffect.apply(victim, damageSource, amount);
-        amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
@@ -244,6 +249,9 @@ public final class LivingEntityEvents {
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
             sword.applyHitEffects(weapon, attacker, victim, damageSource);
         }
+
+        amount = ManaSicknessEffect.apply(damageSource, amount);
+
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
@@ -279,6 +287,11 @@ public final class LivingEntityEvents {
         }
         if (attacker instanceof ServerPlayer player) {
             ModArmorBonus.onAttacked(player, damageSource, victim);
+            if (victim.isDeadOrDying()) {
+                LucyTheAxeDialogPacketS2C.checkAndBroadcast(player, LucyTheAxeDialogCategory.KILL_ENTITY);
+            } else {
+                LucyTheAxeDialogPacketS2C.checkAndBroadcast(player, LucyTheAxeDialogCategory.ATTACK_ENTITY);
+            }
         }
     }
 

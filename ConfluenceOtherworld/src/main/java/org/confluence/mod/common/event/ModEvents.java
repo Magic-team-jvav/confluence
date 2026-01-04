@@ -157,6 +157,7 @@ public final class ModEvents {
             );
             GlobalCloakData.INSTANCE.initialize();
             ModLoader.postEvent(new RegisterEvilMaterialReplacesEvent());
+            DispenserRegistration.boostrap();
         });
     }
 
@@ -201,6 +202,7 @@ public final class ModEvents {
         registrar.playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle);
         registrar.playToClient(KillBoardSyncPacketS2C.TYPE, KillBoardSyncPacketS2C.STREAM_CODEC, KillBoardSyncPacketS2C::handle);
         registrar.playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle);
+        registrar.playToClient(SoulPacketS2C.TYPE, SoulPacketS2C.STREAM_CODEC, SoulPacketS2C::handle);
         registrar.playToClient(MeteoriteLocationPacketS2C.TYPE, MeteoriteLocationPacketS2C.STREAM_CODEC, MeteoriteLocationPacketS2C::handle);
         registrar.playToClient(OpenSelectionsScreenPacketS2C.TYPE, OpenSelectionsScreenPacketS2C.STREAM_CODEC, OpenSelectionsScreenPacketS2C::handle);
         registrar.playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle);
@@ -216,6 +218,7 @@ public final class ModEvents {
         registrar.playToClient(TerraStyleExplosionPacketS2C.TYPE, TerraStyleExplosionPacketS2C.STREAM_CODEC, TerraStyleExplosionPacketS2C::handle);
         registrar.playToClient(FlushArmorSetBonusPacketS2C.TYPE, FlushArmorSetBonusPacketS2C.STREAM_CODEC, FlushArmorSetBonusPacketS2C::handle);
         registrar.playToClient(GlobalCloakSyncPacketS2C.TYPE, GlobalCloakSyncPacketS2C.STREAM_CODEC, GlobalCloakSyncPacketS2C::handle);
+        registrar.playToClient(LucyTheAxeDialogPacketS2C.TYPE, LucyTheAxeDialogPacketS2C.STREAM_CODEC, LucyTheAxeDialogPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
@@ -229,6 +232,7 @@ public final class ModEvents {
         registrar.playToServer(DyeMixPacketC2S.TYPE, DyeMixPacketC2S.STREAM_CODEC, DyeMixPacketC2S::handle);
         registrar.playToServer(HouseSelectPacketC2S.TYPE, HouseSelectPacketC2S.STREAM_CODEC, HouseSelectPacketC2S::handle);
         registrar.playToServer(EmptyTargetSweepPacketC2S.TYPE, EmptyTargetSweepPacketC2S.STREAM_CODEC, EmptyTargetSweepPacketC2S::handle);
+        registrar.playToServer(SwordProjectilePacketC2S.TYPE, SwordProjectilePacketC2S.STREAM_CODEC, SwordProjectilePacketC2S::handle);
         WaystonesHelper.registerPayload(registrar);
     }
 
@@ -278,7 +282,7 @@ public final class ModEvents {
             AccessoryItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
         } else if (event.getTab() == ModTabs.MISC.get()) {
             ItemStack clothierVoodooDollStack = AccessoryItems.CLOTHIER_VOODOO_DOLL.toStack();
-            event.insertAfter(ConsumableItems.ABEEMINATION.toStack(), clothierVoodooDollStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(ConsumableItems.DEER_THING.toStack(), clothierVoodooDollStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(clothierVoodooDollStack, AccessoryItems.GUIDE_VOODOO_DOLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
     }
@@ -301,8 +305,9 @@ public final class ModEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
-            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED))
+            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {
                 return null;
+            }
             Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
             return container == null ? null : new InvWrapper(container);
         }, ChestBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new));

@@ -1,0 +1,14 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "confluence:crushed_raw_tungsten"
+    }
+  ],
+  "results": [
+    {
+      "count": 9,
+      "id": "confluence:tungsten_nugget"
+    }
+  ]
+}

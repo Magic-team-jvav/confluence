@@ -70,7 +70,7 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
 
     @Override
     public DamageSource damageSource() {
-        return ModDamageTypes.of(level(), DamageTypes.GENERIC, this, getOwner());
+        return ModDamageTypes.of(level(), DamageTypes.MOB_ATTACK, this, getOwner());
     }
 
     @Override

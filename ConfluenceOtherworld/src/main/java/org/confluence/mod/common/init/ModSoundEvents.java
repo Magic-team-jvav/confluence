@@ -38,6 +38,7 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> TRANSMUTATION_USE = register("transmutation_use"); // 高级增益使用
     public static final DeferredHolder<SoundEvent, SoundEvent> HOOK_SHOOT = register("hook_shoot");
     public static final DeferredHolder<SoundEvent, SoundEvent> HOOK_ATTACH = register("hook_attach");
+    public static final DeferredHolder<SoundEvent, SoundEvent> LUCYAXE_TALK = register("lucyaxe_talk");
 
     private static DeferredHolder<SoundEvent, SoundEvent> register(String name) {
         return EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(Confluence.asResource(name)));

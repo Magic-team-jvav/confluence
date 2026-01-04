@@ -20,6 +20,10 @@ public interface IMinecraftServer {
         return confluence$matchesSecretFlag(secretSeed.getFlag());
     }
 
+    default boolean confluence$equalsSecretFlag(long flag) {
+        return equalsSecretFlag(confluence$getSecretFlag(), flag);
+    }
+
     /**
      * 单人模式与多人模式通用
      */
@@ -31,6 +35,11 @@ public interface IMinecraftServer {
         return (secretFlag & flag) != 0;
     }
 
+    /// 用于复数位的flag
+    static boolean equalsSecretFlag(long secretFlag, long flag) {
+        return (secretFlag & flag) == flag;
+    }
+
     static boolean matchesSecretFlag(long flag) {
         if (LibUtils.isLogicalClient()) {
             return matchesSecretFlag(ClientPacketHandler.getSecretFlag(), flag);
@@ -39,6 +48,7 @@ public interface IMinecraftServer {
         return server != null && matchesSecretFlag(server, flag);
     }
 
+    /// @see org.confluence.mod.common.data.saved.GamePhase#isHardmode
     static boolean isHardmode(MinecraftServer server) {
         return IMinecraftServer.of(server).confluence$matchesSecretFlag(IWorldOptions.HARDMODE);
     }

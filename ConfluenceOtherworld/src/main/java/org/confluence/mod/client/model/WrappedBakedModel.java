@@ -21,9 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/**
- * isCustomRenderer = true
- */
+/// isCustomRenderer = true
 @SuppressWarnings("all")
 public class WrappedBakedModel implements BakedModel {
     private final BakedModel wrapped;

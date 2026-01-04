@@ -43,7 +43,7 @@ public class CoinPortalEntity extends Entity {
     @Override
     public void tick() {
         if (level().isClientSide && (emitter == null || emitter.isRemoved()) && amount != 0) {
-            MolangExp expression = new MolangExp("amount", amount);
+            MolangExp expression = new MolangExp("variable.amount", amount);
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("coin_portal"), expression);
             emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);

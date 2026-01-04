@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -23,16 +24,28 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 
 import java.util.Arrays;
 
 public class EffectiveCandleBlock extends AbstractMechanicalBlock {
+    private static final VoxelShape SHAPE = Shapes.or(
+            box(6, 1, 6, 10, 9, 10),
+            box(4, 0, 4, 12, 2, 12)
+    );
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty BLOOM = BlockStateProperties.BLOOM;
     private final TickEffect tickEffect;
     private final float scope;
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return SHAPE;
+    }
 
     public EffectiveCandleBlock(Properties properties, float scope, ModFoodPropertiesBuilder.EffectData... effectData) {
         this(properties, scope, (level, entity, stack) -> Arrays.stream(effectData)

@@ -30,10 +30,7 @@ import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TERideableItems;
-import org.confluence.terraentity.init.item.TEWhipItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
+import org.confluence.terraentity.init.item.*;
 
 import java.util.Calendar;
 import java.util.function.BiConsumer;
@@ -592,7 +589,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To4))
-                        // todo 镇静药水
+                        .add(LootItem.lootTableItem(PotionItems.CALMING_POTION.get()).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.FLIPPER_POTION.get()).apply(count2To4))
                         .add(EmptyLootItem.emptyItem().setWeight(42))
                 )
@@ -1011,6 +1008,55 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
         // 宝藏袋
+
+        //双子魔眼
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/the_twins/classic"), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_SIGHT)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 40)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HALLOWED_INGOT)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(15, 30)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(12)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                ))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/the_twins/expert"), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_SIGHT)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 40)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HALLOWED_INGOT)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(42)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WHEEL_PIECE)))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/the_twins/master"), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_SIGHT)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 40)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HALLOWED_INGOT)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(42)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WHEEL_PIECE)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.THE_TWINS_RELIC)))
+        );
+
+        // 肉墙
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/classic"), wallOfFleshTreasureBagCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(8)))
@@ -1025,8 +1071,26 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(28)))
                 ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.WALL_OF_FLESH_RELIC)))
         );
-
+        // 肉山
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/hill_of_flesh/classic"), wallOfFleshTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(8)))
+                ))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/hill_of_flesh/expert"), wallOfFleshTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(28)))
+                ))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/hill_of_flesh/master"), wallOfFleshTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(28)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.HILL_OF_FLESH_RELIC)))
+        );
+        // 骷髅王
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/classic"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
@@ -1076,6 +1140,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ))
         );
+        // 蜂后
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/queen_bee/classic"), queenBeeTreasureBagCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.ROYAL_WAX)
@@ -1140,7 +1205,33 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(22)))
                 ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.QUEEN_BEE_RELIC)))
         );
+        // 巨鹿
+
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/deerclops/classic"), deerclopsTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
+                ))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/deerclops/expert"), deerclopsTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(22)))
+                ))
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/deerclops/master"), deerclopsTreasureBagCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(22)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.DEERCLOPS_RELIC)))
+        );
+        //克脑
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
@@ -1182,7 +1273,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.BRAIN_OF_CTHULHU_RELIC)))
         );
 
-
+        // 世吞
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/classic"), eaterOfWorldsTreasureBagCommon()
 
         );
@@ -1205,7 +1296,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EATER_OF_WORLDS_RELIC)))
         );
-
+        // 史王
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/king_slime/classic"), KingSlimeTreasureBagCommon()
                 .withPool(LootPool.lootPool()
@@ -1274,7 +1365,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.KING_SLIME_RELIC)))
         );
-
+        // 克眼
 
         LootPool.Builder binoculars_1$40 = LootPool.lootPool()
                 .add(LootItem.lootTableItem(ToolItems.BINOCULARS))
@@ -1367,6 +1458,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(binoculars_1$30)
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
         );
+
+
     }
 
     private static LootTable.Builder eyeOfCthulhuTreasureBagCorruption() {
@@ -1472,6 +1565,26 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.HONEY_BOTTLE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ));
+    }
+
+    private static LootTable.Builder deerclopsTreasureBagCommon() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                ))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.RADIO_THING))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TEPetItems.CHESTER_STAFF))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ManaWeaponItems.WEATHER_PAIN))
+                        .add(LootItem.lootTableItem(AxeItems.LUCY_THE_AXE))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                );
     }
 
 

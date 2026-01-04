@@ -21,6 +21,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.paint.PaintItem;
+import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.*;
@@ -76,6 +77,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(AxeItems.TITANIUM_WARAXE, templateNormal24x, "axe/");
         separateModel(AxeItems.AXE_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(AxeItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
+        separateModel(SwordItems.WAFFLES_IRON, templateNormal24x, "sword/");
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 
         getBuilder(SwordItems.NIGHTS_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHTS_EDGE.getId().withPrefix("item/sword/"));
@@ -141,6 +143,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
+
+        customModels.add(createDir(CreateHelper.ITEMS,"materials/"));
 
         genModels(customModels, "item/generated");
 

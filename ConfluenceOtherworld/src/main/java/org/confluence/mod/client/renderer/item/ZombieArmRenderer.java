@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.init.item.SwordItems;
@@ -30,17 +29,23 @@ public class ZombieArmRenderer {
     }
 
     public void render(PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Player player, float partialTick) {
-        PlayerModel<AbstractClientPlayer> playerModel = playerRenderer.getModel();
-        zombieModel.setAllVisible(false);
-        if (player.getItemInHand(InteractionHand.MAIN_HAND).is(SwordItems.ZOMBIE_ARM)) {
+        PlayerModel<AbstractClientPlayer> playerModel = null;
+        if (player.getInventory().getSelected().is(SwordItems.ZOMBIE_ARM)) {
+            playerModel = playerRenderer.getModel();
+            zombieModel.setAllVisible(false);
             playerModel.rightArm.visible = false;
             playerModel.rightSleeve.visible = false;
             zombieModel.rightArm.visible = true;
         }
-        if (player.getItemInHand(InteractionHand.OFF_HAND).is(SwordItems.ZOMBIE_ARM)) {
+        if (player.getInventory().offhand.getFirst().is(SwordItems.ZOMBIE_ARM)) {
+            playerModel = playerRenderer.getModel();
+            zombieModel.setAllVisible(false);
             playerModel.leftArm.visible = false;
             playerModel.leftSleeve.visible = false;
             zombieModel.leftArm.visible = true;
+        }
+        if (playerModel == null) {
+            return;
         }
         playerModel.copyPropertiesTo(zombieModel);
         VertexConsumer vertexconsumer = bufferSource.getBuffer(zombieModel.renderType(ZOMBIE_LOCATION));
@@ -60,10 +65,10 @@ public class ZombieArmRenderer {
 
     public boolean renderHand(PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, HumanoidArm humanoidArm) {
         ModelPart rendererArm;
-        if (humanoidArm == HumanoidArm.RIGHT && player.getItemInHand(InteractionHand.MAIN_HAND).is(SwordItems.ZOMBIE_ARM)) {
+        if (humanoidArm == HumanoidArm.RIGHT && player.getInventory().getSelected().is(SwordItems.ZOMBIE_ARM)) {
             rendererArm = zombieModel.rightArm;
             zombieModel.rightArm.visible = true;
-        } else if (humanoidArm == HumanoidArm.LEFT && player.getItemInHand(InteractionHand.OFF_HAND).is(SwordItems.ZOMBIE_ARM)) {
+        } else if (humanoidArm == HumanoidArm.LEFT && player.getInventory().offhand.getFirst().is(SwordItems.ZOMBIE_ARM)) {
             rendererArm = zombieModel.leftArm;
             zombieModel.leftArm.visible = true;
         } else {

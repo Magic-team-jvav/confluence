@@ -42,6 +42,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
     private boolean couldHurtCritters;
     private boolean couldDamageEnvironment;
+    private boolean fallenSoulCoreActive = false;
 
     @Override
     public void setToDefaultValue() {
@@ -53,6 +54,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
         this.couldHurtCritters = true;
         this.couldDamageEnvironment = true;
+        this.fallenSoulCoreActive = false;
     }
 
     public ArmorSetBonusKey getArmorSetBonusKey() {
@@ -91,9 +93,15 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         return couldDamageEnvironment;
     }
 
-    /**
-     * @see LivingEntity#collectEquipmentChanges()
-     */
+    public boolean isFallenSoulCoreActive() {
+        return fallenSoulCoreActive;
+    }
+
+    public void setFallenSoulCoreActive(boolean active) {
+        this.fallenSoulCoreActive = active;
+    }
+
+    /*/// @see LivingEntity#collectEquipmentChanges()*/
     public void flushArmorSetBonus(Player player) {
         Inventory inventory = player.getInventory();
         ItemStack head = inventory.getArmor(EquipmentSlot.HEAD.getIndex());
@@ -101,7 +109,17 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         ItemStack legs = inventory.getArmor(EquipmentSlot.LEGS.getIndex());
         ItemStack feet = inventory.getArmor(EquipmentSlot.FEET.getIndex());
         ArmorSetBonusKey key = ArmorSetBonusKey.of(head, chest, legs, feet);
-        if (armorSetBonusKey.equals(key)) return;
+        if (armorSetBonusKey.equals(key)) {
+            ArmorSetBonusKey lastKey = ArmorSetBonusKey.of(
+                    player.getLastArmorItem(EquipmentSlot.HEAD),
+                    player.getLastArmorItem(EquipmentSlot.CHEST),
+                    player.getLastArmorItem(EquipmentSlot.LEGS),
+                    player.getLastArmorItem(EquipmentSlot.FEET)
+            );
+            if (lastKey.equals(key)) {
+                return;
+            }
+        }
         AttributeMap attributes = player.getAttributes();
 
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : getValue(TCItems.ATTRIBUTES).asMap().entrySet()) {
@@ -152,6 +170,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         tag.put("CurrentQuestedFish", ItemStack.OPTIONAL_CODEC.encodeStart(ops, currentQuestedFish).result().orElseGet(CompoundTag::new));
         tag.put("CurrentQuestedFishCondition", ITradeLock.TYPED_CODEC.encodeStart(ops, currentQuestedFishCondition).result().orElseGet(CompoundTag::new));
         tag.putBoolean("CouldHurtCritters", couldHurtCritters);
+        tag.putBoolean("FallenSoulCoreActive", fallenSoulCoreActive);
         return tag;
     }
 
@@ -164,6 +183,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         this.currentQuestedFish = ItemStack.OPTIONAL_CODEC.parse(ops, nbt.get("CurrentQuestedFish")).result().orElse(ItemStack.EMPTY);
         this.currentQuestedFishCondition = ITradeLock.TYPED_CODEC.parse(ops, nbt.get("CurrentQuestedFishCondition")).result().orElse(ITradeLock.alwaysTrue());
         this.couldHurtCritters = nbt.getBoolean("CouldHurtCritters");
+        this.fallenSoulCoreActive = nbt.getBoolean("FallenSoulCoreActive");
     }
 
     public static PlayerSpecialData of(Player player) {

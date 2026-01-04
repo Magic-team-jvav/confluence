@@ -185,7 +185,11 @@ public final class ModArmorMaterials {
             3, 7, 7, 3,
             17, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
             "spider", 2.0F, 0.0F);
-
+    public static final Holder<ArmorMaterial> TIKI_ARMOR_MATERIALS = registerArmorMaterial("tiki_armor_materials",
+            3, 6, 5, 3,
+            13, SoundEvents.ARMOR_EQUIP_LEATHER, Blocks.OBSIDIAN,
+            "obsidian", 1.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> GOGGLES_MATERIAL = registerSingletonMaterial("goggles_material", ArmorItem.Type.HELMET, 1, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "goggles", 0, 0);
     public static final Holder<ArmorMaterial> GREEN_CAP_MATERIAL = registerSingletonMaterial("green_cap_material", ArmorItem.Type.HELMET, 2, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "green_cap", 0, 0);
 

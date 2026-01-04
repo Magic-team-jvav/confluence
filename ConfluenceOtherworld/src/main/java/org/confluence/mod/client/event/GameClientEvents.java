@@ -8,7 +8,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
@@ -24,11 +23,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.stats.StatsCounter;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -56,10 +55,12 @@ import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
+import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
+import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -67,15 +68,16 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
-import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
+import org.confluence.mod.network.c2s.SwordProjectilePacketC2S;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
@@ -121,9 +123,14 @@ public final class GameClientEvents {
             MeteorLandingHandler.handle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
-            XaeroHelper.handle(player);
             DropletsHandler.handle(minecraft, player);
             DeathAnimUtils.handle();
+            LucyTheAxeHandler.handle(player.getId());
+            if (minecraft.options.keyAttack.isDown() &&
+                    player.getMainHandItem().getItem() instanceof BaseSwordItem sword &&
+                    !player.getCooldowns().isOnCooldown(sword)) {
+                SwordProjectilePacketC2S.sendToServer();
+            }
         }
         DeathAnimUtils.clear();
     }
@@ -143,6 +150,7 @@ public final class GameClientEvents {
         DropletsHandler.reset();
         EctoMistHelper.reset();
         ClientBestiary.reset();
+        LucyTheAxeHandler.reset();
     }
 
     @SubscribeEvent
@@ -193,7 +201,9 @@ public final class GameClientEvents {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
-        if (PrismLibHelper.shouldSkipOriginalPrefixGather(itemStack, tooltipElements) || tooltipElements.isEmpty()) return;
+        if (PrismLibHelper.shouldSkipOriginalPrefixGather(itemStack, tooltipElements) || tooltipElements.isEmpty()) {
+            return;
+        }
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
         if (displayName.isPresent() && displayName.get() instanceof Component component) {
             PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
@@ -207,13 +217,23 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void itemToolTip(ItemTooltipEvent event) {
+        List<Component> toolTip = event.getToolTip();
+        ItemStack itemStack = event.getItemStack();
         if (ClientConfigs.sellPriceDisplay.test()) {
-            int price = ValueComponent.getValue(event.getItemStack(), 0);
+            int price = ValueComponent.getValue(itemStack, 0);
             if (price > 0) {
-                event.getToolTip().add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
+                toolTip.add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
             }
         }
-        ModArmorBonus.addBonusTooltip(event.getEntity(), event.getItemStack(), event.getToolTip());
+        ModArmorBonus.addBonusTooltip(event.getEntity(), itemStack, toolTip);
+        int power = DiggingPower.getPower(itemStack);
+        if (power > 0) {
+            if (itemStack.is(ItemTags.PICKAXES) || itemStack.is(ModTags.Items.TOOLS_DRILL)) {
+                toolTip.add(Component.translatable("tooltip.confluence.pickaxe_power", power).withStyle(ChatFormatting.GRAY));
+            } else if (itemStack.is(ModTags.Items.TOOLS_HAMMER)) {
+                toolTip.add(Component.translatable("tooltip.confluence.hammer_power", power).withStyle(ChatFormatting.GRAY));
+            }
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
@@ -238,28 +258,47 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
-        LocalPlayer player = Minecraft.getInstance().player;
+        Minecraft minecraft = Minecraft.getInstance();
+        LocalPlayer player = minecraft.player;
         if (player == null) return;
-        ClientLevel level = player.clientLevel;
-        level.getProfiler().push("Spelunker");
-        SpelunkerHelper.renderLevel(event);
-        level.getProfiler().pop();
+        SpelunkerHelper.renderLevel(event, player);
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
-            level.getProfiler().push("StarPhase");
             StarPhaseHandler.render(event);
-            level.getProfiler().pop();
             MeteorLandingHandler.render(event);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
-            if (!headItem.isEmpty() && headItem.is(ToolItems.DUNGEON_COMPASS)) {
-                CompoundTag tag = LibUtils.getItemStackNbtIfPresent(headItem);
-                if (tag != null) {
-                    int[] pos = tag.getIntArray("pos");
-                    if (pos.length == 3) {
-                        DungeonCompassRenderer.getInstance().render(event.getPoseStack(), Minecraft.getInstance().renderBuffers().bufferSource(), player, pos[0], pos[1], pos[2]);
-                    }
+            dungeonCompass:
+            {
+                ItemStack headItem = player.getInventory().armor.get(3);
+                if (headItem.isEmpty() || !headItem.is(ToolItems.DUNGEON_COMPASS)) {
+                    break dungeonCompass;
                 }
+                CompoundTag tag = LibUtils.getItemStackNbtIfPresent(headItem);
+                if (tag == null) break dungeonCompass;
+                int[] pos = tag.getIntArray("pos");
+                if (pos.length != 3) break dungeonCompass;
+                DungeonCompassRenderer.getInstance().render(
+                        event.getPoseStack(),
+                        minecraft.renderBuffers().bufferSource(),
+                        player,
+                        pos[0],
+                        pos[1],
+                        pos[2]
+                );
             }
+
+            LucyTheAxeDialogRenderer.renderInWorld(minecraft, event.getPoseStack());
+        }
+    }
+
+    @SubscribeEvent
+    public static void screen$Render$Post(ScreenEvent.Render.Post event) {
+        LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
+    }
+
+    @SubscribeEvent
+    public static void renderGui$Post(RenderGuiEvent.Post event) {
+        if (Minecraft.getInstance().screen == null) {
+            LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
         }
     }
 
@@ -275,14 +314,17 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event) {
-        if (IPoseStack.isAntiPush(event.getPoseStack()) || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
+        if (IPoseStack.isAntiPush(event.getPoseStack()) || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF
+                || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE) return;
         LivingEntity living = event.getEntity();
         if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
                 && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())
         ) return;
         boolean dead = living.isDeadOrDying();
         if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
-            ClientUtils.livingDeath(living);
+            living.level().getProfiler().push("entity_dismemberment");
+            DeathAnimUtils.livingDeath(living);
+            living.level().getProfiler().pop();
         }
         IClientLivingEntity.of(living).confluence$deadO(dead);
     }
@@ -299,7 +341,9 @@ public final class GameClientEvents {
         if (entity instanceof LivingEntity living) {
             boolean dead = living.isDeadOrDying();
             if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
-                ClientUtils.livingDeath(living);
+                living.level().getProfiler().push("geo_dismemberment");
+                DeathAnimUtils.livingDeath(living);
+                living.level().getProfiler().pop();
             }
             IClientLivingEntity.of(living).confluence$deadO(dead);
         }
@@ -324,14 +368,14 @@ public final class GameClientEvents {
         if (player == null) return;
         EntityType<?> type = event.getNPC().getType();
         if (!ModClientSetups.guideCheckedJEI && type == TENpcEntities.GUIDE.get()) {
-            event.setNeoDialog(Component.translatable("dialogs.confluence.guide.jei_check"));
+            event.setNeoDialog(Component.translatable("dialogs.terra_entity.guide.jei_check"));
             ModClientSetups.guideCheckedJEI = true;
         } else if (type == TENpcEntities.NURSE.get() && event.getNPC().getRandom().nextInt(25) == 0) {
             StatsCounter stats = player.getStats();
             for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
                 int value = stats.getValue(stat);
                 if (value >= 50) {
-                    event.setNeoDialog(Component.translatable("dialogs.confluence.nurse.player_killed_by", stat.getValue().getDescription(), value));
+                    event.setNeoDialog(Component.translatable("dialogs.terra_entity.nurse.player_killed_by", stat.getValue().getDescription(), value));
                     break;
                 }
             }
@@ -343,7 +387,8 @@ public final class GameClientEvents {
         Optional<ResourceKey<MobEffect>> optional = event.getEffectInstance().getEffect().unwrapKey();
         if (optional.isPresent()) {
             String key = Util.makeDescriptionId("tooltip.effect", optional.get().location()) + ".0";
-            if (I18n.exists(key)) event.getTooltip().add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+            if (I18n.exists(key))
+                event.getTooltip().add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
         }
         if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {
             event.getTooltip().add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));

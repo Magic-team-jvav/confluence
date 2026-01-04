@@ -39,7 +39,6 @@ import java.util.function.Supplier;
  */
 public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     public static final int MAX_AGE = BlockStateProperties.MAX_AGE_2;
-    public static final int BRIGHTNESS = 3;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
     protected static final VoxelShape[] SHAPE_BY_AGE;
 

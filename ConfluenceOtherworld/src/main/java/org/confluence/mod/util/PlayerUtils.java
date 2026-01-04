@@ -27,14 +27,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
-import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -86,6 +81,15 @@ public final class PlayerUtils {
         syncMana2Client(player, ManaStorage.of(player));
     }
 
+    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
+        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
+        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
+    }
+
+    public static void syncSoul2Client(ServerPlayer player) {
+        syncSoul2Client(player, SoulStorage.of(player));
+    }
+
     public static void regenerateMana(ServerPlayer player) {
         ManaStorage manaStorage = ManaStorage.of(player);
         if (!manaStorage.canReceive()) return;
@@ -101,13 +105,16 @@ public final class PlayerUtils {
             manaStorage.setRegenerateDelay(delay - delayReduce);
             return;
         }
+        boolean hasStarBottle = player.hasEffect(ModEffects.STAR_IN_A_BOTTLE);
+        float starBottleBonusPerTick = hasStarBottle ? 0.25F : 0.0F;
 
         FloatSupplier receive = () -> {
             // 1.0F / 7.0F = 0.14285715F
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
             float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
-            return a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(player);
+            float baseRegen = a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(player);
+            return baseRegen + starBottleBonusPerTick;
         };
 
         if (manaStorage.receiveMana(receive)) syncMana2Client(player, manaStorage);
@@ -432,17 +439,6 @@ public final class PlayerUtils {
         return false;
     }
 
-    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写泰拉刃的
-    public static void swordProjectile(Player player) {
-        ItemStack stack = player.getMainHandItem();
-        if (stack.getItem() instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(sword)) {
-            SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
-            if (data == null) return;
-            sword.genProjectile(player, stack);
-            player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
-        }
-    }
-
     public static boolean shouldSkipConsumeAmmo(Player player) {
         if (player.hasEffect(ModEffects.AMMO_BOX) && player.getRandom().nextFloat() < 0.2F) {
             return true;
@@ -473,5 +469,11 @@ public final class PlayerUtils {
                 player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 220));
             }
         }
+    }
+
+    public static void flushPrimitiveValueData(ServerPlayer player) {
+        ManaStorage.of(player).flushAbility(player);
+        FishingPowerInfoPacketS2C.sendAndGet(player);
+        VisibilityPacketS2C.sendEcho(player);
     }
 }

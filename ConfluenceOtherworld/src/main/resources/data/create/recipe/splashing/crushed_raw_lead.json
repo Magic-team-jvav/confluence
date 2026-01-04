@@ -1,0 +1,18 @@
+{
+  "type": "create:splashing",
+  "ingredients": [
+    {
+      "item": "create:crushed_raw_lead"
+    }
+  ],
+  "results": [
+    {
+      "count": 9,
+      "id": "confluence:lead_nugget"
+    },
+    {
+      "chance": 0.5,
+      "id": "minecraft:lapis_lazuli"
+    }
+  ]
+}

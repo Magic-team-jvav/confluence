@@ -953,7 +953,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(HookItems.ILLUMINANT_HOOK))
                 )
         );
-        add(TEMonsterEntities.JUNGLE_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hallowed_mimic"),LootTable.lootTable()
+        add(TEMonsterEntities.JUNGLE_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/jungle_mimic"),LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FART_IN_A_JAR))
                         .add(EmptyLootItem.emptyItem().setWeight(2))

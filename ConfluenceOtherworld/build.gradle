@@ -7,7 +7,7 @@ plugins {
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
                    "TerraCurio", "HeavenDestinyMoment",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
-                   "EntityTrackerHUD", "EnemyBanner"
+                   "TheTrackers", "EnemyBanner"
 ]
 
 version = mod_version + "-beta" + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"

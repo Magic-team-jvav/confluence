@@ -16,7 +16,7 @@ include ":ConfluenceOtherworld"
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
                    "TerraCurio", "HeavenDestinyMoment",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
-                   "EntityTrackerHUD", "EnemyBanner"
+                   "TheTrackers", "EnemyBanner"
 ]
 projectName.forEach { name -> include ":" + name }
 

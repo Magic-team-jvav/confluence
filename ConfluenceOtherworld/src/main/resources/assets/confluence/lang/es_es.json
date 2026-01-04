@@ -148,7 +148,7 @@
     "achievements.confluence.obsessive_devotion.description": "Derrota al Cultista Antiguo, líder fanático del aquelarre de la mazmorra.",
     "achievements.confluence.obsessive_devotion.title": "Devoción Obsesiva",
     "achievements.confluence.ooo_shinny.description": "Extrae tu primer fragmento de mineral con un pico.",
-    
+
     "achievements.confluence.ooo_shinny.title": "¡Oooh! Brillante",
     "achievements.confluence.photosynthesis.description": "Extrae clorofita, un mineral orgánico que se encuentra en las profundidades de la flora más densa.",
     "achievements.confluence.photosynthesis.title": "Fotosíntesis",
@@ -1300,7 +1300,7 @@
     "confluence.configuration.doMeteoriteSpawning": "Aparición de Meteoritos",
     "confluence.configuration.doMeteoriteSpawning.tooltip": "Al activarse, caerán meteoritos en zonas no cargadas",
     "confluence.configuration.doNPCSpawning": "Aparición de NPCs",
-    "confluence.configuration.doNPCSpawning.button": "Aparición de NPCs", 
+    "confluence.configuration.doNPCSpawning.button": "Aparición de NPCs",
 
     "confluence.configuration.doNPCSpawning.tooltip": "Cuando está activado, los NPC aparecerán",
     "confluence.configuration.dropsMoney": "Caída de Monedas",
@@ -5415,7 +5415,7 @@
     "enchantment.terra_entity.multi_boomerang.desc": "Aumenta la cantidad de bumeranes que puedes lanzar",
     "enchantment.terra_entity.whip_sweep.desc": "Mejora la capacidad de impactos múltiples del látigo",
 
-    
+
     "block.confluence.adamantite_forge": "Forja de Adamantita",
     "block.confluence.chiseled_dynasty_planks": "Tablones de Dinastía Cincelados",
     "block.confluence.chiseled_spooky_planks": "Tablones Espeluznantes Cincelados",
@@ -5530,7 +5530,7 @@
     "dialogs.terra_entity.quest": "Misión",
     "dialogs.terra_entity.summon": "Invocar",
     "dialogs.terra_entity.trade": "Comerciar",
-    
+
 "effect.terra_entity.crimson_storm": "Tormenta Carmesí",
     "enemybanner.message.player.killcount.short": "%1$s ha derrotado a %2$d %3$s",
     "entity.confluence.blood_cloud_projectile": "Proyectil de Nube de Sangre",
@@ -5580,18 +5580,18 @@
     "entity.terra_entity.worm": "Gusano",
     "entity.terra_entity.wyvern": "Guiverno",
     "entity.terra_entity.yoyos_projectile": "Proyectil de Yo-yós",
-    "entity_tracker.configuration.available": "Disponible",
-    "entity_tracker.configuration.available.tooltip": "Habilitar o deshabilitar el puntero de seguimiento",
-    "entity_tracker.configuration.mappingStyle": "Estilo de mapeado",
-    "entity_tracker.configuration.mappingStyle.tooltip": "Elige el estilo del puntero de seguimiento",
-    "entity_tracker.configuration.projectAlgorithm": "Algoritmo de Proyección",
-    "entity_tracker.configuration.projectAlgorithm.tooltip": "Establece el algoritmo específico para el puntero relativo al centro",
-    "entity_tracker.configuration.section.entity.tracker.client.toml": "Rastreador de Entidades",
-    "entity_tracker.configuration.section.entity.tracker.client.toml.title": "Configuración del Rastreador de Entidades",
-    "entity_tracker.configuration.title": "Ajustes del Rastreador de Entidades",
-    "entity_tracker.configuration.tracking": "Seguimiento",
-    "entity_tracker.configuration.tracking.button": "Ajustes para el seguimiento de entidades",
-    "entity_tracker.configuration.tracking.tooltip": "Lista de tipos de entidades con tipos de cursor, separados por \"|\"",
+    "the_trackers.configuration.available": "Disponible",
+    "the_trackers.configuration.available.tooltip": "Habilitar o deshabilitar el puntero de seguimiento",
+    "the_trackers.configuration.mappingStyle": "Estilo de mapeado",
+    "the_trackers.configuration.mappingStyle.tooltip": "Elige el estilo del puntero de seguimiento",
+    "the_trackers.configuration.projectAlgorithm": "Algoritmo de Proyección",
+    "the_trackers.configuration.projectAlgorithm.tooltip": "Establece el algoritmo específico para el puntero relativo al centro",
+    "the_trackers.configuration.section.entity.tracker.client.toml": "Rastreador de Entidades",
+    "the_trackers.configuration.section.entity.tracker.client.toml.title": "Configuración del Rastreador de Entidades",
+    "the_trackers.configuration.title": "Ajustes del Rastreador de Entidades",
+    "the_trackers.configuration.tracking": "Seguimiento",
+    "the_trackers.configuration.tracking.button": "Ajustes para el seguimiento de entidades",
+    "the_trackers.configuration.tracking.tooltip": "Lista de tipos de entidades con tipos de cursor, separados por \"|\"",
     "equipment_benediction.set_switcher.confluence.adamantite_set": "Conjunto de Adamantita",
     "equipment_benediction.set_switcher.confluence.adamantite_set.data.0": "Aumenta el maná máximo en 80, 12% más de daño mágico y probabilidad de golpe crítico",
     "equipment_benediction.set_switcher.confluence.adamantite_set.data.1": "14% más de daño a distancia, 10% más de probabilidad de golpe crítico a distancia",
@@ -5619,7 +5619,7 @@
     "equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.3": "20% más de velocidad de movimiento",
     "equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.4": "Permite la habilidad de embestir, 10% más de daño y probabilidad de golpe crítico",
     "equipment_benediction.set_switcher.confluence.hallowed_set": "Conjunto Sagrado",
-    
+
     "equipment_benediction.set_switcher.confluence.hallowed_set.data.0": "10% más de daño cuerpo a cuerpo y probabilidad de golpe crítico, 10% más de velocidad cuerpo a cuerpo",
     "equipment_benediction.set_switcher.confluence.hallowed_set.data.1": "Aumenta el maná máximo en 100, 12% más de daño mágico y probabilidad de golpe crítico",
     "equipment_benediction.set_switcher.confluence.hallowed_set.data.2": "Aumenta tu número máximo de súbditos en 1, Aumenta el daño de invocación en 10%",
@@ -5759,7 +5759,7 @@
     "terra_entity.subtitle.metal_death": "Mob Metálico: Muerte",
     "terra_entity.subtitle.metal_hurt": "Mob Metálico: Daño",
     "terra_entity.subtitle.roar": "Jefe: Rugido",
-    
+
     "terra_entity.subtitle.routine_death": "Mob: Muerte",
     "terra_entity.subtitle.routine_hurt": "Mob: Daño",
     "terra_entity.subtitle.routine_summon": "Invocación: Invocar",

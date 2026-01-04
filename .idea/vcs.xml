@@ -4,7 +4,7 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Confluence-Magic-Lib" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/EnemyBanner" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/EntityTrackerHUD" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/TheTrackers" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HeavenDestinyMoment" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/IsekaiInvaded" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/MineTeam" vcs="Git" />

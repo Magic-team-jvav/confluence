@@ -12,7 +12,7 @@
 | [TerraMoment](TerraMoment)                                  | 泰拉事件              | 依赖HeavenDestinyMoment |
 | [IsekaiInvaded](IsekaiInvaded)                              | 多维度入侵事件           | 依赖HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)                            | 泰拉家具              | 是                     |
-| [EntityTrackerHUD](EntityTrackerHUD)                        | 提供包括Boss实体的实时位置提示 | 是                     |
+| [TheTrackers](TheTrackers)                                  | 提供包括Boss实体的实时位置提示 | 是                     |
 
 | 官方附属                                                                                | 备注                 |
 |-------------------------------------------------------------------------------------|--------------------|

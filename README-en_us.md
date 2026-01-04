@@ -12,7 +12,7 @@
 | [TerraMoment](TerraMoment)                   | Terra's Events                                     | depends on HeavenDestinyMoment |
 | [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event                         | depends on HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)             | Terra's Furniture                                  | yes                            |
-| [EntityTrackerHUD](EntityTrackerHUD)         | Provide real-time location hints for Boss entities | Yes                            |
+| [TheTrackers](TheTrackers)                   | Provide real-time location hints for Boss entities | Yes                            |
 
 | Official Integrations                                                               | Description                                                                            |
 |-------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|

@@ -792,6 +792,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.coins_small", "少量钱币:拾起");
         add("confluence.subtitle.coins_medium", "中量钱币:拾起");
         add("confluence.subtitle.coins_large", "大量钱币:拾起");
+        add("confluence.subtitle.lucyaxe_talk", "露西斧:娇嗔");
 
         add("terra_curio.subtitle.transmission", "传送魔法：开启");
         add("terra_curio.subtitle.fart_sound", "玩家：放屁声");

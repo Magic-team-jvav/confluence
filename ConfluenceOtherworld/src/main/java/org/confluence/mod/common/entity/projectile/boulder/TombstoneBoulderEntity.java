@@ -51,18 +51,26 @@ public class TombstoneBoulderEntity extends AbstractBoulderEntity {
     }
 
     @Override
-    protected void brokenFunction(final ServerLevel serverLevel, boolean timeoutUrNot) {
-        if (!timeoutUrNot) {
-            BlockPos blockPos = blockPosition();
-            if (Block.canSupportRigidBlock(serverLevel, blockPos.offset(0, -1, 0)) &&
-                    serverLevel.getBlockState(blockPos).canBeReplaced()) {
-                serverLevel.setBlock(blockPos, getBlockState(), Block.UPDATE_ALL);
-                if (serverLevel.getBlockEntity(blockPos) instanceof TombstoneBlock.BEntity entity) {
-                    entity.setText(text, true);
-                }
-            }
+    public void onRemoveBroken(boolean timeoutUrNot) {
+        if (!(level() instanceof ServerLevel serverLevel) || isRemoved()) {
+            return;
         }
-        super.brokenFunction(serverLevel, timeoutUrNot);
+
+        BlockPos blockPos = blockPosition();
+        if (!Block.canSupportRigidBlock(serverLevel, blockPos.offset(0, -1, 0)) ||
+                !serverLevel.getBlockState(blockPos).canBeReplaced()) {
+            if (timeoutUrNot) {
+                discard();
+            }
+            return;
+        }
+
+        serverLevel.setBlock(blockPos, getBlockState(), Block.UPDATE_ALL);
+        if (serverLevel.getBlockEntity(blockPos) instanceof TombstoneBlock.BEntity entity) {
+            entity.setText(text, true);
+        }
+        brokenFunction(serverLevel, timeoutUrNot);
+        discard();
     }
 
     @Override

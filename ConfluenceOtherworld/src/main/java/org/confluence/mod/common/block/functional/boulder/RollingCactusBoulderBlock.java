@@ -14,11 +14,11 @@ import org.confluence.mod.common.entity.projectile.boulder.RollingCactusBoulderE
  * 滚动仙人掌巨石方块
  * @author 尽
  */
-public class RollingCactusBlock extends AbstractBoulderBlock<RollingCactusBoulderEntity> {
+public class RollingCactusBoulderBlock extends AbstractBoulderBlock<RollingCactusBoulderEntity> {
     protected static final VoxelShape COLLISION_SHAPE = Block.box(1.0, 1.0, 1.0, 15.0, 15.0, 15.0);
     protected static final VoxelShape OUTLINE_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
-    public RollingCactusBlock() {
+    public RollingCactusBoulderBlock() {
         super(Properties.of(), RollingCactusBoulderEntity::new);
     }
 

@@ -27,6 +27,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.DateLootItemCondition;
@@ -699,12 +701,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
                 )
         );
-        /*add(TEMonsterEntities.METEOR_HEAD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/meteor_head"), LootTable.lootTable()
+        add(TEMonsterEntities.METEOR_HEAD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/meteor_head"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().when(beforeSkeletronBehindWallOfFlesh)
                         .add(LootItem.lootTableItem(MaterialItems.RAW_METEORITE).setWeight(2))
                         .add(emptyWeight98).apply(random0To1)
                 )
-        );*/
+        );
         add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon(-10644993));
         add(TEMonsterEntities.DESERT_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/desert_slime"), slimeCommon(-2727));
         add(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_dumpling_slime"), slimeCommon(-8470674)
@@ -892,6 +894,148 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -6522185))))
                 )
         );
+        // 宝箱怪
+        add(TEMonsterEntities.WOODEN_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wooden_mimic"),mimicCommon()
+        );
+        add(TEMonsterEntities.GOLDEN_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/golden_mimic"),mimicCommon()
+        );
+        add(TEMonsterEntities.SHADOW_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/shadow_mimic"),mimicCommon()
+        );
+        add(TEMonsterEntities.ICE_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_mimic"),LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        // 冰雪弓
+                        .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FROST))
+                )
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(25)))
+                ))
+        );
+        // todo秘密种子冰雪宝箱怪使用这个common
+        /*
+        add(TEMonsterEntities.ICE_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_mimic"),LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        // 玩具雪橇
+                        // 冰雪弓
+                        .add(LootItem.lootTableItem(TCItems.ICE_SKATES))
+                        .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS))
+                        .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG))
+                        .add(LootItem.lootTableItem(SwordItems.ICE_BLADE))
+                        .add(LootItem.lootTableItem(TCItems.BLIZZARD_IN_A_BOTTLE))
+                )
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(2)))
+                ))
+        );
+        */
+        add(TEMonsterEntities.CRIMSON_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimson_mimic"),bigMimicCommon()
+                .withPool(LootPool.lootPool()
+                        // 夺命杖
+                        // 飞镖手枪
+                        // 臭虎爪
+                        .add(LootItem.lootTableItem(HookItems.TENDON_HOOK))
+                        .add(LootItem.lootTableItem(TCItems.FLESH_KNUCKLES))
+                )
+        );
+        add(TEMonsterEntities.CORRUPT_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/corrupt_mimic"),bigMimicCommon()
+                .withPool(LootPool.lootPool()
+                        // 爬藤怪法杖
+                        // 飞镖步枪
+                        // 铁链血滴子
+                        .add(LootItem.lootTableItem(HookItems.WORM_HOOK))
+                        .add(LootItem.lootTableItem(TCItems.PUTRID_SCENT))
+                )
+        );
+        add(TEMonsterEntities.HALLOWED_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hallowed_mimic"),bigMimicCommon()
+                .withPool(LootPool.lootPool()
+                        // 飞刀
+                        // 魔晶碎块
+                        .add(LootItem.lootTableItem(BowItems.DAEDALUS_STORM_BOW))
+                        .add(LootItem.lootTableItem(HookItems.ILLUMINANT_HOOK))
+                )
+        );
+        add(TEMonsterEntities.JUNGLE_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hallowed_mimic"),LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.FART_IN_A_JAR))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ManaWeaponItems.GOLDEN_SHOWER))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModBlocks.POO))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                // 天使雕像
+                // 水枪
+                // 闪耀史莱姆气球
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.COAL))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                        .add(EmptyLootItem.emptyItem().setWeight(2)
+                ))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(PotionItems.RED_POTION))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5)))
+                        .add(EmptyLootItem.emptyItem().setWeight(2)
+                ))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(PotionItems.STINK_POTION))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))
+                        .add(EmptyLootItem.emptyItem().setWeight(2)
+                ))
+
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2,4)))
+                        .add(EmptyLootItem.emptyItem().setWeight(2)
+               ))
+        );
+    }
+
+    private static LootTable.Builder mimicCommon() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(HookItems.DUAL_HOOK))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_DAGGER))
+                        .add(LootItem.lootTableItem(AccessoryItems.PHILOSOPHERS_STONE))
+                        .add(LootItem.lootTableItem(TCItems.TITAN_GLOVE))
+                        .add(LootItem.lootTableItem(TCItems.STAR_CLOAK))
+                        .add(LootItem.lootTableItem(TCItems.CROSS_NECKLACE))
+                )
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(25)))
+                ));
+    }
+
+    private static LootTable.Builder bigMimicCommon() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_MANA_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(7)))
+                ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(7)))
+                ));
+    }
+
+    private static LootTable.Builder mimicCommonSecret() {  // todo秘密种子宝箱怪使用这个common
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.BAND_OF_REGENERATION))
+                        .add(LootItem.lootTableItem(TCItems.MAGIC_MIRROR))
+                        .add(LootItem.lootTableItem(TCItems.CLOUD_IN_A_BOTTLE))
+                        .add(LootItem.lootTableItem(TCItems.HERMES_BOOTS))
+                        .add(LootItem.lootTableItem(TCItems.SHOE_SPIKES))
+                )
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
+                ));
     }
 
     private static LootTable.Builder batCommon() {

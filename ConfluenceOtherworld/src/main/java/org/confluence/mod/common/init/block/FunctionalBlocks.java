@@ -24,7 +24,7 @@ import org.confluence.mod.common.block.common.EnchantedFragileBricksBlock;
 import org.confluence.mod.common.block.functional.*;
 import org.confluence.mod.common.block.functional.boulder.AbstractBoulderBlock;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
-import org.confluence.mod.common.block.functional.boulder.RollingCactusBlock;
+import org.confluence.mod.common.block.functional.boulder.RollingCactusBoulderBlock;
 import org.confluence.mod.common.block.functional.crafting.*;
 import org.confluence.mod.common.block.functional.crafting.LoomBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
@@ -156,7 +156,7 @@ public class FunctionalBlocks {
     public static final DeferredBlock<AbstractBoulderBlock<?>> OAK_LOG_BOULDER = registerBoulder("oak_log_boulder", BoulderBlock::new);
     public static final DeferredBlock<AbstractBoulderBlock<?>> FOLLOWER_BOULDER = registerBoulder("follower_boulder", BoulderBlock::new, FollowerBoulderEntity::new);
     public static final DeferredBlock<AbstractBoulderBlock<?>> EXPLODE_BOULDER = registerBoulder("explode_boulder", BoulderBlock::new, ExplodeBoulderEntity::new);
-    public static final DeferredBlock<AbstractBoulderBlock<?>> ROLLING_CACTUS_BOULDER = registerBoulder("rolling_cactus_boulder", RollingCactusBlock::new);
+    public static final DeferredBlock<AbstractBoulderBlock<?>> ROLLING_CACTUS_BOULDER = registerBoulder("rolling_cactus_boulder", RollingCactusBoulderBlock::new);
     public static final DeferredBlock<DetonatorBlock> DETONATOR = registerWithEntity("detonator", () -> new DetonatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_OBSIDIAN_BRICKS = registerWithEntity("mechanical_fragile_obsidian_bricks", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS), DecorativeBlocks.OBSIDIAN_BRICKS.get()::defaultBlockState));

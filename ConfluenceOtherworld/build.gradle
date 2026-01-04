@@ -257,11 +257,11 @@ dependencies {
         runtimeOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
     }
 
-    compileOnly "curse.maven:xaeros-minimap-263420:6515043"
-    compileOnly "curse.maven:xaeros-world-map-317780:6538359"
+    compileOnly "curse.maven:xaeros-minimap-263420:7412188"
+    compileOnly "curse.maven:xaeros-world-map-317780:7412262"
     if (true) {
-        runtimeOnly "curse.maven:xaeros-minimap-263420:6515043"
-        runtimeOnly "curse.maven:xaeros-world-map-317780:6538359"
+        runtimeOnly "curse.maven:xaeros-minimap-263420:7412188"
+        runtimeOnly "curse.maven:xaeros-world-map-317780:7412262"
     }
 
     compileOnly "maven.modrinth:loot-beams-refork:neoforge-1.21.1-3.2.5"

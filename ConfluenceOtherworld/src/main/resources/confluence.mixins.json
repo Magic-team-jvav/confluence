@@ -89,8 +89,6 @@
         "integration.waystones.PlayerWaystoneManagerMixin",
         "integration.waystones.SelectWaystoneMessageMixin",
         "integration.waystones.WaystoneBlockEntityMixin",
-        "integration.xaero.MinecraftServerDataInitializerMixin",
-        "integration.xaero.SyncedPlayerTrackerMixin",
         "item.AbstractContainerMenuMixin",
         "item.ArrowItemMixin",
         "item.BowItemMixin",
@@ -182,10 +180,7 @@
         "integration.terra_curio.TCKeyBindingsMixin",
         "integration.terra_curio.TCUtilsMixin",
         "integration.terra_entity.TEKeyBindingsMixin",
-        "integration.waystones.WaystoneSelectionScreenBaseMixin",
-        "integration.xaero.GuiMapMixin",
-        "integration.xaero.MapElementRenderHandler$BuilderMixin",
-        "integration.xaero.RadarStateUpdaterMixin"
+        "integration.waystones.WaystoneSelectionScreenBaseMixin"
     ],
     "server": [
         "server.DedicatedServerMixin",

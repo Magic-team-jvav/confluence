@@ -17,16 +17,8 @@ public final class CompatibilityHandler {
         return configs == null || configs[2];
     }
 
-    public static boolean isXaerosMapWormholePotion() {
-        return configs == null || configs[3];
-    }
-
-    public static boolean isXaerosMapPylonWaypoint() {
-        return configs == null || configs[4];
-    }
-
     public static boolean isWaystonesPylonNonCost() {
-        return configs != null && configs[5];
+        return configs != null && configs[3];
     }
 
     public static void reset() {

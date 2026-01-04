@@ -72,7 +72,6 @@ import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
-import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
@@ -124,7 +123,6 @@ public final class GameClientEvents {
             MeteorLandingHandler.handle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
-            XaeroHelper.handle(player);
             DropletsHandler.handle(minecraft, player);
             DeathAnimUtils.handle();
             LucyTheAxeHandler.handle(player.getId());

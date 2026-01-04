@@ -104,13 +104,6 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
-modId = "xaeroworldmap"
-type = "optional"
-versionRange = "[1.39.9,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies."${mod_id}"]]
 modId = "create"
 type = "optional"
 versionRange = "[6.0.7,)"

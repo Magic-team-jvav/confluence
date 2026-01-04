@@ -13,14 +13,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.item.common.SpongeItem;
-import org.jetbrains.annotations.NotNull;
 
 public class DispenserRegistration {
     public static void boostrap() {
-        final DefaultDispenseItemBehavior defaultBehavior = new DefaultDispenseItemBehavior();
-        final DispenseItemBehavior simpleFluidOut = new DefaultDispenseItemBehavior() {
+        DefaultDispenseItemBehavior defaultBehavior = new DefaultDispenseItemBehavior();
+        DispenseItemBehavior simpleFluidOut = new DefaultDispenseItemBehavior() {
             @Override
-            public @NotNull ItemStack execute(BlockSource source, ItemStack itemStack) {
+            public ItemStack execute(BlockSource source, ItemStack itemStack) {
                 DispensibleContainerItem dispensiblecontaineritem = (DispensibleContainerItem)itemStack.getItem();
                 BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
                 Level level = source.level();
@@ -32,9 +31,9 @@ public class DispenserRegistration {
                 }
             }
         };
-        final DispenseItemBehavior bottomlessFluidOut = new DefaultDispenseItemBehavior() {
+        DispenseItemBehavior bottomlessFluidOut = new DefaultDispenseItemBehavior() {
             @Override
-            public @NotNull ItemStack execute(BlockSource source, ItemStack itemStack) {
+            public ItemStack execute(BlockSource source, ItemStack itemStack) {
                 DispensibleContainerItem dispensiblecontaineritem = (DispensibleContainerItem)itemStack.getItem();
                 BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
                 Level level = source.level();
@@ -46,9 +45,9 @@ public class DispenserRegistration {
                 }
             }
         };
-        final DispenseItemBehavior spongeAbsorbLiquid = new DefaultDispenseItemBehavior() {
+        DispenseItemBehavior spongeAbsorbLiquid = new DefaultDispenseItemBehavior() {
             @Override
-            public @NotNull ItemStack execute(BlockSource source, ItemStack itemStack) {
+            public ItemStack execute(BlockSource source, ItemStack itemStack) {
                 SpongeItem spongeItem = (SpongeItem) itemStack.getItem();
                 BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
                 Level level = source.level();

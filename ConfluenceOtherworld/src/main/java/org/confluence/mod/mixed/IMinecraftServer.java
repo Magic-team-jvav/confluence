@@ -20,6 +20,10 @@ public interface IMinecraftServer {
         return confluence$matchesSecretFlag(secretSeed.getFlag());
     }
 
+    default boolean confluence$equalsSecretFlag(long flag) {
+        return equalsSecretFlag(confluence$getSecretFlag(), flag);
+    }
+
     /**
      * 单人模式与多人模式通用
      */
@@ -29,6 +33,11 @@ public interface IMinecraftServer {
 
     static boolean matchesSecretFlag(long secretFlag, long flag) {
         return (secretFlag & flag) != 0;
+    }
+
+    /// 用于复数位的flag
+    static boolean equalsSecretFlag(long secretFlag, long flag) {
+        return (secretFlag & flag) == flag;
     }
 
     static boolean matchesSecretFlag(long flag) {

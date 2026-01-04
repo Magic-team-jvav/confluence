@@ -8,12 +8,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,6 +34,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.EverBeneficial;
@@ -47,22 +51,23 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.ModTiers;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseAxeItem;
 import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terraentity.entity.monster.WoodenMimic;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
 
@@ -308,5 +313,54 @@ public final class PlayerEvents {
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         PlayerUtils.flushLocalData(player, player);
+    }
+
+    @SubscribeEvent
+    public static void playerContainer$Close(PlayerContainerEvent.Close event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        IMinecraftServer server = IMinecraftServer.of(player.server);
+        if (!server.confluence$matchesSecretFlag(IWorldOptions.HARDMODE)) return;
+        Level level = player.level();
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return;
+        if (event.getContainer() instanceof ChestMenu menu &&
+                menu.getContainer() instanceof ChestBlockEntity blockEntity
+        ) mimic:{
+            ItemStack key = null;
+            for (int i = 0; i < blockEntity.getContainerSize(); ++i) {
+                ItemStack stack = blockEntity.getItem(i);
+                if (stack.isEmpty()) continue;
+                if (stack.is(ModTags.Items.MIMIC_SUMMON_KEY)) {
+                    if (key != null) break mimic;
+                    key = stack;
+                } else {
+                    break mimic;
+                }
+            }
+            if (key == null) break mimic;
+            if (key.is(ToolItems.KEY_OF_LIGHT)) {
+                WoodenMimic mimic = TEMonsterEntities.HALLOWED_MIMIC.get().create(level);
+                if (mimic != null) {
+                    CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
+                }
+            } else if (key.is(ToolItems.KEY_OF_NIGHT)) {
+                boolean summonCorruption;
+                if (server.confluence$matchesSecretFlag(IWorldOptions.DOUBLE_EVIL) && !server.confluence$equalsSecretFlag(IWorldOptions.DOUBLE_EVIL)) {
+                    summonCorruption = server.confluence$matchesSecretFlag(IWorldOptions.THE_CORRUPTION);
+                } else {
+                    summonCorruption = (level.getGameTime() / 24000L) % 2 == 0;
+                }
+                WoodenMimic mimic;
+                if (summonCorruption) {
+                    mimic = TEMonsterEntities.CORRUPT_MIMIC.get().create(level);
+                } else {
+                    mimic = TEMonsterEntities.CRIMSON_MIMIC.get().create(level);
+                }
+                if (mimic != null) {
+                    CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
+                }
+            } else {
+                NeoForge.EVENT_BUS.post(new CustomMimicSummonKeyEvent(player, key, menu, blockEntity));
+            }
+        }
     }
 }

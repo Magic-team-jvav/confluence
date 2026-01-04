@@ -43,7 +43,6 @@
 |      魔法鹰嘴豆bggg      |  Architect  |         ?          |
 |        会说话的狗        |   Modeler   |        Guns        |
 |     Sihuai2412      |  Developer  |        Misc        |
-|     Black_Moss      | Documenter  |       mcmod        |
 |       Mystia        | Documenter  |       mcmod        |
 |        魔法憨批         | Documenter  |       mcmod        |
 |        魔法多厨         | Documenter  |       mcmod        |

@@ -14,6 +14,7 @@ public final class ImmunitySubProvider {
                 .add(ModEntities.VILETHRON_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 5), false)
                 .add(TCEntities.BEE_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 8), false)
                 .add(ModEntities.GOLDEN_SHOWER_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 4), false)
-                .add(ModEntities.WATER_STREAM_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 4), false);
+                .add(ModEntities.WATER_STREAM_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 4), false)
+                .add(ModEntities.NIGHTS_EDGE_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 20), false);
     }
 }

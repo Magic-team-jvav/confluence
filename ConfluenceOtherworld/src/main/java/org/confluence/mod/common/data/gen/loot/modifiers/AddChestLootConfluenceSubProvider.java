@@ -26,7 +26,7 @@ import java.util.function.BiConsumer;
  * Generates chests loot tables into loot_modifier path specified by ModLootModifiersProvider i.e. confluence/loot_table/with/chests/bat.json
  * @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
  */
-public class AddChestLootConfluenceSubProvider implements LootTableSubProvider {
+public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, SyntheticLootTableProvider {
     public AddChestLootConfluenceSubProvider(HolderLookup.Provider provider) {
 
     }
@@ -397,6 +397,16 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider {
         for (var entry : entries) {
             output.accept(getResourceKey(entry.lootTable), entry.lootTableBuilder);
         }
+    }
+
+    @Override
+    public List<String> getSyntheticLootTablePaths() {
+        var paths = new ArrayList<String>();
+        var entries = getAddedEntitiesLoot();
+        for (var entry : entries) {
+            paths.add(Confluence.asResource(getPath(entry.lootTable)).toString());
+        }
+        return paths;
     }
 
     public record AddedChestLoot(ResourceKey<LootTable> lootTable, LootTable.Builder lootTableBuilder) {}

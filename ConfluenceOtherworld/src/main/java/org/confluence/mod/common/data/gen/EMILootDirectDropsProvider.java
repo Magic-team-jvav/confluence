@@ -49,8 +49,8 @@ public class EMILootDirectDropsProvider implements DataProvider {
 
     @Override
     public CompletableFuture<?> run(CachedOutput cachedOutput) {
-        return this.registries.thenCompose((p_323117_) -> {
-            return this.run(cachedOutput, p_323117_);
+        return this.registries.thenCompose((provider) -> {
+            return this.run(cachedOutput, provider);
         });
     }
 
@@ -95,8 +95,8 @@ public class EMILootDirectDropsProvider implements DataProvider {
         this.validate(lootTables, validationcontext);
         Multimap<String, String> multimap = problemreporter$Collector.get();
         if (!multimap.isEmpty()) {
-            multimap.forEach((p_124446_, p_124447_) -> {
-                LOGGER.warn("Found validation problem in {}: {}", p_124446_, p_124447_);
+            multimap.forEach((file, error) -> {
+                LOGGER.warn("Found validation problem in {}: {}", file, error);
             });
 //            throw new IllegalStateException("Failed to validate loot tables, see logs");
             LOGGER.warn("Failed to validate loot tables, see logs");
@@ -106,9 +106,7 @@ public class EMILootDirectDropsProvider implements DataProvider {
             LootTable loottable = entry.getValue();
             Path path = this.pathProvider.json(resourcekey1.location());
             return DataProvider.saveStable(output, provider, LootTable.DIRECT_CODEC, loottable, path);
-        }).toArray((x$0) -> {
-            return new CompletableFuture[x$0];
-        }));
+        }).toArray(CompletableFuture[]::new));
     }
 
     @Override

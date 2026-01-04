@@ -1,6 +1,7 @@
 package org.confluence.mod.integration.terra_entity.npc_trade_lock.drawer;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.resources.language.I18n;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.npc_trade_lock.MomentLock;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
@@ -9,12 +10,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class MomentLockRecipeDrawer extends TradeLockRecipeDrawer {
     @Override
-    public void drawRecipe(@NotNull ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
-        if (!(lock instanceof MomentLock lock1)) {
-            return;
+    public int drawRecipe(@NotNull ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
+        if (!(lock instanceof MomentLock momentLock)) {
+            return y;
         }
+
         var size = getRecipeSize();
-        guiGraphics.blitSprite(Confluence.asResource("shop_lock_moment"), x, y, size, size);
-        drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY, "Moment: " + lock1.moment());
+        guiGraphics.blitSprite(Confluence.asResource("shop_lock/moment"), x, y, size, size);
+        drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY, I18n.get("confluence.trade_lock.drawer.moment.title") + ": " + I18n.get(momentLock.moment().registry().toLanguageKey()));
+        return y + size;
     }
 }

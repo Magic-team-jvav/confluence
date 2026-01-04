@@ -36,6 +36,20 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("confluence.trade_lock.drawer.position.title", "Position");
+        add("confluence.trade_lock.drawer.position.and", "and");
+        add("confluence.trade_lock.drawer.moon_phase.title", "Moon Phase");
+        add("confluence.trade_lock.drawer.moment.title", "Moment");
+        add("confluence.trade_lock.drawer.fishing.requires_hook", "Requires Fishing While Trading");
+        add("confluence.trade_lock.drawer.fishing.fishing_in", "Be Fishing in");
+        add("confluence.trade_lock.drawer.environment.block", "Block");
+        add("confluence.trade_lock.drawer.environment.fluid", "Fluid");
+        add("confluence.trade_lock.drawer.environment.block_state_predicate", "Block State Predicate");
+        add("confluence.trade_lock.drawer.dimension.title", "Dimension");
+        add("confluence.trade_lock.drawer.date.lunar", "Lunar");
+        add("confluence.trade_lock.drawer.bestiary.title", "Bestiary Pages Unlocked");
+        add("confluence.trade_lock.drawer.any_boss_defeated.title", "Any Boss Defeated");
+
         add("confluence.prefix_separator", " ");
 
         add("itemGroup.confluence.log", "Log");

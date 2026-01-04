@@ -1,7 +1,9 @@
 package org.confluence.mod.integration.terra_entity.npc_trade_lock.drawer;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.resources.language.I18n;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.integration.terra_entity.npc_trade_lock.MoonPhaseLock;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.api.npc.trade.TradeLockRecipeDrawer;
@@ -9,15 +11,31 @@ import org.jetbrains.annotations.NotNull;
 
 public class MoonPhaseLockRecipeDrawer extends TradeLockRecipeDrawer {
     @Override
-    public void drawRecipe(@NotNull ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
-        if (!(lock instanceof MoonPhaseLock lock1)) {
-            return;
+    public int drawRecipe(@NotNull ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
+        if (!(lock instanceof MoonPhaseLock moonPhaseLock)) {
+            return y;
         }
         var size = getRecipeSize();
-        guiGraphics.blitSprite(Confluence.asResource("shop_lock_moon_phase"), x, y, size, size);
-        drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY, lock1.moonPhases().stream()
-                .reduce(new StringBuilder("Moon Phase: "),
-                        (a,b)->a.append(b.toString()).append("/"),
-                        (a,b)->a).toString());
+        for (var moonPhase : moonPhaseLock.moonPhases()) {
+            String moonPhaseTexture = getMoonPhaseTexture(moonPhase);
+            guiGraphics.blit(Confluence.asResource("textures/environment/specific_moon_tr_" + moonPhaseTexture), x, y, size, size, 0, 0,50, 50, 50, 50);
+            drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY,
+                    I18n.get("confluence.trade_lock.drawer.moon_phase.title") + ": " + moonPhase.name().toLowerCase().replace('_', ' '));
+            x += size;
+        }
+        return y + size;
+    }
+
+    private String getMoonPhaseTexture(MoonPhase moonPhase) {
+        return switch (moonPhase) {
+            case FULL_MOON -> "full_moon.png";
+            case WANING_GIBBOUS -> "waning_gibbous.png";
+            case THIRD_QUARTER -> "third_quarter.png";
+            case WAXING_CRESCENT -> "waxing_crescent.png";
+            case NEW_MOON -> "new_moon.png";
+            case WANING_CRESCENT -> "waning_crescent.png";
+            case FIRST_QUARTER -> "first_quarter.png";
+            case WAXING_GIBBOUS -> "waxing_gibbous.png";
+        };
     }
 }

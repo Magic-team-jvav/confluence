@@ -21,6 +21,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.CookingPotRecipe;
+import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -107,5 +108,10 @@ public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingP
         if (recipe.value().getHeatSource().blocks().isEmpty()) {
             guiGraphics.blit(BACKGROUND, 79, 32, 143, 33, 16, 16, 159, 49);
         }
+    }
+
+    @Override
+    public @Nullable ResourceLocation getRegistryName(RecipeHolder<CookingPotRecipe> recipe) {
+        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

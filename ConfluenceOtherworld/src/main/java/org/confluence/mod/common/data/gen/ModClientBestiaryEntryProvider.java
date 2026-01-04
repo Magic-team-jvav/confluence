@@ -248,7 +248,9 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 巨型蝙蝠
                 .add(TEMonsterEntities.BLUE_JELLYFISH, builder -> cave(builder, 20500, 1))
                 .add(TEMonsterEntities.GREEN_JELLYFISH, builder -> cave(builder, 20600, 2))
-                // 宝箱怪
+                .add(TEMonsterEntities.WOODEN_MIMIC, builder -> builder.order(20700).rarity(5).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
+                .add(TEMonsterEntities.GOLDEN_MIMIC, builder -> builder.order(20701).rarity(5).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
+                .add(TEMonsterEntities.SHADOW_MIMIC, builder -> builder.order(20701).rarity(5).background(THE_NETHER).filters(FilterEntry.RARE_CREATURE, FilterEntry.THE_NETHER))
                 .add(TEMonsterEntities.GIANT_SHELLY, builder -> cave(builder, 20800, 2))
                 // 迷失女孩
                 // 花岗岩巨人
@@ -272,7 +274,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 冰雪人鱼
                 .add(TEMonsterEntities.ICE_BAT, builder -> builder.order(22800).rarity(1).background(UNDERGROUND_SNOW).filters(FilterEntry.UNDERGROUND_SNOW))
                 // 冰雪精
-                // 冰雪宝箱怪
+                .add(TEMonsterEntities.ICE_MIMIC, builder -> builder.order(23000).rarity(5).background(UNDERGROUND_SNOW).filters(FilterEntry.RARE_CREATURE, FilterEntry.UNDERGROUND_SNOW))
                 // 冰雪陆龟
                 // 秃鹰
                 .add(TEMonsterEntities.DESERT_SLIME, builder -> builder.order(23300).rarity(2).background(UNDERGROUND_DESERT).filters(FilterEntry.UNDERGROUND_DESERT))
@@ -373,7 +375,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 爬藤怪
                 // 恶翅史莱姆
                 // 诅咒锤
-                // 腐化宝箱怪
+                .add(TEMonsterEntities.CORRUPT_MIMIC, builder -> builder.order(33400).rarity(5).background(UNDERGROUND_CORRUPTION).filters(FilterEntry.RARE_CREATURE, FilterEntry.UNDERGROUND_CORRUPTION))
                 // 猪龙 （腐化）
                 // 噬骨沙鲨
                 // 暗黑木乃伊
@@ -388,7 +390,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 猩红斧
                 .add(TEMonsterEntities.BLOOD_CRAWLER, builder -> builder.order(34700).rarity(2).background(THE_CRIMSON).filters(FilterEntry.THE_CRIMSON, FilterEntry.UNDERGROUND_CRIMSON))
                 // 蹦蹦兽
-                // 猩红宝箱怪
+                .add(TEMonsterEntities.CRIMSON_MIMIC, builder -> builder.order(34900).rarity(5).background(UNDERGROUND_CRIMSON).filters(FilterEntry.RARE_CREATURE, FilterEntry.UNDERGROUND_CRIMSON))
                 // 猪龙 （猩红）
                 // 戮血沙鲨
                 // 血木乃伊
@@ -403,7 +405,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 混沌精
                 // 夜明蝙蝠
                 // 附魔剑
-                // 神圣宝箱怪
+               .add(TEMonsterEntities.HALLOWED_MIMIC, builder -> builder.order(36400).rarity(5).background(UNDERGROUND_HALLOW).filters(FilterEntry.RARE_CREATURE, FilterEntry.UNDERGROUND_HALLOW))
                 // 猪龙
                 // 水晶沙鲨
                 // 光明木乃伊

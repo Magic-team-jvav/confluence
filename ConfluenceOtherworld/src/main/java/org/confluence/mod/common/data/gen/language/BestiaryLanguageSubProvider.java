@@ -267,7 +267,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.grubby.desc", "Slimy, yet satisfying! Fish are somewhat attracted to these.");
         add("bestiary.entity.terra_entity.sluggy.desc", "Slow and covered in a slick mucus. Fish are especially attracted to these.");
 //        add("bestiary.entity.terra_entity.buggy.desc", "A vibrant beetle-like bug. Fish are extremely attracted to these.");
-//        add("bestiary.entity.terra_entity.lavafly.desc", "A variation of firefly which adapted to the intense conditions of the world's infernal core. It mimics sparking embers.");
+//      add("bestiary.entity.terra_entity.lavafly.desc", "A variation of firefly which adapted to the intense conditions of the world's infernal core. It mimics sparking embers.");
         add("bestiary.entity.terra_entity.hell_butterfly.desc", "A solemn butterfly seeking blooms rooted in hell. Its wings glimmer with fiery veins.");
         add("bestiary.entity.terra_entity.magma_snail.desc", "A unique species of snail which withstands extreme heat. Its boiling slime trail melts down most weaker surfaces.");
 //        add("bestiary.entity.terra_entity.lightning_bug.desc", "Appears at night in blessed locations, filling the sky with flashing cyan light. Fish are especially attracted to these.");
@@ -352,7 +352,9 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.giant_bat.desc", "The oversized cousins of Cave Bats, these bats are more dangerous and can confuse their enemies with their bite.");
         add("bestiary.entity.terra_entity.blue_jellyfish.desc", "That strange tingling sensation in the water may be the unwelcome surging of electrical death from a brainless jellyfish. Swim with care.");
         add("bestiary.entity.terra_entity.green_jellyfish.desc", "That strange tingling sensation in the water may be the unwelcome surging of electrical death from a brainless jellyfish. Swim with care.");
-//        add("bestiary.entity.terra_entity.mimic.desc", "Talking to a chest doesn't cause craziness, but if the chest answers back, it may cause death! It still contains rare treasure, regardless!");
+        add("bestiary.entity.terra_entity.wooden_mimic.desc", "Talking to a chest doesn't cause craziness, but if the chest answers back, it may cause death! It still contains rare treasure, regardless!");
+        add("bestiary.entity.terra_entity.golden_mimic.desc", "Talking to a chest doesn't cause craziness, but if the chest answers back, it may cause death! It still contains rare treasure, regardless!");
+        add("bestiary.entity.terra_entity.shadow_mimic.desc", "Talking to a chest doesn't cause craziness, but if the chest answers back, it may cause death! It still contains rare treasure, regardless!");
         add("bestiary.entity.terra_entity.giant_shelly.desc", "To overcome their slow speed, shellies have developed the ability to hide inside their spiked shell and hurl themselves at their foes.");
         add("bestiary.entity.terra_entity.lost_girl.desc", "Naked and afraid, this girl stands still, deep in the world, as if waiting for someone to rescue her and lead her to the surface.");
 //        add("bestiary.entity.terra_entity.granite_golem.desc", "Strong are the magicked spirits which inhabit the granite masses deep below, this type in particular taking on a humanoid shape.");
@@ -375,7 +377,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.icy_merman.desc", "Mermen rarely stray far from the ocean. Those that do can become lost, wander into cold caverns, and become icy undead fish men.");
         add("bestiary.entity.terra_entity.ice_bat.desc", "As if bats weren't enough of a nuisance already, Ice Bats can freeze flesh solid with a touch, leaving their prey defenseless.");
 //        add("bestiary.entity.terra_entity.ice_elemental.desc", "Water elementals become icy when dense strong magicks accumulate in the coldest places. Their frosty shards freeze all.");
-//        add("bestiary.entity.terra_entity.ice_mimic.desc", "Talking to a chest doesn't cause craziness, but if the chest answers back, it may cause death! It still contains rare treasure, regardless!");
+        add("bestiary.entity.terra_entity.ice_mimic.desc", "Talking to a chest doesn't cause craziness, but if the chest answers back, it may cause death! It still contains rare treasure, regardless!");
 //        add("bestiary.entity.terra_entity.ice_tortoise.desc", "Like their jungle cousins, ice tortoises are an unexpectedly serious threat, possessing surprising speed and mobility.");
 //        add("bestiary.entity.terra_entity.vulture.desc", "Built to survive the desert heat, avian scavengers such as these will peck apart those who come near their carrion.");
         add("bestiary.entity.terra_entity.desert_slime.desc", "Deserts are very dry, but the Sand Slime seems to have successfully adapted to the harsh conditions by becoming a pile of living sand.");
@@ -480,7 +482,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.clinger.desc", "In the depths of the darkest corruption lies cursed-fire belching, betentacled nightmares stretching from the very walls themselves.");
 //        add("bestiary.entity.terra_entity.slimer.desc", "The Slimer has become airborne with wings of unknown origin. The wings are easily knocked off with force, depriving it of its flight.");
 //        add("bestiary.entity.terra_entity.cursed_hammer.desc", "Magicked through the pure hatred of the Corruption, this weapon flails about attempting to smash anything that breathes.");
-//        add("bestiary.entity.terra_entity.corrupt_mimic.desc", "Mimics which fall to Corruption grow larger and more powerful as a result. They can be birthed from ordinary chests by force.");
+        add("bestiary.entity.terra_entity.corrupt_mimic.desc", "Mimics which fall to Corruption grow larger and more powerful as a result. They can be birthed from ordinary chests by force.");
 //        add("bestiary.entity.terra_entity.pigron_corrupt.desc", "This elusive dragon-pig hybrid has excellent stealth capabilities despite its rotund figure. It is uncertain how they came to exist.");
 //        add("bestiary.entity.terra_entity.bone_biter.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
 //        add("bestiary.entity.terra_entity.dark_mummy.desc", "With the sands transmogrified by outside forces, those put to rest in the desert, whether good or evil, now rise to maim and kill.");
@@ -495,7 +497,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.crimson_axe.desc", "Ensorcelled by the Crimson collective, this weapon moves about and chops its enemies by its own will.");
         add("bestiary.entity.terra_entity.blood_crawler.desc", "Most spiders operate independently, but ones touched by the Crimson hive coordinate together to consume life.");
 //        add("bestiary.entity.terra_entity.herpling.desc", "These hyper, demented, slug-like fiends serve the crimson horde with an unstoppable appetite for blood and flesh.");
-//        add("bestiary.entity.terra_entity.crimson_mimic.desc", "Mimics which are enthralled by the Crimson are empowered dramatically. They can be birthed from ordinary chests by force.");
+        add("bestiary.entity.terra_entity.crimson_mimic.desc", "Mimics which are enthralled by the Crimson are empowered dramatically. They can be birthed from ordinary chests by force.");
 //        add("bestiary.entity.terra_entity.pigron_crimson.desc", "This elusive dragon-pig hybrid has excellent stealth capabilities despite its rotund figure. It is uncertain how they came to exist.");
 //        add("bestiary.entity.terra_entity.flesh_reaver.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
 //        add("bestiary.entity.terra_entity.blood_mummy.desc", "The blood-dripping organic matter in these mummies display far better preservation than the rest of their ilk.");
@@ -510,7 +512,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.chaos_elemental.desc", "Once living beings infused by the blessing, they erratically make chase with an uncontrollable surge of luminous power.");
 //        add("bestiary.entity.terra_entity.illuminant_bat.desc", "Blessed with the prismatic light of the Hallow, the Illuminant Bats are a vibrant pink blur arcing across the darkness of the Underground.");
 //        add("bestiary.entity.terra_entity.enchanted_sword.desc", "Animated by the blessed light of the crystals, it will slice through anything to cleanse the world's evils.");
-//        add("bestiary.entity.terra_entity.hallowed_mimic.desc", "Mimics struck with the blessing surge with energy and become powerful. They can be birthed from ordinary chests by force.");
+        add("bestiary.entity.terra_entity.hallowed_mimic.desc", "Mimics struck with the blessing surge with energy and become powerful. They can be birthed from ordinary chests by force.");
 //        add("bestiary.entity.terra_entity.pigron.desc", "This elusive dragon-pig hybrid has excellent stealth capabilities despite its rotund figure. It is uncertain how they came to exist.");
 //        add("bestiary.entity.terra_entity.crystal_thresher.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
 //        add("bestiary.entity.terra_entity.light_mummy.desc", "With the sands transmogrified by outside forces, those put to rest in the desert, whether good or evil, now rise to maim and kill.");
@@ -1095,7 +1097,9 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.giant_bat.desc", "巨型蝙蝠是洞穴蝙蝠的体型更大的近亲，它们更危险，叮咬还会让敌人陷入混乱。");
         add("bestiary.entity.terra_entity.blue_jellyfish.desc", "水中若出现奇怪的刺痛感，可能是无脑的蓝水母释放的致命电流所致，游泳时务必小心。");
         add("bestiary.entity.terra_entity.green_jellyfish.desc", "水中若出现奇怪的刺痛感，可能是无脑的绿水母释放的致命电流所致，游泳时务必小心。");
-//        add("bestiary.entity.terra_entity.mimic.desc", "对着宝箱说话不会让人发疯，但如果宝箱回应了你，那可能会让你丧命！不过无论如何，它里面确实藏着稀有宝藏！");
+        add("bestiary.entity.terra_entity.wooden_mimic.desc", "对着宝箱说话不会让人发疯，但如果宝箱回应了你，那可能会让你丧命！不过无论如何，它里面确实藏着稀有宝藏！");
+        add("bestiary.entity.terra_entity.golden_mimic.desc", "对着宝箱说话不会让人发疯，但如果宝箱回应了你，那可能会让你丧命！不过无论如何，它里面确实藏着稀有宝藏！");
+        add("bestiary.entity.terra_entity.shadow_mimic.desc", "对着宝箱说话不会让人发疯，但如果宝箱回应了你，那可能会让你丧命！不过无论如何，它里面确实藏着稀有宝藏！");
         add("bestiary.entity.terra_entity.giant_shelly.desc", "为了弥补速度慢的缺点，巨型卷壳怪进化出了躲进尖壳中，然后向敌人猛冲的能力。");
 //        add("bestiary.entity.terra_entity.lost_girl.desc", "迷失女孩赤裸着身体，带着恐惧伫立在世界深处，仿佛在等待有人将她营救并带回地面。");
 //        add("bestiary.entity.terra_entity.granite_golem.desc", "栖息在地下深处花岗岩中的魔法幽魂力量强大，花岗岩巨人便是这类幽魂中呈现人形的品种。");
@@ -1118,7 +1122,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.icy_merman.desc", "人鱼极少远离海洋，一旦迷途闯入寒冷洞穴，便会化为冰冷的不死鱼人。");
         add("bestiary.entity.terra_entity.ice_bat.desc", "蝙蝠本就足够麻烦，而冰雪蝙蝠只需一碰就能将生物的肉体冻成硬块，让猎物彻底失去防御能力。");
 //        add("bestiary.entity.terra_entity.ice_elemental.desc", "在极寒之地聚集的浓厚强力魔法，会使水元素转化为冰雪精。它们周身的冰霜碎片能冻结万物。");
-//        add("bestiary.entity.terra_entity.ice_mimic.desc", "对着宝箱说话不会让人发疯，但要是宝箱回了话，那很可能会让人丧命！不过无论如何，它里面确实藏着稀有宝藏！");
+        add("bestiary.entity.terra_entity.ice_mimic.desc", "对着宝箱说话不会让人发疯，但要是宝箱回了话，那很可能会让人丧命！不过无论如何，它里面确实藏着稀有宝藏！");
 //        add("bestiary.entity.terra_entity.ice_tortoise.desc", "冰雪陆龟和它们的丛林近亲一样，是远超预期的可怕威胁，拥有惊人的速度与机动性。");
 //        add("bestiary.entity.terra_entity.vulture.desc", "秃鹰是为适应沙漠酷热而生的鸟类食腐者，任何靠近它们腐食的生物，都会被其啄咬撕扯。");
         add("bestiary.entity.terra_entity.desert_slime.desc", "沙漠环境极度干旱，而沙史莱姆通过化为一团“活沙”，成功适应了这种恶劣条件。");
@@ -1223,7 +1227,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.clinger.desc", "在最黑暗的腐化之地深处，栖息着爬藤怪这种恐怖生物——它们长有触手，能从岩壁中延伸而出，还会喷射诅咒火焰。");
 //        add("bestiary.entity.terra_entity.slimer.desc", "恶翅史莱姆不知从何处获得了翅膀，从而拥有飞行能力。但这对翅膀十分脆弱，受外力撞击便会脱落，使其失去飞行能力。");
 //        add("bestiary.entity.terra_entity.cursed_hammer.desc", "诅咒锤因对腐化的极致仇恨而被赋予魔法，会自行挥舞旋转，试图粉碎所有拥有生命的物体。");
-//        add("bestiary.entity.terra_entity.corrupt_mimic.desc", "落入腐化之地的宝箱怪会进化为腐化宝箱怪，体型与实力大幅提升。通过外力作用，也能从普通宝箱中强制催生它们。");
+        add("bestiary.entity.terra_entity.corrupt_mimic.desc", "落入腐化之地的宝箱怪会进化为腐化宝箱怪，体型与实力大幅提升。通过外力作用，也能从普通宝箱中强制催生它们。");
 //        add("bestiary.entity.terra_entity.pigron_corrupt.desc", "腐化猪龙是难以捉摸的龙猪杂交生物，即便体型圆胖，仍具备出色的潜行能力。目前尚未知晓它们的起源。");
 //        add("bestiary.entity.terra_entity.bone_biter.desc", "噬骨沙鲨的祖先生活在远古时期流经沙漠的咸水河中，如今已进化出在干燥沙漠中生存的能力。");
 //        add("bestiary.entity.terra_entity.dark_mummy.desc", "暗黑木乃伊原本是安息在沙漠中的逝者，受外界力量改变沙漠形态的影响，无论生前善恶，如今都化为亡灵苏醒，肆意残杀。");
@@ -1238,7 +1242,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.crimson_axe.desc", "猩红斧被猩红之地的集体意识所操控，能凭自身意志移动，挥砍并击杀所有阻挡猩红扩张的敌人。");
         add("bestiary.entity.terra_entity.blood_crawler.desc", "血爬虫是受猩红巢穴影响的蜘蛛，与普通蜘蛛的独立行动不同，它们会协同作战，共同蚕食生命。");
 //        add("bestiary.entity.terra_entity.herpling.desc", "蹦蹦兽是形似鼻涕虫的疯狂恶魔，行动亢奋且残暴，对血肉有着无法抑制的渴望，始终为猩红部落效力。");
-//        add("bestiary.entity.terra_entity.crimson_mimic.desc", "被猩红之力蛊惑的宝箱怪会进化为猩红宝箱怪，实力得到显著增强。通过外力作用，也能从普通宝箱中强制催生它们。");
+        add("bestiary.entity.terra_entity.crimson_mimic.desc", "被猩红之力蛊惑的宝箱怪会进化为猩红宝箱怪，实力得到显著增强。通过外力作用，也能从普通宝箱中强制催生它们。");
 //        add("bestiary.entity.terra_entity.pigron_crimson.desc", "猩红猪龙是难以捉摸的龙猪杂交生物，即便体型圆胖，仍具备出色的潜行能力。目前尚未知晓它们的起源。");
 //        add("bestiary.entity.terra_entity.flesh_reaver.desc", "戮血沙鲨的祖先生活在远古时期流经沙漠的咸水河中，如今已进化出在干燥沙漠中生存的能力。");
 //        add("bestiary.entity.terra_entity.blood_mummy.desc", "血木乃伊的躯体中残留着大量滴血的有机物，与其他木乃伊相比，这些有机物的保存状态要好得多。");
@@ -1253,7 +1257,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.chaos_elemental.desc", "混沌精原本是普通生物，受神圣福佑注入后发生异变，会携带着难以控制的发光能量，疯狂追逐周围的活物。");
 //        add("bestiary.entity.terra_entity.illuminant_bat.desc", "夜明蝙蝠受神圣之地的棱镜光芒祝福，身体呈现亮粉色，飞行时会在黑暗的地下空间划出一道模糊的光影弧线。");
 //        add("bestiary.entity.terra_entity.enchanted_sword.desc", "附魔剑被神圣水晶的福佑之光赋予生命，会主动劈砍一切邪恶之物，以净化世界为己任。");
-//        add("bestiary.entity.terra_entity.hallowed_mimic.desc", "受神圣福佑加持的宝箱怪会进化为神圣宝箱怪，能量大幅涌动、实力显著提升。通过外力作用，也能从普通宝箱中强制催生它们。");
+        add("bestiary.entity.terra_entity.hallowed_mimic.desc", "受神圣福佑加持的宝箱怪会进化为神圣宝箱怪，能量大幅涌动、实力显著提升。通过外力作用，也能从普通宝箱中强制催生它们。");
 //        add("bestiary.entity.terra_entity.pigron.desc", "猪龙是难以捉摸的龙猪杂交生物，即便体型圆胖，仍具备出色的潜行能力。目前尚未知晓它们的起源。");
 //        add("bestiary.entity.terra_entity.crystal_thresher.desc", "水晶沙鲨的祖先生活在远古时期流经沙漠的咸水河中，如今已进化出在干燥沙漠中生存的能力。");
 //        add("bestiary.entity.terra_entity.light_mummy.desc", "光明木乃伊原本是安息在沙漠中的逝者，受外界力量改变沙漠形态的影响，无论生前善恶，如今都化为亡灵苏醒，肆意残杀。");

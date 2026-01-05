@@ -33,6 +33,8 @@ public final class TEEvents {
                 .register(TEBossEntities.QUEEN_BEE.get(), 2)
                 .register(TEBossEntities.SKELETRON.get(), 4)
                 .register(TEBossEntities.SKELETRON_HAND.get(), 4)
+                .register(TEBossEntities.HILL_OF_FLESH.get(), 4)
+                .register(TEBossEntities.WALL_OF_FLESH.get(), 6)
                 // 肉后
                 .register(TEMonsterEntities.PIXIE.get(), 8)
                 .register(TEMonsterEntities.WYVERN.get(), 8)

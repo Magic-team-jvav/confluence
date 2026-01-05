@@ -20,7 +20,7 @@ public class PositionLockRecipeDrawer extends TradeLockRecipeDrawer {
         if (!(lock instanceof PositionLock positionLock)) {
             return y;
         }
-        List<MutableComponent> position = new ArrayList<>();
+        List<Component> position = new ArrayList<>();
         position.add(Component.translatable("confluence.trade_lock.drawer.position.title").append(Component.literal(":")));
         updateWith("X", positionLock.x()).ifPresent(position::add);
         updateWith("Y", positionLock.y()).ifPresent(position::add);

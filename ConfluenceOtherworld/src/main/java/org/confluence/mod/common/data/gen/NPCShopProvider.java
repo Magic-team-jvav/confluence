@@ -3,14 +3,20 @@ package org.confluence.mod.common.data.gen;
 import com.google.common.collect.ImmutableMap;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CropBlock;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
@@ -18,6 +24,7 @@ import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
+import org.confluence.mod.common.data.saved.DateStamp;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModLootTables;
@@ -42,6 +49,7 @@ import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.api.npc.trade.ITrade;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
@@ -49,14 +57,13 @@ import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTable;
 import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
 import org.confluence.terraentity.registries.npc_trade_list.variant.WeightMapGenerator;
-import org.confluence.terraentity.registries.npc_trade_lock.variant.BiomeLock;
-import org.confluence.terraentity.registries.npc_trade_lock.variant.MoodLock;
-import org.confluence.terraentity.registries.npc_trade_lock.variant.TimeLock;
+import org.confluence.terraentity.registries.npc_trade_lock.variant.*;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -66,6 +73,7 @@ import java.util.concurrent.CompletableFuture;
  * @see NPCTradeManager 读取配方
  */
 public class NPCShopProvider extends AbstractRecipeProvider {
+    private static final boolean ENABLE_DEBUG_SHOPS = true;
     private final PackOutput.PathProvider npcShopPathProvider;
 
     public NPCShopProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
@@ -548,6 +556,222 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .setProperties(TradeProperties.builder().setLock(new BestiaryUnlockedCountLock(75)).build())
                         .build())
                 .build());
+
+        if (ENABLE_DEBUG_SHOPS) {
+            addDebugShops(holderLookup);
+        }
+    }
+
+    /**
+     * Adds debug shops where each trade contains single lock types
+     */
+    private void addDebugShops(HolderLookup.Provider holderLookup) {
+        shop(Confluence.asResource("debug_shop")).addRecipe(
+                new Builder().add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new DimensionLock(
+                                                                Level.NETHER
+                                                        )
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new EnvironmentLock(
+                                                                EnvironmentLevelAccess.matcher(
+                                                                        holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD),
+                                                                       null,
+                                                                        true
+                                                                )
+                                                        ),
+                                                        new EnvironmentLock(
+                                                                EnvironmentLevelAccess.matcher(
+                                                                        null,
+                                                                        new EnvironmentLevelAccess.SearchContext(
+                                                                                5,
+                                                                                Optional.of(holderLookup.lookupOrThrow(Registries.BLOCK).getOrThrow(Tags.Blocks.CHESTS_ENDER)),
+                                                                                List.of(),
+                                                                                Optional.empty()
+                                                                        ),
+                                                                        true
+                                                                )
+                                                        ),
+                                                        new EnvironmentLock(
+                                                                EnvironmentLevelAccess.matcher(
+                                                                        null,
+                                                                        new EnvironmentLevelAccess.SearchContext(
+                                                                                5,
+                                                                                Optional.empty(),
+                                                                                List.of(
+                                                                                        StatePropertiesPredicate.Builder.properties().hasProperty(CropBlock.AGE, 7).build().get()
+                                                                                ),
+                                                                                Optional.empty()
+                                                                        ),
+                                                                        true
+                                                                )
+                                                        ),
+                                                        new EnvironmentLock(
+                                                                EnvironmentLevelAccess.matcher(
+                                                                        null,
+                                                                        new EnvironmentLevelAccess.SearchContext(
+                                                                                5,
+                                                                                Optional.empty(),
+                                                                                List.of(),
+                                                                                Optional.of(holderLookup.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.LAVA))
+                                                                        ),
+                                                                        true
+                                                                )
+                                                        )
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new FishingHookInFluidLock(
+                                                                List.of(Tags.Fluids.WATER, Tags.Fluids.HONEY),
+                                                                true
+                                                        )
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new MomentLock(
+                                                                TMMoments.BLOOD_MOON.getKey()
+                                                        ),
+                                                        new MomentLock(
+                                                                TMMoments.SLIME_RAIN.getKey()
+                                                        )
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new BiomeLock(
+                                                                List.of(
+                                                                        Biomes.PLAINS,
+                                                                        ModBiomes.GLOWING_MUSHROOM //Test names for modded biomes
+                                                                ),
+                                                                List.of(
+                                                                        Tags.Biomes.IS_JUNGLE,
+                                                                        ModTags.Biomes.THE_HALLOW
+                                                                )
+                                                        )
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new KillEntityLock(TEBossEntities.BRAIN_OF_CTHULHU.get()),
+                                                        new KillEntityLock(EntityType.ZOMBIE)
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new NPCExistLock(TENpcEntities.GOBLIN_TINKERER.get()),
+                                                        new NPCExistLock(EntityType.ZOMBIE)
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new AnyBossDefeatedLock()
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new BestiaryUnlockedCountLock(10)
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new DateLock(false, new DateStamp(2, 28), new DateStamp(13, 37)),
+                                                        new DateLock(true, new DateStamp(2, 28), new DateStamp(13, 37)),
+                                                        DateLock.HALLOWEENS,
+                                                        DateLock.CHRISTMAS
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new PositionLock(MinMaxBounds.Ints.between(1, 10), MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY),
+                                                        new PositionLock(MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.between(1, 10), MinMaxBounds.Ints.ANY),
+                                                        new PositionLock(MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.between(1, 10)),
+                                                        new PositionLock(MinMaxBounds.Ints.between(1, 10), MinMaxBounds.Ints.between(2, 20), MinMaxBounds.Ints.between(3, 30))
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new MoodLock(100, false),
+                                                        new MoodLock(50, true)
+                                                )
+                                        ).build()
+                                ).build()
+                ).add(
+                        new MoneyTradeItem.Builder()
+                                .setResult(ToolItems.BUG_NET)
+                                .setProperties(
+                                        TradeProperties.builder().setLock(
+                                                ITradeLock.and(
+                                                        new TimeLock(2500, 13000, false),
+                                                        new TimeLock(2500, 13000, true)
+                                                )
+                                        ).build()
+                                ).build()
+                ).build()
+        );
     }
 
 

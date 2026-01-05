@@ -1,10 +1,12 @@
 package org.confluence.mod.common.data.gen;
 
 import it.unimi.dsi.fastutil.chars.Char2CharOpenHashMap;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,8 +27,8 @@ public class ModEnUdProvider extends ModEnglishProvider {
     );
     private static final Pattern PARAS = Pattern.compile("%(?:(\\d+)\\$)?([A-Za-z%]|$)");
 
-    public ModEnUdProvider(PackOutput output) {
-        super(output, "en_ud");
+    public ModEnUdProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
+        super(output, "en_ud", lookup);
     }
 
     @Override

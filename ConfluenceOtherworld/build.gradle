@@ -203,6 +203,11 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
+    runtimeOnly "curse.maven:fzzyconfig-1005914:7331235"
+    runtimeOnly "curse.maven:kff-351264:6994056"
+    runtimeOnly "curse.maven:emiloot-681783:7265577"
+    runtimeOnly "curse.maven:emi-580555:6420931"
+
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:7134093"
     if (ftb) {

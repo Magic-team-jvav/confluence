@@ -1,7 +1,11 @@
 package org.confluence.mod.common.data.gen;
 
 import net.minecraft.Util;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -11,6 +15,7 @@ import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.language.*;
+import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -20,35 +25,61 @@ import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.init.TEEffects;
+import org.confluence.terraentity.utils.RecipeDrawerUtils;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import static org.confluence.mod.common.component.prefix.ModPrefix.GROUPS;
 
 public class ModEnglishProvider extends LanguageProvider {
-    public ModEnglishProvider(PackOutput output) {
-        super(output, Confluence.MODID, "en_us");
+    CompletableFuture<HolderLookup.Provider> lookup;
+    HolderLookup.Provider registries;
+    public ModEnglishProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
+        this(output, "en_us", lookup);
     }
 
-    public ModEnglishProvider(PackOutput output, String locale) {
+    public ModEnglishProvider(PackOutput output, String locale, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, Confluence.MODID, locale);
+        this.lookup = lookup;
+    }
+
+    @Override
+    public CompletableFuture<?> run(CachedOutput cache) {
+        return lookup.thenCompose(registries -> {
+            this.registries = registries;
+            return super.run(cache);
+        });
     }
 
     @Override
     protected void addTranslations() {
+        var dimensionsLookup = registries.lookup(Registries.DIMENSION_TYPE);
+        dimensionsLookup.ifPresent(dimensionTypeRegistryLookup -> addDefaultRegistryTranslations(dimensionTypeRegistryLookup, Registries.DIMENSION_TYPE.location().getPath()));
+
+        var fluidLookup = registries.lookup(Registries.FLUID);
+        fluidLookup.ifPresent(fluidRegistryLookup -> addDefaultRegistryTranslations(fluidRegistryLookup, Registries.FLUID.location().getPath()));
+
+        var biomeLookup = registries.lookup(Registries.BIOME);
+        biomeLookup.ifPresent(biomeRegistryLookup -> addDefaultRegistryTranslations(biomeRegistryLookup, Registries.BIOME.location().getPath()));
+
+        for (var moonPhase : MoonPhase.values()) {
+            add(moonPhase.getSerializedName(), formatString(moonPhase.name()));
+        }
+
         add("confluence.trade_lock.drawer.position.title", "Position");
         add("confluence.trade_lock.drawer.position.and", "and");
         add("confluence.trade_lock.drawer.moon_phase.title", "Moon Phase");
-        add("confluence.trade_lock.drawer.moment.title", "Moment");
         add("confluence.trade_lock.drawer.fishing.requires_hook", "Requires Fishing While Trading");
         add("confluence.trade_lock.drawer.fishing.fishing_in", "Be Fishing in");
         add("confluence.trade_lock.drawer.environment.block", "Block");
         add("confluence.trade_lock.drawer.environment.fluid", "Fluid");
-        add("confluence.trade_lock.drawer.environment.block_state_predicate", "Block State Predicate");
+        add("confluence.trade_lock.drawer.environment.block_state_predicate", "Block State");
         add("confluence.trade_lock.drawer.dimension.title", "Dimension");
         add("confluence.trade_lock.drawer.date.lunar", "Lunar");
         add("confluence.trade_lock.drawer.bestiary.title", "Bestiary Pages Unlocked");
         add("confluence.trade_lock.drawer.any_boss_defeated.title", "Any Boss Defeated");
+        add("confluence.trade_lock.drawer.environment.radius", "In radius of %s blocks");
 
         add("confluence.prefix_separator", " ");
 
@@ -1175,6 +1206,15 @@ public class ModEnglishProvider extends LanguageProvider {
         CreateHelper.addTranslateKeys((item, s) -> add(Util.makeDescriptionId("item", item.getId()), s), true);
     }
 
+    private void addDefaultRegistryTranslations(HolderLookup.RegistryLookup<?> dimensions, String dimensionsPath) {
+        dimensions.listElements().forEach(dimension -> {
+            var key = dimension.getKey();
+            if (key == null) return;
+            ResourceLocation location = key.location();
+            add(String.format("%s.%s", dimensionsPath, location.toLanguageKey()), formatLocation(location));
+        });
+    }
+
     @Override
     public void add(String key, String value) {
         if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
@@ -1188,5 +1228,13 @@ public class ModEnglishProvider extends LanguageProvider {
 
     private void addEffect(MobEffect effect, String tooltip) {
         add("tooltip." + effect.getDescriptionId() + ".0", tooltip);
+    }
+
+    private String formatLocation(ResourceLocation location) {
+        return RecipeDrawerUtils.formatLocationPath(location);
+    }
+
+    private String formatString(String name) {
+        return RecipeDrawerUtils.formatString(name);
     }
 }

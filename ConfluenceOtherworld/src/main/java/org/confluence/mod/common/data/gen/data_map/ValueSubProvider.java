@@ -1141,6 +1141,10 @@ public final class ValueSubProvider {
                 .add(VanityArmorItems.GUY_FAWKES_MASK, silver20 + silver20)
                 .add(VanityArmorItems.GUY_FAWKES_HAT, silver20 + silver20)
                 .add(VanityArmorItems.GUY_FAWKES_MASK_SET, silver50 + silver10)
+                .add(VanityArmorItems.MUMMY_MASK, silver50 - silver20)
+                .add(VanityArmorItems.MUMMY_SHIRT, silver50 - silver20)
+                .add(VanityArmorItems.MUMMY_PANTS, silver50 - silver20)
+                .add(VanityArmorItems.MUMMY_SHOES, silver50 - silver20)
                 .add(VanityArmorItems.DEAD_MANS_SWEATER, silver20);
         builder
                 .add(Items.LEATHER_HORSE_ARMOR, 14)

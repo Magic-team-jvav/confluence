@@ -1197,7 +1197,8 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANTLION_SWARMER.get(), 500, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_ANTLION_SWARMER.get(), 200, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.MUMMY.get(), 35, 1, 2)
                     )
             ));
             register(context, createModifierKey("common_icy"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1362,6 +1363,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.EATER_OF_SOULS.get(), 75, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_SLIME.get(), 35, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_MUMMY.get(), 35, 1, 2))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1410,6 +1412,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FACE_MONSTER.get(), 60, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSLIME.get(), 35, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_MUMMY.get(), 35, 1, 2))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1443,6 +1446,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIXIE.get(), 60, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LUMINOUS_SLIME.get(), 35, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HALLOWED_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_MUMMY.get(), 35, 1, 2))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()

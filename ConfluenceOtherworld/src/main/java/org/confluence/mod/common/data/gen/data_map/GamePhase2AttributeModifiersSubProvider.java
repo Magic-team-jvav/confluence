@@ -333,6 +333,21 @@ public final class GamePhase2AttributeModifiersSubProvider {
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
 
+                .add(TEMonsterEntities.MUMMY, Map.of(
+                        GamePhase.PLANTERA, NORMAL_CHANGE_1
+                ))
+                .add(TEMonsterEntities.DARK_MUMMY, Map.of(
+                        GamePhase.PLANTERA, NORMAL_CHANGE_1
+                ))
+                .add(TEMonsterEntities.BLOOD_MUMMY, Map.of(
+                        GamePhase.PLANTERA, NORMAL_CHANGE_1
+                ))
+                .add(TEMonsterEntities.LIGHT_MUMMY, Map.of(
+                        GamePhase.PLANTERA, NORMAL_CHANGE_1
+                ))
+
+
+
                 // MC原版敌对怪物
                 .add(EntityType.ZOMBIE.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()

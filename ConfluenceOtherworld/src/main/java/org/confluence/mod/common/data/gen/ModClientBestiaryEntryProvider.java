@@ -280,7 +280,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.DESERT_SLIME, builder -> builder.order(23300).rarity(2).background(UNDERGROUND_DESERT).filters(FilterEntry.UNDERGROUND_DESERT))
                 // 蚁狮幼虫
                 // 巨型蚁狮马
-                // 木乃伊
+                .add(TEMonsterEntities.DESERT_SLIME, builder -> builder.order(23600).rarity(2).background(UNDERGROUND_DESERT).filters(FilterEntry.UNDERGROUND_DESERT))
                 // 食尸鬼
                 // 蛇蜥怪
                 .add(TEMonsterEntities.TOMB_CRAWLER, builder -> builder.order(23900).rarity(1).background(UNDERGROUND_DESERT).filters(FilterEntry.UNDERGROUND_DESERT))
@@ -378,7 +378,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.CORRUPT_MIMIC, builder -> builder.order(33400).rarity(5).background(UNDERGROUND_CORRUPTION).filters(FilterEntry.RARE_CREATURE, FilterEntry.UNDERGROUND_CORRUPTION))
                 // 猪龙 （腐化）
                 // 噬骨沙鲨
-                // 暗黑木乃伊
+                .add(TEMonsterEntities.DARK_MUMMY, builder -> builder.order(33700).rarity(2).background(CORRUPT_DESERT).filters(FilterEntry.RARE_CREATURE, FilterEntry.CORRUPT_DESERT))
                 // 腐恶食尸鬼
                 .add(TEMonsterEntities.CRIMSLIME, builder -> builder.order(33900).rarity(2).background(THE_CRIMSON).filters(FilterEntry.THE_CRIMSON, FilterEntry.UNDERGROUND_CRIMSON))
                 .add(TEMonsterEntities.FACE_MONSTER, builder -> builder.order(34000).rarity(2).background(THE_CRIMSON).filters(FilterEntry.THE_CRIMSON, FilterEntry.UNDERGROUND_CRIMSON))
@@ -393,7 +393,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.CRIMSON_MIMIC, builder -> builder.order(34900).rarity(5).background(UNDERGROUND_CRIMSON).filters(FilterEntry.RARE_CREATURE, FilterEntry.UNDERGROUND_CRIMSON))
                 // 猪龙 （猩红）
                 // 戮血沙鲨
-                // 血木乃伊
+                .add(TEMonsterEntities.BLOOD_MUMMY, builder -> builder.order(35200).rarity(2).background(CRIMSON_DESERT).filters(FilterEntry.RARE_CREATURE, FilterEntry.CRIMSON_DESERT))
                 // 红染食尸鬼
                 // 暗黑拉弥亚
                 // 沙漠幽魂
@@ -408,7 +408,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                .add(TEMonsterEntities.HALLOWED_MIMIC, builder -> builder.order(36400).rarity(5).background(UNDERGROUND_HALLOW).filters(FilterEntry.RARE_CREATURE, FilterEntry.UNDERGROUND_HALLOW))
                 // 猪龙
                 // 水晶沙鲨
-                // 光明木乃伊
+               .add(TEMonsterEntities.LIGHT_MUMMY, builder -> builder.order(36700).rarity(2).background(HALLOW_DESERT).filters(FilterEntry.RARE_CREATURE, FilterEntry.HALLOW_DESERT))
                 // 神梦食尸鬼
                 // 光明拉弥亚
                 .add(TEMonsterEntities.SPORE_ZOMBIE, builder -> builder.order(37000).rarity(2).background(GLOWING_MUSHROOM).filters(FilterEntry.SURFACE_MUSHROOM))

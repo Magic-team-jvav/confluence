@@ -30,6 +30,8 @@ import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.mixed.IModelPart;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
+import org.confluence.terraentity.client.boss.renderer.WallOfFleshRenderer;
+import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
 import org.confluence.terraentity.entity.util.DeathAnimOptions;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -228,7 +230,15 @@ public final class DeathAnimUtils {
             poseStack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
             poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));
             Matrix4f pose = poseStack.last().pose();
-            Collection<GeoBone> bones = new ArrayList<>(geoRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones());
+            Collection<GeoBone> bones = new ArrayList<>();
+            // 肉墙使用合并后的模型骨骼，确保包含动态克隆的部件
+            if (entity instanceof WallOfFlesh && geoRenderer instanceof WallOfFleshRenderer wofRenderer) {
+                wofRenderer.getGeoModel().getBone("All")
+                        .ifPresentOrElse(root -> flattenBone(bones, root),
+                                () -> bones.addAll(wofRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones()));
+            } else {
+                bones.addAll(geoRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones());
+            }
             // 如果bone名字是_death，说明这个bone是专门为尸体做的，只用这里面的模型
             for (GeoBone bone : bones) {
                 if (ClientUtils.DEATH_BONE_NAME.equals(bone.getName())) {
@@ -241,6 +251,8 @@ public final class DeathAnimUtils {
             skipBone:
             for (GeoBone bone : bones) {
                 if (bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;
+                if (entity instanceof WallOfFlesh && level.random.nextInt(25) != 0) continue; // 肉墙随机剔除
+
                 Vector3f boneOffset = new Vector3f(bone.getPosX(), bone.getPosY(), bone.getPosZ());
                 ArrayList<Vector3f> rots = new ArrayList<>();
                 rots.add(new Vector3f(bone.getRotX(), bone.getRotY(), bone.getRotZ()));

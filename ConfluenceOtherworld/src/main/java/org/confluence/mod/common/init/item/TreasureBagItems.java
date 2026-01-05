@@ -73,5 +73,6 @@ public class TreasureBagItems {
         }
     });
     public static final DeferredItem<TreasureBagItem> THE_TWINS_TREASURE_BAG = ITEMS.register("the_twins_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/the_twins"), ModRarity.PINK));
+    public static final DeferredItem<TreasureBagItem> SKELETRON_PRIME_TREASURE_BAG = ITEMS.register("skeletron_prime_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/skeletron_prime"), ModRarity.PINK));
 
 }

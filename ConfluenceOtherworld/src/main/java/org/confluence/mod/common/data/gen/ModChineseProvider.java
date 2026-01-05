@@ -1878,6 +1878,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.WALL_OF_FLESH_RELIC.get(), "血肉墙圣物");
         add(DecorativeBlocks.HILL_OF_FLESH_RELIC.get(), "血肉山圣物");
         add(DecorativeBlocks.THE_TWINS_RELIC.get(), "双子魔眼圣物");
+        add(DecorativeBlocks.SKELETRON_PRIME_RELIC.get(), "双子魔眼圣物");
 
         add(DecorativeBlocks.POO_BLOCK.get(), "臭臭块");
         add(ModBlocks.POO.get(), "臭臭");
@@ -2493,6 +2494,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(), "血肉墙宝藏袋");
         add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG.get(), "血肉山宝藏袋");
         add(TreasureBagItems.THE_TWINS_TREASURE_BAG.get(), "双子魔眼宝藏袋");
+        add(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(), "机械骷髅王宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");

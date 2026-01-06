@@ -36,7 +36,6 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.IdentityHashMap;
@@ -193,6 +192,6 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
 
     @Override
     public @Nullable ResourceLocation getRegistryName(IngredientPair recipe) {
-        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, "extractinator/" + BuiltInRegistries.ITEM.getKey(recipe.ingredient.getItem()).getPath());
+        return Confluence.asResource("extractinator/" + BuiltInRegistries.ITEM.getKey(recipe.ingredient.getItem()).getPath());
     }
 }

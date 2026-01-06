@@ -17,7 +17,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
-import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<HeavyWorkBenchRecipe>> {
@@ -77,6 +76,6 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
 
     @Override
     public @Nullable ResourceLocation getRegistryName(RecipeHolder<HeavyWorkBenchRecipe> recipe) {
-        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

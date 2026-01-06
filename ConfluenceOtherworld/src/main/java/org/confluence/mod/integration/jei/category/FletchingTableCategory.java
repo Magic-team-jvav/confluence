@@ -16,7 +16,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.recipe.FletchingTableRecipe;
-import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
@@ -70,6 +69,6 @@ public class FletchingTableCategory implements IRecipeCategory<RecipeHolder<Flet
 
     @Override
     public @Nullable ResourceLocation getRegistryName(RecipeHolder<FletchingTableRecipe> recipe) {
-        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

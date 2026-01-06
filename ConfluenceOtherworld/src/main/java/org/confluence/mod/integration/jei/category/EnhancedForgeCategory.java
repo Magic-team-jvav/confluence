@@ -19,7 +19,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.container.EnhanceForgeScreen;
 import org.confluence.mod.common.recipe.EnhancedForgeRecipe;
-import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
@@ -77,6 +76,6 @@ public abstract class EnhancedForgeCategory<R extends EnhancedForgeRecipe> imple
 
     @Override
     public @Nullable ResourceLocation getRegistryName(RecipeHolder<R> recipe) {
-        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

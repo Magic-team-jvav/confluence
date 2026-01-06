@@ -25,7 +25,6 @@ import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
-import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -111,6 +110,6 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
         if (target.isEmpty()) {
             return null;
         }
-        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(target.getFirst().getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(target.getFirst().getItem()).getPath());
     }
 }

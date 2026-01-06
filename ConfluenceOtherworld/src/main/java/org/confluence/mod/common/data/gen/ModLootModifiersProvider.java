@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -16,7 +15,6 @@ import org.confluence.mod.common.data.gen.loot.modifiers.AddBlockLootConfluenceS
 import org.confluence.mod.common.data.gen.loot.modifiers.AddChestLootConfluenceSubProvider;
 import org.confluence.mod.common.data.gen.loot.modifiers.AddEntityLootConfluenceSubProvider;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -38,7 +36,7 @@ public class ModLootModifiersProvider  extends GlobalLootModifierProvider {
                     entityType.getDefaultLootTable().location().getPath(),
                     new AddTableLootModifier(new LootTableIdCondition[] {
                             (LootTableIdCondition) LootTableIdCondition.builder(entityType.getDefaultLootTable().location()).build()
-                    }, ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Confluence.MODID, provider.getPath(entityType))))
+                    }, ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(provider.getPath(entityType))))
             );
         }
 
@@ -51,7 +49,7 @@ public class ModLootModifiersProvider  extends GlobalLootModifierProvider {
                     location.getPath(),
                     new AddTableLootModifier(new LootTableIdCondition[] {
                             (LootTableIdCondition) LootTableIdCondition.builder(location).build()
-                    }, ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Confluence.MODID, blockProvider.getPath(location))))
+                    }, ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(blockProvider.getPath(location))))
             );
         }
 
@@ -64,7 +62,7 @@ public class ModLootModifiersProvider  extends GlobalLootModifierProvider {
                     location.getPath(),
                     new AddTableLootModifier(new LootTableIdCondition[] {
                             (LootTableIdCondition) LootTableIdCondition.builder(location).build()
-                    }, ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(Confluence.MODID, chestProvider.getPath(lootTable))))
+                    }, ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(chestProvider.getPath(lootTable))))
             );
         }
     }

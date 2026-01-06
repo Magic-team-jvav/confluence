@@ -17,7 +17,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.CrystalBallRecipe;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
-import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<CrystalBallRecipe>> {
@@ -71,6 +70,6 @@ public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<Crystal
 
     @Override
     public @Nullable ResourceLocation getRegistryName(RecipeHolder<CrystalBallRecipe> recipe) {
-        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

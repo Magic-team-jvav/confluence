@@ -23,7 +23,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
-import org.confluence.terra_furniture.TerraFurniture;
 
 import java.util.Collection;
 import java.util.List;
@@ -113,7 +112,7 @@ public class BrewingStandTerraPotionCategory implements IRecipeCategory<BrewingS
 
     @Override
     public ResourceLocation getRegistryName(Recipe recipe) {
-        return ResourceLocation.fromNamespaceAndPath(TerraFurniture.MODID, "brewing_stand/" + BuiltInRegistries.ITEM.getKey(recipe.output.getItem()).getPath());
+        return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "brewing_stand/" + BuiltInRegistries.ITEM.getKey(recipe.output.getItem()).getPath());
     }
 
     public static final class Recipe {

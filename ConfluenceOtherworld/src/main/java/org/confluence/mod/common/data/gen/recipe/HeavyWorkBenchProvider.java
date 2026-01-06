@@ -1319,6 +1319,27 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "a## ",
                 " ## "
         )), TGItems.PHOENIX_BLASTER.toStack());
+        // 魂钥匙
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.SOUL_OF_LIGHT),
+                'b', Ingredient.of(MaterialItems.SOUL_OF_LIGHT)
+        ), List.of(
+                "aaa",
+                " a ",
+                "bb ",
+                " b "
+        )), ToolItems.KEY_OF_LIGHT.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.SOUL_OF_NIGHT),
+                'b', Ingredient.of(MaterialItems.SOUL_OF_NIGHT)
+        ), List.of(
+                "aaa",
+                " a ",
+                "bb ",
+                " b "
+        )), ToolItems.KEY_OF_NIGHT.toStack());
+
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(30),Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(2, MaterialItems.ROTTEN_BONE), AmountIngredient.of(2, MaterialItems.WORM_TOOTH), AmountIngredient.of(4, MaterialItems.ROTTEN_CHUNK));

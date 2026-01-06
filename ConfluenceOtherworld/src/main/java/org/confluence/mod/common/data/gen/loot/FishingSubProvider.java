@@ -236,15 +236,15 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
         // 宝藏池
         output.accept(ModLootTables.TREASURE, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.FROG_LEG).setWeight(7).setQuality(1))
-                        .add(LootItem.lootTableItem(Items.BOOK).setWeight(4).setQuality(1).apply(
+                        .add(LootItem.lootTableItem(TCItems.FROG_LEG).setWeight(7))
+                        .add(LootItem.lootTableItem(Items.BOOK).setWeight(4).apply(
                                 EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(30.0F))
                         ))
-                        .add(LootItem.lootTableItem(TCItems.BALLOON_PUFFERFISH).setWeight(7).setQuality(1))
+                        .add(LootItem.lootTableItem(TCItems.BALLOON_PUFFERFISH).setWeight(7))
                         .add(LootItem.lootTableItem(ConsumableItems.BOMB_FISH).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))).setWeight(33))
                         .add(LootItem.lootTableItem(FoodItems.GOLDEN_CARP).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(caveThroughSurface))
-                        ).setWeight(7).setQuality(1))
+                        ).setWeight(7))
                         .add(LootItem.lootTableItem(AccessoryItems.NATURES_GIFT).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface))
                         ).setWeight(25))
@@ -269,7 +269,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(NestedLootTable.lootTableReference(ModLootTables.JUNK).setWeight(5).setQuality(-1))
                         .add(NestedLootTable.lootTableReference(ModLootTables.TREASURE)
                                 .setWeight(10)
-                                .setQuality(2)
+                                .setQuality(1)
                                 .when(LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(FishingHookPredicate.inOpenWater(true))
                                 ))

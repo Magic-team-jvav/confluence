@@ -539,6 +539,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_bug_net.1", "也可以捕捉熔岩小动物！");
         add("tooltip.item.confluence.dev_bug_net.0", "可以捕捉绝大部分生物！");
         add("tooltip.item.confluence.lucy_the_axe.0", "“我爱露西！”");
+        add("tooltip.item.confluence.key_of_light.0", "“汇聚了大量灵魂的精华”");
+        add("tooltip.item.confluence.key_of_night.0", "“汇聚了大量灵魂的精华”");
 
         new ConfigurationLanguageSubProvider(this::add, false);
 
@@ -738,6 +740,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.npc.left", "%s已离开！");
         add("event.confluence.traveling_merchant.departed", "旅商%s已离去！");
         add("event.confluence.npc_invitation", "请柬已送达，区块坐标为[%1$s, %2$s]到[%3$s, %4$s]的区域将会添加一批新的NPC！");
+        add("event.confluence.spelunker.first_trigger", "按住tab键（改为玩家的设置按键）以查看详细信息");
+        add("event.confluence.danger_sense.first_trigger", "按住tab键（改为玩家的设置按键）以查看详细信息");
+        add("event.confluence.gravitation.first_trigger", "按住↑键（改为玩家的设置按键）以改变重力");
+        add("event.confluence.metal_detector.first_trigger", "按住ctrl键（改为玩家的设置按键）以使用金属探测器");
 
         add("event.confluence.reveal_step0", "你的世界已赐钴，钯金！");
         add("event.confluence.reveal_step1", "你的世界已赐秘银，山铜！");
@@ -2357,6 +2363,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.UNIVERSE_KEY.get(), "太空钥匙");
         add(ToolItems.RUST_IRON_KEY.get(), "生锈的铁钥匙");
         add(ToolItems.MECHANIC_SAFE_KEY.get(), "机械师安全钥匙");
+        add(ToolItems.KEY_OF_LIGHT.get(), "光明钥匙");
+        add(ToolItems.KEY_OF_NIGHT.get(), "夜光钥匙");
         add(ToolItems.TARGET_DUMMY.get(), "训练假人");
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");

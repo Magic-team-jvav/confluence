@@ -16,15 +16,16 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Compatibility", "Compatibility Mechanism");
         add("confluence.configuration.Compatibility.button", "Settings for compatibility with other mods");
         add("confluence.configuration.ArsNouveau", "Ars Nouveau");
+        add("confluence.configuration.ArsNouveau.tooltip", "Ars Nouveau");
         add("confluence.configuration.IronsSpell", "Iron's Spells 'n Spellbooks");
+        add("confluence.configuration.IronsSpell.tooltip", "Iron's Spells 'n Spellbooks");
         add("confluence.configuration.FTB", "FTB Chunks");
-        add("confluence.configuration.Xaero", "Xaero's World Map");
+        add("confluence.configuration.FTB.tooltip", "FTB Chunks");
         add("confluence.configuration.Waystones", "Waystones");
+        add("confluence.configuration.Waystones.tooltip", "Waystones");
         add("confluence.configuration.convertArsNouveauMana", "Use Confluence's mana system when enabled");
         add("confluence.configuration.convertIronsSpellMana", "Use Confluence's mana system when enabled");
         add("confluence.configuration.ftbChunksWormholePotion", "Enable wormhole potion functionality");
-        add("confluence.configuration.xaerosMapWormholePotion", "Enable wormhole potion functionality");
-        add("confluence.configuration.xaerosMapPylonWaypoint", "Enable pylon waypoint display");
         add("confluence.configuration.waystonesPylonNonCost", "Enable pylons to not consume experience");
 
         add("confluence.configuration.instantlyHardmodeConversion", "Instant Hard Mode Conversion");
@@ -213,15 +214,11 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.IronsSpell.tooltip", "Iron's Spells 'n Spellbooks");
         add("confluence.configuration.FTB", "FTB 区块");
         add("confluence.configuration.FTB.tooltip", "FTB Chunks");
-        add("confluence.configuration.Xaero", "Xaero的世界地图");
-        add("confluence.configuration.Xaero.tooltip", "Xaero's World Map");
         add("confluence.configuration.Waystones", "传送石碑/指路石");
         add("confluence.configuration.Waystones.tooltip", "Waystones");
         add("confluence.configuration.convertArsNouveauMana", "开启后将使用汇流来世的魔力");
         add("confluence.configuration.convertIronsSpellMana", "开启后将使用汇流来世的魔力");
         add("confluence.configuration.ftbChunksWormholePotion", "启用虫洞药水功能");
-        add("confluence.configuration.xaerosMapWormholePotion", "启用虫洞药水功能");
-        add("confluence.configuration.xaerosMapPylonWaypoint", "启用显示晶塔点位功能");
         add("confluence.configuration.waystonesPylonNonCost", "启用晶塔不花费经验功能");
 
         add("confluence.configuration.wrappedCrimsonHeart", "被包裹的猩红心脏");

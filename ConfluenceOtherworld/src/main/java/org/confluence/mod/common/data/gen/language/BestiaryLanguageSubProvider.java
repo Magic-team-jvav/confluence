@@ -218,7 +218,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.worm.2.desc", "A slick, tubular invertebrate found hiding in rocks, dirt, and grass. Loves the rain. Fish are especially attracted to these.");
         add("bestiary.entity.terra_entity.worm.1.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
         add("bestiary.entity.terra_entity.dragonfly.desc", "A swift-flying insect which hunts mosquitoes. Comes in a variety of colors. Fish are somewhat attracted to these.");
-//        add("bestiary.entity.terra_entity.gold_dragonfly.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
+        add("bestiary.entity.terra_entity.gold_dragonfly.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
 //        add("bestiary.entity.terra_entity.seahorse.desc", "A gentle critter which swims harmlessly in the ocean depths.");
 //        add("bestiary.entity.terra_entity.gold_seahorse.desc", "Rarely, critters are found coated entirely in gold! Shopkeepers will pay handsomely for these, or you can show them off in cages!");
         add("bestiary.entity.terra_entity.water_strider.desc", "Glides elegantly along the surface of calm bodies of water searching for smaller bugs. Fish are occasionally attracted to these.");
@@ -400,7 +400,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.sea_snail.desc", "This unusually large snail makes its home deep in the ocean. Its mucus can be manufactured into a purple dye.");
 //        add("bestiary.entity.terra_entity.shark.desc", "Once these ocean predators catch a whiff of blood, they become relentless and unstoppable in their ravenous pursuit.");
 //        add("bestiary.entity.terra_entity.squid.desc", "A betentacled marine creature which discharges a thick, black ink when threatened. The ink is collected for aesthetic purposes.");
-//        add("bestiary.entity.terra_entity.pink_jellyfish.desc", "That strange tingling sensation in the water may be the unwelcome surging of electrical death from a brainless jellyfish. Swim with care.");
+        add("bestiary.entity.terra_entity.pink_jellyfish.desc", "That strange tingling sensation in the water may be the unwelcome surging of electrical death from a brainless jellyfish. Swim with care.");
         add("bestiary.entity.terra_entity.jungle_slime.desc", "A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.");
         add("bestiary.entity.terra_entity.snatcher.desc", "A sharp-toothed plant with a taste for human flesh. It has the ability to hide inside the mud and reach over great distances.");
 //        add("bestiary.entity.terra_entity.giant_flying_fox.desc", "An oversized cousin of the bat found only in the Jungle, giant flying foxes hunt the night skies looking for prey.");
@@ -686,7 +686,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.minecraft.chicken.desc", "Chickens are common farm animals that lay eggs and can be attracted by wheat seeds.");
         add("bestiary.entity.minecraft.cod.desc", "Cod are common fish living in oceans and can serve as a food source.");
         add("bestiary.entity.minecraft.cow.desc", "Cows are farm animals that provide milk, beef, and leather, and they love to eat grass.");
-        add("bestiary.entity.minecraft.rabbit.description", "Rabbits are wild animals good at jumping and can be a source of food.");
+        add("bestiary.entity.minecraft.rabbit.desc", "Rabbits are wild animals good at jumping and can be a source of food.");
         add("bestiary.entity.minecraft.donkey.desc", "Donkeys are tamed creatures used for transporting items and can be equipped with chests.");
         add("bestiary.entity.minecraft.glow_squid.desc", "Glow Squids are bioluminescent creatures in caves, and their ink sacs can make fluorescent items.");
         add("bestiary.entity.minecraft.horse.desc", "Horses are tamed mounts with different speeds and jumping abilities depending on their breed.");

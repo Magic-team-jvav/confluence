@@ -595,6 +595,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_bug_net.1", "Can catch lava critters too!");
         add("tooltip.item.confluence.dev_bug_net.0", "Can catch most creatures!");
         add("tooltip.item.confluence.lucy_the_axe.0", "'I love Lucy!'");
+        add("tooltip.item.confluence.key_of_light.0", "Charged with the essence of many souls");
+        add("tooltip.item.confluence.key_of_night.0", "Charged with the essence of many souls");
 
         new ConfigurationLanguageSubProvider(this::add, true);
 
@@ -646,7 +648,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.safe", "Safe");
         add("container.confluence.heavy_work_bench", "Heavy Work Bench");
         add("container.confluence.hellforge", "Hell Forge");
-        add("container.confluence.adanmantite_forge", "Adanmantite Forge");
+        add("container.confluence.adamantite_forge", "Adamantite Forge");
         add("container.confluence.titanium_forge", "Titanium Forge");
         add("container.confluence.alchemy_table", "Alchemy Table");
         add("container.confluence.cooking_pot", "Cooking Pot");
@@ -741,6 +743,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.npc.left", "%s has left!");
         add("event.confluence.traveling_merchant.departed", "%s the Traveling Merchant has departed!");
         add("event.confluence.npc_invitation", "Invitation delivered! A new batch of NPCs will be added in the region from chunk pos [%1$s, %2$s] to [%3$s, %4$s]!");
+        add("event.confluence.spelunker.first_trigger", "Hold the Tab key (改为玩家的设置按键) to view detailed information");
+        add("event.confluence.danger_sense.first_trigger", "Hold the Tab key (改为玩家的设置按键) to view detailed information");
+        add("event.confluence.gravitation.first_trigger", "Hold the ↑ key (改为玩家的设置按键) to reverse gravity");
+        add("event.confluence.metal_detector.first_trigger", "Hold the Ctrl key (改为玩家的设置按键) to use the metal detector");
 
         add("event.confluence.reveal_step0", "Your world has been blessed with Cobalt and Palladium!");
         add("event.confluence.reveal_step1", "Your world has been blessed with Mythril and Orichalcum!");
@@ -881,7 +887,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.plank_set.0", "+1 Aromor");
         add("armor_set_bonus.confluence.pearlwood_set.0", "+1 Aromor");
 
-        add("armor_set_bonus.confluence.ash_set.0", "Reduces damage from touching lava");
+        add("armor_set_bonus.confluence.ash_set.0", "Reduces lava contact damage by 50%");
+        add("armor_set_bonus.confluence.ash_set.1", "Reduces fire duration taken by 35%");
         // Base Ore
         add("armor_set_bonus.confluence.copper_set.0", "+1 Aromor");
         add("armor_set_bonus.confluence.tin_set.0", "+2 Aromor");
@@ -1113,6 +1120,9 @@ public class ModEnglishProvider extends LanguageProvider {
         addPotion(PotionItems.FLASK_OF_FIRE.get(), "Melee and Whip attacks set enemies on fire");
         addPotion(PotionItems.FLASK_OF_GOLD.get(), "Melee and Whip attacks make enemies drop more gold");
         addPotion(PotionItems.EGGNOG.get(), "Restores 16 health");
+        addPotion(PotionItems.BATTLE_POTION.get(), "Increases enemy spawn rate");
+        addPotion(PotionItems.CALMING_POTION.get(), "Decreases enemy spawn rate");
+        addPotion(PotionItems.SATIETY_POTION.get(), "Slows hunger depletion");
 
         addEffect(ModEffects.MANA_SICKNESS.get(), "Magic damage reduced");
         addEffect(ModEffects.SHINE.get(), "Emitting light");

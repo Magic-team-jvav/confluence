@@ -4,7 +4,7 @@
 
 ### 已有模型但需要写AI的生物
 
-- 木乃伊系列
+- 木乃伊系列（还缺debuff赋予）
 - 蹦蹦兽，跳跳兽（同一AI）
 - 尖刺史莱姆系列
 - 灵液黏黏怪
@@ -101,7 +101,6 @@
 
 ### 优先3(做腻了可以整的)
 
-- 宝箱怪系列
 - 蜘蛛卵方块，蜘蛛洞结构
 - 黑隐士，丛林蜘蛛，蜘蛛套
 - 巨型陆龟，冰雪陆龟
@@ -163,44 +162,9 @@
 
 - 补全流程武器需要的粒子和简单的弹幕模型
 - 等咖啡回来后调整召唤物索敌，射速
-- 独眼巨鹿宝藏袋战利品表
 - en_us缺的翻译：
-  confluence.configuration.ArsNouveau.tooltip
-  enchantment.terra_entity.summoner_pact.desc
-  item.terra_entity.chester_staff
-  tooltip.item.confluence.calming_potion.0
-  bestiary.entity.terra_entity.pink_jellyfish.desc
-  item.terra_entity.wallet
-  enchantment.terra_entity.summoner_pact
-  item.terra_entity.malaise
-  item.terra_entity.guide_voodoo_doll_wall
-  item.terra_entity.cascade
-  item.terra_entity.valor
-  item.terra_entity.code_1
-  item.terra_entity.clothier_voodoo_doll
-  item.terra_entity.hive_five
-  container.confluence.adamantite_forge
-  confluence.configuration.Waystones.tooltip
-  item.terra_entity.bloody_spine
-  item.terra_curio.base_point
-  item.terra_entity.slime_crown
-  item.terra_entity.suspicious_looking_eye
-  bestiary.entity.terra_entity.gold_dragonfly.desc
-  item.terra_entity.amazon
-  bestiary.entity.minecraft.rabbit.desc
-  item.terra_entity.rally
-  item.terra_entity.worm_food
-  confluence.configuration.IronsSpell.tooltip
-  item.terra_entity.abeemination
-  item.terra_entity.wooden_yoyo
-  confluence.configuration.FTB.tooltip
-  terra_entity.effect.strategy.forzen_burn_5_sec
-  armor_set_bonus.confluence.ash_set.1
-  tooltip.item.confluence.satiety_potion.0
-  item.terra_entity.artery
-  confluence.configuration.Xaero.tooltip
-  tooltip.item.confluence.battle_potion.0
-  item.terra_entity.guide_voodoo_doll_hill
+
+
 
 ## 牢MK(MakerTechno)
 
@@ -231,15 +195,13 @@
 
 暂无，很好！去处理很多其它条目！
 
-- 梯凳召唤出来后不消失
+- 梯凳召唤出来后不消失（模组冲突）
 - boss重复自然生成问题
 - 多人模式下其中一个玩家被击杀boss就会脱战
 
-- 玩家具有能产生雪暴粒子效果时候会疯狂输出报错
 
 #### 待石锤问题（需要等玩家在1129后反馈的，测试员需要测试这些问题）
 
-- 肉墙宝藏袋所生框架生成幽灵方块
 - 哥布林军团可同时存在多个
 
 #### 已结案问题 (搬运这里的内容请不要把这个标题删掉，谢谢) (越靠上越新)
@@ -289,7 +251,6 @@
 
 ## 其它
 - 灌注站（国和）
-- 肉墙重写
 - 巨鹿饰品（先等巨鹿做出来）
 - 魔法飞弹（不知道怎么实现）
 - 矿车拐弯时遇到墙角会停
@@ -297,13 +258,15 @@
 - 掘墓者铲（铲+锤）
 - 悠悠球渲染（渲染什么）
 - 需要提升蜜蜂枪，蜜蜂射弹的灵活度
-- 天界手铐需要给回复CD（回蓝CD吗）
+- 天界手铐需要给回复CD（10刻的CD）（回蓝CD吗）（是的，站在尖刺上能光速回）
+- 腐化世界不应该出现猩红世界的任务鱼任务（反之同理）
 
 
-- 优化：喝完洞探，危险感显示一次字幕
-- 优化：装备完金属探测器显示一次字幕
+- 指引优化：
+  - 获得洞探，危险感，重力药水效果时显示一次字幕
+  - 装备完金属探测器显示一次字幕
+  - 翻译键 event.confluence.spelunker.first_trigger 等 ↑
 - 优化：汇流弓副手使用时隐藏主手（同原版）
-- 优化：添加 “滚动的墓碑”和巨石一段时间内没有找到合适的地方落脚会消失 这一效果
 
 # 附属bug存放处
 

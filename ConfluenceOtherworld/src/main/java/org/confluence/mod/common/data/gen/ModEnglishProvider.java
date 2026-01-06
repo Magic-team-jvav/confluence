@@ -14,6 +14,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.data.gen.language.*;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.init.ModEffects;
@@ -30,11 +31,10 @@ import org.confluence.terraentity.utils.RecipeDrawerUtils;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import static org.confluence.mod.common.component.prefix.ModPrefix.GROUPS;
-
 public class ModEnglishProvider extends LanguageProvider {
     CompletableFuture<HolderLookup.Provider> lookup;
     HolderLookup.Provider registries;
+
     public ModEnglishProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         this(output, "en_us", lookup);
     }
@@ -624,7 +624,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("prefix.confluence.quick", "Quick");
         add("prefix.confluence.hasty", "Hasty");
         add("prefix.confluence.deadly", "Deadly");
-        GROUPS.values().stream().flatMap(map -> map.values().stream()).forEach(prefix -> {
+        ModPrefix.GROUPS.values().stream().flatMap(map -> map.values().stream()).forEach(prefix -> {
             String name = prefix.name();
             if ("quick".equals(name) || "deadly".equals(name) || "hasty".equals(name)) return;
             add("prefix.confluence." + name, LibUtils.toTitleCase(name));

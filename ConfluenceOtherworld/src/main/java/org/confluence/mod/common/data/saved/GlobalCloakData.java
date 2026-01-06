@@ -151,7 +151,7 @@ public final class GlobalCloakData implements IGlobalData {
     public <T> void decode(Dynamic<T> tag) {
         tag.get("BlockMap").orElseEmptyMap().read(BLOCK_MAP_CODEC).ifSuccess(blockMap::putAll);
         tag.get("ItemMap").orElseEmptyMap().read(ITEM_MAP_CODEC).ifSuccess(itemMap::putAll);
-        tag.get("Fixed").asBoolean(false);
+        this.fixed = tag.get("Fixed").asBoolean(false);
 
         rollbackAllProperties();
     }
@@ -167,8 +167,9 @@ public final class GlobalCloakData implements IGlobalData {
     public void clear() {
         rollbackAllProperties();
         this.blockMap = new IdentityHashMap<>();
-        this.itemMap = new IdentityHashMap<>();
         this.backupProperties = new IdentityHashMap<>();
+        this.itemMap = new IdentityHashMap<>();
+        this.fixed = false;
         initialize();
     }
 

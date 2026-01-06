@@ -144,6 +144,8 @@ public final class ModRecipes {
             registerMaterial(MaterialItems.ROTTEN_BONE.get());
             registerMaterial(FoodItems.DAMSEL_FISH.get());
             registerMaterial(NatureBlocks.AETHERIUM_BLOCK.asItem());
+            registerMaterial(FoodItems.RED_PLEATFISH.asItem());
+            registerMaterial(FoodItems.BROWN_STALKSPINE.asItem());
 
 
             // 箭术

@@ -192,6 +192,6 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
 
     @Override
     public @Nullable ResourceLocation getRegistryName(IngredientPair recipe) {
-        return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "extractinator/" + BuiltInRegistries.ITEM.getKey(recipe.ingredient.getItem()).getPath());
+        return Confluence.asResource("extractinator/" + BuiltInRegistries.ITEM.getKey(recipe.ingredient.getItem()).getPath());
     }
 }

@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 
 
 public class TaskUseLifeCrystal implements IMaidTask {
-    public static final ResourceLocation UID = Confluence.asResource( "use_life_crystal");
+    public static final ResourceLocation UID = Confluence.asResource("use_life_crystal");
 
     @Override
     public ResourceLocation getUid() {

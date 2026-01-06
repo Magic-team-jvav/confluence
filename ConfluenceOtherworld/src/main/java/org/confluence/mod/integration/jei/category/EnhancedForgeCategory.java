@@ -76,6 +76,6 @@ public abstract class EnhancedForgeCategory<R extends EnhancedForgeRecipe> imple
 
     @Override
     public @Nullable ResourceLocation getRegistryName(RecipeHolder<R> recipe) {
-        return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

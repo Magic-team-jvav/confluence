@@ -79,6 +79,6 @@ public class AlchemyTableCategory implements IRecipeCategory<RecipeHolder<Alchem
 
     @Override
     public @Nullable ResourceLocation getRegistryName(RecipeHolder<AlchemyTableRecipe> recipe) {
-        return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

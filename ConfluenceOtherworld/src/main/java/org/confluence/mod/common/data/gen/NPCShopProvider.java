@@ -73,7 +73,7 @@ import java.util.concurrent.CompletableFuture;
  * @see NPCTradeManager 读取配方
  */
 public class NPCShopProvider extends AbstractRecipeProvider {
-    private static final boolean ENABLE_DEBUG_SHOPS = true;
+    private static final boolean ENABLE_DEBUG_SHOPS = false;
     private final PackOutput.PathProvider npcShopPathProvider;
 
     public NPCShopProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {

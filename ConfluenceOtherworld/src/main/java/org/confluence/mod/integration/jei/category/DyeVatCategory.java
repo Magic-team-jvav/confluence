@@ -63,6 +63,6 @@ public class DyeVatCategory implements IRecipeCategory<RecipeHolder<DyeVatRecipe
 
     @Override
     public @Nullable ResourceLocation getRegistryName(RecipeHolder<DyeVatRecipe> recipe) {
-        return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

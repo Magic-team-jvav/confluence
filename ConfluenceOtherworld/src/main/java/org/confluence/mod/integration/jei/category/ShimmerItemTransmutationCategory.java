@@ -110,6 +110,6 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
         if (target.isEmpty()) {
             return null;
         }
-        return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(target.getFirst().getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(target.getFirst().getItem()).getPath());
     }
 }

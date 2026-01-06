@@ -88,6 +88,6 @@ public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillReci
 
     @Override
     public @Nullable ResourceLocation getRegistryName(RecipeHolder<SkyMillRecipe> recipe) {
-        return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

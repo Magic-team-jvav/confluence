@@ -112,7 +112,7 @@ public class BrewingStandTerraPotionCategory implements IRecipeCategory<BrewingS
 
     @Override
     public ResourceLocation getRegistryName(Recipe recipe) {
-        return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "brewing_stand/" + BuiltInRegistries.ITEM.getKey(recipe.output.getItem()).getPath());
+        return Confluence.asResource("brewing_stand/" + BuiltInRegistries.ITEM.getKey(recipe.output.getItem()).getPath());
     }
 
     public static final class Recipe {

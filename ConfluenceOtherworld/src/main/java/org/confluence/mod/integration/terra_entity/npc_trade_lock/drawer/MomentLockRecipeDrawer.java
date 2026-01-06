@@ -1,5 +1,6 @@
 package org.confluence.mod.integration.terra_entity.npc_trade_lock.drawer;
 
+import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import org.confluence.mod.Confluence;
@@ -17,7 +18,8 @@ public class MomentLockRecipeDrawer extends TradeLockRecipeDrawer {
 
         var size = getRecipeSize();
         guiGraphics.blitSprite(Confluence.asResource("shop_lock/moment"), x, y, size, size);
-        drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY, I18n.get("confluence.trade_lock.drawer.moment.title") + ": " + I18n.get(momentLock.moment().registry().toLanguageKey()));
+
+        drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY, I18n.get(HDMRegistries.Keys.MOMENT.location().toLanguageKey()) + ": " + I18n.get(momentLock.moment().location().toLanguageKey(HDMRegistries.Keys.MOMENT.location().getPath())));
         return y + size;
     }
 }

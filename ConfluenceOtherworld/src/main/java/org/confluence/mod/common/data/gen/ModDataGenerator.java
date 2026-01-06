@@ -25,18 +25,19 @@ public final class ModDataGenerator {
         ExistingFileHelper helper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookup = event.getLookupProvider();
 
+        boolean server = event.includeServer();
+        lookup = generator.addProvider(server, new DatapackBuiltinEntriesProvider(output, lookup, ModDataProvider.DATA_BUILDER, Set.of(Confluence.MODID))).getRegistryProvider();
+
         boolean client = event.includeClient();
         generator.addProvider(client, new ModChineseProvider(output));
-        generator.addProvider(client, new ModEnglishProvider(output));
-        generator.addProvider(client, new ModEnUdProvider(output));
+        generator.addProvider(client, new ModEnglishProvider(output, lookup));
+        generator.addProvider(client, new ModEnUdProvider(output, lookup));
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));
         generator.addProvider(client, new CollectRecipeProvider(Confluence.asPlainId("client"), output, lookup,
                 ModClientBestiaryEntryProvider::new
         ));
 
-        boolean server = event.includeServer();
-        lookup = generator.addProvider(server, new DatapackBuiltinEntriesProvider(output, lookup, ModDataProvider.DATA_BUILDER, Set.of(Confluence.MODID))).getRegistryProvider();
         ModBlockTagsProvider blockTagsProvider = generator.addProvider(server, new ModBlockTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModItemTagsProvider(output, lookup, blockTagsProvider.contentsGetter(), helper));
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));

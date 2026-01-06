@@ -16,7 +16,7 @@ public class BestiaryUnlockedCountLockRecipeDrawer extends TradeLockRecipeDrawer
         }
         var size = getRecipeSize();
         guiGraphics.blitSprite(Confluence.asResource("shop_lock/bestiary_unlocked_count"), x, y, size, size);
-        drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY, I18n.get("confluence.trade_lock.drawer.bestiary.title") + bestiaryUnlockedCountLock.count());
+        drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY, I18n.get("confluence.trade_lock.drawer.bestiary.title") + ": " + bestiaryUnlockedCountLock.count());
         return y + size;
     }
 }

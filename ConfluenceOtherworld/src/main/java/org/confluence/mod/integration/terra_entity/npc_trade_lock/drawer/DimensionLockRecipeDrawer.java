@@ -2,6 +2,7 @@ package org.confluence.mod.integration.terra_entity.npc_trade_lock.drawer;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.registries.Registries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.npc_trade_lock.DimensionLock;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
@@ -17,7 +18,7 @@ public class DimensionLockRecipeDrawer extends TradeLockRecipeDrawer {
         var size = getRecipeSize();
         guiGraphics.blitSprite(Confluence.asResource("shop_lock/dimension"), x, y, size, size);
         drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY,
-                I18n.get("confluence.trade_lock.drawer.dimension.title") + ": " + dimensionLock.dimension().location());
+                I18n.get("confluence.trade_lock.drawer.dimension.title") + ": " + I18n.get(dimensionLock.dimension().location().toLanguageKey(Registries.DIMENSION_TYPE.location().getPath())));
         return y + size;
     }
 }

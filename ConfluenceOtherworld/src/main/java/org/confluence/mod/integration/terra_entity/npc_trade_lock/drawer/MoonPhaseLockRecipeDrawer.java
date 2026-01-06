@@ -20,7 +20,7 @@ public class MoonPhaseLockRecipeDrawer extends TradeLockRecipeDrawer {
             String moonPhaseTexture = getMoonPhaseTexture(moonPhase);
             guiGraphics.blit(Confluence.asResource("textures/environment/specific_moon_tr_" + moonPhaseTexture), x, y, size, size, 0, 0,50, 50, 50, 50);
             drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY,
-                    I18n.get("confluence.trade_lock.drawer.moon_phase.title") + ": " + moonPhase.name().toLowerCase().replace('_', ' '));
+                    I18n.get("confluence.trade_lock.drawer.moon_phase.title") + ": " + moonPhase.getSerializedName());
             x += size;
         }
         return y + size;

@@ -367,7 +367,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.ANGLER.getId()).addRecipe(new Builder().add(TradeTask.create(DynamicAnglerTradeTask.builder(
+        NPCTradeManager anglerTradeManager = new Builder().add(TradeTask.create(DynamicAnglerTradeTask.builder(
                         ItemTradeLootTable.builder()
                                 .addCost(CrateBlocks.WOODEN_CRATE.toStack()) // 在没有任务鱼机制前，用木匣代替
                                 .setLootTable(ModLootTables.QUESTS_0)
@@ -375,11 +375,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                 .build(),
                         ImmutableMap.<ItemStack, ITradeLock>builder()
                                 .put(QuestedFishes.AMANITA_FUNGIFIN.toStack(), glowingMushroomLock)
-                                .put(QuestedFishes.BLOODY_MANOWAR.toStack(), theCrimsonWorldLock)
-                                .put(QuestedFishes.ICHORFISH.toStack(), theCrimsonWorldLock)
-                                .put(QuestedFishes.CURSEDFISH.toStack(), theCorruptionWorldLock)
-                                .put(QuestedFishes.EATER_OF_PLANKTON.toStack(), theCorruptionWorldLock)
-                                .put(QuestedFishes.INFECTED_SCABBARDFISH.toStack(), theCorruptionWorldLock)
+                                .put(QuestedFishes.BLOODY_MANOWAR.toStack(), new QuestedFishPrecheckLock(false))
+                                .put(QuestedFishes.ICHORFISH.toStack(), new QuestedFishPrecheckLock(false))
+                                .put(QuestedFishes.CURSEDFISH.toStack(), new QuestedFishPrecheckLock(true))
+                                .put(QuestedFishes.EATER_OF_PLANKTON.toStack(), new QuestedFishPrecheckLock(true))
+                                .put(QuestedFishes.INFECTED_SCABBARDFISH.toStack(), new QuestedFishPrecheckLock(true))
                                 .put(QuestedFishes.FISHRON.toStack(), ITradeLock.and(snowyLikeLock, caveThroughSurfaceLock))
                                 .put(QuestedFishes.MUTANT_FLINXFIN.toStack(), ITradeLock.and(snowyLikeLock, caveThroughSurfaceLock))
                                 .put(QuestedFishes.PENGFISH.toStack(), ITradeLock.and(snowyLikeLock, surfaceThroughUltraLock))
@@ -423,7 +423,9 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .addResult(30, List.of(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
                 .addLootTable(10, ModLootTables.QUESTS_AFTER_10)
                 .addLootTable(75, ModLootTables.QUESTS_AFTER_75)
-                .build())).build());
+                .build())).build();
+        shop(TENpcEntities.ANGLER.getId()).addRecipe(anglerTradeManager);
+        shop(TENpcEntities.FEMALE_ANGLER.getId()).addRecipe(anglerTradeManager);
 
         shop(TENpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()
                 .add(ToolItems.RED_WRENCH)
@@ -588,7 +590,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                                         new EnvironmentLock(
                                                                 EnvironmentLevelAccess.matcher(
                                                                         holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD),
-                                                                       null,
+                                                                        null,
                                                                         true
                                                                 )
                                                         ),

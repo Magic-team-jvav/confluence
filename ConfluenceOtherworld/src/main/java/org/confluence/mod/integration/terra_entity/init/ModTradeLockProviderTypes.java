@@ -4,6 +4,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.npc_trade_lock.*;
 import org.confluence.mod.integration.terra_entity.npc_trade_lock.drawer.*;
+import org.confluence.terraentity.api.npc.trade.TradeLockRecipeDrawer;
 import org.confluence.terraentity.registries.TERegistries;
 import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
@@ -23,4 +24,5 @@ public class ModTradeLockProviderTypes {
     public static final Supplier<TradeLockProvider> FISHING_HOOK_IN_FLUID_LOCK = TYPES.register("fishing_hook_in_fluid_lock", () -> new TradeLockProvider(FishingHookInFluidLock.CODEC, new FishingHookInFluidLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> ANY_BOSS_DEFEATED_LOCK = TYPES.register("any_boss_defeated_lock", () -> new TradeLockProvider(AnyBossDefeatedLock.CODEC, new AnyBossDefeatedLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> BESTIARY_UNLOCKED_COUNT_LOCK = TYPES.register("bestiary_unlocked_count_lock", () -> new TradeLockProvider(BestiaryUnlockedCountLock.CODEC, new BestiaryUnlockedCountLockRecipeDrawer()));
+    public static final Supplier<TradeLockProvider> QUESTED_FISH_PRECHECK_LOCK = TYPES.register("quested_fish_precheck_lock", () -> new TradeLockProvider(QuestedFishPrecheckLock.CODEC, TradeLockRecipeDrawer.EMPTY));
 }

@@ -1880,11 +1880,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.BRAIN_OF_CTHULHU_RELIC.get(), "克苏鲁之脑圣物");
         add(DecorativeBlocks.EATER_OF_WORLDS_RELIC.get(), "世界吞噬怪圣物");
         add(DecorativeBlocks.QUEEN_BEE_RELIC.get(), "蜂王圣物");
+        add(DecorativeBlocks.DEERCLOPS_RELIC.get(), "独眼巨鹿圣物");
         add(DecorativeBlocks.SKELETRON_RELIC.get(), "骷髅王圣物");
         add(DecorativeBlocks.WALL_OF_FLESH_RELIC.get(), "血肉墙圣物");
         add(DecorativeBlocks.HILL_OF_FLESH_RELIC.get(), "血肉山圣物");
         add(DecorativeBlocks.THE_TWINS_RELIC.get(), "双子魔眼圣物");
-        add(DecorativeBlocks.SKELETRON_PRIME_RELIC.get(), "双子魔眼圣物");
+        add(DecorativeBlocks.SKELETRON_PRIME_RELIC.get(), "机械骷髅王圣物");
 
         add(DecorativeBlocks.POO_BLOCK.get(), "臭臭块");
         add(ModBlocks.POO.get(), "臭臭");

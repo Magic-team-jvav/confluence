@@ -1053,7 +1053,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WHEEL_PIECE)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.THE_TWINS_RELIC)))
+                //.withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.THE_TWINS_RELIC)))
         );
         // 机械骷髅王
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron_prime/classic"), LootTable.lootTable()
@@ -1099,7 +1099,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WAGON_PIECE)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.SKELETRON_PRIME_RELIC)))
+                //.withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.SKELETRON_PRIME_RELIC)))
         );
 
         // 肉墙
@@ -1275,7 +1275,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(22)))
                 ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.DEERCLOPS_RELIC)))
+                //.withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.DEERCLOPS_RELIC)))
         );
         //克脑
 

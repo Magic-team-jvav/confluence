@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
@@ -211,10 +212,17 @@ public class AccessoryItems {
         }
     }
 
-    public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, float amount) {
-        if (TCUtils.hasType(serverPlayer, HURT$GET$MANA)) {
-            if (!damageSource.is(DamageTypes.DROWN) && !damageSource.is(TCTags.HARMFUL_EFFECT)) {
-                PlayerUtils.receiveMana(serverPlayer, () -> amount);
+    public static void applyHurtGetMana(ServerPlayer player, DamageSource damageSource, float amount) {
+        if (TCUtils.hasType(player, HURT$GET$MANA) &&
+                !damageSource.is(DamageTypes.DROWN) &&
+                !damageSource.is(TCTags.HARMFUL_EFFECT)
+        ) {
+            CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+            long last = tag.getLong("confluence:last_hurt_get_mana_time");
+            long cur = player.level().getGameTime();
+            if (cur - last >= 10) {
+                PlayerUtils.receiveMana(player, () -> amount);
+                tag.putLong("confluence:last_hurt_get_mana_time", cur);
             }
         }
     }

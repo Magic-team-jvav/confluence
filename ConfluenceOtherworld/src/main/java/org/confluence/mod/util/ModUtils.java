@@ -121,6 +121,9 @@ public final class ModUtils {
         double x = pos.getX() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
         double z = pos.getZ() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
         double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
+        if (Math.abs(pos.getY() - y) > 50) {
+            y = pos.getY();
+        }
         boss.setPos(x, y, z);
         if (TEUtils.internalSpawnEntity(boss, level)) {
             level.addFreshEntityWithPassengers(boss);
@@ -248,7 +251,8 @@ public final class ModUtils {
 
     public static boolean canHitEntity(@Nullable Entity target, @Nullable Entity owner) {
         if (target == null || target.isRemoved()) return false; // 有模组把target写成了null
-        if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand) return false;
+        if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand)
+            return false;
         return owner == null || (!owner.isPassengerOfSameVehicle(target)/* && !target.skipAttackInteraction(owner)*/);
     }
 
@@ -271,10 +275,14 @@ public final class ModUtils {
         }
         copper = price;
         MutableComponent cmp = Component.empty();
-        if (platinum > 0) cmp.append(Component.literal(platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
-        if (gold > 0) cmp.append(Component.literal(gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
-        if (silver > 0) cmp.append(Component.literal(silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
-        if (copper > 0) cmp.append(Component.literal(copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
+        if (platinum > 0)
+            cmp.append(Component.literal(platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
+        if (gold > 0)
+            cmp.append(Component.literal(gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
+        if (silver > 0)
+            cmp.append(Component.literal(silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
+        if (copper > 0)
+            cmp.append(Component.literal(copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
         return cmp;
     }
 
@@ -297,7 +305,8 @@ public final class ModUtils {
     public static boolean isRainingAt(Level level, BlockPos pos) {
         if (!level.isRaining()) return false;
         if (!level.canSeeSky(pos)) return false;
-        if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()) return false;
+        if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY())
+            return false;
         return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
     }
 

@@ -54,7 +54,7 @@ public final class BossDelaySpawner {
                     break l;
                 } else if (state != CONTINUE) {
                     delayed.delay = state;
-                    break;
+                    break l;
                 }
             }
             iterator.remove();
@@ -62,9 +62,9 @@ public final class BossDelaySpawner {
     }
 
     /// @param predicate 等于[BossDelaySpawner#SUCCESS]时成功
-    ///                  等于[BossDelaySpawner#CONTINUE]时跳过该玩家
-    ///                  等于[BossDelaySpawner#CANCEL]时取消生成
-    ///                  大于0时设置下次检测延时
+    ///                                                    等于[BossDelaySpawner#CONTINUE]时跳过该玩家
+    ///                                                    等于[BossDelaySpawner#CANCEL]时取消生成
+    ///                                                    大于0时设置下次检测延时
     public void pushBoss(int delay, EntityType<? extends AbstractTerraBossBase> boss, ToIntFunction<ServerPlayer> predicate) {
         if (bossQueue.size() == 8) bossQueue.removeFirst();
         bossQueue.add(new Delayed<>(delay, boss, predicate));
@@ -103,7 +103,10 @@ public final class BossDelaySpawner {
     public static boolean eyeOfCthulhuChecker(ServerPlayer player) {
         if (player.getMaxHealth() < 40 || player.getArmorValue() < 10) return false;
         NPCSpawner.Region region = NPCSpawner.getNpcSpawnRegion(player);
-        return NPCSpawner.INSTANCE.getAliveNpcCount(region, entityType -> true) >= 4; /* todo 骷髅商人不计入 */
+        if (NPCSpawner.INSTANCE.getAliveNpcCount(region, type -> true) < 4) {
+            return false; // todo 骷髅商人不计入
+        }
+        return Streams.of(player.serverLevel().getAllEntities()).noneMatch(entity -> entity instanceof Boss);
     }
 
     public static void spawnDeerClops(ServerLevel level) {

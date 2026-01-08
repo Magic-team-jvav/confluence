@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(StateHolder.class)
 public abstract class StateHolderMixin<O, S> implements SelfGetter<StateHolder<O, S>> {
-    @Inject(method = "getValue", at = @At(value = "INVOKE", target = "Ljava/lang/IllegalArgumentException;<init>(Ljava/lang/String;)V"), cancellable = true)
+    @Inject(method = "getValue", at = @At(value = "NEW", target = "Ljava/lang/IllegalArgumentException;"), cancellable = true)
     private <T extends Comparable<T>> void test(Property<T> property, CallbackInfoReturnable<T> cir) {
         if (confluence$self() instanceof BlockState source) {
             BlockState target = GlobalCloakData.INSTANCE.getTarget(source);

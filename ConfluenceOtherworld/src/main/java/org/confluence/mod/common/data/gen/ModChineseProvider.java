@@ -2229,7 +2229,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.ADAMANTITE_WARAXE.get(), "精金战斧");
         add(AxeItems.TITANIUM_WARAXE.get(), "钛金战斧");
         add(AxeItems.CHLOROPHYTE_GREATAXE.get(), "叶绿巨斧");
-        add(AxeItems.STAFF_OF_REGROWTH.get(), "再生法杖");
+        add(ToolItems.STAFF_OF_REGROWTH.get(), "再生法杖");
         add(AxeItems.AXE_OF_REGROWTH.get(), "再生之斧");
         add(HamaxeItems.METEOR_HAMAXE.get(), "流星锤斧");
         add(HoeShovelItems.METEOR_HOE_SHOVEL.get(), "流星锄锹");

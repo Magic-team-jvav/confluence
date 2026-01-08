@@ -15,22 +15,19 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
-import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
-import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.AxeItems;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
+import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.gun.ManaGunItem;
-import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -48,12 +45,6 @@ public final class ItemEvents {
         Player player = event.getPlayer();
         if (event.getClickAction() == ClickAction.SECONDARY && ModUtils.useKey(carried, stackedOn, player)) {
             event.setCanceled(true);
-        }
-        if (carried.is(MaterialItems.GEL)) {
-            ColoredItem.merge(carried, stackedOn);
-        }
-        if (player instanceof ServerPlayer serverPlayer && carried.is(AxeItems.LUCY_THE_AXE)) {
-            LucyTheAxeDialogPacketS2C.inventory(serverPlayer, event.getSlot(), false);
         }
     }
 
@@ -88,7 +79,7 @@ public final class ItemEvents {
         }
         ModUtils.makeItemAntigravity(itemEntity);
         if (event.getPlayer() instanceof ServerPlayer player) {
-            LucyTheAxeDialogPacketS2C.checkAndBroadcast(player, itemStack, LucyTheAxeDialogCategory.THROWN_ON_THE_GROUND);
+            LucyTheAxe.onToss(player, itemStack);
         }
     }
 

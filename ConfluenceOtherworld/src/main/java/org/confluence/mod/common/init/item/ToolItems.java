@@ -70,10 +70,6 @@ public class ToolItems {
     public static final DeferredItem<WrenchItem> YELLOW_WRENCH = ITEMS.register("yellow_wrench", () -> new WrenchItem(0xFFFF00));
     public static final DeferredItem<WireCutterItem> WIRE_CUTTER = ITEMS.register("wire_cutter", WireCutterItem::new);
 
-    public static final DeferredItem<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
-    public static final DeferredItem<GuideToCritterCompanionshipItem> GUIDE_TO_CRITTER_COMPANIONSHIP = ITEMS.register("guide_to_critter_companionship", GuideToCritterCompanionshipItem::new);
-    public static final DeferredItem<GuideToEnvironmentalPreservationItem> GUIDE_TO_ENVIRONMENTAL_PRESERVATION = ITEMS.register("guide_to_environmental_preservation", GuideToEnvironmentalPreservationItem::new);
-    public static final DeferredItem<GuideToPeacefulCoexistenceItem> GUIDE_TO_PEACEFUL_COEXISTENCE = ITEMS.register("guide_to_peaceful_coexistence", GuideToPeacefulCoexistenceItem::new);
     public static final DeferredItem<MagicMirror> ICE_MIRROR = ITEMS.register("ice_mirror", () -> new MagicMirror(ModRarity.BLUE));
     public static final DeferredItem<MagicConch> MAGIC_CONCH = ITEMS.register("magic_conch", () -> new MagicConch(new Item.Properties().stacksTo(1), ModRarity.BLUE));
     public static final DeferredItem<DemonConch> DEMON_CONCH = ITEMS.register("demon_conch", DemonConch::new);
@@ -108,6 +104,12 @@ public class ToolItems {
     // 有效果的蜡烛
     public static final DeferredItem<EffectiveCandleItem> WATER_CANDLE = registerCandle("water_candle", FunctionalBlocks.WATER_CANDLE, ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 0));
     public static final DeferredItem<EffectiveCandleItem> PEACE_CANDLE = registerCandle("peace_candle", FunctionalBlocks.PEACE_CANDLE, ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
+
+    public static final DeferredItem<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
+    public static final DeferredItem<GuideToCritterCompanionshipItem> GUIDE_TO_CRITTER_COMPANIONSHIP = ITEMS.register("guide_to_critter_companionship", GuideToCritterCompanionshipItem::new);
+    public static final DeferredItem<GuideToEnvironmentalPreservationItem> GUIDE_TO_ENVIRONMENTAL_PRESERVATION = ITEMS.register("guide_to_environmental_preservation", GuideToEnvironmentalPreservationItem::new);
+    public static final DeferredItem<GuideToPeacefulCoexistenceItem> GUIDE_TO_PEACEFUL_COEXISTENCE = ITEMS.register("guide_to_peaceful_coexistence", GuideToPeacefulCoexistenceItem::new);
+    public static final DeferredItem<StaffOfRegrowthItem> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", StaffOfRegrowthItem::new); // 再生法杖
 
     public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, ModFoodPropertiesBuilder.EffectData... effect) {
         return registerCandle(name, block, new Item.Properties(), effect);

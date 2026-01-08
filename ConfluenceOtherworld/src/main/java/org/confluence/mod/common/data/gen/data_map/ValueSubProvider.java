@@ -394,7 +394,7 @@ public final class ValueSubProvider {
                 .add(TERideableItems.SLIMY_SADDLE, gold5)
                 .add(TERideableItems.HONEYED_GOGGLES, gold5);
         builder // 影响地形
-                .add(AxeItems.STAFF_OF_REGROWTH, silver50)
+                .add(ToolItems.STAFF_OF_REGROWTH, silver50)
                 .add(ModItems.HIVE_WAND, silver50)
                 .add(ModItems.LIVING_WOOD_WAND, silver20 + silver5)
                 .add(ModItems.LEAF_WAND, silver20 + silver5)

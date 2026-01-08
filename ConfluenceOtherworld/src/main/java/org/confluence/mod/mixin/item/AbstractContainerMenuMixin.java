@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.init.item.AxeItems;
-import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
+import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,7 +26,7 @@ public abstract class AbstractContainerMenuMixin {
         ItemStack stack = original.call(instance, player, slotId);
         if (player instanceof ServerPlayer serverPlayer && stack.is(AxeItems.LUCY_THE_AXE)) {
             Slot slot = slots.get(slotId);
-            LucyTheAxeDialogPacketS2C.inventory(serverPlayer, slot, !slot.hasItem());
+            LucyTheAxe.onSwap(serverPlayer, slot, !slot.hasItem());
         }
         return stack;
     }

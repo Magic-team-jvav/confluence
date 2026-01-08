@@ -76,7 +76,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(AxeItems.ADAMANTITE_WARAXE, templateNormal24x, "axe/");
         separateModel(AxeItems.TITANIUM_WARAXE, templateNormal24x, "axe/");
         separateModel(AxeItems.AXE_OF_REGROWTH, templateNormal24x, "axe/");
-        separateModel(AxeItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
+        separateModel(ToolItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(SwordItems.WAFFLES_IRON, templateNormal24x, "sword/");
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 

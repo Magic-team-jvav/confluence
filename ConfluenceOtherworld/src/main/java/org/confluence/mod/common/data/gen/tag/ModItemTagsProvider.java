@@ -874,7 +874,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
 
         // 农作物掉落提升 再生法杖/再生之斧
-        tag(ModTags.Items.CROP_FORTUNE).add(AxeItems.STAFF_OF_REGROWTH.get(), AxeItems.AXE_OF_REGROWTH.get());
+        tag(ModTags.Items.CROP_FORTUNE).add(ToolItems.STAFF_OF_REGROWTH.get(), AxeItems.AXE_OF_REGROWTH.get());
         // 速发弓：恶魔弓、肌腱弓
         tag(ModTags.Items.FAST_BOW).add(
                 BowItems.FOSSIL_BOW.get(),

@@ -145,9 +145,11 @@ public final class ModItems {
         FishingPoleItems.ITEMS.register(eventBus);
         FlailItems.ITEMS.register(eventBus);
         FoodItems.ITEMS.register(eventBus);
+        GunItems.ITEMS.register(eventBus);
         HamaxeItems.ITEMS.register(eventBus);
-        HoeShovelItems.ITEMS.register(eventBus);
         HammerItems.ITEMS.register(eventBus);
+        HoeItems.ITEMS.register(eventBus);
+        HoeShovelItems.ITEMS.register(eventBus);
         HookItems.ITEMS.register(eventBus);
         IconItems.ITEMS.register(eventBus);
         LanceItems.ITEMS.register(eventBus);
@@ -158,16 +160,14 @@ public final class ModItems {
         PaintItems.ITEMS.register(eventBus);
         PickaxeAxeItems.ITEMS.register(eventBus);
         PickaxeItems.ITEMS.register(eventBus);
-        HoeItems.ITEMS.register(eventBus);
-        ShovelItems.ITEMS.register(eventBus);
-        SpearItems.ITEMS.register(eventBus);
         PotionItems.ITEMS.register(eventBus);
         QuestedFishes.ITEMS.register(eventBus);
+        ShovelItems.ITEMS.register(eventBus);
+        SpearItems.ITEMS.register(eventBus);
         SwordItems.ITEMS.register(eventBus);
         ToolItems.ITEMS.register(eventBus);
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
-        GunItems.ITEMS.register(eventBus);
     }
 
     public static Item.@NotNull Properties unbreakable() {

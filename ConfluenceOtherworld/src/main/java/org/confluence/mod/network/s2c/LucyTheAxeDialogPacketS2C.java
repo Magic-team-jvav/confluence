@@ -6,7 +6,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketS2C;
@@ -54,13 +53,5 @@ public record LucyTheAxeDialogPacketS2C(
         LucyTheAxeDialogCategory dialogCategory = LucyTheAxeDialogCategory.Loader.getInstance().getCategories().get(category);
         if (dialogCategory == null) return;
         PacketDistributor.sendToPlayersTrackingEntityAndSelf(source, new LucyTheAxeDialogPacketS2C(category, dialogCategory, source.getId()));
-    }
-
-    public static void inventory(ServerPlayer source, Slot slot, boolean invert) {
-        if ((slot.container == source.getInventory()) != invert) {
-            broadcast(source, LucyTheAxeDialogCategory.PLACED_BACK_INTO_THE_INVENTORY);
-        } else {
-            broadcast(source, LucyTheAxeDialogCategory.PLACED_IN_OTHER_CONTAINER);
-        }
     }
 }

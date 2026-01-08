@@ -1,11 +1,8 @@
 package org.confluence.mod.common.event.game;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -19,16 +16,15 @@ import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.network.PathService;
-import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
+import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -79,14 +75,7 @@ public final class TickEvents {
             ChunkDropletsData.syncDroplets(player);
             ModArmorBonus.afterTick(player, gameTime);
             PlayerUtils.applySunflowerEffect(player, level, gameTime);
-            if (gameTime % 1200 == 0 && player.getRandom().nextInt(5) == 0) {
-                NonNullList<ItemStack> items = player.getInventory().items;
-                for (int i = 0; i < items.size(); i++) {
-                    if (Inventory.isHotbarSlot(i)) {
-                        LucyTheAxeDialogPacketS2C.checkAndBroadcast(player, items.get(i), LucyTheAxeDialogCategory.IDLE);
-                    }
-                }
-            }
+            LucyTheAxe.onIdle(player, gameTime);
         }
 
         if (gameTime % 60 == 3) {

@@ -478,7 +478,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 '#', Ingredient.of(Items.WOODEN_AXE),
                 'a', AmountIngredient.of(3, MaterialItems.JUNGLE_SPORE),
                 'b', Ingredient.of(MaterialItems.MAN_EATER_VINE),
-                'c', Ingredient.of(AxeItems.STAFF_OF_REGROWTH)
+                'c', Ingredient.of(ToolItems.STAFF_OF_REGROWTH)
         ), List.of(
                 " aaa",
                 " c#b",

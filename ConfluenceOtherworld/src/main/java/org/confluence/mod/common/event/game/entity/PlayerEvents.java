@@ -42,7 +42,6 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
-import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
@@ -51,8 +50,13 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.ModTiers;
-import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.common.BaseAxeItem;
+import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.item.axe.BaseAxeItem;
+import org.confluence.mod.common.item.axe.LucyTheAxe;
+import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
@@ -60,7 +64,6 @@ import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -208,16 +211,8 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getPlayer();
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = event.getOriginalStack();
-        if (itemStack.is(ModTags.Items.COINS)) {
-            if (itemStack.is(ModItems.COPPER_COIN)) {
-                itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
-            } else if (itemStack.is(ModItems.SILVER_COIN)) {
-                itemEntity.playSound(ModSoundEvents.COINS_MEDIUM.get());
-            } else {
-                itemEntity.playSound(ModSoundEvents.COINS_LARGE.get());
-            }
-        }
-        LucyTheAxeDialogPacketS2C.checkAndBroadcast(player, itemStack, LucyTheAxeDialogCategory.PLACED_BACK_INTO_THE_INVENTORY);
+        CoinItem.onPickup(itemStack, itemEntity);
+        LucyTheAxe.onPickup(player, itemStack);
     }
 
     @SubscribeEvent

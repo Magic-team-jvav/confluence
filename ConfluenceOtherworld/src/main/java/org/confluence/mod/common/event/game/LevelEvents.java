@@ -24,7 +24,6 @@ import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
@@ -32,11 +31,11 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.item.common.BaseAxeItem;
+import org.confluence.mod.common.item.axe.BaseAxeItem;
+import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
-import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
 @EventBusSubscriber(modid = Confluence.MODID)
@@ -112,15 +111,7 @@ public final class LevelEvents {
             NoTraps.dropBombWhenLeavesDestroy(serverPlayer, state, pos);
             BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, state, pos);
             BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, state);
-            if (state.is(BlockTags.LOGS)) {
-                LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.CUTTING_DOWN_A_TREE);
-            } else if (state.is(NatureBlocks.STONY_LOG)) {
-                LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.CUTTING_DOWN_A_GEM_TREE);
-            } else if (state.is(ModTags.Blocks.CACTUS)) {
-                LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.CUTTING_DOWN_A_CACTUS);
-            } else {
-                LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.DESTROY_WRONG_BLOCK);
-            }
+            LucyTheAxe.onDestroyBlock(serverPlayer, state);
         }
     }
 

@@ -35,6 +35,7 @@
         "block.BlockMixin",
         "block.CropBlockMixin",
         "block.FarmBlockMixin",
+        "block.StateHolderMixin",
         "chunk.BlockCounterMixin",
         "chunk.ChunkSerializerMixin",
         "chunk.LevelChunkMixin",

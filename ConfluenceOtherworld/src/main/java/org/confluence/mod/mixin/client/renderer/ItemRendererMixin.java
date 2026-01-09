@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
-import org.confluence.mod.common.item.bow.TerraBowItem;
+import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,7 +41,7 @@ public abstract class ItemRendererMixin {
             InteractionHand hand = player.getUsedItemHand();
             ItemStack bow;
             boolean shouldRender = hand == InteractionHand.MAIN_HAND && !leftHand || hand == InteractionHand.OFF_HAND && leftHand;
-            if (shouldRender && (bow = player.getItemInHand(hand)).getItem() instanceof TerraBowItem) {
+            if (shouldRender && (bow = player.getItemInHand(hand)).getItem() instanceof BaseTerraBowItem) {
                 float charge = player.getTicksUsingItem() / 20.0f;
                 if (charge < 0.1f) return;
 

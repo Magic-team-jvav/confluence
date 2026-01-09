@@ -14,11 +14,11 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class DaedalusStormbow extends TerraBowItem {
+public class DaedalusStormbow extends BaseTerraBowItem {
     private final IGeneration generation = new AboveFallenGeneration(30, 60, 25, 2, 25, 5);
 
     public DaedalusStormbow(float baseDamage, ModRarity rarity) {
-        super(baseDamage, new TerraBowItem.Builder().setRarity(rarity));
+        super(baseDamage, new BaseTerraBowItem.Builder().setRarity(rarity));
     }
 
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity owner, @NotNull ItemStack weapon, int remainingUseDuration) {

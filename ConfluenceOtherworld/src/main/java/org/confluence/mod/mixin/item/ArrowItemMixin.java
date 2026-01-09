@@ -10,8 +10,8 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.item.bow.BaseArrowItem;
-import org.confluence.mod.common.item.bow.TerraBowItem;
+import org.confluence.mod.common.item.bow.BaseTerraBowItem;
+import org.confluence.mod.common.item.bow.arrow.BaseTerraArrowItem;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,15 +33,15 @@ public abstract class ArrowItemMixin {
 
     @Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
     public void createArrow(Level level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon, CallbackInfoReturnable<AbstractArrow> cir) {
-        if (weapon != null && weapon.getItem() instanceof TerraBowItem bow) {
-            TerraBowItem.Builder builder = bow.modifyArrowBuilder;
+        if (weapon != null && weapon.getItem() instanceof BaseTerraBowItem bow) {
+            BaseTerraBowItem.Builder builder = bow.modifyArrowBuilder;
             if(builder.entityTransform != null){
                 // 非物品箭的箭实体转化
                 BaseArrowEntity arrow = builder.entityTransform.factory().create(builder.entityTransform.type(), shooter, ammo.copyWithCount(1), weapon, null, bow.modifyArrowBuilder);
                 cir.setReturnValue(arrow);
                 return;
             }
-            BaseArrowItem arrowItem = bow.arrowModifier.getTransformArrow();
+            BaseTerraArrowItem arrowItem = bow.arrowModifier.getTransformArrow();
             if (arrowItem != null) {
                 // 木箭转化
                 cir.setReturnValue(new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, ammo.copyWithCount(1), weapon, arrowItem, bow.modifyArrowBuilder));

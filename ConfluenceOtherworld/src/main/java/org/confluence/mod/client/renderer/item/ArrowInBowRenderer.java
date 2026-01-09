@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.item.BowItems;
+import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.jetbrains.annotations.Nullable;
 

@@ -27,8 +27,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.EnchantmentUtil;
-import org.confluence.mod.common.item.bow.BaseArrowItem;
-import org.confluence.mod.common.item.bow.TerraBowItem;
+import org.confluence.mod.common.item.bow.BaseTerraBowItem;
+import org.confluence.mod.common.item.bow.arrow.BaseTerraArrowItem;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -82,7 +82,7 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param firedFromWeapon 发射的武器
      * @param arrow           预定义的箭的类型
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseArrowItem arrow) {
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow) {
         super(pEntityType, owner, owner.level(), pickupItemStack, firedFromWeapon);
         this.arrowItem = arrow;
         this.baseArrowFactory = arrow == null ? null : arrow.getModifier();
@@ -102,7 +102,7 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param arrow           预定义的箭的类型
      * @param modifyConsumer  属性额外修饰
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseArrowItem arrow, TerraBowItem.Builder modifyConsumer) {
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraBowItem.Builder modifyConsumer) {
         this(pEntityType, owner, pickupItemStack, firedFromWeapon, arrow);
         if (modifyConsumer != null)
             modifyConsumer.applyModifiers(modify);
@@ -118,7 +118,7 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param firedFromWeapon 发射的武器
      * @param arrow           预定义的箭的类型
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, double x, double y, double z, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseArrowItem arrow) {
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, double x, double y, double z, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow) {
         super(pEntityType, x, y, z, level, pickupItemStack, firedFromWeapon);
         this.arrowItem = arrow;
         this.baseArrowFactory = arrow == null ? null : arrow.getModifier();
@@ -350,7 +350,7 @@ public class BaseArrowEntity extends AbstractArrow {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (getPickupItem().getItem() instanceof BaseArrowItem arrow && arrow.getModifier() != null) {
+        if (getPickupItem().getItem() instanceof BaseTerraArrowItem arrow && arrow.getModifier() != null) {
             texturePath = arrow.getModifier().path;
             entityData.set(TEXTURE_PATH, texturePath);
         }
@@ -395,7 +395,7 @@ public class BaseArrowEntity extends AbstractArrow {
         private float speedUpInWater = 1;
         private float damageInRain = 0;
 
-        private BaseArrowItem transformArrow = null;
+        private BaseTerraArrowItem transformArrow = null;
         public List<EffectStrategyComponent> onHitEffects = new ArrayList<>();
         public List<EffectStrategyComponent> fullPullHitEffects = new ArrayList<>();
         private @Nullable ResourceLocation particleId;
@@ -469,7 +469,7 @@ public class BaseArrowEntity extends AbstractArrow {
             return this;
         }
 
-        public Builder setTransformArrow(BaseArrowItem arrow) {
+        public Builder setTransformArrow(BaseTerraArrowItem arrow) {
             this.transformArrow = arrow;
             return this;
         }
@@ -493,7 +493,7 @@ public class BaseArrowEntity extends AbstractArrow {
         }
 
         @Nullable
-        public BaseArrowItem getTransformArrow() {
+        public BaseTerraArrowItem getTransformArrow() {
             return transformArrow;
         }
     }

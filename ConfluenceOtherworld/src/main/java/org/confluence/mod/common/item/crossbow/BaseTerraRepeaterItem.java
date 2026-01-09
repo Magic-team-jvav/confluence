@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.bow.repeater;
+package org.confluence.mod.common.item.crossbow;
 
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
-import org.confluence.mod.common.item.bow.RandomCount;
 
 /**
  * 泰拉连弩基类

@@ -5,7 +5,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
-import org.confluence.mod.common.item.bow.arrow.BaseTerraArrowItem;
+import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.terraentity.init.TEEffectStrategies;
 
 public class ArrowItems {

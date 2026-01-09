@@ -139,6 +139,7 @@ public final class ModItems {
         BaitItems.ITEMS.register(eventBus);
         BoatItems.register(eventBus);
         BowItems.ITEMS.register(eventBus);
+        CrossbowItems.ITEMS.register(eventBus);
         ChainsawItems.ITEMS.register(eventBus);
         ConsumableItems.ITEMS.register(eventBus);
         DrillItems.ITEMS.register(eventBus);

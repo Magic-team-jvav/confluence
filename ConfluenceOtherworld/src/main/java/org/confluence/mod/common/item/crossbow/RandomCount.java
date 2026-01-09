@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.bow;
+package org.confluence.mod.common.item.crossbow;
 
 import net.minecraft.util.RandomSource;
 

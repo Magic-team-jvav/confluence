@@ -24,7 +24,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.bow.arrow.BaseTerraArrowItem;
+import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.attachment.WeaponStorage;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;

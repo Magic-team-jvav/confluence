@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.bow.arrow;
+package org.confluence.mod.common.item.arrow;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;

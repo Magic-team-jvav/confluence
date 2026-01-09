@@ -5,17 +5,11 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.LucyTheAxeHandler;
 import org.joml.Matrix4f;
@@ -24,7 +18,7 @@ import org.joml.Quaternionf;
 import java.util.Queue;
 import java.util.function.Consumer;
 
-public class LucyTheAxeDialogRenderer implements IClientItemExtensions {
+public class LucyTheAxeDialogRenderer {
     private static final ResourceLocation background = Confluence.asResource("dialog_background");
     private static final ResourceLocation tail = Confluence.asResource("dialog_tail");
     private static final Quaternionf quaternion = new Quaternionf();
@@ -33,7 +27,7 @@ public class LucyTheAxeDialogRenderer implements IClientItemExtensions {
     public static Component dialog;
     private static Consumer<GuiGraphics> delayed;
 
-    private static void renderInGui(Minecraft minecraft, PoseStack poseStack) {
+    public static void renderInGui(Minecraft minecraft, PoseStack poseStack) {
         int textW = minecraft.font.width(dialog);
         float itemX = poseStack.last().pose().m30();
         float itemY = poseStack.last().pose().m31();
@@ -94,29 +88,5 @@ public class LucyTheAxeDialogRenderer implements IClientItemExtensions {
             poseStack.popPose();
         }
         poseStack.popPose();
-    }
-
-    private BlockEntityWithoutLevelRenderer renderer;
-
-    @Override
-    public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-        if (renderer == null) {
-            Minecraft minecraft = Minecraft.getInstance();
-            this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
-                @Override
-                public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-                    minecraft.getItemRenderer().renderModelLists(
-                            minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 260102),
-                            stack, packedLight, packedOverlay, poseStack,
-                            ItemRenderer.getFoilBufferDirect(buffer, Sheets.translucentCullBlockSheet(), true, stack.hasFoil())
-                    );
-
-                    if (dialog != null && displayContext == ItemDisplayContext.GUI) {
-                        renderInGui(minecraft, poseStack);
-                    }
-                }
-            };
-        }
-        return renderer;
     }
 }

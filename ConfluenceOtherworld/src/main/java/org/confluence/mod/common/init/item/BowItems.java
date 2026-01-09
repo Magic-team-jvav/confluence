@@ -5,7 +5,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.ArrowInBowHandler;
+import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
 import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * 弓箭位置修正参考{@link ArrowInBowHandler}
+ * 弓箭位置修正参考{@link ArrowInBowRenderer}
  *
  */
 public class BowItems {

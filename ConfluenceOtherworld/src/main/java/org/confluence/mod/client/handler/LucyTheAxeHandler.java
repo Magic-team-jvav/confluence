@@ -16,7 +16,7 @@ import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Queue;
 
-public class LucyTheAxeHandler {
+public final class LucyTheAxeHandler {
     private static final Object2IntMap<ResourceLocation> cycleMap = new Object2IntOpenHashMap<>();
     private static final Queue<Stack> queue = new ArrayDeque<>();
     private static int cooldown;

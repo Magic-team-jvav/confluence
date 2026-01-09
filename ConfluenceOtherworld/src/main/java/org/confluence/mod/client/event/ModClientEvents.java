@@ -21,6 +21,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
@@ -33,6 +34,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
@@ -47,7 +49,6 @@ import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
-import org.confluence.mod.client.handler.ArrowInBowHandler;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
@@ -80,6 +81,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRen
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
+import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
 import org.confluence.mod.client.renderer.item.GroupItemExtension;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
@@ -119,7 +121,7 @@ public final class ModClientEvents {
             ClientConfigs.onLoad();
             ModClientSetups.registerBowProperties();
             ModClientSetups.registerFishingPoleProperties();
-            ArrowInBowHandler.initAdaptionMap();
+            ArrowInBowRenderer.initAdaptionMap();
 
             ModClientSetups.registerItemProperties();
             ModClientSetups.setRenderLayers();
@@ -409,7 +411,12 @@ public final class ModClientEvents {
         event.registerFluidType(ModClientSetups.SHIMMER_CLIENT_EXTENSIONS, ModFluids.SHIMMER.type());
         event.registerBlock(ModClientSetups.NO_HIT_EFFECTS, ModBlocks.ROPE.get(), ModBlocks.VINE_ROPE.get(), ModBlocks.SILK_ROPE.get(), ModBlocks.WEB_ROPE.get());
         event.registerItem(ModClientSetups.ENTITY_DISPLAY, ModItems.ENTITY_DISPLAY.get());
-        event.registerItem(new LucyTheAxeDialogRenderer(), AxeItems.LUCY_THE_AXE.get());
+        event.registerItem(new SimpleClientItemExtensions().customRenderer((minecraft, stack, displayContext, poseStack, buffer, packedLight, packedOverlay) -> {
+            SimpleClientItemExtensions.renderSimpleItem(minecraft, stack, poseStack, buffer, packedLight, packedOverlay);
+            if (LucyTheAxeDialogRenderer.dialog != null && displayContext == ItemDisplayContext.GUI) {
+                LucyTheAxeDialogRenderer.renderInGui(minecraft, poseStack);
+            }
+        }), AxeItems.LUCY_THE_AXE.get());
         event.registerItem(ModClientSetups.BREATHING_REED, SwordItems.BREATHING_REED);
         event.registerItem(ModClientSetups.SPEAR, SpearItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.UMBRELLA, SwordItems.UMBRELLA, SwordItems.TRAGIC_UMBRELLA);

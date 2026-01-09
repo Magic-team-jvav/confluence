@@ -30,12 +30,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.FishingRodItem;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
@@ -50,6 +48,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
@@ -177,31 +176,7 @@ public final class ModClientSetups {
         };
     }
 
-    static final IClientItemExtensions NOOP_ITEM = new IClientItemExtensions() {
-        private BlockEntityWithoutLevelRenderer renderer;
-
-        @Override
-        public boolean applyForgeHandTransform(PoseStack poseStack, LocalPlayer player, HumanoidArm arm, ItemStack itemInHand, float partialTick, float equipProcess, float swingProcess) {
-            return true;
-        }
-
-        @Override
-        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-            return HumanoidModel.ArmPose.EMPTY;
-        }
-
-        @Override
-        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-            if (renderer == null) {
-                Minecraft minecraft = Minecraft.getInstance();
-                this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
-                    @Override
-                    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {}
-                };
-            }
-            return renderer;
-        }
-    };
+    static final IClientItemExtensions NOOP_ITEM = new SimpleClientItemExtensions().handTransform(true).armPose(HumanoidModel.ArmPose.EMPTY).noRenderer();
     static final IClientItemExtensions GUIDE_VOODOO_DOLL = new MutableRenderTypeItemExtension(stack -> GuideVooDooDollItem.isWall(LibUtils.getItemStackNbtIfPresent(stack)) ? ModClientSetups.GLINT_FF0000.renderType() : RenderType.glint());
     static final IClientItemExtensions GLINT_RAINBOW_EXTENSIONS = new MutableRenderTypeItemExtension(stack -> ModClientSetups.GLINT_RAINBOW.renderType());
     static final IClientItemExtensions FULL_LIGHT = new CustomLightItemExtension(15);

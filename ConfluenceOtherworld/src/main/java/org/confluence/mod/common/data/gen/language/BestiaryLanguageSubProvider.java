@@ -398,7 +398,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.sand_shark.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
         add("bestiary.entity.terra_entity.crab.desc", "This hard shelled coastal creature could snip the toes right off a man, among other things. They are not to be trifled with.");
 //        add("bestiary.entity.terra_entity.sea_snail.desc", "This unusually large snail makes its home deep in the ocean. Its mucus can be manufactured into a purple dye.");
-//        add("bestiary.entity.terra_entity.shark.desc", "Once these ocean predators catch a whiff of blood, they become relentless and unstoppable in their ravenous pursuit.");
+        add("bestiary.entity.terra_entity.shark.desc", "Once these ocean predators catch a whiff of blood, they become relentless and unstoppable in their ravenous pursuit.");
 //        add("bestiary.entity.terra_entity.squid.desc", "A betentacled marine creature which discharges a thick, black ink when threatened. The ink is collected for aesthetic purposes.");
         add("bestiary.entity.terra_entity.pink_jellyfish.desc", "That strange tingling sensation in the water may be the unwelcome surging of electrical death from a brainless jellyfish. Swim with care.");
         add("bestiary.entity.terra_entity.jungle_slime.desc", "A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.");
@@ -423,7 +423,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.jungle_bat.desc", "These small, annoying creatures aren't to be underestimated. A deadly end awaits for those swarmed by these fangy rodents.");
         add("bestiary.entity.terra_entity.piranha.desc", "Just one of these sharp-toothed fish can easily end a life. Luckily, they tend to swarm their victims in large groups! Life is grand.");
 //        add("bestiary.entity.terra_entity.angler_fish.desc", "Some angler fish are content to lie in wait for their prey, but these are perfectly happy to aggressively chase down an underwater meal.");
-//        add("bestiary.entity.terra_entity.arapaima.desc", "These enormous fish thrive in the jungle waters near veins of unstable magicks, which make them unusually strong and hostile.");
+        add("bestiary.entity.terra_entity.arapaima.desc", "These enormous fish thrive in the jungle waters near veins of unstable magicks, which make them unusually strong and hostile.");
 //        add("bestiary.entity.terra_entity.giant_tortoise.desc", "No one takes the giant tortoises seriously. Not until they come hurtling through the air, a spinning, spiky ball of death.");
 //        add("bestiary.entity.terra_entity.jungle_creeper.desc", "The itsy bitsy spider climbed up a jungle vine, down came a hapless explorer and the spider got to dine. The End.");
         add("bestiary.entity.terra_entity.meteor_head.desc", "When meteorites strike the surface, their fragments lay scattered for the taking. Some pieces are alive, and will attack.");
@@ -1143,7 +1143,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.sand_shark.desc", "远古时期曾有一条咸水河贯穿沙漠，如今这些沙鲨已进化出在干燥沙层中生存的能力。");
         add("bestiary.entity.terra_entity.crab.desc", "这种生活在海岸的硬壳生物，能轻易剪断人的脚趾，甚至造成更严重的伤害，绝不可轻视。");
 //        add("bestiary.entity.terra_entity.sea_snail.desc", "这种异常巨大的海蜗牛栖息在深海之中，其分泌的黏液可被加工成紫色染料。");
-//        add("bestiary.entity.terra_entity.shark.desc", "这些海洋掠食者一旦嗅到血腥味，便会陷入疯狂的追逐，既不知疲倦也无法阻挡。");
+        add("bestiary.entity.terra_entity.shark.desc", "这些海洋掠食者一旦嗅到血腥味，便会陷入疯狂的追逐，既不知疲倦也无法阻挡。");
 //        add("bestiary.entity.terra_entity.squid.desc", "这种长有触手的海洋生物，遇袭时会喷出浓稠的黑色墨汁。人们会收集这种墨汁用于装饰用途。");
         add("bestiary.entity.terra_entity.pink_jellyfish.desc", "水中若出现奇怪的刺痛感，很可能是无脑的粉水母释放的致命电击。游泳时务必小心。");
         add("bestiary.entity.terra_entity.jungle_slime.desc", "丛林史莱姆是简单的胶状生物，见到任何东西都会整个吞下！但消化过程需要很长时间。");
@@ -1168,7 +1168,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.jungle_bat.desc", "这些烦人的小型丛林蝙蝠绝不可轻视，一旦被这群尖牙啮齿动物包围，便只有死路一条。");
         add("bestiary.entity.terra_entity.piranha.desc", "仅凭一条食人鱼，就足以轻易夺走一条生命。不幸的是，它们还喜欢成群围攻猎物！真是“精彩”的生命法则。");
 //        add("bestiary.entity.terra_entity.angler_fish.desc", "有些琵琶鱼喜欢埋伏等待猎物上门，而这类琵琶鱼则热衷于主动追击水下的猎物。");
-//        add("bestiary.entity.terra_entity.arapaima.desc", "巨骨舌鱼在靠近不稳定魔法矿脉的丛林水域中生存，这种环境让它们变得异常强壮且充满敌意。");
+        add("bestiary.entity.terra_entity.arapaima.desc", "巨骨舌鱼在靠近不稳定魔法矿脉的丛林水域中生存，这种环境让它们变得异常强壮且充满敌意。");
 //        add("bestiary.entity.terra_entity.giant_tortoise.desc", "没人会把巨型陆龟当回事——直到它们像个旋转的死亡刺球一样，从空中猛冲下来。");
 //        add("bestiary.entity.terra_entity.jungle_creeper.desc", "“小小蜘蛛爬藤蔓，倒霉探险掉下来，蜘蛛饱餐真痛快。故事完。”");
         add("bestiary.entity.terra_entity.meteor_head.desc", "陨石撞击地表后，碎片会散落各处等待拾取。但有些碎片是“活的”，会主动发起攻击。");

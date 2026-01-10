@@ -133,7 +133,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(HookItems.ITEMS, "hook/"));
         customModels.add(createDir(IconItems.ITEMS, "icon/"));
         customModels.add(createDir(LightPetItems.ITEMS, "light_pet/"));
-        customModels.add(createDir(MaterialItems.ITEMS, "materials/", "ingot/", "ore/"));
+        customModels.add(createDir(MaterialItems.ITEMS, "materials/", "ingot/"));
         customModels.add(createDir(MinecartItems.ITEMS, "minecart/"));
         customModels.add(createDir(ModItems.ITEMS, "misc/"));
         customModels.add(createDir(ModItems.HIDDEN, "misc/"));

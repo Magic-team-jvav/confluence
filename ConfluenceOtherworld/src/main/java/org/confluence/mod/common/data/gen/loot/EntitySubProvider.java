@@ -600,6 +600,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(967))
                 )
         );
+        add(TEMonsterEntities.SHARK.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/shark"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.SHRIMP_PO_BOY).setWeight(2))
+                        .add(emptyWeight98)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.DIVING_HELMET).setWeight(1))
+                        .add(LootItem.lootTableItem(MaterialItems.SHARK_FIN).setWeight(19))
+                )
+        );
         add(TEMonsterEntities.TOMB_CRAWLER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tomb_crawler"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL)).apply(count1To2).apply(random0To1)

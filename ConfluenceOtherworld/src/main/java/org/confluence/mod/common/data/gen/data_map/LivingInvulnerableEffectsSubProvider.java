@@ -74,10 +74,13 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.PURPLE_SLIME, MobEffects.POISON)
                 // TODO 乌鸦
                 .add(TEMonsterEntities.DESERT_SLIME, MobEffects.POISON)
-                // TODO 海蜗牛 鲨鱼 骷髅全家桶
+                .add(TEMonsterEntities.SHARK, TCEffects.CONFUSED)
+                // TODO 海蜗牛  骷髅全家桶
                 .add(TEMonsterEntities.SNATCHER, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.SNOW_FLINX, TEEffects.FROST_BURN, ModEffects.FROSTBITE)
-                // TODO 尖刺冰雪史莱姆 尖刺丛林史莱姆
+                .add(TEMonsterEntities.SPIKED_SLIME, MobEffects.POISON, ModEffects.SHIMMER)
+                .add(TEMonsterEntities.SPIKED_JUNGLE_SLIME, MobEffects.POISON)
+                .add(TEMonsterEntities.SPIKED_ICE_SLIME, MobEffects.POISON,TEEffects.FROST_BURN, ModEffects.FROSTBITE)
                 .add(TEMonsterEntities.SPORE_SKELETON, MobEffects.POISON)
                 // TODO 乌贼 蒂姆
                 .add(TEMonsterEntities.TOMB_CRAWLER, TCEffects.CONFUSED)
@@ -88,6 +91,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.YELLOW_SLIME, MobEffects.POISON)
                 // TODO 琵琶鱼 愤怒捕手 巨骨舌鱼 装甲骷髅 装甲维京海盗 黑隐士 嗜血怪 拜月教忠教徒 邪教徒弓箭手 蓝装甲骷髅 骷髅李 混沌精 爬藤怪 宝箱怪 冰雪宝箱怪 腐化宝箱怪 猩红宝箱怪 神圣宝箱怪 丛林宝箱怪
                 .add(TEMonsterEntities.CORRUPT_SLIME, MobEffects.POISON)
+                .add(TEMonsterEntities.ARAPAIMA, TCEffects.CONFUSED)
                 // TODO 腐化者
                 .add(TEMonsterEntities.CRIMSLIME, MobEffects.POISON)
                 /*

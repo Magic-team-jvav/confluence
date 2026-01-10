@@ -10,17 +10,28 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
+import nowebsite.makertechno.the_trackers.api.component.ComponentBuilder;
+import nowebsite.makertechno.the_trackers.api.component.StaticComponent;
+import nowebsite.makertechno.the_trackers.core.track.TrackersMonitor;
+import nowebsite.makertechno.the_trackers.core.track.WorldSingletonTracker;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
@@ -35,13 +46,14 @@ import java.util.List;
 
 import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
+import static org.confluence.mod.common.init.item.MaterialItems.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLOCK;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock;
 
 
 /**
- * 实际上是渲染方块边框的类
+ * 方块探测类，处理矿物探测与危险方块探测
  */
 public class SpelunkerHelper extends AbstractBufferManager {
     /**
@@ -55,9 +67,11 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
     private final Map<Block, Entry> targets = new HashMap<>();
     public Map<BlockPos, BlockPos> centerCache = new HashMap<>();
-    public Map<BlockPos, Block> centerCacheFrame = new HashMap<>();//当前帧渲染的cache
+    public Map<BlockPos, Block> centerCacheFrame = new HashMap<>(); // 当前帧渲染的cache
+    public Map<BlockPos, StaticComponentLifeController> cachedPointers = new HashMap<>(); // 根据当前中心cache缓存的对应指针
     public Map<Block, ArrayList<BlockPos>> centers = new LinkedHashMap<>();
     public Map<Block, List<BlockPos>> blockMap = new HashMap<>();
+
 
     /**
      * 重载资源包
@@ -99,14 +113,26 @@ public class SpelunkerHelper extends AbstractBufferManager {
         }
     }
 
-    private record Entry(int color, boolean showText, ShowType showType) {
+    private record Entry(int color, boolean showText, ShowType showType, ResourceLocation showItemRL) {
         private static final Codec<Entry> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
                 Codec.INT.fieldOf("color").forGetter(Entry::color),
                 Codec.BOOL.fieldOf("showText").forGetter(Entry::showText),
-                ShowType.CODEC.fieldOf("showType").forGetter(Entry::showType)
+                ShowType.CODEC.fieldOf("showType").forGetter(Entry::showType),
+                ResourceLocation.CODEC.fieldOf("showItemRL").forGetter(Entry::showItemRL)
         ).apply(builder, Entry::new));
 
         private static final MapCodec<Map<Block, Entry>> BLOCK_MAP_CODEC = Codec.unboundedMap(BuiltInRegistries.BLOCK.byNameCodec(), Entry.CODEC).fieldOf("targets").fieldOf("values");
+    }
+
+    /**
+     * 指针生命周期最简化控制。
+     */
+    public static final class StaticComponentLifeController {
+        public final StaticComponent component;
+        public boolean isAlive;
+        public StaticComponentLifeController(StaticComponent component) {
+            this.component = component;
+        }
     }
 
     protected boolean shouldRefresh() {
@@ -114,7 +140,14 @@ public class SpelunkerHelper extends AbstractBufferManager {
     }
 
     private static SpelunkerHelper blockGen;
+    private final WorldSingletonTracker tracker;
     public static volatile boolean lock = true;
+
+    public static final ComponentBuilder COMPONENT_BUILDER = new ComponentBuilder()
+            .setComponentType(ComponentBuilder.ComponentType.DIRECT)
+            .setAffectedByPlayerSettingsScale(false)
+            .defineScaleMultiple(scale -> scale*0.8f);
+    public static final ResourceLocation EMPTY = TextureMapping.getItemTexture(Items.AIR);
 
     public static SpelunkerHelper getSingleton() {
         if (blockGen == null) {
@@ -126,6 +159,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
     public SpelunkerHelper(int refreshTime) {
         super(refreshTime);
+        tracker = TrackersMonitor.getTracker();
         refreshBlocks();
 
         this.defaultBlocks();
@@ -140,131 +174,131 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(Blocks.ANCIENT_DEBRIS, 0x5f2000, true, ShowType.SPELUNKER);//这个还必须放这个位置
 
         //钻石矿
-        putTarget(Blocks.DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER);
-        putTarget(Blocks.DEEPSLATE_DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER);
+        putTarget(Blocks.DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
+        putTarget(Blocks.DEEPSLATE_DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
+        putTarget(CORRUPTION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
+        putTarget(SANCTIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
+        putTarget(FLESHIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
 
 
         //红玉矿
-        putTarget(RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER);
+        putMaterialTarget(RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER, RUBY);
+        putMaterialTarget(DEEPSLATE_RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER, RUBY);
+        putMaterialTarget(CORRUPTION_RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER, RUBY);
+        putMaterialTarget(SANCTIFICATION_RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER, RUBY);
+        putMaterialTarget(FLESHIFICATION_RUBY_ORE.get(), 0xa80000, true, ShowType.SPELUNKER, RUBY);
 
         //琥珀矿
-        putTarget(AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER);
+        putMaterialTarget(AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER, AMBER);
+        putMaterialTarget(CORRUPTION_AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER, AMBER);
+        putMaterialTarget(SANCTIFICATION_AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER, AMBER);
+        putMaterialTarget(FLESHIFICATION_AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER, AMBER);
 //            putTarget(DEEPSLATE_AMBER_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 
         //黄玉矿
-        putTarget(TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER);
+        putMaterialTarget(TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER, TOPAZ);
+        putMaterialTarget(DEEPSLATE_TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER, TOPAZ);
+        putMaterialTarget(CORRUPTION_TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER, TOPAZ);
+        putMaterialTarget(SANCTIFICATION_TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER, TOPAZ);
+        putMaterialTarget(FLESHIFICATION_TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER, TOPAZ);
 
         //翡翠矿
-        putTarget(OreBlocks.JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.DEEPSLATE_JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.CORRUPTION_JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.SANCTIFICATION_JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.FLESHIFICATION_JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER);
+        putMaterialTarget(OreBlocks.JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER, JADE);
+        putMaterialTarget(OreBlocks.DEEPSLATE_JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER, JADE);
+        putMaterialTarget(OreBlocks.CORRUPTION_JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER, JADE);
+        putMaterialTarget(OreBlocks.SANCTIFICATION_JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER, JADE);
+        putMaterialTarget(OreBlocks.FLESHIFICATION_JADE_ORE.get(), 0x00a87b, true, ShowType.SPELUNKER, JADE);
 
 
         //蓝玉矿
-        putTarget(SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER);
+        putMaterialTarget(SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER, SAPPHIRE);
+        putMaterialTarget(DEEPSLATE_SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER, SAPPHIRE);
+        putMaterialTarget(CORRUPTION_SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER, SAPPHIRE);
+        putMaterialTarget(SANCTIFICATION_SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER, SAPPHIRE);
+        putMaterialTarget(FLESHIFICATION_SAPPHIRE_ORE.get(), 0x0052a8, true, ShowType.SPELUNKER, SAPPHIRE);
 
         //紫晶矿
-        putTarget(OreBlocks.AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.DEEPSLATE_AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.CORRUPTION_AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.SANCTIFICATION_AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.FLESHIFICATION_AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER);
+        putMaterialTarget(OreBlocks.AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER, AMETHYST);
+        putMaterialTarget(OreBlocks.DEEPSLATE_AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER, AMETHYST);
+        putMaterialTarget(OreBlocks.CORRUPTION_AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER, AMETHYST);
+        putMaterialTarget(OreBlocks.SANCTIFICATION_AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER, AMETHYST);
+        putMaterialTarget(OreBlocks.FLESHIFICATION_AMETHYST_ORE.get(), 0x7d00a8, true, ShowType.SPELUNKER, AMETHYST);
 
 
         //绿宝石矿
-        putTarget(Blocks.EMERALD_ORE, 0xa3ff75, true, ShowType.SPELUNKER);
-        putTarget(Blocks.DEEPSLATE_EMERALD_ORE, 0xa3ff75, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER);
+        putTarget(Blocks.EMERALD_ORE, 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
+        putTarget(Blocks.DEEPSLATE_EMERALD_ORE, 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
+        putTarget(CORRUPTION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
+        putTarget(SANCTIFICATION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
+        putTarget(FLESHIFICATION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
 
 
         //铁矿
-        putTarget(Blocks.IRON_ORE, 0xbfae8f, true, ShowType.SPELUNKER);
-        putTarget(Blocks.DEEPSLATE_IRON_ORE, 0xbfae8f, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER);
+        putTarget(Blocks.IRON_ORE, 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
+        putTarget(Blocks.DEEPSLATE_IRON_ORE, 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
+        putTarget(CORRUPTION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
+        putTarget(SANCTIFICATION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
+        putTarget(FLESHIFICATION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
 
 
         //金矿
-        putTarget(Blocks.GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER);
-        putTarget(Blocks.DEEPSLATE_GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER);
-        putTarget(Blocks.GILDED_BLACKSTONE, 0xccbe20, true, ShowType.SPELUNKER);
-        putTarget(Blocks.NETHER_GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER);
+        putTarget(Blocks.GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTarget(Blocks.DEEPSLATE_GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTarget(CORRUPTION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTarget(SANCTIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTarget(FLESHIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTarget(Blocks.GILDED_BLACKSTONE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTarget(Blocks.NETHER_GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
 
 
         //煤矿
-        putTarget(Blocks.COAL_ORE, 0x555555, false, ShowType.SPELUNKER);
-        putTarget(Blocks.DEEPSLATE_COAL_ORE, 0x555555, false, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER);
+        putTarget(Blocks.COAL_ORE, 0x555555, false, ShowType.SPELUNKER, Items.COAL);
+        putTarget(Blocks.DEEPSLATE_COAL_ORE, 0x555555, false, ShowType.SPELUNKER, Items.COAL);
+        putTarget(CORRUPTION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER, Items.COAL);
+        putTarget(SANCTIFICATION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER, Items.COAL);
+        putTarget(FLESHIFICATION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER, Items.COAL);
 
         //铜矿
-        putTarget(Blocks.COPPER_ORE, 0x97502d, false, ShowType.SPELUNKER);
-        putTarget(Blocks.DEEPSLATE_COPPER_ORE, 0x97502d, false, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER);
+        putTarget(Blocks.COPPER_ORE, 0x97502d, false, ShowType.SPELUNKER, Items.RAW_COPPER);
+        putTarget(Blocks.DEEPSLATE_COPPER_ORE, 0x97502d, false, ShowType.SPELUNKER, Items.RAW_COPPER);
+        putTarget(CORRUPTION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER, Items.RAW_COPPER);
+        putTarget(SANCTIFICATION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER, Items.RAW_COPPER);
+        putTarget(FLESHIFICATION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER, Items.RAW_COPPER);
 
         //锡矿
-        putTarget(TIN_ORE.get(), 0x96926e, false, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_TIN_ORE.get(), 0x96926e, false, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_TIN_ORE.get(), 0x96926e, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_TIN_ORE.get(), 0x96926e, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_TIN_ORE.get(), 0x96926e, true, ShowType.SPELUNKER);
+        putMaterialTarget(TIN_ORE.get(), 0x96926e, false, ShowType.SPELUNKER, RAW_TIN);
+        putMaterialTarget(DEEPSLATE_TIN_ORE.get(), 0x96926e, false, ShowType.SPELUNKER, RAW_TIN);
+        putMaterialTarget(CORRUPTION_TIN_ORE.get(), 0x96926e, true, ShowType.SPELUNKER, RAW_TIN);
+        putMaterialTarget(SANCTIFICATION_TIN_ORE.get(), 0x96926e, true, ShowType.SPELUNKER, RAW_TIN);
+        putMaterialTarget(FLESHIFICATION_TIN_ORE.get(), 0x96926e, true, ShowType.SPELUNKER, RAW_TIN);
 
         //铅矿
-        putTarget(LEAD_ORE.get(), 0x304963, false, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_LEAD_ORE.get(), 0x304963, false, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_LEAD_ORE.get(), 0x304963, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_LEAD_ORE.get(), 0x304963, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_LEAD_ORE.get(), 0x304963, true, ShowType.SPELUNKER);
+        putMaterialTarget(LEAD_ORE.get(), 0x304963, false, ShowType.SPELUNKER, RAW_LEAD);
+        putMaterialTarget(DEEPSLATE_LEAD_ORE.get(), 0x304963, false, ShowType.SPELUNKER, RAW_LEAD);
+        putMaterialTarget(CORRUPTION_LEAD_ORE.get(), 0x304963, true, ShowType.SPELUNKER, RAW_LEAD);
+        putMaterialTarget(SANCTIFICATION_LEAD_ORE.get(), 0x304963, true, ShowType.SPELUNKER, RAW_LEAD);
+        putMaterialTarget(FLESHIFICATION_LEAD_ORE.get(), 0x304963, true, ShowType.SPELUNKER, RAW_LEAD);
 
         // 银矿
-        putTarget(SILVER_ORE.get(), 0x6a737c, false, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_SILVER_ORE.get(), 0x6a737c, false, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_SILVER_ORE.get(), 0x6a737c, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_SILVER_ORE.get(), 0x6a737c, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_SILVER_ORE.get(), 0x6a737c, true, ShowType.SPELUNKER);
+        putMaterialTarget(SILVER_ORE.get(), 0x6a737c, false, ShowType.SPELUNKER, RAW_SILVER);
+        putMaterialTarget(DEEPSLATE_SILVER_ORE.get(), 0x6a737c, false, ShowType.SPELUNKER, RAW_SILVER);
+        putMaterialTarget(CORRUPTION_SILVER_ORE.get(), 0x6a737c, true, ShowType.SPELUNKER, RAW_SILVER);
+        putMaterialTarget(SANCTIFICATION_SILVER_ORE.get(), 0x6a737c, true, ShowType.SPELUNKER, RAW_SILVER);
+        putMaterialTarget(FLESHIFICATION_SILVER_ORE.get(), 0x6a737c, true, ShowType.SPELUNKER, RAW_SILVER);
 
         // 钨矿
-        putTarget(TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
+        putMaterialTarget(TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER, RAW_TUNGSTEN);
+        putMaterialTarget(DEEPSLATE_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER, RAW_TUNGSTEN);
+        putMaterialTarget(CORRUPTION_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER, RAW_TUNGSTEN);
+        putMaterialTarget(SANCTIFICATION_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER, RAW_TUNGSTEN);
+        putMaterialTarget(FLESHIFICATION_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER, RAW_TUNGSTEN);
 
         // 铂金矿
-        putTarget(PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER);
+        putMaterialTarget(PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER, RAW_PLATINUM);
+        putMaterialTarget(DEEPSLATE_PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER, RAW_PLATINUM);
+        putMaterialTarget(CORRUPTION_PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER, RAW_PLATINUM);
+        putMaterialTarget(SANCTIFICATION_PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER, RAW_PLATINUM);
+        putMaterialTarget(FLESHIFICATION_PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER, RAW_PLATINUM);
 
         // 生命水晶
         putTarget(LIFE_CRYSTAL_BLOCK.get(), 0xec173e, true, ShowType.SPELUNKER);
@@ -276,18 +310,18 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
 
         // 青金石
-        putTarget(Blocks.LAPIS_ORE, 0x687bff, false, ShowType.SPELUNKER);
-        putTarget(Blocks.DEEPSLATE_LAPIS_ORE, 0x687bff, false, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER);
+        putTarget(Blocks.LAPIS_ORE, 0x687bff, false, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
+        putTarget(Blocks.DEEPSLATE_LAPIS_ORE, 0x687bff, false, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
+        putTarget(CORRUPTION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
+        putTarget(SANCTIFICATION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
+        putTarget(FLESHIFICATION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
 
         // 红石
-        putTarget(Blocks.REDSTONE_ORE, 0x7d0000, false, ShowType.SPELUNKER);
-        putTarget(Blocks.DEEPSLATE_REDSTONE_ORE, 0x7d0000, false, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER);
+        putTarget(Blocks.REDSTONE_ORE, 0x7d0000, false, ShowType.SPELUNKER, Items.REDSTONE);
+        putTarget(Blocks.DEEPSLATE_REDSTONE_ORE, 0x7d0000, false, ShowType.SPELUNKER, Items.REDSTONE);
+        putTarget(CORRUPTION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
+        putTarget(SANCTIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
+        putTarget(FLESHIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
 
         // 化石对标
         putTarget(COLD_CRYSTAL_ORE.get(), 0x3db7b0, true, ShowType.SPELUNKER);
@@ -295,20 +329,20 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(OPAL_ORE.get(), 0x4bbcff, true, ShowType.SPELUNKER);
 
         // 狱石
-        putTarget(HELLSTONE.get(), 0xea650e, true, ShowType.SPELUNKER);
-        putTarget(ASH_HELLSTONE.get(), 0xea650e, true, ShowType.SPELUNKER);
+        putMaterialTarget(HELLSTONE.get(), 0xea650e, true, ShowType.SPELUNKER, RAW_HELLSTONE);
+        putMaterialTarget(ASH_HELLSTONE.get(), 0xea650e, true, ShowType.SPELUNKER, RAW_HELLSTONE);
 
         // 石英
-        putTarget(Blocks.NETHER_QUARTZ_ORE, 0xe2ccbc, true, ShowType.SPELUNKER);
+        putTarget(Blocks.NETHER_QUARTZ_ORE, 0xe2ccbc, true, ShowType.SPELUNKER, Items.QUARTZ);
 
         // 新三矿 todo仅敲除祭坛后可探测
-        putTarget(DEEPSLATE_COBALT_ORE.get(), 0x0060e9, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_PALLADIUM_ORE.get(), 0xe97500, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_MYTHRIL_ORE.get(), 0x00e9ae, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_ORICHALCUM_ORE.get(), 0xe300e9, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_ADAMANTITE_ORE.get(), 0xe90056, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_TITANIUM_ORE.get(), 0xf5dcff, true, ShowType.SPELUNKER);
-        putTarget(CHLOROPHYTE_ORE.get(), 0x00a41b, true, ShowType.SPELUNKER);
+        putMaterialTarget(DEEPSLATE_COBALT_ORE.get(), 0x0060e9, true, ShowType.SPELUNKER, RAW_COBALT);
+        putMaterialTarget(DEEPSLATE_PALLADIUM_ORE.get(), 0xe97500, true, ShowType.SPELUNKER, RAW_PALLADIUM);
+        putMaterialTarget(DEEPSLATE_MYTHRIL_ORE.get(), 0x00e9ae, true, ShowType.SPELUNKER, RAW_MYTHRIL);
+        putMaterialTarget(DEEPSLATE_ORICHALCUM_ORE.get(), 0xe300e9, true, ShowType.SPELUNKER, RAW_ORICHALCUM);
+        putMaterialTarget(DEEPSLATE_ADAMANTITE_ORE.get(), 0xe90056, true, ShowType.SPELUNKER, RAW_ADAMANTITE);
+        putMaterialTarget(DEEPSLATE_TITANIUM_ORE.get(), 0xf5dcff, true, ShowType.SPELUNKER, RAW_TITANIUM);
+        putMaterialTarget(CHLOROPHYTE_ORE.get(), 0x00a41b, true, ShowType.SPELUNKER, RAW_CHLOROPHYTE);
 
         // tip 危险感知
         putTarget(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
@@ -364,7 +398,20 @@ public class SpelunkerHelper extends AbstractBufferManager {
     }
 
     private void putTarget(Block block, int rgb, boolean always, ShowType showType) {
-        targets.put(block, new Entry(rgb, always, showType));
+        putTarget(block, rgb, always, showType, Items.AIR);
+    }
+    /**
+     * 原版用的
+     */
+    private void putTarget(Block block, int rgb, boolean always, ShowType showType, Item showItem) {
+        targets.put(block, new Entry(rgb, always, showType, TextureMapping.getItemTexture(showItem).withPrefix("textures/")));
+    }
+    /**
+     * 咱汇流用的
+     */
+    private void putMaterialTarget(Block block, int rgb, boolean always, ShowType showType, DeferredItem<?> item) {
+        ResourceLocation resourcelocation = BuiltInRegistries.ITEM.getKey(item.get());
+        targets.put(block, new Entry(rgb, always, showType, resourcelocation.withPrefix("textures/item/materials/")));
     }
 
 
@@ -413,6 +460,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         //重新加载缓存，提速
         centers.clear();
         centerCacheFrame.clear();
+        if (!cachedPointers.isEmpty()) cachedPointers.values().forEach(lc -> lc.isAlive = false);
         Player player = Minecraft.getInstance().player;
         if (player == null)
             return;
@@ -440,8 +488,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
             int b = rgb & 0xFF;
             int a;
 
-            for (BlockPos blockProps : n.getValue()) {//每个矿石
-                if (blockProps == null) {
+            for (BlockPos blockPos : n.getValue()) {//每个矿石
+                if (blockPos == null) {
                     return;
                 }
 
@@ -449,15 +497,15 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
                 /* 相近同种方块禁止渲染 */
                 boolean ifNear = false;
-                if (player.level().getBlockState(blockProps).is(Blocks.AIR)) {//已被挖掘，取消缓存
+                if (player.level().getBlockState(blockPos).is(Blocks.AIR)) {//已被挖掘，取消缓存
 
 //                        System.out.println("block break");
-                    centerCache.remove(blockProps);
+                    centerCache.remove(blockPos);
                     ArrayList<BlockPos> list = centers.get(n.getKey());
                     if (list != null && !list.isEmpty()) {
                         // 刷新周围中心块
                         // 附近有中心块，清除改块
-                        list.removeIf(centerPos -> centerPos.distSqr(blockProps) < 25);
+                        list.removeIf(centerPos -> centerPos.distSqr(blockPos) < 25);
                     }
                 }
 
@@ -465,9 +513,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     if (!player.hasEffect(ModEffects.SPELUNKER)) continue;
                     //todo 可以优化
                     for (BlockPos centerPos : centers.get(n.getKey())) {//否则查找所有的中心块
-                        double distance = centerPos.distSqr(blockProps);
+                        double distance = centerPos.distSqr(blockPos);
                         if (distance < blockGen.centerInternal) {//附近有中心块，添加缓存
-                            centerCache.put(blockProps, centerPos);
+                            centerCache.put(blockPos, centerPos);
                             ifNear = true;
                             break;
                         }
@@ -476,31 +524,67 @@ public class SpelunkerHelper extends AbstractBufferManager {
                         if (!SHOW_DETAIL_SPECULAR.get().isDown()) continue;//非中心块或tab按下不渲染
 
                     } else {
-                        centers.get(n.getKey()).add(blockProps);//太远则自己成为中心块
-                        centerCacheFrame.put(blockProps, n.getKey());//只渲染中心块文本
+                        centers.get(n.getKey()).add(blockPos);//太远则自己成为中心块
+                        centerCacheFrame.put(blockPos, n.getKey());//只渲染中心块文本
+
                     }
                 } else if (target != null && target.showType == ShowType.DANGER) {//危险方块
                     if (!player.hasEffect(ModEffects.DANGER_SENSE)) continue;
-                    centerCacheFrame.put(blockProps, n.getKey());//渲染所有危险方块
+                    centerCacheFrame.put(blockPos, n.getKey());//渲染所有危险方块
                 }
 
 
                 //距离越远透明度越低
-                a = (int) ((255 - Math.min(player.distanceToSqr(blockProps.getX(), blockProps.getY(), blockProps.getZ()) / (blockGen.range * blockGen.range) * 255, 255)) * blockGen.maxAlpha);
+                a = (int) ((255 - Math.min(player.distanceToSqr(blockPos.getX(), blockPos.getY(), blockPos.getZ()) / (blockGen.range * blockGen.range) * 255, 255)) * blockGen.maxAlpha);
                 if (a <= 0) continue;
 
                 if (SHOW_DETAIL_SPECULAR.get().isDown()) {
-                    Block self = player.level().getBlockState(blockProps).getBlock();
-                    boolean up = !(player.level().getBlockState(blockProps.above()).getBlock() == self);
-                    boolean down = !(player.level().getBlockState(blockProps.below()).getBlock() == self);
-                    boolean north = !(player.level().getBlockState(blockProps.north()).getBlock() == self);
-                    boolean south = !(player.level().getBlockState(blockProps.south()).getBlock() == self);
-                    boolean east = !(player.level().getBlockState(blockProps.east()).getBlock() == self);
-                    boolean west = !(player.level().getBlockState(blockProps.west()).getBlock() == self);
+                    cachedPointers.values().forEach(controller -> controller.component.setVisible(true));
+                    Block self = player.level().getBlockState(blockPos).getBlock();
+                    boolean up = !(player.level().getBlockState(blockPos.above()).getBlock() == self);
+                    boolean down = !(player.level().getBlockState(blockPos.below()).getBlock() == self);
+                    boolean north = !(player.level().getBlockState(blockPos.north()).getBlock() == self);
+                    boolean south = !(player.level().getBlockState(blockPos.south()).getBlock() == self);
+                    boolean east = !(player.level().getBlockState(blockPos.east()).getBlock() == self);
+                    boolean west = !(player.level().getBlockState(blockPos.west()).getBlock() == self);
                     if (up || down || north || south || east || west)
-                        renderDebugBlock(buffer, blockProps, size, r, g, b, a, up, down, north, south, east, west);
-                } else renderDebugBlock(buffer, blockProps, size, r, g, b, a);
+                        renderDebugBlock(buffer, blockPos, size, r, g, b, a, up, down, north, south, east, west);
+                } else {
+                    cachedPointers.values().forEach(controller -> controller.component.setVisible(false));
+                    renderDebugBlock(buffer, blockPos, size, r, g, b, a);
+                }
             }
+            centerCacheFrame.keySet().forEach(pos -> tryComputePointers(pos, target));
+        }
+        cachedPointers.values().removeIf(controller -> {
+            if(!controller.isAlive) {
+                controller.component.close();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void tryComputePointers(BlockPos blockPos, Entry target) {
+        if (tracker != null) { // 创建对应指针
+            COMPONENT_BUILDER.setIcon1(target != null ? target.showItemRL : EMPTY);
+
+            cachedPointers.compute(blockPos, (pos, controller) -> {
+                if (controller == null) {
+                    StaticComponent component = tracker.addStaticPosComponent(
+                            Confluence.MODID,
+                            "oreTrack",
+                            COMPONENT_BUILDER.build(),
+                            false
+                    );
+                    Vec3 pos1 = blockPos.getCenter();
+                    component.posUpdater(pos2 -> pos1);
+                    return new StaticComponentLifeController(component);
+                } else {
+                    controller.isAlive = true;
+                    return controller;
+                }
+            });
         }
     }
 

@@ -116,7 +116,7 @@ public class BaseTerraRepeaterItem extends BaseTerraBowItem {
     protected void shoot(@NotNull ServerLevel level, @NotNull LivingEntity shooter, @NotNull InteractionHand hand, @NotNull ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
         int countCount = baseBurstCount.getCount(shooter.getRandom());
         if (countCount > 1) {
-            DelayTaskHolder.getInstance(shooter).addTimingRun(hand, DelayTaskHolder.createTaskBilder()
+            DelayTaskHolder.of(shooter).addTimingRun(hand, DelayTaskHolder.createTaskBilder()
                     .repeatCount(countCount - 1)
                     .removedTick(1)
                     .resultRun(holder -> super.shoot(level, shooter, hand, weapon, projectileItems, velocity, inaccuracy, isCrit, target))

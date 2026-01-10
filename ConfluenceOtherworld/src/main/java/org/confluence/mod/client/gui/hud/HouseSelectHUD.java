@@ -208,30 +208,26 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
         float maxDx = maxX - x;
         float minDz = minZ - z;
         float maxDz = maxZ - z;
-        if (x > maxX - 256) {
-            builder.addVertex(maxDx, -depthFar, minDz).setColor(153, 255, 0, a);
-            builder.addVertex(maxDx, -depthFar, maxDz).setColor(153, 255, 0, a);
-            builder.addVertex(maxDx, depthFar, maxDz).setColor(153, 255, 0, a);
-            builder.addVertex(maxDx, depthFar, minDz).setColor(153, 255, 0, a);
-        }
-        if (x < minX + 256) {
-            builder.addVertex(minDx, -depthFar, minDz).setColor(153, 255, 0, a);
-            builder.addVertex(minDx, -depthFar, maxDz).setColor(153, 255, 0, a);
-            builder.addVertex(minDx, depthFar, maxDz).setColor(153, 255, 0, a);
-            builder.addVertex(minDx, depthFar, minDz).setColor(153, 255, 0, a);
-        }
-        if (z > maxZ - 256) {
-            builder.addVertex(minDx, -depthFar, maxDz).setColor(153, 255, 0, a);
-            builder.addVertex(maxDx, -depthFar, maxDz).setColor(153, 255, 0, a);
-            builder.addVertex(maxDx, depthFar, maxDz).setColor(153, 255, 0, a);
-            builder.addVertex(minDx, depthFar, maxDz).setColor(153, 255, 0, a);
-        }
-        if (z < minZ + 256) {
-            builder.addVertex(minDx, -depthFar, minDz).setColor(153, 255, 0, a);
-            builder.addVertex(maxDx, -depthFar, minDz).setColor(153, 255, 0, a);
-            builder.addVertex(maxDx, depthFar, minDz).setColor(153, 255, 0, a);
-            builder.addVertex(minDx, depthFar, minDz).setColor(153, 255, 0, a);
-        }
+
+        builder.addVertex(maxDx, -depthFar, minDz).setColor(153, 255, 0, a);
+        builder.addVertex(maxDx, -depthFar, maxDz).setColor(153, 255, 0, a);
+        builder.addVertex(maxDx, depthFar, maxDz).setColor(153, 255, 0, a);
+        builder.addVertex(maxDx, depthFar, minDz).setColor(153, 255, 0, a);
+
+        builder.addVertex(minDx, -depthFar, minDz).setColor(153, 255, 0, a);
+        builder.addVertex(minDx, -depthFar, maxDz).setColor(153, 255, 0, a);
+        builder.addVertex(minDx, depthFar, maxDz).setColor(153, 255, 0, a);
+        builder.addVertex(minDx, depthFar, minDz).setColor(153, 255, 0, a);
+
+        builder.addVertex(minDx, -depthFar, maxDz).setColor(153, 255, 0, a);
+        builder.addVertex(maxDx, -depthFar, maxDz).setColor(153, 255, 0, a);
+        builder.addVertex(maxDx, depthFar, maxDz).setColor(153, 255, 0, a);
+        builder.addVertex(minDx, depthFar, maxDz).setColor(153, 255, 0, a);
+
+        builder.addVertex(minDx, -depthFar, minDz).setColor(153, 255, 0, a);
+        builder.addVertex(maxDx, -depthFar, minDz).setColor(153, 255, 0, a);
+        builder.addVertex(maxDx, depthFar, minDz).setColor(153, 255, 0, a);
+        builder.addVertex(minDx, depthFar, minDz).setColor(153, 255, 0, a);
 
         MeshData meshdata = builder.build();
         if (meshdata != null) {

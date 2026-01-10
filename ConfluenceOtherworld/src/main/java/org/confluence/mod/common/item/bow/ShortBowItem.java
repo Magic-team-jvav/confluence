@@ -9,7 +9,7 @@ public class ShortBowItem extends BaseTerraBowItem {
 
 
     public ShortBowItem(float baseDamage, int durability) {
-        super(baseDamage, new BaseTerraBowItem.Builder().setDuration(durability));
+        super(baseDamage, new ModifyArrowBuilder().setDuration(durability));
         this.baseDamage = baseDamage;
     }
 

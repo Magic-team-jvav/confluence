@@ -34,10 +34,10 @@ public abstract class ArrowItemMixin {
     @Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
     public void createArrow(Level level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon, CallbackInfoReturnable<AbstractArrow> cir) {
         if (weapon != null && weapon.getItem() instanceof BaseTerraBowItem bow) {
-            BaseTerraBowItem.Builder builder = bow.modifyArrowBuilder;
-            if(builder.entityTransform != null){
+            BaseTerraBowItem.ModifyArrowBuilder modifyArrowBuilder = bow.modifyArrowBuilder;
+            if (modifyArrowBuilder.entityTransform != null) {
                 // 非物品箭的箭实体转化
-                BaseArrowEntity arrow = builder.entityTransform.factory().create(builder.entityTransform.type(), shooter, ammo.copyWithCount(1), weapon, null, bow.modifyArrowBuilder);
+                BaseArrowEntity arrow = modifyArrowBuilder.entityTransform.factory().create(modifyArrowBuilder.entityTransform.type(), shooter, ammo.copyWithCount(1), weapon, null, bow.modifyArrowBuilder);
                 cir.setReturnValue(arrow);
                 return;
             }

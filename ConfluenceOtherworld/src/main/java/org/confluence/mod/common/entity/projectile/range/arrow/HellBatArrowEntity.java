@@ -27,7 +27,7 @@ public class HellBatArrowEntity extends BaseArrowEntity implements GeoEntity {
         super(pEntityType, pLevel);
     }
 
-    public HellBatArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraBowItem.Builder modifyConsumer) {
+    public HellBatArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraBowItem.ModifyArrowBuilder modifyConsumer) {
         super(pEntityType, owner, pickupItemStack, firedFromWeapon, arrow, modifyConsumer);
         this.modify.penetration_count = 99999;
         this.modify.setGravity(0);

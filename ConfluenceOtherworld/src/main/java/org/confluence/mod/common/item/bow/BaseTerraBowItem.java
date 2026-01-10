@@ -3,6 +3,7 @@ package org.confluence.mod.common.item.bow;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
@@ -47,21 +48,75 @@ import java.util.function.Predicate;
  * @author Coffee
  */
 public class BaseTerraBowItem extends BowItem {
+    public static final String ARROW_TRANSFORM_TEXT = "tooltip.item.confluence.arrow_transform";
+    public static final String BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT = "tooltip.item.confluence.bow_full_pull_on_hit_effects";
+    public static final String ON_HIT_EFFECTS_TEXT = "tooltip.item.confluence.on_hit_effects";
+    public static final String MAX_COUNT_TEXT = "tooltip.item.confluence.max_count";
+    public static final String ATTACK_DAMAGE_TEXT = "attribute.name.generic.attack_damage";
+
     public float baseDamage;
     public BaseArrowEntity.Builder arrowModifier;
-    public Builder modifyArrowBuilder;
+    public ModifyArrowBuilder modifyArrowBuilder;
 
-    public BaseTerraBowItem(Properties properties, float baseDamage, Builder builder) {
-        super(builder.buildProperties(properties.stacksTo(1)));
+    public BaseTerraBowItem(Properties properties, float baseDamage, ModifyArrowBuilder modifyArrowBuilder) {
+        super(modifyArrowBuilder.buildProperties(properties.stacksTo(1)));
         this.baseDamage = baseDamage;
         this.arrowModifier = new BaseArrowEntity.Builder();
-        builder.modifyArrowBuilder.forEach(m -> m.accept(this.arrowModifier));
-        this.modifyArrowBuilder = builder;
+        modifyArrowBuilder.modifyArrowBuilder.forEach(m -> m.accept(this.arrowModifier));
+        this.modifyArrowBuilder = modifyArrowBuilder;
     }
 
-    public BaseTerraBowItem(float baseDamage, Builder builder) {
-        this(new Properties(), baseDamage, builder);
+    public BaseTerraBowItem(float baseDamage, ModifyArrowBuilder modifyArrowBuilder) {
+        this(new Properties(), baseDamage, modifyArrowBuilder);
     }
+
+    //region 获取射击参数
+
+    /**
+     * 获取多重射击数量
+     */
+    public int getMultiShoot() {
+        return modifyArrowBuilder.multiShoot;
+    }
+
+    /**
+     * 获取多重射击条件
+     */
+    public Predicate<ItemStack> getCanMultiShoot() {
+        return modifyArrowBuilder.canMultiShoot;
+    }
+
+    /**
+     * 获取射击偏移
+     */
+    public float getInaccuracy() {
+        return modifyArrowBuilder.inaccuracy;
+    }
+
+    /**
+     * 获取多重射击位置偏移函数
+     */
+    @Nullable
+    public BiFunction<Integer, Integer, Vec3> getMultiShootOffset() {
+        return modifyArrowBuilder.multiShootOffset;
+    }
+
+    /**
+     * 获取弓箭满蓄力效果
+     */
+    @Nullable
+    public List<EffectStrategyComponent> getFullPullHitEffects() {
+        return this.arrowModifier.fullPullHitEffects;
+    }
+
+    /**
+     * 获取木箭转化函数
+     */
+    @Nullable
+    public EntityTransform getEntityTransform() {
+        return modifyArrowBuilder.entityTransform;
+    }
+    //endregion
 
     @Override
     public boolean supportsEnchantment(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
@@ -70,8 +125,8 @@ public class BaseTerraBowItem extends BowItem {
 
     @Override
     public @NotNull AbstractArrow customArrow(@NotNull AbstractArrow arrow, @NotNull ItemStack projectileStack, @NotNull ItemStack weaponStack) {
-        int multiShoot = modifyArrowBuilder.multiShoot;
-        if (modifyArrowBuilder.canMultiShoot.test(projectileStack)) {
+        int multiShoot = getMultiShoot();
+        if (getCanMultiShoot().test(projectileStack)) {
             // 可以分裂但不满足条件没有分裂的箭伤害合成一支箭
             float damage = baseDamage / multiShoot;
             arrow.setBaseDamage(damage);
@@ -110,18 +165,18 @@ public class BaseTerraBowItem extends BowItem {
             float f4 = f2 + f3 * (float) ((i + 1) / 2) * f1;
             f3 = -f3;
 
-            int count = modifyArrowBuilder.multiShoot;
-            if (!modifyArrowBuilder.canMultiShoot.test(itemstack)) {
+            int count = getMultiShoot();
+            if (!getCanMultiShoot().test(itemstack)) {
                 count = 1;
             }
             for (int k = 0; k < count; k++) {
 //                    float f0 = count * 5 - k * 10f;
                 Projectile projectile = this.createProjectile(level, shooter, weapon, itemstack, isCrit);
-                this.shootProjectile(shooter, projectile, i, velocity, inaccuracy + modifyArrowBuilder.inaccuracy, f4 + 0, target);
+                this.shootProjectile(shooter, projectile, i, velocity, inaccuracy + getInaccuracy(), f4 + 0, target);
 
-                if (modifyArrowBuilder.multiShootOffset != null) {
+                if (getMultiShootOffset() != null) {
                     // 多重射击初始位置偏移
-                    Vec3 offset = modifyArrowBuilder.multiShootOffset.apply(k, count);
+                    Vec3 offset = getMultiShootOffset().apply(k, count);
                     // 变换到本地坐标系
                     Vec3 initDirection = projectile.getDeltaMovement();
                     float yaw = (float) (-Math.atan2(initDirection.z, initDirection.x));
@@ -162,7 +217,7 @@ public class BaseTerraBowItem extends BowItem {
 
     @Override
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity entity, @NotNull ItemStack stack, int remainingUseDuration) {
-        if (this.arrowModifier.fullPullHitEffects == null) {
+        if (getFullPullHitEffects() == null) {
             return;
         }
         float f = getUseDuration(stack, entity) - remainingUseDuration;
@@ -180,33 +235,29 @@ public class BaseTerraBowItem extends BowItem {
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("attribute.name.generic.attack_damage").append(": ").append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
-        if (modifyArrowBuilder.multiShoot > 1) {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.max_count").append(": ").append(String.format("%d", modifyArrowBuilder.multiShoot)).withColor(0x00FF00));
+        tooltipComponents.add(tooltip(ATTACK_DAMAGE_TEXT).append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
+        if (getMultiShoot() > 1) {
+            tooltipComponents.add(tooltip(MAX_COUNT_TEXT).append(String.format("%d", getMultiShoot())).withColor(0x00FF00));
         }
         // 命中效果
         EffectStrategyComponent hitEffect = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
         if (hitEffect != null) {
-            IEffectStrategy.appendDescription(tooltipComponents,
-                    hitEffect.effects(),
-                    Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF));
+            IEffectStrategy.appendDescription(tooltipComponents, hitEffect.effects(), tooltip(ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
         }
 
         // 蓄满命中效果
         var fullPullHitEffect = stack.get(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY);
         if (fullPullHitEffect != null) {
-            IEffectStrategy.appendDescription(tooltipComponents,
-                    fullPullHitEffect.effects(),
-                    Component.translatable("tooltip.item.confluence.bow_full_pull_on_hit_effects").append(": ").withColor(0xFF00FF));
+            IEffectStrategy.appendDescription(tooltipComponents, fullPullHitEffect.effects(), tooltip(BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
         }
 
         // 木箭转化
-        if (modifyArrowBuilder.entityTransform != null) {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.arrow_transform").append(": ").append(modifyArrowBuilder.entityTransform.type.getDescription()).withColor(0xF1b0F4));
+        if (getEntityTransform() != null) {
+            tooltipComponents.add(tooltip(ARROW_TRANSFORM_TEXT).append(getEntityTransform().type.getDescription()).withColor(0xF1b0F4));
         } else {
             Item transformArrow = arrowModifier.getTransformArrow();
             if (transformArrow != null) {
-                tooltipComponents.add(Component.translatable("tooltip.item.confluence.arrow_transform").append(": ").append(Component.translatable(transformArrow.getDescriptionId())).withColor(0xF1b0F4));
+                tooltipComponents.add(tooltip(ARROW_TRANSFORM_TEXT).append(Component.translatable(transformArrow.getDescriptionId())).withColor(0xF1b0F4));
             }
         }
 
@@ -233,7 +284,7 @@ public class BaseTerraBowItem extends BowItem {
      * <p>弓的属性修饰</p>
      * <p>若注册在弓里面，则是弓的属性；若注册在箭里面，则是箭的属性。二者可以叠加</p>
      */
-    public static class Builder {
+    public static class ModifyArrowBuilder {
         List<Function<Item.Properties, Item.Properties>> modifyProperties = new ArrayList<>();
         List<Consumer<BaseArrowEntity.Builder>> modifyArrowBuilder = new ArrayList<>();
         int multiShoot = 1;
@@ -254,7 +305,7 @@ public class BaseTerraBowItem extends BowItem {
          *
          * @param transformArrow 实体构造信息
          */
-        public Builder setEntityTransform(EntityTransform transformArrow) {
+        public ModifyArrowBuilder setEntityTransform(EntityTransform transformArrow) {
             this.entityTransform = transformArrow;
             return this;
         }
@@ -264,7 +315,7 @@ public class BaseTerraBowItem extends BowItem {
          *
          * @param multiShoot 数量
          */
-        public Builder setMultiShoot(int multiShoot) {
+        public ModifyArrowBuilder setMultiShoot(int multiShoot) {
             this.multiShoot = multiShoot;
             return this;
         }
@@ -275,7 +326,7 @@ public class BaseTerraBowItem extends BowItem {
          * @param multiShoot       数量
          * @param multiShootOffset 偏移函数，第一个参数为当前射击序号，第二个参数为总射击数量
          */
-        public Builder setMultiShoot(int multiShoot, BiFunction<Integer, Integer, Vec3> multiShootOffset) {
+        public ModifyArrowBuilder setMultiShoot(int multiShoot, BiFunction<Integer, Integer, Vec3> multiShootOffset) {
             this.multiShoot = multiShoot;
             this.multiShootOffset = multiShootOffset;
             return this;
@@ -284,7 +335,7 @@ public class BaseTerraBowItem extends BowItem {
         /**
          * 当满足条件时，允许多重射击
          */
-        public Builder setCanMultiShoot(Predicate<ItemStack> canMultiShoot) {
+        public ModifyArrowBuilder setCanMultiShoot(Predicate<ItemStack> canMultiShoot) {
             this.canMultiShoot = canMultiShoot;
             return this;
         }
@@ -292,7 +343,7 @@ public class BaseTerraBowItem extends BowItem {
         /**
          * 设置耐久度
          */
-        public Builder setDuration(int duration) {
+        public ModifyArrowBuilder setDuration(int duration) {
             this.modifyProperties.add(p -> p.durability(duration));
             return this;
         }
@@ -300,7 +351,7 @@ public class BaseTerraBowItem extends BowItem {
         /**
          * 设置命中效果
          */
-        public Builder setOnHitEffect(EffectStrategyComponent component) {
+        public ModifyArrowBuilder setOnHitEffect(EffectStrategyComponent component) {
             this.modifyProperties.add(p -> p.component(TEDataComponentTypes.EFFECT_STRATEGY, component));
             this.addModifyArrowBuilder(m -> m.addOnHitEffect(component));
             return this;
@@ -309,7 +360,7 @@ public class BaseTerraBowItem extends BowItem {
         /**
          * 设置满蓄力命中效果
          */
-        public Builder setFullPullHitEffect(EffectStrategyComponent component) {
+        public ModifyArrowBuilder setFullPullHitEffect(EffectStrategyComponent component) {
             this.modifyProperties.add(p -> p.component(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY, component));
             this.addModifyArrowBuilder(m -> m.addFullPullHitEffect(component));
             return this;
@@ -318,7 +369,7 @@ public class BaseTerraBowItem extends BowItem {
         /**
          * 设置木箭转换泰拉箭
          */
-        public Builder setArrowTransform(BaseTerraArrowItem arrow) {
+        public ModifyArrowBuilder setArrowTransform(BaseTerraArrowItem arrow) {
             this.modifyArrowBuilder.add(m -> m.setTransformArrow(arrow));
             return this;
         }
@@ -326,7 +377,7 @@ public class BaseTerraBowItem extends BowItem {
         /**
          * 设置不可破坏
          */
-        public Builder setUnBreakable() {
+        public ModifyArrowBuilder setUnBreakable() {
             this.modifyProperties.add(p -> p.component(DataComponents.UNBREAKABLE, new Unbreakable(true)));
             return this;
         }
@@ -334,7 +385,7 @@ public class BaseTerraBowItem extends BowItem {
         /**
          * 设置稀有度
          */
-        public Builder setRarity(ModRarity rarity) {
+        public ModifyArrowBuilder setRarity(ModRarity rarity) {
             this.modifyProperties.add(p -> p.component(ConfluenceMagicLib.MOD_RARITY, rarity));
             return this;
         }
@@ -342,7 +393,7 @@ public class BaseTerraBowItem extends BowItem {
         /**
          * 添加属性修改器
          */
-        public Builder addModifyArrowBuilder(Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
+        public ModifyArrowBuilder addModifyArrowBuilder(Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
             this.modifyArrowBuilder.add(modifyArrowBuilder);
             return this;
         }
@@ -350,7 +401,7 @@ public class BaseTerraBowItem extends BowItem {
         /**
          * 设置额外不准确度
          */
-        public Builder setInaccuracy(float inaccuracy) {
+        public ModifyArrowBuilder setInaccuracy(float inaccuracy) {
             this.inaccuracy = inaccuracy;
             return this;
         }
@@ -380,6 +431,10 @@ public class BaseTerraBowItem extends BowItem {
 
     @FunctionalInterface
     public interface ArrowFactory {
-        BaseArrowEntity create(EntityType<? extends AbstractArrow> type, LivingEntity shooter, ItemStack pickupItemStack, ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow, BaseTerraBowItem.Builder modifyConsumer);
+        BaseArrowEntity create(EntityType<? extends AbstractArrow> type, LivingEntity shooter, ItemStack pickupItemStack, ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow, ModifyArrowBuilder modifyConsumer);
+    }
+
+    public static @NotNull MutableComponent tooltip(String text) {
+        return Component.translatable(text).append(": ");
     }
 }

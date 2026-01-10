@@ -18,7 +18,7 @@ public class DaedalusStormbow extends BaseTerraBowItem {
     private final IGeneration generation = new AboveFallenGeneration(30, 60, 25, 2, 25, 5);
 
     public DaedalusStormbow(float baseDamage, ModRarity rarity) {
-        super(baseDamage, new BaseTerraBowItem.Builder().setRarity(rarity));
+        super(baseDamage, new ModifyArrowBuilder().setRarity(rarity));
     }
 
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity owner, @NotNull ItemStack weapon, int remainingUseDuration) {

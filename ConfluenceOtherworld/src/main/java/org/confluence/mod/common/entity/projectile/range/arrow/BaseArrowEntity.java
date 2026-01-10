@@ -102,7 +102,7 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param arrow           预定义的箭的类型
      * @param modifyConsumer  属性额外修饰
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraBowItem.Builder modifyConsumer) {
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraBowItem.ModifyArrowBuilder modifyConsumer) {
         this(pEntityType, owner, pickupItemStack, firedFromWeapon, arrow);
         if (modifyConsumer != null)
             modifyConsumer.applyModifiers(modify);

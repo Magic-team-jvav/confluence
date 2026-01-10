@@ -273,6 +273,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.shadow_jousting_lance.0", "Build momentum to increase attack power");
         add("tooltip.item.confluence.rotten_bone_dust.0", "Right-click to spawn vegetation in the Corruption, or corrupt Skeletons");
         add("tooltip.item.confluence.bloodstained_powder.0", "Right-click to spawn vegetation in the Crimson, or infest Creepers with Crimson");
+        add("tooltip.item.confluence.deer_thing.0", "Right-click to summon the Deerclops, which will emerge amidst the frigid winds of the Tundra");
+        add("tooltip.item.confluence.deer_thing.1", "A frigid eye that glimmers with the sight of another world in its socket");
+        add("tooltip.item.confluence.deer_thing.2", "\"Something big is coming... Don't draw Klaus here again!\"");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");

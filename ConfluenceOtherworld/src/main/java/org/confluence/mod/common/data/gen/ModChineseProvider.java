@@ -217,6 +217,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.shadow_jousting_lance.0", "提升速度来加强攻击力");
         add("tooltip.item.confluence.rotten_bone_dust.0", "右键以在腐化之地催生植被，或腐化骷髅");
         add("tooltip.item.confluence.bloodstained_powder.0", "右键以在猩红之地催生植被，或猩红化苦力怕");
+        add("tooltip.item.confluence.deer_thing.0", "右键使用以召唤独眼巨鹿，它会在冰原的寒风中现身");
+        add("tooltip.item.confluence.deer_thing.1", "一只透着寒意的眼球，它的眼眶中映出了另一个世界的光景");
+        add("tooltip.item.confluence.deer_thing.2", "“有个大家伙要来了…别再引来克劳斯！”");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");

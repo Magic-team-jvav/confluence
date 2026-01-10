@@ -804,6 +804,22 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
                 )
         );
+        add(TEMonsterEntities.SPIKED_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spiked_slime"),slimeCommon(-10644993)
+        );
+        add(TEMonsterEntities.SPIKED_ICE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spiked_ice_slime"),slimeCommon(-10628609)
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.ICE_CREAM.get()))
+                        .apply(random0To1)
+                        .add(EmptyLootItem.emptyItem().setWeight(933))
+                )
+        );
+        add(TEMonsterEntities.SPIKED_JUNGLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spiked_jungle_slime"),slimeCommon(-6570130)
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.STINGER.get()))
+                        .apply(random0To1)
+                        .add(EmptyLootItem.emptyItem())
+                )
+        );
         add(TEMonsterEntities.BLUE_JELLYFISH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_jellyfish"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.JELLYFISH_NECKLACE))

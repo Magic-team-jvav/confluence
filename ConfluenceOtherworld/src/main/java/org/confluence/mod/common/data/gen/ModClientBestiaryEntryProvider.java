@@ -266,7 +266,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.frozen_zombie.pink", "", List.of(ArmorItems.PINK_INSULATED_SHOES.toStack(), ArmorItems.PINK_INSULATED_PANTS.toStack(), ArmorItems.PINK_SNOW_SUITS.toStack(), ArmorItems.PINK_SNOW_CAPS.toStack()), provider, builder -> builder.order(21910).rarity(5).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
                 // 冰雪巨人
                 // 狼
-                // 尖刺冰雪史莱姆
+                .add(TEMonsterEntities.SPIKED_ICE_SLIME, builder -> builder.order(22200).rarity(2).background(UNDERGROUND_SNOW).filters(FilterEntry.UNDERGROUND_SNOW))
                 // 青壳虫
                 // 亡灵维京海盗
                 .add(TEMonsterEntities.SNOW_FLINX, builder -> builder.order(22500).rarity(3).background(UNDERGROUND_SNOW).filters(FilterEntry.UNDERGROUND_SNOW))
@@ -302,7 +302,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.SNATCHER, builder -> builder.order(25500).rarity(1).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
                 // 巨型飞狐
                 // 跳跳兽
-                // 尖刺丛林史莱姆
+                .add(TEMonsterEntities.SPIKED_JUNGLE_SLIME, builder -> builder.order(25800).rarity(2).background(UNDERGROUND_JUNGLE).filters(FilterEntry.UNDERGROUND_JUNGLE))
                 // 紫胶虫
                 // 骷髅博士
                 // 蜜蜂
@@ -562,12 +562,13 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 水晶史莱姆
                 // 弹力史莱姆
                 // 飞翔史莱姆
-                // 激光眼
+                .add(TEBossEntities.RETINAZER, builder -> builder.order(52100).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.BOSS_ENEMY, FilterEntry.NIGHTTIME))
+                .add(TEBossEntities.SPAZMATISM, builder -> builder.order(52200).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.BOSS_ENEMY, FilterEntry.NIGHTTIME))
                 // 魔焰眼
                 // 毁灭者
                 // 探测怪
-                // 机械骷髅王
-                // 世纪之花
+                .add(TEBossEntities.SKELETRON_PRIME, builder -> builder.order(52500).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.BOSS_ENEMY, FilterEntry.NIGHTTIME))
+                .add(TEBossEntities.PLANTERA, builder -> builder.order(52600).rarity(4).background(UNDERGROUND_JUNGLE).filters(FilterEntry.BOSS_ENEMY, FilterEntry.UNDERGROUND_JUNGLE))
                 // 光之女皇
                 // 石巨人
                 // 猪龙鱼公爵

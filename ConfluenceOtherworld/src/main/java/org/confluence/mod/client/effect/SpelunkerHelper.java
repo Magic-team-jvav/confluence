@@ -171,7 +171,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
     public void defaultBlocks() {
 
         //远古残骸
-        putTarget(Blocks.ANCIENT_DEBRIS, 0x5f2000, true, ShowType.SPELUNKER);//这个还必须放这个位置
+        putTarget(Blocks.ANCIENT_DEBRIS, 0x5f2000, true, ShowType.SPELUNKER, Items.NETHERITE_SCRAP);//这个还必须放这个位置
 
         //钻石矿
         putTarget(Blocks.DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
@@ -324,9 +324,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(FLESHIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
 
         // 化石对标
-        putTarget(COLD_CRYSTAL_ORE.get(), 0x3db7b0, true, ShowType.SPELUNKER);
-        putTarget(GELSTONE_ORE.get(), 0x62b73d, true, ShowType.SPELUNKER);
-        putTarget(OPAL_ORE.get(), 0x4bbcff, true, ShowType.SPELUNKER);
+        putTarget(COLD_CRYSTAL_ORE.get(), 0x3db7b0, true, ShowType.SPELUNKER/*,COLD_CRYSTAL*/);
+        putTarget(GELSTONE_ORE.get(), 0x62b73d, true, ShowType.SPELUNKER/*,GELSTONE*/);
+        putTarget(OPAL_ORE.get(), 0x4bbcff, true, ShowType.SPELUNKER/*,OPAL*/);
 
         // 狱石
         putMaterialTarget(HELLSTONE.get(), 0xea650e, true, ShowType.SPELUNKER, RAW_HELLSTONE);

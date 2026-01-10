@@ -289,10 +289,10 @@ dependencies {
     }
 
     compileOnly "curse.maven:lithium-360438:6290413"
-
     if (false) {
         runtimeOnly "curse.maven:lithium-360438:6290413"
     }
+
     /**********************************************************/
 
     runtimeOnly "curse.maven:worldedit-225608:5830452"
@@ -376,10 +376,14 @@ dependencies {
         runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
     }
     if (spark) {
-        implementation "curse.maven:spark-361579:6225208"
+        runtimeOnly "curse.maven:spark-361579:6225208"
     }
     if (apotheosis) {
         runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    }
+    if (false) { // 会与sodium导致类加载锁
+        runtimeOnly "curse.maven:malum-484064:7307339"
+        runtimeOnly "curse.maven:lodestone-616457:7264731"
     }
 }
 
@@ -420,7 +424,8 @@ tasks.register("genVoilaRun") {
     def programParam = new File(projectDir, "build/moddev/clientRunProgramArgs.txt").toString().replace("\\", "\\\\")
     def workingDir = new File(projectDir, "run")
     def vmArgs = new File(projectDir, "build/moddev/clientRunVmArgs.txt").toString().replace("\\", "\\\\")
-    def moduleName = "${project.rootProject.name}.${project.name}.${sourceSets.main.name}" // 写死了自身必定在第二层
+    def moduleName = "${project.rootProject.name}.${project.name}.${sourceSets.main.name}"
+    // 写死了自身必定在第二层
     def classesDir = new File(projectDir, "build/classes/java/main").toString().replace("\\", "\\\\")
     def resDir = new File(projectDir, "build/resources/main").toString().replace("\\", "\\\\")
     def modId = mod_id

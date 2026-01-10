@@ -10,11 +10,9 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -25,17 +23,9 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.block.functional.TuffBoothBlock;
 import org.joml.Vector3d;
 
-import java.util.Objects;
-
 import static org.confluence.lib.util.RenderUtils.drawCube;
 
 public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBlock.TuffBoothBlockEntity> {
-
-
-    public TuffBoothBlockRenderer(BlockEntityRendererProvider.Context context) {
-        System.out.println("TuffBoothBlockRenderer initialized!");
-    }
-
     public static void renderLineBox(PoseStack poseStack, VertexConsumer consumer, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha, float red2, float green2, float blue2, boolean withoutUp) {
         PoseStack.Pose posestack$pose = poseStack.last();
         float f = (float) minX;

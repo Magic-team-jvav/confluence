@@ -1,18 +1,14 @@
 package org.confluence.mod.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LanternBlock;
 import org.confluence.mod.common.block.functional.BaseSoulInABottleBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.joml.Vector2d;
 import org.joml.Vector3d;
 import org.joml.Vector3i;
 
@@ -43,9 +39,6 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
             FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get(), new Vector3i(0xffca49, 0xfdffdb, 0xfff594),
             FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.get(), new Vector3i(0x1e0034, 0xe3bbff, 0x9f1bff)
     );
-
-    public SoulBottleBlockRenderer(BlockEntityRendererProvider.Context context) {
-    }
 
     @Override
     public void render(BaseSoulInABottleBlock.BEntity blockEntity, float partialTick,

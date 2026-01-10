@@ -257,6 +257,9 @@ public final class ModTabs {
                         output.accept(SwordItems.DEVELOPER_SWORD.get());
                         output.accept(TEBoomerangItems.DEVELOPER_BOOMERANG.get());
                         output.accept(BowItems.DEVELOPER_BOW.get());
+                        output.accept(ModBlocks.TEST_BLOCK.get());
+                        output.accept(ModBlocks.AETHERIUM_CAULDRON.get());
+                        output.accept(ModBlocks.HONEY_CAULDRON.get());
                     })
                     .withTabsBefore(EnemyBanner.TAB.getId())
                     .build());

@@ -1722,6 +1722,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹生命红木板");
         add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹发光蘑菇木板");
         add(NatureBlocks.DYNASTY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹王朝木板");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹阴森木板");
         add(DecorativeBlocks.GRANITE_BRICKS.get(), "花岗岩砖");
         add(DecorativeBlocks.GRANITE_COLUMN.get(), "花岗岩柱");
         add(DecorativeBlocks.POLISHED_GRANITE.get(), "磨制花岗岩");

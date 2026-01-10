@@ -217,9 +217,6 @@ public class FunctionalBlocks {
             );
 
 
-    // test block 要测试直接复制下面这一行改名
-    public static final DeferredBlock<Block> TEST_BLOCK   = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.COLOR_BLUE)));
-
 
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier) {

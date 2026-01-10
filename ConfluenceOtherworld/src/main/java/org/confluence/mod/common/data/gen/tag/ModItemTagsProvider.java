@@ -1154,6 +1154,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TCItems.EVERLASTING.get(),
                 TCItems.BASE_POINT.get(),
                 AxeItems.CHLOROPHYTE_GREATAXE.get(),
+                ConsumableItems.FALLEN_SOUL_CORE.get(),
+                VanityArmorItems.MUMMY_MASK.get(),
+                VanityArmorItems.MUMMY_SHIRT.get(),
+                VanityArmorItems.MUMMY_PANTS.get(),
+                VanityArmorItems.MUMMY_SHOES.get(),
                 ArmorItems.GOGGLES.get(),
                 ArmorItems.GREEN_CAP.get(),
                 ArmorItems.WIZARD_HAT.get(),
@@ -1395,6 +1400,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TEFigureBlocks.FIGURE.asItem(),
                 TEFigureBlocks.FIGURE2.asItem(),
                 TEFigureBlocks.FIGURE3.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
+                DecorativeBlocks.DEERCLOPS_RELIC.asItem(),
+                DecorativeBlocks.THE_TWINS_RELIC.asItem(),
+                DecorativeBlocks.SKELETRON_PRIME_RELIC.asItem(),
                 LanceItems.HALLOWED_JOUSTING_LANCE.get(),
                 LanceItems.SHADOW_JOUSTING_LANCE.get()
         );

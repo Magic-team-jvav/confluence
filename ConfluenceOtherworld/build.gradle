@@ -188,8 +188,7 @@ dependencies {
     compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
     implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
 
-    implementation(files('libs/lunar-1.7.4.jar')) // 使用修改了MANIFEST.MF的农历库，以防止有些服务端无法识别
-    jarJar('cn.6tail:lunar:1.7.4')
+    implementation(jarJar(files('libs/lunar-1.7.4.jar'))) // 使用修改了MANIFEST.MF的农历库，以防止有些服务端无法识别
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     if (true) {

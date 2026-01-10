@@ -235,20 +235,20 @@ public class BaseTerraBowItem extends BowItem {
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-        tooltipComponents.add(tooltip(ATTACK_DAMAGE_TEXT).append(": ").append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
+        tooltipComponents.add(tooltip(ATTACK_DAMAGE_TEXT).append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
         if (getMultiShoot() > 1) {
-            tooltipComponents.add(tooltip(MAX_COUNT_TEXT).append(": ").append(String.format("%d", getMultiShoot())).withColor(0x00FF00));
+            tooltipComponents.add(tooltip(MAX_COUNT_TEXT).append(String.format("%d", getMultiShoot())).withColor(0x00FF00));
         }
         // 命中效果
         EffectStrategyComponent hitEffect = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
         if (hitEffect != null) {
-            IEffectStrategy.appendDescription(tooltipComponents, hitEffect.effects(), tooltip(ON_HIT_EFFECTS_TEXT).append(": ").withColor(0xFF00FF));
+            IEffectStrategy.appendDescription(tooltipComponents, hitEffect.effects(), tooltip(ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
         }
 
         // 蓄满命中效果
         var fullPullHitEffect = stack.get(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY);
         if (fullPullHitEffect != null) {
-            IEffectStrategy.appendDescription(tooltipComponents, fullPullHitEffect.effects(), tooltip(BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT).append(": ").withColor(0xFF00FF));
+            IEffectStrategy.appendDescription(tooltipComponents, fullPullHitEffect.effects(), tooltip(BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
         }
 
         // 木箭转化

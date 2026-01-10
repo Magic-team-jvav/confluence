@@ -1,8 +1,12 @@
 package org.confluence.mod.client.gui.hud;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.Util;
+import net.minecraft.client.Camera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
@@ -10,13 +14,18 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.GuiSprite;
@@ -66,6 +75,7 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
     public static boolean inSelectHUD = false;
     private static boolean[] available = new boolean[AvailableHouseSelectPacketS2C.size];
     private static int selected = -1;
+    private static Component regionText;
 
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
@@ -74,7 +84,8 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
         Minecraft minecraft = Minecraft.getInstance();
         MouseHandler handler = minecraft.mouseHandler;
         Font font = minecraft.font;
-        int x = guiGraphics.guiWidth() / 2;
+        int halfW = guiGraphics.guiWidth() / 2;
+        int x = halfW;
         int y = guiGraphics.guiHeight() / 2;
         Window window = minecraft.getWindow();
         if (InputConstants.isKeyDown(window.getWindow(), InputConstants.KEY_ESCAPE)) {
@@ -110,7 +121,7 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
 
                 x += 24;
                 if (x >= m) {
-                    x = guiGraphics.guiWidth() / 2;
+                    x = halfW;
                     y += 24;
                 }
             }
@@ -123,6 +134,10 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
             guiGraphics.drawString(font, tip1, x - font.width(tip1) / 2, y + 15 - font.lineHeight, 0xFFFFFF);
             guiGraphics.drawString(font, tip2, x - font.width(tip2) / 2, y + 15, 0xFFFFFF);
             handler.grabMouse();
+        }
+
+        if (regionText != null) {
+            guiGraphics.drawCenteredString(font, regionText, halfW, y + 32, 0xFFFFFF);
         }
     }
 
@@ -140,7 +155,95 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
         HouseSelectPacketC2S.sendToServer(selected, pos);
     }
 
-    public static void handle(boolean[] values) {
+    public static void handlePacket(boolean[] values) {
         available = values;
+    }
+
+    private static final WorldBorder worldBorder;
+
+    static {
+        worldBorder = new WorldBorder();
+        worldBorder.setSize(256);
+    }
+
+    public static void updatePlayerRegionAt(LocalPlayer player) {
+        if (inSelectHUD) {
+            ChunkPos pos = player.chunkPosition();
+            int x = (pos.x + 8) >> 4 << 4;
+            int z = (pos.z + 8) >> 4 << 4;
+            if (worldBorder.getCenterX() != x || worldBorder.getCenterZ() != z) {
+                regionText = Component.literal("Region(x=[" + (x - 8) + ", " + (x + 7) + "], z=[" + (z - 8) + ", " + (z + 7) + "])");
+                worldBorder.setCenter(x * 16, z * 16);
+            }
+        }
+    }
+
+    /// [net.minecraft.client.renderer.LevelRenderer#renderWorldBorder]
+    public static void renderRegionInWorld(Minecraft minecraft) {
+        if (!inSelectHUD) return;
+        Camera camera = minecraft.gameRenderer.getMainCamera();
+        RenderSystem.enableBlend();
+        RenderSystem.enableDepthTest();
+        RenderSystem.blendFuncSeparate(
+                GlStateManager.SourceFactor.SRC_ALPHA,
+                GlStateManager.DestFactor.ONE,
+                GlStateManager.SourceFactor.ONE,
+                GlStateManager.DestFactor.ZERO
+        );
+        RenderSystem.depthMask(Minecraft.useShaderTransparency());
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        RenderSystem.polygonOffset(-3.0F, -3.0F);
+        RenderSystem.enablePolygonOffset();
+        RenderSystem.disableCull();
+        BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        float x = (float) camera.getPosition().x;
+        float z = (float) camera.getPosition().z;
+        int a = (int) (Mth.clamp(Math.pow(1.0 - worldBorder.getDistanceToBorder(x, z) / 256, 4.0), 0.0, 1.0) * 51);
+        float depthFar = minecraft.gameRenderer.getDepthFar();
+        float minX = (float) worldBorder.getMinX();
+        float maxX = (float) worldBorder.getMaxX();
+        float minZ = (float) worldBorder.getMinZ();
+        float maxZ = (float) worldBorder.getMaxZ();
+        float minDx = minX - x;
+        float maxDx = maxX - x;
+        float minDz = minZ - z;
+        float maxDz = maxZ - z;
+        if (x > maxX - 256) {
+            builder.addVertex(maxDx, -depthFar, minDz).setColor(153, 255, 0, a);
+            builder.addVertex(maxDx, -depthFar, maxDz).setColor(153, 255, 0, a);
+            builder.addVertex(maxDx, depthFar, maxDz).setColor(153, 255, 0, a);
+            builder.addVertex(maxDx, depthFar, minDz).setColor(153, 255, 0, a);
+        }
+        if (x < minX + 256) {
+            builder.addVertex(minDx, -depthFar, minDz).setColor(153, 255, 0, a);
+            builder.addVertex(minDx, -depthFar, maxDz).setColor(153, 255, 0, a);
+            builder.addVertex(minDx, depthFar, maxDz).setColor(153, 255, 0, a);
+            builder.addVertex(minDx, depthFar, minDz).setColor(153, 255, 0, a);
+        }
+        if (z > maxZ - 256) {
+            builder.addVertex(minDx, -depthFar, maxDz).setColor(153, 255, 0, a);
+            builder.addVertex(maxDx, -depthFar, maxDz).setColor(153, 255, 0, a);
+            builder.addVertex(maxDx, depthFar, maxDz).setColor(153, 255, 0, a);
+            builder.addVertex(minDx, depthFar, maxDz).setColor(153, 255, 0, a);
+        }
+        if (z < minZ + 256) {
+            builder.addVertex(minDx, -depthFar, minDz).setColor(153, 255, 0, a);
+            builder.addVertex(maxDx, -depthFar, minDz).setColor(153, 255, 0, a);
+            builder.addVertex(maxDx, depthFar, minDz).setColor(153, 255, 0, a);
+            builder.addVertex(minDx, depthFar, minDz).setColor(153, 255, 0, a);
+        }
+
+        MeshData meshdata = builder.build();
+        if (meshdata != null) {
+            BufferUploader.drawWithShader(meshdata);
+        }
+
+        RenderSystem.enableCull();
+        RenderSystem.polygonOffset(0.0F, 0.0F);
+        RenderSystem.disablePolygonOffset();
+        RenderSystem.disableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.depthMask(true);
     }
 }

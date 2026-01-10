@@ -154,6 +154,7 @@ public final class ModEvents {
                     NPCSpawner.INSTANCE,
                     Bestiary.INSTANCE,
                     GlobalCloakData.INSTANCE
+//                    HouseHandler.INSTANCE
             );
             GlobalCloakData.INSTANCE.initialize();
             ModLoader.postEvent(new RegisterEvilMaterialReplacesEvent());

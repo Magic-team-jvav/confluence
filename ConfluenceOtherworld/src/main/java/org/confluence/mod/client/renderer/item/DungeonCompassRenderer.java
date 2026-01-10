@@ -6,12 +6,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.init.item.ToolItems;
 
 public class DungeonCompassRenderer {
     private static DungeonCompassRenderer INSTANCE;
@@ -26,6 +31,25 @@ public class DungeonCompassRenderer {
             INSTANCE = new DungeonCompassRenderer();
         }
         return INSTANCE;
+    }
+
+    public static void renderInWorld(PoseStack poseStack, LocalPlayer player, Minecraft minecraft) {
+        ItemStack headItem = player.getInventory().armor.get(3);
+        if (headItem.isEmpty() || !headItem.is(ToolItems.DUNGEON_COMPASS)) {
+            return;
+        }
+        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(headItem);
+        if (tag == null) return;
+        int[] pos = tag.getIntArray("pos");
+        if (pos.length != 3) return;
+        getInstance().render(
+                poseStack,
+                minecraft.renderBuffers().bufferSource(),
+                player,
+                pos[0],
+                pos[1],
+                pos[2]
+        );
     }
 
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, AbstractClientPlayer player, int x, int y, int z) {

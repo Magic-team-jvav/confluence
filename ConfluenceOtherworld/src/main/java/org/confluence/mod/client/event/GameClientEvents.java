@@ -1,5 +1,6 @@
 package org.confluence.mod.client.event;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -66,7 +67,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
-import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
@@ -131,6 +131,7 @@ public final class GameClientEvents {
                     !player.getCooldowns().isOnCooldown(sword)) {
                 SwordProjectilePacketC2S.sendToServer();
             }
+            HouseSelectHUD.updatePlayerRegionAt(player);
         }
         DeathAnimUtils.clear();
     }
@@ -266,27 +267,10 @@ public final class GameClientEvents {
             StarPhaseHandler.render(event);
             MeteorLandingHandler.render(event);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-            dungeonCompass:
-            {
-                ItemStack headItem = player.getInventory().armor.get(3);
-                if (headItem.isEmpty() || !headItem.is(ToolItems.DUNGEON_COMPASS)) {
-                    break dungeonCompass;
-                }
-                CompoundTag tag = LibUtils.getItemStackNbtIfPresent(headItem);
-                if (tag == null) break dungeonCompass;
-                int[] pos = tag.getIntArray("pos");
-                if (pos.length != 3) break dungeonCompass;
-                DungeonCompassRenderer.getInstance().render(
-                        event.getPoseStack(),
-                        minecraft.renderBuffers().bufferSource(),
-                        player,
-                        pos[0],
-                        pos[1],
-                        pos[2]
-                );
-            }
-
-            LucyTheAxeDialogRenderer.renderInWorld(minecraft, event.getPoseStack());
+            PoseStack poseStack = event.getPoseStack();
+            DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
+            LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
+            HouseSelectHUD.renderRegionInWorld(minecraft);
         }
     }
 

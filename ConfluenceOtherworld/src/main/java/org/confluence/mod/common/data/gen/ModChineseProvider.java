@@ -70,7 +70,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.lock.or", " 或 ");
         add("message.confluence.dungeon_not_found", "未成功找到地牢");
         add("message.confluence.peddlers_satchel", "旅商的背包变大！");
-        add("message.confluence.house_detect.occupied", "这个房间已被占领！");
+        add("message.confluence.house_detect.occupied", "这个房间已被%1$s %2$s占领！");
         add("message.confluence.house_detect.npc_not_fount", "未在附近找到该NPC！");
         add("message.confluence.house_select.tip1", "按一次Esc以退出，长按Alt以选择");
         add("message.confluence.house_select.tip2", "右击以检查、添加或移除房间");

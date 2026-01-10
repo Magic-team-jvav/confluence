@@ -620,11 +620,11 @@ public final class NPCSpawner implements IGlobalData {
         public static final Codec<Region> CODEC = Codec.LONG.xmap(Region::new, Region::toLong);
 
         public Region(BlockPos pos) {
-            this(new ChunkPos(pos));
+            this((((pos.getX() >> 4) + 8) >> 4 << 4) - 8, (((pos.getZ() >> 4) + 8) >> 4 << 4) - 8);
         }
 
         public Region(long packed) {
-            this(new ChunkPos(packed));
+            this((((int) packed + 8) >> 4 << 4) - 8, (((int) (packed >> 32) + 8) >> 4 << 4) - 8);
         }
 
         public Region(ChunkPos pos) {

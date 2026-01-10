@@ -25,7 +25,7 @@ public class BeeArrow extends BaseArrowEntity {
         this.pickup = Pickup.DISALLOWED;
     }
 
-    public BeeArrow(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseTerraArrowItem arrow, BaseTerraBowItem.Builder modifyConsumer) {
+    public BeeArrow(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseTerraArrowItem arrow, BaseTerraBowItem.ModifyArrowBuilder modifyConsumer) {
         super(pEntityType, owner, pickupItemStack, firedFromWeapon, arrow, modifyConsumer);
         trackType = new BasisTrack(30, 0.2f);
         this.modify.setGravity(0).setAutoDiscard(50);

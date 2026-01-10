@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
-import org.confluence.lib.util.LivingEntityDelayRun;
+import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,8 +57,8 @@ public class BaseTerraRepeaterItem extends BaseTerraBowItem {
      */
     private final AmmunitionRestrictions ammunitionRestrictions;
 
-    public BaseTerraRepeaterItem(Properties properties, float baseDamage, BaseTerraBowItem.Builder bowBuilder, Builder repeaterBuilder) {
-        super(properties, baseDamage, bowBuilder);
+    public BaseTerraRepeaterItem(Properties properties, float baseDamage, ModifyArrowBuilder bowModifyArrowBuilder, Builder repeaterBuilder) {
+        super(properties, baseDamage, bowModifyArrowBuilder);
         this.baseReloadSpeed = repeaterBuilder.reloadSpeed;
         this.baseShootInterval = repeaterBuilder.shootInterval;
         this.baseCapacity = repeaterBuilder.capacity;
@@ -69,8 +69,8 @@ public class BaseTerraRepeaterItem extends BaseTerraBowItem {
         this.baseKnockback = repeaterBuilder.knockback;
     }
 
-    public BaseTerraRepeaterItem(float baseDamage, BaseTerraBowItem.Builder bowBuilder, Builder repeaterBuilder) {
-        this(new Properties(), baseDamage, bowBuilder, repeaterBuilder);
+    public BaseTerraRepeaterItem(float baseDamage, ModifyArrowBuilder bowModifyArrowBuilder, Builder repeaterBuilder) {
+        this(new Properties(), baseDamage, bowModifyArrowBuilder, repeaterBuilder);
     }
 
     //region 获取加成后的值
@@ -116,13 +116,11 @@ public class BaseTerraRepeaterItem extends BaseTerraBowItem {
     protected void shoot(@NotNull ServerLevel level, @NotNull LivingEntity shooter, @NotNull InteractionHand hand, @NotNull ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
         int countCount = baseBurstCount.getCount(shooter.getRandom());
         if (countCount > 1) {
-            LivingEntityDelayRun.Run build = LivingEntityDelayRun.createTimingRunBilder().tickRun((tick, maxTick, playerTimingRun) -> {
-                if (tick < maxTick) {
-                    super.shoot(level, shooter, hand, weapon, projectileItems, velocity, inaccuracy, isCrit, target);
-                }
-                return tick - 1;
-            }).build(countCount);
-            LivingEntityDelayRun.getInstance(shooter).addTimingRun(hand, build);
+            DelayTaskHolder.getInstance(shooter).addTimingRun(hand, DelayTaskHolder.createTaskBilder()
+                    .repeatCount(countCount - 1)
+                    .removedTick(1)
+                    .resultRun(holder -> super.shoot(level, shooter, hand, weapon, projectileItems, velocity, inaccuracy, isCrit, target))
+                    .build());
         }
         super.shoot(level, shooter, hand, weapon, projectileItems, velocity, inaccuracy, isCrit, target);
     }

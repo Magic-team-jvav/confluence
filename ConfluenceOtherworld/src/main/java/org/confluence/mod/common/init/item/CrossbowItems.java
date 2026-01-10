@@ -17,17 +17,17 @@ public class CrossbowItems {
     // 连弩
 
     public static final DeferredItem<BaseTerraRepeaterItem> ADAMANTITE_REPEATER = register("adamantite_repeater", 42,
-            new BaseTerraBowItem.Builder().setDuration(1000).setRarity(ModRarity.LIGHT_RED),
+            new BaseTerraBowItem.ModifyArrowBuilder().setDuration(1000).setRarity(ModRarity.LIGHT_RED),
             new BaseTerraRepeaterItem.Builder().capacity(10).arrowSpeed(10f).reloadTick(18).knockback(2.5f));
     public static final DeferredItem<BaseTerraRepeaterItem> CHLOROPHYTE_SHOTBOW = register("chlorophyte_shotbow", 34,
-            new BaseTerraBowItem.Builder().setDuration(5000).setRarity(ModRarity.LIME),
+            new BaseTerraBowItem.ModifyArrowBuilder().setDuration(5000).setRarity(ModRarity.LIME),
             new BaseTerraRepeaterItem.Builder().capacity(32).arrowSpeed(11.5f).reloadTick(19).knockback(2.75f).concurrentCount(2, 3));
 
     public static <I extends BaseTerraRepeaterItem> DeferredItem<I> register(String name, Supplier<I> supplier) {
         return ITEMS.register(name, supplier);
     }
 
-    public static DeferredItem<BaseTerraRepeaterItem> register(String name, float damage, BaseTerraBowItem.Builder bowBuilder, BaseTerraRepeaterItem.Builder repeaterBuilder) {
-        return register(name, () -> new BaseTerraRepeaterItem(damage, bowBuilder, repeaterBuilder));
+    public static DeferredItem<BaseTerraRepeaterItem> register(String name, float damage, BaseTerraBowItem.ModifyArrowBuilder bowModifyArrowBuilder, BaseTerraRepeaterItem.Builder repeaterBuilder) {
+        return register(name, () -> new BaseTerraRepeaterItem(damage, bowModifyArrowBuilder, repeaterBuilder));
     }
 }

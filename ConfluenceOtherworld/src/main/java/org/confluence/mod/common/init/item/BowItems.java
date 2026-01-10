@@ -114,13 +114,13 @@ public class BowItems {
      * 注册效果修饰的有耐久弓
      */
     public static DeferredItem<BaseTerraBowItem> register(String name, float damage, int durability) {
-        return register(name, () -> new BaseTerraBowItem(damage, new BaseTerraBowItem.Builder().setDuration(durability)));
+        return register(name, () -> new BaseTerraBowItem(damage, new BaseTerraBowItem.ModifyArrowBuilder().setDuration(durability)));
     }
 
     /**
      * 注册带有效果修饰的无耐久弓
      */
-    public static DeferredItem<BaseTerraBowItem> register(String name, float damage, Function<BaseTerraBowItem.Builder, BaseTerraBowItem.Builder> modifier) {
-        return register(name, () -> new BaseTerraBowItem(damage, modifier.apply(new BaseTerraBowItem.Builder().setUnBreakable())));
+    public static DeferredItem<BaseTerraBowItem> register(String name, float damage, Function<BaseTerraBowItem.ModifyArrowBuilder, BaseTerraBowItem.ModifyArrowBuilder> modifier) {
+        return register(name, () -> new BaseTerraBowItem(damage, modifier.apply(new BaseTerraBowItem.ModifyArrowBuilder().setUnBreakable())));
     }
 }

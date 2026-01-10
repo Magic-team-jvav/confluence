@@ -146,7 +146,12 @@ public class SpelunkerHelper extends AbstractBufferManager {
     public static final ComponentBuilder COMPONENT_BUILDER = new ComponentBuilder()
             .setComponentType(ComponentBuilder.ComponentType.DIRECT)
             .setAffectedByPlayerSettingsScale(false)
-            .defineScaleMultiple(scale -> scale*0.8f);
+            .defineRescale(scale -> scale*0.8f)
+            .defineAlphaTransformer((distance, alpha) -> {
+                if (distance <= 15) return 1f;
+                return (float) Math.exp(-(distance - 15) / 20); // 最后这个数字越大能看见的就越远
+            });
+
     public static final ResourceLocation EMPTY = TextureMapping.getItemTexture(Items.AIR);
 
     public static SpelunkerHelper getSingleton() {
@@ -301,7 +306,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putMaterialTarget(FLESHIFICATION_PLATINUM_ORE.get(), 0x81b9dd, true, ShowType.SPELUNKER, RAW_PLATINUM);
 
         // 生命水晶
-        putTarget(LIFE_CRYSTAL_BLOCK.get(), 0xec173e, true, ShowType.SPELUNKER);
+        putWithSpecialIconTarget(LIFE_CRYSTAL_BLOCK.get(), 0xec173e, true, ShowType.SPELUNKER, "life_crystal");
         // 箱子
         for (DeferredBlock<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
             putTarget(normalChest.get(), 0xe8c314, true, ShowType.SPELUNKER);
@@ -324,9 +329,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(FLESHIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
 
         // 化石对标
-        putTarget(COLD_CRYSTAL_ORE.get(), 0x3db7b0, true, ShowType.SPELUNKER/*,COLD_CRYSTAL*/);
-        putTarget(GELSTONE_ORE.get(), 0x62b73d, true, ShowType.SPELUNKER/*,GELSTONE*/);
-        putTarget(OPAL_ORE.get(), 0x4bbcff, true, ShowType.SPELUNKER/*,OPAL*/);
+        putMaterialTarget(COLD_CRYSTAL_ORE.get(), 0x3db7b0, true, ShowType.SPELUNKER,COLD_CRYSTAL);
+        putMaterialTarget(GELSTONE_ORE.get(), 0x62b73d, true, ShowType.SPELUNKER, GELSTONE);
+        putMaterialTarget(OPAL_ORE.get(), 0x4bbcff, true, ShowType.SPELUNKER, OPAL);
 
         // 狱石
         putMaterialTarget(HELLSTONE.get(), 0xea650e, true, ShowType.SPELUNKER, RAW_HELLSTONE);
@@ -404,14 +409,25 @@ public class SpelunkerHelper extends AbstractBufferManager {
      * 原版用的
      */
     private void putTarget(Block block, int rgb, boolean always, ShowType showType, Item showItem) {
-        targets.put(block, new Entry(rgb, always, showType, TextureMapping.getItemTexture(showItem).withPrefix("textures/")));
+        targets.put(block, new Entry(rgb, always, showType, getResource(showItem, "item/")));
     }
     /**
-     * 咱汇流用的
+     * 咱汇流用的，材料部分
      */
     private void putMaterialTarget(Block block, int rgb, boolean always, ShowType showType, DeferredItem<?> item) {
-        ResourceLocation resourcelocation = BuiltInRegistries.ITEM.getKey(item.get());
-        targets.put(block, new Entry(rgb, always, showType, resourcelocation.withPrefix("textures/item/materials/")));
+        targets.put(block, new Entry(rgb, always, showType, getResource(item.get(), "item/materials/")));
+    }
+
+    private static ResourceLocation getResource(Item item, String prefixAfterTexture) {
+        ResourceLocation resourcelocation = BuiltInRegistries.ITEM.getKey(item);
+        return resourcelocation.withPrefix("textures/" + prefixAfterTexture);
+    }
+
+    /**
+     * 咱的，特殊的图标(因为有方块种的单独要设置), 这里不再直接对应键名!
+     */
+    private void putWithSpecialIconTarget(Block block, int rgb, boolean always, ShowType showType, String iconName) {
+        targets.put(block, new Entry(rgb, always, showType, ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "textures/item/icon/" + iconName)));
     }
 
 
@@ -610,6 +626,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
             blockGen.centers.clear();
             blockGen.blockMap.clear();
             blockGen.centerCacheFrame.clear();
+            blockGen.cachedPointers.values().forEach(controller -> controller.component.close());
+            blockGen.cachedPointers.clear();
             return;
         }
         lock = true;

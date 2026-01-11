@@ -185,8 +185,13 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
-    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
-    implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
+    if (false) {
+        compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
+        implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
+    } else {
+        compileOnly(annotationProcessor(files("libs/mixinsquared-common-0.3.3.jar")))
+        implementation(jarJar(files("libs/mixinsquared-neoforge-0.3.7-beta.1.jar")))
+    }
 
     implementation(jarJar(files('libs/lunar-1.7.4.jar'))) // 使用修改了MANIFEST.MF的农历库，以防止有些服务端无法识别
 

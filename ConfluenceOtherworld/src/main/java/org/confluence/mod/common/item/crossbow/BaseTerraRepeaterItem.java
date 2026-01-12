@@ -1,8 +1,11 @@
 package org.confluence.mod.common.item.crossbow;
 
+import com.google.common.collect.Lists;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,6 +19,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ChargedProjectiles;
@@ -24,7 +28,7 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.event.EventHooks;
+import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -41,6 +45,8 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -49,6 +55,8 @@ import java.util.function.Predicate;
  * 泰拉连弩基类
  */
 public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem>, ILeftClickStateItem {
+    public static final String REPEATER_CONTINUOUS_SHOOTING = "repeater.continuous_shooting";
+    public static final String REPEATER_SHOOTING = "repeater.shooting";
     private boolean startSoundPlayed = false;
     private boolean midLoadSoundPlayed = false;
     private static final CrossbowItem.ChargingSounds DEFAULT_SOUNDS = new CrossbowItem.ChargingSounds(
@@ -142,7 +150,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return this.baseShootInterval;
     }
 
-    public int getCapacity(@NotNull LivingEntity shooter, @NotNull InteractionHand hand) {
+    public int getCapacity(@NotNull LivingEntity shooter, ItemStack weapon) {
         return this.baseCapacity;
     }
 
@@ -183,36 +191,74 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return new Vector3f(vector3f).rotateAxis(angle * (float) (Math.PI / 180.0), vector3f2.x, vector3f2.y, vector3f2.z);
     }
 
-    public void performShooting(Level level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, float velocity, float inaccuracy, @javax.annotation.Nullable LivingEntity target) {
-        if (!(level instanceof ServerLevel serverlevel)) {
-            return;
+    protected boolean tryLoadProjectiles(LivingEntity shooter, ItemStack weapon) {
+        if (shooter.level().isClientSide) {
+            return true;
+        }
+        int projectileCount = getCapacity(shooter, weapon);
+        List<ItemStack> list = new ArrayList<>();
+
+        if ((shooter instanceof Player player) && player.isCreative()) {
+            ItemStack projectile = shooter.getProjectile(weapon);
+            if (!projectile.isEmpty()) {
+                int totalLoaded = 0;
+                while (totalLoaded < projectileCount) {
+                    ItemStack copy = projectile.copy();
+                    int amountToAdd = Math.min(projectileCount - totalLoaded, copy.getMaxStackSize());
+                    copy.setCount(amountToAdd);
+                    list.add(copy);
+                    totalLoaded += amountToAdd;
+
+                    if (amountToAdd < copy.getMaxStackSize()) {
+                        break; // 已达到容量限制
+                    }
+                }
+            }
+        } else {
+            int totalLoaded = 0;
+            while (totalLoaded < projectileCount) {
+                ItemStack projectile = shooter.getProjectile(weapon);
+                if (projectile.isEmpty()) {
+                    break;
+                }
+
+                ItemStack itemStackLast;
+                if (!list.isEmpty()) {
+                    itemStackLast = list.getLast();
+                    int maxStackSize = itemStackLast.getMaxStackSize();
+                    int count = itemStackLast.getCount();
+                    int spaceAvailable = maxStackSize - count;
+
+                    if (spaceAvailable > 0 && ItemStack.isSameItemSameComponents(itemStackLast, projectile)) {
+                        int amountToAdd = Math.min(spaceAvailable, projectile.getCount());
+                        amountToAdd = Math.min(amountToAdd, projectileCount - totalLoaded);
+
+                        projectile.shrink(amountToAdd);
+                        itemStackLast.grow(amountToAdd);
+                        totalLoaded += amountToAdd;
+
+                        if (projectile.isEmpty()) {
+                            continue;
+                        }
+                    }
+                }
+
+                int amountToSplit = Math.min(projectile.getCount(), Math.min(projectileCount - totalLoaded, projectile.getMaxStackSize()));
+                ItemStack split = projectile.split(amountToSplit);
+                if (!split.isEmpty()) {
+                    list.add(split);
+                    totalLoaded += amountToSplit;
+                    continue;
+                }
+                break;
+            }
         }
 
-        if (shooter instanceof Player player && EventHooks.onArrowLoose(weapon, shooter.level(), player, 1, true) < 0) {
-            return;
-        }
-
-        ChargedProjectiles chargedprojectiles = weapon.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
-        if (chargedprojectiles == null || chargedprojectiles.isEmpty()) {
-            return;
-        }
-
-        this.shoot(serverlevel, shooter, hand, weapon, chargedprojectiles.getItems(), velocity, inaccuracy, shooter instanceof Player, target);
-        if (!(shooter instanceof ServerPlayer serverplayer)) {
-            return;
-        }
-
-        CriteriaTriggers.SHOT_CROSSBOW.trigger(serverplayer, weapon);
-        serverplayer.awardStat(Stats.ITEM_USED.get(weapon.getItem()));
-    }
-
-    protected static boolean tryLoadProjectiles(LivingEntity shooter, ItemStack crossbowStack) {
-        List<ItemStack> list = draw(crossbowStack, shooter.getProjectile(crossbowStack), shooter);
         if (list.isEmpty()) {
             return false;
         }
 
-        crossbowStack.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(list));
+        weapon.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(list));
         return true;
     }
 
@@ -222,15 +268,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     protected float getShootingPower(ChargedProjectiles projectile, Player player, InteractionHand hand) {
-//        int countCount = getBurstCount(shooter, hand);
-//        if (countCount > 1) {
-//            float finalVelocity = velocity;
-//            DelayTaskHolder.of(shooter).addTask(hand, DelayTaskHolder.createTaskBilder()
-//                    .repeatCount(countCount - 1)
-//                    .removedTick(1)
-//                    .resultRun(holder -> super.shoot(level, shooter, hand, weapon, projectileItems, finalVelocity, inaccuracy, isCrit, target))
-//                    .build());
-//        }
         return getArrowSpeed(player, hand);
     }
 
@@ -261,9 +298,125 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return f;
     }
 
+    /**
+     * 获取一个弹药项目
+     */
+    private @Nullable ItemStack extractAmmoItem(ItemStack weapon) {
+        var ammoContainer = getWeaponItemProjectiles(weapon);
+        if (ammoContainer == null || ammoContainer.isEmpty()) {
+            return null;
+        }
+        List<ItemStack> ammoItems = new ArrayList<>(ammoContainer.getItems());
+        Iterator<ItemStack> iterator = ammoItems.iterator();
+        while (iterator.hasNext()) {
+            ItemStack currentAmmoStack = iterator.next();
+            if (currentAmmoStack.isEmpty()) {
+                iterator.remove();
+                continue;
+            }
+            ItemStack extractedAmmo = currentAmmoStack.split(1);
+            if (currentAmmoStack.isEmpty()) {
+                iterator.remove();
+            }
+            weapon.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(ammoItems));
+            return extractedAmmo;
+        }
+        return null;
+    }
+
+    public @Nullable ChargedProjectiles getWeaponItemProjectiles(@NotNull ItemStack stack) {
+        return stack.get(DataComponents.CHARGED_PROJECTILES);
+    }
+
+    private static @NotNull InteractionHand getHand(Player player, ItemStack itemStack) {
+        return player.getMainHandItem() == itemStack ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public boolean shootingPerform(Level level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, float velocity, float inaccuracy, @Nullable LivingEntity target) {
+        if (!(level instanceof ServerLevel serverlevel)) {
+            return false;
+        }
+
+        ItemStack itemStack = extractAmmoItem(weapon);
+        if (itemStack == null) {
+            return false;
+        }
+
+        this.shoot(serverlevel, shooter, hand, weapon, List.of(itemStack), velocity, inaccuracy, shooter instanceof Player, target);
+        if (shooter instanceof ServerPlayer serverplayer) {
+            CriteriaTriggers.SHOT_CROSSBOW.trigger(serverplayer, weapon);
+            serverplayer.awardStat(Stats.ITEM_USED.get(weapon.getItem()));
+        }
+
+        return true;
+    }
+
+    protected boolean shootingPerformContinuousShooting(Player player, ItemStack itemStack, int countCount, DelayTaskHolder delayTaskHolder, InteractionHand hand, Level level, float shootingPower) {
+        if (delayTaskHolder.containsTask(hand, REPEATER_CONTINUOUS_SHOOTING)) {
+            return false;
+        }
+        delayTaskHolder.addTask(hand, REPEATER_CONTINUOUS_SHOOTING, org.confluence.lib.util.DelayTaskHolder.createTaskBilder()
+                .repeatCount(countCount - 1)
+                .removedTick(1)
+                .resultRun((tick, maxTick, task) -> {
+                    if (!shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null)) {
+                        task.remove();
+                    }
+                    return 0;
+                }).build());
+        return true;
+    }
+
     @Override
-    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack stack) {
-        return UseAnim.CROSSBOW;
+    public void onLeftClick(Player player, ItemStack itemStack) {
+        var chargedprojectiles = getWeaponItemProjectiles(itemStack);
+        if (chargedprojectiles == null || chargedprojectiles.isEmpty()) {
+            return;
+        }
+
+        InteractionHand hand = getHand(player, itemStack);
+        DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
+        Level level = player.level();
+        if (!delayTaskHolder.containsTask(hand).isEmpty()) {
+            return;
+        } else {
+//            if (!shootingPerform(level, player, hand, itemStack, getShootingPower(chargedprojectiles, player, hand), 1.0F, null)) {
+//                return;
+//            }
+        }
+
+        int countCount = getBurstCount(player, hand);
+        float shootingPower = getShootingPower(chargedprojectiles, player, hand);
+        if (countCount > 1) {
+            shootingPerformContinuousShooting(player, itemStack, countCount, delayTaskHolder, hand, level, shootingPower);
+        }
+
+        delayTaskHolder.addTask(hand, REPEATER_SHOOTING, DelayTaskHolder.createTaskBilder()
+                .repeatCount(-1)
+                .removedTick(getShootInterval(player, hand))
+                .resultRun((tick, maxTick, task) -> {
+                    var projectiles = getWeaponItemProjectiles(itemStack);
+                    if (projectiles == null || projectiles.isEmpty()) {
+                        task.remove();
+                        return 0;
+                    }
+                    if (countCount > 1) {
+                        shootingPerformContinuousShooting(player, itemStack, countCount, delayTaskHolder, hand, level, shootingPower);
+                    }
+                    if (!shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null)) {
+                        task.remove();
+                    }
+                    return 0;
+                }).build());
+    }
+
+    @Override
+    public void onLeftRelease(Player player, ItemStack itemStack) {
+        InteractionHand hand = getHand(player, itemStack);
+        DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
+        delayTaskHolder.removeTask(hand, REPEATER_SHOOTING);
+//        delayTaskHolder.removeTask(hand, REPEATER_CONTINUOUS_SHOOTING);
     }
 
     @Override
@@ -296,7 +449,10 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
                 float angleY = initialAngleOffset * angleIncrement + angle;
 
                 Projectile projectile = createProjectile(level, shooter, weapon, itemstack, isCrit);
-                super.shootProjectile(shooter, projectile, itemstackIndex, projectileVelocity, inaccuracy + modifyArrowBuilder.inaccuracy, angleY, target);
+                if (projectile instanceof AbstractArrow abstractArrow) {
+                    abstractArrow.setBaseDamage(getDamage(shooter, hand));
+                }
+                shootProjectile(shooter, projectile, itemstackIndex, projectileVelocity, inaccuracy + modifyArrowBuilder.inaccuracy, angleY, target);
                 float y = itemstackIndex > 0 ? getConcurrentInterval(shooter, hand) * i : 0;
                 float z = projectileIndex > 0 ? getConcurrentInterval(shooter, hand) * i1 : 0;
                 Vec3 offset = projectileItemsCount <= multiShootCount ? new Vec3(0, y, z) : new Vec3(0, z, y);
@@ -340,11 +496,28 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
                 tooltipComponents.add(BaseTerraBowItem.tooltip(BaseTerraBowItem.ARROW_TRANSFORM_TEXT).append(Component.translatable(transformArrow.getDescriptionId())).withColor(0xF1b0F4));
             }
         }
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-    }
-
-    public @Nullable ChargedProjectiles getWeaponItemProjectiles(@NotNull ItemStack stack) {
-        return stack.get(DataComponents.CHARGED_PROJECTILES);
+        ChargedProjectiles chargedprojectiles = stack.get(DataComponents.CHARGED_PROJECTILES);
+        if (chargedprojectiles == null || chargedprojectiles.isEmpty()) {
+            return;
+        }
+        List<ItemStack> items = chargedprojectiles.getItems();
+        tooltipComponents.add(Component.translatable("item.minecraft.crossbow.projectile").append(CommonComponents.SPACE));
+        for (ItemStack stack1 : items) {
+            tooltipComponents.add(Component.literal(" ")
+                    .append(String.valueOf(stack1.getCount()))
+                    .append(" ")
+                    .append(stack1.getDisplayName()));
+            if (!tooltipFlag.isAdvanced() || !stack1.is(Items.FIREWORK_ROCKET)) {
+                continue;
+            }
+            List<Component> list = Lists.newArrayList();
+            Items.FIREWORK_ROCKET.appendHoverText(stack1, context, list, tooltipFlag);
+            if (list.isEmpty()) {
+                continue;
+            }
+            list.replaceAll(sibling -> Component.literal("  ").append(sibling).withStyle(ChatFormatting.GRAY));
+            tooltipComponents.addAll(list);
+        }
     }
 
     @Override
@@ -357,13 +530,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return (itemStack) -> ammunitionRestrictions.test(itemStack, stack);
     }
 
-//    @Override
-//    protected int getDurabilityUse(ItemStack stack) {
-//        return stack.is(Items.FIREWORK_ROCKET) ? 3 : 1;
-//    }
-
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         var projectiles = getWeaponItemProjectiles(itemstack);
         if (projectiles == null || projectiles.isEmpty() && !player.getProjectile(itemstack).isEmpty()) {
@@ -430,22 +598,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         shooter.level().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, shooter.getSoundSource(), 1.0F, f);
     }
 
-//    @Override
-//    protected Projectile createProjectile(Level level, LivingEntity shooter, ItemStack weapon, ItemStack ammo, boolean isCrit) {
-//        if (ammo.is(Items.FIREWORK_ROCKET)) {
-//            return new FireworkRocketEntity(level, ammo, shooter, shooter.getX(), shooter.getEyeY() - 0.15F, shooter.getZ(), true);
-//        }
-//
-//        Projectile projectile = super.createProjectile(level, shooter, weapon, ammo, isCrit);
-//        if (projectile instanceof AbstractArrow abstractarrow) {
-//            abstractarrow.setSoundEvent(SoundEvents.CROSSBOW_HIT);
-//        }
-//
-//        return projectile;
-//    }
-
     @Override
-    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack stack, int count) {
+    public void onUseTick(@NotNull Level level, LivingEntity livingEntity, ItemStack stack, int count) {
         if (level.isClientSide) {
             return;
         }
@@ -485,7 +639,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
             ));
         }
 
-
         if (f >= 1) {
             livingEntity.stopUsingItem();
         }
@@ -495,16 +648,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     public int getUseDuration(ItemStack stack, LivingEntity entity) {
         return getChargeDuration(stack, entity) + 3;
     }
-
-//    @Override
-//    public boolean useOnRelease(ItemStack stack) {
-//        return stack.is(this);
-//    }
-//
-//    @Override
-//    public int getDefaultProjectileRange() {
-//        return 8;
-//    }
 
     @Override
     public boolean isEnchantable(@NotNull ItemStack stack) {
@@ -522,22 +665,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     @Override
-    public void onLeftClick(Player player, ItemStack itemStack) {
-        var chargedprojectiles = getWeaponItemProjectiles(itemStack);
-        if (chargedprojectiles == null || chargedprojectiles.isEmpty()) {
-            return;
-        }
-        InteractionHand hand = player.getMainHandItem() == itemStack ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-        this.performShooting(player.level(), player, hand, itemStack, getShootingPower(chargedprojectiles, player, hand), 1.0F, null);
-    }
-
-    @Override
-    public void onLeftRelease(Player player, ItemStack itemStack) {
-    }
-
-    @Override
-    public void onWhellScroll(Player player, ItemStack itemStack, int scrollAmount) {
-        System.out.println(3);
+    public boolean shouldCauseBlockBreakReset(@NotNull ItemStack oldStack, @NotNull ItemStack newStack) {
+        return ItemStack.isSameItem(oldStack, newStack);
     }
 
     @Override
@@ -553,6 +682,11 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     @Override
     public BaseArrowEntity.Builder getArrowModifier() {
         return arrowModifier;
+    }
+
+    @Override
+    public @NotNull UseAnim getUseAnimation(@NotNull ItemStack stack) {
+        return UseAnim.CROSSBOW;
     }
 
     public static class Builder {

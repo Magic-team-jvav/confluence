@@ -185,7 +185,7 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
-    if (false) {
+    if (true) {
         compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
         implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
     } else {

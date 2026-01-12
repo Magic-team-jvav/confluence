@@ -198,6 +198,7 @@ public final class ModTabs {
                         CreativeModeTab.Output finalOutput = output;
                         Consumer<DeferredHolder<Item, ? extends Item>> action = item -> finalOutput.accept(item.get());
                         BowItems.ITEMS.getEntries().forEach(action);
+                        CrossbowItems.ITEMS.getEntries().forEach(action);
                         ArrowItems.ITEMS.getEntries().forEach(action);
                         TGItems.GUNS.getEntries().forEach(action);
                         GunItems.ITEMS.getEntries().forEach(action);

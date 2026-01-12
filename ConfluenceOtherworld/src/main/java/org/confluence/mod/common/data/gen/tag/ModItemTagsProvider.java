@@ -24,6 +24,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -83,6 +84,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             if (logBlockSet.DOOR.isBound()) notFlammableWood.add(logBlockSet.DOOR.asItem());
         }
 
+        tag(ModTags.Items.REPEATER_ENCHANTABLE);
+        tag(ModTags.Items.TOOLS_REPEATER);
         tag(ModTags.Items.MOUNT).addOptionalTag(TETags.Items.CURIOS_MOUNT);
         tag(ModTags.Items.PET).addOptionalTag(TETags.Items.CURIOS_PET);
         tag(ModTags.Items.LIGHT_PET).addOptionalTag(TETags.Items.CURIOS_LIGHT_PET);
@@ -484,6 +487,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> ranged_weapon_tools = tag(Tags.Items.RANGED_WEAPON_TOOLS);
         IntrinsicTagAppender<Item> weapon_enchantable = tag(ItemTags.WEAPON_ENCHANTABLE);
         IntrinsicTagAppender<Item> sharp_weapon_enchantable = tag(ItemTags.SHARP_WEAPON_ENCHANTABLE);
+        IntrinsicTagAppender<Item> crossbow_enchantable = tag(ItemTags.CROSSBOW_ENCHANTABLE);
+        IntrinsicTagAppender<Item> repeater_enchantable = tag(ModTags.Items.REPEATER_ENCHANTABLE);
+        IntrinsicTagAppender<Item> repeater_crossbow_enchantable = tag(ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE);
+        IntrinsicTagAppender<Item> tools_crossbow = tag(Tags.Items.TOOLS_CROSSBOW);
+        IntrinsicTagAppender<Item> tools_repeater = tag(ModTags.Items.TOOLS_REPEATER);
+        IntrinsicTagAppender<Item> repeater_crossbow = tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW);
 
         tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
                 .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
@@ -586,6 +595,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             ranged_weapon_tools.add(value);
             tools_bows.add(value);
             skip_using_slowdown.add(value);
+        });
+
+        CrossbowItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            crossbow_enchantable.add(value);
+            tools_crossbow.add(value);
+            if (value instanceof BaseTerraRepeaterItem) {
+                repeater_enchantable.add(value);
+                tools_repeater.add(value);
+            }
         });
 
         IntrinsicTagAppender<Item> swords = tag(ItemTags.SWORDS);
@@ -1519,6 +1538,18 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.MIMIC_SUMMON_KEY).add(
                 ToolItems.KEY_OF_LIGHT.get(),
                 ToolItems.KEY_OF_NIGHT.get()
+        );
+        tag(ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE).addTag(
+            ModTags.Items.REPEATER_ENCHANTABLE
+        );
+        tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW).addTag(
+            ModTags.Items.TOOLS_REPEATER
+        );
+        tag(Tags.Items.TOOLS_CROSSBOW).addTag(
+            ModTags.Items.TOOLS_REPEATER_CROSSBOW
+        );
+        tag(ItemTags.CROSSBOW_ENCHANTABLE).addTag(
+            ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE
         );
 
         WaystonesHelper.itemTag(this::tag);

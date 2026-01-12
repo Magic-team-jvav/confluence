@@ -333,6 +333,8 @@ public final class ModTags {
         public static final TagKey<Item> TOOLS_LANCE = c("tools/lance");
         public static final TagKey<Item> TOOLS_DRILL = c("tools/drill");
         public static final TagKey<Item> TOOLS_CHAINSAW = c("tools/tools_chainsaw");
+        public static final TagKey<Item> TOOLS_REPEATER_CROSSBOW = c("tools/repeater_crossbow");
+        public static final TagKey<Item> TOOLS_REPEATER = register("tools/repeater");
 
         public static final TagKey<Item> SPEAR = register("spear"); // neoforge那边为三叉戟
         public static final TagKey<Item> COINS = register("coins");
@@ -418,6 +420,9 @@ public final class ModTags {
         public static final TagKey<Item> LAVA_PROOF_BAIT = register("lava_proof_bait"); // 防熔岩鱼饵
         public static final TagKey<Item> AUTO_ATTACK_WHITELIST = register("auto_attack_whitelist"); // 自动挥舞白名单
         public static final TagKey<Item> AUTO_ATTACK_BLACKLIST = register("auto_attack_blacklist"); // 自动挥舞黑名单
+
+        public static final TagKey<Item> REPEATER_ENCHANTABLE = register("enchantable/repeater");
+        public static final TagKey<Item> REPEATER_CROSSBOW_ENCHANTABLE = c("enchantable/repeater_crossbow");
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

@@ -20,6 +20,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
@@ -117,6 +118,27 @@ public class ModItemModelProvider extends ItemModelProvider {
                 withExistingParent(path, MISSING_ITEM);
             }
             skip.add(item.get());
+        }
+        for (DeferredHolder<Item, ? extends Item> item : CrossbowItems.ITEMS.getEntries()) {
+            String path = item.getId().getPath();
+            Item item1 = item.get();
+            try {
+                String path1 = "item/crossbow/" + ((item1 instanceof BaseTerraRepeaterItem ? "repeater/" : "") + path);
+                ResourceLocation texture = Confluence.asResource(path1);
+                withExistingParent(path, handheldRod).texture("layer0", texture)
+                        .transforms()
+                        .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(-90, 0, -60).translation(2, 0.1f, -3).scale(0.9F, 0.9F, 0.9F).end()
+                        .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(-90, 0, 30).translation(2, 0.1f, -3).scale(0.9F, 0.9F, 0.9F).end()
+                        .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(-90, 0, -55).translation(1.13f, 3.2f, 1.13f).scale(0.68F, 0.68F, 0.68F).end()
+                        .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(-90, 0, 35).translation(1.13F, 3.2F, 1.13F).scale(0.68F, 0.68F, 0.68F).end()
+                        .end()
+                        .override().predicate(pulling, 1).model(new ModelFile.UncheckedModelFile(Confluence.asResource("item/" + path + "_pulling"))).end();
+                ResourceLocation parent = Confluence.asResource("item/" + path);
+                withExistingParent(path + "_pulling", parent).texture("layer0", texture.withSuffix("_pulling"));
+            } catch (Exception e) {
+                withExistingParent(path, MISSING_ITEM);
+            }
+            skip.add(item1);
         }
 
         // 一般物品

@@ -82,14 +82,14 @@ public class BowItems {
     );
     public static final DeferredItem<BaseTerraBowItem> THE_BEES_KNEES = register("the_bees_knees", 6.7F, m -> m
             .setRarity(ModRarity.YELLOW)
-            .setMultiShoot(3, (i, c) -> new Vec3(-i * 0.25f, 0, 0))
+            .setMultiShoot(3, (shootingIndex, shootingTotality) -> new Vec3(-shootingIndex * 0.25f, 0, 0))
             .setCanMultiShoot(ammo -> !(ammo.getItem() instanceof BaseTerraArrowItem))
-            .setEntityTransform(BaseTerraBowItem.EntityTransform.create(ModEntities.BEE_ARROW.get(), BeeArrow::new))
+            .setEntityTransform(BaseTerraArrowItem.EntityTransform.create(ModEntities.BEE_ARROW.get(), BeeArrow::new))
     );
     public static final DeferredItem<BaseTerraBowItem> HELLWING_BOW = register("hellwing_bow", 7.5f, m -> m
             .setRarity(ModRarity.RED)
             .setInaccuracy(1f)
-            .setEntityTransform(BaseTerraBowItem.EntityTransform.create(ModEntities.HELL_BAT_ARROW.get(), HellBatArrowEntity::new))
+            .setEntityTransform(BaseTerraArrowItem.EntityTransform.create(ModEntities.HELL_BAT_ARROW.get(), HellBatArrowEntity::new))
     );
 
     // 代达罗斯风暴弓
@@ -114,13 +114,13 @@ public class BowItems {
      * 注册效果修饰的有耐久弓
      */
     public static DeferredItem<BaseTerraBowItem> register(String name, float damage, int durability) {
-        return register(name, () -> new BaseTerraBowItem(damage, new BaseTerraBowItem.ModifyArrowBuilder().setDuration(durability)));
+        return register(name, () -> new BaseTerraBowItem(damage, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(durability)));
     }
 
     /**
      * 注册带有效果修饰的无耐久弓
      */
-    public static DeferredItem<BaseTerraBowItem> register(String name, float damage, Function<BaseTerraBowItem.ModifyArrowBuilder, BaseTerraBowItem.ModifyArrowBuilder> modifier) {
-        return register(name, () -> new BaseTerraBowItem(damage, modifier.apply(new BaseTerraBowItem.ModifyArrowBuilder().setUnBreakable())));
+    public static DeferredItem<BaseTerraBowItem> register(String name, float damage, Function<BaseTerraArrowItem.ModifyArrowBuilder, BaseTerraArrowItem.ModifyArrowBuilder> modifier) {
+        return register(name, () -> new BaseTerraBowItem(damage, modifier.apply(new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable())));
     }
 }

@@ -11,13 +11,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.Tags;
-import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.mixed.entity.Boss;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.api.entity.Boss;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -79,6 +78,7 @@ public final class BossDelaySpawner {
     }
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
+        if (!MomentInstanceManager.of(level).getRunMoments().isEmpty()) return;
         EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
         if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
             return;
@@ -106,10 +106,11 @@ public final class BossDelaySpawner {
         if (NPCSpawner.INSTANCE.getAliveNpcCount(region, type -> true) < 4) {
             return false; // todo 骷髅商人不计入
         }
-        return Streams.of(player.serverLevel().getAllEntities()).noneMatch(entity -> entity instanceof Boss);
+        return Boss.noBossInWorld(player.serverLevel());
     }
 
     public static void spawnDeerClops(ServerLevel level) {
+        if (!MomentInstanceManager.of(level).getRunMoments().isEmpty()) return;
         if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.DEERCLOPS.get())) return;
         for (ServerPlayer player : level.players()) {
             if (!BossDelaySpawner.deerclopsChecker(player)) continue;
@@ -142,7 +143,7 @@ public final class BossDelaySpawner {
         } catch (Exception ignored) {
             return false;
         }
-        return Streams.of(level.getAllEntities()).noneMatch(entity -> entity instanceof Boss);
+        return Boss.noBossInWorld(player.serverLevel());
     }
 
     static class Delayed<E extends Entity> {

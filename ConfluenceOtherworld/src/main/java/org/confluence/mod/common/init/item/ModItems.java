@@ -14,6 +14,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -27,6 +28,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sponsor.*;
+import org.confluence.mod.integration.sodium.iris.IrisHelper;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.jetbrains.annotations.NotNull;
 
@@ -169,6 +171,10 @@ public final class ModItems {
         ToolItems.ITEMS.register(eventBus);
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
+
+        if (LoadingModList.get().getModFileById("iris") != null) {
+            IrisHelper.register(HIDDEN);
+        }
     }
 
     public static Item.@NotNull Properties unbreakable() {

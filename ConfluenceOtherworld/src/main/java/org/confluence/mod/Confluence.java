@@ -9,7 +9,6 @@ import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -24,7 +23,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.heaven_destiny_moment.HDMEvents;
-import org.confluence.mod.integration.sodium.iris.IrisHelper;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
@@ -58,9 +56,6 @@ public final class Confluence {
         WaystonesHelper.register(eventBus);
         CreateHelper.register(eventBus);
         ModAdvancements.register(eventBus);
-        if (LoadingModList.get().getModFileById("iris") != null) {
-            IrisHelper.register(eventBus);
-        }
 
         TFReferences.init();
         DifficultyScaler.init();

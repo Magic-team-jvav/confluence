@@ -9,7 +9,7 @@ import org.confluence.terraentity.init.TESounds;
 
 public class MagicDaggerItem extends ManaStaffItem<MagicDaggerProjectile> {
     public MagicDaggerItem() {
-        super(ModRarity.LIGHT_RED, MagicDaggerProjectile::new, 7, 6, 12, 8, 0.04);
+        super(ModRarity.LIGHT_RED, MagicDaggerProjectile::new, 23, 6, 12, 2, 0.04);
     }
 
     @Override

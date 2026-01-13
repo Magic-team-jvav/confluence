@@ -22,25 +22,27 @@
 
 # Metrology
 
-|          | Terraria           | Minecraft |
-|----------|--------------------|-----------|
-| 1 meter  | 1.5 tile(12 pixie) | 1 block   |
-| 1 second | 60 tick            | 20 tick   |
-| 1 day    | 24 minute          | 20 minute |
-| 1 health | 5 health           | 1 health  |
+|                   | Terraria           | Minecraft |
+|-------------------|--------------------|-----------|
+| 1 meter           | 1.5 tile(12 pixie) | 1 block   |
+| 1 second          | 60 tick            | 20 tick   |
+| 1 day             | 24 minute          | 20 minute |
+| 1 health (player) | 5 health           | 1 health  |
 
 # Strength
 
-|           | Terraria (expert)    | Minecraft(Initial Value)  | Minecraft(Classic) | Minecraft(Master)  |
-|-----------|----------------------|---------------------------|--------------------|--------------------|
-| Health    | 100                  | 26                        | 17                 | 39                 |
-| Damage    | 100                  | 26                        | 17                 | 39                 |
-| Defense   | 8                    | 8                         | 8                  | 8                  |
-| KB Resist | 50%                  | 0.5(50%)                  | 0.5(50%)           | 0.5(50%)           |
-| Coins     | Fixed Value          | Money Drop Formula        | Money Drop Formula | Money Drop Formula |
+|           | Terraria (expert) | Minecraft(Initial Value) | Minecraft(Classic) | Minecraft(Master)  |
+|-----------|-------------------|--------------------------|--------------------|--------------------|
+| Health    | 100               | 26                       | 17                 | 39                 |
+| Damage    | 100               | 26                       | 17                 | 39                 |
+| Defense   | 8                 | 8                        | 8                  | 8                  |
+| Knockback | 50%               | 0.5(50%)                 | 0.5(50%)           | 0.5(50%)           |
+| Coins     | Fixed Value       | Money Drop Formula       | Money Drop Formula | Money Drop Formula |
 
 ## Money Drop Formula
-- Final Money Drop = min( round( ( (MaxHealth×0.15) + (AttackDmg×0.25) + (Armor×0.1) + (KnockbackRes×10+10) ) × (EffectiveDifficulty×0.5) ) × 7 , 100000 )
+
+- Final Money Drop = min( round( ( (MaxHealth×0.15) + (AttackDmg×0.25) + (Armor×0.1) + (
+  KnockbackRes×10+10) ) × (EffectiveDifficulty×0.5) ) × 7 , 100000 )
 
 ### Sword
 
@@ -68,6 +70,6 @@
 
 # Distance
 
-|       | Terraria   | Minecraft     |
-|-------|------------|---------------|
-| Block | 2          | 3             |
+|       | Terraria | Minecraft |
+|-------|----------|-----------|
+| Block | 2        | 3         |

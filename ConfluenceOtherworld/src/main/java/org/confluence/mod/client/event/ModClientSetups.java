@@ -323,7 +323,7 @@ public final class ModClientSetups {
             if (living == null || (!(itemStack.getItem() instanceof BaseTerraRepeaterItem repeater))) {
                 return 0.0F;
             }
-            var projectiles = repeater.getWeaponItemProjectiles(itemStack);
+            var projectiles = repeater.getHandler(itemStack);
             if (projectiles != null && !projectiles.isEmpty()) {
                 return 1.0F;
             }

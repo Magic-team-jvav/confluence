@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -22,19 +21,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ChargedProjectiles;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
+import org.confluence.mod.common.component.RepeaterItemContainerContents;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.RepeaterItemComponentHandler;
 import org.confluence.terraentity.api.item.ILeftClickStateItem;
 import org.confluence.terraentity.attachment.WeaponStorage;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
@@ -45,12 +47,14 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+// TODO gui渲染
+// TODO gui装配
+// TODO 空弹药提示 & 音效
 /**
  * 泰拉连弩基类
  */
@@ -66,10 +70,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     );
 
     /**
-     * 每一击退转换速度
-     */
-    public static final double KNOCKBACK_SPEED = 0.1;
-    /**
      * 击退
      */
     private final float baseKnockback;
@@ -83,7 +83,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
      */
     private final int baseShootInterval;
     /**
-     * 容量，每64一个格子
+     * 容量
      */
     private final int baseCapacity;
     /**
@@ -116,7 +116,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     private final BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder;
 
     public BaseTerraRepeaterItem(Properties properties, float baseDamage, BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder, Builder repeaterBuilder) {
-        super(modifyArrowBuilder.buildProperties(properties.stacksTo(1).component(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY)));
+        super(modifyArrowBuilder.buildProperties(properties.stacksTo(1)
+                .component(ModDataComponentTypes.REPEATER_CONTAINER, RepeaterItemContainerContents.fromItems(repeaterBuilder.capacity))));
         this.baseReloadSpeed = repeaterBuilder.reloadSpeed;
         this.baseShootInterval = repeaterBuilder.shootInterval;
         this.baseCapacity = repeaterBuilder.capacity;
@@ -131,6 +132,10 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         this.arrowModifier = new BaseArrowEntity.Builder();
         modifyArrowBuilder.modifyArrowBuilder.forEach(m -> m.accept(this.arrowModifier));
         this.modifyArrowBuilder = modifyArrowBuilder;
+    }
+
+    private static int getCeiled(int capacity) {
+        return (int) Math.ceil(capacity / 64d);
     }
 
     public BaseTerraRepeaterItem(float baseDamage, BaseTerraArrowItem.ModifyArrowBuilder bowModifyArrowBuilder, Builder repeaterBuilder) {
@@ -150,8 +155,12 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return this.baseShootInterval;
     }
 
-    public int getCapacity(@NotNull LivingEntity shooter, ItemStack weapon) {
+    public int getCapacity() {
         return this.baseCapacity;
+    }
+
+    public int getCapacitySize() {
+        return getCeiled(this.baseCapacity);
     }
 
     public float getArrowSpeed(@NotNull LivingEntity shooter, @NotNull InteractionHand hand) {
@@ -192,82 +201,16 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     protected boolean tryLoadProjectiles(LivingEntity shooter, ItemStack weapon) {
-        if (shooter.level().isClientSide) {
-            return true;
-        }
-        int projectileCount = getCapacity(shooter, weapon);
-        List<ItemStack> list = new ArrayList<>();
-
-        if ((shooter instanceof Player player) && player.isCreative()) {
+        return RepeaterItemComponentHandler.insertItem(weapon, () -> {
             ItemStack projectile = shooter.getProjectile(weapon);
-            if (!projectile.isEmpty()) {
-                int totalLoaded = 0;
-                while (totalLoaded < projectileCount) {
-                    ItemStack copy = projectile.copy();
-                    int amountToAdd = Math.min(projectileCount - totalLoaded, copy.getMaxStackSize());
-                    copy.setCount(amountToAdd);
-                    list.add(copy);
-                    totalLoaded += amountToAdd;
-
-                    if (amountToAdd < copy.getMaxStackSize()) {
-                        break; // 已达到容量限制
-                    }
-                }
+            if ((shooter instanceof Player player) && player.isCreative()) {
+                return projectile.copy();
             }
-        } else {
-            int totalLoaded = 0;
-            while (totalLoaded < projectileCount) {
-                ItemStack projectile = shooter.getProjectile(weapon);
-                if (projectile.isEmpty()) {
-                    break;
-                }
-
-                ItemStack itemStackLast;
-                if (!list.isEmpty()) {
-                    itemStackLast = list.getLast();
-                    int maxStackSize = itemStackLast.getMaxStackSize();
-                    int count = itemStackLast.getCount();
-                    int spaceAvailable = maxStackSize - count;
-
-                    if (spaceAvailable > 0 && ItemStack.isSameItemSameComponents(itemStackLast, projectile)) {
-                        int amountToAdd = Math.min(spaceAvailable, projectile.getCount());
-                        amountToAdd = Math.min(amountToAdd, projectileCount - totalLoaded);
-
-                        projectile.shrink(amountToAdd);
-                        itemStackLast.grow(amountToAdd);
-                        totalLoaded += amountToAdd;
-
-                        if (projectile.isEmpty()) {
-                            continue;
-                        }
-                    }
-                }
-
-                int amountToSplit = Math.min(projectile.getCount(), Math.min(projectileCount - totalLoaded, projectile.getMaxStackSize()));
-                ItemStack split = projectile.split(amountToSplit);
-                if (!split.isEmpty()) {
-                    list.add(split);
-                    totalLoaded += amountToSplit;
-                    continue;
-                }
-                break;
-            }
-        }
-
-        if (list.isEmpty()) {
-            return false;
-        }
-
-        weapon.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(list));
-        return true;
+            return projectile;
+        });
     }
 
-    public static boolean isCharged(ItemStack crossbowStack) {
-        var projectiles = crossbowStack.getOrDefault(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
-        return !projectiles.isEmpty();
-    }
-
-    protected float getShootingPower(ChargedProjectiles projectile, Player player, InteractionHand hand) {
+    protected float getShootingPower(RepeaterItemComponentHandler handler, Player player, InteractionHand hand) {
         return getArrowSpeed(player, hand);
     }
 
@@ -298,34 +241,11 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return f;
     }
 
-    /**
-     * 获取一个弹药项目
-     */
-    private @Nullable ItemStack extractAmmoItem(ItemStack weapon) {
-        var ammoContainer = getWeaponItemProjectiles(weapon);
-        if (ammoContainer == null || ammoContainer.isEmpty()) {
-            return null;
-        }
-        List<ItemStack> ammoItems = new ArrayList<>(ammoContainer.getItems());
-        Iterator<ItemStack> iterator = ammoItems.iterator();
-        while (iterator.hasNext()) {
-            ItemStack currentAmmoStack = iterator.next();
-            if (currentAmmoStack.isEmpty()) {
-                iterator.remove();
-                continue;
-            }
-            ItemStack extractedAmmo = currentAmmoStack.split(1);
-            if (currentAmmoStack.isEmpty()) {
-                iterator.remove();
-            }
-            weapon.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(ammoItems));
-            return extractedAmmo;
+    public @Nullable RepeaterItemComponentHandler getHandler(@NotNull ItemStack stack) {
+        if (stack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterItemComponentHandler handler) {
+            return handler;
         }
         return null;
-    }
-
-    public @Nullable ChargedProjectiles getWeaponItemProjectiles(@NotNull ItemStack stack) {
-        return stack.get(DataComponents.CHARGED_PROJECTILES);
     }
 
     private static @NotNull InteractionHand getHand(Player player, ItemStack itemStack) {
@@ -338,12 +258,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
             return false;
         }
 
-        ItemStack itemStack = extractAmmoItem(weapon);
-        if (itemStack == null) {
-            return false;
-        }
-
-        this.shoot(serverlevel, shooter, hand, weapon, List.of(itemStack), velocity, inaccuracy, shooter instanceof Player, target);
+        List<ItemStack> itemStacks = RepeaterItemComponentHandler.extractItem(weapon, EnchantmentHelper.processProjectileCount(serverlevel, weapon, shooter, 1));
+        this.shoot(serverlevel, shooter, hand, weapon, itemStacks, velocity, inaccuracy, true, target);
         if (shooter instanceof ServerPlayer serverplayer) {
             CriteriaTriggers.SHOT_CROSSBOW.trigger(serverplayer, weapon);
             serverplayer.awardStat(Stats.ITEM_USED.get(weapon.getItem()));
@@ -368,10 +284,11 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return true;
     }
 
+    // TODO 需重写
     @Override
     public void onLeftClick(Player player, ItemStack itemStack) {
-        var chargedprojectiles = getWeaponItemProjectiles(itemStack);
-        if (chargedprojectiles == null || chargedprojectiles.isEmpty()) {
+        var handler = getHandler(itemStack);
+        if (handler == null || handler.isEmpty()) {
             return;
         }
 
@@ -381,13 +298,13 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         if (!delayTaskHolder.containsTask(hand).isEmpty()) {
             return;
         } else {
-//            if (!shootingPerform(level, player, hand, itemStack, getShootingPower(chargedprojectiles, player, hand), 1.0F, null)) {
+//            if (!shootingPerform(level, player, hand, itemStack, getShootingPower(handler, player, hand), 1.0F, null)) {
 //                return;
 //            }
         }
 
         int countCount = getBurstCount(player, hand);
-        float shootingPower = getShootingPower(chargedprojectiles, player, hand);
+        float shootingPower = getShootingPower(handler, player, hand);
         if (countCount > 1) {
             shootingPerformContinuousShooting(player, itemStack, countCount, delayTaskHolder, hand, level, shootingPower);
         }
@@ -396,7 +313,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
                 .repeatCount(-1)
                 .removedTick(getShootInterval(player, hand))
                 .resultRun((tick, maxTick, task) -> {
-                    var projectiles = getWeaponItemProjectiles(itemStack);
+                    var projectiles = getHandler(itemStack);
                     if (projectiles == null || projectiles.isEmpty()) {
                         task.remove();
                         return 0;
@@ -469,20 +386,20 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
+    public void appendHoverText(@NotNull ItemStack weapon, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
         // TODO 添加速度加成等文本
         tooltipComponents.add(BaseTerraBowItem.tooltip(BaseTerraBowItem.ATTACK_DAMAGE_TEXT).append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
         if (modifyArrowBuilder.multiShoot > 1) {
             tooltipComponents.add(BaseTerraBowItem.tooltip(BaseTerraBowItem.MAX_COUNT_TEXT).append(String.format("%d", modifyArrowBuilder.multiShoot)).withColor(0x00FF00));
         }
         // 命中效果
-        EffectStrategyComponent hitEffect = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
+        EffectStrategyComponent hitEffect = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
         if (hitEffect != null) {
             IEffectStrategy.appendDescription(tooltipComponents, hitEffect.effects(), BaseTerraBowItem.tooltip(BaseTerraBowItem.ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
         }
 
         // 蓄满命中效果
-        var fullPullHitEffect = stack.get(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY);
+        var fullPullHitEffect = weapon.get(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY);
         if (fullPullHitEffect != null) {
             IEffectStrategy.appendDescription(tooltipComponents, fullPullHitEffect.effects(), BaseTerraBowItem.tooltip(BaseTerraBowItem.BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
         }
@@ -496,28 +413,28 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
                 tooltipComponents.add(BaseTerraBowItem.tooltip(BaseTerraBowItem.ARROW_TRANSFORM_TEXT).append(Component.translatable(transformArrow.getDescriptionId())).withColor(0xF1b0F4));
             }
         }
-        ChargedProjectiles chargedprojectiles = stack.get(DataComponents.CHARGED_PROJECTILES);
-        if (chargedprojectiles == null || chargedprojectiles.isEmpty()) {
+        var handler = getHandler(weapon);
+        if (handler == null || handler.isEmpty()) {
             return;
         }
-        List<ItemStack> items = chargedprojectiles.getItems();
+        Iterator<ItemStack> items = handler.getAllItemIterator();
         tooltipComponents.add(Component.translatable("item.minecraft.crossbow.projectile").append(CommonComponents.SPACE));
-        for (ItemStack stack1 : items) {
+        items.forEachRemaining((stack) -> {
             tooltipComponents.add(Component.literal(" ")
-                    .append(String.valueOf(stack1.getCount()))
+                    .append(String.valueOf(stack.getCount()))
                     .append(" ")
-                    .append(stack1.getDisplayName()));
-            if (!tooltipFlag.isAdvanced() || !stack1.is(Items.FIREWORK_ROCKET)) {
-                continue;
+                    .append(stack.getDisplayName()));
+            if (!tooltipFlag.isAdvanced() || !stack.is(Items.FIREWORK_ROCKET)) {
+                return;
             }
             List<Component> list = Lists.newArrayList();
-            Items.FIREWORK_ROCKET.appendHoverText(stack1, context, list, tooltipFlag);
+            Items.FIREWORK_ROCKET.appendHoverText(stack, context, list, tooltipFlag);
             if (list.isEmpty()) {
-                continue;
+                return;
             }
             list.replaceAll(sibling -> Component.literal("  ").append(sibling).withStyle(ChatFormatting.GRAY));
             tooltipComponents.addAll(list);
-        }
+        });
     }
 
     @Override
@@ -533,7 +450,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, @NotNull Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        var projectiles = getWeaponItemProjectiles(itemstack);
+        var projectiles = getHandler(itemstack);
         if (projectiles == null || projectiles.isEmpty() && !player.getProjectile(itemstack).isEmpty()) {
             this.startSoundPlayed = false;
             this.midLoadSoundPlayed = false;
@@ -556,7 +473,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
         int i = this.getUseDuration(stack, entity) - count;
         float f = getPowerForTime(i, stack, entity);
-        if (f < 1.0F || isCharged(stack) || !tryLoadProjectiles(entity, stack)) {
+        if (f < 1.0F || !tryLoadProjectiles(entity, stack)) {
             return;
         }
         Level level = entity.level();
@@ -706,7 +623,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
          */
         private int shootInterval = 5;
         /**
-         * 容量，每64一个格子
+         * 容量
          */
         private int capacity = 5;
         /**

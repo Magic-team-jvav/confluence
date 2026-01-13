@@ -1,7 +1,10 @@
 package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.Lifecycle;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
@@ -225,14 +228,14 @@ public final class NPCSpawner implements IGlobalData {
     }
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
+    public void decode(CompoundTag tag) {
         npcAlive.clear();
-        tag.get("npc_alive").orElseEmptyMap().read(NPC_ALIVE_CODEC).ifSuccess(npcAlive::putAll);
+        NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("npc_alive")).ifSuccess(npcAlive::putAll);
         npcSpawned.clear();
-        tag.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
-        this.isAdvancedCombatTechniquesUsed = tag.get("advanced_combat_techniques").asBoolean(false);
-        this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.get("advanced_combat_techniques_volume_two").asBoolean(false);
-        this.isPeddlersSatchelUsed = tag.get("peddlers_satchel").asBoolean(false);
+        NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.getList("npc_spawned", CompoundTag.TAG_STRING)).ifSuccess(npcSpawned::addAll);
+        this.isAdvancedCombatTechniquesUsed = tag.getBoolean("advanced_combat_techniques");
+        this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("advanced_combat_techniques_volume_two");
+        this.isPeddlersSatchelUsed = tag.getBoolean("peddlers_satchel");
     }
 
     @Override

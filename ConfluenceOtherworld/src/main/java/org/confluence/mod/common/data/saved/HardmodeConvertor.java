@@ -3,11 +3,15 @@ package org.confluence.mod.common.data.saved;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.Lifecycle;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -234,7 +238,8 @@ public final class HardmodeConvertor implements IGlobalData {
                         int i = mutable.getX() - chunkPos.getMinBlockX();
                         int j = mutable.getZ() - chunkPos.getMinBlockZ();
                         BlockPosColumn column = columns[i][j];
-                        if (column == null || column == BlockPosColumn.ZERO) column = new BlockPosColumn(startPos.getY(), height);
+                        if (column == null || column == BlockPosColumn.ZERO)
+                            column = new BlockPosColumn(startPos.getY(), height);
                         columns[i][j] = column.updateY(mutable.getY());
                     }
                 }
@@ -254,18 +259,18 @@ public final class HardmodeConvertor implements IGlobalData {
     }
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
+    public void decode(CompoundTag tag) {
         this.shouldContinue = false;
-        tag.get("sanctification").orElseEmptyList().read(SANCTIFICATION_CODEC).ifSuccess(result -> this.sanctification = result);
-        this.started = tag.get("started").asBoolean(false);
-        this.completed = tag.get("completed").asBoolean(false);
+        SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, tag.getList("sanctification", CompoundTag.TAG_LIST)).ifSuccess(result -> this.sanctification = result);
+        this.started = tag.getBoolean("started");
+        this.completed = tag.getBoolean("completed");
         this.shouldContinue = true;
     }
 
     @Override
     public void encode(CompoundTag tag) {
         this.shouldContinue = false;
-        tag.put("sanctification", SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).getOrThrow());
+        tag.put("sanctification", SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).result().orElseGet(ListTag::new));
         tag.putBoolean("started", started);
         tag.putBoolean("completed", completed);
         this.shouldContinue = true;

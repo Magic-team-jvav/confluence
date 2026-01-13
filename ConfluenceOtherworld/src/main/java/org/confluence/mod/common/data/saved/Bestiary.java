@@ -2,7 +2,6 @@ package org.confluence.mod.common.data.saved;
 
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -32,9 +31,9 @@ public class Bestiary implements IGlobalData {
     private Bestiary() {}
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
+    public void decode(CompoundTag tag) {
         entries.clear();
-        tag.get("entries").orElseEmptyMap().read(CODEC).ifSuccess(entries::putAll);
+        CODEC.parse(NbtOps.INSTANCE, tag.getCompound("entries")).ifSuccess(entries::putAll);
     }
 
     @Override

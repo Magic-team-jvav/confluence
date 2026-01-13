@@ -20,7 +20,7 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile {
     }
 
     @Override
-    protected DamageSource getDamageSource() {
+    public DamageSource getDamageSource() {
         return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
     }
 

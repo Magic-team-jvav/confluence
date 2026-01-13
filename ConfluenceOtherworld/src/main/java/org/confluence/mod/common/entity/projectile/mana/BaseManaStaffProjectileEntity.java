@@ -122,7 +122,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     @Override
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
         float damage = getCalculatedDamage() * (1.0F + getAttackBonus());
-        if (target.hurt(getDamagesource(), damage)) {
+        if (target.hurt(getDamageSource(), damage)) {
             float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
             if ((attackKnockback > 0.0F && knockbackStrength > 0) || knockbackMotionY > 0) {
                 VectorUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);

@@ -17,7 +17,6 @@ import net.minecraft.world.phys.*;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.util.ModUtils;
 
 /**
  * 长条形射弹<p>
@@ -114,7 +113,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
         }
     }
 
-    protected DamageSource getDamageSource() {
+    public DamageSource getDamageSource() {
         return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
     }
 
@@ -140,11 +139,6 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
 
     public void setHead(boolean is) {
         entityData.set(DATA_IS_HEAD, is);
-    }
-
-    @Override
-    public boolean canHitEntity(Entity target) {
-        return ModUtils.canHitEntity(target, getOwner());
     }
 
     @Override

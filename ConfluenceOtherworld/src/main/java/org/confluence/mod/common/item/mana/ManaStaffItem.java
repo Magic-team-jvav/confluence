@@ -116,7 +116,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
             if (victim instanceof PartEntity<?> partEntity) {
                 victim = partEntity.getParent();
             }
-            victim.hurt(projectile.getDamagesource(), projectile.getCalculatedDamage());
+            victim.hurt(projectile.getDamageSource(), projectile.getCalculatedDamage());
         }
     }
 

@@ -5,10 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -18,8 +16,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -50,7 +46,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
         }
     }
 
-    public void setItem(@NotNull ItemStack drop) {
+    public void setItem(ItemStack drop) {
         entityData.set(DATA_ITEM_STACK, drop);
     }
 
@@ -87,10 +83,6 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
         }
     }
 
-    protected DamageSource getDamageSource() {
-        return damageSources().mobProjectile(this, (LivingEntity) getOwner());
-    }
-
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
@@ -108,7 +100,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return ModUtils.canHitEntity(target, getOwner()) && !hitList.contains(target);
+        return super.canHitEntity(target) && !hitList.contains(target);
     }
 
     @Override

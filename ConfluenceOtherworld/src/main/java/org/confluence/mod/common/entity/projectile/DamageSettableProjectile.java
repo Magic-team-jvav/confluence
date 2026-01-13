@@ -15,9 +15,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class DamageSettableProjectile extends Projectile {
     protected static final EntityDataAccessor<Float> DATA_DEFAULT_VELOCITY = SynchedEntityData.defineId(DamageSettableProjectile.class, EntityDataSerializers.FLOAT);
@@ -63,8 +63,12 @@ public abstract class DamageSettableProjectile extends Projectile {
         return damage;
     }
 
-    public DamageSource getDamagesource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+    public @Nullable LivingEntity getLivingOwner() {
+        return getOwner() instanceof LivingEntity living ? living : null;
+    }
+
+    public DamageSource getDamageSource() {
+        return damageSources().mobProjectile(this, getLivingOwner());
     }
 
     @Override

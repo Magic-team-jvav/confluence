@@ -44,6 +44,7 @@ public class GoldenShowerItem extends ManaStaffItem<GoldenShowerProjectile> {
                 GoldenShowerProjectile projectile = factory.create(player);
                 beforeShoot(player, stack, projectile);
                 level.addFreshEntity(projectile);
+                rayTrace(player, stack, projectile);
                 if (remainingUseDuration % 6 == 0) {
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.REGULAR_STAFF_SHOOT_3.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
                 }

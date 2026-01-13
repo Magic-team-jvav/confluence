@@ -107,7 +107,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
     }
 
     @Override
-    protected boolean canHitEntity(Entity target) {
+    public boolean canHitEntity(Entity target) {
         return ModUtils.canHitEntity(target, getOwner()) && !hitList.contains(target);
     }
 

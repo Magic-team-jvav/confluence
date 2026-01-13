@@ -2,7 +2,6 @@ package org.confluence.mod.common.data.saved;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectMutablePair;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -148,10 +147,10 @@ public final class GlobalCloakData implements IGlobalData {
     }
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
-        tag.get("BlockMap").orElseEmptyMap().read(BLOCK_MAP_CODEC).ifSuccess(blockMap::putAll);
-        tag.get("ItemMap").orElseEmptyMap().read(ITEM_MAP_CODEC).ifSuccess(itemMap::putAll);
-        this.fixed = tag.get("Fixed").asBoolean(false);
+    public void decode(CompoundTag tag) {
+        BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("BlockMap")).ifSuccess(blockMap::putAll);
+        ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("\"ItemMap\"")).ifSuccess(itemMap::putAll);
+        this.fixed = tag.getBoolean("Fixed");
 
         rollbackAllProperties();
     }

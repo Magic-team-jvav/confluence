@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
 import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
 import com.xiaohunao.heaven_destiny_moment.common.moment.IMoment;
 import io.netty.buffer.ByteBuf;
@@ -132,10 +131,10 @@ public final class KillBoard implements IGlobalData {
     }
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
-        tag.get("defeated_bosses").result().or(() -> tag.get("defeated_map").result()).orElseGet(tag::emptyMap).read(DEFEATED_BOSSES_CODEC).ifSuccess(result -> this.defeatedBosses = result);
-        tag.get("defeated_events").orElseEmptyMap().read(DEFEATED_EVENTS_CODEC).ifSuccess(result -> this.defeatedEvents = result);
-        this.gamePhase = GamePhase.getByOrder(tag.get("game_phase").asInt(0));
+    public void decode(CompoundTag tag) {
+        DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("defeated_bosses")).ifSuccess(result -> this.defeatedBosses = result);
+        DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("defeated_events")).ifSuccess(result -> this.defeatedEvents = result);
+        this.gamePhase = GamePhase.getByOrder(tag.getInt("game_phase"));
     }
 
     @Override

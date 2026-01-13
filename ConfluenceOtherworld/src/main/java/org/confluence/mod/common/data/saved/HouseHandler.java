@@ -1,8 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
@@ -22,7 +20,7 @@ import java.util.UUID;
 
 /// 生物模块移到主模块之后使用这个
 public class HouseHandler implements IGlobalData {
-//    public static final HouseHandler INSTANCE = new HouseHandler(); 现在还不能用
+    //    public static final HouseHandler INSTANCE = new HouseHandler(); 现在还不能用
     private static final Codec<Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>>> DATA_CODEC = LibCodecUtils.notStringKeyMap(
             "dimension", ResourceKey.codec(Registries.DIMENSION),
             "regions", LibCodecUtils.notStringKeyMap(
@@ -69,8 +67,8 @@ public class HouseHandler implements IGlobalData {
     }
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
-        tag.get("data").orElseEmptyList().decode(DATA_CODEC).map(Pair::getFirst).ifSuccess(data::putAll);
+    public void decode(CompoundTag tag) {
+        DATA_CODEC.parse(NbtOps.INSTANCE, tag.getList("data", CompoundTag.TAG_LIST)).ifSuccess(data::putAll);
     }
 
     @Override

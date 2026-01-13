@@ -24,7 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.mixed.entity.Boss;
+import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;

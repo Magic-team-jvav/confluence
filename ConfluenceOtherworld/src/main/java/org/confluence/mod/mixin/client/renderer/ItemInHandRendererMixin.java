@@ -1,5 +1,7 @@
 package org.confluence.mod.mixin.client.renderer;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -7,8 +9,11 @@ import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,5 +32,14 @@ public abstract class ItemInHandRendererMixin {
                 renderPlayerArm(poseStack, buffer, combinedLight, equippedProgress, swingProgress, humanoidarm);
             }
         }
+    }
+
+    @WrapOperation(method = {"evaluateWhichHandsToRender", "selectionUsingItemWhileHoldingBowLike"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"))
+    private static boolean isBow(ItemStack instance, Item item, Operation<Boolean> original) {
+        boolean called = original.call(instance, item);
+        if (!called && item == Items.BOW && instance.getItem() instanceof BaseTerraBowItem) {
+            return true;
+        }
+        return called;
     }
 }

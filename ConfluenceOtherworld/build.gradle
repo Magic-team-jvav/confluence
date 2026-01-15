@@ -3,6 +3,7 @@ import java.text.SimpleDateFormat
 plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev'
+    id 'com.github.johnrengelman.shadow' version '8.0.0+'
 }
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
                    "TerraCurio", "HeavenDestinyMoment",
@@ -193,7 +194,8 @@ dependencies {
         implementation(jarJar(files("libs/mixinsquared-neoforge-0.3.7-beta.1.jar")))
     }
 
-    implementation(jarJar(files('libs/lunar-1.7.4.jar'))) // 使用修改了MANIFEST.MF的农历库，以防止有些服务端无法识别
+    implementation(jarJar('cn.6tail:lunar:1.7.4'))
+    additionalRuntimeClasspath 'cn.6tail:lunar:1.7.4'
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     if (true) {

@@ -39,7 +39,7 @@ public final class SlimeRainGameEvent implements GameEvent {
     public static final String ENTITY_TAG = "spawn_during_slime_rain";
     private static final int _12$00 = LibDateUtils.getDayTime(12, 0);
     private static final int INV_CHANCE = 675000; // 经典模式、困难模式前、未击败史莱姆王
-    private static final int KILL_COUNT = 75; // 未击败史莱姆王
+    private static final int KILL_COUNT = 150; // 未击败史莱姆王
     private transient MinecraftServer server;
     private transient ServerLevel level;
     private int cooldown;

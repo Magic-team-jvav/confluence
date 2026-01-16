@@ -3,7 +3,6 @@ import java.text.SimpleDateFormat
 plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev'
-    id 'com.github.johnrengelman.shadow' version '8.0.0+'
 }
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
                    "TerraCurio", "HeavenDestinyMoment",
@@ -193,9 +192,6 @@ dependencies {
         compileOnly(annotationProcessor(files("libs/mixinsquared-common-0.3.3.jar")))
         implementation(jarJar(files("libs/mixinsquared-neoforge-0.3.7-beta.1.jar")))
     }
-
-    implementation(jarJar('cn.6tail:lunar:1.7.4'))
-    additionalRuntimeClasspath 'cn.6tail:lunar:1.7.4'
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     if (true) {

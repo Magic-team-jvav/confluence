@@ -21,22 +21,28 @@ public final class GameEventSystem implements IGlobalData {
 
     private GameEventSystem() {}
 
-    public void initEvents(MinecraftServer server) {
+    public void open(MinecraftServer server) {
         for (GameEvent event : events.values()) {
-            event.init(server);
+            event.open(server);
+        }
+    }
+
+    public void close(MinecraftServer server) {
+        for (GameEvent event : events.values()) {
+            event.close(server);
         }
     }
 
     public void tick() {
-        for (GameEvent gameEvent : events.values()) {
-            gameEvent.tick();
-            if (gameEvent.started()) {
-                if (gameEvent.canEnd()) {
-                    gameEvent.onEnd();
+        for (GameEvent event : events.values()) {
+            event.tick();
+            if (event.started()) {
+                if (event.canEnd()) {
+                    event.onEnd();
                 }
             } else {
-                if (gameEvent.canStart()) {
-                    gameEvent.onStart();
+                if (event.canStart()) {
+                    event.onStart();
                 }
             }
         }

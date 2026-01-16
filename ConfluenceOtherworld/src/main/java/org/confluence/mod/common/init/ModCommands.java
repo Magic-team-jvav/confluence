@@ -9,6 +9,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
@@ -18,6 +19,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -45,6 +47,8 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.PrefixArgument;
 import org.confluence.mod.common.data.saved.*;
+import org.confluence.mod.common.gameevent.GameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.DynamicBiomeUtils;
@@ -250,6 +254,22 @@ public final class ModCommands {
                             return 1;
                         }))
                         .then(setPrefixBuilder())
+                )
+                .then(Commands.literal("gameEvent")
+                        .then(Commands.literal("start").then(Commands.argument("key", ResourceLocationArgument.id()).executes(context -> {
+                            ResourceKey<GameEvent> key = GameEvent.createKey(ResourceLocationArgument.getId(context, "key"));
+                            GameEvent event = GameEventSystem.INSTANCE.getEventInstance(key);
+                            if (event == null) return 0;
+                            event.forceStart();
+                            return 1;
+                        })))
+                        .then(Commands.literal("end").then(Commands.argument("key", ResourceLocationArgument.id()).executes(context -> {
+                            ResourceKey<GameEvent> key = GameEvent.createKey(ResourceLocationArgument.getId(context, "key"));
+                            GameEvent event = GameEventSystem.INSTANCE.getEventInstance(key);
+                            if (event == null) return 0;
+                            event.forceEnd();
+                            return 1;
+                        })))
                 )
         );
     }

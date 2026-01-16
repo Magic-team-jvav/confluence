@@ -1,17 +1,34 @@
 package org.confluence.mod.common.gameevent;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.NaturalSpawnerUtil;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
+
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /// [史莱姆雨](https://terraria.wiki.gg/zh/wiki/%E5%8F%B2%E8%8E%B1%E5%A7%86%E9%9B%A8)
 public final class SlimeRainGameEvent implements GameEvent {
@@ -19,23 +36,50 @@ public final class SlimeRainGameEvent implements GameEvent {
     public static final SlimeRainGameEvent INSTANCE = new SlimeRainGameEvent();
     public static final String ENTITY_TAG = "spawn_during_slime_rain";
     private static final int _12$00 = LibDateUtils.getDayTime(12, 0);
-    private static final int factor = 675000; // 经典模式、困难模式前、未击败史莱姆王
-    private MinecraftServer server;
-    private ServerLevel level;
+    private static final int INV_CHANCE = 675000; // 经典模式、困难模式前、未击败史莱姆王
+    private static final int KILL_COUNT = 75; // 经典模式、困难模式前、未击败史莱姆王
+    private transient MinecraftServer server;
+    private transient ServerLevel level;
     private int cooldown;
     private int duration;
-    private transient boolean canStart;
+    private int killed;
     private transient boolean canEnd;
+    private transient boolean canStart;
+    private transient boolean forceStart;
+    private transient final Set<Entity> spawned = new HashSet<>();
+    private transient WeightedRandomList<MobSpawnSettings.SpawnerData> spawnerData = WeightedRandomList.create();
 
     private SlimeRainGameEvent() {}
 
     @Override
-    public void init(MinecraftServer server) {
+    public void open(MinecraftServer server) {
         this.server = server;
-        this.level = server.overworld();
+        this.level = OverworldUtils.getLevel(server);
         if (duration <= 0 && cooldown <= 0) {
             this.cooldown = level.getGameTime() < 24000L ? level.random.nextIntBetweenInclusive(24, 48) * 1200 : 0;
         }
+        this.spawnerData = WeightedRandomList.create(
+                new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 200, 1, 1),
+                new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 300, 1, 1),
+                new MobSpawnSettings.SpawnerData(TEMonsterEntities.PURPLE_SLIME.get(), 100, 1, 1),
+                new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_SLIME.get(), 1, 1, 1)
+        );
+    }
+
+    @Override
+    public void close(MinecraftServer server) {
+        this.server = null;
+        this.level = null;
+        this.cooldown = 0;
+        this.duration = 0;
+        this.killed = 0;
+        this.canEnd = false;
+        this.canStart = false;
+        this.forceStart = false;
+        for (Entity entity : spawned) {
+            entity.discard();
+        }
+        spawned.clear();
     }
 
     @Override
@@ -47,6 +91,8 @@ public final class SlimeRainGameEvent implements GameEvent {
         }
         if (duration > 0) {
             running();
+        } else if (forceStart) {
+            this.canStart = true;
         } else {
             checkCanStart();
         }
@@ -54,7 +100,48 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     private void running() {
         --this.duration;
-        // todo 生成逻辑
+        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        if (map == null) {
+            forceEnd();
+            return;
+        }
+        spawned.removeIf(entity -> {
+            if (LibUtils.getChunkIfLoaded(level.getChunkSource(), entity.chunkPosition()) == null) {
+                entity.discard();
+                return true;
+            }
+            return entity.isRemoved();
+        });
+        if (spawned.size() >= 50) return;
+        for (ServerPlayer player : level.players()) {
+            Vec3 position = player.position();
+            double y = position.y + 64;
+            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            int interval = Mth.floor(server.tickRateManager().tickrate() / data.speedMultiplier());
+            if (level.random.nextInt(interval) != 0) continue;
+            int tryTimes = data.getCount(4);
+            for (int i = 0; i < tryTimes; i++) {
+                Optional<MobSpawnSettings.SpawnerData> random = spawnerData.getRandom(level.random);
+                if (random.isEmpty()) continue;
+                MobSpawnSettings.SpawnerData spawnerData = random.get();
+                int count = level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount);
+                for (int j = 0; j < count; j++) {
+                    double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
+                    double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
+                    int cx = SectionPos.blockToSectionCoord(x);
+                    int cz = SectionPos.blockToSectionCoord(z);
+                    if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                        continue;
+                    }
+                    spawnerData.type.create(level, entity -> {
+                        entity.addTag(ENTITY_TAG);
+                        if (level.tryAddFreshEntityWithPassengers(entity)) {
+                            spawned.add(entity);
+                        }
+                    }, BlockPos.containing(x, y, z), MobSpawnType.EVENT, false, false);
+                }
+            }
+        }
     }
 
     private void checkCanStart() {
@@ -64,10 +151,10 @@ public final class SlimeRainGameEvent implements GameEvent {
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                     boolean expert = LibUtils.isAtLeastExpert(level, player.blockPosition());
                     if (player.getMaxHealth() >= 28 && player.getArmorValue() >= 14) { // 属性
-                        invChance = factor; // 满足要求
+                        invChance = INV_CHANCE; // 满足要求
                         break;
                     } else if (expert) {
-                        invChance = factor * 5; // 不满足要求但是专家模式
+                        invChance = INV_CHANCE * 5; // 不满足要求但是专家模式
                         break;
                     }
                 }
@@ -86,8 +173,12 @@ public final class SlimeRainGameEvent implements GameEvent {
         }
     }
 
-    public void setCanEnd() {
-        this.canEnd = true;
+    public void countKilled(LivingEntity living) {
+        if (started() && living.getTags().contains(ENTITY_TAG)) {
+            ++this.killed;
+            int count = KILL_COUNT;
+            // todo 生成史莱姆王
+        }
     }
 
     @Override
@@ -124,15 +215,33 @@ public final class SlimeRainGameEvent implements GameEvent {
     }
 
     @Override
+    public void forceEnd() {
+        this.duration = 0;
+        this.canEnd = true;
+        this.canStart = false;
+        this.forceStart = false;
+    }
+
+    @Override
+    public void forceStart() {
+        this.cooldown = 0;
+        this.canEnd = false;
+        this.canStart = true;
+        this.forceStart = true;
+    }
+
+    @Override
     public void decode(CompoundTag tag) {
         this.cooldown = tag.getInt("Cooldown");
         this.duration = tag.getInt("Duration");
+        this.killed = tag.getInt("Killed");
     }
 
     @Override
     public void encode(CompoundTag tag) {
         tag.putInt("Cooldown", cooldown);
         tag.putInt("Duration", duration);
+        tag.putInt("Killed", killed);
     }
 
     @Override

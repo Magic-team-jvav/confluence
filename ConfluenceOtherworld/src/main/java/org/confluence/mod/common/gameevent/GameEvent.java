@@ -15,7 +15,9 @@ public interface GameEvent {
         return (ResourceKey<E>) ResourceKey.create(REGISTRY_KEY, key);
     }
 
-    void init(MinecraftServer server);
+    void open(MinecraftServer server);
+
+    void close(MinecraftServer server);
 
     void tick();
 
@@ -28,6 +30,10 @@ public interface GameEvent {
     void onEnd();
 
     boolean started();
+
+    void forceStart();
+
+    void forceEnd();
 
     void decode(CompoundTag tag);
 

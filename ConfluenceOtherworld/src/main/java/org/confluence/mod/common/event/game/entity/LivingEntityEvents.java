@@ -97,6 +97,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
+            SlimeRainGameEvent.INSTANCE.countKilled(victim);
             TombstoneBoulderEntity.createTombstoneEntity(victim);
             Entity attacker = LibUtils.getOwner(damageSource);
 
@@ -114,7 +115,7 @@ public final class LivingEntityEvents {
             if (victim instanceof Boss boss && boss.shouldShowMessage()) {
                 ModUtils.bossDeath(level, victim);
                 if (victim.getType() == TEBossEntities.KING_SLIME.get()) {
-                    SlimeRainGameEvent.INSTANCE.setCanEnd();
+                    SlimeRainGameEvent.INSTANCE.forceEnd();
                 }
             }
             if (victim instanceof ServerPlayer player) {

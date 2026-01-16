@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile;
 
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,21 +41,17 @@ public class EffectThrownPotion extends ThrowableItemProjectile {
     }
 
     @Override
-    protected void onHit(HitResult pResult) {
-        super.onHit(pResult);
-        Level level = level();
-        if (!level.isClientSide) {
-            if (item == null) item = getDefaultItem();
-            Entity entity = getEffectSource();
-            var pEffect = item.mobEffect;
-            level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4.0D, 2.0D, 4.0D)).forEach(living -> {
-                if (living.isAffectedByPotions() && distanceToSqr(living) < 16.0) {
-                    MobEffectInstance mobEffectInstance = new MobEffectInstance(pEffect, item.duration, item.amplifier);
-                    living.addEffect(mobEffectInstance, entity);
-                }
-            });
-            level.levelEvent(LevelEvent.PARTICLES_SPELL_POTION_SPLASH, this.blockPosition(), pEffect.value().getColor());
-            discard();
-        }
+    protected void onHit(HitResult result) {
+        super.onHit(result);
+        if (level().isClientSide) return;
+        if (item == null) item = getDefaultItem();
+        Entity entity = getEffectSource();
+        level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4.0D, 2.0D, 4.0D)).forEach(living -> {
+            if (living.isAffectedByPotions() && distanceToSqr(living) < 16.0) {
+                living.addEffect(item.data.create(), entity);
+            }
+        });
+        level().levelEvent(LevelEvent.PARTICLES_SPELL_POTION_SPLASH, this.blockPosition(), item.data.effect().value().getColor());
+        discard();
     }
 }

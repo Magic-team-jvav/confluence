@@ -9,6 +9,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.util.OverworldUtils;
 
 @EventBusSubscriber(modid = Confluence.MODID)
@@ -22,6 +23,7 @@ public final class ServerEvents {
     @SubscribeEvent
     public static void serverStarted(ServerStartedEvent event) {
         GlobalCloakData.INSTANCE.fix(OverworldUtils.getLevel(event.getServer()));
+        GameEventSystem.INSTANCE.initEvents(event.getServer());
     }
 
     @SubscribeEvent

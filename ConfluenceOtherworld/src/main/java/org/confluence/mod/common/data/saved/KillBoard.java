@@ -113,9 +113,12 @@ public final class KillBoard implements IGlobalData {
         }
     }
 
-    public static void onUnlockHardmode(MinecraftServer server) {
+    public void onUnlockHardmode(MinecraftServer server) {
         IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
         GlobalCloakData.INSTANCE.reveal(OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState());
+        if (!getGamePhase().isHardmode()) {
+            setGamePhase(server, GamePhase.WALL_OF_FLESH);
+        }
     }
 
     public void networkEncode(RegistryFriendlyByteBuf buffer) {

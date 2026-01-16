@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public class ModFoodPropertiesBuilder {
-    private final ImmutableList.Builder<FoodProperties.PossibleEffect>  effects = ImmutableList.builder();
+    private final ImmutableList.Builder<FoodProperties.PossibleEffect> effects = ImmutableList.builder();
 
     private int nutrition;
 
@@ -22,7 +22,7 @@ public class ModFoodPropertiesBuilder {
 
     private float eatSeconds;
 
-    private Optional<ItemStack> usingConvertsTo =  Optional.empty();
+    private Optional<ItemStack> usingConvertsTo = Optional.empty();
 
     public static ModFoodPropertiesBuilder Builder() {
         return new ModFoodPropertiesBuilder();
@@ -81,6 +81,9 @@ public class ModFoodPropertiesBuilder {
     }
 
     public record EffectData(Holder<MobEffect> effect, int duration, int level, float probability) {
+        public int amplifier() {
+            return level;
+        }
 
         public static EffectData of(Holder<MobEffect> effect, int duration) {
             return new EffectData(effect, duration, 0, 1.0f);

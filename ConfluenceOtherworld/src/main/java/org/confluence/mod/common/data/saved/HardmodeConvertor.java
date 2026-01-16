@@ -126,11 +126,11 @@ public final class HardmodeConvertor implements IGlobalData {
                 if (server instanceof IDedicatedServer dedicatedServer) {
                     dedicatedServer.confluence$setOnHardmodeConversation(false);
                 }
+                KillBoard.INSTANCE.onUnlockHardmode(server);
                 SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(server).confluence$getSecretFlag());
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                     AchievementUtils.awardAchievement(player, "its_hard");
                 }
-                KillBoard.onUnlockHardmode(server);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), LibUtils.isDev());
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);

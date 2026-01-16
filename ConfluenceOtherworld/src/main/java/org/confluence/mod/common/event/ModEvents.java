@@ -67,6 +67,7 @@ import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.TargetDummyEntity;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.*;
@@ -155,7 +156,8 @@ public final class ModEvents {
                     HardmodeConvertor.INSTANCE,
                     NPCSpawner.INSTANCE,
                     Bestiary.INSTANCE,
-                    GlobalCloakData.INSTANCE
+                    GlobalCloakData.INSTANCE,
+                    GameEventSystem.INSTANCE
 //                    HouseHandler.INSTANCE
             );
             GlobalCloakData.INSTANCE.initialize();

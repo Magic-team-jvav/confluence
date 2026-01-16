@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -23,12 +22,10 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.item.common.*;
-import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 import org.confluence.terra_curio.common.item.MagicMirror;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
-import java.util.function.Supplier;
 
 @ParametersAreNonnullByDefault
 public class ToolItems {
@@ -85,7 +82,7 @@ public class ToolItems {
     public static final DeferredItem<RopeCoilItem> WEB_ROPE_COIL = ITEMS.register("web_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.WEB_ROPE.get()));
 
     public static final DeferredItem<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", TargetDummyItem::new);
-    public static final DeferredItem<TooltipItem> METEOR_COMPASS = ITEMS.register("meteor_compass", () -> new TooltipItem(new Item.Properties().stacksTo(1), ModRarity.BLUE, Component.translatable("tooltip.item.confluence.meteor_compass.0").withStyle(ChatFormatting.AQUA)));
+    public static final DeferredItem<TooltipItem> METEOR_COMPASS = ITEMS.register("meteor_compass", () -> new TooltipItem(new Item.Properties().stacksTo(1), ModRarity.BLUE, TooltipItem.getTooltipsFromString("meteor_compass", 1, ChatFormatting.AQUA)));
     public static final DeferredItem<BinocularsItem> BINOCULARS = ITEMS.register("binoculars", BinocularsItem::new);
     public static final DeferredItem<NPCInvitationItem> NPC_INVITATION = ITEMS.register("npc_invitation", NPCInvitationItem::new);
     public static final DeferredItem<DungeonCompass> DUNGEON_COMPASS = ITEMS.register("dungeon_compass", DungeonCompass::new);
@@ -102,28 +99,12 @@ public class ToolItems {
     public static final DeferredItem<MagicDropperItem> MAGIC_WATER_DROPPER = ITEMS.register("magic_water_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_WATER));
 
     // 有效果的蜡烛
-    public static final DeferredItem<EffectiveCandleItem> WATER_CANDLE = registerCandle("water_candle", FunctionalBlocks.WATER_CANDLE, ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 0));
-    public static final DeferredItem<EffectiveCandleItem> PEACE_CANDLE = registerCandle("peace_candle", FunctionalBlocks.PEACE_CANDLE, ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
+    public static final DeferredItem<EffectiveCandleItem> WATER_CANDLE = ITEMS.register("water_candle", () -> new EffectiveCandleItem(FunctionalBlocks.WATER_CANDLE.get(), ModRarity.BLUE, 1, ModEffects.WATER_CANDLE, 40, 0));
+    public static final DeferredItem<EffectiveCandleItem> PEACE_CANDLE = ITEMS.register("peace_candle", () -> new EffectiveCandleItem(FunctionalBlocks.PEACE_CANDLE.get(), ModRarity.BLUE, 1, ModEffects.WATER_CANDLE, 40, 0));
 
     public static final DeferredItem<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
     public static final DeferredItem<GuideToCritterCompanionshipItem> GUIDE_TO_CRITTER_COMPANIONSHIP = ITEMS.register("guide_to_critter_companionship", GuideToCritterCompanionshipItem::new);
     public static final DeferredItem<GuideToEnvironmentalPreservationItem> GUIDE_TO_ENVIRONMENTAL_PRESERVATION = ITEMS.register("guide_to_environmental_preservation", GuideToEnvironmentalPreservationItem::new);
     public static final DeferredItem<GuideToPeacefulCoexistenceItem> GUIDE_TO_PEACEFUL_COEXISTENCE = ITEMS.register("guide_to_peaceful_coexistence", GuideToPeacefulCoexistenceItem::new);
     public static final DeferredItem<StaffOfRegrowthItem> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", StaffOfRegrowthItem::new); // 再生法杖
-
-    public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, ModFoodPropertiesBuilder.EffectData... effect) {
-        return registerCandle(name, block, new Item.Properties(), effect);
-    }
-
-    public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, EffectiveCandleItem.HandheldEffect effect) {
-        return registerCandle(name, block, new Item.Properties(), effect);
-    }
-
-    public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, Item.Properties properties, ModFoodPropertiesBuilder.EffectData... effect){
-        return ITEMS.register(name, () -> new EffectiveCandleItem(block.get(), properties, effect));
-    }
-
-    public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, Item.Properties properties, EffectiveCandleItem.HandheldEffect effect) {
-        return ITEMS.register(name, () -> new EffectiveCandleItem(block.get(), properties, effect));
-    }
 }

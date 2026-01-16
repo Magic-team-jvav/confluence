@@ -50,6 +50,7 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
+import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -112,6 +113,9 @@ public final class LivingEntityEvents {
             }
             if (victim instanceof Boss boss && boss.shouldShowMessage()) {
                 ModUtils.bossDeath(level, victim);
+                if (victim.getType() == TEBossEntities.KING_SLIME.get()) {
+                    SlimeRainGameEvent.INSTANCE.setCanEnd();
+                }
             }
             if (victim instanceof ServerPlayer player) {
                 PlayerUtils.dropMoney(player);

@@ -18,6 +18,7 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
@@ -43,6 +44,7 @@ public final class TickEvents {
         FallingStarItemEntity.summon(level);
         MeteoriteTracker.INSTANCE.tick(level);
         BossDelaySpawner.INSTANCE.tick(level);
+        GameEventSystem.INSTANCE.tick();
 
         int dayTime = LibDateUtils.getDayTime(level);
         if (dayTime == LibDateUtils._06$00) {

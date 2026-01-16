@@ -78,10 +78,6 @@ public final class SlimeRainGameEvent implements GameEvent {
     public void close(MinecraftServer server) {
         this.server = null;
         this.level = null;
-        this.cooldown = 0;
-        this.duration = 0;
-        this.killed = 0;
-        this.spawnedKingSlime = false;
         for (Entity entity : spawned) {
             entity.discard();
         }
@@ -241,7 +237,6 @@ public final class SlimeRainGameEvent implements GameEvent {
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             player.sendSystemMessage(component);
         }
-        this.haveKingSlime = false;
     }
 
     @Override

@@ -220,7 +220,6 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     @Override
     public void onStart() {
-        this.cooldown = 0;
         this.duration = server.isDedicatedServer() ? 15 * 1200 : level.random.nextIntBetweenInclusive(9, 15) * 1200;
         Component component = Component.translatable("message.confluence.slime_rain.start").withColor(GlobalColors.MESSAGE.get());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
@@ -254,6 +253,7 @@ public final class SlimeRainGameEvent implements GameEvent {
     @Override
     public void forceStart() {
         if (started()) return;
+        this.cooldown = 0;
         this.canEnd = false;
         this.canStart = true;
         this.forceStart = true;

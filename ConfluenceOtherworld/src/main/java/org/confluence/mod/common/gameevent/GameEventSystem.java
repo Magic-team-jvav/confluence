@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.mod.network.s2c.GameEventSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -39,10 +40,12 @@ public final class GameEventSystem implements IGlobalData {
             if (event.started()) {
                 if (event.canEnd()) {
                     event.onEnd();
+                    GameEventSyncPacketS2C.sendToAll(event.key(), false);
                 }
             } else {
                 if (event.canStart()) {
                     event.onStart();
+                    GameEventSyncPacketS2C.sendToAll(event.key(), true);
                 }
             }
         }

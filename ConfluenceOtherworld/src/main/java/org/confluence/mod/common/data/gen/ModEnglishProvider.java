@@ -131,6 +131,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.house_select.tip2", "Right Click to check or add/remove house");
         add("message.confluence.house_select.check", "Check");
         add("message.confluence.guide_voo_doo_doll.fail", "This powerful sacrificial item can only be used in the Nether!");
+        add("message.confluence.slime_rain.start", "Slime is falling from the sky!");
+        add("message.confluence.slime_rain.end", "Slime has stopped falling from the sky.");
+        add("message.confluence.blood_moon.start", "The Blood Moon is rising...");
+        add("message.confluence.goblin_army.ready", "A goblin army is approaching!");
+        add("message.confluence.goblin_army.start", "A goblin army has arrived!");
+        add("message.confluence.goblin_army.victory", "The Goblin Army has been defeated!");
 
         add("commands.confluence.reforge.cannot_be_reforged", "This item cannot be reforged (or cannot find an item that needs to be reforged)!");
         add("commands.confluence.reforge.unknown_prefix_type", "Unknown prefix type (or reforge failure)!");

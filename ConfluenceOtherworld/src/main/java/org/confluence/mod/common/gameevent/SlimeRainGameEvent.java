@@ -1,6 +1,7 @@
 package org.confluence.mod.common.gameevent;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
+import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
@@ -37,15 +39,17 @@ public final class SlimeRainGameEvent implements GameEvent {
     public static final String ENTITY_TAG = "spawn_during_slime_rain";
     private static final int _12$00 = LibDateUtils.getDayTime(12, 0);
     private static final int INV_CHANCE = 675000; // 经典模式、困难模式前、未击败史莱姆王
-    private static final int KILL_COUNT = 75; // 经典模式、困难模式前、未击败史莱姆王
+    private static final int KILL_COUNT = 75; // 未击败史莱姆王
     private transient MinecraftServer server;
     private transient ServerLevel level;
     private int cooldown;
     private int duration;
     private int killed;
+    private boolean spawnedKingSlime;
     private transient boolean canEnd;
     private transient boolean canStart;
     private transient boolean forceStart;
+    private transient boolean haveKingSlime;
     private transient final Set<Entity> spawned = new HashSet<>();
     private transient WeightedRandomList<MobSpawnSettings.SpawnerData> spawnerData = WeightedRandomList.create();
 
@@ -58,6 +62,10 @@ public final class SlimeRainGameEvent implements GameEvent {
         if (duration <= 0 && cooldown <= 0) {
             this.cooldown = level.getGameTime() < 24000L ? level.random.nextIntBetweenInclusive(24, 48) * 1200 : 0;
         }
+        this.canEnd = false;
+        this.canStart = false;
+        this.forceStart = false;
+        this.haveKingSlime = false;
         this.spawnerData = WeightedRandomList.create(
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 200, 1, 1),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 300, 1, 1),
@@ -73,9 +81,7 @@ public final class SlimeRainGameEvent implements GameEvent {
         this.cooldown = 0;
         this.duration = 0;
         this.killed = 0;
-        this.canEnd = false;
-        this.canStart = false;
-        this.forceStart = false;
+        this.spawnedKingSlime = false;
         for (Entity entity : spawned) {
             entity.discard();
         }
@@ -100,6 +106,9 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     private void running() {
         --this.duration;
+        if (duration % 20 == 4) {
+            this.haveKingSlime = Streams.of(level.getAllEntities()).anyMatch(entity -> entity.getType() == TEBossEntities.KING_SLIME.get());
+        }
         Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
             forceEnd();
@@ -118,6 +127,9 @@ public final class SlimeRainGameEvent implements GameEvent {
             double y = position.y + 64;
             NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
             int interval = Mth.floor(server.tickRateManager().tickrate() / data.speedMultiplier());
+            if (haveKingSlime) {
+                interval *= 5;
+            }
             if (level.random.nextInt(interval) != 0) continue;
             int tryTimes = data.getCount(4);
             for (int i = 0; i < tryTimes; i++) {
@@ -162,7 +174,7 @@ public final class SlimeRainGameEvent implements GameEvent {
         }
         if (invChance > 0) {
             if (KillBoard.INSTANCE.isDefeated(TEBossEntities.KING_SLIME.get())) { // 击败史莱姆王
-                invChance = invChance * 2;
+                invChance *= 2;
             }
             if (KillBoard.INSTANCE.getGamePhase().isHardmode()) { // 困难模式
                 invChance = invChance * 3 / 2;
@@ -176,8 +188,27 @@ public final class SlimeRainGameEvent implements GameEvent {
     public void countKilled(LivingEntity living) {
         if (started() && living.getTags().contains(ENTITY_TAG)) {
             ++this.killed;
+            if (haveKingSlime) return;
             int count = KILL_COUNT;
-            // todo 生成史莱姆王
+            if (spawnedKingSlime) {
+                count = count * 3 / 2;
+            }
+            if (KillBoard.INSTANCE.isDefeated(TEBossEntities.KING_SLIME.get())) {
+                count /= 2;
+            }
+            if (killed >= count) {
+                ServerPlayer player = Util.getRandom(level.players(), level.random);
+                TEBossEntities.KING_SLIME.get().create(level, entity -> {
+                    this.killed = 0;
+                    this.spawnedKingSlime = true;
+                    entity.addTag(ENTITY_TAG);
+                    level.addFreshEntityWithPassengers(entity);
+                }, BlockPos.containing(
+                        player.getX() + Mth.randomBetweenInclusive(level.random, -50, 50),
+                        player.getY(),
+                        player.getZ() + Mth.randomBetweenInclusive(level.random, -50, 50)
+                ), MobSpawnType.EVENT, true, false);
+            }
         }
     }
 
@@ -193,20 +224,24 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     @Override
     public void onStart() {
+        this.cooldown = 0;
         this.duration = server.isDedicatedServer() ? 15 * 1200 : level.random.nextIntBetweenInclusive(9, 15) * 1200;
         Component component = Component.translatable("message.confluence.slime_rain.start").withColor(GlobalColors.MESSAGE.get());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             player.sendSystemMessage(component);
         }
+        this.haveKingSlime = false;
     }
 
     @Override
     public void onEnd() {
+        this.duration = 0;
         this.cooldown = server.isDedicatedServer() ? 0 : level.random.nextIntBetweenInclusive(84, 180) * 1200;
         Component component = Component.translatable("message.confluence.slime_rain.end").withColor(GlobalColors.MESSAGE.get());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             player.sendSystemMessage(component);
         }
+        this.haveKingSlime = false;
     }
 
     @Override
@@ -216,7 +251,6 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     @Override
     public void forceEnd() {
-        this.duration = 0;
         this.canEnd = true;
         this.canStart = false;
         this.forceStart = false;
@@ -224,10 +258,11 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     @Override
     public void forceStart() {
-        this.cooldown = 0;
+        if (started()) return;
         this.canEnd = false;
         this.canStart = true;
         this.forceStart = true;
+        this.spawnedKingSlime = false;
     }
 
     @Override
@@ -235,6 +270,7 @@ public final class SlimeRainGameEvent implements GameEvent {
         this.cooldown = tag.getInt("Cooldown");
         this.duration = tag.getInt("Duration");
         this.killed = tag.getInt("Killed");
+        this.spawnedKingSlime = tag.getBoolean("SpawnedKingSlime");
     }
 
     @Override
@@ -242,6 +278,7 @@ public final class SlimeRainGameEvent implements GameEvent {
         tag.putInt("Cooldown", cooldown);
         tag.putInt("Duration", duration);
         tag.putInt("Killed", killed);
+        tag.putBoolean("SpawnedKingSlime", spawnedKingSlime);
     }
 
     @Override

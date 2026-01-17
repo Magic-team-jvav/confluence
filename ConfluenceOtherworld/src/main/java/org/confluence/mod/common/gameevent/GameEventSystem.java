@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -71,6 +72,12 @@ public final class GameEventSystem implements IGlobalData {
         }
     }
 
+    public void countKilled(LivingEntity living) {
+        for (GameEvent event : getAllEventInstances()) {
+            event.countKilled(living);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public @Nullable <E extends GameEvent> E getEventInstance(ResourceKey<E> key) {
         return (E) events.get(key);
@@ -93,6 +100,15 @@ public final class GameEventSystem implements IGlobalData {
             }
         }
         return amount;
+    }
+
+    public boolean anyEventStarted() {
+        for (GameEvent event : getAllEventInstances()) {
+            if (event.started()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

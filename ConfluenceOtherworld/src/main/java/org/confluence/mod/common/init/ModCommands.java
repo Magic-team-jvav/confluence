@@ -259,8 +259,7 @@ public final class ModCommands {
                         .then(Commands.literal("start").then(Commands.argument("key", ResourceLocationArgument.id()).executes(context -> {
                             ResourceKey<GameEvent> key = GameEvent.createKey(ResourceLocationArgument.getId(context, "key"));
                             GameEvent event = GameEventSystem.INSTANCE.getEventInstance(key);
-                            if (event == null) return 0;
-                            event.forceStart();
+                            if (event == null || !event.forceStart()) return 0;
                             return 1;
                         })))
                         .then(Commands.literal("end").then(Commands.argument("key", ResourceLocationArgument.id()).executes(context -> {

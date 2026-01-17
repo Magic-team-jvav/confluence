@@ -71,48 +71,47 @@ public class BloodMoonGameEvent implements GameEvent {
 
     @Override
     public void tick() {
-        if (started) {
-            Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
-            if (map == null) {
-                forceEnd();
-                return;
+        if (!started) return;
+        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        if (map == null) {
+            forceEnd();
+            return;
+        }
+        spawned.removeIf(entity -> {
+            if (LibUtils.getChunkIfLoaded(level.getChunkSource(), entity.chunkPosition()) == null) {
+                entity.discard();
+                return true;
             }
-            spawned.removeIf(entity -> {
-                if (LibUtils.getChunkIfLoaded(level.getChunkSource(), entity.chunkPosition()) == null) {
-                    entity.discard();
-                    return true;
+            return entity.isRemoved();
+        });
+        List<ServerPlayer> players = level.players();
+        if (spawned.size() >= 30 + players.size() * 30) return;
+        for (ServerPlayer player : players) {
+            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            double speed = data.speedMultiplier();
+            if (speed <= 0) continue;
+            int interval = Mth.floor(server.tickRateManager().tickrate() * 1.5 / speed);
+            if (level.random.nextInt(interval) != 0) continue;
+            Optional<MobSpawnSettings.SpawnerData> random = spawnerData.getRandom(level.random);
+            if (random.isEmpty()) continue;
+            Vec3 position = player.position();
+            MobSpawnSettings.SpawnerData spawnerData = random.get();
+            int count = data.getCount(level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount));
+            for (int j = 0; j < count; j++) {
+                double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
+                double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
+                int cx = SectionPos.blockToSectionCoord(x);
+                int cz = SectionPos.blockToSectionCoord(z);
+                if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                    continue;
                 }
-                return entity.isRemoved();
-            });
-            List<ServerPlayer> players = level.players();
-            if (spawned.size() >= 30 + players.size() * 30) return;
-            for (ServerPlayer player : players) {
-                NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
-                double speed = data.speedMultiplier();
-                if (speed <= 0) continue;
-                int interval = Mth.floor(server.tickRateManager().tickrate() * 1.5 / speed);
-                if (level.random.nextInt(interval) != 0) continue;
-                Optional<MobSpawnSettings.SpawnerData> random = spawnerData.getRandom(level.random);
-                if (random.isEmpty()) continue;
-                Vec3 position = player.position();
-                MobSpawnSettings.SpawnerData spawnerData = random.get();
-                int count = level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount);
-                for (int j = 0; j < count; j++) {
-                    double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
-                    double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
-                    int cx = SectionPos.blockToSectionCoord(x);
-                    int cz = SectionPos.blockToSectionCoord(z);
-                    if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
-                        continue;
-                    }
-                    BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, spawnerData.type, Mth.floor(x), Mth.floor(z));
-                    Entity entity = spawnerData.type.spawn(level, pos, MobSpawnType.EVENT);
-                    if (entity != null) {
-                        entity.addTag(ENTITY_TAG);
-                        spawned.add(entity);
-                        if (entity instanceof Mob mob && player.canBeSeenAsEnemy()) {
-                            mob.setTarget(player);
-                        }
+                BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, spawnerData.type, Mth.floor(x), Mth.floor(z));
+                Entity entity = spawnerData.type.spawn(level, pos, MobSpawnType.EVENT);
+                if (entity != null) {
+                    entity.addTag(ENTITY_TAG);
+                    spawned.add(entity);
+                    if (entity instanceof Mob mob && player.canBeSeenAsEnemy()) {
+                        mob.setTarget(player);
                     }
                 }
             }
@@ -124,11 +123,12 @@ public class BloodMoonGameEvent implements GameEvent {
         if (forceStart) {
             return true;
         }
-        if (LibDateUtils.getDayTime(level) == LibDateUtils._19$30) {
+        if (LibDateUtils.getDayTime(level) == LibDateUtils._19$30 &&
+                !MoonPhase.NEW_MOON.match(level) && // 不是新月
+                BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.EYE_OF_CTHULHU.get()) // 没有克苏鲁之眼
+        ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 if (player.getMaxHealth() >= 24 && player.getArmorValue() >= 16 && // 属性
-                        !MoonPhase.NEW_MOON.match(level) && // 不是新月
-                        BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.EYE_OF_CTHULHU.get()) && // 没有克苏鲁之眼
                         level.random.nextInt(14) == 0 // 1/14的几率
                 ) {
                     return true;
@@ -173,6 +173,7 @@ public class BloodMoonGameEvent implements GameEvent {
 
     @Override
     public boolean forceStart() {
+        if (started) return false;
         if (LibDateUtils.isWithinDayTime(LibDateUtils._19$30, LibDateUtils._04$30, level)) {
             this.forceStart = true;
             return true;
@@ -182,7 +183,9 @@ public class BloodMoonGameEvent implements GameEvent {
 
     @Override
     public void forceEnd() {
-        this.forceEnd = true;
+        if (started) {
+            this.forceEnd = true;
+        }
     }
 
     @Override

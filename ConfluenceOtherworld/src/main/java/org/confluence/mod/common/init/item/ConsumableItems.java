@@ -17,6 +17,7 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.entity.projectile.ThrownWaterProjectile;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
@@ -105,4 +106,5 @@ public class ConsumableItems {
     public static final DeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));
 
     public static final DeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("blood_tear", 2, ChatFormatting.GRAY), BloodMoonGameEvent.KEY));
+    public static final DeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("goblin_battle_standard", 1, ChatFormatting.GRAY), GoblinArmyGameEvent.KEY));
 }

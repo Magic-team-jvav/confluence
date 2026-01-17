@@ -51,6 +51,8 @@ import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
@@ -98,7 +100,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
-            SlimeRainGameEvent.INSTANCE.countKilled(victim);
+            GameEventSystem.INSTANCE.countKilled(victim);
             TombstoneBoulderEntity.createTombstoneEntity(victim);
             Entity attacker = LibUtils.getOwner(damageSource);
 
@@ -513,16 +515,18 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void mobSpawn$PositionCheck(MobSpawnEvent.PositionCheck event) {
-        if (event.getSpawnType() == MobSpawnType.NATURAL) {
-            Mob mob = event.getEntity();
-            if (event.getResult() != MobSpawnEvent.PositionCheck.Result.FAIL && DungeonStructure.skipSpawn(mob, event.getLevel().getLevel())) {
-                event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
-            }
-            if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
-                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
-                if (iSection != null && iSection.confluence$isGraveyard()) {
-                    event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
-                }
+        if (event.getSpawnType() != MobSpawnType.NATURAL) return;
+        Mob mob = event.getEntity();
+        if (event.getResult() != MobSpawnEvent.PositionCheck.Result.FAIL && (
+                DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) ||
+                        GoblinArmyGameEvent.INSTANCE.started()
+        )) {
+            event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
+        }
+        if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
+            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
+            if (iSection != null && iSection.confluence$isGraveyard()) {
+                event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
             }
         }
     }
@@ -531,12 +535,13 @@ public final class LivingEntityEvents {
     public static void mobSpawn$SpawnPlacementCheck(MobSpawnEvent.SpawnPlacementCheck event) {
         if (event.getSpawnType() == MobSpawnType.NATURAL && !event.getPlacementCheckResult()) {
             EntityType<?> entityType = event.getEntityType();
-            if (entityType == TEMonsterEntities.GHOST.get()) {
-                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
-                event.setResult(iSection != null && iSection.confluence$isGraveyard()
-                        ? MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED
-                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
-            } else if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
+//            if (entityType == TEMonsterEntities.GHOST.get()) {
+//                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
+//                event.setResult(iSection != null && iSection.confluence$isGraveyard()
+//                        ? MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED
+//                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
+//            } else
+            if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
                 ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
                 if (iSection != null && iSection.confluence$isGraveyard()) {
                     event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED);

@@ -288,6 +288,7 @@ public final class NPCSpawner implements IGlobalData {
     }
 
     public void checkNpcRespawn(ServerLevel serverLevel) {
+        if (GoblinArmyGameEvent.INSTANCE.started()) return;
         outer:
         for (ServerPlayer player : serverLevel.players()) {
             BlockPos pos = getNpcSpawnPos(player);

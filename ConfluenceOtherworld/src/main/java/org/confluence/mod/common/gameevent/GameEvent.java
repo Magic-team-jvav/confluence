@@ -8,6 +8,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.Confluence;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
@@ -25,6 +26,8 @@ public interface GameEvent {
     void close(MinecraftServer server);
 
     void tick();
+
+    default void countKilled(LivingEntity living) {}
 
     boolean canStart();
 

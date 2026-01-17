@@ -163,17 +163,17 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     private void checkCanStart() {
         int invChance = 0;
-        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, _12$00, level)) { // 时间
-            if (!level.isRaining() && !BloodMoonGameEvent.INSTANCE.started()) { // todo 事件
-                for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                    boolean expert = LibUtils.isAtLeastExpert(level, player.blockPosition());
-                    if (player.getMaxHealth() >= 28 && player.getArmorValue() >= 14) { // 属性
-                        invChance = INV_CHANCE; // 满足要求
-                        break;
-                    } else if (expert) {
-                        invChance = INV_CHANCE * 5; // 不满足要求但是专家模式
-                        break;
-                    }
+        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, _12$00, level) && // 时间
+                !level.isRaining() && !BloodMoonGameEvent.INSTANCE.started() // 事件
+        ) {
+            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                boolean expert = LibUtils.isAtLeastExpert(level, player.blockPosition());
+                if (player.getMaxHealth() >= 28 && player.getArmorValue() >= 14) { // 属性
+                    invChance = INV_CHANCE; // 满足要求
+                    break;
+                } else if (expert) {
+                    invChance = INV_CHANCE * 5; // 不满足要求但是专家模式
+                    break;
                 }
             }
         }
@@ -190,8 +190,9 @@ public final class SlimeRainGameEvent implements GameEvent {
         }
     }
 
+    @Override
     public void countKilled(LivingEntity living) {
-        if (started() && living.getTags().contains(ENTITY_TAG)) {
+        if (started && living.getTags().contains(ENTITY_TAG)) {
             ++this.killed;
             if (haveKingSlime) return;
             int count = KILL_COUNT;
@@ -245,6 +246,7 @@ public final class SlimeRainGameEvent implements GameEvent {
         this.started = false;
         this.canEnd = false;
         this.duration = 0;
+        this.killed = 0;
         this.cooldown = server.isDedicatedServer() ? 0 : level.random.nextIntBetweenInclusive(84, 180) * 1200;
         Component component = Component.translatable("message.confluence.slime_rain.end").withColor(GlobalColors.MESSAGE.get());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
@@ -259,21 +261,22 @@ public final class SlimeRainGameEvent implements GameEvent {
     }
 
     @Override
-    public void forceEnd() {
-        this.canEnd = true;
-        this.canStart = false;
-        this.forceStart = false;
-    }
-
-    @Override
     public boolean forceStart() {
-        if (started()) return false;
+        if (started) return false;
         this.cooldown = 0;
         this.canEnd = false;
         this.canStart = true;
         this.forceStart = true;
         this.spawnedKingSlime = false;
         return true;
+    }
+
+    @Override
+    public void forceEnd() {
+        if (started) {
+            this.canEnd = true;
+            this.canStart = false;
+        }
     }
 
     @Override

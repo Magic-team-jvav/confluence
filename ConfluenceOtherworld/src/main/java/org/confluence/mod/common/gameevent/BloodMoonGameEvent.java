@@ -42,6 +42,7 @@ public class BloodMoonGameEvent implements GameEvent {
     private transient MinecraftServer server;
     private transient ServerLevel level;
     private transient boolean forceStart;
+    private transient boolean forceEnd;
     private transient final Set<Entity> spawned = new HashSet<>();
     private transient WeightedRandomList<MobSpawnSettings.SpawnerData> spawnerData = WeightedRandomList.create();
     private boolean started;
@@ -140,6 +141,9 @@ public class BloodMoonGameEvent implements GameEvent {
 
     @Override
     public boolean canEnd() {
+        if (forceEnd) {
+            return true;
+        }
         return LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._19$30, level);
     }
 
@@ -156,10 +160,12 @@ public class BloodMoonGameEvent implements GameEvent {
     @Override
     public void onEnd() {
         this.started = false;
+        this.forceEnd = false;
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             AchievementUtils.awardAchievement(player, "bloodbath");
         }
         KillBoard.INSTANCE.defeat(KEY);
+        spawned.clear();
     }
 
     @Override
@@ -176,7 +182,7 @@ public class BloodMoonGameEvent implements GameEvent {
 
     @Override
     public void forceEnd() {
-        this.started = false;
+        this.forceEnd = true;
     }
 
     @Override

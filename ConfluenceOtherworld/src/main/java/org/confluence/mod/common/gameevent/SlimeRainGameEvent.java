@@ -44,6 +44,7 @@ public final class SlimeRainGameEvent implements GameEvent {
     private static final int KILL_COUNT = 150; // 未击败史莱姆王
     private transient MinecraftServer server;
     private transient ServerLevel level;
+    private boolean started;
     private int cooldown;
     private int duration;
     private int killed;
@@ -228,6 +229,8 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     @Override
     public void onStart() {
+        this.started = true;
+        this.canStart = false;
         this.forceStart = false;
         this.duration = server.isDedicatedServer() ? 15 * 1200 : level.random.nextIntBetweenInclusive(9, 15) * 1200;
         Component component = Component.translatable("message.confluence.slime_rain.start").withColor(GlobalColors.MESSAGE.get());
@@ -239,17 +242,20 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     @Override
     public void onEnd() {
+        this.started = false;
+        this.canEnd = false;
         this.duration = 0;
         this.cooldown = server.isDedicatedServer() ? 0 : level.random.nextIntBetweenInclusive(84, 180) * 1200;
         Component component = Component.translatable("message.confluence.slime_rain.end").withColor(GlobalColors.MESSAGE.get());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             player.sendSystemMessage(component);
         }
+        spawned.clear();
     }
 
     @Override
     public boolean started() {
-        return duration > 0;
+        return started;
     }
 
     @Override
@@ -271,6 +277,7 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     @Override
     public void decode(CompoundTag tag) {
+        this.started = tag.getBoolean("Started");
         this.cooldown = tag.getInt("Cooldown");
         this.duration = tag.getInt("Duration");
         this.killed = tag.getInt("Killed");
@@ -279,6 +286,7 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     @Override
     public void encode(CompoundTag tag) {
+        tag.putBoolean("Started", started);
         tag.putInt("Cooldown", cooldown);
         tag.putInt("Duration", duration);
         tag.putInt("Killed", killed);

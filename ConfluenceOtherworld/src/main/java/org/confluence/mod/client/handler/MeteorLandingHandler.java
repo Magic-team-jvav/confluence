@@ -22,6 +22,7 @@ import org.joml.Matrix4f;
 public final class MeteorLandingHandler {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
     private static final float RADIUS = 5.0F;
+    private static final PoseStack poseStack = new PoseStack();
     private static @Nullable GlobalPos globalPos = null;
     private static @Nullable Vec3 location = null;
     private static int tickUntilLanding = 0;
@@ -74,6 +75,7 @@ public final class MeteorLandingHandler {
     }
 
     private static void calculate(Player player) {
+        assert location != null;
         vector = player.position().subtract(location);
         distance = vector.length() * 0.0625; // 1.0 / 16.0
         Vec3 vec = vector.normalize();
@@ -89,9 +91,8 @@ public final class MeteorLandingHandler {
         LocalPlayer player = minecraft.player;
         if (player == null || player.level().dimension() != OverworldUtils.dimension()) return;
         if (distance < event.getLevelRenderer().getLastViewDistance()) return;
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
-        Tesselator tesselator = Tesselator.getInstance();
-        PoseStack poseStack = new PoseStack();
+        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        poseStack.pushPose();
         poseStack.mulPose(event.getModelViewMatrix());
         poseStack.mulPose(Axis.YP
                 .rotation(Mth.lerp(partialTick, yawO, yaw))
@@ -101,12 +102,13 @@ public final class MeteorLandingHandler {
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         Matrix4f matrix4f = poseStack.last().pose().rotate(LibClientUtils.ANGLE_45);
-        BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         bufferBuilder.addVertex(matrix4f, -RADIUS, 100, -RADIUS).setUv(0.0F, v1).setColor(1.0F, 1.0F, 1.0F, alpha);
         bufferBuilder.addVertex(matrix4f, RADIUS, 100, -RADIUS).setUv(1.0F, v1).setColor(1.0F, 1.0F, 1.0F, alpha);
         bufferBuilder.addVertex(matrix4f, RADIUS, 100, RADIUS).setUv(1.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
         bufferBuilder.addVertex(matrix4f, -RADIUS, 100, RADIUS).setUv(0.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
         BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+        poseStack.popPose();
     }
 
     public static @Nullable GlobalPos getGlobalPos() {

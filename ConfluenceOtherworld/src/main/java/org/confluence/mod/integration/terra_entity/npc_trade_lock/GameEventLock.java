@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
@@ -22,7 +23,7 @@ public record GameEventLock(ResourceKey<? extends GameEvent> key) implements ITr
 
     @Override
     public TradeLockProvider getCodec() {
-        return null;
+        return ModTradeLockProviderTypes.GAME_EVENT_LOCK.get();
     }
 
     @Override

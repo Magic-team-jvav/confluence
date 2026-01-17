@@ -266,13 +266,14 @@ public final class SlimeRainGameEvent implements GameEvent {
     }
 
     @Override
-    public void forceStart() {
-        if (started()) return;
+    public boolean forceStart() {
+        if (started()) return false;
         this.cooldown = 0;
         this.canEnd = false;
         this.canStart = true;
         this.forceStart = true;
         this.spawnedKingSlime = false;
+        return true;
     }
 
     @Override

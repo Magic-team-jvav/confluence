@@ -486,7 +486,11 @@ public final class ModEvents {
                 .register("confluence:throwing_knives", "confluence:throwing_knive")
                 // 1.1.5 -> 1.2.0
                 .register("confluence:cap_tunabeard", "confluence:capn_tunabeard")
-                .register("confluence:obsidian_fish", "confluence:obsidifish");
+                .register("confluence:obsidian_fish", "confluence:obsidifish")
+                .register("terra_moment:slime_rain", "confluence:slime_rain")
+                .register("terra_moment:blood_tear", "confluence:blood_tear")
+                .register("terra_moment:goblin_battle_standard", "confluence:goblin_battle_standard")
+        ;
     }
 
     @SubscribeEvent

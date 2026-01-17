@@ -62,8 +62,8 @@ public class GoblinArmyGameEvent implements GameEvent {
     }
 
     @Override
-    public void forceStart() {
-
+    public boolean forceStart() {
+        return true;
     }
 
     @Override

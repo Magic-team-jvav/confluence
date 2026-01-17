@@ -172,10 +172,12 @@ public class BloodMoonGameEvent implements GameEvent {
     }
 
     @Override
-    public void forceStart() {
+    public boolean forceStart() {
         if (LibDateUtils.isWithinDayTime(LibDateUtils._19$30, LibDateUtils._04$30, level)) {
             this.forceStart = true;
+            return true;
         }
+        return false;
     }
 
     @Override

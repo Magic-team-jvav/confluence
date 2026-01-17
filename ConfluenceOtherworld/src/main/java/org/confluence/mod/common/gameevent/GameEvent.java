@@ -36,7 +36,7 @@ public interface GameEvent {
 
     boolean started();
 
-    void forceStart();
+    boolean forceStart();
 
     void forceEnd();
 

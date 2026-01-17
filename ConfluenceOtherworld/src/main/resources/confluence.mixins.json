@@ -147,6 +147,7 @@
         "client.renderer.ItemInHandRendererMixin",
         "client.renderer.ItemRendererMixin",
         "client.renderer.LevelRendererMixin",
+        "client.renderer.LightTextureMixin",
         "client.renderer.LivingEntityRendererMixin",
         "client.renderer.ModelBlockRendererMixin",
         "client.renderer.RegistryAwareItemModelShaperMixin",

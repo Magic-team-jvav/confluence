@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +14,8 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.ReturnException;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
@@ -60,16 +61,14 @@ public final class BossDelaySpawner {
         }
     }
 
-    /// @param predicate 等于[BossDelaySpawner#SUCCESS]时成功
-    ///                                                    等于[BossDelaySpawner#CONTINUE]时跳过该玩家
-    ///                                                    等于[BossDelaySpawner#CANCEL]时取消生成
-    ///                                                    大于0时设置下次检测延时
+    /// @param predicate 等于[BossDelaySpawner#SUCCESS]时成功,等于[BossDelaySpawner#CONTINUE]时跳过该玩家,等于[BossDelaySpawner#CANCEL]时取消生成,大于0时设置下次检测延时
     public void pushBoss(int delay, EntityType<? extends AbstractTerraBossBase> boss, ToIntFunction<ServerPlayer> predicate) {
         if (bossQueue.size() == 8) bossQueue.removeFirst();
         bossQueue.add(new Delayed<>(delay, boss, predicate));
     }
 
     public boolean hasSameTypeInQueue(EntityType<?> type) {
+        if (bossQueue.isEmpty()) return false;
         return bossQueue.stream().anyMatch(delayed -> delayed.entity == type);
     }
 
@@ -129,9 +128,8 @@ public final class BossDelaySpawner {
         ServerLevel level = player.serverLevel();
         Holder<Biome> biome = level.getBiome(player.blockPosition());
         if (!biome.is(Tags.Biomes.IS_SNOWY) && !biome.is(Tags.Biomes.IS_ICY)) return false;
-        MomentInstanceManager manager = MomentInstanceManager.of(level);
-        int size = manager.getRunMoments().size();
-        if (size != 0 && (size != 1 || !manager.hasMoment(TMMoments.BLOOD_MOON.getKey()))) {
+        int amount = GameEventSystem.INSTANCE.getStatedEventAmount();
+        if (amount != 0 && (amount != 1 || !BloodMoonGameEvent.INSTANCE.started())) {
             return false;
         }
         try {

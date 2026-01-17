@@ -1,8 +1,6 @@
 package org.confluence.mod.util;
 
 import com.google.common.collect.Iterables;
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
@@ -31,6 +29,8 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -139,7 +139,7 @@ public final class PlayerUtils {
         return false;
     }
 
-    @Deprecated(forRemoval = true)
+    @Deprecated(since = "1.2.0")
     @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean extractAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer player) {
         return extractMana(player, ItemStack.EMPTY, sup);
@@ -172,28 +172,39 @@ public final class PlayerUtils {
 
     public static float getFishingPower(ServerPlayer player) {
         float base = TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
-        if (EverBeneficial.of(player).isGummyWormUsed()) base += 3.0F;
-        if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE))
+        if (EverBeneficial.of(player).isGummyWormUsed()) {
+            base += 3.0F;
+        }
+        if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) {
             base += 5.0F;
-        if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
+        }
+        if (player.hasEffect(ModEffects.TIPSY)) {
+            base += 5.0F;
+        }
         Level level = player.level();
-        if (level.isRaining()) base *= 1.1F;
-        else if (level.isThundering()) base *= 1.2F;
+        if (level.isRaining()) {
+            base *= 1.1F;
+        } else if (level.isThundering()) {
+            base *= 1.2F;
+        }
         int dayTime = LibDateUtils.getDayTime(level);
-        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime))
+        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime)) {
             base *= 1.3F;
-        else if (LibDateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) base *= 0.8F;
-        else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime))
+        } else if (LibDateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) {
+            base *= 0.8F;
+        } else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime)) {
             base *= 1.3F;
-        else if (LibDateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) base *= 0.8F;
-        base *= switch (level.getMoonPhase()) {
-            case 0 -> 1.1F; // 满月
-            case 1, 7 -> 1.05F; // 凸月
-            case 5 -> 0.95F; // 眉月
-            case 4 -> 0.9F; // 新月
+        } else if (LibDateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) {
+            base *= 0.8F;
+        }
+        base *= switch (MoonPhase.of(level)) {
+            case FULL_MOON -> 1.1F;
+            case WANING_GIBBOUS, WAXING_GIBBOUS -> 1.05F;
+            case WAXING_CRESCENT -> 0.95F;
+            case NEW_MOON -> 0.9F;
             default -> 1.0F;
         };
-        if (MomentInstanceManager.of(level).hasMoment(TMMoments.BLOOD_MOON.getKey())) {
+        if (BloodMoonGameEvent.INSTANCE.started()) {
             base *= 1.1F;
         }
         return base;
@@ -234,7 +245,7 @@ public final class PlayerUtils {
         return coins;
     }
 
-    @Deprecated(since = "1.2.0", forRemoval = true)
+    @Deprecated(since = "1.2.0")
     @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static int[] getCoins(Player player) {
         Coins coins = getCoins(player, true);
@@ -254,7 +265,7 @@ public final class PlayerUtils {
         return res;
     }
 
-    @Deprecated(since = "1.2.0", forRemoval = true)
+    @Deprecated(since = "1.2.0")
     @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static long getMoney(Player player) {
         return getMoney(player, true);
@@ -264,7 +275,7 @@ public final class PlayerUtils {
         return tryCostMoney(getMoney(player, withPiggyBank), player, cost, withPiggyBank);
     }
 
-    @Deprecated(since = "1.2.0", forRemoval = true)
+    @Deprecated(since = "1.2.0")
     @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean tryCostMoney(Player player, long cost) {
         return tryCostMoney(player, cost, true);
@@ -307,7 +318,7 @@ public final class PlayerUtils {
         return true;
     }
 
-    @Deprecated(since = "1.2.0", forRemoval = true)
+    @Deprecated(since = "1.2.0")
     @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean tryCostMoney(long have, Player player, long cost) {
         return tryCostMoney(have, player, cost, true);
@@ -388,12 +399,10 @@ public final class PlayerUtils {
         }
     }
 
-    /**
-     * 获取玩家复活时间
-     *
-     * @param player 玩家
-     * @return 复活时间
-     */
+    /// 获取玩家复活时间
+    ///
+    /// @param player 玩家
+    /// @return 复活时间
     public static int getRespawnWaitTime(ServerPlayer player) {
         AABB aabb = new AABB(player.blockPosition()).inflate(Short.MAX_VALUE);
         int min, max;
@@ -408,9 +417,7 @@ public final class PlayerUtils {
         return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
     }
 
-    /**
-     * @return true表示魔力值不够
-     */
+    /// @return true表示魔力值不够
     public static boolean applyAutoGetMana(ServerPlayer player, float currentMana, float extract) {
         if (currentMana < extract) {
             if (!TCUtils.hasType(player, AccessoryItems.AUTO$GET$MANA)) return true;

@@ -14,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
@@ -29,6 +30,7 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -71,6 +73,7 @@ public final class SlimeRainGameEvent implements GameEvent {
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 300, 1, 1),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.PURPLE_SLIME.get(), 100, 1, 1),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_SLIME.get(), 1, 1, 1)
+                // todo 事件注册
         );
     }
 
@@ -117,12 +120,15 @@ public final class SlimeRainGameEvent implements GameEvent {
             }
             return entity.isRemoved();
         });
-        if (spawned.size() >= 50) return;
-        for (ServerPlayer player : level.players()) {
+        List<ServerPlayer> players = level.players();
+        if (spawned.size() >= 25 + players.size() * 25) return;
+        for (ServerPlayer player : players) {
             Vec3 position = player.position();
             double y = position.y + 64;
             NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
-            int interval = Mth.floor(server.tickRateManager().tickrate() / data.speedMultiplier());
+            double speed = data.speedMultiplier();
+            if (speed <= 0) continue;
+            int interval = Mth.floor(server.tickRateManager().tickrate() / speed);
             if (haveKingSlime) {
                 interval *= 5;
             }
@@ -141,12 +147,14 @@ public final class SlimeRainGameEvent implements GameEvent {
                     if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
                         continue;
                     }
-                    spawnerData.type.create(level, entity -> {
+                    Entity entity = spawnerData.type.spawn(level, BlockPos.containing(x, y, z), MobSpawnType.EVENT);
+                    if (entity != null) {
                         entity.addTag(ENTITY_TAG);
-                        if (level.tryAddFreshEntityWithPassengers(entity)) {
-                            spawned.add(entity);
+                        spawned.add(entity);
+                        if (entity instanceof Mob mob && player.canBeSeenAsEnemy()) {
+                            mob.setTarget(player);
                         }
-                    }, BlockPos.containing(x, y, z), MobSpawnType.EVENT, false, false);
+                    }
                 }
             }
         }
@@ -155,7 +163,7 @@ public final class SlimeRainGameEvent implements GameEvent {
     private void checkCanStart() {
         int invChance = 0;
         if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, _12$00, level)) { // 时间
-            if (!level.isRaining()) { // todo 事件
+            if (!level.isRaining() && !BloodMoonGameEvent.INSTANCE.started()) { // todo 事件
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                     boolean expert = LibUtils.isAtLeastExpert(level, player.blockPosition());
                     if (player.getMaxHealth() >= 28 && player.getArmorValue() >= 14) { // 属性
@@ -220,6 +228,7 @@ public final class SlimeRainGameEvent implements GameEvent {
 
     @Override
     public void onStart() {
+        this.forceStart = false;
         this.duration = server.isDedicatedServer() ? 15 * 1200 : level.random.nextIntBetweenInclusive(9, 15) * 1200;
         Component component = Component.translatable("message.confluence.slime_rain.start").withColor(GlobalColors.MESSAGE.get());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {

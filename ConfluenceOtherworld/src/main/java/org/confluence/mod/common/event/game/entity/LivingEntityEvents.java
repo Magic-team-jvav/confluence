@@ -50,6 +50,7 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
@@ -530,13 +531,12 @@ public final class LivingEntityEvents {
     public static void mobSpawn$SpawnPlacementCheck(MobSpawnEvent.SpawnPlacementCheck event) {
         if (event.getSpawnType() == MobSpawnType.NATURAL && !event.getPlacementCheckResult()) {
             EntityType<?> entityType = event.getEntityType();
-//            if (entityType == TEMonsterEntities.GHOST.get()) {
-//                IChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
-//                event.setResult(iSection != null && iSection.confluence$isGraveyard()
-//                        ? MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED
-//                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
-//            } else
-            if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
+            if (entityType == TEMonsterEntities.GHOST.get()) {
+                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
+                event.setResult(iSection != null && iSection.confluence$isGraveyard()
+                        ? MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED
+                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
+            } else if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
                 ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
                 if (iSection != null && iSection.confluence$isGraveyard()) {
                     event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED);
@@ -549,6 +549,16 @@ public final class LivingEntityEvents {
     public static void effectParticleModification(EffectParticleModificationEvent event) {
         if (event.isVisible() && !IMobEffectInstance.of(event.getEffect()).confluence$isEnabled()) {
             event.setVisible(false);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void spawnClusterSize(SpawnClusterSizeEvent event) {
+        if (BloodMoonGameEvent.INSTANCE.started()) {
+            Mob mob = event.getEntity();
+            if (mob instanceof Enemy && mob.position().y > OverworldUtils.getSurfaceY()) {
+                event.setSize(LibUtils.multiplyInt(event.getSize(), 2, mob.getRandom()));
+            }
         }
     }
 }

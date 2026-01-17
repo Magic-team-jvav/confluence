@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.ImmutableMap;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
@@ -26,6 +25,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
 import org.confluence.mod.common.data.saved.DateStamp;
 import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -86,7 +87,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         SecretFlagLock theCorruptionWorldLock = new SecretFlagLock(IWorldOptions.THE_CORRUPTION);
         SecretFlagLock theCrimsonWorldLock = new SecretFlagLock(IWorldOptions.THE_CRIMSON);
         SecretFlagLock hardmodeLock = new SecretFlagLock(IWorldOptions.HARDMODE);
-        MomentLock bloodMoonLock = new MomentLock(TMMoments.BLOOD_MOON.getKey());
+        GameEventLock bloodMoonLock = new GameEventLock(BloodMoonGameEvent.KEY);
         EnvironmentLock ectoMistLock = new EnvironmentLock(EnvironmentLevelAccess.matcher(null, null, true));
         BiomeLock glowingMushroomLock = BiomeLock.of(ModBiomes.GLOWING_MUSHROOM);
         BiomeLock theHallowLock = BiomeLock.of(ModTags.Biomes.THE_HALLOW);
@@ -654,12 +655,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                 .setProperties(
                                         TradeProperties.builder().setLock(
                                                 ITradeLock.and(
-                                                        new MomentLock(
-                                                                TMMoments.BLOOD_MOON.getKey()
-                                                        ),
-                                                        new MomentLock(
-                                                                TMMoments.SLIME_RAIN.getKey()
-                                                        )
+                                                        new GameEventLock(BloodMoonGameEvent.KEY),
+                                                        new GameEventLock(SlimeRainGameEvent.KEY)
                                                 )
                                         ).build()
                                 ).build()

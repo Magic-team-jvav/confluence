@@ -7,7 +7,10 @@ import com.xiaohunao.xhn_lib.api.register.register.MapCodecFlexibleRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.heaven_destiny_moment.context.condition.EverBeneficialCondition;
 import org.confluence.mod.integration.heaven_destiny_moment.context.condition.EvilBrokenCountCondition;
+import org.jetbrains.annotations.ApiStatus;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval(inVersion = "1.2.0")
 public class ModMapCodecRegisters {
     public static final MapCodecFlexibleRegister<ICondition> CONDITION_CODEC = MapCodecFlexibleRegister.createMapCodec(HDMRegistries.Keys.CONDITION_CODEC, Confluence.MODID).addMapCodec(
             "ever_beneficial", EverBeneficialCondition.CODEC,

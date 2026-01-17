@@ -28,9 +28,12 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.mod.integration.heaven_destiny_moment.context.condition.EverBeneficialCondition;
 import org.confluence.mod.integration.heaven_destiny_moment.context.condition.EvilBrokenCountCondition;
 import org.confluence.mod.integration.heaven_destiny_moment.init.ModMomentProbabilityFunction;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.List;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval(inVersion = "1.2.0")
 @EventBusSubscriber
 public class MomentEvents {
     @SubscribeEvent

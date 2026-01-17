@@ -46,6 +46,8 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
@@ -88,12 +90,14 @@ public final class PlayerEvents {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
         PlayerUtils.syncSoul2Client(player);
+        GameEventSystem.INSTANCE.playerLoggedIn(player);
     }
 
     @SubscribeEvent
     public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
+        GameEventSystem.INSTANCE.playerLoggedOut(player);
     }
 
     @SubscribeEvent
@@ -356,6 +360,20 @@ public final class PlayerEvents {
             } else {
                 NeoForge.EVENT_BUS.post(new CustomMimicSummonKeyEvent(player, key, menu, blockEntity));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void canPlayerSleep(CanPlayerSleepEvent event) {
+        if (BloodMoonGameEvent.INSTANCE.started()) {
+            event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
+        }
+    }
+
+    @SubscribeEvent
+    public static void canContinueSleeping(CanContinueSleepingEvent event) {
+        if (event.mayContinueSleeping() && BloodMoonGameEvent.INSTANCE.started()) {
+            event.setContinueSleeping(false);
         }
     }
 }

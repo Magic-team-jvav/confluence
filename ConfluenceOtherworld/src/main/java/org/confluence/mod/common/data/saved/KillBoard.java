@@ -1,8 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
-import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
-import com.xiaohunao.heaven_destiny_moment.common.moment.IMoment;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
@@ -20,7 +18,7 @@ import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibStreamCodecUtils;
-import org.confluence.mod.Confluence;
+import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -32,12 +30,12 @@ import java.util.Set;
 public final class KillBoard implements IGlobalData {
     public static final KillBoard INSTANCE = new KillBoard();
     public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = ExtraCodecs.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec());
-    public static final Codec<Object2BooleanMap<ResourceKey<IMoment>>> DEFEATED_EVENTS_CODEC = ExtraCodecs.object2BooleanMap(ResourceKey.codec(HDMRegistries.Keys.MOMENT));
+    public static final Codec<Object2BooleanMap<ResourceKey<? extends GameEvent>>> DEFEATED_EVENTS_CODEC = ExtraCodecs.object2BooleanMap(GameEvent.KEY_CODEC);
     public static final StreamCodec<RegistryFriendlyByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ByteBufCodecs.registry(Registries.ENTITY_TYPE));
-    public static final StreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<IMoment>>> DEFEATED_EVENTS_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ResourceKey.streamCodec(HDMRegistries.Keys.MOMENT));
+    public static final StreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<? extends GameEvent>>> DEFEATED_EVENTS_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(GameEvent.KEY_STREAM_CODEC);
 
     private Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
-    private Object2BooleanMap<ResourceKey<IMoment>> defeatedEvents = new Object2BooleanOpenHashMap<>();
+    private Object2BooleanMap<ResourceKey<? extends GameEvent>> defeatedEvents = new Object2BooleanOpenHashMap<>();
     private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
 
     private KillBoard() {}
@@ -46,7 +44,7 @@ public final class KillBoard implements IGlobalData {
         return defeatedBosses.getBoolean(entityType);
     }
 
-    public boolean isDefeated(ResourceKey<IMoment> moment) {
+    public boolean isDefeated(ResourceKey<? extends GameEvent> moment) {
         return defeatedEvents.getBoolean(moment);
     }
 
@@ -66,9 +64,9 @@ public final class KillBoard implements IGlobalData {
     }
 
     @SafeVarargs
-    public final int countDefeated(ResourceKey<IMoment>... keys) {
+    public final int countDefeated(ResourceKey<? extends GameEvent>... keys) {
         int count = 0;
-        for (ResourceKey<IMoment> key : keys) {
+        for (ResourceKey<? extends GameEvent> key : keys) {
             if (isDefeated(key)) count++;
         }
         return count;
@@ -78,7 +76,7 @@ public final class KillBoard implements IGlobalData {
         return defeatedBosses.keySet();
     }
 
-    public Set<ResourceKey<IMoment>> getDefeatedEvents() {
+    public Set<ResourceKey<? extends GameEvent>> getDefeatedEvents() {
         return defeatedEvents.keySet();
     }
 
@@ -93,8 +91,8 @@ public final class KillBoard implements IGlobalData {
         }
     }
 
-    public void defeat(IMoment moment) {
-        HDMRegistries.MOMENT.getResourceKey(moment).ifPresentOrElse(key -> defeatedEvents.put(key, true), () -> Confluence.LOGGER.warn("Unknown moment: {}", moment));
+    public void defeat(ResourceKey<? extends GameEvent> key) {
+        defeatedEvents.put(key, true);
         KillBoardSyncPacketS2C.sendToAll();
     }
 

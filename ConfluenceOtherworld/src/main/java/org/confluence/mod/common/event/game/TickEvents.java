@@ -44,7 +44,6 @@ public final class TickEvents {
         FallingStarItemEntity.summon(level);
         MeteoriteTracker.INSTANCE.tick(level);
         BossDelaySpawner.INSTANCE.tick(level);
-        GameEventSystem.INSTANCE.tick();
 
         int dayTime = LibDateUtils.getDayTime(level);
         if (dayTime == LibDateUtils._06$00) {
@@ -58,6 +57,7 @@ public final class TickEvents {
         NPCSpawner.respawnNPC(level, dayTime);
 
         HardmodeConvertor.INSTANCE.scheduleRefill(level);
+        GameEventSystem.INSTANCE.tick();
     }
 
     @SubscribeEvent

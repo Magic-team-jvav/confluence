@@ -1,7 +1,5 @@
 package org.confluence.mod.common.block.natural.herbs;
 
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -16,8 +14,9 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.particle.CrossDustParticleOptions;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 
 public class DeathWeed extends BaseHerbBlock {
@@ -33,13 +32,13 @@ public class DeathWeed extends BaseHerbBlock {
     }
 
     @Override
-    protected @NotNull ItemLike getBaseSeedId() {
+    protected ItemLike getBaseSeedId() {
         return FoodItems.DEATHWEED_SEED.get();
     }
 
     @Override
     public boolean canBloom(ServerLevel level, BlockState state) {
-        return LibDateUtils.isNight(level) && (level.getMoonPhase() == 0 || MomentInstanceManager.of(level).hasMoment(TMMoments.BLOOD_MOON.getKey()));
+        return LibDateUtils.isNight(level) && (MoonPhase.FULL_MOON.match(level) || BloodMoonGameEvent.INSTANCE.started());
     }
 
     @Override

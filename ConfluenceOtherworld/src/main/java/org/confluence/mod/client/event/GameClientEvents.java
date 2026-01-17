@@ -153,6 +153,7 @@ public final class GameClientEvents {
         EctoMistHelper.reset();
         ClientBestiary.reset();
         LucyTheAxeHandler.reset();
+        ClientGameEventSystem.reset();
     }
 
     @SubscribeEvent

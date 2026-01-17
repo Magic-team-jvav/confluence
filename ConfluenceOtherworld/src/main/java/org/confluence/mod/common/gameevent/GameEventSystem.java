@@ -7,6 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.network.s2c.GameEventSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +59,7 @@ public final class GameEventSystem implements IGlobalData {
             if (event.started()) {
                 if (event.canEnd()) {
                     event.onEnd();
+                    KillBoard.INSTANCE.defeat(event.key());
                     GameEventSyncPacketS2C.sendToAll(false, event.key());
                 }
             } else {

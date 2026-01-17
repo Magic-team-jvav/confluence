@@ -27,7 +27,6 @@ import java.util.Queue;
 public final class ClientGameEventSystem {
     private static final Map<ResourceKey<? extends GameEvent>, GameEventSyncCallback> CALLBACKS = Util.make(new IdentityHashMap<>(), map -> {
         map.put(GameEventSystem.ALL_EVENT_KEY, GameEventSyncCallback::handleAllEvent);
-        map.put(SlimeRainGameEvent.KEY, GameEventSyncCallback::handleSlimeRain);
         map.put(BloodMoonGameEvent.KEY, GameEventSyncCallback::handleBloodMoon);
         map.put(GoblinArmyGameEvent.KEY, GameEventSyncCallback::handleGoblinArmy);
         // todo 事件注册
@@ -52,9 +51,16 @@ public final class ClientGameEventSystem {
             if (start) {
                 afterRenderSky = RENDERERS.get(key);
             } else {
-                afterRenderSky = null;
+                reset();
             }
         }
+    }
+
+    public static void reset() {
+        moonTexture = null;
+        lightTextureColor = null;
+        afterRenderSky = null;
+        SlimeRainSprite.SLIME_RAIN_SPRITES.clear();
     }
 
     @FunctionalInterface
@@ -67,17 +73,10 @@ public final class ClientGameEventSystem {
             }
         }
 
-        static void handleSlimeRain(Player player, boolean start) {
-            SlimeRainSprite.SLIME_RAIN_SPRITES.clear();
-        }
-
         static void handleBloodMoon(Player player, boolean start) {
             if (start) {
                 moonTexture = BLOOD_MOON_TEXTURE;
                 lightTextureColor = new Vector3f(1, 0, 0);
-            } else {
-                moonTexture = null;
-                lightTextureColor = null;
             }
         }
 

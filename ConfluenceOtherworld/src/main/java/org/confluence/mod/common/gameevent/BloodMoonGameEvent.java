@@ -23,7 +23,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.NaturalSpawnerUtil;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.BossDelaySpawner;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
@@ -164,7 +163,6 @@ public class BloodMoonGameEvent implements GameEvent {
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             AchievementUtils.awardAchievement(player, "bloodbath");
         }
-        KillBoard.INSTANCE.defeat(KEY);
         spawned.clear();
     }
 

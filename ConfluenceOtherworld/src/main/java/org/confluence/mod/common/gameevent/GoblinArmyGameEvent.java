@@ -6,7 +6,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 
@@ -55,7 +54,6 @@ public class GoblinArmyGameEvent implements GameEvent {
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             AchievementUtils.awardAchievement(player, "goblin_punter");
         }
-        KillBoard.INSTANCE.defeat(KEY);
     }
 
     @Override

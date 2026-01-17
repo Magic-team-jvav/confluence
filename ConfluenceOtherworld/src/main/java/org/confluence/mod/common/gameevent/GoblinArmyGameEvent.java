@@ -177,8 +177,7 @@ public class GoblinArmyGameEvent implements GameEvent {
         if (forceEnd) {
             return true;
         }
-        // todo 击杀数
-        return false;
+        return killed >= required;
     }
 
     @Override

@@ -104,6 +104,10 @@ public final class GameEventSystem implements IGlobalData {
         return events.values();
     }
 
+    public Map<ResourceKey<? extends GameEvent>, GameEvent> getEvents() {
+        return events;
+    }
+
     /// 获取正在运行的事件数量
     ///
     /// @param nonEnv 非环境事件

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceKey;
@@ -20,7 +21,6 @@ import org.confluence.mod.common.gameevent.*;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.util.*;
@@ -42,7 +42,7 @@ public final class ClientGameEventSystem {
     private static final PoseStack poseStack = new PoseStack();
     public static @Nullable ResourceLocation moonTexture;
     public static @Nullable Vector3f lightTextureColor;
-    public static @Nullable AfterRenderSky afterRenderSky;
+    private static Map<ResourceKey<? extends GameEvent>, AfterRenderSky> afterRenderSky = Map.of();
 
     public static void handle(LocalPlayer player) {
         long gameTime = player.level().getGameTime();
@@ -51,24 +51,36 @@ public final class ClientGameEventSystem {
     }
 
     public static void handlePacket(Player player, List<ResourceKey<? extends GameEvent>> keys, boolean start) {
+        Map<ResourceKey<? extends GameEvent>, AfterRenderSky> map = new IdentityHashMap<>(afterRenderSky);
         for (ResourceKey<? extends GameEvent> key : keys) {
             GameEventSyncCallback callback = CALLBACKS.get(key);
             if (callback != null) {
                 callback.call(player, start);
             }
             if (start) {
-                afterRenderSky = RENDERERS.get(key);
+                AfterRenderSky renderSky = RENDERERS.get(key);
+                if (renderSky != null) {
+                    map.put(key, renderSky);
+                }
             } else {
-                reset();
+                map.remove(key);
             }
         }
+        afterRenderSky = map;
     }
 
     public static void reset() {
         moonTexture = null;
         lightTextureColor = null;
-        afterRenderSky = null;
+        afterRenderSky = Map.of();
         SlimeRainSprite.SLIME_RAIN_SPRITES.clear();
+    }
+
+    public static void afterRenderSky(RenderLevelStageEvent event, Minecraft minecraft) {
+        if (afterRenderSky.isEmpty()) return;
+        for (AfterRenderSky renderSky : afterRenderSky.values()) {
+            renderSky.render(minecraft.player, event);
+        }
     }
 
     @FunctionalInterface
@@ -85,6 +97,10 @@ public final class ClientGameEventSystem {
             if (start) {
                 moonTexture = BLOOD_MOON_TEXTURE;
                 lightTextureColor = new Vector3f(1, 0, 0);
+            } else {
+                moonTexture = null;
+                lightTextureColor = null;
+                SlimeRainSprite.SLIME_RAIN_SPRITES.clear();
             }
         }
 
@@ -98,21 +114,23 @@ public final class ClientGameEventSystem {
         void render(LocalPlayer player, RenderLevelStageEvent event);
 
         static void renderSlimeRain(LocalPlayer player, RenderLevelStageEvent event) {
+            RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
-            float a = 1.0F - player.level().getRainLevel(partialTick);
+            float a = (1.0F - player.level().getRainLevel(partialTick)) * 0.5F;
             for (SlimeRainSprite sprite : SlimeRainSprite.SLIME_RAIN_SPRITES) {
                 poseStack.pushPose();
                 poseStack.mulPose(event.getModelViewMatrix());
                 sprite.render(partialTick, a);
                 poseStack.popPose();
             }
-            RenderSystem.setShaderColor(1, 1, 1, 1);
             RenderSystem.disableBlend();
+            RenderSystem.depthMask(true);
         }
 
         static void renderMeteorShower(LocalPlayer player, RenderLevelStageEvent event) {
+            RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, MeteorShowerSprite.TEXTURE);
@@ -131,6 +149,7 @@ public final class ClientGameEventSystem {
             }
             RenderSystem.setShaderColor(1, 1, 1, 1);
             RenderSystem.disableBlend();
+            RenderSystem.depthMask(true);
         }
     }
 
@@ -158,8 +177,7 @@ public final class ClientGameEventSystem {
         private float yo;
 
         private SlimeRainSprite() {
-            float v = 1;
-            this.initialY = 90 - v + v * random();
+            this.initialY = 90 - 2 + 2 * random();
             this.yaw = Mth.TWO_PI * random();
             this.texture = SLIME_RAIN_TEXTURES[(int) (random() * 3)];
             int i = (int) (random() * 75);
@@ -167,7 +185,7 @@ public final class ClientGameEventSystem {
             float j = Mth.clamp(i / 75.0F - 0.25F, 0, 1); // 0 -> 1
             this.alpha = 1 - j; // 1 -> 0
             this.radius = 1 + j;
-            this.y = this.yo = initialY - 90;
+            this.y = this.yo = initialY;
         }
 
         private void render(float partialTick, float a) {
@@ -200,7 +218,6 @@ public final class ClientGameEventSystem {
 
     private static class MeteorShowerSprite {
         private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor_shower.png");
-        private static final Vector2f vec = new Vector2f();
         private static final Queue<MeteorShowerSprite> METEOR_SHOWER_SPRITES = EvictingQueue.create(32);
         private static final float frame = 1 / 7.0F;
         private final float radius;
@@ -212,11 +229,11 @@ public final class ClientGameEventSystem {
         private boolean remove;
 
         private MeteorShowerSprite() {
-            this.radius = 4 + random() * 4;
+            this.radius = 4 + random() * 2;
             this.alpha = 0.5F + random() * 0.5F;
             this.quaternionf = new Quaternionf().rotationXYZ(
                     random() * -Mth.HALF_PI - Mth.PI * 0.25F,
-                    random() * Mth.HALF_PI,
+                    random() * Mth.HALF_PI * 0.95F,
                     random() * Mth.TWO_PI
             );
         }

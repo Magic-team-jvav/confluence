@@ -268,10 +268,7 @@ public final class GameClientEvents {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event);
             MeteorLandingHandler.render(event);
-            ClientGameEventSystem.AfterRenderSky afterRenderSky = ClientGameEventSystem.afterRenderSky;
-            if (afterRenderSky != null) {
-                afterRenderSky.render(minecraft.player, event);
-            }
+            ClientGameEventSystem.afterRenderSky(event, minecraft);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);

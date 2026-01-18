@@ -52,7 +52,6 @@ import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
@@ -519,7 +518,7 @@ public final class LivingEntityEvents {
         Mob mob = event.getEntity();
         if (event.getResult() != MobSpawnEvent.PositionCheck.Result.FAIL && (
                 DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) ||
-                        GoblinArmyGameEvent.INSTANCE.started()
+                        GameEventSystem.shouldDenyNatureSpawn()
         )) {
             event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
         }

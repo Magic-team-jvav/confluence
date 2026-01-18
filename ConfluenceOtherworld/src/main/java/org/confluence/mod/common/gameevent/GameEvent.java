@@ -48,4 +48,9 @@ public interface GameEvent {
     void encode(CompoundTag tag);
 
     ResourceKey<? extends GameEvent> key();
+
+    /// 返回false表示环境事件
+    default boolean isNonEnvEvent() {
+        return true;
+    }
 }

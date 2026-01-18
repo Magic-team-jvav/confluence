@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -17,8 +16,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -120,16 +121,17 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public static void summon(ServerLevel level) {
-        if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) && level.getGameTime() % CommonConfigs.FALLING_STAR_INTERVAL.get() == 0) {
-            RandomSource random = level.random;
+        if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) &&
+                level.getGameTime() % getFallingStarSpawnInterval(level) == 0
+        ) {
             Set<Vec3> cache = new HashSet<>();
             for (ServerPlayer player : level.players()) {
                 if (player.level().dimension() != OverworldUtils.dimension()) continue;
                 if (cache.stream().anyMatch(pos -> player.distanceToSqr(pos) < Mth.square(player.requestedViewDistance() * 16))) {
                     continue;
                 }
-                int offsetX = Mth.nextInt(random, -16, 16);
-                int offsetZ = Mth.nextInt(random, -16, 16);
+                int offsetX = Mth.nextInt(level.random, -16, 16);
+                int offsetZ = Mth.nextInt(level.random, -16, 16);
                 BlockPos pos = player.getOnPos().offset(offsetX, 0, offsetZ).atY(256);
                 if (level.isLoaded(pos)) {
                     level.addFreshEntity(new FallingStarItemEntity(level, pos.getCenter()));
@@ -137,5 +139,14 @@ public class FallingStarItemEntity extends ItemEntity {
                 }
             }
         }
+    }
+
+    private static int getFallingStarSpawnInterval(ServerLevel level) {
+        int interval = CommonConfigs.FALLING_STAR_INTERVAL.get();
+        if (MeteorShowerGameEvent.INSTANCE.started()) {
+            float factor = CommonConfigs.METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER.get().floatValue();
+            return LibUtils.divideInt(interval, factor, level.random);
+        }
+        return interval;
     }
 }

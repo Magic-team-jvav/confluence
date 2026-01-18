@@ -37,6 +37,7 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -288,7 +289,7 @@ public final class NPCSpawner implements IGlobalData {
     }
 
     public void checkNpcRespawn(ServerLevel serverLevel) {
-        if (GoblinArmyGameEvent.INSTANCE.started()) return;
+        if (GameEventSystem.shouldDenyNatureSpawn()) return;
         outer:
         for (ServerPlayer player : serverLevel.players()) {
             BlockPos pos = getNpcSpawnPos(player);
@@ -350,17 +351,13 @@ public final class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /**
-     * todo 他不会在日食，雪人军团，海盗入侵或火星暴乱期间生成。
-     */
+    /// todo 他不会在日食期间生成。
     private boolean trySpawnTravelingMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.TRAVELING_MERCHANT.get())) {
-            if (!GoblinArmyGameEvent.INSTANCE.started()) {
-                if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils.getDayTime(12, 0), player.level())) {
-                    int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
-                    if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
-                        return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
-                    }
+            if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils.getDayTime(12, 0), player.level())) {
+                int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
+                if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
+                    return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
                 }
             }
         }

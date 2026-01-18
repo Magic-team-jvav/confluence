@@ -26,7 +26,6 @@ import org.confluence.mod.integration.heaven_destiny_moment.HDMEvents;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
-import org.confluence.mod.integration.terra_moment.DifficultyScaler;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +57,6 @@ public final class Confluence {
         ModAdvancements.register(eventBus);
 
         TFReferences.init();
-        DifficultyScaler.init();
         ModFluids.initialize();
         ModPrefix.initialize();
         RegistriesFixer.initialize();

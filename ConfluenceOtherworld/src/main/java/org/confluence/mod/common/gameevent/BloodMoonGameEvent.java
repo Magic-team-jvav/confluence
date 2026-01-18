@@ -17,11 +17,13 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.NaturalSpawnerUtil;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
 import org.confluence.mod.common.data.saved.BossDelaySpawner;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.util.AchievementUtils;
@@ -52,11 +54,10 @@ public class BloodMoonGameEvent implements GameEvent {
     public void open(MinecraftServer server) {
         this.server = server;
         this.level = OverworldUtils.getLevel(server);
-        this.spawnerData = WeightedRandomList.create(
+        this.spawnerData = NeoForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.DRIPPLER.get(), 150, 1, 1),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_ZOMBIE.get(), 420, 1, 1)
-                // todo 事件注册
-        );
+        )).create();
     }
 
     @Override

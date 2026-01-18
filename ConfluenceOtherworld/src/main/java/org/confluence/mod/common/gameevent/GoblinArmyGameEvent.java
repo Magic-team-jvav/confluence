@@ -18,11 +18,13 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.NaturalSpawnerUtil;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.util.AchievementUtils;
@@ -55,15 +57,14 @@ public class GoblinArmyGameEvent implements GameEvent {
     public void open(MinecraftServer server) {
         this.server = server;
         this.level = OverworldUtils.getLevel(server);
-        this.spawnerData = WeightedRandomList.create(
+        this.spawnerData = NeoForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_ARCHER.get(), 360, 2, 4),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_PEON.get(), 480, 2, 3),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_WARRIOR.get(), 360, 2, 3),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SORCERER.get(), 240, 1, 1),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_THIEF.get(), 480, 2, 4),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANGER_GOBLIN.get(), 240, 1, 2)
-                // todo 事件注册
-        );
+        )).create();
     }
 
     @Override
@@ -148,7 +149,7 @@ public class GoblinArmyGameEvent implements GameEvent {
             return true;
         }
         if (LibDateUtils.getDayTime(level) == LibDateUtils._04$30 &&
-                GameEventSystem.INSTANCE.anyEventStarted() &&
+                !GameEventSystem.anyInvasionStarted() &&
                 ConfluenceData.get(level).getEvilBrokenCount() > 0
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {

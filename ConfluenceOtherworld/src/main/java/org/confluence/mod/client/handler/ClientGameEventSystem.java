@@ -11,9 +11,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.gameevent.GameEventAfterRenderSkyRegisterEvent;
+import org.confluence.mod.api.event.gameevent.GameEventSyncCallbackRegisterEvent;
 import org.confluence.mod.common.gameevent.*;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -29,11 +31,12 @@ public final class ClientGameEventSystem {
         map.put(GameEventSystem.ALL_EVENT_KEY, GameEventSyncCallback::handleAllEvent);
         map.put(BloodMoonGameEvent.KEY, GameEventSyncCallback::handleBloodMoon);
         map.put(GoblinArmyGameEvent.KEY, GameEventSyncCallback::handleGoblinArmy);
-        // todo 事件注册
+        ModLoader.postEvent(new GameEventSyncCallbackRegisterEvent(map));
     });
     private static final Map<ResourceKey<? extends GameEvent>, AfterRenderSky> RENDERERS = Util.make(new IdentityHashMap<>(), map -> {
         map.put(SlimeRainGameEvent.KEY, AfterRenderSky::renderSlimeRain);
-        // todo 事件注册
+        map.put(MeteorShowerGameEvent.KEY, AfterRenderSky::renderMeteorShower);
+        ModLoader.postEvent(new GameEventAfterRenderSkyRegisterEvent(map));
     });
     public static final ResourceLocation NO_MOON_TEXTURE = Confluence.asResource("textures/environment/no_moon.png");
     private static final ResourceLocation BLOOD_MOON_TEXTURE = Confluence.asResource("textures/environment/specific_moon_tr_blood_full_moon.png");
@@ -90,21 +93,19 @@ public final class ClientGameEventSystem {
         void render(LocalPlayer player, RenderLevelStageEvent event);
 
         static void renderSlimeRain(LocalPlayer player, RenderLevelStageEvent event) {
+            RenderSystem.enableBlend();
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
             for (SlimeRainSprite sprite : SlimeRainSprite.SLIME_RAIN_SPRITES) {
                 float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
                 poseStack.pushPose();
                 poseStack.mulPose(event.getModelViewMatrix());
-                poseStack.mulPose(Axis.YP
-                        .rotation(Mth.lerp(partialTick, sprite.yawO, sprite.yaw))
-                        .rotateX(Mth.lerp(partialTick, sprite.pitchO, sprite.pitch)));
-
-                RenderSystem.enableBlend();
-                RenderSystem.setShader(GameRenderer::getPositionTexShader);
+                poseStack.mulPose(Axis.YP.rotation(sprite.yaw).rotateX(Mth.lerp(partialTick, sprite.pitchO, sprite.pitch)));
                 RenderSystem.setShaderTexture(0, sprite.texture);
-                Matrix4f matrix4f = poseStack.last().pose().rotate(LibClientUtils.ANGLE_45);
+                RenderSystem.setShaderColor(1, 1, 1, sprite.alpha);
+                Matrix4f matrix4f = poseStack.last().pose();
                 BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-                float radius = 2;
-                int y = 100;
+                float radius = sprite.radius;
+                float y = sprite.y;
                 bufferBuilder.addVertex(matrix4f, -radius, y, -radius).setUv(0.0F, sprite.v1);
                 bufferBuilder.addVertex(matrix4f, radius, y, -radius).setUv(1.0F, sprite.v1);
                 bufferBuilder.addVertex(matrix4f, radius, y, radius).setUv(1.0F, sprite.v0);
@@ -112,6 +113,11 @@ public final class ClientGameEventSystem {
                 BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
                 poseStack.popPose();
             }
+            RenderSystem.setShaderColor(1, 1, 1, 1);
+        }
+
+        static void renderMeteorShower(LocalPlayer player, RenderLevelStageEvent event) {
+            // todo
         }
     }
 
@@ -121,42 +127,44 @@ public final class ClientGameEventSystem {
                 Confluence.asResource("textures/environment/slime_rain_green.png"),
                 Confluence.asResource("textures/environment/slime_rain_purple.png")
         };
-        private static final Queue<SlimeRainSprite> SLIME_RAIN_SPRITES = EvictingQueue.create(16);
+        private static final Queue<SlimeRainSprite> SLIME_RAIN_SPRITES = EvictingQueue.create(32);
         private final float initialRatio;
         private final float initialPitch;
+        private final float yaw;
+        private final ResourceLocation texture;
+        private final float y;
+        private final float alpha;
+        private final float radius;
+        private float v0;
+        private float v1 = 0.25F;
+        private int tick;
         private float pitch;
         private float pitchO;
-        private final float initialYaw;
-        private float yaw;
-        private float yawO;
-        private float v0;
-        private float v1;
-        private int tick;
-        private final ResourceLocation texture;
 
         private SlimeRainSprite() {
-            this.initialRatio = 0.5F * (float) Math.random() + 0.5F;
-            this.initialPitch = -Mth.PI * 0.25F * (float) Math.random();
-            this.initialYaw = Mth.HALF_PI * (float) Math.random();
+            float v = -Mth.PI * 0.1F;
+            this.initialRatio = v - 0.05F * (float) Math.random();
+            this.initialPitch = v * (float) Math.random() + initialRatio;
+            this.yaw = Mth.TWO_PI * (float) Math.random();
             this.texture = SLIME_RAIN_TEXTURES[(int) (Math.random() * 3)];
-            this.pitch = this.pitchO = initialPitch * initialRatio;
-            this.yaw = this.yawO = initialYaw * initialRatio;
+            int i = (int) (Math.random() * 75);
+            this.y = i + 25;
+            float j = Mth.clamp(i / 75.0F + 0.25F, 0, 1); // 0 -> 1
+            this.alpha = 1 - j; // 1 -> 0
+            this.radius = 0.5F + j;
+            this.pitch = this.pitchO = initialRatio;
         }
 
         public static void tick(long gameTime) {
-            if (gameTime % 20 == 0) {
+            if (gameTime % 10 == 0) {
                 SlimeRainSprite.SLIME_RAIN_SPRITES.add(new SlimeRainSprite());
             }
             for (SlimeRainSprite sprite : SLIME_RAIN_SPRITES) {
                 ++sprite.tick;
-                int i = 3 - (sprite.tick >> 1) % 4;
-                sprite.v0 = 0.25F * i;
+                sprite.v0 = 0.25F * ((sprite.tick >> 1) % 4);
                 sprite.v1 = sprite.v0 + 0.25F;
-                sprite.yawO = sprite.yaw;
                 sprite.pitchO = sprite.pitch;
-                float ratio = sprite.tick / 100.0F + sprite.initialRatio;
-                sprite.pitch = sprite.initialPitch * ratio;
-                sprite.yaw = sprite.initialYaw * ratio;
+                sprite.pitch = sprite.initialPitch * sprite.tick / 75 + sprite.initialRatio;
             }
         }
     }

@@ -128,7 +128,7 @@ public final class BossDelaySpawner {
         ServerLevel level = player.serverLevel();
         Holder<Biome> biome = level.getBiome(player.blockPosition());
         if (!biome.is(Tags.Biomes.IS_SNOWY) && !biome.is(Tags.Biomes.IS_ICY)) return false;
-        int amount = GameEventSystem.INSTANCE.getStatedEventAmount();
+        int amount = GameEventSystem.INSTANCE.getStatedEventAmount(true, false);
         if (amount != 0 && (amount != 1 || !BloodMoonGameEvent.INSTANCE.started())) {
             return false;
         }

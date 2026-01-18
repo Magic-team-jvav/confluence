@@ -178,20 +178,16 @@ boolean advancementPlaques = false // 进度牌匾
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
-    implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.2'))
-    implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
-    implementation(jarJar("org.mesdag:ParticleStorm:${particle_storm_version}"))
+    implementation jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.2')
+    implementation jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
+    implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
+    implementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}")
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
-    if (true) {
-        compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
-        implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
-    } else {
-        compileOnly(annotationProcessor(files("libs/mixinsquared-common-0.3.3.jar")))
-        implementation(jarJar(files("libs/mixinsquared-neoforge-0.3.7-beta.1.jar")))
-    }
+    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
+    implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     if (true) {

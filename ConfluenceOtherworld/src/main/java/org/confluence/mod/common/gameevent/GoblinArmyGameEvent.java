@@ -153,11 +153,9 @@ public class GoblinArmyGameEvent implements GameEvent {
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 if (player.getMaxHealth() >= 40 && player.getArmorValue() >= 16) {
-                    boolean defeated = KillBoard.INSTANCE.isDefeated(KEY);
-                    boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
                     int chance;
-                    if (defeated) {
-                        if (hardmode) {
+                    if (KillBoard.INSTANCE.isDefeated(KEY)) {
+                        if (KillBoard.INSTANCE.getGamePhase().isHardmode()) {
                             chance = 60;
                         } else {
                             chance = 30;
@@ -193,7 +191,7 @@ public class GoblinArmyGameEvent implements GameEvent {
                 ++count;
             }
         }
-        this.required = Math.min(count, 255) * 40;
+        this.required = 80 + Math.min(count, 255) * 40;
     }
 
     @Override

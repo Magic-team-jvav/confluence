@@ -19,6 +19,8 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.common.gameevent.GameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -81,7 +83,10 @@ public final class KillBoard implements IGlobalData {
     }
 
     public void defeat(EntityType<?> entityType) {
-        defeatedBosses.put(entityType, true);
+        boolean defeated = defeatedBosses.put(entityType, true);
+        if (!defeated) {
+            LanternNightGameEvent.INSTANCE.schedule();
+        }
         if (entityType == TEBossEntities.SKELETRON.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
         } else if (entityType == TEBossEntities.WALL_OF_FLESH.get() || entityType == TEBossEntities.HILL_OF_FLESH.get()) {
@@ -92,7 +97,10 @@ public final class KillBoard implements IGlobalData {
     }
 
     public void defeat(ResourceKey<? extends GameEvent> key) {
-        defeatedEvents.put(key, true);
+        boolean defeated = defeatedEvents.put(key, true);
+        if (!defeated && GameEventSystem.isInvasionEvent(key)) {
+            LanternNightGameEvent.INSTANCE.schedule();
+        }
         KillBoardSyncPacketS2C.sendToAll();
     }
 

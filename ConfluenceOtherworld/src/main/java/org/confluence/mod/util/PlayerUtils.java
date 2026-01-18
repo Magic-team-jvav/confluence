@@ -453,6 +453,7 @@ public final class PlayerUtils {
         return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
     }
 
+    /// 将target的数据同步到sendTo
     public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
         ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
         FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);

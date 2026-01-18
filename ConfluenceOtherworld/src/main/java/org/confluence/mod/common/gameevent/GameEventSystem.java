@@ -39,6 +39,10 @@ public final class GameEventSystem implements IGlobalData {
         map.put(BloodMoonGameEvent.KEY, BloodMoonGameEvent.INSTANCE);
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerGameEvent.INSTANCE);
+        map.put(LanternNightGameEvent.KEY, LanternNightGameEvent.INSTANCE);
+        map.put(SpecificMoonGameEvent.KEY, SpecificMoonGameEvent.INSTANCE);
+        map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
+        map.put(PumpkinMoonGameEvent.KEY, PumpkinMoonGameEvent.INSTANCE);
         ModLoader.postEvent(new CustomGameEventRegisterEvent(map));
     });
     private transient int startedEventAmount;
@@ -166,12 +170,26 @@ public final class GameEventSystem implements IGlobalData {
         return "confluence:game_event_system";
     }
 
+    public static final Map<ResourceKey<? extends GameEvent>, GameEvent> INVASION_EVENTS = Util.make(new IdentityHashMap<>(), map -> {
+        map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
+        // todo 雪人，海盗，火星
+    });
+
+    public static boolean isInvasionEvent(ResourceKey<? extends GameEvent> key) {
+        return INVASION_EVENTS.containsKey(key);
+    }
+
     public static boolean anyInvasionStarted() {
-        return GoblinArmyGameEvent.INSTANCE.started(); // todo 雪人，海盗，火星
+        for (GameEvent event : INVASION_EVENTS.values()) {
+            if (event.started()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean shouldDenyNatureSpawn() {
-        return GoblinArmyGameEvent.INSTANCE.started(); // todo 雪人，海盗，火星，日食，四柱
+        return anyInvasionStarted(); // todo 日食，四柱
     }
 
     public static void removeUnTracked(Set<Entity> spawned, ServerLevel level) {

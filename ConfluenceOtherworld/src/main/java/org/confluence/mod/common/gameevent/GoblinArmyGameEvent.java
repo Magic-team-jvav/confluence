@@ -24,7 +24,7 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GoblinArmyGameEvent implements GameEvent {
+public final class GoblinArmyGameEvent implements GameEvent {
     public static final ResourceKey<GoblinArmyGameEvent> KEY = GameEvent.createKey(Confluence.asResource("goblin_army"));
     public static final GoblinArmyGameEvent INSTANCE = new GoblinArmyGameEvent();
     public static final String ENTITY_TAG = "spawn_during_goblin_army";
@@ -94,6 +94,7 @@ public class GoblinArmyGameEvent implements GameEvent {
             return true;
         }
         if (LibDateUtils.getDayTime(level) == LibDateUtils._04$30 &&
+                !LanternNightGameEvent.INSTANCE.started() &&
                 !GameEventSystem.anyInvasionStarted() &&
                 ConfluenceData.get(level).getEvilBrokenCount() > 0
         ) {

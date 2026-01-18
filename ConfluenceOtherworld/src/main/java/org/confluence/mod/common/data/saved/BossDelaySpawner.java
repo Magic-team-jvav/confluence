@@ -16,6 +16,7 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
@@ -78,6 +79,7 @@ public final class BossDelaySpawner {
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
         if (!MomentInstanceManager.of(level).getRunMoments().isEmpty()) return;
+        if (LanternNightGameEvent.INSTANCE.started()) return;
         EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
         if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
             return;

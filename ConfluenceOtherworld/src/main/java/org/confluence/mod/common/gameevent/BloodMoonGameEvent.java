@@ -24,7 +24,7 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BloodMoonGameEvent implements GameEvent {
+public final class BloodMoonGameEvent implements GameEvent {
     public static final ResourceKey<BloodMoonGameEvent> KEY = GameEvent.createKey(Confluence.asResource("blood_moon"));
     public static final BloodMoonGameEvent INSTANCE = new BloodMoonGameEvent();
     public static final String ENTITY_TAG = "spawn_during_blood_moon";

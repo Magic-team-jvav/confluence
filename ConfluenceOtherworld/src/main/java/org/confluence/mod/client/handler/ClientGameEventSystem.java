@@ -17,6 +17,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventAfterRenderSkyRegisterEvent;
 import org.confluence.mod.api.event.gameevent.GameEventSyncCallbackRegisterEvent;
+import org.confluence.mod.common.data.saved.SpecificMoonVariant;
 import org.confluence.mod.common.gameevent.*;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
@@ -36,10 +37,10 @@ public final class ClientGameEventSystem {
     private static final Map<ResourceKey<? extends GameEvent>, AfterRenderSky> RENDERERS = Util.make(new IdentityHashMap<>(), map -> {
         map.put(SlimeRainGameEvent.KEY, AfterRenderSky::renderSlimeRain);
         map.put(MeteorShowerGameEvent.KEY, AfterRenderSky::renderMeteorShower);
+        map.put(LanternNightGameEvent.KEY, AfterRenderSky::renderLanternNight);
         ModLoader.postEvent(new GameEventAfterRenderSkyRegisterEvent(map));
     });
     public static final ResourceLocation NO_MOON_TEXTURE = Confluence.asResource("textures/environment/no_moon.png");
-    private static final ResourceLocation BLOOD_MOON_TEXTURE = Confluence.asResource("textures/environment/specific_moon_tr_blood_full_moon.png");
     private static final PoseStack poseStack = new PoseStack();
     public static @Nullable ResourceLocation moonTexture;
     public static @Nullable Vector3f lightTextureColor;
@@ -96,7 +97,7 @@ public final class ClientGameEventSystem {
 
         static void handleBloodMoon(Player player, boolean start) {
             if (start && player.level().dimension() == OverworldUtils.dimension()) {
-                moonTexture = BLOOD_MOON_TEXTURE;
+                moonTexture = SpecificMoonVariant.TR_BLOOD_FULL_MOON.texture;
                 lightTextureColor = new Vector3f(1, 0, 0);
             } else {
                 moonTexture = null;
@@ -106,7 +107,7 @@ public final class ClientGameEventSystem {
         }
 
         static void handleGoblinArmy(Player player, boolean start) {
-
+            // todo 进度条
         }
     }
 
@@ -153,6 +154,10 @@ public final class ClientGameEventSystem {
             RenderSystem.setShaderColor(1, 1, 1, 1);
             RenderSystem.disableBlend();
             RenderSystem.depthMask(true);
+        }
+
+        static void renderLanternNight(LocalPlayer player, RenderLevelStageEvent event) {
+            // todo
         }
     }
 

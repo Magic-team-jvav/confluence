@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.terraentity.utils.TEUtils;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class BossSummoningItem extends TooltipItem {
             );
             if (TEUtils.internalSpawnEntity(mob, serverLevel)) {
                 serverLevel.addFreshEntityWithPassengers(mob);
+                LanternNightGameEvent.INSTANCE.forceEnd();
             }
         }
         return InteractionResultHolder.success(itemStack);

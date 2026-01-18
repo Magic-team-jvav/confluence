@@ -36,6 +36,7 @@ public final class TickEvents {
         if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
             return;
         }
+        GameEventSystem.INSTANCE.tick(); // 最高优先级，其会影响BossDelaySpawner、NPCSpawner等内容
         FallingStarItemEntity.summon(level);
         MeteoriteTracker.INSTANCE.tick(level);
         BossDelaySpawner.INSTANCE.tick(level);
@@ -52,7 +53,6 @@ public final class TickEvents {
         NPCSpawner.respawnNPC(level, dayTime);
 
         HardmodeConvertor.INSTANCE.scheduleRefill(level);
-        GameEventSystem.INSTANCE.tick();
     }
 
     @SubscribeEvent

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MeteorShowerGameEvent implements GameEvent {
+public final class MeteorShowerGameEvent implements GameEvent {
     public static final ResourceKey<MeteorShowerGameEvent> KEY = GameEvent.createKey(Confluence.asResource("meteor_shower"));
     public static final MeteorShowerGameEvent INSTANCE = new MeteorShowerGameEvent();
     public static final String ENTITY_TAG = "spawn_during_meteor_shower";

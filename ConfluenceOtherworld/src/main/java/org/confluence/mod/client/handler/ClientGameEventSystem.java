@@ -18,6 +18,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventAfterRenderSkyRegisterEvent;
 import org.confluence.mod.api.event.gameevent.GameEventSyncCallbackRegisterEvent;
 import org.confluence.mod.common.gameevent.*;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -94,7 +95,7 @@ public final class ClientGameEventSystem {
         }
 
         static void handleBloodMoon(Player player, boolean start) {
-            if (start) {
+            if (start && player.level().dimension() == OverworldUtils.dimension()) {
                 moonTexture = BLOOD_MOON_TEXTURE;
                 lightTextureColor = new Vector3f(1, 0, 0);
             } else {
@@ -114,6 +115,7 @@ public final class ClientGameEventSystem {
         void render(LocalPlayer player, RenderLevelStageEvent event);
 
         static void renderSlimeRain(LocalPlayer player, RenderLevelStageEvent event) {
+            if (player.level().dimension() != OverworldUtils.dimension()) return;
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -130,6 +132,7 @@ public final class ClientGameEventSystem {
         }
 
         static void renderMeteorShower(LocalPlayer player, RenderLevelStageEvent event) {
+            if (player.level().dimension() != OverworldUtils.dimension()) return;
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
             RenderSystem.setShader(GameRenderer::getPositionTexShader);

@@ -56,4 +56,8 @@ public record GameEventSyncPacketS2C(
     public static void sentToClient(ServerPlayer player, boolean start, List<ResourceKey<? extends GameEvent>> keys) {
         PacketDistributor.sendToPlayer(player, new GameEventSyncPacketS2C(keys, start));
     }
+
+    public static void sentToClient(ServerPlayer player, List<ResourceKey<? extends GameEvent>> started, List<ResourceKey<? extends GameEvent>> ended) {
+        PacketDistributor.sendToPlayer(player, new GameEventSyncPacketS2C(started, true), new GameEventSyncPacketS2C(ended, false));
+    }
 }

@@ -75,8 +75,8 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEEvents;
+import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
-import org.confluence.mod.integration.terra_entity.TERemoval;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
@@ -147,7 +147,7 @@ public final class ModEvents {
             LogBlockSet.setFlammable();
             ModRecipes.Brewing.initialize();
             ModUtils.registerCauldronInteractions();
-            TERemoval.redirectLootTable();
+            TEHelper.redirectLootTable();
             MagicMailBox.registerVariants();
             ModArmorBonus.registerArmorSetBonus();
             IGlobalData.registerGlobalData(

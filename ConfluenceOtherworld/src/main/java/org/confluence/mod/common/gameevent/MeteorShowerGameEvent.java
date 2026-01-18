@@ -1,22 +1,43 @@
 package org.confluence.mod.common.gameevent;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.NaturalSpawner;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.NaturalSpawnerUtil;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.util.OverworldUtils;
+import org.confluence.terraentity.entity.animal.SimpleVariantAnimal;
+import org.confluence.terraentity.entity.animal.VariantsTextureMaps;
+import org.confluence.terraentity.init.entity.TEAnimals;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class MeteorShowerGameEvent implements GameEvent {
     public static final ResourceKey<MeteorShowerGameEvent> KEY = GameEvent.createKey(Confluence.asResource("meteor_shower"));
     public static final MeteorShowerGameEvent INSTANCE = new MeteorShowerGameEvent();
+    public static final String ENTITY_TAG = "spawn_during_meteor_shower";
     private transient boolean isCelebrationMK10;
     private transient ServerLevel level;
     private transient boolean forceStart;
     private transient boolean forceEnd;
+    private transient final Set<Entity> spawned = new HashSet<>();
     private boolean started;
 
     private MeteorShowerGameEvent() {}
@@ -30,10 +51,50 @@ public class MeteorShowerGameEvent implements GameEvent {
     @Override
     public void close(MinecraftServer server) {
         this.level = null;
+        for (Entity entity : spawned) {
+            entity.discard();
+        }
+        spawned.clear();
     }
 
     @Override
-    public void tick() {}
+    public void tick() {
+        if (!started) return;
+        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        if (map == null) {
+            forceEnd();
+            return;
+        }
+        GameEventSystem.removeUnTracked(spawned, level);
+        List<ServerPlayer> players = level.players();
+        if (spawned.size() >= 1 + players.size() * 2) return;
+        for (ServerPlayer player : players) {
+            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            double speed = data.speedMultiplier();
+            if (speed <= 0) continue;
+            int interval = Mth.floor(20 * 20 / speed);
+            if (level.random.nextInt(interval) != 0) continue;
+            Vec3 position = player.position();
+            int count = data.getCount(1);
+            for (int j = 0; j < count; j++) {
+                double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
+                double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
+                int cx = SectionPos.blockToSectionCoord(x);
+                int cz = SectionPos.blockToSectionCoord(z);
+                if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                    continue;
+                }
+                EntityType<SimpleVariantAnimal> type = TEAnimals.WORM.get();
+                BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, type, Mth.floor(x), Mth.floor(z));
+                SimpleVariantAnimal worm = type.spawn(level, pos, MobSpawnType.EVENT);
+                if (worm != null) {
+                    worm.setVariant(VariantsTextureMaps.ENCHANTED_NIGHTCRAWLER_ID);
+                    worm.addTag(ENTITY_TAG);
+                    spawned.add(worm);
+                }
+            }
+        }
+    }
 
     @Override
     public boolean canStart() {
@@ -65,6 +126,7 @@ public class MeteorShowerGameEvent implements GameEvent {
     public void onEnd() {
         this.forceEnd = false;
         this.started = false;
+        spawned.clear();
     }
 
     @Override

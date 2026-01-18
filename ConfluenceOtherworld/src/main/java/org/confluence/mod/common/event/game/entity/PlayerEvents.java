@@ -90,14 +90,14 @@ public final class PlayerEvents {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
         PlayerUtils.syncSoul2Client(player);
-        GameEventSystem.INSTANCE.playerLoggedIn(player);
+        GameEventSystem.INSTANCE.syncAll(player);
     }
 
     @SubscribeEvent
     public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
-        GameEventSystem.INSTANCE.playerLoggedOut(player);
+        GameEventSystem.INSTANCE.clearAll(player);
     }
 
     @SubscribeEvent
@@ -279,6 +279,7 @@ public final class PlayerEvents {
 
         BoulderWorld.forceSetAccessory(player);
         PlayerUtils.flushLocalData(player, player);
+        GameEventSystem.INSTANCE.syncAll(player);
     }
 
     @SubscribeEvent
@@ -312,6 +313,7 @@ public final class PlayerEvents {
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         PlayerUtils.flushLocalData(player, player);
+        GameEventSystem.INSTANCE.syncAll(player);
     }
 
     @SubscribeEvent

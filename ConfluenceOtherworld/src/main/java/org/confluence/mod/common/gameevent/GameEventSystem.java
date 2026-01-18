@@ -1,13 +1,27 @@
 package org.confluence.mod.common.gameevent;
 
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.NaturalSpawner;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModLoader;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.NaturalSpawnerUtil;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.CustomGameEventRegisterEvent;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -32,17 +46,17 @@ public final class GameEventSystem implements IGlobalData {
 
     private GameEventSystem() {}
 
-    public void playerLoggedIn(ServerPlayer player) {
-        List<ResourceKey<? extends GameEvent>> keys = new ArrayList<>(events.size());
+    public void syncAll(ServerPlayer player) {
+        List<ResourceKey<? extends GameEvent>> started = new ArrayList<>(events.size());
         for (GameEvent event : getAllEventInstances()) {
             if (event.started()) {
-                keys.add(event.key());
+                started.add(event.key());
             }
         }
-        GameEventSyncPacketS2C.sentToClient(player, true, keys);
+        GameEventSyncPacketS2C.sentToClient(player, true, started);
     }
 
-    public void playerLoggedOut(ServerPlayer player) {
+    public void clearAll(ServerPlayer player) {
         GameEventSyncPacketS2C.sentToClient(player, false, ALL_EVENT_KEY);
     }
 
@@ -158,5 +172,65 @@ public final class GameEventSystem implements IGlobalData {
 
     public static boolean shouldDenyNatureSpawn() {
         return GoblinArmyGameEvent.INSTANCE.started(); // todo 雪人，海盗，火星，日食，四柱
+    }
+
+    public static void removeUnTracked(Set<Entity> spawned, ServerLevel level) {
+        spawned.removeIf(entity -> {
+            if (LibUtils.getChunkIfLoaded(level.getChunkSource(), entity.chunkPosition()) == null) {
+                entity.discard();
+                return true;
+            }
+            return entity.isRemoved();
+        });
+    }
+
+    public static void customSpawner(
+            GameEvent event,
+            ServerLevel level,
+            Set<Entity> spawned,
+            int perPlayer,
+            float intervalFactor,
+            WeightedRandomList<MobSpawnSettings.SpawnerData> spawnerDataList,
+            String entityTag,
+            boolean setTarget
+    ) {
+        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        if (map == null) {
+            event.forceEnd();
+            return;
+        }
+        removeUnTracked(spawned, level);
+        List<ServerPlayer> players = level.players();
+        if (spawned.size() >= perPlayer + players.size() * perPlayer) return;
+        for (ServerPlayer player : players) {
+            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            double speed = data.speedMultiplier();
+            if (speed <= 0) continue;
+            int interval = Mth.floor(20 * intervalFactor / speed);
+            if (level.random.nextInt(interval) != 0) continue;
+            Optional<MobSpawnSettings.SpawnerData> random = spawnerDataList.getRandom(level.random);
+            if (random.isEmpty()) continue;
+            Vec3 position = player.position();
+            MobSpawnSettings.SpawnerData spawnerData = random.get();
+            int count = data.getCount(level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount));
+            for (int j = 0; j < count; j++) {
+                double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
+                double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
+                int cx = SectionPos.blockToSectionCoord(x);
+                int cz = SectionPos.blockToSectionCoord(z);
+                if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                    continue;
+                }
+                BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, spawnerData.type, Mth.floor(x), Mth.floor(z));
+                Entity entity = spawnerData.type.spawn(level, pos, MobSpawnType.EVENT);
+                if (entity != null) {
+                    entity.addTag(entityTag);
+                    spawned.add(entity);
+                    if (setTarget && entity instanceof Mob mob && player.canBeSeenAsEnemy()) {
+                        mob.setTarget(player);
+                    }
+                }
+            }
+        }
     }
 }

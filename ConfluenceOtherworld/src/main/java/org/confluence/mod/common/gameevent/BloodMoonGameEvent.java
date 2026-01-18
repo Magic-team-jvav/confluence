@@ -1,27 +1,17 @@
 package org.confluence.mod.common.gameevent;
 
-import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.NaturalSpawnerUtil;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
 import org.confluence.mod.common.data.saved.BossDelaySpawner;
@@ -32,8 +22,6 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public class BloodMoonGameEvent implements GameEvent {
@@ -73,50 +61,7 @@ public class BloodMoonGameEvent implements GameEvent {
     @Override
     public void tick() {
         if (!started) return;
-        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
-        if (map == null) {
-            forceEnd();
-            return;
-        }
-        spawned.removeIf(entity -> {
-            if (LibUtils.getChunkIfLoaded(level.getChunkSource(), entity.chunkPosition()) == null) {
-                entity.discard();
-                return true;
-            }
-            return entity.isRemoved();
-        });
-        List<ServerPlayer> players = level.players();
-        if (spawned.size() >= 30 + players.size() * 30) return;
-        for (ServerPlayer player : players) {
-            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
-            double speed = data.speedMultiplier();
-            if (speed <= 0) continue;
-            int interval = Mth.floor(server.tickRateManager().tickrate() * 1.5 / speed);
-            if (level.random.nextInt(interval) != 0) continue;
-            Optional<MobSpawnSettings.SpawnerData> random = spawnerData.getRandom(level.random);
-            if (random.isEmpty()) continue;
-            Vec3 position = player.position();
-            MobSpawnSettings.SpawnerData spawnerData = random.get();
-            int count = data.getCount(level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount));
-            for (int j = 0; j < count; j++) {
-                double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
-                double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
-                int cx = SectionPos.blockToSectionCoord(x);
-                int cz = SectionPos.blockToSectionCoord(z);
-                if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
-                    continue;
-                }
-                BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, spawnerData.type, Mth.floor(x), Mth.floor(z));
-                Entity entity = spawnerData.type.spawn(level, pos, MobSpawnType.EVENT);
-                if (entity != null) {
-                    entity.addTag(ENTITY_TAG);
-                    spawned.add(entity);
-                    if (entity instanceof Mob mob && player.canBeSeenAsEnemy()) {
-                        mob.setTarget(player);
-                    }
-                }
-            }
-        }
+        GameEventSystem.customSpawner(this, level, spawned, 30, 1.5F, spawnerData, ENTITY_TAG, true);
     }
 
     @Override

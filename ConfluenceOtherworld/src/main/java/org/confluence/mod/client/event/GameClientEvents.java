@@ -120,6 +120,7 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         if (player != null) {
+            WeatherHandler.tick();
             MeteorLandingHandler.handle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();

@@ -69,6 +69,7 @@ import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
+import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
@@ -76,10 +77,12 @@ import org.confluence.mod.util.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.api.entity.IMinion;
+import org.confluence.terraentity.entity.animal.SimpleVariantAnimal;
 import org.confluence.terraentity.entity.boss.Skeletron;
 import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
@@ -455,7 +458,7 @@ public final class LivingEntityEvents {
                 mob.addTag("undead_miner");
                 event.setCanceled(true);
             }
-        } else if (event.getSpawnType() == MobSpawnType.NATURAL && event.getEntity() instanceof Slime slime) {
+        } else if (event.getSpawnType() == MobSpawnType.NATURAL && mob instanceof Slime slime) {
             if ((ModSecretSeeds.CELEBRATIONMK10.match() || ModSecretSeeds.GET_FIXED_BOI.match()) && mob.getRandom().nextInt(140) == 1) {
                 event.setCanceled(true);
                 GoldenSlime goldenSlime = TEMonsterEntities.GOLDEN_SLIME.get().create(mob.level());
@@ -463,6 +466,11 @@ public final class LivingEntityEvents {
                     goldenSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
                     mob.level().addFreshEntity(goldenSlime);
                 }
+            }
+        } else {
+            SimpleVariantAnimal worm = TEAnimals.WORM.get().tryCast(mob);
+            if (worm != null) {
+                TEHelper.finalizeWormSpawn(worm);
             }
         }
 

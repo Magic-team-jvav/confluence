@@ -98,13 +98,7 @@ public final class SlimeRainGameEvent implements GameEvent {
             forceEnd();
             return;
         }
-        spawned.removeIf(entity -> {
-            if (LibUtils.getChunkIfLoaded(level.getChunkSource(), entity.chunkPosition()) == null) {
-                entity.discard();
-                return true;
-            }
-            return entity.isRemoved();
-        });
+        GameEventSystem.removeUnTracked(spawned, level);
         List<ServerPlayer> players = level.players();
         if (spawned.size() >= 25 + players.size() * 25) return;
         for (ServerPlayer player : players) {
@@ -113,7 +107,7 @@ public final class SlimeRainGameEvent implements GameEvent {
             NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
             if (speed <= 0) continue;
-            int interval = Mth.floor(server.tickRateManager().tickrate() / speed);
+            int interval = Mth.floor(20 / speed);
             if (haveKingSlime) {
                 interval *= 5;
             }

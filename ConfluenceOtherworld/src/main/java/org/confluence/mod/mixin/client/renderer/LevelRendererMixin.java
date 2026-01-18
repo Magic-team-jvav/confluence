@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.client.handler.ClientGameEventSystem;
+import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.util.ClientUtils;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;

@@ -10,7 +10,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.ClientGameEventSystem;
+import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.common.gameevent.GameEvent;
 
 import java.util.Arrays;

@@ -2,7 +2,7 @@ package org.confluence.mod.mixin.client.renderer;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.renderer.LightTexture;
-import org.confluence.mod.client.handler.ClientGameEventSystem;
+import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

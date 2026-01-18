@@ -325,9 +325,10 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, ArmorItems.TITANIUM_MASK.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM),
                 'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
-                "a#a",
+                "b#b",
                 "#a#",
                 " a ",
                 "ppp"

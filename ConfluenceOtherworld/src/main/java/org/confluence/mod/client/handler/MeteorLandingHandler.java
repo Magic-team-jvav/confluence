@@ -108,6 +108,7 @@ public final class MeteorLandingHandler {
         bufferBuilder.addVertex(matrix4f, RADIUS, 100, RADIUS).setUv(1.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
         bufferBuilder.addVertex(matrix4f, -RADIUS, 100, RADIUS).setUv(0.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
         BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+        RenderSystem.disableBlend();
         poseStack.popPose();
     }
 

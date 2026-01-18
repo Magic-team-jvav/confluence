@@ -132,7 +132,7 @@ public final class GameClientEvents {
                 SwordProjectilePacketC2S.sendToServer();
             }
             HouseSelectHUD.updatePlayerRegionAt(player);
-            ClientGameEventSystem.SlimeRainSprite.tick(player.level().getGameTime());
+            ClientGameEventSystem.handle(player);
         }
         DeathAnimUtils.clear();
     }

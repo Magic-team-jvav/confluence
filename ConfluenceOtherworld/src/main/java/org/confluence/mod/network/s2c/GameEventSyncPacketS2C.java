@@ -29,7 +29,7 @@ public record GameEventSyncPacketS2C(
 
     @Override
     public void work(Player player) {
-        ClientGameEventSystem.handle(player, keys, start);
+        ClientGameEventSystem.handlePacket(player, keys, start);
     }
 
     @Override

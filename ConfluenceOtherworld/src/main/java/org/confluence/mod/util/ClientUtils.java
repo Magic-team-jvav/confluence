@@ -55,9 +55,13 @@ public final class ClientUtils {
     private static final Set<ResourceLocation> failed = new HashSet<>();
     public static final int LEGACY_SIZE = 128;
     public static final int OVERLAY_SIZE = 128;
-    /** 以这个命名的bone就是专门的死亡模型 */
+    /**
+     * 以这个命名的bone就是专门的死亡模型
+     */
     public static final String DEATH_BONE_NAME = "_death";
-    /** 以这个后缀命名的bone需要爆整个bone */
+    /**
+     * 以这个后缀命名的bone需要爆整个bone
+     */
     public static final String ENTIRE_BONE_SUFFIX = "_entire";
 
     public static void clearCache() {
@@ -235,15 +239,6 @@ public final class ClientUtils {
                 pos.getY() + 2,
                 pos.getZ() + 2
         );
-    }
-
-    public static void renderBait(GuiGraphics guiGraphics, ItemStack bait, int x, int y) {
-        PoseStack pose = guiGraphics.pose();
-        pose.pushPose();
-        pose.translate(x + 8, y + 8, 100);
-        pose.scale(0.5F, 0.5F, 0.5F);
-        guiGraphics.renderItem(bait, 0, 0);
-        pose.popPose();
     }
 
     public static void renderBoulderSun(Minecraft minecraft) {

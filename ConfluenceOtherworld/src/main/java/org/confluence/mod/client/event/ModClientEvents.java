@@ -565,12 +565,12 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerItemDecorations(RegisterItemDecorationsEvent event) {
         for (DeferredHolder<Item, ? extends Item> entry : FishingPoleItems.ITEMS.getEntries()) {
-            event.register(entry.get(), ModItemDecorator.FISHING_POLE_DECORATOR);
+            event.register(entry.get(), ModClientSetups.FISHING_POLE_DECORATOR);
         }
         for (DeferredHolder<Item, ? extends Item> entry : CrossbowItems.ITEMS.getEntries()) {
             Item item = entry.get();
             if (item instanceof BaseTerraRepeaterItem) {
-                event.register(item, ModItemDecorator.REPEATER_AMMO);
+                event.register(item, ModClientSetups.REPEATER_AMMO);
             }
         }
         if (GroupItem.enable) {

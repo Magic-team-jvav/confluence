@@ -6,8 +6,10 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Axis;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -15,6 +17,7 @@ import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
@@ -25,6 +28,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -39,6 +43,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.client.IItemDecorator;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -68,11 +74,14 @@ import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.waystones.PylonBlock;
 import org.confluence.mod.integration.waystones.PylonModel;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
+import org.confluence.mod.mixed.IPlayer;
+import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -159,6 +168,39 @@ public final class ModClientSetups {
     static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW::getValue);
     static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
+    static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && player.getInventory().getSelected() == itemStack) {
+            ItemStack stack = IPlayer.of(player).confluence$getCurrentBait();
+            if (!stack.isEmpty()) {
+                PoseStack pose = guiGraphics.pose();
+                pose.pushPose();
+                pose.translate(x + 8, y + 8, 100);
+                pose.scale(0.5F, 0.5F, 0.5F);
+                guiGraphics.renderItem(stack, 0, 0);
+                pose.popPose();
+            }
+        }
+        return false;
+    };
+    static final IItemDecorator REPEATER_AMMO = (guiGraphics, font, itemStack, x, y) -> {
+        if (itemStack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
+            Iterator<ItemStack> itemIterator = handler.getAllItemIterator();
+            if (itemIterator.hasNext()) {
+                ItemStack stack = itemIterator.next();
+                if (!stack.isEmpty()) {
+                    PoseStack pose = guiGraphics.pose();
+                    pose.pushPose();
+                    pose.translate(x + 8, y + 8, 100);
+                    pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
+                    pose.translate(-7, -9, 0);
+                    guiGraphics.renderItem(stack, 0, 0);
+                    pose.popPose();
+                }
+            }
+        }
+        return false;
+    };
 
     private static IClientItemExtensions simpleArmPose(Supplier<HumanoidModel.ArmPose> supplier) {
         return new IClientItemExtensions() {

@@ -225,6 +225,7 @@ public final class ModEvents {
         registrar.playToClient(GlobalCloakSyncPacketS2C.TYPE, GlobalCloakSyncPacketS2C.STREAM_CODEC, GlobalCloakSyncPacketS2C::handle);
         registrar.playToClient(LucyTheAxeDialogPacketS2C.TYPE, LucyTheAxeDialogPacketS2C.STREAM_CODEC, LucyTheAxeDialogPacketS2C::handle);
         registrar.playToClient(GameEventSyncPacketS2C.TYPE, GameEventSyncPacketS2C.STREAM_CODEC, GameEventSyncPacketS2C::handle);
+        registrar.playToClient(GoblinArmyProgressPacketS2C.TYPE, GoblinArmyProgressPacketS2C.STREAM_CODEC, GoblinArmyProgressPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
@@ -310,7 +311,7 @@ public final class ModEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         CrossbowItems.ITEMS.getEntries().stream().map(DeferredHolder::get).filter(BaseTerraRepeaterItem.class::isInstance).map(BaseTerraRepeaterItem.class::cast).forEach(item -> event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) ->
-            new RepeaterContentsComponentHandler(stack, ModDataComponentTypes.REPEATER_CONTENTS.get(), item.getCapacity()), item
+                new RepeaterContentsComponentHandler(stack, ModDataComponentTypes.REPEATER_CONTENTS.get(), item.getCapacity()), item
         ));
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
             if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {

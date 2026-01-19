@@ -47,6 +47,7 @@ import org.confluence.mod.client.effect.connected.ModelSwapper;
 import org.confluence.mod.client.effect.connected.StitchedSprite;
 import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
+import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
@@ -183,6 +184,7 @@ public final class ModClientEvents {
         event.registerBelow(soulHud, foodHud, new TerraStyleFoodHud());
 
         event.registerBelow(VanillaGuiLayers.CROSSHAIR, Confluence.asResource("house_select"), new HouseSelectHUD());
+        event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
     }
 
     @SubscribeEvent
@@ -253,7 +255,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-		event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new); // 牢枕专用
+        event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new); // 牢枕专用
         event.registerEntityRenderer(BOMB_ENTITY.get(), BaseBombEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
         event.registerEntityRenderer(SCARAB_BOMB_ENTITY.get(), ScarabBombEntityRenderer::new);
@@ -504,7 +506,8 @@ public final class ModClientEvents {
 
         ModConnectives.MODEL_SWAPPER.onModelBake(modelRegistry);
 
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return;
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture())
+            return;
 
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
         Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());

@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package org.confluence.mod.common.gameevent;
+package org.confluence.mod.client.gameevent;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

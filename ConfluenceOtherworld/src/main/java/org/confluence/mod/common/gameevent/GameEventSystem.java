@@ -58,6 +58,7 @@ public final class GameEventSystem implements IGlobalData {
             }
         }
         GameEventSyncPacketS2C.sentToClient(player, true, started);
+        GoblinArmyGameEvent.INSTANCE.syncProgress();
     }
 
     public void clearAll(ServerPlayer player) {

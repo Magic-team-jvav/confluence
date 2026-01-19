@@ -29,7 +29,7 @@ public final class ClientGameEventSystem {
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerSprite::handle);
         map.put(LanternNightGameEvent.KEY, LanternNightSprite::handle);
         map.put(BloodMoonGameEvent.KEY, ClientGameEventSystem::handleBloodMoon);
-        map.put(GoblinArmyGameEvent.KEY, ClientGameEventSystem::handleGoblinArmy);
+        map.put(GoblinArmyGameEvent.KEY, GoblinArmyProgressRenderer::handleSync);
         ModLoader.postEvent(new GameEventSyncCallbackRegisterEvent(map));
     });
     static final Map<ResourceKey<? extends GameEvent>, AfterRenderSky> RENDERERS = Util.make(new IdentityHashMap<>(), map -> {
@@ -79,12 +79,13 @@ public final class ClientGameEventSystem {
         SlimeRainSprite.reset();
         MeteorShowerSprite.reset();
         LanternNightSprite.reset();
+        GoblinArmyProgressRenderer.reset();
     }
 
-    public static void afterRenderSky(RenderLevelStageEvent event, Minecraft minecraft) {
+    public static void afterRenderSky(RenderLevelStageEvent event, LocalPlayer player) {
         if (afterRenderSky.isEmpty()) return;
         for (AfterRenderSky renderSky : afterRenderSky.values()) {
-            renderSky.render(minecraft.player, event);
+            renderSky.render(player, event);
         }
     }
 
@@ -102,10 +103,6 @@ public final class ClientGameEventSystem {
             moonTexture = null;
             lightTextureColor = null;
         }
-    }
-
-    public static void handleGoblinArmy(Player player, boolean start) {
-        // todo 进度条
     }
 
     static float random() {

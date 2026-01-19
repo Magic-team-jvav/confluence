@@ -17,8 +17,12 @@ import org.confluence.terraentity.api.npc.trade.TradeLockRecipeDrawer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class EnvironmentLockRecipeDrawer extends TradeLockRecipeDrawer {
+    private static final ResourceLocation GRAVEYARD_SPRITE = Confluence.asResource("shop_lock/environment_graveyard");
+    private static final ResourceLocation BIOME_SPRITE = TerraEntity.space("shop_lock/biome");
+
     @Override
     public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
         if (!(lock instanceof EnvironmentLock environmentLock)) {
@@ -27,7 +31,7 @@ public class EnvironmentLockRecipeDrawer extends TradeLockRecipeDrawer {
         var size = getRecipeSize();
 
         if (environmentLock.environment().graveyard()) {
-            guiGraphics.blitSprite(Confluence.asResource("shop_lock/environment_graveyard"), x, y, size, size);
+            guiGraphics.blitSprite(GRAVEYARD_SPRITE, x, y, size, size);
             drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY,
                     I18n.get("bestiary.confluence.filter.graveyard.title"));
             x += size;
@@ -38,7 +42,7 @@ public class EnvironmentLockRecipeDrawer extends TradeLockRecipeDrawer {
             tooltipLines.add(Component.translatable("terra_entity.trade_lock.drawer.biome.title"));
 
             for (var biome : environmentLock.environment().biome().get()) {
-                guiGraphics.blitSprite(ResourceLocation.fromNamespaceAndPath(TerraEntity.MODID, "shop_lock/biome"), x, y, size, size);
+                guiGraphics.blitSprite(BIOME_SPRITE, x, y, size, size);
                 ResourceKey<Biome> biomeKey = biome.getKey();
                 ResourceLocation biomeLocation = biomeKey == null ? null : biomeKey.location();
                 String biomeName = biomeLocation == null ? "[unknown biome]" : biomeLocation.toLanguageKey(Registries.BIOME.location().getPath());
@@ -53,7 +57,7 @@ public class EnvironmentLockRecipeDrawer extends TradeLockRecipeDrawer {
             if (environmentLock.environment().block().get().blocks().isPresent()) {
                 List<Component> lines = new ArrayList<>();
                 for (var block : environmentLock.environment().block().get().blocks().get()) {
-                    lines.add(Component.translatable(block.value().getDescriptionId()));
+                    lines.add(block.value().getName());
                 }
                 String icon = "shop_lock/environment_block";
                 String groupTitle = "confluence.trade_lock.drawer.environment.block";
@@ -101,10 +105,12 @@ public class EnvironmentLockRecipeDrawer extends TradeLockRecipeDrawer {
         for (var entry : statePredicate.properties()) {
             var name = entry.name();
             var valueMatcher = entry.valueMatcher();
-            if (valueMatcher instanceof StatePropertiesPredicate.ExactMatcher exactMatcher) {
-                properties.append(name).append("=").append(exactMatcher.value()).append(",");
-            } else if (valueMatcher instanceof StatePropertiesPredicate.RangedMatcher rangedMatcher) {
-                properties.append(name).append("=").append(rangedMatcher.minValue()).append("..").append(rangedMatcher.maxValue()).append(",");
+            if (valueMatcher instanceof StatePropertiesPredicate.ExactMatcher(String value)) {
+                properties.append(name).append("=").append(value).append(",");
+            } else if (valueMatcher instanceof StatePropertiesPredicate.RangedMatcher(
+                    Optional<String> minValue, Optional<String> maxValue
+            )) {
+                properties.append(name).append("=").append(minValue).append("..").append(maxValue).append(",");
             }
         }
         String propertiesString = properties.toString();

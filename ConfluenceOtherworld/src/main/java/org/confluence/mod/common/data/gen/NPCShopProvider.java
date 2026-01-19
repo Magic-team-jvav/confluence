@@ -707,7 +707,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                 .setProperties(
                                         TradeProperties.builder().setLock(
                                                 ITradeLock.and(
-                                                        new AnyBossDefeatedLock()
+                                                        AnyBossDefeatedLock.INSTANCE
                                                 )
                                         ).build()
                                 ).build()

@@ -8,16 +8,18 @@ import org.confluence.mod.integration.terra_entity.npc_trade_lock.MoonPhaseLock;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.api.npc.trade.TradeLockRecipeDrawer;
 
+import java.util.List;
+
 public class MoonPhaseLockRecipeDrawer extends TradeLockRecipeDrawer {
     @Override
     public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
-        if (!(lock instanceof MoonPhaseLock moonPhaseLock)) {
+        if (!(lock instanceof MoonPhaseLock(List<MoonPhase> moonPhases))) {
             return y;
         }
         var size = getRecipeSize();
-        for (var moonPhase : moonPhaseLock.moonPhases()) {
+        for (var moonPhase : moonPhases) {
             String moonPhaseTexture = getMoonPhaseTexture(moonPhase);
-            guiGraphics.blit(Confluence.asResource("textures/environment/specific_moon_tr_" + moonPhaseTexture), x, y, size, size, 0, 0,50, 50, 50, 50);
+            guiGraphics.blit(Confluence.asResource("textures/environment/specific_moon/tr_" + moonPhaseTexture), x, y, size, size, 0, 0,50, 50, 50, 50);
             drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY,
                     I18n.get("confluence.trade_lock.drawer.moon_phase.title") + ": " + moonPhase.getSerializedName());
             x += size;

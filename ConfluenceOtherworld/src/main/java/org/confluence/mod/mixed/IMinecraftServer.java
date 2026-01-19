@@ -24,9 +24,7 @@ public interface IMinecraftServer {
         return equalsSecretFlag(confluence$getSecretFlag(), flag);
     }
 
-    /**
-     * 单人模式与多人模式通用
-     */
+    /// 单人模式与多人模式通用
     static boolean matchesSecretFlag(@NotNull MinecraftServer server, long flag) {
         return IMinecraftServer.of(server).confluence$matchesSecretFlag(flag);
     }

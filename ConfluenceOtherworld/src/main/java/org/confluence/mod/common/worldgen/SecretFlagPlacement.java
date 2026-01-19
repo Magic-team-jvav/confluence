@@ -22,17 +22,13 @@ public class SecretFlagPlacement extends PlacementModifier implements SecretFlag
         this.flip = flip;
     }
 
-    /**
-     * @see org.confluence.mod.mixed.IWorldOptions
-     */
+    /// @see org.confluence.mod.mixed.IWorldOptions
     public static SecretFlagPlacement of(long flag) {
         return new SecretFlagPlacement(flag, false);
     }
 
-    /**
-     * @param flip 反向判断
-     * @see org.confluence.mod.mixed.IWorldOptions
-     */
+    /// @param flip 反向判断
+    /// @see org.confluence.mod.mixed.IWorldOptions
     public static SecretFlagPlacement of(long flag, boolean flip) {
         return new SecretFlagPlacement(flag, flip);
     }

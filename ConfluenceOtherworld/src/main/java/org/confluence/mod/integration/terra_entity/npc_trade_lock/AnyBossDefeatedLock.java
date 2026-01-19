@@ -12,7 +12,7 @@ public final class AnyBossDefeatedLock implements ITradeLock {
     public static final AnyBossDefeatedLock INSTANCE = new AnyBossDefeatedLock();
     public static final MapCodec<AnyBossDefeatedLock> CODEC = MapCodec.unit(INSTANCE);
 
-    public AnyBossDefeatedLock() {}
+    private AnyBossDefeatedLock() {}
 
     @Override
     public boolean canTrade(Player player, ITradeHolder npc, int index) {

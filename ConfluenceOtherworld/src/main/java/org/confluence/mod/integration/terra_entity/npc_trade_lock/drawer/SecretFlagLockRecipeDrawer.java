@@ -7,6 +7,8 @@ import org.confluence.terraentity.api.npc.trade.TradeLockRecipeDrawer;
 public class SecretFlagLockRecipeDrawer extends TradeLockRecipeDrawer {
     /**
      * Should be hidden from player?
+     * No.
+     * @see org.confluence.mod.mixed.IWorldOptions
      */
     @Override
     public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {

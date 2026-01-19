@@ -19,11 +19,10 @@ public class ModTradeLockProviderTypes {
     public static final Supplier<TradeLockProvider> POSITION_LOCK = TYPES.register("position_lock", () -> new TradeLockProvider(PositionLock.CODEC, new PositionLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> DATE_LOCK = TYPES.register("date_lock", () -> new TradeLockProvider(DateLock.CODEC, new DateLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> DIMENSION_LOCK = TYPES.register("dimension_lock", () -> new TradeLockProvider(DimensionLock.CODEC, new DimensionLockRecipeDrawer()));
-    public static final Supplier<TradeLockProvider> MOMENT_LOCK = TYPES.register("moment_lock", () -> new TradeLockProvider(MomentLock.CODEC, new MomentLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> ENVIRONMENT_LOCK = TYPES.register("environment_lock", () -> new TradeLockProvider(EnvironmentLock.CODEC, new EnvironmentLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> FISHING_HOOK_IN_FLUID_LOCK = TYPES.register("fishing_hook_in_fluid_lock", () -> new TradeLockProvider(FishingHookInFluidLock.CODEC, new FishingHookInFluidLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> ANY_BOSS_DEFEATED_LOCK = TYPES.register("any_boss_defeated_lock", () -> new TradeLockProvider(AnyBossDefeatedLock.CODEC, new AnyBossDefeatedLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> BESTIARY_UNLOCKED_COUNT_LOCK = TYPES.register("bestiary_unlocked_count_lock", () -> new TradeLockProvider(BestiaryUnlockedCountLock.CODEC, new BestiaryUnlockedCountLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> QUESTED_FISH_PRECHECK_LOCK = TYPES.register("quested_fish_precheck_lock", () -> new TradeLockProvider(QuestedFishPrecheckLock.CODEC, TradeLockRecipeDrawer.EMPTY));
-    public static final Supplier<TradeLockProvider> GAME_EVENT_LOCK = TYPES.register("game_event_lock", () -> new TradeLockProvider(GameEventLock.CODEC, TradeLockRecipeDrawer.EMPTY));
+    public static final Supplier<TradeLockProvider> GAME_EVENT_LOCK = TYPES.register("game_event_lock", () -> new TradeLockProvider(GameEventLock.CODEC, new GameEventLockRecipeDrawer()));
 }

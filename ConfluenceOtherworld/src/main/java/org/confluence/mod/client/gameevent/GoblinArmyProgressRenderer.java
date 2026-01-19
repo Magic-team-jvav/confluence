@@ -29,7 +29,7 @@ public class GoblinArmyProgressRenderer implements LayeredDraw.Layer {
     }
 
     public static void handleProgress(float progress) {
-        progressed = progress;
+        progressed = progress; // 0 -> 1
     }
 
     @Override
@@ -40,7 +40,7 @@ public class GoblinArmyProgressRenderer implements LayeredDraw.Layer {
         int y = Math.max(Mth.ceil(yOffset) - 16, 0);
         guiGraphics.blitSprite(SPRITE, IMAGE_WIDTH, IMAGE_HEIGHT, 0, 0, x, y, IMAGE_WIDTH, V_HEIGHT);
         int u = (int) (IMAGE_WIDTH * progressed);
-        guiGraphics.blitSprite(SPRITE, IMAGE_WIDTH, IMAGE_HEIGHT, 0, V_HEIGHT, x, y, u, V_HEIGHT);
+        guiGraphics.blitSprite(SPRITE, IMAGE_WIDTH, IMAGE_HEIGHT, 0, V_HEIGHT, x, y, IMAGE_WIDTH - u, V_HEIGHT);
         yOffset = 0;
     }
 }

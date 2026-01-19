@@ -1,0 +1,10 @@
+{
+  "attribute.name.repeater.arrow_capacity": "箭矢容量",
+  "attribute.name.repeater.attack_speed": "矢速度",
+  "attribute.name.repeater.concurrency_count": "并发射击个数",
+  "attribute.name.repeater.firing_interval": "射击间隔",
+  "attribute.name.repeater.knockback": "击退",
+  "attribute.name.repeater.reload_speed": "装填速度",
+  "attribute.name.repeater.torrent_count": "连发射击个数",
+  "item.terra_curio.base_point": "基点"
+}

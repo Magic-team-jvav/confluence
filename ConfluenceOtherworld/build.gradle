@@ -5,8 +5,7 @@ plugins {
     id 'net.neoforged.moddev'
 }
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
-                   "TerraCurio", "HeavenDestinyMoment",
-                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
+                   "TerraCurio", "TerraGuns", "TerraFurniture",
                    "TheTrackers", "EnemyBanner"
 ]
 
@@ -178,7 +177,6 @@ boolean advancementPlaques = false // 进度牌匾
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
-    implementation jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.2')
     implementation jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
     implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
     implementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}")

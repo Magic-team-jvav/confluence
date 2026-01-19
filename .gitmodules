@@ -6,22 +6,10 @@
     path = MineTeam
     url = https://github.com/XiaoHuNao/MineTeam
     branch = neoforge-dev/1.21.1
-[submodule "HeavenDestinyMoment"]
-	path = HeavenDestinyMoment
-	url = https://github.com/XiaoHuNao/HeavenDestinyMoment
-	branch = neoforge-dev/1.21.1
-[submodule "TerraMoment"]
-	path = TerraMoment
-	url = https://github.com/XiaoHuNao/TerraMoment
-	branch = neoforge-dev/1.21.1
 [submodule "TerraGuns"]
 	path = TerraGuns
 	url = https://github.com/XiaoHuNao/TerraGuns
 	branch = neoforge-dev/1.21.1
-[submodule "IsekaiInvaded"]
-	path = IsekaiInvaded
-	url = https://github.com/XiaoHuNao/IsekaiInvaded.git
-	branch = IsekaiInvaded
 [submodule "TerraFurniture"]
 	path = TerraFurniture
 	url = https://github.com/MakerTechno/TerraFurniture

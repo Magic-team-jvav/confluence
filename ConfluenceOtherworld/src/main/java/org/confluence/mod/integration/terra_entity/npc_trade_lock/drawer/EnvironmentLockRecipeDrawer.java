@@ -14,14 +14,13 @@ import org.confluence.mod.integration.terra_entity.npc_trade_lock.EnvironmentLoc
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.api.npc.trade.TradeLockRecipeDrawer;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnvironmentLockRecipeDrawer extends TradeLockRecipeDrawer {
     @Override
-    public int drawRecipe(@NotNull ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
+    public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
         if (!(lock instanceof EnvironmentLock environmentLock)) {
             return y;
         }
@@ -97,7 +96,7 @@ public class EnvironmentLockRecipeDrawer extends TradeLockRecipeDrawer {
         return x + size;
     }
 
-    private static @NotNull String getPredicateProperties(StatePropertiesPredicate statePredicate) {
+    private static String getPredicateProperties(StatePropertiesPredicate statePredicate) {
         StringBuilder properties = new StringBuilder();
         for (var entry : statePredicate.properties()) {
             var name = entry.name();

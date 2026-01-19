@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.gen.loot;
 
 import com.google.common.collect.Streams;
-import com.xiaohunao.terra_moment.common.init.TMItems;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -27,7 +26,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModLootTables;
-import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -275,7 +273,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9933))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TMItems.BLOOD_TEAR.get()))
+                        .add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
@@ -289,7 +287,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9933))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TMItems.BLOOD_TEAR.get()))
+                        .add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()

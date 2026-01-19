@@ -82,6 +82,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.trade_lock.drawer.environment.radius", "In radius of %s blocks");
 
         add("confluence.prefix_separator", " ");
+        add("confluence.game_event", "Game Event");
 
         add("itemGroup.confluence.log", "Log");
         add("itemGroup.confluence.leaves", "Leaves");

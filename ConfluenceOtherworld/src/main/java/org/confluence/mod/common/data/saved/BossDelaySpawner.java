@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.saved;
 
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -78,7 +77,7 @@ public final class BossDelaySpawner {
     }
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
-        if (!MomentInstanceManager.of(level).getRunMoments().isEmpty()) return;
+        if (GameEventSystem.INSTANCE.getStatedEventAmount(true, false) > 0) return;
         if (LanternNightGameEvent.INSTANCE.started()) return;
         EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
         if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
@@ -111,7 +110,7 @@ public final class BossDelaySpawner {
     }
 
     public static void spawnDeerClops(ServerLevel level) {
-        if (!MomentInstanceManager.of(level).getRunMoments().isEmpty()) return;
+        if (GameEventSystem.INSTANCE.getStatedEventAmount(true, false) > 0) return;
         if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.DEERCLOPS.get())) return;
         for (ServerPlayer player : level.players()) {
             if (!BossDelaySpawner.deerclopsChecker(player)) continue;

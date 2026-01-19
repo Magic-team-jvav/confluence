@@ -8,7 +8,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.npc_trade_lock.PositionLock;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.api.npc.trade.TradeLockRecipeDrawer;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.Optional;
 
 public class PositionLockRecipeDrawer extends TradeLockRecipeDrawer {
     @Override
-    public int drawRecipe(@NotNull ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
+    public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
         if (!(lock instanceof PositionLock positionLock)) {
             return y;
         }

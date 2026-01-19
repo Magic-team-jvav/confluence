@@ -27,7 +27,22 @@ public class ModChineseProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("confluence.trade_lock.drawer.position.title", "坐标");
+        add("confluence.trade_lock.drawer.position.and", "且");
+        add("confluence.trade_lock.drawer.moon_phase.title", "月相");
+        add("confluence.trade_lock.drawer.fishing.requires_hook", "Requires Fishing While Trading");
+        add("confluence.trade_lock.drawer.fishing.fishing_in", "Be Fishing in");
+        add("confluence.trade_lock.drawer.environment.block", "方块");
+        add("confluence.trade_lock.drawer.environment.fluid", "流体");
+        add("confluence.trade_lock.drawer.environment.block_state_predicate", "方块状态");
+        add("confluence.trade_lock.drawer.dimension.title", "维度");
+        add("confluence.trade_lock.drawer.date.lunar", "农历");
+        add("confluence.trade_lock.drawer.bestiary.title", "怪物图鉴解锁条目");
+        add("confluence.trade_lock.drawer.any_boss_defeated.title", "击败任意Boss");
+        add("confluence.trade_lock.drawer.environment.radius", "半径 %s 米");
+
         add("confluence.prefix_separator", " ");
+        add("confluence.game_event", "Game Event");
 
         add("itemGroup.confluence.log", "原木");
         add("itemGroup.confluence.leaves", "树叶");

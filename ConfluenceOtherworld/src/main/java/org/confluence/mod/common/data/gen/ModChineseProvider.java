@@ -104,6 +104,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("commands.confluence.reforge.success", "已成功重铸为：%s");
         add("commands.confluence.reforge.clear.success", "已成功清除词缀");
         add("commands.confluence.reforge.set.unavailable_group", "该物品不能应用该词缀！");
+        add("commands.confluence.arguments.prefix.invalid", "无效词缀！");
+        add("commands.confluence.arguments.game_event.unknown", "未知游戏事件！");
 
         add("enchantment.confluence.mana_regeneration", "魔力再生");
         add("enchantment.confluence.mana_regeneration.desc", "提升魔力自然再生时的量");

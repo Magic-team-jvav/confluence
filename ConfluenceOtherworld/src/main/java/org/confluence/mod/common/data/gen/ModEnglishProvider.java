@@ -144,6 +144,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("commands.confluence.reforge.success", "Successfully reforged to: %s");
         add("commands.confluence.reforge.clear.success", "The prefix has been successfully cleared");
         add("commands.confluence.reforge.set.unavailable_group", "This item cannot have this prefix applied!");
+        add("commands.confluence.arguments.prefix.invalid", "Invalid Prefix!");
+        add("commands.confluence.arguments.game_event.unknown", "Unknown Game Event!");
 
         add("enchantment.confluence.mana_regeneration", "Mana Regeneration");
         add("enchantment.confluence.mana_regeneration.desc", "Increases the amount of mana that naturally regenerates");

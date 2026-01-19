@@ -8,7 +8,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -16,7 +15,6 @@ import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
@@ -41,7 +39,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.client.IItemDecorator;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -71,8 +68,6 @@ import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.waystones.PylonBlock;
 import org.confluence.mod.integration.waystones.PylonModel;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
-import org.confluence.mod.mixed.IPlayer;
-import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -212,17 +207,6 @@ public final class ModClientSetups {
             if (m <= 8) return IntegerRGB.HALLOW_B.mixture(IntegerRGB.HALLOW_C, (m - 4) * 0.25F);
             return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
         }
-    };
-
-    static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null && player.getInventory().getSelected() == itemStack) {
-            ItemStack bait = IPlayer.of(player).confluence$getCurrentBait();
-            if (!bait.isEmpty()) {
-                ClientUtils.renderBait(guiGraphics, bait, x, y);
-            }
-        }
-        return false;
     };
 
     static boolean guideCheckedJEI = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");

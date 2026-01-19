@@ -2,14 +2,15 @@ package org.confluence.mod.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.item.BowItems;
-import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaternionf;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +63,7 @@ public final class ArrowInBowRenderer {
         return offset;
     }
 
-    public static void transform(ItemStack bow, PoseStack poseStack, float charge, ItemDisplayContext displayContext) {
+    public static void bowTransform(ItemStack bow, PoseStack poseStack, float charge, ItemDisplayContext displayContext) {
         if (displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || displayContext == ItemDisplayContext.FIRST_PERSON_LEFT_HAND) {
             // 拉弓前后位移
             Item item = bow.getItem();
@@ -94,9 +95,34 @@ public final class ArrowInBowRenderer {
         } else if (displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND) {
             poseStack.mulPose(Axis.YN.rotationDegrees(-90));
             poseStack.mulPose(Axis.ZN.rotationDegrees(20));
-            poseStack.mulPose(Axis.XN.rotationDegrees(0));
 
             poseStack.translate(0.1, -0.3, 0);
+        }
+    }
+
+    public static void repeaterTransform(ItemStack arrowItem, ItemStack repeater, PoseStack poseStack, ItemDisplayContext displayContext) {
+        if (displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) {
+            if (arrowItem.getItem() instanceof FireworkRocketItem) {
+                poseStack.translate(-0.12, 0.278, 0.15);
+                poseStack.mulPose(Axis.ZN.rotationDegrees(90));
+                poseStack.mulPose(Axis.XN.rotationDegrees(55));
+                return;
+            }
+            poseStack.translate(0.055, 0.278, 0.15);
+            poseStack.mulPose(Axis.ZN.rotationDegrees(90));
+            poseStack.mulPose(Axis.XN.rotationDegrees(100));
+        } else if (displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) {
+            if (arrowItem.getItem() instanceof FireworkRocketItem) {
+                poseStack.translate(0.12, 0.09, -0.11);
+                Quaternionf quaternion = Axis.YN.rotationDegrees(-165);
+                quaternion.rotateX(90 * (float) (Math.PI / 180.0));
+                poseStack.mulPose(quaternion);
+                return;
+            }
+            poseStack.translate(-0.042, 0.09, -0.11);
+            Quaternionf quaternion = Axis.YN.rotationDegrees(-119);
+            quaternion.rotateX(90 * (float) (Math.PI / 180.0));
+            poseStack.mulPose(quaternion);
         }
     }
 }

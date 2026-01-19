@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -36,6 +37,12 @@ import java.util.function.Predicate;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BaseTerraArrowItem extends ArrowItem {
+    public static final String ARROW_TRANSFORM_TEXT = "tooltip.item.confluence.arrow_transform";
+    public static final String BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT = "tooltip.item.confluence.bow_full_pull_on_hit_effects";
+    public static final String ON_HIT_EFFECTS_TEXT = "tooltip.item.confluence.on_hit_effects";
+    public static final String MAX_COUNT_TEXT = "tooltip.item.confluence.max_count";
+    public static final String ATTACK_DAMAGE_TEXT = "attribute.name.generic.attack_damage";
+
     protected final @Nullable BaseArrowEntity.Factory modifier;
     protected BaseArrowEntity.Builder attributes;
 
@@ -104,6 +111,53 @@ public class BaseTerraArrowItem extends ArrowItem {
         }
     }
 
+    /**
+     * 伤害
+     */
+    public static void addDamageHoverText(List<Component> tooltipComponents, BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder, float baseDamage) {
+        tooltipComponents.add(tooltip(ATTACK_DAMAGE_TEXT).append(String.format("%.1f", baseDamage)).withColor(0x00FF00));
+        if (modifyArrowBuilder.multiShoot > 1) {
+            tooltipComponents.add(tooltip(MAX_COUNT_TEXT).append(String.format("%d", modifyArrowBuilder.multiShoot)).withColor(0x00FF00));
+        }
+    }
+
+    /**
+     * 命中效果
+     */
+    public static void addHitEffectHoverText(ItemStack weapon, List<Component> tooltipComponents) {
+        EffectStrategyComponent hitEffect = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
+        if (hitEffect != null) {
+            IEffectStrategy.appendDescription(tooltipComponents, hitEffect.effects(), tooltip(ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
+        }
+    }
+
+    /**
+     * 木箭转化
+     */
+    public static void addEntityTransformHoverText(List<Component> tooltipComponents, BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder, BaseArrowEntity.Builder arrowModifier) {
+        if (modifyArrowBuilder.entityTransform != null) {
+            tooltipComponents.add(tooltip(ARROW_TRANSFORM_TEXT).append(modifyArrowBuilder.entityTransform.type().getDescription()).withColor(0xF1b0F4));
+            return;
+        }
+        Item transformArrow = arrowModifier.getTransformArrow();
+        if (transformArrow != null) {
+            tooltipComponents.add(tooltip(ARROW_TRANSFORM_TEXT).append(Component.translatable(transformArrow.getDescriptionId())).withColor(0xF1b0F4));
+        }
+    }
+
+    /**
+     * 蓄满命中效果
+     */
+    public static void addFullPullHitEffectHoverText(ItemStack weapon, List<Component> tooltipComponents) {
+        var fullPullHitEffect = weapon.get(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY);
+        if (fullPullHitEffect != null) {
+            IEffectStrategy.appendDescription(tooltipComponents, fullPullHitEffect.effects(), tooltip(BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
+        }
+    }
+
+    private static MutableComponent tooltip(String text) {
+        return Component.translatable(text).append(": ");
+    }
 
     /**
      * <p>弓或箭的属性修饰</p>

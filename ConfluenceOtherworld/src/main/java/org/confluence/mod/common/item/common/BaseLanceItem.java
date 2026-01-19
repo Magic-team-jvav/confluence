@@ -28,7 +28,7 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.LanceItems;
-import org.confluence.mod.common.item.AltImageComponent;
+import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.api.item.ILeftClickStateItem;

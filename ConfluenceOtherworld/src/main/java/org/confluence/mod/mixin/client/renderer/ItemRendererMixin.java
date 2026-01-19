@@ -41,7 +41,7 @@ public abstract class ItemRendererMixin {
     private void renderArrowInBow(@Nullable LivingEntity entity, ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, CallbackInfo ci) {
         if (entity == null) return;
         Player player = minecraft.player;
-        if (entity != player || !player.isUsingItem()) {
+        if (entity != player) {
             return;
         }
 
@@ -53,12 +53,17 @@ public abstract class ItemRendererMixin {
         }
         stack = player.getItemInHand(hand);
         Item item = stack.getItem();
-        if (item instanceof BaseTerraBowItem) {
-            SpecialItemRenderingUtil.bowArrowRenderer(confluence$of(), entity, displayContext, leftHand, poseStack, bufferSource, level, combinedLight, combinedOverlay, seed, player, stack);
-            return;
-        }
         if (item instanceof BaseTerraRepeaterItem) {
             SpecialItemRenderingUtil.repeaterArrowRenderer(confluence$of(), entity, displayContext, leftHand, poseStack, bufferSource, level, combinedLight, combinedOverlay, seed, player, stack);
+            return;
+        }
+
+        if (!player.isUsingItem()) {
+            return;
+        }
+
+        if (item instanceof BaseTerraBowItem) {
+            SpecialItemRenderingUtil.bowArrowRenderer(confluence$of(), entity, displayContext, leftHand, poseStack, bufferSource, level, combinedLight, combinedOverlay, seed, player, stack);
         }
     }
 

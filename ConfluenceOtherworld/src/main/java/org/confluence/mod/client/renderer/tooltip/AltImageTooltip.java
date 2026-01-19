@@ -1,4 +1,4 @@
-package org.confluence.mod.client.renderer;
+package org.confluence.mod.client.renderer.tooltip;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
@@ -15,7 +15,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.common.item.AltImageComponent;
+import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 

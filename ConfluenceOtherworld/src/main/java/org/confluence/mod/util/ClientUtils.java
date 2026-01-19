@@ -41,7 +41,8 @@ import org.joml.Vector3i;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public final class ClientUtils {
@@ -239,7 +240,7 @@ public final class ClientUtils {
     public static void renderBait(GuiGraphics guiGraphics, ItemStack bait, int x, int y) {
         PoseStack pose = guiGraphics.pose();
         pose.pushPose();
-        pose.translate(x + 8, y + 8, 0);
+        pose.translate(x + 8, y + 8, 100);
         pose.scale(0.5F, 0.5F, 0.5F);
         guiGraphics.renderItem(bait, 0, 0);
         pose.popPose();

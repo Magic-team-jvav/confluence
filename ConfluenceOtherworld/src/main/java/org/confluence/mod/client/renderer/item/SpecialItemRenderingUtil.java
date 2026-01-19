@@ -9,6 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.component.RepeaterContents;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,13 +23,19 @@ public final class SpecialItemRenderingUtil {
         }
 
         ItemStack arrowItem = player.getProjectile(stack);
-        ArrowInBowRenderer.transform(stack, poseStack, charge, displayContext);
+        ArrowInBowRenderer.bowTransform(stack, poseStack, charge, displayContext);
         BakedModel bakedmodel = itemRenderer.getModel(arrowItem, level, entity, seed);
         itemRenderer.render(arrowItem, displayContext, leftHand, poseStack, bufferSource, combinedLight, combinedOverlay, bakedmodel);
     }
 
-    // TODO 弩的箭头渲染
     public static void repeaterArrowRenderer(ItemRenderer itemRenderer, @NotNull LivingEntity entity, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, Player player, ItemStack stack) {
-
+        RepeaterContents repeaterContents = stack.getComponents().getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+        if (repeaterContents.isEmpty()) {
+            return;
+        }
+        ItemStack arrowItem = repeaterContents.getStackInSlot(0);
+        ArrowInBowRenderer.repeaterTransform(arrowItem, stack, poseStack, displayContext);
+        BakedModel bakedmodel = itemRenderer.getModel(arrowItem, level, entity, seed);
+        itemRenderer.render(arrowItem, displayContext, leftHand, poseStack, bufferSource, combinedLight, combinedOverlay, bakedmodel);
     }
 }

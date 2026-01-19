@@ -95,6 +95,7 @@
         "item.ArrowItemMixin",
         "item.BowItemMixin",
         "item.ContainerMixin",
+        "item.CrossbowItemMixin",
         "item.DataComponentsMixin",
         "item.FishingRodItemMixin",
         "item.HoneyBottleItemMixin",

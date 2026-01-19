@@ -6,7 +6,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
-import org.confluence.mod.common.item.crossbow.RandomCount;
+import org.confluence.mod.common.item.crossbow.IRandomCount;
 
 import java.util.function.Supplier;
 
@@ -32,9 +32,9 @@ public class CrossbowItems {
                     .arrowSpeed(11.5f)
                     .reloadTick(19)
                     .knockback(2.75f)
-                    .concurrentCount(RandomCount.create(2, 3))
+                    .concurrentCount(IRandomCount.create(2, 3))
                     .concurrentAngle(1)
-                    .concurrentInterval(RandomCount.create(0.01f, 0.03f)));
+                    .concurrentInterval(IRandomCount.create(0.01f, 0.03f)));
 
     public static <I extends BaseTerraRepeaterItem> DeferredItem<I> register(String name, Supplier<I> supplier) {
         return ITEMS.register(name, supplier);

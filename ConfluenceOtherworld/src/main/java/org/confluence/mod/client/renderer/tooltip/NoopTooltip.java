@@ -1,4 +1,4 @@
-package org.confluence.mod.client.renderer;
+package org.confluence.mod.client.renderer.tooltip;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;

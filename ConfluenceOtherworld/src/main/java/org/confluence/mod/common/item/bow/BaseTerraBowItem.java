@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.bow;
 
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -25,9 +23,6 @@ import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.attachment.WeaponStorage;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.init.TEDataComponentTypes;
-import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -40,12 +35,6 @@ import java.util.List;
  * @author Coffee
  */
 public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem> {
-    public static final String ARROW_TRANSFORM_TEXT = "tooltip.item.confluence.arrow_transform";
-    public static final String BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT = "tooltip.item.confluence.bow_full_pull_on_hit_effects";
-    public static final String ON_HIT_EFFECTS_TEXT = "tooltip.item.confluence.on_hit_effects";
-    public static final String MAX_COUNT_TEXT = "tooltip.item.confluence.max_count";
-    public static final String ATTACK_DAMAGE_TEXT = "attribute.name.generic.attack_damage";
-
     private final float baseDamage;
     private final BaseArrowEntity.Builder arrowModifier;
     private final BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder;
@@ -206,31 +195,14 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-        tooltipComponents.add(tooltip(ATTACK_DAMAGE_TEXT).append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
-        if (modifyArrowBuilder.multiShoot > 1) {
-            tooltipComponents.add(tooltip(MAX_COUNT_TEXT).append(String.format("%d", modifyArrowBuilder.multiShoot)).withColor(0x00FF00));
-        }
+        // 伤害
+        BaseTerraArrowItem.addDamageHoverText(tooltipComponents, modifyArrowBuilder, baseDamage);
         // 命中效果
-        EffectStrategyComponent hitEffect = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
-        if (hitEffect != null) {
-            IEffectStrategy.appendDescription(tooltipComponents, hitEffect.effects(), tooltip(ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
-        }
-
+        BaseTerraArrowItem.addHitEffectHoverText(stack, tooltipComponents);
         // 蓄满命中效果
-        var fullPullHitEffect = stack.get(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY);
-        if (fullPullHitEffect != null) {
-            IEffectStrategy.appendDescription(tooltipComponents, fullPullHitEffect.effects(), tooltip(BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT).withColor(0xFF00FF));
-        }
-
+        BaseTerraArrowItem.addFullPullHitEffectHoverText(stack, tooltipComponents);
         // 木箭转化
-        if (modifyArrowBuilder.entityTransform != null) {
-            tooltipComponents.add(tooltip(ARROW_TRANSFORM_TEXT).append(modifyArrowBuilder.entityTransform.type().getDescription()).withColor(0xF1b0F4));
-        } else {
-            Item transformArrow = arrowModifier.getTransformArrow();
-            if (transformArrow != null) {
-                tooltipComponents.add(tooltip(ARROW_TRANSFORM_TEXT).append(Component.translatable(transformArrow.getDescriptionId())).withColor(0xF1b0F4));
-            }
-        }
+        BaseTerraArrowItem.addEntityTransformHoverText(tooltipComponents, modifyArrowBuilder, arrowModifier);
     }
 
     @Override
@@ -252,9 +224,5 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
 
     public float getBaseDamage() {
         return baseDamage;
-    }
-
-    public static @NotNull MutableComponent tooltip(String text) {
-        return Component.translatable(text).append(": ");
     }
 }

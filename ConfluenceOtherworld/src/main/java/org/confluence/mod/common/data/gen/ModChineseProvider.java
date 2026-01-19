@@ -11,6 +11,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
@@ -3659,6 +3660,14 @@ public class ModChineseProvider extends LanguageProvider {
         PonderHelper.addTranslateKeys(this::add, false);
         WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), false);
         CreateHelper.addTranslateKeys((item, s) -> add(Util.makeDescriptionId("item", item.getId()), s), false);
+
+        add(BaseTerraRepeaterItem.ATTACK_SPEED_TEXT, "矢速度");
+        add(BaseTerraRepeaterItem.KNOCKBACK_TEXT, "击退");
+        add(BaseTerraRepeaterItem.TORRENT_COUNT_TEXT, "连发射击个数");
+        add(BaseTerraRepeaterItem.CONCURRENCY_COUNT_TEXT, "并发射击个数");
+        add(BaseTerraRepeaterItem.RELOAD_SPEED_TEXT, "装填速度");
+        add(BaseTerraRepeaterItem.FIRING_INTERVAL_TEXT, "射击间隔");
+        add(BaseTerraRepeaterItem.ARROW_CAPACITY_TEXT, "箭矢容量");
     }
 
     private void addPotion(Item potion, String name, String tooltip) {

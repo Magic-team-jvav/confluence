@@ -64,8 +64,6 @@ import org.confluence.mod.client.model.entity.hook.SkeletronHandModel;
 import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.particle.*;
-import org.confluence.mod.client.renderer.AltImageTooltip;
-import org.confluence.mod.client.renderer.NoopTooltip;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.*;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
@@ -84,15 +82,20 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjec
 import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
 import org.confluence.mod.client.renderer.item.GroupItemExtension;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
+import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
+import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
+import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.AltImageComponent;
 import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.common.item.common.BaseDyeItem;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
+import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
+import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
@@ -166,6 +169,8 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
+        ResourceLocation repeaterHud = Confluence.asResource("repeater_hud");
+        event.registerAbove(VanillaGuiLayers.CROSSHAIR, repeaterHud, new RepeaterHud());
         ResourceLocation healthHud = Confluence.asResource("health_hud");
         event.registerBelow(VanillaGuiLayers.ARMOR_LEVEL, healthHud, new TerraStyleHealthHud());
         ResourceLocation armorHud = Confluence.asResource("armor_hud");
@@ -533,6 +538,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(AltImageComponent.class, component -> PrismLibHelper.shouldDisableAltImageTooltip() ? NoopTooltip.INSTANCE : new AltImageTooltip(component));
+        event.register(RepeaterComponent.class, ClientRepeaterContentsTooltip::new);
     }
 
     @SubscribeEvent
@@ -556,7 +562,13 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerItemDecorations(RegisterItemDecorationsEvent event) {
         for (DeferredHolder<Item, ? extends Item> entry : FishingPoleItems.ITEMS.getEntries()) {
-            event.register(entry.get(), ModClientSetups.FISHING_POLE_DECORATOR);
+            event.register(entry.get(), ModItemDecorator.FISHING_POLE_DECORATOR);
+        }
+        for (DeferredHolder<Item, ? extends Item> entry : CrossbowItems.ITEMS.getEntries()) {
+            Item item = entry.get();
+            if (item instanceof BaseTerraRepeaterItem) {
+                event.register(item, ModItemDecorator.REPEATER_AMMO);
+            }
         }
         if (GroupItem.enable) {
             ResourceLocation plus = Confluence.asResource("plus");

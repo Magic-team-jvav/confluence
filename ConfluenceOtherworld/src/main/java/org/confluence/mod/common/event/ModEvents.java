@@ -81,7 +81,7 @@ import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.RepeaterItemComponentHandler;
+import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
@@ -214,6 +214,7 @@ public final class ModEvents {
         registrar.playToClient(StarPhasesPacketS2C.TYPE, StarPhasesPacketS2C.STREAM_CODEC, StarPhasesPacketS2C::handle);
         registrar.playToClient(WindSpeedPacketS2C.TYPE, WindSpeedPacketS2C.STREAM_CODEC, WindSpeedPacketS2C::handle);
         registrar.playToClient(AchievementOffsetSyncPacketS2C.TYPE, AchievementOffsetSyncPacketS2C.STREAM_CODEC, AchievementOffsetSyncPacketS2C::handle);
+        registrar.playToClient(RepeaterShootingPayloadS2C.TYPE, RepeaterShootingPayloadS2C.STREAM_CODEC, RepeaterShootingPayloadS2C::handle);
         registrar.playToClient(CompatibilitySyncPacketS2c.TYPE, CompatibilitySyncPacketS2c.STREAM_CODEC, CompatibilitySyncPacketS2c::handle);
         registrar.playToClient(PiggyBankTotalMoneyPacket.TYPE, PiggyBankTotalMoneyPacket.STREAM_CODEC, PiggyBankTotalMoneyPacket::handle);
         registrar.playToClient(DropletsSyncPacketS2C.TYPE, DropletsSyncPacketS2C.STREAM_CODEC, DropletsSyncPacketS2C::handle);
@@ -308,9 +309,8 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        // 给连弩注册能力
         CrossbowItems.ITEMS.getEntries().stream().map(DeferredHolder::get).filter(BaseTerraRepeaterItem.class::isInstance).map(BaseTerraRepeaterItem.class::cast).forEach(item -> event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) ->
-                new RepeaterItemComponentHandler(stack, ModDataComponentTypes.REPEATER_CONTAINER.get(), item.getCapacitySize()), item
+            new RepeaterContentsComponentHandler(stack, ModDataComponentTypes.REPEATER_CONTENTS.get(), item.getCapacity()), item
         ));
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
             if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {

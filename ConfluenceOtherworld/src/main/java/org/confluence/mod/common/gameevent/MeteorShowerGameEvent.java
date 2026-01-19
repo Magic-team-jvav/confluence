@@ -67,12 +67,14 @@ public final class MeteorShowerGameEvent implements GameEvent {
         }
         GameEventSystem.removeUnTracked(spawned, level);
         List<ServerPlayer> players = level.players();
-        if (spawned.size() >= 1 + players.size() * 2) return;
+        if (spawned.size() >= CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_BASE.get() + players.size() * CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_PER_PLAYER.get()) {
+            return;
+        }
         for (ServerPlayer player : players) {
             NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
             if (speed <= 0) continue;
-            int interval = Mth.floor(20 * 20 / speed);
+            int interval = Mth.floor(20 * CommonConfigs.METEOR_SHOWER_EVENT_SPAWN_ENCHANTED_NIGHTCRAWLERS_INTERVAL_FACTOR.get() / speed);
             if (level.random.nextInt(interval) != 0) continue;
             Vec3 position = player.position();
             int count = data.getCount(1);
@@ -103,7 +105,7 @@ public final class MeteorShowerGameEvent implements GameEvent {
         }
         return LibDateUtils.getDayTime(level) == LibDateUtils._19$30 &&
                 level.random.nextInt(isCelebrationMK10
-                        ? CommonConfigs.METEOR_SHOWER_EVENT_FREQUENCY_CELEBRATIONMK10.get()
+                        ? CommonConfigs.METEOR_SHOWER_EVENT_CELEBRATIONMK10_FREQUENCY.get()
                         : CommonConfigs.METEOR_SHOWER_EVENT_FREQUENCY.get()
                 ) == 0;
     }

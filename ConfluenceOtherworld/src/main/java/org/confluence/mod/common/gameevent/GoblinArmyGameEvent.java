@@ -15,6 +15,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.util.AchievementUtils;
@@ -77,7 +78,11 @@ public final class GoblinArmyGameEvent implements GameEvent {
                 player.sendSystemMessage(component);
             }
         } else {
-            GameEventSystem.customSpawner(this, level, spawned, 30, 1.5F, spawnerData, ENTITY_TAG, true);
+            GameEventSystem.customSpawner(this, level, spawned,
+                    CommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_BASE.get(),
+                    CommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
+                    CommonConfigs.GOBLIN_ARMY_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
+                    spawnerData, ENTITY_TAG, true);
         }
     }
 
@@ -99,16 +104,23 @@ public final class GoblinArmyGameEvent implements GameEvent {
                 ConfluenceData.get(level).getEvilBrokenCount() > 0
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                if (player.getMaxHealth() >= 40 && player.getArmorValue() >= 16) {
+                if (player.getMaxHealth() >= CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&
+                        player.getArmorValue() >= CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_ARMOR.get()
+                ) {
                     int chance;
+                    boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
                     if (KillBoard.INSTANCE.isDefeated(KEY)) {
-                        if (KillBoard.INSTANCE.getGamePhase().isHardmode()) {
-                            chance = 60;
+                        if (hardmode) {
+                            chance = CommonConfigs.GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE.get();
                         } else {
-                            chance = 30;
+                            chance = CommonConfigs.GOBLIN_ARMY_EVENT_DEFEATED_INVERT_CHANCE.get();
                         }
                     } else {
-                        chance = 3;
+                        if (hardmode) {
+                            chance = CommonConfigs.GOBLIN_ARMY_EVENT_HARDMODE_INVERT_CHANCE.get();
+                        } else {
+                            chance = CommonConfigs.GOBLIN_ARMY_EVENT_INVERT_CHANCE.get();
+                        }
                     }
                     return level.random.nextInt(chance) == 0;
                 }
@@ -134,11 +146,11 @@ public final class GoblinArmyGameEvent implements GameEvent {
         Component component = Component.translatable("message.confluence.goblin_army.ready").withColor(GlobalColors.EVENT.get());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             player.sendSystemMessage(component);
-            if (player.getMaxHealth() >= 40) {
+            if (player.getMaxHealth() >= CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get()) {
                 ++count;
             }
         }
-        this.required = 80 + Math.min(count, 255) * 40;
+        this.required = CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_BASE.get() + Math.min(count, 255) * CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_PER_PLAYER.get();
     }
 
     @Override
@@ -163,7 +175,7 @@ public final class GoblinArmyGameEvent implements GameEvent {
     public boolean forceStart() {
         if (started) return false;
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            if (player.getMaxHealth() >= 40) {
+            if (player.getMaxHealth() >= CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get()) {
                 this.forceStart = true;
                 return true;
             }

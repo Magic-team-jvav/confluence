@@ -55,9 +55,40 @@ public final class CommonConfigs {
     public static BooleanValue FTB_CHUNKS_WORMHOLE_POTION;
     public static BooleanValue WAYSTONES_PYLON_NON_COST;
 
+    public static IntValue SLIME_RAIN_EVENT_MAX_ENEMIES_BASE;
+    public static IntValue SLIME_RAIN_EVENT_MAX_ENEMIES_PER_PLAYER;
+    public static DoubleValue SLIME_RAIN_EVENT_SPAWN_INTERVAL_FACTOR;
+    public static IntValue SLIME_RAIN_EVENT_SPAWN_GROUP_SIZE;
+    public static IntValue SLIME_RAIN_EVENT_KING_SLIME_SPAWN_REQUIRED_KILL_COUNT;
+    public static IntValue SLIME_RAIN_EVENT_REQUIRED_PLAYER_MAX_HEALTH;
+    public static IntValue SLIME_RAIN_EVENT_REQUIRED_PLAYER_ARMOR;
+    public static IntValue SLIME_RAIN_EVENT_FREQUENCY;
+
+    public static IntValue BLOOD_MOON_EVENT_MAX_ENEMIES_BASE;
+    public static IntValue BLOOD_MOON_EVENT_MAX_ENEMIES_PER_PLAYER;
+    public static DoubleValue BLOOD_MOON_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR;
+    public static IntValue BLOOD_MOON_EVENT_REQUIRED_PLAYER_MAX_HEALTH;
+    public static IntValue BLOOD_MOON_EVENT_REQUIRED_PLAYER_ARMOR;
+    public static IntValue BLOOD_MOON_EVENT_INVERT_CHANCE;
+
+    public static IntValue GOBLIN_ARMY_EVENT_MAX_ENEMIES_BASE;
+    public static IntValue GOBLIN_ARMY_EVENT_MAX_ENEMIES_PER_PLAYER;
+    public static DoubleValue GOBLIN_ARMY_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR;
+    public static IntValue GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH;
+    public static IntValue GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_ARMOR;
+    public static IntValue GOBLIN_ARMY_EVENT_INVERT_CHANCE;
+    public static IntValue GOBLIN_ARMY_EVENT_DEFEATED_INVERT_CHANCE;
+    public static IntValue GOBLIN_ARMY_EVENT_HARDMODE_INVERT_CHANCE;
+    public static IntValue GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE;
+    public static IntValue GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_BASE;
+    public static IntValue GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_PER_PLAYER;
+
     public static DoubleValue METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER;
     public static IntValue METEOR_SHOWER_EVENT_FREQUENCY;
-    public static IntValue METEOR_SHOWER_EVENT_FREQUENCY_CELEBRATIONMK10;
+    public static IntValue METEOR_SHOWER_EVENT_CELEBRATIONMK10_FREQUENCY;
+    public static IntValue METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_BASE;
+    public static IntValue METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_PER_PLAYER;
+    public static IntValue METEOR_SHOWER_EVENT_SPAWN_ENCHANTED_NIGHTCRAWLERS_INTERVAL_FACTOR;
 
     public static Set<ResourceKey<Item>> ammoSlotsItemBlackList = Set.of(Confluence.asResourceKey(Registries.ITEM, "falling_star"));
     public static Set<TagKey<Item>> ammoSlotsTagBlackList = Set.of(Tags.Items.SEEDS);
@@ -169,26 +200,51 @@ public final class CommonConfigs {
         }
         {
             builder.push("GameEvent");
-//            {
-//                builder.push("SlimeRain");
-//
-//                builder.pop();
-//            }
-//            {
-//                builder.push("BloodMoon");
-//
-//                builder.pop();
-//            }
-//            {
-//                builder.push("GoblinArmy");
-//
-//                builder.pop();
-//            }
+            {
+                builder.push("SlimeRain");
+                SLIME_RAIN_EVENT_MAX_ENEMIES_BASE = builder.defineInRange("slimeRainEventMaxEnemiesBase", 25, 1, 1024);
+                SLIME_RAIN_EVENT_MAX_ENEMIES_PER_PLAYER = builder.defineInRange("slimeRainEventPerPlayer", 25, 1, 1024);
+                SLIME_RAIN_EVENT_SPAWN_INTERVAL_FACTOR = builder.defineInRange("slimeRainEventSpawnIntervalFactor", 1, 0.1, 10);
+                SLIME_RAIN_EVENT_SPAWN_GROUP_SIZE = builder.defineInRange("slimeRainEventSpawnGroupSize", 4, 1, 1024);
+                SLIME_RAIN_EVENT_KING_SLIME_SPAWN_REQUIRED_KILL_COUNT = builder.defineInRange("slimeRainEventKingSlimeSpawnRequiredKillCount", 150, 1, 1024);
+                SLIME_RAIN_EVENT_REQUIRED_PLAYER_MAX_HEALTH = builder.defineInRange("slimeRainEventRequiredPlayerMaxHealth", 28, 0, 1024);
+                SLIME_RAIN_EVENT_REQUIRED_PLAYER_ARMOR = builder.defineInRange("slimeRainEventRequiredPlayerArmor", 14, 0, 1024);
+                SLIME_RAIN_EVENT_FREQUENCY = builder.defineInRange("slimeRainEventFrequency", 675000, 1, Integer.MAX_VALUE);
+                builder.pop();
+            }
+            {
+                builder.push("BloodMoon");
+                BLOOD_MOON_EVENT_MAX_ENEMIES_BASE = builder.defineInRange("bloodMoonEventMaxEnemiesBase", 30, 1, 1024);
+                BLOOD_MOON_EVENT_MAX_ENEMIES_PER_PLAYER = builder.defineInRange("bloodMoonEventMaxEnemiesPerPlayer", 30, 1, 1024);
+                BLOOD_MOON_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR = builder.defineInRange("bloodMoonEventSpawnEnemiesIntervalFactor", 1.5, 0.1, 10);
+                BLOOD_MOON_EVENT_REQUIRED_PLAYER_MAX_HEALTH = builder.defineInRange("bloodMoonEventRequiredPlayerMaxHealth", 24, 0, 1024);
+                BLOOD_MOON_EVENT_REQUIRED_PLAYER_ARMOR = builder.defineInRange("bloodMoonEventRequiredPlayerArmor", 16, 0, 1024);
+                BLOOD_MOON_EVENT_INVERT_CHANCE = builder.defineInRange("bloodMoonEventInvertChance", 14, 1, 1024);
+                builder.pop();
+            }
+            {
+                builder.push("GoblinArmy");
+                GOBLIN_ARMY_EVENT_MAX_ENEMIES_BASE = builder.defineInRange("goblinArmyEventMaxEnemiesBase", 30, 1, 1024);
+                GOBLIN_ARMY_EVENT_MAX_ENEMIES_PER_PLAYER = builder.defineInRange("goblinArmyEventMaxEnemiesPerPlayer", 30, 1, 1024);
+                GOBLIN_ARMY_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR = builder.defineInRange("goblinArmyEventSpawnEnemiesIntervalFactor", 1.5, 0.1, 10);
+                GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH = builder.defineInRange("goblinArmyEventRequiredPlayerMaxHealth", 24, 0, 1024);
+                GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_ARMOR = builder.defineInRange("goblinArmyEventRequiredPlayerArmor", 16, 0, 1024);
+                GOBLIN_ARMY_EVENT_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 3, 1, 1024);
+                GOBLIN_ARMY_EVENT_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 3, 1, 1024);
+                GOBLIN_ARMY_EVENT_HARDMODE_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 30, 1, 1024);
+                GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 60, 1, 1024);
+                GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_BASE = builder.defineInRange("goblinArmyEventRequiredKillCountBase", 80, 1, 1024);
+                GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_PER_PLAYER = builder.defineInRange("goblinArmyEventRequiredKillCountPerPlayer", 40, 1, 1024);
+                builder.pop();
+            }
             {
                 builder.push("MeteorShower");
                 METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER = builder.defineInRange("meteorShowerEventFallingStarSpawnSpeedMultiplier", 3.0, 2.0, 4.0);
                 METEOR_SHOWER_EVENT_FREQUENCY = builder.defineInRange("meteorShowerEventFrequency", 10, 1, Integer.MAX_VALUE);
-                METEOR_SHOWER_EVENT_FREQUENCY_CELEBRATIONMK10 = builder.defineInRange("meteorShowerEventFrequencyCelebrationMK10", 5, 1, Integer.MAX_VALUE);
+                METEOR_SHOWER_EVENT_CELEBRATIONMK10_FREQUENCY = builder.defineInRange("meteorShowerEventCelebrationMK10Frequency", 5, 1, Integer.MAX_VALUE);
+                METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_BASE = builder.defineInRange("meteorShowerEventMaxEnchantedNightcrawlersBase", 1, 1, 1024);
+                METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_PER_PLAYER = builder.defineInRange("meteorShowerEventMaxEnchantedNightcrawlersPerPlayer", 2, 1, 1024);
+                METEOR_SHOWER_EVENT_SPAWN_ENCHANTED_NIGHTCRAWLERS_INTERVAL_FACTOR = builder.defineInRange("meteorShowerEventSpawnEnchantedNightcrawlersIntervalFactor", 20, 1, 1024);
                 builder.pop();
             }
             builder.pop();

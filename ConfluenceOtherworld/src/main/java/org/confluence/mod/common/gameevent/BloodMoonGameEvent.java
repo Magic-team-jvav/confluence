@@ -14,6 +14,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.BossDelaySpawner;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.util.AchievementUtils;
@@ -61,7 +62,11 @@ public final class BloodMoonGameEvent implements GameEvent {
     @Override
     public void tick() {
         if (!started) return;
-        GameEventSystem.customSpawner(this, level, spawned, 30, 1.5F, spawnerData, ENTITY_TAG, true);
+        GameEventSystem.customSpawner(this, level, spawned,
+                CommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_BASE.get(),
+                CommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
+                CommonConfigs.BLOOD_MOON_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
+                spawnerData, ENTITY_TAG, true);
     }
 
     @Override
@@ -70,12 +75,13 @@ public final class BloodMoonGameEvent implements GameEvent {
             return true;
         }
         if (LibDateUtils.getDayTime(level) == LibDateUtils._19$30 &&
-                !MoonPhase.NEW_MOON.match(level) && // 不是新月
-                BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.EYE_OF_CTHULHU.get()) // 没有克苏鲁之眼
+                !MoonPhase.NEW_MOON.match(level) &&
+                BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.EYE_OF_CTHULHU.get())
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                if (player.getMaxHealth() >= 24 && player.getArmorValue() >= 16 && // 属性
-                        level.random.nextInt(14) == 0 // 1/14的几率
+                if (player.getMaxHealth() >= CommonConfigs.BLOOD_MOON_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&
+                        player.getArmorValue() >= CommonConfigs.BLOOD_MOON_EVENT_REQUIRED_PLAYER_ARMOR.get() &&
+                        level.random.nextInt(CommonConfigs.BLOOD_MOON_EVENT_INVERT_CHANCE.get()) == 0
                 ) {
                     return true;
                 }

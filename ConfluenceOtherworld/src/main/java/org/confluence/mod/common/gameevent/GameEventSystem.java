@@ -172,7 +172,8 @@ public final class GameEventSystem implements IGlobalData {
 
     public static final Map<ResourceKey<? extends GameEvent>, GameEvent> INVASION_EVENTS = Util.make(new IdentityHashMap<>(), map -> {
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
-        // todo 雪人，海盗，火星
+        map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
+        // todo 海盗，火星
     });
 
     public static boolean isInvasionEvent(ResourceKey<? extends GameEvent> key) {
@@ -206,6 +207,7 @@ public final class GameEventSystem implements IGlobalData {
             GameEvent event,
             ServerLevel level,
             Set<Entity> spawned,
+            int base,
             int perPlayer,
             float intervalFactor,
             WeightedRandomList<MobSpawnSettings.SpawnerData> spawnerDataList,
@@ -219,7 +221,7 @@ public final class GameEventSystem implements IGlobalData {
         }
         removeUnTracked(spawned, level);
         List<ServerPlayer> players = level.players();
-        if (spawned.size() >= perPlayer + players.size() * perPlayer) return;
+        if (spawned.size() >= base + players.size() * perPlayer) return;
         for (ServerPlayer player : players) {
             NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();

@@ -2,6 +2,7 @@ package org.confluence.mod.network.s2c;
 
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
@@ -9,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.hud.RepeaterHud;
+import org.confluence.mod.mixed.IGui;
 
 public final class RepeaterShootingPayloadS2C implements IPacketS2C {
     public static final RepeaterShootingPayloadS2C INSTANCE = new RepeaterShootingPayloadS2C();
@@ -26,7 +27,7 @@ public final class RepeaterShootingPayloadS2C implements IPacketS2C {
 
     @Override
     public void work(Player player) {
-        RepeaterHud.setShooting();
+        IGui.of(Minecraft.getInstance().gui).confluence$setShooting();
     }
 
     public static void sendToClient(ServerPlayer serverPlayer) {

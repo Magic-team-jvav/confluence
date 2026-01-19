@@ -65,10 +65,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-// TODO 空弹药提示 & 音效
-/**
- * 连弩基类 - 按功能分组排序版本
- */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem>, ILeftClickStateItem {
@@ -333,6 +329,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         }
         this.shoot(serverlevel, shooter, hand, weapon, itemStacks, velocity, inaccuracy, true, target);
         if (shooter instanceof ServerPlayer serverplayer) {
+            // 告诉客户端玩家已发射
             RepeaterShootingPayloadS2C.sendToClient(serverplayer);
             CriteriaTriggers.SHOT_CROSSBOW.trigger(serverplayer, weapon);
             serverplayer.awardStat(Stats.ITEM_USED.get(weapon.getItem()));

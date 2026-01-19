@@ -23,7 +23,7 @@ public class ShortBowItem extends BaseTerraBowItem {
     }
 
     public float getVelocityMultiplier() {
-        return 2.0F;
+        return 2.3F;
     }
 
     public static void applyToArrow(ItemStack itemStack, AbstractArrow arrow) {

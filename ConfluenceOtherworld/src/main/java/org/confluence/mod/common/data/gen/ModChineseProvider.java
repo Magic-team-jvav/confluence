@@ -453,6 +453,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.minecart_upgrade_kit.1", "“内含免费的机械货车！”");
         add("tooltip.item.confluence.artisan_loaf.0", "使用后可永久扩大方块交互范围");
         add("tooltip.item.confluence.artisan_loaf.1", "“曾经让泰迪想家的传奇面包”");
+        add("tooltip.item.confluence.water_candle.0", "手持此物可能会引起不必要的注意");
+        add("tooltip.item.confluence.peace_candle.0", "降低周围生物的敌意");
+        add("tooltip.item.confluence.blood_tear.0", "召唤血月");
+        add("tooltip.item.confluence.blood_tear.1", "“诅咒之夜太可怕了。”");
+        add("tooltip.item.confluence.goblin_battle_standard.0", "召唤哥布林军队");
 
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
         add("tooltip.item.confluence.max_count", "多重射击");
@@ -2518,6 +2523,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
         add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
         add(ConsumableItems.FALLEN_SOUL_CORE.get(), "堕魂星核");
+        add(ConsumableItems.BLOOD_TEAR.get(), "血泪");
+        add(ConsumableItems.GOBLIN_BATTLE_STANDARD.get(), "哥布林战旗");
 
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
@@ -2897,6 +2904,16 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(BowItems.DAEDALUS_STORM_BOW.get(), "代达罗斯风暴弓");
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
+
+        add(CrossbowItems.COBALT_REPEATER.get(), "钴连弩");
+        add(CrossbowItems.PALLADIUM_REPEATER.get(), "钯金连弩");
+        add(CrossbowItems.MYTHRIL_REPEATER.get(), "秘银连弩");
+        add(CrossbowItems.ORICHALCUM_REPEATER.get(), "山铜连弩");
+        add(CrossbowItems.ADAMANTITE_REPEATER.get(), "精金连弩");
+        add(CrossbowItems.TITANIUM_REPEATER.get(), "钛金连弩");
+        add(CrossbowItems.HALLOWED_REPEATER.get(), "神圣连弩");
+        add(CrossbowItems.CHLOROPHYTE_REPEATER.get(), "叶绿连弩");
+        add(CrossbowItems.STAKE_LAUNCHER.get(), "尖桩发射器");
 
 
         // 盔甲

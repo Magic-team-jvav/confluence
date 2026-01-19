@@ -457,7 +457,16 @@ public final class ValueSubProvider {
                 .add(BowItems.FOSSIL_BOW, 3000)
                 .add(BowItems.HUNTING_BOW, 3800)
                 .add(BowItems.HELLWING_BOW, gold2 + silver50)
-                .add(BowItems.WOODEN_SHORT_BOW, 30);
+                .add(BowItems.WOODEN_SHORT_BOW, 30)
+                .add(CrossbowItems.COBALT_REPEATER, gold1 + silver20)
+                .add(CrossbowItems.PALLADIUM_REPEATER, gold1 + silver50+ silver10)
+                .add(CrossbowItems.MYTHRIL_REPEATER, gold2 - silver20)
+                .add(CrossbowItems.ORICHALCUM_REPEATER, gold2 + silver20)
+                .add(CrossbowItems.ADAMANTITE_REPEATER, gold2 + silver20 + silver20)
+                .add(CrossbowItems.TITANIUM_REPEATER, gold2 + gold1 - silver20)
+                .add(CrossbowItems.HALLOWED_REPEATER, gold2 + gold2)
+                .add(CrossbowItems.CHLOROPHYTE_REPEATER, gold5 + - silver20)
+                .add(CrossbowItems.STAKE_LAUNCHER, gold10);
         builder
                 .add(PickaxeItems.CACTUS_PICKAXE, silver2 + silver2)
                 .add(PickaxeItems.COPPER_PICKAXE, silver1)

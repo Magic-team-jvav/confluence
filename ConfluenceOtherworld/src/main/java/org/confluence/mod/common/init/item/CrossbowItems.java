@@ -17,24 +17,24 @@ public class CrossbowItems {
 
     // 连弩
 
-    public static final DeferredItem<BaseTerraRepeaterItem> ADAMANTITE_REPEATER = register("adamantite_repeater", 42, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(1000).setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(10).arrowSpeed(10f).reloadTick(18).knockback(2.5f));
-    public static final DeferredItem<BaseTerraRepeaterItem> COBALT_REPEATER = register("cobalt_repeater", 42, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(1000).setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(10).arrowSpeed(10f).reloadTick(18).knockback(2.5f));
-    public static final DeferredItem<BaseTerraRepeaterItem> MYTHRIL_REPEATER = register("mythril_repeater", 42, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(1000).setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(10).arrowSpeed(10f).reloadTick(18).knockback(2.5f));
-    public static final DeferredItem<BaseTerraRepeaterItem> ORICHALCUM_REPEATER = register("orichalcum_repeater", 42, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(1000).setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(10).arrowSpeed(10f).reloadTick(18).knockback(2.5f));
-    public static final DeferredItem<BaseTerraRepeaterItem> PALLADIUM_REPEATER = register("palladium_repeater", 42, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(1000).setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(10).arrowSpeed(10f).reloadTick(18).knockback(2.5f));
-    public static final DeferredItem<BaseTerraRepeaterItem> TITANIUM_REPEATER = register("titanium_repeater", 42, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(1000).setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(10).arrowSpeed(10f).reloadTick(18).knockback(2.5f));
-    public static final DeferredItem<BaseTerraRepeaterItem> STAKE_LAUNCHER = register("stake_launcher", 42, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(1000).setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(10).arrowSpeed(10f).reloadTick(18).knockback(2.5f));
-    public static final DeferredItem<BaseTerraRepeaterItem> Hallowed_REPEATER = register("hallowed_repeater", 42, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(1000).setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(10).arrowSpeed(10f).reloadTick(18).knockback(2.5f));
-    public static final DeferredItem<BaseTerraRepeaterItem> CHLOROPHYTE_REPEATER = register("chlorophyte_repeater", 34,
-            new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(5000).setRarity(ModRarity.LIME),
+    public static final DeferredItem<BaseTerraRepeaterItem> COBALT_REPEATER = register("cobalt_repeater", 10, new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(140).arrowSpeed(3f).reloadTick(22).knockback(2.5f));
+    public static final DeferredItem<BaseTerraRepeaterItem> PALLADIUM_REPEATER = register("palladium_repeater", 11, new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(150).arrowSpeed(3f).reloadTick(22).knockback(2.5f));
+    public static final DeferredItem<BaseTerraRepeaterItem> MYTHRIL_REPEATER = register("mythril_repeater", 12, new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(190).arrowSpeed(3.2f).reloadTick(20).knockback(2.5f));
+    public static final DeferredItem<BaseTerraRepeaterItem> ORICHALCUM_REPEATER = register("orichalcum_repeater", 13, new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(200).arrowSpeed(3.2f).reloadTick(20).knockback(2.5f));
+    public static final DeferredItem<BaseTerraRepeaterItem> ADAMANTITE_REPEATER = register("adamantite_repeater", 14, new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(240).arrowSpeed(3.4f).reloadTick(18).knockback(2.5f));
+    public static final DeferredItem<BaseTerraRepeaterItem> TITANIUM_REPEATER = register("titanium_repeater", 15, new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(250).arrowSpeed(3.4f).reloadTick(18).knockback(2.5f));
+    public static final DeferredItem<BaseTerraRepeaterItem> HALLOWED_REPEATER = register("hallowed_repeater", 16, new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(300).arrowSpeed(3.6f).reloadTick(16).knockback(2.5f));
+    public static final DeferredItem<BaseTerraRepeaterItem> CHLOROPHYTE_REPEATER = register("chlorophyte_repeater", 12,
+            new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIME),
             new BaseTerraRepeaterItem.Builder()
-                    .capacity(32)
-                    .arrowSpeed(11.5f)
-                    .reloadTick(19)
+                    .capacity(320)
+                    .arrowSpeed(3.6f)
+                    .reloadTick(16)
                     .knockback(2.75f)
                     .concurrentCount(IRandomCount.create(2, 3))
                     .concurrentAngle(1)
                     .concurrentInterval(IRandomCount.create(0.01f, 0.03f)));
+    public static final DeferredItem<BaseTerraRepeaterItem> STAKE_LAUNCHER = register("stake_launcher", 25, new BaseTerraArrowItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(350).arrowSpeed(3.8f).reloadTick(16).knockback(2.5f));
 
     public static <I extends BaseTerraRepeaterItem> DeferredItem<I> register(String name, Supplier<I> supplier) {
         return ITEMS.register(name, supplier);

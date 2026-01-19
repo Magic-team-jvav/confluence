@@ -1340,6 +1340,28 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " b "
         )), ToolItems.KEY_OF_NIGHT.toStack());
 
+        // 连弩
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, ModTags.Items.INGOTS_COBALT),
+                'b', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
+        )), CrossbowItems.COBALT_REPEATER.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, ModTags.Items.INGOTS_PALLADIUM),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_PALLADIUM),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
+        )), CrossbowItems.PALLADIUM_REPEATER.toStack());
+
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(30),Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(2, MaterialItems.ROTTEN_BONE), AmountIngredient.of(2, MaterialItems.WORM_TOOTH), AmountIngredient.of(4, MaterialItems.ROTTEN_CHUNK));

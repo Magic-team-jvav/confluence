@@ -720,6 +720,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INGOTS_ORICHALCUM).add(MaterialItems.ORICHALCUM_INGOT.get());
         tag(ModTags.Items.INGOTS_ADAMANTITE).add(MaterialItems.ADAMANTITE_INGOT.get());
         tag(ModTags.Items.INGOTS_TITANIUM).add(MaterialItems.TITANIUM_INGOT.get());
+        tag(ModTags.Items.INGOTS_HALLOWED).add(MaterialItems.HALLOWED_INGOT.get());
         tag(ModTags.Items.INGOTS_CHLOROPHYTE).add(MaterialItems.CHLOROPHYTE_INGOT.get());
 
         tag(ModTags.Items.NUGGETS_TIN).add(MaterialItems.TIN_NUGGET.get());
@@ -1313,7 +1314,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.SNOW_BRICKS_WALL.asItem(),
                 DecorativeBlocks.CRIMTANE_ORE_BRICKS_STAIRS.asItem(),
                 DecorativeBlocks.CRIMTANE_ORE_BRICKS_SLAB.asItem(),
-                DecorativeBlocks.CHISELED_SPRUCE_PLANKS.asItem(),
                 StatueBlocks.ARMOR_STATUE.asItem(),
                 StatueBlocks.AXE_STATUE.asItem(),
                 StatueBlocks.BOOMERANG_STATUE.asItem(),
@@ -1423,7 +1423,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.THE_TWINS_RELIC.asItem(),
                 DecorativeBlocks.SKELETRON_PRIME_RELIC.asItem(),
                 LanceItems.HALLOWED_JOUSTING_LANCE.get(),
-                LanceItems.SHADOW_JOUSTING_LANCE.get()
+                LanceItems.SHADOW_JOUSTING_LANCE.get(),
+                MaterialItems.MECHANICAL_WHEEL_PIECE.get(),
+                MaterialItems.MECHANICAL_WAGON_PIECE.get(),
+                MaterialItems.MECHANICAL_BATTERY_PIECE.get(),
+                CrossbowItems.STAKE_LAUNCHER.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

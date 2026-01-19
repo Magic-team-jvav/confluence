@@ -149,14 +149,7 @@
 - 补全流程武器需要的粒子和简单的弹幕模型
 - 等咖啡回来后调整召唤物索敌，射速
 - en_us缺的翻译：
-  "attribute.name.repeater.arrow_capacity": "箭矢容量",
-  "attribute.name.repeater.attack_speed": "矢速度",
-  "attribute.name.repeater.concurrency_count": "并发射击个数",
-  "attribute.name.repeater.firing_interval": "射击间隔",
-  "attribute.name.repeater.knockback": "击退",
-  "attribute.name.repeater.reload_speed": "装填速度",
-  "attribute.name.repeater.torrent_count": "连发射击个数",
-  "item.terra_curio.base_point": "基点"
+  
 
 ## 牢MK(MakerTechno)
 

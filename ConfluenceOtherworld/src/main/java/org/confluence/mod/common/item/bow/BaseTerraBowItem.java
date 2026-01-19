@@ -112,7 +112,7 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
             for (int projectileIndex = 0; projectileIndex < multiShootCount; projectileIndex++) {
 //                float angleIncrement = multiShootCount * 5 - projectileIndex * 10f;
                 Projectile projectile = createProjectile(level, shooter, weapon, itemstack, isCrit);
-                shootProjectile(shooter, projectile, itemstackIndex, velocity, inaccuracy + modifyArrowBuilder.inaccuracy, angleY, target);
+                shootProjectile(shooter, projectile, itemstackIndex, velocity* 2.0F, inaccuracy + modifyArrowBuilder.inaccuracy, angleY, target);
                 var multiShootOffset = modifyArrowBuilder.multiShootOffset;
                 if (multiShootOffset != null) {// 多重射击初始位置偏移
                     transformAndApplyOffsetToProjectile(projectile, multiShootOffset.apply(projectileIndex, multiShootCount));

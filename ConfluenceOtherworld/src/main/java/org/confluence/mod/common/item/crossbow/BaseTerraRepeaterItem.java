@@ -794,6 +794,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
             this.knockback = knockback;
             return this;
         }
+
     }
 
     @FunctionalInterface

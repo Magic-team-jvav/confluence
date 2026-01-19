@@ -494,6 +494,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.minecart_upgrade_kit.1", "'Free Mechanical Cart included!'");
         add("tooltip.item.confluence.artisan_loaf.0", "Consume to permanently increase block interaction range");
         add("tooltip.item.confluence.artisan_loaf.1", "'Legendary Bread that once reminded Teddy of home'");
+        add("tooltip.item.confluence.water_candle.0", "Holding this may attract unwanted attention");
+        add("tooltip.item.confluence.peace_candle.0", "Makes surrounding creatures less hostile");
+        add("tooltip.item.confluence.blood_tear.0", "Summons the Blood Moon");
+        add("tooltip.item.confluence.blood_tear.1", "'What a horrible night to have a curse.'");
+        add("tooltip.item.confluence.goblin_battle_standard.0", "Summons a Goblin Army ");
 
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
         add("tooltip.item.confluence.max_count", "Arrow Count");
@@ -607,6 +612,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.lucy_the_axe.0", "'I love Lucy!'");
         add("tooltip.item.confluence.key_of_light.0", "Charged with the essence of many souls");
         add("tooltip.item.confluence.key_of_night.0", "Charged with the essence of many souls");
+
+        add("attribute.name.repeater.arrow_capacity", "Arrow Capacity");
+        add("attribute.name.repeater.attack_speed", "Arrow Speed");
+        add("attribute.name.repeater.concurrency_count", "Concurrency Count");
+        add("attribute.name.repeater.firing_interval", "Firing Interval");
+        add("attribute.name.repeater.knockback", "Knockback");
+        add("attribute.name.repeater.reload_speed", "Reload Speed");
+        add("attribute.name.repeater.torrent_count", "Torrent Count");
 
         new ConfigurationLanguageSubProvider(this::add, true);
 

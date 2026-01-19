@@ -285,6 +285,7 @@ public final class ModTags {
         public static final TagKey<Item> INGOTS_ADAMANTITE = c("ingots/adamantite");
         public static final TagKey<Item> INGOTS_TITANIUM = c("ingots/titanium");
 
+        public static final TagKey<Item> INGOTS_HALLOWED = c("ingots/hallowed");
         public static final TagKey<Item> INGOTS_CHLOROPHYTE = c("ingots/chlorophyte");
         public static final TagKey<Item> NUGGETS_TIN = c("nuggets/tin");
         public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");

@@ -1293,7 +1293,7 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.LAVA_SLIME.get(), 25, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 20, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 7, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 13, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BONE_SERPENT.get(), 2, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.SHADOW_MIMIC.get(), 1, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 7, 1, 1)
@@ -1302,8 +1302,8 @@ public class ModDataProvider {
             register(context, createModifierKey("common_ocean"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_OCEAN),
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_JELLYFISH.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SHARK.get(), 3, 1, 1)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_JELLYFISH.get(), 1, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SHARK.get(), 1, 1, 1)
                     )
             ));
             register(context, createModifierKey("flower_forest"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1470,7 +1470,7 @@ public class ModDataProvider {
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 10, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.VOODOO_DEMON.get(), 2, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 10, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 25, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BONE_SERPENT.get(), 2, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 60, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LAVA_SLIME.get(), 80, 1, 1))
@@ -1490,7 +1490,7 @@ public class ModDataProvider {
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 15, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.VOODOO_DEMON.get(), 4, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 15, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 20, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BONE_SERPENT.get(), 2, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 40, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LAVA_SLIME.get(), 40, 1, 1))

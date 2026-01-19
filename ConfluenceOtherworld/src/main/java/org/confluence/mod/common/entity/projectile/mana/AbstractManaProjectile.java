@@ -5,7 +5,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -15,9 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -57,7 +54,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     protected void onHitEntity(EntityHitResult result) {}
 
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
-        if (target.hurt(getDamagesource(), getCalculatedDamage())) {
+        if (target.hurt(getDamageSource(), getCalculatedDamage())) {
             if (knockbackStrength > 0 || knockbackMotionY > 0) {
                 VectorUtils.knockBackA2B(this, target, knockbackStrength, knockbackMotionY);
             }
@@ -78,17 +75,9 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         }
     }
 
-    public @Nullable LivingEntity getLivingOwner() {
-        return getOwner() instanceof LivingEntity living ? living : null;
-    }
-
-    public DamageSource getDamagesource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
-    }
-
     @Override
-    protected boolean canHitEntity(Entity target) {
-        return ModUtils.canHitEntity(target, getOwner());
+    public DamageSource getDamageSource() {
+        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
     }
 
     @Override

@@ -7,7 +7,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
-import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -27,7 +26,7 @@ public class HellBatArrowEntity extends BaseArrowEntity implements GeoEntity {
         super(pEntityType, pLevel);
     }
 
-    public HellBatArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraBowItem.ModifyArrowBuilder modifyConsumer) {
+    public HellBatArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraArrowItem.ModifyArrowBuilder modifyConsumer) {
         super(pEntityType, owner, pickupItemStack, firedFromWeapon, arrow, modifyConsumer);
         this.modify.penetration_count = 99999;
         this.modify.setGravity(0);

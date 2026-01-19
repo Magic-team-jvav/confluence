@@ -76,6 +76,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.house_select.tip2", "右击以检查、添加或移除房间");
         add("message.confluence.house_select.check", "检查");
         add("message.confluence.guide_voo_doo_doll.fail", "这种强大的献祭道具只能在下界使用！");
+        add("message.confluence.slime_rain.start", "史莱姆从天而降!");
+        add("message.confluence.slime_rain.end", "史莱姆已停止从天而降。");
+        add("message.confluence.blood_moon.start", "血月正在升起……");
+        add("message.confluence.goblin_army.ready", "一支哥布林军队正在逼近！");
+        add("message.confluence.goblin_army.start", "哥布林军队来了！");
+        add("message.confluence.goblin_army.victory", "哥布林军队已被击败！");
 
         add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
         add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");

@@ -120,6 +120,7 @@ public final class ModClientEvents {
         event.enqueueWork(() -> {
             ClientConfigs.onLoad();
             ModClientSetups.registerBowProperties();
+            ModClientSetups.registerCrossbowProperties();
             ModClientSetups.registerFishingPoleProperties();
             ArrowInBowRenderer.initAdaptionMap();
 

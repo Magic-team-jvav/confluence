@@ -11,7 +11,10 @@ import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderType
 import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
+import org.jetbrains.annotations.ApiStatus;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval(inVersion = "1.2.0")
 public record MomentLock(ResourceKey<IMoment> moment) implements ITradeLock {
     public static final MapCodec<MomentLock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ResourceKey.codec(HDMRegistries.Keys.MOMENT).fieldOf("moment").forGetter(MomentLock::moment)

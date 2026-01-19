@@ -2,19 +2,23 @@ package org.confluence.mod.integration.heaven_destiny_moment.init;
 
 import com.xiaohunao.heaven_destiny_moment.common.function.MomentProbabilityFunction;
 import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import com.xiaohunao.terra_moment.common.moment.SlimeRainMoment;
 import com.xiaohunao.xhn_lib.api.register.holder.FlexibleHolder;
 import com.xiaohunao.xhn_lib.api.register.register.FlexibleRegister;
 import net.minecraft.world.Difficulty;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
+import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
+import org.jetbrains.annotations.ApiStatus;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval(inVersion = "1.2.0")
 public class ModMomentProbabilityFunction {
     public static final FlexibleRegister<MomentProbabilityFunction> MOMENT_PROBABILITY_FUNCTION = FlexibleRegister.create(HDMRegistries.Keys.MOMENT_PROBABILITY_FUNCTION, Confluence.MODID);
 
     public static final FlexibleHolder<MomentProbabilityFunction, MomentProbabilityFunction> GOBLIN_ARMY = MOMENT_PROBABILITY_FUNCTION.registerStatic("goblin_army", () -> level -> {
-        double spawnChance = KillBoard.INSTANCE.isDefeated(TMMoments.GOBLIN_ARMY.getKey()) ? 0.03 : 0.33;
+        double spawnChance = KillBoard.INSTANCE.isDefeated(GoblinArmyGameEvent.KEY) ? 0.03 : 0.33;
         if (KillBoard.INSTANCE.getGamePhase().isHardmode() && spawnChance == 0.03) {
             spawnChance = 0.0167; //在肉后阶段,概率降低到1.67%
         }
@@ -26,7 +30,7 @@ public class ModMomentProbabilityFunction {
         // 检查是否是困难游戏阶段（对应泰拉瑞亚的困难模式）
         boolean isHardmodePhase = KillBoard.INSTANCE.getGamePhase().isHardmode();
         // 是否完成事件
-        boolean defeated = KillBoard.INSTANCE.isDefeated(TMMoments.SLIME_RAIN.getKey());
+        boolean defeated = KillBoard.INSTANCE.isDefeated(SlimeRainGameEvent.KEY);
 
         if (isHardmodePhase) {
             // 困难游戏阶段

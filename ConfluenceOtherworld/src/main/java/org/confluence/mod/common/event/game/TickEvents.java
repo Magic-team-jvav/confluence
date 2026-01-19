@@ -11,13 +11,13 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
@@ -33,13 +33,10 @@ import org.confluence.mod.util.PlayerUtils;
 public final class TickEvents {
     @SubscribeEvent
     public static void levelTick$Post(LevelTickEvent.Post event) {
-        if (event.getLevel().isClientSide) {
-            WeatherHandler.tick();
-            return;
-        }
         if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
             return;
         }
+        GameEventSystem.INSTANCE.tick(); // 最高优先级，其会影响BossDelaySpawner、NPCSpawner等内容
         FallingStarItemEntity.summon(level);
         MeteoriteTracker.INSTANCE.tick(level);
         BossDelaySpawner.INSTANCE.tick(level);

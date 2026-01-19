@@ -7,9 +7,12 @@ import com.xiaohunao.heaven_destiny_moment.common.automation.AutomationContext;
 import com.xiaohunao.heaven_destiny_moment.common.context.condition.ICondition;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.attachment.EverBeneficial;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Optional;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval(inVersion = "1.2.0")
 public record EverBeneficialCondition(Optional<Integer> lifeCrystals,
                                       Optional<Integer> lifeFruits,
                                       Optional<Boolean> vitalCrystal,

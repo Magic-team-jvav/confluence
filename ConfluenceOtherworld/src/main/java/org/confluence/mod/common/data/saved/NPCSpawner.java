@@ -1,9 +1,10 @@
 package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.Lifecycle;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -36,6 +37,8 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -225,14 +228,14 @@ public final class NPCSpawner implements IGlobalData {
     }
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
+    public void decode(CompoundTag tag) {
         npcAlive.clear();
-        tag.get("npc_alive").orElseEmptyMap().read(NPC_ALIVE_CODEC).ifSuccess(npcAlive::putAll);
+        NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("npc_alive")).ifSuccess(npcAlive::putAll);
         npcSpawned.clear();
-        tag.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
-        this.isAdvancedCombatTechniquesUsed = tag.get("advanced_combat_techniques").asBoolean(false);
-        this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.get("advanced_combat_techniques_volume_two").asBoolean(false);
-        this.isPeddlersSatchelUsed = tag.get("peddlers_satchel").asBoolean(false);
+        NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.getList("npc_spawned", CompoundTag.TAG_STRING)).ifSuccess(npcSpawned::addAll);
+        this.isAdvancedCombatTechniquesUsed = tag.getBoolean("advanced_combat_techniques");
+        this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("advanced_combat_techniques_volume_two");
+        this.isPeddlersSatchelUsed = tag.getBoolean("peddlers_satchel");
     }
 
     @Override
@@ -286,6 +289,7 @@ public final class NPCSpawner implements IGlobalData {
     }
 
     public void checkNpcRespawn(ServerLevel serverLevel) {
+        if (GameEventSystem.shouldDenyNatureSpawn()) return;
         outer:
         for (ServerPlayer player : serverLevel.players()) {
             BlockPos pos = getNpcSpawnPos(player);
@@ -347,18 +351,13 @@ public final class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /**
-     * todo 他不会在日食，雪人军团，海盗入侵或火星暴乱期间生成。
-     */
+    /// todo 他不会在日食期间生成。
     private boolean trySpawnTravelingMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.TRAVELING_MERCHANT.get())) {
-            MomentInstanceManager manager = MomentInstanceManager.of(player.level());
-            if (!manager.hasMoment(TMMoments.GOBLIN_ARMY.getKey())) {
-                if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils.getDayTime(12, 0), player.level())) {
-                    int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
-                    if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
-                        return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
-                    }
+            if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils.getDayTime(12, 0), player.level())) {
+                int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
+                if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
+                    return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
                 }
             }
         }
@@ -477,7 +476,7 @@ public final class NPCSpawner implements IGlobalData {
 
     private boolean trySpawnGoblinTinkerer(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.GOBLIN_TINKERER.get())) {
-            if (KillBoard.INSTANCE.isDefeated(TMMoments.GOBLIN_ARMY.getKey())) {
+            if (KillBoard.INSTANCE.isDefeated(GoblinArmyGameEvent.KEY)) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
             }
         }

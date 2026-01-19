@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.terraentity.utils.TEUtils;
 
 import java.util.List;
@@ -32,12 +33,12 @@ public class BossSummoningItem extends TooltipItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (level instanceof ServerLevel serverLevel && condition.test(player)) {
+            Mob mob = factory.apply(level);
+            if (Streams.stream(serverLevel.getAllEntities()).anyMatch(entity -> entity.getType() == mob.getType())) {
+                return InteractionResultHolder.fail(itemStack);
+            }
             if (!player.hasInfiniteMaterials()) {
                 itemStack.shrink(1);
-            }
-            Mob mob = factory.apply(level);
-            if (Streams.stream(serverLevel.getAllEntities()).anyMatch(mob.getClass()::isInstance)) {
-                return InteractionResultHolder.fail(itemStack);
             }
             mob.setPos(
                     player.getX() + Mth.randomBetweenInclusive(level.random, -50, 50),
@@ -46,6 +47,7 @@ public class BossSummoningItem extends TooltipItem {
             );
             if (TEUtils.internalSpawnEntity(mob, serverLevel)) {
                 serverLevel.addFreshEntityWithPassengers(mob);
+                LanternNightGameEvent.INSTANCE.forceEnd();
             }
         }
         return InteractionResultHolder.success(itemStack);

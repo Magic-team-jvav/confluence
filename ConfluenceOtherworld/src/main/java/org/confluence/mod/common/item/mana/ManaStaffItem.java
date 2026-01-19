@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +18,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
@@ -51,9 +55,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         addAttributeModifiers(consumer);
     }
 
-    /**
-     * @param rawVelocity 换算前的射弹速度
-     */
+    /// @param rawVelocity 换算前的射弹速度
     public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, double critChance) {
         this(new Properties().stacksTo(1), rarity, factory, damage, manaCost, rawVelocity, cooldown);
         if (critChance == 0.0) return;
@@ -79,6 +81,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
             beforeShoot(serverPlayer, itemStack, projectile);
             level.addFreshEntity(projectile);
             afterShoot(serverPlayer, itemStack, projectile);
+            rayTrace(serverPlayer, itemStack, projectile);
         }
         return InteractionResultHolder.success(itemStack);
     }
@@ -99,6 +102,22 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
             player.getCooldowns().addCooldown(this, cooldown);
         }
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.REGULAR_STAFF_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+    }
+
+    /// 1tick内弹速过快的射弹会穿过近距离实体，所以需要一段射线检测
+    protected void rayTrace(ServerPlayer player, ItemStack itemStack, E projectile) {
+        Vec3 viewVector = player.getViewVector(1.0F);
+        Vec3 startVec = new Vec3(player.getX(), player.getEyeY() - 0.1, player.getZ());
+        Vec3 endVec = startVec.add(viewVector.scale(velocity));
+
+        for (Entity victim : player.level().getEntities(player, new AABB(startVec, endVec), projectile::canHitEntity)) {
+            if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
+            player.setLastHurtMob(victim);
+            if (victim instanceof PartEntity<?> partEntity) {
+                victim = partEntity.getParent();
+            }
+            victim.hurt(projectile.getDamageSource(), projectile.getCalculatedDamage());
+        }
     }
 
     @Override

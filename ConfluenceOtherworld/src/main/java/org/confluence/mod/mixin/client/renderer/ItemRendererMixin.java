@@ -8,15 +8,19 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
+import org.confluence.mod.client.renderer.item.SpecialItemRenderingUtil;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -37,20 +41,29 @@ public abstract class ItemRendererMixin {
     private void renderArrowInBow(@Nullable LivingEntity entity, ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, CallbackInfo ci) {
         if (entity == null) return;
         Player player = minecraft.player;
-        if (entity == player && player.isUsingItem()) {
-            InteractionHand hand = player.getUsedItemHand();
-            ItemStack bow;
-            boolean shouldRender = hand == InteractionHand.MAIN_HAND && !leftHand || hand == InteractionHand.OFF_HAND && leftHand;
-            if (shouldRender && (bow = player.getItemInHand(hand)).getItem() instanceof BaseTerraBowItem) {
-                float charge = player.getTicksUsingItem() / 20.0f;
-                if (charge < 0.1f) return;
-
-                ItemStack arrowItem = player.getProjectile(bow);
-                // 移除mixin方便热交换
-                ArrowInBowRenderer.transform(bow, poseStack, charge, displayContext);
-                BakedModel bakedmodel = getModel(arrowItem, level, entity, seed);
-                render(arrowItem, displayContext, leftHand, poseStack, bufferSource, combinedLight, combinedOverlay, bakedmodel);
-            }
+        if (entity != player || !player.isUsingItem()) {
+            return;
         }
+
+        InteractionHand hand = player.getUsedItemHand();
+        ItemStack stack;
+        boolean shouldRender = hand == InteractionHand.MAIN_HAND && !leftHand || hand == InteractionHand.OFF_HAND && leftHand;
+        if (!shouldRender) {
+            return;
+        }
+        stack = player.getItemInHand(hand);
+        Item item = stack.getItem();
+        if (item instanceof BaseTerraBowItem) {
+            SpecialItemRenderingUtil.bowArrowRenderer(confluence$of(), entity, displayContext, leftHand, poseStack, bufferSource, level, combinedLight, combinedOverlay, seed, player, stack);
+            return;
+        }
+        if (item instanceof BaseTerraRepeaterItem) {
+            SpecialItemRenderingUtil.repeaterArrowRenderer(confluence$of(), entity, displayContext, leftHand, poseStack, bufferSource, level, combinedLight, combinedOverlay, seed, player, stack);
+        }
+    }
+
+    @Unique
+    private @NotNull ItemRenderer confluence$of() {
+        return (ItemRenderer) (Object) this;
     }
 }

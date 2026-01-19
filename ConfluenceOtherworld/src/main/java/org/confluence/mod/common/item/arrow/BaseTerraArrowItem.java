@@ -3,24 +3,35 @@ package org.confluence.mod.common.item.arrow;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.item.bow.BaseTerraBowItem;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -48,8 +59,8 @@ public class BaseTerraArrowItem extends ArrowItem {
     public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity shooter, @Nullable ItemStack weapon) {
         if (stack.getItem() instanceof BaseTerraArrowItem arrowItem && arrowItem.modifier != null) {
             BaseArrowEntity arrow;
-            if (weapon != null && weapon.getItem() instanceof BaseTerraBowItem item) {
-                arrow = new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, this.getDefaultInstance(), weapon, this, item.modifyArrowBuilder);
+            if (weapon != null && weapon.getItem() instanceof ITerraArrowProjectileWeaponItem<?> item) {
+                arrow = new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, this.getDefaultInstance(), weapon, this, item.getModifyArrowBuilder());
             } else {
                 arrow = new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, this.getDefaultInstance(), weapon, this);
             }
@@ -91,5 +102,165 @@ public class BaseTerraArrowItem extends ArrowItem {
         if ((attributes.getType() & BaseArrowEntity.Tag.penetration) != 0) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.can_penetrate"));
         }
+    }
+
+
+    /**
+     * <p>弓或箭的属性修饰</p>
+     * <p>若注册在弓里面，则是弓的属性；若注册在箭里面，则是箭的属性。二者可以叠加</p>
+     */
+    public static class ModifyArrowBuilder {
+        public List<Function<Properties, Properties>> modifyProperties = new ArrayList<>();
+        public List<Consumer<BaseArrowEntity.Builder>> modifyArrowBuilder = new ArrayList<>();
+        public int multiShoot = 1;
+        public Predicate<ItemStack> canMultiShoot = ammo -> false;
+        public MultiShootOffsetFunction multiShootOffset;
+        public BaseTerraArrowItem.EntityTransform entityTransform;
+        public float inaccuracy;
+
+        /**
+         * 应用属性修改器
+         */
+        public void applyModifiers(BaseArrowEntity.Builder modifyArrow) {
+            modifyArrowBuilder.forEach(m -> m.accept(modifyArrow));
+        }
+
+        /**
+         * 设置木箭转换的箭实体类型
+         *
+         * @param transformArrow 实体构造信息
+         */
+        public ModifyArrowBuilder setEntityTransform(BaseTerraArrowItem.EntityTransform transformArrow) {
+            this.entityTransform = transformArrow;
+            return this;
+        }
+
+        /**
+         * 设置多重射击
+         *
+         * @param multiShoot 数量
+         */
+        public ModifyArrowBuilder setMultiShoot(int multiShoot) {
+            this.multiShoot = multiShoot;
+            return this;
+        }
+
+        /**
+         * 设置多重射击
+         *
+         * @param multiShoot       数量
+         * @param multiShootOffset 偏移函数，第一个参数为当前射击序号，第二个参数为总射击数量
+         */
+        public ModifyArrowBuilder setMultiShoot(int multiShoot, MultiShootOffsetFunction multiShootOffset) {
+            this.multiShoot = multiShoot;
+            this.multiShootOffset = multiShootOffset;
+            return this;
+        }
+
+        /**
+         * 当满足条件时，允许多重射击
+         */
+        public ModifyArrowBuilder setCanMultiShoot(Predicate<ItemStack> canMultiShoot) {
+            this.canMultiShoot = canMultiShoot;
+            return this;
+        }
+
+        /**
+         * 设置耐久度
+         */
+        public ModifyArrowBuilder setDuration(int duration) {
+            this.modifyProperties.add(p -> p.durability(duration));
+            return this;
+        }
+
+        /**
+         * 设置命中效果
+         */
+        public ModifyArrowBuilder setOnHitEffect(EffectStrategyComponent component) {
+            this.modifyProperties.add(p -> p.component(TEDataComponentTypes.EFFECT_STRATEGY, component));
+            this.addModifyArrowBuilder(m -> m.addOnHitEffect(component));
+            return this;
+        }
+
+        /**
+         * 设置满蓄力命中效果
+         */
+        public ModifyArrowBuilder setFullPullHitEffect(EffectStrategyComponent component) {
+            this.modifyProperties.add(p -> p.component(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY, component));
+            this.addModifyArrowBuilder(m -> m.addFullPullHitEffect(component));
+            return this;
+        }
+
+        /**
+         * 设置木箭转换泰拉箭
+         */
+        public ModifyArrowBuilder setArrowTransform(BaseTerraArrowItem arrow) {
+            this.modifyArrowBuilder.add(m -> m.setTransformArrow(arrow));
+            return this;
+        }
+
+        /**
+         * 设置不可破坏
+         */
+        public ModifyArrowBuilder setUnBreakable() {
+            this.modifyProperties.add(p -> p.component(DataComponents.UNBREAKABLE, new Unbreakable(true)));
+            return this;
+        }
+
+        /**
+         * 设置稀有度
+         */
+        public ModifyArrowBuilder setRarity(ModRarity rarity) {
+            this.modifyProperties.add(p -> p.component(ConfluenceMagicLib.MOD_RARITY, rarity));
+            return this;
+        }
+
+        /**
+         * 添加属性修改器
+         */
+        public ModifyArrowBuilder addModifyArrowBuilder(Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
+            this.modifyArrowBuilder.add(modifyArrowBuilder);
+            return this;
+        }
+
+        /**
+         * 设置额外不准确度
+         */
+        public ModifyArrowBuilder setInaccuracy(float inaccuracy) {
+            this.inaccuracy = inaccuracy;
+            return this;
+        }
+
+        /**
+         * 构建属性
+         */
+        public Properties buildProperties(Properties properties) {
+            for (Function<Item.Properties, Item.Properties> f : modifyProperties) {
+                f.apply(properties);
+            }
+            return properties;
+        }
+
+        @FunctionalInterface
+        public interface MultiShootOffsetFunction {
+            Vec3 apply(int shootingIndex, int shootingTotality);
+        }
+    }
+
+    /**
+     * 箭实体类型转换器
+     *
+     * @param type    箭实体类型
+     * @param factory 箭实体构造
+     */
+    public record EntityTransform(EntityType<? extends AbstractArrow> type, ArrowFactory factory) {
+        public static EntityTransform create(EntityType<? extends AbstractArrow> type, ArrowFactory factory) {
+            return new EntityTransform(type, factory);
+        }
+    }
+
+    @FunctionalInterface
+    public interface ArrowFactory {
+        BaseArrowEntity create(EntityType<? extends AbstractArrow> type, LivingEntity shooter, ItemStack pickupItemStack, ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow, BaseTerraArrowItem.ModifyArrowBuilder modifyConsumer);
     }
 }

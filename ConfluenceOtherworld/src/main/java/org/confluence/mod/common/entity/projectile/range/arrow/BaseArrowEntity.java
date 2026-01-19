@@ -28,7 +28,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.EnchantmentUtil;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
-import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -102,7 +101,7 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param arrow           预定义的箭的类型
      * @param modifyConsumer  属性额外修饰
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraBowItem.ModifyArrowBuilder modifyConsumer) {
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraArrowItem.ModifyArrowBuilder modifyConsumer) {
         this(pEntityType, owner, pickupItemStack, firedFromWeapon, arrow);
         if (modifyConsumer != null)
             modifyConsumer.applyModifiers(modify);

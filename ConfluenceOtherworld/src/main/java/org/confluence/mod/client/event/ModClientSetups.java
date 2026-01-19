@@ -64,12 +64,10 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.BowItems;
-import org.confluence.mod.common.init.item.FishingPoleItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.waystones.PylonBlock;
 import org.confluence.mod.integration.waystones.PylonModel;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
@@ -316,6 +314,24 @@ public final class ModClientSetups {
                 ItemProperties.register(item.get(), pull, shortBowPull);
             else ItemProperties.register(item.get(), pull, bowPull);
             ItemProperties.register(item.get(), pulling, bowPulling);
+        });
+    }
+
+    public static void registerCrossbowProperties() {
+        ResourceLocation pulling = ResourceLocation.withDefaultNamespace("pulling");
+        ClampedItemPropertyFunction crossbowPulling = (itemStack, clientLevel, living, speed) -> {
+            if (living == null || (!(itemStack.getItem() instanceof BaseTerraRepeaterItem repeater))) {
+                return 0.0F;
+            }
+            var projectiles = repeater.getHandler(itemStack);
+            if (projectiles != null && !projectiles.isEmpty()) {
+                return 1.0F;
+            }
+            return 0.0F;
+        };
+
+        CrossbowItems.ITEMS.getEntries().forEach(item -> {
+            ItemProperties.register(item.get(), pulling, crossbowPulling);
         });
     }
 

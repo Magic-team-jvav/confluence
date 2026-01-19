@@ -69,12 +69,6 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements I
             public boolean enabled() {
                 return CommonConfigs.FTB_CHUNKS_WORMHOLE_POTION.get();
             }
-        },
-        XAEROS_MAP {
-            @Override
-            public boolean enabled() {
-                return CommonConfigs.XAEROS_MAP_WORMHOLE_POTION.get();
-            }
         };
 
         public static final ByMod[] VALUES = values();

@@ -1,11 +1,11 @@
 package org.confluence.mod.util;
 
-import com.nlf.calendar.Lunar;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.mod.api.lunar.Lunar;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;

@@ -25,4 +25,5 @@ public class ModTradeLockProviderTypes {
     public static final Supplier<TradeLockProvider> ANY_BOSS_DEFEATED_LOCK = TYPES.register("any_boss_defeated_lock", () -> new TradeLockProvider(AnyBossDefeatedLock.CODEC, new AnyBossDefeatedLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> BESTIARY_UNLOCKED_COUNT_LOCK = TYPES.register("bestiary_unlocked_count_lock", () -> new TradeLockProvider(BestiaryUnlockedCountLock.CODEC, new BestiaryUnlockedCountLockRecipeDrawer()));
     public static final Supplier<TradeLockProvider> QUESTED_FISH_PRECHECK_LOCK = TYPES.register("quested_fish_precheck_lock", () -> new TradeLockProvider(QuestedFishPrecheckLock.CODEC, TradeLockRecipeDrawer.EMPTY));
+    public static final Supplier<TradeLockProvider> GAME_EVENT_LOCK = TYPES.register("game_event_lock", () -> new TradeLockProvider(GameEventLock.CODEC, TradeLockRecipeDrawer.EMPTY));
 }

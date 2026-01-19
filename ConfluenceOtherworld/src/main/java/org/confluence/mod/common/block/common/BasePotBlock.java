@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.common;
 
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,6 +40,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
+import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModStructures;
@@ -427,7 +427,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 TEBossEntities.THE_TWINS.get(),
                 TEBossEntities.PLANTERA.get()
         ) + KillBoard.INSTANCE.countDefeated(
-                TMMoments.GOBLIN_ARMY.getKey()
+                GoblinArmyGameEvent.KEY
         );
         for (int i = 0; i < defeated; i++) {
             ratio *= 1.1F; // todo 毁灭者、机械骷髅王、石巨人、海盗入侵、雪人军团

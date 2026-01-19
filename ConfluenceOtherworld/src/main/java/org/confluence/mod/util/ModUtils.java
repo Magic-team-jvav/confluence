@@ -1,7 +1,5 @@
 package org.confluence.mod.util;
 
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -59,6 +57,7 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
+import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -159,7 +158,7 @@ public final class ModUtils {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
             }
         }
-        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentInstanceManager.of(level).hasMoment(TMMoments.SLIME_RAIN.getKey());
+        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
         boolean is$WallOrHill$OfFlesh = type == TEBossEntities.WALL_OF_FLESH.get() || type == TEBossEntities.HILL_OF_FLESH.get();
         ResourceKey<Level> dimension = living.level().dimension();
         level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
@@ -286,9 +285,7 @@ public final class ModUtils {
         return cmp;
     }
 
-    /**
-     * 不可破坏物品无法附魔耐久与经验修补
-     */
+    /// 不可破坏物品无法附魔耐久与经验修补
     public static boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
         boolean supportedItem = stack.is(enchantment.value().definition().supportedItems());
         if (stack.has(DataComponents.UNBREAKABLE)) {
@@ -297,16 +294,15 @@ public final class ModUtils {
         return supportedItem;
     }
 
-    /**
-     * 由于暮色森林使原版的该方法会访问区块，于是复制一份来用
-     *
-     * @see Level#isRainingAt(BlockPos)
-     */
+    /// 由于暮色森林使原版的该方法会访问区块，于是复制一份来用
+    ///
+    /// @see Level#isRainingAt(BlockPos)
     public static boolean isRainingAt(Level level, BlockPos pos) {
         if (!level.isRaining()) return false;
         if (!level.canSeeSky(pos)) return false;
-        if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY())
+        if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()) {
             return false;
+        }
         return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
     }
 
@@ -316,9 +312,7 @@ public final class ModUtils {
         }
     }
 
-    /**
-     * 铁砧是否能强制合并两个相同物品
-     */
+    /// 铁砧是否能强制合并两个相同物品
     public static boolean couldAnvilForceMerge(ItemStack itemStack) {
         return isFromConfluence(BuiltInRegistries.ITEM, itemStack.getItem());
     }
@@ -372,9 +366,7 @@ public final class ModUtils {
         });
     }
 
-    /**
-     * 决定护士是否能治疗
-     */
+    /// 决定护士是否能治疗
     public static boolean isDebuff(MobEffectInstance instance) {
         return instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && !instance.getCures().contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
     }

@@ -67,19 +67,21 @@ import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.TargetDummyEntity;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEEvents;
+import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
-import org.confluence.mod.integration.terra_entity.TERemoval;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.RepeaterItemComponentHandler;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
@@ -145,7 +147,7 @@ public final class ModEvents {
             LogBlockSet.setFlammable();
             ModRecipes.Brewing.initialize();
             ModUtils.registerCauldronInteractions();
-            TERemoval.redirectLootTable();
+            TEHelper.redirectLootTable();
             MagicMailBox.registerVariants();
             ModArmorBonus.registerArmorSetBonus();
             IGlobalData.registerGlobalData(
@@ -153,7 +155,8 @@ public final class ModEvents {
                     HardmodeConvertor.INSTANCE,
                     NPCSpawner.INSTANCE,
                     Bestiary.INSTANCE,
-                    GlobalCloakData.INSTANCE
+                    GlobalCloakData.INSTANCE,
+                    GameEventSystem.INSTANCE
 //                    HouseHandler.INSTANCE
             );
             GlobalCloakData.INSTANCE.initialize();
@@ -220,6 +223,7 @@ public final class ModEvents {
         registrar.playToClient(FlushArmorSetBonusPacketS2C.TYPE, FlushArmorSetBonusPacketS2C.STREAM_CODEC, FlushArmorSetBonusPacketS2C::handle);
         registrar.playToClient(GlobalCloakSyncPacketS2C.TYPE, GlobalCloakSyncPacketS2C.STREAM_CODEC, GlobalCloakSyncPacketS2C::handle);
         registrar.playToClient(LucyTheAxeDialogPacketS2C.TYPE, LucyTheAxeDialogPacketS2C.STREAM_CODEC, LucyTheAxeDialogPacketS2C::handle);
+        registrar.playToClient(GameEventSyncPacketS2C.TYPE, GameEventSyncPacketS2C.STREAM_CODEC, GameEventSyncPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
@@ -234,7 +238,6 @@ public final class ModEvents {
         registrar.playToServer(HouseSelectPacketC2S.TYPE, HouseSelectPacketC2S.STREAM_CODEC, HouseSelectPacketC2S::handle);
         registrar.playToServer(EmptyTargetSweepPacketC2S.TYPE, EmptyTargetSweepPacketC2S.STREAM_CODEC, EmptyTargetSweepPacketC2S::handle);
         registrar.playToServer(SwordProjectilePacketC2S.TYPE, SwordProjectilePacketC2S.STREAM_CODEC, SwordProjectilePacketC2S::handle);
-        WaystonesHelper.registerPayload(registrar);
     }
 
     @SubscribeEvent
@@ -305,6 +308,10 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        // 给连弩注册能力
+        CrossbowItems.ITEMS.getEntries().stream().map(DeferredHolder::get).filter(BaseTerraRepeaterItem.class::isInstance).map(BaseTerraRepeaterItem.class::cast).forEach(item -> event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) ->
+                new RepeaterItemComponentHandler(stack, ModDataComponentTypes.REPEATER_CONTAINER.get(), item.getCapacitySize()), item
+        ));
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
             if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {
                 return null;
@@ -330,6 +337,7 @@ public final class ModEvents {
                 ToolItems.BOTTOMLESS_SHIMMER_BUCKET
         );
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ToolItems.HONEY_BUCKET);
+
 
 //        event.registerEntity(Capabilities.ItemHandler.ENTITY, EntityType.PLAYER, (player, context) -> player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
     }
@@ -476,7 +484,11 @@ public final class ModEvents {
                 .register("confluence:throwing_knives", "confluence:throwing_knive")
                 // 1.1.5 -> 1.2.0
                 .register("confluence:cap_tunabeard", "confluence:capn_tunabeard")
-                .register("confluence:obsidian_fish", "confluence:obsidifish");
+                .register("confluence:obsidian_fish", "confluence:obsidifish")
+                .register("terra_moment:slime_rain", "confluence:slime_rain")
+                .register("terra_moment:blood_tear", "confluence:blood_tear")
+                .register("terra_moment:goblin_battle_standard", "confluence:goblin_battle_standard")
+        ;
     }
 
     @SubscribeEvent

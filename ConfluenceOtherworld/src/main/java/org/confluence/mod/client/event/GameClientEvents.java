@@ -51,6 +51,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
+import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.client.handler.*;
@@ -120,6 +121,7 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         if (player != null) {
+            WeatherHandler.tick();
             MeteorLandingHandler.handle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
@@ -132,6 +134,7 @@ public final class GameClientEvents {
                 SwordProjectilePacketC2S.sendToServer();
             }
             HouseSelectHUD.updatePlayerRegionAt(player);
+            ClientGameEventSystem.handle(player);
         }
         DeathAnimUtils.clear();
     }
@@ -152,6 +155,7 @@ public final class GameClientEvents {
         EctoMistHelper.reset();
         ClientBestiary.reset();
         LucyTheAxeHandler.reset();
+        ClientGameEventSystem.reset();
     }
 
     @SubscribeEvent
@@ -266,6 +270,7 @@ public final class GameClientEvents {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event);
             MeteorLandingHandler.render(event);
+            ClientGameEventSystem.afterRenderSky(event, minecraft);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);

@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -11,13 +10,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.Tags;
-import org.apache.commons.lang3.stream.Streams;
+import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.ReturnException;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.api.entity.Boss;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -61,16 +62,14 @@ public final class BossDelaySpawner {
         }
     }
 
-    /// @param predicate 等于[BossDelaySpawner#SUCCESS]时成功
-    ///                                                    等于[BossDelaySpawner#CONTINUE]时跳过该玩家
-    ///                                                    等于[BossDelaySpawner#CANCEL]时取消生成
-    ///                                                    大于0时设置下次检测延时
+    /// @param predicate 等于[BossDelaySpawner#SUCCESS]时成功,等于[BossDelaySpawner#CONTINUE]时跳过该玩家,等于[BossDelaySpawner#CANCEL]时取消生成,大于0时设置下次检测延时
     public void pushBoss(int delay, EntityType<? extends AbstractTerraBossBase> boss, ToIntFunction<ServerPlayer> predicate) {
         if (bossQueue.size() == 8) bossQueue.removeFirst();
         bossQueue.add(new Delayed<>(delay, boss, predicate));
     }
 
     public boolean hasSameTypeInQueue(EntityType<?> type) {
+        if (bossQueue.isEmpty()) return false;
         return bossQueue.stream().anyMatch(delayed -> delayed.entity == type);
     }
 
@@ -79,6 +78,8 @@ public final class BossDelaySpawner {
     }
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
+        if (!MomentInstanceManager.of(level).getRunMoments().isEmpty()) return;
+        if (LanternNightGameEvent.INSTANCE.started()) return;
         EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
         if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
             return;
@@ -106,10 +107,11 @@ public final class BossDelaySpawner {
         if (NPCSpawner.INSTANCE.getAliveNpcCount(region, type -> true) < 4) {
             return false; // todo 骷髅商人不计入
         }
-        return Streams.of(player.serverLevel().getAllEntities()).noneMatch(entity -> entity instanceof Boss);
+        return Boss.noBossInWorld(player.serverLevel());
     }
 
     public static void spawnDeerClops(ServerLevel level) {
+        if (!MomentInstanceManager.of(level).getRunMoments().isEmpty()) return;
         if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.DEERCLOPS.get())) return;
         for (ServerPlayer player : level.players()) {
             if (!BossDelaySpawner.deerclopsChecker(player)) continue;
@@ -128,9 +130,8 @@ public final class BossDelaySpawner {
         ServerLevel level = player.serverLevel();
         Holder<Biome> biome = level.getBiome(player.blockPosition());
         if (!biome.is(Tags.Biomes.IS_SNOWY) && !biome.is(Tags.Biomes.IS_ICY)) return false;
-        MomentInstanceManager manager = MomentInstanceManager.of(level);
-        int size = manager.getRunMoments().size();
-        if (size != 0 && (size != 1 || !manager.hasMoment(TMMoments.BLOOD_MOON.getKey()))) {
+        int amount = GameEventSystem.INSTANCE.getStatedEventAmount(true, false);
+        if (amount != 0 && (amount != 1 || !BloodMoonGameEvent.INSTANCE.started())) {
             return false;
         }
         try {
@@ -142,7 +143,7 @@ public final class BossDelaySpawner {
         } catch (Exception ignored) {
             return false;
         }
-        return Streams.of(level.getAllEntities()).noneMatch(entity -> entity instanceof Boss);
+        return Boss.noBossInWorld(player.serverLevel());
     }
 
     static class Delayed<E extends Entity> {

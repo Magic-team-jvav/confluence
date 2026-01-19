@@ -7,8 +7,11 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.npc_trade_lock.MomentLock;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.api.npc.trade.TradeLockRecipeDrawer;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
+@ApiStatus.ScheduledForRemoval(inVersion = "1.2.0")
 public class MomentLockRecipeDrawer extends TradeLockRecipeDrawer {
     @Override
     public int drawRecipe(@NotNull ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {

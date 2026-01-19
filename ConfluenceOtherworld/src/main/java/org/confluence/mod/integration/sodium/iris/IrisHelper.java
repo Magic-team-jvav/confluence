@@ -6,9 +6,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.irisshaders.iris.shaderpack.materialmap.BlockEntry;
 import net.irisshaders.iris.shaderpack.materialmap.NamespacedId;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.OreBlocks;
 
 import java.util.Collections;
@@ -51,10 +49,8 @@ public class IrisHelper {
         return (T) new BlockEntry(new NamespacedId(id.getNamespace(), id.getPath()), map);
     }
 
-    public static void register(IEventBus eventBus) {
-        DeferredRegister.Items items = DeferredRegister.createItems(Confluence.MODID);
-        items.registerItem("test_iris", TestItem::new);
-        items.register(eventBus);
+    public static void register(DeferredRegister.Items register) {
+        register.registerItem("test_iris", TestItem::new);
     }
 
     public static void modifyItemProperties(Object2IntMap<NamespacedId> original) {

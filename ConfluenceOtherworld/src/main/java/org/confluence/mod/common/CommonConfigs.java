@@ -7,10 +7,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ModConfigSpec.Builder;
-import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import net.neoforged.neoforge.common.ModConfigSpec.*;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
 
@@ -56,9 +53,11 @@ public final class CommonConfigs {
     public static BooleanValue CONVERT_ARS_NOUVEAU_MANA;
     public static BooleanValue CONVERT_IRONS_SPELL_MANA;
     public static BooleanValue FTB_CHUNKS_WORMHOLE_POTION;
-    public static BooleanValue XAEROS_MAP_WORMHOLE_POTION;
-    public static BooleanValue XAEROS_MAP_PYLON_WAYPOINT;
     public static BooleanValue WAYSTONES_PYLON_NON_COST;
+
+    public static DoubleValue METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER;
+    public static IntValue METEOR_SHOWER_EVENT_FREQUENCY;
+    public static IntValue METEOR_SHOWER_EVENT_FREQUENCY_CELEBRATIONMK10;
 
     public static Set<ResourceKey<Item>> ammoSlotsItemBlackList = Set.of(Confluence.asResourceKey(Registries.ITEM, "falling_star"));
     public static Set<TagKey<Item>> ammoSlotsTagBlackList = Set.of(Tags.Items.SEEDS);
@@ -78,17 +77,17 @@ public final class CommonConfigs {
     }
 
     public static void register(ModContainer container) {
-        Builder BUILDER = new Builder();
+        Builder builder = new Builder();
         {
-            BUILDER.push("Gameplay");
-            DROP_MONEY = BUILDER.define("dropsMoney", true);
-            AUTO_STACK_GELS_COLOR = BUILDER.define("autoStackGelsColor", true);
-            RETURN_POTION_GLASS_BOTTLE = BUILDER.define("returnPotionGlassBottle", false);
-            RIGHT_CLICK_RIDE_MINECART = BUILDER.define("rightClickRideMinecart", true);
-            ANNOUNCEMENT_BOX_DISTANCE = BUILDER.defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
-            ALERT_PLAYER_IN_DUNGEON = BUILDER.define("alertPlayerDungeon", false);
-            STAR_PHASE = BUILDER.define("starPhase", false);
-            AMMO_SLOTS_BLACKLIST = BUILDER.defineListAllowEmpty("ammoSlotsBlacklist", () -> List.of("confluence:falling_star", "#c:seeds"), () -> "[#]namespace:path", o -> {
+            builder.push("Gameplay");
+            DROP_MONEY = builder.define("dropsMoney", true);
+            AUTO_STACK_GELS_COLOR = builder.define("autoStackGelsColor", true);
+            RETURN_POTION_GLASS_BOTTLE = builder.define("returnPotionGlassBottle", false);
+            RIGHT_CLICK_RIDE_MINECART = builder.define("rightClickRideMinecart", true);
+            ANNOUNCEMENT_BOX_DISTANCE = builder.defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
+            ALERT_PLAYER_IN_DUNGEON = builder.define("alertPlayerDungeon", false);
+            STAR_PHASE = builder.define("starPhase", false);
+            AMMO_SLOTS_BLACKLIST = builder.defineListAllowEmpty("ammoSlotsBlacklist", () -> List.of("confluence:falling_star", "#c:seeds"), () -> "[#]namespace:path", o -> {
                 if (o instanceof String s) {
                     if (s.startsWith("#")) {
                         return ResourceLocation.tryParse(s.substring(1)) != null;
@@ -97,83 +96,103 @@ public final class CommonConfigs {
                 }
                 return false;
             });
-            TERRA_STYLE_EXPLOSION = BUILDER.define("terraStyleExplosion", true);
-            TERRA_STYLE_FIRE_DAMAGE = BUILDER.define("terraStyleFireDamage", true);
-            NPC_INVULNERABLE_TO_PLAYER = BUILDER.define("npcInvulnerableToPlayer", true);
-            ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = BUILDER.define("allowsVanillaEntitiesToPerformStageAttributes", false);
-            BUILDER.pop();
+            TERRA_STYLE_EXPLOSION = builder.define("terraStyleExplosion", true);
+            TERRA_STYLE_FIRE_DAMAGE = builder.define("terraStyleFireDamage", true);
+            NPC_INVULNERABLE_TO_PLAYER = builder.define("npcInvulnerableToPlayer", true);
+            ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
+            builder.pop();
         }
         {
-            BUILDER.push("Recipe");
-            FLETCHING_MENU = BUILDER.define("fletchingMenu", true);
-            SHIMMER_DECOMPOSE = BUILDER.define("shimmerDecompose", true);
-            ALTAR_TIPS = BUILDER.define("altarTips", true);
-            BUILDER.pop();
+            builder.push("Recipe");
+            FLETCHING_MENU = builder.define("fletchingMenu", true);
+            SHIMMER_DECOMPOSE = builder.define("shimmerDecompose", true);
+            ALTAR_TIPS = builder.define("altarTips", true);
+            builder.pop();
         }
         {
-            BUILDER.push("Spawning");
+            builder.push("Spawning");
             {
-                BUILDER.push("Falling Star");
-                DO_FALLING_STAR_SPAWNING = BUILDER.define("doFallingStarSpawning", true);
-                FALLING_STAR_INTERVAL = BUILDER.defineInRange("fallingStarInterval", 2400, 20, 20000);
-                BUILDER.pop();
+                builder.push("Falling Star");
+                DO_FALLING_STAR_SPAWNING = builder.define("doFallingStarSpawning", true);
+                FALLING_STAR_INTERVAL = builder.defineInRange("fallingStarInterval", 2400, 20, 20000);
+                builder.pop();
             }
             {
-                BUILDER.push("NPC");
-                DO_NPC_SPAWNING = BUILDER.define("doNPCSpawning", true);
-                NPC_SPAWN_INTERVAL = BUILDER.defineInRange("npcSpawnInterval", 2400, 20, 20000);
-                BROADCAST_NPC_MSG = BUILDER.define("broadcastNpcMsg", true);
-                BUILDER.pop();
+                builder.push("NPC");
+                DO_NPC_SPAWNING = builder.define("doNPCSpawning", true);
+                NPC_SPAWN_INTERVAL = builder.defineInRange("npcSpawnInterval", 2400, 20, 20000);
+                BROADCAST_NPC_MSG = builder.define("broadcastNpcMsg", true);
+                builder.pop();
             }
-            DO_METEORITE_SPAWNING = BUILDER.define("doMeteoriteSpawning", true);
-            BUILDER.pop();
+            DO_METEORITE_SPAWNING = builder.define("doMeteoriteSpawning", true);
+            builder.pop();
         }
         {
-            BUILDER.push("PlayerDeath");
-            SHOW_MONEY_DROPS = BUILDER.define("showMoneyDrops", true);
-            DROPS_TOMBSTONE = BUILDER.define("dropsTombstone", true);
-            DEFAULT_RESPAWN_TIME_MIN = BUILDER.defineInRange("defaultRespawnTimeMin", 3, 0, Integer.MAX_VALUE);
-            DEFAULT_RESPAWN_TIME_MAX = BUILDER.defineInRange("defaultRespawnTimeMax", 8, 0, Integer.MAX_VALUE);
-            BOSS_RESPAWN_TIME_MIN = BUILDER.defineInRange("bossRespawnTimeMin", 9, 0, Integer.MAX_VALUE);
-            BOSS_RESPAWN_TIME_MAX = BUILDER.defineInRange("bossRespawnTimeMax", 18, 0, Integer.MAX_VALUE);
-            BUILDER.pop();
+            builder.push("PlayerDeath");
+            SHOW_MONEY_DROPS = builder.define("showMoneyDrops", true);
+            DROPS_TOMBSTONE = builder.define("dropsTombstone", true);
+            DEFAULT_RESPAWN_TIME_MIN = builder.defineInRange("defaultRespawnTimeMin", 3, 0, Integer.MAX_VALUE);
+            DEFAULT_RESPAWN_TIME_MAX = builder.defineInRange("defaultRespawnTimeMax", 8, 0, Integer.MAX_VALUE);
+            BOSS_RESPAWN_TIME_MIN = builder.defineInRange("bossRespawnTimeMin", 9, 0, Integer.MAX_VALUE);
+            BOSS_RESPAWN_TIME_MAX = builder.defineInRange("bossRespawnTimeMax", 18, 0, Integer.MAX_VALUE);
+            builder.pop();
         }
         {
-            BUILDER.push("WorldGeneration");
-            WRAPPED_CRIMSON_HEART = BUILDER.define("wrappedCrimsonHeart", false);
-            INSTANTLY_HARDMODE_CONVERSION = BUILDER.define("instantlyHardmodeConversion", false);
-            BUILDER.pop();
+            builder.push("WorldGeneration");
+            WRAPPED_CRIMSON_HEART = builder.define("wrappedCrimsonHeart", false);
+            INSTANTLY_HARDMODE_CONVERSION = builder.define("instantlyHardmodeConversion", false);
+            builder.pop();
         }
         {
-            BUILDER.push("Compatibility");
+            builder.push("Compatibility");
             {
-                BUILDER.push("ArsNouveau");
-                CONVERT_ARS_NOUVEAU_MANA = BUILDER.define("convertArsNouveauMana", false);
-                BUILDER.pop();
+                builder.push("ArsNouveau");
+                CONVERT_ARS_NOUVEAU_MANA = builder.define("convertArsNouveauMana", false);
+                builder.pop();
             }
             {
-                BUILDER.push("IronsSpell");
-                CONVERT_IRONS_SPELL_MANA = BUILDER.define("convertIronsSpellMana", false);
-                BUILDER.pop();
+                builder.push("IronsSpell");
+                CONVERT_IRONS_SPELL_MANA = builder.define("convertIronsSpellMana", false);
+                builder.pop();
             }
             {
-                BUILDER.push("FTB");
-                FTB_CHUNKS_WORMHOLE_POTION = BUILDER.define("ftbChunksWormholePotion", true);
-                BUILDER.pop();
+                builder.push("FTB");
+                FTB_CHUNKS_WORMHOLE_POTION = builder.define("ftbChunksWormholePotion", true);
+                builder.pop();
             }
             {
-                BUILDER.push("Xaero");
-                XAEROS_MAP_WORMHOLE_POTION = BUILDER.define("xaerosMapWormholePotion", true);
-                XAEROS_MAP_PYLON_WAYPOINT = BUILDER.define("xaerosMapPylonWaypoint", true);
-                BUILDER.pop();
+                builder.push("Waystones");
+                WAYSTONES_PYLON_NON_COST = builder.define("waystonesPylonNonCost", true);
+                builder.pop();
             }
-            {
-                BUILDER.push("Waystones");
-                WAYSTONES_PYLON_NON_COST = BUILDER.define("waystonesPylonNonCost", true);
-                BUILDER.pop();
-            }
-            BUILDER.pop();
+            builder.pop();
         }
-        container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());
+        {
+            builder.push("GameEvent");
+//            {
+//                builder.push("SlimeRain");
+//
+//                builder.pop();
+//            }
+//            {
+//                builder.push("BloodMoon");
+//
+//                builder.pop();
+//            }
+//            {
+//                builder.push("GoblinArmy");
+//
+//                builder.pop();
+//            }
+            {
+                builder.push("MeteorShower");
+                METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER = builder.defineInRange("meteorShowerEventFallingStarSpawnSpeedMultiplier", 3.0, 2.0, 4.0);
+                METEOR_SHOWER_EVENT_FREQUENCY = builder.defineInRange("meteorShowerEventFrequency", 10, 1, Integer.MAX_VALUE);
+                METEOR_SHOWER_EVENT_FREQUENCY_CELEBRATIONMK10 = builder.defineInRange("meteorShowerEventFrequencyCelebrationMK10", 5, 1, Integer.MAX_VALUE);
+                builder.pop();
+            }
+            builder.pop();
+        }
+        container.registerConfig(ModConfig.Type.COMMON, builder.build());
     }
 }

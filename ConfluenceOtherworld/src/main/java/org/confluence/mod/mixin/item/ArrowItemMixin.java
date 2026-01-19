@@ -8,10 +8,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
-import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,18 +33,18 @@ public abstract class ArrowItemMixin {
 
     @Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
     public void createArrow(Level level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon, CallbackInfoReturnable<AbstractArrow> cir) {
-        if (weapon != null && weapon.getItem() instanceof BaseTerraBowItem bow) {
-            BaseTerraBowItem.ModifyArrowBuilder modifyArrowBuilder = bow.modifyArrowBuilder;
+        if (weapon != null && weapon.getItem() instanceof ITerraArrowProjectileWeaponItem<?> bow) {
+            BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder = bow.getModifyArrowBuilder();
             if (modifyArrowBuilder.entityTransform != null) {
                 // 非物品箭的箭实体转化
-                BaseArrowEntity arrow = modifyArrowBuilder.entityTransform.factory().create(modifyArrowBuilder.entityTransform.type(), shooter, ammo.copyWithCount(1), weapon, null, bow.modifyArrowBuilder);
+                BaseArrowEntity arrow = modifyArrowBuilder.entityTransform.factory().create(modifyArrowBuilder.entityTransform.type(), shooter, ammo.copyWithCount(1), weapon, null, modifyArrowBuilder);
                 cir.setReturnValue(arrow);
                 return;
             }
-            BaseTerraArrowItem arrowItem = bow.arrowModifier.getTransformArrow();
+            BaseTerraArrowItem arrowItem = bow.getArrowModifier().getTransformArrow();
             if (arrowItem != null) {
                 // 木箭转化
-                cir.setReturnValue(new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, ammo.copyWithCount(1), weapon, arrowItem, bow.modifyArrowBuilder));
+                cir.setReturnValue(new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, ammo.copyWithCount(1), weapon, arrowItem, modifyArrowBuilder));
             }
         }
     }

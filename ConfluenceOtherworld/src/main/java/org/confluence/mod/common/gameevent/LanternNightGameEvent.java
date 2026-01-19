@@ -95,11 +95,13 @@ public final class LanternNightGameEvent implements GameEvent {
     public void onStart() {
         this.forceStart = false;
         this.scheduled = false;
+        this.started = true;
     }
 
     @Override
     public void onEnd() {
         this.forceEnd = false;
+        this.started = false;
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             AttributeInstance instance = player.getAttribute(Attributes.LUCK);
             if (instance == null) continue;

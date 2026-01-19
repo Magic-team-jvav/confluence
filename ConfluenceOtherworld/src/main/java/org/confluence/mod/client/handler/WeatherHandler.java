@@ -152,7 +152,7 @@ public final class WeatherHandler {
         windDirection = Direction.getNearest(packet.x(), 0.0F, packet.z());
     }
 
-    public static void tick() {
+    public static void handle() {
         if (WIND_SPEED.equals(WIND_SPEED_N)) return;
         Vector2f delta = new Vector2f(WIND_SPEED);
         WIND_SPEED_N.sub(WIND_SPEED, delta);

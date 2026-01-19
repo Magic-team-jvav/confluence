@@ -25,6 +25,9 @@ import java.util.Map;
 public final class ClientGameEventSystem {
     static final Map<ResourceKey<? extends GameEvent>, GameEventSyncCallback> CALLBACKS = Util.make(new IdentityHashMap<>(), map -> {
         map.put(GameEventSystem.ALL_EVENT_KEY, ClientGameEventSystem::handleAllEvent);
+        map.put(SlimeRainGameEvent.KEY, SlimeRainSprite::handle);
+        map.put(MeteorShowerGameEvent.KEY, MeteorShowerSprite::handle);
+        map.put(LanternNightGameEvent.KEY, LanternNightSprite::handle);
         map.put(BloodMoonGameEvent.KEY, ClientGameEventSystem::handleBloodMoon);
         map.put(GoblinArmyGameEvent.KEY, ClientGameEventSystem::handleGoblinArmy);
         ModLoader.postEvent(new GameEventSyncCallbackRegisterEvent(map));
@@ -42,9 +45,12 @@ public final class ClientGameEventSystem {
     static Map<ResourceKey<? extends GameEvent>, AfterRenderSky> afterRenderSky = Map.of();
 
     public static void handle(LocalPlayer player) {
-        long gameTime = player.level().getGameTime();
-        SlimeRainSprite.tick(gameTime);
-        MeteorShowerSprite.tick(gameTime);
+        if (!Minecraft.getInstance().isPaused() && player.clientLevel.tickRateManager().runsNormally()) {
+            long gameTime = player.level().getGameTime();
+            SlimeRainSprite.tick(gameTime);
+            MeteorShowerSprite.tick(gameTime);
+            LanternNightSprite.tick();
+        }
     }
 
     public static void handlePacket(Player player, List<ResourceKey<? extends GameEvent>> keys, boolean start) {
@@ -70,7 +76,9 @@ public final class ClientGameEventSystem {
         moonTexture = null;
         lightTextureColor = null;
         afterRenderSky = Map.of();
-        SlimeRainSprite.SLIME_RAIN_SPRITES.clear();
+        SlimeRainSprite.reset();
+        MeteorShowerSprite.reset();
+        LanternNightSprite.reset();
     }
 
     public static void afterRenderSky(RenderLevelStageEvent event, Minecraft minecraft) {
@@ -93,7 +101,6 @@ public final class ClientGameEventSystem {
         } else {
             moonTexture = null;
             lightTextureColor = null;
-            SlimeRainSprite.SLIME_RAIN_SPRITES.clear();
         }
     }
 

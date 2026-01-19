@@ -7,6 +7,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
@@ -21,7 +22,8 @@ import static org.confluence.mod.client.gameevent.ClientGameEventSystem.random;
 
 final class MeteorShowerSprite {
     static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor_shower.png");
-    static final Queue<MeteorShowerSprite> METEOR_SHOWER_SPRITES = EvictingQueue.create(32);
+    static final Queue<MeteorShowerSprite> SPRITES = EvictingQueue.create(32);
+    static boolean started;
     static final float frame = 1 / 7.0F;
     final float radius;
     final float alpha;
@@ -42,6 +44,7 @@ final class MeteorShowerSprite {
     }
 
     void render(BufferBuilder builder, float a) {
+        poseStack.pushPose();
         poseStack.mulPose(quaternionf);
         RenderSystem.setShaderColor(1, 1, 1, alpha * a);
         Matrix4f matrix4f = poseStack.last().pose();
@@ -49,6 +52,7 @@ final class MeteorShowerSprite {
         builder.addVertex(matrix4f, radius, 100, -radius).setUv(1.0F, v1);
         builder.addVertex(matrix4f, radius, 100, radius).setUv(1.0F, v0);
         builder.addVertex(matrix4f, -radius, 100, radius).setUv(0.0F, v0);
+        poseStack.popPose();
     }
 
     static void renderMeteorShower(LocalPlayer player, RenderLevelStageEvent event) {
@@ -59,13 +63,13 @@ final class MeteorShowerSprite {
         RenderSystem.setShaderTexture(0, TEXTURE);
         BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
-        float a = 1.0F - player.level().getRainLevel(partialTick);
-        for (MeteorShowerSprite sprite : METEOR_SHOWER_SPRITES) {
-            poseStack.pushPose();
-            poseStack.mulPose(event.getModelViewMatrix());
+        float a = Math.max(1.0F - player.level().getRainLevel(partialTick), 0.2F);
+        poseStack.pushPose();
+        poseStack.mulPose(event.getModelViewMatrix());
+        for (MeteorShowerSprite sprite : SPRITES) {
             sprite.render(builder, a);
-            poseStack.popPose();
         }
+        poseStack.popPose();
         MeshData data = builder.build();
         if (data != null) {
             BufferUploader.drawWithShader(data);
@@ -76,10 +80,11 @@ final class MeteorShowerSprite {
     }
 
     static void tick(long gameTime) {
+        if (!started) return;
         if (gameTime % 2 == 0) {
-            MeteorShowerSprite.METEOR_SHOWER_SPRITES.add(new MeteorShowerSprite());
+            SPRITES.add(new MeteorShowerSprite());
         }
-        Iterator<MeteorShowerSprite> iterator = MeteorShowerSprite.METEOR_SHOWER_SPRITES.iterator();
+        Iterator<MeteorShowerSprite> iterator = SPRITES.iterator();
         while (iterator.hasNext()) {
             MeteorShowerSprite sprite = iterator.next();
             ++sprite.tick;
@@ -93,5 +98,17 @@ final class MeteorShowerSprite {
                 sprite.remove = true;
             }
         }
+    }
+
+    static void handle(Player player, boolean start) {
+        started = start;
+        if (!start) {
+            SPRITES.clear();
+        }
+    }
+
+    static void reset() {
+        started = false;
+        SPRITES.clear();
     }
 }

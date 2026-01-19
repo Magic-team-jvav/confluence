@@ -160,8 +160,8 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER, BOARD_SWORD.apply(1.0F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 7, AttributeModifier.Operation.ADD_VALUE)
             .modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
-                    1, 1, 1, 50, 0.05f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
-                    Optional.of(new SimpleTrack(Mth.HALF_PI, 0.5f, 0.1f, Optional.empty(), 0.1)),
+                    1, 0.3f, 1, 50, 0f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                    Optional.of(new SimpleTrack(Mth.HALF_PI, 0.8f, 0.2f, Optional.empty(), 0.1)),
                     ForwardGeneration.of(0, 0), Optional.empty()
             ))));
 

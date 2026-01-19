@@ -177,8 +177,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             this.applyGravity();
             if (target != null && target.isAlive()) {
 
-                Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(this.position()).normalize();
                 Vec3 motion = getDeltaMovement();
+                Vec3 dir = target.position().add(0, target.getBoundingBox().getYsize() * 0.5, 0).subtract(this.position())
+                        .normalize().scale(motion.length());
                 double angle = TEUtils.angleBetween(motion, dir);
 
                 if (projComponent.trackType().isPresent()) {

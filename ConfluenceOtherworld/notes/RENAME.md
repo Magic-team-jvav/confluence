@@ -136,3 +136,25 @@
 | `confluence:crystal_shards_item` | `confluence:crystal_shards` |
 | `confluence:throwing_knives`     | `confluence:throwing_knive` |
 | `confluence:golden_coin`         | `confluence:gold_coin`      |
+
+
+# 从1.2.0-beta-260110到?
+
+## 方块
+
+| 原名称                                        | 修改后名称                                      |
+|--------------------------------------------|--------------------------------------------|
+| `terra_furniture:blue_brick_chair`         | `terra_furniture:blue_dungeon_chair`       |
+| `terra_furniture:blue_brick_sofa`          | `terra_furniture:blue_dungeon_sofa`        |
+| `terra_furniture:blue_brick_toilet`        | `terra_furniture:blue_dungeon_toilet`      |
+| `terra_furniture:blue_brick_sink`          | `terra_furniture:blue_dungeon_sink`        |
+| `terra_furniture:blue_brick_door`          | `terra_furniture:blue_dungeon_door`        |
+| `terra_furniture:blue_brick_table`         | `terra_furniture:blue_dungeon_table`       |
+| `terra_furniture:blue_brick_candle`        | `terra_furniture:blue_dungeon_candle`      |
+| `terra_furniture:blue_brick_lantern`       | `terra_furniture:blue_dungeon_lantern`     |
+| `terra_furniture:blue_brick_lamp`          | `terra_furniture:blue_dungeon_lamp`        |
+| `terra_furniture:blue_brick_candelabras`   | `terra_furniture:blue_dungeon_candelabras` |
+| `terra_furniture:blue_brick_bathtub`       | `terra_furniture:blue_dungeon_bathtub`     |
+| `terra_furniture:blue_brick_clock`         | `terra_furniture:blue_dungeon_clock`       |
+| `terra_furniture:blue_brick_chandelier`    | `terra_furniture:blue_dungeon_chandelier`  |
+| `terra_furniture:blue_dungeon_chandeliers` | `terra_furniture:blue_dungeon_chandelier`  |

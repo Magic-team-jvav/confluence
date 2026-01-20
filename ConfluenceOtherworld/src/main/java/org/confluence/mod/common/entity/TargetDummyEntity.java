@@ -130,7 +130,7 @@ public class TargetDummyEntity extends LivingEntity {
      * 处理客户端显示
      */
     private void handleClientDisplay() {
-        if (level().isClientSide) { // 每0.5秒更新一次显示
+        if (level().isClientSide) {
             var dps = InformationHandler.getInformation()
                     .computeIfAbsent(InformationHandler.DPS_METER, (a) -> Component.literal(""));
             String text = String.format("Max: %.2f, Min: %.2f, Total: %.2f", maxDamageAmount, minDamageAmount == Float.MAX_VALUE ? 0.0f : minDamageAmount, totalDamageAmount);
@@ -142,7 +142,7 @@ public class TargetDummyEntity extends LivingEntity {
      * 处理重置逻辑
      */
     private void handleResetLogic() {
-        if (resetTimer > RESET_INTERVAL_TICKS) { // 每秒重置一次
+        if (resetTimer > RESET_INTERVAL_TICKS) {
             resetDamageStats();
         }
     }

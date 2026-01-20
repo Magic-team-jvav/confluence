@@ -197,9 +197,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
 
     /// 获取射击间隔
     public int getShootInterval(LivingEntity shooter, ItemStack stack) {
-        int level = EnchantmentUtil.getEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
-        float v = level * 0.35f;
-        return Mth.floor(baseShootInterval - v);
+        return baseShootInterval;
     }
 
     public int getCapacity() {

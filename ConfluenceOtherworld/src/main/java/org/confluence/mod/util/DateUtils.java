@@ -1,5 +1,6 @@
 package org.confluence.mod.util;
 
+import com.google.common.base.Joiner;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -32,6 +33,9 @@ public final class DateUtils {
     private static final Calendar calendar = Calendar.getInstance();
     private static Lunar lunar;
 
+    private static String yi = "无";
+    private static String ji = "无";
+
     public static Calendar getCalendar() {
         updateTime();
         return calendar;
@@ -50,11 +54,26 @@ public final class DateUtils {
         if (lunar == null) {
             calendar.setTimeInMillis(lastCacheTime);
             lunar = new Lunar(new Date(lastCacheTime));
+            Joiner joiner = Joiner.on("，");
+            yi = joiner.join(lunar.getDayYi());
+            ji = joiner.join(lunar.getDayJi());
         }
+    }
+
+    public static String getYi() {
+        return yi;
+    }
+
+    public static String getJi() {
+        return ji;
     }
 
     public static boolean isXinNian(Lunar lunar) {
         return lunar.getMonth() == 1 && lunar.getDay() <= 15;
+    }
+
+    public static boolean isYuanXiao(Lunar lunar) {
+        return lunar.getMonth() == 1 && lunar.getDay() == 15;
     }
 
     public static boolean isQingMing(Lunar lunar) {
@@ -81,26 +100,44 @@ public final class DateUtils {
 
     public static Item getHolidayGift(RandomSource random) {
         Lunar lunar = getLunar();
-        if (isXinNian(lunar)) return ConsumableItems.RED_ENVELOPE.get();
-        if (isDuanWu(lunar)) return random.nextBoolean() ? FoodItems.ZONGZI.get() : FoodItems.MEAT_STUFFED_ZONGZI.get();
-        if (isZhongQiu(lunar)) return FoodItems.EGG_YOLK_MOONCAKES.get();
+        if (isXinNian(lunar)) {
+            return ConsumableItems.RED_ENVELOPE.get();
+        }
+        if (isDuanWu(lunar)) {
+            return random.nextBoolean() ? FoodItems.ZONGZI.get() : FoodItems.MEAT_STUFFED_ZONGZI.get();
+        }
+        if (isZhongQiu(lunar)) {
+            return FoodItems.EGG_YOLK_MOONCAKES.get();
+        }
         Calendar calendar = getCalendar();
-        if (isHalloween(calendar)) return ConsumableItems.GOODIE_BAG.get();
-        if (isChristmas(calendar)) return ConsumableItems.CHRISTMAS_GIFT.get();
+        if (isHalloween(calendar)) {
+            return ConsumableItems.GOODIE_BAG.get();
+        }
+        if (isChristmas(calendar)) {
+            return ConsumableItems.CHRISTMAS_GIFT.get();
+        }
         return Items.AIR;
     }
 
     public static Item getHeartItem() {
         Calendar calendar = getCalendar();
-        if (isHalloween(calendar)) return ModItems.CANDY_APPLE.get();
-        if (isChristmas(calendar)) return ModItems.CANDY_CANE.get();
+        if (isHalloween(calendar)) {
+            return ModItems.CANDY_APPLE.get();
+        }
+        if (isChristmas(calendar)) {
+            return ModItems.CANDY_CANE.get();
+        }
         return ModItems.HEART.get();
     }
 
     public static Item getStarItem() {
         Calendar calendar = getCalendar();
-        if (isHalloween(calendar)) return ModItems.SOUL_CAKE.get();
-        if (isChristmas(calendar)) return ModItems.SUGAR_PLUM.get();
+        if (isHalloween(calendar)) {
+            return ModItems.SOUL_CAKE.get();
+        }
+        if (isChristmas(calendar)) {
+            return ModItems.SUGAR_PLUM.get();
+        }
         return ModItems.STAR.get();
     }
 

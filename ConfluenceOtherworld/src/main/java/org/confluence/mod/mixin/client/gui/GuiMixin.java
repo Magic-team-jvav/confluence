@@ -79,7 +79,7 @@ public abstract class GuiMixin implements IGui {
         float end = 0;
         if (itemStack.getItem() instanceof BaseTerraRepeaterItem repeaterItem) {
             if (player.isUsingItem() && player.getUseItem().equals(itemStack)) {
-                end = confluence$oldRepeaterCrosshairAngle + (float) 360 / repeaterItem.getReloadSpeed(player, itemStack);
+                end = Math.clamp(confluence$oldRepeaterCrosshairAngle + (float) 360 / repeaterItem.getReloadSpeed(player, itemStack), 0, 720);
             } else if (!itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY).isEmpty()) {
                 end = 45;
             }
@@ -87,7 +87,7 @@ public abstract class GuiMixin implements IGui {
 
         float timeDeltaPartialTick = deltaTracker.getGameTimeDeltaPartialTick(true);
         float v2 = Mth.lerp(timeDeltaPartialTick / 2, confluence$oldRepeaterCrosshairAngle, end);
-        pose.mulPose(Axis.ZN.rotationDegrees(v2));
+        pose.mulPose(Axis.ZN.rotationDegrees(v2 % 360));
 
         float scale = 1f + (0.5f * (confluence$scale / 2));
         pose.scale(scale, scale, 1);

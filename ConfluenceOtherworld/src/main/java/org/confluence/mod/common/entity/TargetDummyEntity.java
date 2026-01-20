@@ -1,8 +1,10 @@
 package org.confluence.mod.common.entity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -18,10 +20,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.terra_curio.client.handler.InformationHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class TargetDummyEntity extends LivingEntity {
+    private int resetTimer;           // 重置计时器
+    private float totalDamageAmount;  // 总伤害量
+    public float damage;              // 当前伤害
+    private float maxDamageAmount;    // 最大伤害量
+    private float minDamageAmount;    // 最小伤害量
+
+    // 添加常量定义
+    private static final int RESET_INTERVAL_TICKS = 40;
+
     public TargetDummyEntity(EntityType<? extends LivingEntity> entityType, Level level) {
         super(entityType, level);
     }
@@ -62,6 +74,16 @@ public class TargetDummyEntity extends LivingEntity {
         return super.hurt(source, amount);
     }
 
+    /**
+     * 记录伤害数据
+     */
+    private void recordDamage(float amount) {
+        maxDamageAmount = Math.max(maxDamageAmount, amount);
+        minDamageAmount = amount > 0 ? Math.min(minDamageAmount, amount) : amount; // 修正最小伤害计算逻辑
+        totalDamageAmount += amount;
+        resetTimer = 0;
+    }
+
     @Override
     public Iterable<ItemStack> getArmorSlots() {
         return NonNullList.create();
@@ -75,15 +97,64 @@ public class TargetDummyEntity extends LivingEntity {
     @Override
     public void setItemSlot(EquipmentSlot slot, ItemStack stack) {}
 
-    public float damage;
-
     @Override
     public void tick() {
+        updateHealth();
+        updateDamageStats();
+        handleClientDisplay();
+        handleResetLogic();
+
+        super.tick();
+    }
+
+    /**
+     * 更新生命值
+     */
+    private void updateHealth() {
         if (getHealth() != getMaxHealth()) {
             damage = getMaxHealth() - getHealth();
+            // 记录伤害数据
+            recordDamage(damage);
             setHealth(getMaxHealth());
         }
-        super.tick();
+    }
+
+    /**
+     * 更新伤害统计
+     */
+    private void updateDamageStats() {
+        resetTimer++;
+    }
+
+    /**
+     * 处理客户端显示
+     */
+    private void handleClientDisplay() {
+        if (level().isClientSide) { // 每0.5秒更新一次显示
+            var dps = InformationHandler.getInformation()
+                    .computeIfAbsent(InformationHandler.DPS_METER, (a) -> Component.literal(""));
+            String text = String.format("Max: %.2f, Min: %.2f, Total: %.2f", maxDamageAmount, minDamageAmount == Float.MAX_VALUE ? 0.0f : minDamageAmount, totalDamageAmount);
+            Minecraft.getInstance().gui.setOverlayMessage(Component.literal(text).append(", ").append(dps), false);
+        }
+    }
+
+    /**
+     * 处理重置逻辑
+     */
+    private void handleResetLogic() {
+        if (resetTimer > RESET_INTERVAL_TICKS) { // 每秒重置一次
+            resetDamageStats();
+        }
+    }
+
+    /**
+     * 重置伤害统计数据
+     */
+    private void resetDamageStats() {
+        totalDamageAmount = 0;
+        minDamageAmount = Float.MAX_VALUE; // 初始化为最大值，以便第一次比较能正确设置最小值
+        maxDamageAmount = 0;
+        resetTimer = 0;
     }
 
     public static AttributeSupplier.@NotNull Builder createAttributes() {

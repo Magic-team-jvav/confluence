@@ -42,8 +42,12 @@ public class RepeaterHud implements LayeredDraw.Layer {
         int slotSize = repeaterContents.getUedSlotSize();
         PoseStack pose = guiGraphics.pose();
         pose.pushPose();
+
+        final int I = 5;
+        final float I1 = I + 1f;
+
         for (int i = 0; i < slotSize; i++) {
-            if (i > 5) {
+            if (i > I) {
                 break;
             }
             ItemStack stack = repeaterContents.getStackInSlot(i);
@@ -53,7 +57,7 @@ public class RepeaterHud implements LayeredDraw.Layer {
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
-            guiGraphics.setColor(1, 1, 1, (5 - i) / 6f);
+            guiGraphics.setColor(1, 1, 1, (I - i) / I1);
             pose.translate(x - x * scale, y - y * scale, 0);
             pose.scale(scale, scale, 1);
             guiGraphics.renderItem(stack, x, y);

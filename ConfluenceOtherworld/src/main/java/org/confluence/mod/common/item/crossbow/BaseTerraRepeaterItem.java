@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -37,6 +38,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -50,6 +52,7 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
+import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.mod.network.s2c.RepeaterShootingPayloadS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.RepeaterContentsComponentHandler;
@@ -60,7 +63,6 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -85,6 +87,10 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
             Optional.of(SoundEvents.CROSSBOW_LOADING_MIDDLE),
             Optional.of(SoundEvents.CROSSBOW_LOADING_END)
     );
+    /// 装填速度
+    private static final float CHARGING_TIME_RELOAD_SPEED = 0.6f;
+    /// 射击间隔
+    private static final float CHARGING_TIME_SHOOT_INTERVAL = 0.4f;
 
     private boolean startSoundPlayed = false;
     private boolean midLoadSoundPlayed = false;
@@ -184,7 +190,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     public int getReloadSpeed(LivingEntity shooter, ItemStack stack) {
-        float f = EnchantmentHelper.modifyCrossbowChargingTime(stack, shooter, baseReloadSpeed / 20f);
+        float f = EnchantmentHelper.modifyCrossbowChargingTime(stack, shooter, baseReloadSpeed * CHARGING_TIME_RELOAD_SPEED / 20f);
         return Mth.floor(f * 20.0F);
     }
 
@@ -193,7 +199,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     public int getShootInterval(LivingEntity shooter, ItemStack stack) {
-        float f = EnchantmentHelper.modifyCrossbowChargingTime(stack, shooter, baseShootInterval / 20f);
+        float f = EnchantmentHelper.modifyCrossbowChargingTime(stack, shooter, baseShootInterval * CHARGING_TIME_SHOOT_INTERVAL / 20f);
         return Mth.floor(f * 20.0F);
     }
 
@@ -206,7 +212,16 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     public int getBurstCount(LivingEntity shooter, InteractionHand hand) {
-        return Math.round(this.baseBurstCount.getCount(shooter.getRandom()));
+        int processProjectileCount;
+        if (shooter.level() instanceof ServerLevel serverLevel) {
+            ItemStack itemStack = shooter.getItemInHand(hand);
+            int count = EnchantmentHelper.processProjectileCount(serverLevel, itemStack, shooter, 1);
+            int level = itemStack.getEnchantmentLevel(serverLevel.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.MULTISHOT));
+            processProjectileCount = count - level;
+        } else {
+            processProjectileCount = 0;
+        }
+        return Math.round(this.baseBurstCount.getCount(shooter.getRandom())) + processProjectileCount;
     }
 
     public int getConcurrentCount(LivingEntity shooter, InteractionHand hand) {
@@ -265,7 +280,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     public static boolean isCharged(ItemStack crossbowStack) {
-        var contents = crossbowStack.get(ModDataComponentTypes.REPEATER_CONTENTS);
+        RepeaterContents contents = crossbowStack.get(ModDataComponentTypes.REPEATER_CONTENTS);
         return contents != null && !contents.isEmpty();
     }
 
@@ -314,7 +329,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     private void playAerialShootingSound(Entity entity) {
-        entity.playSound(ModSoundEvents.REPEATER_ITEM_AERIAL_SHOOTING.get(), 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
+        entity.playSound(ModSoundEvents.REPEATER_ITEM_AERIAL_SHOOTING.get());
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -322,11 +337,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         if (!(level instanceof ServerLevel serverlevel)) {
             return false;
         }
-        List<ItemStack> itemStacks1 = RepeaterContentsComponentHandler.extractItemList(weapon, 1, !isConsume);
-        List<ItemStack> itemStacks = new ArrayList<>();
-        for (int i = 0; i < EnchantmentHelper.processProjectileCount(serverlevel, weapon, shooter, 1); i++) {
-            itemStacks.addAll(itemStacks1.stream().map(ItemStack::copy).toList());
-        }
+        List<ItemStack> itemStacks = RepeaterContentsComponentHandler.extractItemList(weapon, 1, !isConsume);
         this.shoot(serverlevel, shooter, hand, weapon, itemStacks, velocity, inaccuracy, true, target);
         if (shooter instanceof ServerPlayer serverplayer) {
             // 告诉客户端玩家已发射
@@ -390,6 +401,12 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
                 Vec3 offset = projectileItemsCount <= multiShootCount ? new Vec3(0, y, z) : new Vec3(0, z, y);
                 BaseTerraBowItem.transformAndApplyOffsetToProjectile(projectile, offset);
                 BaseTerraBowItem.processArrowBaseEffects(shooter, hand, weapon, projectile, itemstackIndex, multiShootCount);
+                if (projectile instanceof IAbstractArrow abstractArrow) {
+                    abstractArrow.confluence$setDamageNotAffectedBySpeedBonus(true);
+                    if (itemstackIndex > 0 || projectileIndex > 0) {
+                        abstractArrow.confluence$setDisappearingOnGround(true);
+                    }
+                }
                 level.addFreshEntity(projectile);
             }
 
@@ -411,12 +428,12 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
             vector3f = getProjectileShotVector(shooter, new Vec3(d0, d3, d1), angle);
         } else {
             Vec3 vec3 = shooter.getUpVector(1.0F);
-            Quaternionf quaternionf = new Quaternionf().setAngleAxis((double) (angle * (float) (Math.PI / 180.0)), vec3.x, vec3.y, vec3.z);
+            Quaternionf quaternionf = new Quaternionf().setAngleAxis(angle * (float) (Math.PI / 180.0), vec3.x, vec3.y, vec3.z);
             Vec3 vec31 = shooter.getViewVector(1.0F);
             vector3f = vec31.toVector3f().rotate(quaternionf);
         }
 
-        projectile.shoot((double) vector3f.x(), (double) vector3f.y(), (double) vector3f.z(), velocity, inaccuracy);
+        projectile.shoot(vector3f.x(), vector3f.y(), vector3f.z(), velocity, inaccuracy);
         float f = getShotPitch(shooter.getRandom(), index);
         shooter.level().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, shooter.getSoundSource(), 1.0F, f);
     }
@@ -470,6 +487,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         InteractionHand hand = getHand(player, itemStack);
         DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
         delayTaskHolder.removeTask(hand, REPEATER_SHOOTING);
+        delayTaskHolder.removeTask(hand, REPEATER_CONTINUOUS_SHOOTING);
     }
 
     @Override

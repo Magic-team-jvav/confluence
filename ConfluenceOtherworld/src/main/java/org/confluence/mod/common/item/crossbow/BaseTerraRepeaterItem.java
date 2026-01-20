@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -43,6 +42,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import org.confluence.lib.util.DelayTaskHolder;
+import org.confluence.lib.util.EnchantmentUtil;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
 import org.confluence.mod.common.component.RepeaterContents;
@@ -87,10 +87,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
             Optional.of(SoundEvents.CROSSBOW_LOADING_MIDDLE),
             Optional.of(SoundEvents.CROSSBOW_LOADING_END)
     );
-    /// 装填速度
-    private static final float CHARGING_TIME_RELOAD_SPEED = 0.6f;
-    /// 射击间隔
-    private static final float CHARGING_TIME_SHOOT_INTERVAL = 0.4f;
 
     private boolean startSoundPlayed = false;
     private boolean midLoadSoundPlayed = false;
@@ -189,8 +185,9 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return getReloadSpeed(shooter, shooter.getItemInHand(hand));
     }
 
+    ///  获取装填速度
     public int getReloadSpeed(LivingEntity shooter, ItemStack stack) {
-        float f = EnchantmentHelper.modifyCrossbowChargingTime(stack, shooter, baseReloadSpeed * CHARGING_TIME_RELOAD_SPEED / 20f);
+        float f = EnchantmentHelper.modifyCrossbowChargingTime(stack, shooter, baseReloadSpeed / 20f);
         return Mth.floor(f * 20.0F);
     }
 
@@ -198,9 +195,11 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return getShootInterval(shooter, shooter.getItemInHand(hand));
     }
 
+    /// 获取射击间隔
     public int getShootInterval(LivingEntity shooter, ItemStack stack) {
-        float f = EnchantmentHelper.modifyCrossbowChargingTime(stack, shooter, baseShootInterval * CHARGING_TIME_SHOOT_INTERVAL / 20f);
-        return Mth.floor(f * 20.0F);
+        int level = EnchantmentUtil.getEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
+        float v = level * 0.35f;
+        return Mth.floor(baseShootInterval - v);
     }
 
     public int getCapacity() {
@@ -216,7 +215,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         if (shooter.level() instanceof ServerLevel serverLevel) {
             ItemStack itemStack = shooter.getItemInHand(hand);
             int count = EnchantmentHelper.processProjectileCount(serverLevel, itemStack, shooter, 1);
-            int level = itemStack.getEnchantmentLevel(serverLevel.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.MULTISHOT));
+            int level = EnchantmentUtil.getEnchantmentLevel(Enchantments.MULTISHOT, itemStack);
             processProjectileCount = count - level;
         } else {
             processProjectileCount = 0;
@@ -660,11 +659,11 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         tooltipComponents.add(tooltip(ATTACK_SPEED_TEXT).append(String.valueOf(baseArrowSpeed)).withStyle(ChatFormatting.DARK_GRAY));
         // 击退
         tooltipComponents.add(tooltip(KNOCKBACK_TEXT).append(String.valueOf(baseKnockback)).withStyle(ChatFormatting.DARK_GRAY));
-        if (IRandomCount.is(baseBurstCount, 1)) {
+        if (!IRandomCount.is(baseBurstCount, 1)) {
             // 连发个数
             tooltipComponents.add(tooltip(TORRENT_COUNT_TEXT).append(IRandomCount.getString(baseBurstCount)).withStyle(ChatFormatting.DARK_GRAY));
         }
-        if (IRandomCount.is(baseConcurrentCount, 1)) {
+        if (!IRandomCount.is(baseConcurrentCount, 1)) {
             // 并发个数
             tooltipComponents.add(tooltip(CONCURRENCY_COUNT_TEXT).append(IRandomCount.getString(baseConcurrentCount)).withStyle(ChatFormatting.DARK_GRAY));
         }

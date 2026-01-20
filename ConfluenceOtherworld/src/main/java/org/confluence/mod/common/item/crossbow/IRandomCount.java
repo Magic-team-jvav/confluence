@@ -60,7 +60,7 @@ public interface IRandomCount {
                 return nonRandom.getCount() == i;
             }
             case RangeRandom random -> {
-                return random.getMinCount() != i && random.getMaxCount() != i;
+                return random.getMinCount() == i && random.getMaxCount() == i;
             }
             case null, default -> {
                 return false;

@@ -152,6 +152,9 @@ final class LanternNightSprite {
 
     static void createOrRemoveEmitter(Player player) {
         if (player.level().dimension() == OverworldUtils.dimension()) {
+            if (emitter != null) {
+                emitter.remove();
+            }
             emitter = new ParticleEmitter(player.level(), player.position(), Confluence.asResource("lantern_night")) {
                 @Override
                 protected void createVars() {

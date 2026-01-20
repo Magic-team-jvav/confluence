@@ -10,8 +10,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.util.OverworldUtils;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.data.molang.compiler.value.Variable;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -22,12 +27,13 @@ import static org.confluence.mod.client.gameevent.ClientGameEventSystem.random;
 
 final class LanternNightSprite {
     static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/lantern_night.png");
-    static final int MAX = 200;
+    static final int MAX = 100;
     static final Queue<LanternNightSprite> SPRITES = new ArrayDeque<>(MAX);
     static boolean started;
     static float globalAlpha;
     static float globalY;
     static float globalYO;
+    static @Nullable ParticleEmitter emitter;
     final float radius;
     final float dist;
     final float alpha;
@@ -104,7 +110,7 @@ final class LanternNightSprite {
         RenderSystem.disableBlend();
     }
 
-    static void tick() {
+    static void tick(LocalPlayer player) {
         if (!started) return;
         if (globalAlpha < 1) {
             globalAlpha = Math.min(globalAlpha + 0.005F, 1);
@@ -114,6 +120,9 @@ final class LanternNightSprite {
             globalY += 0.1F;
         } else {
             globalY = globalYO = 0;
+        }
+        if (emitter == null || emitter.isRemoved()) {
+            createEmitter(player);
         }
         int spawn = MAX - SPRITES.size();
         if (spawn > 0) {
@@ -133,13 +142,27 @@ final class LanternNightSprite {
     }
 
     static void handle(Player player, boolean start) {
-        started = start;
-        if (!start) {
-            SPRITES.clear();
-            globalAlpha = 0;
-            globalY = -90;
-            globalYO = -90;
+        if (start) {
+            started = true;
+            createEmitter(player);
+        } else {
+            reset();
         }
+    }
+
+    static void createEmitter(Player player) {
+        emitter = new ParticleEmitter(player.level(), player.position(), Confluence.asResource("lantern_night")) {
+            @Override
+            protected void createVars() {
+                super.createVars();
+                Variable windX = new Variable("variable.wind_x", p -> WeatherHandler.getWindSpeedX());
+                Variable windZ = new Variable("variable.wind_z", p -> WeatherHandler.getWindSpeedZ());
+                vars.table.put(windX.name(), windX);
+                vars.table.put(windZ.name(), windZ);
+            }
+        };
+        emitter.attachEntity(player);
+        PSGameClient.LOADER.addEmitter(emitter, false);
     }
 
     static void reset() {
@@ -148,5 +171,9 @@ final class LanternNightSprite {
         globalAlpha = 0;
         globalY = -90;
         globalYO = -90;
+        if (emitter != null) {
+            emitter.remove();
+            emitter = null;
+        }
     }
 }

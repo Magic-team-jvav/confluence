@@ -49,7 +49,7 @@ public final class ClientGameEventSystem {
             long gameTime = player.level().getGameTime();
             SlimeRainSprite.tick(gameTime);
             MeteorShowerSprite.tick(gameTime);
-            LanternNightSprite.tick();
+            LanternNightSprite.tick(player);
         }
     }
 

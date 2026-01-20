@@ -1,0 +1,51 @@
+{
+	"format_version": "1.10.0",
+	"particle_effect": {
+		"description": {
+			"identifier": "confluence:lantern_night",
+			"type": "thr_dim_particle:tdp"
+		},
+		"components": {
+			"minecraft:emitter_local_space": {
+				"position": true,
+				"rotation": false
+			},
+			"minecraft:emitter_rate_steady": {
+				"spawn_rate": 5,
+				"max_particles": 200
+			},
+			"minecraft:emitter_lifetime_expression": {},
+			"minecraft:emitter_shape_disc": {
+				"offset": [0, 8, 0],
+				"radius": "math.random(12,48)",
+				"surface_only": true,
+				"direction": [0, 1, 0]
+			},
+			"minecraft:particle_initialization": {
+				"per_render_expression": "v.particle_size = 1.75 - math.abs(2.5 * (v.particle_age / v.particle_lifetime) - 1.25) - math.abs(math.abs(2.5 * (v.particle_age / v.particle_lifetime) - 1.25) - 0.75);"
+			},
+			"minecraft:particle_lifetime_expression": {
+				"max_lifetime": 15
+			},
+			"minecraft:particle_initial_speed": -1.5,
+			"minecraft:particle_motion_dynamic": {
+				"linear_acceleration": ["v.wind_x * 0.05", "math.sin(v.particle_age * 25) * 1.25", "v.wind_y * 0.05"]
+			},
+			"thr_dim_particle:appearance": {
+                "size": ["variable.particle_size", "variable.particle_size", "variable.particle_size"],
+                "model_animation": {
+                    "type_frames": "confluence:lantern_night"
+                }
+            },
+			"minecraft:particle_appearance_tinting": {
+				"color": {
+					"interpolant": "math.sin(v.particle_age * 180) * 0.5 + 0.5",
+					"gradient": {
+						"0.0": "#FFFFFFFF",
+						"1.0": "#FFFFB754"
+					}
+				}
+			}
+		}
+	}
+}

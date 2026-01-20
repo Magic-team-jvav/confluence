@@ -1,18 +1,17 @@
 - [中文](README.md)
 
-| Project Name                                 | Description                                        | Runs Independently             |
-|----------------------------------------------|----------------------------------------------------|--------------------------------|
-| [ConfluenceOtherworld](ConfluenceOtherworld) | Main module                                        | Depends on all                 |
-| [TerraEntity](TerraEntity)                   | Terra's Entities                                   | yes                            |
-| [MineTeam](MineTeam)                         | Terra's Teams                                      | yes                            |
-| [TerraCurio](TerraCurio)                     | Terra's Wearables                                  | yes                            |
-| [TerraGuns](TerraGuns)                       | Terra's Guns                                       | yes                            |
-| [ParticleStorm](ParticleStorm)               | Particles API                                      | yes                            |
-| [HeavenDestinyMoment](HeavenDestinyMoment)   | Event API                                          | yes                            |
-| [TerraMoment](TerraMoment)                   | Terra's Events                                     | depends on HeavenDestinyMoment |
-| [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event                         | depends on HeavenDestinyMoment |
-| [TerraFurniture](TerraFurniture)             | Terra's Furniture                                  | yes                            |
-| [TheTrackers](TheTrackers)                   | Provide real-time location hints for Boss entities | Yes                            |
+| Project Name                                                                  | Description                                        | Runs Independently |
+|-------------------------------------------------------------------------------|----------------------------------------------------|--------------------|
+| [ConfluenceMagicLib](Confluence-Magic-Lib)                                    | Library                                            | no                 |
+| [ConfluenceOtherworld](ConfluenceOtherworld)                                  | Main module                                        | Depends on all     |
+| [TerraEntity](TerraEntity)                                                    | Terra's Entities                                   | yes                |
+| [MineTeam](MineTeam)                                                          | Terra's Teams                                      | yes                |
+| [TerraCurio](TerraCurio)                                                      | Terra's Wearables                                  | yes                |
+| [TerraGuns](TerraGuns)                                                        | Terra's Guns                                       | yes                |
+| [ParticleStorm](ParticleStorm)                                                | Particles API                                      | yes                |
+| [ThreeDimensionParticle](https://github.com/westernat/ThreeDimensionParticle) | 3D Particle core                                   | no                 |
+| [TerraFurniture](TerraFurniture)                                              | Terra's Furniture                                  | yes                |
+| [TheTrackers](TheTrackers)                                                    | Provide real-time location hints for Boss entities | Yes                |
 
 | Official Integrations                                                               | Description                                                                            |
 |-------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
@@ -23,7 +22,8 @@
 
 ## Build the Project
 
-- When you pull the project, confirm whether the sub-project files are pulled. If the folder is empty, you can run the
+- When you pull the project, confirm whether the sub-project files are pulled. If the folder is
+  empty, you can run the
   following sequence of terminal commands:
   ~~~cmd
     git submodule init

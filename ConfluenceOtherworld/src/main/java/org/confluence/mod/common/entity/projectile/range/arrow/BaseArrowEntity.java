@@ -347,6 +347,11 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     @Override
+    protected boolean canHitEntity(Entity target) {
+        return super.canHitEntity(target) && !this.havenBeen.contains(target);
+    }
+
+    @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (getPickupItem().getItem() instanceof BaseTerraArrowItem arrow && arrow.getModifier() != null) {

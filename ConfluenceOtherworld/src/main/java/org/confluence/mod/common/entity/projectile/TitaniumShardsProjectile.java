@@ -80,9 +80,9 @@ public class TitaniumShardsProjectile extends Projectile {
         assert player != null;
 
         setPos(player.position());
-        this.xo = player.xo;
-        this.yo = player.yo;
-        this.zo = player.zo;
+        this.xOld = player.xOld;
+        this.yOld = player.yOld;
+        this.zOld = player.zOld;
 
         if (amount != shardPos.size()) {
             List<Vector3d> shardPos = new ArrayList<>();

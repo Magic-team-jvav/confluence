@@ -70,7 +70,7 @@ public class SillyBalloonMachineBlock extends Block implements EntityBlock, INet
         @Override
         public void setRemoved() {
             if (level != null && level.isClientSide && emitter != null) {
-                PSGameClient.LOADER.removeEmitter(emitter.id, false);
+                emitter.remove();
             }
             super.setRemoved();
         }

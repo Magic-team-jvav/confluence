@@ -95,7 +95,7 @@ public class FallingStarItemEntity extends ItemEntity {
     private void onRemove() {
         discard();
         if (level().isClientSide && emitter != null) {
-            PSGameClient.LOADER.removeEmitter(emitter, false);
+            emitter.remove();
         }
     }
 

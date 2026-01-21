@@ -16,6 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -113,12 +114,14 @@ public class SpelunkerHelper extends AbstractBufferManager {
         }
     }
 
-    private record Entry(int color, boolean showText, ShowType showType, ResourceLocation showItemRL) {
+    private record Entry(int color, boolean showText, ShowType showType, ItemStack showItem, ResourceLocation showIcon, boolean isLocation) {
         private static final Codec<Entry> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
                 Codec.INT.fieldOf("color").forGetter(Entry::color),
                 Codec.BOOL.fieldOf("showText").forGetter(Entry::showText),
                 ShowType.CODEC.fieldOf("showType").forGetter(Entry::showType),
-                ResourceLocation.CODEC.fieldOf("showItemRL").forGetter(Entry::showItemRL)
+                ItemStack.CODEC.fieldOf("showItem").forGetter(Entry::showItem),
+                ResourceLocation.CODEC.fieldOf("showIcon").forGetter(Entry::showIcon),
+                Codec.BOOL.fieldOf("isLocation").forGetter(Entry::isLocation)
         ).apply(builder, Entry::new));
 
         private static final MapCodec<Map<Block, Entry>> BLOCK_MAP_CODEC = Codec.unboundedMap(BuiltInRegistries.BLOCK.byNameCodec(), Entry.CODEC).fieldOf("targets").fieldOf("values");
@@ -140,7 +143,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
     }
 
     private static SpelunkerHelper blockGen;
-    private final WorldSingletonTracker tracker;
+    private static WorldSingletonTracker tracker;
     public static volatile boolean lock = true;
 
     public static final ComponentBuilder COMPONENT_BUILDER = new ComponentBuilder()
@@ -176,14 +179,14 @@ public class SpelunkerHelper extends AbstractBufferManager {
     public void defaultBlocks() {
 
         //远古残骸
-        putTarget(Blocks.ANCIENT_DEBRIS, 0x5f2000, true, ShowType.SPELUNKER, Items.NETHERITE_SCRAP);//这个还必须放这个位置
+        putTargetWithTexture(Blocks.ANCIENT_DEBRIS, 0x5f2000, true, ShowType.SPELUNKER, Items.NETHERITE_SCRAP);//这个还必须放这个位置
 
         //钻石矿
-        putTarget(Blocks.DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
-        putTarget(Blocks.DEEPSLATE_DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
-        putTarget(CORRUPTION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
-        putTarget(SANCTIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
-        putTarget(FLESHIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
+        putTargetWithTexture(Blocks.DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
+        putTargetWithTexture(Blocks.DEEPSLATE_DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
+        putTargetWithTexture(CORRUPTION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
+        putTargetWithTexture(SANCTIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
+        putTargetWithTexture(FLESHIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER, Items.DIAMOND);
 
 
         //红玉矿
@@ -198,7 +201,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putMaterialTarget(CORRUPTION_AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER, AMBER);
         putMaterialTarget(SANCTIFICATION_AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER, AMBER);
         putMaterialTarget(FLESHIFICATION_AMBER_ORE.get(), 0xa85c00, true, ShowType.SPELUNKER, AMBER);
-//            putTarget(DEEPSLATE_AMBER_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
+//            putTargetWithTexture(DEEPSLATE_AMBER_ORE.get(), Color.CYAN,true, ShowType.SPELUNKER);
 
         //黄玉矿
         putMaterialTarget(TOPAZ_ORE.get(), 0xa88300, true, ShowType.SPELUNKER, TOPAZ);
@@ -231,44 +234,44 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
 
         //绿宝石矿
-        putTarget(Blocks.EMERALD_ORE, 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
-        putTarget(Blocks.DEEPSLATE_EMERALD_ORE, 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
-        putTarget(CORRUPTION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
-        putTarget(SANCTIFICATION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
-        putTarget(FLESHIFICATION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
+        putTargetWithTexture(Blocks.EMERALD_ORE, 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
+        putTargetWithTexture(Blocks.DEEPSLATE_EMERALD_ORE, 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
+        putTargetWithTexture(CORRUPTION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
+        putTargetWithTexture(SANCTIFICATION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
+        putTargetWithTexture(FLESHIFICATION_EMERALD_ORE.get(), 0xa3ff75, true, ShowType.SPELUNKER, Items.EMERALD);
 
 
         //铁矿
-        putTarget(Blocks.IRON_ORE, 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
-        putTarget(Blocks.DEEPSLATE_IRON_ORE, 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
-        putTarget(CORRUPTION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
-        putTarget(SANCTIFICATION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
-        putTarget(FLESHIFICATION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
+        putTargetWithTexture(Blocks.IRON_ORE, 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
+        putTargetWithTexture(Blocks.DEEPSLATE_IRON_ORE, 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
+        putTargetWithTexture(CORRUPTION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
+        putTargetWithTexture(SANCTIFICATION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
+        putTargetWithTexture(FLESHIFICATION_IRON_ORE.get(), 0xbfae8f, true, ShowType.SPELUNKER, Items.RAW_IRON);
 
 
         //金矿
-        putTarget(Blocks.GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
-        putTarget(Blocks.DEEPSLATE_GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
-        putTarget(CORRUPTION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
-        putTarget(SANCTIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
-        putTarget(FLESHIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
-        putTarget(Blocks.GILDED_BLACKSTONE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
-        putTarget(Blocks.NETHER_GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTargetWithTexture(Blocks.GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTargetWithTexture(Blocks.DEEPSLATE_GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTargetWithTexture(CORRUPTION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTargetWithTexture(SANCTIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTargetWithTexture(FLESHIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTargetWithTexture(Blocks.GILDED_BLACKSTONE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
+        putTargetWithTexture(Blocks.NETHER_GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER, Items.RAW_GOLD);
 
 
         //煤矿
-        putTarget(Blocks.COAL_ORE, 0x555555, false, ShowType.SPELUNKER, Items.COAL);
-        putTarget(Blocks.DEEPSLATE_COAL_ORE, 0x555555, false, ShowType.SPELUNKER, Items.COAL);
-        putTarget(CORRUPTION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER, Items.COAL);
-        putTarget(SANCTIFICATION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER, Items.COAL);
-        putTarget(FLESHIFICATION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER, Items.COAL);
+        putTargetWithTexture(Blocks.COAL_ORE, 0x555555, false, ShowType.SPELUNKER, Items.COAL);
+        putTargetWithTexture(Blocks.DEEPSLATE_COAL_ORE, 0x555555, false, ShowType.SPELUNKER, Items.COAL);
+        putTargetWithTexture(CORRUPTION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER, Items.COAL);
+        putTargetWithTexture(SANCTIFICATION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER, Items.COAL);
+        putTargetWithTexture(FLESHIFICATION_COAL_ORE.get(), 0x555555, true, ShowType.SPELUNKER, Items.COAL);
 
         //铜矿
-        putTarget(Blocks.COPPER_ORE, 0x97502d, false, ShowType.SPELUNKER, Items.RAW_COPPER);
-        putTarget(Blocks.DEEPSLATE_COPPER_ORE, 0x97502d, false, ShowType.SPELUNKER, Items.RAW_COPPER);
-        putTarget(CORRUPTION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER, Items.RAW_COPPER);
-        putTarget(SANCTIFICATION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER, Items.RAW_COPPER);
-        putTarget(FLESHIFICATION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER, Items.RAW_COPPER);
+        putTargetWithTexture(Blocks.COPPER_ORE, 0x97502d, false, ShowType.SPELUNKER, Items.RAW_COPPER);
+        putTargetWithTexture(Blocks.DEEPSLATE_COPPER_ORE, 0x97502d, false, ShowType.SPELUNKER, Items.RAW_COPPER);
+        putTargetWithTexture(CORRUPTION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER, Items.RAW_COPPER);
+        putTargetWithTexture(SANCTIFICATION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER, Items.RAW_COPPER);
+        putTargetWithTexture(FLESHIFICATION_COPPER_ORE.get(), 0x97502d, true, ShowType.SPELUNKER, Items.RAW_COPPER);
 
         //锡矿
         putMaterialTarget(TIN_ORE.get(), 0x96926e, false, ShowType.SPELUNKER, RAW_TIN);
@@ -315,18 +318,18 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
 
         // 青金石
-        putTarget(Blocks.LAPIS_ORE, 0x687bff, false, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
-        putTarget(Blocks.DEEPSLATE_LAPIS_ORE, 0x687bff, false, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
-        putTarget(CORRUPTION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
-        putTarget(SANCTIFICATION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
-        putTarget(FLESHIFICATION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
+        putTargetWithTexture(Blocks.LAPIS_ORE, 0x687bff, false, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
+        putTargetWithTexture(Blocks.DEEPSLATE_LAPIS_ORE, 0x687bff, false, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
+        putTargetWithTexture(CORRUPTION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
+        putTargetWithTexture(SANCTIFICATION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
+        putTargetWithTexture(FLESHIFICATION_LAPIS_ORE.get(), 0x687bff, true, ShowType.SPELUNKER, Items.LAPIS_LAZULI);
 
         // 红石
-        putTarget(Blocks.REDSTONE_ORE, 0x7d0000, false, ShowType.SPELUNKER, Items.REDSTONE);
-        putTarget(Blocks.DEEPSLATE_REDSTONE_ORE, 0x7d0000, false, ShowType.SPELUNKER, Items.REDSTONE);
-        putTarget(CORRUPTION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
-        putTarget(SANCTIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
-        putTarget(FLESHIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
+        putTargetWithTexture(Blocks.REDSTONE_ORE, 0x7d0000, false, ShowType.SPELUNKER, Items.REDSTONE);
+        putTargetWithTexture(Blocks.DEEPSLATE_REDSTONE_ORE, 0x7d0000, false, ShowType.SPELUNKER, Items.REDSTONE);
+        putTargetWithTexture(CORRUPTION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
+        putTargetWithTexture(SANCTIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
+        putTargetWithTexture(FLESHIFICATION_REDSTONE_ORE.get(), 0x7d0000, true, ShowType.SPELUNKER, Items.REDSTONE);
 
         // 化石对标
         putMaterialTarget(COLD_CRYSTAL_ORE.get(), 0x3db7b0, true, ShowType.SPELUNKER,COLD_CRYSTAL);
@@ -338,7 +341,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putMaterialTarget(ASH_HELLSTONE.get(), 0xea650e, true, ShowType.SPELUNKER, RAW_HELLSTONE);
 
         // 石英
-        putTarget(Blocks.NETHER_QUARTZ_ORE, 0xe2ccbc, true, ShowType.SPELUNKER, Items.QUARTZ);
+        putTargetWithTexture(Blocks.NETHER_QUARTZ_ORE, 0xe2ccbc, true, ShowType.SPELUNKER, Items.QUARTZ);
 
         // 新三矿 todo仅敲除祭坛后可探测
         putMaterialTarget(DEEPSLATE_COBALT_ORE.get(), 0x0060e9, true, ShowType.SPELUNKER, RAW_COBALT);
@@ -354,13 +357,13 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(Blocks.STONE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
         putTarget(STONE_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(INSTANTANEOUS_EXPLOSION_TNT.get(), 0xff4600, true, ShowType.DANGER);
-//            putTarget(BoulderBlock.Variant.NORMAL.get(), 0xff4600,true, ShowType.DANGER);
+//            putTargetWithTexture(BoulderBlock.Variant.NORMAL.get(), 0xff4600,true, ShowType.DANGER);
         putTarget(SWITCH.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(STONE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(DEEPSLATE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
         putTarget(DEEPSLATE_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.TNT, 0xff4600, true, ShowType.DANGER);
+        putTargetWithItemRender(Blocks.TNT, 0xff4600, true, ShowType.DANGER, Items.TNT);
         putTarget(Blocks.TRIPWIRE, 0xff4600, true, ShowType.DANGER);
         putTarget(Blocks.SCULK_SHRIEKER, 0xff4600, true, ShowType.DANGER);
         putTarget(Blocks.SCULK_SENSOR, 0xff4600, true, ShowType.DANGER);
@@ -403,19 +406,22 @@ public class SpelunkerHelper extends AbstractBufferManager {
     }
 
     private void putTarget(Block block, int rgb, boolean always, ShowType showType) {
-        putTarget(block, rgb, always, showType, Items.AIR);
+        putTargetWithTexture(block, rgb, always, showType, Items.AIR);
+    }
+    private void putTargetWithItemRender(Block block, int rgb, boolean always, ShowType showType, Item showItem) {
+        targets.put(block, new Entry(rgb, always, showType, showItem.getDefaultInstance(), EMPTY,false));
     }
     /**
      * 原版用的
      */
-    private void putTarget(Block block, int rgb, boolean always, ShowType showType, Item showItem) {
-        targets.put(block, new Entry(rgb, always, showType, getResource(showItem, "item/")));
+    private void putTargetWithTexture(Block block, int rgb, boolean always, ShowType showType, Item showItem) {
+        targets.put(block, new Entry(rgb, always, showType, ItemStack.EMPTY, getResource(showItem, "item/"), true));
     }
     /**
      * 咱汇流用的，材料部分
      */
     private void putMaterialTarget(Block block, int rgb, boolean always, ShowType showType, DeferredItem<?> item) {
-        targets.put(block, new Entry(rgb, always, showType, getResource(item.get(), "item/materials/")));
+        targets.put(block, new Entry(rgb, always, showType, ItemStack.EMPTY, getResource(item.get(), "item/materials/"), true));
     }
 
     private static ResourceLocation getResource(Item item, String prefixAfterTexture) {
@@ -425,9 +431,10 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
     /**
      * 咱的，特殊的图标(因为有方块种的单独要设置), 这里不再直接对应键名!
+     *
      */
     private void putWithSpecialIconTarget(Block block, int rgb, boolean always, ShowType showType, String iconName) {
-        targets.put(block, new Entry(rgb, always, showType, ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "textures/item/icon/" + iconName)));
+        targets.put(block, new Entry(rgb, always, showType, ItemStack.EMPTY, ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "textures/item/icon/" + iconName), true));
     }
 
 
@@ -435,6 +442,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
      * 刷新周围的矿
      */
     private void refreshBlocks() {
+        if (tracker == null || tracker.isClosed()) tracker = TrackersMonitor.getTracker();
         for (var n : blockMap.entrySet()) {
             n.getValue().clear();
         }
@@ -583,7 +591,11 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
     private void tryComputePointers(BlockPos blockPos, Entry target) {
         if (tracker != null) { // 创建对应指针
-            COMPONENT_BUILDER.setIcon1(target != null ? target.showItemRL : EMPTY);
+            if (target != null && !target.isLocation) {
+                COMPONENT_BUILDER.setIcon1(target.showItem);
+            } else {
+                COMPONENT_BUILDER.setIcon1(target != null ? target.showIcon : EMPTY);
+            }
 
             cachedPointers.compute(blockPos, (pos, controller) -> {
                 if (controller == null) {

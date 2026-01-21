@@ -712,6 +712,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.loom", "Loom");
         add("title.confluence.dye_vat", "Dye Vat");
         add("title.confluence.brewing_stand_terra_potion", "Use the Brewing Stand to craft Terra Potions");
+        add("title.confluence.armor_set_bonus", "Armor Set Bonus");
 
         add("button.confluence.dye_vat", "Dye Vat");
         add("button.confluence.dye_mix", "Dye Mix");

@@ -16,7 +16,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
 import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
-import org.jetbrains.annotations.Nullable;
 
 public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<HardmodeAnvilRecipe>> {
     public static final RecipeType<RecipeHolder<HardmodeAnvilRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("hardmode_anvil"));
@@ -50,7 +49,7 @@ public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<Hardm
     }
 
     @Override
-    public @Nullable IDrawable getIcon() {
+    public IDrawable getIcon() {
         return icon;
     }
 
@@ -68,7 +67,7 @@ public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<Hardm
     }
 
     @Override
-    public @Nullable ResourceLocation getRegistryName(RecipeHolder<HardmodeAnvilRecipe> recipe) {
+    public ResourceLocation getRegistryName(RecipeHolder<HardmodeAnvilRecipe> recipe) {
         return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

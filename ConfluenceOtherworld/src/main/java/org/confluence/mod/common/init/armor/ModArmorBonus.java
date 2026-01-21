@@ -269,7 +269,7 @@ public final class ModArmorBonus {
                     .build());
         });
 
-        /// 巫师套装
+        /// todo 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
 
         ModLoader.postEvent(new RegisterArmorSetBonusEvent(ModArmorBonus::register));
@@ -350,6 +350,10 @@ public final class ModArmorBonus {
         return NeoForge.EVENT_BUS.post(new GetArmorSetBonusDataEvent(player, key, VALUE_MAP.get(key))).getNeoData();
     }
 
+    public static Object2ObjectMap<ArmorSetBonusKey, ArmorSetBonusData> getValueMap() {
+        return VALUE_MAP;
+    }
+
     public static void addBonusTooltip(@Nullable Player player, ItemStack itemStack, List<Component> toolTip) {
         if (player == null) return;
         ArmorSetBonusKey key = PlayerSpecialData.of(player).getArmorSetBonusKey();
@@ -420,25 +424,31 @@ public final class ModArmorBonus {
             projectile.shoot(position.x - offset.x, position.y - offset.y, position.z - offset.z, 1.2F, 0.0F);
             player.level().addFreshEntity(projectile);
         }
-        if (player instanceof IServerPlayer serverPlayer && hasType(player, TITANIUM$SHARDS))
-            titaniumShards:{
-                if (player.hasEffect(ModEffects.TITANIUM_BARRIER)) break titaniumShards;
-                if (damageSource.getDirectEntity() instanceof TitaniumShardsProjectile)
+        if (player instanceof IServerPlayer serverPlayer && hasType(player, TITANIUM$SHARDS)) {
+            titaniumShards:
+            {
+                if (player.hasEffect(ModEffects.TITANIUM_BARRIER) ||
+                        damageSource.getDirectEntity() instanceof TitaniumShardsProjectile ||
+                        serverPlayer.confluence$hasTitaniumShards()
+                ) {
                     break titaniumShards;
-                if (serverPlayer.confluence$hasTitaniumShards()) break titaniumShards;
+                }
 
                 player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
                 TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
                 serverPlayer.confluence$setTitaniumShards(projectile);
                 player.level().addFreshEntity(projectile);
             }
+        }
         if (damageSource.is(Tags.DamageTypes.IS_MAGIC) && isArmorSet(player, COLD_CRYSTAL_SET)) {
             victim.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
         }
     }
 
     public static void onBreath(LivingBreatheEvent event) {
-        if (event.canBreathe() || !(event.getEntity() instanceof Player player)) return;
+        if (event.canBreathe() || !(event.getEntity() instanceof Player player)) {
+            return;
+        }
 
         if (player.getAirSupply() > 0 && player.level().getGameTime() % 20 == 0 && isArmorSet(player, HEIM_SET)) { // 延长5%
             event.setConsumeAirAmount(0);

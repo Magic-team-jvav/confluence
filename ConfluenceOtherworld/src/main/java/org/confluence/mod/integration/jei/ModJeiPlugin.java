@@ -33,6 +33,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.menu.*;
@@ -83,7 +84,10 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new LoomCategory(jeiHelpers));
         registration.addRecipeCategories(new DyeVatCategory(jeiHelpers));
         registration.addRecipeCategories(new CrystalBallCategory(jeiHelpers));
-        registration.addRecipeCategories(new BrewingStandTerraPotionCategory());
+        if (StartupConfigs.brewingStandRecipe()) {
+            registration.addRecipeCategories(new BrewingStandTerraPotionCategory());
+        }
+        registration.addRecipeCategories(new ArmorSetBonusCategory(jeiHelpers));
     }
 
     @Override
@@ -113,6 +117,7 @@ public final class ModJeiPlugin implements IModPlugin {
         if (StartupConfigs.brewingStandRecipe()) {
             registration.addRecipes(BrewingStandTerraPotionCategory.TYPE, BrewingStandTerraPotionCategory.Recipe.getAllRecipes());
         }
+        registration.addRecipes(ArmorSetBonusCategory.TYPE, ModArmorBonus.getValueMap().entrySet().stream().map(ArmorSetBonusCategory.Holder::new).toList());
     }
 
     @Override
@@ -141,7 +146,9 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.LOOM, LoomCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.DYE_VAT, DyeVatCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.CRYSTAL_BALL, CrystalBallCategory.TYPE);
-        registration.addRecipeCatalyst(Items.BREWING_STAND, BrewingStandTerraPotionCategory.TYPE);
+        if (StartupConfigs.brewingStandRecipe()) {
+            registration.addRecipeCatalyst(Items.BREWING_STAND, BrewingStandTerraPotionCategory.TYPE);
+        }
     }
 
     @Override

@@ -18,7 +18,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackLinkedSet;
 import net.minecraft.world.item.Items;
-import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.MaterialItems;
@@ -29,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BrewingStandTerraPotionCategory implements IRecipeCategory<BrewingStandTerraPotionCategory.Recipe> {
-    public static final RecipeType<Recipe> TYPE = RecipeType.create(ConfluenceMagicLib.CONFLUENCE_ID, "brewing_stand_terra_potion", Recipe.class);
+    public static final RecipeType<Recipe> TYPE = RecipeType.create(Confluence.MODID, "brewing_stand_terra_potion", Recipe.class);
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/brewing_stand_terra_potion.png");
     private final IDrawable icon;
 

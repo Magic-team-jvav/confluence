@@ -15,7 +15,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
-import org.jetbrains.annotations.Nullable;
 
 public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>> {
     public static final RecipeType<RecipeHolder<AltarRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("altar"));
@@ -62,7 +61,7 @@ public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>>
     }
 
     @Override
-    public @Nullable ResourceLocation getRegistryName(RecipeHolder<AltarRecipe> recipe) {
+    public ResourceLocation getRegistryName(RecipeHolder<AltarRecipe> recipe) {
         return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

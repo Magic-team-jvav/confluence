@@ -740,6 +740,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.loom", "织布机");
         add("title.confluence.dye_vat", "染缸");
         add("title.confluence.brewing_stand_terra_potion", "使用炼药台制作泰拉药剂");
+        add("title.confluence.armor_set_bonus", "盔甲套装奖励");
 
         add("button.confluence.dye_vat", "染缸");
         add("button.confluence.dye_mix", "混色");

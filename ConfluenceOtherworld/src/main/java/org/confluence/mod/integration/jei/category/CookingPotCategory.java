@@ -110,7 +110,7 @@ public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingP
     }
 
     @Override
-    public @Nullable ResourceLocation getRegistryName(RecipeHolder<CookingPotRecipe> recipe) {
+    public ResourceLocation getRegistryName(RecipeHolder<CookingPotRecipe> recipe) {
         return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

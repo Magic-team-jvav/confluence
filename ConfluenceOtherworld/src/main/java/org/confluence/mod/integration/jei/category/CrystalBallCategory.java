@@ -17,7 +17,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.CrystalBallRecipe;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
-import org.jetbrains.annotations.Nullable;
 
 public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<CrystalBallRecipe>> {
     public static final RecipeType<RecipeHolder<CrystalBallRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("crystal_ball"));
@@ -69,7 +68,7 @@ public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<Crystal
     }
 
     @Override
-    public @Nullable ResourceLocation getRegistryName(RecipeHolder<CrystalBallRecipe> recipe) {
+    public ResourceLocation getRegistryName(RecipeHolder<CrystalBallRecipe> recipe) {
         return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

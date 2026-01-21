@@ -16,7 +16,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.SawmillRecipe;
 import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
-import org.jetbrains.annotations.Nullable;
 
 public class SawmillCategory implements IRecipeCategory<RecipeHolder<SawmillRecipe>> {
     public static final RecipeType<RecipeHolder<SawmillRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("sawmill"));
@@ -40,7 +39,7 @@ public class SawmillCategory implements IRecipeCategory<RecipeHolder<SawmillReci
     }
 
     @Override
-    public @Nullable IDrawable getIcon() {
+    public IDrawable getIcon() {
         return icon;
     }
 
@@ -68,7 +67,7 @@ public class SawmillCategory implements IRecipeCategory<RecipeHolder<SawmillReci
     }
 
     @Override
-    public @Nullable ResourceLocation getRegistryName(RecipeHolder<SawmillRecipe> recipe) {
+    public ResourceLocation getRegistryName(RecipeHolder<SawmillRecipe> recipe) {
         return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

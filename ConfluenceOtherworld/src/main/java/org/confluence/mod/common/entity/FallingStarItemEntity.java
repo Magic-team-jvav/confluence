@@ -57,34 +57,38 @@ public class FallingStarItemEntity extends ItemEntity {
 
     @Override
     public void tick() {
-        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
-            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
-            emitter.attachEntity(this);
-            PSGameClient.LOADER.addEmitter(emitter, false);
+        if (level().isClientSide) {
+            if ((emitter == null || emitter.isRemoved())) {
+                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
+                emitter.attachEntity(this);
+                PSGameClient.LOADER.addEmitter(emitter, false);
+            }
+            float y = Mth.sin(getAge() / 10.0F + bobOffs) * 0.1F;
+            emitter.offsetPos = new Vec3(0, 0.35F + y, 0);
         }
         super.tick();
         if (LibDateUtils.isDay(level())) {
             onRemove();
-        } else {
-            if (onGround()) {
-                if (hasPickUpDelay()) setNoPickUpDelay();
-                if (!wasOnGround()) {
-                    setWasOnGround(true);
-                    level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR_LANDS.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
-                }
-            } else if (!wasOnGround() && !level().getBlockState(blockPosition().below(6)).isAir()) {
-                level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
-            } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
-                if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
-                    entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
-                    onRemove();
-                    return;
-                }
-            }
-            if (!getInBlockState().isAir()) {
+            return;
+        }
+        if (onGround()) {
+            if (hasPickUpDelay()) setNoPickUpDelay();
+            if (!wasOnGround()) {
                 setWasOnGround(true);
-                setOnGround(true);
+                level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR_LANDS.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
             }
+        } else if (!wasOnGround() && !level().getBlockState(blockPosition().below(6)).isAir()) {
+            level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
+        } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
+            if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
+                entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
+                onRemove();
+                return;
+            }
+        }
+        if (!getInBlockState().isAir()) {
+            setWasOnGround(true);
+            setOnGround(true);
         }
     }
 

@@ -28,7 +28,7 @@ public class FallingStarRenderer extends ItemEntityRenderer {
         float delta = ((float) itemEntity.level().getGameTime() + partialTick) / 200.0F;
         VertexConsumer vertexConsumer = multiBufferSource.getBuffer(RenderType.lightning());
         poseStack.pushPose();
-        float y = Mth.sin(((float) itemEntity.getAge() + partialTick) / 10.0F + itemEntity.bobOffs) * 0.1F;
+        float y = Mth.sin((itemEntity.getAge() + partialTick) / 10.0F + itemEntity.bobOffs) * 0.1F;
         poseStack.translate(0.0F, 0.35F + y, 0.0F);
 
         for (int i = 0; i < 6; i++) {

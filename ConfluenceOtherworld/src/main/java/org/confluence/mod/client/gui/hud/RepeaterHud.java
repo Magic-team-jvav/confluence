@@ -38,7 +38,7 @@ public class RepeaterHud implements LayeredDraw.Layer {
 
         float v = width / 2f;
         float v1 = height / 2f;
-        pose.translate(v, v1, 0);
+        pose.translate(x + v, y + v1, 0);
         ItemStack itemStack = player.getMainHandItem();
 
         float end = 0;
@@ -60,8 +60,8 @@ public class RepeaterHud implements LayeredDraw.Layer {
         igui.confluence$setOldRepeaterCrosshairAngle(v2);
         igui.confluence$setScale(Math.max(1, igui.confluence$getScale() - timeDeltaPartialTick));
 
-        pose.translate(v, v1, 0);
-        original.call(instance, sprite, x, y, width, height);
+        pose.translate(-v, -v1, 0);
+        original.call(instance, sprite, 0, 0, width, height);
 
         pose.popPose();
     }

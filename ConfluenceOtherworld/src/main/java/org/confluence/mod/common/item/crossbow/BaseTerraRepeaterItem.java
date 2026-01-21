@@ -289,8 +289,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
             vector3f1 = new Vector3f(vector3f).cross(vec3.toVector3f());
         }
 
-        Vector3f vector3f2 = new Vector3f(vector3f).rotateAxis((float) (Math.PI / 2), vector3f1.x, vector3f1.y, vector3f1.z);
-        return new Vector3f(vector3f).rotateAxis(angle * (float) (Math.PI / 180.0), vector3f2.x, vector3f2.y, vector3f2.z);
+        Vector3f vector3f2 = new Vector3f(vector3f).rotateAxis(Mth.HALF_PI, vector3f1.x, vector3f1.y, vector3f1.z);
+        return new Vector3f(vector3f).rotateAxis(angle * Mth.DEG_TO_RAD, vector3f2.x, vector3f2.y, vector3f2.z);
     }
 
     protected float getShootingPower(RepeaterContentsComponentHandler handler, Player player, InteractionHand hand) {
@@ -425,7 +425,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
             vector3f = getProjectileShotVector(shooter, new Vec3(d0, d3, d1), angle);
         } else {
             Vec3 vec3 = shooter.getUpVector(1.0F);
-            Quaternionf quaternionf = new Quaternionf().setAngleAxis(angle * (float) (Math.PI / 180.0), vec3.x, vec3.y, vec3.z);
+            Quaternionf quaternionf = new Quaternionf().setAngleAxis(angle * Mth.DEG_TO_RAD, vec3.x, vec3.y, vec3.z);
             Vec3 vec31 = shooter.getViewVector(1.0F);
             vector3f = vec31.toVector3f().rotate(quaternionf);
         }

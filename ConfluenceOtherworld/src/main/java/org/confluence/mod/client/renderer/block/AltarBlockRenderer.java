@@ -41,7 +41,7 @@ public class AltarBlockRenderer extends GeoBlockRenderer<AltarBlock.BEntity> {
         int itemCount = items.size();
 
         double radius = 0.4 + 0.25 * Math.sqrt(itemCount);
-        double rotate = Math.PI * 2 / itemCount;
+        double rotate = Math.TAU / itemCount;
         float scale = 1;
 
         int i = 0;

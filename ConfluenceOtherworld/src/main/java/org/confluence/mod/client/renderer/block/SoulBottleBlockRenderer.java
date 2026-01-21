@@ -19,10 +19,10 @@ import static org.confluence.lib.util.RenderUtils.drawCube;
 public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInABottleBlock.BEntity> {
 
     private final RandomSource RANDOM = RandomSource.create();
-    private double ROTATE00 = RANDOM.nextDouble() * Math.PI * 2;
-    private double ROTATE01 = RANDOM.nextDouble() * Math.PI * 2;
-    private double ROTATE10 = RANDOM.nextDouble() * Math.PI * 2;
-    private double ROTATE11 = RANDOM.nextDouble() * Math.PI * 2;
+    private double ROTATE00 = RANDOM.nextDouble() * Math.TAU;
+    private double ROTATE01 = RANDOM.nextDouble() * Math.TAU;
+    private double ROTATE10 = RANDOM.nextDouble() * Math.TAU;
+    private double ROTATE11 = RANDOM.nextDouble() * Math.TAU;
     private double ROTATE1OFFSET = RANDOM.nextDouble() * 0.05 + 0.075;
     private double[] SIZE = new double[]{RANDOM.nextDouble(), RANDOM.nextDouble()};
     private double[] SIZE_OFFSET = new double[]{RANDOM.nextDouble() * 0.05 + 0.075, RANDOM.nextDouble() * 0.05 + 0.075};

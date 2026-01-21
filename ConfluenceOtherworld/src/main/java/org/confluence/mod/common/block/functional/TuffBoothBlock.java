@@ -1,6 +1,9 @@
 package org.confluence.mod.common.block.functional;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -29,51 +32,38 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
-import java.util.Map;
+import java.util.Objects;
 
 public class TuffBoothBlock extends BaseEntityBlock {
-
     public static final IntegerProperty COLOR = IntegerProperty.create("color", 0, 16); // 名字为 "color"，范围 0-15
-    public static final BooleanProperty SHOW_NAME = BooleanProperty.create("show_name"); // 复用Minecraft原版的 "show_name" 属性
-    private static final VoxelShape SHAPE = Shapes.or(box(1, 0, 1, 15, 3, 15), box(3, 3, 3, 13, 13, 13), box(0, 13, 0, 16, 16, 16), box(1, 3, 12, 4, 5, 15), box(12, 3, 12, 15, 5, 15), box(12, 3, 1, 15, 5, 4), box(1, 3, 1, 4, 5, 4));
-    private static final Map<Item, Integer> CARPET_TO_COLOR = Map.ofEntries(
-            Map.entry(Items.WHITE_CARPET, 1),
-            Map.entry(Items.LIGHT_GRAY_CARPET, 2),
-            Map.entry(Items.GRAY_CARPET, 3),
-            Map.entry(Items.BLACK_CARPET, 4),
-            Map.entry(Items.BROWN_CARPET, 5),
-            Map.entry(Items.RED_CARPET, 6),
-            Map.entry(Items.ORANGE_CARPET, 7),
-            Map.entry(Items.YELLOW_CARPET, 8),
-            Map.entry(Items.LIME_CARPET, 9),
-            Map.entry(Items.GREEN_CARPET, 10),
-            Map.entry(Items.CYAN_CARPET, 11),
-            Map.entry(Items.LIGHT_BLUE_CARPET, 12),
-            Map.entry(Items.BLUE_CARPET, 13),
-            Map.entry(Items.PURPLE_CARPET, 14),
-            Map.entry(Items.MAGENTA_CARPET, 15),
-            Map.entry(Items.PINK_CARPET, 16)
+    public static final BooleanProperty SHOW_NAME = BooleanProperty.create("show_name");
+    private static final VoxelShape SHAPE = Shapes.or(
+            box(1, 0, 1, 15, 3, 15),
+            box(3, 3, 3, 13, 13, 13),
+            box(0, 13, 0, 16, 16, 16),
+            box(1, 3, 12, 4, 5, 15),
+            box(12, 3, 12, 15, 5, 15),
+            box(12, 3, 1, 15, 5, 4),
+            box(1, 3, 1, 4, 5, 4)
     );
-    private static final Item[] COLOR_TO_CARPET = new Item[17];
-
-    static {
-        COLOR_TO_CARPET[1] = Items.WHITE_CARPET;
-        COLOR_TO_CARPET[2] = Items.LIGHT_GRAY_CARPET;
-        COLOR_TO_CARPET[3] = Items.GRAY_CARPET;
-        COLOR_TO_CARPET[4] = Items.BLACK_CARPET;
-        COLOR_TO_CARPET[5] = Items.BROWN_CARPET;
-        COLOR_TO_CARPET[6] = Items.RED_CARPET;
-        COLOR_TO_CARPET[7] = Items.ORANGE_CARPET;
-        COLOR_TO_CARPET[8] = Items.YELLOW_CARPET;
-        COLOR_TO_CARPET[9] = Items.LIME_CARPET;
-        COLOR_TO_CARPET[10] = Items.GREEN_CARPET;
-        COLOR_TO_CARPET[11] = Items.CYAN_CARPET;
-        COLOR_TO_CARPET[12] = Items.LIGHT_BLUE_CARPET;
-        COLOR_TO_CARPET[13] = Items.BLUE_CARPET;
-        COLOR_TO_CARPET[14] = Items.PURPLE_CARPET;
-        COLOR_TO_CARPET[15] = Items.MAGENTA_CARPET;
-        COLOR_TO_CARPET[16] = Items.PINK_CARPET;
-    }
+    private static final BiMap<Item, Integer> CARPET_TO_COLOR = Util.make(HashBiMap.create(), map -> {
+        map.put(Items.WHITE_CARPET, 1);
+        map.put(Items.LIGHT_GRAY_CARPET, 2);
+        map.put(Items.GRAY_CARPET, 3);
+        map.put(Items.BLACK_CARPET, 4);
+        map.put(Items.BROWN_CARPET, 5);
+        map.put(Items.RED_CARPET, 6);
+        map.put(Items.ORANGE_CARPET, 7);
+        map.put(Items.YELLOW_CARPET, 8);
+        map.put(Items.LIME_CARPET, 9);
+        map.put(Items.GREEN_CARPET, 10);
+        map.put(Items.CYAN_CARPET, 11);
+        map.put(Items.LIGHT_BLUE_CARPET, 12);
+        map.put(Items.BLUE_CARPET, 13);
+        map.put(Items.PURPLE_CARPET, 14);
+        map.put(Items.MAGENTA_CARPET, 15);
+        map.put(Items.PINK_CARPET, 16);
+    });
 
     public TuffBoothBlock(Properties p_309186_) {
         super(p_309186_);
@@ -118,9 +108,9 @@ public class TuffBoothBlock extends BaseEntityBlock {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stackToDrop);
             }
             if (state.getValue(SHOW_NAME))
-                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.NAME_TAG));
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), Items.NAME_TAG.getDefaultInstance());
             if (state.getValue(COLOR) != 0)
-                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(COLOR_TO_CARPET[state.getValue(COLOR)]));
+                Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), Objects.requireNonNull(CARPET_TO_COLOR.inverse().get(state.getValue(COLOR))).getDefaultInstance());
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
@@ -128,7 +118,7 @@ public class TuffBoothBlock extends BaseEntityBlock {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (level.isClientSide) {
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            return ItemInteractionResult.sidedSuccess(true);
         }
 
         if (!(level.getBlockEntity(pos) instanceof TuffBoothBlockEntity boothEntity)) {
@@ -157,13 +147,13 @@ public class TuffBoothBlock extends BaseEntityBlock {
             if (!stack.isEmpty()) {
                 if (CARPET_TO_COLOR.containsKey(stack.getItem())) {
                     int currentColor = state.getValue(COLOR);
-                    int newColor = CARPET_TO_COLOR.get(stack.getItem());
+                    int newColor = Objects.requireNonNull(CARPET_TO_COLOR.get(stack.getItem()));
 
                     if (currentColor != newColor) {
                         stack.shrink(1);
 
                         if (currentColor != 0) {
-                            ItemStack oldCarpet = new ItemStack(COLOR_TO_CARPET[currentColor]);
+                            ItemStack oldCarpet = Objects.requireNonNull(CARPET_TO_COLOR.inverse().get(currentColor)).getDefaultInstance();
                             if (!player.getInventory().add(oldCarpet)) {
                                 player.drop(oldCarpet, false);
                             }
@@ -183,7 +173,7 @@ public class TuffBoothBlock extends BaseEntityBlock {
 
                 int currentColor = state.getValue(COLOR);
                 if (currentColor != 0) {
-                    ItemStack carpetStack = new ItemStack(COLOR_TO_CARPET[currentColor]);
+                    ItemStack carpetStack = Objects.requireNonNull(CARPET_TO_COLOR.inverse().get(currentColor)).getDefaultInstance();
                     if (!player.getInventory().add(carpetStack)) {
                         player.drop(carpetStack, false);
                     }
@@ -192,7 +182,7 @@ public class TuffBoothBlock extends BaseEntityBlock {
                 }
 
                 if (newState.getValue(SHOW_NAME)) {
-                    ItemStack nameTagStack = new ItemStack(Items.NAME_TAG);
+                    ItemStack nameTagStack = Items.NAME_TAG.getDefaultInstance();
                     if (!player.getInventory().add(nameTagStack)) {
                         player.drop(nameTagStack, false);
                     }
@@ -207,7 +197,7 @@ public class TuffBoothBlock extends BaseEntityBlock {
         }
 
         boothEntity.setChanged();
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(false);
     }
 
     @Override
@@ -266,4 +256,3 @@ public class TuffBoothBlock extends BaseEntityBlock {
         }
     }
 }
-

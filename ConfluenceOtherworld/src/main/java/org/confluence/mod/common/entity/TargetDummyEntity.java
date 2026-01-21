@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.terra_curio.client.handler.InformationHandler;
+import org.confluence.terra_curio.client.handler.DPSMeter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -74,9 +74,7 @@ public class TargetDummyEntity extends LivingEntity {
         return super.hurt(source, amount);
     }
 
-    /**
-     * 记录伤害数据
-     */
+    /// 记录伤害数据
     private void recordDamage(float amount) {
         maxDamageAmount = Math.max(maxDamageAmount, amount);
         minDamageAmount = amount > 0 ? Math.min(minDamageAmount, amount) : amount; // 修正最小伤害计算逻辑
@@ -107,9 +105,7 @@ public class TargetDummyEntity extends LivingEntity {
         super.tick();
     }
 
-    /**
-     * 更新生命值
-     */
+    /// 更新生命值
     private void updateHealth() {
         if (getHealth() != getMaxHealth()) {
             damage = getMaxHealth() - getHealth();
@@ -119,37 +115,28 @@ public class TargetDummyEntity extends LivingEntity {
         }
     }
 
-    /**
-     * 更新伤害统计
-     */
+    /// 更新伤害统计
     private void updateDamageStats() {
         resetTimer++;
     }
 
-    /**
-     * 处理客户端显示
-     */
+    /// 处理客户端显示
     private void handleClientDisplay() {
         if (level().isClientSide) {
-            var dps = InformationHandler.getInformation()
-                    .computeIfAbsent(InformationHandler.DPS_METER, (a) -> Component.literal(""));
+            String dps = "%.2f".formatted(DPSMeter.getDPS(level().getGameTime()));
             String text = String.format("Max: %.2f, Min: %.2f, Total: %.2f", maxDamageAmount, minDamageAmount == Float.MAX_VALUE ? 0.0f : minDamageAmount, totalDamageAmount);
             Minecraft.getInstance().gui.setOverlayMessage(Component.literal(text).append(", ").append(dps), false);
         }
     }
 
-    /**
-     * 处理重置逻辑
-     */
+    /// 处理重置逻辑
     private void handleResetLogic() {
         if (resetTimer > RESET_INTERVAL_TICKS) {
             resetDamageStats();
         }
     }
 
-    /**
-     * 重置伤害统计数据
-     */
+    /// 重置伤害统计数据
     private void resetDamageStats() {
         totalDamageAmount = 0;
         minDamageAmount = Float.MAX_VALUE; // 初始化为最大值，以便第一次比较能正确设置最小值

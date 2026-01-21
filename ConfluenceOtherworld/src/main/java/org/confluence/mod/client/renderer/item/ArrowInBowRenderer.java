@@ -2,6 +2,7 @@ package org.confluence.mod.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.FireworkRocketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -115,13 +116,13 @@ public final class ArrowInBowRenderer {
             if (arrowItem.getItem() instanceof FireworkRocketItem) {
                 poseStack.translate(0.12, 0.09, -0.11);
                 Quaternionf quaternion = Axis.YN.rotationDegrees(-165);
-                quaternion.rotateX(90 * (float) (Math.PI / 180.0));
+                quaternion.rotateX(Mth.HALF_PI);
                 poseStack.mulPose(quaternion);
                 return;
             }
             poseStack.translate(-0.042, 0.09, -0.11);
             Quaternionf quaternion = Axis.YN.rotationDegrees(-119);
-            quaternion.rotateX(90 * (float) (Math.PI / 180.0));
+            quaternion.rotateX(Mth.HALF_PI);
             poseStack.mulPose(quaternion);
         }
     }

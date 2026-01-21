@@ -49,13 +49,22 @@ public abstract class GuiMixin implements IGui {
     }
 
     @WrapOperation(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", ordinal = 0))
-    private void confluence$repeaterRenderCrosshair(GuiGraphics instance, ResourceLocation sprite, int x, int y, int width, int height, Operation<Void> original, @Local(argsOnly = true) DeltaTracker deltaTracker) {
-        RepeaterHud.renderCrosshair((Gui) (Object) this, instance, sprite, x, y, width, height, original, deltaTracker);
+    private void confluence$repeaterRenderCrosshair(
+            GuiGraphics instance,
+            ResourceLocation sprite,
+            int x,
+            int y,
+            int width,
+            int height,
+            Operation<Void> original,
+            @Local(argsOnly = true) DeltaTracker deltaTracker
+    ) {
+        RepeaterHud.renderCrosshair(confluence$self(), instance, sprite, x, y, width, height, original, deltaTracker);
     }
 
     @Override
     public void confluence$setShooting() {
-        confluence$scale = 3;
+        this.confluence$scale = 3;
     }
 
     @Override
@@ -65,7 +74,7 @@ public abstract class GuiMixin implements IGui {
 
     @Override
     public void confluence$setScale(float scale) {
-        confluence$scale = scale;
+        this.confluence$scale = scale;
     }
 
     @Override
@@ -75,6 +84,6 @@ public abstract class GuiMixin implements IGui {
 
     @Override
     public void confluence$setOldRepeaterCrosshairAngle(float oldRepeaterCrosshairAngle) {
-        confluence$oldRepeaterCrosshairAngle = oldRepeaterCrosshairAngle;
+        this.confluence$oldRepeaterCrosshairAngle = oldRepeaterCrosshairAngle;
     }
 }

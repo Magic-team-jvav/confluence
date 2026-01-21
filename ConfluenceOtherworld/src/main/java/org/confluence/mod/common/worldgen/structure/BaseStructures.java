@@ -2,6 +2,7 @@ package org.confluence.mod.common.worldgen.structure;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import org.confluence.lib.util.VectorUtils;
 import org.joml.Vector3d;
@@ -177,8 +178,8 @@ public class BaseStructures {
         Vector3d rootEnd;
         for (int stickPlace = 0; stickPlace < stickCount; stickPlace++) {
             anCs = 360.0 / stickCount;
-            everyA = anCs * stickPlace / 180 * Math.PI;
-            everyB = ((((double) random.nextInt(110) - 20) * Math.pow((double) random.nextInt(101) / 100, 3)) / 180 * Math.PI);
+            everyA = anCs * stickPlace * Mth.DEG_TO_RAD;
+            everyB = ((((double) random.nextInt(110) - 20) * Math.pow((double) random.nextInt(101) / 100, 3)) * Mth.DEG_TO_RAD);
             length = len + random.nextInt(lenRandom);
             endX = length * Math.cos(everyA) * Math.cos(everyB);
             endY = length * Math.sin(everyB);

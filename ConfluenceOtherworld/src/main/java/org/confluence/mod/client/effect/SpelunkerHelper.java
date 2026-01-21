@@ -46,9 +46,9 @@ import java.util.List;
 
 import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
-import static org.confluence.mod.common.init.item.MaterialItems.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLOCK;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
+import static org.confluence.mod.common.init.item.MaterialItems.*;
 import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock;
 
 
@@ -648,9 +648,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
             float f2 = Mth.lerp(partialTicks, player.oBob, player.bob);
 
             // 注意这里的符号和顺序都与原版相反
-            poseStack.mulPose(Axis.XP.rotationDegrees(-Math.abs(Mth.cos(f1 * (float) Math.PI - 0.2F) * f2) * 5.0F));
-            poseStack.mulPose(Axis.ZP.rotationDegrees(-Mth.sin(f1 * (float) Math.PI) * f2 * 3.0F));
-            poseStack.translate(-Mth.sin(f1 * (float) Math.PI) * f2 * 0.5F, Math.abs(Mth.cos(f1 * (float) Math.PI) * f2), 0.0F);
+            poseStack.mulPose(Axis.XP.rotationDegrees(-Math.abs(Mth.cos(f1 * Mth.PI - 0.2F) * f2) * 5.0F));
+            poseStack.mulPose(Axis.ZP.rotationDegrees(-Mth.sin(f1 * Mth.PI) * f2 * 3.0F));
+            poseStack.translate(-Mth.sin(f1 * Mth.PI) * f2 * 0.5F, Math.abs(Mth.cos(f1 * Mth.PI) * f2), 0.0F);
         }
     }
 }

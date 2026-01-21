@@ -77,7 +77,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 this.gravity = this.entityData.get(DATA_INIT_GRAVITY);
             } else if (DATA_DIRECTION.equals(data)) {
                 direction = new Vec3(this.entityData.get(DATA_DIRECTION));
-                float yaw = (float) Math.atan2(direction.x, direction.z) * (180F / (float) Math.PI);
+                float yaw = (float) Mth.atan2(direction.x, direction.z) * Mth.RAD_TO_DEG;
                 this.setYRot(yaw);
                 yRotO = yaw;
             }

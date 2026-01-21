@@ -1125,7 +1125,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.SMOKE_BOMB.get(),
                 ConsumableItems.GOODIE_BAG.get(),
                 PaintItems.ECHO_COATING.get(),
-                ToolItems.TARGET_DUMMY.get(),
                 ModItems.WHOOPIE_CUSHION.get(),
                 ModItems.TOKYO_TEDDY_BEAR.get(),
                 ModItems.FAILED_SKULL.get(),

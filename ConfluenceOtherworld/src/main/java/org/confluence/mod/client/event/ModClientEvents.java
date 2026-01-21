@@ -54,7 +54,6 @@ import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
-import org.confluence.mod.client.model.entity.TargetDummyModel;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.client.model.entity.fishing.BloodyFishingHookModel;
@@ -66,7 +65,10 @@ import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.particle.*;
 import org.confluence.mod.client.renderer.block.*;
-import org.confluence.mod.client.renderer.entity.*;
+import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
+import org.confluence.mod.client.renderer.entity.EmptyEntityRenderer;
+import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
+import org.confluence.mod.client.renderer.entity.TreasureBagRenderer;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
 import org.confluence.mod.client.renderer.entity.bestiary.SlimeZombieRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
@@ -224,8 +226,6 @@ public final class ModClientEvents {
         event.registerLayerDefinition(GlowingFishingHookModel.COMMON, GlowingFishingHookModel::createCommonLayer);
         event.registerLayerDefinition(GlowingFishingHookModel.GLOWING, GlowingFishingHookModel::createGlowingLayer);
 
-        event.registerLayerDefinition(TargetDummyModel.LAYER_LOCATION, TargetDummyModel::createMesh);
-
         event.registerLayerDefinition(IceBladeSwordProjectileModel.LAYER_LOCATION, IceBladeSwordProjectileModel::createBodyLayer);
         event.registerLayerDefinition(EnchantedSwordProjectileModel.LAYER_LOCATION, EnchantedSwordProjectileModel::createBodyLayer);
         event.registerLayerDefinition(ShurikenProjectileModel.LAYER_LOCATION, ShurikenProjectileModel::createBodyLayer);
@@ -321,7 +321,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ROPE_COILS.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
-        event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
         event.registerEntityRenderer(FLAME_CLOUD.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(SUPER_SPIKY_BALL_PROJECTILE.get(), SuperSpikyBallProjectileRenderer::new);
         event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型

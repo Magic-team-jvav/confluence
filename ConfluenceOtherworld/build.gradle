@@ -165,7 +165,7 @@ boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false // FTB系列
 boolean ipn = false // 一键背包整理Next
-boolean mmmmmmmmmmmm = false // 试验假人
+boolean mmmmmmmmmmmm = true // 试验假人
 boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
 boolean spark = true // 火花
@@ -374,10 +374,10 @@ dependencies {
         runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
     }
     if (mmmmmmmmmmmm) {
-        runtimeOnly "maven.modrinth:mmmmmmmmmmmm:neoforge_1.21-2.0.8"
+        runtimeOnly "maven.modrinth:mmmmmmmmmmmm:1.21-2.0.11-neoforge"
     }
     if (supplementaries || mmmmmmmmmmmm) {
-        runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
+        runtimeOnly "maven.modrinth:moonlight:1.21-2.29.10-neoforge"
     }
     if (spark) {
         runtimeOnly "curse.maven:spark-361579:6225208"

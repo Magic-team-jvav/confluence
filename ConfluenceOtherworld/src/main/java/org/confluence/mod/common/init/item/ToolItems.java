@@ -81,7 +81,6 @@ public class ToolItems {
     public static final DeferredItem<RopeCoilItem> SILK_ROPE_COIL = ITEMS.register("silk_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.SILK_ROPE.get()));
     public static final DeferredItem<RopeCoilItem> WEB_ROPE_COIL = ITEMS.register("web_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.WEB_ROPE.get()));
 
-    public static final DeferredItem<TargetDummyItem> TARGET_DUMMY = ITEMS.register("target_dummy", TargetDummyItem::new);
     public static final DeferredItem<TooltipItem> METEOR_COMPASS = ITEMS.register("meteor_compass", () -> new TooltipItem(new Item.Properties().stacksTo(1), ModRarity.BLUE, TooltipItem.getTooltipsFromString("meteor_compass", 1, ChatFormatting.AQUA)));
     public static final DeferredItem<BinocularsItem> BINOCULARS = ITEMS.register("binoculars", BinocularsItem::new);
     public static final DeferredItem<NPCInvitationItem> NPC_INVITATION = ITEMS.register("npc_invitation", NPCInvitationItem::new);

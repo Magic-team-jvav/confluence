@@ -1094,7 +1094,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.STICKY_DIRT_BOMB.get(), "黏性土炸弹");
         add(ModEntities.STICKY_DYNAMITE.get(), "黏性炸药");
         add(ModEntities.STICKY_GRENADE.get(), "黏性手雷");
-        add(ModEntities.TARGET_DUMMY.get(), "目标假人");
         add(ModEntities.THORN_HOOK.get(), "荆棘钩");
         add(ModEntities.THROWN_KNIVE_PROJECTILE.get(), "投刀");
         add(ModEntities.THROWN_POWDER.get(), "掷出的粉末");
@@ -2402,7 +2401,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.MECHANIC_SAFE_KEY.get(), "机械师安全钥匙");
         add(ToolItems.KEY_OF_LIGHT.get(), "光明钥匙");
         add(ToolItems.KEY_OF_NIGHT.get(), "夜光钥匙");
-        add(ToolItems.TARGET_DUMMY.get(), "训练假人");
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");
         add(ToolItems.DEMON_CONCH.get(), "恶魔海螺");

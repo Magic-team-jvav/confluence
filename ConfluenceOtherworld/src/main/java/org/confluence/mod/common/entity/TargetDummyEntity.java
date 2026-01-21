@@ -18,9 +18,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.lib.client.DPSMeter;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.terra_curio.client.handler.DPSMeter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

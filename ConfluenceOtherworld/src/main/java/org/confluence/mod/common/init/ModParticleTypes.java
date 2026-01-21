@@ -11,7 +11,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.particle.WholeItemParticleOptions;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -35,13 +34,11 @@ public final class ModParticleTypes {
     private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String id, boolean overrideLimiter, MapCodec<T> mapCodec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
         return TYPES.register(id, () -> new ParticleType<>(overrideLimiter) {
             @Override
-            @NotNull
             public MapCodec<T> codec() {
                 return mapCodec;
             }
 
             @Override
-            @NotNull
             public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {
                 return streamCodec;
             }

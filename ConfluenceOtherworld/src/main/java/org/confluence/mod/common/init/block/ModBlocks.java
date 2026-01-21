@@ -95,7 +95,7 @@ public final class ModBlocks {
     public static final DeferredBlock<CursedFlameBlock> CURSED_FLAME_BLOCK = registerWithoutItem("cursed_flame_block", () -> new CursedFlameBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().instabreak().lightLevel(l -> 7).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
 
     // test block 要测试直接复制下面这一行改名
-    public static final DeferredBlock<Block> TEST_BLOCK   = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.COLOR_BLUE)));
+    public static final DeferredBlock<Block> TEST_BLOCK = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.COLOR_BLUE)));
 
 
     private static DeferredBlock<TombstoneBlock> registerTombstone(String id, boolean isGolden) {
@@ -124,13 +124,11 @@ public final class ModBlocks {
         return BLOCKS.register(id, block);
     }
 
-    /**
-     * 基于黑曜石的爆炸抗性，汇流来世的方块设置爆炸抗性时，应当使用这个方法<p>
-     * 对于泰拉爆炸，小于黑曜石爆炸抗性的方块都会被炸掉
-     *
-     * @param delta 偏差值
-     * @return 爆炸抗性
-     */
+    /// 基于黑曜石的爆炸抗性，汇流来世的方块设置爆炸抗性时，应当使用这个方法
+    /// 对于泰拉爆炸，小于黑曜石爆炸抗性的方块都会被炸掉
+    ///
+    /// @param delta 偏差值
+    /// @return 爆炸抗性
     @SuppressWarnings("deprecation")
     public static float getObsidianBasedExplosionResistance(float delta) {
         return Blocks.OBSIDIAN.getExplosionResistance() + delta;

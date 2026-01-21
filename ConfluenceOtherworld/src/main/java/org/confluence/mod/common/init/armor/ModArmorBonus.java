@@ -28,6 +28,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
 import org.confluence.mod.api.event.RegisterArmorSetBonusEvent;
@@ -49,7 +50,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import static org.confluence.mod.common.init.item.ArmorItems.*;
@@ -79,7 +79,7 @@ public final class ModArmorBonus {
     public static final ValueType.FloatType SKIP$CONSUME$AMMO$CHANCE = ValueType.FloatType.of(Confluence.asResource("skip_consume_ammo_chance"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
     public static final ValueType.UnitType SPACE$GUN$FREE = ValueType.UnitType.of(Confluence.asResource("space_gun_free"));
     public static final ValueType.FloatType HEAL$AMOUNT$MULTIPLIER = ValueType.FloatType.of(Confluence.asResource("heal_amount_multiplier"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
-    public static final ValueType<List<MobEffectInstancesValue.Effect>, MobEffectInstancesValue> HURT$ENEMY$AWARD$EFFECTS = ValueType.create(Confluence.asResource("hurt_enemy_award_effects"), MobEffectInstancesValue.MERGE, MobEffectInstancesValue.CODEC, List.of(), MobEffectInstancesValue::new);
+    public static final ValueType<List<MobEffectInstanceData>, MobEffectInstancesValue> HURT$ENEMY$AWARD$EFFECTS = ValueType.create(Confluence.asResource("hurt_enemy_award_effects"), MobEffectInstancesValue.MERGE, MobEffectInstancesValue.CODEC, List.of(), MobEffectInstancesValue::new);
     public static final ValueType.UnitType FLOWER$PETAL = ValueType.UnitType.of(Confluence.asResource("flower_petal"));
     public static final ValueType.UnitType TITANIUM$SHARDS = ValueType.UnitType.of(Confluence.asResource("titanium_shards"));
     public static final ValueType.UnitType LAVA$IMMUNE = ValueType.UnitType.of(Confluence.asResource("lava_immune"));
@@ -202,7 +202,7 @@ public final class ModArmorBonus {
             // todo 移动时产生残影效果
         });
         Consumer<ArmorSetBonusKey> palladiumSet = key -> {
-            key.of(HURT$ENEMY$AWARD$EFFECTS, List.of(new MobEffectInstancesValue.Effect(MobEffects.REGENERATION, 100, 1)));
+            key.of(HURT$ENEMY$AWARD$EFFECTS, List.of(new MobEffectInstanceData(MobEffects.REGENERATION, 100, 1)));
         };
         register("palladium_mask_set", 1, PALLADIUM_MASK, PALLADIUM_CHESTPLATE, PALLADIUM_LEGGINGS, PALLADIUM_BOOTS, palladiumSet);
         register("palladium_helmet_set", 1, PALLADIUM_HELMET, PALLADIUM_CHESTPLATE, PALLADIUM_LEGGINGS, PALLADIUM_BOOTS, palladiumSet);
@@ -317,32 +317,26 @@ public final class ModArmorBonus {
     }
 
     public static boolean isArmorSet(Player player, ArmorSetBonusKey key) {
-        return PlayerSpecialData.of(player).getArmorSetBonusKey().equals(Objects.requireNonNullElse(key, ArmorSetBonusKey.NONE));
+        return PlayerSpecialData.of(player).getArmorSetBonusKey().equals(key);
     }
 
-    /**
-     * 仅使用套装奖励注册的type
-     * <p>
-     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#hasType(LivingEntity, ValueType)}
-     */
+    /// 仅使用套装奖励注册的type
+    ///
+    /// 如果type是配饰用的就使用[org.confluence.terra_curio.util.TCUtils#hasType(LivingEntity,ValueType)]
     public static <T, V extends PrimitiveValue<T>> boolean hasType(Player player, ValueType<T, V> type) {
         return PlayerSpecialData.of(player).contains(type);
     }
 
-    /**
-     * 仅使用套装奖励注册的type
-     * <p>
-     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#getValue(LivingEntity, ValueType)}
-     */
+    /// 仅使用套装奖励注册的type
+    ///
+    /// 如果type是配饰用的就使用[org.confluence.terra_curio.util.TCUtils#getValue(LivingEntity,ValueType)]
     public static <T, V extends PrimitiveValue<T>> T getValue(Player player, ValueType<T, V> type) {
         return PlayerSpecialData.of(player).getValue(type);
     }
 
-    /**
-     * 仅使用套装奖励注册的type
-     * <p>
-     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#getPrimitiveValue(LivingEntity, ValueType)}
-     */
+    /// 仅使用套装奖励注册的type
+    ///
+    /// 如果type是配饰用的就使用[org.confluence.terra_curio.util.TCUtils#getPrimitiveValue(LivingEntity,ValueType)]
     public static <T, V extends PrimitiveValue<T>> @Nullable V getPrimitiveValue(Player player, ValueType<T, V> type) {
         return PlayerSpecialData.of(player).getPrimitiveValue(type);
     }
@@ -400,10 +394,10 @@ public final class ModArmorBonus {
 
     public static void onAttacked(ServerPlayer player, DamageSource damageSource, LivingEntity victim) {
         if (victim instanceof Enemy) hurtEnemyAwardEffects:{
-            List<MobEffectInstancesValue.Effect> effects = getValue(player, HURT$ENEMY$AWARD$EFFECTS);
+            List<MobEffectInstanceData> effects = getValue(player, HURT$ENEMY$AWARD$EFFECTS);
             if (effects.isEmpty()) break hurtEnemyAwardEffects;
-            for (MobEffectInstancesValue.Effect effect : effects) {
-                player.addEffect(effect.get());
+            for (MobEffectInstanceData effect : effects) {
+                player.addEffect(effect.create());
             }
         }
         if (hasType(player, FLOWER$PETAL)) flowerPetal:{

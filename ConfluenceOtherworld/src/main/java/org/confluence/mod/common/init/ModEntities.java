@@ -23,19 +23,18 @@ import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntit
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
 
-/**
- * Fast Link:
- * <p>渲染器 {@link org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers}
- * <p>发包   {@link org.confluence.mod.common.event.ModEvents#registerPayloadHandlers}
- * <p>属性   {@link org.confluence.mod.common.event.ModEvents#entityAttributeCreation}
- */
+/// Fast Link:
+///
+/// 渲染器 [org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers]
+///
+/// 发包   [org.confluence.mod.common.event.ModEvents#registerPayloadHandlers]
+///
+/// 属性   [org.confluence.mod.common.event.ModEvents#entityAttributeCreation]
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Confluence.MODID);
 
 	// 牢枕专用
-	public static final DeferredHolder<EntityType<?>, EntityType<EmptyEntity>> EMPTY_ENTITY = ENTITIES.register(
-			"empty_entity",
-			() -> EntityType.Builder.of(EmptyEntity::new, MobCategory.MISC).build(Confluence.asPlainId("empty_entity")));
+	public static final DeferredHolder<EntityType<?>, EntityType<EmptyEntity>> EMPTY_ENTITY = ENTITIES.register("empty_entity", () -> EntityType.Builder.of(EmptyEntity::new, MobCategory.MISC).build(Confluence.asPlainId("empty_entity")));
 
     // 炸弹
     public static final DeferredHolder<EntityType<?>, EntityType<BaseBombEntity>> BOMB_ENTITY = registerBomb("bomb_entity", BaseBombEntity::new, BaseBombEntity.DIAMETER);

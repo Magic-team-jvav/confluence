@@ -176,12 +176,12 @@ public final class ModVillagers {
             tier2.add(new BasicItemListing(new ItemStack(ModItems.GOLD_COIN.get(), 3), new ItemStack(ModItems.EMERALD_COIN.get()), 30, 15, 0.05F));
             tier3.add(new BasicItemListing(new ItemStack(Items.EMERALD, 20), new ItemStack(ModItems.EMERALD_COIN.get()), 30, 15, 0.05F));
             tier4.add(new BasicItemListing(new ItemStack(ModItems.SILVER_COIN.get(), 15), new ItemStack(Items.EMERALD), 45, 10, 0.05F));
-            tier5.add(new BasicItemListing(new ItemStack(ModItems.GOLD_COIN.get(), 2), new ItemStack(ModItems.EMERALD_COIN.get()),  45, 10, 0.05F));
+            tier5.add(new BasicItemListing(new ItemStack(ModItems.GOLD_COIN.get(), 2), new ItemStack(ModItems.EMERALD_COIN.get()), 45, 10, 0.05F));
         } else if (type == CHEF.get()) {
-            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.BREAD,3), 12, 10, 0.05F));
-            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.COOKED_BEEF,2), 12, 10, 0.05F));
-            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.COOKED_PORKCHOP,2), 12, 10, 0.05F));
-            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD,3), new ItemStack(FoodItems.COOK_FISH.get()), 12, 10, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.BREAD, 3), 12, 10, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.COOKED_BEEF, 2), 12, 10, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.COOKED_PORKCHOP, 2), 12, 10, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD, 3), new ItemStack(FoodItems.COOK_FISH.get()), 12, 10, 0.05F));
             tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD, 2), new ItemStack(FoodItems.MARSHMALLOW.get()), 15, 10, 0.05F));
             tier2.add(new BasicItemListing(new ItemStack(Items.EMERALD, 3), new ItemStack(Items.RABBIT_STEW), 12, 10, 0.05F));
             tier2.add(new BasicItemListing(new ItemStack(Items.EMERALD, 3), new ItemStack(FoodItems.LOBSTER_TAIL.get()), 12, 10, 0.05F));
@@ -195,7 +195,6 @@ public final class ModVillagers {
             tier5.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get(), 2), new ItemStack(ConsumableItems.DELUXE_PACKAGE.get()), 5, 10, 0.05F));
             tier5.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get(), 1), new ItemStack(FoodItems.PHO.get()), 10, 10, 0.05F));
         }
-
     }
 
     public static void setVillagerType(Villager villager) {

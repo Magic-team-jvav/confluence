@@ -10,7 +10,6 @@ import org.confluence.mod.common.worldgen.carver.*;
 
 import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
 public final class ModCarvers {
     public static final DeferredRegister<WorldCarver<?>> CARVERS = DeferredRegister.create(BuiltInRegistries.CARVER, Confluence.MODID);
 

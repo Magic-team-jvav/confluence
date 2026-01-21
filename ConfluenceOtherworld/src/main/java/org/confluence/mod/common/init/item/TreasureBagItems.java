@@ -28,11 +28,11 @@ public class TreasureBagItems {
         String difficulty = LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master");
         long secretFlag = IMinecraftServer.of(level.getServer()).confluence$getSecretFlag();
         String biome;
-        if ((secretFlag & IWorldOptions.DOUBLE_EVIL) == IWorldOptions.DOUBLE_EVIL || (secretFlag & IWorldOptions.DOUBLE_EVIL) == 0) {
+        if (IMinecraftServer.equalsSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL) || !IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL)) {
             biome = "_double_evil";
-        } else if ((secretFlag & IWorldOptions.THE_CORRUPTION) != 0) {
+        } else if (IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.THE_CORRUPTION)) {
             biome = "_corruption";
-        } else if ((secretFlag & IWorldOptions.THE_CRIMSON) != 0) {
+        } else if (IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.THE_CRIMSON)) {
             biome = "_crimson";
         } else {
             biome = "";
@@ -74,5 +74,4 @@ public class TreasureBagItems {
     });
     public static final DeferredItem<TreasureBagItem> THE_TWINS_TREASURE_BAG = ITEMS.register("the_twins_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/the_twins"), ModRarity.PINK));
     public static final DeferredItem<TreasureBagItem> SKELETRON_PRIME_TREASURE_BAG = ITEMS.register("skeletron_prime_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/skeletron_prime"), ModRarity.PINK));
-
 }

@@ -240,7 +240,6 @@ public final class ModTabs {
                     .withTabsBefore(MAGES.getId())
                     .build());
     /* 生物 */
-    /* 事件 */
     /* 敌怪旗 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DEVELOPER = TABS.register("developer",
             () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())

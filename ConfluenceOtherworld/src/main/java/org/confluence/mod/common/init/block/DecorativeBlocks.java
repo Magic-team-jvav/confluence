@@ -19,7 +19,6 @@ import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
 import org.confluence.mod.common.block.palettes.ConnectedStainedGlassBlock;
 import org.confluence.mod.common.init.item.ModItems;
-import org.lwjgl.opengl.GL;
 
 import java.util.ArrayList;
 import java.util.List;

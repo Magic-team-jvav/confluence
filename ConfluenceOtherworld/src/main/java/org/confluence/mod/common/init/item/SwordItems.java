@@ -1,13 +1,11 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -31,14 +29,12 @@ import java.util.function.Supplier;
 
 import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
 
-/**
- * 允许空挥的剑都是特殊横扫剑<p>
- * 有自动挥舞的剑都是特殊横扫剑<p>
- * 有特殊横扫的剑不一定是自动挥舞的剑<p>
- * 是否允许自动挥舞是根据{@link ModTags.Items#AUTO_ATTACK_WHITELIST}判断的<p>
- * 是否允许特殊横扫是根据{@link BaseSwordItem.ModifierBuilder#specialSweep}判断的，即下文中的.setSpecialSweep()<p>
- * 如果不是由BOARD_SWORD定义的，那么需要使用{@link SwordPrefabs#withSpecialSweep}方法
- */
+/// 允许空挥的剑都是特殊横扫剑
+/// 有自动挥舞的剑都是特殊横扫剑
+/// 有特殊横扫的剑不一定是自动挥舞的剑
+/// 是否允许自动挥舞是根据[ModTags.Items#AUTO_ATTACK_WHITELIST]判断的
+/// 是否允许特殊横扫是根据[BaseSwordItem.ModifierBuilder#specialSweep]判断的，即下文中的.setSpecialSweep()
+/// 如果不是由BOARD_SWORD定义的，那么需要使用[SwordPrefabs#withSpecialSweep]方法
 public class SwordItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
@@ -189,9 +185,5 @@ public class SwordItems {
             }
             return new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder);
         });
-    }
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
     }
 }

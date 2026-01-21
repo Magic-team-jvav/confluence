@@ -1,6 +1,5 @@
 package org.confluence.mod.integration.terra_furniture;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.sounds.SoundSource;
@@ -19,7 +18,7 @@ public class TFReferences {
     public static void init() {
         TFConfluenceRefs.poop_task = (entityNull, serverLevel, pos) -> {
             Entity passenger = entityNull.getFirstPassenger();
-            if ( passenger== null) return;
+            if (passenger == null) return;
             if (passenger instanceof LivingEntity livingEntity) {
                 MobEffectInstance instance = livingEntity.getEffect(ModEffects.EXQUISITELY_STUFFED);
                 if (instance == null) return;
@@ -29,14 +28,13 @@ public class TFReferences {
                 int foodTime = instance.duration / 1200 * (instance.amplifier + 1);
                 SimpleContainer container = new SimpleContainer(new ItemStack(BuiltInRegistries.ITEM.get(ModBlocks.POO.getId()), foodTime));
                 Containers.dropContents(serverLevel, pos, container);
-                serverLevel.players().forEach(serverPlayer -> serverPlayer.connection.send(
-                        new ClientboundSoundPacket(
-                                Holder.direct(TCSoundEvents.FART_SOUND.get()),
-                                SoundSource.BLOCKS,
-                                pos.getX(), pos.getY(), pos.getZ(),
-                                1, 1, 1
-                        ))
+                ClientboundSoundPacket packet = new ClientboundSoundPacket(
+                        TCSoundEvents.FART_SOUND,
+                        SoundSource.BLOCKS,
+                        pos.getX(), pos.getY(), pos.getZ(),
+                        1, 1, 1
                 );
+                serverLevel.players().forEach(serverPlayer -> serverPlayer.connection.send(packet));
                 livingEntity.removeEffect(ModEffects.EXQUISITELY_STUFFED);
             }
         };

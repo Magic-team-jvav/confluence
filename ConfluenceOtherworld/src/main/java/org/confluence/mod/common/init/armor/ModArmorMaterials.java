@@ -31,7 +31,6 @@ public final class ModArmorMaterials {
             0, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY,
             List.of(new ArmorMaterial.Layer(Confluence.asResource("vanity_armor"))), 0.0F, 0.0F)
     );
-    public static final Holder<ArmorMaterial> GOLD_CROWN_ARMOR_MATERIAL = registerSingletonMaterial("gold_crown_armor_material", ArmorItem.Type.HELMET, 0, 0, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "gold_crown", 0, 0);
     public static final Holder<ArmorMaterial> CACTUS_ARMOR_MATERIALS = registerArmorMaterial("cactus_armor_materials",
             1, 2, 2, 1,
             9, SoundEvents.ARMOR_EQUIP_GENERIC, Items.CACTUS, "cactus", 0.0F, 0.0F

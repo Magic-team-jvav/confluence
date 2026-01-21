@@ -114,8 +114,6 @@ public class AccessoryItems {
     /* 自动安放器 */
     public static final DeferredItem<BaseCurioItem> PAINT_SPRAYER = registerCurio("paint_sprayer", builder -> builder.rarity(ORANGE).accessories(units(PAINT$SPRAYER))); // 喷漆器
 
-    /* 向导巫毒娃娃 */
-    /* 服装商巫毒娃娃 */
     public static final DeferredItem<BaseCurioItem> LUCKY_COIN = registerCurio("lucky_coin", builder -> builder.rarity(PINK).accessories(units(LUCKY$COIN)).attribute(Attributes.LUCK, 0.05, ADD_VALUE)), // 幸运币
             GOLD_RING = registerCurio("gold_ring", builder -> builder.rarity(PINK).accessories(of(COIN$PICKUP$RANGE, new Tuple<>(14.67F, 0)))), // 金戒指
             COIN_RING = registerCurio("coin_ring", builder -> builder.rarity(PINK)

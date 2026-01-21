@@ -517,7 +517,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             dyed.add(dyeItem);
         }
 
-        PaintItems.ITEMS.getEntries().forEach(item -> dyed.add(item.get()));
+        PaintItems.PAINT_ITEMS.forEach(dyed::add);
 
         IntrinsicTagAppender<Item> arrows = tag(ItemTags.ARROWS);
         ArrowItems.ITEMS.getEntries().forEach(item -> arrows.add(item.get()));

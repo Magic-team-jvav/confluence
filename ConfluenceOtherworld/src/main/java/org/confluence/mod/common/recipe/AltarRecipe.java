@@ -15,8 +15,8 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 public class AltarRecipe extends AbstractAmountRecipe<ItemStackHandlerRecipeInput> {
-    public AltarRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
-        super(pResult, pIngredients);
+    public AltarRecipe(ItemStack result, NonNullList<Ingredient> ingredients) {
+        super(result, ingredients);
     }
 
     @Override

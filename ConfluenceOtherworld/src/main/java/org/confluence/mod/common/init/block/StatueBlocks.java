@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
@@ -45,7 +44,6 @@ import org.confluence.terraentity.entity.monster.prefab.FlyMonsterPrefab;
 import org.confluence.terraentity.entity.monster.slime.BaseSlime;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -53,12 +51,9 @@ import java.util.function.Supplier;
 
 import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
-@SuppressWarnings("unused")
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class StatueBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
-    static List<Supplier<BehaviourStatueBlock>> BEHAVIOUR_STATUES = new ArrayList<>();
+    private static List<Supplier<BehaviourStatueBlock>> BEHAVIOUR_STATUES = new ArrayList<>();
 
     public static final DeferredBlock<StatueBlock> A_STATUE = register("a_statue");
     public static final DeferredBlock<StatueBlock> B_STATUE = register("b_statue");

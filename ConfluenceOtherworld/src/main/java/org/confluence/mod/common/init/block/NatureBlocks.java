@@ -220,8 +220,8 @@ public class NatureBlocks {
             .noOcclusion()
             .isValidSpawn(Blocks::never)
             .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
-            .isSuffocating((blockState, blockGetter, blockPos) -> false)
-            , ParticleTypes.FALLING_WATER));
+            .isSuffocating((blockState, blockGetter, blockPos) -> false),
+            ParticleTypes.FALLING_WATER));
     public static final DeferredBlock<ParticleCloudBlock> SNOW_CLOUD_BLOCK = registerWithItem("snow_cloud_block", () -> new ParticleCloudBlock(BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_GRAY)
             .strength(0.3F)
@@ -229,8 +229,8 @@ public class NatureBlocks {
             .noOcclusion()
             .isValidSpawn(Blocks::never)
             .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
-            .isSuffocating((blockState, blockGetter, blockPos) -> false)
-            , ParticleTypes.SNOWFLAKE));
+            .isSuffocating((blockState, blockGetter, blockPos) -> false),
+            ParticleTypes.SNOWFLAKE));
     public static final DeferredBlock<StellarBlossomBlock> STELLAR_BLOSSOM = registerWithItem("stellar_blossom", () -> new StellarBlossomBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).offsetType(BlockBehaviour.OffsetType.NONE)));
     public static final DeferredBlock<CloudWeaverBlock> CLOUDWEAVER = registerWithItem("cloudweaver", () -> new CloudWeaverBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).offsetType(BlockBehaviour.OffsetType.NONE)));
     public static final DeferredBlock<FloatingWheatBlock> FLOATING_WHEAT = registerWithItem("floating_wheat", () -> new FloatingWheatBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).offsetType(BlockBehaviour.OffsetType.NONE)));
@@ -245,7 +245,7 @@ public class NatureBlocks {
     public static final DeferredBlock<BranchesBlock> AMETHYST_BRANCHES = registerWithItem("amethyst_branches", () -> new BranchesBlock(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE, BlockTags.BASE_STONE_OVERWORLD));
     public static final DeferredBlock<BranchesBlock> ASH_BRANCHES = registerWithItem("ash_branches", () -> new BranchesBlock(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE, ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE));
 
-    //藤蔓方块
+    // 藤蔓方块
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> YELLOW_WILLOW_DROOPING_LEAVES = registerWithItem("yellow_willow_drooping_leaves", () -> new BaseDroopingPlantsHeadBlock(14, false, false, List.of(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LEAVES.get())));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> GLOWING_MUSHROOM_VINE = registerWithItem("glowing_mushroom_vine", () -> new BaseDroopingPlantsHeadBlock(6, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> FOREST_DROOPING_VINE = registerWithItem("forest_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
@@ -259,102 +259,90 @@ public class NatureBlocks {
 
     public static final DeferredBlock<BlinkingRoyalShimmerlilyBlock> BLINKING_ROYAL_SHIMMERLILY = registerWithItem("blinking_royal_shimmerlily", () -> new BlinkingRoyalShimmerlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), BlinkingRoyalShimmerlilyBlock.BItem::new);
 
-    //苔藓
-    public static final DeferredBlock<BaseMossBlock> GREEN_MOSS = registerWithItem("green_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> BROWN_MOSS = registerWithItem("brown_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> RED_MOSS = registerWithItem("red_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> BLUE_MOSS = registerWithItem("blue_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> PURPLE_MOSS = registerWithItem("purple_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> LAVA_MOSS = registerWithItem("lava_moss",
-            () -> new BaseMossBlock(10, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> KRYPTON_MOSS = registerWithItem("krypton_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> XENON_MOSS = registerWithItem("xenon_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> ARGON_MOSS = registerWithItem("argon_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
-    public static final DeferredBlock<BaseMossBlock> GLOWING_MUSHROOM_MOSS = registerWithItem("glowing_mushroom_moss",
-            () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
-                    .noCollission()
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-                    .strength(0.2F)
-                    .sound(SoundType.GLOW_LICHEN)
-                    .replaceable()));
+    // 苔藓
+    public static final DeferredBlock<BaseMossBlock> GREEN_MOSS = registerWithItem("green_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> BROWN_MOSS = registerWithItem("brown_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> RED_MOSS = registerWithItem("red_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> BLUE_MOSS = registerWithItem("blue_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> PURPLE_MOSS = registerWithItem("purple_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> LAVA_MOSS = registerWithItem("lava_moss", () -> new BaseMossBlock(10, BlockBehaviour.Properties.of()
+            .noCollission()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> KRYPTON_MOSS = registerWithItem("krypton_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> XENON_MOSS = registerWithItem("xenon_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> ARGON_MOSS = registerWithItem("argon_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
+    public static final DeferredBlock<BaseMossBlock> GLOWING_MUSHROOM_MOSS = registerWithItem("glowing_mushroom_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable()));
 
     public static final DeferredBlock<CrimsonVenusFlytrapBlock> CRIMSON_VENUS_FLYTRAP_BLOCK = registerWithItem("crimson_venus_flytrap_block", CrimsonVenusFlytrapBlock::new);
     public static final DeferredBlock<BloodthirstCrystallizedBlock> BLOODTHIRST_CRYSTALLIZED_BLOCK = registerWithItem("bloodthirst_crystallized_block", BloodthirstCrystallizedBlock::new);

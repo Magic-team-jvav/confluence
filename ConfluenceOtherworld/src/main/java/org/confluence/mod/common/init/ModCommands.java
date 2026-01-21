@@ -63,12 +63,13 @@ import java.util.Map;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
-@SuppressWarnings("unused")
 public final class ModCommands {
     public static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENT_TYPE_INFOS = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, Confluence.MODID);
 
-    public static final Holder<ArgumentTypeInfo<?, ?>> PREFIX_ARGUMENT_TYPE = ARGUMENT_TYPE_INFOS.register("prefix", () -> ArgumentTypeInfos.registerByClass(PrefixArgument.class, new PrefixArgument.Info()));
-    public static final Holder<ArgumentTypeInfo<?, ?>> GAME_EVENT_ARGUMENT_TYPE = ARGUMENT_TYPE_INFOS.register("game_event", () -> ArgumentTypeInfos.registerByClass(GameEventArgument.class, SingletonArgumentInfo.contextFree(GameEventArgument::new)));
+    static {
+        ARGUMENT_TYPE_INFOS.register("prefix", () -> ArgumentTypeInfos.registerByClass(PrefixArgument.class, new PrefixArgument.Info()));
+        ARGUMENT_TYPE_INFOS.register("game_event", () -> ArgumentTypeInfos.registerByClass(GameEventArgument.class, SingletonArgumentInfo.contextFree(GameEventArgument::new)));
+    }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("confluence").requires(sourceStack -> sourceStack.hasPermission(2))

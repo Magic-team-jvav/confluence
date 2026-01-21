@@ -239,7 +239,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "Prevents you from accidentally destroying the environment while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "Right click to deactivate/reactivate effects");
         add("tooltip.item.confluence.fallen_soul_core.0", "Channel spirits through the celestial stars; right-click to switch magic types");
-
+        add("tooltip.item.confluence.repeater.0", "Hold left click to fire");
+        add("tooltip.item.confluence.repeater.1", "Right click in inventory to retrieve arrows");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -827,7 +828,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.coins_medium", "Medium Coins: Collected");
         add("confluence.subtitle.coins_large", "Large Coins: Collected");
         add("confluence.subtitle.lucyaxe_talk", "Lucy Axe: Coquettish Remonstrance");
-
+        add("confluence.subtitle.repeater_item_aerial_shooting", "Repeater Crossbow: Load Arrows");
 
         add("terra_curio.subtitle.transmission", "Transmission Magic: Activated");
         add("terra_curio.subtitle.fart_sound", "Player: Fart Sound");

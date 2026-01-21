@@ -180,5 +180,12 @@
             "confluence:lucyaxe_talk_4"
         ],
         "subtitle": "confluence.subtitle.lucyaxe_talk"
+    },
+    "repeater_item_aerial_shooting": {
+        "sounds": [
+            "confluence:repeater_item_aerial_shooting"
+        ],
+        "volume": 0.1,
+        "subtitle": "confluence.subtitle.repeater_item_aerial_shooting"
     }
 }

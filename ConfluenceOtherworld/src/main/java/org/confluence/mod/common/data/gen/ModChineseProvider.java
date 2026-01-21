@@ -199,6 +199,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "放在物品栏中时能防止你意外破坏环境");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "右键点击停用/激活其效果");
         add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
+        add("tooltip.item.confluence.repeater.0", "左键长按发射");
+        add("tooltip.item.confluence.repeater.1", "在背包中右键取出箭矢");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -831,6 +833,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.coins_medium", "中量钱币:拾起");
         add("confluence.subtitle.coins_large", "大量钱币:拾起");
         add("confluence.subtitle.lucyaxe_talk", "露西斧:娇嗔");
+        add("confluence.subtitle.repeater_item_aerial_shooting", "连弩:装填箭矢");
 
         add("terra_curio.subtitle.transmission", "传送魔法：开启");
         add("terra_curio.subtitle.fart_sound", "玩家：放屁声");

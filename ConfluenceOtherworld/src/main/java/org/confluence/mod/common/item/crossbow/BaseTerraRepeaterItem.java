@@ -41,6 +41,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.lib.util.EnchantmentUtil;
 import org.confluence.mod.Confluence;
@@ -70,6 +71,8 @@ import java.util.function.Predicate;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem>, ILeftClickStateItem {
+    public static final List<Component> TOOLTIP = TooltipItem.getTooltipsFromString("repeater", 2, ChatFormatting.GRAY);
+
     public static final String ATTACK_SPEED_TEXT = "attribute.name.repeater.attack_speed";
     public static final String KNOCKBACK_TEXT = "attribute.name.repeater.knockback";
     public static final String TORRENT_COUNT_TEXT = "attribute.name.repeater.torrent_count";
@@ -672,6 +675,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         BaseTerraArrowItem.addHitEffectHoverText(weapon, tooltipComponents);
         BaseTerraArrowItem.addFullPullHitEffectHoverText(weapon, tooltipComponents);
         BaseTerraArrowItem.addEntityTransformHoverText(tooltipComponents, modifyArrowBuilder, arrowModifier);
+        tooltipComponents.addAll(TOOLTIP);
     }
 
     private static RepeaterContents getTotalSize(ItemStack weapon) {

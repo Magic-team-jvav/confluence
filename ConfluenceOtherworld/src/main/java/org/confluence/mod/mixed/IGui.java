@@ -8,4 +8,12 @@ public interface IGui {
     static IGui of(Gui gui) {
         return (IGui) gui;
     }
+
+    float confluence$getScale();
+
+    void confluence$setScale(float scale);
+
+    float confluence$getOldRepeaterCrosshairAngle();
+
+    void confluence$setOldRepeaterCrosshairAngle(float oldRepeaterCrosshairAngle);
 }

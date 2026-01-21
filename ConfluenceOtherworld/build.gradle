@@ -173,6 +173,7 @@ boolean apotheosis = false // 神化
 boolean legendarytooltips = false // 传说提示框
 boolean itemborders = false // 物品边框
 boolean advancementPlaques = false // 进度牌匾
+boolean dynamicCrosshair = false // 动态准星
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -311,6 +312,12 @@ dependencies {
     //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
     //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
+    if (dynamicCrosshair) {
+        runtimeOnly "maven.modrinth:dynamiccrosshair:9.11+1.21.1-neoforge"
+    }
+    if (dynamicCrosshair) {
+        runtimeOnly("maven.modrinth:yacl:3.8.2+1.21.1-neoforge")
+    }
     if (false) {
         runtimeOnly "curse.maven:enhanced-celestials-438447:7093308"
         runtimeOnly "curse.maven:corgilib-693313:6808264"

@@ -308,8 +308,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.alertPlayerDungeon.tooltip", "启用时，地牢守卫出现前将有三次吼叫警告");
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
         add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
-        add("confluence.configuration.dropsMoney", "钱币掉落");
-        add("confluence.configuration.dropsMoney.tooltip", "启用时，生物死亡后会掉落钱币");
+        add("confluence.configuration.enemyDropsMoney", "敌怪掉落钱币");
+        add("confluence.configuration.enemyDropsMoney.tooltip", "启用时，敌怪死亡后会掉落钱币");
+        add("confluence.configuration.playerDropsMoney", "玩家掉落钱币");
+        add("confluence.configuration.playerDropsMoney.tooltip", "启用时，玩家死亡后会掉落钱币");
         add("confluence.configuration.Paints", "油漆功能设置");
         add("confluence.configuration.Paints.tooltip", "部分兼容问题可能由油漆功能引发，因此你需要在此调整相关选项");
         add("confluence.configuration.Paints.button", "关于油漆");

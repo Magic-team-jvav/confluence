@@ -157,11 +157,9 @@ public final class LivingEntityEvents {
         }
     }
 
-    /**
-     * 阻止回血的药水效果，已改为使用EffectCure，并提取到Lib了
-     *
-     * @see GameEvents#livingHeal(LivingHealEvent)
-     */
+    /// 阻止回血的药水效果，已改为使用EffectCure，并提取到Lib了
+    ///
+    /// @see GameEvents#livingHeal(LivingHealEvent)
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();

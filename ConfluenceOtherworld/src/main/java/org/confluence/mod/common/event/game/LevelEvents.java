@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -31,8 +32,8 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
+import org.confluence.mod.common.item.common.StaffOfRegrowth;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
@@ -80,7 +81,7 @@ public final class LevelEvents {
         }
         // 再生法杖/再生之斧 时运
         if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
-            BaseAxeItem.increaseDropsOnBlockBreak(breaker, tool, event.getDrops());
+            StaffOfRegrowth.increaseDrops(breaker, tool, event.getDrops().stream().map(ItemEntity::getItem));
         }
     }
 

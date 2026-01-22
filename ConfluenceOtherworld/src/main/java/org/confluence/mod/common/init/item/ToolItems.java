@@ -105,5 +105,5 @@ public class ToolItems {
     public static final DeferredItem<GuideToCritterCompanionshipItem> GUIDE_TO_CRITTER_COMPANIONSHIP = ITEMS.register("guide_to_critter_companionship", GuideToCritterCompanionshipItem::new);
     public static final DeferredItem<GuideToEnvironmentalPreservationItem> GUIDE_TO_ENVIRONMENTAL_PRESERVATION = ITEMS.register("guide_to_environmental_preservation", GuideToEnvironmentalPreservationItem::new);
     public static final DeferredItem<GuideToPeacefulCoexistenceItem> GUIDE_TO_PEACEFUL_COEXISTENCE = ITEMS.register("guide_to_peaceful_coexistence", GuideToPeacefulCoexistenceItem::new);
-    public static final DeferredItem<StaffOfRegrowthItem> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", StaffOfRegrowthItem::new); // 再生法杖
+    public static final DeferredItem<StaffOfRegrowth> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", StaffOfRegrowth::new); // 再生法杖
 }

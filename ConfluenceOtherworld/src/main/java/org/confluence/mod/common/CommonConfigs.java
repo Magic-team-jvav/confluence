@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 public final class CommonConfigs {
-    public static BooleanValue DROP_MONEY;
+    public static BooleanValue ENEMY_DROPS_MONEY;
     public static BooleanValue AUTO_STACK_GELS_COLOR;
     public static BooleanValue RETURN_POTION_GLASS_BOTTLE;
     public static BooleanValue RIGHT_CLICK_RIDE_MINECART;
@@ -40,6 +40,7 @@ public final class CommonConfigs {
     public static BooleanValue DO_METEORITE_SPAWNING;
     public static BooleanValue BROADCAST_NPC_MSG;
 
+    public static BooleanValue PLAYER_DROPS_MONEY;
     public static BooleanValue SHOW_MONEY_DROPS;
     public static BooleanValue DROPS_TOMBSTONE;
     public static IntValue DEFAULT_RESPAWN_TIME_MIN;
@@ -111,7 +112,7 @@ public final class CommonConfigs {
         Builder builder = new Builder();
         {
             builder.push("Gameplay");
-            DROP_MONEY = builder.define("dropsMoney", true);
+            ENEMY_DROPS_MONEY = builder.define("enemyDropsMoney", true);
             AUTO_STACK_GELS_COLOR = builder.define("autoStackGelsColor", true);
             RETURN_POTION_GLASS_BOTTLE = builder.define("returnPotionGlassBottle", false);
             RIGHT_CLICK_RIDE_MINECART = builder.define("rightClickRideMinecart", true);
@@ -160,6 +161,7 @@ public final class CommonConfigs {
         }
         {
             builder.push("PlayerDeath");
+            PLAYER_DROPS_MONEY = builder.define("playerDropsMoney", true);
             SHOW_MONEY_DROPS = builder.define("showMoneyDrops", true);
             DROPS_TOMBSTONE = builder.define("dropsTombstone", true);
             DEFAULT_RESPAWN_TIME_MIN = builder.defineInRange("defaultRespawnTimeMin", 3, 0, Integer.MAX_VALUE);

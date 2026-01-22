@@ -70,8 +70,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.alertPlayerDungeon.tooltip", "When enabled, there will be three roars as warnings before the dungeon guardian appears.");
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
         add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
-        add("confluence.configuration.dropsMoney", "Coin Drops");
-        add("confluence.configuration.dropsMoney.tooltip", "When enabled, characters will drop coins upon death.");
+        add("confluence.configuration.enemyDropsMoney", "Enemy Drops Money");
+        add("confluence.configuration.enemyDropsMoney.tooltip", "When enabled, enemies will drop coins upon death.");
+        add("confluence.configuration.playerDropsMoney", "Player Drops Money");
+        add("confluence.configuration.playerDropsMoney.tooltip", "When enabled, players will drop coins upon death.");
         add("confluence.configuration.Paints", "Paint Function Settings");
         add("confluence.configuration.Paints.tooltip", "Some compatibility issues may be caused by the paint function, so you need to adjust the relevant options here.");
         add("confluence.configuration.Paints.button", "About Paint");

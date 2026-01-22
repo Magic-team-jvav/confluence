@@ -1,5 +1,6 @@
 package org.confluence.mod.network.s2c;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
@@ -38,12 +39,12 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
         ClientPacketHandler.handleDeathInfo(this, player);
     }
 
-    /**
-     * @see PlayerUtils#dropMoney(Player)
-     */
+    /// @see PlayerUtils#dropMoney(Player)
     public static boolean replaceCombatKillPacket(ServerPlayer player, Component message) {
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
-            long drops = LibUtils.getOrCreatePersistedData(player).getLong("confluence:drops_money");
+            CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+            long drops = tag.getLong("confluence:drops_money");
+            tag.remove("confluence:drops_money");
             Coins coins = PlayerUtils.decodeCoin(drops);
             PacketDistributor.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, PlayerUtils.getRespawnWaitTime(player), (short) coins.platinum(), (byte) coins.gold(), (byte) coins.silver(), (byte) coins.copper()));
             return false;

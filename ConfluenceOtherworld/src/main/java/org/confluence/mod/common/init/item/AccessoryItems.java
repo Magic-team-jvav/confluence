@@ -192,7 +192,7 @@ public class AccessoryItems {
     }
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {
-        if (!CommonConfigs.DROP_MONEY.get()) return;
+        if (!CommonConfigs.ENEMY_DROPS_MONEY.get()) return;
         RandomSource randomSource = player.getRandom();
         if (TCUtils.hasType(player, LUCKY$COIN) && randomSource.nextFloat() < 0.2F) {
             Item item;

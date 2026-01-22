@@ -1,5 +1,6 @@
 package org.confluence.mod.client.effect;
 
+import com.github.tartaricacid.touhoulittlemaid.item.ItemModelSwitcher;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -312,9 +313,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putWithSpecialIconTarget(LIFE_CRYSTAL_BLOCK.get(), 0xec173e, true, ShowType.SPELUNKER, "life_crystal");
         // 箱子
         for (DeferredBlock<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
-            putTarget(normalChest.get(), 0xe8c314, true, ShowType.SPELUNKER);
+            putTargetWithItemRender(normalChest.get(), 0xe8c314, true, ShowType.SPELUNKER, Items.CHEST);
         }
-        putTarget(Blocks.CHEST, 0xe8c314, true, ShowType.SPELUNKER);
+        putTargetWithItemRender(Blocks.CHEST, 0xe8c314, true, ShowType.SPELUNKER, Items.CHEST);
 
 
         // 青金石
@@ -353,51 +354,52 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putMaterialTarget(CHLOROPHYTE_ORE.get(), 0x00a41b, true, ShowType.SPELUNKER, RAW_CHLOROPHYTE);
 
         // tip 危险感知
-        putTarget(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.STONE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(STONE_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(INSTANTANEOUS_EXPLOSION_TNT.get(), 0xff4600, true, ShowType.DANGER);
-//            putTargetWithTexture(BoulderBlock.Variant.NORMAL.get(), 0xff4600,true, ShowType.DANGER);
-        putTarget(SWITCH.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(STONE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(DEEPSLATE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(DEEPSLATE_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER);
+        putTargetWithItemRender(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.POLISHED_BLACKSTONE_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.STONE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.STONE_PRESSURE_PLATE);
+        putTargetWithItemRender(STONE_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER, STONE_PRESSURE_PLATE.get().asItem());
+        putTargetWithItemRender(INSTANTANEOUS_EXPLOSION_TNT.get(), 0xff4600, true, ShowType.DANGER, INSTANTANEOUS_EXPLOSION_TNT.get().asItem());
+        putTargetWithItemRender(SWITCH.get(), 0xff4600, true, ShowType.DANGER, SWITCH.get().asItem());
+        putTargetWithItemRender(DART_TRAP.get(), 0xff4600, true, ShowType.DANGER, DART_TRAP.get().asItem());
+        putTargetWithItemRender(STONE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER, STONE_DART_TRAP.get().asItem());
+        putTargetWithItemRender(DEEPSLATE_DART_TRAP.get(), 0xff4600, true, ShowType.DANGER, DEEPSLATE_DART_TRAP.get().asItem());
+        putTargetWithItemRender(DEEPSLATE_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER, DEEPSLATE_PRESSURE_PLATE.get().asItem());
         putTargetWithItemRender(Blocks.TNT, 0xff4600, true, ShowType.DANGER, Items.TNT);
-        putTarget(Blocks.TRIPWIRE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.SCULK_SHRIEKER, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.SCULK_SENSOR, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.DETECTOR_RAIL, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.ACTIVATOR_RAIL, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.ACACIA_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.BAMBOO_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.BIRCH_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.CRIMSON_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.CHERRY_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.WARPED_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.SPRUCE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.DARK_OAK_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.OAK_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.JUNGLE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.MANGROVE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER);
-        putTarget(PLAYER_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(NORMAL_BOULDER.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(OAK_LOG_BOULDER.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(FOLLOWER_BOULDER.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(EXPLODE_BOULDER.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(ROLLING_CACTUS_BOULDER.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(MECHANICAL_FRAGILE_SANDSTONE.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(SCULK_TRAP.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(SHIMMER_TRAP.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(GRAVITATION_TRAP.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(PNEUMATIC_TRAP.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(SPIKE.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(ChestBlocks.DEATH_GOLDEN_CHEST.get(), 0xff4600, true, ShowType.DANGER);
-        putTarget(ChestBlocks.DEATH_WOODEN_CHEST.get(), 0xff4600, true, ShowType.DANGER);
+        putTargetWithItemRender(Blocks.TRIPWIRE, 0xff4600, true, ShowType.DANGER, Items.TRIPWIRE_HOOK);
+        putTargetWithItemRender(Blocks.SCULK_SHRIEKER, 0xff4600, true, ShowType.DANGER, Items.SCULK_SHRIEKER);
+        putTargetWithItemRender(Blocks.SCULK_SENSOR, 0xff4600, true, ShowType.DANGER, Items.SCULK_SENSOR);
+        putTargetWithItemRender(Blocks.DETECTOR_RAIL, 0xff4600, true, ShowType.DANGER, Items.DETECTOR_RAIL);
+        putTargetWithItemRender(Blocks.ACTIVATOR_RAIL, 0xff4600, true, ShowType.DANGER, Items.ACTIVATOR_RAIL);
+        putTargetWithItemRender(Blocks.ACACIA_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.ACACIA_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.BAMBOO_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.BAMBOO_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.HEAVY_WEIGHTED_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.BIRCH_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.BIRCH_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.CRIMSON_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.CRIMSON_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.CHERRY_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.CHERRY_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.WARPED_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.WARPED_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.SPRUCE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.SPRUCE_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.DARK_OAK_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.DARK_OAK_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.OAK_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.OAK_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.JUNGLE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.JUNGLE_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.LIGHT_WEIGHTED_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.MANGROVE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.MANGROVE_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE, 0xff4600, true, ShowType.DANGER, Items.POLISHED_BLACKSTONE_PRESSURE_PLATE);
+        putTargetWithItemRender(Blocks.COBWEB, 0xff4600, true, ShowType.DANGER, Items.COBWEB);
+        putTargetWithItemRender(Blocks.DISPENSER, 0xff4600, true, ShowType.DANGER, Items.DISPENSER);
+        putTargetWithItemRender(PLAYER_PRESSURE_PLATE.get(), 0xff4600, true, ShowType.DANGER, PLAYER_PRESSURE_PLATE.get().asItem());
+        putTargetWithItemRender(NORMAL_BOULDER.get(), 0xff4600, true, ShowType.DANGER, NORMAL_BOULDER.get().asItem());
+        putTargetWithItemRender(OAK_LOG_BOULDER.get(), 0xff4600, true, ShowType.DANGER, OAK_LOG_BOULDER.get().asItem());
+        putTargetWithItemRender(FOLLOWER_BOULDER.get(), 0xff4600, true, ShowType.DANGER, FOLLOWER_BOULDER.get().asItem());
+        putTargetWithItemRender(EXPLODE_BOULDER.get(), 0xff4600, true, ShowType.DANGER, EXPLODE_BOULDER.get().asItem());
+        putTargetWithItemRender(ROLLING_CACTUS_BOULDER.get(), 0xff4600, true, ShowType.DANGER, ROLLING_CACTUS_BOULDER.get().asItem());
+        putTargetWithItemRender(MECHANICAL_FRAGILE_SANDSTONE.get(), 0xff4600, true, ShowType.DANGER, MECHANICAL_FRAGILE_SANDSTONE.get().asItem());
+        putTargetWithItemRender(MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), 0xff4600, true, ShowType.DANGER, MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get().asItem());
+        putTargetWithItemRender(SCULK_TRAP.get(), 0xff4600, true, ShowType.DANGER, SCULK_TRAP.get().asItem());
+        putTargetWithItemRender(SHIMMER_TRAP.get(), 0xff4600, true, ShowType.DANGER, SHIMMER_TRAP.get().asItem());
+        putTargetWithItemRender(GRAVITATION_TRAP.get(), 0xff4600, true, ShowType.DANGER, GRAVITATION_TRAP.get().asItem());
+        putTargetWithItemRender(PNEUMATIC_TRAP.get(), 0xff4600, true, ShowType.DANGER, PNEUMATIC_TRAP.get().asItem());
+        putTargetWithItemRender(SPIKE.get(), 0xff4600, true, ShowType.DANGER, SPIKE.get().asItem());
+        putTargetWithItemRender(ChestBlocks.DEATH_GOLDEN_CHEST.get(), 0xff4600, true, ShowType.DANGER, ChestBlocks.DEATH_GOLDEN_CHEST.asItem());
+        putTargetWithItemRender(ChestBlocks.DEATH_WOODEN_CHEST.get(), 0xff4600, true, ShowType.DANGER, ChestBlocks.DEATH_WOODEN_CHEST.asItem());
     }
 
     @Deprecated

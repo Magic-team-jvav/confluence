@@ -6,9 +6,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.item.axe.AxeOfRegrowth;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
-import org.confluence.mod.common.item.common.StaffOfRegrowthItem;
+import org.confluence.mod.common.item.common.StaffOfRegrowth;
 import org.jetbrains.annotations.ApiStatus;
 
 import static org.confluence.mod.common.init.item.ModItems.attributes;
@@ -38,6 +39,6 @@ public class AxeItems {
 
     @Deprecated(since = "1.2.0")
     @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static final DeferredItem<StaffOfRegrowthItem> STAFF_OF_REGROWTH = ToolItems.STAFF_OF_REGROWTH;
-    public static final DeferredItem<BaseAxeItem> AXE_OF_REGROWTH = ITEMS.register("axe_of_regrowth", () -> new BaseAxeItem(ModTiers.PLATINUM, 7, 1f, unbreakable(), ModRarity.LIGHT_RED)); // 再生之斧
+    public static final DeferredItem<StaffOfRegrowth> STAFF_OF_REGROWTH = ToolItems.STAFF_OF_REGROWTH;
+    public static final DeferredItem<AxeOfRegrowth> AXE_OF_REGROWTH = ITEMS.register("axe_of_regrowth", AxeOfRegrowth::new); // 再生之斧
 }

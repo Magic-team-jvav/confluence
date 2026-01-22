@@ -386,7 +386,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropMoney(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (!CommonConfigs.DROP_MONEY.get()) return false;
+        if (!CommonConfigs.ENEMY_DROPS_MONEY.get()) return false;
         float random = level.random.nextFloat();
         float ratio = 1.0F;
         double y = center.y;

@@ -108,7 +108,7 @@ public final class LivingEntityEvents {
 
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
-                        CommonConfigs.DROP_MONEY.get() &&
+                        CommonConfigs.ENEMY_DROPS_MONEY.get() &&
                         level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
                         (!(victim instanceof IMinion minion) || minion.minion_getOwnerUUID() == null)
                 ) ModUtils.enemyDropMoney(victim, level);
@@ -157,11 +157,9 @@ public final class LivingEntityEvents {
         }
     }
 
-    /**
-     * 阻止回血的药水效果，已改为使用EffectCure，并提取到Lib了
-     *
-     * @see GameEvents#livingHeal(LivingHealEvent)
-     */
+    /// 阻止回血的药水效果，已改为使用EffectCure，并提取到Lib了
+    ///
+    /// @see GameEvents#livingHeal(LivingHealEvent)
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();

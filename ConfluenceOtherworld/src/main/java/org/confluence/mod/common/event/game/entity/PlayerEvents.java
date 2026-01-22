@@ -56,11 +56,11 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
+import org.confluence.mod.common.item.common.StaffOfRegrowth;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -154,7 +154,7 @@ public final class PlayerEvents {
 
         // 再生之斧/再生法杖 右键自动收获
         if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
-            BaseAxeItem.dropAndPlaceOnRightClick(player, itemStack, blockPos);
+            StaffOfRegrowth.dropAndPlaceOnRightClick(player, itemStack, blockPos);
         }
 
         DungeonCompass.matches(player, event.getHand(), level, itemStack, blockState, blockPos);

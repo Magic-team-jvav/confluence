@@ -39,7 +39,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
@@ -200,7 +199,8 @@ public class DungeonStructure extends Structure {
 
                 mazeRotatePos.set(Mth.floor(key.x), Mth.floor(key.y), Mth.floor(key.z));
 
-                if ((mazeRotatePos.getX() == underCenter.getX()) && (mazeRotatePos.getZ() == underCenter.getZ())) stairsFacing = listRandom(valueB, random);
+                if ((mazeRotatePos.getX() == underCenter.getX()) && (mazeRotatePos.getZ() == underCenter.getZ()))
+                    stairsFacing = listRandom(valueB, random);
 
                 rectangular(mazeRotatePos.offset(-6, -1, -6), mazeRotatePos.offset(6, -1, 6), 4, blockMap, 0);
                 rectangular(mazeRotatePos.offset(-6, -1, -6), mazeRotatePos.offset(6, -1, 6), 16, blockMap, 0, 0.03F, random);
@@ -464,10 +464,14 @@ public class DungeonStructure extends Structure {
 
 
             switch (rotation) {
-                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(15, -3, -23), true, false, Rotation.CLOCKWISE_90));
-                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(23, -3, 15), true, false, Rotation.CLOCKWISE_180));
-                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(-15, -3, 23), true, false, Rotation.COUNTERCLOCKWISE_90));
-                default -> builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(-23, -3, -15), true, false, Rotation.NONE));
+                case CLOCKWISE_90 ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(15, -3, -23), true, false, Rotation.CLOCKWISE_90));
+                case CLOCKWISE_180 ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(23, -3, 15), true, false, Rotation.CLOCKWISE_180));
+                case COUNTERCLOCKWISE_90 ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(-15, -3, 23), true, false, Rotation.COUNTERCLOCKWISE_90));
+                default ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(-23, -3, -15), true, false, Rotation.NONE));
             }
 
             int listCount = 0;
@@ -590,7 +594,11 @@ public class DungeonStructure extends Structure {
     }
 
     public static void checkSkeletronDefeated(ServerPlayer player, ServerLevel level) {
-        if (KillBoard.INSTANCE.getGamePhase() == GamePhase.BEFORE_SKELETRON && player.isAlive() && player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 100 == 1) {
+        if (player.isAlive() &&
+                player.gameMode.getGameModeForPlayer().isSurvival() &&
+                level.getGameTime() % 100 == 1 &&
+                !KillBoard.INSTANCE.isDefeated(TEBossEntities.SKELETRON.get())
+        ) {
             iterateDungeon(level, player.chunkPosition(), structureStart -> {
                 BoundingBox boundingBox = IStructureStart.of(structureStart).confluence$cachedBoundingBox();
                 boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
@@ -603,15 +611,14 @@ public class DungeonStructure extends Structure {
                     }
                     ModUtils.summonBoss(level, player.blockPosition(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
                 }
-                if (shouldAlert) LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);
+                if (shouldAlert)
+                    LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);
                 return true;
             });
         }
     }
 
-    /**
-     * 不允许地牢生物生成在地牢主体之外的地方
-     */
+    /// 不允许地牢生物生成在地牢主体之外的地方
     public static boolean skipSpawn(Mob mob, ServerLevel level) {
         if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_DUNGEON)) {
             return iterateDungeon(level, mob.chunkPosition(), structureStart -> mob.getY() >= IStructureStart.of(structureStart).confluence$cachedBoundingBox().minY() + getUpperBoundsFloor1());

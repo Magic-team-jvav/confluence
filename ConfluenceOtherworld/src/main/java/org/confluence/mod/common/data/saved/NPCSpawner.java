@@ -61,9 +61,7 @@ import org.confluence.terraentity.init.entity.TENpcEntities;
 import java.util.*;
 import java.util.function.Predicate;
 
-/**
- * 注：NPC默认生成在对应玩家出生点
- */
+/// 注：NPC默认生成在对应玩家出生点
 public final class NPCSpawner implements IGlobalData {
     public static final NPCSpawner INSTANCE = new NPCSpawner();
     public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC = new Codec<>() {
@@ -99,9 +97,7 @@ public final class NPCSpawner implements IGlobalData {
     public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf().xmap(HashSet::new, ArrayList::new);
 
     private final Map<Region, Object2BooleanMap<EntityType<?>>> npcAlive = new HashMap<>();
-    /**
-     * 生成过的NPC，可用于NPC复活而无需再次满足条件
-     */
+    /// 生成过的NPC，可用于NPC复活而无需再次满足条件
     private final Set<EntityType<?>> npcSpawned = new HashSet<>();
     private boolean isAdvancedCombatTechniquesUsed = false; // 先进战斗技术
     private boolean isAdvancedCombatTechniquesVolumeTwoUsed = false; // 先进战斗技术：卷二
@@ -170,9 +166,7 @@ public final class NPCSpawner implements IGlobalData {
         }
     }
 
-    /**
-     * 旅商与老人不会加进去
-     */
+    /// 旅商与老人不会加进去
     public void addSpawned(EntityType<?> entityType) {
         if (entityType != TENpcEntities.TRAVELING_MERCHANT.get() && entityType != TENpcEntities.OLD_MAN.get()) {
             npcSpawned.add(entityType);
@@ -267,10 +261,8 @@ public final class NPCSpawner implements IGlobalData {
         this.isPeddlersSatchelUsed = false;
     }
 
-    /**
-     * 醉酒世界则会生成派对女孩<p>
-     * todo 其它秘密种子的特殊生成
-     */
+    /// 醉酒世界则会生成派对女孩
+    /// todo 其它秘密种子的特殊生成
     public void trySpawnGuide(ServerPlayer player) {
         ServerLevel serverLevel = player.serverLevel();
         if (serverLevel.dimension() == OverworldUtils.dimension()) {
@@ -335,9 +327,7 @@ public final class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /**
-     * 醉酒世界则会生成向导
-     */
+    /// 醉酒世界则会生成向导
     private boolean trySpawnPartyGirl(ServerPlayer player, BlockPos pos, Region region) {
         if (IMinecraftServer.matchesSecretFlag(player.server, IWorldOptions.DW_MASK)) {
             if (!hasNPCAlive(region, TENpcEntities.GUIDE.get())) {
@@ -364,9 +354,7 @@ public final class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /**
-     * 省去“所有玩家钱币总和50银”的条件，改为单玩家
-     */
+    /// 省去“所有玩家钱币总和50银”的条件，改为单玩家
     private boolean trySpawnMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
             if (PlayerUtils.getMoney(player, true) >= 50 * CoinItem.UPGRADES_COUNT) {
@@ -404,11 +392,9 @@ public final class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /**
-     * 先计入NPC列表，待玩家交互了再转移
-     *
-     * @see AnglerNPCMixin
-     */
+    /// 先计入NPC列表，待玩家交互了再转移
+    ///
+    /// @see AnglerNPCMixin
     private boolean trySpawnAngler(ServerPlayer player, Region region) {
         BlockPos playerPos = player.blockPosition();
         Region playerRegion = new Region(playerPos);
@@ -524,14 +510,12 @@ public final class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /**
-     * 未在区域内的机械师会自动移除（因为机械师距离玩家基地可能很远）
-     *
-     * @see org.confluence.mod.integration.terra_entity.TEGameEvents#onInteractNpc(NPCEvent.InteractNPCEvent)
-     * @see MechanicNPCMixin
-     */
+    /// 未在区域内的机械师会自动移除（因为机械师距离玩家基地可能很远）
+    ///
+    /// @see org.confluence.mod.integration.terra_entity.TEGameEvents#onInteractNpc(NPCEvent.InteractNPCEvent)
+    /// @see MechanicNPCMixin
     private boolean trySpawnMechanic(ServerPlayer player, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.AFTER_SKELETRON) && npcSpawned.contains(TENpcEntities.MECHANIC.get())) {
+        if (KillBoard.INSTANCE.isDefeated(TEBossEntities.SKELETRON.get()) && npcSpawned.contains(TENpcEntities.MECHANIC.get())) {
             if (!hasNPCAlive(region, TENpcEntities.MECHANIC.get())) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.MECHANIC.get());
             }
@@ -592,9 +576,7 @@ public final class NPCSpawner implements IGlobalData {
         }
     }
 
-    /**
-     * 调用前需检查是否已使用过先进战斗技术
-     */
+    /// 调用前需检查是否已使用过先进战斗技术
     public static void applyAdvancedCombatTechniques(AbstractTerraNPC living, ResourceLocation id) {
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         if (armor != null) {

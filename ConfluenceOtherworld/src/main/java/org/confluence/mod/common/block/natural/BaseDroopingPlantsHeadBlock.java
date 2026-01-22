@@ -39,52 +39,43 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
             Codec.BOOL.fieldOf("is_climbable").forGetter(block -> block.isClimbable),
             BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("attached_block").forGetter(block -> block.attachedBlock)
     ).apply(instance, BaseDroopingPlantsHeadBlock::new));
+
     public static final int DEFAULT_MAX_AGE = 25;
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    protected final boolean isNaturalGrowth;
+
     protected final int side;
     protected final int maxAge;
-    protected final List<Block> attachedBlock;
-    private transient Set<Block> cache;
+    protected final boolean isNaturalGrowth;
     protected final boolean isClimbable;
+    protected final List<Block> attachedBlock;
+    private final Set<Block> attachedBlockCache;
 
     public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable) {
-        super(Properties.of().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY), Direction.DOWN, createShape(side), false, 0.1);
-        this.isNaturalGrowth = isNaturalGrowth;
-        this.side = side;
-        this.isClimbable = isClimbable;
-        this.attachedBlock = List.of();
-        this.maxAge = DEFAULT_MAX_AGE;
-        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+        this(side, DEFAULT_MAX_AGE, isNaturalGrowth, isClimbable, List.of());
     }
 
     public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable, List<Block> attachedBlock) {
-        super(Properties.of().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY), Direction.DOWN, createShape(side), false, 0.1);
-        this.isNaturalGrowth = isNaturalGrowth;
-        this.side = side;
-        this.isClimbable = isClimbable;
-        this.attachedBlock = attachedBlock;
-        this.maxAge = DEFAULT_MAX_AGE;
-        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+        this(side, DEFAULT_MAX_AGE, isNaturalGrowth, isClimbable, attachedBlock);
     }
 
     public BaseDroopingPlantsHeadBlock(int side, int maxAge, boolean isNaturalGrowth, boolean isClimbable, List<Block> attachedBlock) {
         super(Properties.of().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY), Direction.DOWN, createShape(side), false, 0.1);
-        this.isNaturalGrowth = isNaturalGrowth;
         this.side = side;
+        this.maxAge = maxAge;
+        this.isNaturalGrowth = isNaturalGrowth;
         this.isClimbable = isClimbable;
         this.attachedBlock = attachedBlock;
-        this.maxAge = maxAge;
+        this.attachedBlockCache = Set.copyOf(attachedBlock);
         this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0).setValue(WATERLOGGED, false));
     }
 
     private static VoxelShape createShape(int side) {
-        double halfSide = (16 - side) / 2.0;
-        return box(halfSide, 0, halfSide, 16 - halfSide, 16, 16 - halfSide);
+        double margin = (16.0 - side) / 2.0;
+        return Block.box(margin, 0, margin, 16.0 - margin, 16, 16.0 - margin);
     }
 
     @Override
-    protected MapCodec<BaseDroopingPlantsHeadBlock> codec() {
+    protected MapCodec<? extends BaseDroopingPlantsHeadBlock> codec() {
         return CODEC;
     }
 
@@ -105,10 +96,7 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {
-        if (maxAge != DEFAULT_MAX_AGE) {
-            return state.getValue(AGE) < maxAge;
-        }
-        return isNaturalGrowth;
+        return isNaturalGrowth || state.getValue(AGE) < maxAge;
     }
 
     @Override
@@ -125,58 +113,44 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     }
 
     @Override
-    public BlockState getStateForPlacement(LevelAccessor level) {
-        if (maxAge != 0) {
-            return this.defaultBlockState().setValue(AGE, level.getRandom().nextInt(maxAge));
-        }
-        return this.defaultBlockState().setValue(AGE, level.getRandom().nextInt(25));
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState state = defaultBlockState();
-        BlockPos pos = context.getClickedPos();
-        Level level = context.getLevel();
-        BlockState blockState = level.getBlockState(pos);
-        if (blockState.getFluidState().is(Fluids.WATER)) {
-            state = state.setValue(WATERLOGGED, true);
-        }
-        return state;
+        BlockState state = super.getStateForPlacement(context);
+        if (state == null) state = this.defaultBlockState();
+        boolean isWater = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
+        return state.setValue(WATERLOGGED, isWater).setValue(AGE, context.getLevel().getRandom().nextInt(Math.max(1, maxAge)));
     }
 
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (maxAge == 0) {
-            super.randomTick(state, level, pos, random);
-            return;
-        }
-        if (state.getValue(AGE) >= maxAge) return;
-        if (canCropGrow(level, pos.relative(this.growthDirection), state, random.nextDouble() < 0.1)) {
-            BlockPos blockPos = pos.relative(this.growthDirection);
-            if (this.canGrowInto(level.getBlockState(blockPos)))
-                level.setBlockAndUpdate(blockPos, this.getGrowIntoState(state, level.random));
+        if (state.getValue(AGE) < maxAge) {
+            if (random.nextDouble() < 0.1) {
+                BlockPos growPos = pos.relative(this.growthDirection);
+                if (this.canGrowInto(level.getBlockState(growPos))) {
+                    level.setBlockAndUpdate(growPos, this.getGrowIntoState(state, level.random));
+                }
+            }
         }
     }
 
     @Override
-    public boolean canSurvive(BlockState blockstate, LevelReader level, BlockPos pos) {
-        BlockPos blockpos = pos.above();
-        blockstate = level.getBlockState(blockpos);
-        if (attachedBlock.isEmpty()) {
-            return blockstate.is(this) || blockstate.is(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE);
-        } else {
-            if (cache == null) this.cache = new HashSet<>(attachedBlock);
-            return blockstate.is(this) || cache.contains(blockstate.getBlock());
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockPos supportPos = pos.above();
+        BlockState supportState = level.getBlockState(supportPos);
+        if (supportState.is(this)) return true;
+        if (attachedBlockCache.isEmpty()) {
+            return supportState.is(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE);
         }
+        return attachedBlockCache.contains(supportState.getBlock());
     }
 
     @Override
     public boolean isLadder(BlockState state, LevelReader level, BlockPos pos, LivingEntity entity) {
-        return isClimbable && (state.is(BlockTags.CLIMBABLE) || state.is(this));
+        return isClimbable;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(WATERLOGGED));
+        super.createBlockStateDefinition(builder);
+        builder.add(WATERLOGGED);
     }
 }

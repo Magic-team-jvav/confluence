@@ -379,10 +379,9 @@ public final class PlayerUtils {
         }
     }
 
-    /**
-     * @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
-     */
+    /// @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
     public static void dropMoney(Player player) {
+        if (!CommonConfigs.PLAYER_DROPS_MONEY.get()) return;
         long money = getMoney(player, false);
         long drops;
         if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {

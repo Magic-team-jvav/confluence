@@ -8,8 +8,7 @@ import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.neoforged.neoforge.common.Tags;
-import org.confluence.mod.common.block.natural.CattailsBodyBlock;
-import org.confluence.mod.common.block.natural.CattailsHeadBlock;
+import org.confluence.mod.common.block.natural.CattailBlock;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -23,22 +22,26 @@ public class PureConversionTable extends ConversionTable {
         if (block == Blocks.TALL_GRASS) {
             return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.SHORT_GRASS : Blocks.AIR;
         }
-        if (block instanceof CattailsHeadBlock) return NatureBlocks.CATTAILS_HEAD.get();
-        if (block instanceof CattailsBodyBlock) return NatureBlocks.CATTAILS_BODY.get();
+        if (block instanceof CattailBlock && block != NatureBlocks.CATTAIL_BLOCK.get())
+            return NatureBlocks.CATTAIL_BLOCK.get();
+
 
         Holder<Block> holder = block.builtInRegistryHolder();
 
         if (holder.is(BlockTags.LOGS)) return Blocks.OAK_LOG;
         if (holder.is(BlockTags.LEAVES)) return Blocks.OAK_LEAVES;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_GRASS_BLOCK)) return Blocks.GRASS_BLOCK;
-        if (holder.is(ModTags.Blocks.PURE_CONVERSION_JUNGLE_GRASS_BLOCK)) return NatureBlocks.JUNGLE_GRASS_BLOCK.get();
+        if (holder.is(ModTags.Blocks.PURE_CONVERSION_JUNGLE_GRASS_BLOCK))
+            return NatureBlocks.JUNGLE_GRASS_BLOCK.get();
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SHORT_GRASS)) return Blocks.SHORT_GRASS;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_PACKED_ICE)) return Blocks.PACKED_ICE;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_ICE)) return Blocks.ICE;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SAND)) return Blocks.SAND;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SANDSTONE)) return Blocks.SANDSTONE;
-        if (holder.is(ModTags.Blocks.PURE_CONVERSION_HARDENED_SAND_BLOCK)) return NatureBlocks.HARDENED_SAND_BLOCK.get();
-        if (holder.is(ModTags.Blocks.PURE_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_SAND_BLOCK.get();
+        if (holder.is(ModTags.Blocks.PURE_CONVERSION_HARDENED_SAND_BLOCK))
+            return NatureBlocks.HARDENED_SAND_BLOCK.get();
+        if (holder.is(ModTags.Blocks.PURE_CONVERSION_MOIST_SAND_BLOCK))
+            return NatureBlocks.MOISTENED_SAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_CACTUS)) return Blocks.CACTUS;
 
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return Blocks.STONE;

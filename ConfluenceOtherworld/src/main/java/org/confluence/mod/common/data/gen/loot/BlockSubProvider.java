@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.mod.common.block.natural.CattailBlock;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
@@ -558,10 +560,10 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         // 发光蘑菇
         add(GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
         add(GLOWING_MUSHROOM_VINE.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
-        add(GLOWING_MUSHROOM_CATTAILS_HEAD.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
+        add(GLOWING_MUSHROOM_CATTAIL_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
         add(GLOWING_MUSHROOM_PILEUS_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
         dropSelf(GLOWING_MUSHROOM_STEM_BLOCK.get());
-        dropWhenSilkTouch(GLOWING_MUSHROOM_CATTAILS_BODY.get());
+        dropWhenSilkTouch(GLOWING_MUSHROOM_CATTAIL_BLOCK.get());
 
         add(LIFE_MUSHROOM_INDUSIUM_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.LIFE_MUSHROOM));
         add(LIFE_MUSHROOM_PILEUS_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.LIFE_MUSHROOM));
@@ -695,18 +697,12 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         addGrassLoot(HALLOW_GRASS.get(), HALLOW_GRASS.asItem());
         addGrassLoot(CRIMSON_GRASS.get(), CRIMSON_GRASS.asItem());
 
-        addGrassLoot(CATTAILS_BODY.get(), ModItems.CATTAILS.get());
-        addGrassLoot(CATTAILS_HEAD.get(), ModItems.CATTAILS.get());
-        addGrassLoot(JUNGLE_CATTAILS_BODY.get(), ModItems.JUNGLE_CATTAILS.get());
-        addGrassLoot(JUNGLE_CATTAILS_HEAD.get(), ModItems.JUNGLE_CATTAILS.get());
-        addGrassLoot(GLOWING_MUSHROOM_CATTAILS_BODY.get(), ModItems.GLOWING_MUSHROOM_CATTAILS.get());
-        addGrassLoot(GLOWING_MUSHROOM_CATTAILS_HEAD.get(), ModItems.GLOWING_MUSHROOM_CATTAILS.get());
-        addGrassLoot(HALLOW_CATTAILS_BODY.get(), ModItems.HALLOW_CATTAILS.get());
-        addGrassLoot(HALLOW_CATTAILS_HEAD.get(), ModItems.HALLOW_CATTAILS.get());
-        addGrassLoot(EBONY_CATTAILS_BODY.get(), ModItems.EBONY_CATTAILS.get());
-        addGrassLoot(EBONY_CATTAILS_HEAD.get(), ModItems.EBONY_CATTAILS.get());
-        addGrassLoot(CRIMSON_CATTAILS_BODY.get(), ModItems.CRIMSON_CATTAILS.get());
-        addGrassLoot(CRIMSON_CATTAILS_HEAD.get(), ModItems.CRIMSON_CATTAILS.get());
+        addGrassLoot(CATTAIL_BLOCK.get(), ModItems.CATTAIL.get());
+        addGrassLoot(JUNGLE_CATTAIL_BLOCK.get(), ModItems.JUNGLE_CATTAIL.get());
+        addGrassLoot(GLOWING_MUSHROOM_CATTAIL_BLOCK.get(), ModItems.GLOWING_MUSHROOM_CATTAIL.get());
+        addGrassLoot(HALLOW_CATTAIL_BLOCK.get(), ModItems.HALLOW_CATTAIL.get());
+        addGrassLoot(EBONY_CATTAIL_BLOCK.get(), ModItems.EBONY_CATTAIL.get());
+        addGrassLoot(CRIMSON_CATTAIL_BLOCK.get(), ModItems.CRIMSON_CATTAIL.get());
 
         addGrassLoot(SMALL_DESERT_PLANT.get(), SMALL_DESERT_PLANT.asItem());
         addGrassLoot(BIG_DESERT_PLANT.get(), BIG_DESERT_PLANT.asItem());

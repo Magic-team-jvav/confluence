@@ -124,12 +124,12 @@ public final class ModItems {
     )));
     public static final DeferredItem<GrassSeedItem> ASH_GRASS_SEED = ITEMS.register("ash_grass_seed", () -> new GrassSeedItem(Map.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get())));
 
-    public static final DeferredItem<BlockItem> CATTAILS = BLOCK_ITEMS.register("cattails", () -> new BlockItem(NatureBlocks.CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> JUNGLE_CATTAILS = BLOCK_ITEMS.register("jungle_cattails", () -> new BlockItem(NatureBlocks.JUNGLE_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> GLOWING_MUSHROOM_CATTAILS = BLOCK_ITEMS.register("glowing_mushroom_cattails", () -> new BlockItem(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> HALLOW_CATTAILS = BLOCK_ITEMS.register("hallow_cattails", () -> new BlockItem(NatureBlocks.HALLOW_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> EBONY_CATTAILS = BLOCK_ITEMS.register("ebony_cattails", () -> new BlockItem(NatureBlocks.EBONY_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> CRIMSON_CATTAILS = BLOCK_ITEMS.register("crimson_cattails", () -> new BlockItem(NatureBlocks.CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> CATTAIL = BLOCK_ITEMS.register("cattail", () -> new BlockItem(NatureBlocks.CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> JUNGLE_CATTAIL = BLOCK_ITEMS.register("jungle_cattail", () -> new BlockItem(NatureBlocks.JUNGLE_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> GLOWING_MUSHROOM_CATTAIL = BLOCK_ITEMS.register("glowing_mushroom_cattail", () -> new BlockItem(NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> HALLOW_CATTAIL = BLOCK_ITEMS.register("hallow_cattail", () -> new BlockItem(NatureBlocks.HALLOW_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> EBONY_CATTAIL = BLOCK_ITEMS.register("ebony_cattail", () -> new BlockItem(NatureBlocks.EBONY_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> CRIMSON_CATTAIL = BLOCK_ITEMS.register("crimson_cattail", () -> new BlockItem(NatureBlocks.CRIMSON_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
 
     public static final DeferredItem<BlockPlacingWandItem> LIVING_WOOD_WAND = ITEMS.register("living_wood_wand", () -> new BlockPlacingWandItem(BlockTags.LOGS, NatureBlocks.LIVING_LOG_BLOCKS.LOG.get()));
     public static final DeferredItem<BlockPlacingWandItem> LEAF_WAND = ITEMS.register("leaf_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_LOG_BLOCKS.LEAVES.get()));

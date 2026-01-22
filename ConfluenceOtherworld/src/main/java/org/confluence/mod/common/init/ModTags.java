@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init;
 
+import com.bawnorton.mixinsquared.TargetHandler;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -51,6 +52,7 @@ public final class ModTags {
         public static final TagKey<Block> SPREADABLE_GRASS_BLOCK = register("spreadable_grass_block");
         public static final TagKey<Block> ENVIRONMENTAL_PRESERVATION = register("environmental_preservation");
         public static final TagKey<Block> RELIC = register("relic"); // 圣物
+        public static final TagKey<Block> CATTAIL_CAN_SURVIVE = register("cattail_can_survive");
 
         public static final TagKey<Block> PURE_CONVERSION_GRASS_BLOCK = register("pure_conversion_grass_block");
         public static final TagKey<Block> PURE_CONVERSION_JUNGLE_GRASS_BLOCK = register("pure_conversion_jungle_grass_block");

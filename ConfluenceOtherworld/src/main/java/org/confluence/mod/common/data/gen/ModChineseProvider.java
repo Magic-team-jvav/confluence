@@ -1608,12 +1608,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.NEON_MOSS.get(), "氖苔藓");
         add(NatureBlocks.HELIUM_MOSS.get(), "氦苔藓");
         add(NatureBlocks.GLOWING_MUSHROOM_MOSS.get(), "发光蘑菇苔藓");
-        add(NatureBlocks.CATTAILS_BODY.get(), "香蒲");
-        add(NatureBlocks.JUNGLE_CATTAILS_BODY.get(), "丛林香蒲");
-        add(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get(), "发光蘑菇香蒲");
-        add(NatureBlocks.HALLOW_CATTAILS_BODY.get(), "神圣香蒲");
-        add(NatureBlocks.EBONY_CATTAILS_BODY.get(), "腐化香蒲");
-        add(NatureBlocks.CRIMSON_CATTAILS_BODY.get(), "猩红香蒲");
+        add(NatureBlocks.CATTAIL_BLOCK.get(), "香蒲");
+        add(NatureBlocks.JUNGLE_CATTAIL_BLOCK.get(), "丛林香蒲");
+        add(NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get(), "发光蘑菇香蒲");
+        add(NatureBlocks.HALLOW_CATTAIL_BLOCK.get(), "神圣香蒲");
+        add(NatureBlocks.EBONY_CATTAIL_BLOCK.get(), "腐化香蒲");
+        add(NatureBlocks.CRIMSON_CATTAIL_BLOCK.get(), "猩红香蒲");
         add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
         add(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get(), "猩红捕蝇草");
         add(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get(), "嗜血结晶");
@@ -2577,12 +2577,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.ENTITY_DISPLAY.get(), "生物显示");
         add(ModItems.HARDMODE_CONVERTOR.get(), "困难模式转换器");
 
-        add(ModItems.CATTAILS.get(), "香蒲");
-        add(ModItems.JUNGLE_CATTAILS.get(), "丛林香蒲");
-        add(ModItems.GLOWING_MUSHROOM_CATTAILS.get(), "发光蘑菇香蒲");
-        add(ModItems.HALLOW_CATTAILS.get(), "神圣香蒲");
-        add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
-        add(ModItems.CRIMSON_CATTAILS.get(), "猩红香蒲");
         add(ModItems.LIVING_WOOD_WAND.get(), "生命木魔棒");
         add(ModItems.LEAF_WAND.get(), "树叶魔棒");
         add(ModItems.LIVING_MAHOGANY_WAND.get(), "生命红木魔棒");

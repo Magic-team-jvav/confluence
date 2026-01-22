@@ -433,7 +433,6 @@ public final class ModEvents {
                 .register("confluence:emerald_chain", "confluence:jade_chain")
                 // 1.1.4 -> 1.1.5
                 .register("confluence:golden_coin", "confluence:gold_coin");
-
     }
 
     @SubscribeEvent
@@ -444,7 +443,20 @@ public final class ModEvents {
                 .register("confluence:silver_coin_pile", "confluence:silver_coin")
                 .register("confluence:golden_coin_pile", "confluence:golden_coin")
                 .register("confluence:platinum_coin_pile", "confluence:platinum_coin")
-                .register("confluence:emerald_coin_pile", "confluence:emerald_coin");
+                .register("confluence:emerald_coin_pile", "confluence:emerald_coin")
+                // 1.1.5 -> 1.2.0
+                .register("confluence:cattails_head", "confluence:cattail_block")
+                .register("confluence:cattails_body", "confluence:cattail_block")
+                .register("confluence:jungle_cattails_head", "confluence:jungle_cattail_block")
+                .register("confluence:jungle_cattails_body", "confluence:jungle_cattail_block")
+                .register("confluence:glowing_mushroom_cattais_head", "confluence:glowing_mushroom_cattail_block")
+                .register("confluence:glowing_mushroom_cattais_body", "confluence:glowing_mushroom_cattail_block")
+                .register("confluence:hallow_cattails_head", "confluence:hallow_cattail_block")
+                .register("confluence:hallow_cattails_body", "confluence:hallow_cattail_block")
+                .register("confluence:ebony_cattails_head", "confluence:ebony_cattail_block")
+                .register("confluence:ebony_cattails_body", "confluence:ebony_cattail_block")
+                .register("confluence:crimson_cattails_head", "confluence:crimson_cattail_block")
+                .register("confluence:crimson_cattails_body", "confluence:crimson_cattail_block");
     }
 
     @SubscribeEvent
@@ -487,6 +499,12 @@ public final class ModEvents {
                 .register("terra_moment:slime_rain", "confluence:slime_rain")
                 .register("terra_moment:blood_tear", "confluence:blood_tear")
                 .register("terra_moment:goblin_battle_standard", "confluence:goblin_battle_standard")
+                .register("confluence:cattails", "confluence:cattail")
+                .register("confluence:jungle_cattails", "confluence:jungle_cattail")
+                .register("confluence:glowing_mushroom_cattails", "confluence:glowing_mushroom_cattail")
+                .register("confluence:hallow_cattails", "confluence:hallow_cattail")
+                .register("confluence:ebony_cattails", "confluence:ebony_cattail")
+                .register("confluence:crimson_cattails", "confluence:crimson_cattail")
         ;
     }
 

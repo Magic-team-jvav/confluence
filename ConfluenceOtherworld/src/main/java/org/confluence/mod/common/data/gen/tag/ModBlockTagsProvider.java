@@ -147,6 +147,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
         tag(TETags.Blocks.HONEY).add(HONEY.get());
 
+        tag(ModTags.Blocks.CATTAIL_CAN_SURVIVE).add(
+                Blocks.GRASS_BLOCK,
+                Blocks.DIRT,
+                Blocks.SAND,
+                Blocks.GRAVEL
+        );
+
         tag(BlockTags.OVERWORLD_NATURAL_LOGS).add(
                 EBONY_LOG_BLOCKS.LOG.get(),
                 SHADOW_LOG_BLOCKS.LOG.get(),
@@ -1611,8 +1618,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             MUSHROOM_GRASS_BLOCK.get(),
             MUSHROOM_PATH.get(),
             GLOWING_MUSHROOM.get(),
-            GLOWING_MUSHROOM_CATTAILS_BODY.get(),
-            GLOWING_MUSHROOM_CATTAILS_HEAD.get(),
+            GLOWING_MUSHROOM_CATTAIL_BLOCK.get(),
             GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(),
             GLOWING_MUSHROOM_STEM_BLOCK.get(),
             GLOWING_MUSHROOM_PILEUS_BLOCK.get(),
@@ -1658,18 +1664,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         NEON_MOSS.get(),
                         HELIUM_MOSS.get(),
                         GLOWING_MUSHROOM_MOSS.get(),
-                        CATTAILS_BODY.get(),
-                        JUNGLE_CATTAILS_BODY.get(),
-                        GLOWING_MUSHROOM_CATTAILS_BODY.get(),
-                        HALLOW_CATTAILS_BODY.get(),
-                        EBONY_CATTAILS_BODY.get(),
-                        CRIMSON_CATTAILS_BODY.get(),
-                        CATTAILS_HEAD.get(),
-                        JUNGLE_CATTAILS_HEAD.get(),
-                        GLOWING_MUSHROOM_CATTAILS_HEAD.get(),
-                        HALLOW_CATTAILS_HEAD.get(),
-                        EBONY_CATTAILS_HEAD.get(),
-                        CRIMSON_CATTAILS_HEAD.get(),
+                        CATTAIL_BLOCK.get(),
+                        JUNGLE_CATTAIL_BLOCK.get(),
+                        GLOWING_MUSHROOM_CATTAIL_BLOCK.get(),
+                        HALLOW_CATTAIL_BLOCK.get(),
+                        EBONY_CATTAIL_BLOCK.get(),
+                        CRIMSON_CATTAIL_BLOCK.get(),
                         YELLOW_WILLOW_DROOPING_LEAVES.get(),
                         GLOWING_MUSHROOM_VINE.get(),
                         FOREST_DROOPING_VINE.get(),

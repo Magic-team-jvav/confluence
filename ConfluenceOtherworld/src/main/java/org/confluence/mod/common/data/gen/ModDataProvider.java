@@ -442,11 +442,11 @@ public class ModDataProvider {
                     1
             ));
             register(context, GLOWING_MUSHROOM_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_VINE.get()), false, 1, 9));
-            register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get()), 0, 1.0F, 16, 20));
-            register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_BODY.get()), 2, 0.5F, 7, 20));
-            register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_BODY.get()), 2, 0.5F, 5, 20));
-            register(context, CRIMSON_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_BODY.get()), 2, 0.5F, 5, 20));
-            register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CATTAILS_BODY.get()), 2, 0.5F, 5, 20));
+            register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get()), 0, 1.0F, 20));
+            register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
+            register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
+            register(context, CRIMSON_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
+            register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, ModFeatures.Configured.BAOBAB_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
                     new WeightedPlacedFeature(direct(
                             ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
@@ -1228,7 +1228,7 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1)
                             // todo 仅 Celebrationmk10 和 Get fixed boi 世界生成 new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_MIMIC.get(), 3, 1, 1)
 
-                            )
+                    )
             ));
             register(context, createModifierKey("common_overworld"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     overworld,

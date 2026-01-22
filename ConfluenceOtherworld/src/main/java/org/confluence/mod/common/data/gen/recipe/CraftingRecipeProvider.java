@@ -594,7 +594,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         )), FunctionalBlocks.LIFE_CAMPFIRE.toStack());
         // 香蒲造纸
         shaped(output, ShapedRecipePattern.of(Map.of(
-                '/', Ingredient.of(ModItems.CATTAILS,ModItems.JUNGLE_CATTAILS,ModItems.GLOWING_MUSHROOM_CATTAILS,ModItems.EBONY_CATTAILS,ModItems.CRIMSON_CATTAILS,ModItems.HALLOW_CATTAILS)
+                '/', Ingredient.of(ModItems.CATTAIL,ModItems.JUNGLE_CATTAIL,ModItems.GLOWING_MUSHROOM_CATTAIL,ModItems.EBONY_CATTAIL,ModItems.CRIMSON_CATTAIL,ModItems.HALLOW_CATTAIL)
         ), List.of(
                 "///"
         )), new ItemStack(Items.PAPER,3));

@@ -229,6 +229,24 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###"
         )), ChestBlocks.SANDSTONE_CHEST.toStack());
 
+        // 大理石箱
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.MARBLE)
+        ), List.of(
+                "###",
+                "# #",
+                "###"
+        )), ChestBlocks.MARBLE_CHEST.toStack());
+
+        // 花岗岩箱
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.GRANITE)
+        ), List.of(
+                "###",
+                "# #",
+                "###"
+        )), ChestBlocks.GRANITE_CHEST.toStack());
+
         for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
             registerWoodRecipes(output, logBlockSet);
         }

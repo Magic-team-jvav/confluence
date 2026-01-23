@@ -92,15 +92,23 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.VOODOO_DEMON, TCEffects.CONFUSED, ModEffects.SHADOWFLAME, TEEffects.HELLFIRE)
                 // TODO 秃鹰 爬墙蜘蛛
                 .add(TEMonsterEntities.YELLOW_SLIME, MobEffects.POISON)
-                // TODO 琵琶鱼 愤怒捕手 巨骨舌鱼 装甲骷髅 装甲维京海盗 黑隐士 嗜血怪 拜月教忠教徒 邪教徒弓箭手 蓝装甲骷髅 骷髅李 混沌精 爬藤怪 宝箱怪 冰雪宝箱怪 腐化宝箱怪 猩红宝箱怪 神圣宝箱怪 丛林宝箱怪
+                // TODO 琵琶鱼 愤怒捕手 巨骨舌鱼 装甲骷髅 装甲维京海盗 黑隐士 嗜血怪 拜月教忠教徒 邪教徒弓箭手 蓝装甲骷髅 骷髅李 混沌精 爬藤怪
+                .add(TEMonsterEntities.WOODEN_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.GOLDEN_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.SHADOW_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.CORRUPT_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.JUNGLE_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.CRIMSON_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.HALLOWED_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.ICE_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE, TEEffects.FROST_BURN, ModEffects.FROSTBITE)
                 .add(TEMonsterEntities.CORRUPT_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.ARAPAIMA, TCEffects.CONFUSED)
                 // TODO 腐化者
                 .add(TEMonsterEntities.CRIMSLIME, MobEffects.POISON)
                 /*
-                TODO 猩红斧 诅咒锤 跳跳兽 沙漠幽魂 魔教徒 挖掘怪 沙虫 附魔剑 恶心浮游怪 腹足怪 巨型诅咒骷髅头 巨型真菌球怪 地狱装甲骷髅 蹦蹦兽
+                TODO 猩红斧 诅咒锤 跳跳兽 沙漠幽魂 魔教徒 挖掘怪 沙虫 附魔剑 恶心浮游怪 腹足怪 巨型诅咒骷髅头 巨型真菌球怪 地狱装甲骷髅
                  弹跳杰克南瓜灯 冰雪精 冰雪陆龟 灵液黏黏怪 冰雪人鱼 夜明蝙蝠 夜明史莱姆 丛林蜘蛛 熔岩蝙蝠 丛林蜥蜴 火星探测器 蛇发女妖 苔藓黄蜂 蛾
-                  圣骑士 装甲幻影魔 褴褛邪教徒法师 红魔鬼 岩石巨人 符文巫师 生锈装甲骷髅 沙贼 骷髅弓箭手 骷髅突击手 骷髅狙击手 小史莱姆 恶翅史莱姆
+                  圣骑士 装甲幻影魔 褴褛邪教徒法师 红魔鬼 岩石巨人 符文巫师 生锈装甲骷髅 骷髅弓箭手 骷髅突击手 骷髅狙击手 小史莱姆 恶翅史莱姆
                    恶翅史莱姆(无翅膀) 骷髅特警 毒泥 吞世怪
                  */
                 .add(TEMonsterEntities.WYVERN, TCEffects.CONFUSED)
@@ -108,6 +116,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.GOLDEN_SLIME, ModEffects.SHIMMER)
                 .add(TEMonsterEntities.HERPLING, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.DERPLING, TCEffects.CONFUSED)
+                .add(TEMonsterEntities.SAND_POACHER, MobEffects.POISON)
                 //boss
                 .add(TEBossEntities.BRAIN_OF_CTHULHU, TCEffects.CONFUSED)
                 .add(TEBossEntities.EATER_OF_WORLDS, TCEffects.CONFUSED)

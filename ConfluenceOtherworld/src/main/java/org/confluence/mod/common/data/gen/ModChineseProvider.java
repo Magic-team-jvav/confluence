@@ -2140,6 +2140,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.UNICORN_HORN.get(), "独角兽角");
         add(MaterialItems.DARK_SHARD.get(), "暗黑碎块");
         add(MaterialItems.LIGHT_SHARD.get(), "光明碎块");
+        add(MaterialItems.ANCIENT_CLOTH.get(), "远古布匹");
         add(MaterialItems.SPIDER_FANG.get(), "蜘蛛牙");
         add(MaterialItems.PEARL.get(), "珍珠");
         add(MaterialItems.BLACK_PEARL.get(), "黑珍珠");
@@ -2730,6 +2731,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ChestBlocks.IVY_CHEST.get(), "常春藤箱");
         add(ChestBlocks.WATER_CHEST.get(), "水中箱");
         add(ChestBlocks.SKYWARE_CHEST.get(), "天域箱");
+        add(ChestBlocks.RICH_MAHOGANY_CHEST.get(), "红木箱");
+        add(ChestBlocks.MARBLE_CHEST.get(), "大理石箱");
+        add(ChestBlocks.GRANITE_CHEST.get(), "花岗岩箱");
         add(ChestBlocks.DEATH_WOODEN_CHEST.get(), "死人木箱");
         add(ChestBlocks.SANDSTONE_CHEST.get(), "沙岩箱");
         add(ChestBlocks.LIVING_WOOD_CHEST.get(), "生命木箱");

@@ -1199,7 +1199,9 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.MUMMY.get(), 35, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_LAMIA.get(), 45, 1, 1)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_LAMIA.get(), 45, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GHOUL.get(), 35, 2, 3),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SAND_POACHER.get(), 45, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_icy"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1372,6 +1374,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_MIMIC.get(), 1, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_MUMMY.get(), 35, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_LAMIA.get(), 45, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.VILE_GHOUL.get(), 35, 2, 3))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1424,6 +1427,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_MUMMY.get(), 35, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_LAMIA.get(), 45, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HERPLING.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.TAINTED_GHOUL.get(), 35, 2, 3))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1460,6 +1464,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HALLOWED_MIMIC.get(), 1, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_MUMMY.get(), 35, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_LAMIA.get(), 45, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DREAMER_GHOUL.get(), 35, 2, 3))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()

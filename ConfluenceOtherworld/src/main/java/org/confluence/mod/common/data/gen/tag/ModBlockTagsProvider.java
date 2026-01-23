@@ -355,8 +355,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SHADOW_CHEST.get(),
                 FROZEN_CHEST.get(),
                 IVY_CHEST.get(),
+                RICH_MAHOGANY_CHEST.get(),
                 WATER_CHEST.get(),
                 SKYWARE_CHEST.get(),
+                MARBLE_CHEST.get(),
+                GRANITE_CHEST.get(),
                 JUNGLE_CHEST.get(),
                 CORRUPTION_CHEST.get(),
                 CRIMSON_CHEST.get(),
@@ -486,6 +489,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WOOD_STONE_SLATTED_BLOCKS.get(),
                 DEATH_WOODEN_CHEST.get(),
                 LIVING_WOOD_CHEST.get(),
+                RICH_MAHOGANY_CHEST.get(),
                 DUNGEON_CHEST.get(),
                 SPORE_ROOT_BLOCK.get(),
 
@@ -1090,7 +1094,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         {
             ChestBlocks.BLOCKS.getEntries().forEach(block -> tag(Tags.Blocks.CHESTS).add(block.get()));
             ChestBlocks.DEATH_CHESTS.forEach(block -> tag(Tags.Blocks.CHESTS_TRAPPED).add(block.get()));
-            tag(Tags.Blocks.CHESTS_WOODEN).add(ChestBlocks.IVY_CHEST.get(), ChestBlocks.DEATH_WOODEN_CHEST.get(), ChestBlocks.LIVING_WOOD_CHEST.get());
+            tag(Tags.Blocks.CHESTS_WOODEN).add(ChestBlocks.IVY_CHEST.get(), ChestBlocks.DEATH_WOODEN_CHEST.get(), ChestBlocks.LIVING_WOOD_CHEST.get(), RICH_MAHOGANY_CHEST.get());
         }
         tag(Tags.Blocks.COBBLESTONES_NORMAL).add(COBBLED_EBONSTONE.get(), COBBLED_PEARLSTONE.get(), COBBLED_CRIMSTONE.get());
         tag(Tags.Blocks.DYED).add(

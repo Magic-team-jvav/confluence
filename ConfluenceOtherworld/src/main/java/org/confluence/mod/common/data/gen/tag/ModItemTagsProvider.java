@@ -692,6 +692,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.ICHOR.get(),
                 MaterialItems.PIXIE_DUST.get(),
                 MaterialItems.UNICORN_HORN.get(),
+                MaterialItems.ANCIENT_CLOTH.get(),
                 MaterialItems.SPIDER_FANG.get(),
                 MaterialItems.SPELL_TOME.get(),
                 MaterialItems.FORBIDDEN_FRAGMENT.get(),

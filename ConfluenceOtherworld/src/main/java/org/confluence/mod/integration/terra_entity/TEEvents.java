@@ -60,6 +60,11 @@ public final class TEEvents {
                 .register(TEMonsterEntities.LIGHT_LAMIA.get(), 8)
                 .register(TEMonsterEntities.DERPLING.get(), 8)
                 .register(TEMonsterEntities.HERPLING.get(), 8)
+                .register(TEMonsterEntities.GHOUL.get(), 8)
+                .register(TEMonsterEntities.VILE_GHOUL.get(), 8)
+                .register(TEMonsterEntities.TAINTED_GHOUL.get(), 8)
+                .register(TEMonsterEntities.DREAMER_GHOUL.get(), 8)
+                .register(TEMonsterEntities.SAND_POACHER.get(), 8)
 
                 .register(TEBossEntities.RETINAZER.get(), 8)
                 .register(TEBossEntities.SPAZMATISM.get(), 8)
@@ -93,6 +98,11 @@ public final class TEEvents {
                 .register(TEMonsterEntities.LIGHT_LAMIA.get(), 2)
                 .register(TEMonsterEntities.DERPLING.get(), 2)
                 .register(TEMonsterEntities.HERPLING.get(), 2)
+                .register(TEMonsterEntities.GHOUL.get(), 2)
+                .register(TEMonsterEntities.VILE_GHOUL.get(), 2)
+                .register(TEMonsterEntities.TAINTED_GHOUL.get(), 2)
+                .register(TEMonsterEntities.DREAMER_GHOUL.get(), 2)
+                .register(TEMonsterEntities.SAND_POACHER.get(), 2)
 
                 .register(TEBossEntities.RETINAZER.get(), 2)
                 .register(TEBossEntities.SPAZMATISM.get(), 2)

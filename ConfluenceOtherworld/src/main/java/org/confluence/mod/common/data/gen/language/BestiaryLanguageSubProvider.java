@@ -384,11 +384,11 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.antlion_larva.desc", "Freshly hatched from their eggs, larval antlions should not be underestimated. Though young, they are still very aggressive.");
 //        add("bestiary.entity.terra_entity.giant_antlion_charger.desc", "The soldiers of the antlion species, Antlion Chargers ferociously chase after intruders with a surprising speed.");
         add("bestiary.entity.terra_entity.mummy.desc", "With the sands transmogrified by outside forces, those put to rest in the desert, whether good or evil, now rise to maim and kill.");
-//        add("bestiary.entity.terra_entity.ghoul.desc", "Wandering the dark caverns below the desert dunes, ghouls are the dessicated husks of zombies preserved by the arid environment.");
+        add("bestiary.entity.terra_entity.ghoul.desc", "Wandering the dark caverns below the desert dunes, ghouls are the dessicated husks of zombies preserved by the arid environment.");
 //        add("bestiary.entity.terra_entity.basilisk.desc", "Sturdy as a rock, these lizard-like beasts roam the desert in search of food. Their hardened bodies make them formidable threats.");
         add("bestiary.entity.terra_entity.tomb_crawler.desc", "The desert is home to one of the largest varieties of worms across the land. It has a voracious appetite for careless explorers.");
 //        add("bestiary.entity.terra_entity.antlion.desc", "When antlions are nesting, they hide in the surface. To defend their eggs, they projectile vomit hard globs of sand at trespassers.");
-//        add("bestiary.entity.terra_entity.sand_poacher.desc", "These unnaturally large scorpions have adapted to swiftly pursuing their prey along the walls with their sharp, venomous tails.");
+        add("bestiary.entity.terra_entity.sand_poacher.desc", "These unnaturally large scorpions have adapted to swiftly pursuing their prey along the walls with their sharp, venomous tails.");
         add("bestiary.entity.terra_entity.giant_antlion_swarmer.desc", "Antlion Swarmers patrol their nests with a watchful eye. Should anyone threaten their eggs, they will defend them fiercely.");
 //        add("bestiary.entity.terra_entity.antlion_charger.desc", "The soldiers of the antlion species, Antlion Chargers ferociously chase after intruders with a surprising speed.");
 //        add("bestiary.entity.terra_entity.dune_splicer.desc", "The world's largest, most deadly worm. Strengthened by ancient magicks, it can devour a spicy Terrarian quicker than they realize.");
@@ -486,7 +486,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.pigron_corrupt.desc", "This elusive dragon-pig hybrid has excellent stealth capabilities despite its rotund figure. It is uncertain how they came to exist.");
 //        add("bestiary.entity.terra_entity.bone_biter.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
         add("bestiary.entity.terra_entity.dark_mummy.desc", "With the sands transmogrified by outside forces, those put to rest in the desert, whether good or evil, now rise to maim and kill.");
-//        add("bestiary.entity.terra_entity.vile_ghoul.desc", "Ghouls twisted by the Corruption ooze a nasty green bile that ignites on contact with skin, scorching their prey with cursed flames.");
+        add("bestiary.entity.terra_entity.vile_ghoul.desc", "Ghouls twisted by the Corruption ooze a nasty green bile that ignites on contact with skin, scorching their prey with cursed flames.");
         add("bestiary.entity.terra_entity.crimslime.desc", "Taking on the consistency of congealed blood and flesh, Crimslimes seek out and digest more raw material for the Crimson.");
         add("bestiary.entity.terra_entity.face_monster.desc", "It would be unwise to face off with one of these unfeeling, hungry mutations. Their mouths are large enough to devour all things.");
         add("bestiary.entity.terra_entity.crimera.desc", "The most common horror to be born from the Crimson, it seeks to consume pure things with unrelenting hunger.");
@@ -501,7 +501,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.pigron_crimson.desc", "This elusive dragon-pig hybrid has excellent stealth capabilities despite its rotund figure. It is uncertain how they came to exist.");
 //        add("bestiary.entity.terra_entity.flesh_reaver.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
         add("bestiary.entity.terra_entity.blood_mummy.desc", "The blood-dripping organic matter in these mummies display far better preservation than the rest of their ilk.");
-//        add("bestiary.entity.terra_entity.tainted_ghoul.desc", "Ghouls infested by the Crimson leak vile ichor from their mouths, weakening the defenses of their foes with every bite.");
+        add("bestiary.entity.terra_entity.tainted_ghoul.desc", "Ghouls infested by the Crimson leak vile ichor from their mouths, weakening the defenses of their foes with every bite.");
         add("bestiary.entity.terra_entity.dark_lamia.desc", "By the time glowing red eyes appear in the darkness of the desert caves, it is already too late. The lamias have found their prey.");
 //        add("bestiary.entity.terra_entity.desert_spirit.desc", "Ancient magicks corrupted the minds of the once friendly desert djinns, releasing them full of hostility from their lamps.");
 //        add("bestiary.entity.terra_entity.rainbow_slime.desc", "These blessing-infused gelatin menaces glow vibrantly in a rainbow of hues. As a result, they require a constant liquid intake.");
@@ -516,7 +516,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.pigron.desc", "This elusive dragon-pig hybrid has excellent stealth capabilities despite its rotund figure. It is uncertain how they came to exist.");
 //        add("bestiary.entity.terra_entity.crystal_thresher.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
         add("bestiary.entity.terra_entity.light_mummy.desc", "With the sands transmogrified by outside forces, those put to rest in the desert, whether good or evil, now rise to maim and kill.");
-//        add("bestiary.entity.terra_entity.dreamer_ghoul.desc", "Ghouls cleansed by the Hallow possess a psychedelic saliva that renders their victims confused and distracted by visions and mirages.");
+        add("bestiary.entity.terra_entity.dreamer_ghoul.desc", "Ghouls cleansed by the Hallow possess a psychedelic saliva that renders their victims confused and distracted by visions and mirages.");
         add("bestiary.entity.terra_entity.light_lamia.desc", "By the time glowing red eyes appear in the darkness of the desert caves, it is already too late. The lamias have found their prey.");
         add("bestiary.entity.terra_entity.spore_zombie_mushroom.desc", "The fungus controlling the minds of these zombies wants only one thing: brains! This is very convenient for the zombie.");
         add("bestiary.entity.terra_entity.spore_zombie_hat_mushroom.desc", "The fungus controlling the minds of these zombies wants only one thing: brains! This is very convenient for the zombie.");
@@ -1129,11 +1129,11 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.antlion_larva.desc", "刚从卵中孵化的蚁狮幼虫绝不可轻视，即便尚处幼年，它们的攻击性也极强。");
 //        add("bestiary.entity.terra_entity.giant_antlion_charger.desc", "巨型蚁狮马是蚁狮族群的士兵，会以惊人的速度凶猛地追击入侵者。");
         add("bestiary.entity.terra_entity.mummy.desc", "外界力量改变了沙漠的形态，那些安息于此的生灵——无论善恶——如今都苏醒过来，肆意残杀。");
-//        add("bestiary.entity.terra_entity.ghoul.desc", "食尸鬼是被干旱环境保存下来的干枯僵尸躯壳，在沙丘之下的黑暗洞穴中四处游荡。");
+        add("bestiary.entity.terra_entity.ghoul.desc", "食尸鬼是被干旱环境保存下来的干枯僵尸躯壳，在沙丘之下的黑暗洞穴中四处游荡。");
 //        add("bestiary.entity.terra_entity.basilisk.desc", "蛇蜥怪如岩石般坚固，这类蜥蜴状生物在沙漠中搜寻猎物，坚硬的躯体让它们成为难以对付的威胁。");
         add("bestiary.entity.terra_entity.tomb_crawler.desc", "沙漠是这片土地上最大型蠕虫的栖息地之一，这种墓穴爬虫对粗心的探险者有着极大的胃口。");
 //        add("bestiary.entity.terra_entity.antlion.desc", "蚁狮筑巢时会潜藏在地表之下，若有入侵者威胁到它们的卵，便会喷射坚硬的沙团进行反击。");
-//        add("bestiary.entity.terra_entity.sand_poacher.desc", "这些异常巨大的蝎子已进化出沿墙壁快速追击猎物的能力，其锋利的毒尾是致命武器。");
+        add("bestiary.entity.terra_entity.sand_poacher.desc", "这些异常巨大的蝎子已进化出沿墙壁快速追击猎物的能力，其锋利的毒尾是致命武器。");
         add("bestiary.entity.terra_entity.giant_antlion_swarmer.desc", "巨型蚁狮蜂会警惕地巡视巢穴，一旦有人威胁到它们的卵，便会拼死守护。");
 //        add("bestiary.entity.terra_entity.antlion_charger.desc", "蚁狮马是蚁狮族群的士兵，会以惊人的速度凶猛地追击入侵者。");
 //        add("bestiary.entity.terra_entity.dune_splicer.desc", "沙虫是世界上体型最大、最致命的蠕虫。经远古魔法强化后，它吞噬一个鲜活泰拉瑞亚生物的速度，比猎物反应过来的速度还要快。");
@@ -1231,7 +1231,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.pigron_corrupt.desc", "腐化猪龙是难以捉摸的龙猪杂交生物，即便体型圆胖，仍具备出色的潜行能力。目前尚未知晓它们的起源。");
 //        add("bestiary.entity.terra_entity.bone_biter.desc", "噬骨沙鲨的祖先生活在远古时期流经沙漠的咸水河中，如今已进化出在干燥沙漠中生存的能力。");
         add("bestiary.entity.terra_entity.dark_mummy.desc", "暗黑木乃伊原本是安息在沙漠中的逝者，受外界力量改变沙漠形态的影响，无论生前善恶，如今都化为亡灵苏醒，肆意残杀。");
-//        add("bestiary.entity.terra_entity.vile_ghoul.desc", "腐恶食尸鬼被腐化之力扭曲，体内会渗出恶心的绿色胆汁，这种胆汁接触皮肤便会燃烧，用诅咒火焰灼烧猎物。");
+        add("bestiary.entity.terra_entity.vile_ghoul.desc", "腐恶食尸鬼被腐化之力扭曲，体内会渗出恶心的绿色胆汁，这种胆汁接触皮肤便会燃烧，用诅咒火焰灼烧猎物。");
         add("bestiary.entity.terra_entity.crimslime.desc", "猩红史莱姆的躯体由凝结的血肉构成，会主动寻找并吞噬生物，为猩红之地提供更多扩张所需的原材料。");
         add("bestiary.entity.terra_entity.face_monster.desc", "脸怪是无情且贪婪的变异生物，与它们正面抗衡绝非明智之举——其嘴巴大到足以吞噬任何眼前的事物。");
         add("bestiary.entity.terra_entity.crimera.desc", "猩红喀迈拉是猩红之地最常见的恐怖造物，始终被无尽的饥饿驱使，执着于吞噬纯净的生命与物体。");
@@ -1246,7 +1246,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.pigron_crimson.desc", "猩红猪龙是难以捉摸的龙猪杂交生物，即便体型圆胖，仍具备出色的潜行能力。目前尚未知晓它们的起源。");
 //        add("bestiary.entity.terra_entity.flesh_reaver.desc", "戮血沙鲨的祖先生活在远古时期流经沙漠的咸水河中，如今已进化出在干燥沙漠中生存的能力。");
         add("bestiary.entity.terra_entity.blood_mummy.desc", "血木乃伊的躯体中残留着大量滴血的有机物，与其他木乃伊相比，这些有机物的保存状态要好得多。");
-//        add("bestiary.entity.terra_entity.tainted_ghoul.desc", "红染食尸鬼被猩红之力感染，嘴巴会不断渗出邪恶灵液，每一次啃咬都会削弱敌人的防御能力。");
+        add("bestiary.entity.terra_entity.tainted_ghoul.desc", "红染食尸鬼被猩红之力感染，嘴巴会不断渗出邪恶灵液，每一次啃咬都会削弱敌人的防御能力。");
         add("bestiary.entity.terra_entity.dark_lamia.desc", "当沙漠洞穴的黑暗中出现发光的红色眼眸时，一切都已太晚——拉弥亚早已锁定了自己的猎物。");
 //        add("bestiary.entity.terra_entity.desert_spirit.desc", "沙漠幽魂原本是友善的沙漠精灵，受远古魔法影响心智被腐化，从 lamps 中挣脱而出，变得充满敌意。");
 //        add("bestiary.entity.terra_entity.rainbow_slime.desc", "彩虹史莱姆是蕴含福佑之力的胶状怪物，身体闪耀着绚丽的彩虹色光芒。正因如此，它们需要持续摄入液体才能维持形态。");
@@ -1261,7 +1261,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.pigron.desc", "猪龙是难以捉摸的龙猪杂交生物，即便体型圆胖，仍具备出色的潜行能力。目前尚未知晓它们的起源。");
 //        add("bestiary.entity.terra_entity.crystal_thresher.desc", "水晶沙鲨的祖先生活在远古时期流经沙漠的咸水河中，如今已进化出在干燥沙漠中生存的能力。");
         add("bestiary.entity.terra_entity.light_mummy.desc", "光明木乃伊原本是安息在沙漠中的逝者，受外界力量改变沙漠形态的影响，无论生前善恶，如今都化为亡灵苏醒，肆意残杀。");
-//        add("bestiary.entity.terra_entity.dreamer_ghoul.desc", "神梦食尸鬼被神圣之地净化后，唾液带有迷幻效果，能让受害者产生幻象，陷入困惑并分散注意力。");
+        add("bestiary.entity.terra_entity.dreamer_ghoul.desc", "神梦食尸鬼被神圣之地净化后，唾液带有迷幻效果，能让受害者产生幻象，陷入困惑并分散注意力。");
         add("bestiary.entity.terra_entity.light_lamia.desc", "当地下沙漠洞穴的黑暗中出现发光的红色眼眸时，一切都已太晚——地下沙漠的拉弥亚早已锁定了自己的猎物。");
         add("bestiary.entity.terra_entity.spore_zombie_mushroom.desc", "控制孢子僵尸（蘑菇）心智的真菌只有一个目标：吞噬大脑！这与僵尸本身的本能不谋而合，对僵尸而言极为“方便”。");
         add("bestiary.entity.terra_entity.spore_zombie_hat_mushroom.desc", "控制孢子僵尸（帽子蘑菇）心智的真菌只有一个目标：吞噬大脑！这与僵尸本身的本能不谋而合，对僵尸而言极为“方便”。");

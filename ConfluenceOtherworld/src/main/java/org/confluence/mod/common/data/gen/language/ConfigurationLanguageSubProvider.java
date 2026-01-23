@@ -217,6 +217,11 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.meteorShowerEventMaxEnchantedNightcrawlersBase", "Maximum Enchanted Nightcrawlers (Base Value)");
         add("confluence.configuration.meteorShowerEventMaxEnchantedNightcrawlersPerPlayer", "Enchanted Nightcrawlers Increase Per Player");
         add("confluence.configuration.meteorShowerEventSpawnEnchantedNightcrawlersIntervalFactor", "Enchanted Nightcrawler Spawn Interval");
+        add("confluence.configuration.Boss", "Boss");
+        add("confluence.configuration.Boss.button", "Spawn Boss");
+        add("confluence.configuration.Boss.tooltip", "When enabled, bosses will spawn naturally");
+        add("confluence.configuration.eyeOfCthulhuNatureSpawning", "Eye of Cthulhu Natural Spawning");
+        add("confluence.configuration.deerclopsNatureSpawning", "Deerclops Natural Spawning");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Soul.button", "Soul");
@@ -449,6 +454,11 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.meteorShowerEventMaxEnchantedNightcrawlersBase", "生成附魔夜行者最大数量");
         add("confluence.configuration.meteorShowerEventMaxEnchantedNightcrawlersPerPlayer", "每位玩家提升生成附魔夜行者最大数量");
         add("confluence.configuration.meteorShowerEventSpawnEnchantedNightcrawlersIntervalFactor", "生成附魔夜行者间隔");
+        add("confluence.configuration.Boss", "Boss");
+        add("confluence.configuration.Boss.button", "BOSS生成");
+        add("confluence.configuration.Boss.tooltip", "启用时，BOSS将会生成");
+        add("confluence.configuration.eyeOfCthulhuNatureSpawning", "克苏鲁之眼自然生成");
+        add("confluence.configuration.deerclopsNatureSpawning", "巨鹿自然生成");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Soul.button", "灵魂值");

@@ -227,14 +227,19 @@ public class DecorativeBlocks {
     // 花岗岩
     public static final DeferredBlock<Block> GRANITE_COLUMN = registerWithItem("granite_column", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
     public static final DeferredBlock<Block> GRANITE_BRICKS = registerWithItem("granite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
+    public static final DeferredBlock<Block> CRACKED_GRANITE_BRICKS = registerWithItem("cracked_granite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
     public static final DeferredBlock<Block> POLISHED_GRANITE = registerWithItem("polished_granite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
+    public static final DeferredBlock<Block> CHISELED_GRANITE_BRICKS = registerWithItem("chiseled_granite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
 
     // 方解石
     public static final DeferredBlock<Block> MARBLE_COLUMN = registerWithItem("marble_column", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> MARBLE_BRICKS = registerWithItem("marble_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> CRACKED_MARBLE_BRICKS = registerWithItem("cracked_marble_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> MARBLE_SMALL_BRICKS = registerWithItem("marble_small_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> MARBLE_CHESSBOARD_BRICKS = registerWithItem("marble_chessboard_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> MARBLE_ETERNAL_CHESSBOARD_BRICKS = registerWithItem("marble_eternal_chessboard_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<GlazedTerracottaBlock> GILDED_MARBLE = registerWithItem("gilded_marble", () -> new GlazedTerracottaBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<GlazedTerracottaBlock> CHISELED_MARBLE_BRICKS = registerWithItem("chiseled_marble_bricks", () -> new GlazedTerracottaBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> POLISHED_MARBLE = registerWithItem("polished_marble", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
 
     // 地牢

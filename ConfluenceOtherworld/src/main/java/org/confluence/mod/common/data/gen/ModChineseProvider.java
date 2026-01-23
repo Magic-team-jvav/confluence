@@ -1781,11 +1781,16 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.DYNASTY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹王朝木板");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹阴森木板");
         add(DecorativeBlocks.GRANITE_BRICKS.get(), "花岗岩砖");
+        add(DecorativeBlocks.CRACKED_GRANITE_BRICKS.get(), "裂纹花岗岩砖");
+        add(DecorativeBlocks.CHISELED_GRANITE_BRICKS.get(), "雕纹花岗岩砖");
         add(DecorativeBlocks.GRANITE_COLUMN.get(), "花岗岩柱");
         add(DecorativeBlocks.POLISHED_GRANITE.get(), "磨制花岗岩");
         add(DecorativeBlocks.MARBLE_COLUMN.get(), "大理石柱");
         add(DecorativeBlocks.MARBLE_BRICKS.get(), "大理石砖");
         add(DecorativeBlocks.CRACKED_MARBLE_BRICKS.get(), "裂纹大理石砖");
+        add(DecorativeBlocks.CHISELED_MARBLE_BRICKS.get(), "雕纹大理石砖");
+        add(DecorativeBlocks.MARBLE_CHESSBOARD_BRICKS.get(), "棋盘大理石砖");
+        add(DecorativeBlocks.MARBLE_ETERNAL_CHESSBOARD_BRICKS.get(), "永恒棋盘大理石砖");
         add(DecorativeBlocks.MARBLE_SMALL_BRICKS.get(), "大理细石砖");
         add(DecorativeBlocks.GILDED_MARBLE.get(), "镶金大理石");
         add(DecorativeBlocks.POLISHED_MARBLE.get(), "磨制大理石");

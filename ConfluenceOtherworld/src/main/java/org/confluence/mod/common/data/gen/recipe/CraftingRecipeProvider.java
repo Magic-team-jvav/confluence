@@ -722,7 +722,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS);
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE), DecorativeBlocks.CRIMSTONE_BRICKS);
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE), DecorativeBlocks.PEARLSTONE_BRICKS);
-        registerBricksRecipes(output, Ingredient.of(Blocks.CALCITE), DecorativeBlocks.CRACKED_MARBLE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.MARBLE), DecorativeBlocks.MARBLE_BRICKS);
         // 锁链
         registerChainsRecipes(output, Ingredient.of(ModTags.Items.GEMS_AMBER), DecorativeBlocks.AMBER_CHAIN);
         registerChainsRecipes(output, Ingredient.of(Tags.Items.GEMS_DIAMOND), DecorativeBlocks.DIAMOND_CHAIN);

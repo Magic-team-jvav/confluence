@@ -35,6 +35,7 @@ import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.block.TEFigureBlocks;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
+import org.confluence.terraentity.init.item.TESpawnEggItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1430,7 +1431,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.MECHANICAL_WHEEL_PIECE.get(),
                 MaterialItems.MECHANICAL_WAGON_PIECE.get(),
                 MaterialItems.MECHANICAL_BATTERY_PIECE.get(),
-                CrossbowItems.STAKE_LAUNCHER.get()
+                CrossbowItems.STAKE_LAUNCHER.get(),
+                TESpawnEggItems.THE_TWINS_SPAWN_EGG.get(),
+                TESpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
+                TESpawnEggItems.PLANTERA_SPAWN_EGG.get(),
+                TreasureBagItems.THE_TWINS_TREASURE_BAG.get(),
+                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

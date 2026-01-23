@@ -13,6 +13,7 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.ReturnException;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.LanternNightGameEvent;
@@ -77,6 +78,7 @@ public final class BossDelaySpawner {
     }
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
+        if (!CommonConfigs.EYE_OF_CTHULHU_NATURE_SPAWNING.get()) return;
         if (GameEventSystem.INSTANCE.getStatedEventAmount(true, false) > 0) return;
         if (LanternNightGameEvent.INSTANCE.started()) return;
         EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
@@ -110,6 +112,7 @@ public final class BossDelaySpawner {
     }
 
     public static void spawnDeerClops(ServerLevel level) {
+        if (!CommonConfigs.DEERCLOPS_NATURE_SPAWNING.get()) return;
         if (GameEventSystem.INSTANCE.getStatedEventAmount(true, false) > 0) return;
         if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.DEERCLOPS.get())) return;
         for (ServerPlayer player : level.players()) {

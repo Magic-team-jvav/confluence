@@ -35,10 +35,15 @@ public final class CommonConfigs {
 
     public static BooleanValue DO_FALLING_STAR_SPAWNING;
     public static IntValue FALLING_STAR_INTERVAL;
+
     public static BooleanValue DO_NPC_SPAWNING;
     public static IntValue NPC_SPAWN_INTERVAL;
-    public static BooleanValue DO_METEORITE_SPAWNING;
     public static BooleanValue BROADCAST_NPC_MSG;
+
+    public static BooleanValue EYE_OF_CTHULHU_NATURE_SPAWNING;
+    public static BooleanValue DEERCLOPS_NATURE_SPAWNING;
+
+    public static BooleanValue DO_METEORITE_SPAWNING;
 
     public static BooleanValue PLAYER_DROPS_MONEY;
     public static BooleanValue SHOW_MONEY_DROPS;
@@ -155,6 +160,11 @@ public final class CommonConfigs {
                 NPC_SPAWN_INTERVAL = builder.defineInRange("npcSpawnInterval", 2400, 20, 20000);
                 BROADCAST_NPC_MSG = builder.define("broadcastNpcMsg", true);
                 builder.pop();
+            }
+            {
+                builder.push("Boss");
+                EYE_OF_CTHULHU_NATURE_SPAWNING = builder.define("eyeOfCthulhuNatureSpawning", true);
+                DEERCLOPS_NATURE_SPAWNING = builder.define("deerclopsNatureSpawning", true);
             }
             DO_METEORITE_SPAWNING = builder.define("doMeteoriteSpawning", true);
             builder.pop();

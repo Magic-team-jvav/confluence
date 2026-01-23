@@ -248,6 +248,9 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(LootItem.lootTableItem(AccessoryItems.NATURES_GIFT).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface))
                         ).setWeight(25))
+                        .add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 6))).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface))
+                        ).setWeight(25))
                         .add(LootItem.lootTableItem(SwordItems.PURPLE_CLUBBERFISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSurface)
                         )).setWeight(25))

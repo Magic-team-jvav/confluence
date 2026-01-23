@@ -1120,6 +1120,31 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.FLAME_CLOUD.get(), "火焰云");
         add(ModEntities.SUPER_SPIKY_BALL_PROJECTILE.get(), "超级尖球射弹");
         add(ModEntities.SPEAR.get(), "长矛");
+        add(ModEntities.FLAIL_BALL.get(), "链球");
+        add(ModEntities.STAR_CANNON_BULLET.get(), "星星炮射弹");
+        add(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), "基础展示实体");
+        add(ModEntities.SMOKE_BOMB_ENTITY.get(), "烟雾弹");
+        add(ModEntities.BEENADE.get(), "蜜蜂手雷");
+        add(ModEntities.WATER_BOLT_PROJECTILE.get(), "水弹射弹");
+        add(ModEntities.BALL_OF_FROST_PROJECTILE.get(), "寒霜球射弹");
+        add(ModEntities.CURSED_FLAMES_PROJECTILE.get(), "诅咒火射弹");
+        add(ModEntities.MAGIC_DAGGER_PROJECTILE.get(), "魔法飞刀射弹");
+        add(ModEntities.CRYSTAL_STORM_PROJECTILE.get(), "水晶风暴射弹");
+        add(ModEntities.DEMON_SCYTHE_PROJECTILE.get(), "恶魔镰刀射弹");
+        add(ModEntities.SKULL_PROJECTILE.get(), "骷髅头射弹");
+        add(ModEntities.BLOOD_CLOUD_PROJECTILE.get(), "血云射弹");
+        add(ModEntities.BLOOD_RAIN_PROJECTILE.get(), "血雨射弹");
+        add(ModEntities.RAIN_CLOUD_PROJECTILE.get(), "雨云射弹");
+        add(ModEntities.RAIN_PROJECTILE.get(), "雨水射弹");
+        add(ModEntities.GOLDEN_SHOWER_PROJECTILE.get(), "黄金雨射弹");
+        add(ModEntities.NIGHTS_EDGE_PROJECTILE.get(), "永夜刃射弹");
+        add(ModEntities.GRASS_PROJECTILE.get(), "草剑射弹");
+        add(ModEntities.BEE_PROJECTILE.get(), "养蜂人射弹");
+        add(ModEntities.BONE_THROWN_KNIVE_PROJECTILE.get(), "骨投刀射弹");
+        add(ModEntities.FROST_DAGGERFISH_PROJECTILE.get(), "寒霜飞鱼射弹");
+        add(ModEntities.DUNGEON_DEMON_BONE_PROJECTILE.get(), "地牢魔骨射弹");
+        add(ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), "风暴之矛射弹");
+
 
 
         //region blocks

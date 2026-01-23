@@ -205,6 +205,10 @@ public final class GamePhase2AttributeModifiersSubProvider {
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
+                .add(TEMonsterEntities.CRAWDAD, Map.of(
+                        GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
+                        GamePhase.PLANTERA, NORMAL_CHANGE_3
+                ))
                 .add(TEMonsterEntities.GIANT_SHELLY, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))

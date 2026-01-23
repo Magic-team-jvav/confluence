@@ -432,18 +432,7 @@ public final class ModEvents {
                 .register("confluence:emerald_sapling", "confluence:jade_sapling")
                 .register("confluence:emerald_chain", "confluence:jade_chain")
                 // 1.1.4 -> 1.1.5
-                .register("confluence:golden_coin", "confluence:gold_coin");
-    }
-
-    @SubscribeEvent
-    public static void blockNameFixRegister(NameFixRegisterEvent.Block event) {
-        event
-                // 1.1.2 -> 1.1.3
-                .register("confluence:copper_coin_pile", "confluence:copper_coin")
-                .register("confluence:silver_coin_pile", "confluence:silver_coin")
-                .register("confluence:golden_coin_pile", "confluence:golden_coin")
-                .register("confluence:platinum_coin_pile", "confluence:platinum_coin")
-                .register("confluence:emerald_coin_pile", "confluence:emerald_coin")
+                .register("confluence:golden_coin", "confluence:gold_coin")
                 // 1.1.5 -> 1.2.0
                 .register("confluence:cattails_head", "confluence:cattail_block")
                 .register("confluence:cattails_body", "confluence:cattail_block")
@@ -457,6 +446,17 @@ public final class ModEvents {
                 .register("confluence:ebony_cattails_body", "confluence:ebony_cattail_block")
                 .register("confluence:crimson_cattails_head", "confluence:crimson_cattail_block")
                 .register("confluence:crimson_cattails_body", "confluence:crimson_cattail_block");
+    }
+
+    @SubscribeEvent
+    public static void blockNameFixRegister(NameFixRegisterEvent.Block event) {
+        event
+                // 1.1.2 -> 1.1.3
+                .register("confluence:copper_coin_pile", "confluence:copper_coin")
+                .register("confluence:silver_coin_pile", "confluence:silver_coin")
+                .register("confluence:golden_coin_pile", "confluence:golden_coin")
+                .register("confluence:platinum_coin_pile", "confluence:platinum_coin")
+                .register("confluence:emerald_coin_pile", "confluence:emerald_coin");
     }
 
     @SubscribeEvent

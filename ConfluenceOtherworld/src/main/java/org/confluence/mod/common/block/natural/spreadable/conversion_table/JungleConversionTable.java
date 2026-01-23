@@ -17,8 +17,9 @@ public class JungleConversionTable extends ConversionTable {
             return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.SHORT_GRASS : Blocks.AIR;
         }
         if (block == Blocks.MUD) return NatureBlocks.JUNGLE_GRASS_BLOCK.get();
-        if (block instanceof CattailBlock && block != NatureBlocks.JUNGLE_CATTAIL_BLOCK.get())
+        if (block instanceof CattailBlock && block != NatureBlocks.JUNGLE_CATTAIL_BLOCK.get()) {
             return NatureBlocks.JUNGLE_CATTAIL_BLOCK.get();
+        }
         return null;
     }
 }

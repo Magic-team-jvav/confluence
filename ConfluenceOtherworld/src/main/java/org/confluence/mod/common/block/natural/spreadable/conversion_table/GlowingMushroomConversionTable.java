@@ -17,8 +17,9 @@ public class GlowingMushroomConversionTable extends ConversionTable {
             return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? NatureBlocks.GLOWING_MUSHROOM.get() : Blocks.AIR;
         }
         if (block == Blocks.MUD) return NatureBlocks.MUSHROOM_GRASS_BLOCK.get();
-        if (block instanceof CattailBlock && block != NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get())
+        if (block instanceof CattailBlock && block != NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get()) {
             return NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get();
+        }
         return null;
     }
 }

@@ -22,36 +22,45 @@ public class TheCorruptionConversionTable extends ConversionTable {
         if (block == Blocks.TALL_GRASS) {
             return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? NatureBlocks.CORRUPT_GRASS.get() : Blocks.AIR;
         }
-        if (block instanceof CattailBlock && block != NatureBlocks.EBONY_CATTAIL_BLOCK.get())
+        if (block instanceof CattailBlock && block != NatureBlocks.EBONY_CATTAIL_BLOCK.get()) {
             return NatureBlocks.EBONY_CATTAIL_BLOCK.get();
-
+        }
 
         Holder<Block> holder = block.builtInRegistryHolder();
 
         if (holder.is(BlockTags.LOGS)) return NatureBlocks.EBONY_LOG_BLOCKS.LOG.get();
         if (holder.is(BlockTags.LEAVES)) return NatureBlocks.EBONY_LOG_BLOCKS.LEAVES.get();
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_DIRT)) return Blocks.DIRT;
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_GRASS_BLOCK))
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_GRASS_BLOCK)) {
             return NatureBlocks.CORRUPT_GRASS_BLOCK.get();
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_JUNGLE_GRASS_BLOCK))
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_JUNGLE_GRASS_BLOCK)) {
             return NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get();
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SHORT_GRASS))
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SHORT_GRASS)) {
             return NatureBlocks.CORRUPT_GRASS.get();
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_PACKED_ICE))
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_PACKED_ICE)) {
             return NatureBlocks.PURPLE_PACKED_ICE.get();
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_ICE))
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_ICE)) {
             return NatureBlocks.PURPLE_ICE.get();
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SAND))
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SAND)) {
             return NatureBlocks.EBONSAND.get();
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE))
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE)) {
             return NatureBlocks.EBONSANDSTONE.get();
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK))
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK)) {
             return NatureBlocks.HARDENED_EBONSAND_BLOCK.get();
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_MOIST_SAND_BLOCK))
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_MOIST_SAND_BLOCK)) {
             return NatureBlocks.MOISTENED_EBONSAND_BLOCK.get();
-        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_CACTUS))
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_CACTUS)) {
             return NatureBlocks.CORRUPT_CACTUS.get();
-
+        }
         if (!hardmode) return null;
 
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.EBONSTONE.get();

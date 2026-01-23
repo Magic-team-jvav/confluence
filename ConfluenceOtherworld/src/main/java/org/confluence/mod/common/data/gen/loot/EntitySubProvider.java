@@ -499,6 +499,24 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(961))
                 )
         );
+        add(TEMonsterEntities.CRAWDAD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crawdad"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(123))
+                        .add(EmptyLootItem.emptyItem().setWeight(9877))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.DEPTH_METER).setWeight(125))
+                        .add(EmptyLootItem.emptyItem().setWeight(9875))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.POTATO_CHIPS).setWeight(133)).apply(random0To1)
+                        .add(EmptyLootItem.emptyItem().setWeight(9867))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TEYoyosItems.RALLY).setWeight(39))
+                        .add(EmptyLootItem.emptyItem().setWeight(961))
+                )
+        );
         add(TEMonsterEntities.GIANT_WORM.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/giant_worm"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION).setWeight(2))
@@ -1057,6 +1075,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.LIGHT_SHARD))
                         .add(EmptyLootItem.emptyItem().setWeight(9))
+                )
+        );
+        add(TEMonsterEntities.DERPLING.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/derpling"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.GRAPE).setWeight(25))
+                        .add(EmptyLootItem.emptyItem().setWeight(975))
                 )
         );
     }

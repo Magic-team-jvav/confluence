@@ -17,6 +17,7 @@ import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.init.TEEffects;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
@@ -31,7 +32,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.BIG_ANGER_BONES, MobEffects.POISON)
                 .add(TEMonsterEntities.BIG_MUSCLE_ANGER_BONES, MobEffects.POISON)
                 .add(TEMonsterEntities.BIG_HELMET_ANGER_BONES, MobEffects.POISON)
-                // TODO 歪尾真菌 蚁狮 蚁狮马/巨型蚁狮马 蚁狮幼虫 蚁狮蜂/巨型蚁狮蜂
+                // TODO 歪尾真菌 蚁狮 蚁狮马/巨型蚁狮马 蚁狮幼虫
                 .add(TEMonsterEntities.LITTLE_HORNET, MobEffects.POISON, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.BLACK_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.BLOOD_CRAWLER, MobEffects.POISON)
@@ -42,8 +43,10 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.BLUE_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.BONE_SERPENT, MobEffects.POISON, TCEffects.CONFUSED, TEEffects.HELLFIRE)
                 .add(TEMonsterEntities.WITHER_BONE_SERPENT, MobEffects.POISON, MobEffects.WITHER, TCEffects.CONFUSED, TEEffects.HELLFIRE)
-                // TODO 胭脂虫 螃蟹 龙虾
+                // TODO 胭脂虫 螃蟹
                 .add(TEMonsterEntities.CRIMERA, TCEffects.CONFUSED)
+                .add(TEMonsterEntities.CRAWDAD, TCEffects.CONFUSED)
+                .add(TEAnimals.CRAB, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.CURSED_SKULL, MobEffects.POISON, TCEffects.CONFUSED)
                 .add(TEBossEntities.DUNGEON_GUARDIAN, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)), LivingInvulnerableEffects.Category.HARMFUL)
                 .add(TEMonsterEntities.DUNGEON_SLIME, MobEffects.POISON)
@@ -103,6 +106,8 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.WYVERN, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.GREEN_DUMPLING_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.GOLDEN_SLIME, ModEffects.SHIMMER)
+                .add(TEMonsterEntities.HERPLING, TCEffects.CONFUSED)
+                .add(TEMonsterEntities.DERPLING, TCEffects.CONFUSED)
                 //boss
                 .add(TEBossEntities.BRAIN_OF_CTHULHU, TCEffects.CONFUSED)
                 .add(TEBossEntities.EATER_OF_WORLDS, TCEffects.CONFUSED)

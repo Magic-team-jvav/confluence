@@ -236,7 +236,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(EntityType.SKELETON.builtInRegistryHolder(), builder -> cave(builder, 19100, 1))
                 // 骷髅 （头痛）
                 // 骷髅 （无裤）
-                // 龙虾
+                .add(TEMonsterEntities.CRAWDAD, builder -> builder.order(19500).rarity(2).background(CAVE).filters(FilterEntry.CAVE))
                 .mobArmorItems(EntityType.SKELETON.builtInRegistryHolder(), "entity.confluence.undead_miner", "", List.of(ArmorItems.MINING_BOOTS.toStack(), ArmorItems.MINING_LEGGINGS.toStack(), ArmorItems.MINING_CHESTPLATE.toStack(), ArmorItems.MINING_HELMET.toStack()), provider, builder -> builder.order(19600).rarity(3).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
                 // 骷髅弓箭手
                 .add(TEMonsterEntities.NYMPH, builder -> builder.order(19800).rarity(5).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
@@ -389,13 +389,13 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 灵液黏黏怪
                 // 猩红斧
                 .add(TEMonsterEntities.BLOOD_CRAWLER, builder -> builder.order(34700).rarity(2).background(THE_CRIMSON).filters(FilterEntry.THE_CRIMSON, FilterEntry.UNDERGROUND_CRIMSON))
-                // 蹦蹦兽
+                .add(TEMonsterEntities.HERPLING, builder -> builder.order(34800).rarity(2).background(THE_CRIMSON).filters(FilterEntry.THE_CRIMSON, FilterEntry.UNDERGROUND_CRIMSON))
                 .add(TEMonsterEntities.CRIMSON_MIMIC, builder -> builder.order(34900).rarity(5).background(UNDERGROUND_CRIMSON).filters(FilterEntry.RARE_CREATURE, FilterEntry.UNDERGROUND_CRIMSON))
                 // 猪龙 （猩红）
                 // 戮血沙鲨
                 .add(TEMonsterEntities.BLOOD_MUMMY, builder -> builder.order(35200).rarity(2).background(CRIMSON_DESERT).filters(FilterEntry.RARE_CREATURE, FilterEntry.CRIMSON_DESERT))
                 // 红染食尸鬼
-                // 暗黑拉弥亚
+                .add(TEMonsterEntities.DARK_LAMIA, builder -> builder.order(35400).rarity(2).background(CORRUPT_CAVE_DESERT).filters(FilterEntry.CORRUPT_CAVE_DESERT, FilterEntry.CRIMSON_CAVE_DESERT))
                 // 沙漠幽魂
                 // 彩虹史莱姆
                 .add(TEMonsterEntities.PIXIE, builder -> builder.order(35700).rarity(2).background(THE_HALLOW).filters(FilterEntry.THE_HALLOW))

@@ -340,7 +340,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.salamander.desc", "An unusual amphibious bipedal lizard which inhabits the dark caverns. When threatened, it spews a highly corrosive acid everywhere.");
 //        add("bestiary.entity.terra_entity.skeleton_headache.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
 //        add("bestiary.entity.terra_entity.skeleton_pantless.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
-//        add("bestiary.entity.terra_entity.crawdad.desc", "A subterranean form of crayfish which scuttles along the cavern floors, searching for prey to clip apart with its powerful pincers.");
+        add("bestiary.entity.terra_entity.crawdad.desc", "A subterranean form of crayfish which scuttles along the cavern floors, searching for prey to clip apart with its powerful pincers.");
 //        add("bestiary.entity.terra_entity.undead_miner.desc", "There's evidence of spelunkers having explored the caverns in the past... as well as evidence of them having died doing so.");
 //        add("bestiary.entity.terra_entity.skeleton_archer.desc", "Skeleton Archers have a keen eye, despite the general lack of eyes. Distance offers little protection from their blazing arrows.");
         add("bestiary.entity.terra_entity.nymph.desc", "Masterfully deceives explorers by posing as a lost girl, then attacks with ferocious might, blood-lust in her eyes.");
@@ -496,13 +496,13 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.ichor_sticker.desc", "Filled to the brim with powerful ichor, these squid-like abominations spew their corrosive bio-fluid at their prey.");
 //        add("bestiary.entity.terra_entity.crimson_axe.desc", "Ensorcelled by the Crimson collective, this weapon moves about and chops its enemies by its own will.");
         add("bestiary.entity.terra_entity.blood_crawler.desc", "Most spiders operate independently, but ones touched by the Crimson hive coordinate together to consume life.");
-//        add("bestiary.entity.terra_entity.herpling.desc", "These hyper, demented, slug-like fiends serve the crimson horde with an unstoppable appetite for blood and flesh.");
+        add("bestiary.entity.terra_entity.herpling.desc", "These hyper, demented, slug-like fiends serve the crimson horde with an unstoppable appetite for blood and flesh.");
         add("bestiary.entity.terra_entity.crimson_mimic.desc", "Mimics which are enthralled by the Crimson are empowered dramatically. They can be birthed from ordinary chests by force.");
 //        add("bestiary.entity.terra_entity.pigron_crimson.desc", "This elusive dragon-pig hybrid has excellent stealth capabilities despite its rotund figure. It is uncertain how they came to exist.");
 //        add("bestiary.entity.terra_entity.flesh_reaver.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
         add("bestiary.entity.terra_entity.blood_mummy.desc", "The blood-dripping organic matter in these mummies display far better preservation than the rest of their ilk.");
 //        add("bestiary.entity.terra_entity.tainted_ghoul.desc", "Ghouls infested by the Crimson leak vile ichor from their mouths, weakening the defenses of their foes with every bite.");
-//        add("bestiary.entity.terra_entity.lamia.desc", "By the time glowing red eyes appear in the darkness of the desert caves, it is already too late. The lamias have found their prey.");
+        add("bestiary.entity.terra_entity.dark_lamia.desc", "By the time glowing red eyes appear in the darkness of the desert caves, it is already too late. The lamias have found their prey.");
 //        add("bestiary.entity.terra_entity.desert_spirit.desc", "Ancient magicks corrupted the minds of the once friendly desert djinns, releasing them full of hostility from their lamps.");
 //        add("bestiary.entity.terra_entity.rainbow_slime.desc", "These blessing-infused gelatin menaces glow vibrantly in a rainbow of hues. As a result, they require a constant liquid intake.");
         add("bestiary.entity.terra_entity.pixie.desc", "A larger, more luminous form of fairy. Pixies provide the Hallow with more blessed light and aid in the cleansing of the land.");
@@ -517,7 +517,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.crystal_thresher.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
         add("bestiary.entity.terra_entity.light_mummy.desc", "With the sands transmogrified by outside forces, those put to rest in the desert, whether good or evil, now rise to maim and kill.");
 //        add("bestiary.entity.terra_entity.dreamer_ghoul.desc", "Ghouls cleansed by the Hallow possess a psychedelic saliva that renders their victims confused and distracted by visions and mirages.");
-//        add("bestiary.entity.terra_entity.lamia_underground_desert.desc", "By the time glowing red eyes appear in the darkness of the desert caves, it is already too late. The lamias have found their prey.");
+        add("bestiary.entity.terra_entity.light_lamia.desc", "By the time glowing red eyes appear in the darkness of the desert caves, it is already too late. The lamias have found their prey.");
         add("bestiary.entity.terra_entity.spore_zombie_mushroom.desc", "The fungus controlling the minds of these zombies wants only one thing: brains! This is very convenient for the zombie.");
         add("bestiary.entity.terra_entity.spore_zombie_hat_mushroom.desc", "The fungus controlling the minds of these zombies wants only one thing: brains! This is very convenient for the zombie.");
 //        add("bestiary.entity.terra_entity.anomura_fungus.desc", "These crab-like creatures scuttle about in glowing mushroom fields, heavily infested by the fungal spores.");
@@ -1085,7 +1085,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.salamander.desc", "蝾螈是栖息在黑暗洞穴中的特殊两栖双足蜥蜴，受到威胁时，会向四周喷射高腐蚀性的酸液。");
 //        add("bestiary.entity.terra_entity.skeleton_headache.desc", "谁说非得有肌肉、皮肤甚至眼球？头痛骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
 //        add("bestiary.entity.terra_entity.skeleton_pantless.desc", "谁说非得有肌肉、皮肤甚至眼球？无裤骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
-//        add("bestiary.entity.terra_entity.crawdad.desc", "龙虾是生活在地下的螯虾品种，会沿着洞穴地面快速爬行，用有力的螯钳将猎物撕碎。");
+        add("bestiary.entity.terra_entity.crawdad.desc", "龙虾是生活在地下的螯虾品种，会沿着洞穴地面快速爬行，用有力的螯钳将猎物撕碎。");
 //        add("bestiary.entity.terra_entity.undead_miner.desc", "有证据表明，过去曾有洞穴探险者探索过这些洞穴……也有证据表明，他们在此过程中丧命。");
 //        add("bestiary.entity.terra_entity.skeleton_archer.desc", "尽管没有眼睛，骷髅弓箭手仍拥有敏锐的瞄准力，即便与它们保持距离，也难以躲避其燃烧的箭矢。");
         add("bestiary.entity.terra_entity.nymph.desc", "宁芙擅长伪装成迷路的女孩欺骗探险者，随后便会眼中带着嗜血的欲望，发起凶猛攻击。");
@@ -1241,13 +1241,13 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.ichor_sticker.desc", "灵液黏黏怪是形似乌贼的丑恶生物，体内充满强效灵液，会向猎物喷射具有腐蚀性的生物流体。");
 //        add("bestiary.entity.terra_entity.crimson_axe.desc", "猩红斧被猩红之地的集体意识所操控，能凭自身意志移动，挥砍并击杀所有阻挡猩红扩张的敌人。");
         add("bestiary.entity.terra_entity.blood_crawler.desc", "血爬虫是受猩红巢穴影响的蜘蛛，与普通蜘蛛的独立行动不同，它们会协同作战，共同蚕食生命。");
-//        add("bestiary.entity.terra_entity.herpling.desc", "蹦蹦兽是形似鼻涕虫的疯狂恶魔，行动亢奋且残暴，对血肉有着无法抑制的渴望，始终为猩红部落效力。");
+        add("bestiary.entity.terra_entity.herpling.desc", "蹦蹦兽是形似鼻涕虫的疯狂恶魔，行动亢奋且残暴，对血肉有着无法抑制的渴望，始终为猩红部落效力。");
         add("bestiary.entity.terra_entity.crimson_mimic.desc", "被猩红之力蛊惑的宝箱怪会进化为猩红宝箱怪，实力得到显著增强。通过外力作用，也能从普通宝箱中强制催生它们。");
 //        add("bestiary.entity.terra_entity.pigron_crimson.desc", "猩红猪龙是难以捉摸的龙猪杂交生物，即便体型圆胖，仍具备出色的潜行能力。目前尚未知晓它们的起源。");
 //        add("bestiary.entity.terra_entity.flesh_reaver.desc", "戮血沙鲨的祖先生活在远古时期流经沙漠的咸水河中，如今已进化出在干燥沙漠中生存的能力。");
         add("bestiary.entity.terra_entity.blood_mummy.desc", "血木乃伊的躯体中残留着大量滴血的有机物，与其他木乃伊相比，这些有机物的保存状态要好得多。");
 //        add("bestiary.entity.terra_entity.tainted_ghoul.desc", "红染食尸鬼被猩红之力感染，嘴巴会不断渗出邪恶灵液，每一次啃咬都会削弱敌人的防御能力。");
-//        add("bestiary.entity.terra_entity.lamia.desc", "当沙漠洞穴的黑暗中出现发光的红色眼眸时，一切都已太晚——拉弥亚早已锁定了自己的猎物。");
+        add("bestiary.entity.terra_entity.dark_lamia.desc", "当沙漠洞穴的黑暗中出现发光的红色眼眸时，一切都已太晚——拉弥亚早已锁定了自己的猎物。");
 //        add("bestiary.entity.terra_entity.desert_spirit.desc", "沙漠幽魂原本是友善的沙漠精灵，受远古魔法影响心智被腐化，从 lamps 中挣脱而出，变得充满敌意。");
 //        add("bestiary.entity.terra_entity.rainbow_slime.desc", "彩虹史莱姆是蕴含福佑之力的胶状怪物，身体闪耀着绚丽的彩虹色光芒。正因如此，它们需要持续摄入液体才能维持形态。");
         add("bestiary.entity.terra_entity.pixie.desc", "妖精是体型更大、光芒更盛的仙灵变种，能为神圣之地带来更多福佑之光，助力净化被腐化或猩红污染的土地。");
@@ -1262,7 +1262,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.crystal_thresher.desc", "水晶沙鲨的祖先生活在远古时期流经沙漠的咸水河中，如今已进化出在干燥沙漠中生存的能力。");
         add("bestiary.entity.terra_entity.light_mummy.desc", "光明木乃伊原本是安息在沙漠中的逝者，受外界力量改变沙漠形态的影响，无论生前善恶，如今都化为亡灵苏醒，肆意残杀。");
 //        add("bestiary.entity.terra_entity.dreamer_ghoul.desc", "神梦食尸鬼被神圣之地净化后，唾液带有迷幻效果，能让受害者产生幻象，陷入困惑并分散注意力。");
-//        add("bestiary.entity.terra_entity.lamia_underground_desert.desc", "当地下沙漠洞穴的黑暗中出现发光的红色眼眸时，一切都已太晚——地下沙漠的拉弥亚早已锁定了自己的猎物。");
+        add("bestiary.entity.terra_entity.light_lamia.desc", "当地下沙漠洞穴的黑暗中出现发光的红色眼眸时，一切都已太晚——地下沙漠的拉弥亚早已锁定了自己的猎物。");
         add("bestiary.entity.terra_entity.spore_zombie_mushroom.desc", "控制孢子僵尸（蘑菇）心智的真菌只有一个目标：吞噬大脑！这与僵尸本身的本能不谋而合，对僵尸而言极为“方便”。");
         add("bestiary.entity.terra_entity.spore_zombie_hat_mushroom.desc", "控制孢子僵尸（帽子蘑菇）心智的真菌只有一个目标：吞噬大脑！这与僵尸本身的本能不谋而合，对僵尸而言极为“方便”。");
 //        add("bestiary.entity.terra_entity.anomura_fungus.desc", "歪尾真菌是形似螃蟹的生物，在发光蘑菇田里四处爬行，全身被真菌孢子严重侵染。");

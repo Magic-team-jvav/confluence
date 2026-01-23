@@ -79,8 +79,10 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 TEMonsterEntities.PURPLE_SLIME.get(),
                 TEMonsterEntities.RED_SLIME.get(),
                 TEMonsterEntities.YELLOW_SLIME.get(),
-                TEMonsterEntities.JUNGLE_SLIME.get()
-                // todo 尖刺史莱姆
+                TEMonsterEntities.JUNGLE_SLIME.get(),
+                TEMonsterEntities.SPIKED_ICE_SLIME.get(),
+                TEMonsterEntities.SPIKED_JUNGLE_SLIME.get(),
+                TEMonsterEntities.SPIKED_SLIME.get()
         );
         tag(EnemyBanner.DENIED_ENTITIES).addTag( // 禁止作为旗帜的生物
                 Tags.EntityTypes.BOSSES

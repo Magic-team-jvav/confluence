@@ -1198,7 +1198,8 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_ANTLION_SWARMER.get(), 200, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.MUMMY.get(), 35, 1, 2)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.MUMMY.get(), 35, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_LAMIA.get(), 45, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_icy"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1224,6 +1225,7 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNATCHER.get(), 50, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIRANHA.get(), 40, 2, 3),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.ARAPAIMA.get(), 40, 2, 3),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DERPLING.get(), 80, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1)
                             // todo 仅 Celebrationmk10 和 Get fixed boi 世界生成 new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_MIMIC.get(), 3, 1, 1)
@@ -1263,6 +1265,7 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 30, 2, 4),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 120, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 90, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRAWDAD.get(), 90, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_WORM.get(), 60, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), 30, 1, 3),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 45, 3, 3),
@@ -1368,6 +1371,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_SLIME.get(), 35, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_MIMIC.get(), 1, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_MUMMY.get(), 35, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_LAMIA.get(), 45, 1, 1))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1394,6 +1398,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FACE_MONSTER.get(), 60, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSLIME.get(), 35, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HERPLING.get(), 60, 1, 1))
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);
@@ -1417,6 +1422,8 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSLIME.get(), 35, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_MUMMY.get(), 35, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_LAMIA.get(), 45, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HERPLING.get(), 60, 1, 1))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1430,6 +1437,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FACE_MONSTER.get(), 60, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSLIME.get(), 35, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HERPLING.get(), 60, 1, 1))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1451,6 +1459,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LUMINOUS_SLIME.get(), 35, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HALLOWED_MIMIC.get(), 1, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_MUMMY.get(), 35, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_LAMIA.get(), 45, 1, 1))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()

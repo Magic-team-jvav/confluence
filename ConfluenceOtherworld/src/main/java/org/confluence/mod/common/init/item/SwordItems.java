@@ -6,7 +6,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -185,5 +187,9 @@ public class SwordItems {
             }
             return new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder);
         });
+    }
+
+    public static boolean isShortSword(DeferredHolder<Item, ? extends Item> holder) {
+        return holder.getId().getPath().endsWith("_short_sword");
     }
 }

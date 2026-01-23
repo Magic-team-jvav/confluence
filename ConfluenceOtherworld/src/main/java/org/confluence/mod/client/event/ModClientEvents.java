@@ -85,6 +85,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjec
 import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
 import org.confluence.mod.client.renderer.item.GroupItemExtension;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
+import org.confluence.mod.client.renderer.item.ShortSwordInHandRenderer;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
@@ -431,6 +432,11 @@ public final class ModClientEvents {
                 ChainsawItems.ITEMS.getEntries()
         )).filter(Objects::nonNull).map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.LANCE, LanceItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+        for (DeferredHolder<Item, ? extends Item> holder : SwordItems.ITEMS.getEntries()) {
+            if (SwordItems.isShortSword(holder)) {
+                event.registerItem(ShortSwordInHandRenderer.INSTANCE, holder.get());
+            }
+        }
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);
         event.registerItem(ModClientSetups.GUIDE_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FRIGHT);

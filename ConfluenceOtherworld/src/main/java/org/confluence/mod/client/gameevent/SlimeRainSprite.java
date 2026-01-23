@@ -82,6 +82,7 @@ final class SlimeRainSprite {
             sprite.render(partialTick, a);
         }
         poseStack.popPose();
+        RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);
     }

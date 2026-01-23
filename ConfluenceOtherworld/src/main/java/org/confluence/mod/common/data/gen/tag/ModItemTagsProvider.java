@@ -72,15 +72,19 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             notFlammableWood.add(logBlockSet.PLANKS.asItem());
             if (logBlockSet.LOG.isBound()) notFlammableWood.add(logBlockSet.LOG.asItem());
             if (logBlockSet.WOOD.isBound()) notFlammableWood.add(logBlockSet.WOOD.asItem());
-            if (logBlockSet.STRIPPED_LOG.isBound()) notFlammableWood.add(logBlockSet.STRIPPED_LOG.asItem());
-            if (logBlockSet.STRIPPED_WOOD.isBound()) notFlammableWood.add(logBlockSet.STRIPPED_WOOD.asItem());
+            if (logBlockSet.STRIPPED_LOG.isBound())
+                notFlammableWood.add(logBlockSet.STRIPPED_LOG.asItem());
+            if (logBlockSet.STRIPPED_WOOD.isBound())
+                notFlammableWood.add(logBlockSet.STRIPPED_WOOD.asItem());
             if (logBlockSet.STAIRS.isBound()) notFlammableWood.add(logBlockSet.STAIRS.asItem());
             if (logBlockSet.SLAB.isBound()) notFlammableWood.add(logBlockSet.SLAB.asItem());
             if (logBlockSet.BUTTON.isBound()) notFlammableWood.add(logBlockSet.BUTTON.asItem());
             if (logBlockSet.FENCE.isBound()) notFlammableWood.add(logBlockSet.FENCE.asItem());
-            if (logBlockSet.FENCE_GATE.isBound()) notFlammableWood.add(logBlockSet.FENCE_GATE.asItem());
+            if (logBlockSet.FENCE_GATE.isBound())
+                notFlammableWood.add(logBlockSet.FENCE_GATE.asItem());
             if (logBlockSet.SIGN.isBound()) notFlammableWood.add(logBlockSet.SIGN.asItem());
-            if (logBlockSet.PRESSURE_PLATE.isBound()) notFlammableWood.add(logBlockSet.PRESSURE_PLATE.asItem());
+            if (logBlockSet.PRESSURE_PLATE.isBound())
+                notFlammableWood.add(logBlockSet.PRESSURE_PLATE.asItem());
             if (logBlockSet.DOOR.isBound()) notFlammableWood.add(logBlockSet.DOOR.asItem());
         }
 
@@ -1542,17 +1546,23 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.KEY_OF_NIGHT.get()
         );
         tag(ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE).addTag(
-            ModTags.Items.REPEATER_ENCHANTABLE
+                ModTags.Items.REPEATER_ENCHANTABLE
         );
         tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW).addTag(
-            ModTags.Items.TOOLS_REPEATER
+                ModTags.Items.TOOLS_REPEATER
         );
         tag(Tags.Items.TOOLS_CROSSBOW).addTag(
-            ModTags.Items.TOOLS_REPEATER_CROSSBOW
+                ModTags.Items.TOOLS_REPEATER_CROSSBOW
         );
         tag(ItemTags.CROSSBOW_ENCHANTABLE).addTag(
-            ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE
+                ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE
         );
+        IntrinsicTagAppender<Item> short_sword = tag(ModTags.Items.SHORT_SWORD);
+        for (DeferredHolder<Item, ? extends Item> holder : SwordItems.ITEMS.getEntries()) {
+            if (SwordItems.isShortSword(holder)) {
+                short_sword.add(holder.get());
+            }
+        }
 
         WaystonesHelper.itemTag(this::tag);
     }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init;
 
-import com.bawnorton.mixinsquared.TargetHandler;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -346,6 +345,7 @@ public final class ModTags {
         public static final TagKey<Item> HOOK = register("hook");
         public static final TagKey<Item> MOUNT = register("mount");
         public static final TagKey<Item> DYE = register("dye");
+        public static final TagKey<Item> SHORT_SWORD = register("short_sword");
 
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");

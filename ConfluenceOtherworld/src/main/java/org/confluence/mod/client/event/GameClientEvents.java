@@ -43,7 +43,6 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
-import org.confluence.lib.mixed.IPoseStack;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
@@ -302,9 +301,7 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
-    public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event) {
-        if (IPoseStack.isAntiPush(event.getPoseStack()) || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF
-                || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE) return;
+    public static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity living = event.getEntity();
         if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
                 && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())
@@ -319,7 +316,7 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
-    public static void postRenderGeoLiving(GeoRenderEvent.Entity.Post event) {
+    public static void geoRender$Entity$Post(GeoRenderEvent.Entity.Post event) {
         if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
         Entity entity = event.getEntity();
         if ((ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA)

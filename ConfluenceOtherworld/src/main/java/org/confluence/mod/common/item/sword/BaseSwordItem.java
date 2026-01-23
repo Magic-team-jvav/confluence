@@ -26,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.consumer.Consumer4;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
@@ -57,16 +58,12 @@ public class BaseSwordItem extends SwordItem {
         super(tier, properties);
     }
 
-    /**
-     * MC白色剑。无效果
-     */
+    /// MC白色剑。无效果
     public BaseSwordItem(Tier tier, int rawDamage, float rawSpeed) {
         this(tier, ModRarity.WHITE, rawDamage, rawSpeed);
     }
 
-    /**
-     * MC带颜色的剑。无效果
-     */
+    /// MC带颜色的剑。无效果
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
         super(tier, new Item.Properties().durability(tier.getUses())
                 .component(ConfluenceMagicLib.MOD_RARITY, rarity)
@@ -76,12 +73,10 @@ public class BaseSwordItem extends SwordItem {
         this.modifier = new ModifierBuilder();
     }
 
-    /**
-     * TR带特殊效果的剑。
-     *
-     * @param modifier 效果修饰器
-     * @see SwordPrefabs 预制体和半预制体
-     */
+    /// TR带特殊效果的剑。
+    ///
+    /// @param modifier 效果修饰器
+    /// @see SwordPrefabs 预制体和半预制体
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, ModifierBuilder modifier) {
         super(tier, modifier.buildProperties(tier, rarity, rawDamage, rawSpeed));
         this.modifier = modifier;
@@ -97,7 +92,6 @@ public class BaseSwordItem extends SwordItem {
 
     public void applyHitEffects(ItemStack weapon, @Nullable Entity attacker, LivingEntity hurter, DamageSource damageSource) {
         if (modifier != null &&
-//                damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK) &&
                 damageSource.is(DamageTypeTags.PANIC_CAUSES)) {
             EffectStrategyComponent data = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
             if (data != null) {
@@ -144,8 +138,7 @@ public class BaseSwordItem extends SwordItem {
         public boolean specialSweep = false;
 
         protected Item.Properties properties = new Item.Properties();
-        //        private final List<DeferredHolder<EffectStrategy,? extends EffectStrategy>> onHitEffects = new ArrayList<>();
-        private QuaConsumer<ItemStack, Level, Entity, Boolean> inventoryTick;
+        private Consumer4<ItemStack, Level, Entity, Boolean> inventoryTick;
         private final ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
         private int modifyCount = 0;
         protected List<Consumer<Item.Properties>> modifier = new ArrayList<>();
@@ -157,60 +150,48 @@ public class BaseSwordItem extends SwordItem {
             return this;
         }
 
-        /**
-         * 添加击中效果组件
-         * <p>注意会覆盖原有组件</p>
-         *
-         * @see EffectStrategyComponent
-         */
+        /// 添加击中效果组件
+        ///
+        /// 注意会覆盖原有组件
+        ///
+        /// @see EffectStrategyComponent
         public ModifierBuilder setOnHitEffect(EffectStrategyComponent onHit) {
-//            this.onHitEffects.add(onHit);
             this.modifier.add(p -> p.component(TEDataComponentTypes.EFFECT_STRATEGY, onHit));
             return this;
         }
 
-        /**
-         * 添加属性修改器
-         */
+        /// 添加属性修改器
         public ModifierBuilder addAttributeModifier(Holder<Attribute> attribute, float amount, AttributeModifier.Operation operation) {
             this.attributeModifiersBuilder.add(attribute, new AttributeModifier(Confluence.asResource("sword.modifier." + modifyCount++), amount, operation), EquipmentSlotGroup.MAINHAND);
             return this;
         }
 
-        /**
-         * 设置弹幕
-         *
-         * @see SwordProjectileComponent
-         */
+        /// 设置弹幕
+        ///
+        /// @see SwordProjectileComponent
         public ModifierBuilder setProj(Supplier<SwordProjectileComponent> proj) {
             this.modifier.add(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, proj.get()));
             return this;
         }
 
-        /**
-         * 禁用横扫
-         */
+        /// 禁用横扫
         public ModifierBuilder setCanNotPerformSweep() {
             this.canPerformSweep = false;
             return this;
         }
 
-        /**
-         * 设置特殊横扫
-         *
-         * @see BaseSwordItem#getSpecialSweepArea
-         */
+        /// 设置特殊横扫
+        ///
+        /// @see BaseSwordItem#getSpecialSweepArea
         public ModifierBuilder setSpecialSweep() {
             this.specialSweep = true;
             return this;
         }
 
-        /**
-         * 背包每刻效果
-         *
-         * @see InventoryTickStrategy
-         */
-        public ModifierBuilder setInventoryTick(QuaConsumer<ItemStack, Level, Entity, Boolean> inventoryTick) {
+        /// 背包每刻效果
+        ///
+        /// @see InventoryTickStrategy
+        public ModifierBuilder setInventoryTick(Consumer4<ItemStack, Level, Entity, Boolean> inventoryTick) {
             this.inventoryTick = inventoryTick;
             return this;
         }
@@ -290,17 +271,15 @@ public class BaseSwordItem extends SwordItem {
         }
     }
 
-    /**
-     * 特殊横扫：<p>
-     * 玩家前、左、右各“手长”长度的方形区域<p>
-     * #########<p>
-     * #########<p>
-     * #########<p>
-     * #########<p>
-     * ####&####<p>
-     * #：横扫范围<p>
-     * &：玩家
-     */
+    /// 特殊横扫：<p>
+    /// 玩家前、左、右各“手长”长度的方形区域<p>
+    /// #########<p>
+    /// #########<p>
+    /// #########<p>
+    /// #########<p>
+    /// ####&####<p>
+    /// #：横扫范围<p>
+    /// &：玩家
     @Override
     public AABB getSweepHitBox(ItemStack stack, Player player, Entity target) {
         if (modifier != null && modifier.specialSweep) {
@@ -331,10 +310,5 @@ public class BaseSwordItem extends SwordItem {
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (modifier != null && modifier.inventoryTick != null)
             modifier.inventoryTick.accept(stack, level, entity, isSelected);
-    }
-
-    @FunctionalInterface
-    public interface QuaConsumer<A, B, C, D> {
-        void accept(A a, B b, C c, D d);
     }
 }

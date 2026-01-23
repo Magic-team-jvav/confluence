@@ -165,6 +165,7 @@ public final class CommonConfigs {
                 builder.push("Boss");
                 EYE_OF_CTHULHU_NATURE_SPAWNING = builder.define("eyeOfCthulhuNatureSpawning", true);
                 DEERCLOPS_NATURE_SPAWNING = builder.define("deerclopsNatureSpawning", true);
+                builder.pop();
             }
             DO_METEORITE_SPAWNING = builder.define("doMeteoriteSpawning", true);
             builder.pop();

@@ -68,8 +68,6 @@
 
 - (terraria Damage 40%)
 
-# Distance
+### Crossbow
 
-|       | Terraria | Minecraft |
-|-------|----------|-----------|
-| Block | 2        | 3         |
+连弩：攻击间隔逐级减小，面板取自泰拉面板一半-2 ，击退十分之一，

@@ -336,15 +336,14 @@ public final class ModClientSetups {
         ClampedItemPropertyFunction bowPulling = (itemStack, clientLevel, living, speed) -> living != null && living.isUsingItem() && living.getUseItem() == itemStack ? 1.0F : 0.0F;
 
         BowItems.ITEMS.getEntries().forEach(item -> {
-            if (item.get() instanceof ShortBowItem)
+            if (item.get() instanceof ShortBowItem) {
                 ItemProperties.register(item.get(), pull, shortBowPull);
-            else ItemProperties.register(item.get(), pull, bowPull);
+            } else {
+                ItemProperties.register(item.get(), pull, bowPull);
+            }
             ItemProperties.register(item.get(), pulling, bowPulling);
         });
-    }
 
-    public static void registerCrossbowProperties() {
-        ResourceLocation pulling = ResourceLocation.withDefaultNamespace("pulling");
         ClampedItemPropertyFunction crossbowPulling = (itemStack, clientLevel, living, speed) -> {
             if (living == null || (!(itemStack.getItem() instanceof BaseTerraRepeaterItem repeater))) {
                 return 0.0F;
@@ -355,7 +354,6 @@ public final class ModClientSetups {
             }
             return 0.0F;
         };
-
         CrossbowItems.ITEMS.getEntries().forEach(item -> {
             ItemProperties.register(item.get(), pulling, crossbowPulling);
         });

@@ -34,7 +34,9 @@ public class DungeonCompassRenderer {
     private DungeonCompassRenderer() {
         BakedGeoModel geoModel = GeckoLibCache.getBakedModels().get(Confluence.asResource("geo/item/dungeon_compass.geo.json"));
         this.bone = geoModel.getBone("bone").orElseThrow();
+        bone.updateScale(0.8F, 0.8F, 0.8F);
         this.outline = geoModel.getBone("outline").orElseThrow();
+        outline.updateScale(0.8F, 0.8F, 0.8F);
         ResourceLocation texture = Confluence.asResource("textures/item/dungeon_compass.png");
         this.boneRenderType = RenderType.text(texture);
         this.outlineRenderType = RenderType.eyes(texture);
@@ -61,12 +63,11 @@ public class DungeonCompassRenderer {
                 minecraft.renderBuffers().bufferSource(),
                 player,
                 pos[0],
-                pos[1],
                 pos[2]
         );
     }
 
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, AbstractClientPlayer player, int x, int y, int z) {
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, AbstractClientPlayer player, int x, int z) {
         if (!Minecraft.getInstance().options.getCameraType().isFirstPerson()) return;
         RenderSystem.enableDepthTest();
         poseStack.pushPose();
@@ -80,21 +81,20 @@ public class DungeonCompassRenderer {
         poseStack.translate(vx, 0.15F, vz);
         float yaw = Mth.PI - (float) Mth.atan2(-x + player.getX(), z - player.getZ());
 
-        renderGeoBone(bone, boneRenderType, poseStack, bufferSource, yaw, 0);
-        renderGeoBone(outline, outlineRenderType, poseStack, bufferSource, yaw, -1);
+        renderGeoBone(bone, boneRenderType, poseStack, bufferSource, yaw, false);
+        renderGeoBone(outline, outlineRenderType, poseStack, bufferSource, yaw, true);
 
         poseStack.popPose();
         RenderSystem.disableDepthTest();
     }
 
-    private static void renderGeoBone(GeoBone geoBone, RenderType renderType, PoseStack poseStack, MultiBufferSource bufferSource, float yaw, float yOffset) {
+    private static void renderGeoBone(GeoBone geoBone, RenderType renderType, PoseStack poseStack, MultiBufferSource bufferSource, float yaw, boolean yOffset) {
         VertexConsumer buffer;
         poseStack.pushPose();
-        if (yOffset != 0) {
-            geoBone.updatePosition(0, yOffset, 0);
+        if (yOffset) {
+            geoBone.updatePosition(0, -1.75F, 0);
         }
         geoBone.setRotY(yaw);
-        geoBone.updateScale(0.8F, 0.8F, 0.8F);
         RenderUtil.prepMatrixForBone(poseStack, geoBone);
         buffer = bufferSource.getBuffer(renderType);
         for (GeoCube cube : geoBone.getCubes()) {

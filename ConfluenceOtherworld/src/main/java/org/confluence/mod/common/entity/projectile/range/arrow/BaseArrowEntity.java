@@ -175,8 +175,6 @@ public class BaseArrowEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         Entity entity = pResult.getEntity();
-        if ((modify.type & Tag.cause_fire) != 0)
-            entity.setRemainingFireTicks(this.getRemainingFireTicks() + modify.causeFireTick - tickCount);
 
         if (!(entity instanceof LivingEntity)) {
             super.onHitEntity(pResult);
@@ -214,8 +212,10 @@ public class BaseArrowEntity extends AbstractArrow {
         // 重复穿透
         havenBeen.add((LivingEntity) pResult.getEntity());
 
-        int k = entity.getRemainingFireTicks();
         if (entity.hurt(damagesource, fi + modify.base_damage)) {
+            if ((modify.type & Tag.cause_fire) != 0) {
+                entity.setRemainingFireTicks(this.getRemainingFireTicks() + modify.causeFireTick - tickCount);
+            }
             this.playSound(getSound(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
             LivingEntity livingentity = (LivingEntity) entity;
             this.doPostHurtEffects(livingentity);
@@ -248,7 +248,6 @@ public class BaseArrowEntity extends AbstractArrow {
             }
 
         } else {
-            entity.setRemainingFireTicks(k);
             this.setDeltaMovement(this.getDeltaMovement().scale(-0.1D));
             this.setYRot(this.getYRot() + 180.0F);
             this.yRotO += 180.0F;

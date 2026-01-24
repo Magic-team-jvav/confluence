@@ -38,7 +38,6 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.Bestiary;
@@ -210,13 +209,6 @@ public final class LivingEntityEvents {
         }
         if (cause != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
-        }
-        if (!living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
-                damageSource.getEntity() instanceof Player player &&
-                !PlayerSpecialData.of(player).isCouldHurtCritters() &&
-                (LibUtils.isAnimal(living) || living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
-        ) {
-            event.setCanceled(true);
         }
     }
 

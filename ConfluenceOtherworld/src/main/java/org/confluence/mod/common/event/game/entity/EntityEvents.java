@@ -15,12 +15,15 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.util.AchievementUtils;
@@ -72,6 +75,12 @@ public final class EntityEvents {
                 living.clearFire();
                 event.setInvulnerable(true); // 免疫熔岩/着火
             }
+        } else if (!living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
+                damageSource.getEntity() instanceof Player player &&
+                !PlayerSpecialData.of(player).isCouldHurtCritters() &&
+                (LibUtils.isAnimal(living) || living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
+        ) {
+            event.setInvulnerable(true);
         }
     }
 }

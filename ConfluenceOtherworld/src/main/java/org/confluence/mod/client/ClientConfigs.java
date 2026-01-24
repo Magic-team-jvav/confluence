@@ -107,65 +107,65 @@ public final class ClientConfigs {
     }
 
     public static void register(ModContainer container) {
-        Builder BUILDER = new Builder();
+        Builder builder = new Builder();
 
-        SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
-        ACHIEVEMENT_TOAST = BUILDER.define("achievementToast", true);
-        SELL_PRICE_DISPLAY = BUILDER.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
-        MIN_ECTO_MIST_EFFECT_RADIUS = BUILDER.defineInRange("minEctoMistEffectRadius", 10, 0, 100);
+        SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);
+        ACHIEVEMENT_TOAST = builder.define("achievementToast", true);
+        SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
+        MIN_ECTO_MIST_EFFECT_RADIUS = builder.defineInRange("minEctoMistEffectRadius", 10, 0, 100);
         {
-            BUILDER.push("HUD");
+            builder.push("HUD");
             {
-                BUILDER.push("Health");
-                TERRA_STYLE_HEALTH = BUILDER.define("terraStyleHealth", true);
-                HEALTH_STYLE = BUILDER.defineEnum("healthStyle", TerraStyleHealthHud.Health.OVERLAY);
-                HEALTH_OFFSET_X = BUILDER.defineInRange("healthOffsetX", 0, -256, 256);
-                HEALTH_OFFSET_Y = BUILDER.defineInRange("healthOffsetY", 0, -256, 256);
-                BUILDER.pop();
+                builder.push("Health");
+                TERRA_STYLE_HEALTH = builder.define("terraStyleHealth", true);
+                HEALTH_STYLE = builder.defineEnum("healthStyle", TerraStyleHealthHud.Health.OVERLAY);
+                HEALTH_OFFSET_X = builder.defineInRange("healthOffsetX", 0, -256, 256);
+                HEALTH_OFFSET_Y = builder.defineInRange("healthOffsetY", 0, -256, 256);
+                builder.pop();
             }
             {
-                BUILDER.push("Food");
-                TERRA_STYLE_FOOD = BUILDER.define("terraStyleFood", true);
-                FOOD_STYLE = BUILDER.defineEnum("foodStyle", TerraStyleFoodHud.Food.OVERLAY);
-                BUILDER.pop();
+                builder.push("Food");
+                TERRA_STYLE_FOOD = builder.define("terraStyleFood", true);
+                FOOD_STYLE = builder.defineEnum("foodStyle", TerraStyleFoodHud.Food.OVERLAY);
+                builder.pop();
             }
             {
-                BUILDER.push("Mana");
-                MANA_STYLE = BUILDER.defineEnum("manaStyle", TerraStyleManaHud.Mana.OVERLAY);
-                MANA_OFFSET_X = BUILDER.defineInRange("manaOffsetX", 0, -256, 256);
-                MANA_OFFSET_Y = BUILDER.defineInRange("manaOffsetY", 0, -256, 256);
-                BUILDER.pop();
+                builder.push("Mana");
+                MANA_STYLE = builder.defineEnum("manaStyle", TerraStyleManaHud.Mana.OVERLAY);
+                MANA_OFFSET_X = builder.defineInRange("manaOffsetX", 0, -256, 256);
+                MANA_OFFSET_Y = builder.defineInRange("manaOffsetY", 0, -256, 256);
+                builder.pop();
             }
             {
-                BUILDER.push("Soul");
-                SOUL_STYLE = BUILDER.defineEnum("soulStyle", TerraStyleSoulHud.Soul.OVERLAY);
-                SOUL_OFFSET_X = BUILDER.defineInRange("soulOffsetX", 0, -256, 256);
-                SOUL_OFFSET_Y = BUILDER.defineInRange("soulOffsetY", 0, -256, 256);
-                BUILDER.pop();
+                builder.push("Soul");
+                SOUL_STYLE = builder.defineEnum("soulStyle", TerraStyleSoulHud.Soul.OVERLAY);
+                SOUL_OFFSET_X = builder.defineInRange("soulOffsetX", 0, -256, 256);
+                SOUL_OFFSET_Y = builder.defineInRange("soulOffsetY", 0, -256, 256);
+                builder.pop();
             }
             {
-                BUILDER.push("Armor");
-                TERRA_STYLE_ARMOR = BUILDER.define("terraStyleArmor", true);
-                ARMOR_STYLE = BUILDER.defineEnum("armorStyle", TerraStyleArmorHud.Armor.OVERLAY);
-                BUILDER.pop();
+                builder.push("Armor");
+                TERRA_STYLE_ARMOR = builder.define("terraStyleArmor", true);
+                ARMOR_STYLE = builder.defineEnum("armorStyle", TerraStyleArmorHud.Armor.OVERLAY);
+                builder.pop();
             }
-            LEFT_EFFECT_ICON = BUILDER.define("leftEffectIcon", true);
-            EXTRA_INVENTORY_BUTTON_OFFSET_X = BUILDER.defineInRange("extraInventoryButtonOffsetX", 0, -256, 256);
-            EXTRA_INVENTORY_BUTTON_OFFSET_Y = BUILDER.defineInRange("extraInventoryButtonOffsetY", 0, -256, 256);
-            BUILDER.pop();
+            LEFT_EFFECT_ICON = builder.define("leftEffectIcon", true);
+            EXTRA_INVENTORY_BUTTON_OFFSET_X = builder.defineInRange("extraInventoryButtonOffsetX", 0, -256, 256);
+            EXTRA_INVENTORY_BUTTON_OFFSET_Y = builder.defineInRange("extraInventoryButtonOffsetY", 0, -256, 256);
+            builder.pop();
         }
         {
-            BUILDER.push("Entity");
-            BLOODY_EFFECT = BUILDER.define("bloodyEffect", true);
+            builder.push("Entity");
+            BLOODY_EFFECT = builder.define("bloodyEffect", true);
             if (!ModList.get().isLoaded("yes_steve_model")) {
-                GORE_EFFECT = BUILDER.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
+                GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
             }
-            DAMAGE_INDICATOR = BUILDER.define("damageIndicator", true);
-            HEAL_INDICATOR = BUILDER.define("healIndicator", true);
-            BUILDER.pop();
+            DAMAGE_INDICATOR = builder.define("damageIndicator", true);
+            HEAL_INDICATOR = builder.define("healIndicator", true);
+            builder.pop();
         }
 
-        container.registerConfig(ModConfig.Type.CLIENT, BUILDER.build());
+        container.registerConfig(ModConfig.Type.CLIENT, builder.build());
     }
 
     public enum GoreEffect implements TranslatableEnum {

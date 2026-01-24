@@ -498,9 +498,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
             this.startSoundPlayed = false;
             this.midLoadSoundPlayed = false;
             player.startUsingItem(hand);
-            return InteractionResultHolder.consume(itemstack);
         }
-        return InteractionResultHolder.fail(itemstack);
+        return InteractionResultHolder.consume(itemstack);
     }
 
     @Override

@@ -61,6 +61,7 @@
         "integration.ars_nouveau.LivingCasterMixin",
         "integration.ars_nouveau.ManaCapMixin",
         "integration.carryon.PickupHandlerMixin",
+        "integration.create.ArmBlockEntityMixin",
         "integration.curios.CuriosServerPayloadHandlerMixin",
         "integration.curios.CuriosUtilMixinHooksMixin",
         "integration.ftbchunks.LongRangePlayerTrackerMixin",

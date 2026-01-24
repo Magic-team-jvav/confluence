@@ -69,8 +69,8 @@ public class BaseArrowEntity extends AbstractArrow {
     private Factory baseArrowFactory;
     public boolean fullPull = false;
 
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> entityType, Level level) {
+        super(entityType, level);
     }
 
     /**
@@ -81,8 +81,8 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param firedFromWeapon 发射的武器
      * @param arrow           预定义的箭的类型
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow) {
-        super(pEntityType, owner, owner.level(), pickupItemStack, firedFromWeapon);
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow) {
+        super(entityType, owner, owner.level(), pickupItemStack, firedFromWeapon);
         this.arrowItem = arrow;
         this.baseArrowFactory = arrow == null ? null : arrow.getModifier();
         if (baseArrowFactory == null)// 这时候应该为实体的木箭转化
@@ -101,8 +101,8 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param arrow           预定义的箭的类型
      * @param modifyConsumer  属性额外修饰
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraArrowItem.ModifyArrowBuilder modifyConsumer) {
-        this(pEntityType, owner, pickupItemStack, firedFromWeapon, arrow);
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraArrowItem.ModifyArrowBuilder modifyConsumer) {
+        this(entityType, owner, pickupItemStack, firedFromWeapon, arrow);
         if (modifyConsumer != null)
             modifyConsumer.applyModifiers(modify);
         if ((modify.type & Tag.auto_discard) != 0) {
@@ -117,8 +117,8 @@ public class BaseArrowEntity extends AbstractArrow {
      * @param firedFromWeapon 发射的武器
      * @param arrow           预定义的箭的类型
      */
-    public BaseArrowEntity(EntityType<? extends AbstractArrow> pEntityType, double x, double y, double z, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow) {
-        super(pEntityType, x, y, z, level, pickupItemStack, firedFromWeapon);
+    public BaseArrowEntity(EntityType<? extends AbstractArrow> entityType, double x, double y, double z, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow) {
+        super(entityType, x, y, z, level, pickupItemStack, firedFromWeapon);
         this.arrowItem = arrow;
         this.baseArrowFactory = arrow == null ? null : arrow.getModifier();
         if (baseArrowFactory == null)// 这时候应该为实体的木箭转化 -- 保留注释
@@ -148,8 +148,8 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     @Override
-    public void shoot(double pX, double pY, double pZ, float pVelocity, float pInaccuracy) {
-        super.shoot(pX, pY, pZ, pVelocity, pInaccuracy);
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+        super.shoot(x, y, z, velocity, inaccuracy);
         this.setDeltaMovement(getDeltaMovement().scale(modify.speedFactor * (level().isRaining() ? modify.speedUpInRain : 1)));
     }
 
@@ -173,14 +173,14 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult pResult) {
-        Entity entity = pResult.getEntity();
+    protected void onHitEntity(EntityHitResult result) {
+        Entity entity = result.getEntity();
 
-        if (!(entity instanceof LivingEntity)) {
-            super.onHitEntity(pResult);
+        if (!(entity instanceof LivingEntity living)) {
+            super.onHitEntity(result);
             return;
         }
-        if (havenBeen.contains((LivingEntity) entity)) return;
+        if (havenBeen.contains(living)) return;
         float f = (float) this.getDeltaMovement().length();
         // 限制速度增伤
         f = getSpeedDamageFactor(f);
@@ -210,43 +210,40 @@ public class BaseArrowEntity extends AbstractArrow {
         float fi = this.level().isRaining() ? modify.damageInRain + i : i;
 
         // 重复穿透
-        havenBeen.add((LivingEntity) pResult.getEntity());
+        havenBeen.add(living);
 
         if (entity.hurt(damagesource, fi + modify.base_damage)) {
             if ((modify.type & Tag.cause_fire) != 0) {
                 entity.setRemainingFireTicks(this.getRemainingFireTicks() + modify.causeFireTick - tickCount);
             }
             this.playSound(getSound(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-            LivingEntity livingentity = (LivingEntity) entity;
-            this.doPostHurtEffects(livingentity);
+            this.doPostHurtEffects(living);
             if (!this.level().isClientSide) {
-                livingentity.setArrowCount(livingentity.getArrowCount() + 1);
+                living.setArrowCount(living.getArrowCount() + 1);
             }
             //todo 击退
-            this.doKnockback(livingentity, damagesource);
+            this.doKnockback(living, damagesource);
             if (modify.knockBack > 0) {
                 double d1 = modify.knockBack;
                 Vec3 vec3 = this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).normalize().scale(0.6 * d1);
                 if (vec3.lengthSqr() > 0.0D) {
-                    livingentity.push(vec3.x, 0.1D, vec3.z);
+                    living.push(vec3.x, 0.1D, vec3.z);
                 }
             }
 
             //箭药水效果
             if (!this.level().isClientSide && entity1 instanceof LivingEntity) {
                 EnchantmentHelper.doPostAttackEffects((ServerLevel) level(), entity, damagesource);
-                //
             }
 
             //命中自己
-            if (livingentity != entity1 && livingentity instanceof Player && entity1 instanceof ServerPlayer player && !this.isSilent()) {
+            if (living != entity1 && living instanceof Player && entity1 instanceof ServerPlayer player && !this.isSilent()) {
                 player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
             }
             penetrate++;
             if (!canPenetrate()) {
                 discard();
             }
-
         } else {
             this.setDeltaMovement(this.getDeltaMovement().scale(-0.1D));
             this.setYRot(this.getYRot() + 180.0F);
@@ -265,14 +262,14 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     @Override
-    protected void doPostHurtEffects(LivingEntity pLiving) {
+    protected void doPostHurtEffects(LivingEntity living) {
         if (getOwner() instanceof LivingEntity owner) {
-            modify.onHitEffects.forEach(effect -> effect.applyAll(owner, pLiving));
+            modify.onHitEffects.forEach(effect -> effect.applyAll(owner, living));
             if (fullPull) {
-                modify.fullPullHitEffects.forEach(effect -> effect.applyAll(owner, pLiving));
+                modify.fullPullHitEffects.forEach(effect -> effect.applyAll(owner, living));
             }
         }
-        super.doPostHurtEffects(pLiving);
+        super.doPostHurtEffects(living);
     }
 
     private static SoundEvent getSound() {

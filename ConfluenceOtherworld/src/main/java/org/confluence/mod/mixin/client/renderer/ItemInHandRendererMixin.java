@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -36,10 +37,15 @@ public abstract class ItemInHandRendererMixin {
 
     @WrapOperation(method = {"evaluateWhichHandsToRender", "selectionUsingItemWhileHoldingBowLike"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"))
     private static boolean isBow(ItemStack instance, Item item, Operation<Boolean> original) {
-        boolean called = original.call(instance, item);
-        if (!called && item == Items.BOW && instance.getItem() instanceof BaseTerraBowItem) {
-            return true;
+        boolean is = original.call(instance, item);
+        if (!is) {
+            if (item == Items.BOW && instance.getItem() instanceof BaseTerraBowItem) {
+                return true;
+            }
+            if (item == Items.CROSSBOW && instance.getItem() instanceof BaseTerraRepeaterItem) {
+                return true;
+            }
         }
-        return called;
+        return is;
     }
 }

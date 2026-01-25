@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.Confluence;
 import org.confluence.terraentity.init.TETags;
+import org.jetbrains.annotations.Nullable;
 
 @ScheduledForMove(since = "1.2.0", inVersion = "2.0.0")
 public final class ModDamageTypes {
@@ -29,11 +30,11 @@ public final class ModDamageTypes {
         return of(level, key, null, null);
     }
 
-    public static DamageSource of(Level level, ResourceKey<DamageType> key, Entity causing) {
+    public static DamageSource of(Level level, ResourceKey<DamageType> key, @Nullable Entity causing) {
         return of(level, key, causing, causing);
     }
 
-    public static DamageSource of(Level level, ResourceKey<DamageType> key, Entity direct, Entity causing) {
+    public static DamageSource of(Level level, ResourceKey<DamageType> key, @Nullable Entity direct, @Nullable Entity causing) {
         return level.damageSources().source(key, direct, causing);
     }
 

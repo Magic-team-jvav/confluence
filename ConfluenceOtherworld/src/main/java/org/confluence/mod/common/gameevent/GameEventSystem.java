@@ -132,7 +132,7 @@ public final class GameEventSystem implements IGlobalData {
     /// @param nonEnv 非环境事件
     /// @param reCal  重新计数
     /// @return 数量
-    public int getStatedEventAmount(boolean nonEnv, boolean reCal) {
+    public int getStartedEventAmount(boolean nonEnv, boolean reCal) {
         if (reCal) {
             int started = 0;
             int nonEnvA = 0;

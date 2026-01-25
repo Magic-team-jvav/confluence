@@ -79,7 +79,7 @@ public final class BossDelaySpawner {
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
         if (!CommonConfigs.EYE_OF_CTHULHU_NATURE_SPAWNING.get()) return;
-        if (GameEventSystem.INSTANCE.getStatedEventAmount(true, false) > 0) return;
+        if (GameEventSystem.INSTANCE.getStartedEventAmount(true, false) > 0) return;
         if (LanternNightGameEvent.INSTANCE.started()) return;
         EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
         if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
@@ -113,7 +113,7 @@ public final class BossDelaySpawner {
 
     public static void spawnDeerClops(ServerLevel level) {
         if (!CommonConfigs.DEERCLOPS_NATURE_SPAWNING.get()) return;
-        if (GameEventSystem.INSTANCE.getStatedEventAmount(true, false) > 0) return;
+        if (!level.isRaining()) return;
         if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.DEERCLOPS.get())) return;
         for (ServerPlayer player : level.players()) {
             if (!BossDelaySpawner.deerclopsChecker(player)) continue;
@@ -132,7 +132,7 @@ public final class BossDelaySpawner {
         ServerLevel level = player.serverLevel();
         Holder<Biome> biome = level.getBiome(player.blockPosition());
         if (!biome.is(Tags.Biomes.IS_SNOWY) && !biome.is(Tags.Biomes.IS_ICY)) return false;
-        int amount = GameEventSystem.INSTANCE.getStatedEventAmount(true, false);
+        int amount = GameEventSystem.INSTANCE.getStartedEventAmount(true, false);
         if (amount != 0 && (amount != 1 || !BloodMoonGameEvent.INSTANCE.started())) {
             return false;
         }

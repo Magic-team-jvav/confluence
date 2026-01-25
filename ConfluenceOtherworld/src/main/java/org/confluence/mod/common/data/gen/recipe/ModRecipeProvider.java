@@ -430,7 +430,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), emptyDropper);
-        crystalBlock(recipeOutput, ToolItems.WATER_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES));
+        crystalBlock(recipeOutput, FunctionalBlocks.WATER_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES));
 
         hardmodeForge(recipeOutput, MaterialItems.ADAMANTITE_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_ADAMANTITE));
         hardmodeForge(recipeOutput, MaterialItems.TITANIUM_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_TITANIUM));

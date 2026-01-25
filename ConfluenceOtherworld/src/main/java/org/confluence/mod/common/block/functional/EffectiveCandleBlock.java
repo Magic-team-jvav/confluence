@@ -2,12 +2,14 @@ package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,20 +19,27 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.TooltipBlockItem;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class EffectiveCandleBlock extends AbstractMechanicalBlock {
     private static final VoxelShape SHAPE = Shapes.or(
@@ -38,44 +47,22 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
             box(4, 0, 4, 12, 2, 12)
     );
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-    public static final BooleanProperty BLOOM = BlockStateProperties.BLOOM;
-    private final TickEffect tickEffect;
-    private final float scope;
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
+    private final float scopeSqr;
+    private final MobEffectInstanceData[] effectData;
+
+    public EffectiveCandleBlock(Properties properties, float scope, MobEffectInstanceData... effectData) {
+        super(properties);
+        this.scopeSqr = scope * scope;
+        this.effectData = effectData;
+        registerDefaultState(stateDefinition.any()
+                .setValue(LIT, true)
+                .setValue(FACING, Direction.WEST));
+    }
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         return SHAPE;
-    }
-
-    public EffectiveCandleBlock(Properties properties, float scope, ModFoodPropertiesBuilder.EffectData... effectData) {
-        this(properties, scope, (level, entity, stack) -> Arrays.stream(effectData)
-                .map(e -> new MobEffectInstance(e.effect(), 210, e.level()))
-                .forEach(entity::addEffect));
-    }
-
-    public EffectiveCandleBlock(Properties properties, float scope, TickEffect tickEffect) {
-        super(properties);
-        this.tickEffect = tickEffect;
-        this.scope = scope;
-        this.registerDefaultState(this.stateDefinition.any()
-                .setValue(BLOOM, true)
-                .setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        level.scheduleTick(pos, this, 1);
-        if (level.getGameTime() % 200 != 0 || !state.getValue(BLOOM)) {
-            return;
-        }
-        level.getPlayers(player -> player.isAlive() && new AABB(pos).inflate(this.scope).contains(player.position()))
-                .forEach(player -> this.tickEffect.handheld(level, player, state));
-    }
-
-    @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-        super.onPlace(state, level, pos, oldState, isMoving);
-        level.scheduleTick(pos, this, 1);
     }
 
     @Override
@@ -95,21 +82,20 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    public void switchStatus(final Level level, final BlockState state, final BlockPos pos) {
-        if (level.isClientSide()) {
-            return;
+    private static void switchStatus(Level level, BlockState state, BlockPos pos) {
+        if (!level.isClientSide) {
+            level.setBlockAndUpdate(pos, state.cycle(LIT));
         }
-        level.setBlockAndUpdate(pos, state.setValue(BLOOM, !state.getValue(BLOOM)));
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING, BLOOM);
+        builder.add(FACING, LIT);
     }
 
     @Override
@@ -122,7 +108,44 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
-    public interface TickEffect {
-        void handheld(Level level, LivingEntity entity, BlockState state);
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), (level1, pos, state1, blockEntity) -> {
+            if (level1 instanceof ServerLevel serverLevel && level.getGameTime() % 40 == 5) {
+                double x = pos.getX() + 0.5;
+                double y = pos.getY() + 0.5;
+                double z = pos.getZ() + 0.5;
+                for (ServerPlayer player : serverLevel.players()) {
+                    if (player.distanceToSqr(x, y, z) <= scopeSqr) {
+                        awardEffect(player, effectData);
+                    }
+                }
+            }
+        });
+    }
+
+    private static void awardEffect(LivingEntity living, MobEffectInstanceData[] dat) {
+        for (MobEffectInstanceData data : dat) {
+            MobEffectInstance instance = living.getActiveEffectsMap().get(data.effect());
+            if (instance == null || instance.duration < 50) {
+                living.addEffect(data.create());
+            }
+        }
+    }
+
+    public static class BItem extends TooltipBlockItem {
+        public final MobEffectInstanceData[] effectData;
+
+        public BItem(Block block, ModRarity rarity, List<Component> tooltips, MobEffectInstanceData... effectData) {
+            super(block, new Properties(), rarity, tooltips);
+            this.effectData = effectData;
+        }
+
+        @Override
+        public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+            if (isSelected && entity instanceof LivingEntity living) {
+                awardEffect(living, effectData);
+            }
+        }
     }
 }

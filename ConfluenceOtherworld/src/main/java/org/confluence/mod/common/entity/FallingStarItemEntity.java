@@ -136,7 +136,7 @@ public class FallingStarItemEntity extends ItemEntity {
                 }
                 int offsetX = Mth.nextInt(level.random, -16, 16);
                 int offsetZ = Mth.nextInt(level.random, -16, 16);
-                BlockPos pos = player.getOnPos().offset(offsetX, 0, offsetZ).atY(256);
+                BlockPos pos = player.blockPosition().offset(offsetX, 0, offsetZ).atY(256);
                 if (level.isLoaded(pos)) {
                     level.addFreshEntity(new FallingStarItemEntity(level, pos.getCenter()));
                     cache.add(player.position());

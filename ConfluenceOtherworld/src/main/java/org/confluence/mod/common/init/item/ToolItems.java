@@ -16,10 +16,8 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.terra_curio.common.item.MagicMirror;
@@ -96,10 +94,6 @@ public class ToolItems {
     public static final DeferredItem<MagicDropperItem> MAGIC_HONEY_DROPPER = ITEMS.register("magic_honey_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_HONEY));
     public static final DeferredItem<MagicDropperItem> MAGIC_LAVA_DROPPER = ITEMS.register("magic_lava_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_LAVA));
     public static final DeferredItem<MagicDropperItem> MAGIC_WATER_DROPPER = ITEMS.register("magic_water_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_WATER));
-
-    // 有效果的蜡烛
-    public static final DeferredItem<EffectiveCandleItem> WATER_CANDLE = ITEMS.register("water_candle", () -> new EffectiveCandleItem(FunctionalBlocks.WATER_CANDLE.get(), ModRarity.BLUE, 1, ModEffects.WATER_CANDLE, 40, 0));
-    public static final DeferredItem<EffectiveCandleItem> PEACE_CANDLE = ITEMS.register("peace_candle", () -> new EffectiveCandleItem(FunctionalBlocks.PEACE_CANDLE.get(), ModRarity.BLUE, 1, ModEffects.WATER_CANDLE, 40, 0));
 
     public static final DeferredItem<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
     public static final DeferredItem<GuideToCritterCompanionshipItem> GUIDE_TO_CRITTER_COMPANIONSHIP = ITEMS.register("guide_to_critter_companionship", GuideToCritterCompanionshipItem::new);

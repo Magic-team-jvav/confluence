@@ -26,7 +26,6 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_furniture.common.init.TFTags;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
@@ -1102,7 +1101,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
         shapeless(output, ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.toStack(), Ingredient.of(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP), Ingredient.of(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION));
 
-        shapeless(output, ToolItems.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2,ModTags.Items.GOLD_AND_PLATINUM),Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, FunctionalBlocks.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2,ModTags.Items.GOLD_AND_PLATINUM),Ingredient.of(MaterialItems.PINK_GEL));
 
         shapeless(output, FunctionalBlocks.HEART_LANTERN.toStack(), Ingredient.of(Items.CHAIN),Ingredient.of(ConsumableItems.LIFE_CRYSTAL));
         shapeless(output, FunctionalBlocks.STAR_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.FALLING_STAR));

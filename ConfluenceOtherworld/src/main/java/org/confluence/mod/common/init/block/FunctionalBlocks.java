@@ -2,16 +2,15 @@ package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
 import net.minecraft.ChatFormatting;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SignItem;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -19,6 +18,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.EnchantedFragileBricksBlock;
 import org.confluence.mod.common.block.functional.*;
@@ -36,7 +36,6 @@ import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,11 +150,11 @@ public class FunctionalBlocks {
     public static final DeferredBlock<TimersBlock> TIMERS_BLOCK_1_2 = registerWithEntity("timers_1_2", () -> new TimersBlock(10)); // 1/2s
     public static final DeferredBlock<TimersBlock> TIMERS_BLOCK_1_4 = registerWithEntity("timers_1_4", () -> new TimersBlock(5)); // 1/4s
     public static final DeferredBlock<GeyserBlock> GEYSER_BLOCK = registerWithEntity("geyser_block", GeyserBlock::new);
-    public static final DeferredBlock<AbstractBoulderBlock<?>> NORMAL_BOULDER = registerBoulder("normal_boulder", BoulderBlock::new);
-    public static final DeferredBlock<AbstractBoulderBlock<?>> OAK_LOG_BOULDER = registerBoulder("oak_log_boulder", BoulderBlock::new);
+    public static final DeferredBlock<AbstractBoulderBlock<?>> NORMAL_BOULDER = registerWithEntity("normal_boulder", BoulderBlock::new);
+    public static final DeferredBlock<AbstractBoulderBlock<?>> OAK_LOG_BOULDER = registerWithEntity("oak_log_boulder", BoulderBlock::new);
     public static final DeferredBlock<AbstractBoulderBlock<?>> FOLLOWER_BOULDER = registerBoulder("follower_boulder", BoulderBlock::new, FollowerBoulderEntity::new);
     public static final DeferredBlock<AbstractBoulderBlock<?>> EXPLODE_BOULDER = registerBoulder("explode_boulder", BoulderBlock::new, ExplodeBoulderEntity::new);
-    public static final DeferredBlock<AbstractBoulderBlock<?>> ROLLING_CACTUS_BOULDER = registerBoulder("rolling_cactus_boulder", RollingCactusBoulderBlock::new);
+    public static final DeferredBlock<AbstractBoulderBlock<?>> ROLLING_CACTUS_BOULDER = registerWithEntity("rolling_cactus_boulder", RollingCactusBoulderBlock::new);
     public static final DeferredBlock<DetonatorBlock> DETONATOR = registerWithEntity("detonator", () -> new DetonatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_OBSIDIAN_BRICKS = registerWithEntity("mechanical_fragile_obsidian_bricks", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS), DecorativeBlocks.OBSIDIAN_BRICKS.get()::defaultBlockState));
@@ -164,6 +163,10 @@ public class FunctionalBlocks {
     public static final DeferredBlock<FlameTrapBlock> FLAME_TRAP = registerWithEntity("flame_trap", () -> new FlameTrapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).requiresCorrectToolForDrops().strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F))));
     public static final DeferredBlock<SpikyBallTrapBlock> SPIKY_BALL_TRAP = registerWithEntity("spiky_ball_trap", () -> new SpikyBallTrapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).requiresCorrectToolForDrops().strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F))));
     public static final DeferredBlock<SpearTrapBlock> SPEAR_TRAP = registerWithEntity("spear_trap", () -> new SpearTrapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).requiresCorrectToolForDrops().strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F))));
+
+    // 有效果的蜡烛
+    public static final DeferredBlock<EffectiveCandleBlock> WATER_CANDLE = registerCandle("water_candle", new MobEffectInstanceData(ModEffects.WATER_CANDLE, 100));
+    public static final DeferredBlock<EffectiveCandleBlock> PEACE_CANDLE = registerCandle("peace_candle", new MobEffectInstanceData(ModEffects.PEACE_CANDLE, 100));
 
     public static final DeferredBlock<AnnouncementBoxBlock> ANNOUNCEMENT_BOX = BLOCKS.register("announcement_box", () -> new AnnouncementBoxBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(5.0F).noCollission().noOcclusion().sound(SoundType.METAL).isValidSpawn(Blocks::never)));
     public static final DeferredBlock<AnnouncementBoxBlock.Wall> WALL_ANNOUNCEMENT_BOX = BLOCKS.register("wall_announcement_box", () -> new AnnouncementBoxBlock.Wall(BlockBehaviour.Properties.ofFullCopy(ANNOUNCEMENT_BOX.get())));
@@ -182,12 +185,8 @@ public class FunctionalBlocks {
     public static final DeferredBlock<LockBlock> LOCK_BLOCK = registerWithItem("lock_block", () -> new LockBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEDROCK)));
     public static final Supplier<BlockEntityType<LockBlock.BEntity>> LOCK_BLOCK_ENTITY = BLOCK_ENTITIES.register("lock_block_entity", () -> BlockEntityType.Builder.of(LockBlock.BEntity::new, LOCK_BLOCK.get()).build(DSL.remainderType()));
 
-    // 有效果的蜡烛
-    public static final DeferredBlock<EffectiveCandleBlock> WATER_CANDLE = registerCandle("water_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 0));
-    public static final DeferredBlock<EffectiveCandleBlock> PEACE_CANDLE = registerCandle("peace_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
-
     // 心灯，星星瓶
-    public static final DeferredBlock<HeartLanternBlock> HEART_LANTERN   = registerWithItem("heart_lantern",  () -> new HeartLanternBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_RED)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.heart_lantern.0"));
+    public static final DeferredBlock<HeartLanternBlock> HEART_LANTERN = registerWithItem("heart_lantern", () -> new HeartLanternBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_RED)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.heart_lantern.0"));
     public static final Supplier<BlockEntityType<HeartLanternBlock.BEntity>> HEART_LANTERN_ENTITY = ModBlocks.BLOCK_ENTITIES.register("heart_lantern_entity", () -> BlockEntityType.Builder.of(HeartLanternBlock.BEntity::new, HEART_LANTERN.get()).build(DSL.remainderType()));
 
     public static final DeferredBlock<StarInABottleBlock> STAR_IN_A_BOTTLE = registerWithItem("star_in_a_bottle", () -> new StarInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_YELLOW)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.star_in_a_bottle.0"));
@@ -233,33 +232,29 @@ public class FunctionalBlocks {
         return holder;
     }
 
-    private static DeferredBlock<EffectiveCandleBlock> registerCandle(
-            String id,
-            float scope,
-            ModFoodPropertiesBuilder.EffectData... effectData) {
-        return registerCandle(id, BlockBehaviour.Properties.of(), scope, effectData);
-    }
-
-    private static DeferredBlock<EffectiveCandleBlock> registerCandle(
-            String id,
-            BlockBehaviour.Properties properties,
-            float scope,
-            ModFoodPropertiesBuilder.EffectData... effectData) {
-        var holder = BLOCKS.register(id, () -> new EffectiveCandleBlock(properties, scope, effectData));
+    private static <B extends Block & EntityBlock & INetworkBlock> DeferredBlock<B> registerWithEntity(String id, Supplier<B> supplier, Function<B, BlockItem> function) {
+        DeferredBlock<B> holder = registerWithItem(id, supplier, function);
         MECHANICAL_BLOCKS.add(holder);
         return holder;
     }
 
-    private static <B extends AbstractBoulderBlock<?>> DeferredBlock<B> registerBoulder(
-            String id,
-            Supplier<B> block) {
-        return registerWithEntity(id, block);
+    private static DeferredBlock<EffectiveCandleBlock> registerCandle(String id, MobEffectInstanceData... effectData) {
+        return registerWithEntity(id,
+                () -> new EffectiveCandleBlock(BlockBehaviour.Properties.of()
+                        .mapColor(DyeColor.WHITE)
+                        .noOcclusion()
+                        .strength(0.1F)
+                        .sound(SoundType.CANDLE)
+                        .lightLevel(state -> state.getValue(EffectiveCandleBlock.LIT) ? 15 : 0)
+                        .pushReaction(PushReaction.DESTROY), (float) 50, effectData),
+                block -> {
+                    List<Component> tooltips = TooltipItem.getTooltipsFromString(id, 1, ChatFormatting.GRAY);
+                    return new EffectiveCandleBlock.BItem(block, ModRarity.BLUE, tooltips, effectData);
+                }
+        );
     }
 
-    private static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
-            String id,
-            Function<AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
-            AbstractBoulderBlock.BoulderEntityFactory<E> entity) {
+    private static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(String id, Function<AbstractBoulderBlock.BoulderEntityFactory<E>, B> block, AbstractBoulderBlock.BoulderEntityFactory<E> entity) {
         return registerWithEntity(id, () -> block.apply(entity));
     }
 }

@@ -103,6 +103,8 @@ public class DeadBodyPartEntity extends Entity {
             case null, default -> this.dimensions = EntityDimensions.fixed(minSide, minSide);
         }
 //        still();
+
+        setId(getId() + 0x3F3F3F3F);
     }
 
     public void still() {

@@ -125,7 +125,7 @@ public final class GameClientEvents {
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
             DropletsHandler.handle(minecraft, player);
-            DeathAnimUtils.handle();
+            DeathAnimUtils.handle(player.clientLevel);
             LucyTheAxeHandler.handle(player.getId());
             if (minecraft.options.keyAttack.isDown() &&
                     player.getMainHandItem().getItem() instanceof BaseSwordItem sword &&

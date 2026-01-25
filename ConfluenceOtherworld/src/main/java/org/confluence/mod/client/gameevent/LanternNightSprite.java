@@ -106,8 +106,8 @@ final class LanternNightSprite {
             BufferUploader.drawWithShader(data);
         }
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        RenderSystem.depthMask(true);
         RenderSystem.disableBlend();
+        RenderSystem.depthMask(true);
     }
 
     static void tick(LocalPlayer player) {

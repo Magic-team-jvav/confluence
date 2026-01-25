@@ -13,9 +13,11 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.ClientHooks;
@@ -51,7 +53,7 @@ import java.util.*;
  */
 public final class DeathAnimUtils {
     public static final Map<EntityType<? extends LivingEntity>, DeathAnimOptions> options = new HashMap<>();
-    public static final List<Pair<ClientLevel, Entity>> toBeAdded = new ArrayList<>();
+    public static final List<Pair<ResourceKey<Level>, Entity>> toBeAdded = new ArrayList<>();
     public static final List<Entity> toBeDiscarded = new ArrayList<>();
 
     public static void clear() {
@@ -59,11 +61,13 @@ public final class DeathAnimUtils {
         toBeDiscarded.clear();
     }
 
-    public static void handle() {
-        for (Pair<ClientLevel, Entity> pair : DeathAnimUtils.toBeAdded) {
-            pair.first.addEntity(pair.second);
+    public static void handle(ClientLevel level) {
+        for (Pair<ResourceKey<Level>, Entity> pair : toBeAdded) {
+            if (pair.first == level.dimension()) {
+                level.addEntity(pair.second);
+            }
         }
-        for (Entity entity : DeathAnimUtils.toBeDiscarded) {
+        for (Entity entity : toBeDiscarded) {
             entity.discard();
         }
     }
@@ -164,7 +168,7 @@ public final class DeathAnimUtils {
     }
 
     public static void tellAddEntity(ClientLevel level, Entity entity) {
-        toBeAdded.add(Pair.of(level, entity));
+        toBeAdded.add(Pair.of(level.dimension(), entity));
     }
 
     public static void tellDiscardEntity(Entity entity) {
@@ -251,7 +255,8 @@ public final class DeathAnimUtils {
             skipBone:
             for (GeoBone bone : bones) {
                 if (bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;
-                if (entity instanceof WallOfFlesh && level.random.nextInt(25) != 0) continue; // 肉墙随机剔除
+                if (entity instanceof WallOfFlesh && level.random.nextInt(25) != 0)
+                    continue; // 肉墙随机剔除
 
                 Vector3f boneOffset = new Vector3f(bone.getPosX(), bone.getPosY(), bone.getPosZ());
                 ArrayList<Vector3f> rots = new ArrayList<>();
@@ -344,7 +349,7 @@ public final class DeathAnimUtils {
     private static void makeGeoArmorPart(ClientLevel level, LivingEntity entity, ItemStack armorItemStack, float deathSpeed, Vec3 deathMotion, EntityModel<?> model) {
         EquipmentSlot slot = ((Equipable) armorItemStack.getItem()).getEquipmentSlot();
         float sideLength = entity.isBaby() && (slot == EquipmentSlot.LEGS || slot == EquipmentSlot.FEET) ? 0.2f : 0.4f;
-        DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, armorItemStack, deathSpeed,sideLength);
+        DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, armorItemStack, deathSpeed, sideLength);
 //        part.still();
 //        part.lifetime = 100;
         offsetGeoArmor(entity, part, armorItemStack);
@@ -355,23 +360,27 @@ public final class DeathAnimUtils {
 
     private static void makeArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, EquipmentSlot slot,
                                       AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
-                                      ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion){
+                                      ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
         ItemStack armorItemStack = entity.getItemBySlot(slot);
         Item armorItemStackItem = armorItemStack.getItem();
         boolean fromConfluence = ModUtils.isFromConfluence(BuiltInRegistries.ITEM, armorItemStackItem);
         if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE && !fromConfluence
-            || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA && !(fromConfluence || ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ITEM.getKey(armorItemStackItem).getNamespace()))
-            || !(armorItemStackItem instanceof Equipable equipable) || equipable.getEquipmentSlot() != slot) {
+                || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA && !(fromConfluence || ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ITEM.getKey(armorItemStackItem).getNamespace()))
+                || !(armorItemStackItem instanceof Equipable equipable) || equipable.getEquipmentSlot() != slot) {
             return;
         }
         if (GeoRenderProvider.of(armorItemStackItem).getGeoArmorRenderer(entity, armorItemStack, slot, null) != null) {
             makeGeoArmorPart(level, entity, armorItemStack, deathSpeed, deathMotion, livingRenderer.getModel());
-        } else if(armorItemStackItem instanceof ArmorItem armorItem) {
+        } else if (armorItemStackItem instanceof ArmorItem armorItem) {
             switch (slot) {
-                case HEAD -> makeHeadArmorPart(entity, armorLayer, armorItemStack, armorItem, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
-                case CHEST -> makeChestArmorPart(entity, armorLayer, armorItemStack, armorItem, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
-                case LEGS -> makeLegsArmorPart(entity, armorLayer, armorItemStack, armorItem, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
-                case FEET -> makeFeetArmorPart(entity, armorLayer, armorItemStack, armorItem, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
+                case HEAD ->
+                        makeHeadArmorPart(entity, armorLayer, armorItemStack, armorItem, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
+                case CHEST ->
+                        makeChestArmorPart(entity, armorLayer, armorItemStack, armorItem, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
+                case LEGS ->
+                        makeLegsArmorPart(entity, armorLayer, armorItemStack, armorItem, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
+                case FEET ->
+                        makeFeetArmorPart(entity, armorLayer, armorItemStack, armorItem, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
             }
         }
     }

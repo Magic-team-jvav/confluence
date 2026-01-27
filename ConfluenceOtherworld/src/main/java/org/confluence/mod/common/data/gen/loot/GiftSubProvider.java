@@ -1275,7 +1275,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(22)))
                 ))
-                //.withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.DEERCLOPS_RELIC)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.DEERCLOPS_RELIC)))
         );
         //克脑
 

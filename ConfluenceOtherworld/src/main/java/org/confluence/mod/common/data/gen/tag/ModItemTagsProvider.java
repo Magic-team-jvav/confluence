@@ -1424,7 +1424,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TEFigureBlocks.FIGURE2.asItem(),
                 TEFigureBlocks.FIGURE3.asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
-                DecorativeBlocks.DEERCLOPS_RELIC.asItem(),
                 DecorativeBlocks.THE_TWINS_RELIC.asItem(),
                 DecorativeBlocks.SKELETRON_PRIME_RELIC.asItem(),
                 LanceItems.HALLOWED_JOUSTING_LANCE.get(),

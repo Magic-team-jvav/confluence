@@ -1,0 +1,118 @@
+{
+    "type": "minecraft:chest",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:mysterious_note",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_lore",
+                            "lore": [
+                                {
+                                    "translate":"lore.confluence.mysterious_note.handwriting_0",
+                                    "color":"dark_gray"
+                                },
+                                {
+                                    "translate":"lore.confluence.mysterious_note_structure_2_0",
+                                    "color":"gray",
+                                    "italic":false
+                                },
+                                [
+                                    {
+                                        "text":" "
+                                    },
+                                    {
+                                        "text":"3",
+                                        "font":"confluence:paper_image",
+                                        "italic":false,
+                                        "color":"#FFFFFF"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text":"                       "
+                                    },
+                                    {
+                                        "text":"4",
+                                        "font":"confluence:paper_image",
+                                        "italic":false,
+                                        "color":"#FFFFFF"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text":"                             "
+                                    },
+                                    {
+                                        "translate":"block.minecraft.amethyst_block",
+                                        "color":"#3A2509",
+                                        "italic":false,
+                                        "font":"minecraft:uniform"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text":"                             "
+                                    },
+                                    {
+                                        "translate":"block.minecraft.chiseled_tuff",
+                                        "color":"#3A2509",
+                                        "italic":false,
+                                        "font":"minecraft:uniform"
+                                    }
+                                ],
+                                {
+                                    "text":""
+                                },
+                                [
+                                    {
+                                        "text":"                        "
+                                    },
+                                    {
+                                        "translate":"block.minecraft.crying_obsidian",
+                                        "color":"#3A2509",
+                                        "italic":false,
+                                        "font":"minecraft:uniform"
+                                    }
+                                ],
+                                {
+                                    "text":""
+                                },
+                                [
+                                    {
+                                        "text":"                        "
+                                    },
+                                    {
+                                        "translate":"block.minecraft.chiseled_tuff",
+                                        "color":"#3A2509",
+                                        "italic":false,
+                                        "font":"minecraft:uniform"
+                                    }
+                                ],
+                                {
+                                    "text":""
+                                },
+                                {
+                                    "text":""
+                                }
+                            ],
+                            "mode": "replace_all"
+                        },
+                        {
+                            "function": "minecraft:set_name",
+                            "name": {
+                                "translate":"item.confluence.mysterious_note.name_structure_1",
+                                "italic":false
+                            },
+                            "target": "custom_name"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

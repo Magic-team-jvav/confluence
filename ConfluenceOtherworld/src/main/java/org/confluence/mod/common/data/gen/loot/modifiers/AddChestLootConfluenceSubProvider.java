@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen.loot.modifiers;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -21,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
+
 
 /**
  * Generates chests loot tables into loot_modifier path specified by ModLootModifiersProvider i.e. confluence/loot_table/with/chests/bat.json
@@ -113,6 +115,7 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                     )
             )
         ));
+        /*
         entries.add(new AddedChestLoot(
             BuiltInLootTables.RUINED_PORTAL,
             LootTable.lootTable().withPool(
@@ -120,6 +123,7 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                     .add(LootItem.lootTableItem(ModItems.MYSTERIOUS_NOTE).setWeight(5))
             )
         ));
+         */
         entries.add(new AddedChestLoot(
             BuiltInLootTables.SHIPWRECK_SUPPLY,
             LootTable.lootTable().withPool(

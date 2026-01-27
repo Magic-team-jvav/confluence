@@ -18,7 +18,7 @@
             "type": "terra_entity:bone_serpent",
             "maxCount": 1,
             "minCount": 1,
-            "weight": 2
+            "weight": 1
         },
         {
             "type": "terra_entity:demon",

@@ -240,8 +240,8 @@ public final class NPCSpawner implements IGlobalData {
             next.getValue().object2BooleanEntrySet().removeIf(entry -> !entry.getBooleanValue());
             if (next.getValue().isEmpty()) iterator.remove();
         }
-        tag.put("npc_alive", NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive).getOrThrow());
-        tag.put("npc_spawned", NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).getOrThrow());
+        NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive).ifSuccess(nbt -> tag.put("npc_alive", nbt));
+        NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).ifSuccess(nbt -> tag.put("npc_spawned", nbt));
         tag.putBoolean("advanced_combat_techniques", isAdvancedCombatTechniquesUsed);
         tag.putBoolean("advanced_combat_techniques_volume_two", isAdvancedCombatTechniquesVolumeTwoUsed);
         tag.putBoolean("peddlers_satchel", isPeddlersSatchelUsed);

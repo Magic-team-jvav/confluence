@@ -309,9 +309,11 @@ dependencies {
     //runtimeOnly "curse.maven:fargo-soul-1315726:6819904"
     //runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
     //runtimeOnly "curse.maven:azurelib-817423:6849116"
-    //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
-    //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
+    if (true) {
+        runtimeOnly "maven.modrinth:l_enders-cataclysm:3.16"
+        runtimeOnly "maven.modrinth:lionfish-api:2.6"
+    }
     if (dynamicCrosshair) {
         runtimeOnly "maven.modrinth:dynamiccrosshair:9.11+1.21.1-neoforge"
     }

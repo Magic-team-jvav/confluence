@@ -32,7 +32,7 @@ public class HouseHandler implements IGlobalData {
             )
     );
 
-    private final Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> data = new Object2ObjectOpenHashMap<>();
+    private Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> data = new Object2ObjectOpenHashMap<>();
 
     private HouseHandler() {}
 
@@ -68,12 +68,14 @@ public class HouseHandler implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        DATA_CODEC.parse(NbtOps.INSTANCE, tag.getList("data", CompoundTag.TAG_LIST)).ifSuccess(data::putAll);
+        DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data"))
+                .ifSuccess(result -> this.data = new Object2ObjectOpenHashMap<>(result));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        DATA_CODEC.encodeStart(NbtOps.INSTANCE, data).ifSuccess(nbt -> tag.put("data", nbt));
+        DATA_CODEC.encodeStart(NbtOps.INSTANCE, data)
+                .ifSuccess(nbt -> tag.put("data", nbt));
     }
 
     @Override

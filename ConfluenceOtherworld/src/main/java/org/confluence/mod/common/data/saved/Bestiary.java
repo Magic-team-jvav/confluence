@@ -1,7 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
-import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -26,19 +26,20 @@ public class Bestiary implements IGlobalData {
     public static final Codec<Map<String, BestiaryEntry>> CODEC = Codec.unboundedMap(Codec.STRING, BestiaryEntry.CODEC);
     public static final Bestiary INSTANCE = new Bestiary();
 
-    private final Map<String, BestiaryEntry> entries = Maps.newHashMap();
+    private Map<String, BestiaryEntry> entries = new Object2ObjectOpenHashMap<>();
 
     private Bestiary() {}
 
     @Override
     public void decode(CompoundTag tag) {
-        entries.clear();
-        CODEC.parse(NbtOps.INSTANCE, tag.getCompound("entries")).ifSuccess(entries::putAll);
+        CODEC.parse(NbtOps.INSTANCE, tag.get("entries"))
+                .ifSuccess(result -> this.entries = new Object2ObjectOpenHashMap<>(result));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("entries", CODEC.encodeStart(NbtOps.INSTANCE, entries).result().orElseGet(CompoundTag::new));
+        CODEC.encodeStart(NbtOps.INSTANCE, entries)
+                .ifSuccess(nbt -> tag.put("entries", nbt));
     }
 
     @Override

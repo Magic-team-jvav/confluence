@@ -7,6 +7,8 @@ import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Lifecycle;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
@@ -96,9 +98,9 @@ public final class NPCSpawner implements IGlobalData {
     };
     public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf().xmap(HashSet::new, ArrayList::new);
 
-    private final Map<Region, Object2BooleanMap<EntityType<?>>> npcAlive = new HashMap<>();
+    private Map<Region, Object2BooleanMap<EntityType<?>>> npcAlive = new Object2ObjectOpenHashMap<>();
     /// 生成过的NPC，可用于NPC复活而无需再次满足条件
-    private final Set<EntityType<?>> npcSpawned = new HashSet<>();
+    private Set<EntityType<?>> npcSpawned = new ObjectOpenHashSet<>();
     private boolean isAdvancedCombatTechniquesUsed = false; // 先进战斗技术
     private boolean isAdvancedCombatTechniquesVolumeTwoUsed = false; // 先进战斗技术：卷二
     private boolean isPeddlersSatchelUsed = false; // 商贩背包
@@ -223,10 +225,10 @@ public final class NPCSpawner implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        npcAlive.clear();
-        NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("npc_alive")).ifSuccess(npcAlive::putAll);
-        npcSpawned.clear();
-        NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.getList("npc_spawned", CompoundTag.TAG_STRING)).ifSuccess(npcSpawned::addAll);
+        NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_alive"))
+                .ifSuccess(result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
+        NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_spawned"))
+                .ifSuccess(result -> this.npcSpawned = new ObjectOpenHashSet<>(result));
         this.isAdvancedCombatTechniquesUsed = tag.getBoolean("advanced_combat_techniques");
         this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("advanced_combat_techniques_volume_two");
         this.isPeddlersSatchelUsed = tag.getBoolean("peddlers_satchel");
@@ -238,10 +240,14 @@ public final class NPCSpawner implements IGlobalData {
         while (iterator.hasNext()) {
             Map.Entry<Region, Object2BooleanMap<EntityType<?>>> next = iterator.next();
             next.getValue().object2BooleanEntrySet().removeIf(entry -> !entry.getBooleanValue());
-            if (next.getValue().isEmpty()) iterator.remove();
+            if (next.getValue().isEmpty()) {
+                iterator.remove();
+            }
         }
-        NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive).ifSuccess(nbt -> tag.put("npc_alive", nbt));
-        NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).ifSuccess(nbt -> tag.put("npc_spawned", nbt));
+        NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive)
+                .ifSuccess(nbt -> tag.put("npc_alive", nbt));
+        NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned)
+                .ifSuccess(nbt -> tag.put("npc_spawned", nbt));
         tag.putBoolean("advanced_combat_techniques", isAdvancedCombatTechniquesUsed);
         tag.putBoolean("advanced_combat_techniques_volume_two", isAdvancedCombatTechniquesVolumeTwoUsed);
         tag.putBoolean("peddlers_satchel", isPeddlersSatchelUsed);

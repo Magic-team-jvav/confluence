@@ -8,7 +8,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -150,8 +149,10 @@ public final class GlobalCloakData implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.getList("BlockMap", Tag.TAG_COMPOUND)).ifSuccess(blockMap::putAll);
-        ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.getList("ItemMap", Tag.TAG_COMPOUND)).ifSuccess(itemMap::putAll);
+        BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap"))
+                .ifSuccess(result -> this.blockMap = new IdentityHashMap<>(result));
+        ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap"))
+                .ifSuccess(result -> this.itemMap = new IdentityHashMap<>(result));
         this.version = tag.getInt("Version");
 
         rollbackAllProperties();
@@ -159,8 +160,10 @@ public final class GlobalCloakData implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
-        BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap).ifSuccess(nbt -> tag.put("BlockMap", nbt));
-        ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap).ifSuccess(nbt -> tag.put("ItemMap", nbt));
+        BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap)
+                .ifSuccess(nbt -> tag.put("BlockMap", nbt));
+        ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap)
+                .ifSuccess(nbt -> tag.put("ItemMap", nbt));
         tag.putInt("Version", version);
     }
 

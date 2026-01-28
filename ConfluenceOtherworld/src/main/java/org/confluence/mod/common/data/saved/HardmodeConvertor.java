@@ -11,7 +11,6 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
@@ -261,7 +260,8 @@ public final class HardmodeConvertor implements IGlobalData {
     @Override
     public void decode(CompoundTag tag) {
         this.shouldContinue = false;
-        SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, tag.getList("sanctification", CompoundTag.TAG_LIST)).ifSuccess(result -> this.sanctification = result);
+        SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, tag.get("sanctification"))
+                .ifSuccess(result -> this.sanctification = new LinkedList<>(result));
         this.started = tag.getBoolean("started");
         this.completed = tag.getBoolean("completed");
         this.shouldContinue = true;
@@ -270,7 +270,8 @@ public final class HardmodeConvertor implements IGlobalData {
     @Override
     public void encode(CompoundTag tag) {
         this.shouldContinue = false;
-        tag.put("sanctification", SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).result().orElseGet(ListTag::new));
+        SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification)
+                .ifSuccess(nbt -> tag.put("sanctification", nbt));
         tag.putBoolean("started", started);
         tag.putBoolean("completed", completed);
         this.shouldContinue = true;

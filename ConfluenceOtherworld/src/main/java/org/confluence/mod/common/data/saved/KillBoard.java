@@ -141,15 +141,19 @@ public final class KillBoard implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("defeated_bosses")).ifSuccess(result -> this.defeatedBosses = result);
-        DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("defeated_events")).ifSuccess(result -> this.defeatedEvents = result);
+        DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_bosses"))
+                .ifSuccess(result -> this.defeatedBosses = new Object2BooleanOpenHashMap<>(result));
+        DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events"))
+                .ifSuccess(result -> this.defeatedEvents = new Object2BooleanOpenHashMap<>(result));
         this.gamePhase = GamePhase.getByOrder(tag.getInt("game_phase"));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("defeated_bosses", DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses).result().orElseGet(CompoundTag::new));
-        tag.put("defeated_events", DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents).result().orElseGet(CompoundTag::new));
+        DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses)
+                .ifSuccess(nbt -> tag.put("defeated_bosses", nbt));
+        DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents)
+                .ifSuccess(nbt -> tag.put("defeated_events", nbt));
         tag.putInt("game_phase", gamePhase.getOrder());
     }
 

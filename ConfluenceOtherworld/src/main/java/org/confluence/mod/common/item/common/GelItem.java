@@ -10,7 +10,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +20,7 @@ public class GelItem extends ColoredItem {
     }
 
     @Override
-    public @NotNull ItemStack getDefaultInstance() {
+    public ItemStack getDefaultInstance() {
         ItemStack itemStack = new ItemStack(MaterialItems.GEL.get());
         setRGBA(itemStack, 0xFF66CCFF);
         return itemStack;

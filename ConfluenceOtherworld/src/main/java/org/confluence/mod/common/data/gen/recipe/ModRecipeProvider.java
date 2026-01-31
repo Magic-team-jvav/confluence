@@ -290,6 +290,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, TCItems.ANKH_CHARM.toStack(), Ingredient.of(AccessoryItems.ARMOR_BRACING), Ingredient.of(AccessoryItems.MEDICATED_BANDAGE), Ingredient.of(TCItems.THE_PLAN), Ingredient.of(AccessoryItems.COUNTERCURSE_MANTRA), Ingredient.of(AccessoryItems.REFLECTIVE_SHADES));
         workshop(recipeOutput, AccessoryItems.BAND_OF_STARPOWER.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(TCItems.PANIC_NECKLACE));
         workshop(recipeOutput, TCItems.PANIC_NECKLACE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
+        workshop(recipeOutput, TCItems.CELL_PHONE.toStack(), Ingredient.of(TCItems.PDA), Ingredient.of(ToolItems.ICE_MIRROR));
 
         solidifier(recipeOutput, DecorativeBlocks.BLUE_GEL_BLOCK.toStack(),
                 ShapedRecipePattern.of(Map.of(

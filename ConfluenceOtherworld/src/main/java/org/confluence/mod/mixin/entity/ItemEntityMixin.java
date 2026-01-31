@@ -140,8 +140,9 @@ public abstract class ItemEntityMixin implements IItemEntity {
         RandomSource random = source.level().random;
         for (RecipeHolder<?> recipeHolder : ((ServerLevel) source.level()).getServer().getRecipeManager().getRecipes()) {
             Recipe<?> recipe = recipeHolder.value();
-            if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe)
+            if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe) {
                 continue;
+            }
             ItemStack resultItem = recipe.getResultItem(registryAccess);
             if (sourceItem.getCount() >= resultItem.getCount() && ItemStack.isSameItem(sourceItem, resultItem)) {
                 int times = sourceItem.getCount() / resultItem.getCount();

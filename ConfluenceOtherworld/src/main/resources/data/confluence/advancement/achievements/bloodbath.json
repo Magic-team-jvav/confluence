@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "terra_moment:blood_tear"
+            "id": "confluence:blood_tear"
         },
         "title": {
             "translate": "achievements.confluence.bloodbath.title"

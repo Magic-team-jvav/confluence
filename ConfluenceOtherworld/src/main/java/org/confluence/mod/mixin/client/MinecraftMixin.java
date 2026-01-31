@@ -40,11 +40,10 @@ public abstract class MinecraftMixin {
     public void changeGlowOutline(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (player != null) {
             GlowingHelper helper = GlowingHelper.INSTANCE;
-            //狩猎药水
+            // 狩猎药水
             if (player.hasEffect(ModEffects.HUNTER)) {
-
-                //自定义类别 中立生物不计入其中
-                for (var n : helper.hunterCatalog)
+                // 自定义类别 中立生物不计入其中
+                for (Class<? extends Entity> n : helper.hunterCatalog) {
                     if (n.isAssignableFrom(entity.getClass())) {
                         if (SHOW_DETAIL_SPECULAR.get().isDown()) {
                             cir.setReturnValue(true);
@@ -53,12 +52,13 @@ public abstract class MinecraftMixin {
                         cir.setReturnValue(helper.colorMap.get(n).alwaysShow());
                         return;
                     }
-                //敌人
+                }
+                // 敌人
                 if (entity instanceof Enemy) {
                     cir.setReturnValue(true);
                     return;
                 }
-                //中立生物
+                // 中立生物
                 if (entity instanceof NeutralMob) {
                     if (SHOW_DETAIL_SPECULAR.get().isDown()) {
                         cir.setReturnValue(true);
@@ -69,13 +69,11 @@ public abstract class MinecraftMixin {
                         return;
                     }
                 }
-
-
             }
 
-            //危险感知药水
+            // 危险感知药水
             if (player.hasEffect(ModEffects.DANGER_SENSE)) {
-                for (var n : helper.dangerCatalog) {
+                for (Class<? extends Entity> n : helper.dangerCatalog) {
                     if (n.isAssignableFrom(entity.getClass())) {
                         if (SHOW_DETAIL_SPECULAR.get().isDown()) {
                             cir.setReturnValue(true);
@@ -86,8 +84,6 @@ public abstract class MinecraftMixin {
                     }
                 }
             }
-
-            //cir.setReturnValue(false);
         }
     }
 }

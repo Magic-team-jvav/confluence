@@ -19,7 +19,7 @@ public abstract class TCClientPacketHandlerMixin {
     }
 
     @ModifyExpressionValue(method = "applyAutoAttack", at = @At(value = "INVOKE", target = "Lorg/confluence/terra_curio/client/handler/TCClientPacketHandler;couldAutoAttack()Z"))
-    private static boolean extraAutoAttack(boolean original, @Local ItemStack stack) {
+    private static boolean extraAutoAttack(boolean original, @Local(name = "itemStack") ItemStack stack) {
         return (original && !stack.is(ModTags.Items.AUTO_ATTACK_BLACKLIST)) || stack.is(ModTags.Items.AUTO_ATTACK_WHITELIST);
     }
 }

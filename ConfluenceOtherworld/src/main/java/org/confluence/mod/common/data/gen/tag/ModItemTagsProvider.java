@@ -1531,6 +1531,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BaitItems.LAVAFLY.get()
         );
 
+        IntrinsicTagAppender<Item> autoAttackBlacklist = tag(ModTags.Items.AUTO_ATTACK_BLACKLIST);
+        for (DeferredHolder<Item, ? extends Item> entry : LanceItems.ITEMS.getEntries()) {
+            autoAttackBlacklist.add(entry.get());
+        }
+
         tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(
                 SwordItems.ICE_BLADE.get(),
                 SwordItems.MANDIBLE_BLADE.get(),

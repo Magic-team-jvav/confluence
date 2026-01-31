@@ -28,6 +28,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
@@ -254,6 +255,15 @@ public final class SlimeRainGameEvent implements GameEvent {
     public void forceEnd() {
         if (started) {
             this.forceEnd = true;
+        }
+    }
+
+    public void checkEnd(LivingEntity victim) {
+        if (started && victim.getType() == TEBossEntities.KING_SLIME.get()) {
+            forceEnd();
+            for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                AchievementUtils.awardAchievement(player, "sticky_situation");
+            }
         }
     }
 

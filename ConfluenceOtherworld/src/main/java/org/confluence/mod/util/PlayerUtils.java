@@ -154,7 +154,7 @@ public final class PlayerUtils {
         MeteoriteLocationPacketS2C.sendToClient(player, data.getMeteoriteLocation(), 0);
         BestiarySyncPacketS2C.syncEntries(player);
         ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
-        PiggyBankTotalMoneyPacket.sendToClient(player, PlayerPiggyBankContainer.of(player), true);
+        PlayerPiggyBankContainer.of(player).setChanged(); // 自动同步
         FishingPowerInfoPacketS2C.sendAndGet(player);
         VisibilityPacketS2C.sendEcho(player);
         syncMana2Client(player);

@@ -20,7 +20,6 @@ import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.entity.npc.mood.NPCMood;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.util.List;
 
 import static org.confluence.terraentity.client.gui.container.TETradeScreen.MENU_LOCATION;
@@ -89,7 +88,7 @@ public interface IMoneyTrade extends ITrade {
         int i = 0;
         for (Integer coin : coins.copper2Platinum()) {
             String s = coin.toString();
-            guiGraphics.drawString(font, s, x + 4 - s.length() * 3, y + 16, Color.orange.getRGB(), true);
+            guiGraphics.drawString(font, s, x + 4 - s.length() * 3, y + 16, 0xFFFFC800, true);
             y -= 13;
             if (coin >= 1) {
                 index = i;

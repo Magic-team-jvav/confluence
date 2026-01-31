@@ -41,9 +41,7 @@ import org.confluence.terraentity.client.buffer.AbstractBufferManager;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
@@ -362,11 +360,6 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTargetWithItemRender(SPIKE.get(), 0xff4600, true, ShowType.DANGER, SPIKE.get().asItem());
         putTargetWithItemRender(ChestBlocks.DEATH_GOLDEN_CHEST.get(), 0xff4600, true, ShowType.DANGER, ChestBlocks.DEATH_GOLDEN_CHEST.asItem());
         putTargetWithItemRender(ChestBlocks.DEATH_WOODEN_CHEST.get(), 0xff4600, true, ShowType.DANGER, ChestBlocks.DEATH_WOODEN_CHEST.asItem());
-    }
-
-    @Deprecated
-    private void putTarget(Block block, Color color, boolean always, ShowType showType) {
-        putTarget(block, color.getRGB(), always, showType);
     }
 
     private void putTarget(Block block, int rgb, boolean always, ShowType showType) {

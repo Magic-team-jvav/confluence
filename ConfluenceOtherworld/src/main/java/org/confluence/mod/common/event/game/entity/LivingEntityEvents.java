@@ -118,9 +118,7 @@ public final class LivingEntityEvents {
             }
             if (victim instanceof Boss boss && boss.shouldShowMessage()) {
                 ModUtils.bossDeath(level, victim);
-                if (victim.getType() == TEBossEntities.KING_SLIME.get()) {
-                    SlimeRainGameEvent.INSTANCE.forceEnd();
-                }
+                SlimeRainGameEvent.INSTANCE.checkEnd(victim);
             }
             if (victim instanceof ServerPlayer player) {
                 PlayerUtils.dropMoney(player);

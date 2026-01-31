@@ -76,8 +76,6 @@ public final class TEEvents {
                 .set(Attributes.ARMOR_TOUGHNESS)
                 .register(TEMonsterEntities.PIXIE.get(), 2)
                 .register(TEMonsterEntities.WYVERN.get(), 2)
-                .register(TEMonsterEntities.WRAITH.get(), 2)
-                .register(TEMonsterEntities.POSSESS_ARMOR.get(), 2)
                 .register(TEMonsterEntities.CORRUPT_SLIME.get(), 2)
                 .register(TEMonsterEntities.LUMINOUS_SLIME.get(), 2)
                 .register(TEMonsterEntities.CRIMSLIME.get(), 2)

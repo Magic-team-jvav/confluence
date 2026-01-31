@@ -11,8 +11,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.client.gui.hud.*;
-import org.confluence.mod.client.handler.StarPhaseHandler;
-import org.confluence.mod.common.CommonConfigs;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +40,7 @@ public final class ClientConfigs {
     public static int extraInventoryButtonOffsetX = 0;
     public static int extraInventoryButtonOffsetY = 0;
 
-    public static boolean bloodyEffect = true;
+    public static boolean bloodyEffect = true; // todo
     public static GoreEffect goreEffect = GoreEffect.CONFLUENCE_VANILLA;
     public static boolean damageIndicator = true;
     public static boolean healIndicator = true;
@@ -100,10 +98,9 @@ public final class ClientConfigs {
         extraInventoryButtonOffsetY = EXTRA_INVENTORY_BUTTON_OFFSET_Y.get();
 
         bloodyEffect = BLOODY_EFFECT.get();
-        goreEffect = GORE_EFFECT != null ? GORE_EFFECT.get() : GoreEffect.OFF;
+        goreEffect = GORE_EFFECT == null ? GoreEffect.OFF : GORE_EFFECT.get();
         damageIndicator = DAMAGE_INDICATOR.get();
         healIndicator = HEAL_INDICATOR.get();
-        StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
     }
 
     public static void register(ModContainer container) {

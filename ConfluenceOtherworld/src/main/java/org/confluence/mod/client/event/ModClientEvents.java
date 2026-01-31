@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
@@ -50,6 +51,7 @@ import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
+import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
@@ -89,6 +91,7 @@ import org.confluence.mod.client.renderer.item.ShortSwordInHandRenderer;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
@@ -125,7 +128,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            ClientConfigs.onLoad();
+            StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
             ModClientSetups.registerBowProperties();
             ModClientSetups.registerFishingPoleProperties();
             ArrowInBowRenderer.initAdaptionMap();
@@ -142,9 +145,17 @@ public final class ModClientEvents {
     }
 
     @SubscribeEvent
-    public static void modConfig$Reloading(ModConfigEvent.Reloading event) {
-        if (event.getConfig().getModId().equals(Confluence.MODID)) {
+    public static void modConfig$Loading(ModConfigEvent.Loading event) {
+        if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
             ClientConfigs.onLoad();
+        }
+    }
+
+    @SubscribeEvent
+    public static void modConfig$Reloading(ModConfigEvent.Reloading event) {
+        if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
+            ClientConfigs.onLoad();
+            StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
         }
     }
 

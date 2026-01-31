@@ -238,7 +238,7 @@ dependencies {
     }
 
     compileOnly "curse.maven:appleskin-248787:5586600"
-    runtimeOnly "curse.maven:appleskin-248787:5586600"
+//    runtimeOnly "curse.maven:appleskin-248787:5586600"
 
     compileOnly "curse.maven:rhino-416294:6886923"
     compileOnly "curse.maven:kubejs-238086:5810100"
@@ -293,7 +293,7 @@ dependencies {
 
     /**********************************************************/
 
-    runtimeOnly "curse.maven:worldedit-225608:5830452"
+//    runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"
@@ -310,7 +310,7 @@ dependencies {
     //runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
     //runtimeOnly "curse.maven:azurelib-817423:6849116"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
-    if (true) {
+    if (false) {
         runtimeOnly "maven.modrinth:l_enders-cataclysm:3.16"
         runtimeOnly "maven.modrinth:lionfish-api:2.6"
     }

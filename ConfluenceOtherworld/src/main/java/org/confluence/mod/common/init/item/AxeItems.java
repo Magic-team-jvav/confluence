@@ -9,8 +9,6 @@ import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.axe.AxeOfRegrowth;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
-import org.confluence.mod.common.item.common.StaffOfRegrowth;
-import org.jetbrains.annotations.ApiStatus;
 
 import static org.confluence.mod.common.init.item.ModItems.attributes;
 import static org.confluence.mod.common.init.item.ModItems.unbreakable;
@@ -36,9 +34,5 @@ public class AxeItems {
     public static final DeferredItem<BaseAxeItem> TITANIUM_WARAXE = ITEMS.register("titanium_waraxe", () -> new BaseAxeItem(ModTiers.TITANIUM, 23, 2.0F, unbreakable(), attributes(0, 0.475), ModRarity.LIGHT_RED).hasImage());
     public static final DeferredItem<BaseAxeItem> CHLOROPHYTE_GREATAXE = ITEMS.register("chlorophyte_greataxe", () -> new BaseAxeItem(ModTiers.CHLOROPHYTE, 26, 2.5F, unbreakable(), attributes(1, 0.7), ModRarity.LIME));
     public static final DeferredItem<BaseAxeItem> LUCY_THE_AXE = ITEMS.register("lucy_the_axe", LucyTheAxe::new);
-
-    @Deprecated(since = "1.2.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static final DeferredItem<StaffOfRegrowth> STAFF_OF_REGROWTH = ToolItems.STAFF_OF_REGROWTH;
     public static final DeferredItem<AxeOfRegrowth> AXE_OF_REGROWTH = ITEMS.register("axe_of_regrowth", AxeOfRegrowth::new); // 再生之斧
 }

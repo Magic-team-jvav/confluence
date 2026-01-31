@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
@@ -28,7 +27,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.integration.geckolib.IGeoCube;
-import org.confluence.mod.mixed.IEntity;
+import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.mixed.IModelPart;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
@@ -72,7 +71,6 @@ public final class DeathAnimUtils {
         }
     }
 
-
     public static ModelPart findRootModelPart(LivingEntityRenderer<?, ?> renderer) {
         EntityModel<?> model = renderer.getModel();
         ModelPart any = findAnyModelPart(model, model.getClass());
@@ -104,7 +102,6 @@ public final class DeathAnimUtils {
     public static DeathAnimOptions getDeathAnimOptions(Entity entity) {
         return entity instanceof DeathAnimOptions r ? r : entity == null ? null : options.get(entity.getType());
     }
-
 
     public static int calcParticleCount(AABB range) {
         double x = range.getXsize() * range.getYsize() * range.getZsize();
@@ -210,33 +207,35 @@ public final class DeathAnimUtils {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    public static void livingDeath(LivingEntity entity) {
-        if (!(entity.level() instanceof ClientLevel level)) return;
+    public static void livingDeath(LivingEntity living) {
+        if (!(living.level() instanceof ClientLevel level) || ClientConfigs.goreEffect.isInvalidFor(living, null)) {
+            return;
+        }
 //        DecimalFormat df = new DecimalFormat("#.####");
-        tellDiscardEntity(entity);
-        EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+        tellDiscardEntity(living);
+        EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(living);
         Vec3 deathMotion;
-        if (entity instanceof Mob mob && mob.isNoAi()) {
+        if (living instanceof Mob mob && mob.isNoAi()) {
             deathMotion = Vec3.ZERO;
         } else {
-            deathMotion = IEntity.of(entity).confluence$deathMotion();
+            deathMotion = IClientLivingEntity.of(living).confluence$deathMotion();
         }
         if (deathMotion == null) {
-            deathMotion = entity.getDeltaMovement();
+            deathMotion = living.getDeltaMovement();
         }
         float deathSpeed = (float) deathMotion.length();
-        Vec3 entityPos = entity.position();
-        if (entity instanceof GeoAnimatable animatable && renderer instanceof GeoEntityRenderer geoRenderer) {
+        Vec3 entityPos = living.position();
+        if (living instanceof GeoAnimatable animatable && renderer instanceof GeoEntityRenderer geoRenderer) {
             // TODO: 用reRender帮我变换
             PoseStack poseStack = new PoseStack();
             BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
-            geoRenderer.preRender(poseStack, entity, bakedGeoModel, null, null, false, 1, 0, 0, 0);
-            poseStack.mulPose(Axis.XP.rotationDegrees(entity.getXRot()));
-            poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot() + 180));
+            geoRenderer.preRender(poseStack, living, bakedGeoModel, null, null, false, 1, 0, 0, 0);
+            poseStack.mulPose(Axis.XP.rotationDegrees(living.getXRot()));
+            poseStack.mulPose(Axis.YP.rotationDegrees(-living.getYRot() + 180));
             Matrix4f pose = poseStack.last().pose();
             Collection<GeoBone> bones = new ArrayList<>();
             // 肉墙使用合并后的模型骨骼，确保包含动态克隆的部件
-            if (entity instanceof WallOfFlesh && geoRenderer instanceof WallOfFleshRenderer wofRenderer) {
+            if (living instanceof WallOfFlesh && geoRenderer instanceof WallOfFleshRenderer wofRenderer) {
                 wofRenderer.getGeoModel().getBone("All")
                         .ifPresentOrElse(root -> flattenBone(bones, root),
                                 () -> bones.addAll(wofRenderer.getGeoModel().getAnimationProcessor().getRegisteredBones()));
@@ -255,7 +254,7 @@ public final class DeathAnimUtils {
             skipBone:
             for (GeoBone bone : bones) {
                 if (bone.isHidden() || Boolean.TRUE.equals(bone.shouldNeverRender())) continue;
-                if (entity instanceof WallOfFlesh && level.random.nextInt(25) != 0)
+                if (living instanceof WallOfFlesh && level.random.nextInt(25) != 0)
                     continue; // 肉墙随机剔除
 
                 Vector3f boneOffset = new Vector3f(bone.getPosX(), bone.getPosY(), bone.getPosZ());
@@ -272,7 +271,7 @@ public final class DeathAnimUtils {
                 }
                 boneOffset.div(16);
                 if (bone.getName().endsWith(ClientUtils.ENTIRE_BONE_SUFFIX)) {
-                    DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, bone, deathSpeed);
+                    DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, living, bone, deathSpeed);
                     part.setPos(entityPos);
                     part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.5 + 0.2)));
                     tellAddEntity(level, part);
@@ -282,7 +281,7 @@ public final class DeathAnimUtils {
                         GeoCube copyCube = IGeoCube.of(cube).confluence$getCopy();
                         if (copyCube == null) continue;
 
-                        DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, deathSpeed);
+                        DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, living, copyCube, deathSpeed);
 
                         float[] min = IGeoCube.of(copyCube).confluence$getMinCoords();
                         float[] max = IGeoCube.of(copyCube).confluence$getMaxCoords();
@@ -314,20 +313,20 @@ public final class DeathAnimUtils {
             if (rootModelPart == null) return;
             AntiPushPoseStack poseStack = new AntiPushPoseStack();
             poseStack.translate(entityPos.x, entityPos.y, entityPos.z);
-            dummyRender(livingRenderer, entity, poseStack);
+            dummyRender(livingRenderer, living, poseStack);
             if (livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young) {
                 poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
                 poseStack.translate(0.0F, model.bodyYOffset / 16.0F, 0.0F);
             }
             Stack<Vector3f> rots = new Stack<>();
             rots.push(new Vector3f());
-            makePartRecursively(rootModelPart, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, null);
+            makePartRecursively(rootModelPart, poseStack, livingRenderer, level, living, deathSpeed, rots, deathMotion, null);
             for (RenderLayer<?, ?> layer : livingRenderer.layers) {
                 if (layer instanceof HumanoidArmorLayer<?, ?, ?> armorLayer) {
-                    makeArmorPart(entity, armorLayer, EquipmentSlot.CHEST, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
-                    makeArmorPart(entity, armorLayer, EquipmentSlot.HEAD, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
-                    makeArmorPart(entity, armorLayer, EquipmentSlot.LEGS, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
-                    makeArmorPart(entity, armorLayer, EquipmentSlot.FEET, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
+                    makeArmorPart(living, armorLayer, EquipmentSlot.CHEST, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
+                    makeArmorPart(living, armorLayer, EquipmentSlot.HEAD, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
+                    makeArmorPart(living, armorLayer, EquipmentSlot.LEGS, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
+                    makeArmorPart(living, armorLayer, EquipmentSlot.FEET, poseStack, livingRenderer, level, deathSpeed, rots, deathMotion);
                 }
             }
         }
@@ -346,7 +345,13 @@ public final class DeathAnimUtils {
         part.setPos(pos);
     }
 
-    private static void makeGeoArmorPart(ClientLevel level, LivingEntity entity, ItemStack armorItemStack, float deathSpeed, Vec3 deathMotion, EntityModel<?> model) {
+    private static void makeGeoArmorPart(
+            ClientLevel level,
+            LivingEntity entity,
+            ItemStack armorItemStack,
+            float deathSpeed,
+            Vec3 deathMotion
+    ) {
         EquipmentSlot slot = ((Equipable) armorItemStack.getItem()).getEquipmentSlot();
         float sideLength = entity.isBaby() && (slot == EquipmentSlot.LEGS || slot == EquipmentSlot.FEET) ? 0.2f : 0.4f;
         DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, armorItemStack, deathSpeed, sideLength);
@@ -358,19 +363,27 @@ public final class DeathAnimUtils {
         tellAddEntity(level, part);
     }
 
-    private static void makeArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, EquipmentSlot slot,
-                                      AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
-                                      ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+    private static void makeArmorPart(
+            LivingEntity entity,
+            HumanoidArmorLayer<?, ?, ?> armorLayer,
+            EquipmentSlot slot,
+            AntiPushPoseStack poseStack,
+            LivingEntityRenderer<?, ?> livingRenderer,
+            ClientLevel level,
+            float deathSpeed,
+            Stack<Vector3f> rots,
+            Vec3 deathMotion
+    ) {
         ItemStack armorItemStack = entity.getItemBySlot(slot);
         Item armorItemStackItem = armorItemStack.getItem();
-        boolean fromConfluence = ModUtils.isFromConfluence(BuiltInRegistries.ITEM, armorItemStackItem);
-        if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE && !fromConfluence
-                || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA && !(fromConfluence || ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ITEM.getKey(armorItemStackItem).getNamespace()))
-                || !(armorItemStackItem instanceof Equipable equipable) || equipable.getEquipmentSlot() != slot) {
+        if (ClientConfigs.goreEffect.isInvalidFor(null, armorItemStackItem) ||
+                !(armorItemStackItem instanceof Equipable equipable) ||
+                equipable.getEquipmentSlot() != slot
+        ) {
             return;
         }
         if (GeoRenderProvider.of(armorItemStackItem).getGeoArmorRenderer(entity, armorItemStack, slot, null) != null) {
-            makeGeoArmorPart(level, entity, armorItemStack, deathSpeed, deathMotion, livingRenderer.getModel());
+            makeGeoArmorPart(level, entity, armorItemStack, deathSpeed, deathMotion);
         } else if (armorItemStackItem instanceof ArmorItem armorItem) {
             switch (slot) {
                 case HEAD ->
@@ -385,9 +398,18 @@ public final class DeathAnimUtils {
         }
     }
 
-    private static void makeChestArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, ItemStack armorItemStack,
-                                           ArmorItem armorItem, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
-                                           ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+    private static void makeChestArmorPart(
+            LivingEntity entity,
+            HumanoidArmorLayer<?, ?, ?> armorLayer,
+            ItemStack armorItemStack,
+            ArmorItem armorItem,
+            AntiPushPoseStack poseStack,
+            LivingEntityRenderer<?, ?> livingRenderer,
+            ClientLevel level,
+            float deathSpeed,
+            Stack<Vector3f> rots,
+            Vec3 deathMotion
+    ) {
         if (armorLayer.outerModel == null) return;
         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.CHEST, armorLayer.outerModel);
         if (model instanceof HumanoidModel<?> outerModel) {
@@ -402,9 +424,18 @@ public final class DeathAnimUtils {
         }
     }
 
-    private static void makeHeadArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, ItemStack armorItemStack,
-                                          ArmorItem armorItem, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
-                                          ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+    private static void makeHeadArmorPart(
+            LivingEntity entity,
+            HumanoidArmorLayer<?, ?, ?> armorLayer,
+            ItemStack armorItemStack,
+            ArmorItem armorItem,
+            AntiPushPoseStack poseStack,
+            LivingEntityRenderer<?, ?> livingRenderer,
+            ClientLevel level,
+            float deathSpeed,
+            Stack<Vector3f> rots,
+            Vec3 deathMotion
+    ) {
         if (armorLayer.outerModel == null) return;
         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.HEAD, armorLayer.outerModel);
         if (model instanceof HumanoidModel<?> outerModel) {
@@ -418,9 +449,18 @@ public final class DeathAnimUtils {
         }
     }
 
-    private static void makeLegsArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, ItemStack armorItemStack,
-                                          ArmorItem armorItem, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
-                                          ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+    private static void makeLegsArmorPart(
+            LivingEntity entity,
+            HumanoidArmorLayer<?, ?, ?> armorLayer,
+            ItemStack armorItemStack,
+            ArmorItem armorItem,
+            AntiPushPoseStack poseStack,
+            LivingEntityRenderer<?, ?> livingRenderer,
+            ClientLevel level,
+            float deathSpeed,
+            Stack<Vector3f> rots,
+            Vec3 deathMotion
+    ) {
         if (armorLayer.innerModel == null) return;
         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.LEGS, armorLayer.innerModel);
         if (model instanceof HumanoidModel<?> humanoidModel) {
@@ -434,9 +474,18 @@ public final class DeathAnimUtils {
         }
     }
 
-    private static void makeFeetArmorPart(LivingEntity entity, HumanoidArmorLayer<?, ?, ?> armorLayer, ItemStack armorItemStack,
-                                          ArmorItem armorItem, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> livingRenderer,
-                                          ClientLevel level, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+    private static void makeFeetArmorPart(
+            LivingEntity entity,
+            HumanoidArmorLayer<?, ?, ?> armorLayer,
+            ItemStack armorItemStack,
+            ArmorItem armorItem,
+            AntiPushPoseStack poseStack,
+            LivingEntityRenderer<?, ?> livingRenderer,
+            ClientLevel level,
+            float deathSpeed,
+            Stack<Vector3f> rots,
+            Vec3 deathMotion
+    ) {
         if (armorLayer.outerModel == null) return;
         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.FEET, armorLayer.outerModel);
         if (model instanceof HumanoidModel<?> outerModel) {
@@ -450,7 +499,17 @@ public final class DeathAnimUtils {
         }
     }
 
-    private static void makePartRecursively(ModelPart modelPart, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion, ResourceLocation texture) {
+    private static void makePartRecursively(
+            ModelPart modelPart,
+            AntiPushPoseStack poseStack,
+            LivingEntityRenderer<?, ?> renderer,
+            ClientLevel level,
+            Entity entity,
+            float deathSpeed,
+            Stack<Vector3f> rots,
+            Vec3 deathMotion,
+            ResourceLocation texture
+    ) {
         if (!modelPart.visible || modelPart.skipDraw) return;
         poseStack.pushPose(true);
         if (renderer.getModel().young && renderer.getModel() instanceof AgeableListModelAccessor model) {

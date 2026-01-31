@@ -1,7 +1,11 @@
 package org.confluence.mod.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.config.ModConfig;
@@ -11,8 +15,9 @@ import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.client.gui.hud.*;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -166,15 +171,51 @@ public final class ClientConfigs {
     }
 
     public enum GoreEffect implements TranslatableEnum {
-        OFF,
-        CONFLUENCE,
-        CONFLUENCE_VANILLA,
-        ALL;
+        OFF {
+            @Override
+            public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
+                return true;
+            }
+        },
+        CONFLUENCE {
+            @Override
+            public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
+                if (living != null) {
+                    return !ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, living.getType());
+                }
+                if (item != null) {
+                    return !ModUtils.isFromConfluence(BuiltInRegistries.ITEM, item);
+                }
+                return true;
+            }
+        },
+        CONFLUENCE_VANILLA {
+            @Override
+            public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
+                String namespace;
+                if (living != null) {
+                    namespace = BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace();
+                } else if (item != null) {
+                    namespace = BuiltInRegistries.ITEM.getKey(item).getNamespace();
+                } else {
+                    return true;
+                }
+                return !ResourceLocation.DEFAULT_NAMESPACE.equals(namespace) && !ModUtils.CONFLUENCE_NAMESPACES.contains(namespace);
+            }
+        },
+        ALL {
+            @Override
+            public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
+                return false;
+            }
+        };
 
         @Override
-        public @NotNull Component getTranslatedName() {
+        public Component getTranslatedName() {
             return Component.translatable("confluence.configuration.goreEffect." + name().toLowerCase(Locale.ROOT));
         }
+
+        public abstract boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item);
     }
 
     public enum SellPriceDisplay implements TranslatableEnum {
@@ -200,7 +241,7 @@ public final class ClientConfigs {
         public abstract boolean test();
 
         @Override
-        public @NotNull Component getTranslatedName() {
+        public Component getTranslatedName() {
             return Component.translatable("confluence.configuration.sellPriceDisplay." + name().toLowerCase(Locale.ROOT));
         }
     }

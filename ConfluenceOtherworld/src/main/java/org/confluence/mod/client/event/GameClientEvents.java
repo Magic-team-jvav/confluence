@@ -14,7 +14,6 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -303,9 +302,6 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity living = event.getEntity();
-        if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
-                && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())
-        ) return;
         boolean dead = living.isDeadOrDying();
         if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
             living.level().getProfiler().push("entity_dismemberment");
@@ -317,14 +313,8 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void geoRender$Entity$Post(GeoRenderEvent.Entity.Post event) {
-        if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
-        Entity entity = event.getEntity();
-        if ((ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA)
-                && !ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, entity.getType())) {
-            return;
-        }
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
-        if (entity instanceof LivingEntity living) {
+        if (event.getEntity() instanceof LivingEntity living) {
             boolean dead = living.isDeadOrDying();
             if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
                 living.level().getProfiler().push("geo_dismemberment");

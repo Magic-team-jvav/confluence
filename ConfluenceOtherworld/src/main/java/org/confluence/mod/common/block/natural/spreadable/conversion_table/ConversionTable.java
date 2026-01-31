@@ -26,22 +26,7 @@ public abstract class ConversionTable {
         return computed;
     }
 
-    @Deprecated(forRemoval = true, since = "1.2.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public @Nullable BlockState get(BlockState source) {
-        return get(source, true);
-    }
-
-    @ApiStatus.OverrideOnly
-    protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
-        return getTarget(source);
-    }
-
-    @Deprecated(forRemoval = true, since = "1.2.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    protected @Nullable Block getTarget(BlockState source) {
-        return null;
-    }
+    protected abstract @Nullable Block getTarget(BlockState source, boolean hardmode);
 
     @SuppressWarnings("unchecked")
     protected <T extends Comparable<T>, V extends T> @Nullable BlockState getTargetState(BlockState source, boolean hardmode) {

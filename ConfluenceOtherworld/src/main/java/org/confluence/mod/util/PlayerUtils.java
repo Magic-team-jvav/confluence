@@ -47,7 +47,6 @@ import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.ApiStatus;
 import org.joml.Vector3f;
 
 import java.util.function.IntFunction;
@@ -137,12 +136,6 @@ public final class PlayerUtils {
             return true;
         }
         return false;
-    }
-
-    @Deprecated(since = "1.2.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean extractAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer player) {
-        return extractMana(player, ItemStack.EMPTY, sup);
     }
 
     public static void receiveMana(ServerPlayer player, FloatSupplier sup) {
@@ -245,13 +238,6 @@ public final class PlayerUtils {
         return coins;
     }
 
-    @Deprecated(since = "1.2.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static int[] getCoins(Player player) {
-        Coins coins = getCoins(player, true);
-        return new int[]{coins.platinum(), coins.gold(), coins.silver(), coins.copper()};
-    }
-
     public static long getMoney(Player player, boolean withPiggyBank) {
         long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() : 0;
         for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
@@ -265,20 +251,8 @@ public final class PlayerUtils {
         return res;
     }
 
-    @Deprecated(since = "1.2.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static long getMoney(Player player) {
-        return getMoney(player, true);
-    }
-
     public static boolean tryCostMoney(Player player, long cost, boolean withPiggyBank) {
         return tryCostMoney(getMoney(player, withPiggyBank), player, cost, withPiggyBank);
-    }
-
-    @Deprecated(since = "1.2.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean tryCostMoney(Player player, long cost) {
-        return tryCostMoney(player, cost, true);
     }
 
     public static boolean tryCostMoney(long have, Player player, long cost, boolean withPiggyBank) {
@@ -316,12 +290,6 @@ public final class PlayerUtils {
             inventory.add(new ItemStack(coinItem, coin));
         }
         return true;
-    }
-
-    @Deprecated(since = "1.2.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean tryCostMoney(long have, Player player, long cost) {
-        return tryCostMoney(have, player, cost, true);
     }
 
     public static Coins decodeCoin(long money) {

@@ -22,7 +22,6 @@ import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
@@ -172,20 +171,8 @@ public interface ISpreadable {
             return target == null ? source : target;
         }
 
-        @Deprecated(forRemoval = true, since = "1.2.0")
-        @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-        public BlockState getNotNull(BlockState source) {
-            return getNotNull(source, true);
-        }
-
         public @Nullable BlockState getNullable(BlockState source, boolean hardmode) {
             return conversionTable.get(source, hardmode);
-        }
-
-        @Deprecated(forRemoval = true, since = "1.2.0")
-        @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-        public @Nullable BlockState getNullable(BlockState source) {
-            return getNullable(source, true);
         }
 
         public boolean spread(Level level, BlockPos pos, boolean hardmode) {
@@ -194,12 +181,6 @@ public interface ISpreadable {
                 return level.setBlockAndUpdate(pos, target);
             }
             return false;
-        }
-
-        @Deprecated(forRemoval = true, since = "1.2.0")
-        @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-        public boolean spread(Level level, BlockPos pos) {
-            return spread(level, pos, true);
         }
 
         @Override

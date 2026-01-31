@@ -14,7 +14,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.init.TEAttributes;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -372,12 +371,6 @@ public interface ModPrefix {
             return ID;
         }
 
-        @Deprecated(since = "1.2.0")
-        @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-        public float rangedDamage() {
-            return attackDamage;
-        }
-
         private static Ranged register(String name, float rangedDamage, float attackSpeed, float criticalChance, float velocity, float knockBack, int tier, float value) {
             Ranged ranged = new Ranged(name, rangedDamage, attackSpeed, criticalChance, velocity, knockBack, tier, value);
             VALUES.put(name, ranged);
@@ -440,12 +433,6 @@ public interface ModPrefix {
         @Override
         public ResourceLocation getModifierId() {
             return ID;
-        }
-
-        @Deprecated(since = "1.2.0")
-        @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-        public float rangedDamage() {
-            return attackDamage;
         }
 
         private static Magic register(String name, float rangedDamage, float attackSpeed, float criticalChance, float manaCost, float knockBack, int tier, float value) {

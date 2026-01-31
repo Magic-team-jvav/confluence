@@ -11,7 +11,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.mixed.IEntity;
+import org.confluence.mod.mixed.IClientLivingEntity;
 
 public record DeathMotionPacketS2C(int entityId, float x, float y, float z) implements IPacketS2C {
     public static final Type<DeathMotionPacketS2C> TYPE = Confluence.createType("death_motion");
@@ -34,7 +34,7 @@ public record DeathMotionPacketS2C(int entityId, float x, float y, float z) impl
 
     @Override
     public void work(Player player) {
-        if (player.level().getEntity(entityId) instanceof IEntity entity) {
+        if (player.level().getEntity(entityId) instanceof IClientLivingEntity entity) {
             entity.confluence$deathMotion(new Vec3(x, y, z));
             if (entity instanceof LivingEntity living && living.isDeadOrDying()) {
                 Confluence.LOGGER.warn("Receive death motion packet but entity is dying");

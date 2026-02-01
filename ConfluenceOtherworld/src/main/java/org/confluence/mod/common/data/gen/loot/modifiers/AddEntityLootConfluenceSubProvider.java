@@ -2,28 +2,27 @@ package org.confluence.mod.common.data.gen.loot.modifiers;
 
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentPredicate;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.*;
-import net.minecraft.world.level.storage.loot.functions.*;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
+import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModLootTables;
-import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.init.item.FoodItems;
+import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.mixin.accessor.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.item.TESummonItems;
@@ -34,10 +33,9 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Generates entities loot tables into loot_modifier path specified by ModLootModifiersProvider i.e. confluence/loot_table/with/entities/bat.json
- * @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
- */
+/// Generates entities loot tables into loot_modifier path specified by ModLootModifiersProvider i.e. confluence/loot_table/with/entities/bat.json
+///
+/// @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
 public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider implements SyntheticLootTableProvider {
     public AddEntityLootConfluenceSubProvider(HolderLookup.Provider registries) {
         super(FeatureFlags.REGISTRY.allFlags(), registries);

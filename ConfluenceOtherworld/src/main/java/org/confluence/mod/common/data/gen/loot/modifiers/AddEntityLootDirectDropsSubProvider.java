@@ -7,9 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Generates loot tables into EMI's direct_drop registry i.e. minecraft/direct_drops/entities/bat.json
- */
+/// Generates loot tables into EMI's direct_drop registry i.e. minecraft/direct_drops/entities/bat.json
 public final class AddEntityLootDirectDropsSubProvider extends AddEntityLootConfluenceSubProvider {
     public AddEntityLootDirectDropsSubProvider(HolderLookup.Provider registries) {
         super(registries);

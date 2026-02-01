@@ -1,8 +1,6 @@
 package org.confluence.mod.common.data.gen.loot.modifiers;
 
 import net.minecraft.advancements.critereon.LocationPredicate;
-import net.minecraft.client.Minecraft;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -30,13 +27,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-/**
- * Generates blocks loot tables into loot_modifier path specified by ModLootModifiersProvider i.e. confluence/loot_table/with/blocks/stone.json
- *
- * @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
- */
+/// Generates blocks loot tables into loot_modifier path specified by ModLootModifiersProvider i.e. confluence/loot_table/with/blocks/stone.json
+///
+/// @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
 public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider implements SyntheticLootTableProvider {
-    private HolderLookup.Provider provider;
+    private final HolderLookup.Provider provider;
 
     public AddBlockLootConfluenceSubProvider(HolderLookup.Provider provider) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);

@@ -31,11 +31,11 @@ import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import javax.annotation.Nullable;
 
-/*
- * 饰品：「无聊之咒·陨志」
- * 每移动（竖直方向五格，水平移动6格），获得1层「地脉共鸣」（上限8层），每层+2%全属性攻击伤害与暴击率
- * 站立时每秒消耗1层，层数归零后触发巨石坠落（这是原地站立8
- */
+/// 饰品：「无聊之咒·陨志」
+///
+/// 每移动（竖直方向五格，水平移动6格），获得1层「地脉共鸣」（上限8层），每层+2%全属性攻击伤害与暴击率
+///
+/// 站立时每秒消耗1层，层数归零后触发巨石坠落
 public class BoredomsPactFallingResolve extends BaseCurioItem {
     public static final ResourceLocation ID = Confluence.asResource("boredoms_pact_falling_resolve");
 
@@ -52,45 +52,46 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
             Vec3 currentPos = readPos(tag);
             if (currentPos == null) {
                 savePos(tag, living);
-            } else {
-                byte count = tag.getByte("count");
-                Vec3 pos = living.position().subtract(currentPos);
-                if (Math.abs(pos.x) < Mth.EPSILON && Math.abs(pos.y) < Mth.EPSILON && Math.abs(pos.z) < Mth.EPSILON) {
-                    if (level.getGameTime() % 20 == 0) {
-                        if (count > 0) {
-                            tag.putByte("count", --count);
-                        } else if (!tag.getBoolean("summoned")) {
-                            BlockPos.MutableBlockPos mutable = living.blockPosition().mutable();
-                            int i = 0;
-                            for (; i < 16 && level.getBlockState(mutable).getCollisionShape(level, mutable).isEmpty(); i++) {
-                                mutable.move(0, 1, 0);
-                            }
-                            BlockState blockState = level.getBlockState(living.blockPosition().below());
-                            if (blockState.isAir())
-                                blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
-                            level.addFreshEntity(new BoulderEntity(level, currentPos.add(0, i, 0), blockState));
-                            tag.putBoolean("summoned", true);
-                        }
-                    }
-                } else {
-                    double h = tag.getDouble("h");
-                    double v = tag.getDouble("v");
-                    if (v >= 5 || h >= 6) {
-                        if (count < 8) {
-                            tag.putByte("count", ++count);
-                        }
-                        h = 0;
-                        v = 0;
-                    } else {
-                        h += pos.horizontalDistance();
-                        v += Math.abs(pos.y);
-                    }
-                    tag.putDouble("h", h);
-                    tag.putDouble("v", v);
-                    savePos(tag, living);
-                    tag.putBoolean("summoned", false);
-                }
+                return;
             }
+            byte count = tag.getByte("count");
+            Vec3 pos = living.position().subtract(currentPos);
+            if (Math.abs(pos.x) < Mth.EPSILON && Math.abs(pos.y) < Mth.EPSILON && Math.abs(pos.z) < Mth.EPSILON) {
+                if (level.getGameTime() % 20 == 0) {
+                    if (count > 0) {
+                        tag.putByte("count", --count);
+                    } else if (!tag.getBoolean("summoned")) {
+                        BlockPos.MutableBlockPos mutable = living.blockPosition().mutable();
+                        int i = 0;
+                        for (; i < 16 && level.getBlockState(mutable).getCollisionShape(level, mutable).isEmpty(); i++) {
+                            mutable.move(0, 1, 0);
+                        }
+                        BlockState blockState = level.getBlockState(living.blockPosition().below());
+                        if (blockState.isAir()) {
+                            blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
+                        }
+                        level.addFreshEntity(new BoulderEntity(level, currentPos.add(0, i, 0), blockState));
+                        tag.putBoolean("summoned", true);
+                    }
+                }
+                return;
+            }
+            double h = tag.getDouble("h");
+            double v = tag.getDouble("v");
+            if (v >= 5 || h >= 6) {
+                if (count < 8) {
+                    tag.putByte("count", ++count);
+                }
+                h = 0;
+                v = 0;
+            } else {
+                h += pos.horizontalDistance();
+                v += Math.abs(pos.y);
+            }
+            tag.putDouble("h", h);
+            tag.putDouble("v", v);
+            savePos(tag, living);
+            tag.putBoolean("summoned", false);
         });
     }
 

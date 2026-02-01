@@ -25,7 +25,7 @@
 
 ## 更新内容：
 
-# Changelog (1.2.1):
+# Changelog (1.2.2):
 
 ## Important Notes:
 

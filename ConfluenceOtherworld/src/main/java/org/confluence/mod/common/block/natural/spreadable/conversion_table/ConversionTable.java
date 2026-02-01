@@ -4,7 +4,6 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -39,12 +38,6 @@ public abstract class ConversionTable {
             }
         }
         return targetState;
-    }
-
-    @Deprecated(forRemoval = true, since = "1.2.0")
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    protected <T extends Comparable<T>, V extends T> @Nullable BlockState getTargetState(BlockState source) {
-        return getTargetState(source, true);
     }
 
     public void clear() {

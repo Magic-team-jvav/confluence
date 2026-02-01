@@ -38,8 +38,8 @@ public class StormSpearItem extends AbstractSpearItem {
             Vec3 viewVector = owner.getViewVector(1.0F);
             StormSpearShotProjectile projectile = new StormSpearShotProjectile(ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), level);
             projectile.setPos(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
-            projectile.setDamage((float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F);
-            projectile.shoot(viewVector.x, viewVector.y, viewVector.z, 1.16F, 0);
+            projectile.setDamage((float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.6F);
+            projectile.shoot(viewVector.x, viewVector.y, viewVector.z, 1.92F, 0);
             projectile.setOwner(owner);
             level.addFreshEntity(projectile);
         }

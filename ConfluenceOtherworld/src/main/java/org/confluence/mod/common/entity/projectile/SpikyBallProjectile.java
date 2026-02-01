@@ -40,7 +40,7 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
 
     @Override
     public void tick() {
-        if (tickCount > 1200) {
+        if (tickCount > 1596) {
             discard();
             return;
         }

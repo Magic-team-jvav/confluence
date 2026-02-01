@@ -220,11 +220,11 @@ public class BoulderEntity extends AbstractBoulderEntity {
 			return this;
 		}
 
-		public BoulderEntity builder(final Level level, final Vec3 pos, final BlockState blockState){
+		public BoulderEntity build(final Level level, final Vec3 pos, final BlockState blockState){
 			return new BoulderEntity(level, pos, blockState, this);
 		}
 
-		public BoulderEntity builder(final EntityType<? extends AbstractBoulderEntity> entityType, final Level level, final Vec3 pos, final BlockState blockState) {
+		public BoulderEntity build(final EntityType<? extends AbstractBoulderEntity> entityType, final Level level, final Vec3 pos, final BlockState blockState) {
 			return new BoulderEntity(entityType, level, pos, blockState, this);
 		}
 	}

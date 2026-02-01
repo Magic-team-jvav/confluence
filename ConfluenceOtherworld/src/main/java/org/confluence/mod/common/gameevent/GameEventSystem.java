@@ -43,6 +43,7 @@ public final class GameEventSystem implements IGlobalData {
         map.put(SpecificMoonGameEvent.KEY, SpecificMoonGameEvent.INSTANCE);
         map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
         map.put(PumpkinMoonGameEvent.KEY, PumpkinMoonGameEvent.INSTANCE);
+        map.put(BoulderRainGameEvent.KEY, BoulderRainGameEvent.INSTANCE);
         ModLoader.postEvent(new CustomGameEventRegisterEvent(map));
     });
     private transient int startedEventAmount;

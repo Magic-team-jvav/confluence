@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventAfterRenderSkyRegisterEvent;
 import org.confluence.mod.api.event.gameevent.GameEventSyncCallbackRegisterEvent;
 import org.confluence.mod.common.data.saved.SpecificMoonVariant;
@@ -38,7 +37,6 @@ public final class ClientGameEventSystem {
         map.put(LanternNightGameEvent.KEY, LanternNightSprite::renderLanternNight);
         ModLoader.postEvent(new GameEventAfterRenderSkyRegisterEvent(map));
     });
-    public static final ResourceLocation NO_MOON_TEXTURE = Confluence.asResource("textures/environment/no_moon.png");
     static final PoseStack poseStack = new PoseStack();
     public static @Nullable ResourceLocation moonTexture;
     public static @Nullable Vector3f lightTextureColor;
@@ -97,7 +95,7 @@ public final class ClientGameEventSystem {
 
     public static void handleBloodMoon(Player player, boolean start) {
         if (start && player.level().dimension() == OverworldUtils.dimension()) {
-            moonTexture = SpecificMoonVariant.TR_BLOOD_FULL_MOON.texture;
+            moonTexture = SpecificMoonVariant.TR_BLOOD.texture;
             lightTextureColor = new Vector3f(1, 0, 0);
         } else {
             moonTexture = null;

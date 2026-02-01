@@ -119,6 +119,7 @@ public final class LanternNightGameEvent implements GameEvent {
 
     @Override
     public boolean forceStart() {
+        if (started) return false;
         if (LibDateUtils.isWithinDayTime(LibDateUtils._19$30, LibDateUtils._04$30, level)) {
             this.forceStart = true;
             return true;

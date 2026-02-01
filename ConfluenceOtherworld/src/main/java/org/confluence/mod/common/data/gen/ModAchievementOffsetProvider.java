@@ -5,12 +5,15 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.util.AchievementUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -22,152 +25,162 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
         this.pathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "");
     }
 
-    /*
-     * 0 1 2 3 4 5 6 7 8 9 10
-     * 1 Colle |   | Explo |
-     * 2 -ctor |   | -rer  |
-     * 3       |   |       |
-     * 4       |   |       |
-     * 5 ----- *   * ----- *
-     * 6
-     * 7 ----- *   * ----- *
-     * 8 Slaye |   | Chall |
-     * 9 -r    |   | -enge |
-     * 10      |   | -r    |
-     * 11      |   |       |
-     * 12      |   * ----- *
-     * 13 ---- *
-     */
+    /// Collector Explorer
+    /// Slayer    Challenger
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
         recipe(Codec.unboundedMap(ResourceLocation.CODEC, AchievementOffset.CODEC), pathProvider().json(Confluence.asResource("achievement_offset"))).addRecipe(new Builder()
-                // Collector [0, 0] -> [4, 5]
-                .offset("new_world", 0, 0)
-                .offset("timber", 1, 0)
-                .offset("benched", 2, 0)
-                .offset("hammer_time", 3, 0)
-                .offset("heavy_metal", 4, 0)
-                .offset("star_power", 0, 1)
-                .offset("hold_on_tight", 1, 1)
-                .offset("miner_for_fire", 2, 1)
-                .offset("head_in_the_clouds", 3, 1)
-                .offset("like_a_boss", 4, 1)
-                .offset("drax_attax", 0, 2)
-                .offset("temple_raider", 1, 2)
-                .offset("fashion_statement", 2, 2)
-                .offset("sword_of_the_hero", 3, 2)
-                .offset("dye_hard", 4, 2)
-                .offset("sick_throw", 0, 3)
-                .offset("the_cavalry", 1, 3)
-                .offset("completely_awesome", 2, 3)
-                .offset("prismancer", 3, 3)
-                .offset("glorious_golden_pole", 4, 3)
-                .offset("matching_attire", 0, 4)
-                .offset("infinity_1_sword", 1, 4)
-                .offset("boots_of_the_hero", 2, 4)
-                .offset("feast_of_midas", 3, 4)
-                .offset("black_mirror", 4, 4)
-                .offset("ankhumulation_complete", 2, 5)
-
-
-                // Explorer [6, 0] -> [10, 5]
-                .offset("no_hobo", 6, 0)
-                .offset("ooo_shinny", 7, 0)
-                .offset("heart_breaker", 8, 0)
-                .offset("i_am_loot", 9, 0)
-                .offset("smashing_poppet", 10, 0)
-                .offset("wheres_my_honey", 6, 1)
-                .offset("dungeon_heist", 7, 1)
-                .offset("its_getting_hot_in_here", 8, 1)
-                .offset("its_hard", 9, 1)
-                .offset("begone_evil", 10, 1)
-                .offset("extra_shiny", 6, 2)
-                .offset("photosynthesis", 7, 2)
-                .offset("get_a_life", 8, 2)
-                .offset("robbing_the_grave", 9, 2)
-                .offset("big_booty", 10, 2)
-                .offset("bloodbath", 6, 3)
-                .offset("kill_the_sun", 7, 3)
-                .offset("sticky_situation", 8, 3)
-                .offset("jeepers_creepers", 9, 3)
-                .offset("funkytown", 10, 3)
-                .offset("into_orbit", 6, 4)
-                .offset("rock_bottom", 7, 4)
-                .offset("it_can_talk", 8, 4)
-                .offset("watch_your_step", 9, 4)
-                .offset("you_can_do_it", 10, 4)
-                .offset("quiet_neighborhood", 6.5F, 5)
-                .offset("hey_listen", 7.5F, 5)
-                .offset("a_rare_realm", 8.5F, 5)
-                .offset("a_shimmer_in_the_dark", 9.5F, 5)
-
-
-                // Slayer [0, 7] -> [4, 13]
-                .offset("eye_on_you", 0, 7)
-                .offset("worm_fodder", 1, 7)
-                .offset("mastermind", 2, 7)
-                .offset("sting_operation", 3, 7)
-                .offset("boned", 4, 7)
-                .offset("still_hungry", 0, 8)
-                .offset("buckets_of_bolts", 1, 8)
-                .offset("the_great_southern_plantkill", 2, 8)
-                .offset("lihzahrdian_idol", 3, 8)
-                .offset("fish_out_of_water", 4, 8)
-                .offset("obsessive_devotion", 0, 9)
-                .offset("star_destroyer", 1, 9)
-                .offset("champion_of_terraria", 2, 9)
-                .offset("slippery_shinobi", 3, 9)
-                .offset("goblin_punter", 4, 9)
-                .offset("walk_the_plank", 0, 10)
-                .offset("do_you_want_to_slay_a_snowman", 1, 10)
-                .offset("tin_foil_hatter", 2, 10)
-                .offset("baleful_harvest", 3, 10)
-                .offset("ice_scream", 4, 10)
-                .offset("vehicular_manslaughter", 0, 11)
-                .offset("there_are_some_who_call_him", 1, 11)
-                .offset("deceiver_of_fools", 2, 11)
-                .offset("til_death", 3, 11)
-                .offset("archaeologist", 4, 11)
-                .offset("pretty_in_pink", 0, 12)
-                .offset("fae_flayer", 1, 12)
-                .offset("just_desserts", 2, 12)
-                .offset("dont_dread_on_me", 3, 12)
-                .offset("hero_of_etheria", 4, 12)
-                .offset("an_eye_for_an_eye", 1.5F, 13)
-                .offset("torch_god", 2.5F, 13)
-
-
-                // Challenger [6, 7] -> [10, 12]
-                .offset("real_estate_agent", 6, 7)
-                .offset("not_the_bees", 7, 7)
-                .offset("mecha_mayhem", 8, 7)
-                .offset("gelatin_world_tour", 9, 7)
-                .offset("bulldozer", 10, 7)
-                .offset("lucky_break", 6, 8)
-                .offset("throwing_lines", 7, 8)
-                .offset("the_frequent_flyer", 8, 8)
-                .offset("rainbows_and_unicorns", 9, 8)
-                .offset("you_and_what_army", 10, 8)
-                .offset("marathon_medalist", 6, 9)
-                .offset("servant_in_training", 7, 9)
-                .offset("good_little_slave", 8, 9)
-                .offset("trout_monkey", 9, 9)
-                .offset("fast_and_fishious", 10, 9)
-                .offset("supreme_helper_minion", 6, 10)
-                .offset("topped_off", 7, 10)
-                .offset("slayer_of_worlds", 8, 10)
-                .offset("a_rather_blustery_day", 9, 10)
-                .offset("hot_reels", 10, 10)
-                .offset("heliophobia", 6, 11)
-                .offset("leading_landlord", 7, 11)
-                .offset("feeling_petty", 8, 11)
-                .offset("jolly_jamboree", 9, 11)
-                .offset("dead_men_tell_no_tales", 10, 11)
-                .offset("unusual_survival_strategies", 6.5F, 12)
-                .offset("the_great_slime_mitosis", 7.5F, 12)
-                .offset("and_good_riddance", 8.5F, 12)
-                .offset("to_infinity_and_beyond", 9.5F, 12)
-                .map);
+                // Collector
+                .push(true, true)
+                .add("new_world")
+                .add("timber")
+                .add("benched")
+                .add("hammer_time")
+                .add("heavy_metal")
+                .add("star_power")
+                .add("hold_on_tight")
+                .add("miner_for_fire")
+                .add("head_in_the_clouds")
+                .add("like_a_boss")
+                .add("drax_attax")
+                .add("temple_raider")
+                .add("fashion_statement")
+                .add("sword_of_the_hero")
+                .add("dye_hard")
+                .add("sick_throw")
+                .add("the_cavalry")
+                .add("completely_awesome")
+                .add("prismancer")
+                .add("glorious_golden_pole")
+                .add("matching_attire")
+                .add("infinity_1_sword")
+                .add("boots_of_the_hero")
+                .add("feast_of_midas")
+                .add("black_mirror")
+                .add("ankhumulation_complete")
+                .add("organized_chaos")
+                .add("on_fleek")
+                .add("mini_me")
+                .add("new_digs")
+                .add("sea_you_later")
+                .pop()
+                // Explorer
+                .push(true, false)
+                .add("no_hobo")
+                .add("ooo_shinny")
+                .add("heart_breaker")
+                .add("i_am_loot")
+                .add("smashing_poppet")
+                .add("wheres_my_honey")
+                .add("dungeon_heist")
+                .add("its_getting_hot_in_here")
+                .add("its_hard")
+                .add("begone_evil")
+                .add("extra_shiny")
+                .add("photosynthesis")
+                .add("get_a_life")
+                .add("robbing_the_grave")
+                .add("big_booty")
+                .add("bloodbath")
+                .add("kill_the_sun")
+                .add("sticky_situation")
+                .add("jeepers_creepers")
+                .add("funkytown")
+                .add("into_orbit")
+                .add("rock_bottom")
+                .add("it_can_talk")
+                .add("watch_your_step")
+                .add("you_can_do_it")
+                .add("quiet_neighborhood")
+                .add("hey_listen")
+                .add("a_rare_realm")
+                .add("a_shimmer_in_the_dark")
+                .add("its_shaling_outside")
+                .add("fortune_favors_the_bould")
+                .add("training_day")
+                .pop()
+                // Slayer
+                .push(false, true)
+                .add("eye_on_you")
+                .add("worm_fodder")
+                .add("mastermind")
+                .add("sting_operation")
+                .add("boned")
+                .add("still_hungry")
+                .add("buckets_of_bolts")
+                .add("the_great_southern_plantkill")
+                .add("lihzahrdian_idol")
+                .add("fish_out_of_water")
+                .add("obsessive_devotion")
+                .add("star_destroyer")
+                .add("champion_of_terraria")
+                .add("slippery_shinobi")
+                .add("goblin_punter")
+                .add("walk_the_plank")
+                .add("do_you_want_to_slay_a_snowman")
+                .add("tin_foil_hatter")
+                .add("baleful_harvest")
+                .add("ice_scream")
+                .add("vehicular_manslaughter")
+                .add("there_are_some_who_call_him")
+                .add("deceiver_of_fools")
+                .add("til_death")
+                .add("archaeologist")
+                .add("pretty_in_pink")
+                .add("fae_flayer")
+                .add("just_desserts")
+                .add("dont_dread_on_me")
+                .add("hero_of_etheria")
+                .add("an_eye_for_an_eye")
+                .add("torch_god")
+                .pop()
+                // Challenger
+                .push(false, false)
+                .add("real_estate_agent")
+                .add("not_the_bees")
+                .add("mecha_mayhem")
+                .add("gelatin_world_tour")
+                .add("bulldozer")
+                .add("lucky_break")
+                .add("throwing_lines")
+                .add("the_frequent_flyer")
+                .add("rainbows_and_unicorns")
+                .add("you_and_what_army")
+                .add("marathon_medalist")
+                .add("servant_in_training")
+                .add("good_little_slave")
+                .add("trout_monkey")
+                .add("fast_and_fishious")
+                .add("supreme_helper_minion")
+                .add("topped_off")
+                .add("slayer_of_worlds")
+                .add("a_rather_blustery_day")
+                .add("hot_reels")
+                .add("heliophobia")
+                .add("leading_landlord")
+                .add("feeling_petty")
+                .add("jolly_jamboree")
+                .add("dead_men_tell_no_tales")
+                .add("unusual_survival_strategies")
+                .add("the_great_slime_mitosis")
+                .add("and_good_riddance")
+                .add("to_infinity_and_beyond")
+                .add("book_worm")
+                .add("boulder_lord")
+                .add("queen_machine")
+                .add("rollin_in_your_grave")
+                .add("fear_the_sun")
+                .add("extra_life")
+                .add("grave_mistake")
+                .add("spicy_licks")
+                .add("terrarist")
+                .add("my_people_need_me")
+                .add("going_oldschool")
+                .add("trash_compactor")
+                .add("conservationist")
+                .add("interdimensional_recycling")
+                .pop()
+                .build());
     }
 
     @Override
@@ -175,17 +188,74 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
         return pathProvider;
     }
 
-    public static class Builder {
-        private final Map<ResourceLocation, AchievementOffset> map = new HashMap<>();
+    static class Builder {
+        private final Category topLeft = new Category();
+        private final Category topRight = new Category();
+        private final Category bottomLeft = new Category();
+        private final Category bottomRight = new Category();
 
-        public Builder offset(String path, float x, float y) {
-            map.put(AchievementUtils.asAchievement(path), new AchievementOffset(x, y));
-            return this;
+        public Category push(boolean top, boolean left) {
+            return top ? (left ? topLeft : topRight) : (left ? bottomLeft : bottomRight);
         }
 
-        public Builder offset(String path, float x, float y, boolean hideLink) {
-            map.put(AchievementUtils.asAchievement(path), new AchievementOffset(x, y, hideLink));
-            return this;
+        public Map<ResourceLocation, AchievementOffset> build() {
+            Map<ResourceLocation, AchievementOffset> offsetMap = new HashMap<>();
+
+            int topLeftLength = getLength(topLeft.list.size());
+            int topRightLength = getLength(topRight.list.size());
+            int bottomLeftLength = getLength(bottomLeft.list.size());
+            int bottomRightLength = getLength(bottomRight.list.size());
+
+            float rightStartX = Math.max(topLeftLength, bottomLeftLength) + 1;
+            float bottomStartY = Math.max(topLeftLength, topRightLength) + 1;
+
+            calculateOffset(topLeft, topLeftLength, 0, 0, offsetMap);
+            calculateOffset(topRight, topRightLength, rightStartX, 0, offsetMap);
+            calculateOffset(bottomLeft, bottomLeftLength, 0, bottomStartY, offsetMap);
+            calculateOffset(bottomRight, bottomRightLength, rightStartX, bottomStartY, offsetMap);
+
+            return offsetMap;
+        }
+
+        private static void calculateOffset(Category category, int length, float startX, float startY, Map<ResourceLocation, AchievementOffset> offsetMap) {
+            int size = category.list.size();
+            int remain = size - Mth.square(length);
+            float offsetX;
+            if (remain < 0) {
+                offsetX = remain * -0.5F;
+                remain += length;
+            } else {
+                offsetX = (length - remain) * 0.5F;
+            }
+            int remainStart = size - remain;
+            for (int i = 0; i < size; i++) {
+                float x = (float) (i % length);
+                float y = (float) (i / length);
+                if (i >= remainStart) {
+                    x += offsetX;
+                }
+                offsetMap.put(category.list.get(i), new AchievementOffset(startX + x, startY + y));
+            }
+        }
+
+        private static int getLength(int size) {
+            int sqrt = (int) Math.sqrt(size);
+            int less = Mth.square(sqrt);
+            int more = Mth.square(sqrt + 1);
+            return size - less > more - size ? sqrt + 1 : sqrt;
+        }
+
+        class Category {
+            private final List<ResourceLocation> list = new ArrayList<>();
+
+            public Category add(String path) {
+                list.add(AchievementUtils.asAchievement(path));
+                return this;
+            }
+
+            public Builder pop() {
+                return Builder.this;
+            }
         }
     }
 }

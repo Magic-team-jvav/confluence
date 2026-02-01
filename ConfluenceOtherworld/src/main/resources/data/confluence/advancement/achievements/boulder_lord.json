@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "minecraft:barrier"
+        },
+        "title": {
+            "translate": "achievements.confluence.boulder_lord.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.boulder_lord.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

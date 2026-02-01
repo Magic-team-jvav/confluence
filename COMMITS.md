@@ -1,0 +1,10 @@
+### Commits
+[ConfluenceMagicLib](Confluence-Magic-Lib) 0bbf626
+[ConfluenceOtherworld](ConfluenceOtherworld) a6f4a49
+[TerraEntity](TerraEntity) 391b21b
+[MineTeam](MineTeam) 8524153
+[TerraCurio](TerraCurio) 5f080a2
+[TerraGuns](TerraGuns) 772b658
+[TerraFurniture](TerraFurniture) ed04055
+[TheTrackers](TheTrackers) af03067
+[EnemyBanner](EnemyBanner) 8264598

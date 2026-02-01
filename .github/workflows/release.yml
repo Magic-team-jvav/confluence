@@ -28,3 +28,6 @@ jobs:
         env:
           MAGIC_TEAM_USERNAME: ${{ secrets.MAGIC_TEAM_USERNAME }}
           MAGIC_TEAM_TOKEN: ${{ secrets.MAGIC_TEAM_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

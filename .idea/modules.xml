@@ -49,35 +49,15 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TheTrackers/confluence.TheTrackers.test.iml" filepath="$PROJECT_DIR$/.idea/modules/TheTrackers/confluence.TheTrackers.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/confluence.main.iml" filepath="$PROJECT_DIR$/.idea/modules/confluence.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/confluence.test.iml" filepath="$PROJECT_DIR$/.idea/modules/confluence.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Confluence-Magic-Lib/confluence1.21.1.Confluence-Magic-Lib.iml" filepath="$PROJECT_DIR$/.idea/modules/Confluence-Magic-Lib/confluence1.21.1.Confluence-Magic-Lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Confluence-Magic-Lib/confluence1.21.1.Confluence-Magic-Lib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Confluence-Magic-Lib/confluence1.21.1.Confluence-Magic-Lib.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Confluence-Magic-Lib/confluence1.21.1.Confluence-Magic-Lib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Confluence-Magic-Lib/confluence1.21.1.Confluence-Magic-Lib.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConfluenceOtherworld/confluence1.21.1.ConfluenceOtherworld.iml" filepath="$PROJECT_DIR$/.idea/modules/ConfluenceOtherworld/confluence1.21.1.ConfluenceOtherworld.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConfluenceOtherworld/confluence1.21.1.ConfluenceOtherworld.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ConfluenceOtherworld/confluence1.21.1.ConfluenceOtherworld.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConfluenceOtherworld/confluence1.21.1.ConfluenceOtherworld.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ConfluenceOtherworld/confluence1.21.1.ConfluenceOtherworld.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/EnemyBanner/confluence1.21.1.EnemyBanner.iml" filepath="$PROJECT_DIR$/.idea/modules/EnemyBanner/confluence1.21.1.EnemyBanner.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/EnemyBanner/confluence1.21.1.EnemyBanner.main.iml" filepath="$PROJECT_DIR$/.idea/modules/EnemyBanner/confluence1.21.1.EnemyBanner.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/EnemyBanner/confluence1.21.1.EnemyBanner.test.iml" filepath="$PROJECT_DIR$/.idea/modules/EnemyBanner/confluence1.21.1.EnemyBanner.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MineTeam/confluence1.21.1.MineTeam.iml" filepath="$PROJECT_DIR$/.idea/modules/MineTeam/confluence1.21.1.MineTeam.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MineTeam/confluence1.21.1.MineTeam.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MineTeam/confluence1.21.1.MineTeam.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MineTeam/confluence1.21.1.MineTeam.test.iml" filepath="$PROJECT_DIR$/.idea/modules/MineTeam/confluence1.21.1.MineTeam.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraCurio/confluence1.21.1.TerraCurio.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraCurio/confluence1.21.1.TerraCurio.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraCurio/confluence1.21.1.TerraCurio.main.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraCurio/confluence1.21.1.TerraCurio.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraCurio/confluence1.21.1.TerraCurio.test.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraCurio/confluence1.21.1.TerraCurio.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraEntity/confluence1.21.1.TerraEntity.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraEntity/confluence1.21.1.TerraEntity.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraEntity/confluence1.21.1.TerraEntity.main.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraEntity/confluence1.21.1.TerraEntity.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraEntity/confluence1.21.1.TerraEntity.test.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraEntity/confluence1.21.1.TerraEntity.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraFurniture/confluence1.21.1.TerraFurniture.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraFurniture/confluence1.21.1.TerraFurniture.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraFurniture/confluence1.21.1.TerraFurniture.main.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraFurniture/confluence1.21.1.TerraFurniture.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraFurniture/confluence1.21.1.TerraFurniture.test.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraFurniture/confluence1.21.1.TerraFurniture.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraGuns/confluence1.21.1.TerraGuns.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraGuns/confluence1.21.1.TerraGuns.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraGuns/confluence1.21.1.TerraGuns.main.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraGuns/confluence1.21.1.TerraGuns.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TerraGuns/confluence1.21.1.TerraGuns.test.iml" filepath="$PROJECT_DIR$/.idea/modules/TerraGuns/confluence1.21.1.TerraGuns.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TheTrackers/confluence1.21.1.TheTrackers.iml" filepath="$PROJECT_DIR$/.idea/modules/TheTrackers/confluence1.21.1.TheTrackers.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TheTrackers/confluence1.21.1.TheTrackers.main.iml" filepath="$PROJECT_DIR$/.idea/modules/TheTrackers/confluence1.21.1.TheTrackers.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TheTrackers/confluence1.21.1.TheTrackers.test.iml" filepath="$PROJECT_DIR$/.idea/modules/TheTrackers/confluence1.21.1.TheTrackers.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/confluence1.21.1.main.iml" filepath="$PROJECT_DIR$/.idea/modules/confluence1.21.1.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/confluence1.21.1.test.iml" filepath="$PROJECT_DIR$/.idea/modules/confluence1.21.1.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TheTrackers/nowebsite.makertechno.the_trackers.confluence.TheTrackers.main.iml" filepath="$PROJECT_DIR$/.idea/modules/TheTrackers/nowebsite.makertechno.the_trackers.confluence.TheTrackers.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TheTrackers/nowebsite.makertechno.the_trackers.confluence.TheTrackers.test.iml" filepath="$PROJECT_DIR$/.idea/modules/TheTrackers/nowebsite.makertechno.the_trackers.confluence.TheTrackers.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ConfluenceOtherworld/org.confluence.mod.confluence.ConfluenceOtherworld.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ConfluenceOtherworld/org.confluence.mod.confluence.ConfluenceOtherworld.main.iml" />

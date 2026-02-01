@@ -10,9 +10,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.boulder.AbstractBoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 
-public class BoulderRenderer extends EntityRenderer<AbstractBoulderEntity> {
+public class BoulderRenderer extends EntityRenderer<BoulderEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/normal_boulder.png");
     private final BlockRenderDispatcher dispatcher;
 
@@ -22,17 +22,17 @@ public class BoulderRenderer extends EntityRenderer<AbstractBoulderEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AbstractBoulderEntity pEntity) {
+    public ResourceLocation getTextureLocation(BoulderEntity pEntity) {
         return TEXTURE;
     }
 
     @Override
-    public void render(AbstractBoulderEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void render(BoulderEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(-entity.getYRot()  - 90));
-        float radius = entity.getSizeRadius();
+        poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() - 90.0F));
+        float radius = entity.radius;
         poseStack.translate(0, radius, 0);
-        poseStack.mulPose(Axis.ZP.rotation(-Mth.lerp(partialTick, entity.rotateO, entity.getRotate())));
+        poseStack.mulPose(Axis.ZP.rotation(-Mth.lerp(partialTick, entity.rotateO, entity.rotate)));
         poseStack.translate(-radius, -radius, -radius);
         if (radius != 0.5F) {
             float scale = radius * 2;

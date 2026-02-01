@@ -5,6 +5,8 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -13,11 +15,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.data.map.PresetBestiaryEntry;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 
 import java.util.Map;
@@ -57,7 +61,7 @@ public class Bestiary implements IGlobalData {
 
     @Override
     public void clear() {
-        entries.clear();
+        this.entries = new Object2ObjectOpenHashMap<>();
     }
 
     public BestiaryEntry getOrCreateEntry(LivingEntity living) {
@@ -79,8 +83,8 @@ public class Bestiary implements IGlobalData {
     }
 
     public void updateEntry(LivingEntity living, boolean killed) {
+        if (living.level().isClientSide) return;
         if (NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled()) return;
-        // if (living.getType().create(living.level()) == null) return;
         if (living.getType().equals(EntityType.PLAYER)) return;
 
         BestiaryEntry entry = getOrCreateEntry(living);
@@ -90,6 +94,15 @@ public class Bestiary implements IGlobalData {
             BestiarySyncPacketS2C.syncEntry(living);
         } else { // 表示需要初始化
             BestiarySyncPacketS2C.syncEntry(living, entry);
+        }
+
+        if (getUnlockedCount() >= 540) {
+            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+            if (server != null) {
+                for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                    AchievementUtils.awardAchievement(player, "book_worm");
+                }
+            }
         }
     }
 

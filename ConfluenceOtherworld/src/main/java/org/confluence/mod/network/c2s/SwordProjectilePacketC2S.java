@@ -11,7 +11,7 @@ import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 
-public class SwordProjectilePacketC2S implements IPacketC2S {
+public final class SwordProjectilePacketC2S implements IPacketC2S {
     private static final SwordProjectilePacketC2S INSTANCE = new SwordProjectilePacketC2S();
     public static final Type<SwordProjectilePacketC2S> TYPE = Confluence.createType("sword_projectile");
     public static final StreamCodec<ByteBuf, SwordProjectilePacketC2S> STREAM_CODEC = StreamCodec.unit(INSTANCE);

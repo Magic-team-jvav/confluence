@@ -23,10 +23,9 @@ import org.confluence.mod.util.AchievementUtils;
 import java.util.List;
 import java.util.Objects;
 
-public class BoulderRainGameEvent implements GameEvent {
+public final class BoulderRainGameEvent implements GameEvent {
     public static final ResourceKey<BoulderRainGameEvent> KEY = GameEvent.createKey(Confluence.asResource("boulder_rain"));
     public static final BoulderRainGameEvent INSTANCE = new BoulderRainGameEvent();
-    private static final BoulderEntity.Builder BUILDER = BoulderEntity.Builder.of();
     private boolean started;
     private transient MinecraftServer server;
     private transient List<ServerLevel> availableLevels;
@@ -60,7 +59,7 @@ public class BoulderRainGameEvent implements GameEvent {
         BlockState blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
         for (ServerLevel level : availableLevels) {
             for (ServerPlayer player : level.players()) {
-                if (player.getRandom().nextInt(1000) == 0) {
+                if (player.getRandom().nextInt(10) == 0) {
                     Vec3 position = player.position();
                     double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
                     double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
@@ -69,7 +68,7 @@ public class BoulderRainGameEvent implements GameEvent {
                     if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
                         continue;
                     }
-                    level.addFreshEntity(BUILDER.build(level, new Vec3(x, position.y + 64, z), blockState));
+                    level.addFreshEntity(new BoulderEntity(level, new Vec3(x, position.y + 64, z), blockState));
                 }
             }
         }

@@ -241,15 +241,18 @@ public final class ClientUtils {
         );
     }
 
+    private static final PoseStack boulderSun = new PoseStack();
+
     public static void renderBoulderSun(Minecraft minecraft) {
-        if (ModSecretSeeds.BOULDER_WORLD.match()) {
-            MultiBufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+        if (ModSecretSeeds.BOULDER_WORLD.match() && minecraft.level.rainLevel <= 0.9F) {
+            MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
             BlockState blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
-            PoseStack poseStack = new PoseStack();
-            poseStack.mulPose(Axis.ZP.rotation(minecraft.level.getTimeOfDay(0) * Mth.TWO_PI));
-            poseStack.translate(-5, 100, -5);
-            poseStack.scale(10, 10, 10);
-            minecraft.getBlockRenderer().renderSingleBlock(blockState, poseStack, bufferSource, 0xF000F0, OverlayTexture.NO_OVERLAY);
+            boulderSun.pushPose();
+            boulderSun.mulPose(Axis.ZP.rotation(minecraft.level.getTimeOfDay(0) * Mth.TWO_PI));
+            boulderSun.translate(-5, 100, -5);
+            boulderSun.scale(10, 10, 10);
+            minecraft.getBlockRenderer().renderSingleBlock(blockState, boulderSun, bufferSource, 0xF000F0, OverlayTexture.NO_OVERLAY);
+            boulderSun.popPose();
         }
     }
 

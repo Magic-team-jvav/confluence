@@ -10,11 +10,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.entity.projectile.boulder.RollingCactusBoulderEntity;
 
-/**
- * 滚动仙人掌巨石方块
- * @author 尽
- */
-public class RollingCactusBoulderBlock extends AbstractBoulderBlock<RollingCactusBoulderEntity> {
+public class RollingCactusBoulderBlock extends BoulderBlock {
     protected static final VoxelShape COLLISION_SHAPE = Block.box(1.0, 1.0, 1.0, 15.0, 15.0, 15.0);
     protected static final VoxelShape OUTLINE_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 

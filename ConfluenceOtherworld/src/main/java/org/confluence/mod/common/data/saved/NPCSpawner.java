@@ -326,7 +326,7 @@ public final class NPCSpawner implements IGlobalData {
 
     private boolean trySpawnZoologist(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.ZOOLOGIST.get())) {
-            if (Bestiary.INSTANCE.getEntries().size() >= 34) {
+            if (Bestiary.INSTANCE.getUnlockedCount() >= 34) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.ZOOLOGIST.get());
             }
         }

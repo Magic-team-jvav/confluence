@@ -1,231 +1,197 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * 巨石
- */
-public class BoulderEntity extends AbstractBoulderEntity {
-	public static final BlockState DEFAULT_BLOCK_STATE = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
+import java.util.UUID;
 
-	public BoulderEntity(final EntityType<? extends AbstractBoulderEntity> entityType, final Level level) {
-		this(entityType, level, Builder.of());
-	}
+public class BoulderEntity extends Projectile {
+    private static final EntityDataAccessor<Boolean> DATA_VERTICAL = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<BlockState> DATA_BLOCK_STATE = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BLOCK_STATE);
+    public static final float SEARCH_RANGE = 31.5F;
+    protected double speed = 0.7;
+    protected double minimumBreakSpeed = 0.007;
+    public float rotateO = 0.0F;
+    public float rotate = 0.0F;
+    public float radius = 0.5F;
+    private final Object2IntOpenHashMap<UUID> hitHistory = new Object2IntOpenHashMap<>();
 
-	public BoulderEntity(final EntityType<? extends AbstractBoulderEntity> entityType, final Level level, Builder builder) {
-		this(entityType, level, DEFAULT_BLOCK_STATE, builder);
-	}
+    public BoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
+        super(entityType, level);
+    }
 
-	public BoulderEntity(final EntityType<? extends AbstractBoulderEntity> entityType, final Level level, BlockState blockState) {
-		this(entityType, level, blockState, Builder.of());
-	}
+    public BoulderEntity(Level level, Vec3 pos, BlockState blockState) {
+        this(ModEntities.BOULDER.get(), level, pos, blockState);
+    }
 
-	public BoulderEntity(final EntityType<? extends AbstractBoulderEntity> entityType, final Level level, BlockState blockState, Builder builder) {
-		super(entityType, level, blockState, builder);
-	}
+    public BoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level, Vec3 pos, BlockState blockState) {
+        super(entityType, level);
+        setPos(pos);
+        entityData.set(DATA_BLOCK_STATE, blockState);
+    }
 
-	public BoulderEntity(final Level level, final Vec3 pos, final BlockState blockState) {
-		this(level, pos, blockState, Builder.of());
-	}
+    public void setVertical(boolean is) {
+        entityData.set(DATA_VERTICAL, is);
+    }
 
-	public BoulderEntity(final Level level, final Vec3 pos, final BlockState blockState, Builder builder) {
-		this(ModEntities.BOULDER.get(), level, pos, blockState, builder);
-	}
+    public boolean isVertical() {
+        return entityData.get(DATA_VERTICAL);
+    }
 
-	public BoulderEntity(final EntityType<? extends AbstractBoulderEntity> entityType, final Level level, final Vec3 pos, final BlockState blockState) {
-		this(entityType, level, pos, blockState, Builder.of());
-	}
+    public BlockState getBlockState() {
+        return entityData.get(DATA_BLOCK_STATE);
+    }
 
-	public BoulderEntity(final EntityType<? extends AbstractBoulderEntity> entityType, final Level level, final Vec3 pos, final BlockState blockState, Builder builder) {
-		super(entityType, level, pos, blockState, builder);
-	}
+    public void onRemove() {
+        if (level() instanceof ServerLevel serverLevel) {
+            BlockPos pos = blockPosition();
+            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState()).setPos(pos),
+                    getX(), getY() + 0.5, getZ(), 175, 0.0, 0.0, 0.0, 0.15);
+            serverLevel.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 5.0F, 1.0F);
+            discard();
+        }
+    }
 
-	@Override
-	public BlockState getDefaultBlockState() {
-		return DEFAULT_BLOCK_STATE;
-	}
+    @Override
+    public void tick() {
+        super.tick();
+        moveAndUpdateNeighbors();
 
-	public static class Builder {
-		/**
-		 * 追踪范围
-		 */
-		protected float trackingRange =  31.5F;
-		/**
-		 * 移动速度
-		 */
-		protected double speed = 0.7;
-		/**
-		 * 最低被移除速度
-		 */
-		protected double minRemoveSpeed = 0.007;
-		/**
-		 * 大小半径
-		 */
-		protected float sizeRadius = 0.5F;
-		/**
-		 * 着陆次数
-		 */
-		protected int landingCount = 3;
-		/**
-		 * 粒子方块状态 如果设置为空则使用方块状态
-		 */
-		protected BlockState particleBlockState;
-		/**
-		 * 粒子类型
-		 */
-		protected ParticleType<BlockParticleOption> particleType = ParticleTypes.BLOCK;
-		/**
-		 * 音效
-		 */
-		protected SoundEvent sound = SoundEvents.STONE_BREAK;
-		/**
-		 * 音效类别
-		 */
-		protected SoundSource soundCategory = SoundSource.BLOCKS;
-		/**
-		 * 默认重力
-		 */
-		protected double defaultGravity = 0.08;
+        Vec3 delta = getDeltaMovement().scale(0.99);
+        setDeltaMovement(delta);
+        float s = (float) delta.length();
+        float r = s / radius;
+        if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
+        this.rotateO = rotate;
+        this.rotate += r;
 
-		private Builder(){}
+        delta = delta.add(Mth.sign(delta.x) * radius, Mth.sign(delta.y) * radius, Mth.sign(delta.z) * radius);
+        Vec3 start = position();
+        Vec3 end = start.add(delta);
+        HitResult hitResult = level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        if (hitResult.getType() != HitResult.Type.MISS) end = hitResult.getLocation();
+        HitResult hitResult1 = ProjectileUtil.getEntityHitResult(level(), this, start, end, getBoundingBox().expandTowards(delta).inflate(1.0), this::canHitEntity);
+        if (hitResult1 != null) hitResult = hitResult1;
 
-		public static Builder of(){
-			return new Builder();
-		}
+        if (hitResult instanceof BlockHitResult blockHitResult) {
+            if (blockHitResult.getType() != HitResult.Type.MISS) {
+                onHitBlock(blockHitResult);
+            }
+        } else {
+            onHitEntity((EntityHitResult) hitResult);
+        }
+        if (onGround() && getDeltaMovement().length() < minimumBreakSpeed) {
+            if (isVertical()) {
+                targetTo(level().getNearestPlayer(this, SEARCH_RANGE));
+                setVertical(false);
+            } else {
+                onRemove();
+            }
+        }
+    }
 
-		public Builder copy(Builder builder){
-			this.trackingRange = builder.trackingRange;
-			this.speed = builder.speed;
-			this.minRemoveSpeed = builder.minRemoveSpeed;
-			this.sizeRadius = builder.sizeRadius;
-			this.landingCount = builder.landingCount;
-			this.particleBlockState = builder.particleBlockState;
-			this.particleType = builder.particleType;
-			this.sound = builder.sound;
-			this.soundCategory = builder.soundCategory;
-			this.defaultGravity = builder.defaultGravity;
-			return this;
-		}
+    protected void moveAndUpdateNeighbors() {
+        Vec3 vec3 = getDeltaMovement();
+        setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
+        setDeltaMovement(vec3.x, onGround() ? 0.0 : vec3.y - getGravity(), vec3.z);
+        vec3 = getDeltaMovement();
+        move(MoverType.SELF, vec3);
+        if (!level().isClientSide) {
+            Vec3 motion = getDeltaMovement();
+            if (motion.x != vec3.x || motion.y != vec3.y || motion.z != vec3.z) {
+                for (Direction dir : LibUtils.DIRECTIONS) {
+                    BlockPos blockPos = blockPosition().relative(dir);
+                    BlockState blockState = level().getBlockState(blockPos);
+                    if (blockState.getBlock() instanceof BoulderBlock block) {
+                        block.onProjectileHit(level(), blockState, new BlockHitResult(blockPos.getCenter(), dir, blockPos, false), this);
+                    }
+                }
+            }
+        }
+    }
 
-		public Builder inherit(Builder builder){
-			var o = of();
-			if (o.trackingRange != builder.trackingRange) {
-				this.trackingRange = builder.trackingRange;
-			}
-			if (o.speed != builder.speed) {
-				this.speed = builder.speed;
-			}
-			if (o.minRemoveSpeed != builder.minRemoveSpeed) {
-				this.minRemoveSpeed = builder.minRemoveSpeed;
-			}
-			if (o.sizeRadius != builder.sizeRadius) {
-				this.sizeRadius = builder.sizeRadius;
-			}
-			if (o.landingCount != builder.landingCount) {
-				this.landingCount = builder.landingCount;
-			}
-			if (o.particleBlockState != builder.particleBlockState) {
-				this.particleBlockState = builder.particleBlockState;
-			}
-			if (o.particleType != builder.particleType) {
-				this.particleType = builder.particleType;
-			}
-			if (o.sound != builder.sound) {
-				this.sound = builder.sound;
-			}
-			if (o.soundCategory != builder.soundCategory) {
-				this.soundCategory = builder.soundCategory;
-			}
-			if (o.defaultGravity != builder.defaultGravity) {
-				this.defaultGravity = builder.defaultGravity;
-			}
-			return this;
-		}
+    @Override
+    protected double getDefaultGravity() {
+        return 0.08;
+    }
 
-		public Builder trackingRange(float trackingRange) {
-			this.trackingRange = trackingRange;
-			return this;
-		}
+    @Override
+    protected void onHitBlock(BlockHitResult blockHitResult) {
+        super.onHitBlock(blockHitResult);
+        if (isVertical() && !getBlockStateOn().isAir() && blockHitResult.getDirection().getAxis() == Direction.Axis.Y) {
+            targetTo(level().getNearestPlayer(this, SEARCH_RANGE));
+        }
+    }
 
-		public Builder speed(double speed) {
-			this.speed = speed;
-			return this;
-		}
+    @Override
+    protected void onHitEntity(EntityHitResult entityHitResult) {
+        Entity entity = entityHitResult.getEntity();
+        UUID uuid1 = entity.getUUID();
+        int i = hitHistory.containsKey(uuid1) ? hitHistory.addTo(uuid1, -1) : 0;
+        if (i <= 0) {
+            entity.hurt(ModDamageTypes.of(entity.level(), ModDamageTypes.BOULDER, this), 100.0F);
+            hitHistory.put(uuid1, 5);
+        }
+    }
 
-		public Builder sizeRadius(float sizeRadius) {
-			this.sizeRadius = sizeRadius;
-			return this;
-		}
+    public void targetTo(@Nullable Player player) {
+        Vec3 vec3 = player == null ? getDeltaMovement() : player.position().subtract(position());
+        vec3 = new Vec3(vec3.x, 0.0, vec3.z).normalize();
+        setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
+        setDeltaMovement(vec3.scale(speed));
+        this.yRotO = getYRot();
+    }
 
-		public Builder landingCount(int landingCount) {
-			this.landingCount = landingCount;
-			return this;
-		}
+    @Override
+    public boolean fireImmune() {
+        return true;
+    }
 
-		public Builder minRemoveSpeed(double minRemoveSpeed) {
-			this.minRemoveSpeed = minRemoveSpeed;
-			return this;
-		}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(DATA_VERTICAL, false);
+        builder.define(DATA_BLOCK_STATE, FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState());
+    }
 
-		/**
-		 * 除非设置不然会自动使用创建时的方块状态
-		 */
-		public Builder particle(BlockState blockState) {
-			this.particleBlockState = blockState;
-			return this;
-		}
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        entityData.set(DATA_BLOCK_STATE, BlockState.CODEC.parse(NbtOps.INSTANCE, tag.get("BlockState")).getOrThrow());
+    }
 
-		public Builder particle(ParticleType<BlockParticleOption> particleType) {
-			this.particleType = particleType;
-			return this;
-		}
-
-		public Builder particle(BlockState blockState,
-		                        ParticleType<BlockParticleOption> particleType) {
-			this.particleBlockState = blockState;
-			this.particleType = particleType;
-			return this;
-		}
-
-		public Builder sound(SoundEvent sound) {
-			this.sound = sound;
-			return this;
-		}
-
-		public Builder sound(SoundSource soundCategory) {
-			this.soundCategory = soundCategory;
-			return this;
-		}
-
-		public Builder sound(SoundEvent sound,
-		                     SoundSource soundCategory) {
-			this.sound = sound;
-			this.soundCategory = soundCategory;
-			return this;
-		}
-
-		public Builder defaultGravity(double defaultGravity) {
-			this.defaultGravity = defaultGravity;
-			return this;
-		}
-
-		public BoulderEntity build(final Level level, final Vec3 pos, final BlockState blockState){
-			return new BoulderEntity(level, pos, blockState, this);
-		}
-
-		public BoulderEntity build(final EntityType<? extends AbstractBoulderEntity> entityType, final Level level, final Vec3 pos, final BlockState blockState) {
-			return new BoulderEntity(entityType, level, pos, blockState, this);
-		}
-	}
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.put("BlockState", BlockState.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_BLOCK_STATE)).getOrThrow());
+    }
 }

@@ -1,11 +1,9 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
 import net.minecraft.Util;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,68 +26,44 @@ import org.jetbrains.annotations.Nullable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-/// 墓碑巨石
-public class TombstoneBoulderEntity extends AbstractBoulderEntity {
+public class TombstoneBoulderEntity extends BoulderEntity {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static final BlockState DEFAULT_BLOCK_STATE = ModBlocks.TOMBSTONE.get().defaultBlockState();
     private SignText text = new SignText();
 
-    private static final BoulderEntity.Builder BUILDER = BoulderEntity.Builder.of()
-            .minRemoveSpeed(0.1)
-            .speed(0.2);
-
     public TombstoneBoulderEntity(EntityType<TombstoneBoulderEntity> entityType, Level pLevel) {
-        super(entityType, pLevel, DEFAULT_BLOCK_STATE, BUILDER);
+        super(entityType, pLevel);
+        this.minimumBreakSpeed = 0.1;
+        this.speed = 0.2;
     }
 
     public TombstoneBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
-        this(level, pos, blockState, BUILDER);
-    }
-
-    public TombstoneBoulderEntity(Level level, Vec3 pos, BlockState blockState, BoulderEntity.Builder builder) {
-        super(ModEntities.TOMBSTONE_BOULDER.get(), level, pos, blockState, BUILDER.inherit(builder));
+        super(ModEntities.TOMBSTONE_BOULDER.get(), level, pos, blockState);
+        this.minimumBreakSpeed = 0.1;
+        this.speed = 0.2;
     }
 
     @Override
-    public void onRemoveBroken(boolean timeoutUrNot) {
-        if (!(level() instanceof ServerLevel serverLevel) || isRemoved()) {
-            return;
-        }
-
-        BlockPos blockPos = blockPosition();
-        if (!Block.canSupportRigidBlock(serverLevel, blockPos.offset(0, -1, 0)) ||
-                !serverLevel.getBlockState(blockPos).canBeReplaced()) {
-            if (timeoutUrNot) {
-                discard();
+    public void onRemove() {
+        if (!level().isClientSide && level().getBlockState(blockPosition()).canBeReplaced()) {
+            level().setBlock(blockPosition(), getBlockState(), Block.UPDATE_ALL);
+            if (level().getBlockEntity(blockPosition()) instanceof TombstoneBlock.BEntity entity) {
+                entity.setText(text, true);
             }
-            return;
         }
-
-        serverLevel.setBlock(blockPos, getBlockState(), Block.UPDATE_ALL);
-        if (serverLevel.getBlockEntity(blockPos) instanceof TombstoneBlock.BEntity entity) {
-            entity.setText(text, true);
-        }
-        brokenFunction(serverLevel, timeoutUrNot);
         discard();
     }
 
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
-        if (!ModSecretSeeds.FOR_THE_WORTHY.match()) {
-            return;
+        if (ModSecretSeeds.FOR_THE_WORTHY.match()) {
+            super.onHitEntity(entityHitResult);
         }
-        super.onHitEntity(entityHitResult);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("text", SignText.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, text).getOrThrow());
-    }
-
-    @Override
-    public BlockState getDefaultBlockState() {
-        return DEFAULT_BLOCK_STATE;
     }
 
     @Override
@@ -111,8 +85,8 @@ public class TombstoneBoulderEntity extends AbstractBoulderEntity {
                 .setMessage(0, living.getCombatTracker().getDeathMessage())
                 .setMessage(1, Component.literal(DATE_FORMAT.format(Calendar.getInstance().getTime())));
         if (!level.getBlockState(living.blockPosition().below()).isAir()) {
-            entity.setTracking(true);
-            entity.targetPlayer(level.getNearestPlayer(position.x, position.y, position.z, entity.getTrackingRange(), Entity::isAlive));
+            entity.targetTo(level.getNearestPlayer(position.x, position.y, position.z, BoulderEntity.SEARCH_RANGE, Entity::isAlive));
+            entity.setVertical(false);
         }
         level.addFreshEntity(entity);
     }

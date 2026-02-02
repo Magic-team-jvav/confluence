@@ -22,19 +22,4 @@
 
 ## Build the Project
 
-- When you pull the project, confirm whether the sub-project files are pulled. If the folder is
-  empty, you can run the
-  following sequence of terminal commands:
-  ~~~cmd
-    git submodule init
-    git submodule update
-  ~~~
-
-- If you would like to manually add a submodule, you can run:
-  ~~~cmd
-    git submodule add -b "<branch name>" "<url>"
-  ~~~
-  > You will also need to add the submodule name in [settings.gradle](settings.gradle)
-  > and [ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle).
-
-- After all the project is pulled successuly, you can use gradle's runClient command.
+run `gradlew build`

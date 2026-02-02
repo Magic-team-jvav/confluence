@@ -1,0 +1,26 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+*.log
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+run-data
+
+src/generated

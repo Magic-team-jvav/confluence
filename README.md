@@ -24,4 +24,17 @@
 
 ## 构建项目
 
-直接运行 `gradlew build`
+- 项目拉取完成后,确认子项目文件是否有拉取，如空文件夹请按下列指令在终端内顺序执行
+  ~~~cmd
+    git submodule init
+    git submodule update
+  ~~~
+
+- 如有其他情况可以手动添加
+  ~~~cmd
+    git submodule add -b "分支名" "url"
+  ~~~
+  > 还需要在[settings.gradle](settings.gradle)
+  > 以及[ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle)里加上子模块名
+
+- 全部拉取完成后,在gradle插件中启动ConfluenceOtherworld本体项目中的runClient命令

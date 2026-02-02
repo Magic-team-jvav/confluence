@@ -1,11 +1,63 @@
+plugins {
+    id 'java-library'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.88'
+}
+
 version = "${minecraft_version}-${mod_version}"
 group = mod_group_id
-base.archivesName = mod_id
+
+repositories {
+    mavenLocal()
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup("software.bernie.geckolib")
+        }
+    }
+    maven {
+        url = "https://www.cursemaven.com"
+    }
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
     accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
+        client {
+            client()
+            programArgument '--username kl'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
         data {
             data()
 
@@ -13,7 +65,15 @@ neoForge {
         }
 
         configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+
+            jvmArgument "-XX:+IgnoreUnrecognizedVMOptions"
+            jvmArgument "-XX:+AllowEnhancedClassRedefinition"
             jvmArgument "-XX:HotswapAgent=fatjar"
+            if (isRunningInIdea()) {
+                systemProperty "terminal.jline", "true"
+            }
         }
     }
 
@@ -66,4 +126,25 @@ tasks.withType(ProcessResources).configureEach {
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
+}
+
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url "file://${project.projectDir}/repo"
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+def isRunningInIdea() {
+    return System.getProperty("idea.active") == "true"
 }

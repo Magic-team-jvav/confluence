@@ -1,0 +1,12 @@
+{
+  "creative_tab.terra_guns.gun_tab": "泰拉枪械",
+  "death.attack.bullet_damage": "%1%s 被枪击",
+  "item.terra_guns.endless_musket_pouch": "无尽火枪袋",
+  "item.terra_guns.hand_gun": "手枪",
+  "item.terra_guns.musket_bullet": "火枪子弹",
+  "key.terra_guns.aim": "瞄准",
+  "key.terra_guns.shoot": "射击",
+  "tooltip.terra_guns.critical": "暴击率：%s%%",
+  "tooltip.terra_guns.damage": "远程伤害：%s",
+  "tooltip.terra_guns.knockback": "击退力：%s"
+}

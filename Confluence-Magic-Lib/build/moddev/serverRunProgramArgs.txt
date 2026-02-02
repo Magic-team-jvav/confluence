@@ -1,0 +1,19 @@
+# Main Class
+cpw.mods.bootstraplauncher.BootstrapLauncher
+
+# NeoForge Run-Type Program Arguments
+--launchTarget
+forgeserverdev
+--gameDir
+.
+--fml.fmlVersion
+4.0.42
+--fml.mcVersion
+1.21.1
+--fml.neoForgeVersion
+21.1.218
+--fml.neoFormVersion
+20240808.144430
+
+# User Supplied Program Arguments
+--nogui

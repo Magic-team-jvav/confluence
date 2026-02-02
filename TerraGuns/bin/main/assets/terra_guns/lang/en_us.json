@@ -1,0 +1,12 @@
+{
+  "creative_tab.terra_guns.gun_tab": "Terra Guns",
+  "death.attack.bullet_damage": "%1%s was shot",
+  "item.terra_guns.endless_musket_pouch": "Endless Musket Pouch",
+  "item.terra_guns.hand_gun": "Hand Gun",
+  "item.terra_guns.musket_bullet": "Musket Bullet",
+  "key.terra_guns.aim": "Aim",
+  "key.terra_guns.shoot": "Shoot",
+  "tooltip.terra_guns.critical": "Critical Strike Chance: %s%%",
+  "tooltip.terra_guns.damage": "Ranged Damage: %s",
+  "tooltip.terra_guns.knockback": "Knockback: %s"
+}

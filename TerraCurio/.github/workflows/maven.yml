@@ -1,0 +1,37 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: 21
+      - name: Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            .gradle
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'build.gradle') }}
+      - uses: gradle/actions/wrapper-validation@v3
+      - run: |
+          chmod +x gradlew
+          ./gradlew build publish
+        env:
+          MAGIC_TEAM_USERNAME: ${{ secrets.MAGIC_TEAM_USERNAME }}
+          MAGIC_TEAM_TOKEN: ${{ secrets.MAGIC_TEAM_TOKEN }}

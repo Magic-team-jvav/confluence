@@ -1,0 +1,60 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
+# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
+
+name: Publish to PlantForm
+permissions: write-all
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+          cache: "gradle"
+
+      - name: Add permissions for gradlew
+        run: chmod +x gradlew
+
+      - name: Generate assets
+        run: ./gradlew runData -Pdev=false
+
+      - name: Build with Gradle
+        run: ./gradlew build -Pdev=false
+
+      - name: Publish to PlantForm
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          github-token: ${{ secrets.GIT_TOKEN }}
+          changelog-file: CHANGELOG.*
+
+
+          name: ""
+#          curseforge-name: "terra_entity-1.1.17-1.21.1-neo"
+          modrinth-id: BZKgbCzw
+          curseforge-id: 1173196
+          github-tag: 1.1.17-neo
+
+
+          java: Java 21
+          version-type: release
+

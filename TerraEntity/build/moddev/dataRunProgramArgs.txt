@@ -1,0 +1,29 @@
+# Main Class
+cpw.mods.bootstraplauncher.BootstrapLauncher
+
+# NeoForge Run-Type Program Arguments
+--launchTarget
+forgedatadev
+--assetIndex
+17
+--assetsDir
+C:\\Users\\22061\\.gradle\\caches\\neoformruntime\\assets
+--gameDir
+.
+--fml.fmlVersion
+4.0.42
+--fml.mcVersion
+1.21.1
+--fml.neoForgeVersion
+21.1.218
+--fml.neoFormVersion
+20240808.144430
+
+# User Supplied Program Arguments
+--mod
+terra_entity
+--all
+--output
+C:\\Users\\22061\\IdeaProjects\\confluence1\\TerraEntity\\src\\generated\\resources
+--existing
+C:\\Users\\22061\\IdeaProjects\\confluence1\\TerraEntity\\src\\main\\resources

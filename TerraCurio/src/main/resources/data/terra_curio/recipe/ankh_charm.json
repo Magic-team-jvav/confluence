@@ -1,0 +1,23 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:detoxification_capsule"
+        },
+        {
+            "item": "terra_curio:nutrient_solution"
+        },
+        {
+            "item": "terra_curio:searchlight"
+        },
+        {
+            "item": "terra_curio:the_plan"
+        },
+        {
+            "item": "terra_curio:explorers_equipment"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:ankh_charm"
+    }
+}

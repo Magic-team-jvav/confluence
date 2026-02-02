@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:magma_stone"
+        },
+        {
+            "item": "terra_curio:mechanical_glove"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:fire_gauntlet"
+    }
+}

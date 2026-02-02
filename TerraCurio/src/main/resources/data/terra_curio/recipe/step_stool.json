@@ -1,0 +1,22 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:stick"
+            },
+            "count": 2
+        },
+        {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:scaffolding"
+            },
+            "count": 5
+        }
+    ],
+    "result": {
+        "id": "terra_curio:step_stool"
+    }
+}

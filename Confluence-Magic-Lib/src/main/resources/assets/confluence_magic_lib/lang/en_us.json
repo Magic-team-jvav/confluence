@@ -1,0 +1,15 @@
+{
+    "tooltip.confluence.work_in_progress": "Still Work In Progress!",
+    "jei.tooltip.environment.biome": "Requires any biome:",
+    "jei.tooltip.environment.block": "Requires any block nearby:",
+    "jei.tooltip.environment.block.inflate": "Search range: %s",
+    "jei.tooltip.environment.block.blocks": "Blocks:",
+    "jei.tooltip.environment.block.predicates": "Block States:",
+    "jei.tooltip.environment.block.predicates.property": "Property: %s",
+    "jei.tooltip.environment.block.fluids": "Fluids:",
+    "jei.tooltip.environment.graveyard": "Requires graveyard",
+    "message.confluence.boss_spawn": "%s Has Awoken!",
+    "message.confluence.boss_leave": "%s Has Been Defeated!",
+    "message.confluence.boss_discard": "%s Has Been Discarded！",
+    "alarm.confluence_magic_lib.this_is_free_mod": "Confluence: Otherworld(Java Edition) is a §afree mod§f; please §cdo not distribute it§f. If you paid for it, please cut your losses promptly."
+}

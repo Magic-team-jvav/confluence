@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:diving_helmet"
+        },
+        {
+            "item": "terra_curio:flipper"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:diving_gear"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:tiger_climbing_gear"
+        },
+        {
+            "item": "terra_curio:frog_flipper"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:frog_gear"
+    }
+}

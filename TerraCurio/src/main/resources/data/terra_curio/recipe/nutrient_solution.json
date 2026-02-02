@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:vitamins"
+        },
+        {
+            "item": "terra_curio:energy_bar"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:nutrient_solution"
+    }
+}

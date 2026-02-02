@@ -1,0 +1,10 @@
+### Commits
+[ConfluenceMagicLib](Confluence-Magic-Lib) [0bbf626](https://github.com/Magic-team-jvav/Confluence-Magic-Lib/tree/0bbf6261d44dd4cbe84ade71bb06b84ca82d744d)
+[ConfluenceOtherworld](ConfluenceOtherworld) a6f4a49
+[TerraEntity](TerraEntity) [c46ee33](https://github.com/Magic-team-jvav/TerraEntity/tree/c46ee338c87ab3b8b15a05c3f6659d3103015f73)
+[MineTeam](MineTeam) [8524153](https://github.com/XiaoHuNao/MineTeam/tree/8524153d32958ef35058887bcadac72a16808d4d)
+[TerraCurio](TerraCurio) [5f080a2](https://github.com/Magic-team-jvav/TerraCurio/tree/5f080a2e28374bf8f5edf569185332d3523a985a)
+[TerraGuns](TerraGuns) [313ab26](https://github.com/XiaoHuNao/TerraGuns/tree/313ab265fcaa61fb5fab8b6a047adf57629242fa)
+[TerraFurniture](TerraFurniture) [ed04055](https://github.com/MakerTechno/TerraFurniture/tree/ed04055f9ac79cb9cbead91c8aab968995f1a202)
+[TheTrackers](TheTrackers) [af03067](https://github.com/MakerTechno/TheTrackers/tree/af0306740a1c71a8805b0a13a2364b8caa60edee)
+[EnemyBanner](EnemyBanner) [8264598](https://github.com/XiaoHuNao/EnemyBanner/tree/8264598a24486098691fcab49c4f34ef101f999f)

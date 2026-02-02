@@ -1,0 +1,17 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:black_belt"
+        },
+        {
+            "item": "terra_curio:tiger_climbing_gear"
+        },
+        {
+            "item": "terra_curio:tabi"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:master_ninja_gear"
+    }
+}

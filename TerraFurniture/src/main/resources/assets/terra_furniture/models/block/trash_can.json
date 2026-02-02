@@ -1,0 +1,97 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"texture_size": [48, 48],
+	"textures": {
+		"8": "terra_furniture:block/trash_can",
+		"particle": "terra_furniture:block/particle/trash_can_particle"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 12, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [3.33333, 3.33333, 6.66667, 7.33333], "texture": "#8"},
+				"east": {"uv": [0, 3.33333, 3.33333, 7.33333], "texture": "#8"},
+				"south": {"uv": [10, 3.33333, 13.33333, 7.33333], "texture": "#8"},
+				"west": {"uv": [6.66667, 3.33333, 10, 7.33333], "texture": "#8"},
+				"up": {"uv": [6.66667, 3.33333, 3.33333, 0], "texture": "#8"},
+				"down": {"uv": [10, 0, 6.66667, 3.33333], "texture": "#8"}
+			}
+		},
+		{
+			"from": [2, 12, 2],
+			"to": [14, 14, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 12, 8]},
+			"faces": {
+				"north": {"uv": [4, 11.33333, 8, 12], "texture": "#8"},
+				"east": {"uv": [0, 11.33333, 4, 12], "texture": "#8"},
+				"south": {"uv": [12, 11.33333, 16, 12], "texture": "#8"},
+				"west": {"uv": [8, 11.33333, 12, 12], "texture": "#8"},
+				"up": {"uv": [8, 11.33333, 4, 7.33333], "texture": "#8"},
+				"down": {"uv": [12, 7.33333, 8, 11.33333], "texture": "#8"}
+			}
+		},
+		{
+			"from": [5, 14, 7],
+			"to": [11, 16, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 14, 8]},
+			"faces": {
+				"north": {"uv": [0.66667, 12.66667, 2.66667, 13.33333], "texture": "#8"},
+				"east": {"uv": [0, 12.66667, 0.66667, 13.33333], "texture": "#8"},
+				"south": {"uv": [3.33333, 12.66667, 5.33333, 13.33333], "texture": "#8"},
+				"west": {"uv": [2.66667, 12.66667, 3.33333, 13.33333], "texture": "#8"},
+				"up": {"uv": [2.66667, 12.66667, 0.66667, 12], "texture": "#8"},
+				"down": {"uv": [4.66667, 12, 2.66667, 12.66667], "texture": "#8"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -135, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, -135, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"fixed": {
+			"scale": [0.5, 0.5, 0.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "trash can",
+			"origin": [8, 0, 8],
+			"color": 0,
+			"children": [
+				0,
+				{
+					"name": "Lid",
+					"origin": [8, 12, 8],
+					"color": 0,
+					"children": [1, 2]
+				}
+			]
+		}
+	]
+}

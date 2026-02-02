@@ -1,0 +1,74 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"render_type": "minecraft:cutout",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "terra_furniture:block/glass_door",
+		"3": "block/chain",
+		"particle": "block/glass"
+	},
+	"elements": [
+		{
+			"from": [5, 3, 5],
+			"to": [11, 11, 11],
+			"faces": {
+				"north": {"uv": [12.5, 0, 15.5, 4], "texture": "#0"},
+				"east": {"uv": [12.5, 0, 15.5, 4], "texture": "#0"},
+				"south": {"uv": [12.5, 0, 15.5, 4], "texture": "#0"},
+				"west": {"uv": [12.5, 0, 15.5, 4], "texture": "#0"},
+				"up": {"uv": [9.5, 0, 12.5, 3], "texture": "#0"},
+				"down": {"uv": [9.5, 0, 12.5, 3], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6, 11, 6],
+			"to": [10, 12, 10],
+			"faces": {
+				"north": {"uv": [10, 3, 12, 3.5], "texture": "#0"},
+				"east": {"uv": [12.5, 4.5, 10.5, 5], "texture": "#0"},
+				"south": {"uv": [10.5, 4.5, 12.5, 5], "texture": "#0"},
+				"west": {"uv": [10.5, 3, 12.5, 3.5], "texture": "#0"},
+				"up": {"uv": [10.5, 3, 12.5, 5], "texture": "#0"},
+				"down": {"uv": [10.5, 3, 12.5, 5], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"from": [6, 2, 6],
+			"to": [10, 3, 10],
+			"faces": {
+				"north": {"uv": [0.5, 15.5, 2.5, 16], "texture": "#0"},
+				"east": {"uv": [9.5, 2.5, 11.5, 3], "texture": "#0"},
+				"south": {"uv": [6, 15.5, 8, 16], "texture": "#0"},
+				"west": {"uv": [13.5, 3.5, 15.5, 4], "texture": "#0"},
+				"down": {"uv": [12.5, 4, 14.5, 6], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 12, 6.5],
+			"to": [8, 16, 9.5],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 14, 8]},
+			"faces": {
+				"north": {"uv": [3, 12, 6, 16], "texture": "#3"},
+				"east": {"uv": [3, 12, 6, 16], "texture": "#3"},
+				"south": {"uv": [3, 12, 6, 16], "texture": "#3"},
+				"west": {"uv": [3, 12, 6, 16], "texture": "#3"},
+				"up": {"uv": [3, 12, 6, 16], "rotation": 270, "texture": "#3"},
+				"down": {"uv": [3, 12, 6, 16], "rotation": 90, "texture": "#3"}
+			}
+		},
+		{
+			"from": [6.5, 12, 8],
+			"to": [9.5, 16, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 14, 8]},
+			"faces": {
+				"north": {"uv": [0, 12, 3, 16], "texture": "#3"},
+				"east": {"uv": [0, 12, 3, 16], "texture": "#3"},
+				"south": {"uv": [0, 12, 3, 16], "texture": "#3"},
+				"west": {"uv": [0, 12, 3, 16], "texture": "#3"},
+				"up": {"uv": [0, 12, 3, 16], "texture": "#3"},
+				"down": {"uv": [0, 12, 3, 16], "texture": "#3"}
+			}
+		}
+	]
+}

@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:avenger_emblem"
+        },
+        {
+            "item": "terra_curio:eye_of_the_golem"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:destroyer_emblem"
+    }
+}

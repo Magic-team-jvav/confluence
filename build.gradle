@@ -6,11 +6,173 @@ plugins {
     id 'net.neoforged.moddev' version '2.0.88' apply false
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
 idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'net.neoforged.moddev'
+
+    boolean isRunningInIdea = System.getProperty("idea.active") == "true"
+
+    neoForge {
+        version = project.neo_version
+        parchment {
+            mappingsVersion = project.parchment_mappings_version
+            minecraftVersion = project.parchment_minecraft_version
+        }
+        //validateAccessTransformers = true
+        runs {
+            client {
+                loggingConfigFile = rootProject.file('tools/extraConfig.xml')
+                client()
+                programArguments.addAll '--username', 'Confluence'
+            }
+
+            client1 {
+                client()
+                programArguments.addAll "--username", "Confluence1"
+            }
+            client2 {
+                client()
+                programArguments.addAll "--username", "Confluence2"
+            }
+
+            server {
+                server()
+                //programArgument '--nogui'
+            }
+
+            configureEach {
+                systemProperty 'forge.logging.markers', 'REGISTRIES'
+                logLevel = org.slf4j.event.Level.DEBUG
+                jvmArguments.addAll([
+                        // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
+                        "-XX:+IgnoreUnrecognizedVMOptions",
+                        // 启用 JetBrain Runtime 热重载功能
+                        "-XX:+AllowEnhancedClassRedefinition",
+                ])
+                if (isRunningInIdea) {
+                    systemProperty "terminal.jline", "true"
+                }
+            }
+        }
+    }
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url = "https://www.cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
+        maven {
+            name = "Modrinth"
+            url = "https://api.modrinth.com/maven"
+        }
+        maven {
+            // location of the maven that hosts JEI files since January 2023
+            name = "Jared's maven"
+            url = "https://maven.blamejared.com/"
+        }
+        maven {
+            // location of a maven mirror for JEI files, as a fallback
+            name = "ModMaven"
+            url = "https://modmaven.dev"
+        }
+        maven {
+            name = 'GeckoLib'
+            url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+            content {
+                includeGroup("software.bernie.geckolib")
+            }
+        }
+        maven {
+            // Shedaniel's maven (Architectury API)
+            url = "https://maven.architectury.dev"
+            content {
+                includeGroup "dev.architectury"
+            }
+        }
+        maven {
+            name = "LatvianMaven" // KubeJS
+            url = "https://maven.latvian.dev/releases"
+            content {
+                includeGroup "dev.latvian.mods"
+                includeGroup "dev.latvian.apps"
+            }
+        }
+        maven {
+            url = 'https://jitpack.io'
+            content {
+                includeGroup "com.github.rtyley"
+            }
+        }
+        maven { url = "https://maven.bawnorton.com/releases" }
+        maven { url = 'https://maven.minecraftforge.net/' }
+        maven {
+            name = "Curios"
+            url = uri("https://maven.theillusivec4.top/")
+        }
+        maven { url = "https://maven.createmod.net" } // Create
+        maven { url "https://maven.ithundxr.dev/snapshots" } // Registrate
+        maven {
+            name = "Fuzs Mod Resources"
+            url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+        }
+        maven {
+            name = "Iron's Maven - Release" // Iron's Spell n Spellbooks
+            url = "https://code.redspace.io/releases"
+        }
+        maven {
+            name "KosmX's maven" // Player Animator
+            url 'https://maven.kosmx.dev/'
+        }
+        maven {
+            name "org.confluenceReleases"
+            url "https://maven.confluence.ink/releases"
+        }
+        maven {
+            name "org.confluenceSnapshots"
+            url "https://maven.confluence.ink/snapshots"
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+
+        withSourcesJar()
+    }
+
+    ext {
+        releasesUrl = "https://maven.confluence.ink/releases"
+        snapshotsUrl = "https://maven.confluence.ink/snapshots"
+    }
+    publishing {
+        publications {
+            register('mavenJava', MavenPublication) {
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                name = "Confluence"
+                url = version.toString().endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
+                credentials {
+                    username = System.getenv("MAGIC_TEAM_USERNAME")
+                    password = System.getenv("MAGIC_TEAM_TOKEN")
+                }
+            }
+        }
     }
 }

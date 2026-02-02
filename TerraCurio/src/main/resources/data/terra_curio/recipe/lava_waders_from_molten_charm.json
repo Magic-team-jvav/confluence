@@ -1,0 +1,17 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:obsidian_water_walking_boots"
+        },
+        {
+            "item": "terra_curio:obsidian_rose"
+        },
+        {
+            "item": "terra_curio:molten_charm"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:lava_waders"
+    }
+}

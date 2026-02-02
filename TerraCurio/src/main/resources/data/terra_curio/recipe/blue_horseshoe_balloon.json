@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:cloud_in_a_balloon"
+        },
+        {
+            "item": "terra_curio:lucky_horseshoe"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:blue_horseshoe_balloon"
+    }
+}

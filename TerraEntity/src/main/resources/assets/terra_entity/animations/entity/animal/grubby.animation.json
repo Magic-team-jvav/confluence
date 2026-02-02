@@ -1,0 +1,37 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"move.walk": {
+			"animation_length": 1.44,
+			"bones": {
+				"All": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.88": {
+							"vector": [0, 0.25, 1],
+							"easing": "easeInOutCirc"
+						},
+						"1.44": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1.2]
+						},
+						"0.88": {
+							"vector": [1, 1.1, 1],
+							"easing": "easeInOutCirc"
+						},
+						"1.44": {
+							"vector": [1, 1, 1.2]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

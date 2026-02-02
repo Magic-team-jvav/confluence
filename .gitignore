@@ -20,39 +20,12 @@ build
 
 # other
 eclipse
-run
-run-data
+run/
+run-data/
 *.hprof
 *.nphd
 *.ref
 *.map
 
-ConfluenceOtherworld/src/generated
-
-
-TerraEntity/run
-MineTeam/run
-TerraCurio/run
-HeavenDestinyMoment/run
-TerraMoment/run
-TerraGuns/run
-Confluence-Magic-Lib/run
-TerraFurniture/run
-
-TerraEntity/build
-MineTeam/build
-TerraCurio/build
-HeavenDestinyMoment/build
-TerraMoment/build
-TerraGuns/build
-Confluence-Magic-Lib/build
-TerraFurniture/build
-
-TerraEntity/src/generated
-MineTeam/src/generated
-TerraCurio/src/generated
-HeavenDestinyMoment/src/generated
-TerraMoment/src/generated
-TerraGuns/src/generated
-TerraFurniture/src/generated
-EnemyBanner/src/generated
+generated/
+build/

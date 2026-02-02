@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:jellyfish_diving_gear"
+        },
+        {
+            "item": "terra_curio:ice_skates"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:arctic_diving_gear"
+    }
+}

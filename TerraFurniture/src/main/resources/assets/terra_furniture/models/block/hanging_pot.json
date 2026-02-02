@@ -1,0 +1,6 @@
+{
+    "parent": "builtin/entity",
+    "textures": {
+        "particle": "terra_furniture:block/particle/hanging_pot_particle"
+    }
+}

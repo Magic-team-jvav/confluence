@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:bezoar"
+        },
+        {
+            "item": "terra_curio:holy_water"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:detoxification_capsule"
+    }
+}

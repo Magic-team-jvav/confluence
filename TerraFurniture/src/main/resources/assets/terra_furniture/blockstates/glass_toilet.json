@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "terra_furniture:block/glass/toilet"
+    },
+    "facing=south": {
+      "model": "terra_furniture:block/glass/toilet", "y": 180
+    },
+    "facing=east": {
+      "model": "terra_furniture:block/glass/toilet", "y": 90
+    },
+    "facing=west": {
+      "model": "terra_furniture:block/glass/toilet", "y": 270
+    }
+  }
+}

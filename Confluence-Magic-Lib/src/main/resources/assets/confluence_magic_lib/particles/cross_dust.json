@@ -1,0 +1,8 @@
+{
+    "textures": [
+        "confluence_magic_lib:cross_dust_small_center",
+        "confluence_magic_lib:cross_dust_small_edge",
+        "confluence_magic_lib:cross_dust_large_center",
+        "confluence_magic_lib:cross_dust_large_edge"
+    ]
+}

@@ -1,11 +1,5 @@
 import java.text.SimpleDateFormat
 
-plugins {
-    id 'maven-publish'
-    id 'net.neoforged.moddev'
-    alias(libs.plugins.modpublisher)
-}
-
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
                    "TerraCurio", "TerraGuns", "TerraFurniture",
                    "TheTrackers", "EnemyBanner"
@@ -13,60 +7,18 @@ var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
 
 version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
-
-base {
-    archivesName = "ConfluenceOtherworld"
-}
-
-boolean isRunningInIdea = System.getProperty("idea.active") == "true"
+base.archivesName = "ConfluenceOtherworld"
 
 neoForge {
-    version = project.neo_version
-    parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
-    }
     validateAccessTransformers = true
+
+    accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+
     runs {
-        client {
-            loggingConfigFile = file('tools/extraConfig.xml')
-            client()
-            programArguments.addAll '--username', 'Confluence'
-        }
-
-        client1 {
-            client()
-            programArguments.addAll "--username", "Confluence1"
-        }
-        client2 {
-            client()
-            programArguments.addAll "--username", "Confluence2"
-        }
-
-
-        server {
-            server()
-            //programArgument '--nogui'
-        }
         data {
             data()
             gameDirectory = project.file('run-data')
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-        }
-        configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
-            logLevel = org.slf4j.event.Level.DEBUG
-            jvmArguments.addAll([
-                    // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
-                    "-XX:+IgnoreUnrecognizedVMOptions",
-                    // 启用 JetBrain Runtime 热重载功能
-                    "-XX:+AllowEnhancedClassRedefinition",
-                    // 并发修改检测
-                    //"-javaagent:mods/CMESuckMyDuck-1.0.5.jar=net/minecraft/util/ClassInstanceMultiMap;byClass;Map;nonstatic"
-            ])
-            if (isRunningInIdea) {
-                systemProperty "terminal.jline", "true"
-            }
         }
     }
 
@@ -80,85 +32,8 @@ neoForge {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    mavenLocal()
     flatDir {
         dirs 'libs'
-    }
-    maven {
-        url = "https://www.cursemaven.com"
-        content {
-            includeGroup "curse.maven"
-        }
-    }
-    maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
-    }
-    maven {
-        // location of the maven that hosts JEI files since January 2023
-        name = "Jared's maven"
-        url = "https://maven.blamejared.com/"
-    }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "https://modmaven.dev"
-    }
-    maven {
-        name = 'GeckoLib'
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-        content {
-            includeGroup("software.bernie.geckolib")
-        }
-    }
-    maven {
-        // Shedaniel's maven (Architectury API)
-        url = "https://maven.architectury.dev"
-        content {
-            includeGroup "dev.architectury"
-        }
-    }
-    maven {
-        name = "LatvianMaven" // KubeJS
-        url = "https://maven.latvian.dev/releases"
-        content {
-            includeGroup "dev.latvian.mods"
-            includeGroup "dev.latvian.apps"
-        }
-    }
-    maven {
-        url = 'https://jitpack.io'
-        content {
-            includeGroup "com.github.rtyley"
-        }
-    }
-    maven { url = "https://maven.bawnorton.com/releases" }
-    maven { url = 'https://maven.minecraftforge.net/' }
-    maven {
-        name = "Curios"
-        url = uri("https://maven.theillusivec4.top/")
-    }
-    maven { url = "https://maven.createmod.net" } // Create
-    maven { url "https://maven.ithundxr.dev/snapshots" } // Registrate
-    maven {
-        name = "Fuzs Mod Resources"
-        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
-    }
-    maven {
-        name = "Iron's Maven - Release" // Iron's Spell n Spellbooks
-        url = "https://code.redspace.io/releases"
-    }
-    maven {
-        name "KosmX's maven" // Player Animator
-        url 'https://maven.kosmx.dev/'
-    }
-    maven {
-        name "org.confluenceReleases"
-        url "https://maven.confluence.ink/releases"
-    }
-    maven {
-        name "org.confluenceSnapshots"
-        url "https://maven.confluence.ink/snapshots"
     }
 }
 
@@ -397,10 +272,10 @@ dependencies {
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [minecraft_version      : minecraft_version,
-                             minecraft_version_range: libs.versions.range.game.get(),
+                             minecraft_version_range: minecraft_version_range,
                              neo_version            : neo_version,
-                             neo_version_range      : libs.versions.range.neoforge.get(),
-                             loader_version_range   : libs.versions.range.fml.get(),
+                             neo_version_range      : neo_version_range,
+                             loader_version_range   : loader_version_range,
                              mod_id                 : mod_id,
                              mod_name               : mod_name,
                              mod_license            : mod_license,
@@ -417,8 +292,6 @@ tasks.withType(ProcessResources).configureEach {
 
 tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
 tasks.withType(Jar).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
-
-tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
 tasks.register("genVoilaRun") {
     dependsOn("prepareClientRun")
@@ -462,57 +335,4 @@ tasks.register("genVoilaRun") {
 
 jar {
     exclude 'org/confluence/mod/common/data/gen'
-}
-
-java.withSourcesJar()
-
-ext {
-    releasesUrl = "https://maven.confluence.ink/releases"
-    snapshotsUrl = "https://maven.confluence.ink/snapshots"
-}
-publishing {
-    publications {
-        register('mavenJava', MavenPublication) {
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            name = "Confluence"
-            url = version.toString().endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
-            credentials {
-                username = System.getenv("MAGIC_TEAM_USERNAME")
-                password = System.getenv("MAGIC_TEAM_TOKEN")
-            }
-        }
-    }
-}
-publisher {
-    apiKeys {
-        modrinth System.getenv("MODRINTH_TOKEN")
-        curseforge System.getenv("CURSEFORGE_TOKEN")
-    }
-
-    setCurseID(libs.versions.platformId.curseforge.get())
-    setModrinthID(libs.versions.platformId.modrinth.get())
-
-    def changelogFile = file("notes/CHANGELOG.md")
-    if (changelogFile.exists()) {
-        setChangelog(changelogFile.getText("UTF-8"))
-    } else {
-        setChangelog("No changelog provided for version ${project.version}")
-    }
-
-    def versionStr = project.version.toString()
-    setVersionType(versionStr.contains("-") ? "beta" : "release")
-
-    setVersion(versionStr)
-    setDisplayName("Confluence ${versionStr}")
-
-    setGameVersions(project.minecraft_version)
-    setLoaders("neoforge")
-
-    setCurseEnvironment(libs.versions.version.env.get())
-
-    setArtifact(tasks.jar)
 }

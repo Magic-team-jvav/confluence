@@ -1,0 +1,12 @@
+{
+    "type": "terra_curio:extra_step_stool",
+    "base": {
+        "item": "terra_curio:step_stool"
+    },
+    "addition": {
+        "item": "terra_curio:step_stool"
+    },
+    "result": {
+        "id": "terra_curio:step_stool"
+    }
+}

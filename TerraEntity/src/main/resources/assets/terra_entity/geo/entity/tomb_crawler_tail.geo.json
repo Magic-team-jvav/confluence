@@ -1,0 +1,34 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.tomb_crawler_tail",
+				"texture_width": 112,
+				"texture_height": 112,
+				"visible_bounds_width": 6,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "bone",
+					"pivot": [0, 9, -4],
+					"rotation": [90, 0, 0]
+				},
+				{
+					"name": "body2",
+					"parent": "bone",
+					"pivot": [0, 7, -4],
+					"cubes": [
+						{"origin": [-9, 1, -13], "size": [18, 12, 18], "uv": [0, 0]},
+						{"origin": [0, -5, -15], "size": [0, 11, 22], "uv": [0, 48]},
+						{"origin": [0, -5, -15], "size": [0, 11, 22], "pivot": [0, 1, -4], "rotation": [0, -90, 0], "uv": [0, 48]},
+						{"origin": [-7, -5, -11], "size": [14, 6, 14], "uv": [44, 48]},
+						{"origin": [-8, 13, -12], "size": [16, 2, 16], "uv": [0, 30]}
+					]
+				}
+			]
+		}
+	]
+}

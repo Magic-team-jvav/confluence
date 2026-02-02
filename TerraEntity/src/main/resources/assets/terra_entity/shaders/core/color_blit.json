@@ -1,0 +1,23 @@
+{
+    "blend": {
+        "func": "add",
+        "srcrgb": "srcalpha",
+        "dstrgb": "1-srcalpha"
+    },
+    "vertex": "terra_entity:color_blit",
+    "fragment": "terra_entity:color_blit",
+    "attributes": [
+        "Position",
+        "Color",
+        "UV0"
+    ],
+    "samplers": [
+        { "name": "Sampler0" },
+        { "name": "Sampler1" }
+
+    ],
+    "uniforms": [
+        { "name": "ColorModulator", "type": "float",     "count": 4,  "values": [ 1.0, 1.0, 1.0, 1.0 ] },
+        { "name": "Time", "type": "float",     "count": 1,  "values": [0.0]}
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:sailfish_boots"
+        },
+        {
+            "item": "terra_curio:rocket_boots"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:spectre_boots"
+    }
+}

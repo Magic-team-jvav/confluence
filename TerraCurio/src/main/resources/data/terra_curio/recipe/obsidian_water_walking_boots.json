@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:water_walking_boots"
+        },
+        {
+            "item": "terra_curio:obsidian_skull"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:obsidian_water_walking_boots"
+    }
+}

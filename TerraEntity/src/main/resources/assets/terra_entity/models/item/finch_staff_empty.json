@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "terra_entity:item/summon/finch_staff_empty"
+  }
+}

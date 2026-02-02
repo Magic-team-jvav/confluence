@@ -1,0 +1,10 @@
+{
+    "entities": [
+        "player"
+    ],
+    "slots": [
+        "mount",
+        "pet",
+        "light_pet"
+    ]
+}

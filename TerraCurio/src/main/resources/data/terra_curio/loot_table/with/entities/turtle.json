@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:entity",
+    "pools": [
+        {
+            "bonus_rolls": 0.0,
+            "conditions": [
+                {
+                    "condition": "minecraft:damage_source_properties",
+                    "predicate": {
+                        "tags": [
+                            {
+                                "expected": true,
+                                "id": "minecraft:is_freezing"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "terra_curio:frozen_turtle_shell"
+                }
+            ],
+            "rolls": 1.0
+        }
+    ]
+}

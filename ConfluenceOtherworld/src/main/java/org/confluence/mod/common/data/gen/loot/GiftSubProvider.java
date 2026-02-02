@@ -1594,11 +1594,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FunctionalBlocks.SOLIDIFIER)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
-                ))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setWeight(333))
-                        .add(EmptyLootItem.emptyItem().setWeight(9667))
-                );
+                ));
     }
 
     private static LootTable.Builder queenBeeTreasureBagCommon() {

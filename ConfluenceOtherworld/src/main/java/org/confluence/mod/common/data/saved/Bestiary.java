@@ -1,6 +1,9 @@
 package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
+import it.unimi.dsi.fastutil.Hash;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
@@ -25,10 +29,22 @@ import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
-public class Bestiary implements IGlobalData {
+public final class Bestiary implements IGlobalData {
     public static final Codec<Map<String, BestiaryEntry>> CODEC = Codec.unboundedMap(Codec.STRING, BestiaryEntry.CODEC);
     public static final Bestiary INSTANCE = new Bestiary();
+    private static final Object2BooleanMap<EntityType<?>> AVAILABLE = new Object2BooleanOpenCustomHashMap<>(new Hash.Strategy<>() {
+        @Override
+        public int hashCode(EntityType<?> o) {
+            return System.identityHashCode(o);
+        }
+
+        @Override
+        public boolean equals(EntityType<?> a, EntityType<?> b) {
+            return a == b;
+        }
+    });
 
     private Map<String, BestiaryEntry> entries = new Object2ObjectOpenHashMap<>();
 
@@ -84,8 +100,7 @@ public class Bestiary implements IGlobalData {
 
     public void updateEntry(LivingEntity living, boolean killed) {
         if (living.level().isClientSide) return;
-        if (NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled()) return;
-        if (living.getType().equals(EntityType.PLAYER)) return;
+        if (!canBeSeenAsBestiaryEntry(living)) return;
 
         BestiaryEntry entry = getOrCreateEntry(living);
         if (killed) entry.killedByCount++;
@@ -113,5 +128,13 @@ public class Bestiary implements IGlobalData {
     private static float getAttributeBaseValue(AttributeMap map, Holder<Attribute> attribute) {
         AttributeInstance instance = map.getInstance(attribute);
         return instance == null ? 0.0F : (float) instance.getBaseValue();
+    }
+
+    public static boolean isAvailableType(EntityType<?> type, Level level) {
+        return AVAILABLE.computeIfAbsent(type, (Predicate<EntityType<?>>) t -> t.create(level) != null);
+    }
+
+    public static boolean canBeSeenAsBestiaryEntry(LivingEntity living) {
+        return isAvailableType(living.getType(), living.level()) && !NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled();
     }
 }

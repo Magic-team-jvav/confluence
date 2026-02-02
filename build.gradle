@@ -33,16 +33,16 @@ subprojects {
             client {
                 loggingConfigFile = rootProject.file('tools/extraConfig.xml')
                 client()
-                programArguments.addAll '--username', 'ConfluenceDev'
+                programArguments.addAll '--username', 'Confluence'
             }
 
             client1 {
                 client()
-                programArguments.addAll "--username", "ConfluenceDev1"
+                programArguments.addAll "--username", "Confluence1"
             }
             client2 {
                 client()
-                programArguments.addAll "--username", "ConfluenceDev2"
+                programArguments.addAll "--username", "Confluence2"
             }
 
             server {

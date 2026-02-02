@@ -55,13 +55,9 @@ public final class ClientUtils {
     private static final Set<ResourceLocation> failed = new HashSet<>();
     public static final int LEGACY_SIZE = 128;
     public static final int OVERLAY_SIZE = 128;
-    /**
-     * 以这个命名的bone就是专门的死亡模型
-     */
+    /// 以这个命名的bone就是专门的死亡模型
     public static final String DEATH_BONE_NAME = "_death";
-    /**
-     * 以这个后缀命名的bone需要爆整个bone
-     */
+    /// 以这个后缀命名的bone需要爆整个bone
     public static final String ENTIRE_BONE_SUFFIX = "_entire";
 
     public static void clearCache() {

@@ -12,10 +12,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
-import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
@@ -44,7 +42,7 @@ public class BestiaryItem extends CustomRarityItem {
                     player, from, to, aabb, entity -> !entity.isSpectator() && entity.isPickable(), squared
             );
             if (entityHitResult != null && entityHitResult.getLocation().distanceToSqr(from) < sqr && entityHitResult.getEntity() instanceof LivingEntity living) {
-                if (!NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled()) {
+                if (Bestiary.canBeSeenAsBestiaryEntry(living)) {
                     BestiaryEntry entry = Bestiary.INSTANCE.getOrCreateEntry(living);
                     entry.killedByCount += 100;
                     BestiarySyncPacketS2C.syncEntry(living, entry);

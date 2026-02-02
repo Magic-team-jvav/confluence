@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:paladins_shield"
+        },
+        {
+            "item": "terra_curio:frozen_turtle_shell"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:frozen_shield"
+    }
+}

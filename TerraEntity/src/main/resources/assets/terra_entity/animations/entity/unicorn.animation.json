@@ -1,0 +1,209 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"attack": {
+			"loop": true,
+			"animation_length": 1.5,
+			"bones": {
+				"Head": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [45, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.625": {
+							"vector": [45, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.875": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutQuart"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [0, -5, -7],
+							"easing": "easeOutQuart"
+						},
+						"0.625": {
+							"vector": [0, -5, -7],
+							"easing": "easeOutQuart"
+						},
+						"0.875": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutQuart"
+						}
+					}
+				},
+				"Ear1": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [45, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.625": {
+							"vector": [45, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.875": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutQuart"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [0, 0, -1],
+							"easing": "easeOutQuart"
+						},
+						"0.625": {
+							"vector": [0, 0, -1],
+							"easing": "easeOutQuart"
+						},
+						"0.875": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutQuart"
+						}
+					}
+				},
+				"Ear2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [45, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.625": {
+							"vector": [45, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.875": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutQuart"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [0, 0, -1],
+							"easing": "easeOutQuart"
+						},
+						"0.625": {
+							"vector": [0, 0, -1],
+							"easing": "easeOutQuart"
+						},
+						"0.875": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutQuart"
+						}
+					}
+				},
+				"Neck": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4167": {
+							"vector": [47.5, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.625": {
+							"vector": [47.5, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.875": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutQuart"
+						}
+					}
+				}
+			}
+		},
+		"move": {
+			"loop": true,
+			"animation_length": 1.54167,
+			"bones": {
+				"Leg1A": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.5": {
+							"vector": [-24.82449, 3.00683, -0.13152]
+						},
+						"0.9583": {
+							"vector": [23.40635, -8.8574, 4.38946]
+						},
+						"1.375": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"Leg2A": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.5": {
+							"vector": [19.39588, -8.531, 6.3348]
+						},
+						"0.9583": {
+							"vector": [-27.38228, -3.7054, 2.85872]
+						},
+						"1.375": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"Leg3A": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.5": {
+							"vector": [22.35952, -2.53116, -0.97622]
+						},
+						"0.9583": {
+							"vector": [-29.33659, 3.91888, 5.33287]
+						},
+						"1.375": {
+							"vector": [0, 0, 0]
+						}
+					}
+				},
+				"Leg4A": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.5": {
+							"vector": [-22.33937, 2.71212, -0.05973]
+						},
+						"0.9583": {
+							"vector": [19.8037, 0.91659, -4.17386]
+						},
+						"1.375": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

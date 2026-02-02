@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "#S#",
+        " # "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:blue_ice"
+        },
+        "S": {
+            "item": "terra_curio:hermes_boots"
+        }
+    },
+    "result": {
+        "id": "terra_curio:ice_skates"
+    }
+}

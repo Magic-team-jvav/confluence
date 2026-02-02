@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.confluence.terra_guns.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "terra_guns.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+    "client.ItemInHandRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

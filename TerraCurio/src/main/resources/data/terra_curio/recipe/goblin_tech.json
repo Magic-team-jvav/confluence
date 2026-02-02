@@ -1,0 +1,17 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:stopwatch"
+        },
+        {
+            "item": "terra_curio:metal_detector"
+        },
+        {
+            "item": "terra_curio:dps_meter"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:goblin_tech"
+    }
+}

@@ -1,0 +1,461 @@
+{
+    "routine_hurt": {
+        "sounds": [
+            "terra_entity:mob/routine_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.routine_hurt"
+    },
+    "routine_death": {
+        "sounds": [
+            "terra_entity:mob/routine_death"
+        ],
+        "subtitle": "terra_entity.subtitle.routine_death"
+    },
+    "roar": {
+        "sounds": [
+            "terra_entity:roar"
+        ],
+        "subtitle": "terra_entity.subtitle.roar"
+    },
+    "hurried_roaring": {
+        "sounds": [
+            "terra_entity:hurried_roaring"
+        ],
+        "subtitle": "terra_entity.subtitle.hurried_roaring"
+    },
+    "blood_crawler_death": {
+        "sounds": [
+            "terra_entity:mob/blood_crawler_death"
+        ],
+        "subtitle": "terra_entity.subtitle.blood_crawler_death"
+    },
+    "blood_crawler_free": {
+        "sounds": [
+            "terra_entity:mob/blood_crawler_free_0",
+            "terra_entity:mob/blood_crawler_free_1"
+        ],
+        "subtitle": "terra_entity.subtitle.blood_crawler_free"
+    },
+    "blood_crawler_hurt": {
+        "sounds": [
+            "terra_entity:mob/blood_crawler_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.blood_crawler_hurt"
+    },
+    "bloody_spore_death": {
+        "sounds": [
+            "terra_entity:mob/bloody_spore_death"
+        ],
+        "subtitle": "terra_entity.subtitle.bloody_spore_death"
+    },
+    "bloody_spore_fuse": {
+        "sounds": [
+            "terra_entity:mob/bloody_spore_fuse_0",
+            "terra_entity:mob/bloody_spore_fuse_1"
+        ],
+        "subtitle": "terra_entity.subtitle.bloody_spore_fuse"
+    },
+    "bloody_spore_hit": {
+        "sounds": [
+            "terra_entity:mob/bloody_spore_hit_0",
+            "terra_entity:mob/bloody_spore_hit_1",
+            "terra_entity:mob/bloody_spore_hit_2",
+            "terra_entity:mob/bloody_spore_hit_3"
+        ],
+        "subtitle": "terra_entity.subtitle.bloody_spore_hit"
+    },
+    "drippler_death": {
+        "sounds": [
+            "terra_entity:mob/drippler_death"
+        ],
+        "subtitle": "terra_entity.subtitle.drippler_death"
+    },
+    "drippler_hurt": {
+        "sounds": [
+            "terra_entity:mob/drippler_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.drippler_hurt"
+    },
+    "metal_death": {
+        "sounds": [
+            "terra_entity:mob/metal_death"
+        ],
+        "subtitle": "terra_entity.subtitle.metal_death"
+    },
+    "metal_hurt": {
+        "sounds": [
+            "terra_entity:mob/metal_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.metal_hurt"
+    },
+    "visual_neuron_death": {
+        "sounds": [
+            "terra_entity:mob/visual_neuron_death"
+        ],
+        "subtitle": "terra_entity.subtitle.visual_neuron_death"
+    },
+    "visual_neuron_hurt": {
+        "sounds": [
+            "terra_entity:mob/visual_neuron_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.visual_neuron_hurt"
+    },
+    "dig_sound": {
+        "sounds": [
+            "terra_entity:dig_sound"
+        ],
+        "subtitle": "terra_entity.subtitle.dig_sound"
+    },
+    "giant_shelly_death": {
+        "sounds": [
+            "terra_entity:mob/giant_shelly_death"
+        ],
+        "subtitle": "terra_entity.subtitle.giant_shelly_death"
+    },
+    "giant_shelly_free_0": {
+        "sounds": [
+            "terra_entity:mob/giant_shelly_free_0"
+        ],
+        "subtitle": "terra_entity.subtitle.giant_shelly_free_0"
+    },
+    "giant_shelly_free_1": {
+        "sounds": [
+            "terra_entity:mob/giant_shelly_free_1"
+        ],
+        "subtitle": "terra_entity.subtitle.giant_shelly_free_1"
+    },
+    "giant_shelly_hurt": {
+        "sounds": [
+            "terra_entity:mob/giant_shelly_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.giant_shelly_hurt"
+    },
+    "tr_zombie_death": {
+        "sounds": [
+            "terra_entity:mob/tr_zombie_death"
+        ],
+        "volume": 0.77,
+        "subtitle": "terra_entity.subtitle.tr_zombie_death"
+    },
+    "tr_skeleton_hurt": {
+        "sounds": [
+            "terra_entity:mob/tr_skeleton_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.tr_skeleton_hurt"
+    },
+    "waving": {
+        "sounds": [
+            "terra_entity:waving"
+        ],
+        "subtitle": "terra_entity.subtitle.waving"
+    },
+    "use_mounts": {
+        "sounds": [
+            "terra_entity:use_mounts"
+        ],
+        "subtitle": "terra_entity.subtitle.use_mounts"
+    },
+    "decayeder_ambient": {
+        "sounds": [
+            "terra_entity:mob/decayeder_ambient_0",
+            "terra_entity:mob/decayeder_ambient_1",
+            "terra_entity:mob/decayeder_ambient_2"
+        ],
+        "subtitle": "terra_entity.subtitle.decayeder_ambient"
+    },
+    "decayeder_death": {
+        "sounds": [
+            "terra_entity:mob/decayeder_death"
+        ],
+        "subtitle": "terra_entity.subtitle.decayeder_death"
+    },
+    "decayeder_hurt": {
+        "sounds": [
+            "terra_entity:mob/decayeder_hurt_0",
+            "terra_entity:mob/decayeder_hurt_1",
+            "terra_entity:mob/decayeder_hurt_2",
+            "terra_entity:mob/decayeder_hurt_3"
+        ],
+        "subtitle": "terra_entity.subtitle.decayeder_hurt"
+    },
+    "decayeder_step": {
+        "sounds": [
+            "terra_entity:mob/decayeder_step_0",
+            "terra_entity:mob/decayeder_step_1",
+            "terra_entity:mob/decayeder_step_2"
+        ],
+        "subtitle": "terra_entity.subtitle.decayeder_step"
+    },
+    "whip_attack": {
+        "sounds": [
+            "terra_entity:whip_attack"
+        ],
+        "subtitle": "terra_entity.subtitle.whip_attack"
+    },
+    "routine_summon": {
+        "sounds": [
+            "terra_entity:summon/routine_summon"
+        ],
+        "subtitle": "terra_entity.subtitle.routine_summon"
+    },
+    "summon_hornet": {
+        "sounds": [
+            "terra_entity:summon/summon_hornet"
+        ],
+        "subtitle": "terra_entity.subtitle.summon_hornet"
+    },
+    "summon_eye": {
+        "sounds": [
+            "terra_entity:summon/summon_eye"
+        ],
+        "subtitle": "terra_entity.subtitle.summon_eye"
+    },
+    "summon_imp": {
+        "sounds": [
+            "terra_entity:summon/summon_imp"
+        ],
+        "subtitle": "terra_entity.subtitle.summon_imp"
+    },
+    "summon_money_trough": {
+        "sounds": [
+            "terra_entity:summon/summon_money_trough"
+        ],
+        "subtitle": "terra_entity.subtitle.summon_money_trough"
+    },
+    "antlion_death": {
+        "sounds": [
+            "terra_entity:mob/antlion_death"
+        ],
+        "subtitle": "terra_entity.subtitle.antlion_death"
+    },
+    "antlion_hurt": {
+        "sounds": [
+            "terra_entity:mob/antlion_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.antlion_hurt"
+    },
+    "antlion_free": {
+        "sounds": [
+            "terra_entity:mob/antlion_free"
+        ],
+        "subtitle": "terra_entity.subtitle.antlion_free"
+    },
+    "antlion_swarmer_death": {
+        "sounds": [
+            "terra_entity:mob/antlion_swarmer_death"
+        ],
+        "subtitle": "terra_entity.subtitle.antlion_swarmer_death"
+    },
+    "antlion_swarmer_free": {
+        "sounds": [
+            "terra_entity:mob/antlion_swarmer_free",
+            "terra_entity:mob/antlion_swarmer_free_0"
+        ],
+        "subtitle": "terra_entity.subtitle.antlion_swarmer_free"
+    },
+    "bat_death": {
+        "sounds": [
+            "terra_entity:mob/bat_death"
+        ],
+        "subtitle": "terra_entity.subtitle.bat_death"
+    },
+    "beetle_death": {
+        "sounds": [
+            "terra_entity:mob/beetle_death"
+        ],
+        "subtitle": "terra_entity.subtitle.beetle_death"
+    },
+    "blood_jelly_death": {
+        "sounds": [
+            "terra_entity:mob/blood_jelly_death"
+        ],
+        "subtitle": "terra_entity.subtitle.blood_jelly_death"
+    },
+    "blood_jelly_free": {
+        "sounds": [
+            "terra_entity:mob/blood_jelly_free"
+        ],
+        "subtitle": "terra_entity.subtitle.blood_jelly_free"
+    },
+    "bone_serpent_death": {
+        "sounds": [
+            "terra_entity:mob/bone_serpent_death"
+        ],
+        "subtitle": "terra_entity.subtitle.bone_serpent_death"
+    },
+    "demon_death": {
+        "sounds": [
+            "terra_entity:mob/demon_death"
+        ],
+        "subtitle": "terra_entity.subtitle.demon_death"
+    },
+    "demon_free": {
+        "sounds": [
+            "terra_entity:mob/demon_free",
+            "terra_entity:mob/demon_free_0",
+            "terra_entity:mob/demon_free_1",
+            "terra_entity:mob/demon_free_2"
+        ],
+        "subtitle": "terra_entity.subtitle.demon_free"
+    },
+    "demon_hurt": {
+        "sounds": [
+            "terra_entity:mob/demon_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.demon_hurt"
+    },
+    "dungeon_spirit_death": {
+        "sounds": [
+            "terra_entity:mob/dungeon_spirit_death"
+        ],
+        "subtitle": "terra_entity.subtitle.dungeon_spirit_death"
+    },
+    "dungeon_spirit_free": {
+        "sounds": [
+            "terra_entity:mob/dungeon_spirit_free",
+            "terra_entity:mob/dungeon_spirit_free_0"
+        ],
+        "subtitle": "terra_entity.subtitle.dungeon_spirit_free"
+    },
+    "dungeon_spirit_hurt": {
+        "sounds": [
+            "terra_entity:mob/dungeon_spirit_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.dungeon_spirit_hurt"
+    },
+    "granite_golem_death": {
+        "sounds": [
+            "terra_entity:mob/granite_golem_death"
+        ],
+        "subtitle": "terra_entity.subtitle.granite_golem_death"
+    },
+    "granite_golem_hurt": {
+        "sounds": [
+            "terra_entity:mob/granite_golem_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.granite_golem_hurt"
+    },
+    "granite_golem_free": {
+        "sounds": [
+            "terra_entity:mob/granite_golem_free",
+            "terra_entity:mob/granite_golem_free_0",
+            "terra_entity:mob/granite_golem_free_1"
+        ],
+        "subtitle": "terra_entity.subtitle.granite_golem_free"
+    },
+    "jellyfish_death": {
+        "sounds": [
+            "terra_entity:mob/jellyfish_death"
+        ],
+        "subtitle": "terra_entity.subtitle.jellyfish_death"
+    },
+    "jellyfish_free": {
+        "sounds": [
+            "terra_entity:mob/jellyfish_free",
+            "terra_entity:mob/jellyfish_free_0"
+        ],
+        "subtitle": "terra_entity.subtitle.jellyfish_free"
+    },
+    "jellyfish_hurt": {
+        "sounds": [
+            "terra_entity:mob/jellyfish_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.jellyfish_hurt"
+    },
+    "pixie_death": {
+        "sounds": [
+            "terra_entity:mob/pixie_death"
+        ],
+        "volume": 0.05,
+        "subtitle": "terra_entity.subtitle.pixie_death"
+    },
+    "pixie_free": {
+        "sounds": [
+            "terra_entity:mob/pixie_free"
+        ],
+        "volume": 0.05,
+        "subtitle": "terra_entity.subtitle.pixie_free"
+    },
+    "pixie_hurt": {
+        "sounds": [
+            "terra_entity:mob/pixie_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.pixie_hurt"
+    },
+    "sand_shoot": {
+        "sounds": [
+            "terra_entity:mob/sand_shoot"
+        ],
+        "subtitle": "terra_entity.subtitle.sand_shoot"
+    },
+    "soul_death": {
+        "sounds": [
+            "terra_entity:mob/soul_death"
+        ],
+        "subtitle": "terra_entity.subtitle.soul_death"
+    },
+    "tr_zombie_free": {
+        "sounds": [
+            "terra_entity:mob/tr_zombie_free",
+            "terra_entity:mob/tr_zombie_free_0",
+            "terra_entity:mob/tr_zombie_free_1"
+        ],
+        "volume": 0.05,
+        "subtitle": "terra_entity.subtitle.tr_zombie_free"
+    },
+    "unicorn_death": {
+        "sounds": [
+            "terra_entity:mob/unicorn_death"
+        ],
+        "subtitle": "terra_entity.subtitle.unicorn_death"
+    },
+    "unicorn_hurt": {
+        "sounds": [
+            "terra_entity:mob/unicorn_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.unicorn_hurt"
+    },
+    "wyvern_death": {
+        "sounds": [
+            "terra_entity:mob/wyvern_death"
+        ],
+        "subtitle": "terra_entity.subtitle.wyvern_death"
+    },
+    "wyvern_hurt": {
+        "sounds": [
+            "terra_entity:mob/wyvern_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.wyvern_hurt"
+    },
+    "the_hungry_death": {
+        "sounds": [
+            "terra_entity:mob/the_hungry_death",
+            "terra_entity:mob/the_hungry_death_0"
+        ],
+        "subtitle": "terra_entity.subtitle.the_hungry_death"
+    },
+    "the_hungry_hurt": {
+        "sounds": [
+            "terra_entity:mob/the_hungry_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.the_hungry_hurt"
+    },
+    "wall_of_flesh_hurt": {
+        "sounds": [
+            "terra_entity:mob/wall_of_flesh_hurt"
+        ],
+        "subtitle": "terra_entity.subtitle.wall_of_flesh_hurt"
+    },
+    "wall_of_flesh_roar": {
+        "sounds": [
+            "terra_entity:mob/wall_of_flesh_roar"
+        ],
+        "subtitle": "terra_entity.subtitle.wall_of_flesh_roar"
+    },
+    "wall_of_flesh_summon": {
+        "sounds": [
+            "terra_entity:mob/wall_of_flesh_summon"
+        ],
+        "subtitle": "terra_entity.subtitle.wall_of_flesh_summon"
+    }
+}

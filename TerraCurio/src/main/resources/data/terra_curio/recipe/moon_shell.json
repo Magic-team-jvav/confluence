@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:moon_charm"
+        },
+        {
+            "item": "terra_curio:neptunes_shell"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:moon_shell"
+    }
+}

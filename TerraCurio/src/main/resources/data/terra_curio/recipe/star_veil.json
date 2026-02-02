@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:star_cloak"
+        },
+        {
+            "item": "terra_curio:cross_necklace"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:star_veil"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:pda"
+        },
+        {
+            "item": "terra_curio:magic_mirror"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:cell_phone"
+    }
+}

@@ -1,0 +1,69 @@
+version = "${minecraft_version}-${mod_version}"
+group = mod_group_id
+base.archivesName = mod_id
+
+neoForge {
+    accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+
+    runs {
+        data {
+            data()
+
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        configureEach {
+            jvmArgument "-XX:HotswapAgent=fatjar"
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+boolean dev = true
+
+dependencies {
+    compileOnly "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    runtimeOnly "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+
+//    runtimeOnly "curse.maven:tweakerge-915857:6387063"
+//    runtimeOnly "curse.maven:mafglib-910766:6416901"
+
+    if (gradle.rootProject.name == mod_name) {
+        // 单独开发时
+        runtimeOnly "curse.maven:freecam-by-zergatul-618947:5591136"
+        implementation "org.confluence.lib:org.confluence.lib.confluence_magic_lib-0.0.3"
+    } else {
+        // 作为submodule开发时
+        if (dev) {
+            implementation project(":Confluence-Magic-Lib")
+        } else {
+            implementation jarJar(project(":Confluence-Magic-Lib"))
+        }
+    }
+}
+
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [minecraft_version      : minecraft_version,
+                             minecraft_version_range: minecraft_version_range,
+                             neo_version            : neo_version,
+                             neo_version_range      : neo_version_range,
+                             loader_version_range   : loader_version_range,
+                             mod_id                 : mod_id,
+                             mod_name               : mod_name,
+                             mod_license            : mod_license,
+                             mod_version            : mod_version,
+                             mod_authors            : mod_authors,
+                             mod_description        : mod_description]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
+}

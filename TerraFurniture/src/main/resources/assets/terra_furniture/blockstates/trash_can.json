@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "terra_furniture:block/trash_can"
+    },
+    "facing=south": {
+      "model": "terra_furniture:block/trash_can",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "terra_furniture:block/trash_can",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "terra_furniture:block/trash_can",
+      "y": 270
+    }
+  }
+}

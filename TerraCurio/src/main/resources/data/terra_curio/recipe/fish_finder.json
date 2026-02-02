@@ -1,0 +1,17 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:fishermans_pocket_guide"
+        },
+        {
+            "item": "terra_curio:weather_radio"
+        },
+        {
+            "item": "terra_curio:sextant"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:fish_finder"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:sharkron_balloon"
+        },
+        {
+            "item": "terra_curio:lucky_horseshoe"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:pink_horseshoe_balloon"
+    }
+}

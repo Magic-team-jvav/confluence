@@ -1,0 +1,19 @@
+{
+	"credit": "Made with Blockbench",
+	"render_type": "cutout",
+	"texture_size": [64, 64],
+	"elements": [
+		{
+			"name": "corner",
+			"from": [-0.5, 12.5, -0.5],
+			"to": [4.5, 16.5, 4.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [8.5, 0, 9.5, 0.75], "texture": "#particle"},
+				"west": {"uv": [8.5, 1, 9.5, 1.75], "texture": "#particle"},
+				"up": {"uv": [3.5, 9.25, 2.5, 8.25], "texture": "#particle"},
+				"down": {"uv": [9.5, 7.75, 8.5, 8.75], "texture": "#particle"}
+			}
+		}
+	]
+}

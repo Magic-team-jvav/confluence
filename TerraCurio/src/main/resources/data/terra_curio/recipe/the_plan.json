@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:fast_clock"
+        },
+        {
+            "item": "terra_curio:trifold_map"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:the_plan"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=east": {
+            "model": "terra_curio:block/workshop",
+            "y": 90
+        },
+        "facing=north": {
+            "model": "terra_curio:block/workshop"
+        },
+        "facing=south": {
+            "model": "terra_curio:block/workshop",
+            "y": 180
+        },
+        "facing=west": {
+            "model": "terra_curio:block/workshop",
+            "y": 270
+        }
+    }
+}

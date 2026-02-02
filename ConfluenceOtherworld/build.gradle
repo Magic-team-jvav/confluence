@@ -7,10 +7,7 @@ var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
 
 version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
-
-base {
-    archivesName = "ConfluenceOtherworld"
-}
+base.archivesName = "ConfluenceOtherworld"
 
 neoForge {
     validateAccessTransformers = true

@@ -1,0 +1,109 @@
+{
+    "values": {
+        "terra_curio:ice_skates": {
+            "terra_curio:ice_speed": {}
+        },
+        "terra_curio:angler_earring": {
+            "terra_curio:attributes": {
+                "minecraft:generic.luck": [
+                    {
+                        "id": "terra_curio:angler_earring",
+                        "amount": 10.0,
+                        "operation": "add_value"
+                    }
+                ]
+            },
+            "terra_curio:components": []
+        },
+        "terra_curio:magma_stone": {
+            "terra_curio:fire_attack": {}
+        },
+        "terra_curio:shackle": {
+            "terra_curio:attributes": {
+                "minecraft:generic.armor": [
+                    {
+                        "id": "terra_curio:shackle",
+                        "amount": 1.0,
+                        "operation": "add_value"
+                    }
+                ]
+            }
+        },
+        "terra_curio:base_point": {
+            "terra_curio:fire_immune": {},
+            "terra_curio:ice_speed": {},
+            "terra_curio:may_fly": {
+                "terra_curio:base_point": {
+                    "fly_speed": 1.1,
+                    "fly_ticks": 70,
+                    "could_glide": true,
+                    "horizontal_flight": true
+                }
+            },
+            "terra_curio:fluid_walk": [
+                "terra_curio:water_like_walk",
+                "terra_curio:lava_like_walk"
+            ],
+            "terra_curio:lava_immune_ticks": 200,
+            "terra_curio:lava_hurt_reduce": 0.75,
+            "terra_curio:attributes": {
+                "minecraft:generic.movement_speed": [
+                    {
+                        "id": "terra_curio:base_point",
+                        "amount": 0.16,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "minecraft:generic.fall_damage_multiplier": [
+                    {
+                        "id": "terra_curio:base_point",
+                        "amount": -100.0,
+                        "operation": "add_value"
+                    }
+                ],
+                "minecraft:generic.jump_strength": [
+                    {
+                        "id": "terra_curio:base_point",
+                        "amount": 1.0,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "minecraft:generic.step_height": [
+                    {
+                        "id": "terra_curio:base_point",
+                        "amount": 0.5,
+                        "operation": "add_value"
+                    }
+                ]
+            }
+        },
+        "terra_curio:everlasting": {
+            "terra_curio:frozen_immune": {},
+            "terra_curio:fire_immune": {},
+            "terra_curio:shield_of_cthulhu": {},
+            "terra_curio:effect_immunities": [
+                "minecraft:poison",
+                "minecraft:wither",
+                "minecraft:weakness",
+                "minecraft:hunger",
+                "minecraft:blindness",
+                "minecraft:darkness",
+                "minecraft:slowness",
+                "minecraft:nausea",
+                "minecraft:mining_fatigue",
+                "minecraft:levitation"
+            ],
+            "terra_curio:totem_with_cooldown": 2400,
+            "terra_curio:invulnerable_ticks_multiplier": 2.0,
+            "terra_curio:attributes": {
+                "terra_curio:generic.dodge_chance": [
+                    {
+                        "id": "terra_curio:everlasting",
+                        "amount": 0.1,
+                        "operation": "add_value"
+                    }
+                ]
+            }
+        }
+    }
+}

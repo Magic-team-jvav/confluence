@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "enemybanner:block/banner_box", "y": 180 },
+    "facing=south": { "model": "enemybanner:block/banner_box", "y": 0 },
+    "facing=west": { "model": "enemybanner:block/banner_box", "y": 90 },
+    "facing=east": { "model": "enemybanner:block/banner_box", "y": 270 }
+}
+}

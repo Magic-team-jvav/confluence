@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:magic_quiver"
+        },
+        {
+            "item": "terra_curio:magma_stone"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:molten_quiver"
+    }
+}

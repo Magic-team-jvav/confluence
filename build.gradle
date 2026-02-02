@@ -56,8 +56,6 @@ subprojects {
                         "-XX:+IgnoreUnrecognizedVMOptions",
                         // 启用 JetBrain Runtime 热重载功能
                         "-XX:+AllowEnhancedClassRedefinition",
-                        // 并发修改检测
-                        //"-javaagent:mods/CMESuckMyDuck-1.0.5.jar=net/minecraft/util/ClassInstanceMultiMap;byClass;Map;nonstatic"
                 ])
                 if (isRunningInIdea) {
                     systemProperty "terminal.jline", "true"

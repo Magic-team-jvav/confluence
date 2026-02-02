@@ -1,0 +1,22 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "cRc",
+        " c "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:chain"
+        },
+        "c": {
+            "tag": "c:ingots/tungsten"
+        },
+        "R": {
+            "item": "minecraft:redstone"
+        }
+    },
+    "result": {
+        "id": "terra_curio:tungsten_watch"
+    }
+}

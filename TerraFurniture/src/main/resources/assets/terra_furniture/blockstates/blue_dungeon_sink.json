@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "terra_furniture:block/blue_dungeon/sink"
+    },
+    "facing=south": {
+      "model": "terra_furniture:block/blue_dungeon/sink",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "terra_furniture:block/blue_dungeon/sink",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "terra_furniture:block/blue_dungeon/sink",
+      "y": 270
+    }
+  }
+}

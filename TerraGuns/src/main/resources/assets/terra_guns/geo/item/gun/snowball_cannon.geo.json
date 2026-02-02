@@ -1,0 +1,71 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.snowball_cannon",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Fire",
+					"pivot": [0, 5, -13.5],
+					"cubes": [
+						{"origin": [-5, 0, -13.5], "size": [10, 10, 2], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "Root",
+					"pivot": [0, 5.08579, -3.58579],
+					"cubes": [
+						{"origin": [-1, 2, -7], "size": [2, 4, 6], "inflate": 0.0008, "uv": [0, 22]},
+						{"origin": [-4, 5, -6], "size": [4, 4, 4], "inflate": 0.0008, "uv": [34, 8]},
+						{"origin": [-0.9973, 5.57118, -0.70817], "size": [2, 1.22487, 6.52513], "inflate": 0.0008, "uv": [16, 22]},
+						{"origin": [-0.9973, -0.42882, 4.29183], "size": [2, 6, 1.5], "inflate": 0.0008, "uv": [32, 22]},
+						{"origin": [-0.9973, -0.42882, 0.29183], "size": [2, 1.5, 4], "inflate": 0.0008, "uv": [0, 32]},
+						{"origin": [-1.75, 2.97487, -12.0016], "size": [3.5, 3.5, 7], "inflate": 0.0008, "uv": [1, 12]},
+						{"origin": [-1.75, 2.97487, -12.0016], "size": [3.5, 3.5, 7], "inflate": 0.5, "uv": [18, 36]},
+						{"origin": [-1.0045, -0.29349, -2.67487], "size": [2.008, 5.85607, 1.64198], "pivot": [-0.002, 5.17288, -0.9379], "rotation": [30, 0, 0], "uv": [12, 35]},
+						{"origin": [-0.9995, 4.40228, -2.2532], "size": [2.003, 1.57759, 2.74305], "pivot": [-0.002, 5.17288, -0.9379], "rotation": [52.5, 0, 0], "uv": [24, 8]}
+					]
+				},
+				{
+					"name": "Pump",
+					"parent": "Root",
+					"pivot": [-1, 6.75, -2.75],
+					"cubes": [
+						{"origin": [-1.02734, 6.05, -2], "size": [1, 3, 4], "uv": [30, 29]}
+					]
+				},
+				{
+					"name": "Trigger",
+					"parent": "Root",
+					"pivot": [0, 1.5, -0.75],
+					"cubes": [
+						{"origin": [-1, -0.25, -5], "size": [1, 3.5, 5], "uv": [24, 0]}
+					]
+				},
+				{
+					"name": "Ball",
+					"parent": "Root",
+					"pivot": [-2.25, 14, -4],
+					"cubes": [
+						{"origin": [-3.5, 12.75, -5.25], "size": [2.5, 2.5, 2.5], "inflate": 0.0008, "pivot": [-2.25, 14, -4], "rotation": [9.00717, -20.70481, -24.14867], "uv": [26, 14]}
+					]
+				},
+				{
+					"name": "Barrel",
+					"parent": "Root",
+					"pivot": [0, 4.72487, -12.0016],
+					"cubes": [
+						{"origin": [-2.25, 2.47487, -13.0016], "size": [4.5, 4.5, 2], "inflate": 0.008, "uv": [17, 29]}
+					]
+				}
+			]
+		}
+	]
+}

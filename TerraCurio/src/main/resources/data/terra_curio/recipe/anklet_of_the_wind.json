@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " # ",
+        "#S#",
+        " # "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:vine"
+        },
+        "S": {
+            "item": "minecraft:spore_blossom"
+        }
+    },
+    "result": {
+        "id": "terra_curio:anklet_of_the_wind"
+    }
+}

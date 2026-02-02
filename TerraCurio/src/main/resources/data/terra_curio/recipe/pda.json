@@ -1,0 +1,20 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "terra_curio:fish_finder"
+        },
+        {
+            "item": "terra_curio:goblin_tech"
+        },
+        {
+            "item": "terra_curio:rek_3000"
+        },
+        {
+            "item": "terra_curio:gps"
+        }
+    ],
+    "result": {
+        "id": "terra_curio:pda"
+    }
+}

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "terra_entity:item/egg/flying_fish_spawn_egg"
-  }
-}

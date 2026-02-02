@@ -1,1 +1,0 @@
-See also [Confluence Of Afterlife](https://github.com/MagicHarp/confluence), it's our main project aims to replicate most of the content from Terraria.

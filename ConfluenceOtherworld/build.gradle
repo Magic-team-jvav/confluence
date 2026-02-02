@@ -1,9 +1,5 @@
 import java.text.SimpleDateFormat
 
-plugins {
-    alias(libs.plugins.modpublisher)
-}
-
 version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
 base.archivesName = "ConfluenceOtherworld"

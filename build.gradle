@@ -3,7 +3,8 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.88' apply false
+    alias(libs.plugins.moddevgradle) apply false
+    alias(libs.plugins.modpublisher) apply false
 }
 
 idea {
@@ -17,6 +18,7 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'net.neoforged.moddev'
+    apply plugin: 'com.hypherionmc.modutils.modpublisher'
 
     boolean isRunningInIdea = System.getProperty("idea.active") == "true"
 
@@ -26,21 +28,21 @@ subprojects {
             mappingsVersion = project.parchment_mappings_version
             minecraftVersion = project.parchment_minecraft_version
         }
-        //validateAccessTransformers = true
+
         runs {
             client {
                 loggingConfigFile = rootProject.file('tools/extraConfig.xml')
                 client()
-                programArguments.addAll '--username', 'Confluence'
+                programArguments.addAll '--username', 'ConfluenceDev'
             }
 
             client1 {
                 client()
-                programArguments.addAll "--username", "Confluence1"
+                programArguments.addAll "--username", "ConfluenceDev1"
             }
             client2 {
                 client()
-                programArguments.addAll "--username", "Confluence2"
+                programArguments.addAll "--username", "ConfluenceDev2"
             }
 
             server {

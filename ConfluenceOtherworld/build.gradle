@@ -1,9 +1,8 @@
 import java.text.SimpleDateFormat
 
-var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
-                   "TerraCurio", "TerraGuns", "TerraFurniture",
-                   "TheTrackers", "EnemyBanner"
-]
+plugins {
+    alias(libs.plugins.modpublisher)
+}
 
 version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
@@ -53,7 +52,7 @@ boolean advancementPlaques = false // 进度牌匾
 boolean dynamicCrosshair = false // 动态准星
 
 dependencies {
-    projectName.forEach { name -> implementation jarJar(project(":" + name)) }
+    confluence_modules.split(",").toList().forEach { name -> implementation jarJar(project(":" + name)) }
 
     implementation jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
     implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
@@ -335,4 +334,34 @@ tasks.register("genVoilaRun") {
 
 jar {
     exclude 'org/confluence/mod/common/data/gen'
+}
+
+publisher {
+    apiKeys {
+        modrinth System.getenv("MODRINTH_TOKEN")
+        curseforge System.getenv("CURSEFORGE_TOKEN")
+    }
+
+    setCurseID(libs.versions.platformId.curseforge.get())
+    setModrinthID(libs.versions.platformId.modrinth.get())
+
+    def changelogFile = file("notes/CHANGELOG.md")
+    if (changelogFile.exists()) {
+        setChangelog(changelogFile.getText("UTF-8"))
+    } else {
+        setChangelog("No changelog provided for version ${project.version}")
+    }
+
+    def versionStr = project.version.toString()
+    setVersionType(versionStr.contains("-") ? "beta" : "release")
+
+    setProjectVersion(versionStr)
+    setDisplayName("Confluence ${versionStr}")
+
+    setGameVersions(project.minecraft_version)
+    setLoaders("neoforge")
+
+    setCurseEnvironment(libs.versions.version.env.get())
+
+    setArtifact(tasks.jar)
 }

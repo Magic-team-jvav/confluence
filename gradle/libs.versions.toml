@@ -11,7 +11,7 @@ version-type = "alpha"
 platformId-curseforge = "1104690"
 platformId-modrinth = "7Y8G2yvN"
 
-moddevgradle = "2.0.88"
+moddevgradle = "2.0.140"
 modpublisher = "2.+"
 
 [plugins]

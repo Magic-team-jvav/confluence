@@ -12,16 +12,23 @@ jobs:
         with:
           ref: refs/heads/neoforge-dev/1.21.1
           submodules: recursive
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: 21
           cache: "gradle"
+
+      - name: Grant execute permissions
+        run: find . -name "gradlew" -exec chmod +x {} +
+
       - name: Generate assets
         run: |
           git submodule foreach '../gradlew runData'
-          cd ./ConfluenceOtherworld && ./gradlew runData
+          cd ./ConfluenceOtherworld
+          ./gradlew runData
+
       - name: Build & Publish to Maven Confluence
         working-directory: ./ConfluenceOtherworld
         run: ./gradlew build publish publishMod

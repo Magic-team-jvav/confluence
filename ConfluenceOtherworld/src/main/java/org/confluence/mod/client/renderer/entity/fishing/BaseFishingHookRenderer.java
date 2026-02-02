@@ -46,24 +46,24 @@ public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRe
     };
     private final BaseFishingHookModel[] MODELS;
 
-    public BaseFishingHookRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
+    public BaseFishingHookRenderer(EntityRendererProvider.Context context) {
+        super(context);
         this.MODELS = new BaseFishingHookModel[]{
-                new BaseFishingHookModel(pContext.bakeLayer(BaseFishingHookModel.WOOD)),
-                new BaseFishingHookModel(pContext.bakeLayer(BaseFishingHookModel.REINFORCED)),
-                new BaseFishingHookModel(pContext.bakeLayer(BaseFishingHookModel.FISHER_OF_SOULS)),
-                new BaseFishingHookModel(pContext.bakeLayer(BaseFishingHookModel.FLESHCATCHER)),
-                new BaseFishingHookModel(pContext.bakeLayer(BaseFishingHookModel.SCARAB)),
-                new BaseFishingHookModel(pContext.bakeLayer(BaseFishingHookModel.FIBERGLASS)),
-                new BaseFishingHookModel(pContext.bakeLayer(BaseFishingHookModel.MECHANICS)),
-                new BaseFishingHookModel(pContext.bakeLayer(BaseFishingHookModel.SITTING_DUCKS)),
-                new BaseFishingHookModel(pContext.bakeLayer(BaseFishingHookModel.GOLDEN))
+                new BaseFishingHookModel(context.bakeLayer(BaseFishingHookModel.WOOD)),
+                new BaseFishingHookModel(context.bakeLayer(BaseFishingHookModel.REINFORCED)),
+                new BaseFishingHookModel(context.bakeLayer(BaseFishingHookModel.FISHER_OF_SOULS)),
+                new BaseFishingHookModel(context.bakeLayer(BaseFishingHookModel.FLESHCATCHER)),
+                new BaseFishingHookModel(context.bakeLayer(BaseFishingHookModel.SCARAB)),
+                new BaseFishingHookModel(context.bakeLayer(BaseFishingHookModel.FIBERGLASS)),
+                new BaseFishingHookModel(context.bakeLayer(BaseFishingHookModel.MECHANICS)),
+                new BaseFishingHookModel(context.bakeLayer(BaseFishingHookModel.SITTING_DUCKS)),
+                new BaseFishingHookModel(context.bakeLayer(BaseFishingHookModel.GOLDEN))
         };
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BaseFishingHook pEntity) {
-        return TEXTURES[pEntity.getVariant().getId()];
+    public ResourceLocation getTextureLocation(BaseFishingHook entity) {
+        return TEXTURES[entity.getVariant().getId()];
     }
 
     @Override
@@ -81,7 +81,7 @@ public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRe
 
             poseStack.pushPose();
             float f = player.getAttackAnim(partialTicks);
-            float f1 = Mth.sin(Mth.sqrt(f) * (float) Math.PI);
+            float f1 = Mth.sin(Mth.sqrt(f) * Mth.PI);
             Vec3 vec3 = getPlayerHandPos(entityRenderDispatcher, player, f1, partialTicks);
             Vec3 vec31 = entity.getPosition(partialTicks).add(0.0, 0.25, 0.0);
             float f2 = (float) (vec3.x - vec31.x);
@@ -116,7 +116,7 @@ public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRe
                     .xRot(-p_340872_ * 0.7F);
             return player.getEyePosition(partialTick).add(vec3);
         } else {
-            float f = Mth.lerp(partialTick, player.yBodyRotO, player.yBodyRot) * (float) (Math.PI / 180.0);
+            float f = Mth.lerp(partialTick, player.yBodyRotO, player.yBodyRot) * Mth.DEG_TO_RAD;
             double d0 = Mth.sin(f);
             double d1 = Mth.cos(f);
             float f1 = player.getScale();

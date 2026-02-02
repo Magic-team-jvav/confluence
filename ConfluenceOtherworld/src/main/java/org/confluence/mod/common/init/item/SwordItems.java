@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -9,6 +8,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -31,14 +31,12 @@ import java.util.function.Supplier;
 
 import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
 
-/**
- * 允许空挥的剑都是特殊横扫剑<p>
- * 有自动挥舞的剑都是特殊横扫剑<p>
- * 有特殊横扫的剑不一定是自动挥舞的剑<p>
- * 是否允许自动挥舞是根据{@link ModTags.Items#AUTO_ATTACK_WHITELIST}判断的<p>
- * 是否允许特殊横扫是根据{@link BaseSwordItem.ModifierBuilder#specialSweep}判断的，即下文中的.setSpecialSweep()<p>
- * 如果不是由BOARD_SWORD定义的，那么需要使用{@link SwordPrefabs#withSpecialSweep}方法
- */
+/// 允许空挥的剑都是特殊横扫剑
+/// 有自动挥舞的剑都是特殊横扫剑
+/// 有特殊横扫的剑不一定是自动挥舞的剑
+/// 是否允许自动挥舞是根据[ModTags.Items#AUTO_ATTACK_WHITELIST]判断的
+/// 是否允许特殊横扫是根据[BaseSwordItem.ModifierBuilder#specialSweep]判断的，即下文中的.setSpecialSweep()
+/// 如果不是由BOARD_SWORD定义的，那么需要使用[SwordPrefabs#withSpecialSweep]方法
 public class SwordItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
@@ -107,7 +105,7 @@ public class SwordItems {
 
     // 改横扫大小的宽剑(由 ENTITY_INTERACTION_RANGE 属性控制)
     public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 7, 7, ModRarity.ORANGE, BOARD_SWORD.apply(0.0F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, -1.8F, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, -1.4F, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F).hasImage()
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 9, AttributeModifier.Operation.ADD_VALUE)
@@ -120,7 +118,7 @@ public class SwordItems {
             .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()).hasImage()));
     public static final DeferredItem<BaseSwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 25, 1.2f, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get()).hasImage()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4f, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)));
     public static final DeferredItem<BaseSwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE, 21, 0.6F, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()).hasImage()
@@ -138,9 +136,13 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 9, 2.0F, ModRarity.ORANGE, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4))));
     public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
-            .apply(SwordProjectileComponent.GRASS_PROJ).hasImage()));
-    public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
-            .apply(SwordProjectileComponent.NIGHT_PROJ).hasImage());
+            .apply(SwordProjectileComponent.GRASS_PROJ).hasImage()
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)));
+    public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
+            .apply(SwordProjectileComponent.NIGHT_PROJ).hasImage()
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)));
+    public static final DeferredItem<BaseSwordItem> WAFFLES_IRON = register("waffles_iron", ModTiers.UNBREAKABLE, 27, 2.5F, ModRarity.PINK, PROJ_SWORD
+            .apply(SwordProjectileComponent.ICE_PROJ).hasImage());
 
     public static final DeferredItem<BaseSwordItem> RED_PHASEBLADE = register("red_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "red"));
     public static final DeferredItem<BaseSwordItem> ORANGE_PHASEBLADE = register("orange_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "orange"));
@@ -156,8 +158,8 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER, BOARD_SWORD.apply(1.0F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 7, AttributeModifier.Operation.ADD_VALUE)
             .modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
-                    1, 1, 1, 50, 0.05f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
-                    Optional.of(new SimpleTrack(Mth.HALF_PI, 0.5f, 0.1f, Optional.empty(), 0.1)),
+                    1, 0.3f, 1, 50, 0f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                    Optional.of(new SimpleTrack(Mth.HALF_PI, 0.8f, 0.2f, Optional.empty(), 0.1)),
                     ForwardGeneration.of(0, 0), Optional.empty()
             ))));
 
@@ -187,7 +189,7 @@ public class SwordItems {
         });
     }
 
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
+    public static boolean isShortSword(DeferredHolder<Item, ? extends Item> holder) {
+        return holder.getId().getPath().endsWith("_short_sword");
     }
 }

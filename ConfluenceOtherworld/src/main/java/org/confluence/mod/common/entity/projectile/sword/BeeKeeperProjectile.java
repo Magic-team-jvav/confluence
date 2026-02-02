@@ -58,7 +58,7 @@ public class BeeKeeperProjectile extends SwordProjectile {
     public void onAddedToLevel() {
         super.onAddedToLevel();
         if (getOwner() != null) {
-            this.direction = new Vec3(Math.sin(Math.random() * 2 * Math.PI) * 0.001f, 0.002f * Math.random() + 0.004f, Math.cos(Math.random() * 2 * Math.PI) * 0.001f);
+            this.direction = new Vec3(Math.sin(Math.random() * Math.TAU) * 0.001f, 0.002f * Math.random() + 0.004f, Math.cos(Math.random() * Math.TAU) * 0.001f);
             this.entityData.set(DATA_DIRECTION, direction.toVector3f());
         }
         this.knockBack = 0;

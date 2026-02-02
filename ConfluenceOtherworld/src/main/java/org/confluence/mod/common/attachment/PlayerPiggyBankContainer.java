@@ -53,9 +53,7 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
         return totalMoney;
     }
 
-    /**
-     * @return 从存钱罐中扣除后还差的钱
-     */
+    /// @return 从存钱罐中扣除后还差的钱
     public long tryCostMoney(long cost) {
         if (cost <= 0) return 0;
         if (totalMoney <= 0) return cost;

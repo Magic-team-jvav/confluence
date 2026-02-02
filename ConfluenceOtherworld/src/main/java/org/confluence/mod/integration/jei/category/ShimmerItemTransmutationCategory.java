@@ -13,7 +13,9 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -23,6 +25,9 @@ import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeHolder<ItemTransmutationRecipe>> {
     public static final RecipeType<RecipeHolder<ItemTransmutationRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("item_transmutation"));
@@ -97,5 +102,14 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
         if (!recipe.value().isValid()) {
             tooltip.add(Component.translatable("tooltip.jei.shimmer_black_list").withStyle(ChatFormatting.RED));
         }
+    }
+
+    @Override
+    public @Nullable ResourceLocation getRegistryName(RecipeHolder<ItemTransmutationRecipe> recipe) {
+        List<ItemStack> target = recipe.value().target();
+        if (target.isEmpty()) {
+            return null;
+        }
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(target.getFirst().getItem()).getPath());
     }
 }

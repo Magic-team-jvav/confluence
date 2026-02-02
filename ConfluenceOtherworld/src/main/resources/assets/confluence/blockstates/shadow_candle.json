@@ -1,32 +1,32 @@
 {
     "variants": {
-        "facing=east,bloom=true": {
+        "facing=east,lit=true": {
             "model": "confluence:block/shadow_candle",
             "y": 90
         },
-        "facing=north,bloom=true": {
+        "facing=north,lit=true": {
             "model": "confluence:block/shadow_candle"
         },
-        "facing=south,bloom=true": {
+        "facing=south,lit=true": {
             "model": "confluence:block/shadow_candle",
             "y": 180
         },
-        "facing=west,bloom=true": {
+        "facing=west,lit=true": {
             "model": "confluence:block/shadow_candle",
             "y": 270
         },
-        "facing=east,bloom=false": {
+        "facing=east,lit=false": {
             "model": "confluence:block/extinguished_candle",
             "y": 90
         },
-        "facing=north,bloom=false": {
+        "facing=north,lit=false": {
             "model": "confluence:block/extinguished_candle"
         },
-        "facing=south,bloom=false": {
+        "facing=south,lit=false": {
             "model": "confluence:block/extinguished_candle",
             "y": 180
         },
-        "facing=west,bloom=false": {
+        "facing=west,lit=false": {
             "model": "confluence:block/extinguished_candle",
             "y": 270
         }

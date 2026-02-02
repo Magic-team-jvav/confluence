@@ -9,8 +9,8 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
-import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -21,7 +21,7 @@ public abstract class BowItemMixin implements SelfGetter<BowItem> {
         if (itemStack.getItem() instanceof ShortBowItem shortBow) {
             return shortBow.getShortPowerForTime(pCharge);
         } else if (itemStack.is(ModTags.Items.FAST_BOW)) {
-            return TerraBowItem.getFastBowPowerForTime(pCharge);
+            return BaseTerraBowItem.getFastBowPowerForTime(pCharge);
         }
         return original.call(pCharge);
     }

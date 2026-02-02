@@ -205,6 +205,10 @@ public final class GamePhase2AttributeModifiersSubProvider {
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
+                .add(TEMonsterEntities.CRAWDAD, Map.of(
+                        GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
+                        GamePhase.PLANTERA, NORMAL_CHANGE_3
+                ))
                 .add(TEMonsterEntities.GIANT_SHELLY, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
@@ -228,6 +232,9 @@ public final class GamePhase2AttributeModifiersSubProvider {
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
+                /*.add(TEMonsterEntities.METEOR_HEAD, Map.of(
+                        GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
+                ))*/
                 .add(TEMonsterEntities.HARPY, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
@@ -329,6 +336,21 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 )).add(TEMonsterEntities.GOBLIN_WARRIOR, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
+
+                .add(TEMonsterEntities.MUMMY, Map.of(
+                        GamePhase.PLANTERA, NORMAL_CHANGE_1
+                ))
+                .add(TEMonsterEntities.DARK_MUMMY, Map.of(
+                        GamePhase.PLANTERA, NORMAL_CHANGE_1
+                ))
+                .add(TEMonsterEntities.BLOOD_MUMMY, Map.of(
+                        GamePhase.PLANTERA, NORMAL_CHANGE_1
+                ))
+                .add(TEMonsterEntities.LIGHT_MUMMY, Map.of(
+                        GamePhase.PLANTERA, NORMAL_CHANGE_1
+                ))
+
+
 
                 // MC原版敌对怪物
                 .add(EntityType.ZOMBIE.builtInRegistryHolder(), Map.of(

@@ -38,8 +38,10 @@ public final class WeatherHandler {
     private static final Map<ResourceLocation, Map<Block, Context>> BLOCK_PARTICLES = new Hashtable<>();
     private static final Map<ResourceLocation, Map<FluidType, ParticleOptions>> FLUID_PARTICLES = new Hashtable<>();
     public static final Vector2f WIND_SPEED = new Vector2f();
+    public static final Vector2f WIND_SPEED_N = new Vector2f();
     public static Direction windDirection = null;
     public static String windSpeedInfo = "0.00";
+    public static final float STEP = 0.02f;
 
     public static void handleBlock(ClientLevel level, RandomSource random, BlockState blockState, BlockPos.MutableBlockPos blockPos, Map<Block, Context> data) {
         if (getWindSpeedX() < 0.1 && getWindSpeedZ() < 0.1) return;
@@ -144,9 +146,19 @@ public final class WeatherHandler {
     }
 
     public static void handleWindSpeed(WindSpeedPacketS2C packet) {
-        WIND_SPEED.set(packet.x(), packet.z());
-        windSpeedInfo = "%.2f".formatted(WIND_SPEED.length());
+        WIND_SPEED.set(WIND_SPEED_N);
+        WIND_SPEED_N.set(packet.x(), packet.z());
+        windSpeedInfo = "%.2f".formatted(WIND_SPEED_N.length());
         windDirection = Direction.getNearest(packet.x(), 0.0F, packet.z());
+    }
+
+    public static void handle() {
+        if (WIND_SPEED.equals(WIND_SPEED_N)) return;
+        Vector2f delta = new Vector2f(WIND_SPEED);
+        WIND_SPEED_N.sub(WIND_SPEED, delta);
+
+        if (delta.length() > STEP) WIND_SPEED.add(delta.normalize().mul(STEP));
+        else WIND_SPEED.set(WIND_SPEED_N);
     }
 
     public static float getWindSpeedX() {

@@ -27,8 +27,6 @@ public final class ModTags {
         public static final TagKey<Block> NEEDS_8_LEVEL = register("needs_8_level");
         public static final TagKey<Block> NEEDS_9_LEVEL = register("needs_9_level");
         public static final TagKey<Block> UNBREAKABLE = register("unbreakable"); // 用于锯刃镐及以上
-        public static final TagKey<Block> TORCH = register("torch"); // todo
-        public static final TagKey<Block> HARDMODE = register("hardmode"); // todo
         public static final TagKey<Block> COINS = register("coins");
         public static final TagKey<Block> EASY_CRASH = register("easy_crash");
         public static final TagKey<Block> MINEABLE_WITH_PICKAXE_AXE = register("mineable_with_pickaxe_axe");
@@ -53,6 +51,7 @@ public final class ModTags {
         public static final TagKey<Block> SPREADABLE_GRASS_BLOCK = register("spreadable_grass_block");
         public static final TagKey<Block> ENVIRONMENTAL_PRESERVATION = register("environmental_preservation");
         public static final TagKey<Block> RELIC = register("relic"); // 圣物
+        public static final TagKey<Block> CATTAIL_CAN_SURVIVE = register("cattail_can_survive");
 
         public static final TagKey<Block> PURE_CONVERSION_GRASS_BLOCK = register("pure_conversion_grass_block");
         public static final TagKey<Block> PURE_CONVERSION_JUNGLE_GRASS_BLOCK = register("pure_conversion_jungle_grass_block");
@@ -285,7 +284,17 @@ public final class ModTags {
         public static final TagKey<Item> INGOTS_ADAMANTITE = c("ingots/adamantite");
         public static final TagKey<Item> INGOTS_TITANIUM = c("ingots/titanium");
 
+        public static final TagKey<Item> INGOTS_HALLOWED = c("ingots/hallowed");
         public static final TagKey<Item> INGOTS_CHLOROPHYTE = c("ingots/chlorophyte");
+        public static final TagKey<Item> NUGGETS_TIN = c("nuggets/tin");
+        public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");
+        public static final TagKey<Item> NUGGETS_SILVER = c("nuggets/silver");
+        public static final TagKey<Item> NUGGETS_TUNGSTEN = c("nuggets/tungsten");
+        public static final TagKey<Item> NUGGETS_PLATINUM = c("nuggets/platinum");
+        public static final TagKey<Item> NUGGETS_METEORITE = c("nuggets/meteorite");
+        public static final TagKey<Item> NUGGETS_DEMONITE = c("nuggets/demonite");
+        public static final TagKey<Item> NUGGETS_CRIMTANE = c("nuggets/crimtane");
+        public static final TagKey<Item> NUGGETS_HELLSTONE = c("nuggets/hellstone");
 
         public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
         public static final TagKey<Item> RAW_MATERIALS_LEAD = c("raw_materials/lead");
@@ -320,12 +329,12 @@ public final class ModTags {
 
         public static final TagKey<Item> RAW_MATERIALS_FLOATING_WHEAT = c("raw_materials/raw_materials_floating_wheat");
 
-        public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");
-
         public static final TagKey<Item> TOOLS_HAMMER = c("tools/hammer");
         public static final TagKey<Item> TOOLS_LANCE = c("tools/lance");
         public static final TagKey<Item> TOOLS_DRILL = c("tools/drill");
         public static final TagKey<Item> TOOLS_CHAINSAW = c("tools/tools_chainsaw");
+        public static final TagKey<Item> TOOLS_REPEATER_CROSSBOW = c("tools/repeater_crossbow");
+        public static final TagKey<Item> TOOLS_REPEATER = register("tools/repeater");
 
         public static final TagKey<Item> SPEAR = register("spear"); // neoforge那边为三叉戟
         public static final TagKey<Item> COINS = register("coins");
@@ -336,6 +345,7 @@ public final class ModTags {
         public static final TagKey<Item> HOOK = register("hook");
         public static final TagKey<Item> MOUNT = register("mount");
         public static final TagKey<Item> DYE = register("dye");
+        public static final TagKey<Item> SHORT_SWORD = register("short_sword");
 
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
@@ -403,6 +413,7 @@ public final class ModTags {
         public static final TagKey<Item> EXPLOSIVE = register("explosive"); // 爆炸物，用于爆破专家入住
         public static final TagKey<Item> SHOW_SIGNAL = register("show_signal"); // 手持可以显示信号连线
         public static final TagKey<Item> ROBE = register("robe"); // 用于巫师套装
+        public static final TagKey<Item> MIMIC_SUMMON_KEY = register("mimic_summon_key"); // 宝箱怪召唤钥匙，用于计数
 
         public static final TagKey<Item> DEATH = register("death");
         public static final TagKey<Item> UNABLE_TO_APPLY_PREFIX = register("unable_to_apply_prefix"); // 不能上词缀
@@ -410,6 +421,9 @@ public final class ModTags {
         public static final TagKey<Item> LAVA_PROOF_BAIT = register("lava_proof_bait"); // 防熔岩鱼饵
         public static final TagKey<Item> AUTO_ATTACK_WHITELIST = register("auto_attack_whitelist"); // 自动挥舞白名单
         public static final TagKey<Item> AUTO_ATTACK_BLACKLIST = register("auto_attack_blacklist"); // 自动挥舞黑名单
+
+        public static final TagKey<Item> REPEATER_ENCHANTABLE = register("enchantable/repeater");
+        public static final TagKey<Item> REPEATER_CROSSBOW_ENCHANTABLE = c("enchantable/repeater_crossbow");
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
@@ -437,6 +451,7 @@ public final class ModTags {
     public static class Fluids {
         public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
         public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
+        public static final TagKey<Fluid> C_WATER = FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", "water"));
     }
 
     public static class EntityTypes {

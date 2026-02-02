@@ -8,8 +8,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.item.bow.BaseArrowItem;
-import org.confluence.mod.common.item.bow.TerraBowItem;
+import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.terraentity.api.entity.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
 import org.confluence.terraentity.utils.TEUtils;
@@ -25,7 +24,7 @@ public class BeeArrow extends BaseArrowEntity {
         this.pickup = Pickup.DISALLOWED;
     }
 
-    public BeeArrow(EntityType<? extends AbstractArrow> pEntityType,LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseArrowItem arrow, TerraBowItem.Builder modifyConsumer) {
+    public BeeArrow(EntityType<? extends AbstractArrow> pEntityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, BaseTerraArrowItem arrow, BaseTerraArrowItem.ModifyArrowBuilder modifyConsumer) {
         super(pEntityType, owner, pickupItemStack, firedFromWeapon, arrow, modifyConsumer);
         trackType = new BasisTrack(30, 0.2f);
         this.modify.setGravity(0).setAutoDiscard(50);

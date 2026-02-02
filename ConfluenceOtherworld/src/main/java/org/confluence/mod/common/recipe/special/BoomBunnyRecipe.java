@@ -5,6 +5,7 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -20,6 +21,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.terraentity.init.entity.TEAnimals;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -66,7 +68,7 @@ public class BoomBunnyRecipe extends ShapelessRecipe {
             CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
             if (tag == null) continue;
             tag = tag.copy();
-            tag.putString(Entity.ID_TAG, "terra_entity:boom_bunny");
+            tag.putString(Entity.ID_TAG, BuiltInRegistries.ENTITY_TYPE.getKey(TEAnimals.EXPLOSIVE_BUNNY.get()).toString());
             tag.putUUID(Entity.UUID_TAG, Mth.createInsecureUUID());
             assemble.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
             assemble.set(DataComponents.CUSTOM_NAME, itemStack.get(DataComponents.CUSTOM_NAME));

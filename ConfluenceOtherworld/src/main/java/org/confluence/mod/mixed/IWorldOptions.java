@@ -11,11 +11,9 @@ import org.confluence.mod.api.event.CustomWorldIconRegisterEvent;
 import org.confluence.mod.common.init.ModSecretSeeds;
 
 public interface IWorldOptions {
-    /**
-     * 能获取到服务器的情况下尽量使用如下方法
-     *
-     * @see IMinecraftServer#confluence$updateSecretFlag(long)
-     */
+    /// 能获取到服务器的情况下尽量使用如下方法
+    ///
+    /// @see IMinecraftServer#confluence$updateSecretFlag(long)
     void confluence$withSecretFlag(long flag);
 
     long confluence$getSecretFlag();

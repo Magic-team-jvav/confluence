@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.ModItems;
@@ -31,7 +32,8 @@ public class BoulderWorld extends SecretSeed {
         if (ModSecretSeeds.BOULDER_WORLD.match(serverPlayer.server) && serverPlayer.level().random.nextFloat() <= 0.01F) {
             if (blockState.getCollisionShape(serverPlayer.level(), pos) == Shapes.block()) {
                 BoulderEntity entity = new BoulderEntity(serverPlayer.serverLevel(), pos.getCenter(), blockState);
-                entity.targetPlayer(serverPlayer);
+                entity.targetTo(serverPlayer);
+                entity.setVertical(false);
                 serverPlayer.serverLevel().addFreshEntity(entity);
             }
         }
@@ -44,6 +46,7 @@ public class BoulderWorld extends SecretSeed {
                 Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player);
                 optional.ifPresent(iCuriosItemHandler -> {
                     ItemStack itemStack = ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get().getDefaultInstance();
+                    LibUtils.updateItemStackNbt(itemStack, tag -> tag.putBoolean("summoned", true)); // 第一次出生的保护
                     itemStack.enchant(player.server.registryAccess().holderOrThrow(Enchantments.BINDING_CURSE), 1);
                     iCuriosItemHandler.setEquippedCurio(TerraCurio.CURIO_SLOT, 0, itemStack);
                 });

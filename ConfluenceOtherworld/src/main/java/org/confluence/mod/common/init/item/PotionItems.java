@@ -19,7 +19,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.*;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -30,15 +29,17 @@ public class PotionItems {
     public static final DeferredItem<BottleItem> BOTTLE = ITEMS.register("bottle", BottleItem::new);
     public static final DeferredItem<AbstractPotionItem> BOTTLED_WATER = ITEMS.register("bottled_water", () -> new AbstractPotionItem(new Item.Properties().stacksTo(16)) {
         @Override
-        protected void apply(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity living) {
-            if (living instanceof ServerPlayer player) AchievementUtils.unusualSurvivalStrategies(player, true);
+        protected void apply(ItemStack itemStack, Level level, LivingEntity living) {
+            if (living instanceof ServerPlayer player) {
+                AchievementUtils.unusualSurvivalStrategies(player, true);
+            }
         }
     });
 
     public static final DeferredItem<TooltipItem> MUG = ITEMS.register("mug", () -> new TooltipItem(new Item.Properties(), ModRarity.GRAY, Component.translatable("tooltip.item.confluence.mug.0")));
     public static final DeferredItem<AbstractPotionItem> ALE = ITEMS.register("ale", () -> new EffectPotionItem(ModEffects.TIPSY, 2400) {
         @Override
-        protected @NotNull ItemStack getReturnItem() {
+        protected ItemStack getReturnItem() {
             return MUG.toStack();
         }
     });
@@ -75,7 +76,9 @@ public class PotionItems {
         @ParametersAreNonnullByDefault
         @Override
         public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-            if (noneLoaded) tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", "sodiumdynamiclights"));
+            if (noneLoaded) {
+                tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", "sodiumdynamiclights"));
+            }
         }
     });
     public static final DeferredItem<AbstractPotionItem> SPELUNKER_POTION = ITEMS.register("spelunker_potion", () -> new EffectPotionItem(ModEffects.SPELUNKER, 6000));
@@ -100,7 +103,7 @@ public class PotionItems {
     public static final DeferredItem<CustomRarityItem> WORMHOLE_POTION = ITEMS.register("wormhole_potion", () -> new CustomRarityItem(new Item.Properties().stacksTo(16), ModRarity.BLUE));
     public static final DeferredItem<AbstractPotionItem> AMMO_RESERVATION_POTION = ITEMS.register("ammo_reservation_potion", () -> new EffectPotionItem(ModEffects.AMMO_BOX, 9600));
     public static final DeferredItem<AbstractPotionItem> SUMMONING_POTION = ITEMS.register("summoning_potion", () -> new EffectPotionItem(ModEffects.SUMMONING, 9600));
-    public static final DeferredItem<AbstractPotionItem> SHIMMER_POTION = ITEMS.register("shimmer_potion", () -> new EffectPotionItem(ModEffects.SHIMMER, 1200,  1));
+    public static final DeferredItem<AbstractPotionItem> SHIMMER_POTION = ITEMS.register("shimmer_potion", () -> new EffectPotionItem(ModEffects.SHIMMER, 1200, 1));
 
     public static final DeferredItem<AbstractPotionItem> RED_POTION = ITEMS.register("red_potion", RedPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> CHAOS_POTION = ITEMS.register("chaos_potion", ChaosPotionItem::new);

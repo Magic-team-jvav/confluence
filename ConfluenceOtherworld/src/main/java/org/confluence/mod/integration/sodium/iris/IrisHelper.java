@@ -2,9 +2,11 @@ package org.confluence.mod.integration.sodium.iris;
 
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.irisshaders.iris.shaderpack.materialmap.BlockEntry;
 import net.irisshaders.iris.shaderpack.materialmap.NamespacedId;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.common.init.block.OreBlocks;
 
 import java.util.Collections;
@@ -45,5 +47,13 @@ public class IrisHelper {
             map = Collections.emptyMap();
         }
         return (T) new BlockEntry(new NamespacedId(id.getNamespace(), id.getPath()), map);
+    }
+
+    public static void register(DeferredRegister.Items register) {
+        register.registerItem("test_iris", TestItem::new);
+    }
+
+    public static void modifyItemProperties(Object2IntMap<NamespacedId> original) {
+        original.put(new NamespacedId("confluence", "test_iris"), 44002);
     }
 }

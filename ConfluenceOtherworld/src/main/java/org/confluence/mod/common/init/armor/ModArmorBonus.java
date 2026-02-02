@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -29,6 +28,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
 import org.confluence.mod.api.event.RegisterArmorSetBonusEvent;
@@ -50,7 +50,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import static org.confluence.mod.common.init.item.ArmorItems.*;
@@ -80,7 +79,7 @@ public final class ModArmorBonus {
     public static final ValueType.FloatType SKIP$CONSUME$AMMO$CHANCE = ValueType.FloatType.of(Confluence.asResource("skip_consume_ammo_chance"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
     public static final ValueType.UnitType SPACE$GUN$FREE = ValueType.UnitType.of(Confluence.asResource("space_gun_free"));
     public static final ValueType.FloatType HEAL$AMOUNT$MULTIPLIER = ValueType.FloatType.of(Confluence.asResource("heal_amount_multiplier"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
-    public static final ValueType<List<MobEffectInstancesValue.Effect>, MobEffectInstancesValue> HURT$ENEMY$AWARD$EFFECTS = ValueType.create(Confluence.asResource("hurt_enemy_award_effects"), MobEffectInstancesValue.MERGE, MobEffectInstancesValue.CODEC, List.of(), MobEffectInstancesValue::new);
+    public static final ValueType<List<MobEffectInstanceData>, MobEffectInstancesValue> HURT$ENEMY$AWARD$EFFECTS = ValueType.create(Confluence.asResource("hurt_enemy_award_effects"), MobEffectInstancesValue.MERGE, MobEffectInstancesValue.CODEC, List.of(), MobEffectInstancesValue::new);
     public static final ValueType.UnitType FLOWER$PETAL = ValueType.UnitType.of(Confluence.asResource("flower_petal"));
     public static final ValueType.UnitType TITANIUM$SHARDS = ValueType.UnitType.of(Confluence.asResource("titanium_shards"));
     public static final ValueType.UnitType LAVA$IMMUNE = ValueType.UnitType.of(Confluence.asResource("lava_immune"));
@@ -203,7 +202,7 @@ public final class ModArmorBonus {
             // todo 移动时产生残影效果
         });
         Consumer<ArmorSetBonusKey> palladiumSet = key -> {
-            key.of(HURT$ENEMY$AWARD$EFFECTS, List.of(new MobEffectInstancesValue.Effect(MobEffects.REGENERATION, 100, 1)));
+            key.of(HURT$ENEMY$AWARD$EFFECTS, List.of(new MobEffectInstanceData(MobEffects.REGENERATION, 100, 1)));
         };
         register("palladium_mask_set", 1, PALLADIUM_MASK, PALLADIUM_CHESTPLATE, PALLADIUM_LEGGINGS, PALLADIUM_BOOTS, palladiumSet);
         register("palladium_helmet_set", 1, PALLADIUM_HELMET, PALLADIUM_CHESTPLATE, PALLADIUM_LEGGINGS, PALLADIUM_BOOTS, palladiumSet);
@@ -262,7 +261,15 @@ public final class ModArmorBonus {
                     .build());
         });
 
-        /// 巫师套装
+        // 提基套装
+        register("tiki_set", 2, TIKI_MASK, TIKI_SHIRT, TIKI_LEGGINGS, TIKI_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
+                    .add(TEAttributes.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
+                    .add(TEAttributes.WHIP_RANGE, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .build());
+        });
+
+        /// todo 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
 
         ModLoader.postEvent(new RegisterArmorSetBonusEvent(ModArmorBonus::register));
@@ -310,32 +317,26 @@ public final class ModArmorBonus {
     }
 
     public static boolean isArmorSet(Player player, ArmorSetBonusKey key) {
-        return PlayerSpecialData.of(player).getArmorSetBonusKey().equals(Objects.requireNonNullElse(key, ArmorSetBonusKey.NONE));
+        return PlayerSpecialData.of(player).getArmorSetBonusKey().equals(key);
     }
 
-    /**
-     * 仅使用套装奖励注册的type
-     * <p>
-     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#hasType(LivingEntity, ValueType)}
-     */
-    public static boolean hasType(Player player, ValueType<Unit, UnitValue> type) {
+    /// 仅使用套装奖励注册的type
+    ///
+    /// 如果type是配饰用的就使用[org.confluence.terra_curio.util.TCUtils#hasType(LivingEntity,ValueType)]
+    public static <T, V extends PrimitiveValue<T>> boolean hasType(Player player, ValueType<T, V> type) {
         return PlayerSpecialData.of(player).contains(type);
     }
 
-    /**
-     * 仅使用套装奖励注册的type
-     * <p>
-     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#getValue(LivingEntity, ValueType)}
-     */
+    /// 仅使用套装奖励注册的type
+    ///
+    /// 如果type是配饰用的就使用[org.confluence.terra_curio.util.TCUtils#getValue(LivingEntity,ValueType)]
     public static <T, V extends PrimitiveValue<T>> T getValue(Player player, ValueType<T, V> type) {
         return PlayerSpecialData.of(player).getValue(type);
     }
 
-    /**
-     * 仅使用套装奖励注册的type
-     * <p>
-     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#getPrimitiveValue(LivingEntity, ValueType)}
-     */
+    /// 仅使用套装奖励注册的type
+    ///
+    /// 如果type是配饰用的就使用[org.confluence.terra_curio.util.TCUtils#getPrimitiveValue(LivingEntity,ValueType)]
     public static <T, V extends PrimitiveValue<T>> @Nullable V getPrimitiveValue(Player player, ValueType<T, V> type) {
         return PlayerSpecialData.of(player).getPrimitiveValue(type);
     }
@@ -347,6 +348,10 @@ public final class ModArmorBonus {
     public static @Nullable ArmorSetBonusData getArmorSetBonusData(Player player, ArmorSetBonusKey key) {
         if (key == ArmorSetBonusKey.NONE) return null;
         return NeoForge.EVENT_BUS.post(new GetArmorSetBonusDataEvent(player, key, VALUE_MAP.get(key))).getNeoData();
+    }
+
+    public static Object2ObjectMap<ArmorSetBonusKey, ArmorSetBonusData> getValueMap() {
+        return VALUE_MAP;
     }
 
     public static void addBonusTooltip(@Nullable Player player, ItemStack itemStack, List<Component> toolTip) {
@@ -393,10 +398,10 @@ public final class ModArmorBonus {
 
     public static void onAttacked(ServerPlayer player, DamageSource damageSource, LivingEntity victim) {
         if (victim instanceof Enemy) hurtEnemyAwardEffects:{
-            List<MobEffectInstancesValue.Effect> effects = getValue(player, HURT$ENEMY$AWARD$EFFECTS);
+            List<MobEffectInstanceData> effects = getValue(player, HURT$ENEMY$AWARD$EFFECTS);
             if (effects.isEmpty()) break hurtEnemyAwardEffects;
-            for (MobEffectInstancesValue.Effect effect : effects) {
-                player.addEffect(effect.get());
+            for (MobEffectInstanceData effect : effects) {
+                player.addEffect(effect.create());
             }
         }
         if (hasType(player, FLOWER$PETAL)) flowerPetal:{
@@ -419,25 +424,31 @@ public final class ModArmorBonus {
             projectile.shoot(position.x - offset.x, position.y - offset.y, position.z - offset.z, 1.2F, 0.0F);
             player.level().addFreshEntity(projectile);
         }
-        if (player instanceof IServerPlayer serverPlayer && hasType(player, TITANIUM$SHARDS))
-            titaniumShards:{
-                if (player.hasEffect(ModEffects.TITANIUM_BARRIER)) break titaniumShards;
-                if (damageSource.getDirectEntity() instanceof TitaniumShardsProjectile)
+        if (player instanceof IServerPlayer serverPlayer && hasType(player, TITANIUM$SHARDS)) {
+            titaniumShards:
+            {
+                if (player.hasEffect(ModEffects.TITANIUM_BARRIER) ||
+                        damageSource.getDirectEntity() instanceof TitaniumShardsProjectile ||
+                        serverPlayer.confluence$hasTitaniumShards()
+                ) {
                     break titaniumShards;
-                if (serverPlayer.confluence$hasTitaniumShards()) break titaniumShards;
+                }
 
                 player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
                 TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
                 serverPlayer.confluence$setTitaniumShards(projectile);
                 player.level().addFreshEntity(projectile);
             }
+        }
         if (damageSource.is(Tags.DamageTypes.IS_MAGIC) && isArmorSet(player, COLD_CRYSTAL_SET)) {
             victim.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
         }
     }
 
     public static void onBreath(LivingBreatheEvent event) {
-        if (event.canBreathe() || !(event.getEntity() instanceof Player player)) return;
+        if (event.canBreathe() || !(event.getEntity() instanceof Player player)) {
+            return;
+        }
 
         if (player.getAirSupply() > 0 && player.level().getGameTime() % 20 == 0 && isArmorSet(player, HEIM_SET)) { // 延长5%
             event.setConsumeAirAmount(0);

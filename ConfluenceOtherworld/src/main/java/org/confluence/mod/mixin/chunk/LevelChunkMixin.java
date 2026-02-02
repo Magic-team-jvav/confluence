@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.blending.BlendingData;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IPalettedContainer;
-import org.confluence.mod.util.BlockCounts;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,15 +54,17 @@ public abstract class LevelChunkMixin extends ChunkAccess {
 
     @Inject(method = "setBlockState", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getBlock()Lnet/minecraft/world/level/block/Block;"/*这个位置才开始真正的放方块流程*/))
     private void setBlock(BlockPos pos, BlockState targetState, boolean isMoving, CallbackInfoReturnable<BlockState> cir, @Local LevelChunkSection section, @Local(ordinal = 1) BlockState beforeState) {
-        BlockCounts.Type before = DynamicBiomeUtils.COUNTER.apply(beforeState);
-        BlockCounts.Type after = DynamicBiomeUtils.COUNTER.apply(targetState);
-        if (before == after) return;
-        if (before != null) {
-            before.apply(ILevelChunkSection.of(section).confluence$getBlockCounts()).addAndGet(-1);
-        }
-        if (after != null) {
-            after.apply(ILevelChunkSection.of(section).confluence$getBlockCounts()).addAndGet(1);
-        }
+        DynamicBiomeUtils.COUNTER.forEach((predicate, consumer) -> {
+            boolean before = predicate.test(beforeState);
+            boolean after = predicate.test(targetState);
+            if (before == after) return;
+            if (before) {
+                consumer.accept(ILevelChunkSection.of(section).confluence$getBlockCounts(), -1);
+            }
+            if (after) {
+                consumer.accept(ILevelChunkSection.of(section).confluence$getBlockCounts(), 1);
+            }
+        });
 
         HolderLookup.RegistryLookup<Biome> lookup = level.registryAccess().lookupOrThrow(Registries.BIOME);
         Holder<Biome> resultBiome = DynamicBiomeUtils.judgeSection(section, lookup);
@@ -76,21 +77,15 @@ public abstract class LevelChunkMixin extends ChunkAccess {
                 confluence$infect(aboveSection, resultBiome);
             }
         } else {
-//          boolean purified = false;
             if (aboveSection != null && aboveResult == null) {
                 confluence$purify(aboveSection);
-//              purified = true;
             }
             Holder<Biome> belowResult = confluence$checkBelow(pos, lookup);
             if (belowResult != null) {
                 confluence$infect(section, belowResult);
             } else {
                 confluence$purify(section);
-//              purified = true;
             }
-//          if (purified && level instanceof ServerLevel serverLevel) {
-//              serverLevel.getChunkSource().chunkMap.resendBiomesForChunks(List.of(this));
-//          }
         }
     }
 
@@ -121,7 +116,7 @@ public abstract class LevelChunkMixin extends ChunkAccess {
 
     @Unique
     private void confluence$purify(LevelChunkSection section) {
-        if (level instanceof ServerLevel && section.getBiomes().maybeHas(biome -> biome.is(ModTags.Biomes.SPREADABLE))) {
+        if (section.getBiomes().maybeHas(biome -> biome.is(ModTags.Biomes.SPREADABLE))) {
             ILevelChunkSection iSection = ILevelChunkSection.of(section);
             iSection.confluence$setBiomes(iSection.confluence$getBackupBiome());
         }

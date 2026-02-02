@@ -30,7 +30,9 @@ public class AetheriumCauldronBlock extends AbstractCauldronBlock {
         if (!level.isClientSide) {
             boolean bottomless = itemStack.is(ModTags.Items.BOTTOMLESS);
             ItemStack filledStack = bottomless ? itemStack : NatureBlocks.AETHERIUM_BLOCK.toStack();
-            if (!bottomless) player.setItemInHand(hand, ItemStack.EMPTY);
+            if (!bottomless && !player.hasInfiniteMaterials()) {
+                itemStack.shrink(1);
+            }
             player.awardStat(Stats.FILL_CAULDRON);
             player.awardStat(Stats.ITEM_USED.get(filledStack.getItem()));
             level.setBlockAndUpdate(blockPos, ModBlocks.AETHERIUM_CAULDRON.get().defaultBlockState());

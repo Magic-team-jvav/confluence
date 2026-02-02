@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
-import org.jetbrains.annotations.NotNull;
+import org.confluence.mod.common.data.saved.KillBoard;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -43,13 +43,11 @@ public class BasePlantBlock extends BushBlock {
     }
 
     @Override
-    @NotNull
     protected MapCodec<BasePlantBlock> codec() {
         return CODEC;
     }
 
     @Override
-    @NotNull
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Vec3 offset = state.getOffset(level, pos);
         return SHAPE.move(offset.x, offset.y, offset.z);
@@ -82,12 +80,11 @@ public class BasePlantBlock extends BushBlock {
      * 邪恶草和蘑菇下方的方块被转化时转化自身
      */
     @Override
-    @NotNull
     public BlockState updateShape(BlockState originState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         BlockState after = super.updateShape(originState, facing, facingState, level, currentPos, facingPos);
         if (facing != Direction.DOWN) return after;
         ISpreadable.Type type = facingState.getBlock() instanceof ISpreadable sp ? sp.getSpreadType() : ISpreadable.Type.PURE;
-        BlockState transformResult = type.getNotNull(originState);  // 默认不转化，如果结果是摧毁则是写到表里面
+        BlockState transformResult = type.getNotNull(originState, KillBoard.INSTANCE.getGamePhase().isHardmode());  // 默认不转化，如果结果是摧毁则是写到表里面
         return transformResult.canSurvive(level, currentPos) ? transformResult : Blocks.AIR.defaultBlockState();
     }
 }

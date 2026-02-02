@@ -6,6 +6,7 @@ import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terra_curio.common.init.TCTags;
@@ -25,6 +26,9 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
                 ModDamageTypes.ACID_VENOM,
                 ModDamageTypes.CURSED_INFERNO,
                 TETags.DamageTypes.FROST_BURN
+        );
+        tag(LibTags.DamageTypes.AS_MELEE_ATTACK).add(
+                ModDamageTypes.SWORD_PROJECTILE
         );
 //        tag(DamageTypeTags.IS_PROJECTILE).add(
 //                ModDamageTypes.MAGICAL_PROJECTILE,

@@ -4,6 +4,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -14,6 +16,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class DamageSettableProjectile extends Projectile {
     protected static final EntityDataAccessor<Float> DATA_DEFAULT_VELOCITY = SynchedEntityData.defineId(DamageSettableProjectile.class, EntityDataSerializers.FLOAT);
@@ -57,6 +61,19 @@ public abstract class DamageSettableProjectile extends Projectile {
 
     public float getDamage() {
         return damage;
+    }
+
+    public @Nullable LivingEntity getLivingOwner() {
+        return getOwner() instanceof LivingEntity living ? living : null;
+    }
+
+    public DamageSource getDamageSource() {
+        return damageSources().mobProjectile(this, getLivingOwner());
+    }
+
+    @Override
+    public boolean canHitEntity(Entity target) {
+        return ModUtils.canHitEntity(target, getOwner());
     }
 
     public void setDefaultVelocity(float defaultVelocity) {

@@ -1,0 +1,19 @@
+[versions]
+range-fml = "[4,)"
+range-game = "[1.21.1,)"
+range-neoforge = "[21,)"
+
+mod-link = "https://github.com/Magic-team-jvav/confluence"
+
+version-env = "both"
+version-type = "alpha"
+
+platformId-curseforge = "1104690"
+platformId-modrinth = "7Y8G2yvN"
+
+moddevgradle = "2.0.140"
+modpublisher = "2.+"
+
+[plugins]
+moddevgradle = { id = "net.neoforged.moddev", version.ref = "moddevgradle" }
+modpublisher = { id = "com.hypherionmc.modutils.modpublisher", version.ref = "modpublisher" }

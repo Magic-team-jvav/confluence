@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -13,13 +12,10 @@ import org.confluence.lib.common.data.SingleJsonFileReloadListener;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementToast;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
     public static volatile CompletableFuture<Void> WAITING_FOR = CompletableFuture.completedFuture(null);
     private static AchievementOffsetLoader INSTANCE;

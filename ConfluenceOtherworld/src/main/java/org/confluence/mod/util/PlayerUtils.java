@@ -1,8 +1,6 @@
 package org.confluence.mod.util;
 
 import com.google.common.collect.Iterables;
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
@@ -24,17 +22,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
-import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -51,8 +47,6 @@ import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.api.entity.Boss;
-import org.jetbrains.annotations.ApiStatus;
 import org.joml.Vector3f;
 
 import java.util.function.IntFunction;
@@ -86,6 +80,15 @@ public final class PlayerUtils {
         syncMana2Client(player, ManaStorage.of(player));
     }
 
+    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
+        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
+        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
+    }
+
+    public static void syncSoul2Client(ServerPlayer player) {
+        syncSoul2Client(player, SoulStorage.of(player));
+    }
+
     public static void regenerateMana(ServerPlayer player) {
         ManaStorage manaStorage = ManaStorage.of(player);
         if (!manaStorage.canReceive()) return;
@@ -101,13 +104,16 @@ public final class PlayerUtils {
             manaStorage.setRegenerateDelay(delay - delayReduce);
             return;
         }
+        boolean hasStarBottle = player.hasEffect(ModEffects.STAR_IN_A_BOTTLE);
+        float starBottleBonusPerTick = hasStarBottle ? 0.25F : 0.0F;
 
         FloatSupplier receive = () -> {
             // 1.0F / 7.0F = 0.14285715F
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
             float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
-            return a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(player);
+            float baseRegen = a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(player);
+            return baseRegen + starBottleBonusPerTick;
         };
 
         if (manaStorage.receiveMana(receive)) syncMana2Client(player, manaStorage);
@@ -132,12 +138,6 @@ public final class PlayerUtils {
         return false;
     }
 
-    @Deprecated(forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean extractAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer player) {
-        return extractMana(player, ItemStack.EMPTY, sup);
-    }
-
     public static void receiveMana(ServerPlayer player, FloatSupplier sup) {
         ManaStorage manaStorage = ManaStorage.of(player);
         if (manaStorage.receiveMana(sup)) syncMana2Client(player, manaStorage);
@@ -154,7 +154,7 @@ public final class PlayerUtils {
         MeteoriteLocationPacketS2C.sendToClient(player, data.getMeteoriteLocation(), 0);
         BestiarySyncPacketS2C.syncEntries(player);
         ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
-        PiggyBankTotalMoneyPacket.sendToClient(player, PlayerPiggyBankContainer.of(player), true);
+        PlayerPiggyBankContainer.of(player).setChanged(); // 自动同步
         FishingPowerInfoPacketS2C.sendAndGet(player);
         VisibilityPacketS2C.sendEcho(player);
         syncMana2Client(player);
@@ -165,28 +165,39 @@ public final class PlayerUtils {
 
     public static float getFishingPower(ServerPlayer player) {
         float base = TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
-        if (EverBeneficial.of(player).isGummyWormUsed()) base += 3.0F;
-        if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE))
+        if (EverBeneficial.of(player).isGummyWormUsed()) {
+            base += 3.0F;
+        }
+        if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) {
             base += 5.0F;
-        if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
+        }
+        if (player.hasEffect(ModEffects.TIPSY)) {
+            base += 5.0F;
+        }
         Level level = player.level();
-        if (level.isRaining()) base *= 1.1F;
-        else if (level.isThundering()) base *= 1.2F;
+        if (level.isRaining()) {
+            base *= 1.1F;
+        } else if (level.isThundering()) {
+            base *= 1.2F;
+        }
         int dayTime = LibDateUtils.getDayTime(level);
-        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime))
+        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime)) {
             base *= 1.3F;
-        else if (LibDateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) base *= 0.8F;
-        else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime))
+        } else if (LibDateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) {
+            base *= 0.8F;
+        } else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime)) {
             base *= 1.3F;
-        else if (LibDateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) base *= 0.8F;
-        base *= switch (level.getMoonPhase()) {
-            case 0 -> 1.1F; // 满月
-            case 1, 7 -> 1.05F; // 凸月
-            case 5 -> 0.95F; // 眉月
-            case 4 -> 0.9F; // 新月
+        } else if (LibDateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) {
+            base *= 0.8F;
+        }
+        base *= switch (MoonPhase.of(level)) {
+            case FULL_MOON -> 1.1F;
+            case WANING_GIBBOUS, WAXING_GIBBOUS -> 1.05F;
+            case WAXING_CRESCENT -> 0.95F;
+            case NEW_MOON -> 0.9F;
             default -> 1.0F;
         };
-        if (MomentInstanceManager.of(level).hasMoment(TMMoments.BLOOD_MOON.getKey())) {
+        if (BloodMoonGameEvent.INSTANCE.started()) {
             base *= 1.1F;
         }
         return base;
@@ -227,13 +238,6 @@ public final class PlayerUtils {
         return coins;
     }
 
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static int[] getCoins(Player player) {
-        Coins coins = getCoins(player, true);
-        return new int[]{coins.platinum(), coins.gold(), coins.silver(), coins.copper()};
-    }
-
     public static long getMoney(Player player, boolean withPiggyBank) {
         long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() : 0;
         for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
@@ -247,20 +251,8 @@ public final class PlayerUtils {
         return res;
     }
 
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static long getMoney(Player player) {
-        return getMoney(player, true);
-    }
-
     public static boolean tryCostMoney(Player player, long cost, boolean withPiggyBank) {
         return tryCostMoney(getMoney(player, withPiggyBank), player, cost, withPiggyBank);
-    }
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean tryCostMoney(Player player, long cost) {
-        return tryCostMoney(player, cost, true);
     }
 
     public static boolean tryCostMoney(long have, Player player, long cost, boolean withPiggyBank) {
@@ -298,12 +290,6 @@ public final class PlayerUtils {
             inventory.add(new ItemStack(coinItem, coin));
         }
         return true;
-    }
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean tryCostMoney(long have, Player player, long cost) {
-        return tryCostMoney(have, player, cost, true);
     }
 
     public static Coins decodeCoin(long money) {
@@ -361,10 +347,9 @@ public final class PlayerUtils {
         }
     }
 
-    /**
-     * @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
-     */
+    /// @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
     public static void dropMoney(Player player) {
+        if (!CommonConfigs.PLAYER_DROPS_MONEY.get()) return;
         long money = getMoney(player, false);
         long drops;
         if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
@@ -381,12 +366,10 @@ public final class PlayerUtils {
         }
     }
 
-    /**
-     * 获取玩家复活时间
-     *
-     * @param player 玩家
-     * @return 复活时间
-     */
+    /// 获取玩家复活时间
+    ///
+    /// @param player 玩家
+    /// @return 复活时间
     public static int getRespawnWaitTime(ServerPlayer player) {
         AABB aabb = new AABB(player.blockPosition()).inflate(Short.MAX_VALUE);
         int min, max;
@@ -401,9 +384,7 @@ public final class PlayerUtils {
         return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
     }
 
-    /**
-     * @return true表示魔力值不够
-     */
+    /// @return true表示魔力值不够
     public static boolean applyAutoGetMana(ServerPlayer player, float currentMana, float extract) {
         if (currentMana < extract) {
             if (!TCUtils.hasType(player, AccessoryItems.AUTO$GET$MANA)) return true;
@@ -432,17 +413,6 @@ public final class PlayerUtils {
         return false;
     }
 
-    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写泰拉刃的
-    public static void swordProjectile(Player player) {
-        ItemStack stack = player.getMainHandItem();
-        if (stack.getItem() instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(sword)) {
-            SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
-            if (data == null) return;
-            sword.genProjectile(player, stack);
-            player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
-        }
-    }
-
     public static boolean shouldSkipConsumeAmmo(Player player) {
         if (player.hasEffect(ModEffects.AMMO_BOX) && player.getRandom().nextFloat() < 0.2F) {
             return true;
@@ -450,6 +420,7 @@ public final class PlayerUtils {
         return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
     }
 
+    /// 将target的数据同步到sendTo
     public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
         ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
         FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
@@ -473,5 +444,11 @@ public final class PlayerUtils {
                 player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 220));
             }
         }
+    }
+
+    public static void flushPrimitiveValueData(ServerPlayer player) {
+        ManaStorage.of(player).flushAbility(player);
+        FishingPowerInfoPacketS2C.sendAndGet(player);
+        VisibilityPacketS2C.sendEcho(player);
     }
 }

@@ -25,6 +25,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
@@ -101,6 +102,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         // 飘飘麦捆
         compressAndDecompressNine(output, MaterialItems.FLOATING_WHEAT_HEADS, ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT, DecorativeBlocks.FLOATING_WHEAT_BALE, ModTags.Items.STORAGE_BLOCKS_FLOATING_WHEAT_BALE);
         // 矿物粒
+        compressAndDecompressNine(output, MaterialItems.TIN_NUGGET, ModTags.Items.NUGGETS_TIN, MaterialItems.TIN_INGOT, ModTags.Items.INGOTS_TIN);
+        compressAndDecompressNine(output, MaterialItems.LEAD_NUGGET, ModTags.Items.NUGGETS_LEAD, MaterialItems.LEAD_INGOT, ModTags.Items.INGOTS_LEAD);
+        compressAndDecompressNine(output, MaterialItems.SILVER_NUGGET, ModTags.Items.NUGGETS_SILVER, MaterialItems.SILVER_INGOT, ModTags.Items.INGOTS_SILVER);
+        compressAndDecompressNine(output, MaterialItems.TUNGSTEN_NUGGET, ModTags.Items.NUGGETS_TUNGSTEN, MaterialItems.TUNGSTEN_INGOT, ModTags.Items.INGOTS_TUNGSTEN);
+        compressAndDecompressNine(output, MaterialItems.PLATINUM_NUGGET, ModTags.Items.NUGGETS_PLATINUM, MaterialItems.PLATINUM_INGOT, ModTags.Items.INGOTS_PLATINUM);
+        compressAndDecompressNine(output, MaterialItems.METEORITE_NUGGET, ModTags.Items.NUGGETS_METEORITE, MaterialItems.METEORITE_INGOT, ModTags.Items.INGOTS_METEORITE);
+        compressAndDecompressNine(output, MaterialItems.DEMONITE_NUGGET, ModTags.Items.NUGGETS_DEMONITE, MaterialItems.DEMONITE_INGOT, ModTags.Items.INGOTS_DEMONITE);
+        compressAndDecompressNine(output, MaterialItems.CRIMTANE_NUGGET, ModTags.Items.NUGGETS_CRIMTANE, MaterialItems.CRIMTANE_INGOT, ModTags.Items.INGOTS_CRIMTANE);
+        compressAndDecompressNine(output, MaterialItems.HELLSTONE_NUGGET, ModTags.Items.NUGGETS_HELLSTONE, MaterialItems.HELLSTONE_INGOT, ModTags.Items.INGOTS_HELLSTONE);
         // 铅砧
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(ModTags.Items.STORAGE_BLOCKS_LEAD),
@@ -218,6 +228,24 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###"
         )), ChestBlocks.SANDSTONE_CHEST.toStack());
 
+        // 大理石箱
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.MARBLE)
+        ), List.of(
+                "###",
+                "# #",
+                "###"
+        )), ChestBlocks.MARBLE_CHEST.toStack());
+
+        // 花岗岩箱
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.GRANITE)
+        ), List.of(
+                "###",
+                "# #",
+                "###"
+        )), ChestBlocks.GRANITE_CHEST.toStack());
+
         for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
             registerWoodRecipes(output, logBlockSet);
         }
@@ -230,6 +258,23 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###",
                 "###"
         )), NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.HANGING_SIGN.toStack());
+
+        // 木椅
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.OAK_PLANKS)
+        ), List.of(
+                "#  ",
+                "#  ",
+                "## "
+        )), TFBlocks.WOODEN_CHAIR.toStack());
+
+        // 木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.OAK_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.WOODEN_TABLE.toStack());
 
         // 船
         registerBoatRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, BoatItems.EBONY_BOAT, BoatItems.EBONY_CHEST_BOAT);
@@ -566,7 +611,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         )), FunctionalBlocks.LIFE_CAMPFIRE.toStack());
         // 香蒲造纸
         shaped(output, ShapedRecipePattern.of(Map.of(
-                '/', Ingredient.of(ModItems.CATTAILS,ModItems.JUNGLE_CATTAILS,ModItems.GLOWING_MUSHROOM_CATTAILS,ModItems.EBONY_CATTAILS,ModItems.CRIMSON_CATTAILS,ModItems.HALLOW_CATTAILS)
+                '/', Ingredient.of(ModItems.CATTAIL,ModItems.JUNGLE_CATTAIL,ModItems.GLOWING_MUSHROOM_CATTAIL,ModItems.EBONY_CATTAIL,ModItems.CRIMSON_CATTAIL,ModItems.HALLOW_CATTAIL)
         ), List.of(
                 "///"
         )), new ItemStack(Items.PAPER,3));
@@ -625,6 +670,9 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, PickaxeItems.GOLDEN_PICKAXE.toStack(), Ingredient.of(Items.GOLDEN_PICKAXE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
         shapeless(output, HoeItems.GOLDEN_HOE.toStack(), Ingredient.of(Items.GOLDEN_HOE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
         shapeless(output, ShovelItems.GOLDEN_SHOVEL.toStack(), Ingredient.of(Items.GOLDEN_SHOVEL), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+
+        shapeless(output, VanityArmorItems.GUY_FAWKES_MASK_SET.toStack(), Ingredient.of(VanityArmorItems.GUY_FAWKES_HAT), Ingredient.of(VanityArmorItems.GUY_FAWKES_MASK));
+
 
         shapeless(output, new ItemStack(Items.STRING, 2), Ingredient.of(ItemTags.WOOL));
         shapeless(output, "", "_from_stony_log", new ItemStack(Items.COBBLESTONE, 2), Ingredient.of(NatureBlocks.STONY_LOG));
@@ -691,7 +739,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS);
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE), DecorativeBlocks.CRIMSTONE_BRICKS);
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE), DecorativeBlocks.PEARLSTONE_BRICKS);
-        registerBricksRecipes(output, Ingredient.of(Blocks.CALCITE), DecorativeBlocks.CRACKED_MARBLE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.MARBLE), DecorativeBlocks.MARBLE_BRICKS);
         // 锁链
         registerChainsRecipes(output, Ingredient.of(ModTags.Items.GEMS_AMBER), DecorativeBlocks.AMBER_CHAIN);
         registerChainsRecipes(output, Ingredient.of(Tags.Items.GEMS_DIAMOND), DecorativeBlocks.DIAMOND_CHAIN);
@@ -819,6 +867,17 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         " # "
                 )),
                 FunctionalBlocks.WEATHER_VANE.toStack()
+        );
+        // 凝灰岩展台
+        shaped(output, "", "",
+                ShapedRecipePattern.of(Map.of(
+                        '#', Ingredient.of(Items.TUFF)
+                ), List.of(
+                        "###",
+                        " # ",
+                        "###"
+                )),
+                FunctionalBlocks.TUFF_BOOTH.toStack(7)
         );
         // 瞬爆tnt
         shaped(output,
@@ -1033,7 +1092,6 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 )),
                 new ItemStack(Items.TRIPWIRE_HOOK, 2)
         );
-        shapeless(output, MaterialItems.LEAD_NUGGET.toStack(9), Ingredient.of(MaterialItems.LEAD_INGOT));
         shapeless(output, new ItemStack(Items.FLINT_AND_STEEL), Ingredient.of(ModTags.Items.LEAD_AND_IRON), Ingredient.of(Items.FLINT));
 
         // 石头及深板岩压力板
@@ -1043,8 +1101,30 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
         shapeless(output, ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.toStack(), Ingredient.of(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP), Ingredient.of(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION));
 
+        shapeless(output, FunctionalBlocks.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2,ModTags.Items.GOLD_AND_PLATINUM),Ingredient.of(MaterialItems.PINK_GEL));
 
-        shapeless(output, ToolItems.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2,ModTags.Items.GOLD_AND_PLATINUM),Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, FunctionalBlocks.HEART_LANTERN.toStack(), Ingredient.of(Items.CHAIN),Ingredient.of(ConsumableItems.LIFE_CRYSTAL));
+        shapeless(output, FunctionalBlocks.STAR_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_LIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_SIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_MIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_FRIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_BRIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_NIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_VOIGHT));
+
+
+        shapeless(output, ConsumableItems.DRY_BOMB.toStack(), Ingredient.of(ConsumableItems.WET_BOMB,ConsumableItems.HONEY_BOMB,ConsumableItems.LAVA_BOMB));
+
+        shapeless(output, ConsumableItems.WET_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.WATER_BUCKET));
+        shapeless(output, ConsumableItems.HONEY_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(ToolItems.HONEY_BUCKET));
+        shapeless(output, ConsumableItems.LAVA_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.LAVA_BUCKET));
+
+        shapeless(output, ConsumableItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH),Ingredient.of(MaterialItems.FALLING_STAR));
+
+        shapeless(output, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(ModBlocks.POO));
+
         // 暗影蜡烛 shapeless(output, ToolItems.SHADOW_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3,ModTags.Items.EVIL_INGOT));
         // 钱币
         shapeless(output, ModItems.COPPER_COIN.toStack(100), Ingredient.of(ModItems.SILVER_COIN));
@@ -1080,10 +1160,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
     // 九原料合成一块的合成及分解配方
     protected void compressAndDecompressNine(RecipeOutput recipeOutput, ItemLike decompressed, TagKey<Item> decompressedTag, ItemLike compressed, TagKey<Item> compressedTag) {
-        ResourceLocation id1 = Confluence.asResource(getItemName(decompressed));
+        ResourceLocation id1 = Confluence.asResource(getItemName(decompressed).concat("_from_decompacting"));
         NonNullList<Ingredient> ingredients = NonNullList.of(Ingredient.EMPTY, Ingredient.of(compressedTag));
         recipeOutput.accept(id1, new ShapelessRecipe("", CraftingBookCategory.BUILDING, new ItemStack(decompressed, 9), ingredients), createAdvancementHolder(recipeOutput, id1, ingredients));
-        ResourceLocation id2 = Confluence.asResource(getItemName(compressed));
+        ResourceLocation id2 = Confluence.asResource(getItemName(compressed).concat("_from_compacting"));
         ShapedRecipePattern pattern = ShapedRecipePattern.of(Map.of('A', Ingredient.of(decompressedTag)), List.of("AAA", "AAA", "AAA"));
         recipeOutput.accept(id2, new ShapedRecipe("", CraftingBookCategory.BUILDING, pattern, compressed.asItem().getDefaultInstance()), createAdvancementHolder(recipeOutput, id2, pattern.ingredients()));
     }

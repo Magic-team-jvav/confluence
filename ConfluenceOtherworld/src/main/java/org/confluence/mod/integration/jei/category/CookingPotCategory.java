@@ -108,4 +108,9 @@ public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingP
             guiGraphics.blit(BACKGROUND, 79, 32, 143, 33, 16, 16, 159, 49);
         }
     }
+
+    @Override
+    public ResourceLocation getRegistryName(RecipeHolder<CookingPotRecipe> recipe) {
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+    }
 }

@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 
 import static terrablender.api.ParameterUtils.*;
 
-//灰烬森林群系设置（自然生成，参数设置）
+// 灰烬森林群系设置（自然生成，参数设置）
 public class AshWastelandRegion extends Region {
     public AshWastelandRegion(ResourceLocation name, int weight) {
         super(name, RegionType.NETHER, weight);

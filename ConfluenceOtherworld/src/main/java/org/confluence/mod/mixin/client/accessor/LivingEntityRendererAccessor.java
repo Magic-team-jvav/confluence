@@ -4,13 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(LivingEntityRenderer.class)
 public interface LivingEntityRendererAccessor {
     @Invoker
-    RenderType callGetRenderType(LivingEntity livingEntity, boolean bodyVisible, boolean translucent, boolean glowing);
+    @Nullable RenderType callGetRenderType(LivingEntity livingEntity, boolean bodyVisible, boolean translucent, boolean glowing);
 
     @Invoker
     boolean callIsBodyVisible(LivingEntity livingEntity);

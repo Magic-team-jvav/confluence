@@ -1,0 +1,6 @@
+{
+  "parent": "confluence:block/tuff_booth/tuff_booth_template",
+  "textures": {
+      "texture": "confluence:block/tuff_booth/tuff_booth_pink"
+  }
+}

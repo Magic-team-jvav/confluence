@@ -11,9 +11,7 @@ import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModTiers;
 
-/**
- * 一般用于镐子
- */
+/// 一般用于镐子，也可用于锤子
 public record DiggingPower(int power) {
     public static final Codec<DiggingPower> CODEC = ExtraCodecs.POSITIVE_INT.xmap(DiggingPower::new, DiggingPower::power);
 

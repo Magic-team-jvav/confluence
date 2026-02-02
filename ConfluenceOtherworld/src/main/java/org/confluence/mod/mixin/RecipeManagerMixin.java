@@ -6,7 +6,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.confluence.mod.integration.terra_curio.TCRemoval;
-import org.confluence.mod.integration.terra_entity.TERemoval;
+import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,6 +21,6 @@ public abstract class RecipeManagerMixin {
         for (ResourceLocation recipe : TCRemoval.RECIPES) {
             object.remove(recipe);
         }
-        TERemoval.processRecipes(object);
+        TEHelper.processRecipes(object);
     }
 }

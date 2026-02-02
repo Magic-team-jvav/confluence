@@ -17,6 +17,7 @@ import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.init.TEEffects;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
@@ -31,7 +32,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.BIG_ANGER_BONES, MobEffects.POISON)
                 .add(TEMonsterEntities.BIG_MUSCLE_ANGER_BONES, MobEffects.POISON)
                 .add(TEMonsterEntities.BIG_HELMET_ANGER_BONES, MobEffects.POISON)
-                // TODO 歪尾真菌 蚁狮 蚁狮马/巨型蚁狮马 蚁狮幼虫 蚁狮蜂/巨型蚁狮蜂
+                // TODO 歪尾真菌 蚁狮 蚁狮马/巨型蚁狮马 蚁狮幼虫
                 .add(TEMonsterEntities.LITTLE_HORNET, MobEffects.POISON, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.BLACK_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.BLOOD_CRAWLER, MobEffects.POISON)
@@ -40,8 +41,12 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.GREEN_JELLYFISH, TCEffects.CONFUSED)
                 // TODO 血水母 蘑菇鱼
                 .add(TEMonsterEntities.BLUE_SLIME, MobEffects.POISON)
-                // TODO 骨蛇 胭脂虫 螃蟹 龙虾
+                .add(TEMonsterEntities.BONE_SERPENT, MobEffects.POISON, TCEffects.CONFUSED, TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.WITHER_BONE_SERPENT, MobEffects.POISON, MobEffects.WITHER, TCEffects.CONFUSED, TEEffects.HELLFIRE)
+                // TODO 胭脂虫 螃蟹
                 .add(TEMonsterEntities.CRIMERA, TCEffects.CONFUSED)
+                .add(TEMonsterEntities.CRAWDAD, TCEffects.CONFUSED)
+                .add(TEAnimals.CRAB, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.CURSED_SKULL, MobEffects.POISON, TCEffects.CONFUSED)
                 .add(TEBossEntities.DUNGEON_GUARDIAN, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)), LivingInvulnerableEffects.Category.HARMFUL)
                 .add(TEMonsterEntities.DUNGEON_SLIME, MobEffects.POISON)
@@ -66,16 +71,19 @@ public final class LivingInvulnerableEffectsSubProvider {
                 // TODO 紫胶虫
                 .add(TEMonsterEntities.LAVA_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.MAN_EATER, MobEffects.POISON, TCEffects.CONFUSED)
-                // TODO 流星头
+                .add(TEMonsterEntities.METEOR_HEAD, MobEffects.POISON, TCEffects.CONFUSED, TEEffects.HELLFIRE)
                 .add(TEMonsterEntities.PINK_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.PIRANHA, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.PURPLE_SLIME, MobEffects.POISON)
                 // TODO 乌鸦
                 .add(TEMonsterEntities.DESERT_SLIME, MobEffects.POISON)
-                // TODO 海蜗牛 鲨鱼 骷髅全家桶
+                .add(TEMonsterEntities.SHARK, TCEffects.CONFUSED)
+                // TODO 海蜗牛  骷髅全家桶
                 .add(TEMonsterEntities.SNATCHER, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.SNOW_FLINX, TEEffects.FROST_BURN, ModEffects.FROSTBITE)
-                // TODO 尖刺冰雪史莱姆 尖刺丛林史莱姆
+                .add(TEMonsterEntities.SPIKED_SLIME, MobEffects.POISON, ModEffects.SHIMMER)
+                .add(TEMonsterEntities.SPIKED_JUNGLE_SLIME, MobEffects.POISON)
+                .add(TEMonsterEntities.SPIKED_ICE_SLIME, MobEffects.POISON,TEEffects.FROST_BURN, ModEffects.FROSTBITE)
                 .add(TEMonsterEntities.SPORE_SKELETON, MobEffects.POISON)
                 // TODO 乌贼 蒂姆
                 .add(TEMonsterEntities.TOMB_CRAWLER, TCEffects.CONFUSED)
@@ -84,19 +92,31 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.VOODOO_DEMON, TCEffects.CONFUSED, ModEffects.SHADOWFLAME, TEEffects.HELLFIRE)
                 // TODO 秃鹰 爬墙蜘蛛
                 .add(TEMonsterEntities.YELLOW_SLIME, MobEffects.POISON)
-                // TODO 琵琶鱼 愤怒捕手 巨骨舌鱼 装甲骷髅 装甲维京海盗 黑隐士 嗜血怪 拜月教忠教徒 邪教徒弓箭手 蓝装甲骷髅 骷髅李 混沌精 爬藤怪 宝箱怪 冰雪宝箱怪 腐化宝箱怪 猩红宝箱怪 神圣宝箱怪 丛林宝箱怪
+                // TODO 琵琶鱼 愤怒捕手 巨骨舌鱼 装甲骷髅 装甲维京海盗 黑隐士 嗜血怪 拜月教忠教徒 邪教徒弓箭手 蓝装甲骷髅 骷髅李 混沌精 爬藤怪
+                .add(TEMonsterEntities.WOODEN_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.GOLDEN_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.SHADOW_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.CORRUPT_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.JUNGLE_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.CRIMSON_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.HALLOWED_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE)
+                .add(TEMonsterEntities.ICE_MIMIC, MobEffects.POISON,TCEffects.CONFUSED,TEEffects.HELLFIRE, TEEffects.FROST_BURN, ModEffects.FROSTBITE)
                 .add(TEMonsterEntities.CORRUPT_SLIME, MobEffects.POISON)
+                .add(TEMonsterEntities.ARAPAIMA, TCEffects.CONFUSED)
                 // TODO 腐化者
                 .add(TEMonsterEntities.CRIMSLIME, MobEffects.POISON)
                 /*
-                TODO 猩红斧 诅咒锤 跳跳兽 沙漠幽魂 魔教徒 挖掘怪 沙虫 附魔剑 恶心浮游怪 腹足怪 巨型诅咒骷髅头 巨型真菌球怪 地狱装甲骷髅 蹦蹦兽
+                TODO 猩红斧 诅咒锤 跳跳兽 沙漠幽魂 魔教徒 挖掘怪 沙虫 附魔剑 恶心浮游怪 腹足怪 巨型诅咒骷髅头 巨型真菌球怪 地狱装甲骷髅
                  弹跳杰克南瓜灯 冰雪精 冰雪陆龟 灵液黏黏怪 冰雪人鱼 夜明蝙蝠 夜明史莱姆 丛林蜘蛛 熔岩蝙蝠 丛林蜥蜴 火星探测器 蛇发女妖 苔藓黄蜂 蛾
-                  圣骑士 装甲幻影魔 褴褛邪教徒法师 红魔鬼 岩石巨人 符文巫师 生锈装甲骷髅 沙贼 骷髅弓箭手 骷髅突击手 骷髅狙击手 小史莱姆 恶翅史莱姆
+                  圣骑士 装甲幻影魔 褴褛邪教徒法师 红魔鬼 岩石巨人 符文巫师 生锈装甲骷髅 骷髅弓箭手 骷髅突击手 骷髅狙击手 小史莱姆 恶翅史莱姆
                    恶翅史莱姆(无翅膀) 骷髅特警 毒泥 吞世怪
                  */
                 .add(TEMonsterEntities.WYVERN, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.GREEN_DUMPLING_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.GOLDEN_SLIME, ModEffects.SHIMMER)
+                .add(TEMonsterEntities.HERPLING, TCEffects.CONFUSED)
+                .add(TEMonsterEntities.DERPLING, TCEffects.CONFUSED)
+                .add(TEMonsterEntities.SAND_POACHER, MobEffects.POISON)
                 //boss
                 .add(TEBossEntities.BRAIN_OF_CTHULHU, TCEffects.CONFUSED)
                 .add(TEBossEntities.EATER_OF_WORLDS, TCEffects.CONFUSED)

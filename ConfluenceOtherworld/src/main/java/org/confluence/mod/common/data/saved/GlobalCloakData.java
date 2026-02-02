@@ -2,7 +2,6 @@ package org.confluence.mod.common.data.saved;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectMutablePair;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -54,17 +53,18 @@ public final class GlobalCloakData implements IGlobalData {
         StreamCodec<RegistryFriendlyByteBuf, Item> streamCodec = ByteBufCodecs.registry(Registries.ITEM);
         return ByteBufCodecs.map(HashMap::new, streamCodec, LibStreamCodecUtils.booleanObjectPair(streamCodec));
     });
+    public static final int VERSION = 1;
 
     private Map<BlockState, BooleanObjectPair<BlockState>> blockMap = new IdentityHashMap<>();
     private Map<BlockState, BlockBehaviour.Properties> backupProperties = new IdentityHashMap<>();
     private Map<Item, BooleanObjectPair<Item>> itemMap = new IdentityHashMap<>();
-    private boolean fixed = false;
+    private int version;
 
     private GlobalCloakData() {}
 
     public void fix(ServerLevel level) {
-        if (fixed) return;
-        this.fixed = true;
+        if (version >= VERSION) return;
+        this.version = VERSION;
         int revealStep = ConfluenceData.get(level).getRevealStep() + 1; // [0, 9]
         if (revealStep == 0) return;
         List<BlockState> pairs = Lists.newArrayListWithExpectedSize(revealStep + revealStep);
@@ -148,27 +148,32 @@ public final class GlobalCloakData implements IGlobalData {
     }
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
-        tag.get("BlockMap").orElseEmptyMap().read(BLOCK_MAP_CODEC).ifSuccess(blockMap::putAll);
-        tag.get("ItemMap").orElseEmptyMap().read(ITEM_MAP_CODEC).ifSuccess(itemMap::putAll);
-        tag.get("Fixed").asBoolean(false);
+    public void decode(CompoundTag tag) {
+        BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap"))
+                .ifSuccess(result -> this.blockMap = new IdentityHashMap<>(result));
+        ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap"))
+                .ifSuccess(result -> this.itemMap = new IdentityHashMap<>(result));
+        this.version = tag.getInt("Version");
 
         rollbackAllProperties();
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("BlockMap", BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap).result().orElseGet(CompoundTag::new));
-        tag.put("ItemMap", ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap).result().orElseGet(CompoundTag::new));
-        tag.putBoolean("Fixed", fixed);
+        BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap)
+                .ifSuccess(nbt -> tag.put("BlockMap", nbt));
+        ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap)
+                .ifSuccess(nbt -> tag.put("ItemMap", nbt));
+        tag.putInt("Version", version);
     }
 
     @Override
     public void clear() {
         rollbackAllProperties();
         this.blockMap = new IdentityHashMap<>();
-        this.itemMap = new IdentityHashMap<>();
         this.backupProperties = new IdentityHashMap<>();
+        this.itemMap = new IdentityHashMap<>();
+        this.version = VERSION;
         initialize();
     }
 

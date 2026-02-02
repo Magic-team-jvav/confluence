@@ -29,7 +29,7 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPac
 
     @Override
     public void work(Player player) {
-        HouseSelectHUD.handle(available);
+        HouseSelectHUD.handlePacket(available);
     }
 
     public static EntityType<?>[] getTypes() {

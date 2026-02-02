@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:normal_boulder"
+        },
+        "title": {
+            "translate": "achievements.confluence.its_shaling_outside.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.its_shaling_outside.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

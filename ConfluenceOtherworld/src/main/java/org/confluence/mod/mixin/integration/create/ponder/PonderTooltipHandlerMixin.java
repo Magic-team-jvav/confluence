@@ -29,7 +29,7 @@ public abstract class PonderTooltipHandlerMixin {
     private static KeyMapping confluence$ponderKey; // fuck simibubi
 
     @WrapOperation(method = "deferredTick", at = @At(value = "INVOKE", target = "Lnet/createmod/catnip/animation/LerpedFloat;setValue(D)V", ordinal = 1))
-    private static void modify(LerpedFloat instance, double value, Operation<Void> original, @Local float vValue) {
+    private static void modify(LerpedFloat instance, double value, Operation<Void> original, @Local(name = "value") float vValue) {
         if (confluence$ponderKey == null) {
             confluence$ponderKey = KeyMappingAccessor.getALL().get("key.ponder.ponder");
         }

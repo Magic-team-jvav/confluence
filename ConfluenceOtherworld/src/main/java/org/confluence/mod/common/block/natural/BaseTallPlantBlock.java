@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
-import org.jetbrains.annotations.NotNull;
+import org.confluence.mod.common.data.saved.KillBoard;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -64,7 +64,6 @@ public class BaseTallPlantBlock extends TallGrassBlock {
     }
 
     @Override
-    @NotNull
     public BlockState updateShape(BlockState originState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         BlockState after = super.updateShape(originState, facing, facingState, level, currentPos, facingPos);
         if (facing == Direction.UP && !facingState.isAir()) {
@@ -72,7 +71,7 @@ public class BaseTallPlantBlock extends TallGrassBlock {
         }
         if (facing != Direction.DOWN) return after;
         ISpreadable.Type type = facingState.getBlock() instanceof ISpreadable spreadable ? spreadable.getSpreadType() : ISpreadable.Type.PURE;
-        BlockState transformResult = type.getNotNull(originState);
+        BlockState transformResult = type.getNotNull(originState, KillBoard.INSTANCE.getGamePhase().isHardmode());
         return transformResult.canSurvive(level, currentPos) ? transformResult : Blocks.AIR.defaultBlockState();
     }
 

@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "terra_moment:slime_rain"
+            "id": "confluence:blue_gel_block"
         },
         "title": {
             "translate": "achievements.confluence.sticky_situation.title"

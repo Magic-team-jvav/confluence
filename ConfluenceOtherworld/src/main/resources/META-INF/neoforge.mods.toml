@@ -45,6 +45,8 @@ enumExtensions = "META-INF/enumextensions.json"
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
 [[mixins]]
 config = "${mod_id}.mixins.json"
+[[mixins]]
+config = "${mod_id}.compat.lithium.mixins.json"
 
 # The [[accessTransformers]] block allows you to declare where your AT file is.
 # If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
@@ -102,16 +104,9 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
-modId = "xaeroworldmap"
-type = "optional"
-versionRange = "[1.39.9,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies."${mod_id}"]]
 modId = "create"
 type = "optional"
-versionRange = "[6.0.7,)"
+versionRange = "[6.0.9,)"
 ordering = "NONE"
 side = "BOTH"
 

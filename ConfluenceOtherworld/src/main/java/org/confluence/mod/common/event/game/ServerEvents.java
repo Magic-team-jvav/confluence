@@ -5,10 +5,12 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.util.OverworldUtils;
 
 @EventBusSubscriber(modid = Confluence.MODID)
@@ -22,10 +24,16 @@ public final class ServerEvents {
     @SubscribeEvent
     public static void serverStarted(ServerStartedEvent event) {
         GlobalCloakData.INSTANCE.fix(OverworldUtils.getLevel(event.getServer()));
+        GameEventSystem.INSTANCE.open(event.getServer());
     }
 
     @SubscribeEvent
-    public static void serverStop(ServerStoppedEvent event) {
+    public static void serverStopping(ServerStoppingEvent event) {
+        GameEventSystem.INSTANCE.close(event.getServer());
+    }
+
+    @SubscribeEvent
+    public static void serverStopped(ServerStoppedEvent event) {
         PathService.INSTANCE.onServerStop();
         NetworkService.INSTANCE.onServerStop();
     }

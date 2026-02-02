@@ -3,7 +3,10 @@ package org.confluence.mod.common.data.saved;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.Lifecycle;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -122,11 +125,11 @@ public final class HardmodeConvertor implements IGlobalData {
                 if (server instanceof IDedicatedServer dedicatedServer) {
                     dedicatedServer.confluence$setOnHardmodeConversation(false);
                 }
+                KillBoard.INSTANCE.onUnlockHardmode(server);
                 SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(server).confluence$getSecretFlag());
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                     AchievementUtils.awardAchievement(player, "its_hard");
                 }
-                KillBoard.onUnlockHardmode(server);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), LibUtils.isDev());
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);
@@ -178,7 +181,7 @@ public final class HardmodeConvertor implements IGlobalData {
                 BlockPosColumn column = columns[z];
                 if (column == null || column == BlockPosColumn.ZERO) continue;
                 for (BlockPos blockPos : column.iterable(cx + x, cz + z)) {
-                    BlockState target = ISpreadable.Type.HALLOW.getNullable(chunkAccess.getBlockState(blockPos));
+                    BlockState target = ISpreadable.Type.HALLOW.getNullable(chunkAccess.getBlockState(blockPos), true);
                     if (target == null) continue;
                     if (cachedState != target) {
                         cachedState = target;
@@ -234,7 +237,8 @@ public final class HardmodeConvertor implements IGlobalData {
                         int i = mutable.getX() - chunkPos.getMinBlockX();
                         int j = mutable.getZ() - chunkPos.getMinBlockZ();
                         BlockPosColumn column = columns[i][j];
-                        if (column == null || column == BlockPosColumn.ZERO) column = new BlockPosColumn(startPos.getY(), height);
+                        if (column == null || column == BlockPosColumn.ZERO)
+                            column = new BlockPosColumn(startPos.getY(), height);
                         columns[i][j] = column.updateY(mutable.getY());
                     }
                 }
@@ -254,18 +258,20 @@ public final class HardmodeConvertor implements IGlobalData {
     }
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
+    public void decode(CompoundTag tag) {
         this.shouldContinue = false;
-        tag.get("sanctification").orElseEmptyList().read(SANCTIFICATION_CODEC).ifSuccess(result -> this.sanctification = result);
-        this.started = tag.get("started").asBoolean(false);
-        this.completed = tag.get("completed").asBoolean(false);
+        SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, tag.get("sanctification"))
+                .ifSuccess(result -> this.sanctification = new LinkedList<>(result));
+        this.started = tag.getBoolean("started");
+        this.completed = tag.getBoolean("completed");
         this.shouldContinue = true;
     }
 
     @Override
     public void encode(CompoundTag tag) {
         this.shouldContinue = false;
-        tag.put("sanctification", SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).getOrThrow());
+        SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification)
+                .ifSuccess(nbt -> tag.put("sanctification", nbt));
         tag.putBoolean("started", started);
         tag.putBoolean("completed", completed);
         this.shouldContinue = true;

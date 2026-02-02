@@ -170,5 +170,22 @@
             "confluence:coins_small_2"
         ],
         "subtitle": "confluence.subtitle.coins_small"
+    },
+    "lucyaxe_talk": {
+        "sounds": [
+            "confluence:lucyaxe_talk_0",
+            "confluence:lucyaxe_talk_1",
+            "confluence:lucyaxe_talk_2",
+            "confluence:lucyaxe_talk_3",
+            "confluence:lucyaxe_talk_4"
+        ],
+        "subtitle": "confluence.subtitle.lucyaxe_talk"
+    },
+    "repeater_item_aerial_shooting": {
+        "sounds": [
+            "confluence:repeater_item_aerial_shooting"
+        ],
+        "volume": 0.1,
+        "subtitle": "confluence.subtitle.repeater_item_aerial_shooting"
     }
 }

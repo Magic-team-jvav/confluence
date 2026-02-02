@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
@@ -113,8 +114,6 @@ public class AccessoryItems {
     /* 自动安放器 */
     public static final DeferredItem<BaseCurioItem> PAINT_SPRAYER = registerCurio("paint_sprayer", builder -> builder.rarity(ORANGE).accessories(units(PAINT$SPRAYER))); // 喷漆器
 
-    /* 向导巫毒娃娃 */
-    /* 服装商巫毒娃娃 */
     public static final DeferredItem<BaseCurioItem> LUCKY_COIN = registerCurio("lucky_coin", builder -> builder.rarity(PINK).accessories(units(LUCKY$COIN)).attribute(Attributes.LUCK, 0.05, ADD_VALUE)), // 幸运币
             GOLD_RING = registerCurio("gold_ring", builder -> builder.rarity(PINK).accessories(of(COIN$PICKUP$RANGE, new Tuple<>(14.67F, 0)))), // 金戒指
             COIN_RING = registerCurio("coin_ring", builder -> builder.rarity(PINK)
@@ -193,7 +192,7 @@ public class AccessoryItems {
     }
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {
-        if (!CommonConfigs.DROP_MONEY.get()) return;
+        if (!CommonConfigs.ENEMY_DROPS_MONEY.get()) return;
         RandomSource randomSource = player.getRandom();
         if (TCUtils.hasType(player, LUCKY$COIN) && randomSource.nextFloat() < 0.2F) {
             Item item;
@@ -211,10 +210,17 @@ public class AccessoryItems {
         }
     }
 
-    public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, float amount) {
-        if (TCUtils.hasType(serverPlayer, HURT$GET$MANA)) {
-            if (!damageSource.is(DamageTypes.DROWN) && !damageSource.is(TCTags.HARMFUL_EFFECT)) {
-                PlayerUtils.receiveMana(serverPlayer, () -> amount);
+    public static void applyHurtGetMana(ServerPlayer player, DamageSource damageSource, float amount) {
+        if (TCUtils.hasType(player, HURT$GET$MANA) &&
+                !damageSource.is(DamageTypes.DROWN) &&
+                !damageSource.is(TCTags.HARMFUL_EFFECT)
+        ) {
+            CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+            long last = tag.getLong("confluence:last_hurt_get_mana_time");
+            long cur = player.level().getGameTime();
+            if (cur - last >= 10) {
+                PlayerUtils.receiveMana(player, () -> amount);
+                tag.putLong("confluence:last_hurt_get_mana_time", cur);
             }
         }
     }

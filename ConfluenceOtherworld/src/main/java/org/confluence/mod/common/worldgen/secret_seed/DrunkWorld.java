@@ -2,9 +2,7 @@ package org.confluence.mod.common.worldgen.secret_seed;
 
 import net.minecraft.resources.ResourceLocation;
 
-/**
- * <a href="https://terraria.wiki.gg/zh/wiki/Drunk_world">Wiki</a>
- */
+/// [Wiki](https://terraria.wiki.gg/zh/wiki/Drunk_world)
 public class DrunkWorld extends SecretSeed {
     public DrunkWorld(long flag, ResourceLocation id) {
         super(flag, id);

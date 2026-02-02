@@ -1,21 +1,14 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
-import org.confluence.mod.common.item.AltImageComponent;
-import org.confluence.mod.common.item.common.BaseAxeItem;
-
-import java.util.Optional;
+import org.confluence.mod.common.item.axe.AxeOfRegrowth;
+import org.confluence.mod.common.item.axe.BaseAxeItem;
+import org.confluence.mod.common.item.axe.LucyTheAxe;
 
 import static org.confluence.mod.common.init.item.ModItems.attributes;
 import static org.confluence.mod.common.init.item.ModItems.unbreakable;
@@ -40,18 +33,6 @@ public class AxeItems {
     public static final DeferredItem<BaseAxeItem> ADAMANTITE_WARAXE = ITEMS.register("adamantite_waraxe", () -> new BaseAxeItem(ModTiers.ADAMANTITE, 21, 2.0F, unbreakable(), attributes(0, 0.7), ModRarity.LIGHT_RED).hasImage());
     public static final DeferredItem<BaseAxeItem> TITANIUM_WARAXE = ITEMS.register("titanium_waraxe", () -> new BaseAxeItem(ModTiers.TITANIUM, 23, 2.0F, unbreakable(), attributes(0, 0.475), ModRarity.LIGHT_RED).hasImage());
     public static final DeferredItem<BaseAxeItem> CHLOROPHYTE_GREATAXE = ITEMS.register("chlorophyte_greataxe", () -> new BaseAxeItem(ModTiers.CHLOROPHYTE, 26, 2.5F, unbreakable(), attributes(1, 0.7), ModRarity.LIME));
-    public static final DeferredItem<BaseAxeItem> LUCY_THE_AXE = ITEMS.register("lucy_the_axe", () -> new BaseAxeItem(Tiers.IRON, 11, 4, unbreakable(), attributes(0, 0.5), ModRarity.GREEN));
-
-    public static final DeferredItem<Item> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", () -> new Item(new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN).component(DataComponents.ATTRIBUTE_MODIFIERS, DiggerItem.createAttributes(ModTiers.PLATINUM, (3 - ModTiers.PLATINUM.getAttackDamageBonus() - 1), 1 - 4))) {
-        private TooltipComponent component;
-
-        @Override
-        public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-            if (component == null) {
-                this.component = AltImageComponent.of(stack.getItem());
-            }
-            return Optional.of(component);
-        }
-    }); // 再生法杖
-    public static final DeferredItem<BaseAxeItem> AXE_OF_REGROWTH = ITEMS.register("axe_of_regrowth", () -> new BaseAxeItem(ModTiers.PLATINUM, 7, 1f, unbreakable(), ModRarity.LIGHT_RED)); // 再生之斧
+    public static final DeferredItem<BaseAxeItem> LUCY_THE_AXE = ITEMS.register("lucy_the_axe", LucyTheAxe::new);
+    public static final DeferredItem<AxeOfRegrowth> AXE_OF_REGROWTH = ITEMS.register("axe_of_regrowth", AxeOfRegrowth::new); // 再生之斧
 }

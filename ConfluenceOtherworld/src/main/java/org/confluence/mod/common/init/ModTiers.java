@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init;
 
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -12,13 +11,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.SimpleTier;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-/**
- * <a href="https://terraria.wiki.gg/zh/wiki/%E9%95%90">镐的Terraria Wiki页面</a> <p>
- */
+/// [镐的Terraria Wiki页面](https://terraria.wiki.gg/zh/wiki/%E9%95%90)
 public final class ModTiers {
     public static final Tier CACTUS = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL, 220, 4, 1, 4, () -> Ingredient.of(Items.CACTUS));
     public static final Tier COPPER = new PoweredTier(35, ModTags.Blocks.NEEDS_2_LEVEL, 250, 4, 1, 5, () -> Ingredient.of(Items.COPPER_INGOT));
@@ -56,9 +52,7 @@ public final class ModTiers {
     // 给一些无限耐久的物品使用的
     public static final Tier UNBREAKABLE = new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, 10000, 4, 1, 18, Ingredient::of);
 
-    /**
-     * @return 原版Tiers的对应镐力
-     */
+    /// @return 原版Tiers的对应镐力
     public static int getPowerForVanillaTiers(Tiers tiers) {
         return switch (tiers) {
             case WOOD -> 35;
@@ -70,40 +64,38 @@ public final class ModTiers {
         };
     }
 
-    /**
-     * 镐力 ======================= 等级 <p>
-     * 全都能挖，比如丛林蜥蜴砖 <p>
-     * 201 ======================= 9 <p>
-     * 200 神圣 <p>
-     * 191 ======================= 8 <p>
-     * 190 钛金 <p>
-     * 180 精金 <p>
-     * 165 山铜 <p>
-     * 150 秘银 <p>
-     * 131 ======================= 7 <p>
-     * 130 钯金 <p>
-     * 110 钴 <p>
-     * 101 ======================= 6 <p>
-     * 100 狱石 <p>
-     * 90 下界合金 <p>
-     * 71 ======================== 5 <p>
-     * 70 猩红<p>
-     * 65 腐化 <p>
-     * 60 ======================== 4 <p>
-     * 59 铂金、骨镐、掠夺鲨、钻石 <p>
-     * 55 金（升级）、糖棒、化石 <p>
-     * 51 ======================== 3 <p>
-     * 50 钨 <p>
-     * 46 ======================== 2 <p>
-     * 45 银 <p>
-     * 43 铅 <p>
-     * 40 铁 <p>
-     * 39 金（原版） <p>
-     * 38 石 <p>
-     * 35 木、铜、锡 <p>
-     * 34 ======================== 1 <p>
-     * 什么也挖不了
-     */
+    /// 镐力 ======================= 等级
+    /// 全都能挖，比如丛林蜥蜴砖
+    /// 201 ======================= 9
+    /// 200 神圣
+    /// 191 ======================= 8
+    /// 190 钛金
+    /// 180 精金
+    /// 165 山铜
+    /// 150 秘银
+    /// 131 ======================= 7
+    /// 130 钯金
+    /// 110 钴
+    /// 101 ======================= 6
+    /// 100 狱石
+    /// 90 下界合金
+    /// 71 ======================== 5
+    /// 70 猩红
+    /// 65 腐化
+    /// 60 ======================== 4
+    /// 59 铂金、骨镐、掠夺鲨、钻石
+    /// 55 金（升级）、糖棒、化石
+    /// 51 ======================== 3
+    /// 50 钨
+    /// 46 ======================== 2
+    /// 45 银
+    /// 43 铅
+    /// 40 铁
+    /// 39 金（原版）
+    /// 38 石
+    /// 35 木、铜、锡
+    /// 34 ======================== 1
+    /// 什么也挖不了
     public static boolean isCorrectToolForDrops(int power, ItemStack pickaxeItem, BlockState blockState) {
         if (!blockState.requiresCorrectToolForDrops()) return true;
         if (!pickaxeItem.isCorrectToolForDrops(blockState)) return false;
@@ -122,15 +114,13 @@ public final class ModTiers {
     public static class PoweredTier extends SimpleTier {
         private final int power;
 
-        /**
-         * @param power                   镐力
-         * @param incorrectBlocksForDrops 不能挖的方块，请参照这个{@link BlockTags#INCORRECT_FOR_WOODEN_TOOL}。
-         * @param uses                    耐久
-         * @param speed                   挖掘速度（挖不正确的方块速度为1）
-         * @param attackDamageBonus       攻击伤害加成
-         * @param enchantmentValue        附魔能力
-         * @param repairIngredient        修复材料
-         */
+        /// @param power                   镐力
+        /// @param incorrectBlocksForDrops 不能挖的方块，请参照这个[#INCORRECT_FOR_WOODEN_TOOL]。
+        /// @param uses                    耐久
+        /// @param speed                   挖掘速度（挖不正确的方块速度为1）
+        /// @param attackDamageBonus       攻击伤害加成
+        /// @param enchantmentValue        附魔能力
+        /// @param repairIngredient        修复材料
         public PoweredTier(int power, TagKey<Block> incorrectBlocksForDrops, int uses, float speed, float attackDamageBonus, int enchantmentValue, Supplier<Ingredient> repairIngredient) {
             super(incorrectBlocksForDrops, uses, speed, attackDamageBonus, enchantmentValue, repairIngredient);
             this.power = power;
@@ -141,7 +131,7 @@ public final class ModTiers {
         }
 
         @Override
-        public @NotNull String toString() {
+        public String toString() {
             return "PoweredTier[" +
                     "incorrectBlocksForDrops=" + getIncorrectBlocksForDrops() + ", " +
                     "uses=" + getUses() + ", " +

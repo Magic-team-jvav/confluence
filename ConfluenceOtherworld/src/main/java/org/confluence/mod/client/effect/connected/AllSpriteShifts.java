@@ -28,6 +28,7 @@ public class AllSpriteShifts {
     public static final CTSpriteShiftEntry CHISELED_PALM_PLANKS = vertical("chiseled_palm_planks");
     public static final CTSpriteShiftEntry GRANITE_COLUMN = vertical("granite_column");
     public static final CTSpriteShiftEntry MARBLE_COLUMN = vertical("marble_column");
+    public static final CTSpriteShiftEntry SOUL_GLASS = omni("soul_glass");
 
     public static final CTSpriteShiftEntry WHITE_PAPER_PANE = omni("white_paper_pane");
     public static final CTSpriteShiftEntry WHITE_PAPER_PANE_LAMP = omni("white_paper_pane_lamp");

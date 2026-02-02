@@ -1,36 +1,24 @@
 package org.confluence.mod.util;
 
-import com.nlf.calendar.Lunar;
+import com.google.common.base.Joiner;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import org.confluence.lib.util.LibDateUtils;
+import org.confluence.mod.api.lunar.Lunar;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Calendar;
 import java.util.Date;
 
 public final class DateUtils {
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static final int _00$00 = LibDateUtils._00$00;
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static final int _04$30 = LibDateUtils._04$30;
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static final int _06$00 = LibDateUtils._06$00;
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static final int _19$30 = LibDateUtils._19$30;
-
     private static long lastCacheTime = 0;
     private static final Calendar calendar = Calendar.getInstance();
     private static Lunar lunar;
+
+    private static String yi = "无";
+    private static String ji = "无";
 
     public static Calendar getCalendar() {
         updateTime();
@@ -50,11 +38,26 @@ public final class DateUtils {
         if (lunar == null) {
             calendar.setTimeInMillis(lastCacheTime);
             lunar = new Lunar(new Date(lastCacheTime));
+            Joiner joiner = Joiner.on("，");
+            yi = joiner.join(lunar.getDayYi());
+            ji = joiner.join(lunar.getDayJi());
         }
+    }
+
+    public static String getYi() {
+        return yi;
+    }
+
+    public static String getJi() {
+        return ji;
     }
 
     public static boolean isXinNian(Lunar lunar) {
         return lunar.getMonth() == 1 && lunar.getDay() <= 15;
+    }
+
+    public static boolean isYuanXiao(Lunar lunar) {
+        return lunar.getMonth() == 1 && lunar.getDay() == 15;
     }
 
     public static boolean isQingMing(Lunar lunar) {
@@ -81,68 +84,44 @@ public final class DateUtils {
 
     public static Item getHolidayGift(RandomSource random) {
         Lunar lunar = getLunar();
-        if (isXinNian(lunar)) return ConsumableItems.RED_ENVELOPE.get();
-        if (isDuanWu(lunar)) return random.nextBoolean() ? FoodItems.ZONGZI.get() : FoodItems.MEAT_STUFFED_ZONGZI.get();
-        if (isZhongQiu(lunar)) return FoodItems.EGG_YOLK_MOONCAKES.get();
+        if (isXinNian(lunar)) {
+            return ConsumableItems.RED_ENVELOPE.get();
+        }
+        if (isDuanWu(lunar)) {
+            return random.nextBoolean() ? FoodItems.ZONGZI.get() : FoodItems.MEAT_STUFFED_ZONGZI.get();
+        }
+        if (isZhongQiu(lunar)) {
+            return FoodItems.EGG_YOLK_MOONCAKES.get();
+        }
         Calendar calendar = getCalendar();
-        if (isHalloween(calendar)) return ConsumableItems.GOODIE_BAG.get();
-        if (isChristmas(calendar)) return ConsumableItems.CHRISTMAS_GIFT.get();
+        if (isHalloween(calendar)) {
+            return ConsumableItems.GOODIE_BAG.get();
+        }
+        if (isChristmas(calendar)) {
+            return ConsumableItems.CHRISTMAS_GIFT.get();
+        }
         return Items.AIR;
     }
 
     public static Item getHeartItem() {
         Calendar calendar = getCalendar();
-        if (isHalloween(calendar)) return ModItems.CANDY_APPLE.get();
-        if (isChristmas(calendar)) return ModItems.CANDY_CANE.get();
+        if (isHalloween(calendar)) {
+            return ModItems.CANDY_APPLE.get();
+        }
+        if (isChristmas(calendar)) {
+            return ModItems.CANDY_CANE.get();
+        }
         return ModItems.HEART.get();
     }
 
     public static Item getStarItem() {
         Calendar calendar = getCalendar();
-        if (isHalloween(calendar)) return ModItems.SOUL_CAKE.get();
-        if (isChristmas(calendar)) return ModItems.SUGAR_PLUM.get();
+        if (isHalloween(calendar)) {
+            return ModItems.SOUL_CAKE.get();
+        }
+        if (isChristmas(calendar)) {
+            return ModItems.SUGAR_PLUM.get();
+        }
         return ModItems.STAR.get();
-    }
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static int getDayTime(Level level) {
-        return LibDateUtils.getDayTime(level);
-    }
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static int getDayTime(long dayTime) {
-        return LibDateUtils.getDayTime(dayTime);
-    }
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static int getDayTime(int hour, int minute) {
-        return LibDateUtils.getDayTime(hour, minute);
-    }
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean isWithinDayTime(int start, int end, int dayTime) {
-        return LibDateUtils.isWithinDayTime(start, end, dayTime);
-    }
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, int dayTime) {
-        return LibDateUtils.isWithinDayTime(startHour, startMinute, endHour, endMinute, dayTime);
-    }
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean isDay(int dayTime) {
-        return LibDateUtils.isDay(dayTime);
-    }
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    public static boolean isNight(int dayTime) {
-        return LibDateUtils.isNight(dayTime);
     }
 }

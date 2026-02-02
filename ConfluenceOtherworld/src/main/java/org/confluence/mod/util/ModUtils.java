@@ -1,7 +1,5 @@
 package org.confluence.mod.util;
 
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -59,6 +57,7 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
+import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -121,6 +120,9 @@ public final class ModUtils {
         double x = pos.getX() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
         double z = pos.getZ() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
         double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
+        if (Math.abs(pos.getY() - y) > 50) {
+            y = pos.getY();
+        }
         boss.setPos(x, y, z);
         if (TEUtils.internalSpawnEntity(boss, level)) {
             level.addFreshEntityWithPassengers(boss);
@@ -156,7 +158,7 @@ public final class ModUtils {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
             }
         }
-        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentInstanceManager.of(level).hasMoment(TMMoments.SLIME_RAIN.getKey());
+        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
         boolean is$WallOrHill$OfFlesh = type == TEBossEntities.WALL_OF_FLESH.get() || type == TEBossEntities.HILL_OF_FLESH.get();
         ResourceKey<Level> dimension = living.level().dimension();
         level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
@@ -248,7 +250,8 @@ public final class ModUtils {
 
     public static boolean canHitEntity(@Nullable Entity target, @Nullable Entity owner) {
         if (target == null || target.isRemoved()) return false; // 有模组把target写成了null
-        if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand) return false;
+        if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand)
+            return false;
         return owner == null || (!owner.isPassengerOfSameVehicle(target)/* && !target.skipAttackInteraction(owner)*/);
     }
 
@@ -271,16 +274,18 @@ public final class ModUtils {
         }
         copper = price;
         MutableComponent cmp = Component.empty();
-        if (platinum > 0) cmp.append(Component.literal(platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
-        if (gold > 0) cmp.append(Component.literal(gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
-        if (silver > 0) cmp.append(Component.literal(silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
-        if (copper > 0) cmp.append(Component.literal(copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
+        if (platinum > 0)
+            cmp.append(Component.literal(platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
+        if (gold > 0)
+            cmp.append(Component.literal(gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
+        if (silver > 0)
+            cmp.append(Component.literal(silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
+        if (copper > 0)
+            cmp.append(Component.literal(copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
         return cmp;
     }
 
-    /**
-     * 不可破坏物品无法附魔耐久与经验修补
-     */
+    /// 不可破坏物品无法附魔耐久与经验修补
     public static boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
         boolean supportedItem = stack.is(enchantment.value().definition().supportedItems());
         if (stack.has(DataComponents.UNBREAKABLE)) {
@@ -289,15 +294,15 @@ public final class ModUtils {
         return supportedItem;
     }
 
-    /**
-     * 由于暮色森林使原版的该方法会访问区块，于是复制一份来用
-     *
-     * @see Level#isRainingAt(BlockPos)
-     */
+    /// 由于暮色森林使原版的该方法会访问区块，于是复制一份来用
+    ///
+    /// @see Level#isRainingAt(BlockPos)
     public static boolean isRainingAt(Level level, BlockPos pos) {
         if (!level.isRaining()) return false;
         if (!level.canSeeSky(pos)) return false;
-        if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()) return false;
+        if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()) {
+            return false;
+        }
         return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
     }
 
@@ -307,9 +312,7 @@ public final class ModUtils {
         }
     }
 
-    /**
-     * 铁砧是否能强制合并两个相同物品
-     */
+    /// 铁砧是否能强制合并两个相同物品
     public static boolean couldAnvilForceMerge(ItemStack itemStack) {
         return isFromConfluence(BuiltInRegistries.ITEM, itemStack.getItem());
     }
@@ -363,9 +366,7 @@ public final class ModUtils {
         });
     }
 
-    /**
-     * 决定护士是否能治疗
-     */
+    /// 决定护士是否能治疗
     public static boolean isDebuff(MobEffectInstance instance) {
         return instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && !instance.getCures().contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
     }

@@ -26,6 +26,7 @@ import net.neoforged.neoforge.common.TranslatableEnum;
 import net.neoforged.neoforge.resource.ContextAwareReloadListener;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryFilterEvent;
+import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -209,11 +210,12 @@ public class ClientBestiary extends ContextAwareReloadListener {
 
     // 玩家进入存档统一同步
     // 随后只需更新部分实体
-    public void handle(Either<Map<String, BestiaryEntry>, String> either) {
+    public void handle(Level level, Either<Map<String, BestiaryEntry>, String> either) {
         either.ifLeft(map -> {
             boolean shouldCount = false;
             for (Map.Entry<String, BestiaryEntry> entry : map.entrySet()) {
                 BestiaryEntry be = entry.getValue();
+                if (!Bestiary.isAvailableType(be.type, level)) continue;
                 ClientBestiaryEntry cbe = entries.computeIfAbsent(entry.getKey(), key -> {
                     ClientBestiaryEntry unknown = new ClientBestiaryEntry();
                     unknown.type = be.type;

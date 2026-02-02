@@ -50,8 +50,8 @@ public class QueenBeeHiveStructure extends Structure {
             BlockPos.MutableBlockPos pillarEndPos = centerPos.mutable();
             BlockPos.MutableBlockPos pillarStartPos = centerPos.mutable();
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
-            double r1 = ((double) random.nextInt(360) / 180) * Math.PI;
-            double r2 = ((double) random.nextInt(30) + 165) / 180 * Math.PI + r1;
+            double r1 = (double) random.nextInt(360) * Mth.DEG_TO_RAD;
+            double r2 = ((double) random.nextInt(30) + 165) * Mth.DEG_TO_RAD + r1;
             float chance;
 
             BlockPos hight1 = new BlockPos(Mth.floor(radius * Math.sin(r1)), centerPos.getY(), Mth.floor(radius * Math.cos(r1)));

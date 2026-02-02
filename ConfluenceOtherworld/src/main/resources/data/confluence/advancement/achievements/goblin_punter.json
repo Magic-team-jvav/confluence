@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "terra_moment:goblin_battle_standard"
+            "id": "confluence:goblin_battle_standard"
         },
         "title": {
             "translate": "achievements.confluence.goblin_punter.title"

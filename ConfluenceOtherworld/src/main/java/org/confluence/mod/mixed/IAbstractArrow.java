@@ -11,4 +11,12 @@ public interface IAbstractArrow extends IExtraSyncedData<AbstractArrow> {
     static IAbstractArrow of(AbstractArrow arrow) {
         return (IAbstractArrow) arrow;
     }
+
+    boolean confluence$isDamageNotAffectedBySpeedBonus();
+
+    void confluence$setDamageNotAffectedBySpeedBonus(boolean is);
+
+    boolean confluence$isDisappearingOnGround();
+
+    void confluence$setDisappearingOnGround(boolean confluence$isDisappearingOnGround);
 }

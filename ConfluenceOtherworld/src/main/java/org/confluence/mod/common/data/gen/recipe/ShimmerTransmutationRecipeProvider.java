@@ -24,6 +24,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.terraentity.init.item.TESummonItems;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -218,13 +219,14 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, Items.DIAMOND, MaterialItems.RUBY);
         item(recipeOutput, "cobblestone_from_amethyst", addItem(MaterialItems.AMETHYST, Items.COBBLESTONE));
         // 锭到矿的转化
-        item(recipeOutput, "raw_titanium_from_ingot", addItem(MaterialItems.TITANIUM_INGOT, MaterialItems.RAW_TITANIUM));
-        item(recipeOutput, "raw_adamantite_from_ingot", addItem(MaterialItems.ADAMANTITE_INGOT, MaterialItems.RAW_ADAMANTITE));
-        item(recipeOutput, "raw_orichalcum_from_ingot", addItem(MaterialItems.ORICHALCUM_INGOT, MaterialItems.RAW_ORICHALCUM));
-        item(recipeOutput, "raw_mythril_from_ingot", addItem(MaterialItems.MYTHRIL_INGOT, MaterialItems.RAW_MYTHRIL));
-        item(recipeOutput, "raw_palladium_from_ingot", addItem(MaterialItems.PALLADIUM_INGOT, MaterialItems.RAW_PALLADIUM));
-        item(recipeOutput, "raw_cobalt_from_ingot", addItem(MaterialItems.COBALT_INGOT, MaterialItems.RAW_COBALT));
-        item(recipeOutput, MaterialItems.HELLSTONE_INGOT, MaterialItems.RAW_HELLSTONE);
+        item(recipeOutput, "raw_chlorophyte_from_ingot", addItem(Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_CHLOROPHYTE.get().asItem(), 5)),1));
+        item(recipeOutput, "raw_titanium_from_ingot", addItem(Ingredient.of(MaterialItems.TITANIUM_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_TITANIUM.get().asItem(), 4)),1));
+        item(recipeOutput, "raw_adamantite_from_ingot", addItem(Ingredient.of(MaterialItems.ADAMANTITE_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_ADAMANTITE.get().asItem(), 4)),1));
+        item(recipeOutput, "raw_orichalcum_from_ingot", addItem(Ingredient.of(MaterialItems.ORICHALCUM_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_ORICHALCUM.get().asItem(), 4)),1));
+        item(recipeOutput, "raw_mythril_from_ingot", addItem(Ingredient.of(MaterialItems.MYTHRIL_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_MYTHRIL.get().asItem(), 4)),1));
+        item(recipeOutput, "raw_palladium_from_ingot", addItem(Ingredient.of(MaterialItems.PALLADIUM_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_PALLADIUM.get().asItem(), 3)),1));
+        item(recipeOutput, "raw_cobalt_from_ingot", addItem(Ingredient.of(MaterialItems.COBALT_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_COBALT.get().asItem(), 3)),1));
+        item(recipeOutput, "raw_hellstone_from_ingot", addItem(Ingredient.of(MaterialItems.HELLSTONE_INGOT), Arrays.asList(new ItemStack(MaterialItems.RAW_HELLSTONE.get().asItem(), 3), new ItemStack(Items.OBSIDIAN.asItem(), 1)), 1));
         item(recipeOutput, MaterialItems.CRIMTANE_INGOT, MaterialItems.RAW_CRIMTANE);
         item(recipeOutput, MaterialItems.DEMONITE_INGOT, MaterialItems.RAW_DEMONITE);
         item(recipeOutput, MaterialItems.METEORITE_INGOT, MaterialItems.RAW_METEORITE);
@@ -286,8 +288,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "ice_from_snow_block", addItem(Blocks.SNOW_BLOCK, Blocks.ICE));
         item(recipeOutput, "blue_ice_from_snow_block", addItem(Blocks.SNOW_BLOCK, Blocks.BLUE_ICE));
         item(recipeOutput, "packed_ice_from_snow_block", addItem(Blocks.SNOW_BLOCK, Blocks.PACKED_ICE));
-        item(recipeOutput, "honey_block_from_jungle_hive", addItem(NatureBlocks.JUNGLE_HIVE_BLOCK, Blocks.HONEY_BLOCK));
-        item(recipeOutput, "crispy_honey_block_from_jungle_hive", addItem(NatureBlocks.JUNGLE_HIVE_BLOCK, DecorativeBlocks.CRISPY_HONEY_BLOCK));
+        item(recipeOutput, "jungle_hive_from_honey_block", addItem(Blocks.HONEY_BLOCK, NatureBlocks.JUNGLE_HIVE_BLOCK));
+        item(recipeOutput, "jungle_hive_from_crispy_honey_block", addItem(DecorativeBlocks.CRISPY_HONEY_BLOCK,NatureBlocks.JUNGLE_HIVE_BLOCK));
         item(recipeOutput, Blocks.PUMPKIN, Blocks.CACTUS);
         item(recipeOutput, Blocks.CACTUS, Blocks.PUMPKIN);
         item(recipeOutput, "acacia_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.ACACIA_LOG));

@@ -35,9 +35,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-/**
- * 用于维度补丁模组
- */
+/// 用于维度补丁模组
 public final class OverworldUtils {
     public static ResourceKey<Level> dimension() {
         return Level.OVERWORLD;
@@ -105,42 +103,33 @@ public final class OverworldUtils {
         return original.call(instance, blockPos, blockState, i);
     }
 
+    /// 获取主世界
     public static ServerLevel getLevel(MinecraftServer server) {
         return server.getLevel(dimension());
     }
 
-    /**
-     * default 320
-     */
+    /// default 320
     public static int getUltraY() {
         return 320;
     }
 
-    /**
-     * default 260
-     */
+    /// default 260
     public static int getSpaceY() {
         return 260;
     }
 
-    /**
-     * default 40
-     */
+    /// default 40
     public static int getSurfaceY() {
         return 40;
     }
 
-    /**
-     * default 0
-     */
+    /// default 0
     public static int getUndergroundY() {
         return 0;
     }
 
-    /**
-     * default -64
-     */
+    /// default -64
     public static int getCaveY() {
-        return -64;
+        return -60;
     }
 }

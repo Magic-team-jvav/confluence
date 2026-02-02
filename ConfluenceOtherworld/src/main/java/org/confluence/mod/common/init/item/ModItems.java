@@ -2,18 +2,25 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.component.Unbreakable;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -27,6 +34,8 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sponsor.*;
+import org.confluence.mod.integration.sodium.iris.IrisHelper;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.jetbrains.annotations.NotNull;
 
@@ -115,18 +124,29 @@ public final class ModItems {
     )));
     public static final DeferredItem<GrassSeedItem> ASH_GRASS_SEED = ITEMS.register("ash_grass_seed", () -> new GrassSeedItem(Map.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get())));
 
-    public static final DeferredItem<BlockItem> CATTAILS = BLOCK_ITEMS.register("cattails", () -> new BlockItem(NatureBlocks.CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> JUNGLE_CATTAILS = BLOCK_ITEMS.register("jungle_cattails", () -> new BlockItem(NatureBlocks.JUNGLE_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> GLOWING_MUSHROOM_CATTAILS = BLOCK_ITEMS.register("glowing_mushroom_cattails", () -> new BlockItem(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> HALLOW_CATTAILS = BLOCK_ITEMS.register("hallow_cattails", () -> new BlockItem(NatureBlocks.HALLOW_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> EBONY_CATTAILS = BLOCK_ITEMS.register("ebony_cattails", () -> new BlockItem(NatureBlocks.EBONY_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> CRIMSON_CATTAILS = BLOCK_ITEMS.register("crimson_cattails", () -> new BlockItem(NatureBlocks.CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> CATTAIL = BLOCK_ITEMS.register("cattail", () -> new BlockItem(NatureBlocks.CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> JUNGLE_CATTAIL = BLOCK_ITEMS.register("jungle_cattail", () -> new BlockItem(NatureBlocks.JUNGLE_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> GLOWING_MUSHROOM_CATTAIL = BLOCK_ITEMS.register("glowing_mushroom_cattail", () -> new BlockItem(NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> HALLOW_CATTAIL = BLOCK_ITEMS.register("hallow_cattail", () -> new BlockItem(NatureBlocks.HALLOW_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> EBONY_CATTAIL = BLOCK_ITEMS.register("ebony_cattail", () -> new BlockItem(NatureBlocks.EBONY_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> CRIMSON_CATTAIL = BLOCK_ITEMS.register("crimson_cattail", () -> new BlockItem(NatureBlocks.CRIMSON_CATTAIL_BLOCK.get(), new Item.Properties().stacksTo(64)));
 
     public static final DeferredItem<BlockPlacingWandItem> LIVING_WOOD_WAND = ITEMS.register("living_wood_wand", () -> new BlockPlacingWandItem(BlockTags.LOGS, NatureBlocks.LIVING_LOG_BLOCKS.LOG.get()));
     public static final DeferredItem<BlockPlacingWandItem> LEAF_WAND = ITEMS.register("leaf_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_LOG_BLOCKS.LEAVES.get()));
     public static final DeferredItem<BlockPlacingWandItem> LIVING_MAHOGANY_WAND = ITEMS.register("living_mahogany_wand", () -> new BlockPlacingWandItem(BlockTags.LOGS, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.LOG.get()));
     public static final DeferredItem<BlockPlacingWandItem> RICH_MAHOGANY_LEAF_WAND = ITEMS.register("rich_mahogany_leaf_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.LEAVES.get()));
     public static final DeferredItem<BlockPlacingWandItem> HIVE_WAND = ITEMS.register("hive_wand", () -> new BlockPlacingWandItem(null, NatureBlocks.JUNGLE_HIVE_BLOCK.get(), (context, state) -> state.setValue(JungleHiveBlock.NATURAL, true)));
+
+    public static final DeferredItem<Item> HUANG_LI = HIDDEN.register("huang_li", () -> new Item(new Item.Properties()) {
+        @Override
+        public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+            if (level.isClientSide) {
+                player.displayClientMessage(Component.literal("今日宜：" + DateUtils.getYi()).withStyle(ChatFormatting.GOLD), false);
+                player.displayClientMessage(Component.literal("今日忌：" + DateUtils.getJi()).withStyle(ChatFormatting.GRAY), false);
+            }
+            return InteractionResultHolder.success(player.getItemInHand(usedHand));
+        }
+    });
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
@@ -141,13 +161,16 @@ public final class ModItems {
         BowItems.ITEMS.register(eventBus);
         ChainsawItems.ITEMS.register(eventBus);
         ConsumableItems.ITEMS.register(eventBus);
+        CrossbowItems.ITEMS.register(eventBus);
         DrillItems.ITEMS.register(eventBus);
         FishingPoleItems.ITEMS.register(eventBus);
         FlailItems.ITEMS.register(eventBus);
         FoodItems.ITEMS.register(eventBus);
+        GunItems.ITEMS.register(eventBus);
         HamaxeItems.ITEMS.register(eventBus);
-        HoeShovelItems.ITEMS.register(eventBus);
         HammerItems.ITEMS.register(eventBus);
+        HoeItems.ITEMS.register(eventBus);
+        HoeShovelItems.ITEMS.register(eventBus);
         HookItems.ITEMS.register(eventBus);
         IconItems.ITEMS.register(eventBus);
         LanceItems.ITEMS.register(eventBus);
@@ -158,16 +181,18 @@ public final class ModItems {
         PaintItems.ITEMS.register(eventBus);
         PickaxeAxeItems.ITEMS.register(eventBus);
         PickaxeItems.ITEMS.register(eventBus);
-        HoeItems.ITEMS.register(eventBus);
-        ShovelItems.ITEMS.register(eventBus);
-        SpearItems.ITEMS.register(eventBus);
         PotionItems.ITEMS.register(eventBus);
         QuestedFishes.ITEMS.register(eventBus);
+        ShovelItems.ITEMS.register(eventBus);
+        SpearItems.ITEMS.register(eventBus);
         SwordItems.ITEMS.register(eventBus);
         ToolItems.ITEMS.register(eventBus);
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
-        GunItems.ITEMS.register(eventBus);
+
+        if (LoadingModList.get().getModFileById("iris") != null) {
+            IrisHelper.register(HIDDEN);
+        }
     }
 
     public static Item.@NotNull Properties unbreakable() {

@@ -20,15 +20,22 @@ public interface IMinecraftServer {
         return confluence$matchesSecretFlag(secretSeed.getFlag());
     }
 
-    /**
-     * 单人模式与多人模式通用
-     */
+    default boolean confluence$equalsSecretFlag(long flag) {
+        return equalsSecretFlag(confluence$getSecretFlag(), flag);
+    }
+
+    /// 单人模式与多人模式通用
     static boolean matchesSecretFlag(@NotNull MinecraftServer server, long flag) {
         return IMinecraftServer.of(server).confluence$matchesSecretFlag(flag);
     }
 
     static boolean matchesSecretFlag(long secretFlag, long flag) {
         return (secretFlag & flag) != 0;
+    }
+
+    /// 用于复数位的flag
+    static boolean equalsSecretFlag(long secretFlag, long flag) {
+        return (secretFlag & flag) == flag;
     }
 
     static boolean matchesSecretFlag(long flag) {
@@ -39,6 +46,7 @@ public interface IMinecraftServer {
         return server != null && matchesSecretFlag(server, flag);
     }
 
+    /// @see org.confluence.mod.common.data.saved.GamePhase#isHardmode
     static boolean isHardmode(MinecraftServer server) {
         return IMinecraftServer.of(server).confluence$matchesSecretFlag(IWorldOptions.HARDMODE);
     }

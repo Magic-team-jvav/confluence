@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Axis;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -22,18 +23,19 @@ import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.FishingRodItem;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
@@ -41,18 +43,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.IItemDecorator;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
+import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.client.renderer.item.MutableRenderTypeItemExtension;
@@ -61,22 +67,22 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.BowItems;
-import org.confluence.mod.common.init.item.FishingPoleItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.waystones.PylonBlock;
 import org.confluence.mod.integration.waystones.PylonModel;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.mixed.IPlayer;
-import org.confluence.mod.util.ClientUtils;
+import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -162,6 +168,39 @@ public final class ModClientSetups {
     static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW::getValue);
     static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
+    static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && player.getInventory().getSelected() == itemStack) {
+            ItemStack stack = IPlayer.of(player).confluence$getCurrentBait();
+            if (!stack.isEmpty()) {
+                PoseStack pose = guiGraphics.pose();
+                pose.pushPose();
+                pose.translate(x + 8, y + 8, 100);
+                pose.scale(0.5F, 0.5F, 0.5F);
+                guiGraphics.renderItem(stack, 0, 0);
+                pose.popPose();
+            }
+        }
+        return false;
+    };
+    static final IItemDecorator REPEATER_AMMO = (guiGraphics, font, itemStack, x, y) -> {
+        if (itemStack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
+            Iterator<ItemStack> itemIterator = handler.getAllItemIterator();
+            if (itemIterator.hasNext()) {
+                ItemStack stack = itemIterator.next();
+                if (!stack.isEmpty()) {
+                    PoseStack pose = guiGraphics.pose();
+                    pose.pushPose();
+                    pose.translate(x + 8, y + 8, 100);
+                    pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
+                    pose.translate(-7, -9, 0);
+                    guiGraphics.renderItem(stack, 0, 0);
+                    pose.popPose();
+                }
+            }
+        }
+        return false;
+    };
 
     private static IClientItemExtensions simpleArmPose(Supplier<HumanoidModel.ArmPose> supplier) {
         return new IClientItemExtensions() {
@@ -172,34 +211,18 @@ public final class ModClientSetups {
         };
     }
 
-    static final IClientItemExtensions NOOP_ITEM = new IClientItemExtensions() {
-        private BlockEntityWithoutLevelRenderer renderer;
-
-        @Override
-        public boolean applyForgeHandTransform(PoseStack poseStack, LocalPlayer player, HumanoidArm arm, ItemStack itemInHand, float partialTick, float equipProcess, float swingProcess) {
-            return true;
-        }
-
-        @Override
-        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-            return HumanoidModel.ArmPose.EMPTY;
-        }
-
-        @Override
-        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-            if (renderer == null) {
-                Minecraft minecraft = Minecraft.getInstance();
-                this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
-                    @Override
-                    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {}
-                };
-            }
-            return renderer;
-        }
-    };
+    static final IClientItemExtensions NOOP_ITEM = new SimpleClientItemExtensions().handTransform(true).armPose(HumanoidModel.ArmPose.EMPTY).noRenderer();
     static final IClientItemExtensions GUIDE_VOODOO_DOLL = new MutableRenderTypeItemExtension(stack -> GuideVooDooDollItem.isWall(LibUtils.getItemStackNbtIfPresent(stack)) ? ModClientSetups.GLINT_FF0000.renderType() : RenderType.glint());
     static final IClientItemExtensions GLINT_RAINBOW_EXTENSIONS = new MutableRenderTypeItemExtension(stack -> ModClientSetups.GLINT_RAINBOW.renderType());
     static final IClientItemExtensions FULL_LIGHT = new CustomLightItemExtension(15);
+
+    /// 对于使用原版json模型，且使用了Extensions来自定义渲染的物品，需使用该方法标记为自定义模型
+    static void asCustomModel(Map<ModelResourceLocation, BakedModel> modelRegistry, DeferredHolder<?, ?>... deferredItems) {
+        for (DeferredHolder<?, ?> holder : deferredItems) {
+            modelRegistry.compute(ModelResourceLocation.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model));
+        }
+    }
+
     static final IClientMobEffectExtensions TRANSLUCENT_EFFECT_ICON = new IClientMobEffectExtensions() {
         @Override
         public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
@@ -226,17 +249,6 @@ public final class ModClientSetups {
             if (m <= 8) return IntegerRGB.HALLOW_B.mixture(IntegerRGB.HALLOW_C, (m - 4) * 0.25F);
             return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
         }
-    };
-
-    static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null && player.getInventory().getSelected() == itemStack) {
-            ItemStack bait = IPlayer.of(player).confluence$getCurrentBait();
-            if (!bait.isEmpty()) {
-                ClientUtils.renderBait(guiGraphics, bait, x, y);
-            }
-        }
-        return false;
     };
 
     static boolean guideCheckedJEI = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");
@@ -324,9 +336,26 @@ public final class ModClientSetups {
         ClampedItemPropertyFunction bowPulling = (itemStack, clientLevel, living, speed) -> living != null && living.isUsingItem() && living.getUseItem() == itemStack ? 1.0F : 0.0F;
 
         BowItems.ITEMS.getEntries().forEach(item -> {
-            if (item.get() instanceof ShortBowItem) ItemProperties.register(item.get(), pull, shortBowPull);
-            else ItemProperties.register(item.get(), pull, bowPull);
+            if (item.get() instanceof ShortBowItem) {
+                ItemProperties.register(item.get(), pull, shortBowPull);
+            } else {
+                ItemProperties.register(item.get(), pull, bowPull);
+            }
             ItemProperties.register(item.get(), pulling, bowPulling);
+        });
+
+        ClampedItemPropertyFunction crossbowPulling = (itemStack, clientLevel, living, speed) -> {
+            if (living == null || (!(itemStack.getItem() instanceof BaseTerraRepeaterItem repeater))) {
+                return 0.0F;
+            }
+            var projectiles = repeater.getHandler(itemStack);
+            if (projectiles != null && !projectiles.isEmpty()) {
+                return 1.0F;
+            }
+            return 0.0F;
+        };
+        CrossbowItems.ITEMS.getEntries().forEach(item -> {
+            ItemProperties.register(item.get(), pulling, crossbowPulling);
         });
     }
 

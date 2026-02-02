@@ -170,4 +170,10 @@ public final class ConfluenceData extends SavedData {
     public int getEvilBrokenCount() {
         return evilBrokenCount;
     }
+
+    public static void updateWind(ServerLevel level) {
+        float factorX = Mth.nextFloat(level.random, -1.0F, 1.0F);
+        float factorZ = Mth.nextFloat(level.random, -1.0F, 1.0F);
+        get(level).setWindSpeed(factorX, factorZ);
+    }
 }

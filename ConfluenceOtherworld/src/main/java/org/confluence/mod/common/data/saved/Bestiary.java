@@ -1,44 +1,65 @@
 package org.confluence.mod.common.data.saved;
 
-import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
+import it.unimi.dsi.fastutil.Hash;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenCustomHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.data.map.PresetBestiaryEntry;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 
 import java.util.Map;
+import java.util.function.Predicate;
 
-public class Bestiary implements IGlobalData {
+public final class Bestiary implements IGlobalData {
     public static final Codec<Map<String, BestiaryEntry>> CODEC = Codec.unboundedMap(Codec.STRING, BestiaryEntry.CODEC);
     public static final Bestiary INSTANCE = new Bestiary();
+    private static final Object2BooleanMap<EntityType<?>> AVAILABLE = new Object2BooleanOpenCustomHashMap<>(new Hash.Strategy<>() {
+        @Override
+        public int hashCode(EntityType<?> o) {
+            return System.identityHashCode(o);
+        }
 
-    private final Map<String, BestiaryEntry> entries = Maps.newHashMap();
+        @Override
+        public boolean equals(EntityType<?> a, EntityType<?> b) {
+            return a == b;
+        }
+    });
+
+    private Map<String, BestiaryEntry> entries = new Object2ObjectOpenHashMap<>();
 
     private Bestiary() {}
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
-        entries.clear();
-        tag.get("entries").orElseEmptyMap().read(CODEC).ifSuccess(entries::putAll);
+    public void decode(CompoundTag tag) {
+        CODEC.parse(NbtOps.INSTANCE, tag.get("entries"))
+                .ifSuccess(result -> this.entries = new Object2ObjectOpenHashMap<>(result));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("entries", CODEC.encodeStart(NbtOps.INSTANCE, entries).result().orElseGet(CompoundTag::new));
+        CODEC.encodeStart(NbtOps.INSTANCE, entries)
+                .ifSuccess(nbt -> tag.put("entries", nbt));
     }
 
     @Override
@@ -56,7 +77,7 @@ public class Bestiary implements IGlobalData {
 
     @Override
     public void clear() {
-        entries.clear();
+        this.entries = new Object2ObjectOpenHashMap<>();
     }
 
     public BestiaryEntry getOrCreateEntry(LivingEntity living) {
@@ -78,7 +99,8 @@ public class Bestiary implements IGlobalData {
     }
 
     public void updateEntry(LivingEntity living, boolean killed) {
-        if (NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled()) return;
+        if (living.level().isClientSide) return;
+        if (!canBeSeenAsBestiaryEntry(living)) return;
 
         BestiaryEntry entry = getOrCreateEntry(living);
         if (killed) entry.killedByCount++;
@@ -87,6 +109,15 @@ public class Bestiary implements IGlobalData {
             BestiarySyncPacketS2C.syncEntry(living);
         } else { // 表示需要初始化
             BestiarySyncPacketS2C.syncEntry(living, entry);
+        }
+
+        if (getUnlockedCount() >= 540) {
+            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+            if (server != null) {
+                for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                    AchievementUtils.awardAchievement(player, "book_worm");
+                }
+            }
         }
     }
 
@@ -97,5 +128,13 @@ public class Bestiary implements IGlobalData {
     private static float getAttributeBaseValue(AttributeMap map, Holder<Attribute> attribute) {
         AttributeInstance instance = map.getInstance(attribute);
         return instance == null ? 0.0F : (float) instance.getBaseValue();
+    }
+
+    public static boolean isAvailableType(EntityType<?> type, Level level) {
+        return AVAILABLE.computeIfAbsent(type, (Predicate<EntityType<?>>) t -> t.create(level) != null);
+    }
+
+    public static boolean canBeSeenAsBestiaryEntry(LivingEntity living) {
+        return isAvailableType(living.getType(), living.level()) && !NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled();
     }
 }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.recipe;
 
-import com.xiaohunao.terra_moment.common.init.TMItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRequirements;
@@ -118,6 +117,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "gold_nugget_from_gold_cooking", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(DecorativeBlocks.MARBLE_BRICKS), DecorativeBlocks.CRACKED_MARBLE_BRICKS.toStack(), 0.1F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(DecorativeBlocks.GRANITE_BRICKS), DecorativeBlocks.CRACKED_GRANITE_BRICKS.toStack(), 0.1F, 200);
 
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.2F, 200);
@@ -135,6 +135,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "glass_from_pearlsand", Ingredient.of(NatureBlocks.PEARLSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
+
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(Items.SOUL_SAND), DecorativeBlocks.SOUL_GLASS.toStack(), 0.1F, 200);
 
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 100);
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 100);
@@ -250,7 +252,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         );
 
         // 哥布林战旗
-        loom(recipeOutput, TMItems.GOBLIN_BATTLE_STANDARD.get().getDefaultInstance(),
+        loom(recipeOutput, ConsumableItems.GOBLIN_BATTLE_STANDARD.toStack(),
                 ShapedRecipePattern.of(Map.of(
                                 '#', AmountIngredient.of(3, MaterialItems.TATTERED_CLOTH),
                                 'b', Ingredient.of(MaterialItems.TATTERED_CLOTH),
@@ -288,6 +290,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, TCItems.ANKH_CHARM.toStack(), Ingredient.of(AccessoryItems.ARMOR_BRACING), Ingredient.of(AccessoryItems.MEDICATED_BANDAGE), Ingredient.of(TCItems.THE_PLAN), Ingredient.of(AccessoryItems.COUNTERCURSE_MANTRA), Ingredient.of(AccessoryItems.REFLECTIVE_SHADES));
         workshop(recipeOutput, AccessoryItems.BAND_OF_STARPOWER.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(TCItems.PANIC_NECKLACE));
         workshop(recipeOutput, TCItems.PANIC_NECKLACE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
+        workshop(recipeOutput, TCItems.CELL_PHONE.toStack(), Ingredient.of(TCItems.PDA), Ingredient.of(ToolItems.ICE_MIRROR));
 
         solidifier(recipeOutput, DecorativeBlocks.BLUE_GEL_BLOCK.toStack(),
                 ShapedRecipePattern.of(Map.of(
@@ -369,6 +372,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         altar(recipeOutput, SwordItems.NIGHTS_EDGE.toStack(), Ingredient.of(SwordItems.BLOOD_BUTCHERER, SwordItems.LIGHTS_BANE), Ingredient.of(SwordItems.MURAMASA), Ingredient.of(SwordItems.BLADE_OF_GRASS), Ingredient.of(SwordItems.VOLCANO));
         altar(recipeOutput, ToolItems.METEOR_COMPASS.toStack(), AmountIngredient.of(4, ModTags.Items.EVIL_INGOT), AmountIngredient.of(4, MaterialItems.FALLING_STAR));
         altar(recipeOutput, ConsumableItems.SLIME_CROWN.toStack(), AmountIngredient.of(20, MaterialItems.GEL), Ingredient.of(VanityArmorItems.GOLD_CROWN, VanityArmorItems.PLATINUM_CROWN));
+        altar(recipeOutput, ConsumableItems.DEER_THING.toStack(), AmountIngredient.of(3, MaterialItems.FLINX_FUR), AmountIngredient.of(5, Ingredient.of(ModTags.Items.EVIL_MATERIAL)));
 
         alchemyTable(recipeOutput, PotionItems.ARCHERY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.LENS), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.SWIFTNESS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.CACTUS));
@@ -427,7 +431,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), emptyDropper);
-        crystalBlock(recipeOutput, ToolItems.WATER_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES));
+        crystalBlock(recipeOutput, FunctionalBlocks.WATER_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES));
 
         hardmodeForge(recipeOutput, MaterialItems.ADAMANTITE_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_ADAMANTITE));
         hardmodeForge(recipeOutput, MaterialItems.TITANIUM_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_TITANIUM));

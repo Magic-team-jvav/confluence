@@ -5,42 +5,28 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 
 import java.util.Locale;
+import java.util.function.Function;
 
 public enum MoonPhase implements StringRepresentable {
-    /**
-     * 满月
-     */
+    /// 满月
     FULL_MOON,
-    /**
-     * 亏凸月
-     */
+    /// 亏凸月
     WANING_GIBBOUS,
-    /**
-     * 下弦月
-     */
+    /// 下弦月
     THIRD_QUARTER,
-    /**
-     * 残月
-     */
+    /// 残月
     WANING_CRESCENT,
-    /**
-     * 新月
-     */
+    /// 新月
     NEW_MOON,
-    /**
-     * 峨嵋月
-     */
+    /// 峨嵋月
     WAXING_CRESCENT,
-    /**
-     * 上弦月
-     */
+    /// 上弦月
     FIRST_QUARTER,
-    /**
-     * 盈凸月
-     */
+    /// 盈凸月
     WAXING_GIBBOUS;
 
-    public static final Codec<MoonPhase> CODEC = StringRepresentable.fromEnum(MoonPhase::values);
+    public static final MoonPhase[] MOON_PHASES = values();
+    public static final Codec<MoonPhase> CODEC = new StringRepresentable.EnumCodec<>(MOON_PHASES, StringRepresentable.createNameLookup(MOON_PHASES, Function.identity()));
 
     @Override
     public String getSerializedName() {
@@ -53,5 +39,9 @@ public enum MoonPhase implements StringRepresentable {
 
     public boolean match(int moonPhase) {
         return moonPhase == ordinal();
+    }
+
+    public static MoonPhase of(Level level) {
+        return MOON_PHASES[level.getMoonPhase()];
     }
 }

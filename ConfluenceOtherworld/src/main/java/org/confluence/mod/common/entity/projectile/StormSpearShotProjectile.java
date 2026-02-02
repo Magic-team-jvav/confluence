@@ -2,7 +2,6 @@ package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
@@ -15,7 +14,6 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.item.spear.StormSpearItem;
-import org.confluence.mod.util.ModUtils;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
@@ -62,11 +60,6 @@ public class StormSpearShotProjectile extends DamageSettableProjectile {
         setPos(offX, offY, offZ);
 
         if (tickCount > 200) discard();
-    }
-
-    @Override
-    protected boolean canHitEntity(Entity target) {
-        return ModUtils.canHitEntity(target, getOwner());
     }
 
     @Override

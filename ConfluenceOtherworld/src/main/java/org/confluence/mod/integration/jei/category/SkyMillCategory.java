@@ -11,6 +11,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -82,5 +83,10 @@ public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillReci
     @Override
     public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<SkyMillRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
         tooltip.addAll(recipe.value().getEnvironment().toDescriptions());
+    }
+
+    @Override
+    public ResourceLocation getRegistryName(RecipeHolder<SkyMillRecipe> recipe) {
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

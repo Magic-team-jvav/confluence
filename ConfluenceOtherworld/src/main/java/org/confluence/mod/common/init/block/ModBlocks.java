@@ -34,6 +34,8 @@ import org.confluence.mod.common.init.item.ModItems;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static net.minecraft.world.level.block.Blocks.STONE;
+
 public final class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
@@ -64,7 +66,7 @@ public final class ModBlocks {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BaseHerbBlock.BEntity>> HERBS_ENTITY = BLOCK_ENTITIES.register("herbs_entity", () -> BlockEntityType.Builder.of(BaseHerbBlock.BEntity::new,
             WATERLEAF.get(), FIREBLOSSOM.get(), MOONGLOW.get(), BLINKROOT.get(), SHIVERTHORN.get(), DAYBLOOM.get(), DEATHWEED.get()).build(DSL.remainderType()));
 
-    public static final DeferredBlock<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD)));
+    public static final DeferredBlock<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
 
     public static final DeferredBlock<BaseRopeBlock> ROPE = registerWithItem("rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.BROWN).sound(SoundType.WOOL).noCollission().instabreak()), BaseRopeBlock.BItem::new);
     public static final DeferredBlock<BaseRopeBlock> VINE_ROPE = registerWithItem("vine_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.GREEN).sound(SoundType.WOOL).noCollission().instabreak()), BaseRopeBlock.BItem::new);
@@ -92,6 +94,10 @@ public final class ModBlocks {
 
     public static final DeferredBlock<CursedFlameBlock> CURSED_FLAME_BLOCK = registerWithoutItem("cursed_flame_block", () -> new CursedFlameBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().instabreak().lightLevel(l -> 7).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
 
+    // test block 要测试直接复制下面这一行改名
+    public static final DeferredBlock<Block> TEST_BLOCK = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.COLOR_BLUE)));
+
+
     private static DeferredBlock<TombstoneBlock> registerTombstone(String id, boolean isGolden) {
         DeferredBlock<TombstoneBlock> tombstone = registerWithItem(id, TombstoneBlock::new);
         TOMBSTONES.put(tombstone, isGolden);
@@ -118,13 +124,11 @@ public final class ModBlocks {
         return BLOCKS.register(id, block);
     }
 
-    /**
-     * 基于黑曜石的爆炸抗性，汇流来世的方块设置爆炸抗性时，应当使用这个方法<p>
-     * 对于泰拉爆炸，小于黑曜石爆炸抗性的方块都会被炸掉
-     *
-     * @param delta 偏差值
-     * @return 爆炸抗性
-     */
+    /// 基于黑曜石的爆炸抗性，汇流来世的方块设置爆炸抗性时，应当使用这个方法
+    /// 对于泰拉爆炸，小于黑曜石爆炸抗性的方块都会被炸掉
+    ///
+    /// @param delta 偏差值
+    /// @return 爆炸抗性
     @SuppressWarnings("deprecation")
     public static float getObsidianBasedExplosionResistance(float delta) {
         return Blocks.OBSIDIAN.getExplosionResistance() + delta;

@@ -1,5 +1,6 @@
 package org.confluence.mod.util;
 
+import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
@@ -11,59 +12,63 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
 import org.confluence.lib.util.ReturnException;
+import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IPalettedContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
+@ScheduledForMove(inVersion = "1.2.0", since = "2.0.0")
 public final class DynamicBiomeUtils {
     public static final int BIOME_THRESHOLD = 256;
-    public static final Function<BlockState, BlockCounts.@Nullable Type> COUNTER = state -> {
-        Block block = state.getBlock();
-        if (block == Blocks.SUNFLOWER) return BlockCounts.Type.SUNFLOWER;
-        Holder<Block> holder = block.builtInRegistryHolder();
-        if (holder.is(ModTags.Blocks.CRIMSON_BLOCKS)) return BlockCounts.Type.CRIMSON;
-        if (holder.is(ModTags.Blocks.CRIMSON_DESERT_BLOCKS)) return BlockCounts.Type.CRIMSON_SAND;
-        if (holder.is(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS)) return BlockCounts.Type.CRIMSON_ICE;
-        if (holder.is(ModTags.Blocks.CORRUPTION_BLOCKS)) return BlockCounts.Type.CORRUPT;
-        if (holder.is(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS)) return BlockCounts.Type.CORRUPT_SAND;
-        if (holder.is(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS)) return BlockCounts.Type.CORRUPT_ICE;
-        if (holder.is(ModTags.Blocks.HALLOW_BLOCKS)) return BlockCounts.Type.HALLOW;
-        if (holder.is(ModTags.Blocks.HALLOW_DESERT_BLOCKS)) return BlockCounts.Type.HALLOW_SAND;
-        if (holder.is(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS)) return BlockCounts.Type.HALLOW_ICE;
-        if (holder.is(ModTags.Blocks.TOMBSTONE)) return BlockCounts.Type.TOMB;
-        return null;
-    };
+    // 要维护两个优先级
+    public static final Map<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>> COUNTER = new ImmutableMap.Builder<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>>()
+        .put(block -> block.is(ModTags.Blocks.CRIMSON_BLOCKS), (counter, count) -> counter.crimson.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.CRIMSON_DESERT_BLOCKS), (counter, count) -> counter.crimsonSand.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS), (counter, count) -> counter.crimsonIce.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.CORRUPTION_BLOCKS), (counter, count) -> counter.corrupt.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS), (counter, count) -> counter.corruptSand.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS), (counter, count) -> counter.corruptIce.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.HALLOW_BLOCKS), (counter, count) -> counter.hallow.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.HALLOW_DESERT_BLOCKS), (counter, count) -> counter.hallowSand.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS), (counter, count) -> counter.hallowIce.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.GLOWING_MUSHROOM_BLOCKS), (counter, count) -> counter.glowing_mushroom.addAndGet(count))
+        .put(block -> block.is(Blocks.SUNFLOWER), (counter, count) -> counter.sunflower.addAndGet(count))
+        .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (counter, count) -> counter.tomb.addAndGet(count))
+        .put(block -> block.is(OreBlocks.CHLOROPHYTE_ORE), (counter, count) -> counter.chlorophyte.addAndGet(count))
+        .put(block -> block.getFluidState().is(ModTags.Fluids.C_WATER), (counter, count) -> counter.water.addAndGet(count))
+        .build();
 
     /**
      * 动态群系的优先级，数字小的优先级高
      */
-    public static final Object2IntMap<ResourceKey<Biome>> PRIORITY = Util.make(new Object2IntOpenHashMap<>() {{
-        this.defRetValue = Integer.MAX_VALUE;
-    }}, map -> {
-        map.put(ModBiomes.THE_HALLOW_TUNDRA, 0);
-        map.put(ModBiomes.THE_CORRUPTION_TUNDRA, 100);
-        map.put(ModBiomes.THE_CRIMSON_TUNDRA, 200);
-        map.put(ModBiomes.THE_HALLOW_DESERT, 300);
-        map.put(ModBiomes.THE_CORRUPTION_DESERT, 400);
-        map.put(ModBiomes.THE_CRIMSON_DESERT, 500);
-        map.put(ModBiomes.THE_HALLOW, 600);
-        map.put(ModBiomes.THE_CORRUPTION, 700);
-        map.put(ModBiomes.THE_CRIMSON, 800);
-        map.put(ModBiomes.GLOWING_MUSHROOM, 900);
+    public static final Object2IntMap<ResourceKey<Biome>> PRIORITY = Util.make(new Object2IntOpenHashMap<>(), map -> {
+        map.defaultReturnValue(Integer.MAX_VALUE);
+        map.put(ModBiomes.THE_HALLOW_TUNDRA, 100);
+        map.put(ModBiomes.THE_CORRUPTION_TUNDRA, 200);
+        map.put(ModBiomes.THE_CRIMSON_TUNDRA, 300);
+        map.put(ModBiomes.THE_HALLOW_DESERT, 400);
+        map.put(ModBiomes.THE_CORRUPTION_DESERT, 500);
+        map.put(ModBiomes.THE_CRIMSON_DESERT, 600);
+        map.put(ModBiomes.THE_HALLOW, 700);
+        map.put(ModBiomes.THE_CORRUPTION, 800);
+        map.put(ModBiomes.THE_CRIMSON, 900);
+        map.put(ModBiomes.GLOWING_MUSHROOM, 1000);
     });
 
     /**
@@ -109,6 +114,7 @@ public final class DynamicBiomeUtils {
         int crimson = Math.max(0, counts.crimson.get() - sunflower);
         int corrupt = Math.max(0, counts.corrupt.get() - sunflower);
         int hallow = counts.hallow.get();
+        int water = counts.water.get();
 
         // (假设)同时存在400个猩红块和400个腐化块的时候，只要400个神圣块就能完全抵消，邪恶不会相加
         int evil = Math.max(crimson, corrupt);
@@ -117,26 +123,28 @@ public final class DynamicBiomeUtils {
         hallow -= evil;
 
         if (corrupt >= BIOME_THRESHOLD && corrupt >= crimson) {
-            if (counts.corruptSand.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(Biomes.DESERT))) {
+            if (counts.corruptSand.get() - water >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(Biomes.DESERT))) {
                 return lookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT);
             } else if (counts.corruptIce.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(BiomeTags.SPAWNS_SNOW_FOXES))) {
                 return lookup.getOrThrow(ModBiomes.THE_CORRUPTION_TUNDRA);
             }
             return lookup.getOrThrow(ModBiomes.THE_CORRUPTION);
         } else if (crimson >= BIOME_THRESHOLD) {
-            if (counts.crimsonSand.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(Biomes.DESERT))) {
+            if (counts.crimsonSand.get() - water >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(Biomes.DESERT))) {
                 return lookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT);
             } else if (counts.crimsonIce.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(BiomeTags.SPAWNS_SNOW_FOXES))) {
                 return lookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA);
             }
             return lookup.getOrThrow(ModBiomes.THE_CRIMSON);
         } else if (hallow >= BIOME_THRESHOLD) {
-            if (counts.hallowSand.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(Biomes.DESERT))) {
+            if (counts.hallowSand.get() - water >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(Biomes.DESERT))) {
                 return lookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT);
             } else if (counts.hallowIce.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(BiomeTags.SPAWNS_SNOW_FOXES))) {
                 return lookup.getOrThrow(ModBiomes.THE_HALLOW_TUNDRA);
             }
             return lookup.getOrThrow(ModBiomes.THE_HALLOW);
+        } else if (counts.glowing_mushroom.get() >= BIOME_THRESHOLD) {
+            return lookup.getOrThrow(ModBiomes.GLOWING_MUSHROOM);
         } else {
             return null;
         }

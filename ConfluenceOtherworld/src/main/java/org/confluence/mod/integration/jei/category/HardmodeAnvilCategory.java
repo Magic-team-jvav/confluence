@@ -8,6 +8,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -15,7 +16,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
 import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
-import org.jetbrains.annotations.Nullable;
 
 public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<HardmodeAnvilRecipe>> {
     public static final RecipeType<RecipeHolder<HardmodeAnvilRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("hardmode_anvil"));
@@ -49,7 +49,7 @@ public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<Hardm
     }
 
     @Override
-    public @Nullable IDrawable getIcon() {
+    public IDrawable getIcon() {
         return icon;
     }
 
@@ -64,5 +64,10 @@ public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<Hardm
         if (mouseX >= 80 && mouseX <= 80 + 28 && mouseY >= 29 && mouseY <= 29 + 23) {
             helper.drawSummary(recipeSlotsView, guiGraphics);
         }
+    }
+
+    @Override
+    public ResourceLocation getRegistryName(RecipeHolder<HardmodeAnvilRecipe> recipe) {
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

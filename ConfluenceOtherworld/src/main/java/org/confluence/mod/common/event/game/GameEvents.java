@@ -1,8 +1,5 @@
 package org.confluence.mod.common.event.game;
 
-import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
@@ -31,11 +28,9 @@ import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.*;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModRecipes;
@@ -53,9 +48,7 @@ import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
-import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
-import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
@@ -72,9 +65,14 @@ public final class GameEvents {
     @SubscribeEvent
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            ManaStorage.of(player).flushAbility(player);
-            FishingPowerInfoPacketS2C.sendAndGet(player);
-            VisibilityPacketS2C.sendEcho(player);
+            PlayerUtils.flushPrimitiveValueData(player);
+        }
+    }
+
+    @SubscribeEvent
+    public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            PlayerUtils.flushPrimitiveValueData(player);
         }
     }
 
@@ -112,24 +110,6 @@ public final class GameEvents {
         } else {
             ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from));
             AchievementOffsetSyncPacketS2C.sendToClient(from);
-        }
-    }
-
-    @SubscribeEvent
-    public static void moment$End(MomentEvent.End event) {
-        MomentInstance momentInstance = event.getMomentInstance();
-        if (momentInstance.getLevel() instanceof ServerLevel) {
-            if (momentInstance.getMoment() == TMMoments.BLOOD_MOON.get()) {
-                for (Player player : momentInstance.getPlayers()) {
-                    AchievementUtils.awardAchievement((ServerPlayer) player, "bloodbath");
-                }
-                KillBoard.INSTANCE.defeat(momentInstance.getMoment());
-            } else if (momentInstance.getMoment() == TMMoments.GOBLIN_ARMY.get()) {
-                for (Player player : momentInstance.getPlayers()) {
-                    AchievementUtils.awardAchievement((ServerPlayer) player, "goblin_punter");
-                }
-                KillBoard.INSTANCE.defeat(momentInstance.getMoment());
-            }
         }
     }
 

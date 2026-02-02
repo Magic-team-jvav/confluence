@@ -14,7 +14,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.PrimitiveValue;
 import org.confluence.terra_curio.api.primitive.UnitValue;
 import org.confluence.terra_curio.api.primitive.ValueType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Objects;
@@ -53,11 +52,11 @@ public final class ArmorSetBonusKey {
     }
 
     public static ResourceLocation getId(ArmorSetBonusKey key) {
-        return MAP.inverse().getOrDefault(key, NONE_ID);
+        return Objects.requireNonNull(MAP.inverse().getOrDefault(key, NONE_ID));
     }
 
     public static ArmorSetBonusKey byId(ResourceLocation id) {
-        return MAP.getOrDefault(id, NONE);
+        return Objects.requireNonNull(MAP.getOrDefault(id, NONE));
     }
 
     static int mixHash(ItemLike head, ItemLike chest, ItemLike legs, ItemLike feet, boolean check) {
@@ -131,7 +130,7 @@ public final class ArmorSetBonusKey {
     // region tooltip
     private transient String descriptionKey;
 
-    public @NotNull String getDescriptionKey() {
+    public String getDescriptionKey() {
         if (descriptionKey == null) {
             ResourceLocation id = getId();
             if (id.equals(ArmorSetBonusKey.NONE_ID)) {

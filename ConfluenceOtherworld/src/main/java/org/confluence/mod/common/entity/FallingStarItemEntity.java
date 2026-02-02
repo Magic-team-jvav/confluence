@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -17,8 +16,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -56,41 +57,45 @@ public class FallingStarItemEntity extends ItemEntity {
 
     @Override
     public void tick() {
-        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
-            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
-            emitter.attachEntity(this);
-            PSGameClient.LOADER.addEmitter(emitter, false);
+        if (level().isClientSide) {
+            if ((emitter == null || emitter.isRemoved())) {
+                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
+                emitter.attachEntity(this);
+                PSGameClient.LOADER.addEmitter(emitter, false);
+            }
+            float y = Mth.sin(getAge() / 10.0F + bobOffs) * 0.1F;
+            emitter.offsetPos = new Vec3(0, 0.35F + y, 0);
         }
         super.tick();
         if (LibDateUtils.isDay(level())) {
             onRemove();
-        } else {
-            if (onGround()) {
-                if (hasPickUpDelay()) setNoPickUpDelay();
-                if (!wasOnGround()) {
-                    setWasOnGround(true);
-                    level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR_LANDS.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
-                }
-            } else if (!wasOnGround() && !level().getBlockState(blockPosition().below(6)).isAir()) {
-                level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
-            } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
-                if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
-                    entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
-                    onRemove();
-                    return;
-                }
-            }
-            if (!getInBlockState().isAir()) {
+            return;
+        }
+        if (onGround()) {
+            if (hasPickUpDelay()) setNoPickUpDelay();
+            if (!wasOnGround()) {
                 setWasOnGround(true);
-                setOnGround(true);
+                level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR_LANDS.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
             }
+        } else if (!wasOnGround() && !level().getBlockState(blockPosition().below(6)).isAir()) {
+            level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
+        } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
+            if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
+                entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
+                onRemove();
+                return;
+            }
+        }
+        if (!getInBlockState().isAir()) {
+            setWasOnGround(true);
+            setOnGround(true);
         }
     }
 
     private void onRemove() {
         discard();
         if (level().isClientSide && emitter != null) {
-            PSGameClient.LOADER.removeEmitter(emitter, false);
+            emitter.remove();
         }
     }
 
@@ -120,22 +125,32 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public static void summon(ServerLevel level) {
-        if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) && level.getGameTime() % CommonConfigs.FALLING_STAR_INTERVAL.get() == 0) {
-            RandomSource random = level.random;
+        if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) &&
+                level.getGameTime() % getFallingStarSpawnInterval(level) == 0
+        ) {
             Set<Vec3> cache = new HashSet<>();
             for (ServerPlayer player : level.players()) {
                 if (player.level().dimension() != OverworldUtils.dimension()) continue;
                 if (cache.stream().anyMatch(pos -> player.distanceToSqr(pos) < Mth.square(player.requestedViewDistance() * 16))) {
                     continue;
                 }
-                int offsetX = Mth.nextInt(random, -16, 16);
-                int offsetZ = Mth.nextInt(random, -16, 16);
-                BlockPos pos = player.getOnPos().offset(offsetX, 0, offsetZ).atY(256);
+                int offsetX = Mth.nextInt(level.random, -16, 16);
+                int offsetZ = Mth.nextInt(level.random, -16, 16);
+                BlockPos pos = player.blockPosition().offset(offsetX, 0, offsetZ).atY(256);
                 if (level.isLoaded(pos)) {
                     level.addFreshEntity(new FallingStarItemEntity(level, pos.getCenter()));
                     cache.add(player.position());
                 }
             }
         }
+    }
+
+    private static int getFallingStarSpawnInterval(ServerLevel level) {
+        int interval = CommonConfigs.FALLING_STAR_INTERVAL.get();
+        if (MeteorShowerGameEvent.INSTANCE.started()) {
+            float factor = CommonConfigs.METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER.get().floatValue();
+            return LibUtils.divideInt(interval, factor, level.random);
+        }
+        return interval;
     }
 }

@@ -89,7 +89,7 @@ public class ThrownPowderEntity extends Entity {
                 this.lastPos = blockPosition();
                 for (BlockPos blockPos : BlockPos.betweenClosed(blockPosition().offset(-2, -2, -2), blockPosition().offset(2, 2, 2))) {
                     BlockPos pos = blockPos.immutable();
-                    if (!coveredPos.contains(pos) && type.spread(level(), pos)) {
+                    if (!coveredPos.contains(pos) && type.spread(level(), pos, true)) {
                         coveredPos.add(pos);
                     }
                 }

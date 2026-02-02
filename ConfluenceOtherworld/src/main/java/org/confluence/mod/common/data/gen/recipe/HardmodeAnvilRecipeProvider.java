@@ -325,9 +325,10 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, ArmorItems.TITANIUM_MASK.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM),
                 'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
-                "a#a",
+                "b#b",
                 "#a#",
                 " a ",
                 "ppp"
@@ -540,7 +541,14 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "#aaa",
                 "pppp"
         )));
-
+        // 矿车升级包
+        hardmodeAnvil(recipeOutput, ConsumableItems.MINECART_UPGRADE_KIT.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.MECHANICAL_WHEEL_PIECE),
+                'b', Ingredient.of(MaterialItems.MECHANICAL_WAGON_PIECE),
+                'c', Ingredient.of(MaterialItems.MECHANICAL_BATTERY_PIECE)
+        ), List.of(
+                "abc"
+        )));
         // 翅膀
         hardmodeAnvil(recipeOutput, AccessoryItems.FAIRY_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
@@ -575,6 +583,67 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "b  b",
                 "caac",
                 "b  b"
+        )));
+        // 连弩
+        hardmodeAnvil(recipeOutput, CrossbowItems.MYTHRIL_REPEATER.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, ModTags.Items.INGOTS_MYTHRIL),
+                'b', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
+        )));
+        hardmodeAnvil(recipeOutput, CrossbowItems.ORICHALCUM_REPEATER.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, ModTags.Items.INGOTS_ORICHALCUM),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ORICHALCUM),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
+        )));
+        hardmodeAnvil(recipeOutput, CrossbowItems.ADAMANTITE_REPEATER.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, ModTags.Items.INGOTS_ADAMANTITE),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
+        )));
+        hardmodeAnvil(recipeOutput, CrossbowItems.TITANIUM_REPEATER.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(7, ModTags.Items.INGOTS_TITANIUM),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
+        )));
+        hardmodeAnvil(recipeOutput, CrossbowItems.HALLOWED_REPEATER.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, ModTags.Items.INGOTS_HALLOWED),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_HALLOWED),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
+        )));
+        hardmodeAnvil(recipeOutput, CrossbowItems.CHLOROPHYTE_REPEATER.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, ModTags.Items.INGOTS_CHLOROPHYTE),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_CHLOROPHYTE),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
         )));
     }
 

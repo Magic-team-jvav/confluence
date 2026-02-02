@@ -6,39 +6,27 @@
     path = MineTeam
     url = https://github.com/XiaoHuNao/MineTeam
     branch = neoforge-dev/1.21.1
-[submodule "HeavenDestinyMoment"]
-	path = HeavenDestinyMoment
-	url = https://github.com/XiaoHuNao/HeavenDestinyMoment
-	branch = neoforge-dev/1.21.1
-[submodule "TerraMoment"]
-	path = TerraMoment
-	url = https://github.com/XiaoHuNao/TerraMoment
-	branch = neoforge-dev/1.21.1
 [submodule "TerraGuns"]
 	path = TerraGuns
 	url = https://github.com/XiaoHuNao/TerraGuns
 	branch = neoforge-dev/1.21.1
-[submodule "IsekaiInvaded"]
-	path = IsekaiInvaded
-	url = https://github.com/XiaoHuNao/IsekaiInvaded.git
-	branch = IsekaiInvaded
 [submodule "TerraFurniture"]
 	path = TerraFurniture
 	url = https://github.com/MakerTechno/TerraFurniture
 	branch = neoforge-dev/1.21.1
 [submodule "TerraEntity"]
 	path = TerraEntity
-	url = https://github.com/EDGtheXu/TerraEntity
-	branch = neoforge-dev/1.21.1
-[submodule "EntityTrackerHUD"]
-	path = EntityTrackerHUD
-	url = https://github.com/MakerTechno/EntityTrackerHUD.git
+	url = https://github.com/Magic-team-jvav/TerraEntity
 	branch = neoforge-dev/1.21.1
 [submodule "Confluence-Magic-Lib"]
 	path = Confluence-Magic-Lib
-	url = https://github.com/westernat/Confluence-Magic-Lib.git
+	url = https://github.com/westernat/Confluence-Magic-Lib
 	branch = neoforge-dev/1.21.1
 [submodule "EnemyBanner"]
 	path = EnemyBanner
 	url = https://github.com/XiaoHuNao/EnemyBanner
+	branch = neoforge-dev/1.21.1
+[submodule "TheTrackers"]
+	path = TheTrackers
+	url = https://github.com/MakerTechno/TheTrackers
 	branch = neoforge-dev/1.21.1

@@ -1,0 +1,18 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes": "soul_sand_valley",
+    "spawners": [
+        {
+            "type": "terra_entity:bone_serpent",
+            "maxCount": 1,
+            "minCount": 1,
+            "weight": 1
+        },
+        {
+            "type": "terra_entity:wither_bone_serpent",
+            "maxCount": 1,
+            "minCount": 1,
+            "weight": 1
+        }
+    ]
+}

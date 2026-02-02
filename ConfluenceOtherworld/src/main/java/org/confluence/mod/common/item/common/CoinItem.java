@@ -3,6 +3,7 @@ package org.confluence.mod.common.item.common;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +13,8 @@ import net.minecraft.world.level.block.Block;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -25,6 +28,18 @@ public class CoinItem extends BlockItem {
     public CoinItem(Block block, ModRarity rarity, @Nullable Supplier<CoinItem> upgrade, int maxStackSize) {
         super(block, new Properties().fireResistant().stacksTo(maxStackSize).component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.upgrade = upgrade;
+    }
+
+    public static void onPickup(ItemStack itemStack, ItemEntity itemEntity) {
+        if (itemStack.is(ModTags.Items.COINS)) {
+            if (itemStack.is(ModItems.COPPER_COIN)) {
+                itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
+            } else if (itemStack.is(ModItems.SILVER_COIN)) {
+                itemEntity.playSound(ModSoundEvents.COINS_MEDIUM.get());
+            } else {
+                itemEntity.playSound(ModSoundEvents.COINS_LARGE.get());
+            }
+        }
     }
 
     @Override

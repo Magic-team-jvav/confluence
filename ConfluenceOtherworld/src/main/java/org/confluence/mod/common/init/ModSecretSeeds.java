@@ -29,15 +29,13 @@ public final class ModSecretSeeds {
     // 新增的
     public static final SecretSeed BOULDER_WORLD = register(Confluence.asResource("boulder_world"), BoulderWorld::new); //   100000000_00000000
 
-    /**
-     * 0b00000001: 1.腐化<br>
-     * 0b00000010: 2.猩红<br>
-     * 0b00000100: 3.肉后<br>
-     * 0b00001000: 4.毕业<br>
-     * 5 ~ 8: 暂无，也许附属模组可以利用这个空缺
-     *
-     * @see org.confluence.mod.mixed.IWorldOptions
-     */
+    /// 0b00000001: 1.腐化
+    /// 0b00000010: 2.猩红
+    /// 0b00000100: 3.肉后
+    /// 0b00001000: 4.毕业
+    /// 5 ~ 8: 暂无，也许附属模组可以利用这个空缺
+    ///
+    /// @see org.confluence.mod.mixed.IWorldOptions
     private static SecretSeed register(ResourceLocation id, BiFunction<Long, ResourceLocation, SecretSeed> function) {
         SecretSeed secretSeed = function.apply(1L << (VALUES.size() + RESERVE), id);
         VALUES.add(secretSeed);

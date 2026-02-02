@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.mana.HurtnadoProjectile;
-import org.confluence.mod.common.item.AltImageComponent;
+import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.terra_curio.common.init.TCAttributes;
 
 import java.util.Optional;

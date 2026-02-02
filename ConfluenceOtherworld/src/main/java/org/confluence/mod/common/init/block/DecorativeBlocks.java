@@ -39,6 +39,8 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> CHISELED_SPRUCE_PLANKS = copyBlockRegister("chiseled_spruce_planks", SPRUCE_PLANKS);
     public static final DeferredBlock<Block> WOOD_STONE_SLATTED_BLOCKS = copyBlockRegister("wood_stone_slatted_blocks", OAK_PLANKS);
 
+    public static final DeferredBlock<PooBlock> POO_BLOCK = registerWithItem("poo_block", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
+
     // 砖
     public static final DeferredBlock<Block> BLUE_ICE_BRICKS = registerWithItem("blue_ice_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
     public static final DeferredBlock<StairBlock> BLUE_ICE_BRICKS_STAIRS = registerWithItem("blue_ice_bricks_stairs", () -> new StairBlock(BLUE_ICE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
@@ -225,14 +227,19 @@ public class DecorativeBlocks {
     // 花岗岩
     public static final DeferredBlock<Block> GRANITE_COLUMN = registerWithItem("granite_column", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
     public static final DeferredBlock<Block> GRANITE_BRICKS = registerWithItem("granite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
+    public static final DeferredBlock<Block> CRACKED_GRANITE_BRICKS = registerWithItem("cracked_granite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
     public static final DeferredBlock<Block> POLISHED_GRANITE = registerWithItem("polished_granite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
+    public static final DeferredBlock<Block> CHISELED_GRANITE_BRICKS = registerWithItem("chiseled_granite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
 
     // 方解石
     public static final DeferredBlock<Block> MARBLE_COLUMN = registerWithItem("marble_column", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> MARBLE_BRICKS = registerWithItem("marble_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> CRACKED_MARBLE_BRICKS = registerWithItem("cracked_marble_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> MARBLE_SMALL_BRICKS = registerWithItem("marble_small_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> MARBLE_CHESSBOARD_BRICKS = registerWithItem("marble_chessboard_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> MARBLE_ETERNAL_CHESSBOARD_BRICKS = registerWithItem("marble_eternal_chessboard_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<GlazedTerracottaBlock> GILDED_MARBLE = registerWithItem("gilded_marble", () -> new GlazedTerracottaBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<GlazedTerracottaBlock> CHISELED_MARBLE_BRICKS = registerWithItem("chiseled_marble_bricks", () -> new GlazedTerracottaBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> POLISHED_MARBLE = registerWithItem("polished_marble", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
 
     // 地牢
@@ -278,12 +285,21 @@ public class DecorativeBlocks {
     public static final DeferredBlock<ChainBlock> SILK_CHAIN = copyBlockRegister("silk_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<ChainBlock> BONE_CHAIN = copyBlockRegister("bone_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
 
+
+    public static final DeferredBlock<SoulGlassBlock> SOUL_GLASS = registerWithItem("soul_glass", () -> new SoulGlassBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
+
     // 圣物
     public static final DeferredBlock<RelicBlock> KING_SLIME_RELIC = registerRelic("king_slime_relic");
     public static final DeferredBlock<RelicBlock> EYE_OF_CTHULHU_RELIC = registerRelic("eye_of_cthulhu_relic");
     public static final DeferredBlock<RelicBlock> BRAIN_OF_CTHULHU_RELIC = registerRelic("brain_of_cthulhu_relic");
     public static final DeferredBlock<RelicBlock> EATER_OF_WORLDS_RELIC = registerRelic("eater_of_worlds_relic");
+    public static final DeferredBlock<RelicBlock> QUEEN_BEE_RELIC = registerRelic("queen_bee_relic");
+    public static final DeferredBlock<RelicBlock> DEERCLOPS_RELIC = registerRelic("deerclops_relic");
     public static final DeferredBlock<RelicBlock> SKELETRON_RELIC = registerRelic("skeletron_relic");
+    public static final DeferredBlock<RelicBlock> WALL_OF_FLESH_RELIC = registerRelic("wall_of_flesh_relic");
+    public static final DeferredBlock<RelicBlock> HILL_OF_FLESH_RELIC = registerRelic("hill_of_flesh_relic");
+    public static final DeferredBlock<RelicBlock> THE_TWINS_RELIC = registerRelic("the_twins_relic");
+    public static final DeferredBlock<RelicBlock> SKELETRON_PRIME_RELIC = registerRelic("skeletron_prime_relic");
 
     public static final Supplier<BlockEntityType<RelicBlock.BEntity>> RELIC_ENTITY = ModBlocks.BLOCK_ENTITIES.register("relic_entity", () -> BlockEntityType.Builder.of(RelicBlock.BEntity::new, RELIC_BLOCKS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
 

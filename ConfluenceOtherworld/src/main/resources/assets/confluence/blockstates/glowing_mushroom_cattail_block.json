@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "part=submerged": { "model": "confluence:block/glowing_mushroom_cattail_block_body" },
+        "part=transition": { "model": "confluence:block/glowing_mushroom_cattail_block_body" },
+        "part=stem": { "model": "confluence:block/glowing_mushroom_cattail_block_body" },
+        "part=top": { "model": "confluence:block/glowing_mushroom_cattail_block_head" }
+    }
+}

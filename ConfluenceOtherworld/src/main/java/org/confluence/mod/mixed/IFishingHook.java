@@ -33,25 +33,11 @@ import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
 
 public interface IFishingHook extends IExtraSyncedData<FishingHook> {
     void confluence$setIsLavaHook();
 
     boolean confluence$isLavaHook();
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    default void confluence$setBait(@Nullable ItemStack bait) {}
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    default @Nullable ItemStack confluence$getBait() {return null;}
-
-    @Deprecated(since = "1.2.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
-    default float confluence$getBonus() {return 0.0F;}
 
     static IFishingHook of(FishingHook fishingHook) {
         return (IFishingHook) fishingHook;

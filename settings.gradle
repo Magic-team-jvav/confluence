@@ -2,7 +2,8 @@ pluginManagement {
     repositories {
         mavenLocal()
         gradlePluginPortal()
-        maven { url = 'https://maven.neoforged.net/releases' }
+        maven { url = "https://maven.neoforged.net/releases" }
+        maven { url = "https://maven.firstdark.dev/releases" }
     }
 }
 
@@ -10,13 +11,10 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }
 
-
-include ":ConfluenceOtherworld"
-
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
-                   "TerraCurio", "HeavenDestinyMoment",
-                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
-                   "EntityTrackerHUD", "EnemyBanner"
+                   "TerraCurio", "TerraGuns", "TerraFurniture",
+                   "TheTrackers", "EnemyBanner"
 ]
-projectName.forEach { name -> include ":" + name }
 
+include(":ConfluenceOtherworld")
+projectName.forEach { name -> include ":" + name }

@@ -16,9 +16,7 @@ import java.util.function.Function;
 public interface SecretFlagMatcher {
     long secretFlag();
 
-    /**
-     * @return 如果为true，则反向匹配
-     */
+    /// @return 如果为true，则反向匹配
     boolean flipMatch();
 
     default boolean matchesSecretFlag() {

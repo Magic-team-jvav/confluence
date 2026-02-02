@@ -3,14 +3,15 @@ import java.text.SimpleDateFormat
 plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev'
+    alias(libs.plugins.modpublisher)
 }
+
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
-                   "TerraCurio", "HeavenDestinyMoment",
-                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
-                   "EntityTrackerHUD", "EnemyBanner"
+                   "TerraCurio", "TerraGuns", "TerraFurniture",
+                   "TheTrackers", "EnemyBanner"
 ]
 
-version = mod_version + "-beta" + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
+version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
 
 base {
@@ -166,7 +167,7 @@ boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false // FTB系列
 boolean ipn = false // 一键背包整理Next
-boolean mmmmmmmmmmmm = false // 试验假人
+boolean mmmmmmmmmmmm = true // 试验假人
 boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
 boolean spark = true // 火花
@@ -174,22 +175,20 @@ boolean apotheosis = false // 神化
 boolean legendarytooltips = false // 传说提示框
 boolean itemborders = false // 物品边框
 boolean advancementPlaques = false // 进度牌匾
+boolean dynamicCrosshair = false // 动态准星
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
-    implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.2'))
-    implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
-    implementation(jarJar("org.mesdag:ParticleStorm:${particle_storm_version}"))
+    implementation jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
+    implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
+    implementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}")
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
     compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
     implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
-
-    implementation(files('libs/lunar-1.7.4.jar')) // 使用修改了MANIFEST.MF的农历库，以防止有些服务端无法识别
-    jarJar('cn.6tail:lunar:1.7.4')
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     if (true) {
@@ -214,9 +213,6 @@ dependencies {
         runtimeOnly "curse.maven:ftb-filter-system-943925:6899527"
         runtimeOnly "curse.maven:ftb-xmod-compat-889915:6979171"
     }
-
-    compileOnly "curse.maven:better-advancements-272515:5850587"
-    runtimeOnly "curse.maven:better-advancements-272515:5850587"
 
     compileOnly "curse.maven:sodium-394468:6382651"
     compileOnly "curse.maven:irisshaders-455508:6661598"
@@ -244,7 +240,7 @@ dependencies {
     }
 
     compileOnly "curse.maven:appleskin-248787:5586600"
-    runtimeOnly "curse.maven:appleskin-248787:5586600"
+//    runtimeOnly "curse.maven:appleskin-248787:5586600"
 
     compileOnly "curse.maven:rhino-416294:6886923"
     compileOnly "curse.maven:kubejs-238086:5810100"
@@ -260,11 +256,11 @@ dependencies {
         runtimeOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
     }
 
-    compileOnly "curse.maven:xaeros-minimap-263420:6515043"
-    compileOnly "curse.maven:xaeros-world-map-317780:6538359"
+    compileOnly "curse.maven:xaeros-minimap-263420:7412188"
+    compileOnly "curse.maven:xaeros-world-map-317780:7412262"
     if (true) {
-        runtimeOnly "curse.maven:xaeros-minimap-263420:6515043"
-        runtimeOnly "curse.maven:xaeros-world-map-317780:6538359"
+        runtimeOnly "curse.maven:xaeros-minimap-263420:7412188"
+        runtimeOnly "curse.maven:xaeros-world-map-317780:7412262"
     }
 
     compileOnly "maven.modrinth:loot-beams-refork:neoforge-1.21.1-3.2.5"
@@ -292,9 +288,14 @@ dependencies {
         runtimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
     }
 
+    compileOnly "curse.maven:lithium-360438:6290413"
+    if (false) {
+        runtimeOnly "curse.maven:lithium-360438:6290413"
+    }
+
     /**********************************************************/
 
-    //runtimeOnly "curse.maven:worldedit-225608:5830452"
+//    runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"
@@ -310,9 +311,22 @@ dependencies {
     //runtimeOnly "curse.maven:fargo-soul-1315726:6819904"
     //runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
     //runtimeOnly "curse.maven:azurelib-817423:6849116"
-    //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
-    //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
+    if (false) {
+        runtimeOnly "maven.modrinth:l_enders-cataclysm:3.16"
+        runtimeOnly "maven.modrinth:lionfish-api:2.6"
+    }
+    if (dynamicCrosshair) {
+        runtimeOnly "maven.modrinth:dynamiccrosshair:9.11+1.21.1-neoforge"
+    }
+    if (dynamicCrosshair) {
+        runtimeOnly("maven.modrinth:yacl:3.8.2+1.21.1-neoforge")
+    }
+    if (false) {
+        runtimeOnly "curse.maven:enhanced-celestials-438447:7093308"
+        runtimeOnly "curse.maven:corgilib-693313:6808264"
+        runtimeOnly "curse.maven:data-anchor-1203668:7256604"
+    }
     if (advancementPlaques) {
         runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
     }
@@ -364,25 +378,29 @@ dependencies {
         runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
     }
     if (mmmmmmmmmmmm) {
-        runtimeOnly "maven.modrinth:mmmmmmmmmmmm:neoforge_1.21-2.0.8"
+        runtimeOnly "maven.modrinth:mmmmmmmmmmmm:1.21-2.0.11-neoforge"
     }
     if (supplementaries || mmmmmmmmmmmm) {
-        runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
+        runtimeOnly "maven.modrinth:moonlight:1.21-2.29.10-neoforge"
     }
     if (spark) {
-        implementation "curse.maven:spark-361579:6225208"
+        runtimeOnly "curse.maven:spark-361579:6225208"
     }
     if (apotheosis) {
         runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    }
+    if (false) { // 会与sodium导致类加载锁
+        runtimeOnly "curse.maven:malum-484064:7307339"
+        runtimeOnly "curse.maven:lodestone-616457:7264731"
     }
 }
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [minecraft_version      : minecraft_version,
-                             minecraft_version_range: minecraft_version_range,
+                             minecraft_version_range: libs.versions.range.game.get(),
                              neo_version            : neo_version,
-                             neo_version_range      : neo_version_range,
-                             loader_version_range   : loader_version_range,
+                             neo_version_range      : libs.versions.range.neoforge.get(),
+                             loader_version_range   : libs.versions.range.fml.get(),
                              mod_id                 : mod_id,
                              mod_name               : mod_name,
                              mod_license            : mod_license,
@@ -414,7 +432,8 @@ tasks.register("genVoilaRun") {
     def programParam = new File(projectDir, "build/moddev/clientRunProgramArgs.txt").toString().replace("\\", "\\\\")
     def workingDir = new File(projectDir, "run")
     def vmArgs = new File(projectDir, "build/moddev/clientRunVmArgs.txt").toString().replace("\\", "\\\\")
-    def moduleName = "${project.rootProject.name}.${project.name}.${sourceSets.main.name}" // 写死了自身必定在第二层
+    def moduleName = "${project.rootProject.name}.${project.name}.${sourceSets.main.name}"
+    // 写死了自身必定在第二层
     def classesDir = new File(projectDir, "build/classes/java/main").toString().replace("\\", "\\\\")
     def resDir = new File(projectDir, "build/resources/main").toString().replace("\\", "\\\\")
     def modId = mod_id
@@ -467,4 +486,33 @@ publishing {
             }
         }
     }
+}
+publisher {
+    apiKeys {
+        modrinth System.getenv("MODRINTH_TOKEN")
+        curseforge System.getenv("CURSEFORGE_TOKEN")
+    }
+
+    setCurseID(libs.versions.platformId.curseforge.get())
+    setModrinthID(libs.versions.platformId.modrinth.get())
+
+    def changelogFile = file("notes/CHANGELOG.md")
+    if (changelogFile.exists()) {
+        setChangelog(changelogFile.getText("UTF-8"))
+    } else {
+        setChangelog("No changelog provided for version ${project.version}")
+    }
+
+    def versionStr = project.version.toString()
+    setVersionType(versionStr.contains("-") ? "beta" : "release")
+
+    setVersion(versionStr)
+    setDisplayName("Confluence ${versionStr}")
+
+    setGameVersions(project.minecraft_version)
+    setLoaders("neoforge")
+
+    setCurseEnvironment(libs.versions.version.env.get())
+
+    setArtifact(tasks.jar)
 }

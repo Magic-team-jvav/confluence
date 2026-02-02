@@ -29,6 +29,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
+import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.event.GameEvents;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
@@ -37,7 +38,6 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.Bestiary;
@@ -49,6 +49,9 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -57,6 +60,7 @@ import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
+import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
@@ -64,18 +68,20 @@ import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
+import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.api.entity.Boss;
 import org.confluence.terraentity.api.entity.IMinion;
+import org.confluence.terraentity.entity.animal.SimpleVariantAnimal;
 import org.confluence.terraentity.entity.boss.Skeletron;
 import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
@@ -95,11 +101,13 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
+            GameEventSystem.INSTANCE.countKilled(victim);
+            TombstoneBoulderEntity.createTombstoneEntity(victim);
             Entity attacker = LibUtils.getOwner(damageSource);
 
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
-                        CommonConfigs.DROP_MONEY.get() &&
+                        CommonConfigs.ENEMY_DROPS_MONEY.get() &&
                         level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
                         (!(victim instanceof IMinion minion) || minion.minion_getOwnerUUID() == null)
                 ) ModUtils.enemyDropMoney(victim, level);
@@ -110,10 +118,10 @@ public final class LivingEntityEvents {
             }
             if (victim instanceof Boss boss && boss.shouldShowMessage()) {
                 ModUtils.bossDeath(level, victim);
+                SlimeRainGameEvent.INSTANCE.checkEnd(victim);
             }
             if (victim instanceof ServerPlayer player) {
                 PlayerUtils.dropMoney(player);
-                TombstoneBoulderEntity.createTombstone(player);
             }
             for (ServerPlayer player : level.players()) {
                 if (player.position().distanceToSqr(victim.position()) > 32 * 32) continue;
@@ -146,11 +154,9 @@ public final class LivingEntityEvents {
         }
     }
 
-    /**
-     * 阻止回血的药水效果，已改为使用EffectCure，并提取到Lib了
-     *
-     * @see GameEvents#livingHeal(LivingHealEvent)
-     */
+    /// 阻止回血的药水效果，已改为使用EffectCure，并提取到Lib了
+    ///
+    /// @see GameEvents#livingHeal(LivingHealEvent)
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
@@ -170,6 +176,9 @@ public final class LivingEntityEvents {
         if (living.hasEffect(ModEffects.COZY_FIRE)) {
             amount *= 1.1F;
         }
+        if (living.hasEffect(ModEffects.HEART_LANTERN)) {
+            amount *= 1.2F;
+        }
         event.setAmount(amount);
 
         DamageIndicatorOptions.sendHealParticle(amount, level, living);
@@ -183,7 +192,8 @@ public final class LivingEntityEvents {
         if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
                 living instanceof Npc &&
                 !damageSource.is(ModDamageTypes.BYPASS_NPC_INVULNERABLE_TO_PLAYER) &&
-                LibUtils.getOwner(damageSource) instanceof Player
+                LibUtils.getOwner(damageSource) instanceof Player player &&
+                !player.isCreative()
         ) {
             event.setCanceled(true);
             return;
@@ -198,16 +208,9 @@ public final class LivingEntityEvents {
         if (cause != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
         }
-        if (!living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
-                damageSource.getEntity() instanceof Player player &&
-                !PlayerSpecialData.of(player).isCouldHurtCritters() &&
-                (LibUtils.isAnimal(living) || living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
-        ) {
-            event.setCanceled(true);
-        }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
@@ -218,7 +221,6 @@ public final class LivingEntityEvents {
         @Nullable Entity attacker = damageSource.getEntity();
 
         amount = ArcheryEffect.apply(victim, damageSource, amount);
-        amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
@@ -244,6 +246,9 @@ public final class LivingEntityEvents {
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
             sword.applyHitEffects(weapon, attacker, victim, damageSource);
         }
+
+        amount = ManaSicknessEffect.apply(damageSource, amount);
+
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
@@ -279,6 +284,7 @@ public final class LivingEntityEvents {
         }
         if (attacker instanceof ServerPlayer player) {
             ModArmorBonus.onAttacked(player, damageSource, victim);
+            LucyTheAxe.onDamageLiving(player, victim);
         }
     }
 
@@ -440,7 +446,7 @@ public final class LivingEntityEvents {
                 mob.addTag("undead_miner");
                 event.setCanceled(true);
             }
-        } else if (event.getSpawnType() == MobSpawnType.NATURAL && event.getEntity() instanceof Slime slime) {
+        } else if (event.getSpawnType() == MobSpawnType.NATURAL && mob instanceof Slime slime) {
             if ((ModSecretSeeds.CELEBRATIONMK10.match() || ModSecretSeeds.GET_FIXED_BOI.match()) && mob.getRandom().nextInt(140) == 1) {
                 event.setCanceled(true);
                 GoldenSlime goldenSlime = TEMonsterEntities.GOLDEN_SLIME.get().create(mob.level());
@@ -448,6 +454,11 @@ public final class LivingEntityEvents {
                     goldenSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
                     mob.level().addFreshEntity(goldenSlime);
                 }
+            }
+        } else {
+            SimpleVariantAnimal worm = TEAnimals.WORM.get().tryCast(mob);
+            if (worm != null) {
+                TEHelper.finalizeWormSpawn(worm);
             }
         }
 
@@ -499,16 +510,18 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void mobSpawn$PositionCheck(MobSpawnEvent.PositionCheck event) {
-        if (event.getSpawnType() == MobSpawnType.NATURAL) {
-            Mob mob = event.getEntity();
-            if (event.getResult() != MobSpawnEvent.PositionCheck.Result.FAIL && DungeonStructure.skipSpawn(mob, event.getLevel().getLevel())) {
-                event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
-            }
-            if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
-                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
-                if (iSection != null && iSection.confluence$isGraveyard()) {
-                    event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
-                }
+        if (event.getSpawnType() != MobSpawnType.NATURAL) return;
+        Mob mob = event.getEntity();
+        if (event.getResult() != MobSpawnEvent.PositionCheck.Result.FAIL && (
+                DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) ||
+                        GameEventSystem.shouldDenyNatureSpawn()
+        )) {
+            event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
+        }
+        if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
+            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
+            if (iSection != null && iSection.confluence$isGraveyard()) {
+                event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
             }
         }
     }
@@ -518,7 +531,7 @@ public final class LivingEntityEvents {
         if (event.getSpawnType() == MobSpawnType.NATURAL && !event.getPlacementCheckResult()) {
             EntityType<?> entityType = event.getEntityType();
 //            if (entityType == TEMonsterEntities.GHOST.get()) {
-//                IChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
+//                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
 //                event.setResult(iSection != null && iSection.confluence$isGraveyard()
 //                        ? MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED
 //                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
@@ -536,6 +549,16 @@ public final class LivingEntityEvents {
     public static void effectParticleModification(EffectParticleModificationEvent event) {
         if (event.isVisible() && !IMobEffectInstance.of(event.getEffect()).confluence$isEnabled()) {
             event.setVisible(false);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void spawnClusterSize(SpawnClusterSizeEvent event) {
+        if (BloodMoonGameEvent.INSTANCE.started()) {
+            Mob mob = event.getEntity();
+            if (mob instanceof Enemy && mob.position().y > OverworldUtils.getSurfaceY()) {
+                event.setSize(LibUtils.multiplyInt(event.getSize(), 2, mob.getRandom()));
+            }
         }
     }
 }

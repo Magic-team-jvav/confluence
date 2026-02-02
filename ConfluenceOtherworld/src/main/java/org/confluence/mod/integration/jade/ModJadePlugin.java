@@ -1,10 +1,12 @@
 package org.confluence.mod.integration.jade;
 
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.block.ISimulatorBlock;
+import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
 import org.confluence.mod.common.block.functional.BehaviourPressurePlateBlock;
@@ -62,6 +64,10 @@ public final class ModJadePlugin implements IWailaPlugin {
                 }
             }
             return accessor;
+        });
+        registration.addAfterRenderCallback((iBoxElement, tooltipRect, guiGraphics, accessor) -> {
+            Rect2i rect = tooltipRect.rect;
+            GoblinArmyProgressRenderer.yOffset = rect.getY() + rect.getHeight();
         });
     }
 }

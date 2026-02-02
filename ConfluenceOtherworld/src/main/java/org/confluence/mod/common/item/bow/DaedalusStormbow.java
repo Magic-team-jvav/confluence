@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.terraentity.api.entity.IGeneration;
 import org.confluence.terraentity.registries.generation.variant.AboveFallenGeneration;
 import org.jetbrains.annotations.NotNull;
@@ -14,11 +15,11 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class DaedalusStormbow extends TerraBowItem {
+public class DaedalusStormbow extends BaseTerraBowItem {
     private final IGeneration generation = new AboveFallenGeneration(30, 60, 25, 2, 25, 5);
 
     public DaedalusStormbow(float baseDamage, ModRarity rarity) {
-        super(baseDamage, new TerraBowItem.Builder().setRarity(rarity));
+        super(baseDamage, new BaseTerraArrowItem.ModifyArrowBuilder().setRarity(rarity));
     }
 
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity owner, @NotNull ItemStack weapon, int remainingUseDuration) {

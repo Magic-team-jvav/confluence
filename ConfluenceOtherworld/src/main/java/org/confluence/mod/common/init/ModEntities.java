@@ -23,19 +23,18 @@ import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntit
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
 
-/**
- * Fast Link:
- * <p>渲染器 {@link org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers}
- * <p>发包   {@link org.confluence.mod.common.event.ModEvents#registerPayloadHandlers}
- * <p>属性   {@link org.confluence.mod.common.event.ModEvents#entityAttributeCreation}
- */
+/// Fast Link:
+///
+/// 渲染器 [org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers]
+///
+/// 发包   [org.confluence.mod.common.event.ModEvents#registerPayloadHandlers]
+///
+/// 属性   [org.confluence.mod.common.event.ModEvents#entityAttributeCreation]
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Confluence.MODID);
 
 	// 牢枕专用
-	public static final DeferredHolder<EntityType<?>, EntityType<EmptyEntity>> EMPTY_ENTITY = ENTITIES.register(
-			"empty_entity",
-			() -> EntityType.Builder.of(EmptyEntity::new, MobCategory.MISC).build(Confluence.asPlainId("empty_entity")));
+	public static final DeferredHolder<EntityType<?>, EntityType<EmptyEntity>> EMPTY_ENTITY = ENTITIES.register("empty_entity", () -> EntityType.Builder.of(EmptyEntity::new, MobCategory.MISC).build(Confluence.asPlainId("empty_entity")));
 
     // 炸弹
     public static final DeferredHolder<EntityType<?>, EntityType<BaseBombEntity>> BOMB_ENTITY = registerBomb("bomb_entity", BaseBombEntity::new, BaseBombEntity.DIAMETER);
@@ -117,7 +116,6 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<CoinPortalEntity>> COIN_PORTAL = ENTITIES.register("coin_portal", () -> EntityType.Builder.<CoinPortalEntity>of(CoinPortalEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(6).build("confluence:coin_portal"));
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownPowderEntity>> THROWN_POWDER = ENTITIES.register("thrown_powder", () -> EntityType.Builder.<ThrownPowderEntity>of(ThrownPowderEntity::new, MobCategory.MISC).sized(0.0F, 0.0F).fireImmune().build("confluence:thrown_powder"));
     public static final DeferredHolder<EntityType<?>, EntityType<DeadBodyPartEntity>> BODY_PART = ENTITIES.register("body_part", () -> EntityType.Builder.<DeadBodyPartEntity>of(DeadBodyPartEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).fireImmune().noSave().noSummon().build("confluence:body_part"));
-    public static final DeferredHolder<EntityType<?>, EntityType<TargetDummyEntity>> TARGET_DUMMY = ENTITIES.register("target_dummy", () -> EntityType.Builder.<TargetDummyEntity>of(TargetDummyEntity::new, MobCategory.MISC).sized(1.0F, 2.0F).clientTrackingRange(6).build("confluence:target_dummy"));
     public static final DeferredHolder<EntityType<?>, EntityType<FlameCloudEntity>> FLAME_CLOUD = ENTITIES.register("flame_cloud", () -> EntityType.Builder.<FlameCloudEntity>of(FlameCloudEntity::new, MobCategory.MISC).sized(5, 5).clientTrackingRange(6).build("confluence:flame_cloud"));
     public static final DeferredHolder<EntityType<?>, EntityType<SuperSpikyBallProjectile>> SUPER_SPIKY_BALL_PROJECTILE = ENTITIES.register("super_spiky_ball_projectile", () -> EntityType.Builder.<SuperSpikyBallProjectile>of(SuperSpikyBallProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build("confluence:super_spiky_ball_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<SpearEntity>> SPEAR = ENTITIES.register("spear", () -> EntityType.Builder.<SpearEntity>of(SpearEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build("confluence:spear"));

@@ -1,11 +1,14 @@
 package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
-import com.xiaohunao.terra_moment.common.init.TMMoments;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.Lifecycle;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
@@ -24,6 +27,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
@@ -35,6 +39,8 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -57,9 +63,7 @@ import org.confluence.terraentity.init.entity.TENpcEntities;
 import java.util.*;
 import java.util.function.Predicate;
 
-/**
- * 注：NPC默认生成在对应玩家出生点
- */
+/// 注：NPC默认生成在对应玩家出生点
 public final class NPCSpawner implements IGlobalData {
     public static final NPCSpawner INSTANCE = new NPCSpawner();
     public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC = new Codec<>() {
@@ -94,11 +98,9 @@ public final class NPCSpawner implements IGlobalData {
     };
     public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf().xmap(HashSet::new, ArrayList::new);
 
-    private final Map<Region, Object2BooleanMap<EntityType<?>>> npcAlive = new HashMap<>();
-    /**
-     * 生成过的NPC，可用于NPC复活而无需再次满足条件
-     */
-    private final Set<EntityType<?>> npcSpawned = new HashSet<>();
+    private Map<Region, Object2BooleanMap<EntityType<?>>> npcAlive = new Object2ObjectOpenHashMap<>();
+    /// 生成过的NPC，可用于NPC复活而无需再次满足条件
+    private Set<EntityType<?>> npcSpawned = new ObjectOpenHashSet<>();
     private boolean isAdvancedCombatTechniquesUsed = false; // 先进战斗技术
     private boolean isAdvancedCombatTechniquesVolumeTwoUsed = false; // 先进战斗技术：卷二
     private boolean isPeddlersSatchelUsed = false; // 商贩背包
@@ -166,9 +168,7 @@ public final class NPCSpawner implements IGlobalData {
         }
     }
 
-    /**
-     * 旅商与老人不会加进去
-     */
+    /// 旅商与老人不会加进去
     public void addSpawned(EntityType<?> entityType) {
         if (entityType != TENpcEntities.TRAVELING_MERCHANT.get() && entityType != TENpcEntities.OLD_MAN.get()) {
             npcSpawned.add(entityType);
@@ -224,14 +224,14 @@ public final class NPCSpawner implements IGlobalData {
     }
 
     @Override
-    public <T> void decode(Dynamic<T> tag) {
-        npcAlive.clear();
-        tag.get("npc_alive").orElseEmptyMap().read(NPC_ALIVE_CODEC).ifSuccess(npcAlive::putAll);
-        npcSpawned.clear();
-        tag.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
-        this.isAdvancedCombatTechniquesUsed = tag.get("advanced_combat_techniques").asBoolean(false);
-        this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.get("advanced_combat_techniques_volume_two").asBoolean(false);
-        this.isPeddlersSatchelUsed = tag.get("peddlers_satchel").asBoolean(false);
+    public void decode(CompoundTag tag) {
+        NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_alive"))
+                .ifSuccess(result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
+        NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_spawned"))
+                .ifSuccess(result -> this.npcSpawned = new ObjectOpenHashSet<>(result));
+        this.isAdvancedCombatTechniquesUsed = tag.getBoolean("advanced_combat_techniques");
+        this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("advanced_combat_techniques_volume_two");
+        this.isPeddlersSatchelUsed = tag.getBoolean("peddlers_satchel");
     }
 
     @Override
@@ -240,10 +240,14 @@ public final class NPCSpawner implements IGlobalData {
         while (iterator.hasNext()) {
             Map.Entry<Region, Object2BooleanMap<EntityType<?>>> next = iterator.next();
             next.getValue().object2BooleanEntrySet().removeIf(entry -> !entry.getBooleanValue());
-            if (next.getValue().isEmpty()) iterator.remove();
+            if (next.getValue().isEmpty()) {
+                iterator.remove();
+            }
         }
-        tag.put("npc_alive", NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive).getOrThrow());
-        tag.put("npc_spawned", NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).getOrThrow());
+        NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive)
+                .ifSuccess(nbt -> tag.put("npc_alive", nbt));
+        NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned)
+                .ifSuccess(nbt -> tag.put("npc_spawned", nbt));
         tag.putBoolean("advanced_combat_techniques", isAdvancedCombatTechniquesUsed);
         tag.putBoolean("advanced_combat_techniques_volume_two", isAdvancedCombatTechniquesVolumeTwoUsed);
         tag.putBoolean("peddlers_satchel", isPeddlersSatchelUsed);
@@ -263,10 +267,8 @@ public final class NPCSpawner implements IGlobalData {
         this.isPeddlersSatchelUsed = false;
     }
 
-    /**
-     * 醉酒世界则会生成派对女孩<p>
-     * todo 其它秘密种子的特殊生成
-     */
+    /// 醉酒世界则会生成派对女孩
+    /// todo 其它秘密种子的特殊生成
     public void trySpawnGuide(ServerPlayer player) {
         ServerLevel serverLevel = player.serverLevel();
         if (serverLevel.dimension() == OverworldUtils.dimension()) {
@@ -285,6 +287,7 @@ public final class NPCSpawner implements IGlobalData {
     }
 
     public void checkNpcRespawn(ServerLevel serverLevel) {
+        if (GameEventSystem.shouldDenyNatureSpawn()) return;
         outer:
         for (ServerPlayer player : serverLevel.players()) {
             BlockPos pos = getNpcSpawnPos(player);
@@ -323,16 +326,14 @@ public final class NPCSpawner implements IGlobalData {
 
     private boolean trySpawnZoologist(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.ZOOLOGIST.get())) {
-            if (Bestiary.INSTANCE.getEntries().size() >= 34) {
+            if (Bestiary.INSTANCE.getUnlockedCount() >= 34) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.ZOOLOGIST.get());
             }
         }
         return false;
     }
 
-    /**
-     * 醉酒世界则会生成向导
-     */
+    /// 醉酒世界则会生成向导
     private boolean trySpawnPartyGirl(ServerPlayer player, BlockPos pos, Region region) {
         if (IMinecraftServer.matchesSecretFlag(player.server, IWorldOptions.DW_MASK)) {
             if (!hasNPCAlive(region, TENpcEntities.GUIDE.get())) {
@@ -346,27 +347,20 @@ public final class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /**
-     * todo 他不会在日食，雪人军团，海盗入侵或火星暴乱期间生成。
-     */
+    /// todo 他不会在日食期间生成。
     private boolean trySpawnTravelingMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.TRAVELING_MERCHANT.get())) {
-            MomentInstanceManager manager = MomentInstanceManager.of(player.level());
-            if (!manager.hasMoment(TMMoments.GOBLIN_ARMY.getKey())) {
-                if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils.getDayTime(12, 0), player.level())) {
-                    int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
-                    if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
-                        return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
-                    }
+            if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils.getDayTime(12, 0), player.level())) {
+                int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
+                if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
+                    return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
                 }
             }
         }
         return false;
     }
 
-    /**
-     * 省去“所有玩家钱币总和50银”的条件，改为单玩家
-     */
+    /// 省去“所有玩家钱币总和50银”的条件，改为单玩家
     private boolean trySpawnMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
             if (PlayerUtils.getMoney(player, true) >= 50 * CoinItem.UPGRADES_COUNT) {
@@ -404,11 +398,9 @@ public final class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /**
-     * 先计入NPC列表，待玩家交互了再转移
-     *
-     * @see AnglerNPCMixin
-     */
+    /// 先计入NPC列表，待玩家交互了再转移
+    ///
+    /// @see AnglerNPCMixin
     private boolean trySpawnAngler(ServerPlayer player, Region region) {
         BlockPos playerPos = player.blockPosition();
         Region playerRegion = new Region(playerPos);
@@ -476,7 +468,7 @@ public final class NPCSpawner implements IGlobalData {
 
     private boolean trySpawnGoblinTinkerer(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.GOBLIN_TINKERER.get())) {
-            if (KillBoard.INSTANCE.isDefeated(TMMoments.GOBLIN_ARMY.getKey())) {
+            if (KillBoard.INSTANCE.isDefeated(GoblinArmyGameEvent.KEY)) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
             }
         }
@@ -524,14 +516,12 @@ public final class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /**
-     * 未在区域内的机械师会自动移除（因为机械师距离玩家基地可能很远）
-     *
-     * @see org.confluence.mod.integration.terra_entity.TEGameEvents#onInteractNpc(NPCEvent.InteractNPCEvent)
-     * @see MechanicNPCMixin
-     */
+    /// 未在区域内的机械师会自动移除（因为机械师距离玩家基地可能很远）
+    ///
+    /// @see org.confluence.mod.integration.terra_entity.TEGameEvents#onInteractNpc(NPCEvent.InteractNPCEvent)
+    /// @see MechanicNPCMixin
     private boolean trySpawnMechanic(ServerPlayer player, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.AFTER_SKELETRON) && npcSpawned.contains(TENpcEntities.MECHANIC.get())) {
+        if (KillBoard.INSTANCE.isDefeated(TEBossEntities.SKELETRON.get()) && npcSpawned.contains(TENpcEntities.MECHANIC.get())) {
             if (!hasNPCAlive(region, TENpcEntities.MECHANIC.get())) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.MECHANIC.get());
             }
@@ -579,6 +569,10 @@ public final class NPCSpawner implements IGlobalData {
         return player.getRespawnPosition() == null ? player.serverLevel().getSharedSpawnPos() : player.getRespawnPosition();
     }
 
+    public static Region getNpcSpawnRegion(ServerPlayer player) {
+        return new Region(getNpcSpawnPos(player));
+    }
+
     public static void broadcastMessageToRegion(Level level, AbstractTerraNPC npc, Component message) {
         Region region = ((IAbstractTerraNPC) npc).confluence$getRegion();
         for (Player player : level.players()) {
@@ -588,9 +582,7 @@ public final class NPCSpawner implements IGlobalData {
         }
     }
 
-    /**
-     * 调用前需检查是否已使用过先进战斗技术
-     */
+    /// 调用前需检查是否已使用过先进战斗技术
     public static void applyAdvancedCombatTechniques(AbstractTerraNPC living, ResourceLocation id) {
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         if (armor != null) {
@@ -602,16 +594,24 @@ public final class NPCSpawner implements IGlobalData {
         }
     }
 
+    public static void respawnNPC(ServerLevel level, int dayTime) {
+        if (CommonConfigs.DO_NPC_SPAWNING.get() &&
+                LibDateUtils.isDay(dayTime) &&
+                level.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
+                level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
+        ) NPCSpawner.INSTANCE.checkNpcRespawn(level);
+    }
+
     public record Region(int x, int z) {
         public static final Region ZERO = new NPCSpawner.Region(BlockPos.ZERO);
         public static final Codec<Region> CODEC = Codec.LONG.xmap(Region::new, Region::toLong);
 
         public Region(BlockPos pos) {
-            this(new ChunkPos(pos));
+            this((((pos.getX() >> 4) + 8) >> 4 << 4) - 8, (((pos.getZ() >> 4) + 8) >> 4 << 4) - 8);
         }
 
         public Region(long packed) {
-            this(new ChunkPos(packed));
+            this((((int) packed + 8) >> 4 << 4) - 8, (((int) (packed >> 32) + 8) >> 4 << 4) - 8);
         }
 
         public Region(ChunkPos pos) {

@@ -1,0 +1,13 @@
+{
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "values": {
+        "confluence:bottomless_lava_bucket": {
+            "burn_time": 20000
+        }
+    }
+}

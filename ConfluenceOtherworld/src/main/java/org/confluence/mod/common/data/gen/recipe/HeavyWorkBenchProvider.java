@@ -478,7 +478,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 '#', Ingredient.of(Items.WOODEN_AXE),
                 'a', AmountIngredient.of(3, MaterialItems.JUNGLE_SPORE),
                 'b', Ingredient.of(MaterialItems.MAN_EATER_VINE),
-                'c', Ingredient.of(AxeItems.STAFF_OF_REGROWTH)
+                'c', Ingredient.of(ToolItems.STAFF_OF_REGROWTH)
         ), List.of(
                 " aaa",
                 " c#b",
@@ -1300,8 +1300,70 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#",
                 "#"
         )), MaterialItems.PEARLWOOD_STICK.toStack(6));
+
+        // 垃圾桶
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+        ), List.of(
+                "####",
+                " ## ",
+                " ## "
+        )), TFBlocks.TRASH_CAN.toStack());
+
+        // 凤凰爆破枪
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.INGOTS_HELLSTONE),
+                'a', Ingredient.of(TGItems.HAND_GUN)
+        ), List.of(
+                "####",
+                "a## ",
+                " ## "
+        )), TGItems.PHOENIX_BLASTER.toStack());
+        // 魂钥匙
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.SOUL_OF_LIGHT),
+                'b', Ingredient.of(MaterialItems.SOUL_OF_LIGHT)
+        ), List.of(
+                "aaa",
+                " a ",
+                "bb ",
+                " b "
+        )), ToolItems.KEY_OF_LIGHT.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.SOUL_OF_NIGHT),
+                'b', Ingredient.of(MaterialItems.SOUL_OF_NIGHT)
+        ), List.of(
+                "aaa",
+                " a ",
+                "bb ",
+                " b "
+        )), ToolItems.KEY_OF_NIGHT.toStack());
+
+        // 连弩
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, ModTags.Items.INGOTS_COBALT),
+                'b', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
+        )), CrossbowItems.COBALT_REPEATER.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, ModTags.Items.INGOTS_PALLADIUM),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_PALLADIUM),
+                'c', Ingredient.of(Items.TRIPWIRE_HOOK),
+                'd', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                "dad",
+                "bcb",
+                " d "
+        )), CrossbowItems.PALLADIUM_REPEATER.toStack());
+
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
-        shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(), Ingredient.of(ConsumableItems.THROWING_KNIVE), Ingredient.of(MaterialItems.STURDY_FOSSIL));
+        shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(30),Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(2, MaterialItems.ROTTEN_BONE), AmountIngredient.of(2, MaterialItems.WORM_TOOTH), AmountIngredient.of(4, MaterialItems.ROTTEN_CHUNK));
         shapeless(recipeOutput, ConsumableItems.BLOODSTAINED_POWDER.toStack(2), AmountIngredient.of(6, MaterialItems.VERTEBRA), AmountIngredient.of(4, MaterialItems.BLOOD_CLOT_POWDER));
         shapeless(recipeOutput, TGItems.SILVER_BULLET.toStack(70), AmountIngredient.of(70, TGItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_SILVER));

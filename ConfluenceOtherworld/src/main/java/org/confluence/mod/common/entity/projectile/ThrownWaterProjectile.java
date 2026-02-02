@@ -38,7 +38,7 @@ public class ThrownWaterProjectile extends ThrowableItemProjectile {
         if (!level().isClientSide) {
             BlockPos blockPos = result.getBlockPos();
             for (BlockPos pos : BlockPos.betweenClosed(blockPos.offset(-2, -2, -2), blockPos.offset(2, 2, 2))) {
-                if (pos.distSqr(blockPos) <= 25) type.spread(level(), pos);
+                if (pos.distSqr(blockPos) <= 25) type.spread(level(), pos, true);
             }
             level().levelEvent(LevelEvent.PARTICLES_SPELL_POTION_SPLASH, blockPosition(), getColor());
             discard();

@@ -8,30 +8,20 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.Dynamic2CommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.network.FriendlyByteBuf;
 import net.neoforged.neoforge.server.command.CommandUtils;
 import org.confluence.mod.common.component.prefix.ModPrefix;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class PrefixArgument implements ArgumentType<ModPrefix> {
+public record PrefixArgument(String group) implements ArgumentType<ModPrefix> {
     private static final Dynamic2CommandExceptionType INVALID_PREFIX = new Dynamic2CommandExceptionType((found, constants) -> CommandUtils.makeTranslatableWithFallback("commands.confluence.arguments.prefix.invalid", constants, found));
-    private final String group;
-
-    public PrefixArgument(String group) {
-        this.group = group;
-    }
 
     @Override
     public ModPrefix parse(StringReader reader) throws CommandSyntaxException {
@@ -56,11 +46,11 @@ public class PrefixArgument implements ArgumentType<ModPrefix> {
         return stream().toList();
     }
 
-    private @NotNull Stream<String> stream() {
+    private Stream<String> stream() {
         return ModPrefix.GROUPS.getOrDefault(group, Map.of()).keySet().stream();
     }
 
-    public static class Info implements ArgumentTypeInfo<PrefixArgument, PrefixArgument.Info.Template> {
+    public static class Info implements ArgumentTypeInfo<PrefixArgument, Info.Template> {
         @Override
         public void serializeToNetwork(Template template, FriendlyByteBuf buffer) {
             buffer.writeUtf(template.group);

@@ -23,14 +23,14 @@ import java.util.Collections;
 import java.util.function.Predicate;
 
 public class SpongeItem extends TooltipItem {
-    private final Predicate<BlockState> predicate;
+    private final Predicate<BlockState> fluidPredicate;
 
-    public SpongeItem(ModRarity rarity, String name, int blockInteractionRange, Predicate<BlockState> predicate) {
+    public SpongeItem(ModRarity rarity, String name, int blockInteractionRange, Predicate<BlockState> fluidPredicate) {
         super(new Properties().stacksTo(1).attributes(new ItemAttributeModifiers(Collections.singletonList(
                 new ItemAttributeModifiers.Entry(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(
                         Confluence.asResource(name), blockInteractionRange, AttributeModifier.Operation.ADD_VALUE
                 ), EquipmentSlotGroup.MAINHAND)), true)), rarity, "tooltip.item.confluence." + name + ".0");
-        this.predicate = predicate;
+        this.fluidPredicate = fluidPredicate;
     }
 
     @Override
@@ -41,16 +41,19 @@ public class SpongeItem extends TooltipItem {
             return InteractionResultHolder.pass(itemStack);
         }
         BlockPos blockPos = hitResult.getBlockPos();
-        boolean succeed = false;
+        if (!level.mayInteract(player, blockPos)) return InteractionResultHolder.fail(itemStack);
+        if (tryAbsorbLiquid(level, blockPos)) return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);
+        return InteractionResultHolder.fail(itemStack);
+    }
+
+    public boolean tryAbsorbLiquid(Level level, BlockPos blockPos) {
+        boolean absorbed = false;
         for (BlockPos pos : BlockPos.betweenClosed(blockPos.offset(-2, -2, -2), blockPos.offset(2, 2, 2))) {
-            if (level.mayInteract(player, pos)) {
-                if (predicate.test(level.getBlockState(pos))) {
-                    level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-                    succeed = true;
-                }
+            if (fluidPredicate.test(level.getBlockState(pos))) {
+                level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                absorbed = true;
             }
         }
-        if (succeed) return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);
-        return InteractionResultHolder.fail(itemStack);
+        return absorbed;
     }
 }

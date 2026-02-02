@@ -31,9 +31,9 @@ public class LightsBaneProjectileRenderer extends ForwardProjRenderer<LightBaneP
 
         poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTick, entity.getYRot(), entity.getYRot())));
         float yRot = entity.getYHeadRot();
-        double rad = yRot * Math.PI / 180;
+        float rad = yRot * Mth.DEG_TO_RAD;
         float xRot = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
-        poseStack.mulPose(Axis.of(new Vector3f((float) Math.cos(rad), 0, (float) Math.sin(rad))).rotationDegrees(xRot));
+        poseStack.mulPose(Axis.of(new Vector3f(Mth.cos(rad), 0, Mth.sin(rad))).rotationDegrees(xRot));
 
     }
 

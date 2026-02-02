@@ -21,6 +21,7 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -158,5 +159,11 @@ public final class MeteoriteTracker {
         nbt.putBoolean("spawnAtNextNight", spawnAtNextNight);
         nbt.put("meteoriteLocation", NbtUtils.writeBlockPos(location));
         nbt.putInt("tickUtilMeteoriteLanding", tickUntilLanding);
+    }
+
+    public static void spawnMeteor(ServerLevel level) {
+        if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && level.random.nextFloat() < 0.02F) {
+            INSTANCE.spawnAtNextNight = true;
+        }
     }
 }

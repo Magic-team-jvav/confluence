@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.mod.common.block.natural.CattailBlock;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
@@ -141,6 +143,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(DART_TRAP.get());
         dropSelf(STONE_DART_TRAP.get());
         dropSelf(DEEPSLATE_DART_TRAP.get());
+        dropSelf(SHIMMER_TRAP.get());
+        dropSelf(GRAVITATION_TRAP.get());
+        dropSelf(PNEUMATIC_TRAP.get());
         dropSelf(PIGGY_BANK.get());
         dropSelf(LIFE_CAMPFIRE.get());
         dropSelf(LOOM.get());
@@ -159,6 +164,17 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(TREE_HOLES_BLOCK.get());
         dropSelf(MAGIC_MAIL_BOX.get());
         dropSelf(SAWMILL.get());
+        dropSelf(HEART_LANTERN.get());
+        dropSelf(STAR_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_FLIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_LIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_FRIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_NIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_MIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_SIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_BRIGHT_IN_A_BOTTLE.get());
+        dropSelf(SOUL_OF_VOIGHT_IN_A_BOTTLE.get());
+        dropSelf(TUFF_BOOTH.get());
 
         add(SANCTIFICATION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(CORRUPTION_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
@@ -312,11 +328,15 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(AETHERIUM_CAULDRON.get());
         dropSelf(CURSED_FLAME_BLOCK.get());
         dropSelf(POO.get());
+        dropSelf(POO_BLOCK.get());
 
         dropSelf(ROPE.get());
         dropSelf(SILK_ROPE.get());
         dropSelf(WEB_ROPE.get());
         dropSelf(VINE_ROPE.get());
+
+        dropSelf(WATER_CANDLE.get());
+        dropSelf(PEACE_CANDLE.get());
 
         dropSelf(TOMBSTONE.get());
         dropSelf(GRAVE_MARKER.get());
@@ -416,13 +436,18 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SMOOTH_OBSIDIAN.get());
         dropSelf(POLISHED_GRANITE.get());
         dropSelf(GRANITE_COLUMN.get());
+        dropSelf(CHISELED_GRANITE_BRICKS.get());
 
         dropSelf(MARBLE_COLUMN.get());
         dropSelf(MARBLE_BRICKS.get());
+        dropSelf(CRACKED_GRANITE_BRICKS.get());
         dropSelf(MARBLE_SMALL_BRICKS.get());
         dropSelf(CRACKED_MARBLE_BRICKS.get());
         dropSelf(GILDED_MARBLE.get());
         dropSelf(POLISHED_MARBLE.get());
+        dropSelf(CHISELED_MARBLE_BRICKS.get());
+        dropSelf(MARBLE_CHESSBOARD_BRICKS.get());
+        dropSelf(MARBLE_ETERNAL_CHESSBOARD_BRICKS.get());
 
         dropSelf(WHITE_PAPER_PANE.get());
         dropSelf(WHITE_PAPER_PANE_LAMP.get());
@@ -511,7 +536,13 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(EYE_OF_CTHULHU_RELIC.get());
         dropSelf(BRAIN_OF_CTHULHU_RELIC.get());
         dropSelf(EATER_OF_WORLDS_RELIC.get());
+        dropSelf(QUEEN_BEE_RELIC.get());
+        dropSelf(DEERCLOPS_RELIC.get());
         dropSelf(SKELETRON_RELIC.get());
+        dropSelf(WALL_OF_FLESH_RELIC.get());
+        dropSelf(HILL_OF_FLESH_RELIC.get());
+        dropSelf(THE_TWINS_RELIC.get());
+        dropSelf(SKELETRON_PRIME_RELIC.get());
         // 片
         dropWhenSilkTouch(SAND_LAYER_BLOCK.get());
         dropWhenSilkTouch(RED_SAND_LAYER_BLOCK.get());
@@ -534,10 +565,10 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         // 发光蘑菇
         add(GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
         add(GLOWING_MUSHROOM_VINE.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
-        add(GLOWING_MUSHROOM_CATTAILS_HEAD.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
+        add(GLOWING_MUSHROOM_CATTAIL_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
         add(GLOWING_MUSHROOM_PILEUS_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
         dropSelf(GLOWING_MUSHROOM_STEM_BLOCK.get());
-        dropWhenSilkTouch(GLOWING_MUSHROOM_CATTAILS_BODY.get());
+        dropWhenSilkTouch(GLOWING_MUSHROOM_CATTAIL_BLOCK.get());
 
         add(LIFE_MUSHROOM_INDUSIUM_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.LIFE_MUSHROOM));
         add(LIFE_MUSHROOM_PILEUS_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.LIFE_MUSHROOM));
@@ -671,18 +702,12 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         addGrassLoot(HALLOW_GRASS.get(), HALLOW_GRASS.asItem());
         addGrassLoot(CRIMSON_GRASS.get(), CRIMSON_GRASS.asItem());
 
-        addGrassLoot(CATTAILS_BODY.get(), ModItems.CATTAILS.get());
-        addGrassLoot(CATTAILS_HEAD.get(), ModItems.CATTAILS.get());
-        addGrassLoot(JUNGLE_CATTAILS_BODY.get(), ModItems.JUNGLE_CATTAILS.get());
-        addGrassLoot(JUNGLE_CATTAILS_HEAD.get(), ModItems.JUNGLE_CATTAILS.get());
-        addGrassLoot(GLOWING_MUSHROOM_CATTAILS_BODY.get(), ModItems.GLOWING_MUSHROOM_CATTAILS.get());
-        addGrassLoot(GLOWING_MUSHROOM_CATTAILS_HEAD.get(), ModItems.GLOWING_MUSHROOM_CATTAILS.get());
-        addGrassLoot(HALLOW_CATTAILS_BODY.get(), ModItems.HALLOW_CATTAILS.get());
-        addGrassLoot(HALLOW_CATTAILS_HEAD.get(), ModItems.HALLOW_CATTAILS.get());
-        addGrassLoot(EBONY_CATTAILS_BODY.get(), ModItems.EBONY_CATTAILS.get());
-        addGrassLoot(EBONY_CATTAILS_HEAD.get(), ModItems.EBONY_CATTAILS.get());
-        addGrassLoot(CRIMSON_CATTAILS_BODY.get(), ModItems.CRIMSON_CATTAILS.get());
-        addGrassLoot(CRIMSON_CATTAILS_HEAD.get(), ModItems.CRIMSON_CATTAILS.get());
+        addGrassLoot(CATTAIL_BLOCK.get(), ModItems.CATTAIL.get());
+        addGrassLoot(JUNGLE_CATTAIL_BLOCK.get(), ModItems.JUNGLE_CATTAIL.get());
+        addGrassLoot(GLOWING_MUSHROOM_CATTAIL_BLOCK.get(), ModItems.GLOWING_MUSHROOM_CATTAIL.get());
+        addGrassLoot(HALLOW_CATTAIL_BLOCK.get(), ModItems.HALLOW_CATTAIL.get());
+        addGrassLoot(EBONY_CATTAIL_BLOCK.get(), ModItems.EBONY_CATTAIL.get());
+        addGrassLoot(CRIMSON_CATTAIL_BLOCK.get(), ModItems.CRIMSON_CATTAIL.get());
 
         addGrassLoot(SMALL_DESERT_PLANT.get(), SMALL_DESERT_PLANT.asItem());
         addGrassLoot(BIG_DESERT_PLANT.get(), BIG_DESERT_PLANT.asItem());

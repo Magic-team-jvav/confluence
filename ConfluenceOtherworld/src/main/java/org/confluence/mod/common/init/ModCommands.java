@@ -12,12 +12,14 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -43,8 +45,11 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
+import org.confluence.mod.common.data.GameEventArgument;
 import org.confluence.mod.common.data.PrefixArgument;
 import org.confluence.mod.common.data.saved.*;
+import org.confluence.mod.common.gameevent.GameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.DynamicBiomeUtils;
@@ -58,11 +63,13 @@ import java.util.Map;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
-@SuppressWarnings("unused")
 public final class ModCommands {
     public static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENT_TYPE_INFOS = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, Confluence.MODID);
 
-    public static final Holder<ArgumentTypeInfo<?, ?>> PREFIX_ARGUMENT_TYPE = ARGUMENT_TYPE_INFOS.register("prefix", () -> ArgumentTypeInfos.registerByClass(PrefixArgument.class, new PrefixArgument.Info()));
+    static {
+        ARGUMENT_TYPE_INFOS.register("prefix", () -> ArgumentTypeInfos.registerByClass(PrefixArgument.class, new PrefixArgument.Info()));
+        ARGUMENT_TYPE_INFOS.register("game_event", () -> ArgumentTypeInfos.registerByClass(GameEventArgument.class, SingletonArgumentInfo.contextFree(GameEventArgument::new)));
+    }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("confluence").requires(sourceStack -> sourceStack.hasPermission(2))
@@ -250,6 +257,31 @@ public final class ModCommands {
                             return 1;
                         }))
                         .then(setPrefixBuilder())
+                )
+                .then(Commands.literal("gameEvent")
+                        .then(Commands.literal("start").then(Commands.argument("key", new GameEventArgument()).executes(context -> {
+                            GameEvent event = context.getArgument("key", GameEvent.class);
+                            if (!event.forceStart()) return 0;
+                            return 1;
+                        })))
+                        .then(Commands.literal("end").then(Commands.argument("key", new GameEventArgument()).executes(context -> {
+                            context.getArgument("key", GameEvent.class).forceEnd();
+                            return 1;
+                        })))
+                        .then(Commands.literal("query").executes(context -> {
+                            CommandSourceStack source = context.getSource();
+                            source.sendSystemMessage(Component.literal("GameEvents:"));
+                            for (Map.Entry<ResourceKey<? extends GameEvent>, GameEvent> entry : GameEventSystem.INSTANCE.getEvents().entrySet()) {
+                                GameEvent event = entry.getValue();
+                                boolean started = event.started();
+                                boolean isEnvironment = !event.isNonEnvEvent();
+                                source.sendSystemMessage(Component.literal("  " + entry.getKey().location())
+                                        .append(": started=").append(Component.literal(String.valueOf(started)).withStyle(started ? ChatFormatting.GREEN : ChatFormatting.RED))
+                                        .append(", isEnvironment=").append(Component.literal(String.valueOf(isEnvironment)).withStyle(isEnvironment ? ChatFormatting.GREEN : ChatFormatting.RED))
+                                );
+                            }
+                            return 1;
+                        }))
                 )
         );
     }

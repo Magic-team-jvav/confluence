@@ -13,8 +13,6 @@ public interface IEntity extends Immunity, SelfGetter<Entity> {
 
     boolean confluence$isInShimmer();
 
-    Vec3 confluence$deathMotion(Vec3... motion);
-
     @Override
     default Type confluence$getImmunityType() {
         return ImmunityDataMap.getImmunityType(confluence$self());

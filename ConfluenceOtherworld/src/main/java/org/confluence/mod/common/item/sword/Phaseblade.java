@@ -82,10 +82,10 @@ public class Phaseblade extends BaseSwordItem implements GeoItem {
         boolean turnOn = component == null || !component.value();
         if (turnOn) {
             triggerAnim(living, GeoItem.getOrAssignId(itemStack, (ServerLevel) level), "light", "on");
-            level.playSound(null, living.getOnPos().above(), ModSoundEvents.LIGHTSABER_OPEN.get(), SoundSource.PLAYERS, 2, 1);
+            level.playSound(null, living.blockPosition().above(), ModSoundEvents.LIGHTSABER_OPEN.get(), SoundSource.PLAYERS, 2, 1);
         } else {
             triggerAnim(living, GeoItem.getOrAssignId(itemStack, (ServerLevel) level), "light", "off");
-            level.playSound(null, living.getOnPos().above(), ModSoundEvents.LIGHTSABER_OPEN.get(), SoundSource.PLAYERS);
+            level.playSound(null, living.blockPosition().above(), ModSoundEvents.LIGHTSABER_OPEN.get(), SoundSource.PLAYERS);
         }
         if (living instanceof Player player) player.getCooldowns().addCooldown(this, 10);
         return itemStack;

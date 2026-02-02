@@ -15,15 +15,13 @@ import java.util.Locale;
 import java.util.function.IntFunction;
 
 
-/**
- * BEFORE_SKELETRON:骷髅王前 <p>
- * AFTER_SKELETRON:骷髅王后 <p>
- * WALL_OF_FLESH:肉后 <p>
- * MECHANICAL_BOSSES:新三王后 <p>
- * PLANTERA:世花后 <p>
- * GOLEM:石巨人后 <p>
- * MOON_LORD:月后 <p>
- */
+/// BEFORE_SKELETRON:骷髅王前
+/// AFTER_SKELETRON:骷髅王后
+/// WALL_OF_FLESH:肉后
+/// MECHANICAL_BOSSES:新三王后
+/// PLANTERA:世花后
+/// GOLEM:石巨人后
+/// MOON_LORD:月后
 @NetworkedEnum(NetworkedEnum.NetworkCheck.BIDIRECTIONAL)
 public enum GamePhase implements StringRepresentable, IExtensibleEnum {
     BEFORE_SKELETRON(0),
@@ -48,6 +46,7 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
         return name().toLowerCase(Locale.ROOT);
     }
 
+    /// @see org.confluence.mod.mixed.IMinecraftServer#isHardmode
     public boolean isHardmode() {
         return isAtLeast(WALL_OF_FLESH);
     }
@@ -56,9 +55,7 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
         return isAtLeast(MOON_LORD);
     }
 
-    /**
-     * 判断阶段是否高于other
-     */
+    /// 判断阶段是否高于other
     public boolean isAboveThan(GamePhase other) {
         return getOrder() > other.getOrder();
     }

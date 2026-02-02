@@ -178,15 +178,16 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     public void clicked(int slotId, int button, ClickType clickType, Player player) {
         boolean isThrow = clickType == ClickType.THROW;
         if ((slotId >= 0 && slotId < slots.size()) && (slotId == TRASH_START || isThrow)) {
+            ClickAction action = button == 0 ? ClickAction.PRIMARY : ClickAction.SECONDARY;
             Slot slot = slots.get(isThrow ? TRASH_START : slotId);
             ItemStack carried = isThrow ? slots.get(slotId).getItem() : getCarried();
             ItemStack slotItem = slot.getItem();
+            if (tryItemClickBehaviourOverride(player, action, slot, slotItem, carried)) return;
             if (isThrow) {
                 slot.setByPlayer(carried);
                 slots.get(slotId).setByPlayer(ItemStack.EMPTY);
             } else if (carried.isEmpty()) {
-                ClickAction clickaction = button == 0 ? ClickAction.PRIMARY : ClickAction.SECONDARY;
-                int j3 = clickaction == ClickAction.PRIMARY ? slotItem.getCount() : (slotItem.getCount() + 1) / 2;
+                int j3 = action == ClickAction.PRIMARY ? slotItem.getCount() : (slotItem.getCount() + 1) / 2;
                 Optional<ItemStack> optional = slot.tryRemove(j3, Integer.MAX_VALUE, player);
                 if (optional.isPresent()) {
                     ItemStack itemStack = optional.get();

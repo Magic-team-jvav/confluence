@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.PartEntity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -77,7 +77,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 this.gravity = this.entityData.get(DATA_INIT_GRAVITY);
             } else if (DATA_DIRECTION.equals(data)) {
                 direction = new Vec3(this.entityData.get(DATA_DIRECTION));
-                float yaw = (float) Math.atan2(direction.x, direction.z) * (180F / (float) Math.PI);
+                float yaw = (float) Mth.atan2(direction.x, direction.z) * Mth.RAD_TO_DEG;
                 this.setYRot(yaw);
                 yRotO = yaw;
             }
@@ -177,8 +177,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             this.applyGravity();
             if (target != null && target.isAlive()) {
 
-                Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(this.position()).normalize();
                 Vec3 motion = getDeltaMovement();
+                Vec3 dir = target.position().add(0, target.getBoundingBox().getYsize() * 0.5, 0).subtract(this.position())
+                        .normalize().scale(motion.length());
                 double angle = TEUtils.angleBetween(motion, dir);
 
                 if (projComponent.trackType().isPresent()) {
@@ -237,10 +238,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 return true;
             }
 
+            Entity victim = LibUtils.getOwner(target);
             LivingEntity hurter;
-            if (target instanceof LivingEntity living) {
-                hurter = living;
-            } else if (target instanceof PartEntity<?> partEntity && partEntity.getParent() instanceof LivingEntity living) {
+            if (victim instanceof LivingEntity living) {
                 hurter = living;
             } else {
                 return false;

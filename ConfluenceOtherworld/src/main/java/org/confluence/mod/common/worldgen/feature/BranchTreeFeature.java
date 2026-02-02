@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BranchTreeFeature extends Feature<BranchTreeFeature.Config> {
-
     public BranchTreeFeature(Codec<Config> pCodec) {
         super(pCodec);
     }

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/chiseled_marble_bricks",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "confluence:block/chiseled_marble_bricks",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "confluence:block/chiseled_marble_bricks"
+    },
+    "facing=west": {
+      "model": "confluence:block/chiseled_marble_bricks",
+      "y": 90
+    }
+  }
+}

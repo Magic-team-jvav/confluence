@@ -1,14 +1,10 @@
 package org.confluence.mod.integration.waystones;
 
 import com.mojang.datafixers.DSL;
-import net.blay09.mods.waystones.api.WaystonesAPI;
-import net.blay09.mods.waystones.requirement.NoRequirement;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
@@ -23,8 +19,6 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -34,17 +28,14 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.data_map.ValueSubProvider;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTabs;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.integration.xaero.PylonWaypointElement;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -148,33 +139,5 @@ public class WaystonesHelper {
         builder.add(HALLOW_PYLON.getId(), value, false, condition);
         builder.add(MUSHROOM_PYLON.getId(), value, false, condition);
         builder.add(UNIVERSAL_PYLON.getId(), new ValueComponent(200000), false, condition);
-    }
-
-    public static void registerPayload(PayloadRegistrar registrar) {
-        if (IS_LOADED) {
-            registrar.playToServer(PlayerToPylonPacketC2S.TYPE, PlayerToPylonPacketC2S.STREAM_CODEC, PlayerToPylonPacketC2S::handle);
-        }
-    }
-
-    public static void handle(ServerPlayer serverPlayer, UUID uuid) {
-        // todo 检查NPC
-        WaystonesAPI.getWaystone(serverPlayer.server, uuid).ifPresent(waystone -> {
-            WaystonesAPI.createDefaultTeleportContext(serverPlayer, waystone, context -> {
-                if (CommonConfigs.WAYSTONES_PYLON_NON_COST.get()) {
-                    context.setRequirements(NoRequirement.INSTANCE);
-                }
-            }).ifLeft(WaystonesAPI::tryTeleport).ifRight(error -> {
-                serverPlayer.sendSystemMessage(error.getComponent().copy().withStyle(ChatFormatting.DARK_RED), false);
-                WaystonesAPI.removeWaystoneFromDatabase(serverPlayer.server, waystone);
-            });
-        });
-    }
-
-    public static boolean teleport(Object o) {
-        if (o instanceof PylonWaypointElement element) {
-            PacketDistributor.sendToServer(new PlayerToPylonPacketC2S(element.getWaystone().getWaystoneUid()));
-            return true;
-        }
-        return false;
     }
 }

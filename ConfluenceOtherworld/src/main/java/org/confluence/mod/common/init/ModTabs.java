@@ -198,6 +198,7 @@ public final class ModTabs {
                         CreativeModeTab.Output finalOutput = output;
                         Consumer<DeferredHolder<Item, ? extends Item>> action = item -> finalOutput.accept(item.get());
                         BowItems.ITEMS.getEntries().forEach(action);
+                        CrossbowItems.ITEMS.getEntries().forEach(action);
                         ArrowItems.ITEMS.getEntries().forEach(action);
                         TGItems.GUNS.getEntries().forEach(action);
                         GunItems.ITEMS.getEntries().forEach(action);
@@ -239,7 +240,6 @@ public final class ModTabs {
                     .withTabsBefore(MAGES.getId())
                     .build());
     /* 生物 */
-    /* 事件 */
     /* 敌怪旗 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DEVELOPER = TABS.register("developer",
             () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
@@ -257,6 +257,9 @@ public final class ModTabs {
                         output.accept(SwordItems.DEVELOPER_SWORD.get());
                         output.accept(TEBoomerangItems.DEVELOPER_BOOMERANG.get());
                         output.accept(BowItems.DEVELOPER_BOW.get());
+                        output.accept(ModBlocks.TEST_BLOCK.get());
+                        output.accept(ModBlocks.AETHERIUM_CAULDRON.get());
+                        output.accept(ModBlocks.HONEY_CAULDRON.get());
                     })
                     .withTabsBefore(EnemyBanner.TAB.getId())
                     .build());

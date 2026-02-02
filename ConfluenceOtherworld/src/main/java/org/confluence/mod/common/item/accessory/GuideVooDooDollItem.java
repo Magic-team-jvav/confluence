@@ -119,7 +119,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     public static void summon(Entity entity, ServerLevel level, boolean isWall, Supplier<@Nullable Direction> forward) {
         EntityType<WallOfFlesh> wof = TEBossEntities.WALL_OF_FLESH.get();
         EntityType<HillOfFlesh> hof = TEBossEntities.HILL_OF_FLESH.get();
-        if (Streams.stream(level.getEntities().getAll()).anyMatch(entity1 -> {
+        if (Streams.stream(level.getAllEntities()).anyMatch(entity1 -> {
             EntityType<?> type = entity1.getType();
             return type == wof || type == hof;
         })) return;

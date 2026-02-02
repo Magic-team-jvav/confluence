@@ -1,6 +1,7 @@
 package org.confluence.mod.common.event.game;
 
 import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -14,7 +15,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
-import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -26,6 +26,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
+import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.gun.ManaGunItem;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
@@ -41,11 +42,9 @@ public final class ItemEvents {
     public static void itemStackedOnOther(ItemStackedOnOtherEvent event) {
         ItemStack carried = event.getCarriedItem();
         ItemStack stackedOn = event.getStackedOnItem();
-        if (event.getClickAction() == ClickAction.SECONDARY && ModUtils.useKey(carried, stackedOn, event.getPlayer())) {
+        Player player = event.getPlayer();
+        if (event.getClickAction() == ClickAction.SECONDARY && ModUtils.useKey(carried, stackedOn, player)) {
             event.setCanceled(true);
-        }
-        if (carried.is(MaterialItems.GEL)) {
-            ColoredItem.merge(carried, stackedOn);
         }
     }
 
@@ -79,6 +78,9 @@ public final class ItemEvents {
             itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
         }
         ModUtils.makeItemAntigravity(itemEntity);
+        if (event.getPlayer() instanceof ServerPlayer player) {
+            LucyTheAxe.onToss(player, itemStack);
+        }
     }
 
     @SubscribeEvent

@@ -45,7 +45,7 @@ public class ShimmerCrystalslBlock extends Block {
     }
 
     private boolean isFullMoonNight(ServerLevel level) {
-        return LibDateUtils.isNight(level) && level.getMoonPhase() == MoonPhase.FULL_MOON.ordinal();
+        return LibDateUtils.isNight(level) && MoonPhase.FULL_MOON.match(level);
     }
 
     @Override

@@ -80,9 +80,9 @@ public class TitaniumShardsProjectile extends Projectile {
         assert player != null;
 
         setPos(player.position());
-        this.xo = player.xo;
-        this.yo = player.yo;
-        this.zo = player.zo;
+        this.xOld = player.xOld;
+        this.yOld = player.yOld;
+        this.zOld = player.zOld;
 
         if (amount != shardPos.size()) {
             List<Vector3d> shardPos = new ArrayList<>();
@@ -108,7 +108,7 @@ public class TitaniumShardsProjectile extends Projectile {
                 Vec3 endVec = position().add(end.x, end.y, end.z);
                 AABB aabb = new AABB(startVec, endVec).inflate(0.5);
                 EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, startVec, endVec, aabb, this::canHitEntity);
-                if (hitResult != null && hitResult.getEntity().hurt(ModDamageTypes.of(level(), DamageTypes.GENERIC, this, getOwner()), 10)) {
+                if (hitResult != null && hitResult.getEntity().hurt(ModDamageTypes.of(level(), DamageTypes.GENERIC, this, getOwner()), 25)) {
                     VectorUtils.knockBackA2B(this, hitResult.getEntity(), 1, 0.4);
                     entityData.set(DATA_SHARDS_AMOUNT, amount - 1);
                 }

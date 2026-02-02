@@ -7,13 +7,14 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.DyeVatRecipe;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
-import org.jetbrains.annotations.Nullable;
 
 public class DyeVatCategory implements IRecipeCategory<RecipeHolder<DyeVatRecipe>> {
     public static final RecipeType<RecipeHolder<DyeVatRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("dye_vat"));
@@ -34,7 +35,7 @@ public class DyeVatCategory implements IRecipeCategory<RecipeHolder<DyeVatRecipe
     }
 
     @Override
-    public @Nullable IDrawable getIcon() {
+    public IDrawable getIcon() {
         return icon;
     }
 
@@ -57,5 +58,10 @@ public class DyeVatCategory implements IRecipeCategory<RecipeHolder<DyeVatRecipe
     public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<DyeVatRecipe> recipe, IFocusGroup focuses) {
         IRecipeCategory.super.createRecipeExtras(builder, recipe, focuses);
         builder.addRecipeArrow().setPosition(50 + 5, 6 + 2);
+    }
+
+    @Override
+    public ResourceLocation getRegistryName(RecipeHolder<DyeVatRecipe> recipe) {
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
     }
 }

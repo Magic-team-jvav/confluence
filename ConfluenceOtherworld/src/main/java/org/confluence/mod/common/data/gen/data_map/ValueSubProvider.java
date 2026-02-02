@@ -265,14 +265,23 @@ public final class ValueSubProvider {
                 .add(MaterialItems.CRYSTAL_SHARDS, silver10 + silver5 + silver1)
                 .add(MaterialItems.CURSED_FLAME, silver10 - silver2)
                 .add(MaterialItems.ICHOR, silver10 - silver1)
+                .add(MaterialItems.DARK_SHARD, silver10 - silver1)
+                .add(MaterialItems.LIGHT_SHARD, silver10 - silver1)
+                .add(MaterialItems.ANCIENT_CLOTH, silver1)
                 .add(MaterialItems.PIXIE_DUST, silver1)
                 .add(MaterialItems.FORBIDDEN_FRAGMENT, gold1)
+                .add(MaterialItems.FROST_CORE, gold1)
+                .add(MaterialItems.MECHANICAL_WHEEL_PIECE, silver50)
+                .add(MaterialItems.MECHANICAL_WAGON_PIECE, silver50)
+                .add(MaterialItems.MECHANICAL_BATTERY_PIECE, silver50)
                 .add(MaterialItems.SOUL_OF_LIGHT, 2000)
                 .add(MaterialItems.SOUL_OF_FLIGHT, 2000)
                 .add(MaterialItems.SOUL_OF_NIGHT, 2000)
                 .add(MaterialItems.SOUL_OF_MIGHT, 8000)
                 .add(MaterialItems.SOUL_OF_SIGHT, 8000)
                 .add(MaterialItems.SOUL_OF_FRIGHT, 8000)
+                .add(MaterialItems.SOUL_OF_BRIGHT, 8000)
+                .add(MaterialItems.SOUL_OF_VOIGHT, 8000)
                 .add(MaterialItems.SPELL_TOME, gold1);
         builder
                 .add(SwordItems.ASH_WOOD_SWORD, 20)
@@ -305,6 +314,7 @@ public final class ValueSubProvider {
                 .add(SwordItems.MANDIBLE_BLADE, silver10)
                 .add(SwordItems.MURAMASA, gold1 + silver50 + silver20 + silver5)
                 .add(SwordItems.NIGHTS_EDGE, gold2 + gold2)
+                .add(SwordItems.WAFFLES_IRON, gold2 + gold1)
                 .add(SwordItems.ORANGE_PHASEBLADE, silver50 + silver2 + silver2)
                 .add(SwordItems.PEARLWOOD_SWORD, 20)
                 .add(SwordItems.PLATINUM_BROADSWORD, silver20 + silver5 + silver2)
@@ -385,7 +395,7 @@ public final class ValueSubProvider {
                 .add(TERideableItems.SLIMY_SADDLE, gold5)
                 .add(TERideableItems.HONEYED_GOGGLES, gold5);
         builder // 影响地形
-                .add(AxeItems.STAFF_OF_REGROWTH, silver50)
+                .add(ToolItems.STAFF_OF_REGROWTH, silver50)
                 .add(ModItems.HIVE_WAND, silver50)
                 .add(ModItems.LIVING_WOOD_WAND, silver20 + silver5)
                 .add(ModItems.LEAF_WAND, silver20 + silver5)
@@ -448,7 +458,16 @@ public final class ValueSubProvider {
                 .add(BowItems.FOSSIL_BOW, 3000)
                 .add(BowItems.HUNTING_BOW, 3800)
                 .add(BowItems.HELLWING_BOW, gold2 + silver50)
-                .add(BowItems.WOODEN_SHORT_BOW, 30);
+                .add(BowItems.WOODEN_SHORT_BOW, 30)
+                .add(CrossbowItems.COBALT_REPEATER, gold1 + silver20)
+                .add(CrossbowItems.PALLADIUM_REPEATER, gold1 + silver50+ silver10)
+                .add(CrossbowItems.MYTHRIL_REPEATER, gold2 - silver20)
+                .add(CrossbowItems.ORICHALCUM_REPEATER, gold2 + silver20)
+                .add(CrossbowItems.ADAMANTITE_REPEATER, gold2 + silver20 + silver20)
+                .add(CrossbowItems.TITANIUM_REPEATER, gold2 + gold1 - silver20)
+                .add(CrossbowItems.HALLOWED_REPEATER, gold2 + gold2)
+                .add(CrossbowItems.CHLOROPHYTE_REPEATER, gold5 + - silver20)
+                .add(CrossbowItems.STAKE_LAUNCHER, gold10);
         builder
                 .add(PickaxeItems.CACTUS_PICKAXE, silver2 + silver2)
                 .add(PickaxeItems.COPPER_PICKAXE, silver1)
@@ -622,7 +641,11 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.BOOK_OF_SKULLS, gold1 + silver50)
                 .add(ManaWeaponItems.FLOWER_OF_FIRE, gold2 + silver50)
                 .add(ManaWeaponItems.THUNDER_ZAPPER, 2100)
-                .add(ManaWeaponItems.GOLDEN_SHOWER, gold2 + gold2);
+                .add(ManaWeaponItems.GOLDEN_SHOWER, gold2 + gold2)
+                .add(ManaWeaponItems.FLOWER_OF_FROST, gold5)
+                .add(ManaWeaponItems.MAGIC_DAGGER, gold5)
+                .add(ManaWeaponItems.CRYSTAL_STORM, gold5 - gold1)
+                .add(ManaWeaponItems.CURSED_FLAMES, gold5 - gold1);
         builder
                 .add(TESummonItems.SLIME_STAFF, gold2)
                 .add(TESummonItems.HORNET_STAFF, silver50 + silver20)
@@ -837,6 +860,7 @@ public final class ValueSubProvider {
                 .add(TGItems.SHOTGUN, gold5)
                 .add(TGItems.TACTICAL_SHOTGUN, gold10 - gold2)
                 .add(TGItems.THE_UNDERTAKER, gold1 + silver50)
+                .add(TGItems.PHOENIX_BLASTER, gold2 + gold1 + silver50)
                 .add(GunItems.STAR_CANNON, gold10)
                 .add(TGItems.MUSKET_BULLET, 1)
                 .add(TGItems.METEOR_SHOT, 1)
@@ -1088,9 +1112,54 @@ public final class ValueSubProvider {
                 .add(ArmorItems.GREEN_CAP, silver50)
                 .add(ArmorItems.VIKING_HELMET, silver50)
                 .add(ArmorItems.FLINX_FUR_COAT, silver50 + gold2)
-                .add(VanityArmorItems.ROBE, silver5 - silver1)
-                .add(VanityArmorItems.DEAD_MANS_SWEATER, silver20)
+
+                .add(ArmorItems.TIKI_MASK, silver50 + gold5+ gold2)
+                .add(ArmorItems.TIKI_SHIRT, silver50 + gold5+ gold2)
+                .add(ArmorItems.TIKI_LEGGINGS, silver50 + gold5+ gold2)
+                .add(ArmorItems.TIKI_BOOTS, silver50 + gold5+ gold2)
+
                 .add(TCItems.DIVING_HELMET, silver2);
+        builder
+                .add(VanityArmorItems.ROBE, silver5 - silver1)
+                .add(VanityArmorItems.TOP_HAT, silver50 - silver10)
+                .add(VanityArmorItems.TUXEDO_SHIRT, silver20)
+                .add(VanityArmorItems.TUXEDO_PANTS, silver10)
+                .add(VanityArmorItems.TUXEDO_SHOES, silver10)
+                .add(VanityArmorItems.SUMMER_HAT, silver20)
+                .add(VanityArmorItems.BUNNY_HOOD, silver20 + silver20)
+                .add(VanityArmorItems.PLUMBERS_HAT, silver20)
+                .add(VanityArmorItems.PLUMBERS_SHIRT, gold5)
+                .add(VanityArmorItems.PLUMBERS_PANTS, gold2)
+                .add(VanityArmorItems.PLUMBERS_SHOES, gold2)
+                .add(VanityArmorItems.HEROS_HAT, silver50)
+                .add(VanityArmorItems.HEROS_SHIRT, silver50)
+                .add(VanityArmorItems.HEROS_PANTS, silver20)
+                .add(VanityArmorItems.HEROS_SHOES, silver20)
+                .add(VanityArmorItems.ARCHAEOLOGISTS_HAT, silver10)
+                .add(VanityArmorItems.ARCHAEOLOGISTS_JACKET, silver10)
+                .add(VanityArmorItems.ARCHAEOLOGISTS_PANTS, silver10)
+                .add(VanityArmorItems.ARCHAEOLOGISTS_SHOES, silver10)
+                .add(VanityArmorItems.CLOTHIERS_HAT, silver2)
+                .add(VanityArmorItems.CLOTHIERS_JACKET, silver20)
+                .add(VanityArmorItems.CLOTHIERS_PANTS, silver20)
+                .add(VanityArmorItems.CLOTHIERS_SHOES, silver20)
+                .add(VanityArmorItems.ROBOT_HAT, silver20)
+                .add(VanityArmorItems.FAMILIAR_WIG, silver20)
+                .add(VanityArmorItems.FAMILIAR_SHIRT, silver20)
+                .add(VanityArmorItems.FAMILIAR_PANTS, silver20)
+                .add(VanityArmorItems.FAMILIAR_SHOES, silver20)
+                .add(VanityArmorItems.MIME_MASK, silver20 + silver20)
+                .add(VanityArmorItems.THE_DOCTORS_SHIRT, gold1)
+                .add(VanityArmorItems.THE_DOCTORS_PANTS, gold1)
+                .add(VanityArmorItems.THE_DOCTORS_SHOES, gold1)
+                .add(VanityArmorItems.GUY_FAWKES_MASK, silver20 + silver20)
+                .add(VanityArmorItems.GUY_FAWKES_HAT, silver20 + silver20)
+                .add(VanityArmorItems.GUY_FAWKES_MASK_SET, silver50 + silver10)
+                .add(VanityArmorItems.MUMMY_MASK, silver50 - silver20)
+                .add(VanityArmorItems.MUMMY_SHIRT, silver50 - silver20)
+                .add(VanityArmorItems.MUMMY_PANTS, silver50 - silver20)
+                .add(VanityArmorItems.MUMMY_SHOES, silver50 - silver20)
+                .add(VanityArmorItems.DEAD_MANS_SWEATER, silver20);
         builder
                 .add(Items.LEATHER_HORSE_ARMOR, 14)
                 .add(Items.IRON_HORSE_ARMOR, silver2 + silver2)
@@ -1417,7 +1486,9 @@ public final class ValueSubProvider {
                 .add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG, gold5)
                 .add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG, gold5 + gold2)
                 .add(TreasureBagItems.SKELETRON_TREASURE_BAG, gold1 + gold2)
-                .add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG, gold10 - silver50);
+                .add(TreasureBagItems.DEERCLOPS_TREASURE_BAG, gold5)
+                .add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG, gold10 - silver50)
+                .add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG, gold10 - silver50);
         builder
                 .add(AccessoryItems.PAINT_SPRAYER, gold2)
                 .add(AccessoryItems.LUCKY_COIN, gold1)
@@ -1821,6 +1892,11 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE, silver10)
                 .add(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT, silver10)
                 .add(FunctionalBlocks.DART_TRAP, silver20)
+                .add(FunctionalBlocks.STONE_DART_TRAP, silver20)
+                .add(FunctionalBlocks.DEEPSLATE_DART_TRAP, silver20)
+                .add(FunctionalBlocks.SHIMMER_TRAP, silver20)
+                .add(FunctionalBlocks.GRAVITATION_TRAP, silver20)
+                .add(FunctionalBlocks.PNEUMATIC_TRAP, silver20)
                 .add(FunctionalBlocks.GEYSER_BLOCK, silver20)
                 .add(FunctionalBlocks.DETONATOR, silver20)
                 .add(FunctionalBlocks.LAND_MINE, gold1)
@@ -1832,6 +1908,17 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.DYE_VAT, gold1)
                 .add(FunctionalBlocks.EXTRACTINATOR, gold2)
                 .add(FunctionalBlocks.LEAD_ANVIL, 100)
+
+                .add(FunctionalBlocks.HEART_LANTERN, 20)
+                .add(FunctionalBlocks.STAR_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE,20)
                 .add(TFBlocks.GLASS_KILN, silver50 + silver2 + silver2)
                 .add(TFBlocks.LIVING_LOOM, gold2);
         builder
@@ -1872,7 +1959,7 @@ public final class ValueSubProvider {
                 .add(DecorativeBlocks.SKYWARE_DOOR, 10)
                 .add(DecorativeBlocks.SKYWARE_GLASS_DOOR, 10)
                 .add(DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR, 10)
-                .add(TFBlocks.BLUE_BRICK_DOOR, 10)
+                .add(TFBlocks.BLUE_DUNGEON_DOOR, 10)
                 .add(TFBlocks.GLASS_DOOR, 10)
                 .add(Blocks.ACACIA_TRAPDOOR, 10)
                 .add(Blocks.BAMBOO_TRAPDOOR, 10)
@@ -1924,6 +2011,9 @@ public final class ValueSubProvider {
                 .add(ChestBlocks.FROZEN_CHEST, silver10)
                 .add(ChestBlocks.IVY_CHEST, silver10)
                 .add(ChestBlocks.WATER_CHEST, silver10)
+                .add(ChestBlocks.MARBLE_CHEST, silver10)
+                .add(ChestBlocks.GRANITE_CHEST, silver10)
+                .add(ChestBlocks.RICH_MAHOGANY_CHEST, silver10)
                 .add(ChestBlocks.SKYWARE_CHEST, silver10)
                 .add(ChestBlocks.DEATH_WOODEN_CHEST, silver10)
                 .add(ChestBlocks.SANDSTONE_CHEST, 10)
@@ -1933,32 +2023,30 @@ public final class ValueSubProvider {
         // 家具
         builder
                 .add(TFBlocks.GLASS_TOILET, 30)
-                .add(TFBlocks.BLUE_BRICK_TOILET, 30)
+                .add(TFBlocks.BLUE_DUNGEON_TOILET, 30)
 
 
                 .add(TFBlocks.GLASS_SOFA, 60)
-                .add(TFBlocks.BLUE_BRICK_SOFA, 60)
+                .add(TFBlocks.BLUE_DUNGEON_SOFA, 60)
 
                 .add(TFBlocks.GLASS_SINK, 60)
-                .add(TFBlocks.BLUE_BRICK_SINK, 60)
+                .add(TFBlocks.BLUE_DUNGEON_SINK, 60)
 
                 .add(TFBlocks.GLASS_TABLE, 60)
-                .add(TFBlocks.BLUE_BRICK_TABLE, 60)
+                .add(TFBlocks.BLUE_DUNGEON_TABLE, 60)
 
                 .add(TFBlocks.GLASS_CANDELABRAS, 300)
-                .add(TFBlocks.BLUE_BRICK_CANDELABRAS, 300)
+                .add(TFBlocks.BLUE_DUNGEON_CANDELABRAS, 300)
 
                 .add(TFBlocks.GLASS_LAMP, 100)
                 .add(TFBlocks.GLASS_LANTERN, 30)
 
-                .add(TFBlocks.GLASS_CHANDELIER, 600)
-                .add(TFBlocks.BLUE_BRICK_CHANDELIER, 600)
-
                 .add(TFBlocks.GLASS_CLOCK, 60)
-                .add(TFBlocks.BLUE_BRICK_CLOCK, 60)
+                .add(TFBlocks.BLUE_DUNGEON_CLOCK, 60)
 
                 .add(Blocks.FLOWER_POT, 20)
                 .add(TFBlocks.HANGING_POT, 250)
+                .add(TFBlocks.PIN_WHEEL, 400)
 
 
         ;

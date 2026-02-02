@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "confluence:block/soul_of_voight_in_a_bottle_item"
+  }
+}

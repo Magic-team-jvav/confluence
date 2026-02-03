@@ -1,7 +1,6 @@
 package org.confluence.mod.mixin.client.entity;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
@@ -46,9 +45,8 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
     }
 
     // 使用占卜球的时候要发送自己的位置给服务端
-    @WrapOperation(method = "sendPosition",at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isControlledCamera()Z"))
-    private boolean sendPos(LocalPlayer instance, Operation<Boolean> original) {
-        return original.call(instance) || ScryingOrb.spectating;
+    @ModifyExpressionValue(method = "sendPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isControlledCamera()Z"))
+    private boolean sendPos(boolean original) {
+        return original || ScryingOrb.spectating;
     }
-
 }

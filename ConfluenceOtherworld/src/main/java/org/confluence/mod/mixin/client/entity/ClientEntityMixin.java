@@ -7,11 +7,9 @@ import net.minecraft.world.entity.monster.Enemy;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.item.common.ScryingOrb;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
@@ -47,14 +45,6 @@ public abstract class ClientEntityMixin implements SelfGetter<Entity> {
                 return;
             }
             cir.setReturnValue(helper.defaultColor.get());
-        }
-    }
-
-    // 使用占卜球的时候不要转动玩家本体
-    @Inject(method = "turn", at = @At("HEAD"), cancellable = true)
-    private void turn(double yRot, double xRot, CallbackInfo ci) {
-        if (confluence$self() == Minecraft.getInstance().player && ScryingOrb.spectating) {
-            ci.cancel();
         }
     }
 }

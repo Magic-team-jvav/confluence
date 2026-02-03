@@ -138,6 +138,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.goblin_army.ready", "A goblin army is approaching!");
         add("message.confluence.goblin_army.start", "A goblin army has arrived!");
         add("message.confluence.goblin_army.victory", "The Goblin Army has been defeated!");
+        add("message.confluence.scrying_orb.singleplayer", "All you see is your reflection in the orb.");
+        add("message.confluence.scrying_orb.alone", "You're by yourself...");
 
         add("commands.confluence.reforge.cannot_be_reforged", "This item cannot be reforged (or cannot find an item that needs to be reforged)!");
         add("commands.confluence.reforge.unknown_prefix_type", "Unknown prefix type (or reforge failure)!");

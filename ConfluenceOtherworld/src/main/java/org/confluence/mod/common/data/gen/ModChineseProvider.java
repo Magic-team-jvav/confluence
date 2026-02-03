@@ -98,6 +98,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.goblin_army.ready", "一支哥布林军队正在逼近！");
         add("message.confluence.goblin_army.start", "哥布林军队来了！");
         add("message.confluence.goblin_army.victory", "哥布林军队已被击败！");
+        add("message.confluence.scrying_orb.singleplayer", "你在球中只看到自己的倒影。");
+        add("message.confluence.scrying_orb.alone", "只有你一个人……");
 
         add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
         add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");
@@ -2616,6 +2618,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.HIVE_WAND.get(), "蜂巢魔棒");
         add(ModItems.ENEMY_BANNER.get(), "敌怪旗");
 
+        add(ModItems.SCRYING_ORB.get(), "占卜球");
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");

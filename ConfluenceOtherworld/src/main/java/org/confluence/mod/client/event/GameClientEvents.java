@@ -69,6 +69,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
@@ -137,6 +138,9 @@ public final class GameClientEvents {
             }
             HouseSelectHUD.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
+            if (ScryingOrb.spectatingPlayer != null && !ScryingOrb.spectatingPlayer.isAlive()) {
+                ScryingOrb.changeTarget(minecraft.level,minecraft.player);
+            }
         }
         DeathAnimUtils.clear();
     }
@@ -441,5 +445,13 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
         ClientPacketHandler.setLuminance(event.getEntity(), event.getData());
+    }
+
+    // 使用占卜球的时候不要使用物品和攻击
+    @SubscribeEvent
+    public static void userInteract(InputEvent.InteractionKeyMappingTriggered event) {
+        if (ScryingOrb.spectating) {
+            event.setCanceled(true);
+        }
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.mixed.ILocalPlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class ScryingOrb extends Item {
 
     /***/
     public static void changeTarget(@Nullable Level level, @Nullable Player player) {
-        if (!(player instanceof LocalPlayer) || !(level instanceof ClientLevel clientLevel)) return;
+        if (!(player instanceof LocalPlayer localPlayer) || !(level instanceof ClientLevel clientLevel)) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.isSingleplayer()) {
             mc.getChatListener().handleSystemMessage(Component.translatable("message.confluence.scrying_orb.singleplayer"), false);
@@ -44,6 +45,7 @@ public class ScryingOrb extends Item {
         List<AbstractClientPlayer> players = clientLevel.players().stream().filter(p -> p != player).toList();
         if (players.isEmpty()) {
             spectating = false;
+            ILocalPlayer.of(localPlayer).confluence$setCanMove(false);
             mc.setCameraEntity(mc.player);
             mc.getChatListener().handleSystemMessage(Component.translatable("message.confluence.scrying_orb.alone"), false);
             return;
@@ -57,5 +59,6 @@ public class ScryingOrb extends Item {
         spectatingPlayer = players.get(index);
         mc.setCameraEntity(spectatingPlayer);
         spectating = true;
+        ILocalPlayer.of(localPlayer).confluence$setCanMove(true);
     }
 }

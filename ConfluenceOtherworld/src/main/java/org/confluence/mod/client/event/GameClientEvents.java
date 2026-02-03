@@ -139,7 +139,7 @@ public final class GameClientEvents {
             HouseSelectHUD.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
             if (ScryingOrb.spectatingPlayer != null && !ScryingOrb.spectatingPlayer.isAlive()) {
-                ScryingOrb.changeTarget(minecraft.level,minecraft.player);
+                ScryingOrb.changeTarget(minecraft.level, minecraft.player);
             }
         }
         DeathAnimUtils.clear();
@@ -445,13 +445,5 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
         ClientPacketHandler.setLuminance(event.getEntity(), event.getData());
-    }
-
-    // 使用占卜球的时候不要使用物品和攻击
-    @SubscribeEvent
-    public static void userInteract(InputEvent.InteractionKeyMappingTriggered event) {
-        if (ScryingOrb.spectating) {
-            event.setCanceled(true);
-        }
     }
 }

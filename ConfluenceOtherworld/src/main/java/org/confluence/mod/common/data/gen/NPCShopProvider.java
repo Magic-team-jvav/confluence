@@ -549,13 +549,17 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         shop(TENpcEntities.ZOOLOGIST.getId()).addRecipe(withDefaultPylon()
                 .add(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP)
-                .add(TEWhipItems.LEATHER_WHIP)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TEWhipItems.LEATHER_WHIP.toStack())
+                        .setProperties(TradeProperties.builder().setLock(new BestiaryUnlockedCountLock(16)).build())
+                        .build())
                 .add(MinecartItems.DIGGING_MOLECART)
                 .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING)
                 .add(Items.CHERRY_SAPLING)
                 .add(SellTrade.INSTANCE)
                 .add(new MoneyTradeItem.Builder()
                         .setResult(LanceItems.JOUSTING_LANCE.toStack())
+                        .setProperties(hardmode)
                         .setProperties(TradeProperties.builder().setLock(new BestiaryUnlockedCountLock(75)).build())
                         .build())
                 .build());

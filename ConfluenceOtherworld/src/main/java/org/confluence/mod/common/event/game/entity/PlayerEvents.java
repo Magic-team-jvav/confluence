@@ -36,10 +36,7 @@ import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.ChunkDropletsData;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.map.DiggingPower;
@@ -89,8 +86,8 @@ public final class PlayerEvents {
         if (CommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
-        PlayerUtils.syncSoul2Client(player);
-        GameEventSystem.INSTANCE.syncAll(player);
+//        PlayerUtils.syncSoul2Client(player);
+        PlayerUtils.syncPlayerData(player);
     }
 
     @SubscribeEvent
@@ -98,6 +95,7 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         GameEventSystem.INSTANCE.clearAll(player);
+        PlayerSpecialData.of(player).clearEnemyBannerEntries();
     }
 
     @SubscribeEvent
@@ -279,7 +277,7 @@ public final class PlayerEvents {
 
         BoulderWorld.forceSetAccessory(player);
         PlayerUtils.flushLocalData(player, player);
-        GameEventSystem.INSTANCE.syncAll(player);
+        PlayerUtils.syncPlayerData(player);
     }
 
     @SubscribeEvent
@@ -313,7 +311,7 @@ public final class PlayerEvents {
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         PlayerUtils.flushLocalData(player, player);
-        GameEventSystem.INSTANCE.syncAll(player);
+        PlayerUtils.syncPlayerData(player);
     }
 
     @SubscribeEvent

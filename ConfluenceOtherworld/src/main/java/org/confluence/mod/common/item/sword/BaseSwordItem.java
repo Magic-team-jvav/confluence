@@ -133,6 +133,13 @@ public class BaseSwordItem extends SwordItem {
         return ModUtils.supportsEnchantment(stack, enchantment);
     }
 
+    public static void applyEffect(DamageSource damageSource, @Nullable Entity attacker, LivingEntity victim) {
+        ItemStack weapon = damageSource.getWeaponItem();
+        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
+            sword.applyHitEffects(weapon, attacker, victim, damageSource);
+        }
+    }
+
     public static class ModifierBuilder {
         public boolean canPerformSweep = true;
         public boolean specialSweep = false;

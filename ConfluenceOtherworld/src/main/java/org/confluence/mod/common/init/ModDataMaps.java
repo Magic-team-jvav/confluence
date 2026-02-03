@@ -5,13 +5,14 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.registries.datamaps.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
@@ -24,7 +25,7 @@ import java.util.List;
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class ModDataMaps {
     private static List<DataMapType<?, ?>> types = new LinkedList<>();
-    private static final boolean jei = ModList.get().isLoaded("jei");
+    private static final boolean jei = LoadingModList.get().getModFileById("jei") != null;
 
     public static final DataMapType<Item, ValueComponent> VALUE = register("value", Registries.ITEM, ValueComponent.CODEC, true);
     public static final DataMapType<Item, ExtractinatorData> EXTRACTINATOR = register("extractinator", Registries.ITEM, ExtractinatorData.CODEC, jei);
@@ -43,6 +44,7 @@ public final class ModDataMaps {
             false
     );
     public static final DataMapType<EntityType<?>, PresetBestiaryEntry> BESTIARY_ENTRY = register("bestiary", Registries.ENTITY_TYPE, PresetBestiaryEntry.CODEC, false); // 交由Bestiary统一同步
+    public static final DataMapType<EntityType<?>, Integer> BANNER_UNLOCK_REQUIRED = register("banner_unlock_required", Registries.ENTITY_TYPE, ExtraCodecs.NON_NEGATIVE_INT, true);
     public static final DataMapType<Block, BlockBreakSpawns> BLOCK_BREAK_SPAWNS = register("block_break_spawns", Registries.BLOCK, BlockBreakSpawns.CODEC, false);
 
     private static <R, T> DataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {

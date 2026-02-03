@@ -7,8 +7,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.npc.Npc;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.LibStreamCodecUtils;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 
@@ -44,6 +50,7 @@ public class BestiaryEntry {
 
     public transient String key;
     private transient Coins coins;
+    protected transient float unlockedProgress = -1.0F; // 小于零代表未解锁
 
     public BestiaryEntry() {}
 
@@ -55,6 +62,42 @@ public class BestiaryEntry {
         this.attackDamage = attackDamage;
         this.armor = armor;
         this.drops = drops;
+    }
+
+    public float getUnlockedProgress() {
+        return Mth.clamp(unlockedProgress, 0.0F, 1.0F);
+    }
+
+    public boolean isLocked() {
+        return unlockedProgress < -Mth.EPSILON;
+    }
+
+    public boolean unlock() {
+        if (isLocked()) {
+            this.unlockedProgress = 0.0F;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isCompleted() {
+        return unlockedProgress >= 1.0F - Mth.EPSILON;
+    }
+
+    protected void updateUnlockedProgress(LivingEntity living) {
+        Integer required = ModDataMaps.getEntityData(ModDataMaps.BANNER_UNLOCK_REQUIRED, type);
+        if (required != null) {
+            float v = required.floatValue();
+            if (v <= 0) {
+                this.unlockedProgress = 1;
+            } else {
+                this.unlockedProgress = Mth.clamp(killedByCount / v, 0, 1);
+            }
+        } else if (living instanceof Npc || LibUtils.isAnimal(living) || type.is(Tags.EntityTypes.BOSSES)) {
+            this.unlockedProgress = 1;
+        } else {
+            this.unlockedProgress = Mth.clamp(killedByCount / 50.0F, 0, 1);
+        }
     }
 
     public EntityType<?> getType() {

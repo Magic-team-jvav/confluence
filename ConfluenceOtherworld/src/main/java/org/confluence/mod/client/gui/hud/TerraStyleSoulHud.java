@@ -6,18 +6,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.util.ClientUtils;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
-
-import static org.confluence.mod.util.ClientUtils.*;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -28,14 +20,14 @@ public class TerraStyleSoulHud implements LayeredDraw.Layer {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !LibClientUtils.shouldDrawSurvivalElements(minecraft)) return;
-        LibClientUtils.setupOverlayRenderState(true, false);
-        minecraft.getProfiler().push("terra_style_hud");
-
-        ClientConfigs.soulStyle.render(guiGraphics, minecraft);
-
-        minecraft.getProfiler().pop();
+//        Minecraft minecraft = Minecraft.getInstance();
+//        if (minecraft.options.hideGui || !LibClientUtils.shouldDrawSurvivalElements(minecraft)) return;
+//        LibClientUtils.setupOverlayRenderState(true, false);
+//        minecraft.getProfiler().push("terra_style_hud");
+//
+//        ClientConfigs.soulStyle.render(guiGraphics, minecraft);
+//
+//        minecraft.getProfiler().pop();
     }
 
     public enum Soul implements TranslatableEnum {
@@ -67,14 +59,14 @@ public class TerraStyleSoulHud implements LayeredDraw.Layer {
         OVERLAY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                if (minecraft.player != null && !ClientPacketHandler.isFallenSoulCoreActive()) return;
-                float currentSoul = ClientPacketHandler.getCurrentSoul() / 5.0F;
-                float maxSoul = ClientPacketHandler.getMaxSoul() / 5.0F;
-                int widthSoul = guiGraphics.guiWidth() / 2 + 10 + ClientConfigs.soulOffsetX;
-                int heightSoul = guiGraphics.guiHeight() - minecraft.gui.rightHeight + ClientConfigs.soulOffsetY;
-                minecraft.gui.rightHeight += 10;
-                RandomSource random = RandomSource.create(1234329);
-                colorDraw(guiGraphics, minecraft, random, ClientUtils.OVERLAY_TEXTURE, SOUL, SOUL_HIGH, SOUL_LOW, maxSoul, currentSoul, widthSoul, heightSoul, ClientUtils.OVERLAY_SIZE, 60, false);
+//                if (minecraft.player != null && !ClientPacketHandler.isFallenSoulCoreActive()) return;
+//                float currentSoul = ClientPacketHandler.getCurrentSoul() / 5.0F;
+//                float maxSoul = ClientPacketHandler.getMaxSoul() / 5.0F;
+//                int widthSoul = guiGraphics.guiWidth() / 2 + 10 + ClientConfigs.soulOffsetX;
+//                int heightSoul = guiGraphics.guiHeight() - minecraft.gui.rightHeight + ClientConfigs.soulOffsetY;
+//                minecraft.gui.rightHeight += 10;
+//                RandomSource random = RandomSource.create(1234329);
+//                colorDraw(guiGraphics, minecraft, random, ClientUtils.OVERLAY_TEXTURE, SOUL, SOUL_HIGH, SOUL_LOW, maxSoul, currentSoul, widthSoul, heightSoul, ClientUtils.OVERLAY_SIZE, 60, false);
             }
         };
 

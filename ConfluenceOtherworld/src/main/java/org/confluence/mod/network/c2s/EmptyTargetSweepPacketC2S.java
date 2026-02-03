@@ -22,7 +22,7 @@ import org.confluence.mod.util.PlayerUtils;
 
 public final class EmptyTargetSweepPacketC2S implements IPacketC2S {
     private static final EmptyTargetSweepPacketC2S INSTANCE = new EmptyTargetSweepPacketC2S();
-    public static final Type<EmptyTargetSweepPacketC2S> TYPE = new Type<>(Confluence.asResource("empty_target_sweep"));
+    public static final Type<EmptyTargetSweepPacketC2S> TYPE = Confluence.createType("empty_target_sweep");
     public static final StreamCodec<ByteBuf, EmptyTargetSweepPacketC2S> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     private EmptyTargetSweepPacketC2S() {}

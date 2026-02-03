@@ -28,6 +28,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryFilterEvent;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
@@ -240,11 +241,15 @@ public class ClientBestiary extends ContextAwareReloadListener {
                 this.unlockedCount = count;
             }
         }).ifRight(key -> {
-            ClientBestiaryEntry entry = entries.get(key);
+            ClientBestiaryEntry entry = getEntry(key);
             if (entry != null) {
                 entry.killedByCount++;
             }
         });
+    }
+
+    public @Nullable ClientBestiaryEntry getEntry(String key) {
+        return entries.get(key);
     }
 
     public enum SortType implements TranslatableEnum {

@@ -19,10 +19,7 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.common.init.item.MinecartItems;
-import org.confluence.mod.network.s2c.SoulPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.network.s2c.RightClickSubtractorPacketS2C;
@@ -77,29 +74,29 @@ public class EverBeneficialItem extends TooltipItem {
         if (attributeInstance == null) return;
         attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, 4, AttributeModifier.Operation.ADD_VALUE));
     });
-    public static final Beneficial FALLEN_SOUL_CORE = new Beneficial(
-            Confluence.asResource("fallen_soul_core"),
-            everBeneficial -> true,
-            (id, player, everBeneficial, isRespawn) -> {
-                if (!isRespawn) {
-                    everBeneficial.changeFallenSoulCore();
-                    PlayerSpecialData data = PlayerSpecialData.of(player);
-                    boolean active = everBeneficial.getFallenSoulCore();
-                    data.setFallenSoulCoreActive(active);
-                    SoulStorage soulStorage = SoulStorage.of(player);
-
-                    // 关键：同步到客户端
-                    if (player instanceof ServerPlayer serverPlayer) {
-                        PacketDistributor.sendToPlayer(serverPlayer,
-                                new SoulPacketS2C(
-                                        soulStorage.getMaxSoul(),
-                                        soulStorage.getCurrentSoul(),
-                                        active
-                                ));
-                    }
-                }
-            }
-    );
+//    public static final Beneficial FALLEN_SOUL_CORE = new Beneficial(
+//            Confluence.asResource("fallen_soul_core"),
+//            everBeneficial -> true,
+//            (id, player, everBeneficial, isRespawn) -> {
+//                if (!isRespawn) {
+//                    everBeneficial.changeFallenSoulCore();
+//                    PlayerSpecialData data = PlayerSpecialData.of(player);
+//                    boolean active = everBeneficial.getFallenSoulCore();
+//                    data.setFallenSoulCoreActive(active);
+//                    SoulStorage soulStorage = SoulStorage.of(player);
+//
+//                    // 关键：同步到客户端
+//                    if (player instanceof ServerPlayer serverPlayer) {
+//                        PacketDistributor.sendToPlayer(serverPlayer,
+//                                new SoulPacketS2C(
+//                                        soulStorage.getMaxSoul(),
+//                                        soulStorage.getCurrentSoul(),
+//                                        active
+//                                ));
+//                    }
+//                }
+//            }
+//    );
 
     private final Beneficial beneficial;
     private final @Nullable Supplier<SoundEvent> sound;

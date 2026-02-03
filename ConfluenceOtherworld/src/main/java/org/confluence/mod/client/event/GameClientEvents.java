@@ -14,9 +14,11 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -57,6 +59,7 @@ import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
@@ -83,6 +86,7 @@ import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -360,11 +364,30 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void gatherEffectScreenTooltips(GatherEffectScreenTooltipsEvent event) {
-        Optional<ResourceKey<MobEffect>> optional = event.getEffectInstance().getEffect().unwrapKey();
+        Holder<MobEffect> effect = event.getEffectInstance().getEffect();
+        Optional<ResourceKey<MobEffect>> optional = effect.unwrapKey();
         if (optional.isPresent()) {
             String key = Util.makeDescriptionId("tooltip.effect", optional.get().location()) + ".0";
-            if (I18n.exists(key))
-                event.getTooltip().add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+            if (I18n.exists(key)) {
+                MutableComponent component;
+                if (effect.equals(ModEffects.ENEMY_BANNER)) {
+                    component = Component.translatable(key, "");
+                    LocalPlayer player = Minecraft.getInstance().player;
+                    if (player != null) {
+                        Iterator<String> iterator = PlayerSpecialData.of(player).getEnemyBannerEntries().iterator();
+                        if (iterator.hasNext()) {
+                            component.append(Component.translatable(iterator.next()));
+                            while (iterator.hasNext()) {
+                                component.append(Component.literal(", "));
+                                component.append(Component.translatable(iterator.next()));
+                            }
+                        }
+                    }
+                } else {
+                    component = Component.translatable(key);
+                }
+                event.getTooltip().add(component.withStyle(ChatFormatting.GRAY));
+            }
         }
         if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {
             event.getTooltip().add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));

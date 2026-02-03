@@ -12,12 +12,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.bestiary.CheckBannerAvailableEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
 import org.confluence.mod.integration.jei.JeiHelper;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
+import org.confluence.mod.network.c2s.GiveBannerPacketC2S;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -74,6 +77,7 @@ public class BestiaryScreen extends Screen {
     private EnumMap<ClientBestiary.SortType, GuiSprite> sortSelections;
     private GuiSprite selectedSort;
     private GuiSprite openedSortBottom;
+    private GuiSprite banner;
 
     private int descPage = 0;
     private Iterable<FormattedCharSequence> renderedDescs = List.of();
@@ -142,6 +146,7 @@ public class BestiaryScreen extends Screen {
         }
         this.selectedSort = new GuiSprite(BACKGROUND, textureW, textureH, 285, 239, sortWidth, 13);
         this.openedSortBottom = new GuiSprite(BACKGROUND, textureW, textureH, 285, 229, sortWidth, 9).setPos(openedSortTop.getX(), selectionY);
+        this.banner = new GuiSprite(BACKGROUND, textureW, textureH, 383, 0, 16, 16).setPos(leftPos - 16, topPos + imageHeight - 16);
     }
 
     @Override
@@ -312,13 +317,21 @@ public class BestiaryScreen extends Screen {
             return true;
         }
 
+        if (showedEntry != null && banner.isHovered(mouseX, mouseY) &&
+                NeoForge.EVENT_BUS.post(new CheckBannerAvailableEvent(showedEntry)).isAvailable()
+        ) {
+            GiveBannerPacketC2S.sendToServer(showedEntry);
+            return true;
+        }
+
         return false;
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (JeiHelper.IS_LOADED && showingName && showedEntry != null) {
-            if (ModJeiPlugin.handleShowUses(keyCode, scanCode, showedEntry.getRenderedEntity(getMinecraft().level).getPickResult())) {
+            LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
+            if (living != null && ModJeiPlugin.handleShowUses(keyCode, scanCode, living.getPickResult())) {
                 return true;
             }
         }
@@ -337,11 +350,13 @@ public class BestiaryScreen extends Screen {
                 renderFilter(guiGraphics, FilterEntry.UNKNOWN, x1, y1, 36, 36);
             } else {
                 LivingEntity living = entry.getRenderedEntity(getMinecraft().level);
-                float size = (float) Math.max(living.getBoundingBox().getXsize(), living.getBoundingBox().getYsize());
-                float factor = 2 / size;
-                int scale = Mth.ceil(10 * factor);
-                float yOffset = 0.3F / factor;
-                InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 36, y1 + 36, scale, yOffset, mouseX, mouseY, living);
+                if (living != null) {
+                    float size = (float) Math.max(living.getBoundingBox().getXsize(), living.getBoundingBox().getYsize());
+                    float factor = 2 / size;
+                    int scale = Mth.ceil(10 * factor);
+                    float yOffset = 0.3F / factor;
+                    InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 36, y1 + 36, scale, yOffset, mouseX, mouseY, living);
+                }
             }
 
             x1 += 35;
@@ -413,6 +428,11 @@ public class BestiaryScreen extends Screen {
 
         // 正在显示条目
         if (showedEntry != null) {
+            // 旗帜按钮
+            if (NeoForge.EVENT_BUS.post(new CheckBannerAvailableEvent(showedEntry)).isAvailable()) {
+                banner.render(guiGraphics);
+            }
+
             float progress = showedEntry.getUnlockedProgress();
             PoseStack pose = guiGraphics.pose();
             int x2, y2;
@@ -423,7 +443,9 @@ public class BestiaryScreen extends Screen {
             guiGraphics.blitSprite(showedEntry.getBackground(), 48, 48, 0, 0, x1, y1, 48, 48);
             // 实体
             LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 48, y1 + 48, 20, 0.3F, mouseX, mouseY, living);
+            if (living != null) {
+                InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 48, y1 + 48, 20, 0.3F, mouseX, mouseY, living);
+            }
             // 稀有度
             pose.pushPose();
             pose.translate(0, 0, 180);

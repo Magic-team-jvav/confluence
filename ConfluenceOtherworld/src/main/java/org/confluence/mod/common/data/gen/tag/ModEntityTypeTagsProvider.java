@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.tag;
 
-import com.xiaohunao.enemybanner.EnemyBanner;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -84,9 +83,6 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 TEMonsterEntities.SPIKED_JUNGLE_SLIME.get(),
                 TEMonsterEntities.SPIKED_SLIME.get()
         );
-        tag(EnemyBanner.DENIED_ENTITIES).addTag( // 禁止作为旗帜的生物
-                Tags.EntityTypes.BOSSES
-        );
         tag(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST).add(
                 EntityType.BAT
         );
@@ -95,5 +91,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 TEAnimals.CRAB.get(),
                 TEMonsterEntities.PIRANHA.get()
         );
+        tag(ModTags.EntityTypes.BANNER_BLACKLIST)
+                .addTag(Tags.EntityTypes.BOSSES);
     }
 }

@@ -113,7 +113,6 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> SHADOWFLAME = EFFECTS.register("shadowflame", ShadowflameEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SUMMONING = EFFECTS.register("summoning", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x9cf257)
             .addAttributeModifier(TEAttributes.MINION_CAPACITY, Confluence.asResource("summoning"), 1, AttributeModifier.Operation.ADD_VALUE));
-
     public static final DeferredHolder<MobEffect, MobEffect> WATER_CANDLE = EFFECTS.register("water_candle", WaterCandleEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> PEACE_CANDLE = EFFECTS.register("peace_candle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xda9ae0)
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.26)
@@ -129,6 +128,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> BATTLE = EFFECTS.register("battle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8b64ca)
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5)  //0.5 就大概是翻倍了，数值暂定
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5));
+    public static final DeferredHolder<MobEffect, MobEffect> ENEMY_BANNER = EFFECTS.register("enemy_banner", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0000));
 
 
     // 药剂

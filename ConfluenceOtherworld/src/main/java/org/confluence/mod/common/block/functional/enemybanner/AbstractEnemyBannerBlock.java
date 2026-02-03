@@ -1,0 +1,190 @@
+package org.confluence.mod.common.block.functional.enemybanner;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.component.NbtComponent;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.item.ModItems;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
+    public static final String TAG_ENTRY_KEY = "entry_key";
+    public static final String DEFAULT_ENTRY_KEY = EntityType.ZOMBIE.getDescriptionId();
+
+    public AbstractEnemyBannerBlock(Properties properties) {
+        super(properties);
+    }
+
+    @Override
+    protected RenderShape getRenderShape(BlockState state) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public boolean isPossibleToRespawnInThis(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BEntity(pos, state);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        return level.getBlockEntity(pos) instanceof AbstractEnemyBannerBlock.BEntity entity
+                ? entity.getItem() : super.getCloneItemStack(state, target, level, pos, player);
+    }
+
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, ModBlocks.ENEMY_BANNER_ENTITY.get(), BEntity::serverTick);
+    }
+
+    public static float processAttacker(ServerPlayer attacker, LivingEntity victim, float amount) {
+        if (victim.getType() != EntityType.PLAYER && PlayerSpecialData.of(attacker).getEnemyBannerEntries().contains(RegisterBestiaryKeyEvent.getKey(victim))) {
+            return amount * 1.1F;
+        }
+        return amount;
+    }
+
+    public static float processVictim(ServerPlayer victim, @Nullable Entity attacker, float amount) {
+        if (attacker instanceof LivingEntity living && living.getType() != EntityType.PLAYER && PlayerSpecialData.of(victim).getEnemyBannerEntries().contains(RegisterBestiaryKeyEvent.getKey(living))) {
+            return amount * 0.9167F;
+        }
+        return amount;
+    }
+
+    public static class BEntity extends BlockEntity {
+        private String entryKey = DEFAULT_ENTRY_KEY;
+
+        public BEntity(BlockPos pos, BlockState blockState) {
+            super(ModBlocks.ENEMY_BANNER_ENTITY.get(), pos, blockState);
+        }
+
+        public String getEntryKey() {
+            return entryKey;
+        }
+
+        @Override
+        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+            super.saveAdditional(tag, registries);
+            tag.putString(TAG_ENTRY_KEY, entryKey);
+        }
+
+        @Override
+        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+            super.loadAdditional(tag, registries);
+            this.entryKey = tag.getString(TAG_ENTRY_KEY);
+        }
+
+        public ClientboundBlockEntityDataPacket getUpdatePacket() {
+            return ClientboundBlockEntityDataPacket.create(this);
+        }
+
+        @Override
+        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+            CompoundTag tag = new CompoundTag();
+            tag.putString(TAG_ENTRY_KEY, entryKey);
+            return tag;
+        }
+
+        public ItemStack getItem() {
+            ItemStack stack = ModItems.ENEMY_BANNER.toStack();
+            stack.applyComponents(collectComponents());
+            return stack;
+        }
+
+        @Override
+        protected void applyImplicitComponents(DataComponentInput componentInput) {
+            NbtComponent component = componentInput.get(ConfluenceMagicLib.NBT);
+            this.entryKey = component == null ? DEFAULT_ENTRY_KEY : component.nbt().getString(TAG_ENTRY_KEY);
+        }
+
+        @Override
+        protected void collectImplicitComponents(DataComponentMap.Builder components) {
+            components.set(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(TAG_ENTRY_KEY, entryKey)));
+        }
+
+        @Override
+        public void removeComponentsFromTag(CompoundTag tag) {
+            tag.remove(TAG_ENTRY_KEY);
+        }
+
+        public static void serverTick(Level level, BlockPos pos, BlockState state, BEntity entity) {
+            if (level.getGameTime() % 20 == 6) {
+                Vec3 center = pos.getCenter();
+                for (Player player : level.players()) {
+                    if (player.distanceToSqr(center) < 100 * 100) {
+                        player.addEffect(new MobEffectInstance(ModEffects.ENEMY_BANNER, 240));
+                        PlayerSpecialData.of(player).updateEnemyBannerEntries(entity.entryKey, pos, true);
+                    } else {
+                        PlayerSpecialData.of(player).updateEnemyBannerEntries(entity.entryKey, pos, false);
+                    }
+                }
+            }
+        }
+    }
+
+    public static class BItem extends StandingAndWallBlockItem {
+        public BItem() {
+            super(
+                    ModBlocks.ENEMY_BANNER.get(),
+                    ModBlocks.WALL_ENEMY_BANNER.get(),
+                    new Properties()
+                            .component(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(TAG_ENTRY_KEY, DEFAULT_ENTRY_KEY)))
+                            .component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
+                    Direction.DOWN
+            );
+        }
+
+        @Override
+        public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+            appendHoverTextFromBannerBlockEntityTag(stack, tooltipComponents);
+        }
+
+        public static String getEntryKey(ItemStack stack) {
+            NbtComponent component = stack.get(ConfluenceMagicLib.NBT);
+            if (component == null) return DEFAULT_ENTRY_KEY;
+            return component.nbt().getString(TAG_ENTRY_KEY);
+        }
+
+        public static void appendHoverTextFromBannerBlockEntityTag(ItemStack stack, List<Component> tooltipComponents) {
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.enemy_banner.0", Component.translatable(getEntryKey(stack))));
+        }
+    }
+}

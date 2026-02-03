@@ -26,11 +26,15 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.*;
+import org.confluence.mod.common.attachment.EverBeneficial;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -80,14 +84,14 @@ public final class PlayerUtils {
         syncMana2Client(player, ManaStorage.of(player));
     }
 
-    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
-        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
-        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
-    }
-
-    public static void syncSoul2Client(ServerPlayer player) {
-        syncSoul2Client(player, SoulStorage.of(player));
-    }
+//    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
+//        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
+//        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
+//    }
+//
+//    public static void syncSoul2Client(ServerPlayer player) {
+//        syncSoul2Client(player, SoulStorage.of(player));
+//    }
 
     public static void regenerateMana(ServerPlayer player) {
         ManaStorage manaStorage = ManaStorage.of(player);
@@ -424,6 +428,12 @@ public final class PlayerUtils {
     public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
         ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
         FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
+    }
+
+    /// 同步数据到player客户端
+    public static void syncPlayerData(ServerPlayer player) {
+        GameEventSystem.INSTANCE.syncAll(player);
+
     }
 
     public static boolean skipHealIfOnFire(Player player) {

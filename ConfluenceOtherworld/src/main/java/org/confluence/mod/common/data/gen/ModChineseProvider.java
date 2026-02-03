@@ -246,6 +246,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.deer_thing.0", "右键使用以召唤独眼巨鹿，它会在冰原的寒风中现身");
         add("tooltip.item.confluence.deer_thing.1", "一只透着寒意的眼球，它的眼眶中映出了另一个世界的光景");
         add("tooltip.item.confluence.deer_thing.2", "“有个大家伙要来了…别再引来克劳斯！”");
+        add("tooltip.item.confluence.enemy_banner.0", "附近的玩家获得针对以下怪的加成：%s");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");
@@ -2557,7 +2558,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.PEDDLERS_SATCHEL.get(), "商贩背包");
         add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
         add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
-        add(ConsumableItems.FALLEN_SOUL_CORE.get(), "堕魂星核");
+//        add(ConsumableItems.FALLEN_SOUL_CORE.get(), "堕魂星核");
         add(ConsumableItems.BLOOD_TEAR.get(), "血泪");
         add(ConsumableItems.GOBLIN_BATTLE_STANDARD.get(), "哥布林战旗");
 
@@ -2613,6 +2614,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.LIVING_MAHOGANY_WAND.get(), "生命红木魔棒");
         add(ModItems.RICH_MAHOGANY_LEAF_WAND.get(), "红木树叶魔棒");
         add(ModItems.HIVE_WAND.get(), "蜂巢魔棒");
+        add(ModItems.ENEMY_BANNER.get(), "敌怪旗");
 
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
@@ -3698,6 +3700,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.BATTLE.get(), "战斗", "提高怪物生成速度");
         addEffect(ModEffects.CALM.get(), "冷静", "敌人生成速度降低");
         addEffect(ModEffects.HAPPY.get(), "快乐", "移动速度提高，怪物生成减少");
+        addEffect(ModEffects.ENEMY_BANNER.get(), "敌怪旗", "提高对以下怪的伤害和防御：%s");
 
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");

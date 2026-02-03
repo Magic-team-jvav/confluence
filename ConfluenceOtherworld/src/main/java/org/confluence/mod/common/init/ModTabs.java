@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init;
 
-import com.xiaohunao.enemybanner.EnemyBanner;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -240,7 +239,6 @@ public final class ModTabs {
                     .withTabsBefore(MAGES.getId())
                     .build());
     /* 生物 */
-    /* 敌怪旗 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DEVELOPER = TABS.register("developer",
             () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.developer"))
@@ -261,6 +259,6 @@ public final class ModTabs {
                         output.accept(ModBlocks.AETHERIUM_CAULDRON.get());
                         output.accept(ModBlocks.HONEY_CAULDRON.get());
                     })
-                    .withTabsBefore(EnemyBanner.TAB.getId())
+                    .withTabsBefore(TEItems.NEO_TERRA.getId())
                     .build());
 }

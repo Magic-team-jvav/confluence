@@ -7,14 +7,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
-import org.jetbrains.annotations.Nullable;
 
 public class TheConstant extends SecretSeed {
     public static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
@@ -28,8 +26,8 @@ public class TheConstant extends SecretSeed {
         return "constant".equals(seed) || "theconstant".equals(seed) || "the constant".equals(seed) || "eye4aneye".equals(seed) || "eyeforaneye".equals(seed);
     }
 
-    public static float applyAttackDamage(@Nullable Entity causer, float amount) {
-        if (causer instanceof ServerPlayer serverPlayer && serverPlayer.getFoodData().needsFood() && ModSecretSeeds.THE_CONSTANT.match(serverPlayer.server)) {
+    public static float applyAttackDamage(ServerPlayer attacker, float amount) {
+        if (attacker.getFoodData().needsFood() && ModSecretSeeds.THE_CONSTANT.match(attacker.server)) {
             return amount * 0.8F;
         }
         return amount;

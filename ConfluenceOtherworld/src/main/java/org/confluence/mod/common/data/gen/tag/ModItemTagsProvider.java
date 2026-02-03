@@ -1179,7 +1179,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TCItems.EVERLASTING.get(),
                 TCItems.BASE_POINT.get(),
                 AxeItems.CHLOROPHYTE_GREATAXE.get(),
-                ConsumableItems.FALLEN_SOUL_CORE.get(),
+//                ConsumableItems.FALLEN_SOUL_CORE.get(),
                 VanityArmorItems.MUMMY_MASK.get(),
                 VanityArmorItems.MUMMY_SHIRT.get(),
                 VanityArmorItems.MUMMY_PANTS.get(),

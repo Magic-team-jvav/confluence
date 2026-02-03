@@ -1,14 +1,16 @@
 package org.confluence.mod.common.attachment;
 
 import com.google.common.collect.Iterables;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
@@ -17,13 +19,20 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.armor.ArmorSetBonusData;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.network.s2c.SyncEnemyBannerEntriesPacketS2C;
 import org.confluence.terra_curio.common.attachment.PrimitiveValueHolder;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -31,8 +40,7 @@ import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 public class PlayerSpecialData extends PrimitiveValueHolder {
     private @NotNull ArmorSetBonusKey armorSetBonusKey = ArmorSetBonusKey.NONE;
@@ -42,7 +50,9 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
     private boolean couldHurtCritters;
     private boolean couldDamageEnvironment;
-    private boolean fallenSoulCoreActive = false;
+    //    private boolean fallenSoulCoreActive = false;
+    private final transient Map<String, Set<BlockPos>> enemyBannerEntries = new HashMap<>();
+    private transient boolean dirty;
 
     @Override
     public void setToDefaultValue() {
@@ -54,7 +64,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
         this.couldHurtCritters = true;
         this.couldDamageEnvironment = true;
-        this.fallenSoulCoreActive = false;
+//        this.fallenSoulCoreActive = false;
     }
 
     public ArmorSetBonusKey getArmorSetBonusKey() {
@@ -93,15 +103,64 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         return couldDamageEnvironment;
     }
 
-    public boolean isFallenSoulCoreActive() {
-        return fallenSoulCoreActive;
+//    public boolean isFallenSoulCoreActive() {
+//        return fallenSoulCoreActive;
+//    }
+//
+//    public void setFallenSoulCoreActive(boolean active) {
+//        this.fallenSoulCoreActive = active;
+//    }
+
+    public void updateEnemyBannerEntries(String key, BlockPos pos, boolean add) {
+        Set<BlockPos> blockPos = enemyBannerEntries.computeIfAbsent(key, s -> new HashSet<>());
+        if (add) {
+            if (blockPos.add(pos)) {
+                dirty = true;
+            }
+        } else if (blockPos.remove(pos)) {
+            dirty = true;
+        }
     }
 
-    public void setFallenSoulCoreActive(boolean active) {
-        this.fallenSoulCoreActive = active;
+    public void setEnemyBannerEntries(List<String> entries) {
+        clearEnemyBannerEntries();
+        for (String entry : entries) {
+            enemyBannerEntries.put(entry, Set.of());
+        }
     }
 
-    /*/// @see LivingEntity#collectEquipmentChanges()*/
+    public Set<String> getEnemyBannerEntries() {
+        return enemyBannerEntries.keySet();
+    }
+
+    public void clearEnemyBannerEntries() {
+        enemyBannerEntries.clear();
+    }
+
+    public void sync(ServerPlayer player) {
+        if (!dirty) return;
+        this.dirty = false;
+        List<String> entries = new ArrayList<>();
+        ServerChunkCache chunkSource = player.serverLevel().getChunkSource();
+        for (Map.Entry<String, Set<BlockPos>> entry : enemyBannerEntries.entrySet()) {
+            Iterator<BlockPos> iterator = entry.getValue().iterator();
+            while (iterator.hasNext()) {
+                BlockPos pos = iterator.next();
+                ChunkAccess access = LibUtils.getChunkIfLoaded(chunkSource, player.chunkPosition());
+                if (access == null) continue;
+                BlockEntity blockEntity = access.getBlockEntity(pos);
+                if (blockEntity != null && blockEntity.getType() == ModBlocks.ENEMY_BANNER_ENTITY.get()) {
+                    entries.add(entry.getKey());
+                } else {
+                    iterator.remove();
+                }
+            }
+        }
+        enemyBannerEntries.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+        PacketDistributor.sendToPlayer(player, new SyncEnemyBannerEntriesPacketS2C(entries));
+    }
+
+    /// [net.minecraft.world.entity.LivingEntity#collectEquipmentChanges]
     public void flushArmorSetBonus(Player player) {
         Inventory inventory = player.getInventory();
         ItemStack head = inventory.getArmor(EquipmentSlot.HEAD.getIndex());
@@ -170,7 +229,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         tag.put("CurrentQuestedFish", ItemStack.OPTIONAL_CODEC.encodeStart(ops, currentQuestedFish).result().orElseGet(CompoundTag::new));
         tag.put("CurrentQuestedFishCondition", ITradeLock.TYPED_CODEC.encodeStart(ops, currentQuestedFishCondition).result().orElseGet(CompoundTag::new));
         tag.putBoolean("CouldHurtCritters", couldHurtCritters);
-        tag.putBoolean("FallenSoulCoreActive", fallenSoulCoreActive);
+//        tag.putBoolean("FallenSoulCoreActive", fallenSoulCoreActive);
         return tag;
     }
 
@@ -179,11 +238,13 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
         super.deserializeNBT(provider, nbt);
 
-        if (nbt.contains("ArmorBonusKey")) this.armorSetBonusKey = ArmorSetBonusKey.CODEC.parse(ops, nbt.get("ArmorBonusKey")).result().orElse(ArmorSetBonusKey.NONE);
+        if (nbt.contains("ArmorBonusKey")) {
+            this.armorSetBonusKey = ArmorSetBonusKey.CODEC.parse(ops, nbt.get("ArmorBonusKey")).result().orElse(ArmorSetBonusKey.NONE);
+        }
         this.currentQuestedFish = ItemStack.OPTIONAL_CODEC.parse(ops, nbt.get("CurrentQuestedFish")).result().orElse(ItemStack.EMPTY);
         this.currentQuestedFishCondition = ITradeLock.TYPED_CODEC.parse(ops, nbt.get("CurrentQuestedFishCondition")).result().orElse(ITradeLock.alwaysTrue());
         this.couldHurtCritters = nbt.getBoolean("CouldHurtCritters");
-        this.fallenSoulCoreActive = nbt.getBoolean("FallenSoulCoreActive");
+//        this.fallenSoulCoreActive = nbt.getBoolean("FallenSoulCoreActive");
     }
 
     public static PlayerSpecialData of(Player player) {
@@ -196,6 +257,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
             data.setCouldHurtCritters(true);
             data.setCouldDamageEnvironment(true);
             for (ItemStack stack : Iterables.concat(player.getInventory().offhand, player.getInventory().items)) {
+                if (stack == null) continue;
                 boolean a = data.isCouldHurtCritters();
                 boolean b = data.isCouldDamageEnvironment();
                 if (!a && !b) break;
@@ -206,6 +268,23 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
                 }
                 if (b && (c || item == ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.get())) {
                     data.setCouldDamageEnvironment(false);
+                }
+            }
+        }
+        if (player.getActiveEffectsMap().get(ModEffects.ENEMY_BANNER) == null) {
+            data.clearEnemyBannerEntries();
+        } else if (player instanceof ServerPlayer serverPlayer) {
+            ServerChunkCache chunkSource = serverPlayer.serverLevel().getChunkSource();
+            Iterator<Map.Entry<String, Set<BlockPos>>> iterator = data.enemyBannerEntries.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Set<BlockPos>> entry = iterator.next();
+                for (BlockPos pos : entry.getValue()) {
+                    ChunkAccess access = LibUtils.getChunkIfLoaded(chunkSource, player.chunkPosition());
+                    if (access == null) continue;
+                    BlockEntity blockEntity = access.getBlockEntity(pos);
+                    if (blockEntity == null || blockEntity.getType() != ModBlocks.ENEMY_BANNER_ENTITY.get()) {
+                        iterator.remove();
+                    }
                 }
             }
         }

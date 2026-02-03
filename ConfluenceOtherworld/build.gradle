@@ -7,8 +7,7 @@ plugins {
 }
 
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
-                   "TerraCurio", "TerraGuns", "TerraFurniture",
-                   "TheTrackers", "EnemyBanner"
+                   "TerraCurio", "TerraGuns", "TerraFurniture", "TheTrackers"
 ]
 
 version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"

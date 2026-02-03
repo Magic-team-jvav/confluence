@@ -463,6 +463,7 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> BESTIARY_BLACKLIST = register("bestiary_blacklist"); // 怪物图鉴黑名单
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_WHITELIST = register("critter_companionship_whitelist"); // 小动物保护指南白名单
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_BLACKLIST = register("critter_companionship_blacklist"); // 小动物保护指南黑名单
+        public static final TagKey<EntityType<?>> BANNER_BLACKLIST = register("banner_blacklist"); // 旗帜黑名单
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

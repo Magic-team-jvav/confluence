@@ -191,10 +191,10 @@ public final class ModClientEvents {
         event.registerAbove(healthHud, armorHud, new TerraStyleArmorHud());
         ResourceLocation manaHud = Confluence.asResource("mana_hud");
         event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, manaHud, new TerraStyleManaHud());
-        ResourceLocation soulHud = Confluence.asResource("soul_hud");
-        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, soulHud, new TerraStyleSoulHud());
+//        ResourceLocation soulHud = Confluence.asResource("soul_hud");
+//        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, soulHud, new TerraStyleSoulHud());
         ResourceLocation foodHud = Confluence.asResource("food_hud");
-        event.registerBelow(soulHud, foodHud, new TerraStyleFoodHud());
+        event.registerBelow(manaHud, foodHud, new TerraStyleFoodHud());
 
         event.registerBelow(VanillaGuiLayers.CROSSHAIR, Confluence.asResource("house_select"), new HouseSelectHUD());
         event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
@@ -403,6 +403,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.LOOM_ENTITY.get(), ClientUtils.rendererProvider(LoomBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.SOUL_BOTTLE_ENTITY.get(), ClientUtils.rendererProvider(SoulBottleBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.TUFF_BOOTH_ENTITY.get(), ClientUtils.rendererProvider(TuffBoothBlockRenderer::new));
+        event.registerBlockEntityRenderer(ModBlocks.ENEMY_BANNER_ENTITY.get(), EnemyBannerBlockRenderer::new);
 
         ModClientSetups.registerWaystoneRenderers(event);
     }

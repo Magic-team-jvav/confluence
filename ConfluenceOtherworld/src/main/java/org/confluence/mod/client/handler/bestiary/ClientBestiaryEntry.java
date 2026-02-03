@@ -2,7 +2,6 @@ package org.confluence.mod.client.handler.bestiary;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.xiaohunao.enemybanner.BannerConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
@@ -10,20 +9,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.LibCodecUtils;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.common.entity.BestiaryEntryDisplay;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixin.accessor.EntityAccessor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -109,7 +105,6 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     private final List<FilterEntry> filters;
     private final Optional<CompoundTag> entityNbt;
 
-    private transient float unlockedProgress = -1.0F; // 小于零代表未解锁
     private transient Component displayName;
     private transient LivingEntity renderedEntity;
 
@@ -167,7 +162,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         this.renderedEntity = null;
     }
 
-    public LivingEntity getRenderedEntity(Level level) {
+    public @Nullable LivingEntity getRenderedEntity(@Nullable Level level) {
         if (renderedEntity == null && level != null) {
             if (type.create(level) instanceof LivingEntity living) {
                 if (RegisterCustomBestiaryEntryRendererEvent.hasRenderer(key)) {
@@ -185,31 +180,13 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         return renderedEntity;
     }
 
-    public float getUnlockedProgress() {
-        return Mth.clamp(unlockedProgress, 0.0F, 1.0F);
-    }
-
-    public boolean isLocked() {
-        return unlockedProgress < -Mth.EPSILON;
-    }
-
-    public boolean unlock() {
-        if (isLocked()) {
-            this.unlockedProgress = 0.0F;
-            return true;
-        }
-        return false;
-    }
-
-    public void updateUnlockedProgress(Level level) {
-        if (isLocked() || unlockedProgress >= 1.0F) return;
+    public void updateUnlockedProgress(@Nullable Level level) {
+        if (isLocked() || isCompleted()) return;
         LivingEntity living = getRenderedEntity(level);
-        if (living instanceof Npc || LibUtils.isAnimal(living) || type.is(Tags.EntityTypes.BOSSES)) {
-            this.unlockedProgress = 1.0F;
-        } else {
-            float required = BannerConfig.getBasicKills(EntityType.getKey(type).toString());
-            this.unlockedProgress = Mth.clamp(killedByCount / required, 0.0F, 1.0F);
+        if (living instanceof BestiaryEntryDisplay display) {
+            living = display.getDelegate();
         }
+        updateUnlockedProgress(living);
     }
 
     public static ResourceLocation background(String path) {

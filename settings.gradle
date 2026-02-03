@@ -12,8 +12,7 @@ plugins {
 }
 
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
-                   "TerraCurio", "TerraGuns", "TerraFurniture",
-                   "TheTrackers", "EnemyBanner"
+                   "TerraCurio", "TerraGuns", "TerraFurniture", "TheTrackers"
 ]
 
 include(":ConfluenceOtherworld")

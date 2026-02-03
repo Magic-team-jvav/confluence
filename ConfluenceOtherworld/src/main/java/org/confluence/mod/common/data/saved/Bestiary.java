@@ -82,7 +82,7 @@ public final class Bestiary implements IGlobalData {
 
     public BestiaryEntry getOrCreateEntry(LivingEntity living) {
         return entries.computeIfAbsent(RegisterBestiaryKeyEvent.getKey(living), key -> {
-            BestiaryEntry entry = PresetBestiaryEntry.getEntry(living);
+            BestiaryEntry entry = PresetBestiaryEntry.getEntry(living, key);
             if (entry != null) return entry;
 
             entry = new BestiaryEntry();
@@ -103,7 +103,13 @@ public final class Bestiary implements IGlobalData {
         if (!canBeSeenAsBestiaryEntry(living)) return;
 
         BestiaryEntry entry = getOrCreateEntry(living);
-        if (killed) entry.killedByCount++;
+        entry.unlock();
+        if (killed) {
+            entry.killedByCount++;
+        }
+        if (!entry.isCompleted()) {
+            entry.updateUnlockedProgress(living);
+        }
 
         if (entry.killedByCount > 1) {
             BestiarySyncPacketS2C.syncEntry(living);

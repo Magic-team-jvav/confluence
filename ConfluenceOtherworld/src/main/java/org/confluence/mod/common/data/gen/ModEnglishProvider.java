@@ -286,6 +286,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.deer_thing.0", "Right-click to summon the Deerclops, which will emerge amidst the frigid winds of the Tundra");
         add("tooltip.item.confluence.deer_thing.1", "A frigid eye that glimmers with the sight of another world in its socket");
         add("tooltip.item.confluence.deer_thing.2", "\"Something big is coming... Don't draw Klaus here again!\"");
+        add("tooltip.item.confluence.enemy_banner.0", "Nearby players get a bonus against: %s");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");
@@ -1217,6 +1218,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.BATTLE.get(), "Increased enemy spawn rate");
         addEffect(ModEffects.CALM.get(), "Decreased enemy spawn rate");
         addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");
+        addEffect(ModEffects.ENEMY_BANNER.get(), "Increased damage and defense from the following: %s");
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
         addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");

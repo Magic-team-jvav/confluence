@@ -18,7 +18,6 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -38,6 +37,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.Bestiary;
@@ -73,7 +73,6 @@ import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.api.entity.IMinion;
 import org.confluence.terraentity.entity.animal.SimpleVariantAnimal;
@@ -220,59 +219,40 @@ public final class LivingEntityEvents {
         if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
         @Nullable Entity attacker = damageSource.getEntity();
 
-        amount = ArcheryEffect.apply(victim, damageSource, amount);
-        amount = TheConstant.applyAttackDamage(attacker, amount);
-
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
         ModUtils.applyCursedSkullDebuff(attacker, victim);
 
         if (attacker instanceof ServerPlayer player) {
             EnchantmentUtils.dropsStar(player, victim, damageSource);
             amount = EnchantmentUtils.processMagicAttack(player, damageSource, amount);
+            amount = TheConstant.applyAttackDamage(player, amount);
+            amount = ManaSicknessEffect.process(player, damageSource, amount);
+            amount = AbstractEnemyBannerBlock.processAttacker(player, victim, amount);
         }
         if (victim instanceof ServerPlayer player) {
             amount = EnchantmentUtils.processManaProtection(player, damageSource, amount);
             amount = PlayerUtils.applyTerraFire(damageSource, amount);
+            amount = AbstractEnemyBannerBlock.processVictim(player, attacker, amount);
         }
-
+        amount = ArcheryEffect.apply(victim, damageSource, amount);
         // 芦苇呼吸管对溺水伤害减半
-        if (damageSource.is(DamageTypes.DROWN)) {
-            if (LibUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
-                amount *= 0.5F;
-            }
+        if (damageSource.is(DamageTypes.DROWN) && LibUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
+            amount *= 0.5F;
         }
-        // 剑命中效果
-        ItemStack weapon = damageSource.getWeaponItem();
-        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
-            sword.applyHitEffects(weapon, attacker, victim, damageSource);
-        }
-
-        amount = ManaSicknessEffect.apply(damageSource, amount);
-
-        // 暴击判定和伤害显示
-        boolean crit = false;
-        if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
-            if (LibUtils.checkChance(player.getAttributeValue(TCAttributes.CRIT_CHANCE), player.getRandom())) {
-                amount *= 1.5F;
-                player.crit(victim);
-                crit = true;
-            }
-        }
-        if (damageSource.getDirectEntity() instanceof AbstractArrow arrow) {
-            crit |= arrow.isCritArrow();
-        }
-        crit |= ((IDamageSource) damageSource).confluence$isCritical();
-        ((IDamageSource) damageSource).confluence$setCritical(crit);
+        BaseSwordItem.applyEffect(damageSource, attacker, victim);
+        amount = IDamageSource.processCritical(attacker, amount, victim, damageSource);
         event.setNewDamage(amount);
     }
 
     @SubscribeEvent
     public static void livingDamage$Post(LivingDamageEvent.Post event) {
+        float amount = event.getNewDamage();
+        if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();
         if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         DamageSource damageSource = event.getSource();
-        Entity attacker = damageSource.getEntity();
-        float amount = event.getNewDamage();
+        if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
+        @Nullable Entity attacker = damageSource.getEntity();
 
         FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);
@@ -310,7 +290,7 @@ public final class LivingEntityEvents {
     public static void mobEffect$Remove(MobEffectEvent.Remove event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
         if (effectInstance == null) return;
-        LuckEffect.onRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.getAmplifier());
+        LuckEffect.onRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.amplifier);
     }
 
     @SubscribeEvent

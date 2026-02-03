@@ -137,27 +137,42 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         enemyBannerEntries.clear();
     }
 
-    public void sync(ServerPlayer player) {
-        if (!dirty) return;
-        this.dirty = false;
-        List<String> entries = new ArrayList<>();
-        ServerChunkCache chunkSource = player.serverLevel().getChunkSource();
-        for (Map.Entry<String, Set<BlockPos>> entry : enemyBannerEntries.entrySet()) {
+    private void syncEnemyBannerEntries(ServerPlayer player) {
+        List<String> entries = null;
+        ServerChunkCache chunkSource = null;
+        Iterator<Map.Entry<String, Set<BlockPos>>> entryIterator = enemyBannerEntries.entrySet().iterator();
+        while (entryIterator.hasNext()) {
+            Map.Entry<String, Set<BlockPos>> entry = entryIterator.next();
             Iterator<BlockPos> iterator = entry.getValue().iterator();
             while (iterator.hasNext()) {
                 BlockPos pos = iterator.next();
-                ChunkAccess access = LibUtils.getChunkIfLoaded(chunkSource, player.chunkPosition());
+                if (chunkSource == null) chunkSource = player.serverLevel().getChunkSource();
+                ChunkAccess access = LibUtils.getChunkIfLoaded(chunkSource, pos);
                 if (access == null) continue;
                 BlockEntity blockEntity = access.getBlockEntity(pos);
                 if (blockEntity != null && blockEntity.getType() == ModBlocks.ENEMY_BANNER_ENTITY.get()) {
+                    if (entries == null) entries = new ArrayList<>();
                     entries.add(entry.getKey());
                 } else {
                     iterator.remove();
                 }
             }
+            if (entry.getValue().isEmpty()) {
+                entryIterator.remove();
+            }
         }
-        enemyBannerEntries.entrySet().removeIf(entry -> entry.getValue().isEmpty());
-        PacketDistributor.sendToPlayer(player, new SyncEnemyBannerEntriesPacketS2C(entries));
+        if (enemyBannerEntries.isEmpty()) {
+            player.removeEffect(ModEffects.ENEMY_BANNER);
+        }
+        if (entries != null) {
+            PacketDistributor.sendToPlayer(player, new SyncEnemyBannerEntriesPacketS2C(entries));
+        }
+    }
+
+    public void sync(ServerPlayer player) {
+        if (!dirty) return;
+        this.dirty = false;
+        syncEnemyBannerEntries(player);
     }
 
     /// [net.minecraft.world.entity.LivingEntity#collectEquipmentChanges]
@@ -274,19 +289,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         if (player.getActiveEffectsMap().get(ModEffects.ENEMY_BANNER) == null) {
             data.clearEnemyBannerEntries();
         } else if (player instanceof ServerPlayer serverPlayer) {
-            ServerChunkCache chunkSource = serverPlayer.serverLevel().getChunkSource();
-            Iterator<Map.Entry<String, Set<BlockPos>>> iterator = data.enemyBannerEntries.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, Set<BlockPos>> entry = iterator.next();
-                for (BlockPos pos : entry.getValue()) {
-                    ChunkAccess access = LibUtils.getChunkIfLoaded(chunkSource, player.chunkPosition());
-                    if (access == null) continue;
-                    BlockEntity blockEntity = access.getBlockEntity(pos);
-                    if (blockEntity == null || blockEntity.getType() != ModBlocks.ENEMY_BANNER_ENTITY.get()) {
-                        iterator.remove();
-                    }
-                }
-            }
+            data.syncEnemyBannerEntries(serverPlayer);
         }
     }
 }

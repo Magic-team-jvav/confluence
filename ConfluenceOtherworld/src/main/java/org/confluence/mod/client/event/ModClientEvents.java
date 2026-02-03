@@ -84,10 +84,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRen
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
-import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
-import org.confluence.mod.client.renderer.item.GroupItemExtension;
-import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
-import org.confluence.mod.client.renderer.item.ShortSwordInHandRenderer;
+import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
@@ -462,6 +459,7 @@ public final class ModClientEvents {
             event.registerItem(GroupItemExtension.INSTANCE, GroupItem.getInstance());
         }
         event.registerItem(ModClientSetups.GLINT_RAINBOW_EXTENSIONS, TreasureBagItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+        event.registerItem(new EnemyBannerItemRenderer(), ModItems.ENEMY_BANNER);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
         GunItems.ITEMS.getEntries().forEach(holder -> TGUtil.registerOtherGunModel(event, Confluence.MODID, holder));
@@ -516,7 +514,8 @@ public final class ModClientEvents {
                 MaterialItems.SOUL_OF_FLIGHT,
                 MaterialItems.SOUL_OF_BRIGHT,
                 MaterialItems.SOUL_OF_VOIGHT,
-                AxeItems.LUCY_THE_AXE
+                AxeItems.LUCY_THE_AXE,
+                ModItems.ENEMY_BANNER
         );
         ModClientSetups.asCustomModel(modelRegistry, TreasureBagItems.ITEMS.getEntries().toArray(DeferredHolder[]::new));
 

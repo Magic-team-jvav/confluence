@@ -2,9 +2,7 @@ package org.confluence.mod.common.attachment;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.UnknownNullability;
 
 public class SoulStorage implements INBTSerializable<CompoundTag> {
@@ -86,7 +84,7 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         this.recoveryRatio = newRecoveryRatio;
     }
 
-    public static SoulStorage of(LivingEntity living) {
-        return living.getData(ModAttachmentTypes.SOUL_STORAGE);
-    }
+//    public static SoulStorage of(LivingEntity living) {
+//        return living.getData(ModAttachmentTypes.SOUL_STORAGE);
+//    }
 }

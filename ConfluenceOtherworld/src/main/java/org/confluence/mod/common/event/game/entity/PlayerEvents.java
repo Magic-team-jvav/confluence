@@ -36,7 +36,10 @@ import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.*;
+import org.confluence.mod.common.attachment.ChunkDropletsData;
+import org.confluence.mod.common.attachment.EverBeneficial;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.map.DiggingPower;
@@ -95,7 +98,6 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         GameEventSystem.INSTANCE.clearAll(player);
-        PlayerSpecialData.of(player).clearEnemyBannerEntries();
     }
 
     @SubscribeEvent

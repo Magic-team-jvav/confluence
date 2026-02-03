@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.functional.enemybanner;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -76,28 +77,31 @@ public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
     }
 
     public static float processAttacker(ServerPlayer attacker, LivingEntity victim, float amount) {
-        if (victim.getType() != EntityType.PLAYER && PlayerSpecialData.of(attacker).getEnemyBannerEntries().contains(RegisterBestiaryKeyEvent.getKey(victim))) {
+        if (victim.getType() != EntityType.PLAYER &&
+                attacker.hasEffect(ModEffects.ENEMY_BANNER) && // 确保玩家关闭这个效果时不会应用增益
+                PlayerSpecialData.of(attacker).getEnemyBannerEntries().contains(RegisterBestiaryKeyEvent.getKey(victim))
+        ) {
             return amount * 1.1F;
         }
         return amount;
     }
 
     public static float processVictim(ServerPlayer victim, @Nullable Entity attacker, float amount) {
-        if (attacker instanceof LivingEntity living && living.getType() != EntityType.PLAYER && PlayerSpecialData.of(victim).getEnemyBannerEntries().contains(RegisterBestiaryKeyEvent.getKey(living))) {
+        if (attacker instanceof LivingEntity living &&
+                living.getType() != EntityType.PLAYER &&
+                victim.hasEffect(ModEffects.ENEMY_BANNER) && // 确保玩家关闭这个效果时不会应用增益
+                PlayerSpecialData.of(victim).getEnemyBannerEntries().contains(RegisterBestiaryKeyEvent.getKey(living))
+        ) {
             return amount * 0.9167F;
         }
         return amount;
     }
 
     public static class BEntity extends BlockEntity {
-        private String entryKey = DEFAULT_ENTRY_KEY;
+        public String entryKey = DEFAULT_ENTRY_KEY;
 
         public BEntity(BlockPos pos, BlockState blockState) {
             super(ModBlocks.ENEMY_BANNER_ENTITY.get(), pos, blockState);
-        }
-
-        public String getEntryKey() {
-            return entryKey;
         }
 
         @Override
@@ -174,17 +178,14 @@ public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
 
         @Override
         public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-            appendHoverTextFromBannerBlockEntityTag(stack, tooltipComponents);
+            Component component = Component.translatable(getEntryKey(stack)).withStyle(ChatFormatting.GREEN);
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.enemy_banner.0", component).withStyle(ChatFormatting.GRAY));
         }
 
         public static String getEntryKey(ItemStack stack) {
             NbtComponent component = stack.get(ConfluenceMagicLib.NBT);
             if (component == null) return DEFAULT_ENTRY_KEY;
             return component.nbt().getString(TAG_ENTRY_KEY);
-        }
-
-        public static void appendHoverTextFromBannerBlockEntityTag(ItemStack stack, List<Component> tooltipComponents) {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.enemy_banner.0", Component.translatable(getEntryKey(stack))));
         }
     }
 }

@@ -369,24 +369,22 @@ public final class GameClientEvents {
         if (optional.isPresent()) {
             String key = Util.makeDescriptionId("tooltip.effect", optional.get().location()) + ".0";
             if (I18n.exists(key)) {
-                MutableComponent component;
                 if (effect.equals(ModEffects.ENEMY_BANNER)) {
-                    component = Component.translatable(key, "");
                     LocalPlayer player = Minecraft.getInstance().player;
                     if (player != null) {
                         Iterator<String> iterator = PlayerSpecialData.of(player).getEnemyBannerEntries().iterator();
                         if (iterator.hasNext()) {
-                            component.append(Component.translatable(iterator.next()));
+                            MutableComponent component = Component.translatable(iterator.next()).withStyle(ChatFormatting.GREEN);
                             while (iterator.hasNext()) {
                                 component.append(Component.literal(", "));
                                 component.append(Component.translatable(iterator.next()));
                             }
+                            event.getTooltip().add(Component.translatable(key, component).withStyle(ChatFormatting.GRAY));
                         }
                     }
                 } else {
-                    component = Component.translatable(key);
+                    event.getTooltip().add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
                 }
-                event.getTooltip().add(component.withStyle(ChatFormatting.GRAY));
             }
         }
         if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@SuppressWarnings({"unused", "OptionalUsedAsFieldOrParameterType"})
 public class ClientBestiaryEntry extends BestiaryEntry {
     public static final ResourceLocation SURFACE = background("surface");
     public static final ResourceLocation SURFACE_SUN = background("surface_sun");
@@ -89,21 +90,21 @@ public class ClientBestiaryEntry extends BestiaryEntry {
 
     public static final Component UNKNOWN = Component.literal("???");
     public static final Codec<ClientBestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(ClientBestiaryEntry::getType),
-            Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(ClientBestiaryEntry::getOrder),
-            ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 1).forGetter(ClientBestiaryEntry::getRarity),
-            ResourceLocation.CODEC.lenientOptionalFieldOf("background", SURFACE).forGetter(ClientBestiaryEntry::getBackground),
-            ComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(ClientBestiaryEntry::getDescription),
-            LibCodecUtils.homogenousList(FilterEntry.CODEC, false).lenientOptionalFieldOf("filters", List.of()).forGetter(ClientBestiaryEntry::getFilters),
-            TagParser.LENIENT_CODEC.lenientOptionalFieldOf("entity_nbt").forGetter(ClientBestiaryEntry::getEntityNbt)
+            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(entry -> entry.type),
+            Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(entry -> entry.order),
+            ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 1).forGetter(entry -> entry.rarity),
+            ResourceLocation.CODEC.lenientOptionalFieldOf("background", SURFACE).forGetter(entry -> entry.background),
+            ComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(entry -> entry.description),
+            LibCodecUtils.homogenousList(FilterEntry.CODEC, false).lenientOptionalFieldOf("filters", List.of()).forGetter(entry -> entry.filters),
+            TagParser.LENIENT_CODEC.lenientOptionalFieldOf("entity_nbt").forGetter(entry -> entry.entityNbt)
     ).apply(instance, ClientBestiaryEntry::new));
 
-    private final int order;
-    private final int rarity;
-    private final ResourceLocation background;
-    private final Component description;
-    private final List<FilterEntry> filters;
-    private final Optional<CompoundTag> entityNbt;
+    public final int order;
+    public final int rarity;
+    public final ResourceLocation background;
+    public final Component description;
+    public final List<FilterEntry> filters;
+    public final Optional<CompoundTag> entityNbt;
 
     private transient Component displayName;
     private transient LivingEntity renderedEntity;
@@ -125,30 +126,6 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         this.description = description;
         this.filters = filters;
         this.entityNbt = entityNbt;
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public int getRarity() {
-        return rarity;
-    }
-
-    public ResourceLocation getBackground() {
-        return background;
-    }
-
-    public Component getDescription() {
-        return description;
-    }
-
-    public List<FilterEntry> getFilters() {
-        return filters;
-    }
-
-    public Optional<CompoundTag> getEntityNbt() {
-        return entityNbt;
     }
 
     public Component getDisplayName() {

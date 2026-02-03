@@ -21,22 +21,23 @@ import org.confluence.mod.util.PlayerUtils;
 /// <a href="https://terraria.wiki.gg/zh/wiki/%E6%80%AA%E7%89%A9%E5%9B%BE%E9%89%B4">怪物图鉴</a>
 public class BestiaryEntry {
     public static final Codec<BestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(BestiaryEntry::getType),
-            Codec.INT.fieldOf("killed_by_count").forGetter(BestiaryEntry::getKilledByCount),
-            Codec.FLOAT.fieldOf("max_health").forGetter(BestiaryEntry::getMaxHealth),
-            Codec.FLOAT.fieldOf("knockback_resistance").forGetter(BestiaryEntry::getKnockbackResistance),
-            Codec.FLOAT.fieldOf("attack_damage").forGetter(BestiaryEntry::getAttackDamage),
-            Codec.FLOAT.fieldOf("armor").forGetter(BestiaryEntry::getArmor),
-            Codec.INT.fieldOf("drops").forGetter(BestiaryEntry::getDrops)
+            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(entry -> entry.type),
+            Codec.INT.fieldOf("killed_by_count").forGetter(entry -> entry.killedByCount),
+            Codec.FLOAT.fieldOf("max_health").forGetter(entry -> entry.maxHealth),
+            Codec.FLOAT.fieldOf("knockback_resistance").forGetter(entry -> entry.knockbackResistance),
+            Codec.FLOAT.fieldOf("attack_damage").forGetter(entry -> entry.attackDamage),
+            Codec.FLOAT.fieldOf("armor").forGetter(entry -> entry.armor),
+            Codec.INT.fieldOf("drops").forGetter(entry -> entry.drops),
+            Codec.FLOAT.lenientOptionalFieldOf("unlocked_progress", 0F).forGetter(entry -> entry.unlockedProgress)
     ).apply(instance, BestiaryEntry::new));
     public static final StreamCodec<RegistryFriendlyByteBuf, BestiaryEntry> STREAM_CODEC = LibStreamCodecUtils.composite(
-            ByteBufCodecs.registry(Registries.ENTITY_TYPE), BestiaryEntry::getType,
-            ByteBufCodecs.VAR_INT, BestiaryEntry::getKilledByCount,
-            ByteBufCodecs.FLOAT, BestiaryEntry::getMaxHealth,
-            ByteBufCodecs.FLOAT, BestiaryEntry::getKnockbackResistance,
-            ByteBufCodecs.FLOAT, BestiaryEntry::getAttackDamage,
-            ByteBufCodecs.FLOAT, BestiaryEntry::getArmor,
-            ByteBufCodecs.VAR_INT, BestiaryEntry::getDrops,
+            ByteBufCodecs.registry(Registries.ENTITY_TYPE), entry -> entry.type,
+            ByteBufCodecs.VAR_INT, entry -> entry.killedByCount,
+            ByteBufCodecs.FLOAT, entry -> entry.maxHealth,
+            ByteBufCodecs.FLOAT, entry -> entry.knockbackResistance,
+            ByteBufCodecs.FLOAT, entry -> entry.attackDamage,
+            ByteBufCodecs.FLOAT, entry -> entry.armor,
+            ByteBufCodecs.VAR_INT, entry -> entry.drops,
             BestiaryEntry::new
     );
 
@@ -47,14 +48,35 @@ public class BestiaryEntry {
     public float attackDamage;
     public float armor;
     public int drops;
+    public float unlockedProgress = -1; // 小于零代表未解锁
 
     public transient String key;
     private transient Coins coins;
-    protected transient float unlockedProgress = -1.0F; // 小于零代表未解锁
 
     public BestiaryEntry() {}
 
-    private BestiaryEntry(EntityType<?> type, int killedByCount, float maxHealth, float knockbackResistance, float attackDamage, float armor, int drops) {
+    private BestiaryEntry(
+            EntityType<?> type,
+            int killedByCount,
+            float maxHealth,
+            float knockbackResistance,
+            float attackDamage,
+            float armor,
+            int drops
+    ) {
+        this(type, killedByCount, maxHealth, knockbackResistance, attackDamage, armor, drops, -1);
+    }
+
+    private BestiaryEntry(
+            EntityType<?> type,
+            int killedByCount,
+            float maxHealth,
+            float knockbackResistance,
+            float attackDamage,
+            float armor,
+            int drops,
+            float unlockedProgress
+    ) {
         this.type = type;
         this.killedByCount = killedByCount;
         this.maxHealth = maxHealth;
@@ -62,6 +84,7 @@ public class BestiaryEntry {
         this.attackDamage = attackDamage;
         this.armor = armor;
         this.drops = drops;
+        this.unlockedProgress = unlockedProgress;
     }
 
     public float getUnlockedProgress() {
@@ -98,34 +121,6 @@ public class BestiaryEntry {
         } else {
             this.unlockedProgress = Mth.clamp(killedByCount / 50.0F, 0, 1);
         }
-    }
-
-    public EntityType<?> getType() {
-        return type;
-    }
-
-    public int getKilledByCount() {
-        return killedByCount;
-    }
-
-    public float getMaxHealth() {
-        return maxHealth;
-    }
-
-    public float getKnockbackResistance() {
-        return knockbackResistance;
-    }
-
-    public float getAttackDamage() {
-        return attackDamage;
-    }
-
-    public float getArmor() {
-        return armor;
-    }
-
-    public int getDrops() {
-        return drops;
     }
 
     public Coins getCoins() {

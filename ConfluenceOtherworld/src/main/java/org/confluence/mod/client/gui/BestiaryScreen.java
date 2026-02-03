@@ -176,10 +176,9 @@ public class BestiaryScreen extends Screen {
             }
         } else if (showedEntry != null && mouseX >= leftPos + 164 && mouseX < leftPos + 212 && mouseY >= topPos + 116 && mouseY < topPos + 221) {
             int lastPage = descPage;
-            Component desc = showedEntry.getDescription();
-            if (font.width(desc) > 48) {
-                List<FormattedCharSequence> split = font.split(desc, 48);
-                int filters = showedEntry.getFilters().size();
+            if (font.width(showedEntry.description) > 48) {
+                List<FormattedCharSequence> split = font.split(showedEntry.description, 48);
+                int filters = showedEntry.filters.size();
                 int filterLines = filters % 3 == 0 ? filters / 16 : filters / 16 + 1;
                 int limitSize = (221 - 116 - filterLines * 16) / font.lineHeight;
                 this.descPage = Mth.clamp(descPage + Mth.sign(-scrollY), 0, Math.max(split.size() - limitSize, 0));
@@ -190,7 +189,7 @@ public class BestiaryScreen extends Screen {
                 }
             } else {
                 this.descPage = 0;
-                this.renderedDescs = List.of(desc.getVisualOrderText());
+                this.renderedDescs = List.of(showedEntry.description.getVisualOrderText());
             }
             return lastPage != descPage;
         }
@@ -227,14 +226,13 @@ public class BestiaryScreen extends Screen {
                 if (entry.isLocked()) return false;
                 this.showedEntry = entry;
                 this.descPage = 0;
-                Component desc = entry.getDescription();
-                if (font.width(desc) > 48) {
-                    int filters = showedEntry.getFilters().size();
+                if (font.width(showedEntry.description) > 48) {
+                    int filters = showedEntry.filters.size();
                     int filterLines = filters % 3 == 0 ? filters / 16 : filters / 16 + 1;
                     int limitSize = (221 - 116 - filterLines * 16) / font.lineHeight;
-                    this.renderedDescs = Iterables.limit(font.split(desc, 48), limitSize);
+                    this.renderedDescs = Iterables.limit(font.split(showedEntry.description, 48), limitSize);
                 } else {
-                    this.renderedDescs = List.of(desc.getVisualOrderText());
+                    this.renderedDescs = List.of(showedEntry.description.getVisualOrderText());
                 }
                 return true;
             }
@@ -440,7 +438,7 @@ public class BestiaryScreen extends Screen {
             x1 = leftPos + 164;
             y1 = topPos + 10;
             // 背景图
-            guiGraphics.blitSprite(showedEntry.getBackground(), 48, 48, 0, 0, x1, y1, 48, 48);
+            guiGraphics.blitSprite(showedEntry.background, 48, 48, 0, 0, x1, y1, 48, 48);
             // 实体
             LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
             if (living != null) {
@@ -450,7 +448,7 @@ public class BestiaryScreen extends Screen {
             pose.pushPose();
             pose.translate(0, 0, 180);
             guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 221, 53, x1, y1, 23, 7);
-            for (int i = 0; i < showedEntry.getRarity(); i++) {
+            for (int i = 0; i < showedEntry.rarity; i++) {
                 if (i == 0) {
                     // 大星
                     guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 222, 61, x1 + 1, y1 + 1, 5, 5);
@@ -494,7 +492,7 @@ public class BestiaryScreen extends Screen {
             y1 = topPos + 116;
             x2 = x1 + 48;
             FilterEntry renderedFilter = null;
-            for (FilterEntry filter : showedEntry.getFilters()) {
+            for (FilterEntry filter : showedEntry.filters) {
                 renderFilter(guiGraphics, filter, x1, y1, 16, 16);
                 if (mouseX >= x1 && mouseX < x1 + 16 && mouseY >= y1 && mouseY < y1 + 16) {
                     renderedFilter = filter;
@@ -511,7 +509,7 @@ public class BestiaryScreen extends Screen {
             // 描述
             if (p20) {
                 x1 = leftPos + 164;
-                if (!showedEntry.getFilters().isEmpty()) y1 += 16;
+                if (!showedEntry.filters.isEmpty()) y1 += 16;
                 for (FormattedCharSequence desc : renderedDescs) {
                     guiGraphics.drawString(font, desc, x1, y1, 0xFFFFFF);
                     y1 += font.lineHeight;

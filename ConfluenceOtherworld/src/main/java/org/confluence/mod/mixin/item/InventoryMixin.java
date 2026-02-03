@@ -90,8 +90,10 @@ public abstract class InventoryMixin {
     }
 
     @Inject(method = "clearOrCountMatchingItems", at = @At("RETURN"), cancellable = true)
-    private void withExtra(Predicate<ItemStack> stackPredicate, int maxCount, Container inventory, CallbackInfoReturnable<Integer> cir, @Local boolean flag) {
-        cir.setReturnValue(ContainerHelper.clearOrCountMatchingItems(ExtraInventory.of(player), stackPredicate, maxCount - cir.getReturnValue(), flag));
+    private void withExtra(Predicate<ItemStack> stackPredicate, int maxCount, Container inventory, CallbackInfoReturnable<Integer> cir, @Local boolean simulate) {
+        int count = cir.getReturnValue();
+        count += ContainerHelper.clearOrCountMatchingItems(ExtraInventory.of(player), stackPredicate, maxCount - count, simulate);
+        cir.setReturnValue(count);
     }
 
     @Unique

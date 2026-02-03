@@ -66,7 +66,7 @@ public class EnemyBannerBlockRenderer implements BlockEntityRenderer<AbstractEne
         flag.xRot = 0;
         flag.y = -32.0F;
         flag.render(poseStack, consumer, packedLight, packedOverlay);
-        ClientBestiaryEntry entry = ClientBestiary.getInstance().getEntry(blockEntity.getEntryKey());
+        ClientBestiaryEntry entry = ClientBestiary.getInstance().getEntry(blockEntity.entryKey);
         if (entry != null) {
             LivingEntity living = entry.getRenderedEntity(Minecraft.getInstance().level);
             if (living != null) {

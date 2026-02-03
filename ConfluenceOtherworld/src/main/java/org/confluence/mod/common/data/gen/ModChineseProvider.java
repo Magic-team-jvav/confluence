@@ -2728,6 +2728,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SOUL_GLASS.get(), "灵魂玻璃");
         add(ModBlocks.AETHERIUM_CAULDRON.get(), "装有微光的炼药锅");
         add(ModBlocks.HONEY_CAULDRON.get(), "装有蜂蜜的炼药锅");
+        add(ModBlocks.WALL_ENEMY_BANNER.get(), "敌怪旗");
+        add(ModBlocks.ENEMY_BANNER.get(), "敌怪旗");
 
         add(ChestBlocks.GOLDEN_CHEST.get(), "金箱");
         add(ChestBlocks.DEATH_GOLDEN_CHEST.get(), "死人金箱");

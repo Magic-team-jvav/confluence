@@ -147,6 +147,7 @@ public class BestiaryScreen extends Screen {
         this.selectedSort = new GuiSprite(BACKGROUND, textureW, textureH, 285, 239, sortWidth, 13);
         this.openedSortBottom = new GuiSprite(BACKGROUND, textureW, textureH, 285, 229, sortWidth, 9).setPos(openedSortTop.getX(), selectionY);
         this.banner = new GuiSprite(BACKGROUND, textureW, textureH, 383, 0, 16, 16).setPos(leftPos - 16, topPos + imageHeight - 16);
+        banner.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 383, 17, 16, 16).setPos(leftPos - 16, topPos + imageHeight - 16));
     }
 
     @Override
@@ -428,7 +429,7 @@ public class BestiaryScreen extends Screen {
         if (showedEntry != null) {
             // 旗帜按钮
             if (NeoForge.EVENT_BUS.post(new CheckBannerAvailableEvent(showedEntry)).isAvailable()) {
-                banner.render(guiGraphics);
+                banner.renderSelfOrHovered(guiGraphics, mouseX, mouseY);
             }
 
             float progress = showedEntry.getUnlockedProgress();

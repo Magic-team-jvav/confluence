@@ -154,7 +154,9 @@ public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
                 Vec3 center = pos.getCenter();
                 for (Player player : level.players()) {
                     if (player.distanceToSqr(center) < 100 * 100) {
-                        player.addEffect(new MobEffectInstance(ModEffects.ENEMY_BANNER, 240));
+                        if (!player.getActiveEffectsMap().containsKey(ModEffects.ENEMY_BANNER)) {
+                            player.addEffect(new MobEffectInstance(ModEffects.ENEMY_BANNER, -1));
+                        }
                         PlayerSpecialData.of(player).updateEnemyBannerEntries(entity.entryKey, pos, true);
                     } else {
                         PlayerSpecialData.of(player).updateEnemyBannerEntries(entity.entryKey, pos, false);

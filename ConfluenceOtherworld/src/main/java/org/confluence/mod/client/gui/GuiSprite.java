@@ -111,6 +111,14 @@ public class GuiSprite {
         }
     }
 
+    public void renderSelfOrHovered(GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        if (hovered != null && hovered.isHovered(mouseX, mouseY)) {
+            hovered.render(guiGraphics);
+        } else {
+            render(guiGraphics);
+        }
+    }
+
     public void renderAligned(GuiGraphics guiGraphics, int alignX, int alignY) {
         guiGraphics.blitSprite(path, textureW, textureH, u, v, x + (alignX - w) / 2, y + (alignY - h) / 2, w, h);
     }

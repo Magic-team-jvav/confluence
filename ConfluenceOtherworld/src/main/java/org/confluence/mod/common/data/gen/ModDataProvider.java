@@ -1185,7 +1185,7 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEAnimals.CRAB.get(), 7, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.TROPIC_SLIME.get(), 7, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 5, 1, 1)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 15, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_desert"), new BiomeModifiers.AddSpawnsBiomeModifier(

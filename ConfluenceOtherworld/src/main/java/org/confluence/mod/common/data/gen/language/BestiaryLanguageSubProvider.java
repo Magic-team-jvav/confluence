@@ -710,7 +710,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.minecraft.ocelot.desc", "Ocelots live in jungles, can be tamed with raw fish, and can scare away Creepers.");
         add("bestiary.entity.minecraft.snow_golem.desc", "Snow Golems are creatures made of snow blocks and pumpkins that throw snowballs to attack enemies.");
         add("bestiary.entity.minecraft.bee.desc", "Bees are creatures that pollinate and produce honey, and will sting when provoked.");
-        add("bestiary.entity.minecraft.fox.desc", "Foxes are cute but cunning creatures that steal items and can be tamed with berries.");
+        add("bestiary.entity.minecraft.fox.desc", "Foxes are cute but cunning creatures that pick up items and can be tamed with berries.");
         add("bestiary.entity.minecraft.iron_golem.desc", "Iron Golems are village guardians made of iron blocks and pumpkins that attack hostile mobs.");
         add("bestiary.entity.minecraft.llama.desc", "Llamas are creatures that can carry items, spit to defend themselves, and form caravans.");
         add("bestiary.entity.minecraft.panda.desc", "Pandas live in jungles, have different personalities, and love to eat bamboo.");
@@ -1456,7 +1456,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.minecraft.ocelot.desc", "豹猫生活在丛林中，可被生鱼驯服，能吓跑苦力怕。");
         add("bestiary.entity.minecraft.snow_golem.desc", "雪傀儡是由雪块和南瓜制作的生物，会投掷雪球攻击敌人。");
         add("bestiary.entity.minecraft.bee.desc", "蜜蜂是授粉和生产蜂蜜的生物，被激怒时会蜇人。");
-        add("bestiary.entity.minecraft.fox.desc", "狐狸是可爱但狡猾的生物，会偷取物品，可被浆果驯服。");
+        add("bestiary.entity.minecraft.fox.desc", "狐狸是可爱但狡猾的生物，会拾取物品，可被浆果驯服。");
         add("bestiary.entity.minecraft.iron_golem.desc", "铁傀儡是村庄的守护者，由铁块和南瓜制作，会攻击敌对生物。");
         add("bestiary.entity.minecraft.llama.desc", "羊驼是能携带物品的生物，会吐口水防御，可组成商队。");
         add("bestiary.entity.minecraft.panda.desc", "熊猫生活在丛林中，有不同的个性，喜欢吃竹子。");

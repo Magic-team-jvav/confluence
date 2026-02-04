@@ -1076,7 +1076,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.window.34", "Confluence: Coming soon to a computer near you");
         add("title.confluence.window.35", "Confluence: Dividing by zero");
         add("title.confluence.window.36", "Confluence: Now with SOUND");
-        add("title.confluence.window.37", "Confluence: Press alt-f4");
+        add("title.confluence.window.37", "Confluence: Press F3+2");
         add("title.confluence.window.38", "Confluence: You sand bro?");
         add("title.confluence.window.39", "Confluence: A good day to dig hard");
         add("title.confluence.window.40", "Confluence: Can You Use Magic-Harp?");

@@ -1078,7 +1078,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.window.34", "汇流来世：邻机即将拥有");
         add("title.confluence.window.35", "汇流来世：除数为零");
         add("title.confluence.window.36", "汇流来世：现已加入音效");
-        add("title.confluence.window.37", "汇流来世：按Alt-F4");
+        add("title.confluence.window.37", "汇流来世：按F3+2");
         add("title.confluence.window.38", "汇流来世：兄弟你疯了吧？");
         add("title.confluence.window.39", "汇流来世：挖矿吉日");
         add("title.confluence.window.40", "汇流来世：你会用魔法竖琴吗？");

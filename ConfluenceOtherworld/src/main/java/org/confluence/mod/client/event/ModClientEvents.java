@@ -514,8 +514,7 @@ public final class ModClientEvents {
                 MaterialItems.SOUL_OF_FLIGHT,
                 MaterialItems.SOUL_OF_BRIGHT,
                 MaterialItems.SOUL_OF_VOIGHT,
-                AxeItems.LUCY_THE_AXE,
-                ModItems.ENEMY_BANNER
+                AxeItems.LUCY_THE_AXE
         );
         ModClientSetups.asCustomModel(modelRegistry, TreasureBagItems.ITEMS.getEntries().toArray(DeferredHolder[]::new));
 

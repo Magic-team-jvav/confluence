@@ -189,7 +189,7 @@ public final class PlayerUtils {
             base *= 1.3F;
         } else if (LibDateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) {
             base *= 0.8F;
-        } else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime)) {
+        } else if (LibDateUtils.isWithinDayTime(LibDateUtils._18$00, LibDateUtils._19$30, dayTime)) {
             base *= 1.3F;
         } else if (LibDateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) {
             base *= 0.8F;

@@ -1111,7 +1111,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.window.67", "汇流来世：现在有更多奥克瑞姆了！");
         add("title.confluence.window.68", "汇流来世：少说多挖之外传！");
         add("title.confluence.window.69", "汇流来世：也试试饥荒！");
-        add("title.confluence.window.70", "汇流来世：我有20个铁！");
+        add("title.confluence.window.70", "汇流来世：融合升华！");
 
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");

@@ -1109,7 +1109,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.window.67", "Confluence: Now with even more Ocram!");
         add("title.confluence.window.68", "Confluence: Shut Up and Dig Gaiden!");
         add("title.confluence.window.69", "Confluence: Also try Don't Starve!");
-        add("title.confluence.window.70", "Confluence: I have 20 iron!");
+        add("title.confluence.window.70", "Confluence: Fusion Rise!");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);

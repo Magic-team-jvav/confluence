@@ -1,21 +1,28 @@
 package org.confluence.mod.mixin.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.server.WorldStem;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.storage.LevelStorageSource;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.ILevelLoadingScreen;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,9 +34,16 @@ import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
 
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin {
+    @Unique
+    private static @Nullable String confluence$currentTitle;
+
     @Shadow
     @Nullable
     public LocalPlayer player;
+
+    @Shadow
+    @Nullable
+    public Screen screen;
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V"))
     private void setSecretFlag(LevelStorageSource.LevelStorageAccess levelStorage, PackRepository packRepository, WorldStem worldStem, boolean newWorld, CallbackInfo ci, @Local LevelLoadingScreen levelloadingscreen) {
@@ -85,5 +99,18 @@ public abstract class MinecraftMixin {
                 }
             }
         }
+    }
+
+    @WrapOperation(method = "createTitle", at = @At(value = "INVOKE", target = "Ljava/lang/StringBuilder;toString()Ljava/lang/String;"))
+    private String customTitle(StringBuilder instance, Operation<String> original) {
+        if (ClientConfigs.customTitle > 0) {
+            if (confluence$currentTitle == null && screen instanceof TitleScreen) {
+                confluence$currentTitle = I18n.get("title.confluence.window." + (int) (Math.random() * ClientConfigs.customTitle));
+            }
+            if (confluence$currentTitle != null) {
+                instance.append(" #").append(confluence$currentTitle);
+            }
+        }
+        return original.call(instance);
     }
 }

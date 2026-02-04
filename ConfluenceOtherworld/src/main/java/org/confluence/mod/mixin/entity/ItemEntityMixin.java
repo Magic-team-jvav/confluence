@@ -62,8 +62,10 @@ public abstract class ItemEntityMixin implements IItemEntity {
         if (confluence$item_coolDown == 0 && IEntity.of(self).confluence$isInShimmer()) {
             ShimmerItemTransmutationEvent.Pre pre = new ShimmerItemTransmutationEvent.Pre(self);
             if (NeoForge.EVENT_BUS.post(pre).isCanceled()) {
-                self.getItem().shrink(pre.getShrink());
-                confluence$setup(self, pre.getCoolDown(), pre.getSpeedY());
+                if (!self.isRemoved()) {
+                    self.getItem().shrink(pre.getShrink());
+                    confluence$setup(self, pre.getCoolDown(), pre.getSpeedY());
+                }
             } else if (confluence$item_transforming < pre.getTransformTime()) {
                 this.confluence$item_transforming++;
                 self.addDeltaMovement(ANTI_GRAVITY);

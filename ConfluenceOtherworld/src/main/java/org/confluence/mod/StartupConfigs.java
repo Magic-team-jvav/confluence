@@ -14,17 +14,17 @@ public final class StartupConfigs {
     private static ModConfigSpec.BooleanValue BREWING_STAND_RECIPE;
 
     public static void register(ModContainer container) {
-        ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+        ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
 
-        BUILDER.push("Paints");
-        PAINTS_REPLACE_TEXTURE = BUILDER.define("paintsReplaceTexture", false);
-        BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", () -> DEFAULT_BANNED_MOD, () -> "modid", o -> o instanceof String s && !s.contains(":"));
-        BUILDER.pop();
+        builder.push("Paints");
+        PAINTS_REPLACE_TEXTURE = builder.define("paintsReplaceTexture", false);
+        BANNED_MOD_FOR_PAINTS = builder.defineListAllowEmpty("bannedModForPaints", () -> DEFAULT_BANNED_MOD, () -> "modid", o -> o instanceof String s && !s.contains(":"));
+        builder.pop();
 
-        FORCE_ALLOW_WIP_ITEMS_DISPLAY_IN_CREATIVE_MODE_TAB = BUILDER.define("forceAllowWipItemsDisplayInCreativeModeTab", false);
-        BREWING_STAND_RECIPE = BUILDER.define("brewingStandRecipe", true);
+        FORCE_ALLOW_WIP_ITEMS_DISPLAY_IN_CREATIVE_MODE_TAB = builder.define("forceAllowWipItemsDisplayInCreativeModeTab", false);
+        BREWING_STAND_RECIPE = builder.define("brewingStandRecipe", true);
 
-        container.registerConfig(ModConfig.Type.STARTUP, BUILDER.build());
+        container.registerConfig(ModConfig.Type.STARTUP, builder.build());
     }
 
     public static boolean paintsReplaceTexture() {

@@ -172,7 +172,7 @@ public final class GameClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
-            if (!ILocalPlayer.of(player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED) || ScryingOrb.spectatingPlayer != null) {
+            if (!ILocalPlayer.of(player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED)) {
                 event.setCanceled(true);
                 event.setSwingHand(false);
             }

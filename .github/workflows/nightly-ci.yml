@@ -1,4 +1,4 @@
-permissions: 
+permissions:
   contents: write
 name: Nightly Build
 on:
@@ -23,12 +23,15 @@ jobs:
           cache: "gradle"
       - name: Generate assets
         run: |
+          chmod +x gradlew
           git submodule foreach '../gradlew runData'
           cd ./ConfluenceOtherworld && ./gradlew runData
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
-        run: ./gradlew build
-      
+        run:
+          chmod +x gradlew
+          ./gradlew build
+
       - name: Get version with date suffix
         id: version
         working-directory: ./ConfluenceOtherworld
@@ -41,7 +44,7 @@ jobs:
           DATE_SUFFIX=$(date +%y%m%d)
           FULL_VERSION="${BASE_VERSION}-alpha-${DATE_SUFFIX}"
           echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_OUTPUT
-      
+
       - name: Delete previous nightly release
         run: |
           releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
@@ -53,7 +56,7 @@ jobs:
                 "https://api.github.com/repos/${{ github.repository }}/releases/$release_id"
             fi
           done
-      
+
       - name: Upload to Nightly Release
         uses: softprops/action-gh-release@v1
         with:

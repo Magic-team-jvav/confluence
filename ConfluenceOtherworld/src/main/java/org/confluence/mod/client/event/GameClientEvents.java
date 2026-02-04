@@ -139,7 +139,10 @@ public final class GameClientEvents {
             HouseSelectHUD.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
             if (ScryingOrb.spectatingPlayer != null && !ScryingOrb.spectatingPlayer.isAlive()) {
-                ScryingOrb.changeTarget(minecraft.level, minecraft.player);
+                ScryingOrb.changeTarget(minecraft.level, player);
+            }
+            if (player.isShiftKeyDown()) {
+                ScryingOrb.stopSpectating();
             }
         }
         DeathAnimUtils.clear();
@@ -169,7 +172,7 @@ public final class GameClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
-            if (!ILocalPlayer.of(player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED)) {
+            if (!ILocalPlayer.of(player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED) || ScryingOrb.spectatingPlayer != null) {
                 event.setCanceled(true);
                 event.setSwingHand(false);
             }
@@ -256,7 +259,7 @@ public final class GameClientEvents {
     public static void movementInputUpdate(MovementInputUpdateEvent event) {
         Input input = event.getInput();
         LocalPlayer player = (LocalPlayer) event.getEntity();
-        boolean cannotMove = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN);
+        boolean cannotMove = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || ScryingOrb.spectatingPlayer != null;
         ILocalPlayer.of(player).confluence$setCanMove(!cannotMove);
         if (!player.hasInfiniteMaterials()) {
             if (cannotMove || player.hasEffect(ModEffects.SHIMMER) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {

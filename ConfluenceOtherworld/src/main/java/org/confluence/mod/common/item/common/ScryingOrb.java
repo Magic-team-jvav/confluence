@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.mixed.ILocalPlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -22,7 +21,6 @@ import java.util.List;
 // TODO: lore
 public class ScryingOrb extends Item {
     public static AbstractClientPlayer spectatingPlayer;
-    public static boolean spectating = false;
 
     public ScryingOrb() {
         super(new Item.Properties());
@@ -36,17 +34,15 @@ public class ScryingOrb extends Item {
 
     /***/
     public static void changeTarget(@Nullable Level level, @Nullable Player player) {
-        if (!(player instanceof LocalPlayer localPlayer) || !(level instanceof ClientLevel clientLevel)) return;
+        if (!(player instanceof LocalPlayer) || !(level instanceof ClientLevel clientLevel)) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc.isSingleplayer()) {
             mc.getChatListener().handleSystemMessage(Component.translatable("message.confluence.scrying_orb.singleplayer"), false);
             return;
         }
-        List<AbstractClientPlayer> players = clientLevel.players().stream().filter(p -> p != player).toList();
+        List<AbstractClientPlayer> players = clientLevel.players().stream().filter(p -> p != player && p.isAlive()).toList();
         if (players.isEmpty()) {
-            spectating = false;
-            ILocalPlayer.of(localPlayer).confluence$setCanMove(false);
-            mc.setCameraEntity(mc.player);
+            stopSpectating();
             mc.getChatListener().handleSystemMessage(Component.translatable("message.confluence.scrying_orb.alone"), false);
             return;
         }
@@ -58,7 +54,11 @@ public class ScryingOrb extends Item {
         }
         spectatingPlayer = players.get(index);
         mc.setCameraEntity(spectatingPlayer);
-        spectating = true;
-        ILocalPlayer.of(localPlayer).confluence$setCanMove(true);
+    }
+
+    public static void stopSpectating() {
+        Minecraft mc = Minecraft.getInstance();
+        spectatingPlayer = null;
+        mc.setCameraEntity(mc.player);
     }
 }

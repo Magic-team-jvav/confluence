@@ -28,7 +28,7 @@ public class BestiaryEntry {
             Codec.FLOAT.fieldOf("attack_damage").forGetter(entry -> entry.attackDamage),
             Codec.FLOAT.fieldOf("armor").forGetter(entry -> entry.armor),
             Codec.INT.fieldOf("drops").forGetter(entry -> entry.drops),
-            Codec.FLOAT.lenientOptionalFieldOf("unlocked_progress", 0F).forGetter(entry -> entry.unlockedProgress)
+            Codec.FLOAT.lenientOptionalFieldOf("unlocked_progress", 1F).forGetter(entry -> entry.unlockedProgress)
     ).apply(instance, BestiaryEntry::new));
     public static final StreamCodec<RegistryFriendlyByteBuf, BestiaryEntry> STREAM_CODEC = LibStreamCodecUtils.composite(
             ByteBufCodecs.registry(Registries.ENTITY_TYPE), entry -> entry.type,

@@ -1439,7 +1439,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TESpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
                 TESpawnEggItems.PLANTERA_SPAWN_EGG.get(),
                 TreasureBagItems.THE_TWINS_TREASURE_BAG.get(),
-                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get()
+                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
+                FoodItems.HONEY_GUMMI.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

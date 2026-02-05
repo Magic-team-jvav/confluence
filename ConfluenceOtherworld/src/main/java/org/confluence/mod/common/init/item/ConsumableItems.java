@@ -100,7 +100,7 @@ public class ConsumableItems {
     public static final DeferredItem<BossSummoningItem> DEER_THING = ITEMS.register("deer_thing", () -> new BossSummoningItem(player -> {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(Tags.Biomes.IS_SNOWY) || biome.is(Tags.Biomes.IS_ICY);
-    }, Deerclops::new, BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.GRAY)));
+    }, Deerclops::new, BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.AQUA)));
 
     public static final DeferredItem<TooltipItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("golden_lock_box", 2, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));

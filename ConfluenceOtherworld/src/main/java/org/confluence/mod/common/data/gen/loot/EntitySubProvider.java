@@ -62,6 +62,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         DateLootItemCondition.Builder halloweens = DateLootItemCondition.builder().from(Calendar.OCTOBER, 10).to(Calendar.NOVEMBER, 1);
         DateLootItemCondition.Builder christmas = DateLootItemCondition.builder().from(Calendar.DECEMBER, 15).to(Calendar.DECEMBER, 31);
         EnchantedCountIncreaseFunction.Builder random0To1 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F));
+        EnchantedCountIncreaseFunction.Builder random3To4 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(3.0F, 4.0F));
         AlternativesEntry.Builder hearts = AlternativesEntry.alternatives(
                 LootItem.lootTableItem(ModItems.HEART).when(AllOfCondition.allOf(halloweens, christmas).invert()),
                 LootItem.lootTableItem(ModItems.CANDY_APPLE).when(halloweens),
@@ -429,6 +430,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(TEMonsterEntities.DUNGEON_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/dungeon_slime"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY)).apply(random0To1)
+                )
+        );
+        add(TEMonsterEntities.HONEY_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/honey_slime"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.HONEY_GUMMI)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 7))).apply(random3To4)
                 )
         );
         add(TEMonsterEntities.GOLDEN_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/golden_slime"), LootTable.lootTable()

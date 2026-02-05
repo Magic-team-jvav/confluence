@@ -278,18 +278,26 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.green_slime.desc", "A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.");
         add("bestiary.entity.terra_entity.blue_slime.desc", "A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.");
         add("bestiary.entity.terra_entity.purple_slime.desc", "A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.");
-        add("bestiary.entity.terra_entity.pinky.desc", "The smallest slime ever recorded, their extreme cellular density makes them incredibly durable for their small size. They eat money.");
+        add("bestiary.entity.terra_entity.pink_slime.desc", "The smallest slime ever recorded, their extreme cellular density makes them incredibly durable for their small size. They eat money.");
+        add("bestiary.entity.terra_entity.golden_slime.desc", "Legends tell of a slime that has gorged itself on countless coins, a symbol of wealth and fortune.");
+        add("bestiary.entity.terra_entity.honey_slime.desc", "Some wasps discovered that slimes accidentally fallen into honey taste far more delicious, so swarms raise these slimes on occasion.");
 //        add("bestiary.entity.terra_entity.windy_balloon.desc", "Some enterprising slimes ride wind currents with balloons in an effort to find food. Pop their balloons to bring them back down to earth.");
 //        add("bestiary.entity.terra_entity.angry_dandelion.desc", "All this wind can make just about anyone angry. Evidently, this includes otherwise harmless dandelions and their deadly seeds.");
 //        add("bestiary.entity.terra_entity.umbrella_slime.desc", "The previous owner of this umbrella learned the hard way: umbrellas are good protection against rain, but not against slime.");
         add("bestiary.entity.terra_entity.flying_fish.desc", "Certain species of fish gain the most peculiar abilities when it rains. They only like one thing about land-dwellers: their flesh.");
 //        add("bestiary.entity.terra_entity.angry_nimbus.desc", "When severe storms roll through, it is said that the skies are angry. This cloud in particular is especially livid!");
-        add("bestiary.entity.terra_entity.demon_eye_dilated.desc", "That suspicious feeling of being watched may very well come true in the dark of night, when Cthulhu's minions roam the skies.");
-        add("bestiary.entity.terra_entity.demon_eye_sleepy.desc", "That suspicious feeling of being watched may very well come true in the dark of night, when Cthulhu's minions roam the skies.");
-        add("bestiary.entity.terra_entity.demon_eye_purple.desc", "That suspicious feeling of being watched may very well come true in the dark of night, when Cthulhu's minions roam the skies.");
-        add("bestiary.entity.terra_entity.demon_eye.desc", "That suspicious feeling of being watched may very well come true in the dark of night, when Cthulhu's minions roam the skies.");
-        add("bestiary.entity.terra_entity.demon_eye_green.desc", "That suspicious feeling of being watched may very well come true in the dark of night, when Cthulhu's minions roam the skies.");
-        add("bestiary.entity.terra_entity.demon_eye_cataract.desc", "That suspicious feeling of being watched may very well come true in the dark of night, when Cthulhu's minions roam the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.dilated.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's dilated minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.dilated_small.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's small, dilated minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.sleepy.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's sleepy minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.sleepy_big.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's big, sleepy minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.purple.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's purple minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.purple_big.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's big, purple minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.normal.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.normal_big.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's big minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.green.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's green minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.green_small.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's small, green minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.cataract.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's aged minions hover through the skies.");
+        add("bestiary.entity.terra_entity.demon_eye.cataract_big.desc", "That unsettling feeling of being watched may very well be real in the dead of night, when Cthulhu's large, aged minions hover through the skies.");
         add("bestiary.entity.terra_entity.wandering_eye.desc", "That suspicious feeling of being watched may very well come true in the dark of night, when Cthulhu's minions roam the skies.");
         add("bestiary.entity.terra_entity.zombie_female.desc", "Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.");
         add("bestiary.entity.terra_entity.zombie_slimed.desc", "Sometimes, a slime's victim will turn into a zombie mid-digestion. Walking around like that is quite awkward for both parties.");
@@ -300,7 +308,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.zombie_swamp.desc", "Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.");
         add("bestiary.entity.terra_entity.zombie_pincushion.desc", "Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.");
         add("bestiary.entity.terra_entity.raincoat_zombie.desc", "Some zombies never leave home without their trusty raincoat. Comfy and dry, they pursue human flesh no matter the weather.");
-        add("bestiary.entity.terra_entity.possessed_armor.desc", "Whatever possessed this suit of armor to suddenly walk about and start killing everyone? It lacks a corporeal body.");
+        add("bestiary.entity.terra_entity.possess_armor.desc", "Whatever possessed this suit of armor to suddenly walk about and start killing everyone? It lacks a corporeal body.");
 //        add("bestiary.entity.terra_entity.werewolf.desc", "Cursed by the moonlight, these menacing lupines were once human. Now, they feast on their loved ones instinctively.");
         add("bestiary.entity.terra_entity.wraith.desc", "Souls belonging to the darkest of hearts were once sealed in the world's core. Now, they roam the night to add to their kind.");
 //        add("bestiary.entity.terra_entity.corrupt_bunny.desc", "Bunnies are pure beings that normally resist all forms of Corruption, but will succumb under the effects of a Blood Moon.");
@@ -404,7 +412,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.jungle_slime.desc", "A simple, gelatinous creature that swallows anything and everything whole! It takes a long time to digest anything.");
         add("bestiary.entity.terra_entity.snatcher.desc", "A sharp-toothed plant with a taste for human flesh. It has the ability to hide inside the mud and reach over great distances.");
 //        add("bestiary.entity.terra_entity.giant_flying_fox.desc", "An oversized cousin of the bat found only in the Jungle, giant flying foxes hunt the night skies looking for prey.");
-//        add("bestiary.entity.terra_entity.derpling.desc", "These large, sapphire-shelled fleas leap around incessantly. They can drain the blood content of one man within seconds.");
+        add("bestiary.entity.terra_entity.derpling.desc", "These large, sapphire-shelled fleas leap around incessantly. They can drain the blood content of one man within seconds.");
         add("bestiary.entity.terra_entity.spiked_jungle_slime.desc", "Frequent consumption of the Jungle's toxins and thorns has resulted in a slime covered in venomous spikes.");
 //        add("bestiary.entity.terra_entity.lac_beetle.desc", "These scaly insects thrive in thick subterranean foliage. Their secretions stain many materials in a beautiful violet color.");
 //        add("bestiary.entity.terra_entity.doctor_bones.desc", "This particular zombie has a knack for finding historical artifacts, but has a terrible disdain towards snakes.");
@@ -428,10 +436,12 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.jungle_creeper.desc", "The itsy bitsy spider climbed up a jungle vine, down came a hapless explorer and the spider got to dine. The End.");
         add("bestiary.entity.terra_entity.meteor_head.desc", "When meteorites strike the surface, their fragments lay scattered for the taking. Some pieces are alive, and will attack.");
         add("bestiary.entity.terra_entity.dungeon_slime.desc", "Slimes in the Dungeon became powerful by feeding off the cursed energy throughout the place. They seem particularly attracted to keys.");
-        add("bestiary.entity.terra_entity.angry_bones.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
-        add("bestiary.entity.terra_entity.angry_bones_big.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
-        add("bestiary.entity.terra_entity.angry_bones_big_muscle.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
-        add("bestiary.entity.terra_entity.angry_bones_big_helmet.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
+        add("bestiary.entity.terra_entity.anger_bones.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
+        add("bestiary.entity.terra_entity.short_bones.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
+        add("bestiary.entity.terra_entity.big_bones.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
+        add("bestiary.entity.terra_entity.big_anger_bones.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
+        add("bestiary.entity.terra_entity.big_muscle_anger_bones.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
+        add("bestiary.entity.terra_entity.big_helmet_anger_bones.desc", "Cursed with undeath, the former inhabitants of the Dungeon roam endlessly through its halls, seeking a victim for their unending fury.");
 //        add("bestiary.entity.terra_entity.blue_armored_bones_mace.desc", "Disciplined and relentless, the Marching Bones unceasingly pursue their goals, sundering anything, or anyone, in their way.");
 //        add("bestiary.entity.terra_entity.skeleton_sniper.desc", "These eagle-eyed sharpshooters let nothing escape their crosshairs. Part of an elite military unit in their past lives.");
 //        add("bestiary.entity.terra_entity.tactical_skeleton.desc", "With thick armor and mighty boomsticks, it's clear these bones are prepared for a siege. Part of an elite military unit in their past lives.");
@@ -483,6 +493,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.slimer.desc", "The Slimer has become airborne with wings of unknown origin. The wings are easily knocked off with force, depriving it of its flight.");
 //        add("bestiary.entity.terra_entity.cursed_hammer.desc", "Magicked through the pure hatred of the Corruption, this weapon flails about attempting to smash anything that breathes.");
         add("bestiary.entity.terra_entity.corrupt_mimic.desc", "Mimics which fall to Corruption grow larger and more powerful as a result. They can be birthed from ordinary chests by force.");
+        add("bestiary.entity.terra_entity.jungle_mimic.desc", "These ancient mimics lurk in the jungles of a distant world, though the 'treasures' they guard are far from ordinary. One can't help but question the intentions of those who buried them.");
 //        add("bestiary.entity.terra_entity.pigron_corrupt.desc", "This elusive dragon-pig hybrid has excellent stealth capabilities despite its rotund figure. It is uncertain how they came to exist.");
 //        add("bestiary.entity.terra_entity.bone_biter.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
         add("bestiary.entity.terra_entity.dark_mummy.desc", "With the sands transmogrified by outside forces, those put to rest in the desert, whether good or evil, now rise to maim and kill.");
@@ -508,7 +519,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.pixie.desc", "A larger, more luminous form of fairy. Pixies provide the Hallow with more blessed light and aid in the cleansing of the land.");
 //        add("bestiary.entity.terra_entity.gastropod.desc", "Touched by the blessing, these nocturnal slimes evolved into a levitating snail-like creature which spits powerful beams of light.");
 //        add("bestiary.entity.terra_entity.unicorn.desc", "These majestic single-horned equines storm angrily through the hallowed land in search of lowly intrusions needing to be cleansed away.");
-        add("bestiary.entity.terra_entity.illuminant_slime.desc", "Slimes exposed to the light of the Hallow's crystals begin to emit that very same light, glowing brightly in the darkness.");
+        add("bestiary.entity.terra_entity.luminous_slime.desc", "Slimes exposed to the light of the Hallow's crystals begin to emit that very same light, glowing brightly in the darkness.");
 //        add("bestiary.entity.terra_entity.chaos_elemental.desc", "Once living beings infused by the blessing, they erratically make chase with an uncontrollable surge of luminous power.");
 //        add("bestiary.entity.terra_entity.illuminant_bat.desc", "Blessed with the prismatic light of the Hallow, the Illuminant Bats are a vibrant pink blur arcing across the darkness of the Underground.");
 //        add("bestiary.entity.terra_entity.enchanted_sword.desc", "Animated by the blessed light of the crystals, it will slice through anything to cleanse the world's evils.");
@@ -601,8 +612,8 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.elf_copter.desc", "The elves aren't just flying toy helicopters, these are fully combat ready. All that inventing finally paid off!");
 //        add("bestiary.entity.terra_entity.flocko.desc", "These ferocious flakes are the frozen minions of the Ice Queen. Where this sinister snow falls, so shall her icy judgment.");
 //        add("bestiary.entity.terra_entity.slime_bunny_mask.desc", "Is it a slime in a bunny costume? Or is it a bunny in a slime costume? Halloween can be very confusing sometimes.");
-        add("bestiary.entity.terra_entity.demon_eye_spaceship.desc", "No one knows who dressed these demon eyes up in cute costumes, but the whole process hasn't made them any friendlier.");
-        add("bestiary.entity.terra_entity.demon_eye_owl_mask.desc", "No one knows who dressed these demon eyes up in cute costumes, but the whole process hasn't made them any friendlier.");
+        add("bestiary.entity.terra_entity.demon_eye.spaceship.desc", "No one knows who dressed these demon eyes up in cute costumes, but the whole process hasn't made them any friendlier.");
+        add("bestiary.entity.terra_entity.demon_eye.owl_mask.desc", "No one knows who dressed these demon eyes up in cute costumes, but the whole process hasn't made them any friendlier.");
 //        add("bestiary.entity.terra_entity.zombie_doctor.desc", "Wearing costumes isn't fooling anyone; these zombies are clearly way too old to be trick or treating.");
 //        add("bestiary.entity.terra_entity.zombie_superman.desc", "Wearing costumes isn't fooling anyone; these zombies are clearly way too old to be trick or treating.");
 //        add("bestiary.entity.terra_entity.zombie_pixie.desc", "Wearing costumes isn't fooling anyone; these zombies are clearly way too old to be trick or treating.");
@@ -648,6 +659,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.eater_of_worlds.desc", "Conceived from the bottomless malice of the Corruption, this mighty abyssal worm tunnels wildly to devour all in its path.");
         add("bestiary.entity.terra_entity.brain_of_cthulhu.desc", "A piece of Cthulhu torn asunder, this vile mastermind pulses with agony and aids the Crimson in an attempt to avenge its master.");
         add("bestiary.entity.terra_entity.visual_neuron.desc", "Manipulated through the hive mind of the Crimson, Visual Neuron serve as the brain's eyes and orbit around it for defense in numbers.");
+        add("bestiary.entity.terra_entity.deerclops.desc", "Hailing from a distant land, this cyclopic monstrosity lurks in cold places, wreaking havoc on those who disturb it.");
         add("bestiary.entity.terra_entity.skeletron.desc", "The disembodied bones of a former tyrant pulsed with a hatred so strong, it left behind a mighty curse which guards the Dungeon.");
         add("bestiary.entity.terra_entity.queen_bee.desc", "This highly aggressive monstrosity responds violently when her larva is disturbed; the honey-laden hives are her home turf.");
         add("bestiary.entity.terra_entity.wall_of_flesh.desc", "Serving as the world's core and guardian, the towering demon lord exists to keep powerful ancient spirits sealed away.");
@@ -752,6 +764,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.minecraft.zombified_piglin.desc", "Zombified Piglins are neutral mobs in the Nether that counterattack in groups when attacked.");
         add("bestiary.entity.minecraft.ender_dragon.desc", "The Ender Dragon guards the End dimension.");
         add("bestiary.entity.minecraft.wither.desc", "The Wither can only be summoned by players and shoots Wither Skulls to cause large-scale damage.");
+        add("bestiary.entity.minecraft.parrot.desc", "Parrots are adorable tropical birds whose vibrant plumage evokes the stunning sunsets above the jungle canopy.");
 
         add("bestiary.entity.terra_entity.decayeder.desc", "Skeletons reanimated by the Corrupted; fragile yet adept at spreading evil thoughts.");
         add("bestiary.entity.terra_entity.bloody_spore.desc", "The Crimson recognizes that Creepers are the easiest creatures to spread its flesh.");
@@ -1023,18 +1036,26 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.green_slime.desc", "绿史莱姆是简单的胶状生物，见到任何东西都会整个吞下！但消化过程需要很长时间。");
         add("bestiary.entity.terra_entity.blue_slime.desc", "蓝史莱姆是简单的胶状生物，见到任何东西都会整个吞下！但消化过程需要很长时间。");
         add("bestiary.entity.terra_entity.purple_slime.desc", "紫史莱姆是简单的胶状生物，见到任何东西都会整个吞下！但消化过程需要很长时间。");
-        add("bestiary.entity.terra_entity.pinky.desc", "粉史莱姆是有记录以来最小的史莱姆，其极高的细胞密度让小巧的体型拥有了惊人的耐用性。它们以钱币为食。");
+        add("bestiary.entity.terra_entity.pink_slime.desc", "粉史莱姆是有记录以来最小的史莱姆，其极高的细胞密度让小巧的体型拥有了惊人的耐用性。它们以钱币为食。");
+        add("bestiary.entity.terra_entity.golden_slime.desc", "传说世界上有一种吃了太多钱币的史莱姆，是财富与运气的象征。");
+        add("bestiary.entity.terra_entity.honey_slime.desc", "有的黄蜂发现，不小心掉入蜂蜜中的史莱姆会变得更加可口。于是蜂群有时候会养殖这种史莱姆。");
 //        add("bestiary.entity.terra_entity.windy_balloon.desc", "有些胆大的史莱姆会借助气球乘着气流飞行，寻找食物。击破它们的气球就能让其落回地面。");
 //        add("bestiary.entity.terra_entity.angry_dandelion.desc", "强风足以让几乎所有生物烦躁，显然，原本无害的蒲公英也不例外——它们会射出致命的种子。");
 //        add("bestiary.entity.terra_entity.umbrella_slime.desc", "这把雨伞的前主人吸取了惨痛教训：雨伞能有效防雨，却防不住史莱姆。");
         add("bestiary.entity.terra_entity.flying_fish.desc", "某些鱼类在雨天会获得奇特的能力。对于陆地上的生物，它们只对一样东西感兴趣——血肉。");
 //        add("bestiary.entity.terra_entity.angry_nimbus.desc", "据说暴风雨来临时，天空会“发怒”，而这团愤怒雨云怪的“怒气”尤为强烈！");
-        add("bestiary.entity.terra_entity.demon_eye_dilated.desc", "当克苏鲁的仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
-        add("bestiary.entity.terra_entity.demon_eye_sleepy.desc", "当克苏鲁的仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
-        add("bestiary.entity.terra_entity.demon_eye_purple.desc", "当克苏鲁的仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
-        add("bestiary.entity.terra_entity.demon_eye.desc", "当克苏鲁的仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
-        add("bestiary.entity.terra_entity.demon_eye_green.desc", "当克苏鲁的仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
-        add("bestiary.entity.terra_entity.demon_eye_cataract.desc", "当克苏鲁的仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.dilated.desc", "当克苏鲁的涣散仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.dilated_small.desc", "当克苏鲁的涣散小仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.sleepy.desc", "当克苏鲁的瞌睡仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.sleepy_big.desc", "当克苏鲁的大瞌睡仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.purple.desc", "当克苏鲁的紫色仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.purple_big.desc", "当克苏鲁的紫色大仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.normal.desc", "当克苏鲁的仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.normal_big.desc", "当克苏鲁的大仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.green.desc", "当克苏鲁的绿色仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.green_small.desc", "当克苏鲁的绿色小仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.cataract.desc", "当克苏鲁的老仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
+        add("bestiary.entity.terra_entity.demon_eye.cataract_big.desc", "当克苏鲁的大型老仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
         add("bestiary.entity.terra_entity.wandering_eye.desc", "当克苏鲁的仆从在漆黑的夜晚盘旋空中时，那种被人监视的不安感，很可能是真实存在的。");
         add("bestiary.entity.terra_entity.zombie_female.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
         add("bestiary.entity.terra_entity.zombie_slimed.desc", "有时，史莱姆的猎物在被消化的过程中会变成僵尸。这样“半消化半僵尸”地四处游荡，对双方来说都很尴尬。");
@@ -1045,7 +1066,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.zombie_swamp.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
         add("bestiary.entity.terra_entity.zombie_pincushion.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
         add("bestiary.entity.terra_entity.raincoat_zombie.desc", "有些僵尸出门必穿可靠的雨衣，无论天气如何，它们都会在舒适干爽的状态下追逐人肉。");
-        add("bestiary.entity.terra_entity.possessed_armor.desc", "究竟是什么东西附身于这套盔甲，让它突然能动弹并开始滥杀无辜？它连实体都没有啊。");
+        add("bestiary.entity.terra_entity.possess_armor.desc", "究竟是什么东西附身于这套盔甲，让它突然能动弹并开始滥杀无辜？它连实体都没有啊。");
 //        add("bestiary.entity.terra_entity.werewolf.desc", "狼人受月光诅咒，这些凶恶的 lupine（ lupine：此处指“狼形生物” ）曾是人类，如今却会本能地捕食自己的亲人。");
         add("bestiary.entity.terra_entity.wraith.desc", "拥有最黑暗心灵的灵魂曾被封印在世界核心，如今它们在夜间游荡，寻找新的成员壮大自己的族群。");
 //        add("bestiary.entity.terra_entity.corrupt_bunny.desc", "兔兔本是纯洁的生物，通常能抵抗各种腐化力量，但在血月影响下会屈服。");
@@ -1149,7 +1170,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.jungle_slime.desc", "丛林史莱姆是简单的胶状生物，见到任何东西都会整个吞下！但消化过程需要很长时间。");
         add("bestiary.entity.terra_entity.snatcher.desc", "抓人草是长有锋利牙齿的肉食植物，偏好人类血肉。它能潜藏在泥土中，攻击范围远超想象。");
 //        add("bestiary.entity.terra_entity.giant_flying_fox.desc", "巨型飞狐是蝙蝠的巨型近亲，仅在丛林中出现，会在夜空中搜寻猎物。");
-//        add("bestiary.entity.terra_entity.derpling.desc", "这些身披蓝宝石色外壳的巨型跳蚤，会不停地跳跃移动，短短几秒内就能吸干一个人的血液。");
+        add("bestiary.entity.terra_entity.derpling.desc", "这些身披蓝宝石色外壳的巨型跳蚤，会不停地跳跃移动，短短几秒内就能吸干一个人的血液。");
         add("bestiary.entity.terra_entity.spiked_jungle_slime.desc", "尖刺丛林史莱姆因长期吞食丛林中的毒素与荆棘，体表布满了带毒的尖刺。");
 //        add("bestiary.entity.terra_entity.lac_beetle.desc", "紫胶虫在茂密的地下植被中繁衍生息，其分泌物能将多种材料染成美丽的紫色。");
 //        add("bestiary.entity.terra_entity.doctor_bones.desc", "骷髅博士这个特殊的僵尸，擅长寻找历史文物，却对蛇类有着极大的厌恶。");
@@ -1173,10 +1194,12 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.jungle_creeper.desc", "“小小蜘蛛爬藤蔓，倒霉探险掉下来，蜘蛛饱餐真痛快。故事完。”");
         add("bestiary.entity.terra_entity.meteor_head.desc", "陨石撞击地表后，碎片会散落各处等待拾取。但有些碎片是“活的”，会主动发起攻击。");
         add("bestiary.entity.terra_entity.dungeon_slime.desc", "地牢史莱姆通过吸收地牢中的诅咒能量变得强大，且似乎对钥匙有着特殊的吸引力。");
-        add("bestiary.entity.terra_entity.angry_bones.desc", "愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
-        add("bestiary.entity.terra_entity.angry_bones_big.desc", "大型愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
-        add("bestiary.entity.terra_entity.angry_bones_big_muscle.desc", "大块头愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
-        add("bestiary.entity.terra_entity.angry_bones_big_helmet.desc", "戴大头盔的愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
+        add("bestiary.entity.terra_entity.anger_bones.desc", "愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
+        add("bestiary.entity.terra_entity.short_bones.desc", "矮骷髅是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
+        add("bestiary.entity.terra_entity.big_bones.desc", "大骷髅是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
+        add("bestiary.entity.terra_entity.big_anger_bones.desc", "大型愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
+        add("bestiary.entity.terra_entity.big_muscle_anger_bones.desc", "大块头愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
+        add("bestiary.entity.terra_entity.big_helmet_anger_bones.desc", "戴大头盔的愤怒骷髅怪是受不死诅咒的原地牢居民，在地牢大厅中永无休止地游荡，寻找宣泄无尽怒火的目标。");
 //        add("bestiary.entity.terra_entity.blue_armored_bones_mace.desc", "持锤矛的蓝装甲骷髅属于“行军骷髅”，它们纪律严明、锲而不舍地追求目标，会撕碎一切挡路的事物或生物。");
 //        add("bestiary.entity.terra_entity.skeleton_sniper.desc", "骷髅狙击手是拥有鹰眼的神射手，任何目标都逃不过它们的准星。它们生前是精英部队的一员。");
 //        add("bestiary.entity.terra_entity.tactical_skeleton.desc", "骷髅特警配备厚重盔甲与强力霰弹枪，显然是为围城战做好了准备。它们生前是精英部队的一员。");
@@ -1228,6 +1251,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.slimer.desc", "恶翅史莱姆不知从何处获得了翅膀，从而拥有飞行能力。但这对翅膀十分脆弱，受外力撞击便会脱落，使其失去飞行能力。");
 //        add("bestiary.entity.terra_entity.cursed_hammer.desc", "诅咒锤因对腐化的极致仇恨而被赋予魔法，会自行挥舞旋转，试图粉碎所有拥有生命的物体。");
         add("bestiary.entity.terra_entity.corrupt_mimic.desc", "落入腐化之地的宝箱怪会进化为腐化宝箱怪，体型与实力大幅提升。通过外力作用，也能从普通宝箱中强制催生它们。");
+        add("bestiary.entity.terra_entity.jungle_mimic.desc", "这些古老的宝箱怪处于某个世界的丛林中，可惜埋藏的“宝物”实在过于特殊。不得不怀疑埋藏者的用意");
 //        add("bestiary.entity.terra_entity.pigron_corrupt.desc", "腐化猪龙是难以捉摸的龙猪杂交生物，即便体型圆胖，仍具备出色的潜行能力。目前尚未知晓它们的起源。");
 //        add("bestiary.entity.terra_entity.bone_biter.desc", "噬骨沙鲨的祖先生活在远古时期流经沙漠的咸水河中，如今已进化出在干燥沙漠中生存的能力。");
         add("bestiary.entity.terra_entity.dark_mummy.desc", "暗黑木乃伊原本是安息在沙漠中的逝者，受外界力量改变沙漠形态的影响，无论生前善恶，如今都化为亡灵苏醒，肆意残杀。");
@@ -1253,7 +1277,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.pixie.desc", "妖精是体型更大、光芒更盛的仙灵变种，能为神圣之地带来更多福佑之光，助力净化被腐化或猩红污染的土地。");
 //        add("bestiary.entity.terra_entity.gastropod.desc", "腹足怪原本是夜行史莱姆，受神圣福佑影响进化为漂浮的蜗牛状生物，能向敌人喷射强大的光束。");
 //        add("bestiary.entity.terra_entity.unicorn.desc", "独角兽是长有独角的威严生物，会在神圣之地上愤怒地奔袭，搜寻并清除所有入侵这片纯净土地的异类。");
-        add("bestiary.entity.terra_entity.illuminant_slime.desc", "夜明史莱姆因暴露在神圣之地的水晶光芒中，自身也开始散发同样的光芒，在黑暗环境中显得格外耀眼。");
+        add("bestiary.entity.terra_entity.luminous_slime.desc", "夜明史莱姆因暴露在神圣之地的水晶光芒中，自身也开始散发同样的光芒，在黑暗环境中显得格外耀眼。");
 //        add("bestiary.entity.terra_entity.chaos_elemental.desc", "混沌精原本是普通生物，受神圣福佑注入后发生异变，会携带着难以控制的发光能量，疯狂追逐周围的活物。");
 //        add("bestiary.entity.terra_entity.illuminant_bat.desc", "夜明蝙蝠受神圣之地的棱镜光芒祝福，身体呈现亮粉色，飞行时会在黑暗的地下空间划出一道模糊的光影弧线。");
 //        add("bestiary.entity.terra_entity.enchanted_sword.desc", "附魔剑被神圣水晶的福佑之光赋予生命，会主动劈砍一切邪恶之物，以净化世界为己任。");
@@ -1393,6 +1417,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.eater_of_worlds.desc", "世界吞噬怪由腐化之地无底的恶意孕育而成，这只强大的深渊蠕虫会疯狂挖掘通道，吞噬沿途所有事物。");
         add("bestiary.entity.terra_entity.brain_of_cthulhu.desc", "克苏鲁之脑是从克苏鲁身上撕裂下的部分，这个邪恶的主脑在痛苦中搏动，试图通过协助猩红之地，为自己的主人复仇。");
         add("bestiary.entity.terra_entity.visual_neuron.desc", "视神经元是由猩红之地的群体意识操控的，它们不仅是克苏鲁之脑的眼睛，还成群地围绕在大脑周围提供保护。");
+        add("bestiary.entity.terra_entity.deerclops.desc", "这只独眼巨兽来自遥远的地方，它蛰伏在酷寒之处，给打扰它的人带去灭顶之灾。");
         add("bestiary.entity.terra_entity.skeletron.desc", "骷髅王是前暴君的离体骸骨，因强烈的仇恨而搏动，留下了强大的诅咒守护着地牢。");
         add("bestiary.entity.terra_entity.queen_bee.desc", "蜂王是极具攻击性的恐怖生物，一旦幼虫受到惊扰便会暴力反击——布满蜂蜜的蜂巢便是她的主场。");
         add("bestiary.entity.terra_entity.wall_of_flesh.desc", "血肉墙是世界的核心与守护者，这尊高大的恶魔领主存在的意义，便是将强大的远古灵魂封印起来。");
@@ -1423,6 +1448,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.vortex_pillar.desc", "星旋柱代表着名为“星旋”的深渊天界虚空，这座塔楼持有封印，锁住了一个可怕的暴君。");
 //        add("bestiary.entity.terra_entity.stardust_pillar.desc", "星尘柱代表着名为“星尘”的闪亮天界残骸，这座塔楼持有封印，锁住了一个可怕的暴君。");
 //        add("bestiary.entity.terra_entity.moon_lord.desc", "月亮领主是降临世间所有恐怖的幕后主使，已从月球监狱中释放。它近乎神明，力量无穷无尽。");
+
 
 
         add("bestiary.entity.minecraft.allay.desc", "悦灵是纯洁善良，爱好音乐的灵魂。");
@@ -1498,6 +1524,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.minecraft.zombified_piglin.desc", "僵尸猪灵是下界的中立生物，被攻击时会群体反击。");
         add("bestiary.entity.minecraft.ender_dragon.desc", "末影龙镇守着末路之地。");
         add("bestiary.entity.minecraft.wither.desc", "凋灵只能由玩家所召唤，会发射凋灵之首并造成大范围破坏。");
+        add("bestiary.entity.minecraft.parrot.desc", "鹦鹉是可爱的热带鸟类，羽毛色彩让人想起丛林树冠上空的绝美日落。");
 
         add("bestiary.entity.minecraft.turtle.desc", "喜欢咸水和海洋猎物的软壳爬行动物。");
         add("bestiary.entity.minecraft.dolphin.desc", "一种活泼的海洋哺乳动物，它的智力可与人类媲美。");

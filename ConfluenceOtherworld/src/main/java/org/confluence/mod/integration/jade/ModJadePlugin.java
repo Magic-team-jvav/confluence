@@ -1,6 +1,5 @@
 package org.confluence.mod.integration.jade;
 
-import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -66,8 +65,7 @@ public final class ModJadePlugin implements IWailaPlugin {
             return accessor;
         });
         registration.addAfterRenderCallback((iBoxElement, tooltipRect, guiGraphics, accessor) -> {
-            Rect2i rect = tooltipRect.rect;
-            GoblinArmyProgressRenderer.yOffset = rect.getY() + rect.getHeight();
+            GoblinArmyProgressRenderer.occupied = tooltipRect.rect;
         });
     }
 }

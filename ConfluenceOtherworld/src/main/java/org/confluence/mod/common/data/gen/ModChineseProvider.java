@@ -186,7 +186,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.magic_conch.0", "右键海滩群系的方块以让大海记住你");
         add("tooltip.item.confluence.demon_conch.0", "右键下界传送门方块以让地狱记住你");
         add("tooltip.item.confluence.bait.common.0", "放入背包即可钓鱼时自动使用，优先使用副手的鱼饵");
-        add("tooltip.item.confluence.crate.common.0", "手持右键打开，shift键右键可放置");
+        add("tooltip.item.confluence.crate.common.0", "手持右键打开，潜行右键可放置");
         add("tooltip.item.confluence.right_click.common.0", "手持右键打开");
         add("tooltip.item.confluence.gel.0", "“既好吃，又易燃”");
         add("tooltip.item.confluence.npc_invitation.0", "使用它，在当前区域邀请一批新的NPC吧！");
@@ -445,7 +445,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paint_scraper.0", "用于去除油漆或涂料，潜行仅去除一面");
         add("tooltip.item.confluence.paint_scraper.1", "有时可以收集苔藓");
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
-        add("tooltip.item.confluence.coin.0", "对着空气潜行右击合并为上级钱币");
+        add("tooltip.item.confluence.coin.0", "潜行右键合并为上级钱币");
         add("tooltip.item.confluence.hardmode_convertor.0", "右击地面将当前世界立刻开始转变为困难模式");
         add("tooltip.item.confluence.life_crystal.0", "最大生命永久增加4");
         add("tooltip.item.confluence.life_fruit.0", "最大生命永久增加1");

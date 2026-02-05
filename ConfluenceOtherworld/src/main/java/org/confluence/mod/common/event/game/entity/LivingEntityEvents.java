@@ -29,7 +29,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.api.entity.Boss;
-import org.confluence.lib.common.event.GameEvents;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -153,9 +152,6 @@ public final class LivingEntityEvents {
         }
     }
 
-    /// 阻止回血的药水效果，已改为使用EffectCure，并提取到Lib了
-    ///
-    /// @see GameEvents#livingHeal(LivingHealEvent)
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
@@ -163,10 +159,6 @@ public final class LivingEntityEvents {
         float amount = event.getAmount();
 
         if (living instanceof Player player) {
-            if (PlayerUtils.skipHealIfOnFire(player)) {
-                event.setCanceled(true);
-                return;
-            }
             amount = ModArmorBonus.applyHealAmount(player, amount);
         }
         if (EverBeneficial.of(living).isVitalCrystalUsed()) {

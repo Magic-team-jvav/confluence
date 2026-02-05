@@ -2,12 +2,14 @@ package org.confluence.mod.common.item.common;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -57,6 +59,26 @@ public class CoinItem extends BlockItem {
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
         }
         return InteractionResultHolder.pass(stack);
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+        Player player = context.getPlayer();
+        if (player != null && player.isCrouching()) {
+            if (context.getLevel().isClientSide) {
+                player.playSound(ModSoundEvents.TERRA_OPERATION.get());
+            } else {
+                if (!player.getInventory().add(upgrade.get().getDefaultInstance())) {
+                    player.drop(upgrade.get().getDefaultInstance(), true);
+                }
+                context.getItemInHand().shrink(UPGRADES_COUNT);
+                if (context.getItemInHand().isEmpty()) {
+                    player.setItemInHand(context.getHand(), ItemStack.EMPTY);
+                }
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.useOn(context);
     }
 
     @Override

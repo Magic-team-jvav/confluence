@@ -77,8 +77,10 @@ public class BoulderEntity extends Projectile {
     public void onRemove() {
         if (level() instanceof ServerLevel serverLevel) {
             BlockPos pos = blockPosition();
-            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState()).setPos(pos),
-                    getX(), getY() + 0.5, getZ(), 175, 0.0, 0.0, 0.0, 0.15);
+            serverLevel.sendParticles(
+                    new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState()).setPos(pos),
+                    getX(), getY() + 0.5, getZ(), 175, 0.0, 0.0, 0.0, 0.15
+            );
             serverLevel.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 5.0F, 1.0F);
             discard();
         }
@@ -86,6 +88,10 @@ public class BoulderEntity extends Projectile {
 
     @Override
     public void tick() {
+        if (tickCount > 100) {
+            onRemove();
+            return;
+        }
         super.tick();
         moveAndUpdateNeighbors();
 
@@ -181,17 +187,20 @@ public class BoulderEntity extends Projectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_VERTICAL, false);
-        builder.define(DATA_BLOCK_STATE, FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState());
+        builder
+                .define(DATA_VERTICAL, false)
+                .define(DATA_BLOCK_STATE, FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState());
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         entityData.set(DATA_BLOCK_STATE, BlockState.CODEC.parse(NbtOps.INSTANCE, tag.get("BlockState")).getOrThrow());
+        this.tickCount = tag.getInt("Age");
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         tag.put("BlockState", BlockState.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_BLOCK_STATE)).getOrThrow());
+        tag.putInt("Age", tickCount);
     }
 }

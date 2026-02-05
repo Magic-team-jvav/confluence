@@ -27,7 +27,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -246,13 +245,6 @@ public final class ModUtils {
         if (attacker != null && attacker.getType() == TEMonsterEntities.CURSED_SKULL.get() && attacker.getRandom().nextFloat() < 0.33F) {
             living.addEffect(new MobEffectInstance(ModEffects.CURSED, 80));
         }
-    }
-
-    public static boolean canHitEntity(@Nullable Entity target, @Nullable Entity owner) {
-        if (target == null || target.isRemoved()) return false; // 有模组把target写成了null
-        if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand)
-            return false;
-        return owner == null || (!owner.isPassengerOfSameVehicle(target)/* && !target.skipAttackInteraction(owner)*/);
     }
 
     public static Component formatPrice(int price) {

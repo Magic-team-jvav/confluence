@@ -35,7 +35,7 @@ public class DemonScytheProjectile extends AbstractManaProjectile implements IAx
             }
         }
         if (level().isClientSide) {
-            rotateZ(rotate, this::getDeltaMovement, 0.0F, 0.125F); // 无重力影响
+            rotateZ(rotate, getDeltaMovement().lengthSqr(), 0.125F); // 无重力影响
         }
 
         Vec3 vec3 = getDeltaMovement();

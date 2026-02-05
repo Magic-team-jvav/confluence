@@ -33,6 +33,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.lib.common.item.ColoredItem;
+import org.confluence.lib.event.PlayerNaturalHealEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -376,6 +377,16 @@ public final class PlayerEvents {
     public static void canContinueSleeping(CanContinueSleepingEvent event) {
         if (event.mayContinueSleeping() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setContinueSleeping(false);
+        }
+    }
+
+    /// 阻止自然回血的药水效果，已改为使用EffectCure，并提取到Lib了
+    ///
+    /// @see org.confluence.lib.common.event.GameEvents#playerNaturalHeal
+    @SubscribeEvent
+    public static void naturalHeal(PlayerNaturalHealEvent event) {
+        if (PlayerUtils.skipHealIfOnFire(event.getEntity())) {
+            event.setCanceled(true);
         }
     }
 }

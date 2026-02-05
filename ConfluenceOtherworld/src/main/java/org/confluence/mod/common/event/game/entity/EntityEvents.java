@@ -83,10 +83,9 @@ public final class EntityEvents {
                 return;
             }
         }
-        if (!victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
-                attacker instanceof Player player &&
+        if (attacker instanceof Player player &&
                 !PlayerSpecialData.of(player).isCouldHurtCritters() &&
-                (LibUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
+                (LibUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST) || !victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST))
         ) {
             event.setInvulnerable(true);
             return;

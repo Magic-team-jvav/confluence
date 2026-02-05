@@ -24,6 +24,7 @@ import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.data.map.PresetBestiaryEntry;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
@@ -141,6 +142,7 @@ public final class Bestiary implements IGlobalData {
     }
 
     public static boolean canBeSeenAsBestiaryEntry(LivingEntity living) {
-        return isAvailableType(living.getType(), living.level()) && !NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled();
+        return isAvailableType(living.getType(), living.level()) &&
+                (living.getType().is(ModTags.EntityTypes.BESTIARY_WHITELIST) || !NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled());
     }
 }

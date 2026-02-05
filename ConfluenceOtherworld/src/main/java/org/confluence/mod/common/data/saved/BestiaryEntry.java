@@ -18,7 +18,7 @@ import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 
-/// <a href="https://terraria.wiki.gg/zh/wiki/%E6%80%AA%E7%89%A9%E5%9B%BE%E9%89%B4">怪物图鉴</a>
+/// [怪物图鉴](https://terraria.wiki.gg/zh/wiki/%E6%80%AA%E7%89%A9%E5%9B%BE%E9%89%B4)
 public class BestiaryEntry {
     public static final Codec<BestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(entry -> entry.type),

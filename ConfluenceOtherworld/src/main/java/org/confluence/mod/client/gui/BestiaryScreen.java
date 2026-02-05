@@ -493,13 +493,15 @@ public class BestiaryScreen extends Screen {
             y1 = topPos + 116;
             x2 = x1 + 48;
             FilterEntry renderedFilter = null;
-            for (FilterEntry filter : showedEntry.filters) {
+            Iterator<FilterEntry> iterator = showedEntry.filters.iterator();
+            while (iterator.hasNext()) {
+                FilterEntry filter = iterator.next();
                 renderFilter(guiGraphics, filter, x1, y1, 16, 16);
                 if (mouseX >= x1 && mouseX < x1 + 16 && mouseY >= y1 && mouseY < y1 + 16) {
                     renderedFilter = filter;
                 }
                 x1 += 16;
-                if (x1 >= x2) {
+                if (x1 >= x2 && iterator.hasNext()) {
                     x1 = leftPos + 164;
                     y1 += 16;
                 }

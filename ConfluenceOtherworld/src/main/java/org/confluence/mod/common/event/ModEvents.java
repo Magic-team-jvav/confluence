@@ -76,6 +76,7 @@ import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
+import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
@@ -242,6 +243,8 @@ public final class ModEvents {
         registrar.playToServer(EmptyTargetSweepPacketC2S.TYPE, EmptyTargetSweepPacketC2S.STREAM_CODEC, EmptyTargetSweepPacketC2S::handle);
         registrar.playToServer(SwordProjectilePacketC2S.TYPE, SwordProjectilePacketC2S.STREAM_CODEC, SwordProjectilePacketC2S::handle);
         registrar.playToServer(GiveBannerPacketC2S.TYPE, GiveBannerPacketC2S.STREAM_CODEC, GiveBannerPacketC2S::handle);
+
+        registrar.playBidirectional(TeamPacket.TYPE, TeamPacket.STREAM_CODEC, TeamPacket::handle);
     }
 
     @SubscribeEvent

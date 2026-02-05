@@ -5,7 +5,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -208,7 +207,9 @@ public final class LivingEntityEvents {
         LivingEntity victim = event.getEntity();
         if (!(victim.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
-        if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
+        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
+            return;
+        }
         @Nullable Entity attacker = damageSource.getEntity();
 
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
@@ -243,7 +244,9 @@ public final class LivingEntityEvents {
         LivingEntity victim = event.getEntity();
         if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         DamageSource damageSource = event.getSource();
-        if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
+        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
+            return;
+        }
         @Nullable Entity attacker = damageSource.getEntity();
 
         FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);

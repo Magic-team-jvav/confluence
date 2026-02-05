@@ -47,6 +47,7 @@ import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
@@ -147,6 +148,7 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(sup)) syncMana2Client(player, manaStorage);
     }
 
+    /// 初始化数据到player客户端
     public static void syncSavedData(ServerPlayer player) {
         ConfluenceData data = ConfluenceData.get(player.serverLevel());
         WindSpeedPacketS2C.sendToClient(player, data.getWindSpeedX(), data.getWindSpeedZ());
@@ -157,7 +159,7 @@ public final class PlayerUtils {
         GlobalCloakSyncPacketS2C.sendToClient(player);
         MeteoriteLocationPacketS2C.sendToClient(player, data.getMeteoriteLocation(), 0);
         BestiarySyncPacketS2C.syncEntries(player);
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        ExtraInventorySyncPacketS2C.sendToClient(player, player);
         PlayerPiggyBankContainer.of(player).setChanged(); // 自动同步
         FishingPowerInfoPacketS2C.sendAndGet(player);
         VisibilityPacketS2C.sendEcho(player);
@@ -165,6 +167,19 @@ public final class PlayerUtils {
         VisibilityPacketS2C.sendTheConstantPostEffect(player);
         SecretFlagSyncPacketS2C.sendToClient(player, IMinecraftServer.of(player.server).confluence$getSecretFlag());
         CompatibilitySyncPacketS2c.sendToClient(player);
+        TeamPacket.sendToClient(player, player);
+    }
+
+    /// 将target的数据同步到sendTo
+    public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
+        ExtraInventorySyncPacketS2C.sendToClient(sendTo, target);
+        FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
+        TeamPacket.sendToClient(sendTo, target);
+    }
+
+    /// 同步数据到player客户端
+    public static void syncPlayerData(ServerPlayer player) {
+        GameEventSystem.INSTANCE.syncAll(player);
     }
 
     public static float getFishingPower(ServerPlayer player) {
@@ -422,18 +437,6 @@ public final class PlayerUtils {
             return true;
         }
         return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
-    }
-
-    /// 将target的数据同步到sendTo
-    public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
-        ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
-        FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
-    }
-
-    /// 同步数据到player客户端
-    public static void syncPlayerData(ServerPlayer player) {
-        GameEventSystem.INSTANCE.syncAll(player);
-
     }
 
     public static boolean skipHealIfOnFire(Player player) {

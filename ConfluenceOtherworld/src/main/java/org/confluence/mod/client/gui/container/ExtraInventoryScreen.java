@@ -29,7 +29,6 @@ import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
-import org.confluence.mod.integration.mine_team.ExtraTeamRender;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.terra_curio.TerraCurio;
@@ -50,7 +49,6 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     private static final TooltipComponentsValue.Storage MECHANICAL$LENS = new TooltipComponentsValue.Storage(Confluence.asResource("textures/gui/information/mechanical_lens.png"), Component.translatable("tooltip.confluence.mechanical_lens"));
 
     private boolean dyeButtonPressed = false;
-    private final ExtraTeamRender teamRender = new ExtraTeamRender(this);
     private ImageButton bestiaryButton;
 
     public ExtraInventoryScreen(ExtraInventoryMenu menu, Inventory playerInventory, Component title) {
@@ -59,7 +57,6 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
 
     @Override
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        teamRender.renderTeamIcon(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
     }
@@ -67,7 +64,6 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     @Override
     protected void init() {
         super.init();
-        teamRender.initButton();
         addRenderableWidget(new ImageButton(leftPos + 109, topPos + 166, 16, 16, HOUSE_BUTTON, button -> {
             if (menu.getCarried().isEmpty()) {
                 getMinecraft().setScreen(null);

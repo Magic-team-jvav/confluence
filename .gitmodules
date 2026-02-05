@@ -2,10 +2,6 @@
 	path = TerraCurio
 	url = https://github.com/westernat/TerraCurio
 	branch = neoforge-dev/1.21.1
-[submodule "MineTeam"]
-    path = MineTeam
-    url = https://github.com/XiaoHuNao/MineTeam
-    branch = neoforge-dev/1.21.1
 [submodule "TerraGuns"]
 	path = TerraGuns
 	url = https://github.com/XiaoHuNao/TerraGuns

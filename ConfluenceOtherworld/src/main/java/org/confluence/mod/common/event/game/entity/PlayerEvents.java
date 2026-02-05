@@ -102,14 +102,14 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+    public static void interact$LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         AltarBlock.onLeftClick(level.getBlockState(pos), level, pos, event.getEntity());
     }
 
     @SubscribeEvent
-    public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+    public static void interact$RightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getEntity();
         Level level = event.getLevel();
         BlockPos blockPos = event.getPos();
@@ -162,7 +162,7 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void playerInteract$EntityInteract(PlayerInteractEvent.EntityInteract event) {
+    public static void interact$EntityInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof LivingEntity targetEntity)
             healChocking:{
                 if (!targetEntity.hasEffect(ModEffects.CHOKING)) break healChocking;
@@ -231,7 +231,7 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void rightClickItem(PlayerInteractEvent.RightClickItem event) {
+    public static void interact$RightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
         if (player.isSpectator()) return;
         ItemStack itemStack = event.getItemStack();
@@ -318,7 +318,7 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void playerContainer$Close(PlayerContainerEvent.Close event) {
+    public static void container$Close(PlayerContainerEvent.Close event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         IMinecraftServer server = IMinecraftServer.of(player.server);
         if (!server.confluence$matchesSecretFlag(IWorldOptions.HARDMODE)) return;
@@ -367,7 +367,7 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void canPlayerSleep(CanPlayerSleepEvent event) {
+    public static void canSleep(CanPlayerSleepEvent event) {
         if (BloodMoonGameEvent.INSTANCE.started()) {
             event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
         }

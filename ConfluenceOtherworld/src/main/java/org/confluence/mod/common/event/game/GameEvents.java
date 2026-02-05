@@ -29,7 +29,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.*;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
-import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
@@ -107,14 +106,14 @@ public final class GameEvents {
 
     @SubscribeEvent(priority = EventPriority.LOW) // 需要晚于Curios Api
     public static void onDatapackSync(OnDatapackSyncEvent event) {
-        ServerPlayer from = event.getPlayer();
-        if (from == null) {
-            for (ServerPlayer to : event.getPlayerList().getPlayers()) {
-                ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(to, to, ExtraInventory.of(to));
+        ServerPlayer sendTo = event.getPlayer();
+        if (sendTo == null) {
+            for (ServerPlayer target : event.getPlayerList().getPlayers()) {
+                ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(target, target);
             }
         } else {
-            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from));
-            AchievementOffsetSyncPacketS2C.sendToClient(from);
+            ExtraInventorySyncPacketS2C.sendToClient(sendTo, sendTo);
+            AchievementOffsetSyncPacketS2C.sendToClient(sendTo);
         }
     }
 

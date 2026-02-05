@@ -10,8 +10,10 @@ import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 
-public record ExtraInventorySyncPacketS2C(int entityId,
-                                          ExtraInventory extraInventory) implements IPacketS2C {
+public record ExtraInventorySyncPacketS2C(
+        int entityId,
+        ExtraInventory extraInventory
+) implements IPacketS2C {
     public static final Type<ExtraInventorySyncPacketS2C> TYPE = Confluence.createType("extra_inventory_sync");
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventorySyncPacketS2C> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, ExtraInventorySyncPacketS2C::entityId,
@@ -26,18 +28,20 @@ public record ExtraInventorySyncPacketS2C(int entityId,
 
     @Override
     public void work(Player player) {
-        if (player.level().getEntity(entityId) instanceof Player entity) {
-            ExtraInventory.of(entity).copyFrom(extraInventory);
+        if (player.level().getEntity(entityId) instanceof Player target) {
+            ExtraInventory.of(target).copyFrom(extraInventory);
         }
     }
 
-    public static void sendToClient(ServerPlayer sendTo, ServerPlayer target, ExtraInventory extraInventory) {
-        extraInventory.initialize(sendTo);
+    public static void sendToClient(ServerPlayer sendTo, ServerPlayer target) {
+        ExtraInventory extraInventory = ExtraInventory.of(target);
+        extraInventory.initialize(target);
         PacketDistributor.sendToPlayer(sendTo, new ExtraInventorySyncPacketS2C(target.getId(), extraInventory));
     }
 
-    public static void sendToPlayersTrackingEntityAndSelf(ServerPlayer from, ServerPlayer to, ExtraInventory extraInventory) {
-        extraInventory.initialize(from);
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(from, new ExtraInventorySyncPacketS2C(to.getId(), extraInventory));
+    public static void sendToPlayersTrackingEntityAndSelf(ServerPlayer sendTo, ServerPlayer target) {
+        ExtraInventory extraInventory = ExtraInventory.of(target);
+        extraInventory.initialize(target);
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(sendTo, new ExtraInventorySyncPacketS2C(target.getId(), extraInventory));
     }
 }

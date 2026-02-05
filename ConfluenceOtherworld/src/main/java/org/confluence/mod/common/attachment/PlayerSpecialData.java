@@ -25,6 +25,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
+import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.armor.ArmorSetBonusData;
@@ -53,6 +54,8 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
     //    private boolean fallenSoulCoreActive = false;
     private final transient Map<String, Set<BlockPos>> enemyBannerEntries = new HashMap<>();
     private transient boolean dirty;
+    private Team team;
+    private boolean pvp;
 
     @Override
     public void setToDefaultValue() {
@@ -65,6 +68,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         this.couldHurtCritters = true;
         this.couldDamageEnvironment = true;
 //        this.fallenSoulCoreActive = false;
+        this.team = Team.WHITE;
     }
 
     public ArmorSetBonusKey getArmorSetBonusKey() {
@@ -169,6 +173,22 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         }
     }
 
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setPvp(boolean pvp) {
+        this.pvp = pvp;
+    }
+
+    public boolean isPvp() {
+        return pvp;
+    }
+
     public void sync(ServerPlayer player) {
         if (!dirty) return;
         this.dirty = false;
@@ -241,10 +261,12 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         CompoundTag tag = super.serializeNBT(provider);
 
         ArmorSetBonusKey.CODEC.encodeStart(ops, armorSetBonusKey).ifSuccess(nbt -> tag.put("ArmorBonusKey", nbt));
-        tag.put("CurrentQuestedFish", ItemStack.OPTIONAL_CODEC.encodeStart(ops, currentQuestedFish).result().orElseGet(CompoundTag::new));
-        tag.put("CurrentQuestedFishCondition", ITradeLock.TYPED_CODEC.encodeStart(ops, currentQuestedFishCondition).result().orElseGet(CompoundTag::new));
+        ItemStack.OPTIONAL_CODEC.encodeStart(ops, currentQuestedFish).ifSuccess(nbt -> tag.put("CurrentQuestedFish", nbt));
+        ITradeLock.TYPED_CODEC.encodeStart(ops, currentQuestedFishCondition).ifSuccess(nbt -> tag.put("CurrentQuestedFishCondition", nbt));
         tag.putBoolean("CouldHurtCritters", couldHurtCritters);
 //        tag.putBoolean("FallenSoulCoreActive", fallenSoulCoreActive);
+        Team.CODEC.encodeStart(ops, team).ifSuccess(nbt -> tag.put("Team", nbt));
+        tag.putBoolean("PVP", pvp);
         return tag;
     }
 
@@ -260,6 +282,8 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         this.currentQuestedFishCondition = ITradeLock.TYPED_CODEC.parse(ops, nbt.get("CurrentQuestedFishCondition")).result().orElse(ITradeLock.alwaysTrue());
         this.couldHurtCritters = nbt.getBoolean("CouldHurtCritters");
 //        this.fallenSoulCoreActive = nbt.getBoolean("FallenSoulCoreActive");
+        this.team = Team.CODEC.parse(ops, nbt.get("Team")).result().orElse(Team.WHITE);
+        this.pvp = nbt.getBoolean("PVP");
     }
 
     public static PlayerSpecialData of(Player player) {

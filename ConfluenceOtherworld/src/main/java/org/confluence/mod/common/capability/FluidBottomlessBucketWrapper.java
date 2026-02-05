@@ -26,9 +26,8 @@ public class FluidBottomlessBucketWrapper implements IFluidHandlerItem {
     public FluidStack getFluid() {
         if (container.getItem() instanceof BottomlessBucketItem bucketItem) {
             return new FluidStack(bucketItem.content, FluidType.BUCKET_VOLUME);
-        } else {
-            return FluidStack.EMPTY;
         }
+        return FluidStack.EMPTY;
     }
 
     @Override

@@ -91,7 +91,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 TEAnimals.CRAB.get(),
                 TEMonsterEntities.PIRANHA.get()
         );
-        tag(ModTags.EntityTypes.BANNER_BLACKLIST)
+        tag(ModTags.EntityTypes.ENEMY_BANNER_BLACKLIST)
                 .addTag(Tags.EntityTypes.BOSSES);
     }
 }

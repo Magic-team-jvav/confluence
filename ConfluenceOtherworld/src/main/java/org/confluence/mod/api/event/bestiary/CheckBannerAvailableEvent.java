@@ -12,7 +12,7 @@ public class CheckBannerAvailableEvent extends Event {
     public CheckBannerAvailableEvent(ClientBestiaryEntry entry) {
         this.entry = entry;
         this.originalAvailalbe = this.available = entry.isCompleted() &&
-                (entry.type.is(ModTags.EntityTypes.BANNER_WHITELIST) || !entry.type.is(ModTags.EntityTypes.BANNER_BLACKLIST));
+                (entry.type.is(ModTags.EntityTypes.ENEMY_BANNER_WHITELIST) || !entry.type.is(ModTags.EntityTypes.ENEMY_BANNER_BLACKLIST));
     }
 
     public ClientBestiaryEntry getEntry() {

@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModBiomes;
@@ -51,7 +52,7 @@ public final class DynamicBiomeUtils {
         .put(block -> block.is(Blocks.SUNFLOWER), (counter, count) -> counter.sunflower.addAndGet(count))
         .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (counter, count) -> counter.tomb.addAndGet(count))
         .put(block -> block.is(OreBlocks.CHLOROPHYTE_ORE), (counter, count) -> counter.chlorophyte.addAndGet(count))
-        .put(block -> block.getFluidState().is(ModTags.Fluids.C_WATER), (counter, count) -> counter.water.addAndGet(count))
+        .put(block -> block.getFluidState().is(Tags.Fluids.WATER), (counter, count) -> counter.water.addAndGet(count))
         .build();
 
     /**

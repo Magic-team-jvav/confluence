@@ -451,7 +451,6 @@ public final class ModTags {
     public static class Fluids {
         public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
         public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
-        public static final TagKey<Fluid> C_WATER = FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", "water"));
     }
 
     public static class EntityTypes {
@@ -464,8 +463,8 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> BESTIARY_BLACKLIST = register("bestiary_blacklist"); // 怪物图鉴黑名单
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_WHITELIST = register("critter_companionship_whitelist"); // 小动物保护指南白名单
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_BLACKLIST = register("critter_companionship_blacklist"); // 小动物保护指南黑名单
-        public static final TagKey<EntityType<?>> BANNER_WHITELIST = register("banner_whitelist"); // 旗帜白名单
-        public static final TagKey<EntityType<?>> BANNER_BLACKLIST = register("banner_blacklist"); // 旗帜黑名单
+        public static final TagKey<EntityType<?>> ENEMY_BANNER_WHITELIST = register("enemy_banner_whitelist"); // 旗帜白名单
+        public static final TagKey<EntityType<?>> ENEMY_BANNER_BLACKLIST = register("enemy_banner_blacklist"); // 旗帜黑名单
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

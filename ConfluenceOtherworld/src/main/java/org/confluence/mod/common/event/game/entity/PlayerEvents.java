@@ -37,15 +37,13 @@ import org.confluence.lib.event.PlayerNaturalHealEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.ChunkDropletsData;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -92,6 +90,15 @@ public final class PlayerEvents {
         }
 //        PlayerUtils.syncSoul2Client(player);
         PlayerUtils.syncPlayerData(player);
+
+        if (ModUtils.shouldDisplayTeam()) {
+            Team team = PlayerSpecialData.of(player).getTeam();
+            if (team != Team.WHITE) {
+                player.server.getPlayerList().broadcastSystemMessage(Component.translatable(
+                        "message.confluence.join_team", player.getName(), team.getLowerCaseName()
+                ), false);
+            }
+        }
     }
 
     @SubscribeEvent

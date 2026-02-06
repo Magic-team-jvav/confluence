@@ -90,7 +90,7 @@ public final class EntityEvents {
             event.setInvulnerable(true);
             return;
         }
-        if (attacker instanceof Player a && victim instanceof Player v && (!PlayerSpecialData.of(a).isPvp() || !PlayerSpecialData.of(v).isPvp())) {
+        if (attacker instanceof Player a && victim instanceof Player v && (!PlayerSpecialData.of(a).isPvP() || !PlayerSpecialData.of(v).isPvP())) {
             event.setInvulnerable(true);
             return;
         }

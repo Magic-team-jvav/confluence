@@ -17,6 +17,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.data.gen.language.*;
 import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -28,6 +29,7 @@ import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.utils.RecipeDrawerUtils;
 
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -140,6 +142,24 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.goblin_army.victory", "The Goblin Army has been defeated!");
         add("message.confluence.scrying_orb.singleplayer", "All you see is your reflection in the orb.");
         add("message.confluence.scrying_orb.alone", "You're by yourself...");
+        add("message.confluence.on_team", "On %s Team"); // capital
+        add("message.confluence.no_team", "No Team");
+        add("message.confluence.join_team.button", "Join %s Team"); // capital
+        add("message.confluence.join_team", "%1$s has joined the %2$s team.");
+        add("message.confluence.leave_team.button", "Join No Team");
+        add("message.confluence.leave_team", "%s is no longer on a team.");
+        add("message.confluence.enable_pvp.button", "Enable PvP");
+        add("message.confluence.enable_pvp", "%s has enabled PvP!");
+        add("message.confluence.disable_pvp.button", "Disable PvP");
+        add("message.confluence.disable_pvp", "%s has disabled PvP!");
+
+        for (Team team : Team.TEAMS) {
+            String name = team.getSerializedName();
+            String key = "team.confluence." + name;
+            String titleCase = LibUtils.toTitleCase(name);
+            add(key, titleCase);
+            add(key + ".lower_case", titleCase.toLowerCase(Locale.ROOT));
+        }
 
         add("commands.confluence.reforge.cannot_be_reforged", "This item cannot be reforged (or cannot find an item that needs to be reforged)!");
         add("commands.confluence.reforge.unknown_prefix_type", "Unknown prefix type (or reforge failure)!");

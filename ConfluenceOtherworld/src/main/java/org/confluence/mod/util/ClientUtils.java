@@ -264,4 +264,8 @@ public final class ClientUtils {
             }
         }
     }
+
+    public static boolean shouldDisplayTeam() {
+        return !Minecraft.getInstance().isSingleplayer();
+    }
 }

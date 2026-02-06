@@ -111,6 +111,13 @@ public class GuiSprite {
         }
     }
 
+    public void renderHoveredAndSelf(GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        if (hovered != null && hovered.isHovered(mouseX, mouseY)) {
+            hovered.render(guiGraphics);
+        }
+        render(guiGraphics);
+    }
+
     public void renderSelfOrHovered(GuiGraphics guiGraphics, double mouseX, double mouseY) {
         if (hovered != null && hovered.isHovered(mouseX, mouseY)) {
             hovered.render(guiGraphics);

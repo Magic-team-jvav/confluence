@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -46,6 +47,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -384,5 +386,10 @@ public final class ModUtils {
             return true;
         }
         return false;
+    }
+
+    public static boolean shouldDisplayTeam() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        return server != null && !server.isSingleplayer();
     }
 }

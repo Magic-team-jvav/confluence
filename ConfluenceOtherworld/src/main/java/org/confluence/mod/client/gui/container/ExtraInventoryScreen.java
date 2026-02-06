@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -25,12 +26,17 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.gui.BestiaryScreen;
+import org.confluence.mod.client.gui.GuiSprite;
 import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.mixed.IInventoryScreen;
+import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
+import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.api.primitive.TooltipComponentsValue;
 import org.confluence.terra_curio.client.handler.InformationHandler;
@@ -46,19 +52,39 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     private static final ResourceLocation ACCESSORY = TerraCurio.asResource("textures/slot/accessory.png");
     private static final WidgetSprites BESTIARY_BUTTON = new WidgetSprites(Confluence.asResource("widget/bestiary_button"), Confluence.asResource("widget/bestiary_button_highlighted"));
     private static final WidgetSprites HOUSE_BUTTON = new WidgetSprites(Confluence.asResource("widget/house_button"), Confluence.asResource("widget/house_button_highlighted"));
-    private static final TooltipComponentsValue.Storage MECHANICAL$LENS = new TooltipComponentsValue.Storage(Confluence.asResource("textures/gui/information/mechanical_lens.png"), Component.translatable("tooltip.confluence.mechanical_lens"));
+    //    private static final TooltipComponentsValue.Storage MECHANICAL$LENS = new TooltipComponentsValue.Storage(Confluence.asResource("textures/gui/information/mechanical_lens.png"), Component.translatable("tooltip.confluence.mechanical_lens"));
+    private static final int TEAM_PVPF_INDEX = 0;
+    private static final int TEAM_PVPT_INDEX = 1;
+    private static final int TEAM_ICON_INDEX = 2;
+    private static final GuiSprite[][] TEAM_SPRITES;
 
-    private boolean dyeButtonPressed = false;
+    static {
+        int length = Team.TEAMS.length;
+        TEAM_SPRITES = new GuiSprite[length][3];
+        ResourceLocation teamIcon = Confluence.asResource("team/icon");
+        ResourceLocation teamPvp = Confluence.asResource("team/pvp");
+        GuiSprite pvpFB = new GuiSprite(teamPvp, 36, 306, 0, 288, 18, 18);
+        GuiSprite pvpTB = new GuiSprite(teamPvp, 36, 306, 18, 288, 18, 18);
+        for (int i = 0; i < length; i++) {
+            int j = i * 18;
+            TEAM_SPRITES[i] = new GuiSprite[]{
+                    new GuiSprite(teamPvp, 36, 306, 0, j, 18, 18).setHovered(pvpFB),
+                    new GuiSprite(teamPvp, 36, 306, 18, j, 18, 18).setHovered(pvpTB),
+                    new GuiSprite(teamIcon, 10, 170, 0, i * 10, 10, 10)
+                            .setHovered(new GuiSprite(teamIcon, 10, 170, 0, 160, 10, 10))
+            };
+        }
+    }
+
+    private final Player player;
+    private boolean dyeButtonPressed;
     private ImageButton bestiaryButton;
+    private boolean teamPvPT;
+    private static int teamCooldown; // 本地全局冷却
 
     public ExtraInventoryScreen(ExtraInventoryMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-    }
-
-    @Override
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+        this.player = playerInventory.player;
     }
 
     @Override
@@ -76,11 +102,106 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 getMinecraft().setScreen(new BestiaryScreen());
             }
         }));
+        if (ClientUtils.shouldDisplayTeam()) {
+            this.teamPvPT = PlayerSpecialData.of(player).isPvP();
+            for (int i = 0; i < TEAM_SPRITES.length; i++) {
+                int x = (i % 2) * 10;
+                int y = (i / 2) * 10;
+                GuiSprite[] sprites = TEAM_SPRITES[i];
+                int rightPos = leftPos + imageWidth;
+                GuiSprite hovered = sprites[TEAM_PVPF_INDEX].setPos(rightPos, topPos).getHovered();
+                if (hovered != null) {
+                    hovered.setPos(rightPos, topPos);
+                }
+                hovered = sprites[TEAM_PVPT_INDEX].setPos(rightPos, topPos).getHovered();
+                if (hovered != null) {
+                    hovered.setPos(rightPos, topPos);
+                }
+                x = rightPos + x;
+                y = topPos + y + 18;
+                hovered = sprites[TEAM_ICON_INDEX].setPos(x, y).getHovered();
+                if (hovered != null) {
+                    hovered.setPos(x, y);
+                }
+            }
+        }
         // better experience mixin here
     }
 
     @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        if (ClientUtils.shouldDisplayTeam()) {
+            renderTeam(guiGraphics, mouseX, mouseY);
+        }
+        renderTooltip(guiGraphics, mouseX, mouseY);
+    }
+
+    @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {}
+
+    private void renderTeam(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        Team playerTeam = PlayerSpecialData.of(player).getTeam();
+        GuiSprite sprite = TEAM_SPRITES[playerTeam.ordinal()][teamPvPT ? TEAM_PVPT_INDEX : TEAM_PVPF_INDEX];
+        if (teamCooldown <= 0) {
+            sprite.renderHoveredAndSelf(guiGraphics, mouseX, mouseY);
+            if (sprite.isHovered(mouseX, mouseY)) {
+                guiGraphics.renderTooltip(font, Component.translatable(
+                        teamPvPT ? "message.confluence.disable_pvp.button" : "message.confluence.enable_pvp.button"
+                ), mouseX, mouseY);
+            }
+        } else {
+            sprite.render(guiGraphics);
+        }
+        for (int i = 0; i < TEAM_SPRITES.length; i++) {
+            sprite = TEAM_SPRITES[i][TEAM_ICON_INDEX];
+            Team team = Team.TEAMS[i];
+            if (teamCooldown <= 0) {
+                if (playerTeam == team) {
+                    GuiSprite hovered = sprite.getHovered();
+                    if (hovered != null) {
+                        hovered.render(guiGraphics);
+                        sprite.render(guiGraphics);
+                    }
+                } else {
+                    sprite.renderHoveredAndSelf(guiGraphics, mouseX, mouseY);
+                }
+                if (sprite.isHovered(mouseX, mouseY)) {
+                    if (playerTeam == team) {
+                        if (team == Team.WHITE) {
+                            guiGraphics.renderTooltip(font, Component.translatable(
+                                    "message.confluence.no_team"
+                            ), mouseX, mouseY);
+                        } else {
+                            guiGraphics.renderTooltip(font, Component.translatable(
+                                    "message.confluence.on_team", team.getTitleCaseName()
+                            ), mouseX, mouseY);
+                        }
+                    } else {
+                        if (team == Team.WHITE) {
+                            guiGraphics.renderTooltip(font, Component.translatable(
+                                    "message.confluence.leave_team.button"
+                            ), mouseX, mouseY);
+                        } else {
+                            guiGraphics.renderTooltip(font, Component.translatable(
+                                    "message.confluence.join_team.button", team.getTitleCaseName()
+                            ), mouseX, mouseY);
+                        }
+                    }
+                }
+            } else {
+                if (playerTeam == team) {
+                    GuiSprite hovered = sprite.getHovered();
+                    if (hovered != null) {
+                        hovered.render(guiGraphics);
+                        sprite.render(guiGraphics);
+                    }
+                } else {
+                    sprite.render(guiGraphics);
+                }
+            }
+        }
+    }
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
@@ -123,7 +244,10 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, mouseX, mouseY, minecraft.player);
 
         RenderSystem.enableBlend();
-        int x = leftPos + 196;
+        int x = leftPos + 178;
+        if (ClientUtils.shouldDisplayTeam()) {
+            x += 18;
+        }
         int y = topPos + 1;
         for (int i = 0; i < 12; i++) { // 跳过机械棱镜的
             if (!InformationHandler.hasInfoData(i)) continue;
@@ -174,7 +298,10 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             return true;
         }
 
-        int x = leftPos + 196;
+        int x = leftPos + 178;
+        if (ClientUtils.shouldDisplayTeam()) {
+            x += 18;
+        }
         int y = topPos + 1;
         boolean[] disable = InformationHandler.DISABLE;
         for (int i = 0; i < disable.length; i++) {
@@ -186,7 +313,38 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             }
             y += 8;
         }
+
+        if (teamCooldown <= 0 && ClientUtils.shouldDisplayTeam()) {
+            if ((teamPvPT ? TEAM_SPRITES[0][TEAM_PVPT_INDEX] : TEAM_SPRITES[0][TEAM_PVPF_INDEX]).isHovered(mouseX, mouseY)) {
+                this.teamPvPT = !teamPvPT;
+                PlayerSpecialData.of(player).setPvP(teamPvPT);
+                TeamPacket.sendToServer(player);
+                this.teamCooldown = 100;
+                return true;
+            }
+            for (int i = 0; i < TEAM_SPRITES.length; i++) {
+                if (TEAM_SPRITES[i][TEAM_ICON_INDEX].isHovered(mouseX, mouseY)) {
+                    PlayerSpecialData data = PlayerSpecialData.of(player);
+                    Team team = Team.TEAMS[i];
+                    if (data.getTeam() != team) {
+                        data.setTeam(team);
+                        TeamPacket.sendToServer(player);
+                        this.teamCooldown = 100;
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        }
+
         return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    protected void containerTick() {
+        if (teamCooldown > 0) {
+            --this.teamCooldown;
+        }
     }
 
     private void toggleAllSlot() {

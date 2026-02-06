@@ -1,8 +1,10 @@
 package org.confluence.mod.network;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacket;
@@ -35,20 +37,38 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPacke
 
     @Override
     public void c2s(ServerPlayer player) {
-        work(player);
+        if (player.level().getEntity(playerId) instanceof Player target) {
+            PlayerSpecialData data = PlayerSpecialData.of(target);
+            PlayerList playerList = player.server.getPlayerList();
+            int textColor = team.getColor().getTextColor();
+            if (data.getTeam() != team) {
+                if (team == Team.WHITE) {
+                    playerList.broadcastSystemMessage(Component.translatable(
+                            "message.confluence.leave_team", target.getName()
+                    ).withColor(textColor), false);
+                } else {
+                    playerList.broadcastSystemMessage(Component.translatable(
+                            "message.confluence.join_team", target.getName(), team.getLowerCaseName()
+                    ).withColor(textColor), false);
+                }
+            }
+            if (data.isPvP() != pvp) {
+                playerList.broadcastSystemMessage(Component.translatable(
+                        pvp ? "message.confluence.enable_pvp" : "message.confluence.disable_pvp", target.getName()
+                ).withColor(textColor), false);
+            }
+            data.setTeam(team);
+            data.setPvP(pvp);
+        }
         PacketDistributor.sendToPlayersTrackingEntity(player, this);
     }
 
     @Override
     public void s2c(Player player) {
-        work(player);
-    }
-
-    private void work(Player player) {
         if (player.level().getEntity(playerId) instanceof Player target) {
             PlayerSpecialData data = PlayerSpecialData.of(target);
             data.setTeam(team);
-            data.setPvp(pvp);
+            data.setPvP(pvp);
         }
     }
 
@@ -69,6 +89,6 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPacke
 
     private static TeamPacket makePacket(Player player) {
         PlayerSpecialData data = PlayerSpecialData.of(player);
-        return new TeamPacket(player.getId(), data.getTeam(), data.isPvp());
+        return new TeamPacket(player.getId(), data.getTeam(), data.isPvP());
     }
 }

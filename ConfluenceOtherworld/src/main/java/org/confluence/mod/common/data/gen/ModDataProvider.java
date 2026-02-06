@@ -441,6 +441,23 @@ public class ModDataProvider {
                     4,
                     1
             ));
+            register(context, ModFeatures.Configured.LIFE_MUSHROOM_TREE, ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.get()),
+                    4,
+                    1
+            ));
+            register(context, ModFeatures.Configured.HUGE_LIFE_MUSHROOM_TREE, ModFeatures.HUGE_MUSHROOM_TREE.get(), new HugeMushroomTreeFeature.Config(
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.HANGING_MYCELIUM.get()),
+                    BlockStateProvider.simple(NatureBlocks.MYCELIAL_DIRT.get()),
+                    BlockStateProvider.simple(Blocks.RED_MUSHROOM),
+                    BlockStateProvider.simple(Blocks.BROWN_MUSHROOM),
+                    BlockStateProvider.simple(Blocks.MYCELIUM)
+            ));
             register(context, GLOWING_MUSHROOM_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_VINE.get()), false, 1, 9));
             register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get()), 0, 1.0F, 20));
             register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAIL_BLOCK.get()), 2, 0.5F, 20));

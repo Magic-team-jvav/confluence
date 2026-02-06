@@ -57,10 +57,9 @@ public class MushroomBlock extends BasePlantBlock implements ISpreadable, Boneme
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         if (state.is(NatureBlocks.LIFE_MUSHROOM.get())) {
-            // TODO 巨型生命蘑菇地物
-            // level.registryAccess().holder(ModFeatures.Configured.LIFE_MUSHROOM_TREE).ifPresent(holder ->
-            //         holder.value().place(level, level.getChunkSource().getGenerator(), random, pos)
-            // );
+            level.registryAccess().holder(ModFeatures.Configured.LIFE_MUSHROOM_TREE).ifPresent(holder ->
+                    holder.value().place(level, level.getChunkSource().getGenerator(), random, pos)
+            );
         } else if (state.is(NatureBlocks.GLOWING_MUSHROOM)) {
             level.registryAccess().holder(ModFeatures.Configured.GLOWING_MUSHROOM_TREE).ifPresent(holder ->
                     holder.value().place(level, level.getChunkSource().getGenerator(), random, pos)

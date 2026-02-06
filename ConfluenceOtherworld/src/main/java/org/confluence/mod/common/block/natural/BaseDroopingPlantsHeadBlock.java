@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implements SimpleWaterloggedBlock {
-
     public static final EnumProperty<VinePart> PART = EnumProperty.create("part", VinePart.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -140,6 +139,7 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
         state = state.setValue(WATERLOGGED, isWater).setValue(AGE, level.getRandom().nextInt(maxAgeValue));
         return calculatePart(level, pos, state);
     }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);

@@ -106,6 +106,7 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         GameEventSystem.INSTANCE.clearAll(player);
+        PlayerSpecialData.of(player).setPvP(false);
     }
 
     @SubscribeEvent

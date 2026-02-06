@@ -116,6 +116,10 @@ public final class GameClientEvents {
                 ExpertColorAnimation.INSTANCE.getGreen(),
                 ExpertColorAnimation.INSTANCE.getBlue()
         );
+
+        if (ExtraInventoryScreen.teamCooldown > 0) {
+            --ExtraInventoryScreen.teamCooldown;
+        }
     }
 
     @SubscribeEvent

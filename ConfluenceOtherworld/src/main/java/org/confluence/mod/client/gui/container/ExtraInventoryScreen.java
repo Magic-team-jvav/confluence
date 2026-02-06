@@ -80,7 +80,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     private boolean dyeButtonPressed;
     private ImageButton bestiaryButton;
     private boolean teamPvPT;
-    private static int teamCooldown; // 本地全局冷却
+    public static int teamCooldown; // 本地全局冷却
 
     public ExtraInventoryScreen(ExtraInventoryMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -319,7 +319,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 this.teamPvPT = !teamPvPT;
                 PlayerSpecialData.of(player).setPvP(teamPvPT);
                 TeamPacket.sendToServer(player);
-                this.teamCooldown = 100;
+                teamCooldown = 100;
                 return true;
             }
             for (int i = 0; i < TEAM_SPRITES.length; i++) {
@@ -329,7 +329,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                     if (data.getTeam() != team) {
                         data.setTeam(team);
                         TeamPacket.sendToServer(player);
-                        this.teamCooldown = 100;
+                        teamCooldown = 100;
                         return true;
                     }
                     return false;
@@ -338,13 +338,6 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         }
 
         return super.mouseClicked(mouseX, mouseY, button);
-    }
-
-    @Override
-    protected void containerTick() {
-        if (teamCooldown > 0) {
-            --this.teamCooldown;
-        }
     }
 
     private void toggleAllSlot() {

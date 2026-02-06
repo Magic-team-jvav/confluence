@@ -55,7 +55,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
     private final transient Map<String, Set<BlockPos>> enemyBannerEntries = new HashMap<>();
     private transient boolean dirty;
     private Team team;
-    private transient boolean pvp;
+    private boolean pvp;
 
     @Override
     public void setToDefaultValue() {
@@ -266,6 +266,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         tag.putBoolean("CouldHurtCritters", couldHurtCritters);
 //        tag.putBoolean("FallenSoulCoreActive", fallenSoulCoreActive);
         Team.CODEC.encodeStart(ops, team).ifSuccess(nbt -> tag.put("Team", nbt));
+        tag.putBoolean("PVP", pvp);
         return tag;
     }
 
@@ -282,6 +283,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         this.couldHurtCritters = nbt.getBoolean("CouldHurtCritters");
 //        this.fallenSoulCoreActive = nbt.getBoolean("FallenSoulCoreActive");
         this.team = Team.CODEC.parse(ops, nbt.get("Team")).result().orElse(Team.WHITE);
+        this.pvp = nbt.getBoolean("PVP");
     }
 
     public static PlayerSpecialData of(Player player) {

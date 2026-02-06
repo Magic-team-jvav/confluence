@@ -1743,6 +1743,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.get(), "生命蘑菇菌裙");
         add(NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get(), "生命蘑菇柄");
         add(NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get(), "生命蘑菇菌盖");
+        add(NatureBlocks.HANGING_MYCELIUM.get(), "悬挂菌丝");
+        add(NatureBlocks.MYCELIAL_DIRT.get(), "菌化泥土");
         add(NatureBlocks.JUNGLE_SPORE.get(), "丛林孢子");
         add(NatureBlocks.JUNGLE_ROSE.get(), "丛林玫瑰");
         add(NatureBlocks.CORRUPT_GRASS.get(), "腐化草");

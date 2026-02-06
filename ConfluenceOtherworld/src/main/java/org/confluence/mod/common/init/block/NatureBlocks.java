@@ -145,6 +145,19 @@ public class NatureBlocks {
     public static final DeferredBlock<RotatedPillarBlock> LIFE_MUSHROOM_STEM_BLOCK = registerWithItem("life_mushroom_stem_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
     public static final DeferredBlock<GlowingMushroomPileusBlock> LIFE_MUSHROOM_PILEUS_BLOCK = registerWithItem("life_mushroom_pileus_block", () -> new GlowingMushroomPileusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
 
+
+    public static final DeferredBlock<Block> HANGING_MYCELIUM = registerWithItem("hanging_mycelium", () -> new HangingMyceliumBlock(
+            BlockBehaviour.Properties.of()
+            .mapColor(MapColor.DIRT)
+            .replaceable()
+            .noCollission()
+            .instabreak()
+            .sound(SoundType.HANGING_ROOTS)
+            .offsetType(BlockBehaviour.OffsetType.XZ)
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<MycelialDirtBlock> MYCELIAL_DIRT = registerWithItem("mycelial_dirt", () -> new MycelialDirtBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(0.5F).sound(SoundType.ROOTED_DIRT)));
+
     public static final LogBlockSet GLOWING_MUSHROOM_LOG_BLOCKS = LogBlockSet.builder("glowing_mushroom", true, LogBlockSet.WoodSetType.GLOWING_MUSHROOM).log(null).strippedLog(null).wood(null).strippedWood(null).leaves(null).build();
 
     // 沙漠

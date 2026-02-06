@@ -2654,6 +2654,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.AMBROSIA.get(), "仙馔密酒");
         add(ConsumableItems.GUMMY_WORM.get(), "黏性蠕虫");
         add(ConsumableItems.CLAM.get(), "牡蛎");
+        add(ConsumableItems.PINE_CONE.get(), "松果");
         add(ConsumableItems.CHRISTMAS_GIFT.get(), "圣诞礼物");
         add(ConsumableItems.RED_ENVELOPE.get(), "红包");
         add(ConsumableItems.GOODIE_BAG.get(), "礼袋");
@@ -3493,6 +3494,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.COOKED_SQUIRREL.get(), "熟松鼠肉");
         add(FoodItems.COOKED_BIRD.get(), "熟鸟肉");
         add(FoodItems.COOKED_DUCK.get(), "熟鸭肉");
+        add(FoodItems.PINE_NUT.get(), "松子");
+        add(FoodItems.ROASTED_PINE_NUT.get(), "烤松子");
 
         add(FoodItems.WATERLEAF_SEED.get(), "水叶草种子");
         add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");

@@ -45,6 +45,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> SEASIDE_CRATE = register("gameplay/crate/seaside_crate");
 
     public static final ResourceKey<LootTable> CLAM = register("gameplay/clam");
+    public static final ResourceKey<LootTable> PINE_CONE = register("gameplay/pine_cone");
     public static final ResourceKey<LootTable> CHRISTMAS_GIFT = register("gameplay/christmas_gift");
     public static final ResourceKey<LootTable> GOODIE_GIFT = register("gameplay/goodie_gift");
     public static final ResourceKey<LootTable> RED_ENVELOPE = register("gameplay/red_envelope");

@@ -74,6 +74,7 @@ public class ConsumableItems {
     public static final DeferredItem<ThrowableItem<ThrownWaterProjectile>> BLOOD_WATER = ITEMS.register("blood_water", () -> new ThrowableItem<>(0.8F, player -> new ThrownWaterProjectile(player, ISpreadable.Type.CRIMSON)));
 
     public static final DeferredItem<RightClickLootItem> CLAM = ITEMS.register("clam", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CLAM));
+    public static final DeferredItem<RightClickLootItem> PINE_CONE = ITEMS.register("pine_cone", () -> new RightClickLootItem(ModRarity.WHITE, ModLootTables.PINE_CONE));
     public static final DeferredItem<RightClickLootItem> HERB_BAG = ITEMS.register("herb_bag", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.HERB_BAG));
     public static final DeferredItem<RightClickLootItem> CAN_OF_WORMS = ITEMS.register("can_of_worms", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CAN_OF_WORMS));
     public static final DeferredItem<RightClickLootItem> RED_ENVELOPE = ITEMS.register("red_envelope", () -> new RightClickLootItem(ModRarity.RED, ModLootTables.RED_ENVELOPE));

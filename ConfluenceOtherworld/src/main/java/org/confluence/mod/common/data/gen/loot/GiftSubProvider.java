@@ -782,6 +782,12 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/sugar_tangerine"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.PEELED_SUGAR_TANGERINE)))
         );
+        // 松果
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/pine_cone"), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.PINE_NUT))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                )
+        );
         // 史莱姆嵌套携带
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/slime_carry"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()

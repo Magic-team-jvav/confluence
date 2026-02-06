@@ -52,6 +52,14 @@ public class FoodItems {
             () -> ModFoodProperties.noEffectProperties(4, 3.6f));
     public static final DeferredItem<BaseFoodItem> COOKED_DUCK = registerNormalFood("cooked_duck", ModRarity.GREEN,
             () -> ModFoodProperties.noEffectProperties(6, 7.2f));
+    public static final DeferredItem<BaseFoodItem> PINE_NUT = registerFood("pine_nut",
+            builder -> builder.rarity(ModRarity.GREEN)
+                    .food(ModFoodProperties.noEffectProperties(1, 1.5f))
+                    .duration(d -> 8));
+    public static final DeferredItem<BaseFoodItem> ROASTED_PINE_NUT = registerFood("roasted_pine_nut",
+            builder -> builder.rarity(ModRarity.GREEN)
+                    .food(ModFoodProperties.plentySatisfiedProperties(40, 2, 1.5f))
+                    .duration(d -> 8));
     public static final DeferredItem<BaseFoodItem> ESCARGOT = registerNormalFood("escargot", ModRarity.BLUE,
             () -> ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f));
     public static final DeferredItem<BaseFoodItem> FROGGLE_BUNWICH = registerNormalFood("froggle_bunwich", ModRarity.GREEN,

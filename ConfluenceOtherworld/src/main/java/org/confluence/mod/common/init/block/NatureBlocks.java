@@ -249,7 +249,7 @@ public class NatureBlocks {
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> CORRUPT_DROOPING_VINE = registerWithItem("corrupt_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> CRIMSON_DROOPING_VINE = registerWithItem("crimson_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> HALLOW_DROOPING_VINE = registerWithItem("hallow_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
-    public static final DeferredBlock<BaseDroopingPlantsHeadBlock> PINE_DROOPING_VINE = registerWithItem("pine_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(8, 3, true, true, () -> List.of(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get(), NatureBlocks.PINE_LOG_BLOCKS.LOG.get())));
+    public static final DeferredBlock<BaseDroopingPlantsHeadBlock> PINE_DROOPING_VINE = registerWithItem("pine_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(8, 3, false, true, () -> List.of(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get(), NatureBlocks.PINE_LOG_BLOCKS.LOG.get())));
 
     public static final DeferredBlock<ShimmerDroopingVinesBlock> SHIMMER_DROOPING_VINE = registerWithoutItem("shimmer_drooping_vine", () -> new ShimmerDroopingVinesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES)));
     public static final DeferredBlock<ShimmerDroopingVinesPlantBlock> SHIMMER_DROOPING_VINE_PLANT = registerWithoutItem("shimmer_drooping_vine_plant", () -> new ShimmerDroopingVinesPlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES_PLANT)));

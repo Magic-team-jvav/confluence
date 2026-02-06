@@ -1,0 +1,15 @@
+{
+    "variants": {
+        "part=head": {
+            "model": "confluence:block/pine_drooping_vine_head",
+            "y": 90
+        },
+        "part=body": {
+            "model": "confluence:block/pine_drooping_vine_body"
+        },
+        "part=tail": {
+            "model": "confluence:block/pine_drooping_vine_tail",
+            "y": 180
+        }
+    }
+}

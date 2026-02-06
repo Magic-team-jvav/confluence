@@ -447,6 +447,24 @@ public class ModDataProvider {
             register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, CRIMSON_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAIL_BLOCK.get()), 2, 0.5F, 20));
+            register(context, ModFeatures.Configured.PINE_TREE, ModFeatures.PINE_TREE.get(), new PineTreeFeature.Config(
+                            BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
+                            BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
+                            BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get()),
+                            14,
+                            10,
+                            false
+                    )
+            );
+            register(context, ModFeatures.Configured.CHINESE_PINE_TREE, ModFeatures.PINE_TREE.get(), new PineTreeFeature.Config(
+                            BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
+                            BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
+                            BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get()),
+                            14,
+                            10,
+                            true
+                    )
+            );
             register(context, ModFeatures.Configured.BAOBAB_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
                     new WeightedPlacedFeature(direct(
                             ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(

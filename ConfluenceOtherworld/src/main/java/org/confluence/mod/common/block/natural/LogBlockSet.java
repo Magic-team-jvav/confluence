@@ -591,6 +591,7 @@ public class LogBlockSet {
         LIVING_MAHOGANY("living_mahogany"),
         ASH("ash"),
         DYNASTY("dynasty"),
+        PINE("pine"),
         SPOOKY("spooky");
 
         public final BlockSetType SET;

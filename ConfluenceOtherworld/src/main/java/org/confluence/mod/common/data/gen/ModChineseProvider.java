@@ -1595,6 +1595,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.DYNASTY_LOG_BLOCKS.FENCE_GATE.get(), "王朝木栅栏门");
         add(NatureBlocks.DYNASTY_LOG_BLOCKS.PRESSURE_PLATE.get(), "王朝木压力板");
 
+        add(NatureBlocks.PINE_LOG_BLOCKS.BUTTON.get(), "松木按钮");
+        add(NatureBlocks.PINE_LOG_BLOCKS.PLANKS.get(), "松木板");
+        add(NatureBlocks.PINE_LOG_BLOCKS.LOG.get(), "松原木");
+        add(NatureBlocks.PINE_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮松原木");
+        add(NatureBlocks.PINE_LOG_BLOCKS.STRIPPED_WOOD.get(), "去皮松木");
+        add(NatureBlocks.PINE_LOG_BLOCKS.DOOR.get(), "松木门");
+        add(NatureBlocks.PINE_LOG_BLOCKS.TRAPDOOR.get(), "松木活板门");
+        add(NatureBlocks.PINE_LOG_BLOCKS.SIGN.get(), "松木告示牌");
+        add(NatureBlocks.PINE_LOG_BLOCKS.HANGING_SIGN.get(), "悬挂式松木告示牌");
+        add(NatureBlocks.PINE_LOG_BLOCKS.STAIRS.get(), "松木楼梯");
+        add(NatureBlocks.PINE_LOG_BLOCKS.SLAB.get(), "松木台阶");
+        add(NatureBlocks.PINE_LOG_BLOCKS.WOOD.get(), "松木");
+        add(NatureBlocks.PINE_LOG_BLOCKS.FENCE.get(), "松木栅栏");
+        add(NatureBlocks.PINE_LOG_BLOCKS.FENCE_GATE.get(), "松木栅栏门");
+        add(NatureBlocks.PINE_LOG_BLOCKS.PRESSURE_PLATE.get(), "松木压力板");
+
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");
         add(NatureBlocks.MOISTENED_SAND_BLOCK.get(), "湿润沙块");

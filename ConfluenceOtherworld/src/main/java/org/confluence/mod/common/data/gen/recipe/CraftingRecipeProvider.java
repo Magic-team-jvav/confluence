@@ -590,6 +590,22 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(Items.RED_DYE),
                 Ingredient.of(Items.BLACK_DYE)
         );
+        // 松针手工绳套
+        shapeless(output,
+                ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET.toStack(),
+                Ingredient.of(NatureBlocks.PINE_DROOPING_VINE),
+                Ingredient.of(NatureBlocks.PINE_DROOPING_VINE)
+        );
+        shapeless(output,
+                DecorativeBlocks.CHRISTMAS_PINE_TRAPDOOR.toStack(),
+                Ingredient.of(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET),
+                Ingredient.of(NatureBlocks.PINE_LOG_BLOCKS.TRAPDOOR)
+        );
+        shapeless(output,
+                DecorativeBlocks.CHRISTMAS_PINE_DOOR.toStack(),
+                Ingredient.of(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET),
+                Ingredient.of(NatureBlocks.PINE_LOG_BLOCKS.DOOR)
+        );
         // 生命篝火
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(NatureBlocks.LIVING_LOG_BLOCKS.WOOD, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.WOOD, MaterialItems.LIFE_MUSHROOM),

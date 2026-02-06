@@ -21,7 +21,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.mod.common.block.natural.CattailBlock;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
@@ -334,6 +332,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SILK_ROPE.get());
         dropSelf(WEB_ROPE.get());
         dropSelf(VINE_ROPE.get());
+        dropSelf(PINE_NEEDLE_HANDMADE_ROPE_SET.get());
 
         dropSelf(WATER_CANDLE.get());
         dropSelf(PEACE_CANDLE.get());
@@ -710,6 +709,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         addGrassLoot(HALLOW_CATTAIL_BLOCK.get(), ModItems.HALLOW_CATTAIL.get());
         addGrassLoot(EBONY_CATTAIL_BLOCK.get(), ModItems.EBONY_CATTAIL.get());
         addGrassLoot(CRIMSON_CATTAIL_BLOCK.get(), ModItems.CRIMSON_CATTAIL.get());
+
+        addGrassLoot(PINE_DROOPING_VINE.get(), NatureBlocks.PINE_DROOPING_VINE.asItem());
 
         addGrassLoot(SMALL_DESERT_PLANT.get(), SMALL_DESERT_PLANT.asItem());
         addGrassLoot(BIG_DESERT_PLANT.get(), BIG_DESERT_PLANT.asItem());

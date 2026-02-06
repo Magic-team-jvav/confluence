@@ -1318,7 +1318,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
         addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");
         addEffect(TCEffects.CONFUSED.get(), "Movement is reversed");
-        addEffect(TCEffects.GRAVITATION.get(), "Press Space to reverse gravity");
+        addEffect(TCEffects.GRAVITATION.get(), "Press UP to reverse gravity");
         addEffect(TCEffects.PALADINS_SHIELD.get(), "25% of damage taken will be redirected to another player");
 
         addEffect(TEEffects.DEMONIC_THOUGHTS.get(), "Being inflicted with Demonic Thoughts again spawns Eater of Souls");

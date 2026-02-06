@@ -35,7 +35,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public static final ResourceLocation SURFACE_RAIN = background("surface_rain");
     public static final ResourceLocation SURFACE_NIGHTTIME_RAIN = background("surface_nighttime_rain");
     public static final ResourceLocation GRAVEYARD = background("graveyard");
-    public static final ResourceLocation BLOOD_MOON = background("blodd_moon");
+    public static final ResourceLocation BLOOD_MOON = background("blood_moon");
     public static final ResourceLocation ECLIPSE = background("eclipse");
     public static final ResourceLocation PUMPKIN_MOON = background("pumpkin_moon");
     public static final ResourceLocation FROST_MOON = background("frost_moon");

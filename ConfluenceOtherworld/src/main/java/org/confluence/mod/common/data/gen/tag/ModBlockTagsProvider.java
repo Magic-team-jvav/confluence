@@ -919,8 +919,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RAW_LUMINITE_BLOCK.get(),
                 LUMINITE_BLOCK.get()
         );
-        tag(ModTags.Blocks.ROPE).add(ROPE.get(), VINE_ROPE.get(), SILK_ROPE.get(), WEB_ROPE.get());
-        tag(Tags.Blocks.ROPES).add(ROPE.get(), VINE_ROPE.get(), SILK_ROPE.get(), WEB_ROPE.get());
+        tag(ModTags.Blocks.ROPE).add(ROPE.get(), VINE_ROPE.get(), SILK_ROPE.get(), WEB_ROPE.get(), PINE_NEEDLE_HANDMADE_ROPE_SET.get());
+        tag(Tags.Blocks.ROPES).add(ROPE.get(), VINE_ROPE.get(), SILK_ROPE.get(), WEB_ROPE.get(), PINE_NEEDLE_HANDMADE_ROPE_SET.get());
         tag(BlockTags.STAIRS).add(
                 SUN_PLATE_STAIRS.get(),
                 OBSIDIAN_BRICKS_STAIRS.get(),

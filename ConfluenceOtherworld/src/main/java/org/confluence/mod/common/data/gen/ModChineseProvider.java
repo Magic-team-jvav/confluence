@@ -1596,9 +1596,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.DYNASTY_LOG_BLOCKS.PRESSURE_PLATE.get(), "王朝木压力板");
 
         add(NatureBlocks.PINE_LOG_BLOCKS.BUTTON.get(), "松木按钮");
-        add(NatureBlocks.PINE_LOG_BLOCKS.PLANKS.get(), "松木板");
-        add(NatureBlocks.PINE_LOG_BLOCKS.LOG.get(), "松原木");
-        add(NatureBlocks.PINE_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮松原木");
+        add(NatureBlocks.PINE_LOG_BLOCKS.PLANKS.get(), "松木木板");
+        add(NatureBlocks.PINE_LOG_BLOCKS.LOG.get(), "松木原木");
+        add(NatureBlocks.PINE_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮松木原木");
         add(NatureBlocks.PINE_LOG_BLOCKS.STRIPPED_WOOD.get(), "去皮松木");
         add(NatureBlocks.PINE_LOG_BLOCKS.DOOR.get(), "松木门");
         add(NatureBlocks.PINE_LOG_BLOCKS.TRAPDOOR.get(), "松木活板门");
@@ -1610,6 +1610,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.PINE_LOG_BLOCKS.FENCE.get(), "松木栅栏");
         add(NatureBlocks.PINE_LOG_BLOCKS.FENCE_GATE.get(), "松木栅栏门");
         add(NatureBlocks.PINE_LOG_BLOCKS.PRESSURE_PLATE.get(), "松木压力板");
+        add(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get(), "松树树叶");
 
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");
@@ -1918,7 +1919,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹发光蘑菇木板");
         add(NatureBlocks.DYNASTY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹王朝木板");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹阴森木板");
-        add(NatureBlocks.PINE_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹松木板");
+        add(NatureBlocks.PINE_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹松树木板");
         add(DecorativeBlocks.GRANITE_BRICKS.get(), "花岗岩砖");
         add(DecorativeBlocks.CRACKED_GRANITE_BRICKS.get(), "裂纹花岗岩砖");
         add(DecorativeBlocks.CHISELED_GRANITE_BRICKS.get(), "雕纹花岗岩砖");
@@ -2107,6 +2108,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.VINE_ROPE.get(), "藤蔓绳");
         add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
         add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
+        add(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET.get(), "松针手工绳套");
 
         // 带效果的蜡烛
         add(FunctionalBlocks.WATER_CANDLE.get(), "水蜡烛");
@@ -3849,7 +3851,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");
         addEffect(TCEffects.HONEY.get(), "蜂蜜", "生命再生速度提高");
         addEffect(TCEffects.CONFUSED.get(), "困惑", "移动方向逆转");
-        addEffect(TCEffects.GRAVITATION.get(), "重力", "按空格键可逆转重力");
+        addEffect(TCEffects.GRAVITATION.get(), "重力", "按↑键可逆转重力");
         addEffect(TCEffects.PALADINS_SHIELD.get(), "圣骑士护盾", "所受伤害的25%将被转移到另一名玩家身上");
 
         addEffect(TEEffects.DEMONIC_THOUGHTS.get(), "邪念", "再次被赋予邪念时会生成噬魂怪");

@@ -141,6 +141,7 @@ public final class ModTabs {
                         output.accept(ModBlocks.VINE_ROPE.get());
                         output.accept(ModBlocks.SILK_ROPE.get());
                         output.accept(ModBlocks.WEB_ROPE.get());
+                        output.accept(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET.get());
                         output.accept(TCItems.MAGIC_MIRROR.get());
                         output.accept(TCItems.CELL_PHONE.get());
                         output.accept(TCItems.DIVING_HELMET.get());

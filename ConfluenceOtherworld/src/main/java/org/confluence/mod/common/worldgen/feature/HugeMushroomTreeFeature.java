@@ -3,7 +3,6 @@ package org.confluence.mod.common.worldgen.feature;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -12,7 +11,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
@@ -20,7 +18,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.FeatureUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.joml.Vector3d;
 
@@ -28,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
-import static org.confluence.lib.util.FeatureUtils.*;
+import static org.confluence.lib.util.FeatureUtils.ball;
+import static org.confluence.lib.util.FeatureUtils.ellipsoid;
 
 public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Config> {
     public HugeMushroomTreeFeature(Codec<Config> pCodec) {
@@ -44,7 +41,7 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
         BlockPos baseBlockPos = pContext.origin();
         BlockPos headPos = baseBlockPos.offset(
                 random.nextInt(-5, 6),
-                random.nextInt(10,15),
+                random.nextInt(10, 15),
                 random.nextInt(-5, 6)
         );
         BlockState stemBlockState = config.stem().getState(random, baseBlockPos);
@@ -124,7 +121,8 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
                         for (int i = 0; i < 10; i++) {
                             if (level.getBlockState(baseBlockPos.offset(x, offset, z)).is(DIRT_TAG) && level.getBlockState(baseBlockPos.offset(x, offset + 1, z)).canBeReplaced()) {
                                 level.setBlock(baseBlockPos.offset(x, offset, z), mycelium, 3);
-                                if (random.nextFloat() > 0.7) level.setBlock(baseBlockPos.offset(x, offset + 1, z), random.nextBoolean() ? mushroom1 : mushroom2, 3);
+                                if (random.nextFloat() > 0.7)
+                                    level.setBlock(baseBlockPos.offset(x, offset + 1, z), random.nextBoolean() ? mushroom1 : mushroom2, 3);
                                 break;
                             } else if (level.getBlockState(baseBlockPos.offset(x, offset, z)).canBeReplaced()) {
                                 offset--;
@@ -140,7 +138,7 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
                     for (int z = -1; z < 2; z++) {
                         if (random.nextFloat() > 0.67) {
                             level.setBlock(baseBlockPos.offset(x, -i, z), mycelialDirt, 3);
-                            if ((i == length) && (level.getBlockState(baseBlockPos.offset(x, -i -1, z)).canBeReplaced())) {
+                            if ((i == length) && (level.getBlockState(baseBlockPos.offset(x, -i - 1, z)).canBeReplaced())) {
                                 level.setBlock(baseBlockPos.offset(x, -i - 1, z), hangingMycelium, 3);
                             }
                         }

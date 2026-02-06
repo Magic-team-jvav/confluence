@@ -189,8 +189,6 @@
   - 翻译键 event.confluence.spelunker.first_trigger 等 ↑
 
 - 汇流的小鬼和其他武器共用无敌帧，导致召唤三个小鬼反而会大幅降低最终伤害
-- 魔法飞刀需改为穿透俩个敌怪
-- 魔法飞刀不应该会掉落
 
 - 来自Discord
   - Other mod furniture compat with NPC housing

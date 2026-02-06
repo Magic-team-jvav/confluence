@@ -60,7 +60,6 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
@@ -232,7 +231,7 @@ public final class LivingEntityEvents {
         if (damageSource.is(DamageTypes.DROWN) && LibUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
             amount *= 0.5F;
         }
-        BaseSwordItem.applyEffect(damageSource, attacker, victim);
+        amount = SwordItems.processEffect(damageSource, attacker, victim, amount);
         amount = IDamageSource.processCritical(attacker, amount, victim, damageSource);
         event.setNewDamage(amount);
     }

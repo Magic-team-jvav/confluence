@@ -2,11 +2,15 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -20,10 +24,12 @@ import org.confluence.mod.common.item.sword.GeoSwordItem;
 import org.confluence.mod.common.item.sword.Phaseblade;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
+import org.confluence.mod.common.item.sword.legacy.SwordStrategy;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.terraentity.init.TEEffectStrategies;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
 import org.confluence.terraentity.registries.track.variant.SimpleTrack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -93,12 +99,18 @@ public class SwordItems {
     // tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
     public static final DeferredItem<BaseSwordItem> FAKE_SWORD = register("fake_sword", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, NORMAL_SWORD.get());
     public static final DeferredItem<BaseSwordItem> CANDY_CANE_SWORD = register("candy_cane_sword", ModTiers.CANDY_CANE, 5, 1.8F, BOARD_SWORD.apply(0.5F).hasImage());
-    public static final DeferredItem<BaseSwordItem> FALCON_BLADE = register("falcon_blade", ModTiers.UNBREAKABLE, 6, 1.8F, ModRarity.BLUE, BOARD_SWORD.apply(0.5F));
+    public static final DeferredItem<BaseSwordItem> FALCON_BLADE = register("falcon_blade", ModTiers.UNBREAKABLE, 6, 1.8F, ModRarity.BLUE, BOARD_SWORD.apply(0.5F)
+            .setInventoryTick(SwordStrategy.FALCON_BLADE_EXOTIC_SCIMITAR_BONUS_A)
+            .setPreLivingDamage(SwordStrategy.FALCON_BLADE_EXOTIC_SCIMITAR_BONUS_B)
+            .setPostHurtEnemy(SwordStrategy.FALCON_BLADE_EXOTIC_SCIMITAR_BONUS_C));
     public static final DeferredItem<BaseSwordItem> ZOMBIE_ARM = register("zombie_arm", ModTiers.UNBREAKABLE, 5, 2.4F, BOARD_SWORD.apply(0.5F));
     public static final DeferredItem<BaseSwordItem> MANDIBLE_BLADE = register("mandible_blade", ModTiers.UNBREAKABLE, 6, 2.4F, BOARD_SWORD.apply(0.8F));
     public static final DeferredItem<BaseSwordItem> BONE_SWORD = register("bone_sword", ModTiers.UNBREAKABLE, 7, 2.4F, ModRarity.ORANGE, BOARD_SWORD.apply(0.8F).hasImage());
     public static final DeferredItem<BaseSwordItem> STYLISH_SCISSORS = register("stylish_scissors", ModTiers.UNBREAKABLE, 5, 2.2F, ModRarity.GREEN, BOARD_SWORD.apply(0.8F));
-    public static final DeferredItem<BaseSwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar", ModTiers.UNBREAKABLE, 7, 2.3F, ModRarity.GREEN, BOARD_SWORD.apply(0.8F));
+    public static final DeferredItem<BaseSwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar", ModTiers.UNBREAKABLE, 7, 2.3F, ModRarity.GREEN, BOARD_SWORD.apply(0.8F)
+            .setInventoryTick(SwordStrategy.FALCON_BLADE_EXOTIC_SCIMITAR_BONUS_A)
+            .setPreLivingDamage(SwordStrategy.FALCON_BLADE_EXOTIC_SCIMITAR_BONUS_B)
+            .setPostHurtEnemy(SwordStrategy.FALCON_BLADE_EXOTIC_SCIMITAR_BONUS_C));
     public static final DeferredItem<BaseSwordItem> KATANA = register("katana", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, BOARD_SWORD.apply(0.8F));
 
     // 改横扫大小的宽剑(由 ENTITY_INTERACTION_RANGE 属性控制)
@@ -192,5 +204,16 @@ public class SwordItems {
 
     public static boolean isShortSword(DeferredHolder<Item, ? extends Item> holder) {
         return holder.getId().getPath().endsWith("_short_sword");
+    }
+
+    public static float processEffect(DamageSource damageSource, @Nullable Entity attacker, LivingEntity victim, float amount) {
+        ItemStack weapon = damageSource.getWeaponItem();
+        if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
+            sword.applyHitEffects(weapon, attacker, victim, damageSource);
+            if (sword.modifier != null && sword.modifier.preLivingDamage != null) {
+                amount = sword.modifier.preLivingDamage.apply(weapon, damageSource, attacker, victim, amount);
+            }
+        }
+        return amount;
     }
 }

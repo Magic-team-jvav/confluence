@@ -10,7 +10,7 @@ import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy.UMBRELLA_TICK;
+import static org.confluence.mod.common.item.sword.legacy.SwordStrategy.UMBRELLA_TICK;
 
 /// 这个类用于组合各种剑的特殊技能 strategy，以便于快速注册
 ///

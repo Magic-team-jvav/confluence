@@ -494,6 +494,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SPORE_ROOT_BLOCK.get(),
 
                 TRADITIONAL_DYNASTY_DOOR.get(),
+                CHRISTMAS_PINE_DOOR.get(),
+                CHRISTMAS_PINE_TRAPDOOR.get(),
 
                 ANNOUNCEMENT_BOX.get(),
                 WALL_ANNOUNCEMENT_BOX.get(),
@@ -989,7 +991,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SKYWARE_GLASS_DOOR.get(),
                 OBSIDIAN_BRICKS_DOOR.get(),
                 LIHZAHRD_DOOR.get(),
-                TRADITIONAL_DYNASTY_DOOR.get()
+                TRADITIONAL_DYNASTY_DOOR.get(),
+                CHRISTMAS_PINE_DOOR.get()
+        );
+        tag(BlockTags.TRAPDOORS).add(
+                CHRISTMAS_PINE_TRAPDOOR.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMER)
                 .addTag(BlockTags.WALLS)

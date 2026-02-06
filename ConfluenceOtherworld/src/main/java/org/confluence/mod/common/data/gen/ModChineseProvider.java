@@ -1731,6 +1731,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING.get(), "黄柳树苗");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get(), "猴面包树苗");
 
+
         add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");
         add(NatureBlocks.VILE_MUSHROOM.get(), "魔菇");
         add(NatureBlocks.GLOWING_MUSHROOM.get(), "发光蘑菇");
@@ -1917,6 +1918,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹发光蘑菇木板");
         add(NatureBlocks.DYNASTY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹王朝木板");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹阴森木板");
+        add(NatureBlocks.PINE_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹松木板");
         add(DecorativeBlocks.GRANITE_BRICKS.get(), "花岗岩砖");
         add(DecorativeBlocks.CRACKED_GRANITE_BRICKS.get(), "裂纹花岗岩砖");
         add(DecorativeBlocks.CHISELED_GRANITE_BRICKS.get(), "雕纹花岗岩砖");
@@ -1997,6 +1999,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.MALACHITE_PAPER_PANE.get(), "石绿纸窗格");
         add(DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP.get(), "石绿纸窗格灯");
         add(DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR.get(), "传统王朝木门");
+        add(DecorativeBlocks.CHRISTMAS_PINE_DOOR.get(), "圣诞松木门");
+        add(DecorativeBlocks.CHRISTMAS_PINE_TRAPDOOR.get(), "圣诞松木活板门");
 
         // 雕像
         add(StatueBlocks.A_STATUE.get(), "A字雕像");

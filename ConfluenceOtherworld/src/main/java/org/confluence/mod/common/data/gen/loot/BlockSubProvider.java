@@ -561,6 +561,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(SKYWARE_GLASS_DOOR.get(), this::createDoorTable);
         add(DUNGEON_DOOR.get(), this::createDoorTable);
         add(TRADITIONAL_DYNASTY_DOOR.get(), this::createDoorTable);
+        add(CHRISTMAS_PINE_DOOR.get(), this::createDoorTable);
+        dropSelf(CHRISTMAS_PINE_TRAPDOOR.get());
 
         // 发光蘑菇
         add(GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));

@@ -224,6 +224,10 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> MALACHITE_PAPER_PANE_LAMP = registerWithItem("malachite_paper_pane_lamp", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OAK_PLANKS).lightLevel(state -> 15)));
     public static final DeferredBlock<DoorBlock> TRADITIONAL_DYNASTY_DOOR = registerWithItem("traditional_dynasty_door", () -> new DoorBlock(BlockSetType.OAK, BlockBehaviour.Properties.ofFullCopy(OAK_DOOR).mapColor(DyeColor.BROWN).pushReaction(PushReaction.BLOCK)));
 
+    // 松树
+    public static final DeferredBlock<DoorBlock> CHRISTMAS_PINE_DOOR = registerWithItem("christmas_pine_door", () -> new DoorBlock(BlockSetType.OAK, BlockBehaviour.Properties.ofFullCopy(OAK_DOOR).mapColor(DyeColor.BROWN).pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<TrapDoorBlock> CHRISTMAS_PINE_TRAPDOOR = registerWithItem("christmas_pine_trapdoor", () -> new TrapDoorBlock(BlockSetType.OAK, BlockBehaviour.Properties.ofFullCopy(OAK_DOOR).mapColor(DyeColor.BROWN).pushReaction(PushReaction.BLOCK)));
+
     // 花岗岩
     public static final DeferredBlock<Block> GRANITE_COLUMN = registerWithItem("granite_column", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
     public static final DeferredBlock<Block> GRANITE_BRICKS = registerWithItem("granite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));

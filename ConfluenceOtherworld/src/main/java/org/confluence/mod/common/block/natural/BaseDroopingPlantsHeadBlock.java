@@ -6,12 +6,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
@@ -19,69 +17,56 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModTags;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static net.neoforged.neoforge.common.CommonHooks.canCropGrow;
+import java.util.function.Supplier;
 
 public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implements SimpleWaterloggedBlock {
-    public static final MapCodec<BaseDroopingPlantsHeadBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.INT.fieldOf("side").forGetter(block -> block.side),
-            Codec.INT.fieldOf("max_age").forGetter(block -> block.maxAge),
-            Codec.BOOL.fieldOf("is_natural_growth").forGetter(block -> block.isNaturalGrowth),
-            Codec.BOOL.fieldOf("is_climbable").forGetter(block -> block.isClimbable),
-            BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("attached_block").forGetter(block -> block.attachedBlock)
-    ).apply(instance, BaseDroopingPlantsHeadBlock::new));
 
-    public static final int DEFAULT_MAX_AGE = 25;
-    protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    public static final EnumProperty<VinePart> PART = EnumProperty.create("part", VinePart.class);
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
+    public static final MapCodec<BaseDroopingPlantsHeadBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.INT.fieldOf("side").forGetter(b -> b.side),
+            Codec.INT.fieldOf("max_age").forGetter(b -> b.maxAgeValue),
+            Codec.BOOL.fieldOf("is_natural_growth").forGetter(b -> b.isNaturalGrowth),
+            Codec.BOOL.fieldOf("is_climbable").forGetter(b -> b.isClimbable),
+            BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("attached_block")
+                    .forGetter(b -> b.attachedBlocksSupplier.get())
+    ).apply(instance, (side, maxAge, isNatural, isClimbable, blocks) -> new BaseDroopingPlantsHeadBlock(side, maxAge, isNatural, isClimbable, () -> blocks)));
 
     protected final int side;
-    protected final int maxAge;
+    protected final int maxAgeValue;
     protected final boolean isNaturalGrowth;
     protected final boolean isClimbable;
-    protected final List<Block> attachedBlock;
-    private final Set<Block> attachedBlockCache;
+    protected final Supplier<List<Block>> attachedBlocksSupplier;
 
-    public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable) {
-        this(side, DEFAULT_MAX_AGE, isNaturalGrowth, isClimbable, List.of());
-    }
-
-    public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable, List<Block> attachedBlock) {
-        this(side, DEFAULT_MAX_AGE, isNaturalGrowth, isClimbable, attachedBlock);
-    }
-
-    public BaseDroopingPlantsHeadBlock(int side, int maxAge, boolean isNaturalGrowth, boolean isClimbable, List<Block> attachedBlock) {
-        super(Properties.of().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY), Direction.DOWN, createShape(side), false, 0.1);
+    public BaseDroopingPlantsHeadBlock(int side, int maxAge, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlocksSupplier) {
+        super(Properties.of().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY).randomTicks(), Direction.DOWN, createShape(side), true, 0.1);
         this.side = side;
-        this.maxAge = maxAge;
+        this.maxAgeValue = Math.min(maxAge, 25);
         this.isNaturalGrowth = isNaturalGrowth;
         this.isClimbable = isClimbable;
-        this.attachedBlock = attachedBlock;
-        this.attachedBlockCache = Set.copyOf(attachedBlock);
-        this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0).setValue(WATERLOGGED, false));
+        this.attachedBlocksSupplier = attachedBlocksSupplier;
+        this.registerDefaultState(this.stateDefinition.any()
+                .setValue(AGE, 0)
+                .setValue(WATERLOGGED, false)
+                .setValue(PART, VinePart.HEAD));
     }
 
-    private static VoxelShape createShape(int side) {
-        double margin = (16.0 - side) / 2.0;
-        return Block.box(margin, 0, margin, 16.0 - margin, 16, 16.0 - margin);
+    public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlock) {
+        this(side, 25, isNaturalGrowth, isClimbable, attachedBlock);
     }
 
-    @Override
-    protected MapCodec<? extends BaseDroopingPlantsHeadBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    protected Block getBodyBlock() {
-        return this;
+    public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable) {
+        this(side, 25, isNaturalGrowth, isClimbable, () -> List.of());
     }
 
     @Override
@@ -91,45 +76,7 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
 
     @Override
     protected boolean canGrowInto(BlockState state) {
-        return NetherVines.isValidGrowthState(state);
-    }
-
-    @Override
-    public boolean isRandomlyTicking(BlockState state) {
-        return isNaturalGrowth || state.getValue(AGE) < maxAge;
-    }
-
-    @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        if (state.getValue(WATERLOGGED)) {
-            level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
-        }
-        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
-    }
-
-    @Override
-    protected FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
-
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState state = super.getStateForPlacement(context);
-        if (state == null) state = this.defaultBlockState();
-        boolean isWater = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
-        return state.setValue(WATERLOGGED, isWater).setValue(AGE, context.getLevel().getRandom().nextInt(Math.max(1, maxAge)));
-    }
-
-    @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (state.getValue(AGE) < maxAge) {
-            if (random.nextDouble() < 0.1) {
-                BlockPos growPos = pos.relative(this.growthDirection);
-                if (this.canGrowInto(level.getBlockState(growPos))) {
-                    level.setBlockAndUpdate(growPos, this.getGrowIntoState(state, level.random));
-                }
-            }
-        }
+        return state.isAir() || state.is(Blocks.WATER);
     }
 
     @Override
@@ -137,11 +84,70 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
         BlockPos supportPos = pos.above();
         BlockState supportState = level.getBlockState(supportPos);
         if (supportState.is(this)) return true;
-        if (attachedBlockCache.isEmpty()) {
-            return supportState.is(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE);
-        }
-        return attachedBlockCache.contains(supportState.getBlock());
+        return isAnchor(supportState);
     }
+
+    private boolean isAnchor(BlockState state) {
+        List<Block> anchors = attachedBlocksSupplier.get();
+        if (anchors != null && !anchors.isEmpty()) {
+            for (Block block : anchors) {
+                if (state.is(block)) return true;
+            }
+        }
+        return state.is(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseDroopingPlantsHeadBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+        }
+        BlockState updatedState = super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+        if (updatedState.isAir()) return updatedState;
+        return calculatePart(level, currentPos, updatedState);
+    }
+
+    private BlockState calculatePart(LevelReader level, BlockPos pos, BlockState state) {
+        boolean hasVineBelow = level.getBlockState(pos.below()).is(this);
+        boolean isSupportedByAnchor = isAnchor(level.getBlockState(pos.above()));
+        if (!hasVineBelow) {
+            return state.setValue(PART, VinePart.HEAD);
+        } else {
+            if (isSupportedByAnchor && !level.getBlockState(pos.above()).is(this)) {
+                return state.setValue(PART, VinePart.TAIL);
+            }
+            return state.setValue(PART, VinePart.BODY);
+        }
+    }
+
+    @Override
+    protected boolean isRandomlyTicking(BlockState state) {
+        return this.isNaturalGrowth && state.getValue(AGE) < this.maxAgeValue;
+    }
+
+    @Override
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+        LevelAccessor level = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        BlockState state = this.defaultBlockState();
+        if (!this.canSurvive(state, level, pos)) return null;
+        boolean isWater = level.getFluidState(pos).getType() == Fluids.WATER;
+        state = state.setValue(WATERLOGGED, isWater).setValue(AGE, level.getRandom().nextInt(maxAgeValue));
+        return calculatePart(level, pos, state);
+    }
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(WATERLOGGED, PART);
+    }
+
+    @Override
+    protected Block getBodyBlock() {return this;}
 
     @Override
     public boolean isLadder(BlockState state, LevelReader level, BlockPos pos, LivingEntity entity) {
@@ -149,8 +155,33 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(WATERLOGGED);
+    protected FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    }
+
+    private static VoxelShape createShape(int side) {
+        double margin = (16.0 - side) / 2.0;
+        return Block.box(margin, 0.0, margin, 16.0 - margin, 16.0, 16.0 - margin);
+    }
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+        return state.getValue(AGE) < this.maxAgeValue;
+    }
+
+    public enum VinePart implements StringRepresentable {
+        HEAD("head"),
+        BODY("body"),
+        TAIL("tail");
+        private final String name;
+
+        VinePart(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return name;
+        }
     }
 }

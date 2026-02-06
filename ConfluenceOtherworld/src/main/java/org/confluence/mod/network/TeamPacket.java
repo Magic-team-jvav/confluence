@@ -20,7 +20,7 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPacke
         @Override
         public TeamPacket decode(FriendlyByteBuf buffer) {
             byte b = buffer.readByte();
-            return new TeamPacket(buffer.readVarInt(), Team.TEAMS[b & TEAM_MASK], (b & PVP_MASK) == PVP_MASK);
+            return new TeamPacket(buffer.readVarInt(), Team.TEAMS[b & TEAM_MASK], (b & PVP_MASK) != 0);
         }
 
         @Override
@@ -51,14 +51,14 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPacke
                             "message.confluence.join_team", target.getName(), team.getLowerCaseName()
                     ).withColor(textColor), false);
                 }
+                data.setTeam(team);
             }
             if (data.isPvP() != pvp) {
                 playerList.broadcastSystemMessage(Component.translatable(
                         pvp ? "message.confluence.enable_pvp" : "message.confluence.disable_pvp", target.getName()
                 ).withColor(textColor), false);
+                data.setPvP(pvp);
             }
-            data.setTeam(team);
-            data.setPvP(pvp);
         }
         PacketDistributor.sendToPlayersTrackingEntity(player, this);
     }

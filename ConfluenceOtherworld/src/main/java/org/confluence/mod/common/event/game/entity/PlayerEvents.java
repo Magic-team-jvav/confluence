@@ -96,7 +96,7 @@ public final class PlayerEvents {
             if (team != Team.WHITE) {
                 player.server.getPlayerList().broadcastSystemMessage(Component.translatable(
                         "message.confluence.join_team", player.getName(), team.getLowerCaseName()
-                ), false);
+                ).withColor(team.getColor().getTextColor()), false);
             }
         }
     }

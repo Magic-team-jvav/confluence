@@ -1,7 +1,7 @@
 package org.confluence.mod.common.item.mana;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.mana.MagicDaggerProjectile;
@@ -21,8 +21,7 @@ public class MagicDaggerItem extends ManaStaffItem<MagicDaggerProjectile> {
     }
 
     @Override
-    protected void afterShoot(ServerPlayer player, ItemStack itemStack, MagicDaggerProjectile projectile) {
-        player.getCooldowns().addCooldown(this, cooldown);
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), TESounds.WAVING.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
+    protected SoundEvent getShootSound() {
+        return TESounds.WAVING.get();
     }
 }

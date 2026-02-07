@@ -15,7 +15,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Slime;
-import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -50,7 +49,6 @@ import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntit
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
@@ -66,7 +64,10 @@ import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.integration.terra_entity.TEHelper;
-import org.confluence.mod.mixed.*;
+import org.confluence.mod.mixed.IDamageSource;
+import org.confluence.mod.mixed.ILevelChunkSection;
+import org.confluence.mod.mixed.IMobEffectInstance;
+import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
@@ -178,23 +179,10 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
 
-        if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
-                living instanceof Npc &&
-                !damageSource.is(ModDamageTypes.BYPASS_NPC_INVULNERABLE_TO_PLAYER) &&
-                LibUtils.getOwner(damageSource) instanceof Player player &&
-                !player.isCreative()
-        ) {
-            event.setCanceled(true);
-            return;
-        }
         if (living instanceof ServerPlayer player) {
             AccessoryItems.applyHurtGetMana(player, damageSource, event.getAmount());
         }
-        Immunity cause = Immunity.getCause(event.getSource());
-        if (ILivingEntity.of(living).confluence$getImmunityTicks().containsKey(cause)) {
-            event.setCanceled(true);
-        }
-        if (cause != null) {
+        if (Immunity.getCause(event.getSource()) != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
         }
     }

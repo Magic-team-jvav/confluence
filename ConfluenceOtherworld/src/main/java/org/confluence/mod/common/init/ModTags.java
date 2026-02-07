@@ -465,6 +465,8 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_BLACKLIST = register("critter_companionship_blacklist"); // 小动物保护指南黑名单
         public static final TagKey<EntityType<?>> ENEMY_BANNER_WHITELIST = register("enemy_banner_whitelist"); // 旗帜白名单
         public static final TagKey<EntityType<?>> ENEMY_BANNER_BLACKLIST = register("enemy_banner_blacklist"); // 旗帜黑名单
+        public static final TagKey<EntityType<?>> GORE_EFFECT_BLACKLIST = register("gore_effect_blacklist"); // 肢解效果黑名单
+        public static final TagKey<EntityType<?>> NPC_INVULNERABLE_TO_PLAYER = register("npc_invulnerable_to_player"); // 能够免疫玩家伤害的NPC
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

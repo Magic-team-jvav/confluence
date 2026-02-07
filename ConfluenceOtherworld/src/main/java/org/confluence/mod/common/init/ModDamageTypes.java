@@ -15,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 public final class ModDamageTypes {
     public static final ResourceKey<DamageType> ACID_VENOM = register("acid_venom");
     public static final ResourceKey<DamageType> BOULDER = register("boulder");
-    public static final ResourceKey<DamageType> BYPASS_NPC_INVULNERABLE_TO_PLAYER = register("bypass_npc_invulnerable_to_player");
     public static final ResourceKey<DamageType> CURSED_INFERNO = register("cursed_inferno");
     public static final ResourceKey<DamageType> DARKNESS = register("darkness");
     public static final ResourceKey<DamageType> FALLING_STAR = register("falling_star");
@@ -42,7 +41,6 @@ public final class ModDamageTypes {
         TETags.DamageTypes.createDamageTypes(context);
         damageType(context, ACID_VENOM, DamageScaling.ALWAYS, 10);
         damageType(context, BOULDER, DamageScaling.ALWAYS, 5);
-        damageType(context, BYPASS_NPC_INVULNERABLE_TO_PLAYER, DamageScaling.ALWAYS, 10);
         damageType(context, CURSED_INFERNO, DamageScaling.ALWAYS, 10, DamageEffects.BURNING);
         damageType(context, DARKNESS, DamageScaling.ALWAYS, 20);
         damageType(context, FALLING_STAR, DamageScaling.ALWAYS, 10);

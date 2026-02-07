@@ -26,6 +26,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.mixed.ILivingEntity;
+import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,6 +94,17 @@ public final class EntityEvents {
         if (attacker instanceof Player a && victim instanceof Player v && (!PlayerSpecialData.of(a).isPvP() || !PlayerSpecialData.of(v).isPvP())) {
             event.setInvulnerable(true);
             return;
+        }
+        if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
+                victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER) &&
+                LibUtils.getOwner(damageSource) instanceof Player player &&
+                !player.isCreative()
+        ) {
+            event.setInvulnerable(true);
+            return;
+        }
+        if (ILivingEntity.of(victim).confluence$getImmunityTicks().containsKey(Immunity.getCause(event.getSource()))) {
+            event.setInvulnerable(true);
         }
     }
 }

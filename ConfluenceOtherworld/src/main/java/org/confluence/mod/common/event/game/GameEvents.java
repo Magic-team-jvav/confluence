@@ -6,6 +6,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -34,10 +35,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
-import org.confluence.mod.common.init.ModCommands;
-import org.confluence.mod.common.init.ModRecipes;
-import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.ArmorItems;
@@ -45,6 +43,7 @@ import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
+import org.confluence.mod.common.item.mana.CrystalVileShardItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IAbstractMinecart;
@@ -56,6 +55,7 @@ import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
+import org.confluence.terra_curio.api.event.ArmorPenetrationEvent;
 import org.confluence.terra_guns.api.event.GunEvent;
 import org.confluence.terraentity.entity.summon.AbstractSummonMob;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -245,6 +245,14 @@ public final class GameEvents {
             } else if (key.chest() == ArmorItems.MAGIC_HAT.get()) {
                 event.setNeoData(ModArmorBonus.MAGIC_HAT_SET_BONUS);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void armorPenetration(ArmorPenetrationEvent event) {
+        Entity direct = event.getDamageSource().getDirectEntity();
+        if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get()) {
+            event.setPenetration(event.getPenetration() + CrystalVileShardItem.ARMOR_PENETRATION);
         }
     }
 }

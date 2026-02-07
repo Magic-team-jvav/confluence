@@ -7,10 +7,13 @@ import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -93,5 +96,11 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         );
         tag(ModTags.EntityTypes.ENEMY_BANNER_BLACKLIST)
                 .addTag(Tags.EntityTypes.BOSSES);
+        tag(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)
+                .addOptionalTag(TETags.EntityTypes.SLIME);
+        IntrinsicTagAppender<EntityType<?>> npcInvulnerableToPlayer = tag(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER);
+        for (DeferredHolder<EntityType<?>, ? extends EntityType<?>> npc : TENpcEntities.NPCS) {
+            npcInvulnerableToPlayer.add(npc.get());
+        }
     }
 }

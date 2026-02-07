@@ -551,9 +551,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.attack_distance", "Attack Distance: %s");
         add("tooltip.confluence.knockback", "Knockback: %s");
         add("tooltip.confluence.disabled", "Disabled");
-
         add("tooltip.confluence.pickaxe_power", "Pickaxe Power: %s%%");
         add("tooltip.confluence.hammer_power", "Hammer Power: %s%%");
+        add("tooltip.confluence.armor_penetration", "Armor Penetration: %s");
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");

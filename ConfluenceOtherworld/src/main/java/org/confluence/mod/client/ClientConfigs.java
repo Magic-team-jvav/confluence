@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModContainer;
@@ -18,6 +19,7 @@ import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.jetbrains.annotations.Nullable;
@@ -195,7 +197,11 @@ public final class ClientConfigs {
             @Override
             public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
                 if (living != null) {
-                    return !ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, living.getType());
+                    EntityType<?> type = living.getType();
+                    if (type.is(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)) {
+                        return true;
+                    }
+                    return !ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, type);
                 }
                 if (item != null) {
                     return !ModUtils.isFromConfluence(BuiltInRegistries.ITEM, item);
@@ -208,7 +214,11 @@ public final class ClientConfigs {
             public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
                 String namespace;
                 if (living != null) {
-                    namespace = BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace();
+                    EntityType<?> type = living.getType();
+                    if (type.is(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)) {
+                        return true;
+                    }
+                    namespace = BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace();
                 } else if (item != null) {
                     namespace = BuiltInRegistries.ITEM.getKey(item).getNamespace();
                 } else {

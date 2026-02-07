@@ -4,9 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -15,11 +19,10 @@ import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.confluence.lib.util.VectorUtils;
+import org.joml.Vector3d;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
     public PineTreeFeature(Codec<Config> pCodec) {
@@ -37,18 +40,40 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
         BlockState leavesBlockState = config.leaves().getState(random, baseBlockPos);
         int height = config.height() + random.nextInt(config.heightMore() + 1);
         boolean chinese_style = config.chineseStyle();
+        Set<BlockPos> rootSet = new HashSet<>();
+        Set<BlockPos> trunkSet = new HashSet<>();
+        Set<BlockPos> leavesSet = new HashSet<>();
+        List<BlockPos> checkPosList = new ArrayList<>();
+        List<BlockPos> trunkPosXList = new ArrayList<>();
+        List<BlockPos> trunkPosYList = new ArrayList<>();
+        List<BlockPos> trunkPosZList = new ArrayList<>();
+        List<BlockPos> leavesPosList = new ArrayList<>();
+        List<BlockPos> vinePosList = new ArrayList<>();
+        TagKey<Block> SPALING_TAG = TagKey.create(Registries.BLOCK, Objects.requireNonNull(ResourceLocation.tryParse("minecraft:saplings")));
+
         if (chinese_style) {
-            //TODO
+            int offset = height / 3 * 2;
+            int xOffset = random.nextInt(offset / 2, offset + 1) * (random.nextBoolean() ? 1 : -1);
+            int zOffset = random.nextInt(offset / 2, offset + 1) * (random.nextBoolean() ? 1 : -1);
+            BlockPos headPos = baseBlockPos.offset(xOffset, height, zOffset);
+            List<Vector3d> trunkList = new ArrayList<>();
+            List<Vector3d> brunchList = new ArrayList<>();
+            trunkList.add(VectorUtils.toVector3d(baseBlockPos));
+            trunkList.add(new Vector3d(baseBlockPos.getX() + (double) xOffset / 2 * random.nextDouble(), baseBlockPos.getY() + (double) height / 2, baseBlockPos.getZ() + (double) zOffset / 2 * random.nextDouble()));
+            trunkList.add(new Vector3d(headPos.getX() - (double) xOffset / 2 * random.nextDouble(), baseBlockPos.getY() + (double) height / 2, headPos.getZ() - (double) zOffset / 2 * random.nextDouble()));
+            trunkList.add(VectorUtils.toVector3d(headPos));
+            brunchList.add(trunkList.get(1));
+            brunchList.add(new Vector3d(baseBlockPos.getX() - xOffset + (double) xOffset / 2 * random.nextDouble(), baseBlockPos.getY() + (double) height / 2, baseBlockPos.getZ() - zOffset + (double) zOffset / 2 * random.nextDouble()));
+            brunchList.add(new Vector3d(baseBlockPos.getX() - xOffset, (brunchList.get(1).y + headPos.getY()) / 2, baseBlockPos.getX() - zOffset));
+            VectorUtils.lightningPathList(trunkList, 0.5, 0.2F, random);
+            VectorUtils.lightningPathList(brunchList, 0.5, 0.2F, random);
+            trunkList.addAll(brunchList);
+            for (Vector3d trunkVct : trunkList) {
+                BlockPos trunkPos = BlockPos.containing(trunkVct.x, trunkVct.y, trunkVct.z);
+                level.setBlock(trunkPos, trunkBlockState, 3);
+            }
+            return true;
         } else {
-            Set<BlockPos> rootSet = new HashSet<>();
-            Set<BlockPos> trunkSet = new HashSet<>();
-            Set<BlockPos> leavesSet = new HashSet<>();
-            List<BlockPos> checkPosList = new ArrayList<>();
-            List<BlockPos> trunkPosXList = new ArrayList<>();
-            List<BlockPos> trunkPosYList = new ArrayList<>();
-            List<BlockPos> trunkPosZList = new ArrayList<>();
-            List<BlockPos> leavesPosList = new ArrayList<>();
-            List<BlockPos> vinePosList = new ArrayList<>();
             boolean placed = true;
             int maxSide = 0;
             for (int i = 0; i < (height) / 4; i++) {
@@ -114,7 +139,7 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
             leavesPosList.add(baseBlockPos.offset(0, height, 0));
             leavesPosList.add(baseBlockPos.offset(0, height + 1, 0));
             for (BlockPos checkPos : checkPosList) {
-                placed = !level.getBlockState(checkPos).canBeReplaced();
+                placed = level.getBlockState(checkPos).canBeReplaced() || level.getBlockState(checkPos).is(SPALING_TAG);
                 if (!placed) break;
             }
             if (placed) {

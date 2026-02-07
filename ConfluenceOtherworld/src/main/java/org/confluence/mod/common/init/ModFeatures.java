@@ -142,6 +142,8 @@ public final class ModFeatures {
         public static final TreeGrower SAPPHIRE_GROWER = registerSmallTree("sapphire", Configured.SAPPHIRE_TREE);
         public static final TreeGrower AMETHYST_GROWER = registerSmallTree("amethyst", Configured.AMETHYST_TREE);
         public static final TreeGrower ASH_GROWER = registerSmallTree("ash", Configured.ASH_TREE);
+        public static final TreeGrower PINE_GROWER = registerSmallTree("pine", Configured.PINE_TREE);
+        public static final TreeGrower CHINESE_PINE_GROWER = registerSmallTree("chinese_pine", Configured.CHINESE_PINE_TREE);
         public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow", Configured.YELLOW_WILLOW_TREE);
         public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab", Configured.BAOBAB_TREE);
 

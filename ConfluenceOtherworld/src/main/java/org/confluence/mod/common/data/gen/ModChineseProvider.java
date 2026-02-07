@@ -877,6 +877,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.coins_large", "大量钱币:拾起");
         add("confluence.subtitle.lucyaxe_talk", "露西斧:娇嗔");
         add("confluence.subtitle.repeater_item_aerial_shooting", "连弩:装填箭矢");
+        add("confluence.subtitle.crystal_vile_shard_shoot", "魔晶碎块:延伸");
 
         add("terra_curio.subtitle.transmission", "传送魔法：开启");
         add("terra_curio.subtitle.fart_sound", "玩家：放屁声");
@@ -1217,7 +1218,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.VILETHRON_PROJECTILE.get(), "魔刺射弹");
         add(ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get(), "魔晶碎块射弹");
         add(ModEntities.WATER_STREAM_PROJECTILE.get(), "水流射弹");
-        add(ModEntities.WEB_SLINGER.get(), "网射手");
+        add(ModEntities.WEB_SLINGER.get(), "蛛丝吊索钩");
         add(ModEntities.WET_BOMB.get(), "湿炸弹");
         add(ModEntities.VANILLA_MINECART.get(), "矿车");
         add(ModEntities.WOODEN_MINECART.get(), "木制矿车");
@@ -3039,6 +3040,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.CRIMSON_ROD.get(), "猩红魔杖");
         add(ManaWeaponItems.NIMBUS_ROD.get(), "雨云魔杖");
         add(ManaWeaponItems.GOLDEN_SHOWER.get(), "黄金雨");
+        add(ManaWeaponItems.CRYSTAL_VILE_SHARD.get(), "魔晶碎块");
 
         add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
         add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");

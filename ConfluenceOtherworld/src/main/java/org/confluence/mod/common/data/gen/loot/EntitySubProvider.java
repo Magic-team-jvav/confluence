@@ -996,7 +996,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(TEMonsterEntities.HALLOWED_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hallowed_mimic"),bigMimicCommon()
                 .withPool(LootPool.lootPool()
                         // 飞刀
-                        // 魔晶碎块
+                        .add(LootItem.lootTableItem(ManaWeaponItems.CRYSTAL_VILE_SHARD))
                         .add(LootItem.lootTableItem(BowItems.DAEDALUS_STORM_BOW))
                         .add(LootItem.lootTableItem(HookItems.ILLUMINANT_HOOK))
                 )

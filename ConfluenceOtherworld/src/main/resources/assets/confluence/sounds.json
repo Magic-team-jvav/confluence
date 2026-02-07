@@ -187,5 +187,11 @@
         ],
         "volume": 0.1,
         "subtitle": "confluence.subtitle.repeater_item_aerial_shooting"
+    },
+    "crystal_vile_shard_shoot": {
+        "sounds": [
+            "confluence:crystal_vile_shard_shoot"
+        ],
+        "subtitle": "confluence.subtitle.crystal_vile_shard_shoot"
     }
 }

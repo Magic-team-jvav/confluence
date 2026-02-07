@@ -849,6 +849,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.coins_large", "Large Coins: Collected");
         add("confluence.subtitle.lucyaxe_talk", "Lucy Axe: Coquettish Remonstrance");
         add("confluence.subtitle.repeater_item_aerial_shooting", "Repeater Crossbow: Load Arrows");
+        add("confluence.subtitle.crystal_vile_shard_shoot", "Crystal Vile Shard: Extend");
 
         add("terra_curio.subtitle.transmission", "Transmission Magic: Activated");
         add("terra_curio.subtitle.fart_sound", "Player: Fart Sound");

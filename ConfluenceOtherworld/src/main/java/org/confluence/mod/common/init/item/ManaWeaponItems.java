@@ -45,6 +45,6 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = ITEMS.register("crystal_storm", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 23, 5, 16, 3, 0.04));
     public static final DeferredItem<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = ITEMS.register("cursed_flames", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 32, 9, 10, 5, 0.04));
     public static final DeferredItem<GoldenShowerItem> GOLDEN_SHOWER = ITEMS.register("golden_shower", GoldenShowerItem::new);
-    public static final DeferredItem<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = ITEMS.register("crystal_vile_shard", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalVileShardProjectile::new, 4.5F, 10, 8.0F, 18, 0.04));
+    public static final DeferredItem<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = ITEMS.register("crystal_vile_shard", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalVileShardProjectile::new, 17.5F, 13, 7.0F, 22, 0.04));
 
 }

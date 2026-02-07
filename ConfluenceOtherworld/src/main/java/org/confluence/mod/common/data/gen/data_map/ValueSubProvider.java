@@ -642,6 +642,7 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.FLOWER_OF_FIRE, gold2 + silver50)
                 .add(ManaWeaponItems.THUNDER_ZAPPER, 2100)
                 .add(ManaWeaponItems.GOLDEN_SHOWER, gold2 + gold2)
+                .add(ManaWeaponItems.CRYSTAL_VILE_SHARD, gold10 - gold2)
                 .add(ManaWeaponItems.FLOWER_OF_FROST, gold5)
                 .add(ManaWeaponItems.MAGIC_DAGGER, gold5)
                 .add(ManaWeaponItems.CRYSTAL_STORM, gold5 - gold1)

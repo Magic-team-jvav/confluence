@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.block.natural.BaseDroopingPlantsHeadBlock;
 import org.joml.Vector3d;
 
 import java.util.*;
@@ -56,22 +57,6 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
             int xOffset = random.nextInt(offset / 2, offset + 1) * (random.nextBoolean() ? 1 : -1);
             int zOffset = random.nextInt(offset / 2, offset + 1) * (random.nextBoolean() ? 1 : -1);
             BlockPos headPos = baseBlockPos.offset(xOffset, height, zOffset);
-            List<Vector3d> trunkList = new ArrayList<>();
-            List<Vector3d> brunchList = new ArrayList<>();
-            trunkList.add(VectorUtils.toVector3d(baseBlockPos));
-            trunkList.add(new Vector3d(baseBlockPos.getX() + (double) xOffset / 2 * random.nextDouble(), baseBlockPos.getY() + (double) height / 2, baseBlockPos.getZ() + (double) zOffset / 2 * random.nextDouble()));
-            trunkList.add(new Vector3d(headPos.getX() - (double) xOffset / 2 * random.nextDouble(), baseBlockPos.getY() + (double) height / 2, headPos.getZ() - (double) zOffset / 2 * random.nextDouble()));
-            trunkList.add(VectorUtils.toVector3d(headPos));
-            brunchList.add(trunkList.get(1));
-            brunchList.add(new Vector3d(baseBlockPos.getX() - xOffset + (double) xOffset / 2 * random.nextDouble(), baseBlockPos.getY() + (double) height / 2, baseBlockPos.getZ() - zOffset + (double) zOffset / 2 * random.nextDouble()));
-            brunchList.add(new Vector3d(baseBlockPos.getX() - xOffset, (brunchList.get(1).y + headPos.getY()) / 2, baseBlockPos.getX() - zOffset));
-            VectorUtils.lightningPathList(trunkList, 0.5, 0.2F, random);
-            VectorUtils.lightningPathList(brunchList, 0.5, 0.2F, random);
-            trunkList.addAll(brunchList);
-            for (Vector3d trunkVct : trunkList) {
-                BlockPos trunkPos = BlockPos.containing(trunkVct.x, trunkVct.y, trunkVct.z);
-                level.setBlock(trunkPos, trunkBlockState, 3);
-            }
             return true;
         } else {
             boolean placed = true;
@@ -157,6 +142,12 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
                 }
                 for (BlockPos trunkPos : trunkPosYList) {
                     level.setBlock(trunkPos, trunkBlockState, 3);
+                }
+                for (BlockPos vinePos : vinePosList) {
+                    if (level.getBlockState(vinePos).is(vineBlockState.getBlock()) && level.getBlockState(vinePos.offset(0, -1, 0)).is(vineBlockState.getBlock())) {
+                        if (level.getBlockState(vinePos.offset(0, 1, 0)).is(vineBlockState.getBlock())) level.setBlock(vinePos, vineBlockState.trySetValue(BaseDroopingPlantsHeadBlock.PART, BaseDroopingPlantsHeadBlock.VinePart.BODY), 3);
+                        else level.setBlock(vinePos, vineBlockState.trySetValue(BaseDroopingPlantsHeadBlock.PART, BaseDroopingPlantsHeadBlock.VinePart.TAIL), 3);
+                    }
                 }
                 maxSide += 2;
                 rootSet.add(baseBlockPos.offset(0, height, 0));

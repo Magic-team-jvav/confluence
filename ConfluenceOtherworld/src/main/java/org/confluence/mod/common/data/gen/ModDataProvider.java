@@ -477,8 +477,8 @@ public class ModDataProvider {
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get()),
-                            14,
-                            10,
+                            7,
+                            4,
                             true
                     )
             );

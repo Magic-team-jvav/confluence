@@ -55,9 +55,7 @@ public final class DynamicBiomeUtils {
         .put(block -> block.getFluidState().is(Tags.Fluids.WATER), (counter, count) -> counter.water.addAndGet(count))
         .build();
 
-    /**
-     * 动态群系的优先级，数字小的优先级高
-     */
+    /// 动态群系的优先级，数字小的优先级高
     public static final Object2IntMap<ResourceKey<Biome>> PRIORITY = Util.make(new Object2IntOpenHashMap<>(), map -> {
         map.defaultReturnValue(Integer.MAX_VALUE);
         map.put(ModBiomes.THE_HALLOW_TUNDRA, 100);
@@ -72,13 +70,11 @@ public final class DynamicBiomeUtils {
         map.put(ModBiomes.GLOWING_MUSHROOM, 1000);
     });
 
-    /**
-     * 判断这个区块的纯净形态应该是什么样的
-     * <p>
-     * 如果原群系包含邪恶：如果纯邪恶则返回平原，否则从纯净中挑一个
-     * <p>
-     * 如果原群系没有邪恶则返回原群系
-     */
+    /// 判断这个区块的纯净形态应该是什么样的
+    ///
+    /// 如果原群系包含邪恶：如果纯邪恶则返回平原，否则从纯净中挑一个
+    ///
+    /// 如果原群系没有邪恶则返回原群系
     @NotNull
     public static PalettedContainer<Holder<Biome>> judgeBackupBiome(LevelChunkSection section, HolderLookup.RegistryLookup<Biome> lookup) {
         PalettedContainer<Holder<Biome>> biomes = (PalettedContainer<Holder<Biome>>) section.getBiomes();
@@ -106,9 +102,7 @@ public final class DynamicBiomeUtils {
         return biomes;
     }
 
-    /**
-     * @return 平衡的结果，纯净返回null
-     */
+    /// @return 平衡的结果，纯净返回null
     public static @Nullable Holder<Biome> judgeSection(LevelChunkSection section, HolderLookup.RegistryLookup<Biome> lookup) {
         BlockCounts counts = ILevelChunkSection.of(section).confluence$getBlockCounts();
         int sunflower = counts.sunflower.get() * 64;
@@ -160,9 +154,7 @@ public final class DynamicBiomeUtils {
         return ILevelChunkSection.of(getSection(level, pos));
     }
 
-    /**
-     * 为这个区块应用动态群系，从底部判断到顶部，应用动态群系的规则
-     */
+    /// 为这个区块应用动态群系，从底部判断到顶部，应用动态群系的规则
     public static void applyDynamicBiome(ChunkAccess chunk, HolderLookup.RegistryLookup<Biome> lookup) {
         Holder<Biome> belowBiome = null;
         for (LevelChunkSection section : chunk.getSections()) {

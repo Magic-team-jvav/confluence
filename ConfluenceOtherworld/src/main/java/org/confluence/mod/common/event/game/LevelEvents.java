@@ -2,8 +2,6 @@ package org.confluence.mod.common.event.game;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,10 +9,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,7 +30,6 @@ import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.StaffOfRegrowth;
@@ -59,28 +53,6 @@ public final class LevelEvents {
             Block block = LogBlockSet.WRAPPED_STRIP_TABLE.get(originalState.getBlock());
             if (block != null) {
                 event.setFinalState(block.defaultBlockState().trySetValue(RotatedPillarBlock.AXIS, originalState.getValue(RotatedPillarBlock.AXIS)));
-            }
-        }
-        if (event.getItemAbility() == ItemAbilities.SHOVEL_FLATTEN) {
-            BlockState originalState = event.getState();
-            if (originalState.is(NatureBlocks.JUNGLE_GRASS_BLOCK.get())) {
-                event.setFinalState(NatureBlocks.JUNGLE_PATH.get().defaultBlockState());
-            } else if (originalState.is(NatureBlocks.MUSHROOM_GRASS_BLOCK.get())) {
-                event.setFinalState(NatureBlocks.MUSHROOM_PATH.get().defaultBlockState());
-            } else if (originalState.is(NatureBlocks.ASH_GRASS_BLOCK.get())) {
-                event.setFinalState(NatureBlocks.ASH_PATH.get().defaultBlockState());
-            }
-        }
-        if (event.getItemAbility() == ItemAbilities.HOE_TILL) {
-            BlockState originalState = event.getState();
-            LevelAccessor levelAccessor = event.getLevel();
-            BlockPos pos = event.getPos();
-            if (originalState.is(NatureBlocks.MYCELIAL_DIRT.get())) {
-                if (levelAccessor instanceof Level level && !level.isClientSide()) {
-                    event.setFinalState(Blocks.DIRT.defaultBlockState());
-                    Block.popResource(level, pos, new ItemStack(NatureBlocks.HANGING_MYCELIUM.get()));
-                    level.playSound(null, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
-                }
             }
         }
     }

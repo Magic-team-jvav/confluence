@@ -31,9 +31,7 @@ import java.util.Set;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-/**
- * <a href="https://terraria.wiki.gg/zh/wiki/%E7%94%9F%E7%89%A9%E7%BE%A4%E7%B3%BB%E8%94%93%E5%BB%B6">生物群系蔓延</a>
- */
+/// [生物群系蔓延](https://terraria.wiki.gg/zh/wiki/%E7%94%9F%E7%89%A9%E7%BE%A4%E7%B3%BB%E8%94%93%E5%BB%B6)
 public interface ISpreadable {
     // That was a joke haha!
     BooleanProperty STILL_ALIVE = BooleanProperty.create("still_alive");
@@ -42,26 +40,21 @@ public interface ISpreadable {
 
     default void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!blockState.getValue(STILL_ALIVE)) return;
-        if (blockState.is(ModTags.Blocks.SPREADABLE_GRASS_BLOCK)) {
-            if (isFullBlock(serverLevel, blockPos.above())) {
-                serverLevel.setBlockAndUpdate(blockPos, Blocks.MUD.defaultBlockState());
-                return;
-            }
-        }
         int chance = serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE);
         int phase = KillBoard.INSTANCE.getGamePhase().getOrder();
         if (phase >= GamePhase.PLANTERA.getOrder()) {
             chance /= 2;
         }
         if (chance != 100 && (chance == 0 || randomSource.nextInt(100) >= chance)) return;
+
         boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
             if (!serverLevel.isLoaded(targetPos)) continue;
-            BlockState currentTarget = serverLevel.getBlockState(targetPos);
-            BlockState target = getSpreadType().getNullable(currentTarget, hardmode);
+
+            BlockState target = getSpreadType().getNullable(serverLevel.getBlockState(targetPos), hardmode);
             if (target == null) continue;
-            if (currentTarget.is(target.getBlock())) continue;
+
             if (target.is(ModTags.Blocks.SPREADABLE_GRASS_BLOCK)) {
                 if (!isFullBlock(serverLevel, targetPos.above())) {
                     spreadOrDie(phase, blockState, serverLevel, blockPos, randomSource, target, targetPos);
@@ -135,18 +128,18 @@ public interface ISpreadable {
     private static void searchBox(ServerLevel serverLevel, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
         if (depth == 128) return;
         for (BlockPos relative : BlockPos.betweenClosed(targetPos.offset(-1, -1, -1), targetPos.offset(1, 1, 1))) {
-            BlockPos immutableRelative = relative.immutable();
-            if (map.containsKey(immutableRelative)) continue;
-            BlockState blockState = serverLevel.getBlockState(immutableRelative);
+            relative = relative.immutable();
+            if (map.containsKey(relative)) continue;
+            BlockState blockState = serverLevel.getBlockState(relative);
             if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
-                map.put(immutableRelative, blockState);
+                map.put(relative, blockState);
                 if (PALMS.get().contains(blockState.getBlock())) {
-                    searchBox(serverLevel, immutableRelative, map, depth + 1);
+                    searchBox(serverLevel, relative, map, depth + 1);
                 } else {
-                    searchFace(serverLevel, immutableRelative, map, depth + 1);
+                    searchFace(serverLevel, relative, map, depth + 1);
                 }
             } else {
-                map.put(immutableRelative, AIR);
+                map.put(relative, AIR);
             }
         }
     }

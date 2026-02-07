@@ -1541,9 +1541,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.GRASS_BLOCK,
                 JUNGLE_GRASS_BLOCK.get(),
                 CORRUPT_JUNGLE_GRASS_BLOCK.get(),
+                CORRUPT_GRASS_BLOCK.get(),
                 CRIMSON_JUNGLE_GRASS_BLOCK.get(),
+                CRIMSON_GRASS_BLOCK.get(),
                 MUSHROOM_GRASS_BLOCK.get(),
-                ASH_GRASS_BLOCK.get()
+                ASH_GRASS_BLOCK.get(),
+                HALLOW_GRASS_BLOCK.get()
         );
         tag(ModTags.Blocks.CRIMSON_BLOCKS).addTags(
                 ModTags.Blocks.CRIMSON_DESERT_BLOCKS,

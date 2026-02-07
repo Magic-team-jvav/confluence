@@ -74,6 +74,7 @@
 - 仅汇流来世的NPC可以无视玩家伤害
 
 ## 更新内容：
+
 - 同步泰拉瑞亚1.4.5版本：
   - 占卜球
   - 将史莱姆王冠丢入微光可以召唤史莱姆雨
@@ -84,8 +85,6 @@
 - 现在发光蘑菇地上会生长超大型生命蘑菇
 - 现在生命蘑菇可以被骨粉催熟至大型生命蘑菇
 
-
-
 # Changelog (1.2.2):
 
 ## Important Notes:
@@ -95,8 +94,89 @@
 
 ## Fixes:
 
+- Fixed an issue where creating a world would generate Hungry (Devourer segments) when "Advanced
+  Loot Info" mod is also loaded.
+- Fixed the Lethargic effect configuration not working.
+- Fixed being able to see wires even when the Mechanical Prism is turned off.
+- Fixed auto-attack affecting lances.
+- Fixed fishing quests failing to distinguish between evil biomes.
+- Fixed the Shimmer Transmutation Pot consuming all Aether Blocks.
+- Fixed the Slime Rain event not triggering.
+- Suppressed error messages from the Shimmer Transmutation Pot.
+- Fixed a chunk loading deadlock caused by the "Buff All Creatures" option in Terra Creature
+  Configuration.
+- Fixed Cursed Skull enemies in the Dungeon not being highlighted by Hunter Potion.
+- Fixed compatibility with AzureLib (again).
+- Fixed missing bonuses added by Confluence to vanilla loot tables.
+- Fixed a Bestiary crash.
+- Fixed Bestiary data loss when reloading resource packs.
+- Fixed the clear command not working.
+- Fixed confusion between natural life regeneration and manual healing.
+- Fixed various bugs related to Step Stools.
+- Fixed incorrect Bestiary keys.
+
 ## Optimizations:
+
+- Added smoother movement for yoyos.
+- Confluence custom window title.
+- NPCs no longer spawn inside walls or in mid-air.
+- At 18:00 (tick 12000), there's a 20% chance for the moon to be replaced by a special version.
+- Adjusted Crossbone model offset and improved Spiky Ball rolling/sliding.
+- Opening crates and upgrading coins no longer requires pointing at empty space.
+- Rewrote the team system. PvP is now automatically turned off when exiting a world (Multiplayer
+  only).
+- Added more Bestiary entries.
+- Spelunker Potion effect, Dangersense Potion effect, Gravitation Potion effect, and the Metal
+  Detector item now display their hotkey in the inventory.
+- Increased Bee Gun projectile sensitivity.
+- Added support for MrCrayfish's Furniture Mod items as valid NPC housing furniture. chair, sofa,
+  and stool series count as chairs; table and desk series count as tables.
 
 ## Adjustments:
 
+- Synchronized with Terraria 1.4.5:
+  - Replaced Suspicious Looking Eye with Deer Thing in the Frozen Chest loot table.
+  - Added Slime Staff (3.33% chance) to King Slime's Treasure Bag loot table.
+  - Unlocking 16 Bestiary entries is now required to buy the Leather Whip from the Zoologist.
+  - Increased materials required for crafting Bottomless Bags from 3,996 to 9,999.
+  - Increased Bat Bat attack speed.
+  - Increased Gladius attack speed.
+  - Purple Clubberfish now has a 50% chance to inflict Confused.
+  - The Beekeeper now has a 100% chance to inflict Confused.
+  - Increased Storm Spear projectile range and damage.
+  - Increased Spiky Ball duration by 33%.
+  - Increased Flintlock Pistol critical strike chance by 6% and projectile speed by 20%.
+  - Increased Musket critical strike chance by 1%.
+  - Increased Tactical Shotgun damage by 2.
+  - Decreased Thunder Zapper mana cost by 1.
+  - Increased Space Gun's enemy penetration limit by 2.
+  - Decreased Magic Dagger damage by 3.
+  - Increased Crystal Storm damage by 2.
+  - Increased Spinal Tap damage by 2.
+  - NPCs no longer require happiness conditions to sell Pylons.
+  - Falcon Blade and Exotic Scimitar gain a temporary 12% damage increase on hit, stacking up to
+    50%. The bonus decays at 30% per second.
+  - Replaced mineral contents in Obsidian Lock Boxes and Hellstone Lock Boxes with Hellstone, and
+    added a 5% chance for a Hellforge.
+  - Increased chance to get Dungeon Brick from Dungeon and Locked Golden Chests by 50%.
+  - Increased Terra Blade acquisition weight by 2.
+- Rewrote Enemy Banners. They can now be obtained directly from the Bestiary.
+- Crossbone gains 4 ticks of invincibility frames when attacking.
+- Titanium Shard barrier damage source is now changed to the player.
+- Defense-halving now also applies to late-game accessories.
+- Maximum additional height for Step Stools changed to 7.
+- Wings activate before Flying Carpet.
+- Only Confluence NPCs are immune to player damage.
+
 ## New Content:
+
+- Synchronized with Terraria 1.4.5:
+  - Scrying Orb.
+  - Throwing a Slime Crown into Shimmer now triggers a Slime Rain.
+  - Boulder World now experiences Boulder Rain during Rain and Thunderstorms.
+- Honey Slime: Created by soaking Blue, Purple, or Green Slimes in Honey for a period. Now drops
+  large amounts of Nectar.
+- Pine series: Pine surface features have a 25% chance to be replaced with Confluence Pine trees.
+- Added Faewood series.
+- Giant Life Mushrooms now grow in surface Glowing Mushroom biomes.
+- Life Mushrooms can now be grown into Giant Life Mushrooms using Bone Meal.

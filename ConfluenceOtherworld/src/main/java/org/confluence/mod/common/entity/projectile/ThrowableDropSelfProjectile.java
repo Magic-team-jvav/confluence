@@ -102,9 +102,13 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
 
     @Override
     protected void applyGravity() {
-        if (tickCount > getFlyTicks()) {
+        if (shouldApplyGravity()) {
             super.applyGravity();
         }
+    }
+
+    public boolean shouldApplyGravity() {
+        return tickCount > getFlyTicks();
     }
 
     @Override

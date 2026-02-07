@@ -33,7 +33,7 @@ public class CrystalVileShardProjectileRenderer extends GeoNegativeVolumeRendere
     @Override
     protected void applyRotations(CrystalVileShardProjectile animatable, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTick, float nativeScale) {
         float[] rot = animatable.getRot();
-        poseStack.mulPose(Axis.YP.rotation(rot[0]+Mth.PI));
+        poseStack.mulPose(Axis.YP.rotation(rot[0] + Mth.PI));
         poseStack.mulPose(Axis.XP.rotation(rot[1]));
     }
 

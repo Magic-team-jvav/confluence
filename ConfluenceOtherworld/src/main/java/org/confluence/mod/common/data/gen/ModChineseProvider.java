@@ -1707,6 +1707,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.SLAB.get(), "阴森木台阶");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.LEAVES.get(), "阴森木树叶");
 
+        add(NatureBlocks.FEY_LOG_BLOCKS.LOG.get(), "仙灵原木");
+        add(NatureBlocks.FEY_LOG_BLOCKS.WOOD.get(), "仙灵木");
+        add(NatureBlocks.FEY_LOG_BLOCKS.PLANKS.get(), "仙灵木板");
+        add(NatureBlocks.FEY_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮仙灵木原木");
+        add(NatureBlocks.FEY_LOG_BLOCKS.STRIPPED_WOOD.get(), "去皮仙灵木");
+        add(NatureBlocks.FEY_LOG_BLOCKS.PRESSURE_PLATE.get(), "仙灵木压力板");
+        add(NatureBlocks.FEY_LOG_BLOCKS.FENCE.get(), "仙灵木栅栏");
+        add(NatureBlocks.FEY_LOG_BLOCKS.FENCE_GATE.get(), "仙灵木栅栏门");
+        add(NatureBlocks.FEY_LOG_BLOCKS.BUTTON.get(), "仙灵按钮");
+        add(NatureBlocks.FEY_LOG_BLOCKS.DOOR.get(), "仙灵木门");
+        add(NatureBlocks.FEY_LOG_BLOCKS.TRAPDOOR.get(), "仙灵木活板门");
+        add(NatureBlocks.FEY_LOG_BLOCKS.SIGN.get(), "仙灵木告示牌");
+        add(NatureBlocks.FEY_LOG_BLOCKS.HANGING_SIGN.get(), "仙灵木悬挂告示牌");
+        add(NatureBlocks.FEY_LOG_BLOCKS.STAIRS.get(), "仙灵木楼梯");
+        add(NatureBlocks.FEY_LOG_BLOCKS.SLAB.get(), "仙灵木台阶");
+
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
         add(NatureBlocks.CLOUDWEAVER.get(), "云织草");
@@ -1729,7 +1745,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_LOG_BLOCKS.SAPLING.get(), "灰烬树苗");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING.get(), "黄柳树苗");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get(), "猴面包树苗");
-        // add(NatureBlocks.PINE_LOG_BLOCKS.SAPLING.get(), "松树树苗");
+        add(NatureBlocks.PINE_LOG_BLOCKS.SAPLING.get(), "松树苗");
+        add(NatureBlocks.PRUNED_PINE_SAPLING.get(), "修枝松树苗");
 
 
         add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");
@@ -1923,6 +1940,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.DYNASTY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹王朝木板");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹阴森木板");
         add(NatureBlocks.PINE_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹松树木板");
+        add(NatureBlocks.FEY_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹仙灵木板");
         add(DecorativeBlocks.GRANITE_BRICKS.get(), "花岗岩砖");
         add(DecorativeBlocks.CRACKED_GRANITE_BRICKS.get(), "裂纹花岗岩砖");
         add(DecorativeBlocks.CHISELED_GRANITE_BRICKS.get(), "雕纹花岗岩砖");

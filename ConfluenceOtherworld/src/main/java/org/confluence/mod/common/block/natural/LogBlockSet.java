@@ -592,7 +592,8 @@ public class LogBlockSet {
         ASH("ash"),
         DYNASTY("dynasty"),
         PINE("pine"),
-        SPOOKY("spooky");
+        SPOOKY("spooky"),
+        FEY("fey");
 
         public final BlockSetType SET;
         public final WoodType TYPE;

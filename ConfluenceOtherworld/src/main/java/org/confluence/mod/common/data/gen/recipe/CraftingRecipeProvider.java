@@ -1191,6 +1191,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 new ItemStack(Items.TRIPWIRE_HOOK, 2)
         );
         shapeless(output, new ItemStack(Items.FLINT_AND_STEEL), Ingredient.of(ModTags.Items.LEAD_AND_IRON), Ingredient.of(Items.FLINT));
+        shapeless(output, new ItemStack(NatureBlocks.FEY_LOG_BLOCKS.LOG,8), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS),Ingredient.of(MaterialItems.LIFE_MUSHROOM));
 
         // 石头及深板岩压力板
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));

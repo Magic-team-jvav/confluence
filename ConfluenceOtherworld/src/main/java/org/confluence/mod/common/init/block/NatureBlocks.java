@@ -212,6 +212,9 @@ public class NatureBlocks {
     public static final LogBlockSet PINE_LOG_BLOCKS = LogBlockSet.builder("pine", true, PINE).leaves(properties -> new TransparentLeavesBlock(properties.noOcclusion())).build();
     public static final DeferredBlock<PineSaplingBlock> PINE_SAPLING = registerWithItem("pine_sapling", () -> new PineSaplingBlock(ModFeatures.TreeGrowers.PINE_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final DeferredBlock<PineSaplingBlock> PRUNED_PINE_SAPLING = registerWithItem("pruned_pine_sapling", () -> new PineSaplingBlock(ModFeatures.TreeGrowers.CHINESE_PINE_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+
+    // 仙灵木
+    public static final LogBlockSet FEY_LOG_BLOCKS = LogBlockSet.builder("fey", true, FEY).leaves(null).build();
     // 空岛
     public static final DeferredBlock<CloudBlock> CLOUD_BLOCK = registerWithItem("cloud_block", () -> new CloudBlock(BlockBehaviour.Properties.of()
             .mapColor(MapColor.TERRACOTTA_WHITE)

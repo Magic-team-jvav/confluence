@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_glazed_terracotta",
   "textures": {
-    "pattern": "confluence:block/chiseled_marble_bricks"
+    "pattern": "confluence:block/gilded_marble"
   }
 }

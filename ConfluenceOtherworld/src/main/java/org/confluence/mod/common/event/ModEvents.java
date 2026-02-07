@@ -537,6 +537,7 @@ public final class ModEvents {
         event.register(TEAnimals.FEALING.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.SCORPION.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEMonsterEntities.DEMON_EYE.get(), (type, eye) -> {
             String key = type.getDescriptionId() + '.';
             if (eye.minion_getOwnerUUID() != null) {
@@ -552,8 +553,10 @@ public final class ModEvents {
             Item chest = zombie.getItemBySlot(EquipmentSlot.CHEST).getItem();
             if (chest == ArmorItems.RAINCOAT.get()) {
                 return key + ".raincoat";
-            } else if (chest == ArmorItems.SNOW_SUITS.get() || chest == ArmorItems.PINK_SNOW_SUITS.get()) {
+            } else if (chest == ArmorItems.SNOW_SUITS.get()) {
                 return key + ".frozen";
+            } else if (chest == ArmorItems.PINK_SNOW_SUITS.get()) {
+                return key + ".frozen.pink";
             }
             return key;
         }));

@@ -793,10 +793,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.npc.left", "%s has left!");
         add("event.confluence.traveling_merchant.departed", "%s the Traveling Merchant has departed!");
         add("event.confluence.npc_invitation", "Invitation delivered! A new batch of NPCs will be added in the region from chunk pos [%1$s, %2$s] to [%3$s, %4$s]!");
-        add("event.confluence.spelunker.first_trigger", "Hold the Tab key (改为玩家的设置按键) to view detailed information");
-        add("event.confluence.danger_sense.first_trigger", "Hold the Tab key (改为玩家的设置按键) to view detailed information");
-        add("event.confluence.gravitation.first_trigger", "Hold the ↑ key (改为玩家的设置按键) to reverse gravity");
-        add("event.confluence.metal_detector.first_trigger", "Hold the Ctrl key (改为玩家的设置按键) to use the metal detector");
 
         add("event.confluence.reveal_step0", "Your world has been blessed with Cobalt and Palladium!");
         add("event.confluence.reveal_step1", "Your world has been blessed with Mythril and Orichalcum!");
@@ -1231,8 +1227,8 @@ public class ModEnglishProvider extends LanguageProvider {
         addPotion(PotionItems.WATER_WALKING_POTION.get(), "Allows the ability to walk on water");
         addPotion(PotionItems.FEATHERFALL_POTION.get(), "Slows falling speed");
         addPotion(PotionItems.RANDOM_TELEPORT_POTION.get(), "Teleports you to a random location");
-        addPotion(PotionItems.SPELUNKER_POTION.get(), "Shows the location of treasure and ore; press Tab for detailed information");
-        addPotion(PotionItems.DANGERSENSE_POTION.get(), "Allows you to see nearby danger sources; press Tab for detailed information");
+        addPotion(PotionItems.SPELUNKER_POTION.get(), "Shows the location of treasure and ore");
+        addPotion(PotionItems.DANGERSENSE_POTION.get(), "Allows you to see nearby danger sources");
         addPotion(PotionItems.HUNTER_POTION.get(), "Shows the location of enemies");
         addPotion(PotionItems.CRATE_POTION.get(), "Increases chance to get a crate");
         addPotion(PotionItems.CHAOS_POTION.get(), "Grants random effects");
@@ -1281,8 +1277,8 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.WATER_WALKING.get(), "Can walk on liquids.");
         addEffect(ModEffects.MAGIC_POWER.get(), "20% increased magic damage");
         addEffect(ModEffects.FLIPPER.get(), "Move like normal in water");
-        addEffect(ModEffects.SPELUNKER.get(), "Shows the location of treasure and ore");
-        addEffect(ModEffects.HUNTER.get(), "Shows the location of enemies");
+        addEffect(ModEffects.SPELUNKER.get(), "Shows the location of treasure and ore; press [%s] for detailed information");
+        addEffect(ModEffects.HUNTER.get(), "Shows the location of enemies; press [%s] for detailed information");
         addEffect(ModEffects.DANGER_SENSE.get(), "You can see nearby hazards");
         addEffect(ModEffects.FROZEN.get(), "You can't move!");
         addEffect(ModEffects.STINKY.get(), "You smell terrible");

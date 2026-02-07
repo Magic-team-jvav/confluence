@@ -821,10 +821,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.npc.left", "%s已离开！");
         add("event.confluence.traveling_merchant.departed", "旅商%s已离去！");
         add("event.confluence.npc_invitation", "请柬已送达，区块坐标为[%1$s, %2$s]到[%3$s, %4$s]的区域将会添加一批新的NPC！");
-        add("event.confluence.spelunker.first_trigger", "按住tab键（改为玩家的设置按键）以查看详细信息");
-        add("event.confluence.danger_sense.first_trigger", "按住tab键（改为玩家的设置按键）以查看详细信息");
-        add("event.confluence.gravitation.first_trigger", "按住↑键（改为玩家的设置按键）以改变重力");
-        add("event.confluence.metal_detector.first_trigger", "按住ctrl键（改为玩家的设置按键）以使用金属探测器");
 
         add("event.confluence.reveal_step0", "你的世界已赐钴，钯金！");
         add("event.confluence.reveal_step1", "你的世界已赐秘银，山铜！");
@@ -3766,8 +3762,8 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.WATER_WALKING_POTION.get(), "水上漂药水", "可在水上行走");
         addPotion(PotionItems.FEATHERFALL_POTION.get(), "羽落药水", "减缓坠落速度");
         addPotion(PotionItems.RANDOM_TELEPORT_POTION.get(), "传送药水", "将玩家传送至世界中的随机位置。");
-        addPotion(PotionItems.SPELUNKER_POTION.get(), "洞穴探险药水", "显示宝藏和矿石的位置，按下tab键显示具体信息");
-        addPotion(PotionItems.DANGERSENSE_POTION.get(), "危险感药水", "让你看到附近的危险源，按下tab键显示具体信息");
+        addPotion(PotionItems.SPELUNKER_POTION.get(), "洞穴探险药水", "显示宝藏和矿石的位置");
+        addPotion(PotionItems.DANGERSENSE_POTION.get(), "危险感药水", "让你看到附近的危险源");
         addPotion(PotionItems.HUNTER_POTION.get(), "狩猎药水", "显示敌人位置");
         addPotion(PotionItems.CRATE_POTION.get(), "宝匣药水", "提高获得宝匣的几率");
         addPotion(PotionItems.CHAOS_POTION.get(), "混沌药水", "赋予随机效果");
@@ -3818,9 +3814,9 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.WATER_WALKING.get(), "水上漂", "能在液体上行走。");
         addEffect(ModEffects.MAGIC_POWER.get(), "魔能", "魔法伤害提高20%");
         addEffect(ModEffects.FLIPPER.get(), "脚蹼", "在水中移动如常");
-        addEffect(ModEffects.SPELUNKER.get(), "寻宝", "显示宝藏和矿石的位置");
+        addEffect(ModEffects.SPELUNKER.get(), "寻宝", "显示宝藏和矿石的位置；按下[%s]显示具体信息");
         addEffect(ModEffects.HUNTER.get(), "狩猎", "显示敌人位置");
-        addEffect(ModEffects.DANGER_SENSE.get(), "危险感知", "你可以看到附近的危险");
+        addEffect(ModEffects.DANGER_SENSE.get(), "危险感知", "你可以看到附近的危险；按下[%s]显示具体信息");
         addEffect(ModEffects.FROZEN.get(), "冻结", "你不能移动！");
         addEffect(ModEffects.STINKY.get(), "臭味", "你的味道真难闻");
         addEffect(ModEffects.THE_BAST_DEFENSE.get(), "巴斯特防御", "防御增加5");
@@ -3856,7 +3852,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");
         addEffect(TCEffects.HONEY.get(), "蜂蜜", "生命再生速度提高");
         addEffect(TCEffects.CONFUSED.get(), "困惑", "移动方向逆转");
-        addEffect(TCEffects.GRAVITATION.get(), "重力", "按↑键可逆转重力");
+        addEffect(TCEffects.GRAVITATION.get(), "重力", "按[%s]可逆转重力");
         addEffect(TCEffects.PALADINS_SHIELD.get(), "圣骑士护盾", "所受伤害的25%将被转移到另一名玩家身上");
 
         addEffect(TEEffects.DEMONIC_THOUGHTS.get(), "邪念", "再次被赋予邪念时会生成噬魂怪");

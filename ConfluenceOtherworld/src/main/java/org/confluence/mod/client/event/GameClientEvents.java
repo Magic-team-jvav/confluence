@@ -44,10 +44,12 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
@@ -83,6 +85,8 @@ import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.network.c2s.SwordProjectilePacketC2S;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
+import org.confluence.terra_curio.client.TCKeyBindings;
+import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
@@ -377,29 +381,31 @@ public final class GameClientEvents {
     public static void gatherEffectScreenTooltips(GatherEffectScreenTooltipsEvent event) {
         Holder<MobEffect> effect = event.getEffectInstance().getEffect();
         Optional<ResourceKey<MobEffect>> optional = effect.unwrapKey();
-        if (optional.isPresent()) {
+        List<Component> tooltip = event.getTooltip();
+        if (optional.isPresent()) l:{
             String key = Util.makeDescriptionId("tooltip.effect", optional.get().location()) + ".0";
-            if (I18n.exists(key)) {
-                if (effect.equals(ModEffects.ENEMY_BANNER)) {
-                    LocalPlayer player = Minecraft.getInstance().player;
-                    if (player != null) {
-                        Iterator<String> iterator = PlayerSpecialData.of(player).getEnemyBannerEntries().iterator();
-                        if (iterator.hasNext()) {
-                            MutableComponent component = Component.translatable(iterator.next()).withStyle(ChatFormatting.GREEN);
-                            while (iterator.hasNext()) {
-                                component.append(Component.literal(", "));
-                                component.append(Component.translatable(iterator.next()));
-                            }
-                            event.getTooltip().add(Component.translatable(key, component).withStyle(ChatFormatting.GRAY));
-                        }
-                    }
-                } else {
-                    event.getTooltip().add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+            if (!I18n.exists(key)) break l;
+            if (effect.equals(ModEffects.ENEMY_BANNER)) {
+                LocalPlayer player = Minecraft.getInstance().player;
+                if (player == null) break l;
+                Iterator<String> iterator = PlayerSpecialData.of(player).getEnemyBannerEntries().iterator();
+                if (!iterator.hasNext()) break l;
+                MutableComponent component = Component.translatable(iterator.next()).withStyle(ChatFormatting.GREEN);
+                while (iterator.hasNext()) {
+                    component.append(Component.literal(", "));
+                    component.append(Component.translatable(iterator.next()));
                 }
+                tooltip.add(Component.translatable(key, component).withStyle(ChatFormatting.GRAY));
+            } else if (effect.equals(ModEffects.DANGER_SENSE) || effect.equals(ModEffects.SPELUNKER)) {
+                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(ModKeyBindings.SHOW_DETAIL_SPECULAR.get())));
+            } else if (effect.equals(TCEffects.GRAVITATION)) {
+                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(TCKeyBindings.FLIP_GRAVITATION.get())));
+            } else {
+                tooltip.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
             }
         }
         if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {
-            event.getTooltip().add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));
+            tooltip.add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 

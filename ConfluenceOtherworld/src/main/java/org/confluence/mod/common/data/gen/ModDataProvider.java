@@ -778,6 +778,7 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM = key("glowing_mushroom");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_LIFE_CRYSTAL = key("glowing_mushroom_life_crystal");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_TREE = key("glowing_mushroom_tree");
+        private static final ResourceKey<PlacedFeature> HUGE_LIFE_MUSHROOM_TREE = key("huge_life_mushroom_tree");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_VINE = key("glowing_mushroom_vine");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_CATTAILS = key("glowing_mushroom_cattails");
         private static final ResourceKey<PlacedFeature> ASH_TREE = key("ash_tree");
@@ -914,6 +915,7 @@ public class ModDataProvider {
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), CountPlacement.of(40), inSquare, bottomThroughUnderground, biome);
             register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), CountPlacement.of(6), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), biome);
+            register(context, HUGE_LIFE_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.HUGE_LIFE_MUSHROOM_TREE), RarityFilter.onAverageOnceEvery(30), biome);
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), CountPlacement.of(144), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
             register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), CountOnEveryLayerPlacement.of(32), bottomThroughUnderground, ySpreadN1, biome);
             register(context, ASH_TREE, configured.getOrThrow(ModFeatures.Configured.ASH_TREE), CountOnEveryLayerPlacement.of(4), targetSturdyAllowedAir, biome);
@@ -1566,6 +1568,7 @@ public class ModDataProvider {
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);
                         builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.GLOWING_MUSHROOM_CAVE_CARVER);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.HUGE_LIFE_MUSHROOM_TREE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_LIFE_CRYSTAL);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_TREE);

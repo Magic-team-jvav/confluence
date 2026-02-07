@@ -114,7 +114,7 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
             leavesPosList.add(baseBlockPos.offset(0, height, 0));
             leavesPosList.add(baseBlockPos.offset(0, height + 1, 0));
             for (BlockPos checkPos : checkPosList) {
-                placed = placed && level.getBlockState(checkPos).canBeReplaced();
+                placed = !level.getBlockState(checkPos).canBeReplaced();
                 if (!placed) break;
             }
             if (placed) {

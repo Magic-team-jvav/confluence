@@ -11,7 +11,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -39,6 +41,8 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
         BlockPos baseBlockPos = pContext.origin();
+        int surfaceY = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, baseBlockPos.getX(), baseBlockPos.getZ());
+        baseBlockPos = new BlockPos(baseBlockPos.getX(), surfaceY, baseBlockPos.getZ());
         BlockPos headPos = baseBlockPos.offset(
                 random.nextInt(-5, 6),
                 random.nextInt(10, 15),
@@ -74,6 +78,9 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
             double radius = 2.5;
             double step = 1.0 / trunkList.size();
 
+            Vector3d indusiumVct = trunkList.get((int) (trunkList.size() * 0.5));
+            BlockPos indusiumPos = BlockPos.containing(indusiumVct.x, indusiumVct.y, indusiumVct.z);
+            ellipsoid(5.5, 1, 5.5, indusiumPos, indusiumBlockState, true, level);
             for (Vector3d truckVct : trunkList) {
                 BlockPos trunkPos = BlockPos.containing(truckVct.x, truckVct.y, truckVct.z);
                 ball(radius, trunkPos, stemBlockState, true, level);
@@ -100,14 +107,12 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
                     0.8F,
                     worldgenRandom)
             );
-
             for (Vector3d pileusVct : pileusList) {
+                double pileusRadius = random.nextDouble() * 2.5 + 1;
                 BlockPos pileusPos = BlockPos.containing(pileusVct.x, pileusVct.y, pileusVct.z);
-                ball(random.nextDouble() * 2.5 + 1, pileusPos, pileusBlockState, true, level);
+                ball(pileusRadius, pileusPos, pileusBlockState, true, level);
+                pileusCheck((int) pileusRadius + 1, pileusPos, pileusBlockState, level);
             }
-            Vector3d indusiumVct = trunkList.get((int) (trunkList.size() * 0.5));
-            BlockPos indusiumPos = BlockPos.containing(indusiumVct.x, indusiumVct.y, indusiumVct.z);
-            ellipsoid(5.5, 1, 5.5, indusiumPos, indusiumBlockState, true, level);
 
             TagKey<Block> DIRT_TAG = TagKey.create(Registries.BLOCK, Objects.requireNonNull(ResourceLocation.tryParse("minecraft:dirt")));
 
@@ -171,5 +176,36 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
                 BlockStateProvider.CODEC.fieldOf("mushroom_2").forGetter(Config::mushroom2),
                 BlockStateProvider.CODEC.fieldOf("mycelium").forGetter(Config::mycelium)
         ).apply(instance, Config::new));
+    }
+
+    private static void pileusCheck(int side, BlockPos baseBlockPos, BlockState pileusBlockState, WorldGenLevel level) {
+        BlockPos checkPos;
+        for (int x = -side; x <= side; x++) {
+            for (int y = -side; y <= side; y++) {
+                for (int z = -side; z <= side; z++) {
+                    checkPos = baseBlockPos.offset(x, y, z);
+                    if (level.getBlockState(checkPos).is(pileusBlockState.getBlock())) {
+                        if (level.getBlockState(checkPos.offset(0, 1, 0)).is(pileusBlockState.getBlock())) {
+                            level.setBlock(checkPos, level.getBlockState(checkPos).trySetValue(PipeBlock.UP, true), 3);
+                        }
+                        if (level.getBlockState(checkPos.offset(0, -1, 0)).is(pileusBlockState.getBlock())) {
+                            level.setBlock(checkPos, level.getBlockState(checkPos).trySetValue(PipeBlock.DOWN, true), 3);
+                        }
+                        if (level.getBlockState(checkPos.offset(1, 0, 0)).is(pileusBlockState.getBlock())) {
+                            level.setBlock(checkPos, level.getBlockState(checkPos).trySetValue(PipeBlock.EAST, true), 3);
+                        }
+                        if (level.getBlockState(checkPos.offset(-1, 0, 0)).is(pileusBlockState.getBlock())) {
+                            level.setBlock(checkPos, level.getBlockState(checkPos).trySetValue(PipeBlock.WEST, true), 3);
+                        }
+                        if (level.getBlockState(checkPos.offset(0, 0, 1)).is(pileusBlockState.getBlock())) {
+                            level.setBlock(checkPos, level.getBlockState(checkPos).trySetValue(PipeBlock.SOUTH, true), 3);
+                        }
+                        if (level.getBlockState(checkPos.offset(0, 0, -1)).is(pileusBlockState.getBlock())) {
+                            level.setBlock(checkPos, level.getBlockState(checkPos).trySetValue(PipeBlock.NORTH, true), 3);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

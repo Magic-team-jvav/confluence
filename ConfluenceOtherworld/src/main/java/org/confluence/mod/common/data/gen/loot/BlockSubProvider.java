@@ -569,11 +569,16 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(GLOWING_MUSHROOM_CATTAIL_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
         add(GLOWING_MUSHROOM_PILEUS_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.GLOWING_MUSHROOM));
         dropSelf(GLOWING_MUSHROOM_STEM_BLOCK.get());
+
+
         dropWhenSilkTouch(GLOWING_MUSHROOM_CATTAIL_BLOCK.get());
 
         add(LIFE_MUSHROOM_INDUSIUM_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.LIFE_MUSHROOM));
         add(LIFE_MUSHROOM_PILEUS_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.LIFE_MUSHROOM));
-        dropSelf(LIFE_MUSHROOM_STEM_BLOCK.get());
+        add(LIFE_MUSHROOM_STEM_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.LIFE_MUSHROOM));
+
+        dropSelf(HANGING_MYCELIUM.get());
+        dropSelf(MYCELIAL_DIRT.get());
 
 
 

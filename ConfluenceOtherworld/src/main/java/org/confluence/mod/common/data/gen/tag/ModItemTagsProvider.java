@@ -1231,7 +1231,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 VanityArmorItems.THE_DOCTORS_SHIRT.get(),
                 VanityArmorItems.THE_DOCTORS_PANTS.get(),
                 VanityArmorItems.THE_DOCTORS_SHOES.get(),
-                ManaWeaponItems.MAGIC_DAGGER.get(),
                 NatureBlocks.LOOSE_HONEY_BLOCK.asItem(),
                 NatureBlocks.GREEN_MOSS.asItem(),
                 NatureBlocks.BROWN_MOSS.asItem(),
@@ -1439,8 +1438,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TESpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
                 TESpawnEggItems.PLANTERA_SPAWN_EGG.get(),
                 TreasureBagItems.THE_TWINS_TREASURE_BAG.get(),
-                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
-                FoodItems.HONEY_GUMMI.get()
+                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

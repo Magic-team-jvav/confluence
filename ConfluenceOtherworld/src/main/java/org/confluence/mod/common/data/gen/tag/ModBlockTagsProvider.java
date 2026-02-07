@@ -474,7 +474,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 JUNGLE_PATH.get(),
                 MUSHROOM_PATH.get(),
                 POO.get(),
-                POO_BLOCK.get()
+                POO_BLOCK.get(),
+                HANGING_MYCELIUM.get(),
+                MYCELIAL_DIRT.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
@@ -743,6 +745,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GELSTONE_BLOCK.get(),
                 STURDY_FOSSIL_BLOCK.get(),
                 COLD_CRYSTAL_BLOCK.get(),
+
+                HANGING_MYCELIUM.get(),
+                MYCELIAL_DIRT.get(),
 
                 HEART_LANTERN.get(),
                 STAR_IN_A_BOTTLE.get(),

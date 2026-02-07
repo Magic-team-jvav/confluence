@@ -11,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -19,11 +20,15 @@ import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import org.confluence.lib.util.FeatureUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.block.natural.BaseDroopingPlantsHeadBlock;
 import org.joml.Vector3d;
 
 import java.util.*;
+
+import static org.confluence.lib.util.FeatureUtils.updateLeavesCustom;
+import static org.confluence.lib.util.FeatureUtils.updateLeavesCustomCheck;
 
 public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
     public PineTreeFeature(Codec<Config> pCodec) {
@@ -89,11 +94,9 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
             return true;
         } else {
             boolean placed = true;
-            int maxSide = 0;
             for (int i = 0; i < (height) / 4; i++) {
                 boolean directionRotate = (i % 2 == 0);
                 int length = i * 2 + 1;
-                maxSide = Math.max(maxSide, length);
                 int brunchHeight = height - i * 4;
                 if (brunchHeight < ((double) height / 3)) break;
                 for (int j = 0; j < 4; j++) {
@@ -113,7 +116,7 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
                                 if ((dis <= leavesSide) && level.getBlockState(brunchPos.offset(x, 0, z)).canBeReplaced() && (random.nextFloat() >= 0.5F * (1 + ((float) (dis - leavesSide) / leavesSide)))) {
                                     BlockPos leavesPos = brunchPos.offset(x, 0, z);
                                     leavesPosList.add(leavesPos);
-                                    //leavesSet.add(leavesPos);
+                                    leavesSet.add(leavesPos);
                                     if (random.nextFloat() < ((float) (length - k) / length) * 0.5) {
                                         int vineLength = random.nextInt(1, (int) ((float) (length - k) / length * 2.5 + 2));
                                         for (int l = 0; l < vineLength; l++) {
@@ -128,7 +131,7 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
                         if (level.getBlockState(brunchPos.offset(0, -1, 0)).canBeReplaced()) {
                             BlockPos leavesPos = brunchPos.offset(0, -1, 0);
                             leavesPosList.add(leavesPos);
-                            //leavesSet.add(leavesPos);
+                            leavesSet.add(leavesPos);
                             if (random.nextFloat() < ((float) (length - k) / length) * 0.5) {
                                 int vineLength = random.nextInt(1, (int) ((float) (length - k) / length * 2.5 + 2));
                                 for (int l = 0; l < vineLength; l++) {
@@ -154,39 +157,37 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
             }
             leavesPosList.add(baseBlockPos.offset(0, height, 0));
             leavesPosList.add(baseBlockPos.offset(0, height + 1, 0));
-            //leavesSet.add(baseBlockPos.offset(0, height, 0));
-            //leavesSet.add(baseBlockPos.offset(0, height + 1, 0));
+            leavesSet.add(baseBlockPos.offset(0, height, 0));
+            leavesSet.add(baseBlockPos.offset(0, height + 1, 0));
             for (BlockPos checkPos : checkPosList) {
                 placed = level.getBlockState(checkPos).canBeReplaced() || level.getBlockState(checkPos).is(SPALING_TAG);
                 if (!placed) break;
             }
             if (placed) {
+                int placeFlags = 19;
                 for (BlockPos vinePos : vinePosList) {
-                    level.setBlock(vinePos, vineBlockState, 3);
+                    level.setBlock(vinePos, vineBlockState, placeFlags);
                 }
                 for (BlockPos leavesPos : leavesPosList) {
-                    level.setBlock(leavesPos, leavesBlockState, 3);
+                    level.setBlock(leavesPos, leavesBlockState, placeFlags);
                 }
                 for (BlockPos trunkPos : trunkPosXList) {
-                    level.setBlock(trunkPos, trunkBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.X), 3);
+                    level.setBlock(trunkPos, trunkBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.X), placeFlags);
                 }
                 for (BlockPos trunkPos : trunkPosZList) {
-                    level.setBlock(trunkPos, trunkBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Z), 3);
+                    level.setBlock(trunkPos, trunkBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Z), placeFlags);
                 }
                 for (BlockPos trunkPos : trunkPosYList) {
-                    level.setBlock(trunkPos, trunkBlockState, 3);
+                    level.setBlock(trunkPos, trunkBlockState, placeFlags);
                 }
                 for (BlockPos vinePos : vinePosList) {
                     if (level.getBlockState(vinePos).is(vineBlockState.getBlock()) && level.getBlockState(vinePos.offset(0, -1, 0)).is(vineBlockState.getBlock())) {
-                        if (level.getBlockState(vinePos.offset(0, 1, 0)).is(vineBlockState.getBlock())) level.setBlock(vinePos, vineBlockState.trySetValue(BaseDroopingPlantsHeadBlock.PART, BaseDroopingPlantsHeadBlock.VinePart.BODY), 3);
-                        else level.setBlock(vinePos, vineBlockState.trySetValue(BaseDroopingPlantsHeadBlock.PART, BaseDroopingPlantsHeadBlock.VinePart.TAIL), 3);
+                        if (level.getBlockState(vinePos.offset(0, 1, 0)).is(vineBlockState.getBlock())) level.setBlock(vinePos, vineBlockState.trySetValue(BaseDroopingPlantsHeadBlock.PART, BaseDroopingPlantsHeadBlock.VinePart.BODY), placeFlags);
+                        else level.setBlock(vinePos, vineBlockState.trySetValue(BaseDroopingPlantsHeadBlock.PART, BaseDroopingPlantsHeadBlock.VinePart.TAIL), placeFlags);
                     }
                 }
-                maxSide += 2;
-                trunkSet.add(baseBlockPos.offset(0, height, 0));
-                Set<BlockPos> rootSet = new HashSet<>(trunkSet);
-                BoundingBox box = new BoundingBox(baseBlockPos.getX() - maxSide, baseBlockPos.getY(), baseBlockPos.getZ() - maxSide, baseBlockPos.getX() + maxSide, baseBlockPos.getY() + height + 4, baseBlockPos.getZ() + maxSide);
-                TreeFeature.updateLeaves(level, box, rootSet, trunkSet, leavesSet);
+                updateLeavesCustom(level, trunkSet, leavesSet, true);
+                //updateLeavesCustomCheck(level, trunkSet, leavesSet, true);
                 return true;
             }
         }

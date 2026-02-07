@@ -985,7 +985,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.toucan.desc", "巨嘴鸟羽毛鲜艳、鸟喙宽大，你常会看到它在高高的树枝间盘旋，寻找美味的果实。");
 //        add("bestiary.entity.terra_entity.yellow_cockatiel.desc", "黄玄凤鹦鹉羽冠上的特殊羽毛能反映它的情绪，通常在兴奋时，羽冠会竖起来。");
 //        add("bestiary.entity.terra_entity.gray_cockatiel.desc", "灰玄凤鹦鹉是鹦鹉的近亲，天生喜欢社交，通常能学会说一些简单的短语。");
-        add("bestiary.entity.terra_entity.gold_bird.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
+//      add("bestiary.entity.terra_entity.gold_bird.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
 //        add("bestiary.entity.terra_entity.goldfish.desc", "金鱼看起来平平无奇，可一到下雨天，它就变得不一般了。");
 //        add("bestiary.entity.terra_entity.gold_goldfish.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
         add("bestiary.entity.terra_entity.squirrel.0.desc", "松鼠是动作敏捷、行踪不定的林地动物，皮毛呈灰褐色。你有坚果吗？（它可等着呢）");

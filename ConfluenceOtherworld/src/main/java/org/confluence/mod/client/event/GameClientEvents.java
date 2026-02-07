@@ -149,7 +149,7 @@ public final class GameClientEvents {
                 ScryingOrb.stopSpectating();
             }
         }
-        DeathAnimUtils.clear();
+        DeathAnimUtils.clearPending();
     }
 
     @SubscribeEvent

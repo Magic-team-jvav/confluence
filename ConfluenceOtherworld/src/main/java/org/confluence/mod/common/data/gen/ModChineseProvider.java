@@ -1238,6 +1238,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.SPEAR.get(), "长矛");
         add(ModEntities.FLAIL_BALL.get(), "链球");
         add(ModEntities.STAR_CANNON_BULLET.get(), "星星炮射弹");
+        add(ModEntities.BEE_GUN_BULLET.get(), "蜜蜂枪射弹");
         add(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), "基础展示实体");
         add(ModEntities.SMOKE_BOMB_ENTITY.get(), "烟雾弹");
         add(ModEntities.BEENADE.get(), "蜜蜂手雷");

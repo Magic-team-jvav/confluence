@@ -37,7 +37,7 @@
 - 补充更多图鉴条目
 - 洞穴探险药水效果、危险感知药水效果、重力药水效果、金属探测器物品会在物品栏内显示其键位
 - 增加蜜蜂枪射弹的灵敏度
-- 支持MrCrayfish的家具作为NPC房屋条件。其中chair、stool系列为椅子；table、desk系列为桌子。
+- 支持MrCrayfish的家具作为NPC房屋条件。其中chair、sofa、stool系列为椅子；table、desk系列为桌子。
 
 ## 调整：
 

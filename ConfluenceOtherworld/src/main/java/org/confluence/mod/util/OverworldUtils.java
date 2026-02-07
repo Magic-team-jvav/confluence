@@ -6,9 +6,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFeatures;
@@ -74,19 +75,20 @@ public final class OverworldUtils {
         WorldGenLevel level = context.level();
         if (!(level instanceof WorldGenRegion)) return;
         BlockPos origin = context.origin();
-        if (level.getBiome(origin).is(ModTags.Biomes.VANITY_TREES_REPLACEABLE)) {
+        Holder<Biome> biome = level.getBiome(origin);
+        if (biome.is(ModTags.Biomes.VANITY_TREES_REPLACEABLE)) {
             RandomSource random = context.random();
-            if (context.config().trunkProvider.getState(random, origin).is(Blocks.CHERRY_LOG)) return;
+            if (context.config().trunkProvider.getState(random, origin).is(Blocks.CHERRY_LOG)) {
+                return;
+            }
             float v = ModSecretSeeds.DRUNK_WORLD.match() ? 0.02F : 0.01F;
             if (random.nextFloat() < v) {
                 if (random.nextFloat() < 0.75F) {
-                    boolean placed = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
-                            .getHolder(ModFeatures.Configured.YELLOW_WILLOW_TREE).orElseThrow().value()
+                    boolean placed = level.registryAccess().holderOrThrow(ModFeatures.Configured.YELLOW_WILLOW_TREE).value()
                             .place(level, context.chunkGenerator(), random, origin);
                     if (placed) cir.setReturnValue(true);
                 } else {
-                    boolean placed = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
-                            .getHolder(TreeFeatures.CHERRY).orElseThrow().value()
+                    boolean placed = level.registryAccess().holderOrThrow(TreeFeatures.CHERRY).value()
                             .place(level, context.chunkGenerator(), random, origin);
                     if (placed) cir.setReturnValue(true);
                 }
@@ -101,6 +103,19 @@ public final class OverworldUtils {
             }
         }
         return original.call(instance, blockPos, blockState, i);
+    }
+
+    public static boolean replacePine(ResourceLocation feature, PlacementContext context, RandomSource random, BlockPos pos) {
+        WorldGenLevel level = context.getLevel();
+        if (!(level instanceof WorldGenRegion)) return false;
+        if (feature.getPath().equals("pine") &&
+                feature.getNamespace().equals("minecraft") &&
+                random.nextInt(4) == 0
+        ) {
+            return level.registryAccess().holderOrThrow(ModFeatures.Configured.PINE_TREE).value()
+                    .place(level, context.generator(), random, pos);
+        }
+        return false;
     }
 
     /// 获取主世界

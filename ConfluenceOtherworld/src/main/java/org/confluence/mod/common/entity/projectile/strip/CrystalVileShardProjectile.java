@@ -16,20 +16,25 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class CrystalVileShardProjectile extends StripedProjectile implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    protected void init() {
-        this.distForHeadRemove = 18.0;
-        this.ticksForBodyRemove = 35;
-    }
     public CrystalVileShardProjectile(EntityType<? extends StripedProjectile> entityType, Level level) {
         super(entityType, level);
+        init();
     }
 
     public CrystalVileShardProjectile(LivingEntity living) {
         super(ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get(), living);
+        init();
     }
 
     public CrystalVileShardProjectile(LivingEntity living, Vec3 pos) {
         super(ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get(), living, pos);
+        init();
+    }
+
+    protected void init() {
+        this.distForHeadRemove = 18.0;
+        this.ticksForBodyRemove = 35;
+        this.distForCreateBody = 0.75;
     }
 
     @Override

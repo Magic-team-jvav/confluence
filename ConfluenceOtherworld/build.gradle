@@ -397,6 +397,10 @@ dependencies {
         runtimeOnly "curse.maven:malum-484064:7307339"
         runtimeOnly "curse.maven:lodestone-616457:7264731"
     }
+    if (true) {
+        runtimeOnly "curse.maven:refurbished-furniture-897116:7473565"
+        runtimeOnly "curse.maven:framework-549225:7530361"
+    }
 }
 
 tasks.withType(ProcessResources).configureEach {

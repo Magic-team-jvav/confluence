@@ -27,7 +27,10 @@ public class CrystalVileShardProjectileRenderer extends GeoNegativeVolumeRendere
 
     @Override
     public void render(CrystalVileShardProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        poseStack.pushPose();
+        poseStack.translate(0, 0.375F, 0);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, 0xF000F0);
+        poseStack.popPose();
     }
 
     @Override

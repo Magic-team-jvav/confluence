@@ -20,6 +20,7 @@ import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
 import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
+import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
 
@@ -60,6 +61,7 @@ public final class ModEntities {
     // 魔法
     public static final DeferredHolder<EntityType<?>, EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF_PROJECTILE = ENTITIES.register("base_mana_staff_projectile", () -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build("confluence:base_mana_staff_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<VilethronProjectile>> VILETHRON_PROJECTILE = ENTITIES.register("vilethron_projectile", () -> EntityType.Builder.<VilethronProjectile>of(VilethronProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build("confluence:vilethron_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD_PROJECTILE = ENTITIES.register("crystal_vile_shard_projectile", () -> EntityType.Builder.<CrystalVileShardProjectile>of(CrystalVileShardProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build("confluence:crystal_vile_shard_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<HurtnadoProjectile>> HURTNADO_PROJECTILE = ENTITIES.register("hurtnado_projectile", () -> EntityType.Builder.<HurtnadoProjectile>of(HurtnadoProjectile::new, MobCategory.MISC).sized(0.8F, 1.2F).clientTrackingRange(10).build("confluence:hurtnado_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<WaterStreamProjectile>> WATER_STREAM_PROJECTILE = ENTITIES.register("water_stream_projectile", () -> EntityType.Builder.<WaterStreamProjectile>of(WaterStreamProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build("confluence:water_stream_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<WaterBoltProjectile>> WATER_BOLT_PROJECTILE = ENTITIES.register("water_bolt_projectile", () -> EntityType.Builder.<WaterBoltProjectile>of(WaterBoltProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build("confluence:water_bolt_projectile"));

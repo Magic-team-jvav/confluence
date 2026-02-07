@@ -287,6 +287,7 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
+        event.registerEntityRenderer(CRYSTAL_VILE_SHARD_PROJECTILE.get(), CrystalVileShardProjectileRenderer::new);
         event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), HurtnadoProjectileRenderer::new);
         event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(WATER_BOLT_PROJECTILE.get(), NoopRenderer::new);

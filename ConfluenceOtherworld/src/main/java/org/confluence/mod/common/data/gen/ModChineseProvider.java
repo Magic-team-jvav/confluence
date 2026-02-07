@@ -1214,7 +1214,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.THORN_HOOK.get(), "荆棘钩");
         add(ModEntities.THROWN_KNIVE_PROJECTILE.get(), "投刀");
         add(ModEntities.THROWN_POWDER.get(), "掷出的粉末");
-        add(ModEntities.VILETHRON_PROJECTILE.get(), "邪恶荆棘投射物");
+        add(ModEntities.VILETHRON_PROJECTILE.get(), "魔刺射弹");
+        add(ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get(), "魔晶碎块射弹");
         add(ModEntities.WATER_STREAM_PROJECTILE.get(), "水流射弹");
         add(ModEntities.WEB_SLINGER.get(), "网射手");
         add(ModEntities.WET_BOMB.get(), "湿炸弹");
@@ -1261,7 +1262,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.FROST_DAGGERFISH_PROJECTILE.get(), "寒霜飞鱼射弹");
         add(ModEntities.DUNGEON_DEMON_BONE_PROJECTILE.get(), "地牢魔骨射弹");
         add(ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), "风暴之矛射弹");
-
 
 
         //region blocks

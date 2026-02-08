@@ -6,25 +6,16 @@ import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.block.natural.BaseDroopingPlantsHeadBlock;
-import org.joml.Vector3d;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.confluence.lib.util.FeatureUtils.updateLeavesOptimized;
 
@@ -72,7 +63,8 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
                             .relative(sideDir, rotate ? 0 : (int) (k * 0.72));
 
                     long bPosLong = bPos.asLong();
-                    if (j % 2 == 0) trunkZ.add(bPosLong); else trunkX.add(bPosLong);
+                    if (j % 2 == 0) trunkZ.add(bPosLong);
+                    else trunkX.add(bPosLong);
                     trunkSet.add(bPosLong);
 
                     int side = (int) (Mth.sqrt(length - k) / 3 + 1);
@@ -144,7 +136,8 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
     }
 
     public record Config(BlockStateProvider trunk, BlockStateProvider vine,
-                         BlockStateProvider leaves, int height, int heightMore) implements FeatureConfiguration {
+                         BlockStateProvider leaves, int height,
+                         int heightMore) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("vine_block").forGetter(Config::vine),

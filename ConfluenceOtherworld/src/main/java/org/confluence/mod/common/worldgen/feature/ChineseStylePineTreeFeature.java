@@ -5,12 +5,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -77,7 +75,7 @@ public class ChineseStylePineTreeFeature extends Feature<ChineseStylePineTreeFea
             }
             Vector3d lastV = segment.getLast();
             leavesPos = BlockPos.containing(lastV.x, lastV.y, lastV.z);
-            int mainSide = random.nextInt(3,6);
+            int mainSide = random.nextInt(3, 6);
             int side;
             for (int y = -1; y < 3; y++) {
                 side = mainSide - Mth.abs(y);

@@ -52,6 +52,7 @@ public final class ModFeatures {
     public static final Supplier<HugeMushroomTreeFeature> HUGE_MUSHROOM_TREE = FEATURES.register("huge_mushroom_tree", () -> new HugeMushroomTreeFeature(HugeMushroomTreeFeature.Config.CODEC));
     public static final Supplier<BaobabTreeFeature> BAOBAB_TREE = FEATURES.register("baobab_tree", () -> new BaobabTreeFeature(BaobabTreeFeature.Config.CODEC));
     public static final Supplier<PineTreeFeature> PINE_TREE = FEATURES.register("pine_tree", () -> new PineTreeFeature(PineTreeFeature.Config.CODEC));
+    public static final Supplier<ChineseStylePineTreeFeature> CHINESE_STYLE_PINE_TREE = FEATURES.register("chinese_style_pine_tree", () -> new ChineseStylePineTreeFeature(ChineseStylePineTreeFeature.Config.CODEC));
     public static final Supplier<BranchTreeFeature> BRANCH_TREE = FEATURES.register("branch_tree", () -> new BranchTreeFeature(BranchTreeFeature.Config.CODEC));
     public static final Supplier<MeteoriteFeature> METEORITE = FEATURES.register("meteorite", () -> new MeteoriteFeature(MeteoriteFeature.Config.CODEC));
     public static final Supplier<RailSupportFeature> RAIL_SUPPORT = FEATURES.register("rail_support", () -> new RailSupportFeature(RailSupportFeature.Config.CODEC));

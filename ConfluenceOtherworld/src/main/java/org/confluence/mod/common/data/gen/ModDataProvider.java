@@ -469,17 +469,15 @@ public class ModDataProvider {
                             BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get()),
                             14,
-                            10,
-                            false
+                            10
                     )
             );
-            register(context, ModFeatures.Configured.CHINESE_PINE_TREE, ModFeatures.PINE_TREE.get(), new PineTreeFeature.Config(
+            register(context, ModFeatures.Configured.CHINESE_PINE_TREE, ModFeatures.CHINESE_STYLE_PINE_TREE.get(), new ChineseStylePineTreeFeature.Config(
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get()),
                             7,
-                            4,
-                            true
+                            4
                     )
             );
             register(context, ModFeatures.Configured.BAOBAB_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(

@@ -45,26 +45,6 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
         BlockState leavesBlock = config.leaves().getState(random, basePos);
 
         int height = config.height() + random.nextInt(config.heightMore() + 1);
-        TagKey<Block> SAPLING_TAG = TagKey.create(Registries.BLOCK, ResourceLocation.parse("minecraft:saplings"));
-
-        if (config.chineseStyle()) {
-            List<Vector3d> trunkPath = new ArrayList<>();
-            int offset = height / 3 * 2;
-            int xOff = random.nextInt(offset / 2, offset + 1) * (random.nextBoolean() ? 1 : -1);
-            int zOff = random.nextInt(offset / 2, offset + 1) * (random.nextBoolean() ? 1 : -1);
-
-            trunkPath.add(VectorUtils.toVector3d(basePos));
-            trunkPath.add(VectorUtils.toVector3d(basePos.offset(xOff / 4, height / 2, zOff / 4)));
-            trunkPath.add(VectorUtils.toVector3d(basePos.offset(xOff, height, zOff)));
-
-            List<List<Vector3d>> segments = VectorUtils.lightningPathList(trunkPath, 1, 0.2F, random, random.nextInt(2, 5), 0.6F);
-            for (List<Vector3d> segment : segments) {
-                for (Vector3d v : segment) {
-                    level.setBlock(BlockPos.containing(v.x, v.y, v.z), trunkBlock, 3);
-                }
-            }
-            return true;
-        }
 
         LongOpenHashSet trunkSet = new LongOpenHashSet();
         LongOpenHashSet leavesSet = new LongOpenHashSet();
@@ -130,13 +110,21 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
 
         for (long p : trunkSet) {
             BlockPos bp = BlockPos.of(p);
-            if (!level.getBlockState(bp).canBeReplaced() && !level.getBlockState(bp).is(SAPLING_TAG))
+            if (!level.getBlockState(bp).canBeReplaced())
                 return false;
         }
 
         int flags = 19;
 
         for (long p : vinePosList) level.setBlock(BlockPos.of(p), vineBlock, flags);
+
+        for (long p : leavesSet) {
+            level.setBlock(BlockPos.of(p), leavesBlock, flags);
+        }
+
+        trunkX.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.X), flags));
+        trunkZ.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.Z), flags));
+        trunkY.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock, flags));
         for (long p : vinePosList) {
             BlockPos vp = BlockPos.of(p);
             if (level.getBlockState(vp).is(vineBlock.getBlock())) {
@@ -150,29 +138,19 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
             }
         }
 
-        for (long p : leavesSet) {
-            level.setBlock(BlockPos.of(p), leavesBlock, flags);
-        }
-
-        trunkX.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.X), flags));
-        trunkZ.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.Z), flags));
-        trunkY.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock, flags));
-
         updateLeavesOptimized(level, trunkSet, leavesSet, true, false);
 
         return true;
     }
 
     public record Config(BlockStateProvider trunk, BlockStateProvider vine,
-                         BlockStateProvider leaves, int height, int heightMore,
-                         boolean chineseStyle) implements FeatureConfiguration {
+                         BlockStateProvider leaves, int height, int heightMore) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("vine_block").forGetter(Config::vine),
                 BlockStateProvider.CODEC.fieldOf("leaves_block").forGetter(Config::leaves),
                 Codec.INT.fieldOf("height").forGetter(Config::height),
-                Codec.INT.fieldOf("height_more").forGetter(Config::heightMore),
-                Codec.BOOL.fieldOf("chinese_style").forGetter(Config::chineseStyle)
+                Codec.INT.fieldOf("height_more").forGetter(Config::heightMore)
         ).apply(instance, Config::new));
     }
 }

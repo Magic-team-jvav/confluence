@@ -76,7 +76,7 @@ public final class BloodMoonGameEvent implements GameEvent {
         }
         if (LibDateUtils.getDayTime(level) == LibDateUtils._19$30 &&
                 !MoonPhase.NEW_MOON.match(level) &&
-                BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.EYE_OF_CTHULHU.get())
+                !BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.EYE_OF_CTHULHU.get())
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 if (player.getMaxHealth() >= CommonConfigs.BLOOD_MOON_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&

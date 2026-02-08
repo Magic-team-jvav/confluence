@@ -1,3 +1,6 @@
+import com.hypherionmc.modpublisher.tasks.CurseUploadTask
+import com.hypherionmc.modpublisher.tasks.ModrinthPublishTask
+
 import java.text.SimpleDateFormat
 
 plugins {
@@ -523,4 +526,11 @@ publisher {
     setCurseEnvironment(libs.versions.version.env.get())
 
     setArtifact(tasks.jar)
+}
+tasks.withType(CurseUploadTask).configureEach {
+    notCompatibleWithConfigurationCache("modpublisher The plugin has not yet adapted to the configuration cache")
+}
+
+tasks.withType(ModrinthPublishTask).configureEach {
+    notCompatibleWithConfigurationCache("modpublisher The plugin has not yet adapted to the configuration cache")
 }

@@ -69,6 +69,9 @@ public class ShimmerRiceBlock extends Block implements SimpleShimmerImmersedBloc
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        if (state.getValue(SHIMMER_IMMERSED)) {
+            level.scheduleTick(pos, ModFluids.SHIMMER.fluid().get(), ModFluids.SHIMMER.fluid().get().getTickDelay(level));
+        }
         if (!state.canSurvive(level, pos)) {
             return state.getValue(SHIMMER_IMMERSED) ? ModFluids.SHIMMER.fluid().get().getSource(false).createLegacyBlock() : Blocks.AIR.defaultBlockState();
         }

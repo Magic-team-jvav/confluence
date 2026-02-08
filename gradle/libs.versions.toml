@@ -9,7 +9,7 @@ version-env = "both"
 version-type = "alpha"
 
 platformId-curseforge = "1104690"
-platformId-modrinth = "7Y8G2yvN"
+platformId-modrinth = "confluence"
 
 moddevgradle = "2.0.140"
 modpublisher = "2.+"

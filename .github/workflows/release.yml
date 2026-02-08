@@ -22,29 +22,41 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 21
-          cache: "gradle"
+
+      - name: Cache Gradle & Minecraft Data
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ./ConfluenceOtherworld/.gradle/
+            **/build/generated/
+          key: ${{ runner.os }}-gradle-neo-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-neo-
 
       - name: Grant execute permissions
         run: find . -name "gradlew" -exec chmod +x {} +
 
-      - name: Generate Assets (runData)
+      - name: Execute Integrated Build
         working-directory: ./ConfluenceOtherworld
-        run: |
-          git submodule foreach 'if [ -f ./gradlew ]; then ./gradlew runData --no-configuration-cache; else echo "No gradlew found in $name"; fi'
-          ./gradlew runData --no-configuration-cache
-
-      - name: Build & Publish
-        working-directory: ./ConfluenceOtherworld
-        run: |
-          ./gradlew build publish publishMod \
-            --no-configuration-cache \
-            --stacktrace
         env:
+          GRADLE_OPTS: >-
+            -Xmx5g
+            -Dorg.gradle.parallel=true
+            -Dorg.gradle.vfs.watch=true
+            -Dorg.gradle.daemon=true
+            -Dorg.gradle.caching=true
           MAGIC_TEAM_USERNAME: ${{ secrets.MAGIC_TEAM_USERNAME }}
           MAGIC_TEAM_TOKEN: ${{ secrets.MAGIC_TEAM_TOKEN }}
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./gradlew runData build publish publishMod \
+            --build-cache \
+            --stacktrace \
+            -Dorg.gradle.terminal.width=80
 
       - name: Upload Build Artifacts (Optional)
         if: success()

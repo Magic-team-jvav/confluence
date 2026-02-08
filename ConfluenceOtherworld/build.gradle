@@ -1,12 +1,8 @@
-import com.hypherionmc.modpublisher.tasks.CurseUploadTask
-import com.hypherionmc.modpublisher.tasks.ModrinthPublishTask
-
 import java.text.SimpleDateFormat
 
 plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev'
-    alias(libs.plugins.modpublisher)
 }
 
 var projectName = [
@@ -408,10 +404,10 @@ dependencies {
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [minecraft_version      : minecraft_version,
-                             minecraft_version_range: libs.versions.range.game.get(),
+                             minecraft_version_range: minecraft_version_range,
                              neo_version            : neo_version,
-                             neo_version_range      : libs.versions.range.neoforge.get(),
-                             loader_version_range   : libs.versions.range.fml.get(),
+                             neo_version_range      : neo_version_range,
+                             loader_version_range   : loader_version_range,
                              mod_id                 : mod_id,
                              mod_name               : mod_name,
                              mod_license            : mod_license,
@@ -497,40 +493,4 @@ publishing {
             }
         }
     }
-}
-publisher {
-    apiKeys {
-        modrinth System.getenv("MODRINTH_TOKEN")
-        curseforge System.getenv("CURSEFORGE_TOKEN")
-    }
-
-    setCurseID(libs.versions.platformId.curseforge.get())
-    setModrinthID(libs.versions.platformId.modrinth.get())
-
-    def changelogFile = file("notes/CHANGELOG.md")
-    if (changelogFile.exists()) {
-        setChangelog(changelogFile.getText("UTF-8"))
-    } else {
-        setChangelog("No changelog provided for version ${project.version}")
-    }
-
-    def versionStr = project.version.toString()
-    setVersionType(versionStr.contains("-") ? "beta" : "release")
-
-    setVersion(versionStr)
-    setDisplayName("Confluence ${versionStr}")
-
-    setGameVersions(project.minecraft_version)
-    setLoaders("neoforge")
-
-    setCurseEnvironment(libs.versions.version.env.get())
-
-    setArtifact(tasks.jar)
-}
-tasks.withType(CurseUploadTask).configureEach {
-    notCompatibleWithConfigurationCache("modpublisher The plugin has not yet adapted to the configuration cache")
-}
-
-tasks.withType(ModrinthPublishTask).configureEach {
-    notCompatibleWithConfigurationCache("modpublisher The plugin has not yet adapted to the configuration cache")
 }

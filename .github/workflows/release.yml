@@ -13,7 +13,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-
           ref: refs/heads/neoforge-dev/1.21.1
           submodules: recursive
           fetch-depth: 0
@@ -26,15 +25,12 @@ jobs:
           cache: "gradle"
 
       - name: Grant execute permissions
-        run: chmod +x gradlew || find . -name "gradlew" -exec chmod +x {} +
+        run: find . -name "gradlew" -exec chmod +x {} +
 
       - name: Generate Assets (runData)
         working-directory: ./ConfluenceOtherworld
         run: |
-          # 1. 运行子模块的数据生成（如果子模块有自己的 gradlew）
-          git submodule foreach '[ -f ./gradlew ] && ./gradlew runData --no-configuration-cache || echo "No gradlew in submodule"'
-
-          # 2. 运行主项目的数据生成
+          git submodule foreach 'if [ -f ./gradlew ]; then ./gradlew runData --no-configuration-cache; else echo "No gradlew found in $name"; fi'
           ./gradlew runData --no-configuration-cache
 
       - name: Build & Publish

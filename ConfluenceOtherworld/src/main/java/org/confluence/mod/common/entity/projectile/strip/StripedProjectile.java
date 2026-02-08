@@ -18,20 +18,18 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 
-/**
- * 长条形射弹<p>
- * 需要设置immunity type为local
- *
- * @see org.confluence.mod.common.data.map.ImmunityDataMap
- */
+/// 长条形射弹
+/// 需要设置immunity type为static
+///
+/// [org.confluence.mod.common.data.gen.data_map.ImmunitySubProvider]
 public abstract class StripedProjectile extends DamageSettableProjectile {
-    private static final EntityDataAccessor<Boolean> DATA_IS_HEAD = SynchedEntityData.defineId(StripedProjectile.class, EntityDataSerializers.BOOLEAN);
+    protected static final EntityDataAccessor<Boolean> DATA_IS_HEAD = SynchedEntityData.defineId(StripedProjectile.class, EntityDataSerializers.BOOLEAN);
     protected double distForHeadRemove = 10.0;
     protected double distForCreateBody = 0.95;
     protected int ticksForBodyRemove = 28;
-    private Vec3 startPos = Vec3.ZERO;
-    private double distO = -0.5;
-    public float[] rot;
+    protected Vec3 startPos = Vec3.ZERO;
+    protected double distO = -0.5;
+    protected float[] rot;
 
     public StripedProjectile(EntityType<? extends StripedProjectile> entityType, Level level) {
         super(entityType, level);

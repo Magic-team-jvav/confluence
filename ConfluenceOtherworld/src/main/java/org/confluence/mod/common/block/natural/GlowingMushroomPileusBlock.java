@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import static net.minecraft.world.level.block.PipeBlock.*;
 
 public class GlowingMushroomPileusBlock extends Block {
-    public GlowingMushroomPileusBlock(Properties properties) {
-        super(properties.lightLevel(l -> 4));
+    public GlowingMushroomPileusBlock(int lightLevel, Properties properties) {
+        super(properties.lightLevel((state) -> lightLevel));
         registerDefaultState(stateDefinition.any().setValue(NORTH, false)
                 .setValue(EAST, false)
                 .setValue(SOUTH, false)

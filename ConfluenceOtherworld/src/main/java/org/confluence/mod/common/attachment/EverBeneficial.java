@@ -18,7 +18,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
     private boolean galaxyPearl;
     private boolean minecartUpgradeKit;
     private boolean artisanLoaf;
-    private boolean fallenSoulCore;
+//    private boolean fallenSoulCore;
 
     public EverBeneficial() {
         this.lifeCrystals = 0;
@@ -31,7 +31,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         this.galaxyPearl = false;
         this.minecartUpgradeKit = false;
         this.artisanLoaf = false;
-        this.fallenSoulCore = false;
+//        this.fallenSoulCore = false;
     }
 
     public boolean increaseCrystals() {
@@ -128,13 +128,13 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         return artisanLoaf;
     }
 
-    public void changeFallenSoulCore() {this.fallenSoulCore = !fallenSoulCore;}
-
-    public void setFallenSoulCore(boolean fallenSoulCore) {
-        this.fallenSoulCore = fallenSoulCore;
-    }
-
-    public boolean getFallenSoulCore() {return fallenSoulCore;}
+//    public void changeFallenSoulCore() {this.fallenSoulCore = !fallenSoulCore;}
+//
+//    public void setFallenSoulCore(boolean fallenSoulCore) {
+//        this.fallenSoulCore = fallenSoulCore;
+//    }
+//
+//    public boolean getFallenSoulCore() {return fallenSoulCore;}
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
@@ -149,7 +149,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         nbt.putBoolean("galaxyPearl", galaxyPearl);
         nbt.putBoolean("minecartUpgradeKit", minecartUpgradeKit);
         nbt.putBoolean("artisanLoaf", artisanLoaf);
-        nbt.putBoolean("fallenSoulCore", fallenSoulCore);
+//        nbt.putBoolean("fallenSoulCore", fallenSoulCore);
         return nbt;
     }
 
@@ -165,7 +165,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         this.galaxyPearl = nbt.getBoolean("galaxyPearl");
         this.minecartUpgradeKit = nbt.getBoolean("minecartUpgradeKit");
         this.artisanLoaf = nbt.getBoolean("artisanLoaf");
-        this.fallenSoulCore = nbt.getBoolean("fallenSoulCore");
+//        this.fallenSoulCore = nbt.getBoolean("fallenSoulCore");
     }
 
     public static EverBeneficial of(LivingEntity living) {

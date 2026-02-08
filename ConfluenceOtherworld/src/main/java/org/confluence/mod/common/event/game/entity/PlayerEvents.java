@@ -33,18 +33,17 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.lib.common.item.ColoredItem;
+import org.confluence.lib.event.PlayerNaturalHealEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.ChunkDropletsData;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -89,8 +88,17 @@ public final class PlayerEvents {
         if (CommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
-        PlayerUtils.syncSoul2Client(player);
-        GameEventSystem.INSTANCE.syncAll(player);
+//        PlayerUtils.syncSoul2Client(player);
+        PlayerUtils.syncPlayerData(player);
+
+        if (ModUtils.shouldDisplayTeam()) {
+            Team team = PlayerSpecialData.of(player).getTeam();
+            if (team != Team.WHITE) {
+                player.server.getPlayerList().broadcastSystemMessage(Component.translatable(
+                        "message.confluence.join_team", player.getName(), team.getLowerCaseName()
+                ).withColor(team.getColor().getTextColor()), false);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -98,17 +106,18 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         GameEventSystem.INSTANCE.clearAll(player);
+        PlayerSpecialData.of(player).setPvP(false);
     }
 
     @SubscribeEvent
-    public static void leftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+    public static void interact$LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         AltarBlock.onLeftClick(level.getBlockState(pos), level, pos, event.getEntity());
     }
 
     @SubscribeEvent
-    public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+    public static void interact$RightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getEntity();
         Level level = event.getLevel();
         BlockPos blockPos = event.getPos();
@@ -161,7 +170,7 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void playerInteract$EntityInteract(PlayerInteractEvent.EntityInteract event) {
+    public static void interact$EntityInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof LivingEntity targetEntity)
             healChocking:{
                 if (!targetEntity.hasEffect(ModEffects.CHOKING)) break healChocking;
@@ -230,7 +239,7 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void rightClickItem(PlayerInteractEvent.RightClickItem event) {
+    public static void interact$RightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
         if (player.isSpectator()) return;
         ItemStack itemStack = event.getItemStack();
@@ -279,7 +288,7 @@ public final class PlayerEvents {
 
         BoulderWorld.forceSetAccessory(player);
         PlayerUtils.flushLocalData(player, player);
-        GameEventSystem.INSTANCE.syncAll(player);
+        PlayerUtils.syncPlayerData(player);
     }
 
     @SubscribeEvent
@@ -313,11 +322,11 @@ public final class PlayerEvents {
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         PlayerUtils.flushLocalData(player, player);
-        GameEventSystem.INSTANCE.syncAll(player);
+        PlayerUtils.syncPlayerData(player);
     }
 
     @SubscribeEvent
-    public static void playerContainer$Close(PlayerContainerEvent.Close event) {
+    public static void container$Close(PlayerContainerEvent.Close event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         IMinecraftServer server = IMinecraftServer.of(player.server);
         if (!server.confluence$matchesSecretFlag(IWorldOptions.HARDMODE)) return;
@@ -366,7 +375,7 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void canPlayerSleep(CanPlayerSleepEvent event) {
+    public static void canSleep(CanPlayerSleepEvent event) {
         if (BloodMoonGameEvent.INSTANCE.started()) {
             event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
         }
@@ -376,6 +385,16 @@ public final class PlayerEvents {
     public static void canContinueSleeping(CanContinueSleepingEvent event) {
         if (event.mayContinueSleeping() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setContinueSleeping(false);
+        }
+    }
+
+    /// 阻止自然回血的药水效果，已改为使用EffectCure，并提取到Lib了
+    ///
+    /// @see org.confluence.lib.common.event.GameEvents#playerNaturalHeal
+    @SubscribeEvent
+    public static void naturalHeal(PlayerNaturalHealEvent event) {
+        if (PlayerUtils.skipHealIfOnFire(event.getEntity())) {
+            event.setCanceled(true);
         }
     }
 }

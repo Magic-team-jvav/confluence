@@ -15,7 +15,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.jetbrains.annotations.NotNull;
 
 public class MushroomBlock extends BasePlantBlock implements ISpreadable, BonemealableBlock {
     protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
@@ -27,7 +26,6 @@ public class MushroomBlock extends BasePlantBlock implements ISpreadable, Boneme
     }
 
     @Override
-    @NotNull
     public VoxelShape getShape(BlockState pState, BlockGetter level, BlockPos pPos, CollisionContext pContext) {
         Vec3 vec3 = pState.getOffset(level, pPos);
         return SHAPE.move(vec3.x, vec3.y, vec3.z);
@@ -41,7 +39,6 @@ public class MushroomBlock extends BasePlantBlock implements ISpreadable, Boneme
         return 0;
     }
 
-
     @Override
     public ISpreadable.Type getSpreadType() {
         return type;
@@ -49,19 +46,24 @@ public class MushroomBlock extends BasePlantBlock implements ISpreadable, Boneme
 
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        return state.is(NatureBlocks.GLOWING_MUSHROOM);
+        return state.is(NatureBlocks.GLOWING_MUSHROOM) || state.is(NatureBlocks.LIFE_MUSHROOM.get());
     }
 
     @Override
     public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
-        if (state.is(NatureBlocks.GLOWING_MUSHROOM)) return (double) random.nextFloat() < 0.4;
-        return false;
+        return (double) random.nextFloat() < 0.4;
     }
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        level.registryAccess().holder(ModFeatures.Configured.GLOWING_MUSHROOM_TREE).ifPresent(holder ->
-                holder.value().place(level, level.getChunkSource().getGenerator(), random, pos)
-        );
+        if (state.is(NatureBlocks.LIFE_MUSHROOM.get())) {
+            level.registryAccess().holder(ModFeatures.Configured.LIFE_MUSHROOM_TREE).ifPresent(holder ->
+                    holder.value().place(level, level.getChunkSource().getGenerator(), random, pos)
+            );
+        } else if (state.is(NatureBlocks.GLOWING_MUSHROOM)) {
+            level.registryAccess().holder(ModFeatures.Configured.GLOWING_MUSHROOM_TREE).ifPresent(holder ->
+                    holder.value().place(level, level.getChunkSource().getGenerator(), random, pos)
+            );
+        }
     }
 }

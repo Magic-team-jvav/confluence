@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.effect.harmful.PotionSicknessEffect;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.food.ModFoodProperties;
 
@@ -27,18 +26,17 @@ public class MushroomItem extends BlockItem {
 
     @Override
     protected boolean canPlace(BlockPlaceContext context, BlockState state) {
-        return state.is(NatureBlocks.GLOWING_MUSHROOM);
+        return super.canPlace(context, state);
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        InteractionResult result = place(new BlockPlaceContext(context));
+        InteractionResult result = this.place(new BlockPlaceContext(context));
         if (!result.consumesAction() && context.getPlayer() != null) {
-            result = use(context.getLevel(), context.getPlayer(), context.getHand()).getResult();
-            return result == InteractionResult.CONSUME ? InteractionResult.CONSUME_PARTIAL : result;
-        } else {
-            return result;
+            InteractionResultHolder<ItemStack> useResult = this.use(context.getLevel(), context.getPlayer(), context.getHand());
+            return useResult.getResult();
         }
+        return result;
     }
 
     @Override
@@ -48,14 +46,14 @@ public class MushroomItem extends BlockItem {
             return InteractionResultHolder.fail(itemStack);
         }
         if (itemStack.is(MaterialItems.LIFE_MUSHROOM.get())) {
-            player.startUsingItem(hand);
             player.heal(amount);
             player.getFoodData().eat(ModFoodProperties.LIFE_MUSHROOM);
-            itemStack.shrink(1);
-            PotionSicknessEffect.addTo(player, 600);
+            PotionSicknessEffect.addTo(player, 600); // 你代码里写的是600
+            if (!player.getAbilities().instabuild) {
+                itemStack.shrink(1);
+            }
             return InteractionResultHolder.consume(itemStack);
-        } else {
-            return InteractionResultHolder.fail(itemStack);
         }
+        return InteractionResultHolder.fail(itemStack);
     }
 }

@@ -5,10 +5,13 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.Item;
@@ -27,20 +30,20 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.*;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
-import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
-import org.confluence.mod.common.init.ModCommands;
-import org.confluence.mod.common.init.ModRecipes;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
+import org.confluence.mod.common.item.mana.CrystalVileShardItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IAbstractMinecart;
@@ -52,6 +55,7 @@ import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
+import org.confluence.terra_curio.api.event.ArmorPenetrationEvent;
 import org.confluence.terra_guns.api.event.GunEvent;
 import org.confluence.terraentity.entity.summon.AbstractSummonMob;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -102,14 +106,14 @@ public final class GameEvents {
 
     @SubscribeEvent(priority = EventPriority.LOW) // 需要晚于Curios Api
     public static void onDatapackSync(OnDatapackSyncEvent event) {
-        ServerPlayer from = event.getPlayer();
-        if (from == null) {
-            for (ServerPlayer to : event.getPlayerList().getPlayers()) {
-                ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(to, to, ExtraInventory.of(to));
+        ServerPlayer sendTo = event.getPlayer();
+        if (sendTo == null) {
+            for (ServerPlayer target : event.getPlayerList().getPlayers()) {
+                ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(target, target);
             }
         } else {
-            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from));
-            AchievementOffsetSyncPacketS2C.sendToClient(from);
+            ExtraInventorySyncPacketS2C.sendToClient(sendTo, sendTo);
+            AchievementOffsetSyncPacketS2C.sendToClient(sendTo);
         }
     }
 
@@ -119,6 +123,16 @@ public final class GameEvents {
             if (PrefixUtils.canInit(event.getTo())) {
                 PrefixUtils.initPrefix(player.getRandom(), event.getTo());
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void shimmerItemTransmutation$Pre(ShimmerItemTransmutationEvent.Pre event) {
+        ItemEntity source = event.getSource();
+        if (source.getItem().is(ConsumableItems.SLIME_CROWN) && SlimeRainGameEvent.INSTANCE.forceStart()) {
+            source.level().playSound(null, source.getX(), source.getY(), source.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
+            source.discard();
+            event.setCanceled(true);
         }
     }
 
@@ -231,6 +245,14 @@ public final class GameEvents {
             } else if (key.chest() == ArmorItems.MAGIC_HAT.get()) {
                 event.setNeoData(ModArmorBonus.MAGIC_HAT_SET_BONUS);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void armorPenetration(ArmorPenetrationEvent event) {
+        Entity direct = event.getDamageSource().getDirectEntity();
+        if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get()) {
+            event.setPenetration(event.getPenetration() + CrystalVileShardItem.ARMOR_PENETRATION);
         }
     }
 }

@@ -28,6 +28,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.block.natural.JungleHiveBlock;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -137,6 +138,8 @@ public final class ModItems {
     public static final DeferredItem<BlockPlacingWandItem> RICH_MAHOGANY_LEAF_WAND = ITEMS.register("rich_mahogany_leaf_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.LEAVES.get()));
     public static final DeferredItem<BlockPlacingWandItem> HIVE_WAND = ITEMS.register("hive_wand", () -> new BlockPlacingWandItem(null, NatureBlocks.JUNGLE_HIVE_BLOCK.get(), (context, state) -> state.setValue(JungleHiveBlock.NATURAL, true)));
 
+    public static final DeferredItem<ScryingOrb> SCRYING_ORB = ITEMS.register("scrying_orb", ScryingOrb::new);
+
     public static final DeferredItem<Item> HUANG_LI = HIDDEN.register("huang_li", () -> new Item(new Item.Properties()) {
         @Override
         public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
@@ -147,6 +150,8 @@ public final class ModItems {
             return InteractionResultHolder.success(player.getItemInHand(usedHand));
         }
     });
+
+    public static final DeferredItem<AbstractEnemyBannerBlock.BItem> ENEMY_BANNER = ITEMS.register("enemy_banner", AbstractEnemyBannerBlock.BItem::new);
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

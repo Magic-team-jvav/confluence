@@ -451,7 +451,6 @@ public final class ModTags {
     public static class Fluids {
         public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
         public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
-        public static final TagKey<Fluid> C_WATER = FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", "water"));
     }
 
     public static class EntityTypes {
@@ -460,9 +459,14 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> FEALING_TRANSMUTATION = register("fealing_transmutation"); // 可转化为飞灵的生物
         public static final TagKey<EntityType<?>> SPAWN_AT_GRAVEYARD = register("spawn_at_graveyard"); // 可以生成在墓地的生物
         public static final TagKey<EntityType<?>> DO_NOT_DROPS_EVIL_SOUL = register("do_not_drops_evil_soul"); // 不掉落光明或暗影之魂
+        public static final TagKey<EntityType<?>> BESTIARY_WHITELIST = register("bestiary_whitelist"); // 怪物图鉴白名单
         public static final TagKey<EntityType<?>> BESTIARY_BLACKLIST = register("bestiary_blacklist"); // 怪物图鉴黑名单
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_WHITELIST = register("critter_companionship_whitelist"); // 小动物保护指南白名单
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_BLACKLIST = register("critter_companionship_blacklist"); // 小动物保护指南黑名单
+        public static final TagKey<EntityType<?>> ENEMY_BANNER_WHITELIST = register("enemy_banner_whitelist"); // 旗帜白名单
+        public static final TagKey<EntityType<?>> ENEMY_BANNER_BLACKLIST = register("enemy_banner_blacklist"); // 旗帜黑名单
+        public static final TagKey<EntityType<?>> GORE_EFFECT_BLACKLIST = register("gore_effect_blacklist"); // 肢解效果黑名单
+        public static final TagKey<EntityType<?>> NPC_INVULNERABLE_TO_PLAYER = register("npc_invulnerable_to_player"); // 能够免疫玩家伤害的NPC
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

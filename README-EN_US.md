@@ -7,10 +7,9 @@
 | [ConfluenceMagicLib](Confluence-Magic-Lib)                                    | Library                                            | no                 |
 | [ConfluenceOtherworld](ConfluenceOtherworld)                                  | Main module                                        | Depends on all     |
 | [TerraEntity](TerraEntity)                                                    | Terra's Entities                                   | yes                |
-| [MineTeam](MineTeam)                                                          | Terra's Teams                                      | yes                |
 | [TerraCurio](TerraCurio)                                                      | Terra's Wearables                                  | yes                |
 | [TerraGuns](TerraGuns)                                                        | Terra's Guns                                       | yes                |
-| [ParticleStorm](ParticleStorm)                                                | Particles API                                      | yes                |
+| [ParticleStorm](https://github.com/westernat/ParticleStorm)                   | Particles API                                      | yes                |
 | [ThreeDimensionParticle](https://github.com/westernat/ThreeDimensionParticle) | 3D Particle core                                   | no                 |
 | [TerraFurniture](TerraFurniture)                                              | Terra's Furniture                                  | yes                |
 | [TheTrackers](TheTrackers)                                                    | Provide real-time location hints for Boss entities | Yes                |

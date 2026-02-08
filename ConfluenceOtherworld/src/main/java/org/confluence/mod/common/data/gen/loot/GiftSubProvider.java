@@ -56,7 +56,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         GamePhaseLootItemCondition.Builder beforeWallOfFlesh = GamePhaseLootItemCondition.builder().from(GamePhase.BEFORE_SKELETRON).to(GamePhase.WALL_OF_FLESH);
 
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/obsidian_crate"), environmentCrateCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/obsidian_crate"), environmentLavaCrateCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM).setWeight(5))
                         .add(LootItem.lootTableItem(AccessoryItems.LAVAPROOF_FISHING_HOOK).setWeight(19))
@@ -74,6 +74,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TFBlocks.HANGING_POT).apply(SetItemCountFunction.setCount(new ConstantValue(2))))
                         .add(EmptyLootItem.emptyItem().setWeight(3))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FunctionalBlocks.HELLFORGE).setWeight(5))
+                        .add(EmptyLootItem.emptyItem().setWeight(95))
+                )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/obsidian_lock_box"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -87,6 +91,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/dungeon_crate"), environmentCrateCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        .add(EmptyLootItem.emptyItem())
+                )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/golden_lock_box"), LootTable.lootTable()
@@ -351,7 +359,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hellstone_crate"), environmentCrateHardModeCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hellstone_crate"), environmentLavaCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM).setWeight(5))
                         .add(LootItem.lootTableItem(AccessoryItems.LAVAPROOF_FISHING_HOOK).setWeight(19))
@@ -359,6 +367,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.WET_BOMB).apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 10))))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FunctionalBlocks.HELLFORGE).setWeight(5))
+                        .add(EmptyLootItem.emptyItem().setWeight(95))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.OBSIDIAN_LOCK_BOX)))
                 .withPool(LootPool.lootPool()
@@ -371,6 +383,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/stockade_crate"),environmentCrateHardModeCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        .add(EmptyLootItem.emptyItem())
+                )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/divine_crate"), environmentCrateHardModeCommon()
@@ -673,10 +689,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/clam"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.SHUCKED_OYSTER)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.PEARL).setWeight(28))
-                        .add(LootItem.lootTableItem(MaterialItems.BLACK_PEARL).setWeight(14))
-                        .add(LootItem.lootTableItem(MaterialItems.PINK_PEARL).setWeight(3))
-                        .add(EmptyLootItem.emptyItem().setWeight(180))
+                        .add(LootItem.lootTableItem(MaterialItems.PEARL).setWeight(30))
+                        .add(LootItem.lootTableItem(MaterialItems.BLACK_PEARL).setWeight(16))
+                        .add(LootItem.lootTableItem(MaterialItems.PINK_PEARL).setWeight(5))
+                        .add(EmptyLootItem.emptyItem().setWeight(151))
                 )
         );
         // 蠕虫罐头
@@ -703,6 +719,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 29)))
                         )
                         .add(LootItem.lootTableItem(DecorativeBlocks.RED_CANDY_BLOCK).setWeight(1680)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 29)))
+                        )
+                        .add(LootItem.lootTableItem(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET).setWeight(1680)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 29)))
                         )
                         .add(LootItem.lootTableItem(FoodItems.SUGAR_COOKIE).setWeight(360))
@@ -778,6 +797,12 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         // 砂糖橘
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/sugar_tangerine"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.PEELED_SUGAR_TANGERINE)))
+        );
+        // 松果
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/pine_cone"), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.PINE_NUT))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                )
         );
         // 史莱姆嵌套携带
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/slime_carry"), LootTable.lootTable()
@@ -1594,7 +1619,11 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FunctionalBlocks.SOLIDIFIER)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
-                ));
+                ))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setWeight(333))
+                        .add(EmptyLootItem.emptyItem().setWeight(9667))
+                );
     }
 
     private static LootTable.Builder queenBeeTreasureBagCommon() {
@@ -1699,6 +1728,77 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
                         .add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
                         .add(EmptyLootItem.emptyItem().setWeight(16))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(EmptyLootItem.emptyItem().setWeight(16))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
+                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                );
+    }
+
+    // 困难模式前岩浆匣子通用
+    private static LootTable.Builder environmentLavaCrateCommon() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
+                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_HELLSTONE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
+                        .add(EmptyLootItem.emptyItem().setWeight(6))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.HELLSTONE_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        .add(EmptyLootItem.emptyItem().setWeight(16))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
+                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                );
+    }
+    // 困难模式岩浆匣子通用
+    private static LootTable.Builder environmentLavaCrateHardModeCommon() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
+                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_HELLSTONE).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
+                        .add(EmptyLootItem.emptyItem().setWeight(6))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.HELLSTONE_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))

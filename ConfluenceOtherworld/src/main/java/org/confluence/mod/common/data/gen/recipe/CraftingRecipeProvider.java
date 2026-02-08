@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import static com.xiaohunao.enemybanner.items.ItemRegister.BANNER_BOX;
 import static org.confluence.mod.common.data.gen.recipe.ModRecipeProvider.createAdvancementHolder;
 
 @SuppressWarnings("all")
@@ -275,6 +274,99 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###",
                 " # "
         )), TFBlocks.WOODEN_TABLE.toStack());
+
+
+        // 金合欢桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.ACACIA_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.ACACIA_TABLE.toStack());
+        // 竹桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.BAMBOO_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.BAMBOO_TABLE.toStack());
+        // 白桦木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.BIRCH_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.BIRCH_TABLE.toStack());
+        // 樱花木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.CHERRY_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.CHERRY_TABLE.toStack());
+        // 绯红木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.CRIMSON_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.CRIMSON_TABLE.toStack());
+        // 深色橡木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.DARK_OAK_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.DARK_OAK_TABLE.toStack());
+        // 丛林木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.JUNGLE_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.JUNGLE_TABLE.toStack());
+        // 红木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.MANGROVE_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.MANGROVE_TABLE.toStack());
+        // 松木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.PINE_LOG_BLOCKS.PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.PINE_TABLE.toStack());
+        // 磨制黑石桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.POLISHED_BLACKSTONE)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.POLISHED_BLACKSTONE_TABLE.toStack());
+        // 云杉木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.SPRUCE_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.SPRUCE_TABLE.toStack());
+        // 石桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.STONE)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.STONE_TABLE.toStack());
+        // 诡异木桌
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.WARPED_PLANKS)
+        ), List.of(
+                "###",
+                " # "
+        )), TFBlocks.WARPED_TABLE.toStack());
 
         // 船
         registerBoatRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, BoatItems.EBONY_BOAT, BoatItems.EBONY_CHEST_BOAT);
@@ -561,16 +653,6 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "O",
                 "a"
         )), new ItemStack(Items.ARROW, 12));
-        // 旗帜盒
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(MaterialItems.SILK),
-                'b', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
-                'c', Ingredient.of(ItemTags.PLANKS)
-        ), List.of(
-                "bcb",
-                "cac",
-                "bcb"
-        )), BANNER_BOX.toStack());
         // 王朝木衍生系列
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(NatureBlocks.DYNASTY_LOG_BLOCKS.PLANKS),
@@ -601,9 +683,25 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(Items.RED_DYE),
                 Ingredient.of(Items.BLACK_DYE)
         );
+        // 松针手工绳套
+        shapeless(output,
+                ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET.toStack(),
+                Ingredient.of(NatureBlocks.PINE_DROOPING_VINE),
+                Ingredient.of(NatureBlocks.PINE_DROOPING_VINE)
+        );
+        shapeless(output,
+                DecorativeBlocks.CHRISTMAS_PINE_TRAPDOOR.toStack(),
+                Ingredient.of(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET),
+                Ingredient.of(NatureBlocks.PINE_LOG_BLOCKS.TRAPDOOR)
+        );
+        shapeless(output,
+                DecorativeBlocks.CHRISTMAS_PINE_DOOR.toStack(),
+                Ingredient.of(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET),
+                Ingredient.of(NatureBlocks.PINE_LOG_BLOCKS.DOOR)
+        );
         // 生命篝火
         shaped(output, ShapedRecipePattern.of(Map.of(
-                'S', Ingredient.of(NatureBlocks.LIVING_LOG_BLOCKS.WOOD,NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.WOOD,MaterialItems.LIFE_MUSHROOM),
+                'S', Ingredient.of(NatureBlocks.LIVING_LOG_BLOCKS.WOOD, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.WOOD, MaterialItems.LIFE_MUSHROOM),
                 '/', Ingredient.of(Items.CAMPFIRE)
         ), List.of(
                 " S ",
@@ -611,10 +709,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         )), FunctionalBlocks.LIFE_CAMPFIRE.toStack());
         // 香蒲造纸
         shaped(output, ShapedRecipePattern.of(Map.of(
-                '/', Ingredient.of(ModItems.CATTAIL,ModItems.JUNGLE_CATTAIL,ModItems.GLOWING_MUSHROOM_CATTAIL,ModItems.EBONY_CATTAIL,ModItems.CRIMSON_CATTAIL,ModItems.HALLOW_CATTAIL)
+                '/', Ingredient.of(ModItems.CATTAIL, ModItems.JUNGLE_CATTAIL, ModItems.GLOWING_MUSHROOM_CATTAIL, ModItems.EBONY_CATTAIL, ModItems.CRIMSON_CATTAIL, ModItems.HALLOW_CATTAIL)
         ), List.of(
                 "///"
-        )), new ItemStack(Items.PAPER,3));
+        )), new ItemStack(Items.PAPER, 3));
         // 便捷合成，无序合成
         shapeless(output, "", "_from_raw_copper",
                 new ItemStack(Items.COPPER_INGOT),
@@ -1093,6 +1191,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 new ItemStack(Items.TRIPWIRE_HOOK, 2)
         );
         shapeless(output, new ItemStack(Items.FLINT_AND_STEEL), Ingredient.of(ModTags.Items.LEAD_AND_IRON), Ingredient.of(Items.FLINT));
+        shapeless(output, new ItemStack(NatureBlocks.FEY_LOG_BLOCKS.LOG,8), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS),Ingredient.of(MaterialItems.LIFE_MUSHROOM));
 
         // 石头及深板岩压力板
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));
@@ -1101,27 +1200,27 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
         shapeless(output, ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.toStack(), Ingredient.of(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP), Ingredient.of(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION));
 
-        shapeless(output, FunctionalBlocks.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2,ModTags.Items.GOLD_AND_PLATINUM),Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, FunctionalBlocks.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2, ModTags.Items.GOLD_AND_PLATINUM), Ingredient.of(MaterialItems.PINK_GEL));
 
-        shapeless(output, FunctionalBlocks.HEART_LANTERN.toStack(), Ingredient.of(Items.CHAIN),Ingredient.of(ConsumableItems.LIFE_CRYSTAL));
-        shapeless(output, FunctionalBlocks.STAR_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.FALLING_STAR));
-        shapeless(output, FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_LIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_SIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_MIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_FRIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_BRIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_NIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE,Items.GLASS_BOTTLE),Ingredient.of(MaterialItems.SOUL_OF_VOIGHT));
+        shapeless(output, FunctionalBlocks.HEART_LANTERN.toStack(), Ingredient.of(Items.CHAIN), Ingredient.of(ConsumableItems.LIFE_CRYSTAL));
+        shapeless(output, FunctionalBlocks.STAR_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_LIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_SIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_MIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_FRIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_BRIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_NIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_VOIGHT));
 
 
-        shapeless(output, ConsumableItems.DRY_BOMB.toStack(), Ingredient.of(ConsumableItems.WET_BOMB,ConsumableItems.HONEY_BOMB,ConsumableItems.LAVA_BOMB));
+        shapeless(output, ConsumableItems.DRY_BOMB.toStack(), Ingredient.of(ConsumableItems.WET_BOMB, ConsumableItems.HONEY_BOMB, ConsumableItems.LAVA_BOMB));
 
         shapeless(output, ConsumableItems.WET_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.WATER_BUCKET));
         shapeless(output, ConsumableItems.HONEY_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(ToolItems.HONEY_BUCKET));
         shapeless(output, ConsumableItems.LAVA_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.LAVA_BUCKET));
 
-        shapeless(output, ConsumableItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH),Ingredient.of(MaterialItems.FALLING_STAR));
+//        shapeless(output, ConsumableItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH), Ingredient.of(MaterialItems.FALLING_STAR));
 
         shapeless(output, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(ModBlocks.POO));
 
@@ -1173,12 +1272,13 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ItemLike[] logs = Streams.of(logBlockSet.LOG, logBlockSet.STRIPPED_LOG, logBlockSet.WOOD, logBlockSet.STRIPPED_WOOD).filter(DeferredHolder::isBound).toArray(ItemLike[]::new);
         if (logs.length > 0) shapeless(output, logBlockSet.PLANKS.toStack(4), Ingredient.of(logs));
         shapeless(output, logBlockSet.BUTTON.toStack(), Ingredient.of(logBlockSet.PLANKS));
-        if (logBlockSet.LOG.isBound() && logBlockSet.WOOD.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.LOG)
-        ), List.of(
-                "##",
-                "##"
-        )), logBlockSet.WOOD.toStack(3));
+        if (logBlockSet.LOG.isBound() && logBlockSet.WOOD.isBound())
+            shaped(output, ShapedRecipePattern.of(Map.of(
+                    '#', Ingredient.of(logBlockSet.LOG)
+            ), List.of(
+                    "##",
+                    "##"
+            )), logBlockSet.WOOD.toStack(3));
         if (logBlockSet.STRIPPED_LOG.isBound() && logBlockSet.STRIPPED_WOOD.isBound())
             shaped(output, ShapedRecipePattern.of(Map.of(
                     '#', Ingredient.of(logBlockSet.STRIPPED_LOG)

@@ -1,5 +1,6 @@
-permissions: 
+permissions:
   contents: write
+
 name: Nightly Build
 on:
   workflow_dispatch:
@@ -15,51 +16,54 @@ jobs:
         with:
           ref: refs/heads/neoforge-dev/1.21.1
           submodules: recursive
+          fetch-depth: 0
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: 21
           cache: "gradle"
-      - name: Generate assets
+
+      - name: Prepare Permissions and Assets
         run: |
-          git submodule foreach '../gradlew runData'
+          find . -name "gradlew" -exec chmod +x {} +
+          git submodule foreach './gradlew runData'
           cd ./ConfluenceOtherworld && ./gradlew runData
+
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
-        run: ./gradlew build
-      
+        run: |
+          chmod +x gradlew
+          ./gradlew build
+
       - name: Get version with date suffix
         id: version
         working-directory: ./ConfluenceOtherworld
         run: |
           if [ -f "gradle.properties" ]; then
-            BASE_VERSION=$(grep -E "^(mod_)?version" gradle.properties | head -1 | cut -d'=' -f2 | tr -d ' \r\n' | sed 's/-.*//')
+            BASE_VERSION=$(grep -E "^(mod_)?version\s*=" gradle.properties | head -1 | cut -d'=' -f2 | tr -d ' \r\n' | sed 's/-.*//')
           else
             BASE_VERSION="1.2.0"
           fi
           DATE_SUFFIX=$(date +%y%m%d)
           FULL_VERSION="${BASE_VERSION}-alpha-${DATE_SUFFIX}"
           echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_OUTPUT
-      
-      - name: Delete previous nightly release
-        run: |
-          releases=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/releases?per_page=100")
-          echo "$releases" | jq -r '.[] | select(.prerelease == true and .name == "Nightly Build") | "\(.id)"' | while read release_id; do
-            if [ ! -z "$release_id" ]; then
-              echo "Deleting previous nightly release: $release_id"
-              curl -s -X DELETE -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                "https://api.github.com/repos/${{ github.repository }}/releases/$release_id"
-            fi
-          done
-      
+
+      - name: Cleanup Old Nightly Release
+        uses: dev-drprasad/delete-tag-and-release@v1.1
+        with:
+          delete_release: true
+          tag_name: nightly
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Upload to Nightly Release
         uses: softprops/action-gh-release@v1
         with:
           files: ./ConfluenceOtherworld/build/libs/*.jar
           tag_name: nightly
-          name: Nightly Build
+          name: "Nightly Build - ${{ steps.version.outputs.FULL_VERSION }}"
           prerelease: true
           make_latest: true
         env:

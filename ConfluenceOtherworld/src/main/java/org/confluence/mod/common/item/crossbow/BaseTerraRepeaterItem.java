@@ -440,6 +440,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
 
     @Override
     public void onLeftClick(Player player, ItemStack itemStack) {
+        if (player.level().isClientSide) return;
         var handler = getHandler(itemStack);
         if (handler == null) {
             return;
@@ -484,6 +485,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
 
     @Override
     public void onLeftRelease(Player player, ItemStack itemStack) {
+        if (player.level().isClientSide) return;
         InteractionHand hand = getHand(player, itemStack);
         DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
         delayTaskHolder.removeTask(hand, REPEATER_SHOOTING);

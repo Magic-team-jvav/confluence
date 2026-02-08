@@ -30,7 +30,6 @@ import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.StaffOfRegrowth;
@@ -54,16 +53,6 @@ public final class LevelEvents {
             Block block = LogBlockSet.WRAPPED_STRIP_TABLE.get(originalState.getBlock());
             if (block != null) {
                 event.setFinalState(block.defaultBlockState().trySetValue(RotatedPillarBlock.AXIS, originalState.getValue(RotatedPillarBlock.AXIS)));
-            }
-        }
-        if (event.getItemAbility() == ItemAbilities.SHOVEL_FLATTEN) {
-            BlockState originalState = event.getState();
-            if (originalState.is(NatureBlocks.JUNGLE_GRASS_BLOCK.get())) {
-                event.setFinalState(NatureBlocks.JUNGLE_PATH.get().defaultBlockState());
-            } else if (originalState.is(NatureBlocks.MUSHROOM_GRASS_BLOCK.get())) {
-                event.setFinalState(NatureBlocks.MUSHROOM_PATH.get().defaultBlockState());
-            } else if (originalState.is(NatureBlocks.ASH_GRASS_BLOCK.get())) {
-                event.setFinalState(NatureBlocks.ASH_PATH.get().defaultBlockState());
             }
         }
     }

@@ -67,12 +67,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * 生成单个NPC单个配方
- *
- * @see ITrade 生成配方
- * @see NPCTradeManager 读取配方
- */
+/// 生成单个NPC单个配方
+///
+/// @see ITrade 生成配方
+/// @see NPCTradeManager 读取配方
 public class NPCShopProvider extends AbstractRecipeProvider {
     private static final boolean ENABLE_DEBUG_SHOPS = false;
     private final PackOutput.PathProvider npcShopPathProvider;
@@ -549,13 +547,17 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         shop(TENpcEntities.ZOOLOGIST.getId()).addRecipe(withDefaultPylon()
                 .add(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP)
-                .add(TEWhipItems.LEATHER_WHIP)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TEWhipItems.LEATHER_WHIP.toStack())
+                        .setProperties(TradeProperties.builder().setLock(new BestiaryUnlockedCountLock(16)).build())
+                        .build())
                 .add(MinecartItems.DIGGING_MOLECART)
                 .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING)
                 .add(Items.CHERRY_SAPLING)
                 .add(SellTrade.INSTANCE)
                 .add(new MoneyTradeItem.Builder()
                         .setResult(LanceItems.JOUSTING_LANCE.toStack())
+                        .setProperties(hardmode)
                         .setProperties(TradeProperties.builder().setLock(new BestiaryUnlockedCountLock(75)).build())
                         .build())
                 .build());
@@ -781,16 +783,15 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
     protected Builder withDefaultPylon() {
         ITradeLock waystonesLock = withModLoaded(WaystonesHelper.MODID);
-        MoodLock goodMoodLock = MoodLock.greater(120);
         return new Builder()
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS), goodMoodLock, waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.SNOW_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY), goodMoodLock, waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.DESERT_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_DESERT, Tags.Biomes.IS_BADLANDS), goodMoodLock, waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.CAVERN_PYLON.getId(), 1, ITradeLock.and(PositionLock.ofY(MinMaxBounds.Ints.atMost(OverworldUtils.getSurfaceY())), goodMoodLock, waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.OCEAN_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_OCEAN), goodMoodLock, waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.JUNGLE_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_JUNGLE), goodMoodLock, waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.HALLOW_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(ModTags.Biomes.THE_HALLOW), goodMoodLock, waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.MUSHROOM_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(ModBiomes.GLOWING_MUSHROOM), goodMoodLock, waystonesLock)));
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS), waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.SNOW_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY), waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.DESERT_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_DESERT, Tags.Biomes.IS_BADLANDS), waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.CAVERN_PYLON.getId(), 1, ITradeLock.and(PositionLock.ofY(MinMaxBounds.Ints.atMost(OverworldUtils.getSurfaceY())), waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.OCEAN_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_OCEAN), waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.JUNGLE_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_JUNGLE), waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.HALLOW_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(ModTags.Biomes.THE_HALLOW), waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.MUSHROOM_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(ModBiomes.GLOWING_MUSHROOM), waystonesLock)));
     }
 
     protected ITradeLock withModLoaded(String modid) {

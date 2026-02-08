@@ -441,12 +441,47 @@ public class ModDataProvider {
                     4,
                     1
             ));
+            register(context, ModFeatures.Configured.LIFE_MUSHROOM_TREE, ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.get()),
+                    4,
+                    1
+            ));
+            register(context, ModFeatures.Configured.HUGE_LIFE_MUSHROOM_TREE, ModFeatures.HUGE_MUSHROOM_TREE.get(), new HugeMushroomTreeFeature.Config(
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.HANGING_MYCELIUM.get()),
+                    BlockStateProvider.simple(NatureBlocks.MYCELIAL_DIRT.get()),
+                    BlockStateProvider.simple(Blocks.RED_MUSHROOM),
+                    BlockStateProvider.simple(Blocks.BROWN_MUSHROOM),
+                    BlockStateProvider.simple(Blocks.MYCELIUM)
+            ));
             register(context, GLOWING_MUSHROOM_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_VINE.get()), false, 1, 9));
             register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get()), 0, 1.0F, 20));
             register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, CRIMSON_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAIL_BLOCK.get()), 2, 0.5F, 20));
+            register(context, ModFeatures.Configured.PINE_TREE, ModFeatures.PINE_TREE.get(), new PineTreeFeature.Config(
+                            BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
+                            BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
+                            BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get()),
+                            14,
+                            10,
+                            false
+                    )
+            );
+            register(context, ModFeatures.Configured.CHINESE_PINE_TREE, ModFeatures.PINE_TREE.get(), new PineTreeFeature.Config(
+                            BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
+                            BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
+                            BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get()),
+                            7,
+                            4,
+                            true
+                    )
+            );
             register(context, ModFeatures.Configured.BAOBAB_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
                     new WeightedPlacedFeature(direct(
                             ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
@@ -743,6 +778,7 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM = key("glowing_mushroom");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_LIFE_CRYSTAL = key("glowing_mushroom_life_crystal");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_TREE = key("glowing_mushroom_tree");
+        private static final ResourceKey<PlacedFeature> HUGE_LIFE_MUSHROOM_TREE = key("huge_life_mushroom_tree");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_VINE = key("glowing_mushroom_vine");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_CATTAILS = key("glowing_mushroom_cattails");
         private static final ResourceKey<PlacedFeature> ASH_TREE = key("ash_tree");
@@ -879,6 +915,7 @@ public class ModDataProvider {
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), CountPlacement.of(40), inSquare, bottomThroughUnderground, biome);
             register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), CountPlacement.of(6), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), biome);
+            register(context, HUGE_LIFE_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.HUGE_LIFE_MUSHROOM_TREE), RarityFilter.onAverageOnceEvery(30), biome);
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), CountPlacement.of(144), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
             register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), CountOnEveryLayerPlacement.of(32), bottomThroughUnderground, ySpreadN1, biome);
             register(context, ASH_TREE, configured.getOrThrow(ModFeatures.Configured.ASH_TREE), CountOnEveryLayerPlacement.of(4), targetSturdyAllowedAir, biome);
@@ -1185,7 +1222,7 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEAnimals.CRAB.get(), 7, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.TROPIC_SLIME.get(), 7, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 5, 1, 1)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 15, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_desert"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1531,6 +1568,7 @@ public class ModDataProvider {
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);
                         builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.GLOWING_MUSHROOM_CAVE_CARVER);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.HUGE_LIFE_MUSHROOM_TREE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_LIFE_CRYSTAL);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_TREE);

@@ -26,14 +26,12 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.consumer.Consumer4;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
-import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
+import org.confluence.mod.common.item.sword.legacy.*;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
@@ -133,17 +131,41 @@ public class BaseSwordItem extends SwordItem {
         return ModUtils.supportsEnchantment(stack, enchantment);
     }
 
+    @Override
+    public float getAttackDamageBonus(Entity target, float damage, DamageSource damageSource) {
+        if (modifier != null && modifier.attackDamageBonus != null) {
+            return modifier.attackDamageBonus.get(target, damage, damageSource);
+        }
+        return super.getAttackDamageBonus(target, damage, damageSource);
+    }
+
+    @Override
+    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        super.postHurtEnemy(stack, target, attacker);
+        if (modifier != null && modifier.postHurtEnemy != null) {
+            modifier.postHurtEnemy.accept(stack, target, attacker);
+        }
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return false;
+    }
+
     public static class ModifierBuilder {
         public boolean canPerformSweep = true;
         public boolean specialSweep = false;
 
         protected Item.Properties properties = new Item.Properties();
-        private Consumer4<ItemStack, Level, Entity, Boolean> inventoryTick;
-        private final ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
-        private int modifyCount = 0;
+        protected IInventoryTick inventoryTick;
+        protected final ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
+        protected int modifyCount = 0;
         protected List<Consumer<Item.Properties>> modifier = new ArrayList<>();
-        List<Consumer<MutableComponent>> tooltipsModifier = new ArrayList<>();
-        boolean hasImage;
+        protected List<Consumer<MutableComponent>> tooltipsModifier = new ArrayList<>();
+        protected boolean hasImage;
+        protected IAttackDamageBonus attackDamageBonus;
+        protected IPostHurtEnemy postHurtEnemy;
+        public IPreLivingDamage preLivingDamage;
 
         public ModifierBuilder hasImage() {
             this.hasImage = true;
@@ -190,9 +212,24 @@ public class BaseSwordItem extends SwordItem {
 
         /// 背包每刻效果
         ///
-        /// @see InventoryTickStrategy
-        public ModifierBuilder setInventoryTick(Consumer4<ItemStack, Level, Entity, Boolean> inventoryTick) {
+        /// @see SwordStrategy
+        public ModifierBuilder setInventoryTick(IInventoryTick inventoryTick) {
             this.inventoryTick = inventoryTick;
+            return this;
+        }
+
+        public ModifierBuilder setAttackDamageBonus(IAttackDamageBonus bonus) {
+            this.attackDamageBonus = bonus;
+            return this;
+        }
+
+        public ModifierBuilder setPostHurtEnemy(IPostHurtEnemy postHurtEnemy) {
+            this.postHurtEnemy = postHurtEnemy;
+            return this;
+        }
+
+        public ModifierBuilder setPreLivingDamage(IPreLivingDamage preLivingDamage) {
+            this.preLivingDamage = preLivingDamage;
             return this;
         }
 
@@ -309,6 +346,6 @@ public class BaseSwordItem extends SwordItem {
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (modifier != null && modifier.inventoryTick != null)
-            modifier.inventoryTick.accept(stack, level, entity, isSelected);
+            modifier.inventoryTick.accept(stack, level, entity, slotId, isSelected);
     }
 }

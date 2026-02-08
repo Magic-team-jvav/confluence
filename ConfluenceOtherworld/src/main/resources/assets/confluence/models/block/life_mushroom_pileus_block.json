@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/life_mushroom_pileus_block_bottom_display",
+    "side": "confluence:block/life_mushroom_pileus_block_side_display",
+    "top": "confluence:block/life_mushroom_pileus_block_top_display"
+  }
+}

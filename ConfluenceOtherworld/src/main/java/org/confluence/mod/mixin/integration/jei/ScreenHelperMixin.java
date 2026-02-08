@@ -12,7 +12,7 @@ import java.util.List;
 @Pseudo
 @Mixin(targets = "mezz.jei.neoforge.platform.ScreenHelper", remap = false)
 public abstract class ScreenHelperMixin {
-    @ModifyVariable(method = "getToastsArea", at = @At("STORE"))
+    @ModifyVariable(method = "getToastsArea", at = @At("STORE"), name = "visible")
     private List<ToastComponent.ToastInstance<?>> filter(List<ToastComponent.ToastInstance<?>> visible) {
         return ModJeiPlugin.filterAchievements(visible);
     }

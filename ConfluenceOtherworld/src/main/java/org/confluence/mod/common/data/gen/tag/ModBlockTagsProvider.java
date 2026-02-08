@@ -16,6 +16,7 @@ import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.integration.mrcrayfish.furniture.MrCrayfishFurnitureHelper;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
@@ -473,7 +474,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 JUNGLE_PATH.get(),
                 MUSHROOM_PATH.get(),
                 POO.get(),
-                POO_BLOCK.get()
+                POO_BLOCK.get(),
+                HANGING_MYCELIUM.get(),
+                MYCELIAL_DIRT.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
@@ -494,6 +497,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SPORE_ROOT_BLOCK.get(),
 
                 TRADITIONAL_DYNASTY_DOOR.get(),
+                CHRISTMAS_PINE_DOOR.get(),
+                CHRISTMAS_PINE_TRAPDOOR.get(),
 
                 ANNOUNCEMENT_BOX.get(),
                 WALL_ANNOUNCEMENT_BOX.get(),
@@ -741,6 +746,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 STURDY_FOSSIL_BLOCK.get(),
                 COLD_CRYSTAL_BLOCK.get(),
 
+                HANGING_MYCELIUM.get(),
+                MYCELIAL_DIRT.get(),
+
                 HEART_LANTERN.get(),
                 STAR_IN_A_BOTTLE.get(),
                 TUFF_BOOTH.get(),
@@ -917,8 +925,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RAW_LUMINITE_BLOCK.get(),
                 LUMINITE_BLOCK.get()
         );
-        tag(ModTags.Blocks.ROPE).add(ROPE.get(), VINE_ROPE.get(), SILK_ROPE.get(), WEB_ROPE.get());
-        tag(Tags.Blocks.ROPES).add(ROPE.get(), VINE_ROPE.get(), SILK_ROPE.get(), WEB_ROPE.get());
+        tag(ModTags.Blocks.ROPE).add(ROPE.get(), VINE_ROPE.get(), SILK_ROPE.get(), WEB_ROPE.get(), PINE_NEEDLE_HANDMADE_ROPE_SET.get());
+        tag(Tags.Blocks.ROPES).add(ROPE.get(), VINE_ROPE.get(), SILK_ROPE.get(), WEB_ROPE.get(), PINE_NEEDLE_HANDMADE_ROPE_SET.get());
         tag(BlockTags.STAIRS).add(
                 SUN_PLATE_STAIRS.get(),
                 OBSIDIAN_BRICKS_STAIRS.get(),
@@ -989,7 +997,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SKYWARE_GLASS_DOOR.get(),
                 OBSIDIAN_BRICKS_DOOR.get(),
                 LIHZAHRD_DOOR.get(),
-                TRADITIONAL_DYNASTY_DOOR.get()
+                TRADITIONAL_DYNASTY_DOOR.get(),
+                CHRISTMAS_PINE_DOOR.get()
+        );
+        tag(BlockTags.TRAPDOORS).add(
+                CHRISTMAS_PINE_TRAPDOOR.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMER)
                 .addTag(BlockTags.WALLS)
@@ -1535,9 +1547,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.GRASS_BLOCK,
                 JUNGLE_GRASS_BLOCK.get(),
                 CORRUPT_JUNGLE_GRASS_BLOCK.get(),
+                CORRUPT_GRASS_BLOCK.get(),
                 CRIMSON_JUNGLE_GRASS_BLOCK.get(),
+                CRIMSON_GRASS_BLOCK.get(),
                 MUSHROOM_GRASS_BLOCK.get(),
-                ASH_GRASS_BLOCK.get()
+                ASH_GRASS_BLOCK.get(),
+                HALLOW_GRASS_BLOCK.get()
         );
         tag(ModTags.Blocks.CRIMSON_BLOCKS).addTags(
                 ModTags.Blocks.CRIMSON_DESERT_BLOCKS,
@@ -1732,5 +1747,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 LIFE_CAMPFIRE.get()
         );
         WaystonesHelper.blockTags(this::tag);
+        MrCrayfishFurnitureHelper.blockTags(this::tag);
     }
 }

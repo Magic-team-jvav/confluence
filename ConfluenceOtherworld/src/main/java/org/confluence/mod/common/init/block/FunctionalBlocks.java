@@ -198,19 +198,18 @@ public class FunctionalBlocks {
     public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_SIGHT_IN_A_BOTTLE = registerWithItem("soul_of_sight_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_LIGHT_GREEN)));
     public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_BRIGHT_IN_A_BOTTLE = registerWithItem("soul_of_bright_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_YELLOW)));
     public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_VOIGHT_IN_A_BOTTLE = registerWithItem("soul_of_voight_in_a_bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_PURPLE)));
-    public static final Supplier<BlockEntityType<BaseSoulInABottleBlock.BEntity>> SOUL_BOTTLE_ENTITY =
-            BLOCK_ENTITIES.register("soul_bottle_entity", () ->
-                    BlockEntityType.Builder.of(BaseSoulInABottleBlock.BEntity::new,
-                            SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
-                            SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
-                            SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),
-                            SOUL_OF_NIGHT_IN_A_BOTTLE.get(),
-                            SOUL_OF_MIGHT_IN_A_BOTTLE.get(),
-                            SOUL_OF_SIGHT_IN_A_BOTTLE.get(),
-                            SOUL_OF_VOIGHT_IN_A_BOTTLE.get(),
-                            SOUL_OF_BRIGHT_IN_A_BOTTLE.get()
-                    ).build(DSL.remainderType())
-            );
+    public static final Supplier<BlockEntityType<BaseSoulInABottleBlock.BEntity>> SOUL_BOTTLE_ENTITY = BLOCK_ENTITIES.register("soul_bottle_entity", () ->
+            BlockEntityType.Builder.of(BaseSoulInABottleBlock.BEntity::new,
+                    SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
+                    SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
+                    SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),
+                    SOUL_OF_NIGHT_IN_A_BOTTLE.get(),
+                    SOUL_OF_MIGHT_IN_A_BOTTLE.get(),
+                    SOUL_OF_SIGHT_IN_A_BOTTLE.get(),
+                    SOUL_OF_VOIGHT_IN_A_BOTTLE.get(),
+                    SOUL_OF_BRIGHT_IN_A_BOTTLE.get()
+            ).build(DSL.remainderType())
+    );
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier) {
         DeferredBlock<B> block = BLOCKS.register(id, supplier);

@@ -6,7 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
@@ -15,8 +15,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.block.natural.spreadable.SpreadingGrassBlock;
+import org.confluence.mod.common.init.block.NatureBlocks;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,9 +86,9 @@ public class JungleGrassBlock extends SpreadingGrassBlock implements Bonemealabl
                     if (flowerFeatures.isEmpty()) {
                         continue;
                     }
-                    featureHolder = ((RandomPatchConfiguration) flowerFeatures.get(0).config()).feature();
+                    featureHolder = ((RandomPatchConfiguration) flowerFeatures.getFirst().config()).feature();
                 } else {
-                    if (!grassFeatureOpt.isPresent()) {
+                    if (grassFeatureOpt.isEmpty()) {
                         continue;
                     }
                     featureHolder = grassFeatureOpt.get();
@@ -97,5 +101,13 @@ public class JungleGrassBlock extends SpreadingGrassBlock implements Bonemealabl
     @Override
     public BonemealableBlock.Type getType() {
         return BonemealableBlock.Type.NEIGHBOR_SPREADER;
+    }
+
+    @Override
+    public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+        if (itemAbility == ItemAbilities.SHOVEL_FLATTEN) {
+            return NatureBlocks.JUNGLE_PATH.get().defaultBlockState();
+        }
+        return null;
     }
 }

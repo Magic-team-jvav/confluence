@@ -64,6 +64,7 @@ public final class TickEvents {
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
             PlayerUtils.regenerateMana(player);
             ExtraInventory.of(player).sync(player);
+            PlayerSpecialData.of(player).sync(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);
             AchievementUtils.quietNeighborhood(player, level, gameTime);
             AchievementUtils.aRareRealm(player, level, gameTime);

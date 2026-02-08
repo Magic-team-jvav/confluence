@@ -128,6 +128,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 20);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "glass_from_crimsand", Ingredient.of(NatureBlocks.CRIMSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
@@ -146,6 +147,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 100);
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 100);
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 100);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 10);
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "_from_atlantic_cod", Ingredient.of(FoodItems.ATLANTIC_COD), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 200);
@@ -155,6 +157,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 200);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 200);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 30);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
 
 
@@ -423,7 +426,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.SATIETY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.RED_PLEATFISH), Ingredient.of(FoodItems.BROWN_STALKSPINE));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
-        crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(3996, TGItems.MUSKET_BULLET));
+        crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(9999, TGItems.MUSKET_BULLET));
         crystalBlock(recipeOutput, ManaWeaponItems.CURSED_FLAMES.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.CURSED_FLAME),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(recipeOutput, ManaWeaponItems.CRYSTAL_STORM.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.CRYSTAL_SHARDS),AmountIngredient.of(15, MaterialItems.SOUL_OF_LIGHT));
         crystalBlock(recipeOutput, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.ICHOR),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));

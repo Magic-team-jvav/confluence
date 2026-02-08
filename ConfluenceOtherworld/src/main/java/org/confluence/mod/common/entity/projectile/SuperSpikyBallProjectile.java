@@ -18,7 +18,6 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.mod.util.ModUtils;
 
 public class SuperSpikyBallProjectile extends Projectile implements Immunity, IAxisZRotate, IBouncy {
     public final Rotate rotate = new Rotate();
@@ -41,11 +40,12 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
             return;
         }
         super.tick();
+        updateRotation();
 
         bounce(this::move, this::getDeltaMovement, this::setDeltaMovement, getDefaultGravity(), 0.99);
 
         if (level().isClientSide) {
-            rotateZ(rotate, this::getDeltaMovement, (float) getDefaultGravity(), 0.125F);
+            rotateZ(rotate, this, 0.125F);
         } else {
             AABB boundingBox = getBoundingBox().inflate(1.0);
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
@@ -66,7 +66,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return ModUtils.canHitEntity(target, getOwner());
+        return LibUtils.canHitEntity(target, getOwner());
     }
 
     @Override

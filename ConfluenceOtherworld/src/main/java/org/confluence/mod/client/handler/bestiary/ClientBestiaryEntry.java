@@ -2,7 +2,6 @@ package org.confluence.mod.client.handler.bestiary;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.xiaohunao.enemybanner.BannerConfig;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
@@ -10,26 +9,24 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.LibCodecUtils;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.common.entity.BestiaryEntryDisplay;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixin.accessor.EntityAccessor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@SuppressWarnings({"unused", "OptionalUsedAsFieldOrParameterType"})
 public class ClientBestiaryEntry extends BestiaryEntry {
     public static final ResourceLocation SURFACE = background("surface");
     public static final ResourceLocation SURFACE_SUN = background("surface_sun");
@@ -38,7 +35,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public static final ResourceLocation SURFACE_RAIN = background("surface_rain");
     public static final ResourceLocation SURFACE_NIGHTTIME_RAIN = background("surface_nighttime_rain");
     public static final ResourceLocation GRAVEYARD = background("graveyard");
-    public static final ResourceLocation BLOOD_MOON = background("blodd_moon");
+    public static final ResourceLocation BLOOD_MOON = background("blood_moon");
     public static final ResourceLocation ECLIPSE = background("eclipse");
     public static final ResourceLocation PUMPKIN_MOON = background("pumpkin_moon");
     public static final ResourceLocation FROST_MOON = background("frost_moon");
@@ -93,23 +90,22 @@ public class ClientBestiaryEntry extends BestiaryEntry {
 
     public static final Component UNKNOWN = Component.literal("???");
     public static final Codec<ClientBestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(ClientBestiaryEntry::getType),
-            Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(ClientBestiaryEntry::getOrder),
-            ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 1).forGetter(ClientBestiaryEntry::getRarity),
-            ResourceLocation.CODEC.lenientOptionalFieldOf("background", SURFACE).forGetter(ClientBestiaryEntry::getBackground),
-            ComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(ClientBestiaryEntry::getDescription),
-            LibCodecUtils.homogenousList(FilterEntry.CODEC, false).lenientOptionalFieldOf("filters", List.of()).forGetter(ClientBestiaryEntry::getFilters),
-            TagParser.LENIENT_CODEC.lenientOptionalFieldOf("entity_nbt").forGetter(ClientBestiaryEntry::getEntityNbt)
+            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(entry -> entry.type),
+            Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(entry -> entry.order),
+            ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 1).forGetter(entry -> entry.rarity),
+            ResourceLocation.CODEC.lenientOptionalFieldOf("background", SURFACE).forGetter(entry -> entry.background),
+            ComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(entry -> entry.description),
+            LibCodecUtils.homogenousList(FilterEntry.CODEC, false).lenientOptionalFieldOf("filters", List.of()).forGetter(entry -> entry.filters),
+            TagParser.LENIENT_CODEC.lenientOptionalFieldOf("entity_nbt").forGetter(entry -> entry.entityNbt)
     ).apply(instance, ClientBestiaryEntry::new));
 
-    private final int order;
-    private final int rarity;
-    private final ResourceLocation background;
-    private final Component description;
-    private final List<FilterEntry> filters;
-    private final Optional<CompoundTag> entityNbt;
+    public final int order;
+    public final int rarity;
+    public final ResourceLocation background;
+    public final Component description;
+    public final List<FilterEntry> filters;
+    public final Optional<CompoundTag> entityNbt;
 
-    private transient float unlockedProgress = -1.0F; // 小于零代表未解锁
     private transient Component displayName;
     private transient LivingEntity renderedEntity;
 
@@ -132,30 +128,6 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         this.entityNbt = entityNbt;
     }
 
-    public int getOrder() {
-        return order;
-    }
-
-    public int getRarity() {
-        return rarity;
-    }
-
-    public ResourceLocation getBackground() {
-        return background;
-    }
-
-    public Component getDescription() {
-        return description;
-    }
-
-    public List<FilterEntry> getFilters() {
-        return filters;
-    }
-
-    public Optional<CompoundTag> getEntityNbt() {
-        return entityNbt;
-    }
-
     public Component getDisplayName() {
         if (displayName == null) {
             this.displayName = Component.translatable(key);
@@ -167,7 +139,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         this.renderedEntity = null;
     }
 
-    public LivingEntity getRenderedEntity(Level level) {
+    public @Nullable LivingEntity getRenderedEntity(@Nullable Level level) {
         if (renderedEntity == null && level != null) {
             if (type.create(level) instanceof LivingEntity living) {
                 if (RegisterCustomBestiaryEntryRendererEvent.hasRenderer(key)) {
@@ -185,31 +157,13 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         return renderedEntity;
     }
 
-    public float getUnlockedProgress() {
-        return Mth.clamp(unlockedProgress, 0.0F, 1.0F);
-    }
-
-    public boolean isLocked() {
-        return unlockedProgress < -Mth.EPSILON;
-    }
-
-    public boolean unlock() {
-        if (isLocked()) {
-            this.unlockedProgress = 0.0F;
-            return true;
-        }
-        return false;
-    }
-
-    public void updateUnlockedProgress(Level level) {
-        if (isLocked() || unlockedProgress >= 1.0F) return;
+    public void updateUnlockedProgress(@Nullable Level level) {
+        if (isLocked() || isCompleted()) return;
         LivingEntity living = getRenderedEntity(level);
-        if (living instanceof Npc || LibUtils.isAnimal(living) || type.is(Tags.EntityTypes.BOSSES)) {
-            this.unlockedProgress = 1.0F;
-        } else {
-            float required = BannerConfig.getBasicKills(EntityType.getKey(type).toString());
-            this.unlockedProgress = Mth.clamp(killedByCount / required, 0.0F, 1.0F);
+        if (living instanceof BestiaryEntryDisplay display) {
+            living = display.getDelegate();
         }
+        updateUnlockedProgress(living);
     }
 
     public static ResourceLocation background(String path) {

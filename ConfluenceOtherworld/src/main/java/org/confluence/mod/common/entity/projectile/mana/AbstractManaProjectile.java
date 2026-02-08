@@ -104,4 +104,9 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         super.readAdditionalSaveData(compound);
         this.tickCount = compound.getInt("Age");
     }
+
+    @Override
+    public boolean canChangeDimensions(Level oldLevel, Level newLevel) {
+        return false;
+    }
 }

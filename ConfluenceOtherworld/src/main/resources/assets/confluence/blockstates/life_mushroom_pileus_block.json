@@ -1,0 +1,1380 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_0_0",
+        "uvlock": true
+      },
+      "when": {
+        "north": "false",
+        "south": "true",
+        "east": "true",
+        "west": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_0_1",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "south": "true",
+        "east": "true",
+        "west": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_0_2",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "south": "false",
+        "east": "true",
+        "west": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_0_3",
+        "uvlock": true
+      },
+      "when": {
+        "north": "false",
+        "south": "false",
+        "east": "true",
+        "west": "true",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_1_0",
+        "uvlock": true
+      },
+      "when": {
+        "north": "false",
+        "south": "true",
+        "east": "true",
+        "west": "true",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_1_1",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "south": "true",
+        "east": "true",
+        "west": "true",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_1_2",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "south": "false",
+        "east": "true",
+        "west": "true",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_1_3",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "south": "true",
+        "east": "false",
+        "west": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_2_0",
+        "uvlock": true
+      },
+      "when": {
+        "north": "false",
+        "south": "true",
+        "east": "false",
+        "west": "true",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_2_1",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "south": "true",
+        "east": "false",
+        "west": "true",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_2_2",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "south": "false",
+        "east": "false",
+        "west": "true",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_2_3",
+        "uvlock": true
+      },
+      "when": {
+        "north": "false",
+        "south": "false",
+        "east": "false",
+        "west": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_3_0",
+        "uvlock": true
+      },
+      "when": {
+        "north": "false",
+        "south": "true",
+        "east": "false",
+        "west": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_3_1",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "south": "false",
+        "east": "false",
+        "west": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_3_2",
+        "uvlock": true
+      },
+      "when": {
+        "north": "false",
+        "south": "false",
+        "east": "true",
+        "west": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_top_3_3",
+        "uvlock": true
+      },
+      "when": {
+        "north": "false",
+        "south": "false",
+        "east": "false",
+        "west": "true",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_0_0",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "false",
+        "north": "true",
+        "east": "true",
+        "west": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_0_1",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "true",
+        "north": "true",
+        "east": "true",
+        "west": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_0_2",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "true",
+        "north": "false",
+        "east": "true",
+        "west": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_0_3",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "false",
+        "north": "false",
+        "east": "true",
+        "west": "true",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_1_0",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "false",
+        "north": "true",
+        "east": "true",
+        "west": "true",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_1_1",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "true",
+        "north": "true",
+        "east": "true",
+        "west": "true",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_1_2",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "true",
+        "north": "false",
+        "east": "true",
+        "west": "true",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_1_3",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "true",
+        "north": "true",
+        "east": "false",
+        "west": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_2_0",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "false",
+        "north": "true",
+        "east": "false",
+        "west": "true",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_2_1",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "true",
+        "north": "true",
+        "east": "false",
+        "west": "true",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_2_2",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "true",
+        "north": "false",
+        "east": "false",
+        "west": "true",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_2_3",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "false",
+        "north": "false",
+        "east": "false",
+        "west": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_3_0",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "false",
+        "north": "true",
+        "east": "false",
+        "west": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_3_1",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "true",
+        "north": "false",
+        "east": "false",
+        "west": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_3_2",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "false",
+        "north": "false",
+        "east": "true",
+        "west": "false",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_bottom_3_3",
+        "uvlock": true,
+        "x": 180
+      },
+      "when": {
+        "south": "false",
+        "north": "false",
+        "east": "false",
+        "west": "true",
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_0",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "east": "true",
+        "west": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_1",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "east": "true",
+        "west": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_2",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "east": "true",
+        "west": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_3",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "east": "true",
+        "west": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_0",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "east": "true",
+        "west": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_1",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "east": "true",
+        "west": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_2",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "east": "true",
+        "west": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_3",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "east": "false",
+        "west": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_0",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "east": "false",
+        "west": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_1",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "east": "false",
+        "west": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_2",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "east": "false",
+        "west": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_3",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "east": "false",
+        "west": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_0",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "east": "false",
+        "west": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_1",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "east": "false",
+        "west": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_2",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "east": "true",
+        "west": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_3",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "east": "false",
+        "west": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "west": "true",
+        "east": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "west": "true",
+        "east": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "west": "true",
+        "east": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "west": "true",
+        "east": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "west": "true",
+        "east": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "west": "true",
+        "east": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "west": "true",
+        "east": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "west": "false",
+        "east": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "west": "false",
+        "east": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "west": "false",
+        "east": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "west": "false",
+        "east": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "west": "false",
+        "east": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "west": "false",
+        "east": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "west": "false",
+        "east": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "west": "true",
+        "east": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "west": "false",
+        "east": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "south": "true",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "south": "true",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "south": "true",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "south": "true",
+        "north": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "south": "true",
+        "north": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "south": "true",
+        "north": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "south": "true",
+        "north": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "south": "false",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "south": "false",
+        "north": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "south": "false",
+        "north": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "south": "false",
+        "north": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "south": "false",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "south": "false",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "south": "false",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "south": "true",
+        "north": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "south": "false",
+        "north": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "north": "true",
+        "south": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "north": "true",
+        "south": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "north": "true",
+        "south": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_0_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "north": "true",
+        "south": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "north": "true",
+        "south": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "north": "true",
+        "south": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "north": "true",
+        "south": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_1_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "north": "false",
+        "south": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "north": "false",
+        "south": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "north": "false",
+        "south": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "north": "false",
+        "south": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_2_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "north": "false",
+        "south": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_0",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "true",
+        "north": "false",
+        "south": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_1",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "true",
+        "down": "false",
+        "north": "false",
+        "south": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_2",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "north": "true",
+        "south": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/life_mushroom_pileus_block/life_mushroom_pileus_block_side_3_3",
+        "uvlock": true,
+        "x": 270,
+        "y": 270
+      },
+      "when": {
+        "up": "false",
+        "down": "false",
+        "north": "false",
+        "south": "true",
+        "east": "false"
+      }
+    }
+  ]
+}

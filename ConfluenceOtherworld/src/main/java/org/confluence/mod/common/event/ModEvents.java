@@ -76,6 +76,7 @@ import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
+import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
@@ -206,7 +207,7 @@ public final class ModEvents {
         registrar.playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle);
         registrar.playToClient(KillBoardSyncPacketS2C.TYPE, KillBoardSyncPacketS2C.STREAM_CODEC, KillBoardSyncPacketS2C::handle);
         registrar.playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle);
-        registrar.playToClient(SoulPacketS2C.TYPE, SoulPacketS2C.STREAM_CODEC, SoulPacketS2C::handle);
+//        registrar.playToClient(SoulPacketS2C.TYPE, SoulPacketS2C.STREAM_CODEC, SoulPacketS2C::handle);
         registrar.playToClient(MeteoriteLocationPacketS2C.TYPE, MeteoriteLocationPacketS2C.STREAM_CODEC, MeteoriteLocationPacketS2C::handle);
         registrar.playToClient(OpenSelectionsScreenPacketS2C.TYPE, OpenSelectionsScreenPacketS2C.STREAM_CODEC, OpenSelectionsScreenPacketS2C::handle);
         registrar.playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle);
@@ -226,6 +227,7 @@ public final class ModEvents {
         registrar.playToClient(LucyTheAxeDialogPacketS2C.TYPE, LucyTheAxeDialogPacketS2C.STREAM_CODEC, LucyTheAxeDialogPacketS2C::handle);
         registrar.playToClient(GameEventSyncPacketS2C.TYPE, GameEventSyncPacketS2C.STREAM_CODEC, GameEventSyncPacketS2C::handle);
         registrar.playToClient(GoblinArmyProgressPacketS2C.TYPE, GoblinArmyProgressPacketS2C.STREAM_CODEC, GoblinArmyProgressPacketS2C::handle);
+        registrar.playToClient(SyncEnemyBannerEntriesPacketS2C.TYPE, SyncEnemyBannerEntriesPacketS2C.STREAM_CODEC, SyncEnemyBannerEntriesPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
@@ -240,6 +242,9 @@ public final class ModEvents {
         registrar.playToServer(HouseSelectPacketC2S.TYPE, HouseSelectPacketC2S.STREAM_CODEC, HouseSelectPacketC2S::handle);
         registrar.playToServer(EmptyTargetSweepPacketC2S.TYPE, EmptyTargetSweepPacketC2S.STREAM_CODEC, EmptyTargetSweepPacketC2S::handle);
         registrar.playToServer(SwordProjectilePacketC2S.TYPE, SwordProjectilePacketC2S.STREAM_CODEC, SwordProjectilePacketC2S::handle);
+        registrar.playToServer(GiveBannerPacketC2S.TYPE, GiveBannerPacketC2S.STREAM_CODEC, GiveBannerPacketC2S::handle);
+
+        registrar.playBidirectional(TeamPacket.TYPE, TeamPacket.STREAM_CODEC, TeamPacket::handle);
     }
 
     @SubscribeEvent
@@ -532,6 +537,7 @@ public final class ModEvents {
         event.register(TEAnimals.FEALING.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.SCORPION.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEMonsterEntities.DEMON_EYE.get(), (type, eye) -> {
             String key = type.getDescriptionId() + '.';
             if (eye.minion_getOwnerUUID() != null) {
@@ -547,8 +553,10 @@ public final class ModEvents {
             Item chest = zombie.getItemBySlot(EquipmentSlot.CHEST).getItem();
             if (chest == ArmorItems.RAINCOAT.get()) {
                 return key + ".raincoat";
-            } else if (chest == ArmorItems.SNOW_SUITS.get() || chest == ArmorItems.PINK_SNOW_SUITS.get()) {
+            } else if (chest == ArmorItems.SNOW_SUITS.get()) {
                 return key + ".frozen";
+            } else if (chest == ArmorItems.PINK_SNOW_SUITS.get()) {
+                return key + ".frozen.pink";
             }
             return key;
         }));

@@ -78,7 +78,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TENpcEntities.OLD_MAN, builder -> builder.order(4000).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 // 神秘青蛙
                 .add(TEAnimals.BUNNY, builder -> builder.order(4200).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.RABBIT.builtInRegistryHolder(), builder -> builder.order(4210).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.RABBIT, builder -> builder.order(4210).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 兔兔 （戴帽子）
                 .add(TEAnimals.EXPLOSIVE_BUNNY, builder -> builder.order(4250).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 兔兔 （史莱姆）
@@ -88,7 +88,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEAnimals.BLUE_JAY, builder -> builder.order(4900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(TEAnimals.CARDINAL, builder -> builder.order(5000).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 绯红金刚鹦鹉
-                .add(EntityType.PARROT.builtInRegistryHolder(), builder -> builder.order(5200).rarity(3).background(THE_JUNGLE_SUN).filters(FilterEntry.THE_JUNGLE,FilterEntry.DAYTIME))
+                .add(EntityType.PARROT, builder -> builder.order(5200).rarity(3).background(THE_JUNGLE_SUN).filters(FilterEntry.THE_JUNGLE,FilterEntry.DAYTIME))
                 // 巨嘴鸟
                 // 黄玄凤鹦鹉
                 // 灰玄凤鹦鹉
@@ -100,15 +100,27 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .addIntVariant(TEAnimals.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.GOLDEN_ID, builder -> builder.order(6100).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 老鼠
                 // 金老鼠
-                .add(EntityType.FROG.builtInRegistryHolder(), builder -> builder.order(6400).rarity(1).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
+                .add(EntityType.FROG, builder -> builder.order(6400).rarity(1).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
                 // 金青蛙
                 .addIntVariant(TEAnimals.GRASSHOPPER, JumpableVariantAnimal.VARIANT_KEY, VariantsTextureMaps.COMMON_GRASSHOPPER_ID, builder -> builder.order(6600).rarity(1).background(SURFACE).filters(FilterEntry.SURFACE))
                 .addIntVariant(TEAnimals.GRASSHOPPER, JumpableVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_GRASSHOPPER_ID, builder -> builder.order(6700).rarity(5).background(SURFACE).filters(FilterEntry.SURFACE))
-                .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.COMMON_BUTTERFLY_ID, builder -> builder.order(6800).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.JULIA_BUTTERFLY_ID, builder -> builder.order(6800).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.MONARCH_BUTTERFLY_ID, builder -> builder.order(6801).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.PURPLE_EMPEROR_BUTTERFLY_ID, builder -> builder.order(6802).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.RED_ADMIRAL_BUTTERFLY_ID, builder -> builder.order(6803).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.SULPHUR_BUTTERFLY_ID, builder -> builder.order(6804).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.TREE_NYMPH_BUTTERFLY_ID, builder -> builder.order(6805).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.ULYSSES_BUTTERFLY_ID, builder -> builder.order(6806).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.ZEBRA_SWALLOWTAIL_BUTTERFLY_ID, builder -> builder.order(6807).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .addIntVariant(TEAnimals.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_BUTTERFLY_ID, builder -> builder.order(6900).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 .addIntVariant(TEAnimals.WORM, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.COMMON_WORM_ID, builder -> builder.order(7000).rarity(1).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
                 .addIntVariant(TEAnimals.WORM, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_WORM_ID, builder -> builder.order(7100).rarity(5).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
-                .addIntVariant(TEAnimals.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.COMMON_DRAGONFLY_ID, builder -> builder.order(7200).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.BLACK_DRAGONFLY_ID, builder -> builder.order(7200).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.BLUE_DRAGONFLY_ID, builder -> builder.order(7201).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GREEN_DRAGONFLY_ID, builder -> builder.order(7202).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.ORANGE_DRAGONFLY_ID, builder -> builder.order(7203).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.RED_DRAGONFLY_ID, builder -> builder.order(7204).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .addIntVariant(TEAnimals.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.YELLOW_DRAGONFLY_ID, builder -> builder.order(7205).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
                 .addIntVariant(TEAnimals.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_DRAGONFLY_ID, builder -> builder.order(7300).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 海马
                 // 金海马
@@ -152,8 +164,8 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 䴙䴘
                 // 鳉鱼
                 // 海鸥
-                .add(EntityType.TURTLE.builtInRegistryHolder(), builder -> builder.order(11600).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN))
-                .add(EntityType.DOLPHIN.builtInRegistryHolder(), builder -> builder.order(11700).rarity(3).background(OCEAN).filters(FilterEntry.OCEAN))
+                .add(EntityType.TURTLE, builder -> builder.order(11600).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN))
+                .add(EntityType.DOLPHIN, builder -> builder.order(11700).rarity(3).background(OCEAN).filters(FilterEntry.OCEAN))
                 // 丛林龟
                 .add(TEAnimals.GRUBBY, builder -> builder.order(11900).rarity(1).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
                 .add(TEAnimals.SLUGGY, builder -> builder.order(12000).rarity(2).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
@@ -170,6 +182,12 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.BLUE_SLIME, builder -> builder.order(13100).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(TEMonsterEntities.PURPLE_SLIME, builder -> builder.order(13200).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(TEMonsterEntities.PINK_SLIME, builder -> builder.order(13300).rarity(4).background(SURFACE_SUN).filters(FilterEntry.RARE_CREATURE, FilterEntry.SURFACE, FilterEntry.DAYTIME))
+                .add(TEMonsterEntities.GOLDEN_SLIME, builder -> builder.order(13301).rarity(5).background(SURFACE_SUN).filters(FilterEntry.RARE_CREATURE, FilterEntry.SURFACE, FilterEntry.DAYTIME))
+                .add(TEMonsterEntities.HONEY_SLIME, builder -> builder.order(13302).rarity(3).background(THE_JUNGLE_SUN).filters(FilterEntry.UNDERGROUND_JUNGLE))
+                .add(TEMonsterEntities.SWAMP_SLIME, builder -> builder.order(13303).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(TEMonsterEntities.GREEN_DUMPLING_SLIME, builder -> builder.order(13304).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(TEMonsterEntities.SPIKED_SLIME, builder -> builder.order(13305).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(TEMonsterEntities.TROPIC_SLIME, builder -> builder.order(13306).rarity(2).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
                 // 大风气球怪
                 // 愤怒蒲公英
                 // 雨伞史莱姆
@@ -187,16 +205,18 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .demonEyeVariant(DemonEyeVariant.GREEN_SMALL, builder -> builder.order(14310).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 .demonEyeVariant(DemonEyeVariant.CATARACT, builder -> builder.order(14400).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 .demonEyeVariant(DemonEyeVariant.CATARACT_BIG, builder -> builder.order(14410).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.SPACESHIP, builder -> builder.order(14411).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.OWL, builder -> builder.order(14412).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 游荡眼球怪
                 // 僵尸 （女性）
-                .add(EntityType.ZOMBIE.builtInRegistryHolder(), "slime", builder -> builder.order(14700).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .add(EntityType.ZOMBIE, "slime", builder -> builder.order(14700).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 僵尸 （光头）
-                .add(EntityType.ZOMBIE.builtInRegistryHolder(), builder -> builder.order(14900).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .add(EntityType.ZOMBIE, builder -> builder.order(14900).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 僵尸 （纤瘦）
                 // 僵尸 （火把）
                 // 僵尸 （沼泽）
                 // 僵尸 （中箭）
-                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.raincoat_zombie", "", List.of(ItemStack.EMPTY, ItemStack.EMPTY, ArmorItems.RAINCOAT.toStack(), ArmorItems.RAIN_CAP.toStack()), provider, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
+                .mobArmorItems(EntityType.ZOMBIE, "raincoat", List.of(ItemStack.EMPTY, ItemStack.EMPTY, ArmorItems.RAINCOAT.toStack(), ArmorItems.RAIN_CAP.toStack()), provider, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
                 .mobArmorItems(TEMonsterEntities.POSSESS_ARMOR, "", List.of(TEArmors.POSSESSED_ARMOR.boots.toStack(), TEArmors.POSSESSED_ARMOR.leggings.toStack(), TEArmors.POSSESSED_ARMOR.chestplate.toStack(), TEArmors.POSSESSED_ARMOR.helmet.toStack()), provider, builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 狼人
                 .add(TEMonsterEntities.WRAITH, builder -> builder.order(15700).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
@@ -233,11 +253,11 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.BLACK_SLIME, "entity.terra_entity.mother_slime", "", builder -> cave(builder, 18800, 2))
                 // 胭脂虫
                 // 骷髅 （畸形）
-                .add(EntityType.SKELETON.builtInRegistryHolder(), builder -> cave(builder, 19100, 1))
+                .add(EntityType.SKELETON, builder -> cave(builder, 19100, 1))
                 // 骷髅 （头痛）
                 // 骷髅 （无裤）
                 .add(TEMonsterEntities.CRAWDAD, builder -> builder.order(19500).rarity(2).background(CAVE).filters(FilterEntry.CAVE))
-                .mobArmorItems(EntityType.SKELETON.builtInRegistryHolder(), "entity.confluence.undead_miner", "", List.of(ArmorItems.MINING_BOOTS.toStack(), ArmorItems.MINING_LEGGINGS.toStack(), ArmorItems.MINING_CHESTPLATE.toStack(), ArmorItems.MINING_HELMET.toStack()), provider, builder -> builder.order(19600).rarity(3).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
+                .mobArmorItems(EntityType.SKELETON, "entity.confluence.undead_miner", "", List.of(ArmorItems.MINING_BOOTS.toStack(), ArmorItems.MINING_LEGGINGS.toStack(), ArmorItems.MINING_CHESTPLATE.toStack(), ArmorItems.MINING_HELMET.toStack()), provider, builder -> builder.order(19600).rarity(3).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
                 // 骷髅弓箭手
                 .add(TEMonsterEntities.NYMPH, builder -> builder.order(19800).rarity(5).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
                 // 装甲骷髅
@@ -262,13 +282,13 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 爬墙蜘蛛
                 // 黑隐士
                 .add(TEMonsterEntities.ICE_SLIME, builder -> builder.order(21800).rarity(1).background(SNOW).filters(FilterEntry.SNOW, FilterEntry.DAYTIME))
-                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.frozen_zombie", "", List.of(ArmorItems.INSULATED_SHOES.toStack(), ArmorItems.INSULATED_PANTS.toStack(), ArmorItems.SNOW_SUITS.toStack(), ArmorItems.SNOW_CAPS.toStack()), provider, builder -> builder.order(21900).rarity(2).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
-                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.frozen_zombie.pink", "", List.of(ArmorItems.PINK_INSULATED_SHOES.toStack(), ArmorItems.PINK_INSULATED_PANTS.toStack(), ArmorItems.PINK_SNOW_SUITS.toStack(), ArmorItems.PINK_SNOW_CAPS.toStack()), provider, builder -> builder.order(21910).rarity(5).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
+                .mobArmorItems(EntityType.ZOMBIE, "frozen", List.of(ArmorItems.INSULATED_SHOES.toStack(), ArmorItems.INSULATED_PANTS.toStack(), ArmorItems.SNOW_SUITS.toStack(), ArmorItems.SNOW_CAPS.toStack()), provider, builder -> builder.order(21900).rarity(2).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
+                .mobArmorItems(EntityType.ZOMBIE,  "frozen.pink", List.of(ArmorItems.PINK_INSULATED_SHOES.toStack(), ArmorItems.PINK_INSULATED_PANTS.toStack(), ArmorItems.PINK_SNOW_SUITS.toStack(), ArmorItems.PINK_SNOW_CAPS.toStack()), provider, builder -> builder.order(21910).rarity(5).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
                 // 冰雪巨人
                 // 狼
                 .add(TEMonsterEntities.SPIKED_ICE_SLIME, builder -> builder.order(22200).rarity(2).background(UNDERGROUND_SNOW).filters(FilterEntry.UNDERGROUND_SNOW))
                 // 青壳虫
-                // 亡灵维京海盗
+                .add(TEMonsterEntities.UNDEAD_VIKING, builder -> builder.order(22400).rarity(2).background(UNDERGROUND_SNOW).filters(FilterEntry.UNDERGROUND_SNOW))
                 .add(TEMonsterEntities.SNOW_FLINX, builder -> builder.order(22500).rarity(3).background(UNDERGROUND_SNOW).filters(FilterEntry.UNDERGROUND_SNOW))
                 // 装甲维京海盗
                 // 冰雪人鱼
@@ -280,7 +300,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.DESERT_SLIME, builder -> builder.order(23300).rarity(2).background(UNDERGROUND_DESERT).filters(FilterEntry.UNDERGROUND_DESERT))
                 // 蚁狮幼虫
                 // 巨型蚁狮马
-                .add(TEMonsterEntities.DESERT_SLIME, builder -> builder.order(23600).rarity(2).background(UNDERGROUND_DESERT).filters(FilterEntry.UNDERGROUND_DESERT))
+                .add(TEMonsterEntities.MUMMY, builder -> builder.order(23600).rarity(2).background(UNDERGROUND_DESERT).filters(FilterEntry.UNDERGROUND_DESERT))
                 .add(TEMonsterEntities.GHOUL, builder -> builder.order(23700).rarity(2).background(UNDERGROUND_DESERT).filters(FilterEntry.UNDERGROUND_DESERT))
                 // 蛇蜥怪
                 .add(TEMonsterEntities.TOMB_CRAWLER, builder -> builder.order(23900).rarity(1).background(UNDERGROUND_DESERT).filters(FilterEntry.UNDERGROUND_DESERT))
@@ -301,7 +321,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.JUNGLE_SLIME, builder -> builder.order(25400).rarity(1).background(THE_JUNGLE_SUN).filters(FilterEntry.THE_JUNGLE, FilterEntry.DAYTIME))
                 .add(TEMonsterEntities.SNATCHER, builder -> builder.order(25500).rarity(1).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
                 // 巨型飞狐
-                // 跳跳兽
+                .add(TEMonsterEntities.DERPLING, builder -> builder.order(25700).rarity(2).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
                 .add(TEMonsterEntities.SPIKED_JUNGLE_SLIME, builder -> builder.order(25800).rarity(2).background(UNDERGROUND_JUNGLE).filters(FilterEntry.UNDERGROUND_JUNGLE))
                 // 紫胶虫
                 // 骷髅博士
@@ -318,11 +338,15 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.PIRANHA, builder -> builder.order(27400).rarity(1).background(UNDERGROUND).filters(FilterEntry.UNDERGROUND, FilterEntry.THE_JUNGLE, FilterEntry.UNDERGROUND_JUNGLE))
                 // 琵琶鱼
                 .add(TEMonsterEntities.ARAPAIMA, builder -> builder.order(27600).rarity(2).background(UNDERGROUND).filters(FilterEntry.UNDERGROUND, FilterEntry.THE_JUNGLE, FilterEntry.UNDERGROUND_JUNGLE))
+                .add(TEMonsterEntities.JUNGLE_MIMIC, builder -> builder.order(27601).rarity(5).background(UNDERGROUND).filters(FilterEntry.RARE_CREATURE,  FilterEntry.THE_JUNGLE,FilterEntry.UNDERGROUND_JUNGLE))
                 // 巨型陆龟
                 // 丛林蜘蛛
                 // 流星头
+                .add(TEMonsterEntities.METEOR_HEAD, builder -> builder.order(27900).rarity(2).background(METEOR).filters(FilterEntry.METEOR))
                 .add(TEMonsterEntities.DUNGEON_SLIME, builder -> builder.order(28000).rarity(4).background(THE_DUNGEON).filters(FilterEntry.RARE_CREATURE, FilterEntry.THE_DUNGEON))
-                // 愤怒骷髅怪
+                .add(TEMonsterEntities.ANGER_BONES, builder -> builder.order(28100).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
+                .add(TEMonsterEntities.SHORT_BONES, builder -> builder.order(28101).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
+                .add(TEMonsterEntities.BIG_BONES, builder -> builder.order(28102).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 .add(TEMonsterEntities.BIG_ANGER_BONES, builder -> builder.order(28200).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 .add(TEMonsterEntities.BIG_MUSCLE_ANGER_BONES, builder -> builder.order(28300).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 .add(TEMonsterEntities.BIG_HELMET_ANGER_BONES, builder -> builder.order(28400).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
@@ -409,7 +433,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 猪龙
                 // 水晶沙鲨
                 .add(TEMonsterEntities.LIGHT_MUMMY, builder -> builder.order(36700).rarity(2).background(HALLOW_DESERT).filters(FilterEntry.RARE_CREATURE, FilterEntry.HALLOW_DESERT))
-                .add(TEMonsterEntities.TAINTED_GHOUL, builder -> builder.order(36800).rarity(2).background(HALLOW_CAVE_DESERT).filters(FilterEntry.CAVE, FilterEntry.HALLOW_DESERT))
+                .add(TEMonsterEntities.DREAMER_GHOUL, builder -> builder.order(36800).rarity(2).background(HALLOW_CAVE_DESERT).filters(FilterEntry.CAVE, FilterEntry.HALLOW_DESERT))
                 .add(TEMonsterEntities.LIGHT_LAMIA, builder -> builder.order(36900).rarity(2).background(HALLOW_CAVE_DESERT).filters(FilterEntry.CAVE, FilterEntry.HALLOW_DESERT))
                 .add(TEMonsterEntities.SPORE_ZOMBIE, builder -> builder.order(37000).rarity(2).background(GLOWING_MUSHROOM).filters(FilterEntry.SURFACE_MUSHROOM))
                 .add(TEMonsterEntities.HAT_SPORE_ZOMBIE, builder -> builder.order(37100).rarity(2).background(GLOWING_MUSHROOM).filters(FilterEntry.SURFACE_MUSHROOM))
@@ -425,6 +449,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEMonsterEntities.GOBLIN_ARCHER, builder -> builder.order(38100).rarity(1).background(SURFACE).filters(FilterEntry.GOBLIN_INVASION))
                 .add(TEMonsterEntities.GOBLIN_WARRIOR, builder -> builder.order(38200).rarity(2).background(SURFACE).filters(FilterEntry.GOBLIN_INVASION))
                 .add(TEMonsterEntities.GOBLIN_SORCERER, builder -> builder.order(38300).rarity(2).background(SURFACE).filters(FilterEntry.GOBLIN_INVASION))
+                .add(TEMonsterEntities.ANGER_GOBLIN, builder -> builder.order(38301).rarity(3).background(SURFACE).filters(FilterEntry.GOBLIN_INVASION))
                 // 哥布林巫士
                 // 暗影焰幻鬼
                 // 撒旦骷髅
@@ -551,7 +576,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEBossEntities.EATER_OF_WORLDS, builder -> builder.order(50700).rarity(3).background(THE_CORRUPTION).filters(FilterEntry.BOSS_ENEMY, FilterEntry.THE_CORRUPTION))
                 .add(TEBossEntities.BRAIN_OF_CTHULHU, builder -> builder.order(50800).rarity(3).background(THE_CRIMSON).filters(FilterEntry.BOSS_ENEMY, FilterEntry.THE_CRIMSON))
                 .add(TEMonsterEntities.VISUAL_NEURON, builder -> builder.order(50900).rarity(2).background(THE_CRIMSON).filters(FilterEntry.THE_CRIMSON))
-                // 独眼巨鹿
+                .add(TEBossEntities.DEERCLOPS, builder -> builder.order(51000).rarity(3).background(SNOW).filters(FilterEntry.BOSS_ENEMY, FilterEntry.SNOW))
                 .add(TEBossEntities.SKELETRON, builder -> builder.order(51100).rarity(3).background(THE_DUNGEON).filters(FilterEntry.BOSS_ENEMY, FilterEntry.THE_DUNGEON))
                 .add(TEBossEntities.QUEEN_BEE, builder -> builder.order(51200).rarity(3).background(UNDERGROUND_JUNGLE).filters(FilterEntry.BOSS_ENEMY, FilterEntry.UNDERGROUND_JUNGLE))
                 .add(TEBossEntities.WALL_OF_FLESH, builder -> builder.order(51300).rarity(4).background(THE_NETHER).filters(FilterEntry.BOSS_ENEMY, FilterEntry.THE_NETHER))
@@ -586,80 +611,79 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
 
 
                 // MC原版生物 从60000开始  和泰拉生物重合归上面的泰拉生物编号
-                //
-                .add(EntityType.ALLAY.builtInRegistryHolder(), builder -> builder.order(60000).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.ARMADILLO.builtInRegistryHolder(), builder -> builder.order(60100).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.BAT.builtInRegistryHolder(), builder -> builder.order(60200).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .add(EntityType.CAMEL.builtInRegistryHolder(), builder -> builder.order(60300).rarity(2).background(DESERT_SUN).filters(FilterEntry.DESERT,FilterEntry.DAYTIME))
-                .add(EntityType.CHICKEN.builtInRegistryHolder(), builder -> builder.order(60400).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.COD.builtInRegistryHolder(), builder -> builder.order(60500).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
-                .add(EntityType.COW.builtInRegistryHolder(), builder -> builder.order(60600).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.DONKEY.builtInRegistryHolder(), builder -> builder.order(60700).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.GLOW_SQUID.builtInRegistryHolder(), builder -> builder.order(60800).rarity(3).background(CAVE).filters(FilterEntry.CAVE))
-                .add(EntityType.HORSE.builtInRegistryHolder(), builder -> builder.order(60900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.MOOSHROOM.builtInRegistryHolder(), builder -> builder.order(61000).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.MULE.builtInRegistryHolder(), builder -> builder.order(61100).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.PIG.builtInRegistryHolder(), builder -> builder.order(61200).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.SALMON.builtInRegistryHolder(), builder -> builder.order(61300).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
-                .add(EntityType.SHEEP.builtInRegistryHolder(), builder -> builder.order(61400).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.SKELETON_HORSE.builtInRegistryHolder(), builder -> builder.order(61500).rarity(4).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.SURFACE,FilterEntry.NIGHTTIME,FilterEntry.RAIN))
-                .add(EntityType.SNIFFER.builtInRegistryHolder(), builder -> builder.order(61600).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.SQUID.builtInRegistryHolder(), builder -> builder.order(61700).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
-                .add(EntityType.STRIDER.builtInRegistryHolder(), builder -> builder.order(61800).rarity(1).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.TADPOLE.builtInRegistryHolder(), builder -> builder.order(61900).rarity(1).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
-                .add(EntityType.TROPICAL_FISH.builtInRegistryHolder(), builder -> builder.order(62000).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
-                .add(EntityType.WANDERING_TRADER.builtInRegistryHolder(), builder -> builder.order(62100).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.PUFFERFISH.builtInRegistryHolder(), builder -> builder.order(62200).rarity(2).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
-                .add(EntityType.GOAT.builtInRegistryHolder(), builder -> builder.order(62300).rarity(2).background(SNOW).filters(FilterEntry.SNOW,FilterEntry.SURFACE,FilterEntry.DAYTIME))
-                .add(EntityType.VILLAGER.builtInRegistryHolder(), builder -> builder.order(62400).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.AXOLOTL.builtInRegistryHolder(), builder -> builder.order(62500).rarity(3).background(UNDERGROUND_JUNGLE).filters(FilterEntry.UNDERGROUND_JUNGLE))
-                .add(EntityType.CAT.builtInRegistryHolder(), builder -> builder.order(62600).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.OCELOT.builtInRegistryHolder(), builder -> builder.order(62700).rarity(4).background(THE_JUNGLE_SUN).filters(FilterEntry.THE_JUNGLE,FilterEntry.DAYTIME))
-                .add(EntityType.SNOW_GOLEM.builtInRegistryHolder(), builder -> builder.order(62800).rarity(2).background(SNOW).filters(FilterEntry.SNOW,FilterEntry.SURFACE,FilterEntry.DAYTIME))
-                .add(EntityType.BEE.builtInRegistryHolder(), builder -> builder.order(62900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.FOX.builtInRegistryHolder(), builder -> builder.order(63000).rarity(2).background(SNOW).filters(FilterEntry.SNOW,FilterEntry.SURFACE,FilterEntry.DAYTIME))
-                .add(EntityType.IRON_GOLEM.builtInRegistryHolder(), builder -> builder.order(63100).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.LLAMA.builtInRegistryHolder(), builder -> builder.order(63200).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.PANDA.builtInRegistryHolder(), builder -> builder.order(63300).rarity(5).background(THE_JUNGLE_SUN).filters(FilterEntry.THE_JUNGLE,FilterEntry.DAYTIME))
-                .add(EntityType.POLAR_BEAR.builtInRegistryHolder(), builder -> builder.order(63400).rarity(3).background(SNOW).filters(FilterEntry.OCEAN,FilterEntry.SNOW,FilterEntry.DAYTIME))
-                .add(EntityType.TRADER_LLAMA.builtInRegistryHolder(), builder -> builder.order(63500).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.WOLF.builtInRegistryHolder(), builder -> builder.order(63600).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.BLAZE.builtInRegistryHolder(), builder -> builder.order(63700).rarity(3).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.BOGGED.builtInRegistryHolder(), builder -> builder.order(63800).rarity(2).background(SURFACE_MOON).filters(surfaceNighttime))
-                .add(EntityType.BREEZE.builtInRegistryHolder(), builder -> builder.order(63900).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.CREEPER.builtInRegistryHolder(), builder -> builder.order(64000).rarity(1).background(SURFACE_MOON).filters(surfaceNighttime))
-                .add(EntityType.ELDER_GUARDIAN.builtInRegistryHolder(), builder -> builder.order(64100).rarity(5).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
-                .add(EntityType.ENDERMITE.builtInRegistryHolder(), builder -> builder.order(64200).rarity(2).background(SURFACE).filters(surfaceNighttime))
-                .add(EntityType.EVOKER.builtInRegistryHolder(), builder -> builder.order(64300).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.GHAST.builtInRegistryHolder(), builder -> builder.order(64400).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.GUARDIAN.builtInRegistryHolder(), builder -> builder.order(64500).rarity(2).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
-                .add(EntityType.HOGLIN.builtInRegistryHolder(), builder -> builder.order(64600).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.HUSK.builtInRegistryHolder(), builder -> builder.order(64700).rarity(1).background(DESERT).filters(FilterEntry.DESERT,FilterEntry.SURFACE,FilterEntry.NIGHTTIME))
-                .add(EntityType.MAGMA_CUBE.builtInRegistryHolder(), builder -> builder.order(64800).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.PHANTOM.builtInRegistryHolder(), builder -> builder.order(64900).rarity(1).background(SURFACE_MOON).filters(surfaceNighttime))
-                .add(EntityType.PIGLIN_BRUTE.builtInRegistryHolder(), builder -> builder.order(65000).rarity(3).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.PILLAGER.builtInRegistryHolder(), builder -> builder.order(65100).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.RAVAGER.builtInRegistryHolder(), builder -> builder.order(65200).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.SHULKER.builtInRegistryHolder(), builder -> builder.order(65300).rarity(2).background(SURFACE).filters(surfaceNighttime))
-                .add(EntityType.SILVERFISH.builtInRegistryHolder(), builder -> builder.order(65400).rarity(2).background(CAVE).filters(FilterEntry.CAVE))
-                .add(EntityType.SLIME.builtInRegistryHolder(), builder -> builder.order(65500).rarity(3).background(CAVE).filters(FilterEntry.CAVE))
-                .add(EntityType.STRAY.builtInRegistryHolder(), builder -> builder.order(65600).rarity(2).background(SNOW_MOON).filters(FilterEntry.SNOW,FilterEntry.SURFACE,FilterEntry.NIGHTTIME))
-                .add(EntityType.VEX.builtInRegistryHolder(), builder -> builder.order(65700).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.VINDICATOR.builtInRegistryHolder(), builder -> builder.order(65700).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.VINDICATOR.builtInRegistryHolder(), builder -> builder.order(65700).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.WARDEN.builtInRegistryHolder(), builder -> builder.order(65800).rarity(3).background(CAVE).filters(FilterEntry.CAVE))
-                .add(EntityType.WITCH.builtInRegistryHolder(), builder -> builder.order(65900).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(EntityType.WITHER_SKELETON.builtInRegistryHolder(), builder -> builder.order(66000).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.ZOGLIN.builtInRegistryHolder(), builder -> builder.order(66100).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.ZOMBIE_VILLAGER.builtInRegistryHolder(), builder -> builder.order(66200).rarity(2).background(SURFACE_MOON).filters(surfaceNighttime))
-                .add(EntityType.DROWNED.builtInRegistryHolder(), builder -> builder.order(66300).rarity(2).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.NIGHTTIME))
-                .add(EntityType.ENDERMAN.builtInRegistryHolder(), builder -> builder.order(66400).rarity(3).background(SURFACE_MOON).filters(surfaceNighttime))
-                .add(EntityType.PIGLIN.builtInRegistryHolder(), builder -> builder.order(66500).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.SPIDER.builtInRegistryHolder(), builder -> builder.order(66600).rarity(1).background(SURFACE_MOON).filters(surfaceNighttime))
-                .add(EntityType.CAVE_SPIDER.builtInRegistryHolder(), builder -> builder.order(66700).rarity(2).background(CAVE).filters(FilterEntry.CAVE))
-                .add(EntityType.ZOMBIFIED_PIGLIN.builtInRegistryHolder(), builder -> builder.order(66800).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(EntityType.ENDER_DRAGON.builtInRegistryHolder(), builder -> builder.order(66900).rarity(5).background(THE_END).filters(FilterEntry.BOSS_ENEMY))
-                .add(EntityType.WITHER.builtInRegistryHolder(), builder -> builder.order(67000).rarity(2).background(THE_NETHER).filters(FilterEntry.BOSS_ENEMY))
+                .add(EntityType.ALLAY, builder -> builder.order(60000).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.ARMADILLO, builder -> builder.order(60100).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.BAT, builder -> builder.order(60200).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .add(EntityType.CAMEL, builder -> builder.order(60300).rarity(2).background(DESERT_SUN).filters(FilterEntry.DESERT,FilterEntry.DAYTIME))
+                .add(EntityType.CHICKEN, builder -> builder.order(60400).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.COD, builder -> builder.order(60500).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
+                .add(EntityType.COW, builder -> builder.order(60600).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.DONKEY, builder -> builder.order(60700).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.GLOW_SQUID, builder -> builder.order(60800).rarity(3).background(CAVE).filters(FilterEntry.CAVE))
+                .add(EntityType.HORSE, builder -> builder.order(60900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.MOOSHROOM, builder -> builder.order(61000).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.MULE, builder -> builder.order(61100).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.PIG, builder -> builder.order(61200).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.SALMON, builder -> builder.order(61300).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
+                .add(EntityType.SHEEP, builder -> builder.order(61400).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.SKELETON_HORSE, builder -> builder.order(61500).rarity(4).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.SURFACE,FilterEntry.NIGHTTIME,FilterEntry.RAIN))
+                .add(EntityType.SNIFFER, builder -> builder.order(61600).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.SQUID, builder -> builder.order(61700).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
+                .add(EntityType.STRIDER, builder -> builder.order(61800).rarity(1).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.TADPOLE, builder -> builder.order(61900).rarity(1).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
+                .add(EntityType.TROPICAL_FISH, builder -> builder.order(62000).rarity(1).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
+                .add(EntityType.WANDERING_TRADER, builder -> builder.order(62100).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.PUFFERFISH, builder -> builder.order(62200).rarity(2).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
+                .add(EntityType.GOAT, builder -> builder.order(62300).rarity(2).background(SNOW).filters(FilterEntry.SNOW,FilterEntry.SURFACE,FilterEntry.DAYTIME))
+                .add(EntityType.VILLAGER, builder -> builder.order(62400).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.AXOLOTL, builder -> builder.order(62500).rarity(3).background(UNDERGROUND_JUNGLE).filters(FilterEntry.UNDERGROUND_JUNGLE))
+                .add(EntityType.CAT, builder -> builder.order(62600).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.OCELOT, builder -> builder.order(62700).rarity(4).background(THE_JUNGLE_SUN).filters(FilterEntry.THE_JUNGLE,FilterEntry.DAYTIME))
+                .add(EntityType.SNOW_GOLEM, builder -> builder.order(62800).rarity(2).background(SNOW).filters(FilterEntry.SNOW,FilterEntry.SURFACE,FilterEntry.DAYTIME))
+                .add(EntityType.BEE, builder -> builder.order(62900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.FOX, builder -> builder.order(63000).rarity(2).background(SNOW).filters(FilterEntry.SNOW,FilterEntry.SURFACE,FilterEntry.DAYTIME))
+                .add(EntityType.IRON_GOLEM, builder -> builder.order(63100).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.LLAMA, builder -> builder.order(63200).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.PANDA, builder -> builder.order(63300).rarity(5).background(THE_JUNGLE_SUN).filters(FilterEntry.THE_JUNGLE,FilterEntry.DAYTIME))
+                .add(EntityType.POLAR_BEAR, builder -> builder.order(63400).rarity(3).background(SNOW).filters(FilterEntry.OCEAN,FilterEntry.SNOW,FilterEntry.DAYTIME))
+                .add(EntityType.TRADER_LLAMA, builder -> builder.order(63500).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.WOLF, builder -> builder.order(63600).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.BLAZE, builder -> builder.order(63700).rarity(3).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.BOGGED, builder -> builder.order(63800).rarity(2).background(SURFACE_MOON).filters(surfaceNighttime))
+                .add(EntityType.BREEZE, builder -> builder.order(63900).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.CREEPER, builder -> builder.order(64000).rarity(1).background(SURFACE_MOON).filters(surfaceNighttime))
+                .add(EntityType.ELDER_GUARDIAN, builder -> builder.order(64100).rarity(5).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
+                .add(EntityType.ENDERMITE, builder -> builder.order(64200).rarity(2).background(SURFACE).filters(surfaceNighttime))
+                .add(EntityType.EVOKER, builder -> builder.order(64300).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.GHAST, builder -> builder.order(64400).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.GUARDIAN, builder -> builder.order(64500).rarity(2).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.DAYTIME))
+                .add(EntityType.HOGLIN, builder -> builder.order(64600).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.HUSK, builder -> builder.order(64700).rarity(1).background(DESERT).filters(FilterEntry.DESERT,FilterEntry.SURFACE,FilterEntry.NIGHTTIME))
+                .add(EntityType.MAGMA_CUBE, builder -> builder.order(64800).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.PHANTOM, builder -> builder.order(64900).rarity(1).background(SURFACE_MOON).filters(surfaceNighttime))
+                .add(EntityType.PIGLIN_BRUTE, builder -> builder.order(65000).rarity(3).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.PILLAGER, builder -> builder.order(65100).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.RAVAGER, builder -> builder.order(65200).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.SHULKER, builder -> builder.order(65300).rarity(2).background(SURFACE).filters(surfaceNighttime))
+                .add(EntityType.SILVERFISH, builder -> builder.order(65400).rarity(2).background(CAVE).filters(FilterEntry.CAVE))
+                .add(EntityType.SLIME, builder -> builder.order(65500).rarity(3).background(CAVE).filters(FilterEntry.CAVE))
+                .add(EntityType.STRAY, builder -> builder.order(65600).rarity(2).background(SNOW_MOON).filters(FilterEntry.SNOW,FilterEntry.SURFACE,FilterEntry.NIGHTTIME))
+                .add(EntityType.VEX, builder -> builder.order(65700).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.VINDICATOR, builder -> builder.order(65700).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.VINDICATOR, builder -> builder.order(65700).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.WARDEN, builder -> builder.order(65800).rarity(3).background(CAVE).filters(FilterEntry.CAVE))
+                .add(EntityType.WITCH, builder -> builder.order(65900).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(EntityType.WITHER_SKELETON, builder -> builder.order(66000).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.ZOGLIN, builder -> builder.order(66100).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.ZOMBIE_VILLAGER, builder -> builder.order(66200).rarity(2).background(SURFACE_MOON).filters(surfaceNighttime))
+                .add(EntityType.DROWNED, builder -> builder.order(66300).rarity(2).background(OCEAN).filters(FilterEntry.OCEAN,FilterEntry.NIGHTTIME))
+                .add(EntityType.ENDERMAN, builder -> builder.order(66400).rarity(3).background(SURFACE_MOON).filters(surfaceNighttime))
+                .add(EntityType.PIGLIN, builder -> builder.order(66500).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.SPIDER, builder -> builder.order(66600).rarity(1).background(SURFACE_MOON).filters(surfaceNighttime))
+                .add(EntityType.CAVE_SPIDER, builder -> builder.order(66700).rarity(2).background(CAVE).filters(FilterEntry.CAVE))
+                .add(EntityType.ZOMBIFIED_PIGLIN, builder -> builder.order(66800).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(EntityType.ENDER_DRAGON, builder -> builder.order(66900).rarity(5).background(THE_END).filters(FilterEntry.BOSS_ENEMY))
+                .add(EntityType.WITHER, builder -> builder.order(67000).rarity(2).background(THE_NETHER).filters(FilterEntry.BOSS_ENEMY))
 
                 // 原创生物 从70000开始
                 .add(TEMonsterEntities.DECAYEDER, builder -> builder.order(70000).rarity(2).background(THE_CORRUPTION).filters(FilterEntry.SURFACE,FilterEntry.DAYTIME,FilterEntry.THE_CORRUPTION))
@@ -694,21 +718,31 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
             return add(holder, holder.getDelegate().value().getDescriptionId(), variant, consumer);
         }
 
+        public Builder add(EntityType<?> type, String variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            return add(type.builtInRegistryHolder(), variant, consumer);
+        }
+
         public Builder add(IHolderExtension<EntityType<?>> holder, Consumer<ClientBestiaryEntry.Builder> consumer) {
             return add(holder, "", consumer);
+        }
+
+        public Builder add(EntityType<?> type, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            return add(type.builtInRegistryHolder(), consumer);
         }
 
         public Builder addIntVariant(IHolderExtension<EntityType<?>> holder, String variantKey, int variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
             return add(holder, Integer.toString(variant), consumer.andThen(builder -> builder.entityNbt(nbt -> nbt.putInt(variantKey, variant))));
         }
 
+        public Builder addIntVariant(EntityType<?> type, String variantKey, int variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            return addIntVariant(type.builtInRegistryHolder(), variantKey, variant, consumer);
+        }
+
         public Builder demonEyeVariant(DemonEyeVariant variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
             return add(TEMonsterEntities.DEMON_EYE, variant.getSerializedName(), consumer.andThen(builder -> builder.entityNbt(nbt -> nbt.putInt(DemonEye.VARIANT_KEY, variant.getId()))));
         }
 
-        /**
-         * @param armorItems [鞋子，裤子，衣服，帽子]
-         */
+        /// @param armorItems \[鞋子，裤子，衣服，帽子\]
         public Builder mobArmorItems(IHolderExtension<EntityType<?>> holder, String typeKey, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
             if (armorItems.size() != 4) throw new IllegalArgumentException();
             return add(holder, typeKey, variant, consumer.andThen(builder -> builder.entityNbt(nbt -> {
@@ -724,11 +758,19 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
             })));
         }
 
-        /**
-         * @param armorItems [鞋子，裤子，衣服，帽子]
-         */
+        /// @param armorItems \[鞋子，裤子，衣服，帽子\]
+        public Builder mobArmorItems(EntityType<?> type, String typeKey, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            return mobArmorItems(type.builtInRegistryHolder(), typeKey, variant, armorItems, provider, consumer);
+        }
+
+        /// @param armorItems \[鞋子，裤子，衣服，帽子\]
         public Builder mobArmorItems(IHolderExtension<EntityType<?>> holder, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
             return mobArmorItems(holder, holder.getDelegate().value().getDescriptionId(), variant, armorItems, provider, consumer);
+        }
+
+        /// @param armorItems \[鞋子，裤子，衣服，帽子\]
+        public Builder mobArmorItems(EntityType<?> type, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            return mobArmorItems(type.builtInRegistryHolder(), variant, armorItems, provider, consumer);
         }
     }
 }

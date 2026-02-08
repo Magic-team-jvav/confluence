@@ -6,12 +6,15 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.registries.TERegistries;
 import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
+import org.confluence.terraentity.registries.hit_effect.variant.PrefabEffect;
 import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -145,8 +148,16 @@ public final class ModEffectStrategies {
         /**
          * 养蜂人
          */
-        public static final Supplier<EffectStrategyComponent> BEE_KEEPER_EFFECT = () -> EffectStrategyComponent.ofPrefab("bee_keeper",
-                ModEffectStrategies.BEE_KEEPER_EFFECT);
+        public static final Supplier<EffectStrategyComponent> BEE_KEEPER_EFFECT = () -> new EffectStrategyComponent(List.of(
+                new PrefabEffect("bee_keeper", ModEffectStrategies.BEE_KEEPER_EFFECT),
+                TimePossibilityAmplifierEffect.of("bee_keeper_confused", TCEffects.CONFUSED.getDelegate(), 40, 0, 1, 1f)
+        ));
+
+        /**
+         * 紫挥棒鱼
+         */
+        public static final Supplier<EffectStrategyComponent> PURPLE_CLUBBERFISH_EFFECT = () -> EffectStrategyComponent.of(
+                TimePossibilityAmplifierEffect.of("purple_clubberfish", TCEffects.CONFUSED.getDelegate(), 40, 0, 1, 0.5f));
 
         /* random效果*/
 

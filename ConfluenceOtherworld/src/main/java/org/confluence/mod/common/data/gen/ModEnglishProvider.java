@@ -17,6 +17,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.data.gen.language.*;
 import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -28,6 +29,7 @@ import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.utils.RecipeDrawerUtils;
 
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -112,7 +114,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
         add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
-        add("message.confluence.toolmode.tip", "Crouch & Right click on the air to switch mode");
+        add("message.confluence.toolmode.tip", "Sneak & Right click on the air to switch mode");
         add("message.confluence.toolmode.current", "Current Mode: ");
         add("message.confluence.hamaxe.mode.0", "Hammer & Axe");
         add("message.confluence.hamaxe.mode.1", "Axe");
@@ -138,6 +140,26 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.goblin_army.ready", "A goblin army is approaching!");
         add("message.confluence.goblin_army.start", "A goblin army has arrived!");
         add("message.confluence.goblin_army.victory", "The Goblin Army has been defeated!");
+        add("message.confluence.scrying_orb.singleplayer", "All you see is your reflection in the orb.");
+        add("message.confluence.scrying_orb.alone", "You're by yourself...");
+        add("message.confluence.on_team", "On %s Team"); // capital
+        add("message.confluence.no_team", "No Team");
+        add("message.confluence.join_team.button", "Join %s Team"); // capital
+        add("message.confluence.join_team", "%1$s has joined the %2$s team.");
+        add("message.confluence.leave_team.button", "Join No Team");
+        add("message.confluence.leave_team", "%s is no longer on a team.");
+        add("message.confluence.enable_pvp.button", "Enable PvP");
+        add("message.confluence.enable_pvp", "%s has enabled PvP!");
+        add("message.confluence.disable_pvp.button", "Disable PvP");
+        add("message.confluence.disable_pvp", "%s has disabled PvP!");
+
+        for (Team team : Team.TEAMS) {
+            String name = team.getSerializedName();
+            String key = "team.confluence." + name;
+            String titleCase = LibUtils.toTitleCase(name);
+            add(key, titleCase);
+            add(key + ".lower_case", titleCase.toLowerCase(Locale.ROOT));
+        }
 
         add("commands.confluence.reforge.cannot_be_reforged", "This item cannot be reforged (or cannot find an item that needs to be reforged)!");
         add("commands.confluence.reforge.unknown_prefix_type", "Unknown prefix type (or reforge failure)!");
@@ -227,7 +249,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.magic_conch.0", "Right-click a block in the Beach biome to make the sea remember you");
         add("tooltip.item.confluence.demon_conch.0", "Right-click a Nether Portal block to make the Nether remember you.");
         add("tooltip.item.confluence.bait.common.0", "When placed in the inventory, it will be automatically used while fishing, prioritizing the bait in the off-hand.");
-        add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and Crouch while clicking the right mouse button to place.");
+        add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and Sneak while clicking the right mouse button to place.");
         add("tooltip.item.confluence.right_click.common.0", "Hold the right mouse button to open.");
         add("tooltip.item.confluence.raw_asphalt.0", "Use a Blend-O-Matic to make asphalt blocks");
         add("tooltip.item.confluence.empty_dropper.0", "Right-click on the droplet to remove it (requires block assist aiming)");
@@ -238,7 +260,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "Prevents you from hurting critters while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "Prevents you from accidentally destroying the environment while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "Right click to deactivate/reactivate effects");
-        add("tooltip.item.confluence.fallen_soul_core.0", "Channel spirits through the celestial stars; right-click to switch magic types");
+//        add("tooltip.item.confluence.fallen_soul_core.0", "Channel spirits through the celestial stars; right-click to switch magic types");
         add("tooltip.item.confluence.repeater.0", "Hold left click to fire");
         add("tooltip.item.confluence.repeater.1", "Right click in inventory to retrieve arrows");
 
@@ -286,6 +308,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.deer_thing.0", "Right-click to summon the Deerclops, which will emerge amidst the frigid winds of the Tundra");
         add("tooltip.item.confluence.deer_thing.1", "A frigid eye that glimmers with the sight of another world in its socket");
         add("tooltip.item.confluence.deer_thing.2", "\"Something big is coming... Don't draw Klaus here again!\"");
+        add("tooltip.item.confluence.enemy_banner.0", "Nearby players get a bonus against: %s");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");
@@ -474,15 +497,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.terra_curio.spectre_goggles.1", "Right-click in the backpack to toggle on/off.");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "Allows the collection of Vine Rope from vines");
         add("tooltip.item.confluence.fledgling_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing, Hold Crouch to Phase while submerged in Shimmer");
+        add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing, Hold Sneak to Phase while submerged in Shimmer");
         add("tooltip.item.confluence.paintbrush.0", "Used with paint to color blocks");
         add("tooltip.item.confluence.paintbrush.1", "Can also apply coatings");
         add("tooltip.item.confluence.paint_roller.0", "Used with paint to color walls");
         add("tooltip.item.confluence.paint_roller.1", "Can also apply coatings");
-        add("tooltip.item.confluence.paint_scraper.0", "Used to remove paint or coatings. Crouch to remove only one side");
+        add("tooltip.item.confluence.paint_scraper.0", "Used to remove paint or coatings. Sneak to remove only one side");
         add("tooltip.item.confluence.paint_scraper.1", "Can sometimes collect moss");
         add("tooltip.item.confluence.paint_sprayer.0", "Automatically paints or coats placed objects.");
-        add("tooltip.item.confluence.coin.0", "Sneak through the air and right-click to merge into a primary coin");
+        add("tooltip.item.confluence.coin.0", "Sneak and right-click to merge into a primary coin");
         add("tooltip.item.confluence.hardmode_convertor.0", "Right-clicking on the ground immediately turns the current world into Hardmode");
         add("tooltip.item.confluence.life_crystal.0", "Permanently increases maximum life by 4");
         add("tooltip.item.confluence.life_fruit.0", "Permanently increases maximum life by 1");
@@ -528,9 +551,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.attack_distance", "Attack Distance: %s");
         add("tooltip.confluence.knockback", "Knockback: %s");
         add("tooltip.confluence.disabled", "Disabled");
-
         add("tooltip.confluence.pickaxe_power", "Pickaxe Power: %s%%");
         add("tooltip.confluence.hammer_power", "Hammer Power: %s%%");
+        add("tooltip.confluence.armor_penetration", "Armor Penetration: %s");
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
@@ -770,10 +793,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.npc.left", "%s has left!");
         add("event.confluence.traveling_merchant.departed", "%s the Traveling Merchant has departed!");
         add("event.confluence.npc_invitation", "Invitation delivered! A new batch of NPCs will be added in the region from chunk pos [%1$s, %2$s] to [%3$s, %4$s]!");
-        add("event.confluence.spelunker.first_trigger", "Hold the Tab key (改为玩家的设置按键) to view detailed information");
-        add("event.confluence.danger_sense.first_trigger", "Hold the Tab key (改为玩家的设置按键) to view detailed information");
-        add("event.confluence.gravitation.first_trigger", "Hold the ↑ key (改为玩家的设置按键) to reverse gravity");
-        add("event.confluence.metal_detector.first_trigger", "Hold the Ctrl key (改为玩家的设置按键) to use the metal detector");
 
         add("event.confluence.reveal_step0", "Your world has been blessed with Cobalt and Palladium!");
         add("event.confluence.reveal_step1", "Your world has been blessed with Mythril and Orichalcum!");
@@ -830,6 +849,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.coins_large", "Large Coins: Collected");
         add("confluence.subtitle.lucyaxe_talk", "Lucy Axe: Coquettish Remonstrance");
         add("confluence.subtitle.repeater_item_aerial_shooting", "Repeater Crossbow: Load Arrows");
+        add("confluence.subtitle.crystal_vile_shard_shoot", "Crystal Vile Shard: Extend");
 
         add("terra_curio.subtitle.transmission", "Transmission Magic: Activated");
         add("terra_curio.subtitle.fart_sound", "Player: Fart Sound");
@@ -1035,6 +1055,79 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.tiki_set.0", "Increases your max number of minions by 1");
         add("armor_set_bonus.confluence.tiki_set.1", "Increases whip range by 20%");
 
+        // Title
+        add("title.confluence.window.0", "Confluence: Dig Peon, Dig!");
+        add("title.confluence.window.1", "Confluence: Epic Dirt");
+        add("title.confluence.window.2", "Confluence: Adaman-TIGHT!");
+        add("title.confluence.window.3", "Confluence: Sand is Overpowered");
+        add("title.confluence.window.4", "Terraria Part 3: The Return of the Guide");
+        add("title.confluence.window.5", "Confluence: A Bunnies Tale");
+        add("title.confluence.window.6", "Confluence: Dr. Bones and The Temple of Blood Moon");
+        add("title.confluence.window.7", "Confluence: Slimeassic Park");
+        add("title.confluence.window.8", "Confluence: The Grass is Greener on This Side");
+        add("title.confluence.window.9", "Confluence: Small Blocks, Not for Children Under the Age of 5");
+        add("title.confluence.window.10", "Confluence: Digger T' Blocks");
+        add("title.confluence.window.11", "Confluence: There is No Cow Layer");
+        add("title.confluence.window.12", "Confluence: Suspicous Looking Eyeballs");
+        add("title.confluence.window.13", "Confluence: Purple Grass!");
+        add("title.confluence.window.14", "Confluence: No one Dug Behind!");
+        add("title.confluence.window.15", "Confluence: The Water Fall Of Content!");
+        add("title.confluence.window.16", "Confluence: Earthbound");
+        add("title.confluence.window.17", "Confluence: Dig Dug Ain't Got Nuthin on Me");
+        add("title.confluence.window.18", "Confluence: Ore's Well That Ends Well");
+        add("title.confluence.window.19", "Confluence: Judgement Clay");
+        add("title.confluence.window.20", "Confluence: Terrestrial Trouble");
+        add("title.confluence.window.21", "Confluence: Obsessive-Compulsive Discovery Simulator");
+        add("title.confluence.window.22", "Confluence: Red Dev Redemption");
+        add("title.confluence.window.23", "Confluence: Rise of the Slimes");
+        add("title.confluence.window.24", "Confluence: Now with more things to kill you!");
+        add("title.confluence.window.25", "Confluence: Rumors of the Guides' death were greatly exaggerated");
+        add("title.confluence.window.26", "Confluence: I Pity the Tools...");
+        add("title.confluence.window.27", "Confluence: I Pity the Tools");
+        add("title.confluence.window.28", "Confluence: A spelunker says 'What'?");
+        add("title.confluence.window.29", "Confluence: So then I said 'Something about a PC update....'");
+        add("title.confluence.window.30", "Confluence: May the blocks be with you");
+        add("title.confluence.window.31", "Confluence: Better than life");
+        add("title.confluence.window.32", "Confluence: Confluence: Confluence:");
+        add("title.confluence.window.33", "Confluence: Now in 2D");
+        add("title.confluence.window.34", "Confluence: Coming soon to a computer near you");
+        add("title.confluence.window.35", "Confluence: Dividing by zero");
+        add("title.confluence.window.36", "Confluence: Now with SOUND");
+        add("title.confluence.window.37", "Confluence: Press F3+2");
+        add("title.confluence.window.38", "Confluence: You sand bro?");
+        add("title.confluence.window.39", "Confluence: A good day to dig hard");
+        add("title.confluence.window.40", "Confluence: Can You Use Magic-Harp?");
+        add("title.confluence.window.41", "Confluence: I don't know that-- aaaaa!");
+        add("title.confluence.window.42", "Confluence: What's that purple spiked thing?");
+        add("title.confluence.window.43", "Confluence: I wanna be the guide");
+        add("title.confluence.window.44", "Confluence: Cthulhu is mad... and is missing an eye!");
+        add("title.confluence.window.45", "Confluence: NOT THE BEES!!!");
+        add("title.confluence.window.46", "Confluence: Legend of Maxx");
+        add("title.confluence.window.47", "Confluence: Cult of MagicHarpWaaaa");
+        add("title.confluence.window.48", "Confluence 2: Electric Boogaloo");
+        add("title.confluence.window.49", "Confluence: Also try Terraria!");
+        add("title.confluence.window.50", "Confluence: Also try Breath of the Wild!");
+        add("title.confluence.window.51", "Confluence: Also try Stardew Valley!");
+        add("title.confluence.window.52", "Confluence: Also try Core Keeper!");
+        add("title.confluence.window.53", "Confluence: Also try Project Zomboid!");
+        add("title.confluence.window.54", "Confluence: Also try RainbowBridge!");
+        add("title.confluence.window.55", "Confluence: I just wanna know where the gold at?");
+        add("title.confluence.window.56", "Confluence: Now with more ducks!");
+        add("title.confluence.window.57", "Confluence: 1 + 1 = 10");
+        add("title.confluence.window.58", "Confluence: Infinite Plantera");
+        add("title.confluence.window.59", "Confluence: Now with microtransactions!");
+        add("title.confluence.window.60", "Confluence: Built on Blockchain Technology");
+        add("title.confluence.window.61", "Confluence: Now with even more Ocram!");
+        add("title.confluence.window.62", "Confluence: Now with even more and more Ocram!");
+        add("title.confluence.window.63", "Confluence: Otherworld");
+        add("title.confluence.window.64", "Confluence: Touch Grass Simulator");
+        add("title.confluence.window.65", "Confluence: Don't dig up!");
+        add("title.confluence.window.66", "Confluence: For the worthy!");
+        add("title.confluence.window.67", "Confluence: Now with even more Ocram!");
+        add("title.confluence.window.68", "Confluence: Shut Up and Dig Gaiden!");
+        add("title.confluence.window.69", "Confluence: Also try Don't Starve!");
+        add("title.confluence.window.70", "Confluence: Fusion Rise!");
+
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
@@ -1135,8 +1228,8 @@ public class ModEnglishProvider extends LanguageProvider {
         addPotion(PotionItems.WATER_WALKING_POTION.get(), "Allows the ability to walk on water");
         addPotion(PotionItems.FEATHERFALL_POTION.get(), "Slows falling speed");
         addPotion(PotionItems.RANDOM_TELEPORT_POTION.get(), "Teleports you to a random location");
-        addPotion(PotionItems.SPELUNKER_POTION.get(), "Shows the location of treasure and ore; press Tab for detailed information");
-        addPotion(PotionItems.DANGERSENSE_POTION.get(), "Allows you to see nearby danger sources; press Tab for detailed information");
+        addPotion(PotionItems.SPELUNKER_POTION.get(), "Shows the location of treasure and ore");
+        addPotion(PotionItems.DANGERSENSE_POTION.get(), "Allows you to see nearby danger sources");
         addPotion(PotionItems.HUNTER_POTION.get(), "Shows the location of enemies");
         addPotion(PotionItems.CRATE_POTION.get(), "Increases chance to get a crate");
         addPotion(PotionItems.CHAOS_POTION.get(), "Grants random effects");
@@ -1185,8 +1278,8 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.WATER_WALKING.get(), "Can walk on liquids.");
         addEffect(ModEffects.MAGIC_POWER.get(), "20% increased magic damage");
         addEffect(ModEffects.FLIPPER.get(), "Move like normal in water");
-        addEffect(ModEffects.SPELUNKER.get(), "Shows the location of treasure and ore");
-        addEffect(ModEffects.HUNTER.get(), "Shows the location of enemies");
+        addEffect(ModEffects.SPELUNKER.get(), "Shows the location of treasure and ore; press [%s] for detailed information");
+        addEffect(ModEffects.HUNTER.get(), "Shows the location of enemies; press [%s] for detailed information");
         addEffect(ModEffects.DANGER_SENSE.get(), "You can see nearby hazards");
         addEffect(ModEffects.FROZEN.get(), "You can't move!");
         addEffect(ModEffects.STINKY.get(), "You smell terrible");
@@ -1217,11 +1310,12 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.BATTLE.get(), "Increased enemy spawn rate");
         addEffect(ModEffects.CALM.get(), "Decreased enemy spawn rate");
         addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");
+        addEffect(ModEffects.ENEMY_BANNER.get(), "Increased damage and defense from the following: %s");
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
         addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");
         addEffect(TCEffects.CONFUSED.get(), "Movement is reversed");
-        addEffect(TCEffects.GRAVITATION.get(), "Press Space to reverse gravity");
+        addEffect(TCEffects.GRAVITATION.get(), "Press UP to reverse gravity");
         addEffect(TCEffects.PALADINS_SHIELD.get(), "25% of damage taken will be redirected to another player");
 
         addEffect(TEEffects.DEMONIC_THOUGHTS.get(), "Being inflicted with Demonic Thoughts again spawns Eater of Souls");

@@ -1,9 +1,12 @@
 package org.confluence.mod.mixin.client.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,6 +15,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin implements ILocalPlayer {
@@ -40,5 +44,18 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
         if (ILocalPlayer.redirectEditScreen(signEntity, isFrontText, minecraft)) {
             ci.cancel();
         }
+    }
+
+    // 使用占卜球的时候要发送自己的位置给服务端
+    @ModifyExpressionValue(method = "sendPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isControlledCamera()Z"))
+    private boolean sendPos(boolean original) {
+        return original || ScryingOrb.spectatingPlayer != null;
+    }
+
+    // 客户端玩家受伤没事件的
+    // 受伤让视角返回自己
+    @Inject(method = "hurt", at = @At("HEAD"))
+    private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        ScryingOrb.stopSpectating();
     }
 }

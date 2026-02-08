@@ -23,6 +23,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.block.EmptyPickupLiquidBlock;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.*;
+import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
+import org.confluence.mod.common.block.functional.enemybanner.EnemyBannerBlock;
+import org.confluence.mod.common.block.functional.enemybanner.WallEnemyBannerBlock;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.CursedFlameBlock;
 import org.confluence.mod.common.block.natural.food.BoulderBreadBlock;
@@ -69,9 +72,10 @@ public final class ModBlocks {
     public static final DeferredBlock<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
 
     public static final DeferredBlock<BaseRopeBlock> ROPE = registerWithItem("rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.BROWN).sound(SoundType.WOOL).noCollission().instabreak()), BaseRopeBlock.BItem::new);
-    public static final DeferredBlock<BaseRopeBlock> VINE_ROPE = registerWithItem("vine_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.GREEN).sound(SoundType.WOOL).noCollission().instabreak()), BaseRopeBlock.BItem::new);
+    public static final DeferredBlock<BaseRopeBlock> VINE_ROPE = registerWithItem("vine_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.GREEN).sound(SoundType.GRASS).noCollission().instabreak()), BaseRopeBlock.BItem::new);
     public static final DeferredBlock<BaseRopeBlock> SILK_ROPE = registerWithItem("silk_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.WHITE).sound(SoundType.WOOL).noCollission().instabreak()), BaseRopeBlock.BItem::new);
     public static final DeferredBlock<BaseRopeBlock> WEB_ROPE = registerWithItem("web_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.BLUE).sound(SoundType.WOOL).noCollission().instabreak()), BaseRopeBlock.BItem::new);
+    public static final DeferredBlock<BaseRopeBlock> PINE_NEEDLE_HANDMADE_ROPE_SET = registerWithItem("pine_needle_handmade_rope_set", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.BLUE).sound(SoundType.GRASS).noCollission().instabreak()), BaseRopeBlock.BItem::new);
 
     public static final DeferredBlock<Block> FAILED_SKULL_BLOCK = registerWithoutItem("failed_skull_block", () -> new BaseSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
     public static final DeferredBlock<Block> FAILED_SKULL_WALL_BLOCK = registerWithoutItem("failed_skull_wall_block", () -> new BaseSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
@@ -96,6 +100,9 @@ public final class ModBlocks {
 
     // test block 要测试直接复制下面这一行改名
     public static final DeferredBlock<Block> TEST_BLOCK = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.COLOR_BLUE)));
+    public static final DeferredBlock<EnemyBannerBlock> ENEMY_BANNER = BLOCKS.register("enemy_banner", EnemyBannerBlock::new);
+    public static final DeferredBlock<WallEnemyBannerBlock> WALL_ENEMY_BANNER = BLOCKS.register("wall_enemy_banner", WallEnemyBannerBlock::new);
+    public static final Supplier<BlockEntityType<AbstractEnemyBannerBlock.BEntity>> ENEMY_BANNER_ENTITY = BLOCK_ENTITIES.register("enemy_banner_entity", () -> BlockEntityType.Builder.of(AbstractEnemyBannerBlock.BEntity::new, ENEMY_BANNER.get(), WALL_ENEMY_BANNER.get()).build(DSL.remainderType()));
 
 
     private static DeferredBlock<TombstoneBlock> registerTombstone(String id, boolean isGolden) {

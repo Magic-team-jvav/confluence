@@ -47,15 +47,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InaccessibleObjectException;
 import java.util.*;
 
-/**
- * @author voila
- */
 public final class DeathAnimUtils {
     public static final Map<EntityType<? extends LivingEntity>, DeathAnimOptions> options = new HashMap<>();
     public static final List<Pair<ResourceKey<Level>, Entity>> toBeAdded = new ArrayList<>();
     public static final List<Entity> toBeDiscarded = new ArrayList<>();
 
-    public static void clear() {
+    public static void clearPending() {
         toBeAdded.clear();
         toBeDiscarded.clear();
     }

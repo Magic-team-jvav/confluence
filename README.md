@@ -7,7 +7,6 @@
 | [ConfluenceMagicLib](Confluence-Magic-Lib)                                    | 库                 | 否      |
 | [ConfluenceOtherworld](ConfluenceOtherworld)                                  | 本体                | 依赖所有   |
 | [TerraEntity](TerraEntity)                                                    | 泰拉实体生物            | 是      |
-| [MineTeam](MineTeam)                                                          | 类泰拉团队机制           | 是      |
 | [TerraCurio](TerraCurio)                                                      | 泰拉饰品              | 是      |
 | [TerraGuns](TerraGuns)                                                        | 泰拉枪支              | 是      |
 | [ParticleStorm](https://github.com/westernat/ParticleStorm)                   | 为复杂的粒子提供API       | 是      |

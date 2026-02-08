@@ -5,6 +5,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -17,6 +19,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.sapling.BaseSaplingBlock;
+import org.confluence.mod.common.block.natural.sapling.PineSaplingBlock;
 import org.confluence.mod.common.block.natural.sapling.StoneSaplingBlock;
 import org.confluence.mod.common.block.natural.spreadable.*;
 import org.confluence.mod.common.block.natural.spreadable.extended.*;
@@ -139,11 +142,24 @@ public class NatureBlocks {
     public static final DeferredBlock<MushroomBlock> GLOWING_MUSHROOM = registerWithoutItem("glowing_mushroom", () -> new MushroomBlock(ISpreadable.Type.GLOWING, MUSHROOM_GRASS_BLOCK.get())); // 发光蘑菇
     public static final DeferredBlock<IndusiumBlock> GLOWING_MUSHROOM_INDUSIUM_BLOCK = registerWithItem("glowing_mushroom_indusium_block", IndusiumBlock::new);
     public static final DeferredBlock<RotatedPillarBlock> GLOWING_MUSHROOM_STEM_BLOCK = registerWithItem("glowing_mushroom_stem_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
-    public static final DeferredBlock<GlowingMushroomPileusBlock> GLOWING_MUSHROOM_PILEUS_BLOCK = registerWithItem("glowing_mushroom_pileus_block", () -> new GlowingMushroomPileusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
+    public static final DeferredBlock<GlowingMushroomPileusBlock> GLOWING_MUSHROOM_PILEUS_BLOCK = registerWithItem("glowing_mushroom_pileus_block", () -> new GlowingMushroomPileusBlock(4, BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
 
     public static final DeferredBlock<IndusiumBlock> LIFE_MUSHROOM_INDUSIUM_BLOCK = registerWithItem("life_mushroom_indusium_block", IndusiumBlock::new);
     public static final DeferredBlock<RotatedPillarBlock> LIFE_MUSHROOM_STEM_BLOCK = registerWithItem("life_mushroom_stem_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
-    public static final DeferredBlock<GlowingMushroomPileusBlock> LIFE_MUSHROOM_PILEUS_BLOCK = registerWithItem("life_mushroom_pileus_block", () -> new GlowingMushroomPileusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
+    public static final DeferredBlock<GlowingMushroomPileusBlock> LIFE_MUSHROOM_PILEUS_BLOCK = registerWithItem("life_mushroom_pileus_block", () -> new GlowingMushroomPileusBlock(0, BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
+
+
+    public static final DeferredBlock<Block> HANGING_MYCELIUM = registerWithItem("hanging_mycelium", () -> new HangingMyceliumBlock(
+            BlockBehaviour.Properties.of()
+            .mapColor(MapColor.DIRT)
+            .replaceable()
+            .noCollission()
+            .instabreak()
+            .sound(SoundType.HANGING_ROOTS)
+            .offsetType(BlockBehaviour.OffsetType.XZ)
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<MycelialDirtBlock> MYCELIAL_DIRT = registerWithItem("mycelial_dirt", () -> new MycelialDirtBlock(BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(0.5F).sound(SoundType.ROOTED_DIRT)));
 
     public static final LogBlockSet GLOWING_MUSHROOM_LOG_BLOCKS = LogBlockSet.builder("glowing_mushroom", true, LogBlockSet.WoodSetType.GLOWING_MUSHROOM).log(null).strippedLog(null).wood(null).strippedWood(null).leaves(null).build();
 
@@ -191,6 +207,14 @@ public class NatureBlocks {
 
     // 王朝木
     public static final LogBlockSet DYNASTY_LOG_BLOCKS = LogBlockSet.builder("dynasty", true, DYNASTY).leaves(null).build();
+
+    // 松树
+    public static final LogBlockSet PINE_LOG_BLOCKS = LogBlockSet.builder("pine", true, PINE).leaves(properties -> new TransparentLeavesBlock(properties.noOcclusion())).build();
+    public static final DeferredBlock<PineSaplingBlock> PINE_SAPLING = registerWithItem("pine_sapling", () -> new PineSaplingBlock(ModFeatures.TreeGrowers.PINE_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+    public static final DeferredBlock<PineSaplingBlock> PRUNED_PINE_SAPLING = registerWithItem("pruned_pine_sapling", () -> new PineSaplingBlock(ModFeatures.TreeGrowers.CHINESE_PINE_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
+
+    // 仙灵木
+    public static final LogBlockSet FEY_LOG_BLOCKS = LogBlockSet.builder("fey", true, FEY).leaves(null).build();
     // 空岛
     public static final DeferredBlock<CloudBlock> CLOUD_BLOCK = registerWithItem("cloud_block", () -> new CloudBlock(BlockBehaviour.Properties.of()
             .mapColor(MapColor.TERRACOTTA_WHITE)
@@ -239,18 +263,20 @@ public class NatureBlocks {
     public static final DeferredBlock<BranchesBlock> ASH_BRANCHES = registerWithItem("ash_branches", () -> new BranchesBlock(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE, ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE));
 
     // 藤蔓方块
-    public static final DeferredBlock<BaseDroopingPlantsHeadBlock> YELLOW_WILLOW_DROOPING_LEAVES = registerWithItem("yellow_willow_drooping_leaves", () -> new BaseDroopingPlantsHeadBlock(14, false, false, List.of(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LEAVES.get())));
+    public static final DeferredBlock<BaseDroopingPlantsHeadBlock> YELLOW_WILLOW_DROOPING_LEAVES = registerWithItem("yellow_willow_drooping_leaves", () -> new BaseDroopingPlantsHeadBlock(14, false, false, () -> List.of(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LEAVES.get())));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> GLOWING_MUSHROOM_VINE = registerWithItem("glowing_mushroom_vine", () -> new BaseDroopingPlantsHeadBlock(6, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> FOREST_DROOPING_VINE = registerWithItem("forest_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> JUNGLE_DROOPING_VINE = registerWithItem("jungle_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> CORRUPT_DROOPING_VINE = registerWithItem("corrupt_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> CRIMSON_DROOPING_VINE = registerWithItem("crimson_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> HALLOW_DROOPING_VINE = registerWithItem("hallow_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
+    public static final DeferredBlock<BaseDroopingPlantsHeadBlock> PINE_DROOPING_VINE = registerWithItem("pine_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(8, false, true, () -> List.of(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get(), NatureBlocks.PINE_LOG_BLOCKS.LOG.get())));
 
     public static final DeferredBlock<ShimmerDroopingVinesBlock> SHIMMER_DROOPING_VINE = registerWithoutItem("shimmer_drooping_vine", () -> new ShimmerDroopingVinesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES)));
     public static final DeferredBlock<ShimmerDroopingVinesPlantBlock> SHIMMER_DROOPING_VINE_PLANT = registerWithoutItem("shimmer_drooping_vine_plant", () -> new ShimmerDroopingVinesPlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES_PLANT)));
+    public static final DeferredBlock<ShimmerRiceBlock> SHIMMER_RICE =  registerWithItem("shimmer_rice", () -> new ShimmerRiceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
 
-    public static final DeferredBlock<BlinkingRoyalShimmerlilyBlock> BLINKING_ROYAL_SHIMMERLILY = registerWithItem("blinking_royal_shimmerlily", () -> new BlinkingRoyalShimmerlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), BlinkingRoyalShimmerlilyBlock.BItem::new);
+    public static final DeferredBlock<BlinkingRoyalShimmerlilyBlock> BLINKING_ROYAL_SHIMMERLILY = registerWithItem("blinking_royal_shimmerlily", () -> new BlinkingRoyalShimmerlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), block -> new PlaceOnWaterBlockItem(block, new Item.Properties()));
 
     // 苔藓
     public static final DeferredBlock<BaseMossBlock> GREEN_MOSS = registerWithItem("green_moss", () -> new BaseMossBlock(5, BlockBehaviour.Properties.of()

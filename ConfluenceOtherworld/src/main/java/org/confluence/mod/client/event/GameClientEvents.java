@@ -14,9 +14,11 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -42,10 +44,12 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
@@ -57,6 +61,7 @@ import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
@@ -66,6 +71,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
@@ -79,10 +85,13 @@ import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.network.c2s.SwordProjectilePacketC2S;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
+import org.confluence.terra_curio.client.TCKeyBindings;
+import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -111,6 +120,10 @@ public final class GameClientEvents {
                 ExpertColorAnimation.INSTANCE.getGreen(),
                 ExpertColorAnimation.INSTANCE.getBlue()
         );
+
+        if (ExtraInventoryScreen.teamCooldown > 0) {
+            --ExtraInventoryScreen.teamCooldown;
+        }
     }
 
     @SubscribeEvent
@@ -133,8 +146,14 @@ public final class GameClientEvents {
             }
             HouseSelectHUD.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
+            if (ScryingOrb.spectatingPlayer != null && !ScryingOrb.spectatingPlayer.isAlive()) {
+                ScryingOrb.changeTarget(minecraft.level, player);
+            }
+            if (player.isShiftKeyDown()) {
+                ScryingOrb.stopSpectating();
+            }
         }
-        DeathAnimUtils.clear();
+        DeathAnimUtils.clearPending();
     }
 
     @SubscribeEvent
@@ -248,7 +267,7 @@ public final class GameClientEvents {
     public static void movementInputUpdate(MovementInputUpdateEvent event) {
         Input input = event.getInput();
         LocalPlayer player = (LocalPlayer) event.getEntity();
-        boolean cannotMove = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN);
+        boolean cannotMove = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || ScryingOrb.spectatingPlayer != null;
         ILocalPlayer.of(player).confluence$setCanMove(!cannotMove);
         if (!player.hasInfiniteMaterials()) {
             if (cannotMove || player.hasEffect(ModEffects.SHIMMER) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {
@@ -360,14 +379,33 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void gatherEffectScreenTooltips(GatherEffectScreenTooltipsEvent event) {
-        Optional<ResourceKey<MobEffect>> optional = event.getEffectInstance().getEffect().unwrapKey();
-        if (optional.isPresent()) {
+        Holder<MobEffect> effect = event.getEffectInstance().getEffect();
+        Optional<ResourceKey<MobEffect>> optional = effect.unwrapKey();
+        List<Component> tooltip = event.getTooltip();
+        if (optional.isPresent()) l:{
             String key = Util.makeDescriptionId("tooltip.effect", optional.get().location()) + ".0";
-            if (I18n.exists(key))
-                event.getTooltip().add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+            if (!I18n.exists(key)) break l;
+            if (effect.equals(ModEffects.ENEMY_BANNER)) {
+                LocalPlayer player = Minecraft.getInstance().player;
+                if (player == null) break l;
+                Iterator<String> iterator = PlayerSpecialData.of(player).getEnemyBannerEntries().iterator();
+                if (!iterator.hasNext()) break l;
+                MutableComponent component = Component.translatable(iterator.next()).withStyle(ChatFormatting.GREEN);
+                while (iterator.hasNext()) {
+                    component.append(Component.literal(", "));
+                    component.append(Component.translatable(iterator.next()));
+                }
+                tooltip.add(Component.translatable(key, component).withStyle(ChatFormatting.GRAY));
+            } else if (effect.equals(ModEffects.DANGER_SENSE) || effect.equals(ModEffects.SPELUNKER)) {
+                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(ModKeyBindings.SHOW_DETAIL_SPECULAR.get())));
+            } else if (effect.equals(TCEffects.GRAVITATION)) {
+                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(TCKeyBindings.FLIP_GRAVITATION.get())));
+            } else {
+                tooltip.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+            }
         }
         if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {
-            event.getTooltip().add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));
+            tooltip.add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 

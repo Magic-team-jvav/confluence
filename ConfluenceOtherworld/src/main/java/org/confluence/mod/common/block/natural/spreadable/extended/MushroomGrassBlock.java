@@ -3,14 +3,18 @@ package org.confluence.mod.common.block.natural.spreadable.extended;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.block.natural.spreadable.SpreadingGrassBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 import java.util.function.IntUnaryOperator;
@@ -59,5 +63,13 @@ public class MushroomGrassBlock extends SpreadingGrassBlock implements Bonemeala
         BlockState glowingMushroomVine = NatureBlocks.GLOWING_MUSHROOM_VINE.get().defaultBlockState();
         tryPlaceBlock.accept(glowingMushroom, dy -> dy);
         tryPlaceBlock.accept(glowingMushroomVine, dy -> -dy);
+    }
+
+    @Override
+    public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
+        if (itemAbility == ItemAbilities.SHOVEL_FLATTEN) {
+            return NatureBlocks.MUSHROOM_PATH.get().defaultBlockState();
+        }
+        return null;
     }
 }

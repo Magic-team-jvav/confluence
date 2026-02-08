@@ -49,7 +49,9 @@ public final class ModFeatures {
     public static final Supplier<DroopingBlockFeature> DROOPING_BLOCK = FEATURES.register("drooping_block", () -> new DroopingBlockFeature(DroopingBlockFeature.Config.CODEC));
     public static final Supplier<CattailsFeature> CATTAILS = FEATURES.register("cattails", () -> new CattailsFeature(CattailsFeature.Config.CODEC));
     public static final Supplier<MushroomTreeFeature> MUSHROOM_TREE = FEATURES.register("mushroom_tree", () -> new MushroomTreeFeature(MushroomTreeFeature.Config.CODEC));
+    public static final Supplier<HugeMushroomTreeFeature> HUGE_MUSHROOM_TREE = FEATURES.register("huge_mushroom_tree", () -> new HugeMushroomTreeFeature(HugeMushroomTreeFeature.Config.CODEC));
     public static final Supplier<BaobabTreeFeature> BAOBAB_TREE = FEATURES.register("baobab_tree", () -> new BaobabTreeFeature(BaobabTreeFeature.Config.CODEC));
+    public static final Supplier<PineTreeFeature> PINE_TREE = FEATURES.register("pine_tree", () -> new PineTreeFeature(PineTreeFeature.Config.CODEC));
     public static final Supplier<BranchTreeFeature> BRANCH_TREE = FEATURES.register("branch_tree", () -> new BranchTreeFeature(BranchTreeFeature.Config.CODEC));
     public static final Supplier<MeteoriteFeature> METEORITE = FEATURES.register("meteorite", () -> new MeteoriteFeature(MeteoriteFeature.Config.CODEC));
     public static final Supplier<RailSupportFeature> RAIL_SUPPORT = FEATURES.register("rail_support", () -> new RailSupportFeature(RailSupportFeature.Config.CODEC));
@@ -120,7 +122,11 @@ public final class ModFeatures {
         public static final ResourceKey<ConfiguredFeature<?, ?>> ASH_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ash_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> YELLOW_WILLOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> PINE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("pine_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> CHINESE_PINE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("chinese_pine_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> LIFE_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("life_mushroom_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> HUGE_LIFE_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("huge_life_mushroom_tree"));
     }
 
     public static final class TreeGrowers {
@@ -136,6 +142,8 @@ public final class ModFeatures {
         public static final TreeGrower SAPPHIRE_GROWER = registerSmallTree("sapphire", Configured.SAPPHIRE_TREE);
         public static final TreeGrower AMETHYST_GROWER = registerSmallTree("amethyst", Configured.AMETHYST_TREE);
         public static final TreeGrower ASH_GROWER = registerSmallTree("ash", Configured.ASH_TREE);
+        public static final TreeGrower PINE_GROWER = registerSmallTree("pine", Configured.PINE_TREE);
+        public static final TreeGrower CHINESE_PINE_GROWER = registerSmallTree("chinese_pine", Configured.CHINESE_PINE_TREE);
         public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow", Configured.YELLOW_WILLOW_TREE);
         public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab", Configured.BAOBAB_TREE);
 

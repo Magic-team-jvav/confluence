@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.confluence.terraentity.init.TESounds;
-import org.jetbrains.annotations.NotNull;
 
 
 public class ThrowableDropSelfItem extends Item {
@@ -23,7 +22,7 @@ public class ThrowableDropSelfItem extends Item {
     final float damage;
     final int flyTicks;
 
-    public ThrowableDropSelfItem(@NotNull EntityType<? extends ThrowableDropSelfProjectile> entityType, float damage, float power, float inaccuracy, int cooldown, int flyTicks, boolean dropSelf) {
+    public ThrowableDropSelfItem(EntityType<? extends ThrowableDropSelfProjectile> entityType, float damage, float power, float inaccuracy, int cooldown, int flyTicks, boolean dropSelf) {
         super(new Properties());
         this.entityType = entityType;
         this.dropSelf = dropSelf;

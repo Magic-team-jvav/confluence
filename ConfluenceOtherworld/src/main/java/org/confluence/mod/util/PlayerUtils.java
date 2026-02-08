@@ -26,11 +26,15 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.*;
+import org.confluence.mod.common.attachment.EverBeneficial;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -43,6 +47,7 @@ import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
@@ -80,14 +85,14 @@ public final class PlayerUtils {
         syncMana2Client(player, ManaStorage.of(player));
     }
 
-    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
-        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
-        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
-    }
-
-    public static void syncSoul2Client(ServerPlayer player) {
-        syncSoul2Client(player, SoulStorage.of(player));
-    }
+//    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
+//        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
+//        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
+//    }
+//
+//    public static void syncSoul2Client(ServerPlayer player) {
+//        syncSoul2Client(player, SoulStorage.of(player));
+//    }
 
     public static void regenerateMana(ServerPlayer player) {
         ManaStorage manaStorage = ManaStorage.of(player);
@@ -143,6 +148,7 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(sup)) syncMana2Client(player, manaStorage);
     }
 
+    /// 初始化数据到player客户端
     public static void syncSavedData(ServerPlayer player) {
         ConfluenceData data = ConfluenceData.get(player.serverLevel());
         WindSpeedPacketS2C.sendToClient(player, data.getWindSpeedX(), data.getWindSpeedZ());
@@ -153,7 +159,7 @@ public final class PlayerUtils {
         GlobalCloakSyncPacketS2C.sendToClient(player);
         MeteoriteLocationPacketS2C.sendToClient(player, data.getMeteoriteLocation(), 0);
         BestiarySyncPacketS2C.syncEntries(player);
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        ExtraInventorySyncPacketS2C.sendToClient(player, player);
         PlayerPiggyBankContainer.of(player).setChanged(); // 自动同步
         FishingPowerInfoPacketS2C.sendAndGet(player);
         VisibilityPacketS2C.sendEcho(player);
@@ -161,6 +167,19 @@ public final class PlayerUtils {
         VisibilityPacketS2C.sendTheConstantPostEffect(player);
         SecretFlagSyncPacketS2C.sendToClient(player, IMinecraftServer.of(player.server).confluence$getSecretFlag());
         CompatibilitySyncPacketS2c.sendToClient(player);
+        TeamPacket.sendToClient(player, player);
+    }
+
+    /// 将target的数据同步到sendTo
+    public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
+        ExtraInventorySyncPacketS2C.sendToClient(sendTo, target);
+        FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
+        TeamPacket.sendToClient(sendTo, target);
+    }
+
+    /// 同步数据到player客户端
+    public static void syncPlayerData(ServerPlayer player) {
+        GameEventSystem.INSTANCE.syncAll(player);
     }
 
     public static float getFishingPower(ServerPlayer player) {
@@ -185,7 +204,7 @@ public final class PlayerUtils {
             base *= 1.3F;
         } else if (LibDateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) {
             base *= 0.8F;
-        } else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime)) {
+        } else if (LibDateUtils.isWithinDayTime(LibDateUtils._18$00, LibDateUtils._19$30, dayTime)) {
             base *= 1.3F;
         } else if (LibDateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) {
             base *= 0.8F;
@@ -418,12 +437,6 @@ public final class PlayerUtils {
             return true;
         }
         return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
-    }
-
-    /// 将target的数据同步到sendTo
-    public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
-        ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
-        FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
     }
 
     public static boolean skipHealIfOnFire(Player player) {

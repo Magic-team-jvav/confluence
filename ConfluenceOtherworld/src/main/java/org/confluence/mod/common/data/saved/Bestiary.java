@@ -24,6 +24,7 @@ import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.data.map.PresetBestiaryEntry;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
@@ -82,7 +83,7 @@ public final class Bestiary implements IGlobalData {
 
     public BestiaryEntry getOrCreateEntry(LivingEntity living) {
         return entries.computeIfAbsent(RegisterBestiaryKeyEvent.getKey(living), key -> {
-            BestiaryEntry entry = PresetBestiaryEntry.getEntry(living);
+            BestiaryEntry entry = PresetBestiaryEntry.getEntry(living, key);
             if (entry != null) return entry;
 
             entry = new BestiaryEntry();
@@ -103,7 +104,13 @@ public final class Bestiary implements IGlobalData {
         if (!canBeSeenAsBestiaryEntry(living)) return;
 
         BestiaryEntry entry = getOrCreateEntry(living);
-        if (killed) entry.killedByCount++;
+        entry.unlock();
+        if (killed) {
+            entry.killedByCount++;
+        }
+        if (!entry.isCompleted()) {
+            entry.updateUnlockedProgress(living);
+        }
 
         if (entry.killedByCount > 1) {
             BestiarySyncPacketS2C.syncEntry(living);
@@ -135,6 +142,7 @@ public final class Bestiary implements IGlobalData {
     }
 
     public static boolean canBeSeenAsBestiaryEntry(LivingEntity living) {
-        return isAvailableType(living.getType(), living.level()) && !NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled();
+        return isAvailableType(living.getType(), living.level()) &&
+                (living.getType().is(ModTags.EntityTypes.BESTIARY_WHITELIST) || !NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled());
     }
 }

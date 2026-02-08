@@ -12,9 +12,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.ModUtils;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -68,6 +68,6 @@ public class FlowerPetalProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return ModUtils.canHitEntity(target, getOwner());
+        return LibUtils.canHitEntity(target, getOwner());
     }
 }

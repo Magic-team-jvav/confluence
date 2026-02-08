@@ -3,18 +3,19 @@ package org.confluence.mod.client.gameevent;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 
-public class GoblinArmyProgressRenderer implements LayeredDraw.Layer {
+public final class GoblinArmyProgressRenderer implements LayeredDraw.Layer {
     static final ResourceLocation SPRITE = Confluence.asResource("hud/goblin_army");
     static final int IMAGE_WIDTH = 256;
     static final int IMAGE_HEIGHT = 96;
     static final int HALF_U_WIDTH = IMAGE_WIDTH / 2;
     static final int V_HEIGHT = IMAGE_HEIGHT / 2;
-    public static float yOffset;
+    public static Rect2i occupied;
     static boolean started;
     static float progressed;
 
@@ -23,7 +24,7 @@ public class GoblinArmyProgressRenderer implements LayeredDraw.Layer {
     }
 
     static void reset() {
-        yOffset = 0;
+        occupied = null;
         started = false;
         progressed = 0;
     }
@@ -36,11 +37,22 @@ public class GoblinArmyProgressRenderer implements LayeredDraw.Layer {
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!started) return;
         int centerX = guiGraphics.guiWidth() / 2;
+        float yOffset;
         int x = centerX - HALF_U_WIDTH;
+
+        if (occupied != null &&
+                Math.max(x, occupied.getX()) < Math.min(x + IMAGE_WIDTH, occupied.getX() + occupied.getWidth()) &&
+                Math.max(0, occupied.getY()) < Math.min(V_HEIGHT, occupied.getY() + occupied.getHeight())
+        ) {
+            yOffset = occupied.getY() + occupied.getHeight();
+        } else {
+            yOffset = 0;
+        }
+
         int y = Math.max(Mth.ceil(yOffset) - 16, 0);
         guiGraphics.blitSprite(SPRITE, IMAGE_WIDTH, IMAGE_HEIGHT, 0, 0, x, y, IMAGE_WIDTH, V_HEIGHT);
         int u = (int) (IMAGE_WIDTH * progressed);
         guiGraphics.blitSprite(SPRITE, IMAGE_WIDTH, IMAGE_HEIGHT, 0, V_HEIGHT, x, y, IMAGE_WIDTH - u, V_HEIGHT);
-        yOffset = 0;
+        occupied = null;
     }
 }

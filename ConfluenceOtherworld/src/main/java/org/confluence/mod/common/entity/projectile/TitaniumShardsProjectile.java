@@ -4,7 +4,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -14,11 +13,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
@@ -108,7 +106,7 @@ public class TitaniumShardsProjectile extends Projectile {
                 Vec3 endVec = position().add(end.x, end.y, end.z);
                 AABB aabb = new AABB(startVec, endVec).inflate(0.5);
                 EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, startVec, endVec, aabb, this::canHitEntity);
-                if (hitResult != null && hitResult.getEntity().hurt(ModDamageTypes.of(level(), DamageTypes.GENERIC, this, getOwner()), 25)) {
+                if (hitResult != null && hitResult.getEntity().hurt(damageSources().playerAttack(player), 25)) {
                     VectorUtils.knockBackA2B(this, hitResult.getEntity(), 1, 0.4);
                     entityData.set(DATA_SHARDS_AMOUNT, amount - 1);
                 }
@@ -118,7 +116,7 @@ public class TitaniumShardsProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return ModUtils.canHitEntity(target, getOwner());
+        return LibUtils.canHitEntity(target, getOwner());
     }
 
     @Override

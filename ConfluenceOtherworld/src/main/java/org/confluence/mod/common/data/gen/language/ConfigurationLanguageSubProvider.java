@@ -110,6 +110,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.brewingStandRecipe.tooltip", "When enabled, the Brewing Stand can craft Terra Potions. (Restart the game after changing this setting!)");
         add("confluence.configuration.showWindParticles", "Wind Particles Ratio");
         add("confluence.configuration.HUD", "HUD");
+        add("confluence.configuration.GUI", "GUI");
         add("confluence.configuration.Mana", "Mana");
         add("confluence.configuration.Soul", "Soul");
         add("confluence.configuration.Armor", "Armor");
@@ -233,13 +234,15 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Mana.tooltip", "About Mana Display");
         add("confluence.configuration.Soul.tooltip", "About Soul Display");
         add("confluence.configuration.Food.tooltip", "About Food Display");
-        add("confluence.configuration.section.confluence.client.toml", "Client Display Settings");
-        add("confluence.configuration.section.confluence.common.toml", "Gameplay Settings");
+        add("confluence.configuration.section.confluence.client.toml", "Client Display Settings (Client)");
+        add("confluence.configuration.section.confluence.common.toml", "Gameplay Settings (Server)");
         add("confluence.configuration.leftEffectIcon.tooltip", "When enabled, potion effect icons are displayed on the left side of the screen.");
         add("confluence.configuration.Entity.button", "Entity-related Visual Effects");
         add("confluence.configuration.HUD.tooltip", "About HUD Display");
-        add("confluence.configuration.showWindParticles.tooltip", "Adjust the value to decide how many wind particles are visible.");
         add("confluence.configuration.HUD.button", "About HUD Display");
+        add("confluence.configuration.GUI.tooltip", "About GUI Display");
+        add("confluence.configuration.GUI.button", "About GUI Display");
+        add("confluence.configuration.showWindParticles.tooltip", "Adjust the value to decide how many wind particles are visible.");
         add("confluence.configuration.terraStyleHealth.tooltip", "When enabled, health is displayed in Terra style.");
         add("confluence.configuration.healthStyle.tooltip", "Health Display");
         add("confluence.configuration.Health.tooltip", "About Health Display");
@@ -251,6 +254,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.section.confluence.common.toml.title", "Common Configuration");
         add("confluence.configuration.minEctoMistEffectRadius", "Min Ecto Mist Effect Radius");
         add("confluence.configuration.minEctoMistEffectRadius.tooltip", "Disables ecto mist effect when set to 0.");
+        add("confluence.configuration.customTitle", "Custom Title");
     }
 
     @Override
@@ -351,6 +355,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.bossRespawnTimeMin.tooltip", "最小重生时间（boss战时死亡的重生时间）");
         add("confluence.configuration.showWindParticles", "风粒子比率");
         add("confluence.configuration.HUD", "HUD");
+        add("confluence.configuration.GUI", "GUI");
         add("confluence.configuration.Mana", "魔力值");
         add("confluence.configuration.Soul", "灵魂值");
         add("confluence.configuration.Armor", "护甲值");
@@ -469,13 +474,15 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Mana.tooltip", "关于魔力值显示");
         add("confluence.configuration.Food.tooltip", "关于饥饿值显示");
         add("confluence.configuration.Soul.tooltip", "关于灵魂值显示");
-        add("confluence.configuration.section.confluence.client.toml", "个人显示设定");
-        add("confluence.configuration.section.confluence.common.toml", "游戏机制设定");
+        add("confluence.configuration.section.confluence.client.toml", "个人显示设定（客户端）");
+        add("confluence.configuration.section.confluence.common.toml", "游戏机制设定（服务端）");
         add("confluence.configuration.leftEffectIcon.tooltip", "开启后，药水效果图标显示屏幕左侧");
         add("confluence.configuration.Entity.button", "与生物有关的视觉效果");
         add("confluence.configuration.HUD.tooltip", "关于HUD显示");
-        add("confluence.configuration.showWindParticles.tooltip", "通过调整数值，来决定你能看见风粒子的数量");
         add("confluence.configuration.HUD.button", "关于HUD显示");
+        add("confluence.configuration.GUI.tooltip", "关于GUI显示");
+        add("confluence.configuration.GUI.button", "关于GUI显示");
+        add("confluence.configuration.showWindParticles.tooltip", "通过调整数值，来决定你能看见风粒子的数量");
         add("confluence.configuration.terraStyleHealth.tooltip", "开启后，生命值显示为泰拉样式");
         add("confluence.configuration.healthStyle.tooltip", "生命值显示");
         add("confluence.configuration.Health.tooltip", "关于生命值显示");
@@ -487,6 +494,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.section.confluence.common.toml.title", "通用配置");
         add("confluence.configuration.minEctoMistEffectRadius", "最小迷雾效果距离");
         add("confluence.configuration.minEctoMistEffectRadius.tooltip", "设置为0时，关闭迷雾效果");
+        add("confluence.configuration.customTitle", "自定义标题");
     }
 
     @Override

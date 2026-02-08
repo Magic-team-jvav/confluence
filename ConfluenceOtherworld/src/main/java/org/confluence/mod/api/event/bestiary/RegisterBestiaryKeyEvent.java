@@ -12,9 +12,7 @@ import org.confluence.terraentity.api.entity.IVariant;
 import java.util.Map;
 import java.util.function.Function;
 
-/**
- * 仅需要注册特殊键，如带有变种的生物
- */
+/// 仅需要注册特殊键，如带有变种的生物
 public class RegisterBestiaryKeyEvent extends Event implements IModBusEvent {
     private static final Map<EntityType<?>, Factory<?>> factories = Maps.newIdentityHashMap();
 

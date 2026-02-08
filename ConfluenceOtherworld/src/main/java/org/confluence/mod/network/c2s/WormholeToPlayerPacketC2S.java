@@ -11,6 +11,7 @@ import org.confluence.lib.network.IPacketC2S;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.item.PotionItems;
 
 import java.util.UUID;
@@ -32,7 +33,7 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements I
     public void work(ServerPlayer player) {
         if (!byMod.enabled()) return;
         ServerPlayer target = player.server.getPlayerList().getPlayer(playerId);
-        if (target != null && player.getTeam() == target.getTeam()) {
+        if (target != null && PlayerSpecialData.of(player).getTeam() == PlayerSpecialData.of(target).getTeam()) {
             ItemStack potion = getWormholePotion(player);
             if (potion.isEmpty()) return;
             if (!player.hasInfiniteMaterials()) potion.shrink(1);
@@ -41,7 +42,7 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements I
     }
 
     public static boolean isTrackable(ServerPlayer trackingPlayer, ServerPlayer trackedPlayer) {
-        return trackingPlayer != trackedPlayer && trackingPlayer.getTeam() == trackedPlayer.getTeam();
+        return trackingPlayer != trackedPlayer && PlayerSpecialData.of(trackingPlayer).getTeam() == PlayerSpecialData.of(trackedPlayer).getTeam();
     }
 
     private static ItemStack getWormholePotion(ServerPlayer serverPlayer) {

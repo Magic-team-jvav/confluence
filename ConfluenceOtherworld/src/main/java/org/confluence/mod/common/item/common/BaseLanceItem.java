@@ -24,13 +24,13 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.api.item.ILeftClickStateItem;
 import org.confluence.terraentity.attachment.WeaponStorage;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -110,7 +110,7 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
             Vec3 endVec = startVec.add(lanceDirection.scale(attackDistance)); // 末位置
 
             /* 选择矩形框选区域内可被攻击的实体 */
-            for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> ModUtils.canHitEntity(target, owner))) {
+            for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> LibUtils.canHitEntity(target, owner))) {
                 if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue; // 排除骑枪实际攻击范围碰不到的实体
                 owner.setLastHurtMob(victim);
 

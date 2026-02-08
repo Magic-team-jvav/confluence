@@ -4,18 +4,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalFourPartBlock;
@@ -69,38 +62,6 @@ public class BlinkingRoyalShimmerlilyBlock extends HorizontalDirectionalWithHori
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canSurvive(state, level, pos)) {
             level.destroyBlock(pos, true);
-        }
-    }
-
-    public static class BItem extends BlockItem {
-        public BItem(Block block) {
-            super(block, new Properties());
-        }
-
-        @Override
-        public InteractionResult onItemUseFirst(ItemStack itemstack, UseOnContext context) {
-            Player player = context.getPlayer();
-            if (player == null || context.getLevel().isClientSide) {
-                return super.onItemUseFirst(itemstack, context);
-            }
-            Level level = context.getLevel();
-            BlockHitResult blockhitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
-            if (blockhitresult.getType() == HitResult.Type.MISS) {
-                return InteractionResult.PASS;
-            } else if (blockhitresult.getType() != HitResult.Type.BLOCK) {
-                return InteractionResult.PASS;
-            }
-            BlockPos blockpos = blockhitresult.getBlockPos();
-            Direction direction = blockhitresult.getDirection();
-            BlockPos blockpos1 = blockpos.relative(direction);
-            if (level.mayInteract(player, blockpos) && player.mayUseItemAt(blockpos1, direction, itemstack)) {
-                BlockState blockstate1 = level.getBlockState(blockpos);
-                if (blockstate1.getFluidState().is(ModFluids.SHIMMER.fluid().get())) {
-                    player.swing(context.getHand(), true);
-                    return useOn(new BlockPlaceContext(player, context.getHand(), itemstack, new BlockHitResult(blockhitresult.getLocation(), direction, blockpos1, blockhitresult.isInside())));
-                }
-            }
-            return InteractionResult.FAIL;
         }
     }
 }

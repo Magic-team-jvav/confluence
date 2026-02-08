@@ -31,9 +31,7 @@ import java.util.Set;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 
-/**
- * <a href="https://terraria.wiki.gg/zh/wiki/%E7%94%9F%E7%89%A9%E7%BE%A4%E7%B3%BB%E8%94%93%E5%BB%B6">生物群系蔓延</a>
- */
+/// [生物群系蔓延](https://terraria.wiki.gg/zh/wiki/%E7%94%9F%E7%89%A9%E7%BE%A4%E7%B3%BB%E8%94%93%E5%BB%B6)
 public interface ISpreadable {
     // That was a joke haha!
     BooleanProperty STILL_ALIVE = BooleanProperty.create("still_alive");
@@ -64,16 +62,11 @@ public interface ISpreadable {
             } else {
                 spreadOrDie(phase, blockState, serverLevel, blockPos, randomSource, target, targetPos);
             }
-//            BlockState above = serverLevel.getBlockState(targetPos.above());
-//            if (above.is(SHORT_GRASS) || above.is(FERN) || above.is(TALL_GRASS)) {  // 被动传播草
-//                targetBlock = getSpreadType().blockMap.get(above.getBlock());
-//                serverLevel.setBlockAndUpdate(targetPos.above(), targetBlock == null ? above : targetBlock.defaultBlockState());
-//            }
         }
     }
 
     default boolean isFullBlock(ServerLevel serverLevel, BlockPos pos) {
-        return Block.isShapeFullBlock(serverLevel.getBlockState(pos).getCollisionShape(serverLevel, pos));
+        return serverLevel.getBlockState(pos).isSolidRender(serverLevel, pos);
     }
 
     default void spreadOrDie(int phase, BlockState selfState, ServerLevel serverLevel, BlockPos selfPos, RandomSource randomSource, BlockState targetState, BlockPos targetPos) {
@@ -135,17 +128,18 @@ public interface ISpreadable {
     private static void searchBox(ServerLevel serverLevel, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
         if (depth == 128) return;
         for (BlockPos relative : BlockPos.betweenClosed(targetPos.offset(-1, -1, -1), targetPos.offset(1, 1, 1))) {
+            relative = relative.immutable();
             if (map.containsKey(relative)) continue;
             BlockState blockState = serverLevel.getBlockState(relative);
             if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
-                map.put(relative.immutable(), blockState);
+                map.put(relative, blockState);
                 if (PALMS.get().contains(blockState.getBlock())) {
                     searchBox(serverLevel, relative, map, depth + 1);
                 } else {
                     searchFace(serverLevel, relative, map, depth + 1);
                 }
             } else {
-                map.put(relative.immutable(), AIR);
+                map.put(relative, AIR);
             }
         }
     }

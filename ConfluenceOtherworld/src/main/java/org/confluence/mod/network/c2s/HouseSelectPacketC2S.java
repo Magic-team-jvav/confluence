@@ -52,7 +52,8 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPacke
             } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof AbstractTerraNPC npc) { // 如果不是空房子，获取所有者并告知已被占领
                 player.sendSystemMessage(Component.translatable("message.confluence.house_detect.occupied", npc.getType().getDescription(), npc.getDisplayName()));
             } else {
-                player.sendSystemMessage(Component.translatable("message.confluence.house_detect.npc_not_fount"));
+                HouseManager.getInstance().removeHouse(house.uuid().get());
+                player.sendSystemMessage(Component.translatable(detect.message()));
             }
         } else if (detect.isError()) { // 添加、删除房屋模式，但房屋检测失败
             player.sendSystemMessage(Component.translatable(detect.message()));

@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -101,7 +102,11 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         if (cooldown > 0) {
             player.getCooldowns().addCooldown(this, cooldown);
         }
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.REGULAR_STAFF_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+        player.level().playSound(null, player.getX(), player.getEyeY(), player.getZ(), getShootSound(), SoundSource.PLAYERS, 1.0F, 1.0F);
+    }
+
+    protected SoundEvent getShootSound() {
+        return ModSoundEvents.REGULAR_STAFF_SHOOT.get();
     }
 
     /// 1tick内弹速过快的射弹会穿过近距离实体，所以需要一段射线检测

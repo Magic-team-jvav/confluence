@@ -18,9 +18,13 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -28,9 +32,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
@@ -555,14 +562,59 @@ public final class NPCSpawner implements IGlobalData {
     }
 
     public boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
-        if (!(entityType.create(level) instanceof AbstractTerraNPC living)) return false;
-        living.setPos(pos.getX() + 0.5, pos.getY() + 2.9, pos.getZ() + 0.5);
-        level.addFreshEntity(living);
-        if (living instanceof AnglerNPC angler) {
+        if (!(entityType.create(level) instanceof AbstractTerraNPC npc)) return false;
+        npc.setPos(adjustSpawnLocation(level, pos, npc).getBottomCenter());
+        level.addFreshEntity(npc);
+        if (npc instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来
         }
-        onNPCAdded(living);
+        onNPCAdded(npc);
         return true;
+    }
+
+    /// @see ServerPlayer#adjustSpawnLocation(ServerLevel, BlockPos)
+    public static BlockPos adjustSpawnLocation(ServerLevel level, BlockPos pos, AbstractTerraNPC npc) {
+        AABB aabb = npc.getDimensions(Pose.STANDING).makeBoundingBox(Vec3.ZERO);
+        BlockPos blockPos = pos;
+        if (level.dimensionType().hasSkyLight() && level.getServer().getWorldData().getGameType() != GameType.ADVENTURE) {
+            int i = Math.max(0, level.getServer().getSpawnRadius(level));
+            int j = Mth.floor(level.getWorldBorder().getDistanceToBorder(pos.getX(), pos.getZ()));
+            if (j < i) {
+                i = j;
+            }
+
+            if (j <= 1) {
+                i = 1;
+            }
+
+            long k = i * 2L + 1;
+            long l = k * k;
+            int spawnArea = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
+            int j1 = spawnArea <= 16 ? spawnArea - 1 : 17;
+            int k1 = RandomSource.create().nextInt(spawnArea);
+
+            for (int l1 = 0; l1 < spawnArea; l1++) {
+                int i2 = (k1 + j1 * l1) % spawnArea;
+                int j2 = i2 % (i * 2 + 1);
+                int k2 = i2 / (i * 2 + 1);
+                blockPos = PlayerRespawnLogic.getOverworldRespawnPos(level, pos.getX() + j2 - i, pos.getZ() + k2 - i);
+                if (blockPos != null && level.noCollision(npc, aabb.move(blockPos.getBottomCenter()))) {
+                    return blockPos;
+                }
+            }
+
+            blockPos = pos;
+        }
+
+        while (!level.noCollision(npc, aabb.move(blockPos.getBottomCenter())) && blockPos.getY() < level.getMaxBuildHeight() - 1) {
+            blockPos = blockPos.above();
+        }
+
+        while (level.noCollision(npc, aabb.move(blockPos.below().getBottomCenter())) && blockPos.getY() > level.getMinBuildHeight() + 1) {
+            blockPos = blockPos.below();
+        }
+
+        return blockPos;
     }
 
     public static BlockPos getNpcSpawnPos(ServerPlayer player) {

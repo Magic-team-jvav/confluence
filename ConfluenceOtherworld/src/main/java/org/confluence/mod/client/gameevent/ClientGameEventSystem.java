@@ -29,8 +29,10 @@ public final class ClientGameEventSystem {
         map.put(LanternNightGameEvent.KEY, LanternNightSprite::handle);
         map.put(BloodMoonGameEvent.KEY, ClientGameEventSystem::handleBloodMoon);
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyProgressRenderer::handleSync);
+        map.put(SpecificMoonGameEvent.KEY, ClientGameEventSystem::handleSpecificMoon);
         ModLoader.postEvent(new GameEventSyncCallbackRegisterEvent(map));
     });
+
     static final Map<ResourceKey<? extends GameEvent>, AfterRenderSky> RENDERERS = Util.make(new IdentityHashMap<>(), map -> {
         map.put(SlimeRainGameEvent.KEY, SlimeRainSprite::renderSlimeRain);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerSprite::renderMeteorShower);
@@ -100,6 +102,17 @@ public final class ClientGameEventSystem {
         } else {
             moonTexture = null;
             lightTextureColor = null;
+        }
+    }
+
+    public static void handleSpecificMoon(Player player, boolean start) {
+        if (start) {
+            List<SpecificMoonVariant> variants = SpecificMoonVariant.getByGameEvent(SpecificMoonGameEvent.KEY);
+            if (!variants.isEmpty()) {
+                moonTexture = Util.getRandom(variants, player.getRandom()).texture;
+            }
+        } else {
+            moonTexture = null;
         }
     }
 

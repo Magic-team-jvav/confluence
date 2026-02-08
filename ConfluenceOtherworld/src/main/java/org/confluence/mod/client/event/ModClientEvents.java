@@ -84,10 +84,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRen
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
-import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
-import org.confluence.mod.client.renderer.item.GroupItemExtension;
-import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
-import org.confluence.mod.client.renderer.item.ShortSwordInHandRenderer;
+import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
@@ -110,6 +107,7 @@ import org.confluence.mod.integration.sodium.dynamiclights.SodiumDynamicLightsHe
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
+import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
 import org.confluence.terra_guns.util.TGUtil;
 import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
@@ -191,10 +189,10 @@ public final class ModClientEvents {
         event.registerAbove(healthHud, armorHud, new TerraStyleArmorHud());
         ResourceLocation manaHud = Confluence.asResource("mana_hud");
         event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, manaHud, new TerraStyleManaHud());
-        ResourceLocation soulHud = Confluence.asResource("soul_hud");
-        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, soulHud, new TerraStyleSoulHud());
+//        ResourceLocation soulHud = Confluence.asResource("soul_hud");
+//        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, soulHud, new TerraStyleSoulHud());
         ResourceLocation foodHud = Confluence.asResource("food_hud");
-        event.registerBelow(soulHud, foodHud, new TerraStyleFoodHud());
+        event.registerBelow(manaHud, foodHud, new TerraStyleFoodHud());
 
         event.registerBelow(VanillaGuiLayers.CROSSHAIR, Confluence.asResource("house_select"), new HouseSelectHUD());
         event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
@@ -289,6 +287,7 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
+        event.registerEntityRenderer(CRYSTAL_VILE_SHARD_PROJECTILE.get(), CrystalVileShardProjectileRenderer::new);
         event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), HurtnadoProjectileRenderer::new);
         event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(WATER_BOLT_PROJECTILE.get(), NoopRenderer::new);
@@ -320,7 +319,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), SpikyBallProjectileRenderer::new);
         event.registerEntityRenderer(THROWN_WATER_PROJECTILE.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(MAGIC_DAGGER_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(MAGIC_DAGGER_PROJECTILE.get(), MagicDaggerRenderer::new);
         event.registerEntityRenderer(CRYSTAL_STORM_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(CURSED_FLAMES_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(FLOWER_PETAL_PROJECTILE.get(), NoopRenderer::new);
@@ -383,6 +382,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BESTIARY_ENTRY_DISPLAY.get(), BestiaryEntryDisplayRenderer::new);
 
         event.registerEntityRenderer(STAR_CANNON_BULLET.get(), StarCannonBulletRenderer::new);
+        event.registerEntityRenderer(BEE_GUN_BULLET.get(), BeeProjectileRenderer::new);
 
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), AltarBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), ClientUtils.rendererProvider(SkyMillBlockRenderer::new));
@@ -403,6 +403,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.LOOM_ENTITY.get(), ClientUtils.rendererProvider(LoomBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.SOUL_BOTTLE_ENTITY.get(), ClientUtils.rendererProvider(SoulBottleBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.TUFF_BOOTH_ENTITY.get(), ClientUtils.rendererProvider(TuffBoothBlockRenderer::new));
+        event.registerBlockEntityRenderer(ModBlocks.ENEMY_BANNER_ENTITY.get(), EnemyBannerBlockRenderer::new);
 
         ModClientSetups.registerWaystoneRenderers(event);
     }
@@ -426,7 +427,7 @@ public final class ModClientEvents {
     public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerFluidType(ModClientSetups.HONEY_CLIENT_EXTENSIONS, ModFluids.HONEY.type());
         event.registerFluidType(ModClientSetups.SHIMMER_CLIENT_EXTENSIONS, ModFluids.SHIMMER.type());
-        event.registerBlock(ModClientSetups.NO_HIT_EFFECTS, ModBlocks.ROPE.get(), ModBlocks.VINE_ROPE.get(), ModBlocks.SILK_ROPE.get(), ModBlocks.WEB_ROPE.get());
+        event.registerBlock(ModClientSetups.NO_HIT_EFFECTS, ModBlocks.ROPE.get(), ModBlocks.VINE_ROPE.get(), ModBlocks.SILK_ROPE.get(), ModBlocks.WEB_ROPE.get(),ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET.get());
         event.registerItem(ModClientSetups.ENTITY_DISPLAY, ModItems.ENTITY_DISPLAY.get());
         event.registerItem(new SimpleClientItemExtensions().customRenderer((minecraft, stack, displayContext, poseStack, buffer, packedLight, packedOverlay) -> {
             SimpleClientItemExtensions.renderSimpleItem(minecraft, stack, poseStack, buffer, packedLight, packedOverlay);
@@ -461,6 +462,7 @@ public final class ModClientEvents {
             event.registerItem(GroupItemExtension.INSTANCE, GroupItem.getInstance());
         }
         event.registerItem(ModClientSetups.GLINT_RAINBOW_EXTENSIONS, TreasureBagItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+        event.registerItem(new EnemyBannerItemRenderer(), ModItems.ENEMY_BANNER);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
         GunItems.ITEMS.getEntries().forEach(holder -> TGUtil.registerOtherGunModel(event, Confluence.MODID, holder));

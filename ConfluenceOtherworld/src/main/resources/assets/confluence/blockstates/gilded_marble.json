@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/gilded_marble",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "confluence:block/gilded_marble",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "confluence:block/gilded_marble"
+    },
+    "facing=west": {
+      "model": "confluence:block/gilded_marble",
+      "y": 90
+    }
+  }
+}

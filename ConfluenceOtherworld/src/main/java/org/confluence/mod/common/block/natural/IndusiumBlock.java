@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class IndusiumBlock extends Block {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final VoxelShape SHAPE = Block.box(4.0, 4.0, 4.0, 12.0, 12.0, 12.0);
+    public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 1, 16);
 
     public IndusiumBlock() {
         super(BlockBehaviour.Properties.of().strength(1.0f));

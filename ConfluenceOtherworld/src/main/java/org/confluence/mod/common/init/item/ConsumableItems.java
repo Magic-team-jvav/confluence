@@ -41,7 +41,7 @@ public class ConsumableItems {
     public static final DeferredItem<AdvancedCombatTechniquesItem> ADVANCED_COMBAT_TECHNIQUES = ITEMS.register("advanced_combat_techniques", AdvancedCombatTechniquesItem::new);
     public static final DeferredItem<AdvancedCombatTechniquesVolumeTwoItem> ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO = ITEMS.register("advanced_combat_techniques_volume_two", AdvancedCombatTechniquesVolumeTwoItem::new);
     public static final DeferredItem<PeddlersSatchelItem> PEDDLERS_SATCHEL = ITEMS.register("peddlers_satchel", PeddlersSatchelItem::new);
-    public static final DeferredItem<EverBeneficialItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new EverBeneficialItem(ModRarity.BLUE, EverBeneficialItem.FALLEN_SOUL_CORE, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("fallen_soul_core", 1, ChatFormatting.GREEN)));
+//    public static final DeferredItem<EverBeneficialItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new EverBeneficialItem(ModRarity.BLUE, EverBeneficialItem.FALLEN_SOUL_CORE, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("fallen_soul_core", 1, ChatFormatting.GREEN)));
 
     public static final DeferredItem<ThrowableItem<BaseBombEntity>> BOMB = ITEMS.register("bomb", () -> new ThrowableItem<>(0.8F, BaseBombEntity::new));
     public static final DeferredItem<ThrowableItem<BouncyBombEntity>> BOUNCY_BOMB = ITEMS.register("bouncy_bomb", () -> new ThrowableItem<>(0.8F, BouncyBombEntity::new));
@@ -74,6 +74,7 @@ public class ConsumableItems {
     public static final DeferredItem<ThrowableItem<ThrownWaterProjectile>> BLOOD_WATER = ITEMS.register("blood_water", () -> new ThrowableItem<>(0.8F, player -> new ThrownWaterProjectile(player, ISpreadable.Type.CRIMSON)));
 
     public static final DeferredItem<RightClickLootItem> CLAM = ITEMS.register("clam", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CLAM));
+    public static final DeferredItem<RightClickLootItem> PINE_CONE = ITEMS.register("pine_cone", () -> new RightClickLootItem(ModRarity.WHITE, ModLootTables.PINE_CONE));
     public static final DeferredItem<RightClickLootItem> HERB_BAG = ITEMS.register("herb_bag", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.HERB_BAG));
     public static final DeferredItem<RightClickLootItem> CAN_OF_WORMS = ITEMS.register("can_of_worms", () -> new RightClickLootItem(ModRarity.BLUE, ModLootTables.CAN_OF_WORMS));
     public static final DeferredItem<RightClickLootItem> RED_ENVELOPE = ITEMS.register("red_envelope", () -> new RightClickLootItem(ModRarity.RED, ModLootTables.RED_ENVELOPE));
@@ -100,7 +101,7 @@ public class ConsumableItems {
     public static final DeferredItem<BossSummoningItem> DEER_THING = ITEMS.register("deer_thing", () -> new BossSummoningItem(player -> {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(Tags.Biomes.IS_SNOWY) || biome.is(Tags.Biomes.IS_ICY);
-    }, Deerclops::new, BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.GRAY)));
+    }, Deerclops::new, BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.AQUA)));
 
     public static final DeferredItem<TooltipItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("golden_lock_box", 2, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));

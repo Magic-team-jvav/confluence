@@ -26,7 +26,9 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.mixed.ILivingEntity;
+import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
+import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class EntityEvents {
@@ -58,28 +60,50 @@ public final class EntityEvents {
 
     @SubscribeEvent
     public static void invulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
-        if (event.isInvulnerable() || !(event.getEntity() instanceof LivingEntity living)) return;
-        if (ILivingEntity.of(living).confluence$getExtraInvulnerableTicks() > 0) return;
+        if (event.isInvulnerable() || !(event.getEntity() instanceof LivingEntity victim)) return;
+        if (ILivingEntity.of(victim).confluence$getExtraInvulnerableTicks() > 0) return;
 
         DamageSource damageSource = event.getSource();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
             return;
         }
+        @Nullable Entity attacker = damageSource.getEntity();
 
-        if (damageSource.is(ModDamageTypes.BOULDER) && living.getType().is(Tags.EntityTypes.BOSSES)) {
+        if (damageSource.is(ModDamageTypes.BOULDER) && victim.getType().is(Tags.EntityTypes.BOSSES)) {
             event.setInvulnerable(true); // boss 免疫巨石
-        } else if ((damageSource.getEntity() == null || !damageSource.getEntity().getType().is(Tags.EntityTypes.BOSSES)) && living.hasEffect(ModEffects.SHIMMER)) {
+            return;
+        }
+        if ((attacker == null || !attacker.getType().is(Tags.EntityTypes.BOSSES)) && victim.hasEffect(ModEffects.SHIMMER)) {
             event.setInvulnerable(true); // 微光状态时免疫非Boss和环境伤害
-        } else if (damageSource.is(DamageTypeTags.IS_FIRE)) {
-            if (living.hasEffect(ModEffects.OBSIDIAN_SKIN) || (living instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
-                living.clearFire();
+            return;
+        }
+        if (damageSource.is(DamageTypeTags.IS_FIRE)) {
+            if (victim.hasEffect(ModEffects.OBSIDIAN_SKIN) || (victim instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
+                victim.clearFire();
                 event.setInvulnerable(true); // 免疫熔岩/着火
+                return;
             }
-        } else if (!living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
-                damageSource.getEntity() instanceof Player player &&
+        }
+        if (attacker instanceof Player player &&
                 !PlayerSpecialData.of(player).isCouldHurtCritters() &&
-                (LibUtils.isAnimal(living) || living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
+                (LibUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST) || !victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST))
         ) {
+            event.setInvulnerable(true);
+            return;
+        }
+        if (attacker instanceof Player a && victim instanceof Player v && (!PlayerSpecialData.of(a).isPvP() || !PlayerSpecialData.of(v).isPvP())) {
+            event.setInvulnerable(true);
+            return;
+        }
+        if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
+                victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER) &&
+                LibUtils.getOwner(damageSource) instanceof Player player &&
+                !player.isCreative()
+        ) {
+            event.setInvulnerable(true);
+            return;
+        }
+        if (ILivingEntity.of(victim).confluence$getImmunityTicks().containsKey(Immunity.getCause(event.getSource()))) {
             event.setInvulnerable(true);
         }
     }

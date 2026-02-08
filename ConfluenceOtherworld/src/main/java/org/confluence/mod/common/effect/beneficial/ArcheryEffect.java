@@ -12,8 +12,8 @@ public class ArcheryEffect extends MobEffect {
         super(MobEffectCategory.BENEFICIAL, 0xBBAA00);
     }
 
-    public static float apply(LivingEntity living, DamageSource damageSource, float amount) {
-        if (damageSource.is(DamageTypes.ARROW) && living.hasEffect(ModEffects.ARCHERY)) {
+    public static float apply(LivingEntity victim, DamageSource damageSource, float amount) {
+        if (damageSource.is(DamageTypes.ARROW) && victim.hasEffect(ModEffects.ARCHERY)) {
             return amount * 1.1F;
         }
         return amount;

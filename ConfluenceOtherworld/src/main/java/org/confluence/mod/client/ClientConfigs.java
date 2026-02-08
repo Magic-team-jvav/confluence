@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModContainer;
@@ -14,7 +15,11 @@ import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import org.confluence.mod.client.gui.hud.*;
+import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
+import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
+import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
+import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.jetbrains.annotations.Nullable;
@@ -23,9 +28,11 @@ import java.util.Locale;
 
 public final class ClientConfigs {
     public static int showWindParticles = 90;
+    public static float minEctoMistEffectRadius = 10;
+
     public static boolean achievementToast = true;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
-    public static float minEctoMistEffectRadius = 10;
+    public static int customTitle = 71;
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -36,9 +43,9 @@ public final class ClientConfigs {
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
     public static int manaOffsetX = 0;
     public static int manaOffsetY = 0;
-    public static TerraStyleSoulHud.Soul soulStyle = TerraStyleSoulHud.Soul.OVERLAY;
-    public static int soulOffsetX = 0;
-    public static int soulOffsetY = 0;
+    //    public static TerraStyleSoulHud.Soul soulStyle = TerraStyleSoulHud.Soul.OVERLAY;
+//    public static int soulOffsetX = 0;
+//    public static int soulOffsetY = 0;
     public static boolean terraStyleArmor = true;
     public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
     public static boolean leftEffectIcon = true;
@@ -51,9 +58,11 @@ public final class ClientConfigs {
     public static boolean healIndicator = true;
 
     private static IntValue SHOW_WIND_PARTICLES;
+    private static IntValue MIN_ECTO_MIST_EFFECT_RADIUS;
+
     private static BooleanValue ACHIEVEMENT_TOAST;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
-    private static IntValue MIN_ECTO_MIST_EFFECT_RADIUS;
+    private static IntValue CUSTOM_TITLE;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
@@ -64,9 +73,9 @@ public final class ClientConfigs {
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
     private static IntValue MANA_OFFSET_X;
     private static IntValue MANA_OFFSET_Y;
-    private static EnumValue<TerraStyleSoulHud.Soul> SOUL_STYLE;
-    private static IntValue SOUL_OFFSET_X;
-    private static IntValue SOUL_OFFSET_Y;
+    //    private static EnumValue<TerraStyleSoulHud.Soul> SOUL_STYLE;
+//    private static IntValue SOUL_OFFSET_X;
+//    private static IntValue SOUL_OFFSET_Y;
     private static BooleanValue TERRA_STYLE_ARMOR;
     private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
@@ -80,9 +89,11 @@ public final class ClientConfigs {
 
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
+        minEctoMistEffectRadius = MIN_ECTO_MIST_EFFECT_RADIUS.get();
+
         achievementToast = ACHIEVEMENT_TOAST.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
-        minEctoMistEffectRadius = MIN_ECTO_MIST_EFFECT_RADIUS.get();
+        customTitle = CUSTOM_TITLE.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -92,9 +103,9 @@ public final class ClientConfigs {
         manaStyle = MANA_STYLE.get();
         manaOffsetX = MANA_OFFSET_X.get();
         manaOffsetY = MANA_OFFSET_Y.get();
-        soulStyle = SOUL_STYLE.get();
-        soulOffsetX = SOUL_OFFSET_X.get();
-        soulOffsetY = SOUL_OFFSET_Y.get();
+//        soulStyle = SOUL_STYLE.get();
+//        soulOffsetX = SOUL_OFFSET_X.get();
+//        soulOffsetY = SOUL_OFFSET_Y.get();
         terraStyleArmor = TERRA_STYLE_ARMOR.get();
         armorStyle = ARMOR_STYLE.get();
         terraStyleFood = TERRA_STYLE_FOOD.get();
@@ -112,9 +123,14 @@ public final class ClientConfigs {
         Builder builder = new Builder();
 
         SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);
-        ACHIEVEMENT_TOAST = builder.define("achievementToast", true);
-        SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
         MIN_ECTO_MIST_EFFECT_RADIUS = builder.defineInRange("minEctoMistEffectRadius", 10, 0, 100);
+        {
+            builder.push("GUI");
+            ACHIEVEMENT_TOAST = builder.define("achievementToast", true);
+            SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
+            CUSTOM_TITLE = builder.defineInRange("customTitle", 71, 0, 1000);
+            builder.pop();
+        }
         {
             builder.push("HUD");
             {
@@ -138,13 +154,13 @@ public final class ClientConfigs {
                 MANA_OFFSET_Y = builder.defineInRange("manaOffsetY", 0, -256, 256);
                 builder.pop();
             }
-            {
-                builder.push("Soul");
-                SOUL_STYLE = builder.defineEnum("soulStyle", TerraStyleSoulHud.Soul.OVERLAY);
-                SOUL_OFFSET_X = builder.defineInRange("soulOffsetX", 0, -256, 256);
-                SOUL_OFFSET_Y = builder.defineInRange("soulOffsetY", 0, -256, 256);
-                builder.pop();
-            }
+//            {
+//                builder.push("Soul");
+//                SOUL_STYLE = builder.defineEnum("soulStyle", TerraStyleSoulHud.Soul.OVERLAY);
+//                SOUL_OFFSET_X = builder.defineInRange("soulOffsetX", 0, -256, 256);
+//                SOUL_OFFSET_Y = builder.defineInRange("soulOffsetY", 0, -256, 256);
+//                builder.pop();
+//            }
             {
                 builder.push("Armor");
                 TERRA_STYLE_ARMOR = builder.define("terraStyleArmor", true);
@@ -181,7 +197,11 @@ public final class ClientConfigs {
             @Override
             public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
                 if (living != null) {
-                    return !ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, living.getType());
+                    EntityType<?> type = living.getType();
+                    if (type.is(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)) {
+                        return true;
+                    }
+                    return !ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, type);
                 }
                 if (item != null) {
                     return !ModUtils.isFromConfluence(BuiltInRegistries.ITEM, item);
@@ -194,7 +214,11 @@ public final class ClientConfigs {
             public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
                 String namespace;
                 if (living != null) {
-                    namespace = BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace();
+                    EntityType<?> type = living.getType();
+                    if (type.is(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)) {
+                        return true;
+                    }
+                    namespace = BuiltInRegistries.ENTITY_TYPE.getKey(type).getNamespace();
                 } else if (item != null) {
                     namespace = BuiltInRegistries.ITEM.getKey(item).getNamespace();
                 } else {

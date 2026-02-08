@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -23,13 +22,13 @@ import org.confluence.terra_curio.common.init.TCItems;
 public final class ClientPacketHandler {
     private static int maxMana = 20;
     private static float currentMana = 20;
-    private static int maxSoul = 10;
-    private static float currentSoul = 10;
+//    private static int maxSoul = 10;
+//    private static float currentSoul = 10;
     private static float fishingPower = 0.0F;
     private static boolean echoVisible = false;
     private static long secretFlag = 0L;
     private static boolean showSignal = false;
-    private static boolean fallenSoulCoreActive = false;
+//    private static boolean fallenSoulCoreActive = false;
 
     private static int luminance = 0;
     private static final Int2IntMap remoteLuminance = new Int2IntArrayMap();
@@ -42,15 +41,15 @@ public final class ClientPacketHandler {
         return maxMana;
     }
 
-    public static float getCurrentSoul() {
-        return currentSoul;
-    }
-
-    public static int getMaxSoul() {
-        return maxSoul;
-    }
-
-    public static boolean isFallenSoulCoreActive() {return fallenSoulCoreActive;}
+//    public static float getCurrentSoul() {
+//        return currentSoul;
+//    }
+//
+//    public static int getMaxSoul() {
+//        return maxSoul;
+//    }
+//
+//    public static boolean isFallenSoulCoreActive() {return fallenSoulCoreActive;}
 
     public static float getFishingPower() {
         return fishingPower;
@@ -83,15 +82,15 @@ public final class ClientPacketHandler {
     public static void reset() {
         maxMana = 20;
         currentMana = 20;
-        maxSoul = 10;
-        currentSoul = 10;
+//        maxSoul = 10;
+//        currentSoul = 10;
         fishingPower = 0.0F;
         echoVisible = false;
         secretFlag = 0L;
         showSignal = false;
         luminance = 0;
         remoteLuminance.clear();
-        fallenSoulCoreActive = false;
+//        fallenSoulCoreActive = false;
     }
 
     public static void handleMana(ManaPacketS2C packet, Player player) {
@@ -103,13 +102,13 @@ public final class ClientPacketHandler {
     }
 
     public static void handleSoul(SoulPacketS2C packet, Player player) {
-        maxSoul = packet.maxSoul();
-        currentSoul = packet.currentSoul();
-        fallenSoulCoreActive = packet.fallenSoulCoreActive();
-        EverBeneficial beneficial = EverBeneficial.of(player);
-        beneficial.setFallenSoulCore(fallenSoulCoreActive);
-        PlayerSpecialData data = PlayerSpecialData.of(player);
-        data.setFallenSoulCoreActive(beneficial.getFallenSoulCore());
+//        maxSoul = packet.maxSoul();
+//        currentSoul = packet.currentSoul();
+//        fallenSoulCoreActive = packet.fallenSoulCoreActive();
+//        EverBeneficial beneficial = EverBeneficial.of(player);
+//        beneficial.setFallenSoulCore(fallenSoulCoreActive);
+//        PlayerSpecialData data = PlayerSpecialData.of(player);
+//        data.setFallenSoulCoreActive(beneficial.getFallenSoulCore());
     }
 
     public static void handleFishingPower(FishingPowerInfoPacketS2C packet) {

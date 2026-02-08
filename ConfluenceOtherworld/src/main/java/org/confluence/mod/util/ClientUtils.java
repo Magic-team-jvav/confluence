@@ -4,8 +4,6 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.xiaohunao.mine_team.common.team.Team;
-import com.xiaohunao.mine_team.common.team.TeamManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,6 +29,8 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
@@ -212,10 +212,8 @@ public final class ClientUtils {
                 if (item instanceof BaseDyeItem) {
                     return BaseDyeItem.getARGB(vanityArmorDye);
                 } else if (item == VanityArmorItems.TEAM_DYE.get()) {
-                    Team team = TeamManager.getTeam(player);
-                    if (team != null) {
-                        return FastColor.ARGB32.opaque(team.getRGB());
-                    }
+                    Team team = PlayerSpecialData.of(player).getTeam();
+                    return FastColor.ARGB32.opaque(team.getColor().getTextureDiffuseColor());
                 }
             }
         }
@@ -265,5 +263,9 @@ public final class ClientUtils {
                 gameRenderer.effectActive = false;
             }
         }
+    }
+
+    public static boolean shouldDisplayTeam() {
+        return !Minecraft.getInstance().isSingleplayer();
     }
 }

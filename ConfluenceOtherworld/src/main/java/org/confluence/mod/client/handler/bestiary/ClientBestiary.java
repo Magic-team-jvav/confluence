@@ -28,6 +28,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryFilterEvent;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
@@ -52,7 +53,6 @@ public class ClientBestiary extends ContextAwareReloadListener {
     private Map<String, ClientBestiaryEntry> backupEntries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> sortedEntries = Maps.newLinkedHashMap();
     private CompletableFuture<SearchTree<Map.Entry<String, ClientBestiaryEntry>>> searchTree = CompletableFuture.completedFuture(SearchTree.empty());
-
 
     private Level currentLevel;
 
@@ -92,6 +92,13 @@ public class ClientBestiary extends ContextAwareReloadListener {
         for (Map.Entry<String, JsonElement> entry : resourceList.entrySet()) {
             ClientBestiaryEntry.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).ifSuccess(result -> {
                 result.key = entry.getKey();
+                if (entries != null) {
+                    ClientBestiaryEntry entry1 = entries.get(result.key);
+                    if (entry1 != null) {
+                        result.unlockedProgress = entry1.unlockedProgress;
+                        result.killedByCount = entry1.killedByCount;
+                    }
+                }
                 map.put(result.key, result);
                 backup.put(result.key, result.copy());
             });
@@ -154,7 +161,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
                 sortedEntries.entrySet().stream().filter(entry -> !entry.getValue().isLocked()).toList(),
                 entry -> Stream.of(
                         entry.getKey(),
-                        entry.getValue().getDescription().getString(),
+                        entry.getValue().description.getString(),
                         entry.getValue().type.getDescription().getString()
                 ).map(s -> ChatFormatting.stripFormatting(s).trim())
         ), Util.backgroundExecutor());
@@ -171,11 +178,10 @@ public class ClientBestiary extends ContextAwareReloadListener {
             }
         }
 
-        List<FilterEntry> filters = entry.getFilters();
-        if (filters.isEmpty()) return true;
+        if (entry.filters.isEmpty()) return true;
 
         boolean enabled = false;
-        for (FilterEntry filter : filters) {
+        for (FilterEntry filter : entry.filters) {
             enabled |= isFilterEnabled(filter);
         }
         return enabled;
@@ -211,6 +217,12 @@ public class ClientBestiary extends ContextAwareReloadListener {
     // 玩家进入存档统一同步
     // 随后只需更新部分实体
     public void handle(Level level, Either<Map<String, BestiaryEntry>, String> either) {
+        if (level != currentLevel) {
+            if (currentLevel != null) {
+                resetEntries();
+            }
+            this.currentLevel = level;
+        }
         either.ifLeft(map -> {
             boolean shouldCount = false;
             for (Map.Entry<String, BestiaryEntry> entry : map.entrySet()) {
@@ -240,22 +252,26 @@ public class ClientBestiary extends ContextAwareReloadListener {
                 this.unlockedCount = count;
             }
         }).ifRight(key -> {
-            ClientBestiaryEntry entry = entries.get(key);
+            ClientBestiaryEntry entry = getEntry(key);
             if (entry != null) {
                 entry.killedByCount++;
             }
         });
     }
 
+    public @Nullable ClientBestiaryEntry getEntry(String key) {
+        return entries.get(key);
+    }
+
     public enum SortType implements TranslatableEnum {
         UNLOCKS(Comparator.comparingInt(entry -> entry.getValue().isLocked() ? 1 : 0)),
-        BESTIARY_ID(Comparator.comparingInt(entry -> entry.getValue().getOrder())),
-        NAME(Comparator.comparing(entry -> entry.getValue().getDescription().getString())),
+        BESTIARY_ID(Comparator.comparingInt(entry -> entry.getValue().order)),
+        NAME(Comparator.comparing(entry -> entry.getValue().description.getString())),
         ATTACK(Comparator.comparingDouble(entry -> entry.getValue().attackDamage)),
         DEFENSE(Comparator.comparingDouble(entry -> entry.getValue().armor)),
         COINS(Comparator.comparingInt(entry -> entry.getValue().drops)),
         HP(Comparator.comparingDouble(entry -> entry.getValue().maxHealth)),
-        RARITY(Comparator.comparingInt(entry -> entry.getValue().getRarity()));
+        RARITY(Comparator.comparingInt(entry -> entry.getValue().rarity));
 
         private final Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator;
 

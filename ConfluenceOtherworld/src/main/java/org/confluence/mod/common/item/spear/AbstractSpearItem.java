@@ -173,7 +173,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     }
 
     protected boolean canHitEntity(Entity target, LivingEntity owner) {
-        return ModUtils.canHitEntity(target, owner);
+        return LibUtils.canHitEntity(target, owner);
     }
 
     protected double getDistance(long tickCount, LivingEntity owner) {

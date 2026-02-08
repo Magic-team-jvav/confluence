@@ -110,6 +110,7 @@
         "level.DifficultyInstanceMixin",
         "level.DifficultyMixin",
         "level.LevelMixin",
+        "level.PlacedFeatureMixin",
         "level.TreeFeatureMixin",
         "level.WorldOptionsMixin"
     ],

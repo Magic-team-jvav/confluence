@@ -1,0 +1,6 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "confluence:item/tool/pine_needle_handmade_rope_set"
+	}
+}

@@ -20,13 +20,16 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.HerbSeedItem;
 import org.confluence.mod.common.item.food.BaseFoodItem;
 import org.confluence.mod.common.item.food.ModFoodProperties;
+import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder.EffectData;
+import org.confluence.terra_curio.common.init.TCEffects;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.item.Items.BOWL;
 import static net.minecraft.world.item.Items.GLASS_BOTTLE;
+import static org.confluence.mod.common.item.food.ModFoodProperties.hasEffectProperties;
 
 public class FoodItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -49,6 +52,14 @@ public class FoodItems {
             () -> ModFoodProperties.noEffectProperties(4, 3.6f));
     public static final DeferredItem<BaseFoodItem> COOKED_DUCK = registerNormalFood("cooked_duck", ModRarity.GREEN,
             () -> ModFoodProperties.noEffectProperties(6, 7.2f));
+    public static final DeferredItem<BaseFoodItem> PINE_NUT = registerFood("pine_nut",
+            builder -> builder.rarity(ModRarity.GREEN)
+                    .food(ModFoodProperties.noEffectProperties(1, 1.5f))
+                    .duration(d -> 8));
+    public static final DeferredItem<BaseFoodItem> ROASTED_PINE_NUT = registerFood("roasted_pine_nut",
+            builder -> builder.rarity(ModRarity.GREEN)
+                    .food(ModFoodProperties.plentySatisfiedProperties(40, 2, 1.5f))
+                    .duration(d -> 8));
     public static final DeferredItem<BaseFoodItem> ESCARGOT = registerNormalFood("escargot", ModRarity.BLUE,
             () -> ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f));
     public static final DeferredItem<BaseFoodItem> FROGGLE_BUNWICH = registerNormalFood("froggle_bunwich", ModRarity.GREEN,
@@ -135,7 +146,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> CLOUD_DOUGH = registerNormalFood("cloud_dough", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(1200, 4, 1.5f)); // 粗制云朵面包
     public static final DeferredItem<BaseFoodItem> CLOUD_BREAD = registerNormalFood("cloud_bread", ModRarity.BLUE,
-            () -> ModFoodProperties.hasEffectProperties(5, 0.6f,
+            () -> hasEffectProperties(5, 0.6f,
                     EffectData.of(ModEffects.EXQUISITELY_STUFFED, 6000, 1),
                     EffectData.of(MobEffects.SLOW_FALLING, 600, 1),
                     EffectData.of(MobEffects.LEVITATION, 300, 1))); // 云朵面包
@@ -149,7 +160,7 @@ public class FoodItems {
             () -> ModFoodProperties.noEffectProperties(5, 3.8f));  //烤猴面包果
     public static final DeferredItem<BaseFoodItem.BItem> BOULDER_BREAD = registerBlockItemFood("boulder_bread",
             builder -> builder.rarity(ModRarity.GREEN)
-                    .food(ModFoodProperties.hasEffectProperties(20, 2.5f, EffectData.of(ModEffects.CHOKING, 6000)))
+                    .food(hasEffectProperties(20, 2.5f, EffectData.of(ModEffects.CHOKING, 6000)))
                     .duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.BOULDER_BREAD_BLOCK); //巨石面包
     // 水果
     public static final DeferredItem<BaseFoodItem> APRICOT = registerNormalFood("apricot", ModRarity.BLUE,
@@ -314,16 +325,16 @@ public class FoodItems {
                         }}));
     //赞助
     public static final DeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola",
-            builder -> builder.rarity(ModRarity.EXPERT).food(ModFoodProperties.hasEffectProperties(1, 0.5f,
+            builder -> builder.rarity(ModRarity.EXPERT).food(hasEffectProperties(1, 0.5f,
                     EffectData.of(MobEffects.MOVEMENT_SLOWDOWN, 1200),
                     EffectData.of(MobEffects.REGENERATION, 1200))
             ).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1, ChatFormatting.GRAY);
     public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread",
-            builder -> builder.rarity(ModRarity.EXPERT).food(ModFoodProperties.hasEffectProperties(5, 0.2f,
+            builder -> builder.rarity(ModRarity.EXPERT).food(hasEffectProperties(5, 0.2f,
                     EffectData.of(ModEffects.EXQUISITELY_STUFFED, 3000))
             ).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
     public static final DeferredItem<BaseFoodItem> PIGLIN_STEW = registerToolTipFood("piglin_stew",
-            builder -> builder.rarity(ModRarity.EXPERT).food(ModFoodProperties.hasEffectProperties(20, 80.0f,
+            builder -> builder.rarity(ModRarity.EXPERT).food(hasEffectProperties(20, 80.0f,
                     EffectData.of(MobEffects.DAMAGE_RESISTANCE, 1200, 4))
             ).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
     //节日特有
@@ -353,6 +364,17 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem.BItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling",
             builder -> builder.rarity(ModRarity.RED).food(ModFoodProperties.plentySatisfiedProperties(6000, 3, 1.5f)
             ).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
+
+    public static final DeferredItem<BaseFoodItem> HONEY_GUMMI = registerFood("honey_gummi",
+            builder -> builder.rarity(ModRarity.ORANGE)
+                    .food(hasEffectProperties(
+                            12,
+                            6.0f,
+                            new ModFoodPropertiesBuilder.EffectData(TCEffects.HONEY, 200, 0, 1.0f)
+                    ))
+                    .duration(d -> 15)
+                    .useAnim(u -> UseAnim.EAT)
+                    .eatingSound(s -> SoundEvents.GENERIC_EAT));
 
     // 种子
     public static final DeferredItem<Item> STELLAR_BLOSSOM_SEED = ITEMS.register("stellar_blossom_seed", () -> new ItemNameBlockItem(NatureBlocks.STELLAR_BLOSSOM.get(), new Item.Properties()));

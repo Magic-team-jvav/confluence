@@ -2,6 +2,8 @@ package org.confluence.mod.common.worldgen.feature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -22,9 +24,7 @@ import org.confluence.mod.common.block.natural.BaseDroopingPlantsHeadBlock;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.confluence.lib.util.FeatureUtils.updateLeavesOptimized;
 
@@ -66,13 +66,13 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
             return true;
         }
 
-        Set<BlockPos> trunkSet = new HashSet<>();
-        Set<BlockPos> leavesSet = new HashSet<>();
-        List<BlockPos> vinePosList = new ArrayList<>();
+        LongOpenHashSet trunkSet = new LongOpenHashSet();
+        LongOpenHashSet leavesSet = new LongOpenHashSet();
+        LongArrayList vinePosList = new LongArrayList();
 
-        List<BlockPos> trunkX = new ArrayList<>();
-        List<BlockPos> trunkY = new ArrayList<>();
-        List<BlockPos> trunkZ = new ArrayList<>();
+        LongArrayList trunkX = new LongArrayList();
+        LongArrayList trunkY = new LongArrayList();
+        LongArrayList trunkZ = new LongArrayList();
 
         for (int i = 0; i < height / 4; i++) {
             int brunchHeight = height - i * 4;
@@ -91,9 +91,9 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
                             .relative(dir, rotate ? k : (int) (k * 0.72))
                             .relative(sideDir, rotate ? 0 : (int) (k * 0.72));
 
-                    if (j % 2 == 0) trunkZ.add(bPos);
-                    else trunkX.add(bPos);
-                    trunkSet.add(bPos);
+                    long bPosLong = bPos.asLong();
+                    if (j % 2 == 0) trunkZ.add(bPosLong); else trunkX.add(bPosLong);
+                    trunkSet.add(bPosLong);
 
                     int side = (int) (Mth.sqrt(length - k) / 3 + 1);
                     for (int x = -side; x <= side; x++) {
@@ -101,14 +101,15 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
                             if (Mth.abs(x) + Mth.abs(z) <= side) {
                                 BlockPos lPos = bPos.offset(x, 0, z);
                                 if (level.getBlockState(lPos).canBeReplaced() && random.nextFloat() >= 0.5F * (1 + (float) (Mth.abs(x) + Mth.abs(z) - side) / side)) {
-                                    leavesSet.add(lPos);
+                                    long lPosLong = lPos.asLong();
+                                    leavesSet.add(lPosLong);
 
                                     if (random.nextFloat() < ((float) (length - k) / length) * 0.5) {
                                         int vLen = random.nextInt(1, (int) ((float) (length - k) / length * 2.5 + 2));
                                         for (int l = 1; l <= vLen; l++) {
                                             BlockPos vPos = lPos.below(l);
                                             if (level.getBlockState(vPos).canBeReplaced())
-                                                vinePosList.add(vPos);
+                                                vinePosList.add(vPos.asLong());
                                         }
                                     }
                                 }
@@ -120,22 +121,24 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
         }
 
         for (int i = 0; i < height; i++) {
-            BlockPos p = basePos.above(i);
+            long p = basePos.above(i).asLong();
             trunkY.add(p);
             trunkSet.add(p);
         }
-        leavesSet.add(basePos.above(height));
-        leavesSet.add(basePos.above(height + 1));
+        leavesSet.add(basePos.above(height).asLong());
+        leavesSet.add(basePos.above(height + 1).asLong());
 
-        for (BlockPos p : trunkSet) {
-            if (!level.getBlockState(p).canBeReplaced() && !level.getBlockState(p).is(SAPLING_TAG))
+        for (long p : trunkSet) {
+            BlockPos bp = BlockPos.of(p);
+            if (!level.getBlockState(bp).canBeReplaced() && !level.getBlockState(bp).is(SAPLING_TAG))
                 return false;
         }
 
         int flags = 19;
 
-        for (BlockPos vp : vinePosList) level.setBlock(vp, vineBlock, flags);
-        for (BlockPos vp : vinePosList) {
+        for (long p : vinePosList) level.setBlock(BlockPos.of(p), vineBlock, flags);
+        for (long p : vinePosList) {
+            BlockPos vp = BlockPos.of(p);
             if (level.getBlockState(vp).is(vineBlock.getBlock())) {
                 boolean up = level.getBlockState(vp.above()).is(vineBlock.getBlock());
                 boolean down = level.getBlockState(vp.below()).is(vineBlock.getBlock());
@@ -147,13 +150,13 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
             }
         }
 
-        for (BlockPos lp : leavesSet) {
-            level.setBlock(lp, leavesBlock, flags);
+        for (long p : leavesSet) {
+            level.setBlock(BlockPos.of(p), leavesBlock, flags);
         }
 
-        trunkX.forEach(p -> level.setBlock(p, trunkBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.X), flags));
-        trunkZ.forEach(p -> level.setBlock(p, trunkBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.Z), flags));
-        trunkY.forEach(p -> level.setBlock(p, trunkBlock, flags));
+        trunkX.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.X), flags));
+        trunkZ.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock.setValue(BlockStateProperties.AXIS, Direction.Axis.Z), flags));
+        trunkY.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock, flags));
 
         updateLeavesOptimized(level, trunkSet, leavesSet, true, false);
 
@@ -161,8 +164,7 @@ public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
     }
 
     public record Config(BlockStateProvider trunk, BlockStateProvider vine,
-                         BlockStateProvider leaves,
-                         int height, int heightMore,
+                         BlockStateProvider leaves, int height, int heightMore,
                          boolean chineseStyle) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),

@@ -24,7 +24,7 @@ public abstract class DedicatedServerPropertiesMixin {
     @Inject(method = "<init>", at = @At(value = "NEW", target = "(Lcom/google/gson/JsonObject;Ljava/lang/String;)Lnet/minecraft/server/dedicated/DedicatedServerProperties$WorldDimensionData;"))
     private void modify(Properties properties, CallbackInfo ci, @Local String s) {
         if (!s.isEmpty()) {
-            this.worldOptions = ModSecretSeeds.matchSeed(s, worldOptions).getSecond();
+            this.worldOptions = ModSecretSeeds.matchSeed(s, worldOptions).left();
         }
     }
 }

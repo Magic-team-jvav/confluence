@@ -47,7 +47,7 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
                                 .add(LootItem.lootTableItem(SwordItems.BAT_BAT)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.004f))
+                                        .when(LootItemRandomChanceCondition.randomChance(0.003f))
                                 )
                 )
         ));

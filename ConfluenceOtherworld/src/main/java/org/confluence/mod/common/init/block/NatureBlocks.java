@@ -209,7 +209,7 @@ public class NatureBlocks {
     public static final LogBlockSet DYNASTY_LOG_BLOCKS = LogBlockSet.builder("dynasty", true, DYNASTY).leaves(null).build();
 
     // 松树
-    public static final LogBlockSet PINE_LOG_BLOCKS = LogBlockSet.builder("pine", true, PINE).leaves(properties -> new TransparentLeavesBlock(properties.noOcclusion())).build();
+    public static final LogBlockSet PINE_LOG_BLOCKS = LogBlockSet.builder("pine", true, PINE).build();
     public static final DeferredBlock<PineSaplingBlock> PINE_SAPLING = registerWithItem("pine_sapling", () -> new PineSaplingBlock(ModFeatures.TreeGrowers.PINE_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final DeferredBlock<PineSaplingBlock> PRUNED_PINE_SAPLING = registerWithItem("pruned_pine_sapling", () -> new PineSaplingBlock(ModFeatures.TreeGrowers.CHINESE_PINE_GROWER, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
 

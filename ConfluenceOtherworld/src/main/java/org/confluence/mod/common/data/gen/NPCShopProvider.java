@@ -454,6 +454,10 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(Items.STICKY_PISTON)
                 .add(Items.REDSTONE_LAMP)
                 .add(Items.DAYLIGHT_DETECTOR)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(AccessoryItems.SPECTRE_GOGGLES)
+                        .setProperties(TradeProperties.builder().setLock(ectoMistLock).build())
+                        .build())
                 // 控制杆
                 // 7色的压力板
                 // 青绿压力垫板
@@ -551,7 +555,10 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .setResult(TEWhipItems.LEATHER_WHIP.toStack())
                         .setProperties(TradeProperties.builder().setLock(new BestiaryUnlockedCountLock(16)).build())
                         .build())
-                .add(MinecartItems.DIGGING_MOLECART)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(MinecartItems.DIGGING_MOLECART.toStack())
+                        .setProperties(TradeProperties.builder().setLock(new BestiaryUnlockedCountLock(85)).build())
+                        .build())
                 .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING)
                 .add(Items.CHERRY_SAPLING)
                 .add(SellTrade.INSTANCE)

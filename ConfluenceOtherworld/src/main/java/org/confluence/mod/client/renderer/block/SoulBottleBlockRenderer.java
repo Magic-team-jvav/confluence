@@ -1,7 +1,9 @@
 package org.confluence.mod.client.renderer.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -18,17 +20,6 @@ import static org.confluence.lib.util.RenderUtils.drawCube;
 
 public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInABottleBlock.BEntity> {
 
-    private final RandomSource RANDOM = RandomSource.create();
-    private double ROTATE00 = RANDOM.nextDouble() * Math.TAU;
-    private double ROTATE01 = RANDOM.nextDouble() * Math.TAU;
-    private double ROTATE10 = RANDOM.nextDouble() * Math.TAU;
-    private double ROTATE11 = RANDOM.nextDouble() * Math.TAU;
-    private double ROTATE1OFFSET = RANDOM.nextDouble() * 0.05 + 0.075;
-    private double[] SIZE = new double[]{RANDOM.nextDouble(), RANDOM.nextDouble()};
-    private double[] SIZE_OFFSET = new double[]{RANDOM.nextDouble() * 0.05 + 0.075, RANDOM.nextDouble() * 0.05 + 0.075};
-    private boolean[] SIZE_UP = new boolean[]{true, true};
-    private long TIME_BEFORE = 0;
-
     private static final Map<Block, Vector3i> SOUL_COLORS = Map.of(
             FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.get(), new Vector3i(0x0fa7d3, 0xcbfafc, 0x8bebef),
             FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.get(), new Vector3i(0xff8dd3, 0xffffeb, 0xffd4ef),
@@ -39,6 +30,16 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
             FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get(), new Vector3i(0xffca49, 0xfdffdb, 0xfff594),
             FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.get(), new Vector3i(0x1e0034, 0xe3bbff, 0x9f1bff)
     );
+    private final RandomSource RANDOM = RandomSource.create();
+    private double ROTATE00 = RANDOM.nextDouble() * Math.TAU;
+    private double ROTATE01 = RANDOM.nextDouble() * Math.TAU;
+    private double ROTATE10 = RANDOM.nextDouble() * Math.TAU;
+    private double ROTATE11 = RANDOM.nextDouble() * Math.TAU;
+    private double ROTATE1OFFSET = RANDOM.nextDouble() * 0.05 + 0.075;
+    private double[] SIZE = new double[]{RANDOM.nextDouble(), RANDOM.nextDouble()};
+    private double[] SIZE_OFFSET = new double[]{RANDOM.nextDouble() * 0.05 + 0.075, RANDOM.nextDouble() * 0.05 + 0.075};
+    private boolean[] SIZE_UP = new boolean[]{true, true};
+    private long TIME_BEFORE = 0;
 
     @Override
     public void render(BaseSoulInABottleBlock.BEntity blockEntity, float partialTick,
@@ -120,9 +121,10 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
 
             double rotate0 = RANDOM.nextDouble() * 10;
             double rotate1 = RANDOM.nextDouble() * 10;
-            drawCube(poseStack, bufferSource, sizeGet * cubeSize, r0, g0, b0, 255, entityMainPos, offset, true, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1);
-            drawCube(poseStack, bufferSource, sizeGet * cubeSize + 0.015625, r1, g1, b1, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1);
-            drawCube(poseStack, bufferSource, sizeGet * cubeSize + 0.078125, r2, g2, b2, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1);
+            VertexConsumer consumer = bufferSource.getBuffer(RenderType.debugQuads());
+            drawCube(poseStack, sizeGet * cubeSize, r0, g0, b0, 255, entityMainPos, offset, true, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1, consumer);
+            drawCube(poseStack, sizeGet * cubeSize + 0.015625, r1, g1, b1, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1, consumer);
+            drawCube(poseStack, sizeGet * cubeSize + 0.078125, r2, g2, b2, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1, consumer);
         }
     }
 }

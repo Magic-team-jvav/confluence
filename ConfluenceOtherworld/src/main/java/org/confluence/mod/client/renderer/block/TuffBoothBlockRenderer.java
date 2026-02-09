@@ -3,134 +3,215 @@ package org.confluence.mod.client.renderer.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.block.functional.TuffBoothBlock;
-import org.joml.Matrix4f;
 import org.joml.Vector3d;
 
 import static org.confluence.lib.util.RenderUtils.drawCube;
 
 public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBlock.TuffBoothBlockEntity> {
-    private final Font font;
-    private final ItemRenderer itemRenderer;
+    private static final Minecraft MC = Minecraft.getInstance();
+    private static final Font FONT = MC.font;
+    private static final TagKey<Item> carpetTag = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("minecraft", "wool_carpets"));
 
-    public TuffBoothBlockRenderer(BlockEntityRendererProvider.Context context) {
-        this.font = context.getFont();
-        this.itemRenderer = context.getItemRenderer();
+    public static void renderLineBox(PoseStack poseStack, VertexConsumer consumer, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float red, float green, float blue, float alpha, float red2, float green2, float blue2, boolean withoutUp) {
+        PoseStack.Pose posestack$pose = poseStack.last();
+        float f = (float) minX;
+        float f1 = (float) minY;
+        float f2 = (float) minZ;
+        float f3 = (float) maxX;
+        float f4 = (float) maxY;
+        float f5 = (float) maxZ;
+        if (withoutUp) {
+            consumer.addVertex(posestack$pose, f, f1, f2).setColor(red, green2, blue2, alpha).setNormal(posestack$pose, 1.0F, 0.0F, 0.0F);
+            consumer.addVertex(posestack$pose, f3, f1, f2).setColor(red, green2, blue2, alpha).setNormal(posestack$pose, 1.0F, 0.0F, 0.0F);
+
+            consumer.addVertex(posestack$pose, f, f1, f2).setColor(red2, green2, blue, alpha).setNormal(posestack$pose, 0.0F, 0.0F, 1.0F);
+            consumer.addVertex(posestack$pose, f, f1, f5).setColor(red2, green2, blue, alpha).setNormal(posestack$pose, 0.0F, 0.0F, 1.0F);
+
+            consumer.addVertex(posestack$pose, f3, f1, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 0.0F, -1.0F);
+            consumer.addVertex(posestack$pose, f3, f1, f2).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 0.0F, -1.0F);
+
+            consumer.addVertex(posestack$pose, f, f1, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 1.0F, 0.0F, 0.0F);
+            consumer.addVertex(posestack$pose, f3, f1, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 1.0F, 0.0F, 0.0F);
+        }
+
+        if (!withoutUp) {
+            consumer.addVertex(posestack$pose, f3, f4, f2).setColor(red, green, blue, alpha).setNormal(posestack$pose, -1.0F, 0.0F, 0.0F);
+            consumer.addVertex(posestack$pose, f, f4, f2).setColor(red, green, blue, alpha).setNormal(posestack$pose, -1.0F, 0.0F, 0.0F);
+
+            consumer.addVertex(posestack$pose, f, f4, f2).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 0.0F, 1.0F);
+            consumer.addVertex(posestack$pose, f, f4, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 0.0F, 1.0F);
+
+            consumer.addVertex(posestack$pose, f, f4, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 1.0F, 0.0F, 0.0F);
+            consumer.addVertex(posestack$pose, f3, f4, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 1.0F, 0.0F, 0.0F);
+
+            consumer.addVertex(posestack$pose, f3, f4, f2).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 0.0F, 1.0F);
+            consumer.addVertex(posestack$pose, f3, f4, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 0.0F, 1.0F);
+        }
+        consumer.addVertex(posestack$pose, f3, f1, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 1.0F, 0.0F);
+        consumer.addVertex(posestack$pose, f3, f4, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 1.0F, 0.0F);
+
+        consumer.addVertex(posestack$pose, f, f4, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, -1.0F, 0.0F);
+        consumer.addVertex(posestack$pose, f, f1, f5).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, -1.0F, 0.0F);
+
+        consumer.addVertex(posestack$pose, f, f1, f2).setColor(red2, green, blue2, alpha).setNormal(posestack$pose, 0.0F, 1.0F, 0.0F);
+        consumer.addVertex(posestack$pose, f, f4, f2).setColor(red2, green, blue2, alpha).setNormal(posestack$pose, 0.0F, 1.0F, 0.0F);
+
+        consumer.addVertex(posestack$pose, f3, f1, f2).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 1.0F, 0.0F);
+        consumer.addVertex(posestack$pose, f3, f4, f2).setColor(red, green, blue, alpha).setNormal(posestack$pose, 0.0F, 1.0F, 0.0F);
     }
 
     @Override
     public void render(TuffBoothBlock.TuffBoothBlockEntity boothEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        Level level = boothEntity.getLevel();
-        if (level == null) return;
-
-        Player player = net.minecraft.client.Minecraft.getInstance().player;
+        Player player = MC.player;
         if (player == null) return;
 
-        BlockPos pos = boothEntity.getBlockPos();
-        boolean isGuiHidden = net.minecraft.client.Minecraft.getInstance().options.hideGui;
+        final float alpha = 0xB0 / 255F;
+        final float white = 1.0F;
 
+        ItemStack playHand = player.getMainHandItem();
+
+        VertexConsumer buffer = bufferSource.getBuffer(RenderType.lines());
+
+        boolean showUI = !MC.options.hideGui;
         Vec3 exactHitLocation = null;
-        HitResult hitResult = net.minecraft.client.Minecraft.getInstance().hitResult;
-        if (hitResult instanceof net.minecraft.world.phys.BlockHitResult blockHit && blockHit.getBlockPos().equals(pos)) {
-            exactHitLocation = blockHit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ());
+
+        if (MC.hitResult != null && MC.hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockPos lookedAtPos = ((net.minecraft.world.phys.BlockHitResult) MC.hitResult).getBlockPos();
+            if (lookedAtPos.equals(boothEntity.getBlockPos())) {
+                exactHitLocation = MC.hitResult.getLocation().subtract(boothEntity.getBlockPos().getX(), boothEntity.getBlockPos().getY(), boothEntity.getBlockPos().getZ());
+            }
         }
 
-        if (!isGuiHidden && exactHitLocation != null && !player.isSpectator()) {
-            VertexConsumer lineBuffer = bufferSource.getBuffer(RenderType.lines());
-            renderSelectionUI(poseStack, lineBuffer, exactHitLocation, player.getAbilities().mayBuild);
+        if (showUI && exactHitLocation != null && !player.isSpectator()) {
+            poseStack.pushPose();
+
+            if (exactHitLocation.y > 0.5 && !playHand.isEmpty()) {
+                LevelRenderer.renderLineBox(poseStack, buffer, 0.1865, 0.499, 0.1865, 0.8135, 0.8135, 0.8135, white, white, white, alpha);
+                LevelRenderer.renderLineBox(poseStack, buffer, -0.001, 0.8115, -0.001, 1.001, 1.001, 1.001, white, white, white, alpha);
+                poseStack.translate(0.5, 0, 0.5);
+                poseStack.mulPose(Axis.YP.rotation(Mth.PI * 0.25F));
+                LevelRenderer.renderLineBox(poseStack, buffer, -0.5635, 0.5615, -0.126, 0.5635, 0.8135, 0.126, white, white, white, alpha);
+                poseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI));
+                LevelRenderer.renderLineBox(poseStack, buffer, -0.5635, 0.5615, -0.126, 0.5635, 0.8135, 0.126, white, white, white, alpha);
+            } else if (exactHitLocation.y <= 0.5 && (playHand.is(carpetTag) || playHand.is(Items.NAME_TAG))) {
+                LevelRenderer.renderLineBox(poseStack, buffer, 0.1865, 0.1885, 0.1865, 0.8135, 0.501, 0.8135, white, white, white, alpha, white, white, white);
+                renderLineBox(poseStack, buffer, 0.0615, -0.001, 0.0615, 0.9385, 0.1885, 0.9385, white, white, white, alpha, white, white, white, true);
+                renderLineBox(poseStack, buffer, 0.0615, 0.1885, 0.0615, 0.251, 0.3135, 0.251, white, white, white, alpha, white, white, white, false);
+                renderLineBox(poseStack, buffer, 0.0615, 0.1885, 0.749, 0.251, 0.3135, 0.9385, white, white, white, alpha, white, white, white, false);
+                renderLineBox(poseStack, buffer, 0.749, 0.1885, 0.0615, 0.9385, 0.3135, 0.251, white, white, white, alpha, white, white, white, false);
+                renderLineBox(poseStack, buffer, 0.749, 0.1885, 0.749, 0.9385, 0.3135, 0.9385, white, white, white, alpha, white, white, white, false);
+                renderLineBox(poseStack, buffer, 0.0615, 0.1885, 0.249, 0.9385, 0.1885, 0.751, white, white, white, alpha, white, white, white, false);
+                renderLineBox(poseStack, buffer, 0.249, 0.1885, 0.0615, 0.751, 0.1885, 0.9385, white, white, white, alpha, white, white, white, false);
+                renderLineBox(poseStack, buffer, 0.749, 0.1885, 0.749, 0.8135, 0.3135, 0.8135, white, white, white, alpha, white, white, white, false);
+                renderLineBox(poseStack, buffer, 0.749, 0.1885, 0.1865, 0.8135, 0.3135, 0.251, white, white, white, alpha, white, white, white, false);
+                renderLineBox(poseStack, buffer, 0.1865, 0.1885, 0.749, 0.251, 0.3135, 0.8135, white, white, white, alpha, white, white, white, false);
+                renderLineBox(poseStack, buffer, 0.1865, 0.1885, 0.1865, 0.251, 0.3135, 0.251, white, white, white, alpha, white, white, white, false);
+                poseStack.translate(0.5, 0, 0.5);
+                poseStack.mulPose(Axis.YP.rotation(Mth.PI * 0.25F));
+            } else {
+                poseStack.translate(0.5, 0, 0.5);
+                poseStack.mulPose(Axis.YP.rotation(Mth.PI * 0.25F));
+            }
+            if (player.getAbilities().mayBuild) {
+                LevelRenderer.renderLineBox(poseStack, buffer, -0.5625, 0.5625, -0.125, 0.5625, 0.8125, 0.125, 0, 0, 0, 0.5F);
+                poseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI));
+                LevelRenderer.renderLineBox(poseStack, buffer, -0.5625, 0.5625, -0.125, 0.5625, 0.8125, 0.125, 0, 0, 0, 0.5F);
+            }
+
+            poseStack.popPose();
         }
 
         ItemStack itemStack = boothEntity.getItemHandler().getStackInSlot(0);
-        if (itemStack.isEmpty() && exactHitLocation == null) return;
-
-        double time = level.getGameTime() + partialTick;
-        float yOffset = (float) (Math.sin(time * 0.1) * 0.08);
-        float rotationAngle = (float) (time * 0.05);
+        if (itemStack.isEmpty() && exactHitLocation == null) {
+            return;
+        }
 
         poseStack.pushPose();
-        poseStack.translate(0.5, 1.25 + yOffset, 0.5);
-        poseStack.mulPose(Axis.YP.rotation(rotationAngle));
+        long gameTime = MC.level != null ? MC.level.getGameTime() : 0;
+        double timeWithPartialTick = gameTime + partialTick;
+        double angleInRadians = (timeWithPartialTick / 60.0) * Math.TAU;
 
-        if (!player.getMainHandItem().isEmpty() && exactHitLocation != null && exactHitLocation.y > 0.5) {
-            float cubeAlpha = (float) (Math.sin(time * 0.15) + 1.0) / 2.0F;
-            drawCube(poseStack, bufferSource, 0.52, 255, 255, 255, (int)(cubeAlpha * 40),
-                    new Vector3d(pos.getX(), pos.getY(), pos.getZ()), new Vector3d(0, 0.125, 0), true, Math.PI * 0.25, 0);
+        float yOffset = (float) (Math.sin(angleInRadians) * 0.08);
+        float cubeAlpha = (float) Math.sin(angleInRadians * 1.5);
+
+        poseStack.translate(0.5F, 1.25F + yOffset, 0.5F);
+        poseStack.mulPose(Axis.YP.rotation((float) ((timeWithPartialTick % 360) / 60.0F * Mth.TWO_PI)));
+
+        if (!playHand.isEmpty() && exactHitLocation != null && exactHitLocation.y > 0.5) {
+            VertexConsumer consumer = bufferSource.getBuffer(RenderType.debugQuads());
+            drawCube(poseStack, 0.52, 255, 255, 255, (int) ((cubeAlpha + 1F) / 8F * 255),
+                    new Vector3d(boothEntity.getBlockPos().getX(), boothEntity.getBlockPos().getY(), boothEntity.getBlockPos().getZ()),
+                    new Vector3d(0, 0.125, 0), true, Math.PI * 0.25F, 0, consumer);
+
+            LevelRenderer.renderLineBox(poseStack, buffer, -0.26, -0.135, -0.26, 0.26, 0.385, 0.26, white, white, white, (cubeAlpha + 1F) / 4F);
         }
 
         if (!itemStack.isEmpty()) {
-            this.itemRenderer.renderStatic(
-                    itemStack, ItemDisplayContext.GROUND, packedLight, packedOverlay,
-                    poseStack, bufferSource, level, 0
+            MC.getItemRenderer().render(
+                    itemStack, ItemDisplayContext.GROUND, false, poseStack, bufferSource, packedLight, packedOverlay,
+                    MC.getItemRenderer().getModel(itemStack, null, null, 0)
             );
-        }
-        poseStack.popPose();
+            poseStack.popPose();
 
-        if (!itemStack.isEmpty() && boothEntity.getBlockState().getValue(TuffBoothBlock.SHOW_NAME)) {
-            renderFloatingText(poseStack, bufferSource, itemStack, yOffset);
-        }
-    }
+            if (boothEntity.getBlockState().getValue(TuffBoothBlock.SHOW_NAME)) {
+                poseStack.pushPose();
+                poseStack.translate(0.5D, 1.83D + yOffset, 0.5D);
+                poseStack.mulPose(MC.getEntityRenderDispatcher().cameraOrientation());
+                float scale1 = 0.02F;
+                poseStack.scale(scale1, -scale1, scale1);
 
-    private void renderSelectionUI(PoseStack poseStack, VertexConsumer buffer, Vec3 hit, boolean canBuild) {
-        float r = 1, g = 1, b = 1, a = 0.7F;
-        if (hit.y > 0.5) {
-            LevelRenderer.renderLineBox(poseStack, buffer, 0.186, 0.5, 0.186, 0.814, 0.814, 0.814, r, g, b, a);
-            LevelRenderer.renderLineBox(poseStack, buffer, -0.001, 0.811, -0.001, 1.001, 1.001, 1.001, r, g, b, a);
+                Component text = itemStack.getDisplayName();
+                String rawString = text.getString();
+                String cleanText = rawString;
+                int length = rawString.length();
+                if (length >= 2) {
+                    if (rawString.charAt(0) == '[' && rawString.charAt(length - 1) == ']') {
+                        cleanText = rawString.substring(1, length - 1);
+                    }
+                }
+                ModRarity rarity = ModRarity.getRarity(itemStack);
+                int textColor = rarity != null ? rarity.color() : 0xFFFFFF;
+                boolean useTextColor = rarity != null;
+
+                Component displayComponent = useTextColor ? Component.literal(cleanText) : text;
+
+                int textWidth = FONT.width(displayComponent);
+                float xOffset = -textWidth / 2.0F;
+
+                VertexConsumer consumer = bufferSource.getBuffer(RenderType.debugQuads());
+                PoseStack.Pose pose = poseStack.last();
+                float bgAlpha = 0x40 / 255F;
+                consumer.addVertex(pose, -xOffset + 1, -1, -0.1F).setColor(0, 0, 0, bgAlpha);
+                consumer.addVertex(pose, xOffset - 1, -1, -0.1F).setColor(0, 0, 0, bgAlpha);
+                consumer.addVertex(pose, xOffset - 1, 9, -0.1F).setColor(0, 0, 0, bgAlpha);
+                consumer.addVertex(pose, -xOffset + 1, 9, -0.1F).setColor(0, 0, 0, bgAlpha);
+
+                FONT.drawInBatch(displayComponent, xOffset, 0, textColor, false, poseStack.last().pose(), bufferSource, Font.DisplayMode.NORMAL, 0, 255);
+                poseStack.popPose();
+            }
         } else {
-            LevelRenderer.renderLineBox(poseStack, buffer, 0.186, 0.188, 0.186, 0.814, 0.5, 0.814, r, g, b, a);
-            LevelRenderer.renderLineBox(poseStack, buffer, 0.062, -0.001, 0.062, 0.938, 0.188, 0.938, r, g, b, a);
-        }
-
-        if (canBuild) {
-            poseStack.pushPose();
-            poseStack.translate(0.5, 0, 0.5);
-            poseStack.mulPose(Axis.YP.rotation(Mth.PI * 0.25F));
-            LevelRenderer.renderLineBox(poseStack, buffer, -0.56, 0.56, -0.12, 0.56, 0.81, 0.12, 0, 0, 0, 0.4F);
-            poseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI));
-            LevelRenderer.renderLineBox(poseStack, buffer, -0.56, 0.56, -0.12, 0.56, 0.81, 0.12, 0, 0, 0, 0.4F);
             poseStack.popPose();
         }
-    }
-
-    private void renderFloatingText(PoseStack poseStack, MultiBufferSource bufferSource, ItemStack stack, float yOffset) {
-        poseStack.pushPose();
-        poseStack.translate(0.5, 1.83 + yOffset, 0.5);
-
-        poseStack.mulPose(net.minecraft.client.Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
-        poseStack.scale(-0.02F, -0.02F, 0.02F);
-
-        Matrix4f matrix = poseStack.last().pose();
-        Component text = stack.getHoverName();
-        int width = this.font.width(text);
-        float x = -width / 2.0F;
-
-        VertexConsumer bg = bufferSource.getBuffer(RenderType.textBackground());
-        bg.addVertex(matrix, x - 1, -1, 0).setColor(0, 0, 0, 64);
-        bg.addVertex(matrix, x - 1, 8, 0).setColor(0, 0, 0, 64);
-        bg.addVertex(matrix, x + width + 1, 8, 0).setColor(0, 0, 0, 64);
-        bg.addVertex(matrix, x + width + 1, -1, 0).setColor(0, 0, 0, 64);
-
-        ModRarity rarity = ModRarity.getRarity(stack);
-        int color = (rarity != null) ? rarity.color() : 0xFFFFFF;
-
-        this.font.drawInBatch(text, x, 0, color, false, matrix, bufferSource, Font.DisplayMode.NORMAL, 0, 15728880);
-
-        poseStack.popPose();
     }
 }

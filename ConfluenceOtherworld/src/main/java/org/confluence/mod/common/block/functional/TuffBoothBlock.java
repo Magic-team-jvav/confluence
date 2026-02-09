@@ -8,6 +8,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -26,6 +29,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -35,26 +39,36 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
 public class TuffBoothBlock extends BaseEntityBlock {
-    public static final MapCodec<TuffBoothBlock> CODEC = simpleCodec(TuffBoothBlock::new);
     public static final IntegerProperty COLOR = IntegerProperty.create("color", 0, 16);
     public static final BooleanProperty SHOW_NAME = BooleanProperty.create("show_name");
-
+    public static final MapCodec<TuffBoothBlock> CODEC = simpleCodec(TuffBoothBlock::new);
+    public static final BiMap<Item, Integer> CARPET_TO_COLOR = Util.make(HashBiMap.create(), map -> {
+        map.put(Items.WHITE_CARPET, 1);
+        map.put(Items.LIGHT_GRAY_CARPET, 2);
+        map.put(Items.GRAY_CARPET, 3);
+        map.put(Items.BLACK_CARPET, 4);
+        map.put(Items.BROWN_CARPET, 5);
+        map.put(Items.RED_CARPET, 6);
+        map.put(Items.ORANGE_CARPET, 7);
+        map.put(Items.YELLOW_CARPET, 8);
+        map.put(Items.LIME_CARPET, 9);
+        map.put(Items.GREEN_CARPET, 10);
+        map.put(Items.CYAN_CARPET, 11);
+        map.put(Items.LIGHT_BLUE_CARPET, 12);
+        map.put(Items.BLUE_CARPET, 13);
+        map.put(Items.PURPLE_CARPET, 14);
+        map.put(Items.MAGENTA_CARPET, 15);
+        map.put(Items.PINK_CARPET, 16);
+    });
     private static final VoxelShape SHAPE = Shapes.or(
             box(1, 0, 1, 15, 3, 15),
             box(3, 3, 3, 13, 13, 13),
-            box(0, 13, 0, 16, 16, 16)
+            box(0, 13, 0, 16, 16, 16),
+            box(1, 3, 12, 4, 5, 15),
+            box(12, 3, 12, 15, 5, 15),
+            box(12, 3, 1, 15, 5, 4),
+            box(1, 3, 1, 4, 5, 4)
     );
-
-    public static final BiMap<Item, Integer> CARPET_TO_COLOR = Util.make(HashBiMap.create(), map -> {
-        map.put(Items.WHITE_CARPET, 1); map.put(Items.LIGHT_GRAY_CARPET, 2);
-        map.put(Items.GRAY_CARPET, 3); map.put(Items.BLACK_CARPET, 4);
-        map.put(Items.BROWN_CARPET, 5); map.put(Items.RED_CARPET, 6);
-        map.put(Items.ORANGE_CARPET, 7); map.put(Items.YELLOW_CARPET, 8);
-        map.put(Items.LIME_CARPET, 9); map.put(Items.GREEN_CARPET, 10);
-        map.put(Items.CYAN_CARPET, 11); map.put(Items.LIGHT_BLUE_CARPET, 12);
-        map.put(Items.BLUE_CARPET, 13); map.put(Items.PURPLE_CARPET, 14);
-        map.put(Items.MAGENTA_CARPET, 15); map.put(Items.PINK_CARPET, 16);
-    });
 
     public TuffBoothBlock(Properties properties) {
         super(properties);
@@ -62,16 +76,32 @@ public class TuffBoothBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() { return CODEC; }
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        if (target instanceof BlockHitResult hit) {
+            if (hit.getLocation().y - pos.getY() > 0.5) {
+                BlockEntity be = level.getBlockEntity(pos);
+                if (be instanceof TuffBoothBlockEntity booth) {
+                    ItemStack displayStack = booth.getItemHandler().getStackInSlot(0);
+                    if (!displayStack.isEmpty()) {
+                        return displayStack.copy();
+                    }
+                }
+            }
+        }
+        return super.getCloneItemStack(state, target, level, pos, player);
+    }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { return SHAPE; }
+    protected MapCodec<? extends BaseEntityBlock> codec() {return CODEC;}
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(COLOR, SHOW_NAME); }
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return SHAPE;}
 
     @Override
-    public RenderShape getRenderShape(BlockState state) { return RenderShape.MODEL; }
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {builder.add(COLOR, SHOW_NAME);}
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {return RenderShape.MODEL;}
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
@@ -81,65 +111,78 @@ public class TuffBoothBlock extends BaseEntityBlock {
         if (be instanceof TuffBoothBlockEntity booth) {
             double hitY = hit.getLocation().y - pos.getY();
 
-
-            if (hitY > 0.6) {
+            if (hitY > 0.5) {
                 IItemHandler handler = booth.getItemHandler();
                 ItemStack currentDisplay = handler.getStackInSlot(0);
 
                 if (!stack.isEmpty()) {
-                    if (!currentDisplay.isEmpty()) player.getInventory().placeItemBackInInventory(currentDisplay);
-                    handler.insertItem(0, stack.split(1), false);
+                    if (!currentDisplay.isEmpty())
+                        player.getInventory().placeItemBackInInventory(currentDisplay);
+
+                    if (!player.getAbilities().instabuild) {
+                        handler.insertItem(0, stack.split(1), false);
+                    } else {
+                        ItemStack copy = stack.copy();
+                        copy.setCount(1);
+                        handler.insertItem(0, copy, false);
+                    }
                 } else if (!currentDisplay.isEmpty()) {
                     player.setItemInHand(hand, currentDisplay);
                     handler.extractItem(0, 1, false);
                 }
                 return ItemInteractionResult.SUCCESS;
-            }
+            } else {
+                if (stack.isEmpty()) {
+                    boolean changed = false;
+                    BlockState newState = state;
 
-            else {
-                if (CARPET_TO_COLOR.containsKey(stack.getItem())) {
-                    int newColor = CARPET_TO_COLOR.get(stack.getItem());
-                    if (state.getValue(COLOR) != newColor) {
+                    if (state.getValue(SHOW_NAME)) {
+                        player.getInventory().placeItemBackInInventory(new ItemStack(Items.NAME_TAG));
+                        newState = newState.setValue(SHOW_NAME, false);
+                        changed = true;
+                    } else if (state.getValue(COLOR) != 0) {
+                        player.getInventory().placeItemBackInInventory(new ItemStack(CARPET_TO_COLOR.inverse().get(state.getValue(COLOR))));
+                        newState = newState.setValue(COLOR, 0);
+                        changed = true;
+                    }
 
-                        int oldColor = state.getValue(COLOR);
-                        if (oldColor != 0) player.getInventory().placeItemBackInInventory(new ItemStack(CARPET_TO_COLOR.inverse().get(oldColor)));
-
-                        stack.shrink(1);
-                        level.setBlock(pos, state.setValue(COLOR, newColor), 3);
+                    if (changed) {
+                        level.setBlock(pos, newState, 3);
                         return ItemInteractionResult.SUCCESS;
                     }
-                } else if (stack.is(Items.NAME_TAG) && !state.getValue(SHOW_NAME)) {
-                    stack.shrink(1);
-                    level.setBlock(pos, state.setValue(SHOW_NAME, true), 3);
-                    return ItemInteractionResult.SUCCESS;
-                } else if (stack.isEmpty() && player.isSecondaryUseActive()) {
+                } else {
+                    boolean isCreative = player.getAbilities().instabuild;
 
-                    return removeDecorations(level, pos, state, player);
+                    if (CARPET_TO_COLOR.containsKey(stack.getItem())) {
+                        int newColor = CARPET_TO_COLOR.get(stack.getItem());
+                        if (state.getValue(COLOR) != newColor) {
+                            if (state.getValue(COLOR) != 0) {
+                                player.getInventory().placeItemBackInInventory(new ItemStack(CARPET_TO_COLOR.inverse().get(state.getValue(COLOR))));
+                            }
+
+                            if (!isCreative) {
+                                stack.shrink(1);
+                            }
+
+                            level.setBlock(pos, state.setValue(COLOR, newColor), 3);
+                            level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                            return ItemInteractionResult.SUCCESS;
+                        }
+                    } else if (stack.is(Items.NAME_TAG) && !state.getValue(SHOW_NAME)) {
+                        if (!isCreative) {
+                            stack.shrink(1);
+                        }
+
+                        level.setBlock(pos, state.setValue(SHOW_NAME, true), 3);
+                        level.playSound(null, pos, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5F, 1.0F);
+                        return ItemInteractionResult.SUCCESS;
+                    }
                 }
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    private ItemInteractionResult removeDecorations(Level level, BlockPos pos, BlockState state, Player player) {
-        boolean changed = false;
-        BlockState newState = state;
-        if (state.getValue(COLOR) != 0) {
-            player.getInventory().placeItemBackInInventory(new ItemStack(CARPET_TO_COLOR.inverse().get(state.getValue(COLOR))));
-            newState = newState.setValue(COLOR, 0);
-            changed = true;
-        }
-        if (state.getValue(SHOW_NAME)) {
-            player.getInventory().placeItemBackInInventory(new ItemStack(Items.NAME_TAG));
-            newState = newState.setValue(SHOW_NAME, false);
-            changed = true;
-        }
-        if (changed) {
-            level.setBlock(pos, newState, 3);
-            return ItemInteractionResult.SUCCESS;
-        }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-    }
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
@@ -181,7 +224,7 @@ public class TuffBoothBlock extends BaseEntityBlock {
             super(FunctionalBlocks.TUFF_BOOTH_ENTITY.get(), pos, state);
         }
 
-        public IItemHandler getItemHandler() { return itemHandler; }
+        public IItemHandler getItemHandler() {return itemHandler;}
 
         @Override
         public ClientboundBlockEntityDataPacket getUpdatePacket() {

@@ -1119,7 +1119,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.window.60", "Confluence: Built on Blockchain Technology");
         add("title.confluence.window.61", "Confluence: Now with even more Ocram!");
         add("title.confluence.window.62", "Confluence: Now with even more and more Ocram!");
-        add("title.confluence.window.63", "Confluence: Otherworld");
+        add("title.confluence.window.63", "Confluence: Installation service available for just $2.89 now!");
         add("title.confluence.window.64", "Confluence: Touch Grass Simulator");
         add("title.confluence.window.65", "Confluence: Don't dig up!");
         add("title.confluence.window.66", "Confluence: For the worthy!");
@@ -1128,6 +1128,29 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.window.69", "Confluence: Also try Don't Starve!");
         add("title.confluence.window.70", "Confluence: Fusion Rise!");
 
+        //Special world seeds
+        add("title.confluence.secret_seeds_selection.normal", "Normal World");
+        add("description.confluence.secret_seeds_selection.normal", "The otherworld of confluence and exchange — this time, your journey is intertwined with the fates of two worlds as one. Embark on your adventure and explore the merged world!");
+        add("title.confluence.secret_seeds_selection.drunk_world", "Drunk World");
+        add("description.confluence.secret_seeds_selection.drunk_world", "Crimson and Corruption? Both appearing at once? Only madness! This time, the confluence has plunged the world into utter chaos, bringing an adventure like no other! Sink into it, world — you're drunk!");
+        add("title.confluence.secret_seeds_selection.not_the_bees", "Not The Bees!");
+        add("description.confluence.secret_seeds_selection.not_the_bees", "Step into a continent shrouded in cloyingly sweet honeyed fragrance, where the hum of wings and the threat of venomous stings lurk around every corner! (Wicker helmets excluded)");
+        add("title.confluence.secret_seeds_selection.for_the_worthy", "For The Worthy");
+        add("description.confluence.secret_seeds_selection.for_the_worthy", "Are you a brave one? This is a world without mercy. Forget everything you know and hone your skills, lest you be scrutinized, measured, and found wanting.");
+        add("title.confluence.secret_seeds_selection.celebrationmk10", "Celebrationmk10");
+        add("description.confluence.secret_seeds_selection.celebrationmk10", "Terraria's 10th Anniversary! Celebrate together in this vibrant and fantastical world — who knows, maybe the team left some gifts waiting for you to unwrap.");
+        add("title.confluence.secret_seeds_selection.the_constant", "The Constant");
+        add("description.confluence.secret_seeds_selection.the_constant", "Blend Don't Starve's adventures into Terraria and Minecraft! Can you overcome the constant hunger while finding a way to save the world? Oh, and don't forget to stay in the light!");
+        add("title.confluence.secret_seeds_selection.dont_dig_up", "Don't Dig Up");
+        add("description.confluence.secret_seeds_selection.dont_dig_up", "Born in the Nether, then explore a world turned upside down! In this reversed adventure, can you see the light of day again?");
+        add("title.confluence.secret_seeds_selection.no_traps", "No Traps");
+        add("description.confluence.secret_seeds_selection.no_traps", "Whoa, traps — you hate 'em, I hate 'em! This world has definitely had all traps removed... should have, anyway. Maybe.");
+        add("title.confluence.secret_seeds_selection.get_fixed_boi", "Get Fixed Boi");
+        add("description.confluence.secret_seeds_selection.get_fixed_boi", "This world is just like the Zenith Sword! It blends the main features of all other seeds! Plus a few unexpected twists — it's built to beat you. Prepare to die, buddy!");
+        add("title.confluence.secret_seeds_selection.skyblock", "Skyblock");
+        add("description.confluence.secret_seeds_selection.skyblock", "Step into this realm floating high in the sky. With meager starting resources, you must build your world from scratch, step by step.");
+        add("title.confluence.secret_seeds_selection.boulder_world", "Boulder World");
+        add("description.confluence.secret_seeds_selection.boulder_world", "You know what? The world is actually one giant boulder. So everything in the world is a boulder.");
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);

@@ -1144,7 +1144,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.window.60", "汇流来世：基于区块链技术构建");
         add("title.confluence.window.61", "汇流来世：现在有更多奥克瑞姆了！");
         add("title.confluence.window.62", "汇流来世：现在有更多更多奥克瑞姆了！");
-        add("title.confluence.window.63", "汇流来世：异界");
+        add("title.confluence.window.63", "汇流来世：提供安装服务，现仅需要￥19.99！");
         add("title.confluence.window.64", "汇流来世：模拟触摸青草");
         add("title.confluence.window.65", "汇流来世：别往上挖！");
         add("title.confluence.window.66", "汇流来世：为了值得的人！");
@@ -1153,6 +1153,29 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.window.69", "汇流来世：也试试饥荒！");
         add("title.confluence.window.70", "汇流来世：融合升华！");
 
+        //Special world seeds
+        add("title.confluence.secret_seeds_selection.normal", "常规世界");
+        add("description.confluence.secret_seeds_selection.normal", "交流汇合的来世，这次你的旅途与两个世界的命运重合与一体。开始冒险，在融合世界中探索吧！");
+        add("title.confluence.secret_seeds_selection.drunk_world", "醉酒世界");
+        add("description.confluence.secret_seeds_selection.drunk_world", "猩红加上腐化？两者一同出现？唯有疯狂！这次融合，世界陷入疯狂境地，带来一次绝无仅有的冒险！沉沦吧，世界，你喝醉了！");
+        add("title.confluence.secret_seeds_selection.not_the_bees", "不要蜜蜂");
+        add("description.confluence.secret_seeds_selection.not_the_bees", "进入一片弥漫着甜腻蜂香的大陆，在这里振翅声和有毒蛰刺的威胁潜伏在每一个角落!(不包括柳条头盔)");
+        add("title.confluence.secret_seeds_selection.for_the_worthy", "勇者之境");
+        add("description.confluence.secret_seeds_selection.for_the_worthy", "你是勇者吗?这是一个毫无怜悯的世界。忘记所知的一切并磨练技能，免得你被考察、衡量，并被发现不合格");
+        add("title.confluence.secret_seeds_selection.celebrationmk10", "十年庆典");
+        add("description.confluence.secret_seeds_selection.celebrationmk10", "泰拉瑞亚十周年!在这个多姿多彩的奇幻世界中一起庆祝——谁知道呢，也许团队留下了一些礼物等你拆开。");
+        add("title.confluence.secret_seeds_selection.the_constant", "永恒之域");
+        add("description.confluence.secret_seeds_selection.the_constant", "将《饥荒》冒险融入到泰拉瑞亚与我的世界之中，你能否在战胜持续饥饿的同时找到世界的拯救之道?哦，还有别忘了待在光明处!");
+        add("title.confluence.secret_seeds_selection.dont_dig_up", "不要挖掘");
+        add("description.confluence.secret_seeds_selection.dont_dig_up", "生于下界，而后探索上下翻转的世界！在这场乾坤倒转的冒险中，你是否能重见天日？");
+        add("title.confluence.secret_seeds_selection.no_traps", "没有陷阱");
+        add("description.confluence.secret_seeds_selection.no_traps", "哇，陷阱，你讨厌它们，我也讨厌它们！这个世界毫无疑问去除掉了所有的陷阱...应该是这样的，也许吧。");
+        add("title.confluence.secret_seeds_selection.get_fixed_boi", "天顶世界");
+        add("description.confluence.secret_seeds_selection.get_fixed_boi", "这个世界就像天顶剑一样！混合了所有其他种子的主要特色！再加上一些意外因素，它就是为了击败你而生。准备受死吧，伙计！");
+        add("title.confluence.secret_seeds_selection.skyblock", "天空之岛");
+        add("description.confluence.secret_seeds_selection.skyblock", "踏入这片悬浮于天际的领域。初始资源微薄，你需白手起家，逐步构建属于你的世界。");
+        add("title.confluence.secret_seeds_selection.boulder_world", "巨石世界");
+        add("description.confluence.secret_seeds_selection.boulder_world", "你知道吗？世界其实是一个巨大的巨石。所以世界上的万物都是巨石。");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");

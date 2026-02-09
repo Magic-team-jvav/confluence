@@ -114,7 +114,9 @@ public final class PlayerEvents {
     public static void interact$LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
-        AltarBlock.onLeftClick(level.getBlockState(pos), level, pos, event.getEntity());
+        if (event.getAction() == PlayerInteractEvent.LeftClickBlock.Action.START) {
+            AltarBlock.onLeftClick(level.getBlockState(pos), level, pos, event.getEntity());
+        }
     }
 
     @SubscribeEvent

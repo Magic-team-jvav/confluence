@@ -179,6 +179,7 @@ boolean legendarytooltips = false // 传说提示框
 boolean itemborders = false // 物品边框
 boolean advancementPlaques = false // 进度牌匾
 boolean dynamicCrosshair = false // 动态准星
+boolean kubejs = true
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -245,11 +246,10 @@ dependencies {
     compileOnly "curse.maven:appleskin-248787:5586600"
 //    runtimeOnly "curse.maven:appleskin-248787:5586600"
 
-    compileOnly "curse.maven:rhino-416294:6886923"
-    compileOnly "curse.maven:kubejs-238086:5810100"
-    if (false) {
-        runtimeOnly "curse.maven:rhino-416294:6886923"
-        runtimeOnly "curse.maven:kubejs-238086:5810100"
+    compileOnly "curse.maven:kubejs-238086:7278501"
+    if (kubejs) {
+        runtimeOnly "curse.maven:rhino-416294:7104526"
+        runtimeOnly "curse.maven:kubejs-238086:7278501"
     }
 
     compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
@@ -355,7 +355,7 @@ dependencies {
         runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.1.8"
         runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.5.0"
     }
-    if (observable || ftb) {
+    if (observable || ftb || kubejs) {
         runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
     }
     if (observable || ipn || lootBeams) {

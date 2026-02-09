@@ -52,6 +52,7 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
@@ -114,6 +115,7 @@ public final class GameEvents {
         } else {
             ExtraInventorySyncPacketS2C.sendToClient(sendTo, sendTo);
             AchievementOffsetSyncPacketS2C.sendToClient(sendTo);
+            AchievementUtils.setData(sendTo);
         }
     }
 

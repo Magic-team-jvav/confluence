@@ -65,6 +65,7 @@ import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.network.s2c.AchievementsDataSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -302,9 +303,19 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         AdvancementHolder advancement = event.getAdvancement();
-        if (advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(false) && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
+        if (!advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(true) && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
             ServerPlayer player = (ServerPlayer) event.getEntity();
             player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
+        }
+    }
+
+    @SubscribeEvent
+    public static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        if (!player.server.isSingleplayerOwner(player.getGameProfile()) &&
+                AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
+        ) {
+            AchievementsDataSyncPacketS2C.sendToPlayer(player);
         }
     }
 

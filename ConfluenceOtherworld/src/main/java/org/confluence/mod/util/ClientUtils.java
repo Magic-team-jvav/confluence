@@ -1,8 +1,10 @@
 package org.confluence.mod.util;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.DataFixer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -267,5 +269,13 @@ public final class ClientUtils {
 
     public static boolean shouldDisplayTeam() {
         return !Minecraft.getInstance().isSingleplayer();
+    }
+
+    public static GameProfile getGameProfile() {
+        return Minecraft.getInstance().getGameProfile();
+    }
+
+    public static DataFixer getDataFixer() {
+        return Minecraft.getInstance().getFixerUpper();
     }
 }

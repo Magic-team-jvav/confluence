@@ -18,6 +18,7 @@ import net.minecraft.world.level.storage.LevelStorageSource;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.mixed.ILevelLoadingScreen;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,8 +47,10 @@ public abstract class MinecraftMixin {
     public Screen screen;
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V"))
-    private void setSecretFlag(LevelStorageSource.LevelStorageAccess levelStorage, PackRepository packRepository, WorldStem worldStem, boolean newWorld, CallbackInfo ci, @Local LevelLoadingScreen levelloadingscreen) {
-        ILevelLoadingScreen.of(levelloadingscreen).confluence$setSecretFlag(IWorldOptions.of(worldStem.worldData().worldGenOptions()).confluence$getSecretFlag());
+    private void setSecretFlag(LevelStorageSource.LevelStorageAccess levelStorage, PackRepository packRepository, WorldStem worldStem, boolean newWorld, CallbackInfo ci, @Local LevelLoadingScreen screen) {
+        IWorldOptions options = IWorldOptions.of(worldStem.worldData().worldGenOptions());
+        long flag = ModSecretSeeds.fixWorldOptions(options.confluence$getSecretFlag(), options.confluence$getVersion());
+        ILevelLoadingScreen.of(screen).confluence$setSecretFlag(flag);
     }
 
     @Inject(method = "shouldEntityAppearGlowing", at = @At(value = "HEAD"), cancellable = true)

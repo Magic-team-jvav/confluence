@@ -1,18 +1,33 @@
 package org.confluence.mod.util;
 
 import com.google.common.collect.Streams;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonIOException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.FileUtil;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.advancements.CriterionProgress;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.fml.loading.FMLPaths;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -21,20 +36,117 @@ import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IPlayerAdvancements;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.network.task.ReplyAchievementsPacketC2S;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
 
 public final class AchievementUtils {
     public static final String PREFIX = "achievements/";
+    public static final Path CONFLUENCE_ACHIEVEMENTS_DIR = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("achievements");
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final StreamCodec<FriendlyByteBuf, PlayerAdvancements.Data> DATA_STREAM_CODEC = new StreamCodec<>() {
+        @Override
+        public PlayerAdvancements.Data decode(FriendlyByteBuf buffer) {
+            int size = buffer.readVarInt();
+            Map<ResourceLocation, AdvancementProgress> advancement = new LinkedHashMap<>();
+            for (int i = 0; i < size; i++) {
+                ResourceLocation id = asAchievement(buffer.readUtf());
+                int j = buffer.readVarInt();
+                Map<String, CriterionProgress> criterion = new HashMap<>();
+                for (int k = 0; k < j; k++) {
+                    String criteria = buffer.readUtf();
+                    String time = buffer.readUtf();
+                    try {
+                        Instant instant = Instant.from(AdvancementProgress.OBTAINED_TIME_FORMAT.parse(time));
+                        criterion.put(criteria, new CriterionProgress(instant));
+                    } catch (Exception ignored) {}
+                }
+                advancement.put(id, new AdvancementProgress(criterion));
+            }
+            return new PlayerAdvancements.Data(advancement);
+        }
+
+        @Override
+        public void encode(FriendlyByteBuf buffer, PlayerAdvancements.Data value) {
+            buffer.writeVarInt(value.map().size());
+            value.forEach((id, progress) -> {
+                buffer.writeUtf(asPath(id));
+                buffer.writeVarInt(progress.criteria.size());
+                for (Map.Entry<String, CriterionProgress> entry : progress.criteria.entrySet()) {
+                    Instant instant = entry.getValue().getObtained();
+                    if (instant != null) {
+                        buffer.writeUtf(entry.getKey());
+                        buffer.writeUtf(instant.atZone(ZoneId.systemDefault()).format(AdvancementProgress.OBTAINED_TIME_FORMAT));
+                    }
+                }
+            });
+        }
+    };
+    private static @Nullable PlayerAdvancements.Data data;
+
+    public static Codec<PlayerAdvancements.Data> getCodecClientOnly() {
+        return DataFixTypes.ADVANCEMENTS.wrapCodec(PlayerAdvancements.Data.CODEC, ClientUtils.getDataFixer(), 1343);
+    }
+
+    public static void setData(ServerPlayer player) {
+        Map<UUID, PlayerAdvancements.Data> map = player.connection.getConnection().channel().attr(ReplyAchievementsPacketC2S.ACHIEVEMENTS).get();
+        if (map == null) return;
+        PlayerAdvancements.Data data = map.get(player.getGameProfile().getId());
+        if (data == null) return;
+        IPlayerAdvancements.of(player.getAdvancements()).confluence$load(player.server.getAdvancements(), data);
+    }
+
+    public static void handleData(PlayerAdvancements.Data data) {
+        AchievementUtils.data = data;
+    }
+
+    public static void saveData(Player player) {
+        if (data == null) return;
+        Path path = AchievementUtils.CONFLUENCE_ACHIEVEMENTS_DIR.resolve(player.getUUID() + ".json");
+        saveData(data, path, GSON, getCodecClientOnly());
+        data = null;
+    }
+
+    public static void saveData(PlayerAdvancements.Data data, Path savePath, Gson gson, Codec<PlayerAdvancements.Data> codec) {
+        JsonElement element = codec.encodeStart(JsonOps.INSTANCE, data).getOrThrow();
+        try {
+            FileUtil.createDirectoriesSafe(savePath.getParent());
+            try (Writer writer = Files.newBufferedWriter(savePath, StandardCharsets.UTF_8)) {
+                gson.toJson(element, gson.newJsonWriter(writer));
+            }
+        } catch (JsonIOException | IOException ioexception) {
+            Confluence.LOGGER.error("Couldn't save confluence achievements to {}", savePath, ioexception);
+        }
+    }
 
     public static ResourceLocation asAchievement(String path) {
         return Confluence.asResource(PREFIX + path);
     }
 
+    public static String asPath(ResourceLocation achievement) {
+        return achievement.getPath().substring(PREFIX.length());
+    }
+
     public static boolean achievedAchievement(ServerPlayer player, String path) {
-        if (LibUtils.getOrCreatePersistedData(player).getBoolean(Confluence.asPlainId(path))) return true;
+        if (LibUtils.getOrCreatePersistedData(player).getBoolean(Confluence.asPlainId(path))) {
+            return true;
+        }
         AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
         return advancement != null && player.getAdvancements().getOrStartProgress(advancement).isDone();
     }

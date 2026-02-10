@@ -163,7 +163,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.witch_doctor.desc", "It's unusual for a Lihzahrd to be outside the Temple. Even more unusual are the voodoo things he sells. He prefers his jungle digs.");
         add("bestiary.entity.terra_entity.mechanic.desc", "The Mechanic was imprisoned for her aptitude in engineering. She sells wiring and tools for putting together anything imaginable.");
         add("bestiary.entity.terra_entity.clothier.desc", "Once trapped under a curse, the Clothier is the master of thread. If it's fashion that's desired, he's the man! He talks in a familiar way.");
-//        add("bestiary.entity.terra_entity.wizard.desc", "The Wizard is an absent-minded, demented old man who dabbles in the arcane arts. He sells magical trinkets to train new apprentices.");
+        add("bestiary.entity.terra_entity.wizard.desc", "The Wizard is an absent-minded, demented old man who dabbles in the arcane arts. He sells magical trinkets to train new apprentices.");
 //        add("bestiary.entity.terra_entity.steampunker.desc", "The Steampunker has a particular taste for steam-fueled machinery and gadgets. She sells her gizmos with an endearing accent.");
 //        add("bestiary.entity.terra_entity.pirate.desc", "Ahoy! The only good Pirate Captain is... one that sells cannons and weapons to take out all competing Pirate Captains!");
         add("bestiary.entity.terra_entity.truffle.desc", "Harnessing the hidden power of the glowing mushroom, the Truffle forges weapons and tools exclusively in his mushroom home.");
@@ -947,7 +947,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.witch_doctor.desc", "丛林蜥蜴待在神庙之外可不寻常。更不寻常的是他出售的巫毒物品。他更喜欢他在丛林的家。");
         add("bestiary.entity.terra_entity.mechanic.desc", "机械师因在工程方面的才能而被监禁。她出售电线和工具，用来组装任何可以想象的东西。");
         add("bestiary.entity.terra_entity.clothier.desc", "服装商曾被诅咒所困，是当之无愧的针线大师。若你追求时尚，找他准没错！他说话的语气十分随和。");
-//        add("bestiary.entity.terra_entity.wizard.desc", "巫师是个精神恍惚又有些癫狂的健忘老人，醉心于奥术研究。他售卖魔法小饰品，以此培养新的学徒。");
+        add("bestiary.entity.terra_entity.wizard.desc", "巫师是个精神恍惚又有些癫狂的健忘老人，醉心于奥术研究。他售卖魔法小饰品，以此培养新的学徒。");
 //        add("bestiary.entity.terra_entity.steampunker.desc", "蒸汽朋克人对蒸汽驱动的机械与装置情有独钟。她带着可爱的口音，售卖自己发明的各类小玩意儿。");
 //        add("bestiary.entity.terra_entity.pirate.desc", "喂！唯一像样的海盗船长是……那种卖大炮和武器，用来干掉所有竞争对手船长的人！");
         add("bestiary.entity.terra_entity.truffle.desc", "松露人能驾驭发光蘑菇的隐藏力量，只在自己的蘑菇屋里打造武器与工具。");

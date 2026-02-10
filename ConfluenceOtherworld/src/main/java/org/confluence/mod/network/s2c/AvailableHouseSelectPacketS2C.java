@@ -45,8 +45,7 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPac
                     TENpcEntities.CLOTHIER.get(),
                     TENpcEntities.MECHANIC.get(),
                     TENpcEntities.GOBLIN_TINKERER.get(),
-
-                    null,
+                    TENpcEntities.WIZARD.get(),
                     null,
                     TENpcEntities.TRUFFLE.get(),
                     null,

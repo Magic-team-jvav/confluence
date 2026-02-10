@@ -566,6 +566,9 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TENpcEntities.TRUFFLE, Map.of(
                         GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
                 ))
+                .add(TENpcEntities.WIZARD, Map.of(
+                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
+                ))
         // MC原版友好生物
 //                .add(EntityType.ALLAY.builtInRegistryHolder(), Map.of(
 //                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH

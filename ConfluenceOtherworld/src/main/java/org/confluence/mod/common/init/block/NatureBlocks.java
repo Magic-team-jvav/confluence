@@ -63,6 +63,7 @@ public class NatureBlocks {
 
     // 环境辅助
     public static final DeferredBlock<ThinIceBlock> THIN_ICE_BLOCK = registerWithItem("thin_ice_block", ThinIceBlock::new);
+    public static final DeferredBlock<TaperedTwoPartBlock> ICE_TAPERED_BLOCK = registerWithItem("ice_tapered_block", TaperedTwoPartBlock::new);
     public static final DeferredBlock<Block> HARDENED_SAND_BLOCK = registerWithItem("hardened_sand_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.SAND)));
     public static final DeferredBlock<MoistSandBlock> MOISTENED_SAND_BLOCK = registerWithItem("moistened_sand_block", () -> new MoistSandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.SAND), Blocks.SAND));
     public static final DeferredBlock<Block> HARDENED_RED_SAND_BLOCK = registerWithItem("hardened_red_sand_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
@@ -79,8 +80,9 @@ public class NatureBlocks {
     public static final Supplier<BlockEntityType<LifeCrystalBlock.BEntity>> LIFE_CRYSTAL_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("life_crystal_block_entity", () -> BlockEntityType.Builder.of(LifeCrystalBlock.BEntity::new, LIFE_CRYSTAL_BLOCK.get()).build(DSL.remainderType()));
 
     public static final DeferredBlock<Block> GRANITE = registerWithItem("granite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
+    public static final DeferredBlock<TaperedTwoPartBlock> GRANITE_TAPERED_BLOCK = registerWithItem("granite_tapered_block", TaperedTwoPartBlock::new);
     public static final DeferredBlock<Block> MARBLE = registerWithItem("marble", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
-
+    public static final DeferredBlock<TaperedTwoPartBlock> MARBLE_TAPERED_BLOCK = registerWithItem("marble_tapered_block", TaperedTwoPartBlock::new);
     public static final DeferredBlock<MushroomBlock> LIFE_MUSHROOM = registerWithoutItem("life_mushroom", () -> new MushroomBlock(ISpreadable.Type.PURE, Blocks.GRASS_BLOCK)); // 生命蘑菇
 
     // 腐化
@@ -101,6 +103,8 @@ public class NatureBlocks {
     public static final DeferredBlock<JungleGrassBlock> CORRUPT_JUNGLE_GRASS_BLOCK = registerWithItem("corrupt_jungle_grass_block", () -> new JungleGrassBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_PURPLE))); // 腐化丛林草
     public static final DeferredBlock<ShadowOrbBlock> SHADOW_ORB = registerWithoutItem("shadow_orb", ShadowOrbBlock::new);
     public static final DeferredBlock<EvilCactusBlock> CORRUPT_CACTUS = registerWithItem("corrupt_cactus", () -> new EvilCactusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).mapColor(MapColor.COLOR_CYAN)));
+    public static final DeferredBlock<TaperedTwoPartBlock> CORRUPT_TAPERED_BLOCK = registerWithItem("corrupt_tapered_block", TaperedTwoPartBlock::new);
+
     // 神圣
     public static final DeferredBlock<SpreadingGrassBlock> HALLOW_GRASS_BLOCK = registerWithItem("hallow_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_CYAN)));
     public static final DeferredBlock<BasePlantBlock> HALLOW_GRASS = registerWithItem("hallow_grass", () -> new BasePlantBlock(HALLOW_GRASS_BLOCK.get())); // 神圣草
@@ -117,6 +121,8 @@ public class NatureBlocks {
     public static final DeferredBlock<AmethystClusterBlock> CRYSTAL_SHARDS = registerWithoutItem("crystal_shards", () -> new AmethystClusterBlock(7.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PINK).lightLevel(state -> 7)));
     public static final DeferredBlock<AmethystClusterBlock> GELATIN_CRYSTAL = registerWithoutItem("gelatin_crystal", () -> new AmethystClusterBlock(7.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PINK).lightLevel(state -> 9)));
     public static final DeferredBlock<EvilCactusBlock> HALLOW_CACTUS = registerWithItem("hallow_cactus", () -> new EvilCactusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).mapColor(MapColor.COLOR_CYAN)));
+    public static final DeferredBlock<TaperedTwoPartBlock> HALLOW_TAPERED_BLOCK = registerWithItem("hallow_tapered_block", TaperedTwoPartBlock::new);
+
 
     // 猩红
     public static final DeferredBlock<SpreadingGrassBlock> CRIMSON_GRASS_BLOCK = registerWithItem("crimson_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_RED)));
@@ -136,6 +142,7 @@ public class NatureBlocks {
     public static final DeferredBlock<SpreadingIceBlock> RED_PACKED_ICE = registerWithItem("red_packed_ice", () -> new SpreadingIceBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).mapColor(MapColor.COLOR_RED)));
     public static final DeferredBlock<CrimsonHeartBlock> CRIMSON_HEART = registerWithoutItem("crimson_heart", CrimsonHeartBlock::new);
     public static final DeferredBlock<EvilCactusBlock> CRIMSON_CACTUS = registerWithItem("crimson_cactus", () -> new EvilCactusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).mapColor(MapColor.COLOR_RED)));
+    public static final DeferredBlock<TaperedTwoPartBlock> CRIMSON_TAPERED_BLOCK = registerWithItem("crimson_tapered_block", TaperedTwoPartBlock::new);
 
     // 蘑菇地
     public static final DeferredBlock<MushroomGrassBlock> MUSHROOM_GRASS_BLOCK = registerWithItem("mushroom_grass_block", MushroomGrassBlock::new);

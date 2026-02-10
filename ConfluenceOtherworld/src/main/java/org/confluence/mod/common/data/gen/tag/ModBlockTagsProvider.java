@@ -417,6 +417,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CRYSTAL_SHARDS.get(),
                 GELATIN_CRYSTAL.get(),
 
+                ICE_TAPERED_BLOCK.get(),
+                DESERT_TAPERED_BLOCK.get(),
+                MARBLE_TAPERED_BLOCK.get(),
+                GRANITE_TAPERED_BLOCK.get(),
+                CORRUPT_TAPERED_BLOCK.get(),
+                CRIMSON_TAPERED_BLOCK.get(),
+                HALLOW_TAPERED_BLOCK.get(),
+
                 AMMO_BOX.get(),
                 BEWITCHING_TABLE.get(),
                 SHARPENING_STATION.get(),
@@ -746,8 +754,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 STURDY_FOSSIL_BLOCK.get(),
                 COLD_CRYSTAL_BLOCK.get(),
 
-                HANGING_MYCELIUM.get(),
-                MYCELIAL_DIRT.get(),
+                ICE_TAPERED_BLOCK.get(),
+                DESERT_TAPERED_BLOCK.get(),
+                MARBLE_TAPERED_BLOCK.get(),
+                GRANITE_TAPERED_BLOCK.get(),
 
                 HEART_LANTERN.get(),
                 STAR_IN_A_BOTTLE.get(),
@@ -807,7 +817,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HELLSTONE_BLOCK.get(),
                 RAW_HELLSTONE_BLOCK.get(),
                 ASH_HELLSTONE.get(),
-                HELLSTONE_BRICKS.get()
+                HELLSTONE_BRICKS.get(),
+                CORRUPT_TAPERED_BLOCK.get(),
+                CRIMSON_TAPERED_BLOCK.get(),
+                HALLOW_TAPERED_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_5_LEVEL).addTags(
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_COBALT,

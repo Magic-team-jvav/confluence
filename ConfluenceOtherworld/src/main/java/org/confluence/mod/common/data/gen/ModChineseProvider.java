@@ -1829,6 +1829,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CORRUPTED_OVARIES_BLOCK.get(), "腐化卵巢");
         add(NatureBlocks.SHIMMER_CRYSTALS_BLOCK.get(), "以太结晶");
         add(NatureBlocks.DESERT_TAPERED_BLOCK.get(), "沙漠石笋");
+        add(NatureBlocks.CORRUPT_TAPERED_BLOCK.get(), "腐化石笋");
+        add(NatureBlocks.CRIMSON_TAPERED_BLOCK.get(), "猩红石笋");
+        add(NatureBlocks.HALLOW_TAPERED_BLOCK.get(), "神圣石笋");
+        add(NatureBlocks.ICE_TAPERED_BLOCK.get(), "冰锥");
+        add(NatureBlocks.MARBLE_TAPERED_BLOCK.get(), "大理石笋");
+        add(NatureBlocks.GRANITE_TAPERED_BLOCK.get(), "花岗岩石笋");
         add(NatureBlocks.SMALL_DESERT_PLANT.get(), "小型沙漠植株");
         add(NatureBlocks.BIG_DESERT_PLANT.get(), "大型沙漠植株");
         add(NatureBlocks.SMALL_CACTUS.get(), "小型仙人掌");
@@ -2028,6 +2034,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.AETHERIUM_BRICKS.get(), "以太砖");
         add(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get(), "云块蹦床");
         add(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get(), "弹力云块");
+        add(DecorativeBlocks.STAR_CLOUD_BLOCK.get(), "星星云");
         add(DecorativeBlocks.CRISPY_HONEY_BLOCK.get(), "松脆蜂蜜块");
         add(DecorativeBlocks.CRACKED_BLUE_BRICKS.get(), "碎裂蓝色地牢砖");
         add(DecorativeBlocks.CRACKED_GREEN_BRICKS.get(), "碎裂绿色地牢砖");

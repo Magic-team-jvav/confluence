@@ -112,6 +112,16 @@ public class DecorativeBlocks {
             .isValidSpawn(Blocks::never)
             .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
             .isSuffocating((blockState, blockGetter, blockPos) -> false)));
+    public static final DeferredBlock<CloudBlock> STAR_CLOUD_BLOCK = registerWithItem("star_cloud_block", () -> new CloudBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_WHITE)
+            .mapColor(MapColor.SNOW)
+            .strength(0.3F)
+            .sound(SoundType.SNOW)
+            .noOcclusion()
+            .lightLevel(state -> 11)
+            .isValidSpawn(Blocks::never)
+            .isRedstoneConductor((blockState, blockGetter, blockPos) -> false)
+            .isSuffocating((blockState, blockGetter, blockPos) -> false)));
     // 石中剑
     public static final DeferredBlock<SwordInStoneBlock> SWORD_IN_STONE = registerWithItem("sword_in_stone", SwordInStoneBlock::new);
 

@@ -1248,7 +1248,7 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPIKED_ICE_SLIME.get(), 130, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_SLIME.get(), 15, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_MIMIC.get(), 2, 1, 1)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_MIMIC.get(), 6, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_jungle"), new BiomeModifiers.AddSpawnsBiomeModifier(

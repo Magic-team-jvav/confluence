@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "vertical_direction=up,stalagmite_thickness=base": {
+      "model": "confluence:block/hallow_tapered_block_base"
+    },
+    "vertical_direction=up,stalagmite_thickness=tip_single": {
+      "model": "confluence:block/hallow_tapered_block_tip_single"
+    },
+    "vertical_direction=up,stalagmite_thickness=tip_merge": {
+      "model": "confluence:block/hallow_tapered_block_tip_merge"
+    },
+    "vertical_direction=down,stalagmite_thickness=base": {
+      "model": "confluence:block/hallow_tapered_block_base",
+      "x": 180,
+      "uvlock": false
+    },
+    "vertical_direction=down,stalagmite_thickness=tip_single": {
+      "model": "confluence:block/hallow_tapered_block_tip_single",
+      "x": 180,
+      "uvlock": false
+    },
+    "vertical_direction=down,stalagmite_thickness=tip_merge": {
+      "model": "confluence:block/hallow_tapered_block_tip_merge",
+      "x": 180,
+      "uvlock": false
+    }
+  }
+}

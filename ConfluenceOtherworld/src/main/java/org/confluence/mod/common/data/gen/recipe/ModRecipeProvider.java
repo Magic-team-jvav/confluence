@@ -206,6 +206,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
+        skyMill(recipeOutput, DecorativeBlocks.STAR_CLOUD_BLOCK.toStack(10), Ingredient.of(MaterialItems.FALLING_STAR), AmountIngredient.of(10,NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE));
         skyMill(recipeOutput, DecorativeBlocks.DISC_BLOCK.toStack(4), Ingredient.of(DecorativeBlocks.SUN_PLATE));
         skyMill(recipeOutput, DecorativeBlocks.SKYWARE_DOOR.toStack(), AmountIngredient.of(2, DecorativeBlocks.SUN_PLATE));

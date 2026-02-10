@@ -1128,27 +1128,29 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.window.69", "Confluence: Also try Don't Starve!");
         add("title.confluence.window.70", "Confluence: Fusion Rise!");
 
-        //Special world seeds
-        add("title.confluence.secret_seeds_selection.normal", "Normal World");
-        add("description.confluence.secret_seeds_selection.normal", "The otherworld of confluence and exchange — this time, your journey is intertwined with the fates of two worlds as one. Embark on your adventure and explore the merged world!");
-        add("title.confluence.secret_seeds_selection.drunk_world", "Drunk World");
-        add("description.confluence.secret_seeds_selection.drunk_world", "Crimson and Corruption? Both appearing at once? Only madness! This time, the confluence has plunged the world into utter chaos, bringing an adventure like no other! Sink into it, world — you're drunk!");
-        add("title.confluence.secret_seeds_selection.not_the_bees", "Not The Bees!");
-        add("description.confluence.secret_seeds_selection.not_the_bees", "Step into a continent shrouded in cloyingly sweet honeyed fragrance, where the hum of wings and the threat of venomous stings lurk around every corner! (Wicker helmets excluded)");
+        // Special world seeds
+        add("title.confluence.secret_seeds_selection.empty", "Info");
+        add("description.confluence.secret_seeds_selection.empty", "Please choose how your world will be built with the options above.");
+        add("title.confluence.secret_seeds_selection.normal", "Normal");
+        add("description.confluence.secret_seeds_selection.normal", "Welcome to Confluence! Embark on your adventures with the original Terraria experience and gameplay.");
+        add("title.confluence.secret_seeds_selection.drunk_world", "Drunk");
+        add("description.confluence.secret_seeds_selection.drunk_world", "Crimson & Corruption? Together? Madness. This is the land of world generation gone wild, leading to a Terraria adventure like no other! Go home worldgen, you are drunk!");
+        add("title.confluence.secret_seeds_selection.not_the_bees", "Not The Bees");
+        add("description.confluence.secret_seeds_selection.not_the_bees", "Enter a land oozing with syrupy honey, where the buzzing of wings and thr threat of venomous singers awaits around every turn! (Wicker helmet not included)");
         add("title.confluence.secret_seeds_selection.for_the_worthy", "For The Worthy");
-        add("description.confluence.secret_seeds_selection.for_the_worthy", "Are you a brave one? This is a world without mercy. Forget everything you know and hone your skills, lest you be scrutinized, measured, and found wanting.");
-        add("title.confluence.secret_seeds_selection.celebrationmk10", "Celebrationmk10");
-        add("description.confluence.secret_seeds_selection.celebrationmk10", "Terraria's 10th Anniversary! Celebrate together in this vibrant and fantastical world — who knows, maybe the team left some gifts waiting for you to unwrap.");
+        add("description.confluence.secret_seeds_selection.for_the_worthy", "Are you Worthy? This is a world of no mercy Forget what you know and sharpen your skills, lest you be weighed, measured, and found wanting...");
+        add("title.confluence.secret_seeds_selection.celebrationmk10", "Celebration MK 10");
+        add("description.confluence.secret_seeds_selection.celebrationmk10", "10 years of Terraria! Join the party in this colorful world of whimsy - who knows, maybe the team left some gifts behind for you to open.");
         add("title.confluence.secret_seeds_selection.the_constant", "The Constant");
-        add("description.confluence.secret_seeds_selection.the_constant", "Blend Don't Starve's adventures into Terraria and Minecraft! Can you overcome the constant hunger while finding a way to save the world? Oh, and don't forget to stay in the light!");
-        add("title.confluence.secret_seeds_selection.dont_dig_up", "Don't Dig Up");
-        add("description.confluence.secret_seeds_selection.dont_dig_up", "Born in the Nether, then explore a world turned upside down! In this reversed adventure, can you see the light of day again?");
+        add("description.confluence.secret_seeds_selection.the_constant", "Bringing the Don't Starve Together adventure into Terraria, can you survive persistent hunger as you seek to save Minecraft? Oh, and don't forget to stay in the light!");
+        add("title.confluence.secret_seeds_selection.dont_dig_up", "Remix");
+        add("description.confluence.secret_seeds_selection.dont_dig_up", "A land where up is down and down is up. Turn Minecraft on its head in this inverted adventure. Will you be brave enough to explore The Up?");
         add("title.confluence.secret_seeds_selection.no_traps", "No Traps");
-        add("description.confluence.secret_seeds_selection.no_traps", "Whoa, traps — you hate 'em, I hate 'em! This world has definitely had all traps removed... should have, anyway. Maybe.");
-        add("title.confluence.secret_seeds_selection.get_fixed_boi", "Get Fixed Boi");
-        add("description.confluence.secret_seeds_selection.get_fixed_boi", "This world is just like the Zenith Sword! It blends the main features of all other seeds! Plus a few unexpected twists — it's built to beat you. Prepare to die, buddy!");
+        add("description.confluence.secret_seeds_selection.no_traps", "Whoa, Traps. Ya hate 'em, right? I hate them myself! This world has definitely been stripped of any and all traps... we think. Maybe.");
+        add("title.confluence.secret_seeds_selection.get_fixed_boi", "Zenith");
+        add("description.confluence.secret_seeds_selection.get_fixed_boi", "For the Worthy wasn't enough? Featuring aspects of every other world seed combined with some brand new surprises, this world is here to break you. Get Fixed, boi!");
         add("title.confluence.secret_seeds_selection.skyblock", "Skyblock");
-        add("description.confluence.secret_seeds_selection.skyblock", "Step into this realm floating high in the sky. With meager starting resources, you must build your world from scratch, step by step.");
+        add("description.confluence.secret_seeds_selection.skyblock", "Enter a realm floating in the sky. With little to start with, you must build up your world from humble beginnings.");
         add("title.confluence.secret_seeds_selection.boulder_world", "Boulder World");
         add("description.confluence.secret_seeds_selection.boulder_world", "You know what? The world is actually one giant boulder. So everything in the world is a boulder.");
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));

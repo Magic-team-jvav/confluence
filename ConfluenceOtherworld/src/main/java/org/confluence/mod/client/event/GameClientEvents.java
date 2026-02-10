@@ -54,6 +54,7 @@ import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
+import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.client.handler.*;
@@ -154,6 +155,7 @@ public final class GameClientEvents {
             }
         }
         DeathAnimUtils.clearPending();
+        BackgroundLayer.tickLayers();
     }
 
     @SubscribeEvent

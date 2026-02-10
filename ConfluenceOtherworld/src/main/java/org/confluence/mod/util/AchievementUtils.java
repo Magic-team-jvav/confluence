@@ -2,8 +2,6 @@ package org.confluence.mod.util;
 
 import com.google.common.collect.Streams;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
@@ -59,7 +57,6 @@ import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_AR
 public final class AchievementUtils {
     public static final String PREFIX = "achievements/";
     public static final Path CONFLUENCE_ACHIEVEMENTS_DIR = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("achievements");
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final StreamCodec<FriendlyByteBuf, PlayerAdvancements.Data> DATA_STREAM_CODEC = new StreamCodec<>() {
         @Override
         public PlayerAdvancements.Data decode(FriendlyByteBuf buffer) {
@@ -119,16 +116,15 @@ public final class AchievementUtils {
     public static void saveData(Player player) {
         if (data == null) return;
         Path path = AchievementUtils.CONFLUENCE_ACHIEVEMENTS_DIR.resolve(player.getUUID() + ".json");
-        saveData(data, path, GSON, getCodecClientOnly());
+        saveData(data, path, ModUtils.GSON, getCodecClientOnly());
         data = null;
     }
 
     public static void saveData(PlayerAdvancements.Data data, Path savePath, Gson gson, Codec<PlayerAdvancements.Data> codec) {
-        JsonElement element = codec.encodeStart(JsonOps.INSTANCE, data).getOrThrow();
         try {
             FileUtil.createDirectoriesSafe(savePath.getParent());
             try (Writer writer = Files.newBufferedWriter(savePath, StandardCharsets.UTF_8)) {
-                gson.toJson(element, gson.newJsonWriter(writer));
+                gson.toJson(codec.encodeStart(JsonOps.INSTANCE, data).getOrThrow(), gson.newJsonWriter(writer));
             }
         } catch (JsonIOException | IOException ioexception) {
             Confluence.LOGGER.error("Couldn't save confluence achievements to {}", savePath, ioexception);

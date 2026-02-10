@@ -3,6 +3,8 @@ package org.confluence.mod.common.init;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.ObjectBooleanImmutablePair;
 import it.unimi.dsi.fastutil.objects.ObjectBooleanPair;
+import it.unimi.dsi.fastutil.objects.ObjectLongImmutablePair;
+import it.unimi.dsi.fastutil.objects.ObjectLongPair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import org.confluence.mod.Confluence;
@@ -45,6 +47,12 @@ public final class ModSecretSeeds {
         return secretSeed;
     }
 
+    public static ObjectBooleanPair<WorldOptions> matchSeed(String seed, WorldOptions worldOptions) {
+        ObjectLongPair<OptionalLong> pair = tryMatch(seed, VALUES);
+        IWorldOptions.of(worldOptions).confluence$withSecretFlag(pair.rightLong());
+        return new ObjectBooleanImmutablePair<>(worldOptions.withSeed(OptionalLong.of(pair.key().orElseGet(WorldOptions::randomSeed))), pair.rightLong() != 0);
+    }
+
     /// 可以匹配
     ///
     /// secret seed
@@ -52,7 +60,7 @@ public final class ModSecretSeeds {
     /// secret seed 1 | secret seed 2 | (...)
     ///
     /// secret seed 1 | secret seed 2 | (...) | identifier
-    public static ObjectBooleanPair<WorldOptions> matchSeed(String seed, WorldOptions worldOptions) {
+    public static ObjectLongPair<OptionalLong> tryMatch(String seed, List<SecretSeed> seeds) {
         String[] split = seed.split("\\|");
         OptionalLong identifier = OptionalLong.empty();
         long flag = 0;
@@ -61,7 +69,7 @@ public final class ModSecretSeeds {
             boolean missmatchLast = true;
             for (int i = 0; i < split.length; i++) {
                 String s = split[i].trim().toLowerCase(Locale.ROOT);
-                for (SecretSeed secretSeed : VALUES) {
+                for (SecretSeed secretSeed : seeds) {
                     if (secretSeed.match(s)) {
                         flag |= secretSeed.getFlag();
                         if (i == endIndex) { // 如果是最后一个，先尝试进行匹配，匹配失败则作为标识符
@@ -78,15 +86,14 @@ public final class ModSecretSeeds {
             }
         } else {
             String s = seed.trim().toLowerCase(Locale.ROOT);
-            for (SecretSeed secretSeed : VALUES) {
+            for (SecretSeed secretSeed : seeds) {
                 if (secretSeed.match(s)) {
                     flag = secretSeed.getFlag();
                     break;
                 }
             }
         }
-        IWorldOptions.of(worldOptions).confluence$withSecretFlag(flag);
-        return new ObjectBooleanImmutablePair<>(worldOptions.withSeed(OptionalLong.of(identifier.orElseGet(WorldOptions::randomSeed))), flag != 0);
+        return new ObjectLongImmutablePair<>(identifier, flag);
     }
 
     public static long fixWorldOptions(long secretFlag, int lastVersion) {

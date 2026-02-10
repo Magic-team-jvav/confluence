@@ -1153,15 +1153,17 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.window.69", "汇流来世：也试试饥荒！");
         add("title.confluence.window.70", "汇流来世：融合升华！");
 
-        //Special world seeds
+        // Special world seeds
+        add("title.confluence.secret_seeds_selection.empty", "信息");
+        add("description.confluence.secret_seeds_selection.empty", "请选择上述选项来构建你的世界。");
         add("title.confluence.secret_seeds_selection.normal", "常规世界");
         add("description.confluence.secret_seeds_selection.normal", "交流汇合的来世，这次你的旅途与两个世界的命运重合与一体。开始冒险，在融合世界中探索吧！");
         add("title.confluence.secret_seeds_selection.drunk_world", "醉酒世界");
         add("description.confluence.secret_seeds_selection.drunk_world", "猩红加上腐化？两者一同出现？唯有疯狂！这次融合，世界陷入疯狂境地，带来一次绝无仅有的冒险！沉沦吧，世界，你喝醉了！");
-        add("title.confluence.secret_seeds_selection.not_the_bees", "不要蜜蜂");
-        add("description.confluence.secret_seeds_selection.not_the_bees", "进入一片弥漫着甜腻蜂香的大陆，在这里振翅声和有毒蛰刺的威胁潜伏在每一个角落!(不包括柳条头盔)");
+        add("title.confluence.secret_seeds_selection.not_the_bees", "蜜蜂之惧");
+        add("description.confluence.secret_seeds_selection.not_the_bees", "进入一片弥漫着甜腻蜂香的大陆，在这里嗡嗡振翅声和有毒蛰刺的威胁潜伏在每一个角落！（不包括柳条头盔）");
         add("title.confluence.secret_seeds_selection.for_the_worthy", "勇者之境");
-        add("description.confluence.secret_seeds_selection.for_the_worthy", "你是勇者吗?这是一个毫无怜悯的世界。忘记所知的一切并磨练技能，免得你被考察、衡量，并被发现不合格");
+        add("description.confluence.secret_seeds_selection.for_the_worthy", "你是勇者吗？这是一个毫无怜悯的世界。忘记所知的一切并磨练技能，免得你被考察、衡量，并被发现不合格……");
         add("title.confluence.secret_seeds_selection.celebrationmk10", "十年庆典");
         add("description.confluence.secret_seeds_selection.celebrationmk10", "泰拉瑞亚十周年!在这个多姿多彩的奇幻世界中一起庆祝——谁知道呢，也许团队留下了一些礼物等你拆开。");
         add("title.confluence.secret_seeds_selection.the_constant", "永恒之域");

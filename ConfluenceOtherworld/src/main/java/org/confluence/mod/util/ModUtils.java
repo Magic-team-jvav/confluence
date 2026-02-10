@@ -1,5 +1,7 @@
 package org.confluence.mod.util;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -86,6 +88,7 @@ import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
 public final class ModUtils {
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {
         int copper_count = amount % UPGRADES_COUNT;

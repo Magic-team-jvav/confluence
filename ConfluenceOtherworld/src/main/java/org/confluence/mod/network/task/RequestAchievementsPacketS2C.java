@@ -1,6 +1,5 @@
 package org.confluence.mod.network.task;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 import com.google.gson.internal.Streams;
@@ -38,8 +37,7 @@ public final class RequestAchievementsPacketS2C implements IPacketS2C {
         if (Files.isRegularFile(path)) {
             try (JsonReader reader = new JsonReader(Files.newBufferedReader(path, StandardCharsets.UTF_8))) {
                 reader.setLenient(false);
-                JsonElement element = Streams.parse(reader);
-                data = AchievementUtils.getCodecClientOnly().parse(JsonOps.INSTANCE, element).getOrThrow(JsonParseException::new);
+                data = AchievementUtils.getCodecClientOnly().parse(JsonOps.INSTANCE, Streams.parse(reader)).getOrThrow(JsonParseException::new);
             } catch (JsonIOException | IOException ioexception) {
                 Confluence.LOGGER.error("Couldn't access confluence achievements in {}", path, ioexception);
             } catch (JsonParseException jsonParseException) {

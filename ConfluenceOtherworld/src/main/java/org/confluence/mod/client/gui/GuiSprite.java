@@ -5,17 +5,17 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 public class GuiSprite {
-    private final ResourceLocation path;
-    private final int textureW;
-    private final int textureH;
-    private final int u;
-    private final int v;
-    private final int w;
-    private final int h;
-    private int x;
-    private int y;
+    protected final ResourceLocation path;
+    protected final int textureW;
+    protected final int textureH;
+    protected final int u;
+    protected final int v;
+    protected final int w;
+    protected final int h;
+    protected int x;
+    protected int y;
 
-    private @Nullable GuiSprite hovered;
+    protected @Nullable GuiSprite hovered;
 
     public GuiSprite(ResourceLocation path, int width, int height) {
         this(path, width, height, 0, 0, width, height);
@@ -98,6 +98,10 @@ public class GuiSprite {
 
     public void render(GuiGraphics guiGraphics) {
         guiGraphics.blitSprite(path, textureW, textureH, u, v, x, y, 0, w, h);
+    }
+
+    public void render(GuiGraphics guiGraphics, float partialTick) {
+        render(guiGraphics);
     }
 
     public boolean isHovered(double mouseX, double mouseY) {

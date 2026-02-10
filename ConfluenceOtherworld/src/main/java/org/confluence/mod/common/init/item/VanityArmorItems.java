@@ -1,14 +1,19 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.Holder;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.armor.ModArmorMaterials;
 import org.confluence.mod.common.item.armor.BaseVanityArmorItem;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 
@@ -53,7 +58,17 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> THE_DOCTORS_SHIRT = registerVanityArmor("the_doctors_shirt", "vanity_armor/the_doctors_shirt", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> THE_DOCTORS_PANTS = registerVanityArmor("the_doctors_pants", "vanity_armor/the_doctors_pants", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> THE_DOCTORS_SHOES = registerVanityArmor("the_doctors_shoes", "vanity_armor/the_doctors_shoes", ArmorItem.Type.BOOTS, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> DEAD_MANS_SWEATER = registerVanityArmor("dead_mans_seater", "vanity_armor/dead_mans_seater", ArmorItem.Type.CHESTPLATE, ModRarity.GREEN);
+    public static final DeferredItem<BaseVanityArmorItem> DEAD_MANS_SWEATER = registerAttributeVanityArmor(
+            "dead_mans_seater",
+            "vanity_armor/dead_mans_seater",
+            ModArmorMaterials.VANITY_ARMOR_MATERIALS,
+            ArmorItem.Type.CHESTPLATE,
+            ModRarity.GREEN,
+            Attributes.ARMOR,
+            4.0,
+            AttributeModifier.Operation.ADD_VALUE,
+            EquipmentSlotGroup.CHEST
+    );
     public static final DeferredItem<BaseVanityArmorItem> GUY_FAWKES_MASK = registerVanityArmor("guy_fawkes_mask", "vanity_armor/guy_fawkes_mask", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> GUY_FAWKES_HAT = registerVanityArmor("guy_fawkes_hat", "vanity_armor/guy_fawkes_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> GUY_FAWKES_MASK_SET = registerVanityArmor("guy_fawkes_mask_set", "vanity_armor/guy_fawkes_mask_set", ArmorItem.Type.HELMET, ModRarity.WHITE);
@@ -112,5 +127,15 @@ public class VanityArmorItems {
 
     private static DeferredItem<BaseVanityArmorItem> registerVanityArmor(String name, String geoName, Holder<ArmorMaterial> material, ArmorItem.Type type, Item.Properties properties, ModRarity rarity) {
         return ITEMS.register(name, () -> new BaseVanityArmorItem(geoName, material, type, properties, rarity));
+    }
+
+    private static DeferredItem<BaseVanityArmorItem> registerAttributeVanityArmor(String name, String geoName, Holder<ArmorMaterial> material, ArmorItem.Type type, ModRarity rarity, Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute, double amount, AttributeModifier.Operation operation, EquipmentSlotGroup slotGroup) {
+        return ITEMS.register(name, () -> {
+            ItemAttributeModifiers attributes = ItemAttributeModifiers.builder()
+                    .add(attribute,
+                            new AttributeModifier(Confluence.asResource(name + "_modifier"), amount, operation), slotGroup)
+                    .build();
+            return new BaseVanityArmorItem(geoName, material, type, new Item.Properties().attributes(attributes), rarity);
+        });
     }
 }

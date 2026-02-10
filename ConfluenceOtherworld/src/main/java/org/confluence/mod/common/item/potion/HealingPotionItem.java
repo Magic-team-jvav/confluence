@@ -12,10 +12,12 @@ import org.confluence.mod.common.init.ModEffects;
 
 public class HealingPotionItem extends AbstractPotionItem {
     private final int amount;
+    private final int sickNessDuration;
 
-    public HealingPotionItem(int amount, ModRarity rarity) {
+    public HealingPotionItem(int amount, ModRarity rarity, int sickNessDuration) {
         super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.amount = amount;
+        this.sickNessDuration = sickNessDuration;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class HealingPotionItem extends AbstractPotionItem {
     protected void apply(ItemStack itemStack, Level level, LivingEntity living) {
         if (level.isClientSide) return;
         living.heal(amount);
-        PotionSicknessEffect.addTo(living, 1200);
+        PotionSicknessEffect.addTo(living, sickNessDuration);
     }
 
     public static void use(Player player) {

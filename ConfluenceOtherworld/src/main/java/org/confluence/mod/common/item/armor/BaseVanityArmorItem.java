@@ -4,6 +4,7 @@ import com.google.common.base.Suppliers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,6 +17,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
 import org.confluence.mod.common.init.armor.ModArmorMaterials;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -41,11 +43,17 @@ public class BaseVanityArmorItem extends BaseArmorItem implements GeoItem {
     public BaseVanityArmorItem(String name, Holder<ArmorMaterial> material, ArmorItem.Type type, Properties properties, ModRarity rarity) {
         super(material, type, properties.stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.name = name;
-        this.defaultModifiers = Suppliers.memoize(() -> new ItemAttributeModifiers(Collections.emptyList(), false));
+        ItemAttributeModifiers modifiersFromProperties = this.components().get(DataComponents.ATTRIBUTE_MODIFIERS);
+        this.defaultModifiers = Suppliers.memoize(() -> {
+            if (modifiersFromProperties != null && !modifiersFromProperties.modifiers().isEmpty()) {
+                return modifiersFromProperties;
+            }
+            return new ItemAttributeModifiers(Collections.emptyList(), false);
+        });
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
+    public boolean isEnchantable(@NotNull ItemStack stack) {
         return false;
     }
 

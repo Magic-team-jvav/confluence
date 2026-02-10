@@ -85,6 +85,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CRISPY_HONEY_BLOCK.get()
         );
         tag(BlockTags.RAILS).add(EVER_POWERED_RAIL.get());
+        tag(BlockTags.WOOL).add(FLINX_FUR_BLOCK.get(),COLORED_WOOL.get());
+        tag(BlockTags.WOOL_CARPETS).add(FLINX_FUR_CARPET.get(),COLORED_CARPET.get());
 
         tag(BlockTags.DIRT).add(
                 CORRUPT_GRASS_BLOCK.get(),

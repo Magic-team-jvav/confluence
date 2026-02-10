@@ -713,6 +713,18 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "///"
         )), new ItemStack(Items.PAPER, 3));
+
+        // 地毯
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.COLORED_WOOL)
+        ), List.of(
+                "##"
+        )), DecorativeBlocks.COLORED_CARPET.toStack(3));
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.FLINX_FUR_BLOCK)
+        ), List.of(
+                "##"
+        )), DecorativeBlocks.FLINX_FUR_CARPET.toStack(3));
         // 便捷合成，无序合成
         shapeless(output, "", "_from_raw_copper",
                 new ItemStack(Items.COPPER_INGOT),
@@ -780,6 +792,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ConsumableItems.MANA_CRYSTAL.toStack(), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR));
         shapeless(output, MaterialItems.FALLING_STAR.toStack(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));
         shapeless(output, FoodItems.CLOUD_DOUGH.toStack(), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
+        shapeless(output, DecorativeBlocks.FLINX_FUR_BLOCK.toStack(20), Ingredient.of(MaterialItems.FLINX_FUR));
+
         //生鱼片
         shapeless(output, "", "_from_partial_mouth_fish",
                 FoodItems.SASHIMI.toStack(),

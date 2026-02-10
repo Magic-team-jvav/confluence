@@ -455,6 +455,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         dropSelf(ASPHALT_BLOCK.get());
 
+        dropSelf(FLINX_FUR_BLOCK.get());
+        dropSelf(FLINX_FUR_CARPET.get());
+        dropSelf(COLORED_WOOL.get());
+        dropSelf(COLORED_CARPET.get());
+
         dropSelf(CHISELED_OBSIDIAN_BRICKS.get());
         dropSelf(BLUE_BRICKS.get());
         dropSelf(GREEN_BRICKS.get());

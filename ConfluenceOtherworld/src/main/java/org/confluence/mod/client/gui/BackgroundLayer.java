@@ -131,11 +131,13 @@ public enum BackgroundLayer {
         public boolean clicked(double mouseX, double mouseY) {
             if (sunPos.distance((float) mouseX, (float) mouseY) < sunSize) {
                 this.draggedSun = true;
+                sunPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
                 return true;
             }
             if (moonPos.distance((float) mouseX, (float) mouseY) < moonSize) {
                 this.draggedMoon = true;
+                moonPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
                 return true;
             }
@@ -145,11 +147,11 @@ public enum BackgroundLayer {
         @Override
         public boolean drag(double mouseX, double mouseY, double dragX, double dragY) {
             if (draggedSun) {
-                sunPos.add((float) dragX, (float) dragY);
+                sunPos.set((float) mouseX, (float) mouseY);
                 return true;
             }
             if (draggedMoon) {
-                moonPos.add((float) dragX, (float) dragY);
+                moonPos.set((float) mouseX, (float) mouseY);
                 return true;
             }
             return false;

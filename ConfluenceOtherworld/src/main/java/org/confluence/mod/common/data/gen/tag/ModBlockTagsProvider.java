@@ -310,6 +310,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 LEAD_ANVIL.get(),
                 DAMAGED_LEAD_ANVIL.get(),
                 HEAVY_WORK_BENCH.get(),
+                CRYSTAL_BALL.get(),
                 DART_TRAP.get(),
                 STONE_DART_TRAP.get(),
                 DEEPSLATE_DART_TRAP.get(),
@@ -486,7 +487,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 POO.get(),
                 POO_BLOCK.get(),
                 HANGING_MYCELIUM.get(),
-                MYCELIAL_DIRT.get()
+                MYCELIAL_DIRT.get(),
+                CLOUD_BLOCK.get(),
+                RAIN_CLOUD_BLOCK.get(),
+                BOUNCY_CLOUD_BLOCK.get(),
+                SNOW_CLOUD_BLOCK.get(),
+                STAR_CLOUD_BLOCK.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);

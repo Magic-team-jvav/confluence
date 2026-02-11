@@ -371,7 +371,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.skeleton_headache.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
 //        add("bestiary.entity.terra_entity.skeleton_pantless.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
         add("bestiary.entity.terra_entity.crawdad.desc", "A subterranean form of crayfish which scuttles along the cavern floors, searching for prey to clip apart with its powerful pincers.");
-//        add("bestiary.entity.terra_entity.undead_miner.desc", "There's evidence of spelunkers having explored the caverns in the past... as well as evidence of them having died doing so.");
+        add("bestiary.entity.confluence.undead_miner.desc", "There's evidence of spelunkers having explored the caverns in the past... as well as evidence of them having died doing so.");
 //        add("bestiary.entity.terra_entity.skeleton_archer.desc", "Skeleton Archers have a keen eye, despite the general lack of eyes. Distance offers little protection from their blazing arrows.");
         add("bestiary.entity.terra_entity.nymph.desc", "Masterfully deceives explorers by posing as a lost girl, then attacks with ferocious might, blood-lust in her eyes.");
         add("bestiary.entity.terra_entity.armored_skeleton.desc", "Remnants of a long lost expeditionary force, these stout warriors mindlessly patrol the caves in which they died.");
@@ -1152,7 +1152,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.skeleton_headache.desc", "谁说非得有肌肉、皮肤甚至眼球？头痛骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
 //        add("bestiary.entity.terra_entity.skeleton_pantless.desc", "谁说非得有肌肉、皮肤甚至眼球？无裤骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
         add("bestiary.entity.terra_entity.crawdad.desc", "龙虾是生活在地下的螯虾品种，会沿着洞穴地面快速爬行，用有力的螯钳将猎物撕碎。");
-//        add("bestiary.entity.terra_entity.undead_miner.desc", "有证据表明，过去曾有洞穴探险者探索过这些洞穴……也有证据表明，他们在此过程中丧命。");
+        add("bestiary.entity.confluence.undead_miner.desc", "有证据表明，过去曾有洞穴探险者探索过这些洞穴……也有证据表明，他们在此过程中丧命。");
 //        add("bestiary.entity.terra_entity.skeleton_archer.desc", "尽管没有眼睛，骷髅弓箭手仍拥有敏锐的瞄准力，即便与它们保持距离，也难以躲避其燃烧的箭矢。");
         add("bestiary.entity.terra_entity.nymph.desc", "宁芙擅长伪装成迷路的女孩欺骗探险者，随后便会眼中带着嗜血的欲望，发起凶猛攻击。");
         add("bestiary.entity.terra_entity.armored_skeleton.desc", "装甲骷髅是早已覆灭的远征军残部，这些顽强的战士会在自己战死的洞穴中漫无目的地巡逻。");

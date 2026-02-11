@@ -33,6 +33,7 @@ import net.minecraft.world.level.levelgen.WorldOptions;
 import net.neoforged.fml.loading.FMLPaths;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
@@ -60,6 +61,11 @@ public class SecretSeedsSelectionScreen extends Screen {
             ModSecretSeeds.GET_FIXED_BOI,
             ModSecretSeeds.SKYBLOCK
     };
+    private static final Path UNLOCKED_SECRET_SEEDS_PATH = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("unlocked_secret_seeds.json");
+    private static final Codec<Set<SecretSeed>> UNLOCKED_SECRET_SEEDS_CODEC = ModSecretSeeds.CODEC.listOf().xmap(LinkedHashSet::new, ArrayList::new);
+    private static final SecretSeed[] SECRET_SEEDS = new SecretSeed[]{
+            ModSecretSeeds.BOULDER_WORLD
+    };
     private static final Long2ObjectArrayMap<Triple<ResourceLocation, Component, Component>> DESCRIPTIONS = Util.make(new Long2ObjectArrayMap<>(12), map -> {
         ResourceLocation normal = Confluence.asResource("textures/gui/secret_seeds_selection/world_icon/normal.png");
         map.defaultReturnValue(new ImmutableTriple<>(
@@ -85,12 +91,15 @@ public class SecretSeedsSelectionScreen extends Screen {
                     Component.translatable("description." + id.getNamespace() + ".secret_seeds_selection." + id.getPath())
             ));
         }
+        for (SecretSeed seed : SECRET_SEEDS) {
+            ResourceLocation id = seed.getId();
+            map.put(seed.getFlag(), new ImmutableTriple<>(
+                    Confluence.asResource("textures/gui/secret_seeds_selection/world_icon/" + id.getPath() + ".png"),
+                    CommonComponents.EMPTY,
+                    Component.translatable("description." + id.getNamespace() + ".secret_seeds_selection." + id.getPath())
+            ));
+        }
     });
-    private static final Path UNLOCKED_SECRET_SEEDS_PATH = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("unlocked_secret_seeds.json");
-    private static final Codec<Set<SecretSeed>> UNLOCKED_SECRET_SEEDS_CODEC = ModSecretSeeds.CODEC.listOf().xmap(LinkedHashSet::new, ArrayList::new);
-    private static final SecretSeed[] SECRET_SEEDS = new SecretSeed[]{
-            ModSecretSeeds.BOULDER_WORLD
-    };
     private final EditBox parentSeedEdit;
     private final WorldCreationUiState uiState;
     private int imageWidth;
@@ -131,8 +140,8 @@ public class SecretSeedsSelectionScreen extends Screen {
         seedEdit.setHint(Component.translatable("selectWorld.seedInfo"));
 
         this.selection = new Long2BooleanArrayMap(12);
-        selection.put(0, true);
         long flag = IWorldOptions.of(uiState.getSettings().options()).confluence$getSecretFlag();
+        selection.put(0, flag == 0);
         for (SecretSeed seed : SPECIAL_SEEDS) {
             selection.put(seed.getFlag(), seed.match(flag));
         }
@@ -142,7 +151,7 @@ public class SecretSeedsSelectionScreen extends Screen {
                 reader.setLenient(false);
                 Set<SecretSeed> set = UNLOCKED_SECRET_SEEDS_CODEC.parse(JsonOps.INSTANCE, Streams.parse(reader)).getOrThrow(JsonParseException::new);
                 Object2BooleanLinkedOpenHashMap<SecretSeed> map = new Object2BooleanLinkedOpenHashMap<>();
-                set.stream().sorted(Comparator.comparingLong(SecretSeed::getFlag)).forEachOrdered(seed -> map.put(seed, false));
+                set.stream().sorted(Comparator.comparingLong(SecretSeed::getFlag)).forEachOrdered(seed -> map.put(seed, seed.match(flag)));
                 this.unlockedSecretSeeds = map;
             } catch (JsonIOException | IOException ioexception) {
                 Confluence.LOGGER.error("Couldn't access unlocked secret seeds in {}", UNLOCKED_SECRET_SEEDS_PATH, ioexception);
@@ -217,11 +226,11 @@ public class SecretSeedsSelectionScreen extends Screen {
         } else {
             triple = DESCRIPTIONS.get(hovered.getLongKey());
         }
-        guiGraphics.drawString(font, triple.getMiddle(), centerX - font.width(triple.getMiddle()) / 2, topPos + 108, -1);
+        int j = topPos + 108;
+        guiGraphics.drawString(font, triple.getMiddle(), centerX - font.width(triple.getMiddle()) / 2, j, -1, false);
         if (font.width(triple.getRight()) > 182) {
             List<FormattedCharSequence> list = font.split(triple.getRight(), 182);
             this.lines = list.size();
-            int j = topPos + 108;
             if (hovered == null || this.hovered == null || hovered.getLongKey() != this.hovered.getLongKey()) {
                 this.skip = 0;
             }
@@ -229,21 +238,21 @@ public class SecretSeedsSelectionScreen extends Screen {
             if (skip > 0) {
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().translate(0, -Mth.sin(System.currentTimeMillis() % 1000 / 1000F), 0);
-                guiGraphics.blit(FIRST, leftPos + 181, topPos + 108, 245, 186, 5, 4, 256, 256);
+                guiGraphics.blit(FIRST, leftPos + 181, j, 245, 186, 5, 4, 256, 256);
                 guiGraphics.pose().popPose();
             }
             if (end < lines && lines > maxDescLines()) {
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().translate(0, Mth.sin(System.currentTimeMillis() % 1000 / 1000F), 0);
-                guiGraphics.blit(FIRST, leftPos + 181, topPos + 153, 251, 186, 5, 4, 256, 256);
+                guiGraphics.blit(FIRST, leftPos + 181, j + 45, 251, 186, 5, 4, 256, 256);
                 guiGraphics.pose().popPose();
             }
             for (FormattedCharSequence sequence : list.subList(skip, end)) {
-                guiGraphics.drawString(font, sequence, leftPos + 4, j += font.lineHeight, -1);
+                guiGraphics.drawString(font, sequence, leftPos + 4, j += font.lineHeight, -1, false);
             }
         } else {
             this.lines = 1;
-            guiGraphics.drawString(font, triple.getRight(), leftPos + 4, topPos + 108 + font.lineHeight, -1);
+            guiGraphics.drawString(font, triple.getRight(), leftPos + 4, j + font.lineHeight, -1, false);
         }
 
         this.hovered = hovered;
@@ -274,6 +283,11 @@ public class SecretSeedsSelectionScreen extends Screen {
                 for (Long2BooleanMap.Entry entry : selection.long2BooleanEntrySet()) {
                     if (entry.getBooleanValue()) {
                         flag |= entry.getLongKey();
+                    }
+                }
+                for (Object2BooleanMap.Entry<SecretSeed> entry : unlockedSecretSeeds.object2BooleanEntrySet()) {
+                    if (entry.getBooleanValue()) {
+                        flag |= entry.getKey().getFlag();
                     }
                 }
                 IWorldOptions.of(worldOptions).confluence$withSecretFlag(flag);
@@ -335,17 +349,16 @@ public class SecretSeedsSelectionScreen extends Screen {
             ++i;
         }
         if (flag == -1) {
-            // todo
-//            if (!unlockedSecretSeeds.isEmpty()) {
-//                offsetX = i % 6 * 30;
-//                offsetY = i < 6 ? 0 : 32;
-//                x1 = x + offsetX;
-//                y1 = y + offsetY;
-//                if (mouseX > x1 && mouseX < x1 + 28 && mouseY > y1 && mouseY < y1 + 30) {
-//                    getMinecraft().pushGuiLayer(new SecondScreen());
-//                    return true;
-//                }
-//            }
+            if (!unlockedSecretSeeds.isEmpty()) {
+                offsetX = i % 6 * 30;
+                offsetY = i < 6 ? 0 : 32;
+                x1 = x + offsetX;
+                y1 = y + offsetY;
+                if (mouseX > x1 && mouseX < x1 + 28 && mouseY > y1 && mouseY < y1 + 30) {
+                    getMinecraft().pushGuiLayer(new SecondScreen());
+                    return true;
+                }
+            }
             return false;
         }
         if (flag == 0) {
@@ -357,6 +370,11 @@ public class SecretSeedsSelectionScreen extends Screen {
                 selection.put(0, true);
                 for (SecretSeed seed : SPECIAL_SEEDS) {
                     selection.put(seed.getFlag(), false);
+                }
+                for (SecretSeed seed : SECRET_SEEDS) {
+                    if (unlockedSecretSeeds.containsKey(seed)) {
+                        unlockedSecretSeeds.put(seed, false);
+                    }
                 }
             }
         } else {
@@ -421,6 +439,10 @@ public class SecretSeedsSelectionScreen extends Screen {
         private int leftPos;
         private int topPos;
 
+        private int lines;
+        private int skip;
+        private Object2BooleanMap.Entry<SecretSeed> hovered;
+
         protected SecondScreen() {
             super(CommonComponents.EMPTY);
         }
@@ -428,7 +450,7 @@ public class SecretSeedsSelectionScreen extends Screen {
         @Override
         protected void init() {
             this.imageWidth = 190;
-            this.imageHeight = 132;
+            this.imageHeight = 197;
 
             this.leftPos = (width - imageWidth) / 2;
             this.topPos = (height - imageHeight) / 2;
@@ -436,12 +458,126 @@ public class SecretSeedsSelectionScreen extends Screen {
 
         @Override
         public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-            guiGraphics.blit(SECOND, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
+            guiGraphics.blit(SECOND, leftPos, topPos, 0, 0, imageWidth, imageHeight, 310, 310);
 
-            ObjectSet<Object2BooleanMap.Entry<SecretSeed>> entries = SecretSeedsSelectionScreen.this.unlockedSecretSeeds.object2BooleanEntrySet();
-            for (Object2BooleanMap.Entry<SecretSeed> entry : Iterables.limit(Iterables.skip(entries, 1), 6)) {
-
+            Object2BooleanMap.Entry<SecretSeed> hovered = null;
+            ObjectSet<Object2BooleanMap.Entry<SecretSeed>> entries = unlockedSecretSeeds.object2BooleanEntrySet();
+            int i = 0;
+            for (Object2BooleanMap.Entry<SecretSeed> entry : Iterables.limit(Iterables.skip(entries, this.skip), 5)) {
+                assert entry != null;
+                int v = entry.getBooleanValue() ? 255 : 199;
+                int x = leftPos + 5;
+                int y = topPos + 4 + i * 26;
+                if (mouseX > x && mouseX < x + 172 && mouseY > y && mouseY < y + 26) {
+                    v += 28;
+                    hovered = entry;
+                }
+                guiGraphics.blit(SECOND, x, y, 9, v, 172, 26, 310, 310);
+                SecretSeed seed = entry.getKey();
+                guiGraphics.blit(DESCRIPTIONS.get(seed.getFlag()).getLeft(), x + 1, y + 2, 0, 0, 18, 18, 18, 18);
+                guiGraphics.drawString(font, LibUtils.toTitleCase(seed.getId().getPath()), x + 20, y + 8, -1, false);
+                ++i;
             }
+
+            Triple<ResourceLocation, Component, Component> triple;
+            if (hovered == null) {
+                triple = DESCRIPTIONS.defaultReturnValue();
+            } else {
+                triple = DESCRIPTIONS.get(hovered.getKey().getFlag());
+            }
+            int j = topPos + 144;
+            if (font.width(triple.getRight()) > 182) {
+                List<FormattedCharSequence> list = font.split(triple.getRight(), 182);
+                this.lines = list.size();
+                if (hovered == null || this.hovered == null || hovered.getKey() != this.hovered.getKey()) {
+                    this.skip = 0;
+                }
+                int end = Math.min(this.skip + maxDescLines(), this.lines);
+                if (this.skip > 0) {
+                    guiGraphics.pose().pushPose();
+                    guiGraphics.pose().translate(0, -Mth.sin(System.currentTimeMillis() % 1000 / 1000F), 0);
+                    guiGraphics.blit(SECOND, leftPos + 181, j, 193, 2, 5, 4, 310, 310);
+                    guiGraphics.pose().popPose();
+                }
+                if (end < this.lines && this.lines > maxDescLines()) {
+                    guiGraphics.pose().pushPose();
+                    guiGraphics.pose().translate(0, Mth.sin(System.currentTimeMillis() % 1000 / 1000F), 0);
+                    guiGraphics.blit(FIRST, leftPos + 181, j + 45, 199, 2, 5, 4, 310, 310);
+                    guiGraphics.pose().popPose();
+                }
+                for (FormattedCharSequence sequence : list.subList(this.skip, end)) {
+                    guiGraphics.drawString(font, sequence, leftPos + 4, j, -1, false);
+                    j += font.lineHeight;
+                }
+            } else {
+                this.lines = 1;
+                guiGraphics.drawString(font, triple.getRight(), leftPos + 4, j, -1, false);
+            }
+            this.hovered = hovered;
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            if (button == 0 && BackgroundLayer.clickedLayers(mouseX, mouseY)) {
+                return true;
+            }
+            ObjectSet<Object2BooleanMap.Entry<SecretSeed>> entries = unlockedSecretSeeds.object2BooleanEntrySet();
+            int i = 0;
+            for (Object2BooleanMap.Entry<SecretSeed> entry : Iterables.limit(Iterables.skip(entries, this.skip), 5)) {
+                assert entry != null;
+                int x = leftPos + 5;
+                int y = topPos + 4 + i * 26;
+                if (mouseX > x && mouseX < x + 172 && mouseY > y && mouseY < y + 26) {
+                    unlockedSecretSeeds.put(entry.getKey(), !entry.getBooleanValue());
+                    return true;
+                }
+                ++i;
+            }
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
+
+        @Override
+        public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+            if (hovered != null) {
+                if (this.lines > maxDescLines()) {
+                    this.skip = Mth.clamp(this.skip + Mth.sign(-scrollY), 0, this.lines - maxDescLines());
+                }
+                return true;
+            }
+            return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+        }
+
+        @Override
+        public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+            if (button == 0 && BackgroundLayer.dragLayers(mouseX, mouseY, dragX, dragY)) {
+                return true;
+            }
+            return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        }
+
+        @Override
+        public boolean mouseReleased(double mouseX, double mouseY, int button) {
+            if (button == 0 && BackgroundLayer.releasedLayers(mouseX, mouseY)) {
+                return true;
+            }
+            return super.mouseReleased(mouseX, mouseY, button);
+        }
+
+        @Override
+        public void onClose() {
+            boolean selected = unlockedSecretSeeds.values().stream().anyMatch(Boolean::booleanValue);
+            if (selected) {
+                if (selection.get(0)) {
+                    selection.put(0, false);
+                }
+            } else if (selection.values().stream().noneMatch(Boolean::booleanValue)) {
+                selection.put(0, true);
+            }
+            super.onClose();
+        }
+
+        private int maxDescLines() {
+            return 49 / font.lineHeight - 1;
         }
     }
 }

@@ -3,6 +3,8 @@ package org.confluence.mod.util;
 import com.google.common.collect.Streams;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
+import com.google.gson.JsonParseException;
+import com.google.gson.stream.JsonReader;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.FileUtil;
@@ -23,9 +25,9 @@ import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.loading.FMLPaths;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -98,7 +100,7 @@ public final class AchievementUtils {
     private static @Nullable PlayerAdvancements.Data data;
 
     public static Codec<PlayerAdvancements.Data> getCodecClientOnly() {
-        return DataFixTypes.ADVANCEMENTS.wrapCodec(PlayerAdvancements.Data.CODEC, ClientUtils.getDataFixer(), 1343);
+        return DataFixTypes.ADVANCEMENTS.wrapCodec(PlayerAdvancements.Data.CODEC, LibClientUtils.getDataFixer(), 1343);
     }
 
     public static void setData(ServerPlayer player) {
@@ -109,13 +111,19 @@ public final class AchievementUtils {
         IPlayerAdvancements.of(player.getAdvancements()).confluence$load(player.server.getAdvancements(), data);
     }
 
-    public static void handleData(PlayerAdvancements.Data data) {
-        AchievementUtils.data = data;
+    public static void handleData(PlayerAdvancements.Data data, boolean override) {
+        if (override || AchievementUtils.data == null) {
+            AchievementUtils.data = data;
+        } else {
+            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(AchievementUtils.data.map());
+            map.putAll(data.map());
+            AchievementUtils.data = new PlayerAdvancements.Data(map);
+        }
     }
 
-    public static void saveData(Player player) {
+    public static void saveData() {
         if (data == null) return;
-        Path path = AchievementUtils.CONFLUENCE_ACHIEVEMENTS_DIR.resolve(player.getUUID() + ".json");
+        Path path = CONFLUENCE_ACHIEVEMENTS_DIR.resolve(LibClientUtils.getGameProfile().getId() + ".json");
         saveData(data, path, ModUtils.GSON, getCodecClientOnly());
         data = null;
     }
@@ -129,6 +137,21 @@ public final class AchievementUtils {
         } catch (JsonIOException | IOException ioexception) {
             Confluence.LOGGER.error("Couldn't save confluence achievements to {}", savePath, ioexception);
         }
+    }
+
+    public static PlayerAdvancements.Data loadData(UUID uuid) {
+        Path path = CONFLUENCE_ACHIEVEMENTS_DIR.resolve(uuid + ".json");
+        if (Files.isRegularFile(path)) {
+            try (JsonReader reader = new JsonReader(Files.newBufferedReader(path, StandardCharsets.UTF_8))) {
+                reader.setLenient(false);
+                return getCodecClientOnly().parse(JsonOps.INSTANCE, com.google.gson.internal.Streams.parse(reader)).getOrThrow(JsonParseException::new);
+            } catch (JsonIOException | IOException ioexception) {
+                Confluence.LOGGER.error("Couldn't access confluence achievements in {}", path, ioexception);
+            } catch (JsonParseException jsonParseException) {
+                Confluence.LOGGER.error("Couldn't parse confluence achievements in {}", path, jsonParseException);
+            }
+        }
+        return new PlayerAdvancements.Data(Map.of());
     }
 
     public static ResourceLocation asAchievement(String path) {

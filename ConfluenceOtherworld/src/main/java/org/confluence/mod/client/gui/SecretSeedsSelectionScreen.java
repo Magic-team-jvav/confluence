@@ -216,8 +216,8 @@ public class SecretSeedsSelectionScreen extends Screen {
             triple = DESCRIPTIONS.get(hovered.getLongKey());
         }
         guiGraphics.drawString(font, triple.getMiddle(), centerX - font.width(triple.getMiddle()) / 2, topPos + 108, -1);
-        if (font.width(triple.getRight()) > 177) {
-            List<FormattedCharSequence> list = font.split(triple.getRight(), 177);
+        if (font.width(triple.getRight()) > 182) {
+            List<FormattedCharSequence> list = font.split(triple.getRight(), 182);
             this.lines = list.size();
             int j = topPos + 108;
             if (hovered == null || this.hovered == null || hovered.getLongKey() != this.hovered.getLongKey()) {

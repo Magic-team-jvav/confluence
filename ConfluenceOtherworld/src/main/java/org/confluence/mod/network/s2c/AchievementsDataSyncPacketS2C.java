@@ -24,7 +24,7 @@ public record AchievementsDataSyncPacketS2C(PlayerAdvancements.Data data) implem
 
     @Override
     public void work(Player player) {
-        AchievementUtils.handleData(data);
+        AchievementUtils.handleData(data, true);
     }
 
     @Override

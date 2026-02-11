@@ -3,7 +3,6 @@ package org.confluence.mod.common.init;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.common.EffectCure;
@@ -21,7 +20,6 @@ import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.init.TEAttributes;
-import org.mesdag.particlestorm.api.MolangParticleMobEffect;
 
 public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Confluence.MODID);
@@ -84,22 +82,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> LOVE = EFFECTS.register("love", LoveEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SHIMMER = EFFECTS.register("shimmer", ShimmerEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> FROZEN = EFFECTS.register("frozen", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x66CCFF));
-    public static final DeferredHolder<MobEffect, MobEffect> STINKY = EFFECTS.register("stinky",
-            () -> new MolangParticleMobEffect(MobEffectCategory.HARMFUL, 0x99FF00, Confluence.asResource("stinky")) {
-                @Override
-                public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-                    return true;
-                }
-                @Override
-                public boolean applyEffectTick(LivingEntity entity, int amplifier) {
-                    if (entity.isInWater()) {
-                        entity.removeEffect(STINKY);
-                        return false;
-                    }
-                    return true;
-                }
-            }
-            .addAttributeModifier(Attributes.LUCK, Confluence.asResource("stinky"), -0.25, AttributeModifier.Operation.ADD_VALUE));
+    public static final DeferredHolder<MobEffect, MobEffect> STINKY = EFFECTS.register("stinky", StinkyEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> CRATE = EFFECTS.register("crate", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xD88B3F));
     public static final DeferredHolder<MobEffect, MobEffect> THE_BAST_DEFENSE = EFFECTS.register("the_bast_defense", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x000000)
             .addAttributeModifier(Attributes.ARMOR, Confluence.asResource("the_bast_defense"), 5.0, AttributeModifier.Operation.ADD_VALUE));

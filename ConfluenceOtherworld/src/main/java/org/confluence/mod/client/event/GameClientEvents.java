@@ -175,7 +175,7 @@ public final class GameClientEvents {
         ClientBestiary.reset();
         LucyTheAxeHandler.reset();
         ClientGameEventSystem.reset();
-        AchievementUtils.saveData(event.getPlayer());
+        AchievementUtils.saveData();
     }
 
     @SubscribeEvent

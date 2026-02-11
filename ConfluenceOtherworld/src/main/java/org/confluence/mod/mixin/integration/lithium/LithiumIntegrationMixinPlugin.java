@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.compat.lithium;
+package org.confluence.mod.mixin.integration.lithium;
 
 import net.neoforged.fml.loading.LoadingModList;
 import org.objectweb.asm.tree.ClassNode;
@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class LithiumIntegrationMixinPlugin implements IMixinConfigPlugin {
     private final boolean shouldApply;
+
     public LithiumIntegrationMixinPlugin() {
         this.shouldApply = LoadingModList.get().getModFileById("lithium") != null;
     }

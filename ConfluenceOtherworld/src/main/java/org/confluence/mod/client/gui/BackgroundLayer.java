@@ -30,10 +30,10 @@ public enum BackgroundLayer {
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
             sprite.render(guiGraphics);
-            RenderSystem.setShaderColor(1, 1, 1, 1);
 
             float[] color = DimensionSpecialEffectsManager.getForType(BuiltinDimensionTypes.OVERWORLD_EFFECTS).getSunriseColor(timeOfDay, partialTick);
             if (color != null) {
+                RenderSystem.setShaderColor(1, 1, 1, 1);
                 RenderSystem.setShader(GameRenderer::getPositionColorShader);
                 PoseStack poseStack = guiGraphics.pose();
                 poseStack.pushPose();

@@ -569,6 +569,20 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .build())
                 .build());
 
+        shop(TENpcEntities.WIZARD.getId()).addRecipe(withDefaultPylon()
+                .add(FunctionalBlocks.CRYSTAL_BALL)
+                // 冰雪魔杖
+                .add(PotionItems.GREATER_MANA_POTION)
+                .add(MaterialItems.BELL)
+                .add(MaterialItems.HARP)
+                .add(MaterialItems.SPELL_TOME)
+                .add(Items.BOOK)
+                .add(ToolItems.EMPTY_DROPPER)
+                // 巫师帽（万圣节）
+                // 杀戮牌组（血月）
+                .add(SellTrade.INSTANCE)
+                .build());
+
         if (ENABLE_DEBUG_SHOPS) {
             addDebugShops(holderLookup);
         }

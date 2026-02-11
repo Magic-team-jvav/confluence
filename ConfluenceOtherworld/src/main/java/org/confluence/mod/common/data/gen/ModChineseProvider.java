@@ -2382,6 +2382,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.NANITES.get(), "纳米机器人");
         add(MaterialItems.CONFETTI.get(), "彩纸");
         add(MaterialItems.VIAL_OF_VENOM.get(), "小瓶毒液");
+        add(MaterialItems.BELL.get(), "铃铛");
+        add(MaterialItems.HARP.get(), "竖琴");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "水叶草");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");

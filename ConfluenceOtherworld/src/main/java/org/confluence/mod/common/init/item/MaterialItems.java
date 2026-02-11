@@ -131,6 +131,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> CONFETTI = register("confetti", ModRarity.WHITE);
     public static final DeferredItem<Item> VIAL_OF_VENOM = register("vial_of_venom", ModRarity.WHITE);
     public static final DeferredItem<Item> PEARLWOOD_STICK = register("pearlwood_stick", ModRarity.WHITE);
+    public static final DeferredItem<Item> BELL = register("bell", ModRarity.ORANGE);
+    public static final DeferredItem<Item> HARP = register("harp", ModRarity.ORANGE);
 
     // 草药
     public static final DeferredItem<Item> WATERLEAF = ITEMS.registerSimpleItem("waterleaf");

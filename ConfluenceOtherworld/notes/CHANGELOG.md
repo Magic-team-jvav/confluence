@@ -53,7 +53,6 @@
 - 血爬虫兼容Nyf's Spiders
 - 家具床
 
-
 # Changelog (1.2.3):
 
 ## Important Notes:

@@ -10,7 +10,6 @@ import net.minecraft.client.gui.layouts.LayoutElement;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.network.chat.Component;
-import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.gui.SecretSeedsSelectionScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,10 +32,10 @@ public abstract class CreateWorldScreen$WorldTabMixin {
         seedEdit.setWidth(seedEdit.getWidth() - size);
         LinearLayout layout = LinearLayout.horizontal().spacing(8);
         layout.addChild(element);
-        layout.addChild(new ImageButton(0, 0, size, size, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+        layout.addChild(new ImageButton(0, 0, size, size, SecretSeedsSelectionScreen.SPRITES, button -> {
             button.setFocused(false);
             this$0.getMinecraft().pushGuiLayer(new SecretSeedsSelectionScreen(seedEdit, this$0.getUiState()));
-        }));
+        }), settings -> settings.paddingLeft(-4));
         return original.call(font, layout, label);
     }
 }

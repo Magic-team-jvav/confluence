@@ -19,6 +19,7 @@ import net.minecraft.FileUtil;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -46,6 +47,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class SecretSeedsSelectionScreen extends Screen {
+    public static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("seed_icon"), Confluence.asResource("seed_icon_highlighted"));
     private static final ResourceLocation FIRST = Confluence.asResource("textures/gui/secret_seeds_selection/first.png");
     private static final SecretSeed[] SPECIAL_SEEDS = new SecretSeed[]{
             ModSecretSeeds.NOT_THE_BEES,

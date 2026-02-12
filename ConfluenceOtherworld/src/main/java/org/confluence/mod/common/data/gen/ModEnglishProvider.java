@@ -1216,6 +1216,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("description.confluence.secret_seeds_selection.get_fixed_boi", "For the Worthy wasn't enough? Featuring aspects of every other world seed combined with some brand new surprises, this world is here to break you. Get Fixed, boi!");
         add("title.confluence.secret_seeds_selection.skyblock", "Skyblock");
         add("description.confluence.secret_seeds_selection.skyblock", "Enter a realm floating in the sky. With little to start with, you must build up your world from humble beginnings.");
+        add("title.confluence.secret_seeds_selection.secret_seed", "Secret Seed");
+        add("description.confluence.secret_seeds_selection.boulder_world", "A world of more secrets, parallel timelines, and a disorienting journey awaits your exploration.");
         add("title.confluence.secret_seeds_selection.boulder_world", "Boulder World");
         add("description.confluence.secret_seeds_selection.boulder_world", "You know what? The world is actually one giant boulder. So everything in the world is a boulder.");
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));

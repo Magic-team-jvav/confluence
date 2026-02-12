@@ -1242,6 +1242,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("description.confluence.secret_seeds_selection.get_fixed_boi", "这个世界就像天顶剑一样！混合了所有其他种子的主要特色！再加上一些意外因素，它就是为了击败你而生。准备受死吧，伙计！");
         add("title.confluence.secret_seeds_selection.skyblock", "天空之岛");
         add("description.confluence.secret_seeds_selection.skyblock", "踏入这片悬浮于天际的领域。初始资源微薄，你需白手起家，逐步构建属于你的世界。");
+        add("title.confluence.secret_seeds_selection.secret_seed", "秘密种子");
+        add("description.confluence.secret_seeds_selection.secret_seed", "更多秘密的世界，平行的时空，错乱的旅途等待着你的探索。");
         add("title.confluence.secret_seeds_selection.boulder_world", "巨石世界");
         add("description.confluence.secret_seeds_selection.boulder_world", "你知道吗？世界其实是一个巨大的巨石。所以世界上的万物都是巨石。");
 
@@ -2760,6 +2762,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(BoatItems.YELLOW_WILLOW_CHEST_BOAT.get(), "黄柳木运输船");
         add(BoatItems.DYNASTY_BOAT.get(), "王朝木船");
         add(BoatItems.DYNASTY_CHEST_BOAT.get(), "王朝木运输船");
+        add(BoatItems.PINE_BOAT.get(), "松木船");
+        add(BoatItems.PINE_CHEST_BOAT.get(), "松木运输船");
+        add(BoatItems.FEY_BOAT.get(), "仙灵木船");
+        add(BoatItems.FEY_CHEST_BOAT.get(), "仙灵木运输船");
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
         add(ConsumableItems.THROWING_KNIVE.get(), "投刀");

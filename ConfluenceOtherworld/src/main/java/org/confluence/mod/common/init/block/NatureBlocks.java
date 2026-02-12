@@ -208,7 +208,7 @@ public class NatureBlocks {
     public static final DeferredBlock<NaturesGiftBlock> JUNGLE_ROSE = registerWithItem("jungle_rose", () -> new NaturesGiftBlock(NaturesGiftBlock.BlockItemType.JUNGLE_ROSE));
     public static final DeferredBlock<LarvaBlock> LARVA = registerWithItem("larva", () -> new LarvaBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).noOcclusion().replaceable().instabreak()));
 
-    public static final DeferredBlock<MudPathBlock> JUNGLE_PATH = registerWithItem("mud_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+    public static final DeferredBlock<MudPathBlock> JUNGLE_PATH = registerWithItem("jungle_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
     public static final DeferredBlock<MudPathBlock> MUSHROOM_PATH = registerWithItem("mushroom_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
     public static final DeferredBlock<AshPathBlock> ASH_PATH = registerWithItem("ash_path", () -> new AshPathBlock(BlockBehaviour.Properties.ofFullCopy(NatureBlocks.ASH_BLOCK.get()).mapColor(MapColor.COLOR_GRAY)));
 

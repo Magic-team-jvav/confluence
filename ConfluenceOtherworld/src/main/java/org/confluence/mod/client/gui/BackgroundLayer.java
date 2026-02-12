@@ -329,10 +329,10 @@ public enum BackgroundLayer {
     private static float timeOfDay;
     private static float skyColor;
     private static boolean dragged;
-    private static final ResourceLocation GOING_OLDSCHOOL = AchievementUtils.asAchievement("going_oldschool");
     private static boolean completedGoingOldSchool;
 
     public static void initLayers(int width, int height) {
+        timeOfDay = (float) Math.random();
         for (BackgroundLayer layer : LAYERS) {
             layer.init(width, height);
         }
@@ -362,7 +362,6 @@ public enum BackgroundLayer {
                 layer.render(guiGraphics, partialTick);
             }
             RenderSystem.setShaderColor(1, 1, 1, 1);
-            RenderSystem.disableBlend();
         }
     }
 
@@ -400,12 +399,12 @@ public enum BackgroundLayer {
     private static void awardGoingOldschool() {
         if (completedGoingOldSchool) return;
         PlayerAdvancements.Data data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
-        if (data.map().containsKey(GOING_OLDSCHOOL)) {
+        if (data.map().containsKey(AchievementUtils.GOING_OLDSCHOOL)) {
             completedGoingOldSchool = true;
         } else {
             completedGoingOldSchool = true;
             Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(data.map());
-            map.put(GOING_OLDSCHOOL, new AdvancementProgress(Map.of("never", new CriterionProgress(Instant.now()))));
+            map.put(AchievementUtils.GOING_OLDSCHOOL, new AchievementProgress(Map.of("never", new CriterionProgress(Instant.now())), true));
             data = new PlayerAdvancements.Data(map);
             AchievementToast toast = new AchievementToast(
                     Confluence.asResource("textures/achievement/going_oldschool.png"),
@@ -413,10 +412,21 @@ public enum BackgroundLayer {
                             Component.translatable("achievements.confluence.going_oldschool.title"),
                             Component.translatable("achievements.confluence.going_oldschool.description")
                     ));
-            toast.blitOffset = () -> Minecraft.getInstance().screen instanceof SecretSeedsSelectionScreen ? 10001 : 0;
+            toast.blitOffset = () -> isBackgroundedScreen() ? 10001 : 0;
             Minecraft.getInstance().getToasts().addToast(toast);
             AchievementUtils.handleData(data, false);
             AchievementUtils.saveData();
         }
     }
+
+    public static boolean isCompletedGoingOldSchool() {
+        return completedGoingOldSchool;
+    }
+
+    public static boolean isBackgroundedScreen() {
+        return Minecraft.getInstance().screen instanceof Backgrounded;
+    }
+
+    /// 仅用于标记
+    public interface Backgrounded {}
 }

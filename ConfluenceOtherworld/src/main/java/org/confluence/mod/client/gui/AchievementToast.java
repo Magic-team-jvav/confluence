@@ -19,7 +19,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.FloatSupplier;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -117,7 +116,7 @@ public class AchievementToast implements Toast {
         }
     }
 
-    private void renderIcon(@NotNull GuiGraphics guiGraphics) {
+    private void renderIcon(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(4, 4, 0);
         guiGraphics.pose().scale(0.375F, 0.375F, 1.0F);
@@ -163,7 +162,7 @@ public class AchievementToast implements Toast {
 
     public static void registerToast(ResourceLocation id, boolean hideLink) {
         String namespace = id.getNamespace();
-        String path = id.getPath().substring(AchievementUtils.PREFIX.length());
+        String path = AchievementUtils.asPath(id);
         ACHIEVEMENTS.put(ResourceLocation.fromNamespaceAndPath(namespace, AchievementUtils.PREFIX + path), new AchievementToast(
                 ResourceLocation.fromNamespaceAndPath(namespace, "textures/achievement/" + path + ".png"),
                 new Display(AdvancementType.CHALLENGE,

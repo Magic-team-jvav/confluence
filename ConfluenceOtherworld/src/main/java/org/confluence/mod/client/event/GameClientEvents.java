@@ -5,7 +5,11 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -54,6 +58,7 @@ import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
+import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHUD;
@@ -318,6 +323,23 @@ public final class GameClientEvents {
         // 额外槽
         if (isInventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             event.addListener(ExtraInventoryScreen.getExtraInventoryButton((EffectRenderingInventoryScreen<?>) screen, isInventoryScreen));
+        }
+
+        if (screen instanceof TitleScreen) {
+            for (GuiEventListener listener : event.getListenersList()) {
+                if (listener instanceof AbstractWidget widget &&
+                        widget.getMessage().getContents() instanceof TranslatableContents contents &&
+                        "menu.online".equals(contents.getKey())
+                ) {
+                    event.addListener(new ImageButton(widget.getX() - 24, widget.getY(), 20, 20, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+                        Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
+                    }) {
+                        @Override
+                        public void setFocused(boolean focused) {}
+                    });
+                    break;
+                }
+            }
         }
     }
 

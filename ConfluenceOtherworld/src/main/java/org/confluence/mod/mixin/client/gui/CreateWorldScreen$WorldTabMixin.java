@@ -28,14 +28,13 @@ public abstract class CreateWorldScreen$WorldTabMixin {
 
     @WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/layouts/CommonLayouts;labeledElement(Lnet/minecraft/client/gui/Font;Lnet/minecraft/client/gui/layouts/LayoutElement;Lnet/minecraft/network/chat/Component;)Lnet/minecraft/client/gui/layouts/Layout;"))
     private Layout setSeedEditorWidthAndAddButton(Font font, LayoutElement element, Component label, Operation<Layout> original) {
-        int size = seedEdit.getHeight();
-        seedEdit.setWidth(seedEdit.getWidth() - size);
+        seedEdit.setWidth(seedEdit.getWidth() - seedEdit.getHeight() - 2);
         LinearLayout layout = LinearLayout.horizontal().spacing(8);
         layout.addChild(element);
-        layout.addChild(new ImageButton(0, 0, size, size, SecretSeedsSelectionScreen.SPRITES, button -> {
+        layout.addChild(new ImageButton(0, 0, 20, 20, SecretSeedsSelectionScreen.SPRITES, button -> {
             button.setFocused(false);
             this$0.getMinecraft().pushGuiLayer(new SecretSeedsSelectionScreen(seedEdit, this$0.getUiState()));
-        }), settings -> settings.paddingLeft(-4));
+        }), settings -> settings.paddingLeft(-6));
         return original.call(font, layout, label);
     }
 }

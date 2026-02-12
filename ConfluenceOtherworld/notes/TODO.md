@@ -242,6 +242,7 @@
 
 - 来自Discord
   - Other mod furniture compat with NPC housing
+  - you can use the spear and yoyos while shielding
 
 优化列表：
 

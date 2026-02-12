@@ -31,6 +31,7 @@ import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.AchievementProgress;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
@@ -76,7 +77,7 @@ public final class AchievementUtils {
                         criterion.put(criteria, new CriterionProgress(instant));
                     } catch (Exception ignored) {}
                 }
-                advancement.put(id, new AdvancementProgress(criterion));
+                advancement.put(id, new AchievementProgress(criterion, buffer.readBoolean()));
             }
             return new PlayerAdvancements.Data(advancement);
         }
@@ -94,13 +95,17 @@ public final class AchievementUtils {
                         buffer.writeUtf(instant.atZone(ZoneId.systemDefault()).format(AdvancementProgress.OBTAINED_TIME_FORMAT));
                     }
                 }
+                buffer.writeBoolean(progress.isDone());
             });
         }
     };
+    public static final ResourceLocation GOING_OLDSCHOOL = asAchievement("going_oldschool");
     private static @Nullable PlayerAdvancements.Data data;
 
     public static Codec<PlayerAdvancements.Data> getCodecClientOnly() {
-        return DataFixTypes.ADVANCEMENTS.wrapCodec(PlayerAdvancements.Data.CODEC, LibClientUtils.getDataFixer(), 1343);
+        Codec<PlayerAdvancements.Data> dataCodec = Codec.unboundedMap(ResourceLocation.CODEC, AchievementProgress.CODEC)
+                .xmap(PlayerAdvancements.Data::new, PlayerAdvancements.Data::map);
+        return DataFixTypes.ADVANCEMENTS.wrapCodec(dataCodec, LibClientUtils.getDataFixer(), 1343);
     }
 
     public static void setData(ServerPlayer player) {
@@ -273,7 +278,7 @@ public final class AchievementUtils {
         }
     }
 
-    public static void aRareRealm(ServerPlayer player, ServerLevel level, long gameTime) {
+    public static void aRareRealm(ServerPlayer player, long gameTime) {
         if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED) && gameTime % 40 == 3) {
             awardAchievement(player, "a_rare_realm");
         }

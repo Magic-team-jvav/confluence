@@ -2,6 +2,7 @@ package org.confluence.mod.common.data;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +20,12 @@ import java.util.concurrent.Executor;
 public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
     public static volatile CompletableFuture<Void> WAITING_FOR = CompletableFuture.completedFuture(null);
     private static AchievementOffsetLoader INSTANCE;
+    private final Codec<AchievementOffset> codec;
     private Map<ResourceLocation, AchievementOffset> registeredAchievements = ImmutableMap.of();
+
+    private AchievementOffsetLoader(Codec<AchievementOffset> codec) {
+        this.codec = codec;
+    }
 
     @Override
     public final CompletableFuture<Void> reload(
@@ -33,16 +39,23 @@ public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
         return WAITING_FOR = super.reload(stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor);
     }
 
+    @Override
     protected void apply(Map<ResourceLocation, JsonElement> resourceList) {
         ImmutableMap.Builder<ResourceLocation, AchievementOffset> builder = ImmutableMap.builder();
         for (Map.Entry<ResourceLocation, JsonElement> entry : resourceList.entrySet()) {
             ResourceLocation location = entry.getKey();
             JsonElement json = entry.getValue();
-            AchievementOffset.CODEC.parse(JsonOps.INSTANCE, json)
+            codec.parse(JsonOps.INSTANCE, json)
                     .resultOrPartial(errorMsg -> Confluence.LOGGER.warn("Could not decode achievement offset with json id {} - error: {}", location, errorMsg))
                     .ifPresent(offset -> builder.put(location, offset));
         }
         this.registeredAchievements = builder.build();
+    }
+
+    public static Map<ResourceLocation, AchievementOffset> load(ResourceManager manager) {
+        AchievementOffsetLoader loader = new AchievementOffsetLoader(AchievementOffset.CLIENT_CODEC);
+        loader.apply(loader.prepare(manager));
+        return loader.registeredAchievements;
     }
 
     @Override
@@ -61,7 +74,7 @@ public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
 
     public static AchievementOffsetLoader getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new AchievementOffsetLoader();
+            INSTANCE = new AchievementOffsetLoader(AchievementOffset.SERVER_CODEC);
         }
         return INSTANCE;
     }

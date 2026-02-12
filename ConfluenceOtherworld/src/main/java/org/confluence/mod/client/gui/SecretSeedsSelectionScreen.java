@@ -47,7 +47,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class SecretSeedsSelectionScreen extends Screen {
+public class SecretSeedsSelectionScreen extends Screen implements BackgroundLayer.Backgrounded {
     public static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("seed_icon"), Confluence.asResource("seed_icon_highlighted"));
     private static final ResourceLocation FIRST = Confluence.asResource("textures/gui/secret_seeds_selection/first.png");
     private static final SecretSeed[] SPECIAL_SEEDS = new SecretSeed[]{
@@ -268,9 +268,6 @@ public class SecretSeedsSelectionScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0 && BackgroundLayer.clickedLayers(mouseX, mouseY)) {
-            return true;
-        }
         unlockSecretSeeds();
         int x = leftPos + 6;
         int y = topPos + 164;
@@ -297,6 +294,9 @@ public class SecretSeedsSelectionScreen extends Screen {
             return true;
         }
         if (clickSelections(mouseX, mouseY)) return true;
+        if (button == 0 && BackgroundLayer.clickedLayers(mouseX, mouseY)) {
+            return true;
+        }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 

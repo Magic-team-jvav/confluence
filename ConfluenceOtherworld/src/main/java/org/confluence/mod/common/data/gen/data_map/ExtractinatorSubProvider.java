@@ -7,6 +7,7 @@ import net.neoforged.neoforge.common.data.DataMapProvider;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.BaitItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -19,8 +20,13 @@ public final class ExtractinatorSubProvider {
                                 .add(ExtractinatorData.Entry.of(MaterialItems.STURDY_FOSSIL, 1, 1))
                                 .add(ExtractinatorData.Entry.empty(9))
                         ).build(), false)
-                .add(Tags.Items.GRAVELS, ExtractinatorData.builder().withPool(extractCommon()).build(), false)
-                .add(ModTags.Items.JUNK, ExtractinatorData.builder().withPool(extractCommon())
+                .add(Tags.Items.GRAVELS, ExtractinatorData.builder().withPool(gravelsCommon())
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.FLINT, 1, 1))
+                                .add(ExtractinatorData.Entry.empty(9))
+                        )
+                        .build(), false)
+                .add(ModTags.Items.JUNK, ExtractinatorData.builder()
                         .withPool(ExtractinatorData.Pool.builder()
                                 .add(ExtractinatorData.Entry.of(BaitItems.SNAIL, 1, 1667))
                                 .add(ExtractinatorData.Entry.of(BaitItems.APPRENTICE_BAIT, 1, 7500))
@@ -28,10 +34,6 @@ public final class ExtractinatorSubProvider {
                                 .add(ExtractinatorData.Entry.of(BaitItems.SNAIL, 1, 2780))
                         ).build(), false)
                 .add(ModTags.Items.SILT_BLOCK, ExtractinatorData.builder().withPool(extractCommon())
-                        .withPool(ExtractinatorData.Pool.builder()
-                                .add(ExtractinatorData.Entry.of(Items.FLINT, 1, 1))
-                                .add(ExtractinatorData.Entry.empty(9))
-                        )
                         .withPool(ExtractinatorData.Pool.builder()
                                 .add(ExtractinatorData.Entry.of(ModItems.SILVER_COIN, 1, 4, 13534))
                                 .add(ExtractinatorData.Entry.of(ModItems.COPPER_COIN, 1, 15, 642145))
@@ -46,6 +48,36 @@ public final class ExtractinatorSubProvider {
                         .withPool(ExtractinatorData.Pool.builder()
                                 .add(ExtractinatorData.Entry.of(Items.SNOWBALL, 1, 1))
                                 .add(ExtractinatorData.Entry.empty(9))
+                        ).build(), false)
+                .add(ModTags.Items.JUNK, ExtractinatorData.builder()
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(BaitItems.SNAIL, 1, 1667))
+                                .add(ExtractinatorData.Entry.of(BaitItems.APPRENTICE_BAIT, 1, 7500))
+                                .add(ExtractinatorData.Entry.of(BaitItems.WORM, 1, 5560))
+                                .add(ExtractinatorData.Entry.of(BaitItems.SNAIL, 1, 2780))
+                        ).build(), false)
+                .add(ModTags.Items.POO, ExtractinatorData.builder()
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.DIRT, 1, 97))
+                                .add(ExtractinatorData.Entry.of(ModItems.GRASS_SEED, 1, 1))
+                                .add(ExtractinatorData.Entry.of(ModItems.MUSHROOM_GRASS_SEED, 1, 1))
+                                .add(ExtractinatorData.Entry.of(ModItems.JUNGLE_GRASS_SEED, 1, 1))
+                        ).build(), false)
+                .add(ModTags.Items.EXTRACT_SAND, ExtractinatorData.builder()
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.SAND, 1, 1))
+                        ).build(), false)
+                .add(ModTags.Items.EXTRACT_HONEY_BLOCK, ExtractinatorData.builder()
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.HONEY_BLOCK, 1, 1))
+                        ).build(), false)
+                .add(ModTags.Items.EXTRACT_MOSS, ExtractinatorData.builder()
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(NatureBlocks.GREEN_MOSS, 1, 1))
+                                .add(ExtractinatorData.Entry.of(NatureBlocks.BROWN_MOSS, 1, 1))
+                                .add(ExtractinatorData.Entry.of(NatureBlocks.RED_MOSS, 1, 1))
+                                .add(ExtractinatorData.Entry.of(NatureBlocks.BLUE_MOSS, 1, 1))
+                                .add(ExtractinatorData.Entry.of(NatureBlocks.PURPLE_MOSS, 1, 1))
                         ).build(), false)
                 .add(ModTags.Items.MARINE_GRAVEL, ExtractinatorData.builder().withPool(extractCommon())
                         .withPool(ExtractinatorData.Pool.builder()
@@ -91,5 +123,19 @@ public final class ExtractinatorSubProvider {
                 .add(ExtractinatorData.Entry.of(MaterialItems.RAW_SILVER, 1, 2, 39192))
                 .add(ExtractinatorData.Entry.of(MaterialItems.RAW_TUNGSTEN, 1, 2, 39192))
                 .add(ExtractinatorData.Entry.of(MaterialItems.RAW_PLATINUM, 1, 2, 39192));
+    }
+
+    private static ExtractinatorData.Pool.Builder gravelsCommon() {
+        return ExtractinatorData.Pool.builder()
+                .add(ExtractinatorData.Entry.of(ModItems.GOLD_COIN, 1, 2, 1017))
+                .add(ExtractinatorData.Entry.of(ModItems.SILVER_COIN, 1, 4, 13534))
+                .add(ExtractinatorData.Entry.of(ModItems.COPPER_COIN, 1, 15, 642145))
+                .add(ExtractinatorData.Entry.of(Items.RAW_COPPER, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_TIN, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(Items.RAW_IRON, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(Items.RAW_GOLD, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_LEAD, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_SILVER, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_TUNGSTEN, 1, 2, 39192));
     }
 }

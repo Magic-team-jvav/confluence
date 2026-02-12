@@ -359,6 +359,10 @@ public final class ModTags {
         public static final TagKey<Item> SLUSH = register("slush");
         public static final TagKey<Item> SILT_BLOCK = register("silt_block");
         public static final TagKey<Item> MARINE_GRAVEL = register("marine_gravel");
+        public static final TagKey<Item> POO = register("poo");
+        public static final TagKey<Item> EXTRACT_SAND = register("extract_sand");
+        public static final TagKey<Item> EXTRACT_HONEY_BLOCK = register("extract_honey_block");
+        public static final TagKey<Item> EXTRACT_MOSS = register("extract_moss");
         public static final TagKey<Item> CORALS = register("corals");
         public static final TagKey<Item> EVIL_MATERIAL = register("evil_material");
         public static final TagKey<Item> SEAFOOD_DINNER_MATERIALS = register("seafood_dinner_materials");// 制作海鲜大餐

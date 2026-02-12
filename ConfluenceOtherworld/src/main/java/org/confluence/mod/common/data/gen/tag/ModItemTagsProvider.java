@@ -109,6 +109,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.SLUSH).add(NatureBlocks.SLUSH.asItem());
         tag(ModTags.Items.SILT_BLOCK).add(NatureBlocks.SILT_BLOCK.asItem());
         tag(ModTags.Items.MARINE_GRAVEL).add(NatureBlocks.MARINE_GRAVEL.asItem());
+        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.asItem(),ModBlocks.POO.asItem());
+        tag(ModTags.Items.EXTRACT_SAND).add(Items.OBSIDIAN);
+        tag(ModTags.Items.EXTRACT_HONEY_BLOCK).add(Items.BEE_NEST,NatureBlocks.JUNGLE_HIVE_BLOCK.asItem());
+        tag(ModTags.Items.EXTRACT_MOSS).add(NatureBlocks.HELIUM_MOSS.asItem(),NatureBlocks.NEON_MOSS.asItem(),NatureBlocks.ARGON_MOSS.asItem(),NatureBlocks.XENON_MOSS.asItem(),NatureBlocks.KRYPTON_MOSS.asItem(),NatureBlocks.LAVA_MOSS.asItem());
         tag(ModTags.Items.JUNK).add(Blocks.LILY_PAD.asItem(), Items.LEATHER_BOOTS, Blocks.SEAGRASS.asItem());
         tag(ModTags.Items.CORALS).add(Blocks.TUBE_CORAL.asItem(), Blocks.TUBE_CORAL_FAN.asItem(), Blocks.TUBE_CORAL_BLOCK.asItem(), Blocks.BRAIN_CORAL.asItem(), Blocks.BRAIN_CORAL_FAN.asItem(), Blocks.BRAIN_CORAL_BLOCK.asItem(),
                 Blocks.BUBBLE_CORAL.asItem(), Blocks.BUBBLE_CORAL_FAN.asItem(), Blocks.BUBBLE_CORAL_BLOCK.asItem(), Blocks.FIRE_CORAL.asItem(), Blocks.FIRE_CORAL_FAN.asItem(), Blocks.FIRE_CORAL_BLOCK.asItem(), Blocks.HORN_CORAL.asItem(), Blocks.HORN_CORAL_FAN.asItem(), Blocks.HORN_CORAL_BLOCK.asItem(),

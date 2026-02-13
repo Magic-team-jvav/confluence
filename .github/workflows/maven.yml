@@ -13,16 +13,22 @@ jobs:
         with:
           ref: refs/heads/neoforge-dev/1.21.1
           submodules: recursive
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: 21
           cache: "gradle"
+
       - name: Generate assets
         run: |
           git submodule foreach '../gradlew runData'
           cd ./ConfluenceOtherworld && ./gradlew runData
+
       - name: Build & Publish to Maven Confluence
         working-directory: ./ConfluenceOtherworld
         run: ./gradlew build publish

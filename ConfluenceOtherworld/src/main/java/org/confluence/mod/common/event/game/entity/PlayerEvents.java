@@ -280,13 +280,18 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            EverBeneficialItem.refreshAll(player);
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        EverBeneficial everBeneficial = EverBeneficial.of(player);
+        EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, player);
+        EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
+        EverBeneficialItem.AEGIS_APPLE.recovery(everBeneficial, EverBeneficial::isAegisAppleUsed, player);
+        EverBeneficialItem.AMBROSIA.recovery(everBeneficial, EverBeneficial::isAmbrosiaUsed, player);
+        EverBeneficialItem.GALAXY_PEARL.recovery(everBeneficial, EverBeneficial::isGalaxyPearlUsed, player);
+        EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, player);
 
-            BoulderWorld.forceSetAccessory(player);
-            PlayerUtils.flushLocalData(player, player);
-            PlayerUtils.syncPlayerData(player);
-        }
+        BoulderWorld.forceSetAccessory(player);
+        PlayerUtils.flushLocalData(player, player);
+        PlayerUtils.syncPlayerData(player);
     }
 
     @SubscribeEvent

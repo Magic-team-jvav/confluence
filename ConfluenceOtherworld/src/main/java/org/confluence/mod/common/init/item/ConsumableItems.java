@@ -2,25 +2,16 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.entity.projectile.ThrownWaterProjectile;
@@ -31,55 +22,26 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaCrystalItem;
-import org.confluence.mod.util.AchievementUtils;
-import org.confluence.terra_curio.network.s2c.RightClickSubtractorPacketS2C;
-import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.boss.*;
-
-import javax.annotation.Nullable;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 public class ConsumableItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     public static final DeferredItem<ManaCrystalItem> MANA_CRYSTAL = ITEMS.register("mana_crystal", ManaCrystalItem::new);
-    public static final DeferredItem<EverBeneficialItem> LIFE_CRYSTAL = registerBeneficial(
-            "life_crystal", 15, Attributes.MAX_HEALTH, 4.0, AttributeModifier.Operation.ADD_VALUE,
-            ModSoundEvents.LIFE_CRYSTAL_USE, (e, r) -> {
-                if (!r) e.heal(4.0f);
-                if (e instanceof ServerPlayer sp && EverBeneficial.of(sp).isLifeCrystalsMaximum() && EverBeneficial.of(sp).isLifeFruitsMaximum() && ManaStorage.of(sp).isStarMaximum())
-                    AchievementUtils.awardAchievement(sp, "topped_off");
-            }, ModRarity.GREEN, 1, ChatFormatting.GREEN);
-    public static final DeferredItem<EverBeneficialItem> LIFE_FRUIT = registerBeneficial(
-            "life_fruit", 20, Attributes.MAX_HEALTH, 1.0, AttributeModifier.Operation.ADD_VALUE,
-            ModSoundEvents.LIFE_CRYSTAL_USE, (e, r) -> {
-                if (!r) e.heal(1.0f);
-            }, ModRarity.LIME, 1, ChatFormatting.GREEN);
-    public static final DeferredItem<EverBeneficialItem> VITAL_CRYSTAL = registerFunctionalBeneficial("vital_crystal", 1, ModSoundEvents.TRANSMUTATION_USE, ModRarity.LIGHT_PURPLE, ChatFormatting.GREEN);
+    public static final DeferredItem<EverBeneficialItem> LIFE_CRYSTAL = ITEMS.register("life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_crystal", 1, ChatFormatting.GREEN)));
+    public static final DeferredItem<EverBeneficialItem> LIFE_FRUIT = ITEMS.register("life_fruit", () -> new EverBeneficialItem(ModRarity.LIME, EverBeneficialItem.LIFE_FRUITS, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_fruit", 1, ChatFormatting.GREEN)));
+    public static final DeferredItem<EverBeneficialItem> VITAL_CRYSTAL = ITEMS.register("vital_crystal", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.VITAL_CRYSTAL, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("vital_crystal", 1, ChatFormatting.GREEN)));
     public static final DeferredItem<ArcaneCrystalItem> ARCANE_CRYSTAL = ITEMS.register("arcane_crystal", ArcaneCrystalItem::new);
-    public static final DeferredItem<EverBeneficialItem> AEGIS_APPLE = registerAttributeBeneficial("aegis_apple", 1, Attributes.ARMOR, 4.0, ModSoundEvents.TRANSMUTATION_USE, ModRarity.LIGHT_PURPLE, ChatFormatting.GREEN);
-    public static final DeferredItem<EverBeneficialItem> AMBROSIA = registerBeneficial(
-            "ambrosia", 1, Attributes.BLOCK_BREAK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
-            ModSoundEvents.TRANSMUTATION_USE, (e, r) -> {
-                if (!r && e instanceof ServerPlayer sp) {
-                    int v = TCUtils.getValue(sp, org.confluence.terra_curio.common.init.TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR);
-                    PacketDistributor.sendToPlayer(sp, new RightClickSubtractorPacketS2C((byte) Math.min(v + 1, 4)));
-                }
-            }, ModRarity.LIGHT_PURPLE, 1, ChatFormatting.GREEN);
-    public static final DeferredItem<EverBeneficialItem> GUMMY_WORM = registerFunctionalBeneficial("gummy_worm", 1, ModSoundEvents.TRANSMUTATION_USE, ModRarity.LIGHT_PURPLE, ChatFormatting.GREEN);
-    public static final DeferredItem<EverBeneficialItem> GALAXY_PEARL = registerAttributeBeneficial("galaxy_pearl", 1, Attributes.LUCK, 0.03, ModSoundEvents.TRANSMUTATION_USE, ModRarity.LIGHT_PURPLE, ChatFormatting.GREEN);
-    public static final DeferredItem<EverBeneficialItem> MINECART_UPGRADE_KIT = registerBeneficial(
-            "minecart_upgrade_kit", 1, null, 0, AttributeModifier.Operation.ADD_VALUE,
-            ModSoundEvents.TRANSMUTATION_USE, (e, r) -> {
-                if (!r && e instanceof ServerPlayer sp)
-                    sp.drop(MinecartItems.MECHANICAL_CART.get().getDefaultInstance(), true);
-            }, ModRarity.EXPERT, 2, ChatFormatting.GREEN);
-    public static final DeferredItem<EverBeneficialItem> ARTISAN_LOAF = registerAttributeBeneficial("artisan_loaf", 1, Attributes.BLOCK_INTERACTION_RANGE, 4.0, ModSoundEvents.TRANSMUTATION_USE, ModRarity.ORANGE, ChatFormatting.GREEN);
+    public static final DeferredItem<EverBeneficialItem> AEGIS_APPLE = ITEMS.register("aegis_apple", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AEGIS_APPLE, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("aegis_apple", 1, ChatFormatting.GREEN)));
+    public static final DeferredItem<EverBeneficialItem> AMBROSIA = ITEMS.register("ambrosia", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AMBROSIA, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("ambrosia", 1, ChatFormatting.GREEN)));
+    public static final DeferredItem<EverBeneficialItem> GUMMY_WORM = ITEMS.register("gummy_worm", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GUMMY_WORM, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("gummy_worm", 1, ChatFormatting.GREEN)));
+    public static final DeferredItem<EverBeneficialItem> GALAXY_PEARL = ITEMS.register("galaxy_pearl", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GALAXY_PEARL, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("galaxy_pearl", 1, ChatFormatting.GREEN)));
+    public static final DeferredItem<EverBeneficialItem> MINECART_UPGRADE_KIT = ITEMS.register("minecart_upgrade_kit", () -> new EverBeneficialItem(ModRarity.EXPERT, EverBeneficialItem.MINECART_UPGRADE_KIT, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("minecart_upgrade_kit", 2, ChatFormatting.GREEN)));
+    public static final DeferredItem<EverBeneficialItem> ARTISAN_LOAF = ITEMS.register("artisan_loaf", () -> new EverBeneficialItem(ModRarity.ORANGE, EverBeneficialItem.ARTISAN_LOAF, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("artisan_loaf", 2, ChatFormatting.GREEN)));
     public static final DeferredItem<AdvancedCombatTechniquesItem> ADVANCED_COMBAT_TECHNIQUES = ITEMS.register("advanced_combat_techniques", AdvancedCombatTechniquesItem::new);
     public static final DeferredItem<AdvancedCombatTechniquesVolumeTwoItem> ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO = ITEMS.register("advanced_combat_techniques_volume_two", AdvancedCombatTechniquesVolumeTwoItem::new);
     public static final DeferredItem<PeddlersSatchelItem> PEDDLERS_SATCHEL = ITEMS.register("peddlers_satchel", PeddlersSatchelItem::new);
-//    public static final DeferredItem<EverBeneficialItem> FALLEN_SOUL_CORE = registerFunctionalBeneficial("fallen_soul_core", 1, ModSoundEvents.LIFE_CRYSTAL_USE, ModRarity.BLUE, ChatFormatting.GREEN);
+//    public static final DeferredItem<EverBeneficialItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new EverBeneficialItem(ModRarity.BLUE, EverBeneficialItem.FALLEN_SOUL_CORE, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("fallen_soul_core", 1, ChatFormatting.GREEN)));
 
     public static final DeferredItem<ThrowableItem<BaseBombEntity>> BOMB = ITEMS.register("bomb", () -> new ThrowableItem<>(0.8F, BaseBombEntity::new));
     public static final DeferredItem<ThrowableItem<BouncyBombEntity>> BOUNCY_BOMB = ITEMS.register("bouncy_bomb", () -> new ThrowableItem<>(0.8F, BouncyBombEntity::new));
@@ -146,29 +108,4 @@ public class ConsumableItems {
 
     public static final DeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("blood_tear", 2, ChatFormatting.GRAY), BloodMoonGameEvent.KEY));
     public static final DeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("goblin_battle_standard", 1, ChatFormatting.GRAY), GoblinArmyGameEvent.KEY));
-
-
-    private static DeferredItem<EverBeneficialItem> registerBeneficial(
-            String name, int max, @Nullable Holder<Attribute> attr, double val,
-            AttributeModifier.Operation op, Supplier<SoundEvent> sound,
-            BiConsumer<LivingEntity, Boolean> effect, ModRarity rarity,
-            int lines, ChatFormatting color) {
-        return ITEMS.register(name, () -> new EverBeneficialItem(
-                Confluence.asResource(name), max, attr, val, op, sound, effect,
-                rarity, TooltipItem.getTooltipsFromString(name, lines, color)
-        ));
-    }
-
-    private static DeferredItem<EverBeneficialItem> registerAttributeBeneficial(
-            String name, int max, Holder<Attribute> attr, double val,
-            Supplier<SoundEvent> sound, ModRarity rarity, ChatFormatting color) {
-        return registerBeneficial(name, max, attr, val, AttributeModifier.Operation.ADD_VALUE,
-                sound, (e, r) -> {}, rarity, 1, color);
-    }
-
-    private static DeferredItem<EverBeneficialItem> registerFunctionalBeneficial(
-            String name, int max, Supplier<SoundEvent> sound, ModRarity rarity, ChatFormatting color) {
-        return registerBeneficial(name, max, null, 0, AttributeModifier.Operation.ADD_VALUE,
-                sound, (e, r) -> {}, rarity, 1, color);
-    }
 }

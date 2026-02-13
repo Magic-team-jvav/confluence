@@ -1,98 +1,171 @@
 package org.confluence.mod.common.attachment;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.UnknownNullability;
 
 public class EverBeneficial implements INBTSerializable<CompoundTag> {
-    private final Object2IntMap<ResourceLocation> data = new Object2IntOpenHashMap<>();
+    private int lifeCrystals;
+    private int lifeFruits;
 
-    private static final ResourceLocation LIFE_CRYSTAL = Confluence.asResource("life_crystal");
-    private static final ResourceLocation LIFE_FRUIT = Confluence.asResource("life_fruit");
-    private static final ResourceLocation VITAL_CRYSTAL = Confluence.asResource("vital_crystal");
-    private static final ResourceLocation GUMMY_WORM = Confluence.asResource("gummy_worm");
-    private static final ResourceLocation MINECART_UPGRADE_KIT = Confluence.asResource("minecart_upgrade_kit");
-    private static final ResourceLocation AEGIS_APPLE = Confluence.asResource("aegis_apple");
-    private static final ResourceLocation AMBROSIA = Confluence.asResource("ambrosia");
-    private static final ResourceLocation ARTISAN_LOAF = Confluence.asResource("artisan_loaf");
-    private static final ResourceLocation GALAXY_PEARL = Confluence.asResource("galaxy_pearl");
+    private boolean vitalCrystal;
+    private boolean aegisApple;
+    private boolean ambrosia;
+    private boolean gummyWorm;
+    private boolean galaxyPearl;
+    private boolean minecartUpgradeKit;
+    private boolean artisanLoaf;
+//    private boolean fallenSoulCore;
 
-    public EverBeneficial() {}
+    public EverBeneficial() {
+        this.lifeCrystals = 0;
+        this.lifeFruits = 0;
 
-    public boolean tryIncrease(ResourceLocation id, int max) {
-        int current = getLevel(id);
-        if (current < max) {
-            data.put(id, current + 1);
+        this.vitalCrystal = false;
+        this.aegisApple = false;
+        this.ambrosia = false;
+        this.gummyWorm = false;
+        this.galaxyPearl = false;
+        this.minecartUpgradeKit = false;
+        this.artisanLoaf = false;
+//        this.fallenSoulCore = false;
+    }
+
+    public boolean increaseCrystals() {
+        if (!isLifeCrystalsMaximum()) {
+            this.lifeCrystals++;
             return true;
         }
         return false;
     }
 
-    public int getLevel(ResourceLocation id) {
-        return data.getOrDefault(id, 0);
+    public int getUsedLifeCrystals() {
+        return lifeCrystals;
     }
 
     public boolean isLifeCrystalsMaximum() {
-        return getLevel(LIFE_CRYSTAL) >= 15;
+        return lifeCrystals >= 15;
+    }
+
+    public boolean increaseFruits() {
+        if (!isLifeFruitsMaximum()) {
+            this.lifeFruits++;
+            return true;
+        }
+        return false;
+    }
+
+    public int getUsedLifeFruits() {
+        return lifeFruits;
     }
 
     public boolean isLifeFruitsMaximum() {
-        return getLevel(LIFE_FRUIT) >= 20;
+        return lifeFruits >= 20;
+    }
+
+    public boolean setVitalCrystalUsed() {
+        if (vitalCrystal) return false;
+        return this.vitalCrystal = true;
     }
 
     public boolean isVitalCrystalUsed() {
-        return getLevel(VITAL_CRYSTAL) > 0;
+        return vitalCrystal;
     }
 
-    public boolean isGummyWormUsed() {
-        return getLevel(GUMMY_WORM) > 0;
-    }
-
-    public boolean isMinecartUpgradeKitUsed() {
-        return getLevel(MINECART_UPGRADE_KIT) > 0;
+    public boolean setAegisAppleUsed() {
+        if (aegisApple) return false;
+        return this.aegisApple = true;
     }
 
     public boolean isAegisAppleUsed() {
-        return getLevel(AEGIS_APPLE) > 0;
+        return aegisApple;
+    }
+
+    public boolean setAmbrosiaUsed() {
+        if (ambrosia) return false;
+        return this.ambrosia = true;
     }
 
     public boolean isAmbrosiaUsed() {
-        return getLevel(AMBROSIA) > 0;
+        return ambrosia;
     }
 
-    public boolean isArtisanLoafUsed() {
-        return getLevel(ARTISAN_LOAF) > 0;
+    public boolean setGummyWormUsed() {
+        if (gummyWorm) return false;
+        return this.gummyWorm = true;
+    }
+
+    public boolean isGummyWormUsed() {
+        return gummyWorm;
+    }
+
+    public boolean setGalaxyPearlUsed() {
+        if (galaxyPearl) return false;
+        return this.galaxyPearl = true;
     }
 
     public boolean isGalaxyPearlUsed() {
-        return getLevel(GALAXY_PEARL) > 0;
+        return galaxyPearl;
     }
+
+    public boolean setMinecartUpgradeKitUsed() {
+        return this.minecartUpgradeKit = true;
+    }
+
+    public boolean isMinecartUpgradeKitUsed() {
+        return minecartUpgradeKit;
+    }
+
+    public boolean setArtisanLoafUsed() {
+        if (artisanLoaf) return false;
+        return this.artisanLoaf = true;
+    }
+
+    public boolean isArtisanLoafUsed() {
+        return artisanLoaf;
+    }
+
+//    public void changeFallenSoulCore() {this.fallenSoulCore = !fallenSoulCore;}
+//
+//    public void setFallenSoulCore(boolean fallenSoulCore) {
+//        this.fallenSoulCore = fallenSoulCore;
+//    }
+//
+//    public boolean getFallenSoulCore() {return fallenSoulCore;}
 
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
-        for (Object2IntMap.Entry<ResourceLocation> entry : data.object2IntEntrySet()) {
-            nbt.putInt(entry.getKey().toString(), entry.getIntValue());
-        }
+        nbt.putInt("lifeCrystals", lifeCrystals);
+        nbt.putInt("lifeFruits", lifeFruits);
+
+        nbt.putBoolean("vitalCrystal", vitalCrystal);
+        nbt.putBoolean("aegisApple", aegisApple);
+        nbt.putBoolean("ambrosia", ambrosia);
+        nbt.putBoolean("gummyWorm", gummyWorm);
+        nbt.putBoolean("galaxyPearl", galaxyPearl);
+        nbt.putBoolean("minecartUpgradeKit", minecartUpgradeKit);
+        nbt.putBoolean("artisanLoaf", artisanLoaf);
+//        nbt.putBoolean("fallenSoulCore", fallenSoulCore);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        data.clear();
-        for (String key : nbt.getAllKeys()) {
-            ResourceLocation id = ResourceLocation.tryParse(key);
-            if (id != null) {
-                data.put(id, nbt.getInt(key));
-            }
-        }
+        this.lifeCrystals = nbt.getInt("lifeCrystals");
+        this.lifeFruits = nbt.getInt("lifeFruits");
+
+        this.vitalCrystal = nbt.getBoolean("vitalCrystal");
+        this.aegisApple = nbt.getBoolean("aegisApple");
+        this.ambrosia = nbt.getBoolean("ambrosia");
+        this.gummyWorm = nbt.getBoolean("gummyWorm");
+        this.galaxyPearl = nbt.getBoolean("galaxyPearl");
+        this.minecartUpgradeKit = nbt.getBoolean("minecartUpgradeKit");
+        this.artisanLoaf = nbt.getBoolean("artisanLoaf");
+//        this.fallenSoulCore = nbt.getBoolean("fallenSoulCore");
     }
 
     public static EverBeneficial of(LivingEntity living) {

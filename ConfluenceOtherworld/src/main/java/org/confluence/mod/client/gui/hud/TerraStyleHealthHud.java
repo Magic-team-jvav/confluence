@@ -9,7 +9,6 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +16,7 @@ import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.item.ConsumableItems;
+import org.confluence.mod.common.item.common.EverBeneficialItem;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
@@ -35,8 +34,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!ClientConfigs.terraStyleHealth) return;
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !LibClientUtils.shouldDrawSurvivalElements(minecraft))
-            return;
+        if (minecraft.options.hideGui || !LibClientUtils.shouldDrawSurvivalElements(minecraft)) return;
         LibClientUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
@@ -65,12 +63,9 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     absorptionHealth = player.getAbsorptionAmount();
                     maxHealth = player.getMaxHealth();
                     currentHealth = player.getHealth();
-                    AttributeInstance maxHealthAttr = player.getAttribute(Attributes.MAX_HEALTH);
-                    if (maxHealthAttr != null) {
-                        AttributeModifier modifier = maxHealthAttr.getModifier(ConsumableItems.LIFE_FRUIT.get().getModifierId());
-                        if (modifier != null) {
-                            lifeFruitHealth = (int) modifier.amount();
-                        }
+                    AttributeModifier modifier = player.getAttribute(Attributes.MAX_HEALTH).getModifier(EverBeneficialItem.LIFE_FRUITS.id());
+                    if (modifier != null) {
+                        lifeFruitHealth = (int) modifier.amount();
                     }
                 }
                 int countHeart = (int) ((maxHealth - (float) lifeFruitHealth) / 4);

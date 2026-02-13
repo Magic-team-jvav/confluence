@@ -109,6 +109,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.SLUSH).add(NatureBlocks.SLUSH.asItem());
         tag(ModTags.Items.SILT_BLOCK).add(NatureBlocks.SILT_BLOCK.asItem());
         tag(ModTags.Items.MARINE_GRAVEL).add(NatureBlocks.MARINE_GRAVEL.asItem());
+        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.asItem(),ModBlocks.POO.asItem());
+        tag(ModTags.Items.EXTRACT_SAND).add(Items.OBSIDIAN);
+        tag(ModTags.Items.EXTRACT_HONEY_BLOCK).add(Items.BEE_NEST,NatureBlocks.JUNGLE_HIVE_BLOCK.asItem());
+        tag(ModTags.Items.EXTRACT_MOSS).add(NatureBlocks.HELIUM_MOSS.asItem(),NatureBlocks.NEON_MOSS.asItem(),NatureBlocks.ARGON_MOSS.asItem(),NatureBlocks.XENON_MOSS.asItem(),NatureBlocks.KRYPTON_MOSS.asItem(),NatureBlocks.LAVA_MOSS.asItem());
         tag(ModTags.Items.JUNK).add(Blocks.LILY_PAD.asItem(), Items.LEATHER_BOOTS, Blocks.SEAGRASS.asItem());
         tag(ModTags.Items.CORALS).add(Blocks.TUBE_CORAL.asItem(), Blocks.TUBE_CORAL_FAN.asItem(), Blocks.TUBE_CORAL_BLOCK.asItem(), Blocks.BRAIN_CORAL.asItem(), Blocks.BRAIN_CORAL_FAN.asItem(), Blocks.BRAIN_CORAL_BLOCK.asItem(),
                 Blocks.BUBBLE_CORAL.asItem(), Blocks.BUBBLE_CORAL_FAN.asItem(), Blocks.BUBBLE_CORAL_BLOCK.asItem(), Blocks.FIRE_CORAL.asItem(), Blocks.FIRE_CORAL_FAN.asItem(), Blocks.FIRE_CORAL_BLOCK.asItem(), Blocks.HORN_CORAL.asItem(), Blocks.HORN_CORAL_FAN.asItem(), Blocks.HORN_CORAL_BLOCK.asItem(),
@@ -1254,14 +1258,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SPOOKY_LOG_BLOCKS.LOG.asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.LEAVES.asItem(),
                 NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.asItem(),
-                NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.asItem(),
-                NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.asItem(),
-                NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.asItem(),
                 NatureBlocks.SMALL_DESERT_PLANT.asItem(),
                 NatureBlocks.SMALL_CACTUS.asItem(),
-                NatureBlocks.JUNGLE_PATH.asItem(),
-                NatureBlocks.MUSHROOM_PATH.asItem(),
-                NatureBlocks.ASH_PATH.asItem(),
                 NatureBlocks.SHIMMER_CRYSTALS_BLOCK.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.TRAPDOOR.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.DOOR.asItem(),
@@ -1359,12 +1357,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TFBlocks.GOLD_FISH_BOWL.asItem(),
                 TFBlocks.PUPFISH_BOWL.asItem(),
                 TFBlocks.LAVA_SERPENT_BOWL.asItem(),
-                TFBlocks.GLASS_BATHTUB.asItem(),
-                TFBlocks.BLUE_DUNGEON_SOFA.asItem(),
-                TFBlocks.BLUE_DUNGEON_LANTERN.asItem(),
-                TFBlocks.BLUE_DUNGEON_LAMP.asItem(),
-                TFBlocks.BLUE_DUNGEON_CLOCK.asItem(),
-                TFBlocks.BLUE_DUNGEON_BATHTUB.asItem(),
+                TFBlocks.GLASS_SET.BATHTUB.asItem(),
+                TFBlocks.GLASS_SET.LANTERN.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.SOFA.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.LANTERN.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.LAMP.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.CLOCK.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.BATHTUB.asItem(),
                 ChestBlocks.LIVING_WOOD_CHEST.asItem(),
                 ChestBlocks.JUNGLE_CHEST.asItem(),
                 ChestBlocks.CORRUPTION_CHEST.asItem(),
@@ -1393,7 +1392,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.TREE_HOLES_BLOCK.asItem(),
                 FunctionalBlocks.MAGIC_MAIL_BOX.asItem(),
                 MaterialItems.ECTOPLASM.get(),
-                MaterialItems.UNICORN_HORN.get(),
                 MaterialItems.SPIDER_FANG.get(),
                 HookItems.WEB_SLINGER.get(),
                 HookItems.SLIME_HOOK.get(),
@@ -1423,10 +1421,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TEFigureBlocks.FIGURE2.asItem(),
                 TEFigureBlocks.FIGURE3.asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
-                NatureBlocks.FEY_LOG_BLOCKS.SIGN.asItem(),
-                NatureBlocks.FEY_LOG_BLOCKS.HANGING_SIGN.asItem(),
-                NatureBlocks.PINE_LOG_BLOCKS.SIGN.asItem(),
-                NatureBlocks.PINE_LOG_BLOCKS.HANGING_SIGN.asItem(),
                 DecorativeBlocks.THE_TWINS_RELIC.asItem(),
                 DecorativeBlocks.SKELETRON_PRIME_RELIC.asItem(),
                 LanceItems.HALLOWED_JOUSTING_LANCE.get(),

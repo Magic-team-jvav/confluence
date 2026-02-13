@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "confluence:block/marble_tapered_block_tip_single"
+    }
+}

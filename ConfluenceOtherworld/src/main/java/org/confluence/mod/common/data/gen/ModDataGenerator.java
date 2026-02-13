@@ -35,7 +35,8 @@ public final class ModDataGenerator {
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));
         generator.addProvider(client, new CollectRecipeProvider(Confluence.asPlainId("client"), output, lookup,
-                ModClientBestiaryEntryProvider::new
+                ModClientBestiaryEntryProvider::new,
+                ModAchievementOffsetProvider::client
         ));
 
         ModBlockTagsProvider blockTagsProvider = generator.addProvider(server, new ModBlockTagsProvider(output, lookup, helper));
@@ -51,7 +52,7 @@ public final class ModDataGenerator {
                 HeavyWorkBenchProvider::new,
                 CookingPotRecipeProvider::new,
                 ShimmerTransmutationRecipeProvider::new,
-                ModAchievementOffsetProvider::new,
+                ModAchievementOffsetProvider::server,
                 StonecuttingRecipeProvider::new,
                 SawmillRecipeProvider::new,
                 HardmodeAnvilRecipeProvider::new

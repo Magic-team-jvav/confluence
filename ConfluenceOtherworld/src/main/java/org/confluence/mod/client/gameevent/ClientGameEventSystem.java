@@ -17,9 +17,7 @@ import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class ClientGameEventSystem {
     static final Map<ResourceKey<? extends GameEvent>, GameEventSyncCallback> CALLBACKS = Util.make(new IdentityHashMap<>(), map -> {
@@ -43,6 +41,7 @@ public final class ClientGameEventSystem {
     public static @Nullable ResourceLocation moonTexture;
     public static @Nullable Vector3f lightTextureColor;
     static Map<ResourceKey<? extends GameEvent>, AfterRenderSky> afterRenderSky = Map.of();
+    private static final Set<ResourceKey<? extends GameEvent>> RUNNING_EVENTS = new HashSet<>();
 
     public static void handle(LocalPlayer player) {
         if (!Minecraft.getInstance().isPaused() && player.clientLevel.tickRateManager().runsNormally()) {
@@ -65,8 +64,10 @@ public final class ClientGameEventSystem {
                 if (renderSky != null) {
                     map.put(key, renderSky);
                 }
+                RUNNING_EVENTS.add(key);
             } else {
                 map.remove(key);
+                RUNNING_EVENTS.remove(key);
             }
         }
         afterRenderSky = map;
@@ -80,6 +81,11 @@ public final class ClientGameEventSystem {
         MeteorShowerSprite.reset();
         LanternNightSprite.reset();
         GoblinArmyProgressRenderer.reset();
+        RUNNING_EVENTS.clear();
+    }
+
+    public static boolean isEventStarted(ResourceKey<? extends GameEvent> key) {
+        return RUNNING_EVENTS.contains(key);
     }
 
     public static void afterRenderSky(RenderLevelStageEvent event, LocalPlayer player) {

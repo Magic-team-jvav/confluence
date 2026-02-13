@@ -163,7 +163,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.witch_doctor.desc", "It's unusual for a Lihzahrd to be outside the Temple. Even more unusual are the voodoo things he sells. He prefers his jungle digs.");
         add("bestiary.entity.terra_entity.mechanic.desc", "The Mechanic was imprisoned for her aptitude in engineering. She sells wiring and tools for putting together anything imaginable.");
         add("bestiary.entity.terra_entity.clothier.desc", "Once trapped under a curse, the Clothier is the master of thread. If it's fashion that's desired, he's the man! He talks in a familiar way.");
-//        add("bestiary.entity.terra_entity.wizard.desc", "The Wizard is an absent-minded, demented old man who dabbles in the arcane arts. He sells magical trinkets to train new apprentices.");
+        add("bestiary.entity.terra_entity.wizard.desc", "The Wizard is an absent-minded, demented old man who dabbles in the arcane arts. He sells magical trinkets to train new apprentices.");
 //        add("bestiary.entity.terra_entity.steampunker.desc", "The Steampunker has a particular taste for steam-fueled machinery and gadgets. She sells her gizmos with an endearing accent.");
 //        add("bestiary.entity.terra_entity.pirate.desc", "Ahoy! The only good Pirate Captain is... one that sells cannons and weapons to take out all competing Pirate Captains!");
         add("bestiary.entity.terra_entity.truffle.desc", "Harnessing the hidden power of the glowing mushroom, the Truffle forges weapons and tools exclusively in his mushroom home.");
@@ -371,7 +371,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.skeleton_headache.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
 //        add("bestiary.entity.terra_entity.skeleton_pantless.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
         add("bestiary.entity.terra_entity.crawdad.desc", "A subterranean form of crayfish which scuttles along the cavern floors, searching for prey to clip apart with its powerful pincers.");
-//        add("bestiary.entity.terra_entity.undead_miner.desc", "There's evidence of spelunkers having explored the caverns in the past... as well as evidence of them having died doing so.");
+        add("bestiary.entity.confluence.undead_miner.desc", "There's evidence of spelunkers having explored the caverns in the past... as well as evidence of them having died doing so.");
 //        add("bestiary.entity.terra_entity.skeleton_archer.desc", "Skeleton Archers have a keen eye, despite the general lack of eyes. Distance offers little protection from their blazing arrows.");
         add("bestiary.entity.terra_entity.nymph.desc", "Masterfully deceives explorers by posing as a lost girl, then attacks with ferocious might, blood-lust in her eyes.");
         add("bestiary.entity.terra_entity.armored_skeleton.desc", "Remnants of a long lost expeditionary force, these stout warriors mindlessly patrol the caves in which they died.");
@@ -947,7 +947,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.terra_entity.witch_doctor.desc", "丛林蜥蜴待在神庙之外可不寻常。更不寻常的是他出售的巫毒物品。他更喜欢他在丛林的家。");
         add("bestiary.entity.terra_entity.mechanic.desc", "机械师因在工程方面的才能而被监禁。她出售电线和工具，用来组装任何可以想象的东西。");
         add("bestiary.entity.terra_entity.clothier.desc", "服装商曾被诅咒所困，是当之无愧的针线大师。若你追求时尚，找他准没错！他说话的语气十分随和。");
-//        add("bestiary.entity.terra_entity.wizard.desc", "巫师是个精神恍惚又有些癫狂的健忘老人，醉心于奥术研究。他售卖魔法小饰品，以此培养新的学徒。");
+        add("bestiary.entity.terra_entity.wizard.desc", "巫师是个精神恍惚又有些癫狂的健忘老人，醉心于奥术研究。他售卖魔法小饰品，以此培养新的学徒。");
 //        add("bestiary.entity.terra_entity.steampunker.desc", "蒸汽朋克人对蒸汽驱动的机械与装置情有独钟。她带着可爱的口音，售卖自己发明的各类小玩意儿。");
 //        add("bestiary.entity.terra_entity.pirate.desc", "喂！唯一像样的海盗船长是……那种卖大炮和武器，用来干掉所有竞争对手船长的人！");
         add("bestiary.entity.terra_entity.truffle.desc", "松露人能驾驭发光蘑菇的隐藏力量，只在自己的蘑菇屋里打造武器与工具。");
@@ -1152,7 +1152,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.skeleton_headache.desc", "谁说非得有肌肉、皮肤甚至眼球？头痛骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
 //        add("bestiary.entity.terra_entity.skeleton_pantless.desc", "谁说非得有肌肉、皮肤甚至眼球？无裤骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
         add("bestiary.entity.terra_entity.crawdad.desc", "龙虾是生活在地下的螯虾品种，会沿着洞穴地面快速爬行，用有力的螯钳将猎物撕碎。");
-//        add("bestiary.entity.terra_entity.undead_miner.desc", "有证据表明，过去曾有洞穴探险者探索过这些洞穴……也有证据表明，他们在此过程中丧命。");
+        add("bestiary.entity.confluence.undead_miner.desc", "有证据表明，过去曾有洞穴探险者探索过这些洞穴……也有证据表明，他们在此过程中丧命。");
 //        add("bestiary.entity.terra_entity.skeleton_archer.desc", "尽管没有眼睛，骷髅弓箭手仍拥有敏锐的瞄准力，即便与它们保持距离，也难以躲避其燃烧的箭矢。");
         add("bestiary.entity.terra_entity.nymph.desc", "宁芙擅长伪装成迷路的女孩欺骗探险者，随后便会眼中带着嗜血的欲望，发起凶猛攻击。");
         add("bestiary.entity.terra_entity.armored_skeleton.desc", "装甲骷髅是早已覆灭的远征军残部，这些顽强的战士会在自己战死的洞穴中漫无目的地巡逻。");

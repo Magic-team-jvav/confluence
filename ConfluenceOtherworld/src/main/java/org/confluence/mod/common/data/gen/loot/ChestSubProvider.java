@@ -392,6 +392,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
                         .add(LootItem.lootTableItem(TGItems.HAND_GUN))
                         .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
+                        .add(LootItem.lootTableItem(TCItems.RAM_RUNE))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ToolItems.SHADOW_KEY))

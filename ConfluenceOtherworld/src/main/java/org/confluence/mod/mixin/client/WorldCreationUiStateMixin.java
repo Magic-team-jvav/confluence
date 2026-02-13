@@ -2,11 +2,10 @@ package org.confluence.mod.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.ObjectBooleanPair;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,9 +22,9 @@ public abstract class WorldCreationUiStateMixin {
     private WorldOptions checkSecretSeed(WorldOptions instance, OptionalLong seed, Operation<WorldOptions> original) {
         instance = IWorldOptions.of(instance).confluence$copyWithoutSecretFlag();
         if (!getSeed().isEmpty()) {
-            Pair<SecretSeed, WorldOptions> tuple = ModSecretSeeds.matchSeed(getSeed(), instance);
-            if (tuple.getFirst() != null) {
-                return tuple.getSecond();
+            ObjectBooleanPair<WorldOptions> pair = ModSecretSeeds.matchSeed(getSeed(), instance);
+            if (pair.rightBoolean()) {
+                return pair.left();
             }
         }
         return original.call(instance, seed);

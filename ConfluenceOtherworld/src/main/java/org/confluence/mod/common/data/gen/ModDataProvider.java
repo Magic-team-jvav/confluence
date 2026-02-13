@@ -469,17 +469,15 @@ public class ModDataProvider {
                             BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get()),
                             14,
-                            10,
-                            false
+                            10
                     )
             );
-            register(context, ModFeatures.Configured.CHINESE_PINE_TREE, ModFeatures.PINE_TREE.get(), new PineTreeFeature.Config(
+            register(context, ModFeatures.Configured.CHINESE_PINE_TREE, ModFeatures.CHINESE_STYLE_PINE_TREE.get(), new ChineseStylePineTreeFeature.Config(
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get()),
                             7,
-                            4,
-                            true
+                            4
                     )
             );
             register(context, ModFeatures.Configured.BAOBAB_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
@@ -990,10 +988,10 @@ public class ModDataProvider {
 
             chest(context, CAVE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), count3, -110, -80);
             chest(context, CAVE_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), count5, -80, -23);
-            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), count3, -80, -23);
+            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), count5, -80, -23);
             chest(context, CAVE_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_SANDSTONE_CHESTS), count2, -110, -80);
             chest(context, UNDERGROUND_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_SANDSTONE_CHESTS), count2, -80, -23);
-            chest(context, SURFACE_CHESTS, configured.getOrThrow(ConfiguredFeatures.SURFACE_CHESTS), CountPlacement.of(24), -23, -2);
+            chest(context, SURFACE_CHESTS, configured.getOrThrow(ConfiguredFeatures.SURFACE_CHESTS), CountPlacement.of(27), -23, -2);
             chest(context, CAVE_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_FROZEN_CHESTS), count2, -110, -80);
             chest(context, UNDERGROUND_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_FROZEN_CHESTS), count2, -80, -23);
 
@@ -1230,7 +1228,7 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEAnimals.SCORPION.get(), 15, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.DESERT_SLIME.get(), 15, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.TOMB_CRAWLER.get(), 250, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.TOMB_CRAWLER.get(), 180, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANTLION_SWARMER.get(), 500, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_ANTLION_SWARMER.get(), 200, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
@@ -1244,13 +1242,13 @@ public class ModDataProvider {
             register(context, createModifierKey("common_icy"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     snowyIcy,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_BAT.get(), 100, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.UNDEAD_VIKING.get(), 100, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNOW_FLINX.get(), 100, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPIKED_ICE_SLIME.get(), 100, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_BAT.get(), 140, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.UNDEAD_VIKING.get(), 140, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNOW_FLINX.get(), 130, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPIKED_ICE_SLIME.get(), 130, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_SLIME.get(), 15, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_MIMIC.get(), 2, 1, 1)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_MIMIC.get(), 6, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_jungle"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1302,7 +1300,7 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLACK_SLIME.get(), 60, 1, 3),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 30, 2, 4),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 120, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 145, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 90, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRAWDAD.get(), 90, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_WORM.get(), 60, 1, 1),

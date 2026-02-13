@@ -455,6 +455,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         dropSelf(ASPHALT_BLOCK.get());
 
+        dropSelf(FLINX_FUR_BLOCK.get());
+        dropSelf(FLINX_FUR_CARPET.get());
+        dropSelf(COLORED_WOOL.get());
+        dropSelf(COLORED_CARPET.get());
+
         dropSelf(CHISELED_OBSIDIAN_BRICKS.get());
         dropSelf(BLUE_BRICKS.get());
         dropSelf(GREEN_BRICKS.get());
@@ -480,6 +485,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(RAINBOW_BRICKS.get());
         dropSelf(FLOATING_WHEAT_BALE.get());
         dropSelf(BOUNCY_CLOUD_BLOCK.get());
+        dropSelf(STAR_CLOUD_BLOCK.get());
 
         dropSelf(HARDENED_SAND_BLOCK.get());
         dropSelf(MOISTENED_SAND_BLOCK.get());
@@ -579,6 +585,16 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         dropSelf(HANGING_MYCELIUM.get());
         dropSelf(MYCELIAL_DIRT.get());
+
+        dropWhenSilkTouch(ICE_TAPERED_BLOCK.get());
+        dropSelf(DESERT_TAPERED_BLOCK.get());
+        dropSelf(MARBLE_TAPERED_BLOCK.get());
+        dropSelf(GRANITE_TAPERED_BLOCK.get());
+
+        dropSelf(CORRUPT_TAPERED_BLOCK.get());
+        dropSelf(CRIMSON_TAPERED_BLOCK.get());
+        dropSelf(HALLOW_TAPERED_BLOCK.get());
+
 
 
 

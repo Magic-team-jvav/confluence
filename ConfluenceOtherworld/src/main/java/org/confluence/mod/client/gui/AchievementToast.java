@@ -1,5 +1,6 @@
 package org.confluence.mod.client.gui;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -17,7 +18,7 @@ import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.AchievementUtils;
-import org.jetbrains.annotations.NotNull;
+import org.confluence.mod.util.FloatSupplier;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -35,6 +36,7 @@ public class AchievementToast implements Toast {
     private final ResourceLocation icon;
     private final Display display;
     public boolean playedSound;
+    public FloatSupplier blitOffset = () -> 0;
 
     public AchievementToast(ResourceLocation icon, Display display) {
         this.icon = icon;
@@ -50,13 +52,14 @@ public class AchievementToast implements Toast {
     @Override
     public Visibility render(GuiGraphics guiGraphics, ToastComponent toastComponent, long timeSinceLastVisible) {
         Font font = toastComponent.getMinecraft().font;
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(0.0F, guiGraphics.guiHeight() - height(), 0.0F);
+        PoseStack poseStack = guiGraphics.pose();
+        poseStack.pushPose();
+        poseStack.translate(0.0F, guiGraphics.guiHeight() - height(), blitOffset.getAsFloat());
         guiGraphics.blit(TEXTURE, 0, 0, 0, 0, width(), height(), 160, 64);
         renderTitle(guiGraphics, timeSinceLastVisible, font);
         renderDescription(guiGraphics, timeSinceLastVisible, font);
         renderIcon(guiGraphics);
-        guiGraphics.pose().popPose();
+        poseStack.popPose();
         playSound(toastComponent, timeSinceLastVisible);
         return (double) timeSinceLastVisible >= 5000.0 * toastComponent.getNotificationDisplayTimeMultiplier() ? Visibility.HIDE : Visibility.SHOW;
     }
@@ -113,7 +116,7 @@ public class AchievementToast implements Toast {
         }
     }
 
-    private void renderIcon(@NotNull GuiGraphics guiGraphics) {
+    private void renderIcon(GuiGraphics guiGraphics) {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(4, 4, 0);
         guiGraphics.pose().scale(0.375F, 0.375F, 1.0F);
@@ -159,7 +162,7 @@ public class AchievementToast implements Toast {
 
     public static void registerToast(ResourceLocation id, boolean hideLink) {
         String namespace = id.getNamespace();
-        String path = id.getPath().substring(AchievementUtils.PREFIX.length());
+        String path = AchievementUtils.asPath(id);
         ACHIEVEMENTS.put(ResourceLocation.fromNamespaceAndPath(namespace, AchievementUtils.PREFIX + path), new AchievementToast(
                 ResourceLocation.fromNamespaceAndPath(namespace, "textures/achievement/" + path + ".png"),
                 new Display(AdvancementType.CHALLENGE,

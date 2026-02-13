@@ -22,6 +22,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 
 import java.util.Arrays;
@@ -164,7 +165,6 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, PaintItems.ILLUMINANT_COATING, PaintItems.NEGATIVE_PAINT);
         item(recipeOutput, PaintItems.NEGATIVE_PAINT, PaintItems.SHADOW_PAINT);
         item(recipeOutput, PaintItems.SHADOW_PAINT, PaintItems.ECHO_COATING);
-        item(recipeOutput, AccessoryItems.MECHANICAL_LENS, AccessoryItems.SPECTRE_GOGGLES);
         // 腐化与猩红转化
         item(recipeOutput, "raw_demonite_from_raw_crimtane", addItem(MaterialItems.RAW_CRIMTANE, MaterialItems.RAW_DEMONITE, 3));
         item(recipeOutput, "raw_crimtane_from_raw_demonite", addItem(MaterialItems.RAW_DEMONITE, MaterialItems.RAW_CRIMTANE, 3));
@@ -260,6 +260,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, Items.LAVA_BUCKET, ToolItems.HONEY_BUCKET);
         item(recipeOutput, ToolItems.HONEY_BUCKET, Items.WATER_BUCKET);
         item(recipeOutput, SwordItems.ZOMBIE_ARM, ModItems.WHOOPIE_CUSHION);
+        item(recipeOutput, TCItems.PUTRID_SCENT, TCItems.FLESH_KNUCKLES);
+        item(recipeOutput, TCItems.FLESH_KNUCKLES, TCItems.PUTRID_SCENT);
 
         item(recipeOutput, ConsumableItems.LIFE_CRYSTAL, ConsumableItems.VITAL_CRYSTAL);
         item(recipeOutput, ConsumableItems.MANA_CRYSTAL, ConsumableItems.ARCANE_CRYSTAL);

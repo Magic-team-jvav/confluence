@@ -370,7 +370,7 @@ public final class ModArmorBonus {
             String descriptionKey = key.getDescriptionKey();
             toolTip.add(Component.translatable("armor_set_bonus.when_applied").withStyle(ChatFormatting.GRAY));
             for (int i = 0; i < data.tooltipCount(); i++) {
-                toolTip.add(Component.translatable("armor_set_bonus." + descriptionKey + "." + i).withStyle(ChatFormatting.AQUA));
+                toolTip.add(Component.translatable("armor_set_bonus." + descriptionKey + "." + i).withStyle(ChatFormatting.DARK_AQUA));
             }
         }
     }

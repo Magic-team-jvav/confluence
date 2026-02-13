@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+    "render_type": "cutout",
 	"textures": {
 		"0": "confluence:block/ash_log_side",
 		"particle": "confluence:block/ash_log_side"

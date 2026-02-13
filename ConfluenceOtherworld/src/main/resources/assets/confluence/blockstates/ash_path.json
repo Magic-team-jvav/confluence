@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/ash_path"
+      },
+      {
+        "model": "confluence:block/ash_path",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/ash_path",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/ash_path",
+        "y": 270
+      }
+    ]
+  }
+}

@@ -67,7 +67,7 @@ public final class TickEvents {
             PlayerSpecialData.of(player).sync(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);
             AchievementUtils.quietNeighborhood(player, level, gameTime);
-            AchievementUtils.aRareRealm(player, level, gameTime);
+            AchievementUtils.aRareRealm(player, gameTime);
             TheConstant.applyDarkness(player, level, gameTime);
             DungeonStructure.checkSkeletronDefeated(player, level);
             ChunkDropletsData.syncDroplets(player);

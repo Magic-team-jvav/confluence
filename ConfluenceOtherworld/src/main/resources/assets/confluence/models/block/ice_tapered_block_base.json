@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/ice_tapered_block_base",
+    "particle": "confluence:block/ice_tapered_block_base"
+  },
+  "render_type": "cutout"
+}

@@ -206,6 +206,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
+        skyMill(recipeOutput, DecorativeBlocks.STAR_CLOUD_BLOCK.toStack(10), Ingredient.of(MaterialItems.FALLING_STAR), AmountIngredient.of(10,NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE));
         skyMill(recipeOutput, DecorativeBlocks.DISC_BLOCK.toStack(4), Ingredient.of(DecorativeBlocks.SUN_PLATE));
         skyMill(recipeOutput, DecorativeBlocks.SKYWARE_DOOR.toStack(), AmountIngredient.of(2, DecorativeBlocks.SUN_PLATE));
@@ -413,7 +414,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.REGENERATION_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.LIFE_MUSHROOM));
         alchemyTable(recipeOutput, PotionItems.SHINE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.GLOWING_MUSHROOM));
         alchemyTable(recipeOutput, PotionItems.SPELUNKER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.RAW_PLATINUM, Items.RAW_GOLD));
-        alchemyTable(recipeOutput, PotionItems.STINK_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.STINKY_FISH), Ingredient.of(MaterialItems.DEATHWEED));
+        alchemyTable(recipeOutput, PotionItems.STINK_POTION.toStack(2), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.STINKY_FISH), Ingredient.of(MaterialItems.DEATHWEED));
         alchemyTable(recipeOutput, PotionItems.TITAN_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(ConsumableItems.DUNGEON_DEMON_BONE), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(MaterialItems.SHIVERTHORN));
         alchemyTable(recipeOutput, PotionItems.WATER_WALKING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(MaterialItems.SHARK_FIN));
         alchemyTable(recipeOutput, PotionItems.WORMHOLE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.MIRROR_FISH), Ingredient.of(MaterialItems.BLINKROOT));
@@ -424,6 +425,9 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.BATTLE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
         alchemyTable(recipeOutput, PotionItems.CALMING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.DAMSEL_FISH), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.SATIETY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.RED_PLEATFISH), Ingredient.of(FoodItems.BROWN_STALKSPINE));
+        alchemyTable(recipeOutput, PotionItems.MANA_POTION.toStack(), Ingredient.of(MaterialItems.GLOWING_MUSHROOM),  AmountIngredient.of(2, PotionItems.LESSER_MANA_POTION));
+        alchemyTable(recipeOutput, PotionItems.SUPER_MANA_POTION.toStack(15),  AmountIngredient.of(15,PotionItems.GREATER_MANA_POTION),  AmountIngredient.of(3,MaterialItems.CRYSTAL_SHARDS), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.UNICORN_HORN));
+        alchemyTable(recipeOutput, PotionItems.GREATER_HEALING_POTION.toStack(3),  AmountIngredient.of(3,PotionItems.BOTTLED_WATER),  AmountIngredient.of(3,MaterialItems.PIXIE_DUST), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
         crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(9999, TGItems.MUSKET_BULLET));

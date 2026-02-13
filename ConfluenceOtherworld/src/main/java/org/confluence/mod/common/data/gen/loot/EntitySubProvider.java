@@ -359,8 +359,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.HOOK).setWeight(4))
@@ -501,8 +501,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9867))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TEYoyosItems.RALLY).setWeight(39))
-                        .add(EmptyLootItem.emptyItem().setWeight(961))
+                        .add(LootItem.lootTableItem(TEYoyosItems.RALLY).setWeight(667))
+                        .add(EmptyLootItem.emptyItem().setWeight(9333))
                 )
         );
         add(TEMonsterEntities.CRAWDAD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crawdad"), LootTable.lootTable()
@@ -519,8 +519,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9867))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TEYoyosItems.RALLY).setWeight(39))
-                        .add(EmptyLootItem.emptyItem().setWeight(961))
+                        .add(LootItem.lootTableItem(TEYoyosItems.RALLY).setWeight(667))
+                        .add(EmptyLootItem.emptyItem().setWeight(9333))
                 )
         );
         add(TEMonsterEntities.GIANT_WORM.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/giant_worm"), LootTable.lootTable()
@@ -603,8 +603,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.SNOW_FLINX.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/snow_flinx"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.FLINX_FUR)).apply(random0To1).apply(count1To2)
@@ -789,8 +789,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.BLACK_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/black_slime"), slimeCommon(-7697782)
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
         add(TEMonsterEntities.TROPIC_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tropic_slime"), slimeCommon(-10644993)
@@ -1229,11 +1229,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.DEPTH_METER))
-                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                        .add(EmptyLootItem.emptyItem().setWeight(199))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.BAT_BAT).setWeight(4).setQuality(1))
-                        .add(EmptyLootItem.emptyItem().setWeight(996))
+                        .add(LootItem.lootTableItem(SwordItems.BAT_BAT).setWeight(3).setQuality(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(997))
                 );
     }
 

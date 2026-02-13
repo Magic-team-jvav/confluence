@@ -18,13 +18,19 @@ public interface IWorldOptions {
 
     long confluence$getSecretFlag();
 
+    void confluence$setVersion(int version);
+
+    int confluence$getVersion();
+
     WorldOptions confluence$copyWithoutSecretFlag();
 
+    int CURRENT_VERSION = 1;
+
     long THE_CORRUPTION = 0b00000001;
-    long THE_CRIMSON    = 0b00000010;
-    long DOUBLE_EVIL    = 0b00000011;
-    long HARDMODE       = 0b00000100;
-    long GRADUATED      = 0b00001100;
+    long THE_CRIMSON = 0b00000010;
+    long DOUBLE_EVIL = 0b00000011;
+    long HARDMODE = 0b00000100;
+    long GRADUATED = 0b00001100;
     long SECRET_SEED = Long.MAX_VALUE >> ModSecretSeeds.RESERVE << ModSecretSeeds.RESERVE;
 
     long DW_MASK = ModSecretSeeds.DRUNK_WORLD.getFlag();
@@ -32,9 +38,10 @@ public interface IWorldOptions {
     long FTW_MASK = ModSecretSeeds.FOR_THE_WORTHY.getFlag();
     long C10_MASK = ModSecretSeeds.CELEBRATIONMK10.getFlag();
     long TC_MASK = ModSecretSeeds.THE_CONSTANT.getFlag();
-    long NT_MASK = ModSecretSeeds.NO_TRAPS.getFlag();
     long DDU_MASK = ModSecretSeeds.DONT_DIG_UP.getFlag();
+    long NT_MASK = ModSecretSeeds.NO_TRAPS.getFlag();
     long GFB_MASK = ModSecretSeeds.GET_FIXED_BOI.getFlag();
+    long SKYBLOCK_MASK = ModSecretSeeds.SKYBLOCK.getFlag();
     long BW_MASK = ModSecretSeeds.BOULDER_WORLD.getFlag();
 
 

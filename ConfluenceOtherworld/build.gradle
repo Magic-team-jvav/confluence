@@ -3,7 +3,6 @@ import java.text.SimpleDateFormat
 plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev'
-    alias(libs.plugins.modpublisher)
 }
 
 var projectName = [
@@ -180,6 +179,7 @@ boolean legendarytooltips = false // 传说提示框
 boolean itemborders = false // 物品边框
 boolean advancementPlaques = false // 进度牌匾
 boolean dynamicCrosshair = false // 动态准星
+boolean kubejs = true
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -246,11 +246,10 @@ dependencies {
     compileOnly "curse.maven:appleskin-248787:5586600"
 //    runtimeOnly "curse.maven:appleskin-248787:5586600"
 
-    compileOnly "curse.maven:rhino-416294:6886923"
-    compileOnly "curse.maven:kubejs-238086:5810100"
-    if (false) {
-        runtimeOnly "curse.maven:rhino-416294:6886923"
-        runtimeOnly "curse.maven:kubejs-238086:5810100"
+    compileOnly "curse.maven:kubejs-238086:7278501"
+    if (kubejs) {
+        runtimeOnly "curse.maven:rhino-416294:7104526"
+        runtimeOnly "curse.maven:kubejs-238086:7278501"
     }
 
     compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
@@ -302,7 +301,6 @@ dependencies {
     runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
-    //runtimeOnly "curse.maven:lootr-361276:6294335"
     //runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
     //runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
     //runtimeOnly "curse.maven:modern-ui-352491:6200236"
@@ -316,6 +314,7 @@ dependencies {
     //runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
     //runtimeOnly "curse.maven:azurelib-817423:6849116"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
+    //runtimeOnly "maven.modrinth:lootr:4dt0SxY0"
     if (false) {
         runtimeOnly "maven.modrinth:l_enders-cataclysm:3.16"
         runtimeOnly "maven.modrinth:lionfish-api:2.6"
@@ -356,7 +355,7 @@ dependencies {
         runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.1.8"
         runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.5.0"
     }
-    if (observable || ftb) {
+    if (observable || ftb || kubejs) {
         runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
     }
     if (observable || ipn || lootBeams) {
@@ -405,10 +404,10 @@ dependencies {
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [minecraft_version      : minecraft_version,
-                             minecraft_version_range: libs.versions.range.game.get(),
+                             minecraft_version_range: minecraft_version_range,
                              neo_version            : neo_version,
-                             neo_version_range      : libs.versions.range.neoforge.get(),
-                             loader_version_range   : libs.versions.range.fml.get(),
+                             neo_version_range      : neo_version_range,
+                             loader_version_range   : loader_version_range,
                              mod_id                 : mod_id,
                              mod_name               : mod_name,
                              mod_license            : mod_license,
@@ -494,33 +493,4 @@ publishing {
             }
         }
     }
-}
-publisher {
-    apiKeys {
-        modrinth System.getenv("MODRINTH_TOKEN")
-        curseforge System.getenv("CURSEFORGE_TOKEN")
-    }
-
-    setCurseID(libs.versions.platformId.curseforge.get())
-    setModrinthID(libs.versions.platformId.modrinth.get())
-
-    def changelogFile = file("notes/CHANGELOG.md")
-    if (changelogFile.exists()) {
-        setChangelog(changelogFile.getText("UTF-8"))
-    } else {
-        setChangelog("No changelog provided for version ${project.version}")
-    }
-
-    def versionStr = project.version.toString()
-    setVersionType(versionStr.contains("-") ? "beta" : "release")
-
-    setVersion(versionStr)
-    setDisplayName("Confluence ${versionStr}")
-
-    setGameVersions(project.minecraft_version)
-    setLoaders("neoforge")
-
-    setCurseEnvironment(libs.versions.version.env.get())
-
-    setArtifact(tasks.jar)
 }

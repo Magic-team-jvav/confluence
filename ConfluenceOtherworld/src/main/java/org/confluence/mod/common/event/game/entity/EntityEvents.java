@@ -86,7 +86,8 @@ public final class EntityEvents {
         }
         if (attacker instanceof Player player &&
                 !PlayerSpecialData.of(player).isCouldHurtCritters() &&
-                (LibUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST) || !victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST))
+                !victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
+                (LibUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
         ) {
             event.setInvulnerable(true);
             return;

@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.integration.kubejs.KubeJSHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,9 +35,6 @@ public abstract class GuiGraphicsMixin implements SelfGetter<GuiGraphics> {
 
     @WrapOperation(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I"))
     private int transform(GuiGraphics instance, Font font, String text, int x, int y, int color, boolean dropShadow, Operation<Integer> original, @Local(argsOnly = true, ordinal = 0) int ox, @Local(argsOnly = true, ordinal = 1) int oy) {
-        if (KubeJSHelper.shouldDrawStackSize(instance)) {
-            return original.call(instance, font, text, x, y, color, dropShadow);
-        }
         int w = font.width(text);
         float scale = text.length() >= 4 ? 0.5F : text.length() == 3 ? 0.75F : 1;
         pose.pushPose();

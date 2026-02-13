@@ -1144,7 +1144,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.window.60", "汇流来世：基于区块链技术构建");
         add("title.confluence.window.61", "汇流来世：现在有更多奥克瑞姆了！");
         add("title.confluence.window.62", "汇流来世：现在有更多更多奥克瑞姆了！");
-        add("title.confluence.window.63", "汇流来世：异界");
+        add("title.confluence.window.63", "汇流来世：提供安装服务，现仅需要￥19.99！");
         add("title.confluence.window.64", "汇流来世：模拟触摸青草");
         add("title.confluence.window.65", "汇流来世：别往上挖！");
         add("title.confluence.window.66", "汇流来世：为了值得的人！");
@@ -1153,6 +1153,99 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.window.69", "汇流来世：也试试饥荒！");
         add("title.confluence.window.70", "汇流来世：融合升华！");
 
+        // 特殊变种
+        add("entity.minecraft.zombie.slime", "史莱姆僵尸");
+        add("entity.minecraft.zombie.raincoat", "雨衣僵尸");
+        add("entity.minecraft.zombie.frozen", "冰雪僵尸");
+        add("entity.terra_entity.duck.0", "野鸭");
+        add("entity.terra_entity.duck.1", "鸭");;
+        add("entity.terra_entity.demon_eye.dilated", "涣散恶魔眼");
+        add("entity.terra_entity.demon_eye.dilated_small", "小涣散恶魔眼");
+        add("entity.terra_entity.demon_eye.sleepy", "瞌睡恶魔眼");
+        add("entity.terra_entity.demon_eye.sleepy_big", "大瞌睡恶魔眼");
+        add("entity.terra_entity.demon_eye.purple", "紫色恶魔眼");
+        add("entity.terra_entity.demon_eye.purple_big", "大紫色恶魔眼");
+        add("entity.terra_entity.demon_eye.normal", "恶魔眼");
+        add("entity.terra_entity.demon_eye.normal_big", "大恶魔眼");
+        add("entity.terra_entity.demon_eye.green", "绿恶魔眼");
+        add("entity.terra_entity.demon_eye.green_small", "小绿恶魔眼");
+        add("entity.terra_entity.demon_eye.cataract", "白内障恶魔眼");
+        add("entity.terra_entity.demon_eye.cataract_big", "大白内障恶魔眼");
+        add("entity.terra_entity.worm.0", "附魔夜行者");
+        add("entity.terra_entity.worm.1", "金蠕虫");
+        add("entity.terra_entity.worm.2", "蠕虫");
+        add("entity.terra_entity.grasshopper.0", "金蚱蜢");
+        add("entity.terra_entity.grasshopper.1", "蚱蜢");
+        add("entity.terra_entity.ladybug.0", "金瓢虫");
+        add("entity.terra_entity.ladybug.1", "瓢虫");
+        add("entity.terra_entity.fealing.0", "飞灵");
+        add("entity.terra_entity.fairy.0", "粉仙灵");
+        add("entity.terra_entity.fairy.1", "绿仙灵");
+        add("entity.terra_entity.fairy.2", "栏仙灵");
+        add("entity.terra_entity.scorpion.0", "黑蝎子");
+        add("entity.terra_entity.scorpion.1", "蝎子");
+        add("entity.terra_entity.squirrel.0", "灰松鼠");
+        add("entity.terra_entity.squirrel.1", "红松鼠");
+        add("entity.terra_entity.jewel_squirrel.0", "琥珀松鼠");
+        add("entity.terra_entity.jewel_squirrel.1", "金松鼠");
+        add("entity.terra_entity.jewel_squirrel.2", "紫晶松鼠");
+        add("entity.terra_entity.jewel_squirrel.3", "钻石松鼠");
+        add("entity.terra_entity.jewel_squirrel.4", "翡翠松鼠");
+        add("entity.terra_entity.jewel_squirrel.5", "红玉松鼠");
+        add("entity.terra_entity.jewel_squirrel.6", "蓝玉松鼠");
+        add("entity.terra_entity.jewel_squirrel.7", "黄玉松鼠");
+        add("entity.terra_entity.jewel_bunny.0", "琥珀兔兔");
+        add("entity.terra_entity.jewel_bunny.1", "紫晶兔兔");
+        add("entity.terra_entity.jewel_bunny.2", "钻石兔兔");
+        add("entity.terra_entity.jewel_bunny.3", "翡翠兔兔");
+        add("entity.terra_entity.jewel_bunny.4", "金兔兔");
+        add("entity.terra_entity.jewel_bunny.5", "红玉兔兔");
+        add("entity.terra_entity.jewel_bunny.6", "蓝玉兔兔");
+        add("entity.terra_entity.jewel_bunny.7", "黄玉兔兔");
+        add("entity.terra_entity.butterfly.0", "金蝴蝶");
+        add("entity.terra_entity.butterfly.1", "珠袖蝶");
+        add("entity.terra_entity.butterfly.2", "帝王蝶");
+        add("entity.terra_entity.butterfly.3", "紫蛱蝶");
+        add("entity.terra_entity.butterfly.4", "红蛱蝶");
+        add("entity.terra_entity.butterfly.5", "黄粉蝶");
+        add("entity.terra_entity.butterfly.6", "帛斑蝶");
+        add("entity.terra_entity.butterfly.7", "翠凤蝶");
+        add("entity.terra_entity.butterfly.8", "带凤蝶");
+        add("entity.terra_entity.dragonfly.0", "黑蜻蜓");
+        add("entity.terra_entity.dragonfly.1", "蓝蜻蜓");
+        add("entity.terra_entity.dragonfly.2", "金蜻蜓");
+        add("entity.terra_entity.dragonfly.3", "绿蜻蜓");
+        add("entity.terra_entity.dragonfly.4", "橙蜻蜓");
+        add("entity.terra_entity.dragonfly.5", "红蜻蜓");
+        add("entity.terra_entity.dragonfly.6", "黄蜻蜓");
+
+        // Special world seeds
+        add("title.confluence.secret_seeds_selection.empty", "信息");
+        add("description.confluence.secret_seeds_selection.empty", "请选择上述选项来构建你的世界。");
+        add("title.confluence.secret_seeds_selection.normal", "常规世界");
+        add("description.confluence.secret_seeds_selection.normal", "交流汇合的来世，这次你的旅途与两个世界的命运重合与一体。开始冒险，在融合世界中探索吧！");
+        add("title.confluence.secret_seeds_selection.drunk_world", "醉酒世界");
+        add("description.confluence.secret_seeds_selection.drunk_world", "猩红加上腐化？两者一同出现？唯有疯狂！这次融合，世界陷入疯狂境地，带来一次绝无仅有的冒险！沉沦吧，世界，你喝醉了！");
+        add("title.confluence.secret_seeds_selection.not_the_bees", "蜜蜂之惧");
+        add("description.confluence.secret_seeds_selection.not_the_bees", "进入一片弥漫着甜腻蜂香的大陆，在这里嗡嗡振翅声和有毒蛰刺的威胁潜伏在每一个角落！（不包括柳条头盔）");
+        add("title.confluence.secret_seeds_selection.for_the_worthy", "勇者之境");
+        add("description.confluence.secret_seeds_selection.for_the_worthy", "你是勇者吗？这是一个毫无怜悯的世界。忘记所知的一切并磨练技能，免得你被考察、衡量，并被发现不合格……");
+        add("title.confluence.secret_seeds_selection.celebrationmk10", "十年庆典");
+        add("description.confluence.secret_seeds_selection.celebrationmk10", "泰拉瑞亚十周年!在这个多姿多彩的奇幻世界中一起庆祝——谁知道呢，也许团队留下了一些礼物等你拆开。");
+        add("title.confluence.secret_seeds_selection.the_constant", "永恒之域");
+        add("description.confluence.secret_seeds_selection.the_constant", "将《饥荒》冒险融入到泰拉瑞亚与我的世界之中，你能否在战胜持续饥饿的同时找到世界的拯救之道?哦，还有别忘了待在光明处!");
+        add("title.confluence.secret_seeds_selection.dont_dig_up", "不要挖掘");
+        add("description.confluence.secret_seeds_selection.dont_dig_up", "生于下界，而后探索上下翻转的世界！在这场乾坤倒转的冒险中，你是否能重见天日？");
+        add("title.confluence.secret_seeds_selection.no_traps", "没有陷阱");
+        add("description.confluence.secret_seeds_selection.no_traps", "哇，陷阱，你讨厌它们，我也讨厌它们！这个世界毫无疑问去除掉了所有的陷阱...应该是这样的，也许吧。");
+        add("title.confluence.secret_seeds_selection.get_fixed_boi", "天顶世界");
+        add("description.confluence.secret_seeds_selection.get_fixed_boi", "这个世界就像天顶剑一样！混合了所有其他种子的主要特色！再加上一些意外因素，它就是为了击败你而生。准备受死吧，伙计！");
+        add("title.confluence.secret_seeds_selection.skyblock", "天空之岛");
+        add("description.confluence.secret_seeds_selection.skyblock", "踏入这片悬浮于天际的领域。初始资源微薄，你需白手起家，逐步构建属于你的世界。");
+        add("title.confluence.secret_seeds_selection.secret_seed", "秘密种子");
+        add("description.confluence.secret_seeds_selection.secret_seed", "更多秘密的世界，平行的时空，错乱的旅途等待着你的探索。");
+        add("title.confluence.secret_seeds_selection.boulder_world", "巨石世界");
+        add("description.confluence.secret_seeds_selection.boulder_world", "你知道吗？世界其实是一个巨大的巨石。所以世界上的万物都是巨石。");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");
@@ -1806,6 +1899,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CORRUPTED_OVARIES_BLOCK.get(), "腐化卵巢");
         add(NatureBlocks.SHIMMER_CRYSTALS_BLOCK.get(), "以太结晶");
         add(NatureBlocks.DESERT_TAPERED_BLOCK.get(), "沙漠石笋");
+        add(NatureBlocks.CORRUPT_TAPERED_BLOCK.get(), "腐化石笋");
+        add(NatureBlocks.CRIMSON_TAPERED_BLOCK.get(), "猩红石笋");
+        add(NatureBlocks.HALLOW_TAPERED_BLOCK.get(), "神圣石笋");
+        add(NatureBlocks.ICE_TAPERED_BLOCK.get(), "冰锥");
+        add(NatureBlocks.MARBLE_TAPERED_BLOCK.get(), "大理石笋");
+        add(NatureBlocks.GRANITE_TAPERED_BLOCK.get(), "花岗岩石笋");
         add(NatureBlocks.SMALL_DESERT_PLANT.get(), "小型沙漠植株");
         add(NatureBlocks.BIG_DESERT_PLANT.get(), "大型沙漠植株");
         add(NatureBlocks.SMALL_CACTUS.get(), "小型仙人掌");
@@ -1826,6 +1925,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.JADE_BLOCK.get(), "翡翠块");
         add(DecorativeBlocks.SAPPHIRE_BLOCK.get(), "蓝玉块");
         add(DecorativeBlocks.AMETHYST_BLOCK.get(), "紫晶块");
+
+        add(DecorativeBlocks.FLINX_FUR_BLOCK.get(), "小雪怪皮毛块");
+        add(DecorativeBlocks.FLINX_FUR_CARPET.get(), "小雪怪皮毛地毯");
+        add(DecorativeBlocks.COLORED_WOOL.get(), "多彩羊毛");
+        add(DecorativeBlocks.COLORED_CARPET.get(), "多彩地毯");
 
 
         add(DecorativeBlocks.SANDSTONE_BRICKS.get(), "砂岩砖");
@@ -2005,6 +2109,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.AETHERIUM_BRICKS.get(), "以太砖");
         add(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get(), "云块蹦床");
         add(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get(), "弹力云块");
+        add(DecorativeBlocks.STAR_CLOUD_BLOCK.get(), "星星云");
         add(DecorativeBlocks.CRISPY_HONEY_BLOCK.get(), "松脆蜂蜜块");
         add(DecorativeBlocks.CRACKED_BLUE_BRICKS.get(), "碎裂蓝色地牢砖");
         add(DecorativeBlocks.CRACKED_GREEN_BRICKS.get(), "碎裂绿色地牢砖");
@@ -2345,6 +2450,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.NANITES.get(), "纳米机器人");
         add(MaterialItems.CONFETTI.get(), "彩纸");
         add(MaterialItems.VIAL_OF_VENOM.get(), "小瓶毒液");
+        add(MaterialItems.BELL.get(), "铃铛");
+        add(MaterialItems.HARP.get(), "竖琴");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "水叶草");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");
@@ -2655,6 +2762,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(BoatItems.YELLOW_WILLOW_CHEST_BOAT.get(), "黄柳木运输船");
         add(BoatItems.DYNASTY_BOAT.get(), "王朝木船");
         add(BoatItems.DYNASTY_CHEST_BOAT.get(), "王朝木运输船");
+        add(BoatItems.PINE_BOAT.get(), "松木船");
+        add(BoatItems.PINE_CHEST_BOAT.get(), "松木运输船");
+        add(BoatItems.FEY_BOAT.get(), "仙灵木船");
+        add(BoatItems.FEY_CHEST_BOAT.get(), "仙灵木运输船");
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
         add(ConsumableItems.THROWING_KNIVE.get(), "投刀");

@@ -265,7 +265,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "#  ",
                 "#  ",
                 "## "
-        )), TFBlocks.WOODEN_CHAIR.toStack());
+        )), TFBlocks.OAK_SET.CHAIR.toStack());
 
         // 木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
@@ -273,7 +273,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.WOODEN_TABLE.toStack());
+        )), TFBlocks.OAK_SET.TABLE.toStack());
 
 
         // 金合欢桌
@@ -282,91 +282,91 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.ACACIA_TABLE.toStack());
+        )), TFBlocks.ACACIA_SET.TABLE.toStack());
         // 竹桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.BAMBOO_PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.BAMBOO_TABLE.toStack());
+        )), TFBlocks.BAMBOO_SET.TABLE.toStack());
         // 白桦木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.BIRCH_PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.BIRCH_TABLE.toStack());
+        )), TFBlocks.BIRCH_SET.TABLE.toStack());
         // 樱花木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.CHERRY_PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.CHERRY_TABLE.toStack());
+        )), TFBlocks.CHERRY_SET.TABLE.toStack());
         // 绯红木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.CRIMSON_PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.CRIMSON_TABLE.toStack());
+        )), TFBlocks.CRIMSON_SET.TABLE.toStack());
         // 深色橡木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.DARK_OAK_PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.DARK_OAK_TABLE.toStack());
+        )), TFBlocks.DARK_OAK_SET.TABLE.toStack());
         // 丛林木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.JUNGLE_PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.JUNGLE_TABLE.toStack());
+        )), TFBlocks.JUNGLE_SET.TABLE.toStack());
         // 红木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.MANGROVE_PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.MANGROVE_TABLE.toStack());
+        )), TFBlocks.MANGROVE_SET.TABLE.toStack());
         // 松木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(NatureBlocks.PINE_LOG_BLOCKS.PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.PINE_TABLE.toStack());
+        )), TFBlocks.PINE_SET.TABLE.toStack());
         // 磨制黑石桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.POLISHED_BLACKSTONE)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.POLISHED_BLACKSTONE_TABLE.toStack());
+        )), TFBlocks.POLISHED_BLACKSTONE_SET.TABLE.toStack());
         // 云杉木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.SPRUCE_PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.SPRUCE_TABLE.toStack());
+        )), TFBlocks.SPRUCE_SET.TABLE.toStack());
         // 石桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.STONE)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.STONE_TABLE.toStack());
+        )), TFBlocks.STONE_SET.TABLE.toStack());
         // 诡异木桌
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.WARPED_PLANKS)
         ), List.of(
                 "###",
                 " # "
-        )), TFBlocks.WARPED_TABLE.toStack());
+        )), TFBlocks.WARPED_SET.TABLE.toStack());
 
         // 船
         registerBoatRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, BoatItems.EBONY_BOAT, BoatItems.EBONY_CHEST_BOAT);

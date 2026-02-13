@@ -1957,8 +1957,8 @@ public final class ValueSubProvider {
                 .add(DecorativeBlocks.SKYWARE_DOOR, 10)
                 .add(DecorativeBlocks.SKYWARE_GLASS_DOOR, 10)
                 .add(DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR, 10)
-                .add(TFBlocks.BLUE_DUNGEON_DOOR, 10)
-                .add(TFBlocks.GLASS_DOOR, 10)
+                .add(TFBlocks.BLUE_DUNGEON_SET.DOOR, 10)
+                .add(TFBlocks.GLASS_SET.DOOR, 10)
                 .add(Blocks.ACACIA_TRAPDOOR, 10)
                 .add(Blocks.BAMBOO_TRAPDOOR, 10)
                 .add(Blocks.DARK_OAK_TRAPDOOR, 10)
@@ -2020,27 +2020,27 @@ public final class ValueSubProvider {
         ;
         // 家具
         builder
-                .add(TFBlocks.GLASS_TOILET, 30)
-                .add(TFBlocks.BLUE_DUNGEON_TOILET, 30)
+                .add(TFBlocks.GLASS_SET.TOILET, 30)
+                .add(TFBlocks.BLUE_DUNGEON_SET.TOILET, 30)
 
 
-                .add(TFBlocks.GLASS_SOFA, 60)
-                .add(TFBlocks.BLUE_DUNGEON_SOFA, 60)
+                .add(TFBlocks.GLASS_SET.SOFA, 60)
+                .add(TFBlocks.BLUE_DUNGEON_SET.SOFA, 60)
 
-                .add(TFBlocks.GLASS_SINK, 60)
-                .add(TFBlocks.BLUE_DUNGEON_SINK, 60)
+                .add(TFBlocks.GLASS_SET.SINK, 60)
+                .add(TFBlocks.BLUE_DUNGEON_SET.SINK, 60)
 
-                .add(TFBlocks.GLASS_TABLE, 60)
-                .add(TFBlocks.BLUE_DUNGEON_TABLE, 60)
+                .add(TFBlocks.GLASS_SET.TABLE, 60)
+                .add(TFBlocks.BLUE_DUNGEON_SET.TABLE, 60)
 
-                .add(TFBlocks.GLASS_CANDELABRAS, 300)
-                .add(TFBlocks.BLUE_DUNGEON_CANDELABRAS, 300)
+                .add(TFBlocks.GLASS_SET.CANDELABRAS, 300)
+                .add(TFBlocks.BLUE_DUNGEON_SET.CANDELABRAS, 300)
 
-                .add(TFBlocks.GLASS_LAMP, 100)
-                .add(TFBlocks.GLASS_LANTERN, 30)
+                .add(TFBlocks.GLASS_SET.LAMP, 100)
+                .add(TFBlocks.GLASS_SET.LANTERN, 30)
 
-                .add(TFBlocks.GLASS_CLOCK, 60)
-                .add(TFBlocks.BLUE_DUNGEON_CLOCK, 60)
+                .add(TFBlocks.GLASS_SET.CLOCK, 60)
+                .add(TFBlocks.BLUE_DUNGEON_SET.CLOCK, 60)
 
                 .add(Blocks.FLOWER_POT, 20)
                 .add(TFBlocks.HANGING_POT, 250)

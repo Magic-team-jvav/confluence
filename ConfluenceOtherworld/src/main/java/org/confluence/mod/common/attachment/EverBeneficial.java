@@ -1,5 +1,7 @@
 package org.confluence.mod.common.attachment;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -9,12 +11,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.UnknownNullability;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class EverBeneficial implements INBTSerializable<CompoundTag> {
-
-    private final Map<ResourceLocation, Integer> data = new HashMap<>();
+    private final Object2IntMap<ResourceLocation> data = new Object2IntOpenHashMap<>();
 
     private static final ResourceLocation LIFE_CRYSTAL = Confluence.asResource("life_crystal");
     private static final ResourceLocation LIFE_FRUIT = Confluence.asResource("life_fruit");
@@ -80,7 +78,9 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
     @Override
     public @UnknownNullability CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
-        data.forEach((id, val) -> nbt.putInt(id.toString(), val));
+        for (Object2IntMap.Entry<ResourceLocation> entry : data.object2IntEntrySet()) {
+            nbt.putInt(entry.getKey().toString(), entry.getIntValue());
+        }
         return nbt;
     }
 

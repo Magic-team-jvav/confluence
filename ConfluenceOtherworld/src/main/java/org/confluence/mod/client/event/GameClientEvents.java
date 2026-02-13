@@ -329,9 +329,9 @@ public final class GameClientEvents {
             for (GuiEventListener listener : event.getListenersList()) {
                 if (listener instanceof AbstractWidget widget &&
                         widget.getMessage().getContents() instanceof TranslatableContents contents &&
-                        "menu.online".equals(contents.getKey())
+                        "fml.menu.mods".equals(contents.getKey())
                 ) {
-                    event.addListener(new ImageButton(widget.getX() - 24, widget.getY(), 20, 20, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+                    event.addListener(new ImageButton(widget.getX() - 24, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
                         Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
                     }) {
                         @Override

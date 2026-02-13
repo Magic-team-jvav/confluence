@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -16,9 +15,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.item.ConsumableItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
@@ -36,7 +35,8 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!ClientConfigs.terraStyleHealth) return;
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !LibClientUtils.shouldDrawSurvivalElements(minecraft)) return;
+        if (minecraft.options.hideGui || !LibClientUtils.shouldDrawSurvivalElements(minecraft))
+            return;
         LibClientUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
@@ -67,8 +67,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     currentHealth = player.getHealth();
                     AttributeInstance maxHealthAttr = player.getAttribute(Attributes.MAX_HEALTH);
                     if (maxHealthAttr != null) {
-                        ResourceLocation lifeFruitModId = Confluence.asResource("beneficial/life_fruit");
-                        AttributeModifier modifier = maxHealthAttr.getModifier(lifeFruitModId);
+                        AttributeModifier modifier = maxHealthAttr.getModifier(ConsumableItems.LIFE_FRUIT.get().getModifierId());
                         if (modifier != null) {
                             lifeFruitHealth = (int) modifier.amount();
                         }

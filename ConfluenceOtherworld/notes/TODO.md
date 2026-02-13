@@ -222,14 +222,14 @@
   - jingle all the way(jingle_all_the_way)
     - 常驻圣诞节
 
-  -	too easy(too_easy)
+  - too easy(too_easy)
     - 开局困难模式
 
-  -	what a horrible night to have a curse(what_a_horrible_night_to_have_a_curse)
+  - what a horrible night to have a curse(what_a_horrible_night_to_have_a_curse)
     - 玩家在地下生成
     - 地下具有火把地物
     - 被阳光照到会迅速降低生命值
-  
+
 - 原创的：
   - it's so hot in here(its_so_hot_in_here)
     - 每隔五分钟给予一次无限时长的干噎，干噎造成的伤害提高40点

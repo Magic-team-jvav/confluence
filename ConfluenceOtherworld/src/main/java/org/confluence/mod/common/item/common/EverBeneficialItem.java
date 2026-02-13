@@ -112,4 +112,8 @@ public class EverBeneficialItem extends TooltipItem {
             }
         }
     }
+
+    public ResourceLocation getModifierId() {
+        return modifierId;
+    }
 }

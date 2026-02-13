@@ -242,6 +242,7 @@
 - 来自Discord
   - Other mod furniture compat with NPC housing
   - you can use the spear and yoyos while shielding
+  - Can we add sheeps name jeb_ in the hallow and make them drop rainbow wool? Seem relatable
 
 优化列表：
 

@@ -68,6 +68,7 @@
         "integration.ftbchunks.LongRangePlayerTrackerMixin",
         "integration.irons_spell.AbstractSpellMixin",
         "integration.irons_spell.MagicManagerMixin",
+        "integration.lootr.BlockReplacementMapMixin",
         "integration.terra_curio.AccessoriesAttachmentMixin",
         "integration.terra_curio.DemonHeartMixin",
         "integration.terra_curio.StarClockEntityMixin",

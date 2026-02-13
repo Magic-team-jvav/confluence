@@ -851,6 +851,7 @@ public final class ValueSubProvider {
                 .add(TCItems.WHITE_HORSESHOE_BALLOON, 30000)
                 .add(TCItems.WORM_SCARF, gold2)
                 .add(TCItems.YELLOW_HORSESHOE_BALLOON, 30000)
+                .add(TCItems.RAM_RUNE, 17500)
                 .add(TCItems.WORKSHOP, gold2);
         builder
                 .add(TGItems.BOOMSTICK, gold2)

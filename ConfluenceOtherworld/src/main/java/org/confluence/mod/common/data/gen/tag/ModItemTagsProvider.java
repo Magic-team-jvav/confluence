@@ -1392,7 +1392,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.TREE_HOLES_BLOCK.asItem(),
                 FunctionalBlocks.MAGIC_MAIL_BOX.asItem(),
                 MaterialItems.ECTOPLASM.get(),
-                MaterialItems.UNICORN_HORN.get(),
                 MaterialItems.SPIDER_FANG.get(),
                 HookItems.WEB_SLINGER.get(),
                 HookItems.SLIME_HOOK.get(),

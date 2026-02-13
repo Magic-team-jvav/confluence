@@ -141,6 +141,11 @@ public final class ModRecipes {
             registerMaterial(FoodItems.DAMSEL_FISH.get());
             registerMaterial(NatureBlocks.AETHERIUM_BLOCK.asItem());
             registerMaterial(FoodItems.RED_PLEATFISH.asItem());
+            registerMaterial(PotionItems.LESSER_HEALING_POTION.get());
+            registerMaterial(PotionItems.LESSER_MANA_POTION.get());
+            registerMaterial(MaterialItems.PIXIE_DUST.get());
+            registerMaterial(MaterialItems.CRYSTAL_SHARDS.get());
+            registerMaterial(PotionItems.GREATER_MANA_POTION.get());
             registerMaterial(FoodItems.BROWN_STALKSPINE.asItem());
 
 
@@ -404,6 +409,22 @@ public final class ModRecipes {
                     FoodItems.RED_PLEATFISH.get(),
                     FoodItems.BROWN_STALKSPINE.get()
             }, PotionItems.SATIETY_POTION.toStack());
+            // 强效治疗
+            registerMix(new Item[]{
+                    MaterialItems.PIXIE_DUST.get(),
+                    MaterialItems.PIXIE_DUST.get(),
+                    MaterialItems.PIXIE_DUST.get(),
+                    MaterialItems.CRYSTAL_SHARDS.get()
+            }, PotionItems.GREATER_HEALING_POTION.toStack());
+            // 超级魔力
+            registerMix(new Item[]{
+                    MaterialItems.CRYSTAL_SHARDS.get(),
+                    MaterialItems.FALLING_STAR.get(),
+                    MaterialItems.CRYSTAL_SHARDS.get(),
+                    PotionItems.GREATER_MANA_POTION.get(),
+                    MaterialItems.CRYSTAL_SHARDS.get(),
+                    MaterialItems.UNICORN_HORN.get()
+            }, PotionItems.SUPER_MANA_POTION.toStack());
         }
 
         private static void registerMaterial(Item material) {

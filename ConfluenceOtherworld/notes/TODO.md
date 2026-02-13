@@ -206,7 +206,31 @@
   - 饥荒世界新增饥饿条归0立刻死亡
   - ftw世界挖树叶掉落炸弹改为掉落闪电苦力怕
 - 秘密种子：
+- 泰拉的：
+  - does that sparkle(does_that_sparkle)
+    - 自然生成神圣之地
 
+  - fish mox(fish_mox)
+    - 不生成邪恶
+
+  - more traps please(more_traps_please)
+    - 没有陷阱
+
+  - hocus pocus(hocus_pocus)
+    - 常驻万圣节
+
+  - jingle all the way(jingle_all_the_way)
+    - 常驻圣诞节
+
+  -	too easy(too_easy)
+    - 开局困难模式
+
+  -	what a horrible night to have a curse(what_a_horrible_night_to_have_a_curse)
+    - 玩家在地下生成
+    - 地下具有火把地物
+    - 被阳光照到会迅速降低生命值
+  
+- 原创的：
   - it's so hot in here(its_so_hot_in_here)
     - 每隔五分钟给予一次无限时长的干噎，干噎造成的伤害提高40点
     - 开局给个空瓶子
@@ -227,17 +251,12 @@
   - heartbroken(heartbroken)
     - 玩家死亡会重置生命水晶加成
 
-  - (act_three_abyss)
+  - act three abyss(act_three_abyss)
     - 被怪物击中后会在2秒内损失20魔力
     - 怪物变黑（纯视觉效果）
     - 怪物的血量x1.0~1.5
     - 怪物的刷新量减少
 
-  - how did i get_here
-    - 被怪物击中后会在2秒内损失20魔力
-    - 怪物变黑（纯视觉效果）
-    - 怪物的血量x1.0~1.5
-    - 怪物的刷新量减少
 
 - 来自Discord
   - Other mod furniture compat with NPC housing

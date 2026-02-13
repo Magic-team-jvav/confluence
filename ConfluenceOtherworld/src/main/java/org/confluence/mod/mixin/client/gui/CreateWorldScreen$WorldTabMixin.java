@@ -34,7 +34,7 @@ public abstract class CreateWorldScreen$WorldTabMixin {
         layout.addChild(new ImageButton(0, 0, 20, 20, SecretSeedsSelectionScreen.SPRITES, button -> {
             button.setFocused(false);
             this$0.getMinecraft().pushGuiLayer(new SecretSeedsSelectionScreen(seedEdit, this$0.getUiState()));
-        }), settings -> settings.paddingLeft(-6));
+        }), settings -> settings.paddingLeft(-4));
         return original.call(font, layout, label);
     }
 }

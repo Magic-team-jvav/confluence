@@ -410,8 +410,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("death.attack.dungeon_altar", "Steve差一步就用陨石指南针右击凝灰岩揭开秘密");
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
+        add("death.attack.falling_star.player", "%1$s 在 %2$s 的见证下成功实现了愿望");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
         add("death.attack.darkness", "%1$s 被黑暗中的什么东西杀死了！");
+        add("death.attack.darkness.player", "%1$s 远离 %2$s 时没想到还有幕后黑手");
         add("death.attack.summon_damage_type", "%1$s 被抽得皮开肉绽");
         add("death.attack.summoner_damage_type", "%1$s 没能及时沟通");
         add("death.attack.frost_burn_damage_type", "%1$s 至少死前觉得很温暖");

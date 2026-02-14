@@ -427,8 +427,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("death.attack.dungeon_altar", "Steve was one step away from uncovering the secret by right-clicking tuff with the meteor compass.");
 
         add("death.attack.falling_star", "%1$s got a response from a meteor");
+        add("death.attack.falling_star.player", "%1$s's wish was finally granted in the presence of %2$s");
         add("death.attack.boulder", "%1$s is crushed by boulder");
         add("death.attack.darkness", "%1$s was killed by something in the dark!");
+        add("death.attack.darkness.player", "%1$s tried to flee from %2$s, yet never anticipated the scheming of the puppet master");
         add("death.attack.summon_damage_type", "%1$s was flogged mercilessly");
         add("death.attack.summoner_damage_type", "%1$s failed to communicate in time");
         add("death.attack.frost_burn_damage_type", "%1$s felt warm before the end");

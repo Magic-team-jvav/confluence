@@ -61,12 +61,61 @@
 
 # Changelog (1.2.3):
 
-## Important Notes:
+## Notes:
+
+- The temporary recipe for the Spectre Goggles has been removed. They are now purchased from the Mechanic while in the Ecto Mist.
 
 ## Fixes:
 
-## Optimizations:
+- Fixed an issue where Blood Moons would not trigger naturally.
+- Fixed an issue where achievements would not broadcast when completed.
+- Fixed an issue where left-clicking an Altar would craft twice.
+- Fixed an issue where the Guide to Critter Companions would prevent all creatures from being attacked.
+- Fixed a compatibility issue with the Chandelier's flame light layer and Iris.
+- Fixed an issue in multiplayer where one player respawning would cause nearby bosses to despawn.
+- Fixed an issue where player summons could get stuck/lost.
+- Fixed a crash caused by IdFixer loading too early.
+- Fixed rendering issues with the Ashen Stalk.
+
+## Improvements:
+
+- Strategically set the render type for undyed Clear Glass and Glass furniture to Cutout to improve weather particle visibility.
 
 ## Adjustments:
 
-## New Content:
+- Synced with Terraria version 1.4.5:
+  - Spectre Goggles are now purchased from the Mechanic while in the Spooky Fog.
+  - Increased the effective range of Vile Powder, Vicious Powder, and Essence Powder.
+  - The Alchemy Table recipe for Stink Potions now yields 2 potions.
+  - Decreased the drop rate of the Compass from Mother Slimes, Snow Flinxes, and Viking Zombies from 2% to 1%.
+  - Decreased the drop rate of the Depth Meter from Bats from 1% to 0.5%.
+  - Decreased the drop rate of the Bat Bat from Bats from 4% to 3%.
+  - Increased the drop rate of the Tunava from Lobsters and Giant Shellies from 4% to 6.67%.
+  - The Flesh Knuckles and Putrid Scent can now be shimmered into each other.
+  - Changed the sell values of the Katana, Magma Skull, and Molten Skull Rose.
+  - The Digging Molecart now requires unlocking 85 Bestiary entries to obtain.
+  - Being under the Stink effect now reduces luck by 0.25. The Stink effect can be removed by touching water.
+  - Reduced the duration of the Eggnog cooldown (Potent Sickness) from 60 seconds to 45 seconds.
+  - Cloud blocks can now be mined faster with Shovels.
+  - The Extractinator can now process Stinkbugs into items like Dirt, process Hive into Honey Blocks, and process Obsidian into Sand Blocks.
+  - Special Seeds:
+    - The bit flag for the No Traps seed was changed from `0b100000_00000000` to `0b1000000_00000000`.
+    - The bit flag for the Don't Dig Up seed was changed from `0b1000000_00000000` to `0b100000_00000000`.
+    - The bit flag for the Boulder World seed was changed from `0b100000000_00000000` to `0b1000000000_00000000`.
+    - Added the Skyblock seed, using the bit flag `0b100000000_00000000`.
+- Slightly increased the generation chance of Underground and Surface Wooden Crates.
+- Slightly decreased the spawn rate of Tomb Crawlers.
+- Slightly increased the spawn rates of Snow Flinxes, Viking Zombies, Ice Bats, Spiked Ice Slimes, and Cave Bats.
+- Removed the property where pendulum-type furniture (Damping Pot) would be affected by world wind.
+- Dungeon Guardians will now be saved when their chunk is unloaded.
+
+## Additions:
+
+- Added global achievements and their interface (for Conflux Legacy achievements only).
+- Added a special seed selection interface during world creation (these special seeds are not fully implemented yet).
+- Added compatibility for Blood Crawlers with Nyf's Spiders.
+- Added Furniture Beds.
+- Added the ability to create Dirt Paths from Jungle Grass, Mushroom Grass, and Ash Grass blocks using Shovels.
+- Added a fix to prevent Lootr from replacing Conflux Legacy chests.
+- Added the Snow Flinx Fur Bed, Marble Table, and Balloon Table.
+- Added the 1.4.5 new accessory: Shepherd's Crook, obtainable from Dungeon Gold Chests and Golden Lock Boxes.

@@ -1357,7 +1357,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TFBlocks.GOLD_FISH_BOWL.asItem(),
                 TFBlocks.PUPFISH_BOWL.asItem(),
                 TFBlocks.LAVA_SERPENT_BOWL.asItem(),
-                TFBlocks.GLASS_SET.BATHTUB.asItem(),
                 TFBlocks.GLASS_SET.LANTERN.asItem(),
                 TFBlocks.BLUE_DUNGEON_SET.SOFA.asItem(),
                 TFBlocks.BLUE_DUNGEON_SET.LANTERN.asItem(),

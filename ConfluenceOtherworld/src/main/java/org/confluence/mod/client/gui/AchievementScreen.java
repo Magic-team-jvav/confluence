@@ -139,7 +139,11 @@ public class AchievementScreen extends Screen implements BackgroundLayer.Backgro
                 u += CATEGORY_DISABLED_OFFSET_U;
             }
             int w = uvwh[2];
-            guiGraphics.blit(BACKGROUND, x, y, u, uvwh[1], w, uvwh[3], TEXTURE_WIDTH, TEXTURE_HEIGHT);
+            int h = uvwh[3];
+            guiGraphics.blit(BACKGROUND, x, y, u, uvwh[1], w, h, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+            if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
+                guiGraphics.renderTooltip(font, category.getTranslatedName(), mouseX, mouseY);
+            }
             x += w;
         }
         x = leftPos + ENTRY_X;

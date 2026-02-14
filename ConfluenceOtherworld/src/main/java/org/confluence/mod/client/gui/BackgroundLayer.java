@@ -22,6 +22,7 @@ import org.confluence.mod.util.AchievementUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import java.time.Instant;
 import java.util.LinkedHashMap;
@@ -31,16 +32,11 @@ import java.util.Map;
 
 public enum BackgroundLayer {
     SKY {
-        private GuiSprite sprite;
-
-        @Override
-        public void init(int width, int height) {
-            this.sprite = new GuiSprite(Confluence.asResource("background/sky_0"), width, height, 0, 0, 528, 336);
-        }
+        private final ResourceLocation sprite = Confluence.asResource("background/sky_0");
 
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
-            sprite.render(guiGraphics);
+            BackgroundLayer.renderStaticBackground(guiGraphics, sprite, 528, 336);
 
             float[] color = DimensionSpecialEffectsManager.getForType(BuiltinDimensionTypes.OVERWORLD_EFFECTS).getSunriseColor(timeOfDay, partialTick);
             if (color != null) {
@@ -67,7 +63,48 @@ public enum BackgroundLayer {
             }
         }
     },
-    STAR,
+    STAR {
+        private final RandomSource random = RandomSource.create();
+        private long seed;
+
+        @Override
+        public void init(int width, int height) {
+            this.seed = random.nextLong();
+        }
+
+        @Override
+        public void render(GuiGraphics guiGraphics, float partialTick) {
+            float f = Mth.cos(timeOfDay * Mth.TWO_PI) * 2.0F + 0.25F;
+            f = Mth.clamp(f, 0.0F, 1.0F);
+            f = f * f;
+            if (f <= 0) return;
+            RenderSystem.setShaderColor(f, f, f, f);
+            RenderSystem.setShader(GameRenderer::getPositionShader);
+
+            int width = guiGraphics.guiWidth();
+            int height = guiGraphics.guiHeight();
+
+            random.setSeed(seed);
+            BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
+            Matrix4f matrix4f = guiGraphics.pose().last().pose();
+            Vector3f temp = new Vector3f();
+            for (int j = 0; j < 50; j++) {
+                float x = random.nextFloat() * width;
+                float y = random.nextFloat() * height;
+                float size = random.nextFloat() * 0.5F + 0.5F;
+                Quaternionf rotation = Axis.ZP.rotation(random.nextFloat() * Mth.TWO_PI);
+                temp.set(-size, -size, 0).rotate(rotation).add(x, y, 0);
+                builder.addVertex(matrix4f, temp.x, temp.y, 0);
+                temp.set(-size, size, 0).rotate(rotation).add(x, y, 0);
+                builder.addVertex(matrix4f, temp.x, temp.y, 0);
+                temp.set(size, size, 0).rotate(rotation).add(x, y, 0);
+                builder.addVertex(matrix4f, temp.x, temp.y, 0);
+                temp.set(size, -size, 0).rotate(rotation).add(x, y, 0);
+                builder.addVertex(matrix4f, temp.x, temp.y, 0);
+            }
+            BufferUploader.drawWithShader(builder.buildOrThrow());
+        }
+    },
     PLANET {
         private final ResourceLocation sun = Confluence.asResource("background/sun_0");
         private final ResourceLocation moon = Confluence.asResource("background/moon_0");
@@ -232,6 +269,7 @@ public enum BackgroundLayer {
 
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
+            RenderSystem.enableBlend();
             for (CloudSprite sprite : clouds) {
                 sprite.render(guiGraphics, partialTick);
             }
@@ -265,43 +303,38 @@ public enum BackgroundLayer {
     },
     ENVIRONMENT_0 {
         private final ResourceLocation sprite = Confluence.asResource("background/environment_0_0");
+        private float x;
 
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
-            guiGraphics.blitSprite(sprite, 0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight());
+            this.x = BackgroundLayer.renderMovedBackground(guiGraphics, sprite, 512, 320, x + partialTick * 0.125F);
         }
     },
     ENVIRONMENT_1 {
-        private final ResourceLocation[] sprites = new ResourceLocation[]{
-                Confluence.asResource("background/environment_1_0"),
-                Confluence.asResource("background/environment_1_1")
-        };
-        private ResourceLocation sprite;
-
-        @Override
-        public void init(int width, int height) {
-            this.sprite = sprites[(int) (Math.random() * 2)];
-        }
+        private final ResourceLocation sprite = Confluence.asResource("background/environment_1_0");
+        private float x;
 
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
-            guiGraphics.blitSprite(sprite, 0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight());
+            this.x = BackgroundLayer.renderMovedBackground(guiGraphics, sprite, 528, 336, x + partialTick * 0.25F);
         }
     },
     ENVIRONMENT_2 {
         private final ResourceLocation sprite = Confluence.asResource("background/environment_2_0");
+        private float x;
 
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
-            guiGraphics.blitSprite(sprite, 0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight());
+            this.x = BackgroundLayer.renderMovedBackground(guiGraphics, sprite, 528, 336, x + partialTick * 0.5F);
         }
     },
     ENVIRONMENT_3 {
         private final ResourceLocation sprite = Confluence.asResource("background/environment_3_0");
+        private float x;
 
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
-            guiGraphics.blitSprite(sprite, 0, 0, guiGraphics.guiWidth(), guiGraphics.guiHeight());
+            this.x = BackgroundLayer.renderMovedBackground(guiGraphics, sprite, 528, 336, x + partialTick);
         }
     };
 
@@ -323,6 +356,37 @@ public enum BackgroundLayer {
 
     public boolean released(double mouseX, double mouseY) {
         return false;
+    }
+
+    private static void renderStaticBackground(GuiGraphics guiGraphics, ResourceLocation sprite, int textureWidth, int textureHeight) {
+        int w = guiGraphics.guiHeight() * textureWidth / textureHeight;
+        if ((float) guiGraphics.guiWidth() / guiGraphics.guiHeight() > (float) textureWidth / textureHeight) {
+            int i = Mth.ceil((float) guiGraphics.guiWidth() / w);
+            for (int j = 0; j < i; j++) {
+                guiGraphics.blitSprite(sprite, w * j, 0, w, guiGraphics.guiHeight());
+            }
+        } else {
+            guiGraphics.blitSprite(sprite, 0, 0, w, guiGraphics.guiHeight());
+        }
+    }
+
+    private static float renderMovedBackground(GuiGraphics guiGraphics, ResourceLocation sprite, int textureWidth, int textureHeight, float x) {
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, 0, 0);
+        int w = guiGraphics.guiHeight() * textureWidth / textureHeight;
+        if (x > w) {
+            x = 0;
+        }
+        if ((float) guiGraphics.guiWidth() / guiGraphics.guiHeight() > (float) textureWidth / textureHeight) {
+            int i = Mth.ceil((float) guiGraphics.guiWidth() / w);
+            for (int j = -1; j < i; j++) {
+                guiGraphics.blitSprite(sprite, w * j, 0, w, guiGraphics.guiHeight());
+            }
+        } else {
+            guiGraphics.blitSprite(sprite, 0, 0, w, guiGraphics.guiHeight());
+        }
+        guiGraphics.pose().popPose();
+        return x;
     }
 
     private static boolean enabled;

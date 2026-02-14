@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFeatures;
@@ -46,29 +47,42 @@ public final class OverworldUtils {
         return Level.NETHER;
     }
 
-    public static void replaceBiome(MultiNoiseBiomeSource biomeSource, int x, int y, int z, CallbackInfoReturnable<Holder<Biome>> cir, Supplier<List<Holder<Biome>>> jungleGetter, Supplier<Pair<Holder<Biome>, Holder<Biome>>> biomePairGetter, Function<RegistryAccess, Holder<Biome>> protectionFactory) {
+    private static TriState notTheBees = TriState.DEFAULT;
+
+    public static void replaceBiome(
+            MultiNoiseBiomeSource biomeSource,
+            int x,
+            int y,
+            int z,
+            CallbackInfoReturnable<Holder<Biome>> cir,
+            Supplier<List<Holder<Biome>>> jungleGetter,
+            Supplier<Pair<Holder<Biome>, Holder<Biome>>> biomePairGetter,
+            Function<RegistryAccess, Holder<Biome>> protectionFactory
+    ) {
         Holder<Biome> replaced = cir.getReturnValue();
-        if (replaced != null) {
-            if (ModSecretSeeds.NOT_THE_BEES.match()) {
-                List<Holder<Biome>> jungle = jungleGetter.get();
-                if (!jungle.isEmpty()) {
-                    replaced = NotTheBees.replaceBiome(x, y, z, replaced, jungle);
-                }
-            } else {
-                Pair<Holder<Biome>, Holder<Biome>> pair = biomePairGetter.get();
-                if (pair != null && replaced == pair.getFirst()) {
-                    replaced = pair.getSecond();
-                }
+        if (replaced == null) return;
+        if (notTheBees.isDefault()
+                ? (notTheBees = ModSecretSeeds.NOT_THE_BEES.match() ? TriState.TRUE : TriState.FALSE).isTrue()
+                : notTheBees.isTrue()
+        ) {
+            List<Holder<Biome>> jungle = jungleGetter.get();
+            if (!jungle.isEmpty()) {
+                replaced = NotTheBees.replaceBiome(x, y, z, replaced, jungle);
             }
-            MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
-            if (currentServer != null && (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.THE_CRIMSON))) {
-                BlockPos spawnPos = currentServer.getWorldData().overworldData().getSpawnPos();
-                if (Math.abs((spawnPos.getX() >> 2) - x) <= 50 || Math.abs((spawnPos.getZ() >> 2) - z) <= 50) {
-                    replaced = protectionFactory.apply(currentServer.registryAccess());
-                }
+        } else {
+            Pair<Holder<Biome>, Holder<Biome>> pair = biomePairGetter.get();
+            if (pair != null && replaced == pair.getFirst()) {
+                replaced = pair.getSecond();
             }
-            cir.setReturnValue(replaced);
         }
+        MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+        if (currentServer != null && (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.THE_CRIMSON))) {
+            BlockPos spawnPos = currentServer.getWorldData().overworldData().getSpawnPos();
+            if (Math.abs((spawnPos.getX() >> 2) - x) <= 50 || Math.abs((spawnPos.getZ() >> 2) - z) <= 50) {
+                replaced = protectionFactory.apply(currentServer.registryAccess());
+            }
+        }
+        cir.setReturnValue(replaced);
     }
 
     public static void replaceTree(FeaturePlaceContext<TreeConfiguration> context, CallbackInfoReturnable<Boolean> cir) {

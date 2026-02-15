@@ -254,7 +254,7 @@ dependencies {
 
     compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
     compileOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
-    if (false) {
+    if (true) {
         runtimeOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
         runtimeOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
     }

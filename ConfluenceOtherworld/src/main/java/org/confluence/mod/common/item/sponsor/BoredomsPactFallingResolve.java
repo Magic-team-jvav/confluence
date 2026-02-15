@@ -107,6 +107,12 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
         );
     }
 
+    @SuppressWarnings({"removal", "UnstableApiUsage"})
+    @Override
+    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
+        return getDropRule(slotContext, source, recentlyHit, stack);
+    }
+
     @Override
     public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, boolean recentlyHit, ItemStack stack) {
         return ModSecretSeeds.BOULDER_WORLD.match() ? ICurio.DropRule.ALWAYS_KEEP : ICurio.DropRule.DEFAULT;

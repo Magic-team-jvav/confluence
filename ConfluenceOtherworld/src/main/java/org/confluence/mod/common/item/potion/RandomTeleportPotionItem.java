@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModSoundEvents;
 
 public class RandomTeleportPotionItem extends AbstractPotionItem {
-    public static final double RANGE = 200.0;
+    public static final double RANGE = 10000;
 
     public RandomTeleportPotionItem() {
         super(new Properties());

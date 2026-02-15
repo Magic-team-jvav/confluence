@@ -177,7 +177,7 @@ public final class GameClientEvents {
         CompatibilityHandler.reset();
         DropletsHandler.reset();
         EctoMistHelper.reset();
-        ClientBestiary.reset();
+        ClientBestiary.getInstance().reset();
         LucyTheAxeHandler.reset();
         ClientGameEventSystem.reset();
         AchievementUtils.saveData();

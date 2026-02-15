@@ -12,11 +12,11 @@ public class RegisterEvilMaterialReplacesEvent extends Event implements IModBusE
     private static final BiMap<Item, Item> corrupt2crimson = HashBiMap.create();
 
     public static @Nullable Item fromCorrupt(Item corruptItem) {
-        return corrupt2crimson.get(corruptItem);
+        return corrupt2crimson.inverse().get(corruptItem);
     }
 
     public static @Nullable Item fromCrimson(Item crimsonItem) {
-        return corrupt2crimson.inverse().get(crimsonItem);
+        return corrupt2crimson.get(crimsonItem);
     }
 
     public static @Nullable Item getPossible(Item source, boolean corrupt, boolean crimson) {

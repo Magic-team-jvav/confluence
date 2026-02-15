@@ -198,11 +198,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
         return INSTANCE;
     }
 
-    public static void reset() {
-        getInstance().resetEntries();
-    }
-
-    private void resetEntries() {
+    public void reset() {
         if (currentLevel == null) return;
         this.currentLevel = null;
         Map<String, ClientBestiaryEntry> map = Maps.newHashMap();
@@ -219,7 +215,9 @@ public class ClientBestiary extends ContextAwareReloadListener {
     public void handle(Level level, Either<Map<String, BestiaryEntry>, String> either) {
         if (level != currentLevel) {
             if (currentLevel != null) {
-                resetEntries();
+                for (Map.Entry<String, ClientBestiaryEntry> entry : entries.entrySet()) {
+                    entry.getValue().resetRenderedEntity(); // 移除之前的level
+                }
             }
             this.currentLevel = level;
         }

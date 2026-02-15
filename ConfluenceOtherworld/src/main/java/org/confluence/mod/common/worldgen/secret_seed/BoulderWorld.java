@@ -33,7 +33,6 @@ public class BoulderWorld extends SecretSeed {
             if (blockState.getCollisionShape(serverPlayer.level(), pos) == Shapes.block()) {
                 BoulderEntity entity = new BoulderEntity(serverPlayer.serverLevel(), pos.getCenter(), blockState);
                 entity.targetTo(serverPlayer);
-                entity.setVertical(false);
                 serverPlayer.serverLevel().addFreshEntity(entity);
             }
         }

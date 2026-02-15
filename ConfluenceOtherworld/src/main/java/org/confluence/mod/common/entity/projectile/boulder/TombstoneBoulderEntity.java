@@ -4,7 +4,6 @@ import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -85,8 +84,7 @@ public class TombstoneBoulderEntity extends BoulderEntity {
                 .setMessage(0, living.getCombatTracker().getDeathMessage())
                 .setMessage(1, Component.literal(DATE_FORMAT.format(Calendar.getInstance().getTime())));
         if (!level.getBlockState(living.blockPosition().below()).isAir()) {
-            entity.targetTo(level.getNearestPlayer(position.x, position.y, position.z, BoulderEntity.SEARCH_RANGE, Entity::isAlive));
-            entity.setVertical(false);
+            entity.targetTo(level.getNearestPlayer(position.x, position.y, position.z, BoulderEntity.SEARCH_RANGE, BoulderEntity.ENTITY_PREDICATE));
         }
         level.addFreshEntity(entity);
     }

@@ -268,7 +268,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 
-        tag(ModTags.Items.EVIL_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.CRIMTANE_INGOT.get());
+        tag(ModTags.Items.EVIL_INGOT).addTags(ModTags.Items.INGOTS_DEMONITE, ModTags.Items.INGOTS_CRIMTANE);
         tag(ModTags.Items.LEAD_AND_IRON).addTags(Tags.Items.INGOTS_IRON, ModTags.Items.INGOTS_LEAD);
         tag(ModTags.Items.GOLD_AND_PLATINUM).addTags(Tags.Items.INGOTS_GOLD, ModTags.Items.INGOTS_PLATINUM);
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);

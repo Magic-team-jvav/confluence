@@ -151,7 +151,7 @@ public class DialogsLanguageSubProvider implements LanguageSubProvider {
         add("dialogs.terra_entity.angler.item.confluence.cloudfish", "有谣言说天上漂浮着岛屿，岛上有惊人的宝藏！但是谁会在意呢，更有意思的是，云彩中有时会形成湖泊，湖泊中游荡着云朵做成的鱼！我想尝尝它的味道，所以你最好去把它抓来给我！（抓捕位置：天湖）");
         add("dialogs.terra_entity.angler.item.confluence.clownfish", "我在海边看到过这条亮橙色的彩鱼，它在疯狂地游来游去，好像在找走丢的家人！去把它抓来给我，这样又会有一条游出来找它！（抓捕位置：海洋）");
         add("dialogs.terra_entity.angler.item.confluence.cursedfish", "有条受诅咒的鱼在腐化之地最深处的水中游来游去！它由潜藏在那里的堕落恐怖蔓延出来的诅咒焰化成。他们说，诅咒焰连水都无法扑灭，可以永远燃烧。有一条这样的鱼，我就可以做许多好玩的事！你去抓给我！还是你太胆小！？（抓捕位置：腐化之地）");
-        add("dialogs.terra_entity.angler.item.confluence.demonic_hellfish", "我听说在地狱，所有恶魔的王其实是一条鱼！想像一下，如果你去抓一条给我，我将拥有强大的王权！（抓捕位置：洞穴）");
+        add("dialogs.terra_entity.angler.item.confluence.demonic_hellfish", "我听说在地狱，所有恶魔的王其实是一条鱼！想象一下，如果你去抓一条给我，我将拥有强大的王权！（抓捕位置：洞穴）");
         add("dialogs.terra_entity.angler.item.confluence.derpfish", "丛林里的那些跳跳兽是我见过的最可怕的怪物！好的一面是，有时候它们没有腿！这些是生活在水中的，就没那么可怕了！马上去给我抓一只，这样我可以品尝它们的味道，还不会被吓个半死！（抓捕位置：丛林地表）");
         add("dialogs.terra_entity.angler.item.confluence.dirtfish", "正当我在收线钓起一条大鱼时，这个僵尸从森林湖中蹦出来，不仅很搞笑还会说话，然后开始大说特说这种用土做成的“凶残”的鱼！他说，这鱼能闷死十个像他这个块头的小伙子……我要得到它！马上！（抓捕位置：地表和地下）");
         add("dialogs.terra_entity.angler.item.confluence.dynamite_fish", "爆破专家在森林里的湖中弄丢了一捆雷管，一直很着急。他有那么多炸药，丢的那捆炸药有这么重要吗？显然，因为这捆炸药长出了鳍，开始游走了！我不知道他做炸药的材料是哪儿弄的，但那一捆肯定已经走火入魔了！钓回来给我，我一直想要一条自杀式炸弹鱼！不要问为什么……（抓捕位置：地表）");

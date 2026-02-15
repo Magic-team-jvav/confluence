@@ -3984,6 +3984,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.CALM.get(), "冷静", "敌人生成速度降低");
         addEffect(ModEffects.HAPPY.get(), "快乐", "移动速度提高，怪物生成减少");
         addEffect(ModEffects.ENEMY_BANNER.get(), "敌怪旗", "提高对以下怪的伤害和防御：%s");
+        addEffect(ModEffects.SUMMONING.get(), "召唤", "仆从数量上限增加1");
 
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");

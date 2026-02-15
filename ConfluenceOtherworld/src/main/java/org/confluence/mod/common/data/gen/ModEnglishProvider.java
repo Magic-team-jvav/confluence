@@ -1406,6 +1406,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.CALM.get(), "Decreased enemy spawn rate");
         addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");
         addEffect(ModEffects.ENEMY_BANNER.get(), "Increased damage and defense from the following: %s");
+        addEffect(ModEffects.SUMMONING.get(), "Increased your max number of minions by 1");
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
         addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");

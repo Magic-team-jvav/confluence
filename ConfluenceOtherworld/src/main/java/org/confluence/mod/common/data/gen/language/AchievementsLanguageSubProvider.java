@@ -12,6 +12,11 @@ public class AchievementsLanguageSubProvider implements LanguageSubProvider {
 
     @Override
     public void english() {
+        // gui
+        add("achievements.confluence.category.challenger", "Challenger");
+        add("achievements.confluence.category.explorer", "Explorer");
+        add("achievements.confluence.category.slayer", "Slayer");
+        add("achievements.confluence.category.collector", "Collector");
         // new
         add("achievements.toast.complete", "Achievement achieved!");
         add("achievements.confluence.new_world.title", "Old World, New Journey!");
@@ -294,6 +299,11 @@ public class AchievementsLanguageSubProvider implements LanguageSubProvider {
 
     @Override
     public void chinese() {
+        // gui
+        add("achievements.confluence.category.challenger", "挑战者");
+        add("achievements.confluence.category.explorer", "探险家");
+        add("achievements.confluence.category.slayer", "杀手");
+        add("achievements.confluence.category.collector", "收藏家");
         //成就
         add("achievements.toast.complete", "成就达成！");
         add("achievements.confluence.new_world.title", "旧的世界，新的旅途！");

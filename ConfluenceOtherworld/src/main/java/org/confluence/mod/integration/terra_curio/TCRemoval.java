@@ -21,5 +21,7 @@ public final class TCRemoval {
         list.add(TerraCurio.asResource("architect_gizmo_pack"));
         list.add(TerraCurio.asResource("anklet_of_the_wind"));
         list.add(TerraCurio.asResource("ankh_charm"));
+        list.add(TerraCurio.asResource("magic_mirror_from_gold_ingot"));
+        list.add(TerraCurio.asResource("magic_mirror_from_platinum_ingot"));
     });
 }

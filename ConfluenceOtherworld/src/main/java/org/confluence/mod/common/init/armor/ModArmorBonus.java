@@ -6,7 +6,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -398,69 +397,52 @@ public final class ModArmorBonus {
     }
 
     public static void onAttacked(ServerPlayer player, DamageSource damageSource, LivingEntity victim) {
-        MinecraftServer server = player.getServer();
-        if (server == null) return; // 安全检查
-
-        if (victim instanceof Enemy) {
+        if (victim instanceof Enemy) hurtEnemyAwardEffects:{
             List<MobEffectInstanceData> effects = getValue(player, HURT$ENEMY$AWARD$EFFECTS);
-            if (!effects.isEmpty()) {
-                server.tell(new net.minecraft.server.TickTask(server.getTickCount(), () -> {
-                    if (player.isAlive()) {
-                        for (MobEffectInstanceData effect : effects) {
-                            player.addEffect(effect.create());
-                        }
-                    }
-                }));
+            if (effects.isEmpty()) break hurtEnemyAwardEffects;
+            for (MobEffectInstanceData effect : effects) {
+                player.addEffect(effect.create());
             }
         }
-
-        if (hasType(player, FLOWER$PETAL)) {
-            if (!(damageSource.getDirectEntity() instanceof FlowerPetalProjectile)) {
-                CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
-                long gameTime = player.level().getGameTime();
-                if (gameTime - tag.getLong("confluence:last_flower_petal_attack") >= 6) {
-                    tag.putLong("confluence:last_flower_petal_attack", gameTime);
-                    Vec3 victimPos = victim.position().add(0, victim.getBbHeight() * 0.5, 0);
-                    RandomSource random = player.getRandom();
-                    double offsetY = (random.nextFloat() - 0.5) * 10;
-                    Vec3 spawnPos = victimPos.add(
-                            (random.nextFloat() - 0.5) * 10,
-                            offsetY > 0.0 ? offsetY + 5 : offsetY,
-                            (random.nextFloat() - 0.5) * 10
-                    );
-                    server.tell(new net.minecraft.server.TickTask(server.getTickCount(), () -> {
-                        if (player.isAlive() && victim.isAlive()) {
-                            FlowerPetalProjectile projectile = new FlowerPetalProjectile(player);
-                            projectile.setPos(spawnPos);
-                            projectile.shoot(victimPos.x - spawnPos.x, victimPos.y - spawnPos.y, victimPos.z - spawnPos.z, 1.2F, 0.0F);
-                            player.level().addFreshEntity(projectile);
-                        }
-                    }));
-                }
+        if (hasType(player, FLOWER$PETAL)) flowerPetal:{
+            if (damageSource.getDirectEntity() instanceof FlowerPetalProjectile) break flowerPetal;
+            CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+            long gameTime = player.level().getGameTime();
+            if (gameTime - tag.getLong("confluence:last_flower_petal_attack") < 6) {
+                break flowerPetal;
             }
+            tag.putLong("confluence:last_flower_petal_attack", gameTime);
+            FlowerPetalProjectile projectile = new FlowerPetalProjectile(player);
+            Vec3 position = victim.position().add(0, victim.getBbHeight() * 0.5, 0);
+            RandomSource random = player.getRandom();
+            double y = (random.nextFloat() - 0.5) * 10;
+            Vec3 offset = position.add(
+                    (random.nextFloat() - 0.5) * 10,
+                    y > 0.0 ? y + 5 : y,
+                    (random.nextFloat() - 0.5) * 10
+            );
+            projectile.setPos(offset);
+            projectile.shoot(position.x - offset.x, position.y - offset.y, position.z - offset.z, 1.2F, 0.0F);
+            player.level().addFreshEntity(projectile);
         }
-
         if (player instanceof IServerPlayer serverPlayer && hasType(player, TITANIUM$SHARDS)) {
-            if (!player.hasEffect(ModEffects.TITANIUM_BARRIER) &&
-                    !(damageSource.getDirectEntity() instanceof TitaniumShardsProjectile) &&
-                    !serverPlayer.confluence$hasTitaniumShards()) {
-                server.tell(new net.minecraft.server.TickTask(server.getTickCount(), () -> {
-                    if (player.isAlive() && !player.hasEffect(ModEffects.TITANIUM_BARRIER) && !serverPlayer.confluence$hasTitaniumShards()) {
-                        player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
-                        TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
-                        serverPlayer.confluence$setTitaniumShards(projectile);
-                        player.level().addFreshEntity(projectile);
-                    }
-                }));
+            titaniumShards:
+            {
+                if (player.hasEffect(ModEffects.TITANIUM_BARRIER) ||
+                        damageSource.getDirectEntity() instanceof TitaniumShardsProjectile ||
+                        serverPlayer.confluence$hasTitaniumShards()
+                ) {
+                    break titaniumShards;
+                }
+
+                player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
+                TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
+                serverPlayer.confluence$setTitaniumShards(projectile);
+                player.level().addFreshEntity(projectile);
             }
         }
-
         if (damageSource.is(Tags.DamageTypes.IS_MAGIC) && isArmorSet(player, COLD_CRYSTAL_SET)) {
-            server.tell(new net.minecraft.server.TickTask(server.getTickCount(), () -> {
-                if (victim.isAlive()) {
-                    victim.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
-                }
-            }));
+            victim.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
         }
     }
 

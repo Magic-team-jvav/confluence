@@ -13,6 +13,8 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.util.TCUtils;
 
 public class TheConstant extends SecretSeed {
     public static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
@@ -36,6 +38,7 @@ public class TheConstant extends SecretSeed {
     public static void applyDarkness(ServerPlayer player, ServerLevel level, long gameTime) {
         if (player.gameMode.getGameModeForPlayer().isSurvival() && gameTime % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(level)) {
             if (player.hasEffect(ModEffects.SHINE) || player.hasEffect(MobEffects.GLOWING)) return;
+            if (TCUtils.getValue(player, TCItems.LUMINANCE) > 0) return;
             if (LibUtils.anyHandHasItem(player, ModTags.Items.PROVIDE_LIGHT)) return;
             CompoundTag data = LibUtils.getOrCreatePersistedData(player);
             int tick = data.getInt("confluence:in_darkness_tick");

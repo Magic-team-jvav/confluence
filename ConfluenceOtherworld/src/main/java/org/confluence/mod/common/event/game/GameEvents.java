@@ -108,6 +108,7 @@ public final class GameEvents {
     @SubscribeEvent(priority = EventPriority.LOW) // 需要晚于Curios Api
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer sendTo = event.getPlayer();
+        Confluence.LOGGER.info("onDatapackSync target {}", sendTo);
         if (sendTo == null) {
             for (ServerPlayer target : event.getPlayerList().getPlayers()) {
                 ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(target, target);

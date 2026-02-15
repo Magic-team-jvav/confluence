@@ -65,67 +65,55 @@ public class TitaniumShardsProjectile extends Projectile {
         if (player == null) {
             if (!synced) return;
             discard();
-            return;
         } else if (!player.hasEffect(ModEffects.TITANIUM_BARRIER)) {
             discard();
-            return;
         }
 
         int amount = entityData.get(DATA_SHARDS_AMOUNT);
-        if (amount <= 0 || isRemoved()) {
+        if (amount <= 0) {
             discard();
-            return;
         }
 
-        setPos(player.getX(), player.getY(), player.getZ());
+        if (isRemoved()) return;
+        assert player != null;
+
+        setPos(player.position());
         this.xOld = player.xOld;
         this.yOld = player.yOld;
         this.zOld = player.zOld;
 
         if (amount != shardPos.size()) {
-            this.shardPos.clear();
-            this.shardPosO.clear();
+            List<Vector3d> shardPos = new ArrayList<>();
+            List<Vector3d> shardPosO = new ArrayList<>();
             double d = Math.TAU / amount;
             for (int i = 0; i < amount; i++) {
                 Vector3d e = new Vector3d(1 + amount / 10.0, 0, 0).rotateY(d * i);
-                this.shardPos.add(e);
-                this.shardPosO.add(new Vector3d(e));
+                shardPos.add(e);
+                shardPosO.add(new Vector3d(e));
             }
+            this.shardPos = shardPos;
+            this.shardPosO = shardPosO;
         }
-
         double r = Math.PI * Mth.lerp(amount / 8.0, 0.05, 0.2);
-        Entity targetToHurt = null;
-
         for (int i = 0; i < amount; i++) {
             Vector3d end = shardPos.get(i);
             end.y = player.getBbHeight() * 0.5;
-            shardPosO.get(i).set(end);
+            Vector3d start = shardPosO.get(i).set(end);
             end.rotateY(r);
-            if (!level().isClientSide && targetToHurt == null) {
-                Vec3 startVec = position().add(shardPosO.get(i).x, shardPosO.get(i).y, shardPosO.get(i).z);
+
+            if (!level().isClientSide) {
+                Vec3 startVec = position().add(start.x, start.y, start.z);
                 Vec3 endVec = position().add(end.x, end.y, end.z);
                 AABB aabb = new AABB(startVec, endVec).inflate(0.5);
                 EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, startVec, endVec, aabb, this::canHitEntity);
-                if (hitResult != null) {
-                    targetToHurt = hitResult.getEntity();
+                if (hitResult != null && hitResult.getEntity().hurt(damageSources().playerAttack(player), 25)) {
+                    VectorUtils.knockBackA2B(this, hitResult.getEntity(), 1, 0.4);
+                    entityData.set(DATA_SHARDS_AMOUNT, amount - 1);
                 }
             }
         }
-        if (targetToHurt != null) {
-            final Entity finalTarget = targetToHurt;
-            if (player.getServer() != null) {
-                player.getServer().tell(new net.minecraft.server.TickTask(player.getServer().getTickCount(), () -> {
-                    if (finalTarget.isAlive() && !this.isRemoved()) {
-                        if (finalTarget.hurt(damageSources().playerAttack(player), 25.0F)) {
-                            VectorUtils.knockBackA2B(this, finalTarget, 1.0, 0.4);
-                            int currentAmount = entityData.get(DATA_SHARDS_AMOUNT);
-                            this.entityData.set(DATA_SHARDS_AMOUNT, Math.max(0, currentAmount - 1));
-                        }
-                    }
-                }));
-            }
-        }
     }
+
     @Override
     protected boolean canHitEntity(Entity target) {
         return LibUtils.canHitEntity(target, getOwner());

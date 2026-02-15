@@ -1,6 +1,9 @@
 package org.confluence.mod.network.task;
 
+import com.mojang.authlib.GameProfile;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.UUIDUtil;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.world.entity.player.Player;
@@ -12,18 +15,28 @@ import org.confluence.mod.util.AchievementUtils;
 
 import java.util.UUID;
 
-public final class RequestAchievementsPacketS2C implements IPacketS2C {
-    public static final RequestAchievementsPacketS2C INSTANCE = new RequestAchievementsPacketS2C();
+/// onlineMode为false时服务端会根据玩家名称生成uuid
+///
+/// [net.minecraft.core.UUIDUtil#createOfflinePlayerUUID(java.lang.String)]
+///
+/// 但是客户端还是原先的profile
+public record RequestAchievementsPacketS2C(boolean onlineMode) implements IPacketS2C {
     public static final Type<RequestAchievementsPacketS2C> TYPE = Confluence.createType("request_achievements");
-    public static final StreamCodec<ByteBuf, RequestAchievementsPacketS2C> STREAM_CODEC = StreamCodec.unit(INSTANCE);
-
-    private RequestAchievementsPacketS2C() {}
+    public static final StreamCodec<ByteBuf, RequestAchievementsPacketS2C> STREAM_CODEC = ByteBufCodecs.BOOL
+            .map(RequestAchievementsPacketS2C::new, RequestAchievementsPacketS2C::onlineMode);
 
     @Override
     public void handle(IPayloadContext context) {
-        UUID id = LibClientUtils.getGameProfile().getId();
-        PlayerAdvancements.Data data = AchievementUtils.loadData(id);
-        context.reply(new ReplyAchievementsPacketC2S(id, data));
+        GameProfile gameProfile = LibClientUtils.getGameProfile();
+        if (onlineMode) {
+            UUID id = gameProfile.getId();
+            PlayerAdvancements.Data data = AchievementUtils.loadData(id);
+            context.reply(new ReplyAchievementsPacketC2S(id, data));
+        } else {
+            UUID id = UUIDUtil.createOfflinePlayerUUID(gameProfile.getName());
+            PlayerAdvancements.Data data = AchievementUtils.loadData(gameProfile.getId());
+            context.reply(new ReplyAchievementsPacketC2S(id, data));
+        }
     }
 
     @Override

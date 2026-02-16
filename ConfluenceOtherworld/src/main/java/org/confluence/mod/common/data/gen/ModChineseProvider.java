@@ -2862,7 +2862,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.SUGAR_PLUM.get(), "蜜糖李");
         add(ModItems.HEART.get(), "心");
         add(ModItems.CANDY_CANE.get(), "拐杖糖");
-        add(ModItems.CANDY_APPLE.get(), "糖葫芦");
+        add(ModItems.CANDY_APPLE.get(), "焦糖苹果");
         add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
         add(ModItems.GRASS_SEED.get(), "草种子");
         add(ModItems.JUNGLE_GRASS_SEED.get(), "丛林草种子");

@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -8,11 +7,8 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.common.TranslatableEnum;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class TerraStyleSoulHud implements LayeredDraw.Layer {
     private static final int[] SOUL = new int[]{0xa7d0e9};
     private static final int[] SOUL_LOW = new int[]{0x74a5c2};

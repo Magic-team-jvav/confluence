@@ -1,7 +1,6 @@
 package org.confluence.mod.client.gui.hud;
 
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,13 +17,10 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
 import static org.confluence.mod.util.ClientUtils.*;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class TerraStyleHealthHud implements LayeredDraw.Layer {
     private static final int[] HEALTH = new int[]{0xab311e, 0x5d11ba, 0x41a9ba, 0x37c438, 0xeed536};
     private static final int[] HEALTH_LOW = new int[]{0xab1f5d, 0x9d44ac, 0x12f7dd, 0x1fab7f, 0xf7b60b};

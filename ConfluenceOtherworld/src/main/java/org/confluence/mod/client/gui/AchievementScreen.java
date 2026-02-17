@@ -24,7 +24,7 @@ import org.confluence.mod.util.AchievementUtils;
 
 import java.util.*;
 
-public class AchievementScreen extends Screen implements BackgroundLayer.Backgrounded {
+public class AchievementScreen extends Screen {
     public static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("achievement_icon"), Confluence.asResource("achievement_icon_highlighted"));
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/achievement.png");
     private static final int ENTRY_X = 4;

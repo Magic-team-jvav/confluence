@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,13 +11,10 @@ import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.client.ClientConfigs;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
 import static org.confluence.mod.util.ClientUtils.*;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class TerraStyleFoodHud implements LayeredDraw.Layer {
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {

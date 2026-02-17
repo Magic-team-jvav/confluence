@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,13 +12,10 @@ import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.client.ClientConfigs;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
 import static org.confluence.mod.util.ClientUtils.*;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class TerraStyleArmorHud implements LayeredDraw.Layer {
     private static final int[] ARMOR = new int[]{0x979191, 0xd8c849, 0x8097b8, 0x3b2754, 0xea5d39};
     private static final int[] ARMOR_LOW = new int[]{0x5d4b4b, 0x645241, 0x515277, 0x201735, 0xb50000};

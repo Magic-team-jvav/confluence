@@ -15,6 +15,7 @@ import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
@@ -476,7 +477,7 @@ public enum BackgroundLayer {
                             Component.translatable("achievements.confluence.going_oldschool.title"),
                             Component.translatable("achievements.confluence.going_oldschool.description")
                     ));
-            toast.blitOffset = () -> isBackgroundedScreen() ? 10001 : 0;
+            toast.blitOffset = () -> ClientHooks.getGuiFarPlane() - 21000 + 1;
             Minecraft.getInstance().getToasts().addToast(toast);
             AchievementUtils.handleData(data, false);
             AchievementUtils.saveData();
@@ -486,11 +487,4 @@ public enum BackgroundLayer {
     public static boolean isCompletedGoingOldSchool() {
         return completedGoingOldSchool;
     }
-
-    public static boolean isBackgroundedScreen() {
-        return Minecraft.getInstance().screen instanceof Backgrounded;
-    }
-
-    /// 仅用于标记
-    public interface Backgrounded {}
 }

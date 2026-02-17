@@ -47,7 +47,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-public class SecretSeedsSelectionScreen extends Screen implements BackgroundLayer.Backgrounded {
+public class SecretSeedsSelectionScreen extends Screen {
     public static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("seed_icon"), Confluence.asResource("seed_icon_highlighted"));
     private static final ResourceLocation FIRST = Confluence.asResource("textures/gui/secret_seeds_selection/first.png");
     private static final SecretSeed[] SPECIAL_SEEDS = new SecretSeed[]{

@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,13 +12,10 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.util.ClientUtils;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
 import static org.confluence.mod.util.ClientUtils.*;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class TerraStyleManaHud implements LayeredDraw.Layer {
     private static final int[] MANA = new int[]{0x5a82e2, 0xa248d7};
     private static final int[] MANA_LOW = new int[]{0x5d11ba, 0xac1a91};

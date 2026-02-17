@@ -8,6 +8,7 @@ public class AllSpriteShifts {
     public static final CTSpriteShiftEntry FROZEN_GEL_BLOCK = omni("frozen_gel_block");
     public static final CTSpriteShiftEntry ANDESITE_CASING = omni("andesite_casing");
     public static final CTSpriteShiftEntry SUN_PLATE = omni("sun_plate");
+    public static final CTSpriteShiftEntry MOON_PLATE = omni("moon_plate");
     public static final CTSpriteShiftEntry PURE_GLASS = omni("pure_glass");
     public static final CTSpriteShiftEntry WHITE_PURE_GLASS = omni("white_pure_glass");
     public static final CTSpriteShiftEntry LIGHT_GRAY_PURE_GLASS = omni("light_gray_pure_glass");
@@ -58,4 +59,5 @@ public class AllSpriteShifts {
     private static CTSpriteShiftEntry getCT(CTType type, String blockTextureName) {
         return getCT(type, blockTextureName, blockTextureName);
     }
+
 }

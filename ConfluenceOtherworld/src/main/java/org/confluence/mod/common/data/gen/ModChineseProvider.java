@@ -2079,6 +2079,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), "品红纯净玻璃");
         add(DecorativeBlocks.PINK_PURE_GLASS.get(), "粉红纯净玻璃");
         add(DecorativeBlocks.DISC_BLOCK.get(), "飞盘块");
+        add(DecorativeBlocks.DISC_STAIRS.get(), "飞盘楼梯");
+        add(DecorativeBlocks.DISC_SLAB.get(), "飞盘台阶");
+        add(DecorativeBlocks.MOON_PLATE.get(), "月盘块");
+        add(DecorativeBlocks.MOON_PLATE_STAIRS.get(), "月盘楼梯");
+        add(DecorativeBlocks.MOON_PLATE_SLAB.get(), "月盘台阶");
         add(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(), "木石板条块");
         add(DecorativeBlocks.LIHZAHRD_BRICKS.get(), "丛林蜥蜴砖");
         add(DecorativeBlocks.RUBY_CHAIN.get(), "红玉锁链");

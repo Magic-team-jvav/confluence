@@ -233,6 +233,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SKYWARE_DOOR.get(),
                 SKYWARE_GLASS_DOOR.get(),
                 DISC_BLOCK.get(),
+                DISC_STAIRS.get(),
+                DISC_SLAB.get(),
+                MOON_PLATE.get(),
+                MOON_PLATE_SLAB.get(),
+                MOON_PLATE_STAIRS.get(),
                 OBSIDIAN_BRICKS.get(),
                 MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(),
                 OBSIDIAN_BRICKS_SLAB.get(),
@@ -669,8 +674,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SUN_PLATE_SLAB.get(),
                 SUN_PLATE_STAIRS.get(),
                 SKYWARE_DOOR.get(),
-                DISC_BLOCK.get(),
                 SKYWARE_GLASS_DOOR.get(),
+                DISC_BLOCK.get(),
+                DISC_STAIRS.get(),
+                DISC_SLAB.get(),
+                MOON_PLATE.get(),
+                MOON_PLATE_SLAB.get(),
+                MOON_PLATE_STAIRS.get(),
                 AETHERIUM_BRICKS.get(),
                 POLISHED_GRANITE.get(),
                 CHISELED_GRANITE_BRICKS.get(),
@@ -975,7 +985,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CRIMSTONE_BRICKS_STAIRS.get(),
                 EBONSTONE_BRICKS_STAIRS.get(),
                 PEARLSTONE_BRICKS_STAIRS.get(),
-                DEMONITE_ORE_BRICKS_STAIRS.get()
+                DEMONITE_ORE_BRICKS_STAIRS.get(),
+                MOON_PLATE_STAIRS.get(),
+                DISC_STAIRS.get()
         );
         tag(BlockTags.SLABS).add(
                 SUN_PLATE_SLAB.get(),
@@ -1004,7 +1016,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CRIMSTONE_BRICKS_SLAB.get(),
                 EBONSTONE_BRICKS_SLAB.get(),
                 PEARLSTONE_BRICKS_SLAB.get(),
-                DEMONITE_ORE_BRICKS_SLAB.get()
+                DEMONITE_ORE_BRICKS_SLAB.get(),
+                MOON_PLATE_SLAB.get(),
+                DISC_SLAB.get()
         );
         tag(BlockTags.WALLS).add(
                 SANDSTONE_BRICKS_WALL.get(),

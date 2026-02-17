@@ -427,6 +427,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SUN_PLATE_SLAB.get());
         dropSelf(SUN_PLATE_STAIRS.get());
         dropSelf(DISC_BLOCK.get());
+        dropSelf(DISC_SLAB.get());
+        dropSelf(DISC_STAIRS.get());
+        dropSelf(MOON_PLATE.get());
+        dropSelf(MOON_PLATE_SLAB.get());
+        dropSelf(MOON_PLATE_STAIRS.get());
         dropSelf(OBSIDIAN_BRICKS.get());
         dropSelf(OBSIDIAN_BRICKS_SLAB.get());
         dropSelf(OBSIDIAN_BRICKS_STAIRS.get());

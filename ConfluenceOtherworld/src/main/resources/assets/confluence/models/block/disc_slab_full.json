@@ -1,0 +1,9 @@
+{
+"parent":"block/cube_bottom_top",
+"textures":{
+"bottom":"confluence:block/disc_block",
+"top":"confluence:block/disc_block",
+"side":"confluence:block/disc_block"
+},
+"render_type":"solid"
+}

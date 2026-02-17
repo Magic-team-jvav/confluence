@@ -1,0 +1,8 @@
+{
+"parent":"minecraft:block/outer_stairs",
+"textures":{
+"bottom":"confluence:block/moon_plate",
+"side":"confluence:block/moon_plate",
+"top":"confluence:block/moon_plate"
+}
+}

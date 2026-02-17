@@ -217,7 +217,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, MaterialItems.JADE, MaterialItems.SAPPHIRE);
         item(recipeOutput, MaterialItems.RUBY, MaterialItems.JADE);
         item(recipeOutput, Items.DIAMOND, MaterialItems.RUBY);
-        item(recipeOutput, "cobblestone_from_amethyst", addItem(MaterialItems.AMETHYST, Items.COBBLESTONE));
+        item(recipeOutput, "clay_from_amethyst", addItem(MaterialItems.AMETHYST, Items.CLAY));
         // 锭到矿的转化
         item(recipeOutput, "raw_chlorophyte_from_ingot", addItem(Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_CHLOROPHYTE.get().asItem(), 5)),1));
         item(recipeOutput, "raw_titanium_from_ingot", addItem(Ingredient.of(MaterialItems.TITANIUM_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_TITANIUM.get().asItem(), 4)),1));
@@ -238,7 +238,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "raw_lead_from_ingot", addItem(ModTags.Items.INGOTS_LEAD, MaterialItems.RAW_LEAD.get(), 1));
         item(recipeOutput, "raw_tin_from_ingot", addItem(ModTags.Items.INGOTS_TIN, MaterialItems.RAW_TIN.get(), 1));
         item(recipeOutput, "raw_copper_from_ingot", addItem(Items.COPPER_INGOT, Items.RAW_COPPER));
-        item(recipeOutput, "cobblestone_from_raw_copper", addItem(Items.RAW_COPPER, Items.COBBLESTONE));
+        item(recipeOutput, "clay_from_raw_copper", addItem(Items.RAW_COPPER, Items.CLAY));
+        item(recipeOutput, Items.CLAY, Items.COBBLESTONE);
         item(recipeOutput, Items.COBBLESTONE, Items.DIRT);
         // 矿的下级转化（陨石，魔矿，猩红矿不参与这一过程）
         item(recipeOutput, MaterialItems.RAW_LUMINITE, MaterialItems.RAW_CHLOROPHYTE);
@@ -294,6 +295,9 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "jungle_hive_from_crispy_honey_block", addItem(DecorativeBlocks.CRISPY_HONEY_BLOCK,NatureBlocks.JUNGLE_HIVE_BLOCK));
         item(recipeOutput, Blocks.PUMPKIN, Blocks.CACTUS);
         item(recipeOutput, Blocks.CACTUS, Blocks.PUMPKIN);
+        item(recipeOutput, Blocks.SNOW_BLOCK, NatureBlocks.AETHERIUM_BLOCK);
+        item(recipeOutput, DecorativeBlocks.SUN_PLATE, DecorativeBlocks.MOON_PLATE);
+        item(recipeOutput, DecorativeBlocks.MOON_PLATE, DecorativeBlocks.SUN_PLATE);
         item(recipeOutput, "acacia_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.ACACIA_LOG));
         item(recipeOutput, "birch_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.BIRCH_LOG));
         item(recipeOutput, "cherry_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.CHERRY_LOG));
@@ -306,6 +310,16 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
 
         item(recipeOutput, "bottomless_shimmer_bucket", addItem(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), GamePhase.MOON_LORD));
         item(recipeOutput, "bottomless_water_bucket", addItem(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), ToolItems.BOTTOMLESS_WATER_BUCKET.get(), GamePhase.MOON_LORD));
+
+        item(recipeOutput, ModItems.JUNGLE_GRASS_SEED, ModItems.MUSHROOM_GRASS_SEED);
+        item(recipeOutput, ModItems.MUSHROOM_GRASS_SEED, ModItems.JUNGLE_GRASS_SEED);
+        item(recipeOutput, Blocks.CHERRY_SAPLING, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING);
+        item(recipeOutput, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING,Blocks.CHERRY_SAPLING);
+        item(recipeOutput, "helium_moss_from_lava_moss", addItem(NatureBlocks.LAVA_MOSS, NatureBlocks.HELIUM_MOSS));
+        item(recipeOutput, "helium_moss_from_krypton_moss", addItem(NatureBlocks.KRYPTON_MOSS, NatureBlocks.HELIUM_MOSS));
+        item(recipeOutput, "helium_moss_from_xenon_moss", addItem( NatureBlocks.XENON_MOSS, NatureBlocks.HELIUM_MOSS));
+        item(recipeOutput, "helium_moss_from_argon_moss", addItem(NatureBlocks.ARGON_MOSS, NatureBlocks.HELIUM_MOSS));
+        item(recipeOutput, "helium_moss_from_neon_moss", addItem( NatureBlocks.NEON_MOSS, NatureBlocks.HELIUM_MOSS));
     }
 
 

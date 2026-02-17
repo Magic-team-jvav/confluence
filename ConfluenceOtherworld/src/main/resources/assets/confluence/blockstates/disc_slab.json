@@ -1,0 +1,13 @@
+{
+"variants":{
+"type=bottom":{
+"model":"confluence:block/disc_slab"
+},
+"type=top":{
+"model":"confluence:block/disc_slab_top"
+},
+"type=double":{
+"model":"confluence:block/disc_slab_full"
+}
+}
+}

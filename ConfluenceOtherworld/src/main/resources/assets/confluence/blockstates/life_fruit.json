@@ -1,0 +1,51 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/life_fruit_0"
+            },
+            {
+                "model": "confluence:block/life_fruit_1"
+            },
+            {
+                "model": "confluence:block/life_fruit_2"
+            },
+            {
+                "model": "confluence:block/life_fruit_0",
+                "y": 90
+            },
+            {
+                "model": "confluence:block/life_fruit_1",
+                "y": 90
+            },
+            {
+                "model": "confluence:block/life_fruit_2",
+                "y": 90
+            },
+            {
+                "model": "confluence:block/life_fruit_0",
+                "y": 180
+            },
+            {
+                "model": "confluence:block/life_fruit_1",
+                "y": 180
+            },
+            {
+                "model": "confluence:block/life_fruit_2",
+                "y": 180
+            },
+            {
+                "model": "confluence:block/life_fruit_0",
+                "y": 270
+            },
+            {
+                "model": "confluence:block/life_fruit_1",
+                "y": 270
+            },
+            {
+                "model": "confluence:block/life_fruit_2",
+                "y": 270
+            }
+        ]
+    }
+}

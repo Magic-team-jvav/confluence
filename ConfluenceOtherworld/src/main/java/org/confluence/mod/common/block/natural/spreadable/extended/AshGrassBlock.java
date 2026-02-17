@@ -19,12 +19,12 @@ public class AshGrassBlock extends SpreadingGrassBlock {
     }
 
     @Override
-    public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-        if (!serverLevel.isAreaLoaded(blockPos, 3)) return;
-        if (isFullBlock(serverLevel, blockPos.above())) {
-            serverLevel.setBlockAndUpdate(blockPos, NatureBlocks.ASH_BLOCK.get().defaultBlockState());
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!level.isAreaLoaded(pos, 3)) return;
+        if (isFullBlock(level, pos.above())) {
+            level.setBlockAndUpdate(pos, NatureBlocks.ASH_BLOCK.get().defaultBlockState());
         } else {
-            super.randomTick(blockState, serverLevel, blockPos, randomSource);
+            super.randomTick(state, level, pos, random);
         }
     }
 

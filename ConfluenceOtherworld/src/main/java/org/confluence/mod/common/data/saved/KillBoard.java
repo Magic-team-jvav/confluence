@@ -57,6 +57,12 @@ public final class KillBoard implements IGlobalData {
         return false;
     }
 
+    public boolean isAnyMechBossDefeated() {
+        return isDefeated(TEBossEntities.THE_TWINS.get()) ||
+                isDefeated(TEBossEntities.THE_DESTROYER.get()) ||
+                isDefeated(TEBossEntities.SKELETRON_PRIME.get());
+    }
+
     public int countDefeated(EntityType<?>... entityTypes) {
         int count = 0;
         for (EntityType<?> entityType : entityTypes) {

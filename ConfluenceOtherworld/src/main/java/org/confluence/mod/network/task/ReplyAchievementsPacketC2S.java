@@ -30,7 +30,6 @@ public record ReplyAchievementsPacketC2S(
 
     @Override
     public void handle(IPayloadContext context) {
-        Confluence.LOGGER.info("ReplyAchievementsPacketC2S received {}, {}", uuid, data);
         Attribute<Map<UUID, PlayerAdvancements.Data>> attr = context.channelHandlerContext().attr(ACHIEVEMENTS);
         Map<UUID, PlayerAdvancements.Data> map = attr.get();
         if (map == null) {

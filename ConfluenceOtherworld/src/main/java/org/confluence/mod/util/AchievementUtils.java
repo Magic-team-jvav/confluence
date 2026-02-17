@@ -113,14 +113,11 @@ public final class AchievementUtils {
 
     public static void setData(ServerPlayer player) {
         Map<UUID, PlayerAdvancements.Data> map = player.connection.getConnection().channel().attr(ReplyAchievementsPacketC2S.ACHIEVEMENTS).get();
-        Confluence.LOGGER.info("setData {}", map);
         if (map == null) return;
         UUID id = player.getGameProfile().getId();
         PlayerAdvancements.Data data = map.get(id);
-        Confluence.LOGGER.info("{} get {}", id, data);
         if (data == null) return;
         IPlayerAdvancements.of(player.getAdvancements()).confluence$load(player.server.getAdvancements(), data);
-        Confluence.LOGGER.info("{} load", id);
     }
 
     public static void handleData(PlayerAdvancements.Data data, boolean override) {

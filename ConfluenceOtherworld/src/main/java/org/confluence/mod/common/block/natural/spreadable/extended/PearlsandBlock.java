@@ -14,8 +14,8 @@ public class PearlsandBlock extends SpreadingSandBlock {
     }
 
     @Override
-    public void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-        super.spread(blockState, serverLevel, blockPos, randomSource);
-        generateCrystal(serverLevel, blockPos, randomSource);
+    public void spread(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource randomSource) {
+        super.spread(blockState, level, blockPos, randomSource);
+        generateCrystal(level, blockPos, randomSource);
     }
 }

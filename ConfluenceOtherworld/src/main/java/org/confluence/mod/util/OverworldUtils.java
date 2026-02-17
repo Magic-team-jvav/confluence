@@ -61,9 +61,9 @@ public final class OverworldUtils {
     ) {
         Holder<Biome> replaced = cir.getReturnValue();
         if (replaced == null) return;
-        if (notTheBees.isDefault()
-                ? (notTheBees = ModSecretSeeds.NOT_THE_BEES.match() ? TriState.TRUE : TriState.FALSE).isTrue()
-                : notTheBees.isTrue()
+        if ((notTheBees.isDefault()
+                ? (notTheBees = ModSecretSeeds.NOT_THE_BEES.match() ? TriState.TRUE : TriState.FALSE)
+                : notTheBees).isTrue()
         ) {
             List<Holder<Biome>> jungle = jungleGetter.get();
             if (!jungle.isEmpty()) {

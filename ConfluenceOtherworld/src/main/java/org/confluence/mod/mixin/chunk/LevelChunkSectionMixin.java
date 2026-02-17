@@ -6,6 +6,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainerRO;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.util.BlockCounts;
 import org.spongepowered.asm.mixin.Mixin;
@@ -61,6 +62,10 @@ public abstract class LevelChunkSectionMixin implements ILevelChunkSection {
 
     @Inject(method = "read", at = @At("RETURN"))
     private void read(FriendlyByteBuf buffer, CallbackInfo ci) {
-        recalcBlockCounts();
+        try {
+            recalcBlockCounts();
+        } catch (Exception e) {
+            Confluence.LOGGER.warn("Failed to recalc block counts");
+        }
     }
 }

@@ -51,7 +51,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
     }
 
     public boolean increaseFruits() {
-        if (!isLifeFruitsMaximum()) {
+        if (isLifeCrystalsMaximum() && !isLifeFruitsMaximum()) {
             this.lifeFruits++;
             return true;
         }

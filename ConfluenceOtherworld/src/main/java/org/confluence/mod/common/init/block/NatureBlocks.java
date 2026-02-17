@@ -53,7 +53,7 @@ public class NatureBlocks {
     public static final DeferredBlock<AetheriumBlock> AETHERIUM_BLOCK = registerWithItem("aetherium_block", () -> new AetheriumBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(MapColor.COLOR_PINK).lightLevel(blockState -> 10)));
     public static final DeferredBlock<Block> DARK_AETHERIUM_BLOCK = registerWithItem("dark_aetherium_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(MapColor.COLOR_GRAY)));
 
-    //香蒲
+    // 香蒲
     public static final DeferredBlock<CattailBlock> CATTAIL_BLOCK = registerWithoutItem("cattail_block", () -> new CattailBlock(BlockBehaviour.Properties.of().sound(SoundType.GRASS).mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
     public static final DeferredBlock<CattailBlock> JUNGLE_CATTAIL_BLOCK = registerWithoutItem("jungle_cattail_block", () -> new CattailBlock(BlockBehaviour.Properties.of().sound(SoundType.GRASS).mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
     public static final DeferredBlock<CattailBlock> GLOWING_MUSHROOM_CATTAIL_BLOCK = registerWithoutItem("glowing_mushroom_cattail_block", () -> new CattailBlock(BlockBehaviour.Properties.of().sound(SoundType.GRASS).mapColor(MapColor.WATER).instabreak().noCollission().randomTicks().pushReaction(PushReaction.DESTROY)));
@@ -156,8 +156,7 @@ public class NatureBlocks {
     public static final DeferredBlock<GlowingMushroomPileusBlock> LIFE_MUSHROOM_PILEUS_BLOCK = registerWithItem("life_mushroom_pileus_block", () -> new GlowingMushroomPileusBlock(0, BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
 
 
-    public static final DeferredBlock<Block> HANGING_MYCELIUM = registerWithItem("hanging_mycelium", () -> new HangingMyceliumBlock(
-            BlockBehaviour.Properties.of()
+    public static final DeferredBlock<Block> HANGING_MYCELIUM = registerWithItem("hanging_mycelium", () -> new HangingMyceliumBlock(BlockBehaviour.Properties.of()
             .mapColor(MapColor.DIRT)
             .replaceable()
             .noCollission()
@@ -207,6 +206,7 @@ public class NatureBlocks {
     public static final DeferredBlock<JungleHiveBlock> JUNGLE_HIVE_BLOCK = registerWithItem("jungle_hive_block", JungleHiveBlock::new);
     public static final DeferredBlock<NaturesGiftBlock> JUNGLE_ROSE = registerWithItem("jungle_rose", () -> new NaturesGiftBlock(NaturesGiftBlock.BlockItemType.JUNGLE_ROSE));
     public static final DeferredBlock<LarvaBlock> LARVA = registerWithItem("larva", () -> new LarvaBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).noOcclusion().replaceable().instabreak()));
+    public static final DeferredBlock<LifeFruitBlock> LIFE_FRUIT = registerWithoutItem("life_fruit", LifeFruitBlock::new);
 
     public static final DeferredBlock<MudPathBlock> JUNGLE_PATH = registerWithItem("jungle_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
     public static final DeferredBlock<MudPathBlock> MUSHROOM_PATH = registerWithItem("mushroom_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
@@ -281,7 +281,7 @@ public class NatureBlocks {
 
     public static final DeferredBlock<ShimmerDroopingVinesBlock> SHIMMER_DROOPING_VINE = registerWithoutItem("shimmer_drooping_vine", () -> new ShimmerDroopingVinesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES)));
     public static final DeferredBlock<ShimmerDroopingVinesPlantBlock> SHIMMER_DROOPING_VINE_PLANT = registerWithoutItem("shimmer_drooping_vine_plant", () -> new ShimmerDroopingVinesPlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES_PLANT)));
-    public static final DeferredBlock<ShimmerRiceBlock> SHIMMER_RICE =  registerWithItem("shimmer_rice", () -> new ShimmerRiceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
+    public static final DeferredBlock<ShimmerRiceBlock> SHIMMER_RICE = registerWithItem("shimmer_rice", () -> new ShimmerRiceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
 
     public static final DeferredBlock<BlinkingRoyalShimmerlilyBlock> BLINKING_ROYAL_SHIMMERLILY = registerWithItem("blinking_royal_shimmerlily", () -> new BlinkingRoyalShimmerlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), block -> new PlaceOnWaterBlockItem(block, new Item.Properties()));
 

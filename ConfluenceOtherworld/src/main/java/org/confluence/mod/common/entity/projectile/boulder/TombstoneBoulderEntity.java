@@ -4,6 +4,7 @@ import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -42,14 +43,14 @@ public class TombstoneBoulderEntity extends BoulderEntity {
     }
 
     @Override
-    public void onRemove() {
-        if (!level().isClientSide && level().getBlockState(blockPosition()).canBeReplaced()) {
-            level().setBlock(blockPosition(), getBlockState(), Block.UPDATE_ALL);
-            if (level().getBlockEntity(blockPosition()) instanceof TombstoneBlock.BEntity entity) {
-                entity.setText(text, true);
-            }
+    protected void removeEffect(ServerLevel serverLevel) {
+        if (!serverLevel.getBlockState(blockPosition()).canBeReplaced()) {
+            return;
         }
-        discard();
+        serverLevel.setBlock(blockPosition(), getBlockState(), Block.UPDATE_ALL);
+        if (serverLevel.getBlockEntity(blockPosition()) instanceof TombstoneBlock.BEntity entity) {
+            entity.setText(text, true);
+        }
     }
 
     @Override

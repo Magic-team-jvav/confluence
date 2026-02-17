@@ -11,7 +11,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -22,7 +21,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -81,13 +79,25 @@ public class BoulderEntity extends Projectile {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        BlockPos pos = blockPosition();
-        serverLevel.sendParticles(
-                new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState()).setPos(pos),
-                getX(), getY() + 0.5, getZ(), 175, 0.0, 0.0, 0.0, 0.15
-        );
-        serverLevel.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 5.0F, 1.0F);
+        removeEffect(serverLevel);
+        BlockPos blockPos = blockPosition();
+        sendRemoveParticle(serverLevel, blockPos);
+        playRemoveSound(serverLevel, blockPos);
         discard();
+    }
+
+    /**
+     * 移除前触发的效果
+     */
+    protected void removeEffect(ServerLevel serverLevel) {
+    }
+
+    protected void sendRemoveParticle(ServerLevel serverLevel, BlockPos pos) {
+        serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, getBlockState()).setPos(pos), getX(), getY() + radius, getZ(), 175, 0.0, 0.0, 0.0, 0.15);
+    }
+
+    protected void playRemoveSound(ServerLevel serverLevel, BlockPos pos) {
+        serverLevel.playSound(null, pos, getBlockState().getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0F, 1.0F);
     }
 
     @Override
@@ -142,7 +152,6 @@ public class BoulderEntity extends Projectile {
     protected void moveAndUpdateNeighbors() {
         Vec3 deltaMovement = getDeltaMovement();
         setYRot((float) (Mth.atan2(deltaMovement.x, deltaMovement.z) * Mth.RAD_TO_DEG));
-        move();
         applyGravity();
 
         deltaMovement = getDeltaMovement();
@@ -156,9 +165,6 @@ public class BoulderEntity extends Projectile {
         if (motion.x != deltaMovement.x || motion.y != deltaMovement.y || motion.z != deltaMovement.z) {
             updateNeighbors();
         }
-    }
-
-    protected void move() {
     }
 
     protected static double horizontalVectorLength(Vec3 deltaMovement) {
@@ -189,6 +195,13 @@ public class BoulderEntity extends Projectile {
         } else {
             horizontalHitBlock(blockHitResult, direction);
         }
+        if (level() instanceof ServerLevel serverLevel) {
+            playHitBlockSound(serverLevel);
+        }
+    }
+
+    protected void playHitBlockSound(ServerLevel serverLevel) {
+        serverLevel.playSound(null, blockPosition(), getBlockState().getSoundType().getFallSound(), SoundSource.BLOCKS, 5.0F, 1.0F);
     }
 
     protected void horizontalHitBlock(BlockHitResult blockHitResult, Direction direction) {

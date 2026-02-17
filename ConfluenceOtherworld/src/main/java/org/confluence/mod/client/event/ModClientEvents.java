@@ -310,6 +310,12 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ROLLING_CACTUS_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(ROLLING_CACTUS_SPIKE.get(), RollingCactusSpikeRenderer::new);
         event.registerEntityRenderer(TOMBSTONE_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(BOUNCY_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(GHOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(LAVA_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(POO_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(SPIDER_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(RAINBOW_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(BOULDER_3X.get(), BoulderRenderer::new);
         event.registerEntityRenderer(THROWN_KNIVE_PROJECTILE.get(), ThrownKniveProjectileRenderer::new);
         event.registerEntityRenderer(BONE_THROWN_KNIVE_PROJECTILE.get(), BoneThrownKniveProjectileRenderer::new);

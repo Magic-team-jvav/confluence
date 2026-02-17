@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -42,5 +43,14 @@ public class ExplodeBoulderEntity extends BoulderEntity {
 
     protected void explode(Level level, double pos, double pos1, double pos2) {
         level.explode(this, pos, pos1, pos2, 2.85F, true, Level.ExplosionInteraction.TNT);
+    }
+
+    protected void explode(Level level, Vec3 pos) {
+        explode(level, pos.x, pos.y, pos.z);
+    }
+
+    @Override
+    protected void removeEffect(ServerLevel serverLevel) {
+        explode(this.level(), position());
     }
 }

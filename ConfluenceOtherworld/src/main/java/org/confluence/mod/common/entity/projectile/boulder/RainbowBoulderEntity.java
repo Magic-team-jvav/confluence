@@ -6,13 +6,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
 
-// TODO 弹力
-public class BouncyBoulderEntity extends BoulderEntity {
-    public BouncyBoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
+// TODO 彩虹
+public class RainbowBoulderEntity extends BoulderEntity {
+    public RainbowBoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public BouncyBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
-        super(ModEntities.BOUNCY_BOULDER.get(), level, pos, blockState);
+    public RainbowBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
+        super(ModEntities.RAINBOW_BOULDER.get(), level, pos, blockState);
     }
 }

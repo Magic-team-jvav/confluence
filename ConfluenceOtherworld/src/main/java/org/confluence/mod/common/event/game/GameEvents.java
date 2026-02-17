@@ -63,7 +63,9 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class GameEvents {
@@ -147,16 +149,8 @@ public final class GameEvents {
         boolean corrupt = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
         boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
         if (corrupt == crimson) return;
-        List<ItemStack> targets = new ArrayList<>();
-        for (ItemStack targetStack : event.getTargets()) {
-            Item target = RegisterEvilMaterialReplacesEvent.getPossible(targetStack.getItem(), corrupt, crimson);
-            if (target == null) {
-                targets.add(targetStack);
-            } else {
-                targets.add(new ItemStack(target, targetStack.getCount()));
-            }
-        }
-        event.setTargets(targets);
+
+        event.setTargets(RegisterEvilMaterialReplacesEvent.replaceTargets(event.getTargets(), corrupt, crimson));
     }
 
     @SubscribeEvent

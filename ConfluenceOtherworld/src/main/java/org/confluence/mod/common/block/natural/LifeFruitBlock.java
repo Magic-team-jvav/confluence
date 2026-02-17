@@ -3,17 +3,19 @@ package org.confluence.mod.common.block.natural;
 import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -27,13 +29,28 @@ public class LifeFruitBlock extends Block {
     }
 
     @Override
-    protected void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
-        level.destroyBlock(hit.getBlockPos(), true, LibUtils.getOwner(projectile.getOwner()));
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if (entity instanceof Projectile) {
+            level.destroyBlock(pos, true, LibUtils.getOwner(entity));
+        }
     }
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return level.getBlockState(pos.below()).is(NatureBlocks.JUNGLE_GRASS_BLOCK);
+    }
+
+    @Override
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        if (!state.canSurvive(level, pos)) level.scheduleTick(pos, this, 1);
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    }
+
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!state.canSurvive(level, pos)) {
+            level.destroyBlock(pos, true);
+        }
     }
 
     /// [生命果](https://terraria.wiki.gg/zh/wiki/%E7%94%9F%E5%91%BD%E6%9E%9C)

@@ -46,6 +46,7 @@ import java.util.*;
 import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLOCK;
+import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_FRUIT;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
 import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock;
@@ -271,6 +272,10 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
         // 生命水晶
         putWithSpecialIconTarget(LIFE_CRYSTAL_BLOCK.get(), 0xec173e, true, ShowType.SPELUNKER, "life_crystal");
+
+        // 生命果
+        putWithSpecialIconTarget(LIFE_FRUIT.get(), 0xe8c314, true, ShowType.SPELUNKER, "life_fruit");
+
         // 箱子
         for (DeferredBlock<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
             putTargetWithItemRender(normalChest.get(), 0xe8c314, true, ShowType.SPELUNKER, Items.CHEST);

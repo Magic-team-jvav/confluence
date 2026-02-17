@@ -12,14 +12,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.MobEffectInstanceData;
 
 import java.util.function.Function;
 
 public class ContactEffectBoulderBlock extends BoulderBlock {
-    protected static final VoxelShape COLLISION_SHAPE = Block.box(0.5, 0.5, 0.5, 15.5, 15.5, 15.5);
-    protected static final VoxelShape OUTLINE_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
+    private static final VoxelShape SHAPE = Shapes.or(
+            box(1.9, -0.1, 1.9, 14.1, 16.1, 14.1),
+            box(-0.1, 1.9, 1.9, 16.1, 14.1, 14.1),
+            box(1.9, 1.9, -0.1, 14.1, 14.1, 16.1));
+
 
     protected final ContactEffect contactEffect;
 
@@ -38,13 +42,8 @@ public class ContactEffectBoulderBlock extends BoulderBlock {
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return COLLISION_SHAPE;
-    }
-
-    @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return OUTLINE_SHAPE;
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @FunctionalInterface

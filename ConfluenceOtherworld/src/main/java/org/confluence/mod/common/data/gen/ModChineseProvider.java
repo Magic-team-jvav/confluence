@@ -1320,6 +1320,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.BOULDER.get(), "巨石");
         add(ModEntities.FOLLOWER_BOULDER.get(), "跟踪巨石");
         add(ModEntities.EXPLODE_BOULDER.get(), "爆炸巨石");
+        add(ModEntities.BOUNCY_BOULDER.get(), "弹力巨石");
+        add(ModEntities.POO_BOULDER.get(), "臭臭巨石");
+        add(ModEntities.SPIDER_BOULDER.get(), "蜘蛛巨石");
+        add(ModEntities.LAVA_BOULDER.get(), "熔岩巨石");
         add(ModEntities.ROLLING_CACTUS_BOULDER.get(), "仙人球");
         add(ModEntities.ROLLING_CACTUS_SPIKE.get(), "仙人球尖刺");
         add(ModEntities.TOMBSTONE_BOULDER.get(), "墓石巨石");
@@ -1767,6 +1771,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SNOW_CLOUD_BLOCK.get(), "雪云块");
         add(NatureBlocks.THIN_ICE_BLOCK.get(), "薄冰块");
         add(NatureBlocks.LIFE_CRYSTAL_BLOCK.get(), "生命水晶");
+        add(NatureBlocks.LIFE_FRUIT.get(), "生命果");
         add(NatureBlocks.JUNGLE_HIVE_BLOCK.get(), "丛林蜂巢");
         add(NatureBlocks.THIN_HONEY_BLOCK.get(), "稀薄蜂蜜块");
         add(NatureBlocks.LOOSE_HONEY_BLOCK.get(), "松散蜂蜜块");
@@ -2905,6 +2910,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.OAK_LOG_BOULDER.get(), "橡木原木巨石");
         add(FunctionalBlocks.FOLLOWER_BOULDER.get(), "跟踪巨石");
         add(FunctionalBlocks.EXPLODE_BOULDER.get(), "爆炸巨石");
+        add(FunctionalBlocks.BOUNCY_BOULDER.get(), "弹力巨石");
+        add(FunctionalBlocks.POO_BOULDER.get(), "臭臭巨石");
+        add(FunctionalBlocks.SPIDER_BOULDER.get(), "蜘蛛巨石");
+        add(FunctionalBlocks.LAVA_BOULDER.get(), "熔岩巨石");
+        add(FunctionalBlocks.RAINBOW_BOULDER.get(), "彩虹巨石");
+        add(FunctionalBlocks.GHOULDER.get(), "鬼石");
         add(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get(), "瞬爆TNT");
         add(FunctionalBlocks.SWITCH.get(), "开关");
         add(FunctionalBlocks.SIGNAL_ADAPTER.get(), "信号适配器");

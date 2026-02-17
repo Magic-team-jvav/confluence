@@ -11,6 +11,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
@@ -20,6 +23,10 @@ import java.util.function.Function;
 
 public class BoulderBlock extends AbstractMechanicalBlock {
     private final BoulderFactory factory;
+    private static final VoxelShape SHAPE = Shapes.or(
+            box(1.9, -0.1, 1.9, 14.1, 16.1, 14.1),
+            box(-0.1, 1.9, 1.9, 16.1, 14.1, 14.1),
+            box(1.9, 1.9, -0.1, 14.1, 14.1, 16.1));
 
     public BoulderBlock() {
         this(BoulderEntity::new);
@@ -80,6 +87,10 @@ public class BoulderBlock extends AbstractMechanicalBlock {
         level.addFreshEntity(entity);
     }
 
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
     @FunctionalInterface
     public interface BoulderFactory {
         BoulderEntity create(Level level, Vec3 position, BlockState blockState);

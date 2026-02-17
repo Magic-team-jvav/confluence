@@ -1387,6 +1387,11 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shapeless(recipeOutput, ModItems.SCRYING_ORB.toStack(), Ingredient.of(TCItems.MAGIC_MIRROR,ToolItems.ICE_MIRROR), AmountIngredient.of(2, MaterialItems.LENS), AmountIngredient.of(4, PotionItems.WORMHOLE_POTION));
 
 
+        shapeless(recipeOutput, FunctionalBlocks.BOUNCY_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), AmountIngredient.of(5, MaterialItems.PINK_GEL));
+        shapeless(recipeOutput, FunctionalBlocks.LAVA_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER),  Ingredient.of(ConsumableItems.LAVA_BOMB));
+        shapeless(recipeOutput, FunctionalBlocks.SPIDER_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), AmountIngredient.of(200, Items.COBWEB));
+
+
         shapeless(recipeOutput, ConsumableItems.ABEEMINATION.toStack(), AmountIngredient.of(5, NatureBlocks.JUNGLE_HIVE_BLOCK), AmountIngredient.of(5, Items.HONEY_BLOCK), Ingredient.of(Items.HONEY_BOTTLE), Ingredient.of(MaterialItems.STINGER));
     }
 

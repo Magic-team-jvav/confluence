@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.food;
+package org.confluence.mod.common.block.food;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

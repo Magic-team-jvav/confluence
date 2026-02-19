@@ -32,13 +32,13 @@ public class TombstoneBoulderEntity extends BoulderEntity {
 
     public TombstoneBoulderEntity(EntityType<TombstoneBoulderEntity> entityType, Level pLevel) {
         super(entityType, pLevel);
-        this.minimumBreakSpeed = 0.1;
+        this.minRemoveSpeed = 0.1;
         this.speed = 0.2;
     }
 
     public TombstoneBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
         super(ModEntities.TOMBSTONE_BOULDER.get(), level, pos, blockState);
-        this.minimumBreakSpeed = 0.1;
+        this.minRemoveSpeed = 0.1;
         this.speed = 0.2;
     }
 

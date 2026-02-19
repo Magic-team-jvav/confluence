@@ -18,13 +18,13 @@ import org.confluence.mod.common.init.ModEntities;
 public class RollingCactusBoulderEntity extends BoulderEntity {
     public RollingCactusBoulderEntity(EntityType<? extends BoulderEntity> entityType, Level pLevel) {
         super(entityType, pLevel);
-        this.minimumBreakSpeed = 0.05;
+        this.minRemoveSpeed = 0.05;
         this.speed = 0.3;
     }
 
     public RollingCactusBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
         super(ModEntities.ROLLING_CACTUS_BOULDER.get(), level, pos, blockState);
-        this.minimumBreakSpeed = 0.05;
+        this.minRemoveSpeed = 0.05;
         this.speed = 0.3;
     }
 

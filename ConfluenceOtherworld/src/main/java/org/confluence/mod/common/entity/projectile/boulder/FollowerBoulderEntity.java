@@ -1,8 +1,8 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FollowerBoulderEntity extends BoulderEntity {
     private int tick;
-    private Player target;
+    private Entity target;
 
     public FollowerBoulderEntity(EntityType<FollowerBoulderEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -45,9 +45,9 @@ public class FollowerBoulderEntity extends BoulderEntity {
     }
 
     @Override
-    public void targetTo(@Nullable Player player) {
-        if (player != null){
-            target = player;
+    public void targetTo(@Nullable Entity entity) {
+        if (entity != null) {
+            target = entity;
         }
     }
 }

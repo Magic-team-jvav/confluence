@@ -27,6 +27,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
@@ -63,6 +64,8 @@ public class BoulderEntity extends Projectile {
     public int maxStillTick = 20; // 最大静止时间
     public double speed = 0.7; // 速度
     public double minRemoveSpeed = 0.007; // 最小移除速度
+    public double bounceFactor = 0.3;
+    public double frictionFactor = 0.9;
 
     protected int stillTickCount; // 静止刻计时
 
@@ -263,13 +266,10 @@ public class BoulderEntity extends Projectile {
 
     protected void verticalHitRebound(BlockHitResult blockHitResult, Direction direction) {
         if (fallDistance > 5) {
-            Vec3 directionVec3 = Vec3.atLowerCornerOf(direction.getNormal());
-            Vec3 deltaMovementVec3 = getDeltaMovement();
-            double dot = deltaMovementVec3.dot(directionVec3);
-            double x = -(1 + 0.9) * dot * directionVec3.x;
-            double y = Math.max(0.3, -(1 + 0.1) * dot * directionVec3.y);
-            double z = -(1 + 0.9) * dot * directionVec3.z;
-            setDeltaMovement(deltaMovementVec3.add(x, y, z));
+            Vec3 motion = VectorUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
+            if (Math.abs(motion.y) < 0.03) motion = new Vec3(motion.x, 0.0, motion.z);
+            setDeltaMovement(motion.scale(frictionFactor));
+            super.onHitBlock(blockHitResult);
             fallDistance = 0;
         }
     }

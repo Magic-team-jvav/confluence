@@ -5,10 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Lifecycle;
-import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
-import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
@@ -21,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -42,6 +40,7 @@ import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
+import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -67,17 +66,21 @@ import org.confluence.terraentity.entity.npc.TravelingMerchantNPC;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /// 注：NPC默认生成在对应玩家出生点
 public final class NPCSpawner implements IGlobalData {
     public static final NPCSpawner INSTANCE = new NPCSpawner();
+    public static final int CURRENT_VERSION = 1;
     public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC = new Codec<>() {
         @Override
         public <T> DataResult<Pair<Map<Region, Object2BooleanMap<EntityType<?>>>, T>> decode(DynamicOps<T> ops, T input) {
             Map<Region, Object2BooleanMap<EntityType<?>>> map = new HashMap<>();
-            ops.getMap(input).getOrThrow().entries().forEach(pair -> {
+            ops.getMap(input).ifSuccess(map2 -> map2.entries().forEach(pair -> {
                 Region region = new Region(new ChunkPos(Long.parseLong(ops.getStringValue(pair.getFirst()).getOrThrow())));
                 Object2BooleanMap<EntityType<?>> map1 = new Object2BooleanOpenHashMap<>();
                 ops.getMap(pair.getSecond()).getOrThrow().entries().forEach(pair1 -> {
@@ -86,7 +89,7 @@ public final class NPCSpawner implements IGlobalData {
                     map1.put(entityType, spawned);
                 });
                 map.put(region, map1);
-            });
+            }));
             return DataResult.success(new Pair<>(map, input), Lifecycle.stable());
         }
 
@@ -103,7 +106,12 @@ public final class NPCSpawner implements IGlobalData {
             })), Lifecycle.stable());
         }
     };
-    public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf().xmap(HashSet::new, ArrayList::new);
+    public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC_V1 = LibCodecUtils.notStringKeyMap(
+            "region", Region.CODEC,
+            "alive", ExtraCodecs.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec())
+    );
+    public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf()
+            .xmap(ObjectOpenHashSet::new, ObjectArrayList::new);
 
     private Map<Region, Object2BooleanMap<EntityType<?>>> npcAlive = new Object2ObjectOpenHashMap<>();
     /// 生成过的NPC，可用于NPC复活而无需再次满足条件
@@ -232,17 +240,29 @@ public final class NPCSpawner implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_alive"))
-                .ifSuccess(result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
-        NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_spawned"))
-                .ifSuccess(result -> this.npcSpawned = new ObjectOpenHashSet<>(result));
-        this.isAdvancedCombatTechniquesUsed = tag.getBoolean("advanced_combat_techniques");
-        this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("advanced_combat_techniques_volume_two");
-        this.isPeddlersSatchelUsed = tag.getBoolean("peddlers_satchel");
+        int version = tag.getInt("Version");
+        if (version == 0) {
+            NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_alive"))
+                    .ifSuccess(result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
+            NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_spawned"))
+                    .ifSuccess(result -> this.npcSpawned = new ObjectOpenHashSet<>(result));
+            this.isAdvancedCombatTechniquesUsed = tag.getBoolean("advanced_combat_techniques");
+            this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("advanced_combat_techniques_volume_two");
+            this.isPeddlersSatchelUsed = tag.getBoolean("peddlers_satchel");
+        } else if (version == CURRENT_VERSION) {
+            NPC_ALIVE_CODEC_V1.parse(NbtOps.INSTANCE, tag.get("NpcAlive"))
+                    .ifSuccess(result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
+            NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcSpawned"))
+                    .ifSuccess(result -> this.npcSpawned = result);
+            this.isAdvancedCombatTechniquesUsed = tag.getBoolean("AdvancedCombatTechniquesUsed");
+            this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("AdvancedCombatTechniquesVolumeTwoUsed");
+            this.isPeddlersSatchelUsed = tag.getBoolean("PeddlersSatchelUsed");
+        }
     }
 
     @Override
     public void encode(CompoundTag tag) {
+        tag.putInt("Version", CURRENT_VERSION);
         Iterator<Map.Entry<Region, Object2BooleanMap<EntityType<?>>>> iterator = npcAlive.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Region, Object2BooleanMap<EntityType<?>>> next = iterator.next();
@@ -251,13 +271,13 @@ public final class NPCSpawner implements IGlobalData {
                 iterator.remove();
             }
         }
-        NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive)
-                .ifSuccess(nbt -> tag.put("npc_alive", nbt));
+        NPC_ALIVE_CODEC_V1.encodeStart(NbtOps.INSTANCE, npcAlive)
+                .ifSuccess(nbt -> tag.put("NpcAlive", nbt));
         NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned)
-                .ifSuccess(nbt -> tag.put("npc_spawned", nbt));
-        tag.putBoolean("advanced_combat_techniques", isAdvancedCombatTechniquesUsed);
-        tag.putBoolean("advanced_combat_techniques_volume_two", isAdvancedCombatTechniquesVolumeTwoUsed);
-        tag.putBoolean("peddlers_satchel", isPeddlersSatchelUsed);
+                .ifSuccess(nbt -> tag.put("NpcSpawned", nbt));
+        tag.putBoolean("AdvancedCombatTechniquesUsed", isAdvancedCombatTechniquesUsed);
+        tag.putBoolean("AdvancedCombatTechniquesVolumeTwoUsed", isAdvancedCombatTechniquesVolumeTwoUsed);
+        tag.putBoolean("PeddlersSatchelUsed", isPeddlersSatchelUsed);
     }
 
     @Override

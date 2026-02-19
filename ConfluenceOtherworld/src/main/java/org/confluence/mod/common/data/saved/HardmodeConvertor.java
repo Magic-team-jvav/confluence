@@ -237,8 +237,9 @@ public final class HardmodeConvertor implements IGlobalData {
                         int i = mutable.getX() - chunkPos.getMinBlockX();
                         int j = mutable.getZ() - chunkPos.getMinBlockZ();
                         BlockPosColumn column = columns[i][j];
-                        if (column == null || column == BlockPosColumn.ZERO)
+                        if (column == null || column == BlockPosColumn.ZERO) {
                             column = new BlockPosColumn(startPos.getY(), height);
+                        }
                         columns[i][j] = column.updateY(mutable.getY());
                     }
                 }

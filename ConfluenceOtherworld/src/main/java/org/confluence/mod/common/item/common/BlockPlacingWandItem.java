@@ -46,8 +46,10 @@ public class BlockPlacingWandItem extends BlockItem {
     }
 
     @Override
-    protected BlockState getPlacementState(BlockPlaceContext context) {
-        return transferTo.apply(context, super.getPlacementState(context));
+    protected @Nullable BlockState getPlacementState(BlockPlaceContext context) {
+        BlockState state = super.getPlacementState(context);
+        if (state == null) return null;
+        return transferTo.apply(context, state);
     }
 
     @Override

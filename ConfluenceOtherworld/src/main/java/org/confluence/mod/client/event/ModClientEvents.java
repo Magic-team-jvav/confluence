@@ -315,7 +315,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LAVA_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(POO_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(SPIDER_BOULDER.get(), BoulderRenderer::new);
-        event.registerEntityRenderer(RAINBOW_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(RAINBOW_BOULDER.get(), RainbowBoulderRenderer::new);
         event.registerEntityRenderer(BOULDER_3X.get(), BoulderRenderer::new);
         event.registerEntityRenderer(THROWN_KNIVE_PROJECTILE.get(), ThrownKniveProjectileRenderer::new);
         event.registerEntityRenderer(BONE_THROWN_KNIVE_PROJECTILE.get(), BoneThrownKniveProjectileRenderer::new);

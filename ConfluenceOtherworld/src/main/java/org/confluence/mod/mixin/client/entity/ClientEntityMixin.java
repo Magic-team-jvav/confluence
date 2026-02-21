@@ -7,6 +7,7 @@ import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.effect.GlowingHelper;
+import org.confluence.mod.common.entity.projectile.boulder.RainbowBoulderEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +21,12 @@ public abstract class ClientEntityMixin implements SelfGetter<Entity> {
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
     private void getTeamColor(CallbackInfoReturnable<Integer> cir) {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player == null || !player.hasEffect(ModEffects.HUNTER)) return;
+        if (player == null) return;
+        if (confluence$self() instanceof RainbowBoulderEntity rainbowBoulder) {
+            cir.setReturnValue(rainbowBoulder.getGlowingColor());
+            return;
+        }
+        if (!player.hasEffect(ModEffects.HUNTER)) return;
         GlowingHelper helper = GlowingHelper.INSTANCE;
         // 自定义狩猎药水表
         for (Map.Entry<Class<? extends Entity>, GlowingHelper.Data> entry : helper.colorMap.entrySet()) {

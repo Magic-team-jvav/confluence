@@ -2,12 +2,10 @@ package org.confluence.mod.common.entity.projectile.boulder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
@@ -22,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 // TODO 彩虹
 public class RainbowBoulderEntity extends BoulderEntity {
@@ -33,10 +30,12 @@ public class RainbowBoulderEntity extends BoulderEntity {
     private final List<Vec3> trails = new ArrayList<>();
     private List<Entity> cachedEnemies = new ArrayList<>();
     private final List<BlockPos> cachedRareBlocks = new ArrayList<>();
+    private int glowingColor;
 
     public RainbowBoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
         super(entityType, level);
     }
+
 
     public RainbowBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
         super(ModEntities.RAINBOW_BOULDER.get(), level, pos, blockState);
@@ -179,6 +178,7 @@ public class RainbowBoulderEntity extends BoulderEntity {
         } else {
             super.onHit(deltaMovement);
         }
+        updateColor();
     }
 
     @Override
@@ -247,6 +247,15 @@ public class RainbowBoulderEntity extends BoulderEntity {
                 trails.removeFirst();
             }
         }
+    }
+
+    private void updateColor() {
+        float hue = (this.tickCount % 360) / 360.0f;
+        this.glowingColor = Mth.hsvToRgb(hue, 1.0f, 1.0f);
+    }
+
+    public int getGlowingColor() {
+        return glowingColor;
     }
 
     public List<Vec3> getTrails() {

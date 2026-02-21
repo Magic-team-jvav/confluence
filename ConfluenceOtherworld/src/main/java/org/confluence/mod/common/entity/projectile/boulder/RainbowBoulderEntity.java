@@ -124,7 +124,7 @@ public class RainbowBoulderEntity extends BoulderEntity {
         }
 
         if (protectedPlayer != null && target == null) {
-            if (tickCount % 20 == 0) {
+            if (tickCount % 100 == 0) {
                 AABB area = new AABB(protectedPlayer.blockPosition()).inflate(64);
                 cachedEnemies = level().getEntities((Entity) null, area, e -> e instanceof Enemy && e.isAlive());
 

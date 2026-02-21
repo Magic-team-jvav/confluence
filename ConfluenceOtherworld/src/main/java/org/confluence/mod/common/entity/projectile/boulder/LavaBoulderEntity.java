@@ -28,7 +28,7 @@ public class LavaBoulderEntity extends BoulderEntity {
     protected void removeEffect(ServerLevel serverLevel) {
         super.removeEffect(serverLevel);
 
-        final int blockRadius = 5;
+        final int blockRadius = 2;
         final BlockState toFill = Fluids.LAVA.defaultFluidState().createLegacyBlock();
 
         if (!serverLevel.dimensionType().ultraWarm() || toFill.getFluidState().getType().getFluidType() != NeoForgeMod.WATER_TYPE.value()) {

@@ -1,0 +1,7 @@
+{
+    "parent": "confluence:block/normal_boulder",
+    "textures": {
+        "0": "confluence:block/ghoulder",
+        "particle": "confluence:block/ghoulder"
+    }
+}

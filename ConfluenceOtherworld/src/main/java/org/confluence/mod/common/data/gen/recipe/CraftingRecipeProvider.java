@@ -723,6 +723,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, MaterialItems.FALLING_STAR.toStack(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));
         shapeless(output, FoodItems.CLOUD_DOUGH.toStack(), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
         shapeless(output, DecorativeBlocks.FLINX_FUR_BLOCK.toStack(20), Ingredient.of(MaterialItems.FLINX_FUR));
+        shapeless(output, new ItemStack(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.PLANKS, 4), Ingredient.of(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK));
 
         //生鱼片
         shapeless(output, "", "_from_partial_mouth_fish",

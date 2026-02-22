@@ -260,7 +260,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.bloody_spine.1", "一截被剥离下来了的身体组织，上面斑驳着血痂块与肌肉组织，很难想象它是从哪种生物体内，以何种方式取出来的。");
         add("tooltip.item.confluence.bloody_spine.2", "“它似乎在尝试着与你对话…要不蘨睈錗㧴氓旳義厡…”");
         add("tooltip.item.confluence.abeemination.0", "右键使用以召唤蜂王，只有热带阔叶雨林间的污浊瘴气才能压制住她的狂怒");
-        add("tooltip.item.confluence.abeemination.1", "她似乎极度那些厌恶荧光真菌孢子的气息");
+        add("tooltip.item.confluence.abeemination.1", "她似乎极度厌恶那些荧光真菌孢子的气息");
         add("tooltip.item.confluence.abeemination.2", "一团尚未成型的幼蜂，摸上去感觉像黏稠的蜂蜜……蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的极度排斥与憎恶。");
         add("tooltip.item.confluence.abeemination.3", "“群蜂振翅之声撼动了丛林中最为厚重的叶片”");
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "“你这人真可怕”");

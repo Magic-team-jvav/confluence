@@ -778,10 +778,11 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, NatureBlocks.AMETHYST_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_AMETHYST));
 
         // 基础石砖
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE), DecorativeBlocks.CRIMSTONE_BRICKS);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE), DecorativeBlocks.PEARLSTONE_BRICKS);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.MARBLE), DecorativeBlocks.MARBLE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS,4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE), DecorativeBlocks.CRIMSTONE_BRICKS,4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE), DecorativeBlocks.PEARLSTONE_BRICKS,4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.MARBLE), DecorativeBlocks.POLISHED_MARBLE,4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.GRANITE), DecorativeBlocks.POLISHED_GRANITE,4);
         // 锁链
         registerChainsRecipes(output, Ingredient.of(ModTags.Items.GEMS_AMBER), DecorativeBlocks.AMBER_CHAIN);
         registerChainsRecipes(output, Ingredient.of(Tags.Items.GEMS_DIAMOND), DecorativeBlocks.DIAMOND_CHAIN);
@@ -1394,7 +1395,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), HOE_PATTERN), hoe.asItem().getDefaultInstance());
     }
 
-    private void registerBricksRecipes(RecipeOutput output, Ingredient material, ItemLike bricks) {
+    private void registerBricksRecipes(RecipeOutput output, Ingredient material, ItemLike bricks, int count) {
         shaped(output, ShapedRecipePattern.of(Map.of('#', material), BRICKS_PATTERN), bricks.asItem().getDefaultInstance());
     }
 

@@ -443,21 +443,25 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         // 秘银砧
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
-                'a', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL)
+                'a', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
+                'b', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS)
         ), List.of(
                 "###",
                 " a ",
-                "aaa"
+                "aaa",
+                "bbb"
         )), FunctionalBlocks.MYTHRIL_ANVIL.toStack());
 
         // 山铜砧
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
-                'a', Ingredient.of(ModTags.Items.INGOTS_ORICHALCUM)
+                'a', Ingredient.of(ModTags.Items.INGOTS_ORICHALCUM),
+                'b', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS)
         ), List.of(
                 "###",
                 " a ",
-                "#a#"
+                "#a#",
+                "bbb"
         )), FunctionalBlocks.ORICHALCUM_ANVIL.toStack());
 
         // 穿流戟
@@ -1031,59 +1035,47 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_COBALT),
                 'a', AmountIngredient.of(2,ModTags.Items.INGOTS_COBALT),
-                'b', AmountIngredient.of(3,ModTags.Items.INGOTS_COBALT),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'b', AmountIngredient.of(3,ModTags.Items.INGOTS_COBALT)
         ), List.of(
                 "bab",
-                "# #",
-                "ppp"
+                "# #"
         )), ArmorItems.COBALT_HAT.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2,ModTags.Items.INGOTS_COBALT),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2,ModTags.Items.INGOTS_COBALT)
         ), List.of(
                 "aaa",
-                "a a",
-                "ppp"
+                "a a"
         )), ArmorItems.COBALT_HELMET.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_COBALT),
-                'a', AmountIngredient.of(2,ModTags.Items.INGOTS_COBALT),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2,ModTags.Items.INGOTS_COBALT)
         ), List.of(
                 "a#a",
                 "###",
-                " a ",
-                "ppp"
+                " a "
         )), ArmorItems.COBALT_MASK.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2,ModTags.Items.INGOTS_COBALT),
-                'b', AmountIngredient.of(3,ModTags.Items.INGOTS_COBALT),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'b', AmountIngredient.of(3,ModTags.Items.INGOTS_COBALT)
         ), List.of(
                 "a a",
                 "bab",
-                "bab",
-                "ppp"
+                "bab"
         )), ArmorItems.COBALT_CHESTPLATE.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_COBALT),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT)
         ), List.of(
                 "a#a",
                 "# #",
-                "# #",
-                "ppp"
+                "# #"
         )), ArmorItems.COBALT_LEGGINGS.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_COBALT),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT)
                 ), List.of(
                 "a a",
-                "# #",
-                "ppp"
+                "# #"
         )), ArmorItems.COBALT_BOOTS.toStack());
         // 钴薙刀
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
@@ -1130,80 +1122,64 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         // 钴钻头
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_COBALT),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT)
         ), List.of(
                 "##a ",
-                "##aa",
-                "pppp"
+                "##aa"
         )), ChainsawItems.COBALT_CHAINSAW.toStack());
         // 钴链锯
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_COBALT),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT)
         ), List.of(
                 "##a ",
                 "# #a",
-                "##a ",
-                "pppp"
+                "##a "
         )), DrillItems.COBALT_DRILL.toStack());
 
         // 钯金套
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2,ModTags.Items.INGOTS_PALLADIUM),
-                'b', AmountIngredient.of(3,ModTags.Items.INGOTS_PALLADIUM),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'b', AmountIngredient.of(3,ModTags.Items.INGOTS_PALLADIUM)
         ), List.of(
                 "bab",
-                "a a",
-                "ppp"
+                "a a"
         )), ArmorItems.PALLADIUM_HEADGEAR.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_PALLADIUM),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_PALLADIUM)
         ), List.of(
                 "aaa",
-                "b b",
-                "ppp"
+                "b b"
         )), ArmorItems.PALLADIUM_HELMET.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_PALLADIUM),
-                'a', AmountIngredient.of(2,ModTags.Items.INGOTS_PALLADIUM),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2,ModTags.Items.INGOTS_PALLADIUM)
         ), List.of(
                 "aaa",
                 "#a#",
-                " a ",
-                "ppp"
+                " a "
         )), ArmorItems.PALLADIUM_MASK.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'b', AmountIngredient.of(3,ModTags.Items.INGOTS_PALLADIUM),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'b', AmountIngredient.of(3,ModTags.Items.INGOTS_PALLADIUM)
         ), List.of(
                 "b b",
                 "bbb",
-                "bbb",
-                "ppp"
+                "bbb"
         )), ArmorItems.PALLADIUM_CHESTPLATE.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_PALLADIUM),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM)
         ), List.of(
                 "aaa",
                 "# #",
-                "# #",
-                "ppp"
+                "# #"
         )), ArmorItems.PALLADIUM_LEGGINGS.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM)
         ), List.of(
                 "a a",
-                "a a",
-                "ppp"
+                "a a"
         )), ArmorItems.PALLADIUM_BOOTS.toStack());
         // 钯金剑
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
@@ -1251,23 +1227,19 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         // 钯金钻头
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_PALLADIUM),
-                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_PALLADIUM),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_PALLADIUM)
         ), List.of(
                 "##a ",
                 "# #a",
-                "##a ",
-                "pppp"
+                "##a "
         )), DrillItems.PALLADIUM_DRILL.toStack());
         // 钯金链锯
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_PALLADIUM),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM),
-                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM)
         ), List.of(
                 "#aa ",
-                "#aaa",
-                "pppp"
+                "#aaa"
         )), ChainsawItems.PALLADIUM_CHAINSAW.toStack());
 
         // 荆鞭
@@ -1379,7 +1351,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         shapeless(recipeOutput, FunctionalBlocks.EXPLODE_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT));
         shapeless(recipeOutput, FunctionalBlocks.FOLLOWER_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(Items.OBSERVER));
-        shapeless(recipeOutput, FunctionalBlocks.EVER_POWERED_RAIL.toStack(16), AmountIngredient.of(16, Items.RAIL), Ingredient.of(Items.REDSTONE_TORCH));
+        shapeless(recipeOutput, FunctionalBlocks.EVER_POWERED_RAIL.toStack(16), AmountIngredient.of(16, Items.POWERED_RAIL), Ingredient.of(Items.REDSTONE_TORCH));
 
         shapeless(recipeOutput, ConsumableItems.SCARAB_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(recipeOutput, NatureBlocks.LIFE_CRYSTAL_BLOCK.toStack(), Ingredient.of(ConsumableItems.LIFE_CRYSTAL));

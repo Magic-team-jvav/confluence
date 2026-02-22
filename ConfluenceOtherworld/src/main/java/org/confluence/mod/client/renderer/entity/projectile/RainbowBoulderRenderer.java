@@ -7,11 +7,13 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.RainbowBoulderEntity;
 import org.confluence.terra_guns.client.init.TGRenderTypes;
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
@@ -87,24 +89,7 @@ public class RainbowBoulderRenderer extends BoulderRenderer{
         float t = (float) ((y - minY) / (maxY - minY));
         t = Math.max(0, Math.min(1, t));
         float hue = t * (300.0f / 360.0f);
-        float r, g, b;
-        if (hue < 1f/6f) {
-            r = 1; g = hue * 6; b = 0;
-        } else if (hue < 2f/6f) {
-            r = 1 - (hue - 1f/6f) * 6; g = 1; b = 0;
-        } else if (hue < 3f/6f) {
-            r = 0; g = 1; b = (hue - 2f/6f) * 6;
-        } else if (hue < 4f/6f) {
-            r = 0; g = 1 - (hue - 3f/6f) * 6; b = 1;
-        } else if (hue < 5f/6f) {
-            r = (hue - 4f/6f) * 6; g = 0; b = 1;
-        } else {
-            r = 1; g = 0; b = 1 - (hue - 5f/6f) * 6;
-        }
-        int red = (int)(r * 255);
-        int green = (int)(g * 255);
-        int blue = (int)(b * 255);
-        return (alpha << 24) | (red << 16) | (green << 8) | blue;
+        return Mth.hsvToArgb(hue, 1.0f, 1.0f, alpha);
     }
 
     private static void addVertex(VertexConsumer buffer, Matrix4f matrix, Vec3 pos, int argb) {

@@ -282,6 +282,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, NatureBlocks.GRANITE, NatureBlocks.MARBLE);
         item(recipeOutput, "sand_from_sandstone", addItem(Blocks.SANDSTONE, Blocks.SAND));
         item(recipeOutput, "sand_from_hardened_sand", addItem(NatureBlocks.HARDENED_SAND_BLOCK, Blocks.SAND));
+        item(recipeOutput, "red_sand_from_red_sandstone", addItem(Blocks.RED_SANDSTONE, Blocks.RED_SAND));
+        item(recipeOutput, "red_sand_from_hardened_red_sand_block", addItem(NatureBlocks.HARDENED_RED_SAND_BLOCK, Blocks.RED_SAND));
         item(recipeOutput, "ebonsand_from_ebonsandstone", addItem(NatureBlocks.EBONSANDSTONE, NatureBlocks.EBONSAND));
         item(recipeOutput, "ebonsand_from_hardened_ebonsand", addItem(NatureBlocks.HARDENED_EBONSAND_BLOCK, NatureBlocks.EBONSAND));
         item(recipeOutput, "crimsand_from_crimsandstone", addItem(NatureBlocks.CRIMSANDSTONE, NatureBlocks.CRIMSAND));

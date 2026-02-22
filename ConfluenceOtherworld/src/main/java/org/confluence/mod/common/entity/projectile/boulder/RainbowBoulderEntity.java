@@ -25,7 +25,6 @@ import java.util.List;
 
 // TODO 彩虹
 public class RainbowBoulderEntity extends BoulderEntity {
-    private static int count = 0;
     private Player protectedPlayer = null;
     private Object target = null;
     private BlockPos targetPos = null;
@@ -43,22 +42,16 @@ public class RainbowBoulderEntity extends BoulderEntity {
         super(ModEntities.RAINBOW_BOULDER.get(), level, pos, blockState);
         minRemoveSpeed = 0;
         setNoGravity(true);
-        count++;
-        if (count > 10) {
-            onRemove();
-        }
     }
 
     @Override
     public void onRemove() {
         super.onRemove();
-        count--;
     }
 
     @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);
-        count--;
     }
 
     @Override
@@ -66,8 +59,8 @@ public class RainbowBoulderEntity extends BoulderEntity {
         if (entity instanceof Player) {
             return;
         }
-        Vec3 deltaMovement = getDeltaMovement();
-        Vec3 vec3 = entity == null ? deltaMovement : entity.position().subtract(position());
+        setDeltaMovement(Vec3.ZERO);
+        Vec3 vec3 = entity == null ? Vec3.ZERO : entity.position().subtract(position());
         vec3 = new Vec3(vec3.x, vec3.y, vec3.z).normalize();
         setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
         setDeltaMovement(vec3.scale(speed));
@@ -76,6 +69,7 @@ public class RainbowBoulderEntity extends BoulderEntity {
 
     public void targetToBlock(@Nullable BlockPos pos) {
         if (pos == null) return;
+        setDeltaMovement(Vec3.ZERO);
         Vec3 targetCenter = Vec3.atCenterOf(pos);
         Vec3 dir = targetCenter.subtract(position()).normalize();
         setYRot((float) (Mth.atan2(dir.x, dir.z) * Mth.RAD_TO_DEG));
@@ -87,9 +81,6 @@ public class RainbowBoulderEntity extends BoulderEntity {
     public void tick() {
         super.tick();
         this.saveTrailPos();
-        if (count > 10) {
-            onRemove();
-        }
 
         if (protectedPlayer == null) {
             Player player = level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), 256, e -> true);

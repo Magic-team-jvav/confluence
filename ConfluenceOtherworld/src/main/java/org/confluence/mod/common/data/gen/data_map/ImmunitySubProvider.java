@@ -19,6 +19,7 @@ public final class ImmunitySubProvider {
                 .add(ModEntities.GOLDEN_SHOWER_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 4), false)
                 .add(ModEntities.WATER_STREAM_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 4), false)
                 .add(ModEntities.NIGHTS_EDGE_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 20), false)
+                .add(TEProjectileEntities.ICE_PILLAR, new ImmunityDataMap(Immunity.Type.STATIC, 20), false)
                 .add(TEProjectileEntities.SLIME_SPIKE, new ImmunityDataMap(Immunity.Type.STATIC, 5), false)
                 .add(TEProjectileEntities.FIRE_IMP_PROJ, new ImmunityDataMap(Immunity.Type.LOCAL, 1), false)
                 .add(TEProjectileEntities.SUMMON_BEE_STICK_PROJ, new ImmunityDataMap(Immunity.Type.LOCAL, 1), false)

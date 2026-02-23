@@ -200,7 +200,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), SwordItems.BLADE_OF_GRASS.toStack());
         // 邪恶工具
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(4, MaterialItems.DEMONITE_INGOT),
+                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_DEMONITE),
                 '/', AmountIngredient.of(2, MaterialItems.ROTTEN_BONE)
         ), List.of(
                 "a",
@@ -208,7 +208,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/"
         )), ShovelItems.SHADOW_SHOVEL.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(4, MaterialItems.CRIMTANE_INGOT),
+                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_CRIMTANE),
                 '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
         ), List.of(
                 "a",
@@ -216,7 +216,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/"
         )), ShovelItems.MINER.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, MaterialItems.DEMONITE_INGOT),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_DEMONITE),
                 '/', AmountIngredient.of(2, MaterialItems.ROTTEN_BONE)
         ), List.of(
                 "aa",
@@ -224,7 +224,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /"
         )), HoeItems.SHADOW_HOE.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, MaterialItems.CRIMTANE_INGOT),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_CRIMTANE),
                 '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
         ), List.of(
                 "aa",
@@ -242,7 +242,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/   "
         )), HoeShovelItems.METEOR_HOE_SHOVEL.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_HELLSTONE),
                 '/', Ingredient.of(Items.BLAZE_ROD)
         ), List.of(
                 " aaa",
@@ -250,30 +250,48 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /  ",
                 "/   "
         )), HoeShovelItems.MOLTEN_HOE_SHOVEL.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
+        )), HoeShovelItems.COBALT_HOE_SHOVEL.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
+        )), HoeShovelItems.PALLADIUM_HOE_SHOVEL.toStack());
         // 熔岩套
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT)
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_HELLSTONE)
         ), List.of(
                 "###",
                 "# #"
         )), ArmorItems.MOLTEN_HELMET.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT),
-                'a', Ingredient.of(MaterialItems.HELLSTONE_INGOT)
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_HELLSTONE),
+                'a', Ingredient.of(ModTags.Items.INGOTS_HELLSTONE)
         ), List.of(
                 "###",
                 "# #",
                 "a a"
         )), ArmorItems.MOLTEN_LEGGINGS.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT)
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_HELLSTONE)
         ), List.of(
                 "# #",
                 "# #"
         )), ArmorItems.MOLTEN_BOOTS.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT),
-                'a', Ingredient.of(MaterialItems.HELLSTONE_INGOT)
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_HELLSTONE),
+                'a', Ingredient.of(ModTags.Items.INGOTS_HELLSTONE)
         ), List.of(
                 "# #",
                 "#a#",
@@ -387,7 +405,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), FunctionalBlocks.SIGNAL_ADAPTER.toStack());
         // 小鬼法杖
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT),
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_HELLSTONE),
                 'a', Ingredient.of(OreBlocks.HELLSTONE_BLOCK)
         ), List.of(
                 "  # ",

@@ -168,6 +168,15 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "##a ",
                 "##aa"
         )));
+        hardmodeAnvil(recipeOutput, HoeShovelItems.MYTHRIL_HOE_SHOVEL.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
+        )));
 
         // 山铜套
         hardmodeAnvil(recipeOutput, ArmorItems.ORICHALCUM_HEADGEAR.toStack(), ShapedRecipePattern.of(Map.of(
@@ -268,6 +277,15 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "#aa ",
                 "#aaa"
+        )));
+        hardmodeAnvil(recipeOutput, HoeShovelItems.ORICHALCUM_HOE_SHOVEL.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
         )));
 
         // 钛金套
@@ -374,7 +392,15 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "aaa ",
                 "#aaa"
         )));
-
+        hardmodeAnvil(recipeOutput, HoeShovelItems.TITANIUM_HOE_SHOVEL.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
+        )));
         // 精金套
         hardmodeAnvil(recipeOutput, ArmorItems.ADAMANTITE_HEADGEAR.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
@@ -475,6 +501,15 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "#aa ",
                 "#aaa"
+        )));
+        hardmodeAnvil(recipeOutput, HoeShovelItems.ADAMANTITE_HOE_SHOVEL.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
         )));
         // 矿车升级包
         hardmodeAnvil(recipeOutput, ConsumableItems.MINECART_UPGRADE_KIT.toStack(), ShapedRecipePattern.of(Map.of(
@@ -579,6 +614,26 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "dad",
                 "bcb",
                 " d "
+        )));
+        // 神圣
+        hardmodeAnvil(recipeOutput, HoeShovelItems.HALLOWED_HOE_SHOVEL.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_HALLOWED),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
+        )));
+        // 叶绿
+        hardmodeAnvil(recipeOutput, HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_CHLOROPHYTE),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
+        ), List.of(
+                " aaa",
+                "  /a",
+                " /  ",
+                "/   "
         )));
     }
 

@@ -2596,6 +2596,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(HoeShovelItems.METEOR_HOE_SHOVEL.get(), "流星锄锹");
         add(HamaxeItems.MOLTEN_HAMAXE.get(), "熔火锤斧");
         add(HoeShovelItems.MOLTEN_HOE_SHOVEL.get(), "熔火锄锹");
+        add(HoeShovelItems.COBALT_HOE_SHOVEL.get(), "钴锄锹");
+        add(HoeShovelItems.PALLADIUM_HOE_SHOVEL.get(), "钯金锄锹");
+        add(HoeShovelItems.MYTHRIL_HOE_SHOVEL.get(), "秘银锄锹");
+        add(HoeShovelItems.ORICHALCUM_HOE_SHOVEL.get(), "山铜锄锹");
+        add(HoeShovelItems.ADAMANTITE_HOE_SHOVEL.get(), "精金锄锹");
+        add(HoeShovelItems.TITANIUM_HOE_SHOVEL.get(), "钛金锄锹");
+        add(HoeShovelItems.HALLOWED_HOE_SHOVEL.get(), "神圣锄锹");
+        add(HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get(), "叶绿锄锹");
         add(HamaxeItems.SPECTRE_HAMAXE.get(), "幽灵锤斧");
         add(HamaxeItems.SOLAR_FLARE_HAMAXE.get(), "耀斑锤斧");
         add(HamaxeItems.VORTEX_HAMAXE.get(), "星旋锤斧");

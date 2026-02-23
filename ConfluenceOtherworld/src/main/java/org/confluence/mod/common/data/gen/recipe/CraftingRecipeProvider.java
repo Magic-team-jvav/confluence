@@ -50,8 +50,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
     private final List<String> SHORT_SWORD_PATTERN = List.of(" #", "/ ");
     private final List<String> SHOVEL_PATTERN = List.of("#", "/", "/");
     private final List<String> HOE_PATTERN = List.of("##", " /", " /");
-    //剪刀
+    // 剪刀
     private final List<String> SHEAR_PATTERN = List.of(" #", "# ");
+    // 鱼竿
+    private final List<String> FISHING_POLE_PATTERN = List.of("  /", " /S", "/ S");
 
     // 基础砖
     private final List<String> BRICKS_PATTERN = List.of("##", "##");
@@ -64,6 +66,12 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
     // 基础桌
     private final List<String> TABLES_PATTERN = List.of("###", " # ");
+
+    // 箱子
+    private final List<String> CHEST_PATTERN = List.of("###", "# #", "###");
+
+    // 片
+    private final List<String> LAYER_PATTERN = List.of("###");
 
     public CraftingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
@@ -176,14 +184,13 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(PotionItems.BOTTLE),
                 Ingredient.of(PotionItems.BOTTLE)
         );
-        // 广播盒
+        // 玻璃瓶
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(DecorativeBlocks.PURE_GLASS)
         ), List.of(
                 "# #",
                 " # "
         )), PotionItems.BOTTLE.toStack(3));
-        // 玻璃瓶
         shapeless(output, "", "_from_bottle",
                 new ItemStack(Items.GLASS_BOTTLE),
                 Ingredient.of(PotionItems.BOTTLE)
@@ -196,59 +203,36 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         // 各种片
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Blocks.SAND)
-        ), List.of(
-                "###"
-        )), NatureBlocks.SAND_LAYER_BLOCK.toStack(6));
+        ), LAYER_PATTERN), NatureBlocks.SAND_LAYER_BLOCK.toStack(6));
 
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Blocks.RED_SAND)
-        ), List.of(
-                "###"
-        )), NatureBlocks.RED_SAND_LAYER_BLOCK.toStack(6));
+        ), LAYER_PATTERN), NatureBlocks.RED_SAND_LAYER_BLOCK.toStack(6));
 
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(NatureBlocks.EBONSAND)
-        ), List.of(
-                "###"
-        )), NatureBlocks.EBONSAND_LAYER_BLOCK.toStack(6));
+        ), LAYER_PATTERN), NatureBlocks.EBONSAND_LAYER_BLOCK.toStack(6));
 
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(NatureBlocks.CRIMSAND)
-        ), List.of(
-                "###"
-        )), NatureBlocks.CRIMSAND_LAYER_BLOCK.toStack(6));
+        ), LAYER_PATTERN), NatureBlocks.CRIMSAND_LAYER_BLOCK.toStack(6));
 
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(NatureBlocks.PEARLSAND)
-        ), List.of(
-                "###"
-        )), NatureBlocks.PEARLSAND_LAYER_BLOCK.toStack(6));
+        ), LAYER_PATTERN), NatureBlocks.PEARLSAND_LAYER_BLOCK.toStack(6));
+
         // 砂岩箱
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Blocks.SANDSTONE)
-        ), List.of(
-                "###",
-                "# #",
-                "###"
-        )), ChestBlocks.SANDSTONE_CHEST.toStack());
-
+        ), CHEST_PATTERN), ChestBlocks.SANDSTONE_CHEST.toStack());
         // 大理石箱
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(NatureBlocks.MARBLE)
-        ), List.of(
-                "###",
-                "# #",
-                "###"
-        )), ChestBlocks.MARBLE_CHEST.toStack());
-
+        ), CHEST_PATTERN), ChestBlocks.MARBLE_CHEST.toStack());
         // 花岗岩箱
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(NatureBlocks.GRANITE)
-        ), List.of(
-                "###",
-                "# #",
-                "###"
-        )), ChestBlocks.GRANITE_CHEST.toStack());
+        ), CHEST_PATTERN), ChestBlocks.GRANITE_CHEST.toStack());
 
         for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
             registerWoodRecipes(output, logBlockSet);
@@ -336,78 +320,16 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER), BowItems.SILVER_BOW, BowItems.SILVER_SHORT_BOW);
         registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN), BowItems.TUNGSTEN_BOW, BowItems.TUNGSTEN_SHORT_BOW);
         registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM), BowItems.PLATINUM_BOW, BowItems.PLATINUM_SHORT_BOW);
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(Items.STICK),
-                '/', Ingredient.of(Items.STRING)
-        ), List.of(
-                " #",
-                "#/",
-                " #"
-        )), BowItems.WOODEN_SHORT_BOW.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.BOW)
-        ), List.of(
-                " #",
-                "#/",
-                " #"
-        )), BowItems.EBONWOOD_BOW.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(BowItems.WOODEN_SHORT_BOW)
-        ), List.of(
-                " #",
-                "#/",
-                " #"
-        )), BowItems.EBONWOOD_SHORT_BOW.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.BOW)
-        ), List.of(
-                " #",
-                "#/",
-                " #"
-        )), BowItems.SHADEWOOD_BOW.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(BowItems.WOODEN_SHORT_BOW)
-        ), List.of(
-                " #",
-                "#/",
-                " #"
-        )), BowItems.SHADEWOOD_SHORT_BOW.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.BOW)
-        ), List.of(
-                " #",
-                "#/",
-                " #"
-        )), BowItems.ASH_WOOD_BOW.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(BowItems.WOODEN_SHORT_BOW)
-        ), List.of(
-                " #",
-                "#/",
-                " #"
-        )), BowItems.ASH_WOOD_SHORT_BOW.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.BOW)
-        ), List.of(
-                " #",
-                "#/",
-                " #"
-        )), BowItems.PEARLWOOD_BOW.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(BowItems.WOODEN_SHORT_BOW)
-        ), List.of(
-                " #",
-                "#/",
-                " #"
-        )), BowItems.PEARLWOOD_SHORT_BOW.toStack());
+        registerShortBowRecipes(output, Ingredient.of(Items.STICK), Ingredient.of(Items.STRING), BowItems.WOODEN_SHORT_BOW);
+        registerShortBowRecipes(output, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS), Ingredient.of(Items.BOW), BowItems.EBONWOOD_BOW);
+        registerShortBowRecipes(output, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS), Ingredient.of(BowItems.WOODEN_SHORT_BOW), BowItems.EBONWOOD_SHORT_BOW);
+        registerShortBowRecipes(output, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS), Ingredient.of(Items.BOW), BowItems.SHADEWOOD_BOW);
+        registerShortBowRecipes(output, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS), Ingredient.of(BowItems.WOODEN_SHORT_BOW), BowItems.SHADEWOOD_SHORT_BOW);
+        registerShortBowRecipes(output, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS), Ingredient.of(Items.BOW), BowItems.ASH_WOOD_BOW);
+        registerShortBowRecipes(output, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS), Ingredient.of(BowItems.WOODEN_SHORT_BOW), BowItems.ASH_WOOD_SHORT_BOW);
+        registerShortBowRecipes(output, Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS), Ingredient.of(Items.BOW), BowItems.PEARLWOOD_BOW);
+        registerShortBowRecipes(output, Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS), Ingredient.of(BowItems.WOODEN_SHORT_BOW), BowItems.PEARLWOOD_SHORT_BOW);
+
         // 基础工具，阔剑短剑
         registerToolRecipes(output, Ingredient.of(Tags.Items.INGOTS_COPPER), AxeItems.COPPER_AXE, PickaxeItems.COPPER_PICKAXE, HammerItems.COPPER_HAMMER, SwordItems.COPPER_BROADSWORD, SwordItems.COPPER_SHORT_SWORD, ShovelItems.COPPER_SHOVEL, HoeItems.COPPER_HOE);
         registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TIN), AxeItems.TIN_AXE, PickaxeItems.TIN_PICKAXE, HammerItems.TIN_HAMMER, SwordItems.TIN_BROADSWORD, SwordItems.TIN_SHORT_SWORD, ShovelItems.TIN_SHOVEL, HoeItems.TIN_HOE);
@@ -415,124 +337,24 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER), AxeItems.SILVER_AXE, PickaxeItems.SILVER_PICKAXE, HammerItems.SILVER_HAMMER, SwordItems.SILVER_BROADSWORD, SwordItems.SILVER_SHORT_SWORD, ShovelItems.SILVER_SHOVEL, HoeItems.SILVER_HOE);
         registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN), AxeItems.TUNGSTEN_AXE, PickaxeItems.TUNGSTEN_PICKAXE, HammerItems.TUNGSTEN_HAMMER, SwordItems.TUNGSTEN_BROADSWORD, SwordItems.TUNGSTEN_SHORT_SWORD, ShovelItems.TUNGSTEN_SHOVEL, HoeItems.TUNGSTEN_HOE);
         registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM), AxeItems.PLATINUM_AXE, PickaxeItems.PLATINUM_PICKAXE, HammerItems.PLATINUM_HAMMER, SwordItems.PLATINUM_BROADSWORD, SwordItems.PLATINUM_SHORT_SWORD, ShovelItems.PLATINUM_SHOVEL, HoeItems.PLATINUM_HOE);
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(Tags.Items.INGOTS_IRON),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                " #",
-                "/ "
-        )), SwordItems.IRON_SHORT_SWORD.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(Tags.Items.INGOTS_GOLD),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                " #",
-                "/ "
-        )), SwordItems.GOLDEN_SHORT_SWORD.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(ModTags.Items.INITIAL_WOOD),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "###",
-                "#/#",
-                " / "
-        )), HammerItems.WOODEN_HAMMER.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "###",
-                "#/#",
-                " / "
-        )), HammerItems.EBONWOOD_HAMMER.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "###",
-                "#/#",
-                " / "
-        )), HammerItems.SHADEWOOD_HAMMER.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "###",
-                "#/#",
-                " / "
-        )), HammerItems.ASH_WOOD_HAMMER.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "###",
-                "#/#",
-                " / "
-        )), HammerItems.PEARLWOOD_HAMMER.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(Tags.Items.INGOTS_GOLD),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "###",
-                "#/#",
-                " / "
-        )), HammerItems.GOLDEN_HAMMER.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(Tags.Items.INGOTS_IRON),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "###",
-                "#/#",
-                " / "
-        )), HammerItems.IRON_HAMMER.toStack());
+        registerShortSwordRecipe(output, Ingredient.of(Tags.Items.INGOTS_IRON), SwordItems.IRON_SHORT_SWORD);
+        registerShortSwordRecipe(output, Ingredient.of(Tags.Items.INGOTS_GOLD), SwordItems.GOLDEN_SHORT_SWORD);
+        registerHammerRecipe(output, Ingredient.of(ModTags.Items.INITIAL_WOOD), HammerItems.WOODEN_HAMMER);
+        registerHammerRecipe(output, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS), HammerItems.EBONWOOD_HAMMER);
+        registerHammerRecipe(output, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS), HammerItems.SHADEWOOD_HAMMER);
+        registerHammerRecipe(output, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS), HammerItems.ASH_WOOD_HAMMER);
+        registerHammerRecipe(output, Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS), HammerItems.PEARLWOOD_HAMMER);
+        registerHammerRecipe(output, Ingredient.of(Tags.Items.INGOTS_GOLD), HammerItems.GOLDEN_HAMMER);
+        registerHammerRecipe(output, Ingredient.of(Tags.Items.INGOTS_IRON), HammerItems.IRON_HAMMER);
+        registerBroadswordRecipe(output, Ingredient.of(Items.CACTUS), SwordItems.CACTUS_SWORD);
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.CACTUS),
                 '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "#",
-                "#",
-                "/"
-        )), SwordItems.CACTUS_SWORD.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(Items.CACTUS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "###",
-                " / ",
-                " / "
-        )), PickaxeItems.CACTUS_PICKAXE.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "#",
-                "#",
-                "/"
-        )), SwordItems.EBONWOOD_SWORD.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "#",
-                "#",
-                "/"
-        )), SwordItems.SHADEWOOD_SWORD.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "#",
-                "#",
-                "/"
-        )), SwordItems.ASH_WOOD_SWORD.toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "#",
-                "#",
-                "/"
-        )), SwordItems.PEARLWOOD_SWORD.toStack());
+        ), PICKAXE_PATTERN), PickaxeItems.CACTUS_PICKAXE.toStack());
+        registerBroadswordRecipe(output, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS), SwordItems.EBONWOOD_SWORD);
+        registerBroadswordRecipe(output, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS), SwordItems.SHADEWOOD_SWORD);
+        registerBroadswordRecipe(output, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS), SwordItems.ASH_WOOD_SWORD);
+        registerBroadswordRecipe(output, Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS), SwordItems.PEARLWOOD_SWORD);
         // 鱼竿
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(Items.STRING),
@@ -545,27 +367,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(Items.STRING),
                 '/', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
-        ), List.of(
-                "  /",
-                " /S",
-                "/ S"
-        )), FishingPoleItems.REINFORCED_FISHING_POLE.toStack());
+        ), FISHING_POLE_PATTERN), FishingPoleItems.REINFORCED_FISHING_POLE.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(Items.STRING),
                 '/', Ingredient.of(ModTags.Items.INGOTS_DEMONITE)
-        ), List.of(
-                "  /",
-                " /S",
-                "/ S"
-        )), FishingPoleItems.FISHER_OF_SOULS.toStack());
+        ), FISHING_POLE_PATTERN), FishingPoleItems.FISHER_OF_SOULS.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(Items.STRING),
                 '/', Ingredient.of(ModTags.Items.INGOTS_CRIMTANE)
-        ), List.of(
-                "  /",
-                " /S",
-                "/ S"
-        )), FishingPoleItems.FLESHCATCHER.toStack());
+        ), FISHING_POLE_PATTERN), FishingPoleItems.FLESHCATCHER.toStack());
         // 木悠悠球
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(ItemTags.LOGS),
@@ -1358,9 +1168,12 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '/', Ingredient.of(Items.STRING)
         ), BOW_PATTERN), normalBow.asItem().getDefaultInstance());
 
+        registerShortBowRecipes(output, material, Ingredient.of(Items.STRING), shortBow);
+    }
+    private void registerShortBowRecipes(RecipeOutput output, Ingredient material0, Ingredient material1, ItemLike shortBow) {
         shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', material,
-                '/', Ingredient.of(Items.STRING)
+                '#', material0,
+                '/', material1
         ), SHORT_BOW_PATTERN), shortBow.asItem().getDefaultInstance());
     }
 
@@ -1375,20 +1188,9 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '/', Ingredient.of(Items.STICK)
         ), PICKAXE_PATTERN), pickaxe.asItem().getDefaultInstance());
 
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', material,
-                '/', Ingredient.of(Items.STICK)
-        ), HAMMER_PATTERN), hammer.asItem().getDefaultInstance());
-
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', material,
-                '/', Ingredient.of(Items.STICK)
-        ), BROADSWORD_PATTERN), broadsword.asItem().getDefaultInstance());
-
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', material,
-                '/', Ingredient.of(Items.STICK)
-        ), SHORT_SWORD_PATTERN), shortsword.asItem().getDefaultInstance());
+        registerHammerRecipe(output, material, hammer);
+        registerBroadswordRecipe(output, material, broadsword);
+        registerShortSwordRecipe(output, material, shortsword);
 
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', material,
@@ -1399,6 +1201,24 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '#', material,
                 '/', Ingredient.of(Items.STICK)
         ), HOE_PATTERN), hoe.asItem().getDefaultInstance());
+    }
+    private void registerHammerRecipe(RecipeOutput output, Ingredient material, ItemLike hammer) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), HAMMER_PATTERN), hammer.asItem().getDefaultInstance());
+    }
+    private void registerBroadswordRecipe(RecipeOutput output, Ingredient material, ItemLike broadsword) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), BROADSWORD_PATTERN), broadsword.asItem().getDefaultInstance());
+    }
+    private void registerShortSwordRecipe(RecipeOutput output, Ingredient material, ItemLike shortsword) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), SHORT_SWORD_PATTERN), shortsword.asItem().getDefaultInstance());
     }
 
     private void registerShearsRecipe(RecipeOutput output, Ingredient material, ItemLike shears) {

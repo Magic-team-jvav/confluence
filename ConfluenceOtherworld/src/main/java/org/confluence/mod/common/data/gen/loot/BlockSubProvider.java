@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen.loot;
 
 import com.google.common.collect.Streams;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -32,6 +34,7 @@ import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 
@@ -50,6 +53,7 @@ import static org.confluence.mod.common.init.item.MaterialItems.*;
 
 @SuppressWarnings("all")
 public final class BlockSubProvider extends BlockLootSubProvider {
+    public static final LootItemCondition.Builder HAS_SHEARS;
     public BlockSubProvider(HolderLookup.Provider provider) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
     }
@@ -852,10 +856,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(block, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(dropItem))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(dropItem))
-                        .when(HAS_SHEARS))
+                        .when(hasShearsOrSilkTouch()))
         );
     }
 
@@ -916,5 +917,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                                                 .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CaveVines.BERRIES, true))
                                 )
                 );
+    }
+
+    static {
+        HAS_SHEARS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_SHEAR));
     }
 }

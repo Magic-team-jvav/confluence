@@ -15,10 +15,9 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
-import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.predicates.*;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.gen.loot.BlockSubProvider;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -43,6 +42,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.BIRCH_LEAVES,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(FoodItems.LEMON)
                                         .when(LootItemRandomChanceCondition.randomChance(0.009f))
                                 ).add(LootItem.lootTableItem(ConsumableItems.SUGAR_TANGERINE)
@@ -53,6 +53,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.CHERRY_LEAVES,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(FoodItems.PEACH)
                                         .when(LootItemRandomChanceCondition.randomChance(0.009f))
                                 )
@@ -61,6 +62,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.DARK_OAK_LEAVES,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(FoodItems.APRICOT)
                                         .when(LootItemRandomChanceCondition.randomChance(0.009f))
                                 ).add(LootItem.lootTableItem(FoodItems.GRAPE_FRUIT)
@@ -72,6 +74,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.FERN,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(ModItems.GRASS_SEED)
                                         .when(LootItemRandomChanceCondition.randomChance(0.02f))
                                 ).add(LootItem.lootTableItem(ModItems.JUNGLE_GRASS_SEED)
@@ -87,6 +90,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.JUNGLE_LEAVES,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(FoodItems.MANGO)
                                         .when(LootItemRandomChanceCondition.randomChance(0.009f))
                                 ).add(LootItem.lootTableItem(FoodItems.PINEAPPLE)
@@ -97,6 +101,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.LARGE_FERN,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(ModItems.GRASS_SEED)
                                         .when(LootItemRandomChanceCondition.randomChance(0.02f))
                                 ).add(LootItem.lootTableItem(ModItems.JUNGLE_GRASS_SEED)
@@ -112,6 +117,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.OAK_LEAVES,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(FoodItems.APRICOT)
                                         .when(LootItemRandomChanceCondition.randomChance(0.009f))
                                 ).add(LootItem.lootTableItem(FoodItems.GRAPE_FRUIT)
@@ -122,6 +128,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.SHORT_GRASS,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(ModItems.GRASS_SEED)
                                         .when(LootItemRandomChanceCondition.randomChance(0.02f))
                                 ).add(LootItem.lootTableItem(ModItems.JUNGLE_GRASS_SEED)
@@ -137,6 +144,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.SPRUCE_LEAVES,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(FoodItems.PLUM)
                                         .when(LootItemRandomChanceCondition.randomChance(0.009f))
                                 ).add(LootItem.lootTableItem(FoodItems.CHERRY)
@@ -147,6 +155,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         entries.add(new AddedBlockLoot(Blocks.TALL_GRASS,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
+                                .when(this.doesNotHaveShearsOrSilkTouch())
                                 .add(LootItem.lootTableItem(ModItems.GRASS_SEED)
                                         .when(LootItemRandomChanceCondition.randomChance(0.02f))
                                 ).add(LootItem.lootTableItem(ModItems.JUNGLE_GRASS_SEED)
@@ -160,6 +169,14 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
                 )
         ));
         return entries;
+    }
+
+    private LootItemCondition.Builder hasShearsOrSilkTouch() {
+        return BlockSubProvider.HAS_SHEARS.or(this.hasSilkTouch());
+    }
+
+    private LootItemCondition.Builder doesNotHaveShearsOrSilkTouch() {
+        return this.hasShearsOrSilkTouch().invert();
     }
 
     @Override

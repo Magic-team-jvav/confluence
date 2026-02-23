@@ -622,6 +622,9 @@ public final class ValueSubProvider {
                 .add(DrillItems.SOLAR_FLARE_DRILL, gold5 + gold2)
                 .add(DrillItems.STARDUST_DRILL, gold5 + gold2);
         builder
+                .add(GardenShearsItems.COBALT_GARDEN_SHEARS, silver20 + silver10)
+                .add(GardenShearsItems.PALLADIUM_GARDEN_SHEARS, silver20 + silver10 + silver5 + silver1);
+        builder
                 .add(ManaWeaponItems.WAND_OF_SPARKING, gold1)
                 .add(ManaWeaponItems.WAND_OF_FROSTING, 3500)
                 .add(ManaWeaponItems.AMETHYST_STAFF, 2800)

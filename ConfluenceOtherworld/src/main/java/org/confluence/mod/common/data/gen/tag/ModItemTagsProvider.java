@@ -584,7 +584,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         ShovelItems.ITEMS.getEntries().forEach(item -> shovels.add(item.get()));
 
         IntrinsicTagAppender<Item> shears = tag(ModTags.Items.TOOLS_SHEAR);
-        GardenShearsItems.ITEMS.getEntries().forEach(item -> shears.add(item.get()));
+        GardenShearsItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            shears.add(value);
+            mining_enchantable.add(value);
+        });
 
         HoeShovelItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();

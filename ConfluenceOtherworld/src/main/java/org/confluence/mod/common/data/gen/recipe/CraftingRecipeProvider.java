@@ -50,6 +50,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
     private final List<String> SHORT_SWORD_PATTERN = List.of(" #", "/ ");
     private final List<String> SHOVEL_PATTERN = List.of("#", "/", "/");
     private final List<String> HOE_PATTERN = List.of("##", " /", " /");
+    //剪刀
+    private final List<String> SHEAR_PATTERN = List.of(" #", "# ");
 
     // 基础砖
     private final List<String> BRICKS_PATTERN = List.of("##", "##");
@@ -573,6 +575,9 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "/SS",
                 "/  "
         )), TEYoyosItems.WOODEN_YOYO.toStack());
+        // 园艺剪
+        registerShearsRecipe(output, Ingredient.of(ModTags.Items.INGOTS_COBALT), GardenShearsItems.COBALT_GARDEN_SHEARS);
+        registerShearsRecipe(output, Ingredient.of(ModTags.Items.INGOTS_PALLADIUM), GardenShearsItems.PALLADIUM_GARDEN_SHEARS);
         // 箭
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS),
@@ -1396,7 +1401,13 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), HOE_PATTERN), hoe.asItem().getDefaultInstance());
     }
 
-    private void registerBricksRecipes(RecipeOutput output, Ingredient material, ItemLike bricks, int count) {
+    private void registerShearsRecipe(RecipeOutput output, Ingredient material, ItemLike shears) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material
+        ), SHEAR_PATTERN), shears.asItem().getDefaultInstance());
+    }
+
+        private void registerBricksRecipes(RecipeOutput output, Ingredient material, ItemLike bricks, int count) {
         shaped(output, ShapedRecipePattern.of(Map.of('#', material), BRICKS_PATTERN), bricks.asItem().getDefaultInstance());
     }
 

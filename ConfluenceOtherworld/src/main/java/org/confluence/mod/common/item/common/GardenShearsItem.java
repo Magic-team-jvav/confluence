@@ -7,9 +7,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,6 +22,7 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.common.init.item.ModItems;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -26,7 +31,9 @@ import java.util.stream.Stream;
 
 public class GardenShearsItem extends ShearsItem {
     public GardenShearsItem(Properties properties, ModRarity rarity) {
-        super(properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        super(properties.component(ConfluenceMagicLib.MOD_RARITY, rarity).attributes(ItemAttributeModifiers.builder().add(
+                Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND
+        ).build()));
     }
 
     @Override

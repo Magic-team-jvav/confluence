@@ -183,6 +183,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheld.add(createDir(ShovelItems.ITEMS, "shovel/"));
         handheld.add(createDir(HamaxeItems.ITEMS, "hamaxe/"));
         handheld.add(createDir(HoeShovelItems.ITEMS, "hoe_shovel/"));
+        handheld.add(createDir(GardenShearsItems.ITEMS, "garden_shears/"));
 
         genModels(handheld, "item/handheld");
 

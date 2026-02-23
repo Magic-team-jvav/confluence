@@ -171,6 +171,7 @@ public final class ModItems {
         FishingPoleItems.ITEMS.register(eventBus);
         FlailItems.ITEMS.register(eventBus);
         FoodItems.ITEMS.register(eventBus);
+        GardenShearsItems.ITEMS.register(eventBus);
         GunItems.ITEMS.register(eventBus);
         HamaxeItems.ITEMS.register(eventBus);
         HammerItems.ITEMS.register(eventBus);

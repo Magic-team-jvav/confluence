@@ -156,6 +156,7 @@ public final class ModTabs {
                         ChainsawItems.ITEMS.getEntries().forEach(action);
                         HamaxeItems.ITEMS.getEntries().forEach(action);
                         HoeShovelItems.ITEMS.getEntries().forEach(action);
+                        GardenShearsItems.ITEMS.getEntries().forEach(action);
                         HammerItems.ITEMS.getEntries().forEach(action);
                         HookItems.ITEMS.getEntries().forEach(action);
                         MinecartItems.ITEMS.getEntries().forEach(action);

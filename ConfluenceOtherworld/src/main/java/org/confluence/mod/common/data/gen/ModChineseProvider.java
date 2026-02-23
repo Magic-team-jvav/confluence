@@ -2594,6 +2594,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(HamaxeItems.HAEMORRHAXE.get(), "血锤斧");
         add(HamaxeItems.THE_AXE.get(), "吉他斧");
         add(AxeItems.LUCY_THE_AXE.get(), "露西斧");
+        add(GardenShearsItems.COBALT_GARDEN_SHEARS.get(), "钴园艺剪");
+        add(GardenShearsItems.PALLADIUM_GARDEN_SHEARS.get(), "钯金园艺剪");
 
         add(HoeItems.COPPER_HOE.get(), "铜锄");
         add(HoeItems.TIN_HOE.get(), "锡锄");

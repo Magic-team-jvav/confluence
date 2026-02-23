@@ -336,6 +336,8 @@ public final class ModTags {
         public static final TagKey<Item> TOOLS_REPEATER_CROSSBOW = c("tools/repeater_crossbow");
         public static final TagKey<Item> TOOLS_REPEATER = register("tools/repeater");
 
+        public static final TagKey<Item> TOOLS_SHEAR = c("tools/shear");
+
         public static final TagKey<Item> SPEAR = register("spear"); // neoforge那边为三叉戟
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");

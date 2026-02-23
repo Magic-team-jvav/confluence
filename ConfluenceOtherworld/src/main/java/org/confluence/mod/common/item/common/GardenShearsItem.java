@@ -3,6 +3,7 @@ package org.confluence.mod.common.item.common;
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -31,9 +32,14 @@ import java.util.stream.Stream;
 
 public class GardenShearsItem extends ShearsItem {
     public GardenShearsItem(Properties properties, ModRarity rarity) {
-        super(properties.component(ConfluenceMagicLib.MOD_RARITY, rarity).attributes(ItemAttributeModifiers.builder().add(
-                Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 2.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND
-        ).build()));
+        super(properties
+                .component(DataComponents.MAX_STACK_SIZE, 1)
+                .component(DataComponents.TOOL, ShearsItem.createToolProperties())
+                .component(ConfluenceMagicLib.MOD_RARITY, rarity)
+                .attributes(ItemAttributeModifiers.builder().add(
+                        Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(
+                                ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 2.5, AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND).build()));
     }
 
     @Override
@@ -48,6 +54,7 @@ public class GardenShearsItem extends ShearsItem {
                 .collect(Collectors.toCollection(Sets::newIdentityHashSet))
                 .contains(itemAbility);
     }
+    @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockPos blockpos = context.getClickedPos();

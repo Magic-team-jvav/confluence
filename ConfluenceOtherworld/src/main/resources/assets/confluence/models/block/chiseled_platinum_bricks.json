@@ -1,0 +1,7 @@
+{
+    "parent": "minecraft:block/cube_column",
+    "textures": {
+        "end": "confluence:block/chiseled_platinum_bricks_end",
+        "side": "confluence:block/chiseled_platinum_bricks_side"
+    }
+}

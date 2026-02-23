@@ -1,0 +1,22 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/chiseled_tungsten_bricks",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/chiseled_tungsten_bricks_0",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/chiseled_tungsten_bricks_1",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/chiseled_tungsten_bricks_2",
+                "weight": 1
+            }
+        ]
+    }
+}

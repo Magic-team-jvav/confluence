@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "confluence:block/chiseled_lead_bricks_2"
+  }
+}

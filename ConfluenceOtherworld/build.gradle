@@ -179,7 +179,8 @@ boolean legendarytooltips = false // 传说提示框
 boolean itemborders = false // 物品边框
 boolean advancementPlaques = false // 进度牌匾
 boolean dynamicCrosshair = false // 动态准星
-boolean kubejs = true
+boolean kubejs = false
+boolean quark = true
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -400,6 +401,10 @@ dependencies {
     if (true) {
         runtimeOnly "curse.maven:refurbished-furniture-897116:7473565"
         runtimeOnly "curse.maven:framework-549225:7530361"
+    }
+    if (quark) {
+        runtimeOnly "curse.maven:quark-243121:7640331"
+        runtimeOnly "curse.maven:zeta-968868:7640154"
     }
 }
 

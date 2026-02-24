@@ -2,10 +2,10 @@ package org.confluence.mod.mixed;
 
 import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.client.Minecraft;
-import net.neoforged.fml.ModList;
+import org.confluence.lib.util.LibUtils;
 
 public interface ILevelRenderer {
-    boolean IS_SODIUM_LOADED = ModList.get().isLoaded("sodium");
+    boolean IS_SODIUM_LOADED = LibUtils.isModLoaded("sodium");
 
     void confluence$rebuildAllChunks();
 

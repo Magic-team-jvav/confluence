@@ -1,9 +1,7 @@
 package org.confluence.mod.integration.create;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -17,7 +15,7 @@ import java.util.function.BiConsumer;
 
 public class CreateHelper {
     public static final String MODID = "create";
-    public static final boolean IS_LOADED = ModList.get().isLoaded(MODID);
+    public static final boolean IS_LOADED = LibUtils.isModLoaded(MODID);
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
     public static final DeferredItem<Item> CRUSHED_RAW_TUNGSTEN = ITEMS.register("crushed_raw_tungsten", () -> new Item(new Item.Properties()));
     public static void register(IEventBus eventBus) {

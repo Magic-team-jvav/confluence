@@ -251,7 +251,7 @@ public final class ModClientSetups {
         }
     };
 
-    static boolean guideCheckedJEI = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");
+    static boolean guideCheckedJEI = LibUtils.isModLoaded("jei") || LibUtils.isModLoaded("emi");
 
     static void setRenderLayers() {
         RenderType translucent = RenderType.translucent();
@@ -297,7 +297,7 @@ public final class ModClientSetups {
         });
     }
 
-    public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = ModList.get().isLoaded("ctm") || ModList.get().isLoaded("fusion") || ModList.get().isLoaded("continuity");
+    public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = LibUtils.isModLoaded("ctm") || LibUtils.isModLoaded("fusion") || LibUtils.isModLoaded("continuity");
 
     public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
             RenderType.CompositeState.builder()

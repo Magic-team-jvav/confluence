@@ -5,7 +5,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.fml.ModList;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.ModEffects;
@@ -15,7 +14,7 @@ import org.confluence.terra_curio.api.primitive.IntegerValue;
 import org.confluence.terraentity.init.entity.TEProjectileEntities;
 
 public class SodiumDynamicLightsHelper {
-    public static final boolean IS_LOADED = ModList.get().isLoaded("sodiumdynamiclights");
+    public static final boolean IS_LOADED = LibUtils.isModLoaded("sodiumdynamiclights");
 
     public static void registerDynamicLight() {
         if (IS_LOADED) {

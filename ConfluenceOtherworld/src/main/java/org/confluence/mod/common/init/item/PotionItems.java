@@ -8,12 +8,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.*;
@@ -71,7 +71,7 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> RECALL_POTION = ITEMS.register("recall_potion", RecallPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> REGENERATION_POTION = ITEMS.register("regeneration_potion", () -> new EffectPotionItem(MobEffects.REGENERATION, 9600));
     public static final DeferredItem<AbstractPotionItem> SHINE_POTION = ITEMS.register("shine_potion", () -> new EffectPotionItem(ModEffects.SHINE, 12000) {
-        private final boolean noneLoaded = !ModList.get().isLoaded("sodiumdynamiclights");
+        private final boolean noneLoaded = !LibUtils.isModLoaded("sodiumdynamiclights");
 
         @ParametersAreNonnullByDefault
         @Override

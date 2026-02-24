@@ -111,7 +111,7 @@ public final class ModEvents {
                 WipNotDisplayOutput.forceAllow();
             }
 
-            if (!ModList.get().isLoaded("attributefix")) {
+            if (!LibUtils.isModLoaded("attributefix")) {
                 if (Attributes.ARMOR.value() instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 65536;
                 }

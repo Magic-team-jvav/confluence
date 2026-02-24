@@ -3,11 +3,11 @@ package org.confluence.mod.integration.supplementaries;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.fml.ModList;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
 
 public class SupplementariesHelper {
-    public static final boolean IS_LOADED = ModList.get().isLoaded("supplementaries");
+    public static final boolean IS_LOADED = LibUtils.isModLoaded("supplementaries");
 
     public static boolean shouldSkip(ItemStack itemStack, LivingEntity shooter) {
         if (IS_LOADED && shooter instanceof Player player) {

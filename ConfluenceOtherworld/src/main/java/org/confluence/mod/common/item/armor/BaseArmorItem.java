@@ -17,10 +17,10 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.neoforged.fml.ModList;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -54,7 +54,7 @@ public class BaseArmorItem extends ArmorItem {
         if (tooltips != null) {
             tooltipComponents.addAll(tooltips);
         }
-        if (requiresModLoaded != null && !ModList.get().isLoaded(requiresModLoaded)) {
+        if (requiresModLoaded != null && !LibUtils.isModLoaded(requiresModLoaded)) {
             tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", requiresModLoaded));
         }
     }

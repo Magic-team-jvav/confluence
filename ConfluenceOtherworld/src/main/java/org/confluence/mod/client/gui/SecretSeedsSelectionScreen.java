@@ -64,7 +64,8 @@ public class SecretSeedsSelectionScreen extends Screen {
     private static final Path UNLOCKED_SECRET_SEEDS_PATH = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("unlocked_secret_seeds.json");
     private static final Codec<Set<SecretSeed>> UNLOCKED_SECRET_SEEDS_CODEC = ModSecretSeeds.CODEC.listOf().xmap(LinkedHashSet::new, ArrayList::new);
     private static final SecretSeed[] SECRET_SEEDS = new SecretSeed[]{
-            ModSecretSeeds.BOULDER_WORLD
+            ModSecretSeeds.BOULDER_WORLD,
+            ModSecretSeeds.REALLY_SMALL
     };
     private static final Long2ObjectArrayMap<Triple<ResourceLocation, Component, Component>> DESCRIPTIONS = Util.make(new Long2ObjectArrayMap<>(12), map -> {
         ResourceLocation normal = Confluence.asResource("textures/gui/secret_seeds_selection/world_icon/normal.png");

@@ -48,10 +48,7 @@ import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -63,6 +60,7 @@ import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.item.common.StaffOfRegrowth;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
+import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -100,6 +98,11 @@ public final class PlayerEvents {
                         "message.confluence.join_team", player.getName(), team.getLowerCaseName()
                 ).withColor(team.getColor().getTextColor()), false);
             }
+        }
+
+        if (ModSecretSeeds.REALLY_SMALL.match(player.server)) {
+            ReallySmall.giveStepStool(player);
+            ReallySmall.scalePlayer(player);
         }
     }
 
@@ -294,6 +297,9 @@ public final class PlayerEvents {
         BoulderWorld.forceSetAccessory(player);
         PlayerUtils.flushLocalData(player, player);
         PlayerUtils.syncPlayerData(player);
+        if (ModSecretSeeds.REALLY_SMALL.match(player.server)) {
+            ReallySmall.scalePlayer(player);
+        }
     }
 
     @SubscribeEvent

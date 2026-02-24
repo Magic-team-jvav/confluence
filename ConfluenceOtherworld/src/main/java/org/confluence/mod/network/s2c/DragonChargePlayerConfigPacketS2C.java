@@ -19,6 +19,10 @@ public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPac
     public static final StreamCodec<ByteBuf, DragonChargePlayerConfigPacketS2C> STREAM_CODEC = ByteBufCodecs.BOOL
             .map(DragonChargePlayerConfigPacketS2C::new, DragonChargePlayerConfigPacketS2C::enabled);
 
+    public DragonChargePlayerConfigPacketS2C() {
+        this(CommonConfigs.isDragonChargePlayer());
+    }
+
     @Override
     public void work(Player player) {
         CommonConfigs.handleDragonChargePlayer(enabled);
@@ -31,13 +35,13 @@ public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPac
 
     public static void sendToPlayer(ServerPlayer player) {
         if (LibUtils.isSingleplayerOwner(player)) return;
-        PacketDistributor.sendToPlayer(player, new DragonChargePlayerConfigPacketS2C(CommonConfigs.isDragonChargePlayer()));
+        PacketDistributor.sendToPlayer(player, new DragonChargePlayerConfigPacketS2C());
     }
 
     public static void sendToAll() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server == null) return;
-        ClientboundCustomPayloadPacket payload = new ClientboundCustomPayloadPacket(new DragonChargePlayerConfigPacketS2C(CommonConfigs.isDragonChargePlayer()));
+        ClientboundCustomPayloadPacket payload = new ClientboundCustomPayloadPacket(new DragonChargePlayerConfigPacketS2C());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             if (LibUtils.isSingleplayerOwner(player)) continue;
             player.connection.send(payload);

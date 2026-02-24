@@ -260,4 +260,14 @@ public class RainbowBoulderEntity extends BoulderEntity {
     public List<Vec3> getTrails() {
         return trails;
     }
+
+    @Override
+    public boolean isCurrentlyGlowing() {
+        return true;
+    }
+
+    @Override
+    public int getTeamColor() {
+        return getGlowingColor();
+    }
 }

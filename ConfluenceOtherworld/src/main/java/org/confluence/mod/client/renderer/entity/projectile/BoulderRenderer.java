@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 
-public class BoulderRenderer extends EntityRenderer<BoulderEntity> {
+public class BoulderRenderer<E extends BoulderEntity> extends EntityRenderer<E> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/normal_boulder.png");
     private final BlockRenderDispatcher dispatcher;
 
@@ -22,12 +22,12 @@ public class BoulderRenderer extends EntityRenderer<BoulderEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BoulderEntity pEntity) {
+    public ResourceLocation getTextureLocation(E pEntity) {
         return TEXTURE;
     }
 
     @Override
-    public void render(BoulderEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void render(E entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() - 90.0F));
         float radius = entity.radius;

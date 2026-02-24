@@ -17,7 +17,6 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
-import org.confluence.mod.common.entity.projectile.boulder.RainbowBoulderEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.mixed.ILevelLoadingScreen;
@@ -58,9 +57,6 @@ public abstract class MinecraftMixin {
     public void changeGlowOutline(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (player != null) {
             GlowingHelper helper = GlowingHelper.INSTANCE;
-            if (entity instanceof RainbowBoulderEntity) {
-                cir.setReturnValue(true);
-            }
             // 狩猎药水
             if (player.hasEffect(ModEffects.HUNTER)) {
                 // 自定义类别 中立生物不计入其中

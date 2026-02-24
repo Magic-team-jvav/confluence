@@ -9,25 +9,21 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.RainbowBoulderEntity;
 import org.confluence.terra_guns.client.init.TGRenderTypes;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-public class RainbowBoulderRenderer extends BoulderRenderer{
+public class RainbowBoulderRenderer extends BoulderRenderer<RainbowBoulderEntity> {
     public RainbowBoulderRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
     }
 
     @Override
-    public void render(BoulderEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        if (entity instanceof RainbowBoulderEntity rainbowBoulder){
-            List<Vec3> trails = rainbowBoulder.getTrails();
-            renderTrail(trails, entity.position(), poseStack, bufferSource);
-        }
+    public void render(RainbowBoulderEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        List<Vec3> trails = entity.getTrails();
+        renderTrail(trails, entity.position(), poseStack, bufferSource);
 
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
@@ -69,10 +65,10 @@ public class RainbowBoulderRenderer extends BoulderRenderer{
             Vec3 left1 = pos1.add(side.scale(+progress));
             Vec3 right1 = pos1.add(side.scale(-progress));
 
-            int colorLeft0  = getRainbowColor(p0.y, minY, maxY, alpha);
+            int colorLeft0 = getRainbowColor(p0.y, minY, maxY, alpha);
             int colorRight0 = getRainbowColor(p0.y, minY, maxY, alpha);
             int colorRight1 = getRainbowColor(p1.y, minY, maxY, alpha);
-            int colorLeft1  = getRainbowColor(p1.y, minY, maxY, alpha);
+            int colorLeft1 = getRainbowColor(p1.y, minY, maxY, alpha);
 
             addVertex(buffer, matrix4f, left0, colorLeft0);
             addVertex(buffer, matrix4f, right0, colorRight0);

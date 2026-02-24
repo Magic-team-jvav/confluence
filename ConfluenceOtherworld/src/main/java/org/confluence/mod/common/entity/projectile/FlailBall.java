@@ -22,7 +22,6 @@ import org.confluence.mod.mixed.Immunity;
 import org.confluence.terraentity.api.entity.IOriented;
 import org.confluence.terraentity.mixin.accessor.EntityAccessor;
 import org.confluence.terraentity.utils.OBB;
-import org.jetbrains.annotations.NotNull;
 
 // 原作者：@viola
 public class FlailBall extends Projectile implements IOriented, Immunity {
@@ -41,7 +40,7 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
     public static final int PHASE_FORCE_RETRACT = 3;
     public static final int PHASE_STAY = 4;
 
-    public FlailBall(Level pLevel, FlailItem flailItem){
+    public FlailBall(Level pLevel, FlailItem flailItem) {
         super(ModEntities.FLAIL_BALL.get(), pLevel);
         setNoGravity(true);
         noPhysics = true;
@@ -49,7 +48,7 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
         this.item = flailItem;
     }
 
-    public FlailBall(Level pLevel, Entity owner, InteractionHand hand, FlailItem flailItem){
+    public FlailBall(Level pLevel, Entity owner, InteractionHand hand, FlailItem flailItem) {
         this(pLevel, flailItem);
         setOwner(owner);
         radians = (float) Math.toRadians(owner.getYRot());
@@ -60,21 +59,21 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder){
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(DATA_OFFSET, -0.6f);
         builder.define(DATA_PHASE, PHASE_SPIN);
     }
 
     @Override
-    public void tick(){
+    public void tick() {
         Entity owner = getOwner();
         int phase = getPhase();
-        if(owner == null || owner.isRemoved()  // 没有owner
-            || (!level().isClientSide() && item == null)  // 没有物品
-            || (!level().isClientSide() && owner instanceof LivingEntity living && living.getItemInHand(hand).getItem() != item)   // 切换物品
-            || position().distanceToSqr(owner.position()) >= 30 * 30){  //距离太远，自动消失的距离是固定的 TODO: 调整数值
+        if (owner == null || owner.isRemoved()  // 没有owner
+                || (!level().isClientSide() && item == null)  // 没有物品
+                || (!level().isClientSide() && owner instanceof LivingEntity living && living.getItemInHand(hand).getItem() != item)   // 切换物品
+                || position().distanceToSqr(owner.position()) >= 30 * 30) {  //距离太远，自动消失的距离是固定的 TODO: 调整数值
             discard();
-            if(owner instanceof IPlayer fp){
+            if (owner instanceof IPlayer fp) {
                 fp.confluence$setFlailBall(null);
             }
             return;
@@ -82,7 +81,7 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
         super.tick();
         Vec3 motion = getDeltaMovement();
         move(MoverType.SELF, motion);
-        switch(phase){
+        switch (phase) {
             case PHASE_SPIN -> {
                 float offset = getEntityData().get(DATA_OFFSET);
                 float radians = (float) Math.toRadians(owner.getYRot());
@@ -106,27 +105,27 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
             case PHASE_RETRACT, PHASE_FORCE_RETRACT -> {
                 noPhysics = true;
                 setNoGravity(true);
-                setDeltaMovement(owner.position().add(0,1.5,0).subtract(position()).normalize().scale(3)); // TODO: 时间决定速度
+                setDeltaMovement(owner.position().add(0, 1.5, 0).subtract(position()).normalize().scale(3)); // TODO: 时间决定速度
             }
         }
-        if(position().distanceToSqr(owner.position()) > 16 * 16){  // TODO: 抛出时间固定，时间决定速度和距离
+        if (position().distanceToSqr(owner.position()) > 16 * 16) {  // TODO: 抛出时间固定，时间决定速度和距离
             setPhase(PHASE_RETRACT);
         }
         refreshDimensions();
-        if(!level().isClientSide()){
+        if (!level().isClientSide()) {
             OBB obb = getOrientedBoundingBox();
             //包围盒要大一点
             AABB border = getBoundingBox().inflate(2);
             var entities = level().getEntitiesOfClass(LivingEntity.class, border, EntitySelector.NO_SPECTATORS
                     .and(e -> {
-                        if(e instanceof Player) return true;
+                        if (e instanceof Player) return true;
                         return obb.inflate(10).collide(e.getBoundingBox(), motion, e.getDeltaMovement());
                     }));
 
-            for(LivingEntity living : entities){
-                if(living == owner){
-                    if(phase == PHASE_RETRACT || phase == PHASE_FORCE_RETRACT){
-                        if(owner instanceof IPlayer fp){
+            for (LivingEntity living : entities) {
+                if (living == owner) {
+                    if (phase == PHASE_RETRACT || phase == PHASE_FORCE_RETRACT) {
+                        if (owner instanceof IPlayer fp) {
                             fp.confluence$setFlailBall(null);
                         }
                         discard();
@@ -143,20 +142,20 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
 
 
     @Override
-    public void move(MoverType pType, Vec3 motion){
+    public void move(MoverType pType, Vec3 motion) {
         int phase = getPhase();
-        if(phase == PHASE_THROWN){
+        if (phase == PHASE_THROWN) {
             Vec3 collide = ((EntityAccessor) this).callCollide(motion);
-            if(collide.x !=motion.x){
-                motion=new Vec3(-motion.x/2, motion.y, motion.z);
+            if (collide.x != motion.x) {
+                motion = new Vec3(-motion.x / 2, motion.y, motion.z);
             }
-            if(collide.y !=motion.y){
-                motion=new Vec3(motion.x, -motion.y/2, motion.z);
+            if (collide.y != motion.y) {
+                motion = new Vec3(motion.x, -motion.y / 2, motion.z);
             }
-            if(collide.z !=motion.z){
-                motion=new Vec3(motion.x, motion.y, -motion.z/2);
+            if (collide.z != motion.z) {
+                motion = new Vec3(motion.x, motion.y, -motion.z / 2);
             }
-        }else if(phase == PHASE_STAY){
+        } else if (phase == PHASE_STAY) {
             motion = new Vec3(motion.x * 0.7, Math.min(0, motion.y - 0.4), motion.z * 0.7);
         }
 //        if(!isNoGravity()){
@@ -166,39 +165,38 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
         super.move(pType, motion);
     }
 
-    public int getPhase(){
+    public int getPhase() {
         return getEntityData().get(DATA_PHASE);
     }
 
-    public void setPhase(int phase){
-        if(phase < PHASE_SPIN || phase > PHASE_STAY){
+    public void setPhase(int phase) {
+        if (phase < PHASE_SPIN || phase > PHASE_STAY) {
             throw new IllegalArgumentException("Invalid phase");
         }
         getEntityData().set(DATA_PHASE, phase);
     }
 
     @Override
-    @NotNull
-    public EntityDimensions getDimensions(@NotNull Pose pPose){
-        if(getPhase() == PHASE_SPIN){
+    public EntityDimensions getDimensions(Pose pPose) {
+        if (getPhase() == PHASE_SPIN) {
             return super.getDimensions(pPose);
-        }else{
+        } else {
             //包围盒要大一点
             return EntityDimensions.fixed(0.75f, 0.75f);
         }
     }
 
     @Override
-    protected void onHitBlock(@NotNull BlockHitResult pResult){
+    protected void onHitBlock(BlockHitResult pResult) {
         Confluence.LOGGER.info("{}", pResult);
         super.onHitBlock(pResult);
     }
 
     @Override
-    public OBB getOrientedBoundingBox(){
+    public OBB getOrientedBoundingBox() {
         Vec3 pos = position();
         Entity owner = getOwner();
-        if(owner == null || getEntityData().get(DATA_PHASE) != PHASE_SPIN){
+        if (owner == null || getEntityData().get(DATA_PHASE) != PHASE_SPIN) {
             return new OBB(getBoundingBox()).updateVertex();
         }
         float offset = getEntityData().get(DATA_OFFSET) / -2;
@@ -207,12 +205,12 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
     }
 
     @Override
-    public Type confluence$getImmunityType(){
+    public Type confluence$getImmunityType() {
         return Type.LOCAL;
     }
 
     @Override
-    public int confluence$getImmunityDuration(DamageSource damageSource){
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
         return 7;
     }
 }

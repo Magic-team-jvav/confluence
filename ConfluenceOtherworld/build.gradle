@@ -315,6 +315,7 @@ dependencies {
     //runtimeOnly "curse.maven:azurelib-817423:6849116"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
     //runtimeOnly "maven.modrinth:lootr:4dt0SxY0"
+    //runtimeOnly "curse.maven:official-divinerpg-363543:7371103"
     if (false) {
         runtimeOnly "maven.modrinth:l_enders-cataclysm:3.16"
         runtimeOnly "maven.modrinth:lionfish-api:2.6"

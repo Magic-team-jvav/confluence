@@ -16,6 +16,7 @@ import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.util.AchievementUtils;
@@ -64,7 +65,7 @@ public abstract class LocalPlayerAdvancementsMixin {
 
     @Inject(method = "save", at = @At("HEAD"))
     private void saveConfluence(CallbackInfo ci) { // 单独保存玩家的成就
-        if (player.server.isSingleplayerOwner(player.getGameProfile())) {
+        if (LibUtils.isSingleplayerOwner(player)) {
             Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>();
             progress.forEach((holder, progress) -> {
                 if (progress.hasProgress() && AchievementOffsetLoader.getDisplayOffset().containsKey(holder.id())) {
@@ -77,7 +78,7 @@ public abstract class LocalPlayerAdvancementsMixin {
 
     @Inject(method = "load", at = @At("HEAD"))
     private void loadConfluence(ServerAdvancementManager manager, CallbackInfo ci) {
-        if (player.server.isSingleplayerOwner(player.getGameProfile()) && Files.isRegularFile(confluence$savePath)) {
+        if (LibUtils.isSingleplayerOwner(player) && Files.isRegularFile(confluence$savePath)) {
             try (JsonReader reader = new JsonReader(Files.newBufferedReader(confluence$savePath, StandardCharsets.UTF_8))) {
                 reader.setLenient(false);
                 JsonElement element = Streams.parse(reader);

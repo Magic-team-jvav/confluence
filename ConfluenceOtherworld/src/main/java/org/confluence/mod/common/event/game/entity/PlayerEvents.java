@@ -34,6 +34,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.lib.event.PlayerNaturalHealEvent;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -108,6 +109,7 @@ public final class PlayerEvents {
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         GameEventSystem.INSTANCE.clearAll(player);
         PlayerSpecialData.of(player).setPvP(false);
+        CommonConfigs.reset();
     }
 
     @SubscribeEvent
@@ -314,7 +316,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!player.server.isSingleplayerOwner(player.getGameProfile()) &&
+        if (!LibUtils.isSingleplayerOwner(player) &&
                 AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
         ) {
             AchievementsDataSyncPacketS2C.sendToPlayer(player);

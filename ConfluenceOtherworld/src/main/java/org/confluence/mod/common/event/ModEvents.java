@@ -232,6 +232,7 @@ public final class ModEvents {
                 .playToClient(GoblinArmyProgressPacketS2C.TYPE, GoblinArmyProgressPacketS2C.STREAM_CODEC, GoblinArmyProgressPacketS2C::handle)
                 .playToClient(SyncEnemyBannerEntriesPacketS2C.TYPE, SyncEnemyBannerEntriesPacketS2C.STREAM_CODEC, SyncEnemyBannerEntriesPacketS2C::handle)
                 .playToClient(AchievementsDataSyncPacketS2C.TYPE, AchievementsDataSyncPacketS2C.STREAM_CODEC, AchievementsDataSyncPacketS2C::handle)
+                .playToClient(DragonChargePlayerConfigPacketS2C.TYPE, DragonChargePlayerConfigPacketS2C.STREAM_CODEC, DragonChargePlayerConfigPacketS2C::handle)
 
                 .playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle)
                 .playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle)

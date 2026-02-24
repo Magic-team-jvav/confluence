@@ -168,6 +168,7 @@ public final class PlayerUtils {
         SecretFlagSyncPacketS2C.sendToClient(player, IMinecraftServer.of(player.server).confluence$getSecretFlag());
         CompatibilitySyncPacketS2c.sendToClient(player);
         TeamPacket.sendToClient(player, player);
+        DragonChargePlayerConfigPacketS2C.sendToPlayer(player);
     }
 
     /// 将target的数据同步到sendTo

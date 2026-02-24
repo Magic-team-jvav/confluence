@@ -10,6 +10,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec.*;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.network.s2c.DragonChargePlayerConfigPacketS2C;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ public final class CommonConfigs {
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
     public static BooleanValue ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES;
+    private static BooleanValue DRAGON_CHARGE_PLAYER;
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
@@ -99,6 +101,9 @@ public final class CommonConfigs {
     public static Set<ResourceKey<Item>> ammoSlotsItemBlackList = Set.of(Confluence.asResourceKey(Registries.ITEM, "falling_star"));
     public static Set<TagKey<Item>> ammoSlotsTagBlackList = Set.of(Tags.Items.SEEDS);
 
+    private static boolean isSingleplayerOwner = true;
+    private static boolean dragonChargePlayer = true;
+
     public static void onLoad() {
         Set<ResourceKey<Item>> a = new HashSet<>();
         Set<TagKey<Item>> b = new HashSet<>();
@@ -111,6 +116,25 @@ public final class CommonConfigs {
         }
         ammoSlotsItemBlackList = a;
         ammoSlotsTagBlackList = b;
+
+        if (isSingleplayerOwner) {
+            dragonChargePlayer = DRAGON_CHARGE_PLAYER.get();
+            DragonChargePlayerConfigPacketS2C.sendToAll();
+        }
+    }
+
+    public static void handleDragonChargePlayer(boolean enabled) {
+        isSingleplayerOwner = false;
+        dragonChargePlayer = enabled;
+    }
+
+    public static void reset() {
+        isSingleplayerOwner = true;
+        dragonChargePlayer = DRAGON_CHARGE_PLAYER.get();
+    }
+
+    public static boolean isDragonChargePlayer() {
+        return dragonChargePlayer;
     }
 
     public static void register(ModContainer container) {
@@ -137,6 +161,7 @@ public final class CommonConfigs {
             TERRA_STYLE_FIRE_DAMAGE = builder.define("terraStyleFireDamage", true);
             NPC_INVULNERABLE_TO_PLAYER = builder.define("npcInvulnerableToPlayer", true);
             ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
+            DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
             builder.pop();
         }
         {

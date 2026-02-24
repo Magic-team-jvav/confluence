@@ -131,6 +131,7 @@ public class AchievementScreen extends Screen {
 
         int x = leftPos + CATEGORY_X;
         int y = topPos + CATEGORY_Y;
+        AchievementOffset.Category hoveredCategory = null;
         for (int i = 0; i < 4; i++) {
             AchievementOffset.Category category = INDEX_2_CATEGORY[i];
             int[] uvwh = CATEGORIES_UVWH.get(category);
@@ -142,9 +143,12 @@ public class AchievementScreen extends Screen {
             int h = uvwh[3];
             guiGraphics.blit(BACKGROUND, x, y, u, uvwh[1], w, h, TEXTURE_WIDTH, TEXTURE_HEIGHT);
             if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
-                guiGraphics.renderTooltip(font, category.getTranslatedName(), mouseX, mouseY);
+                hoveredCategory = category;
             }
             x += w;
+        }
+        if (hoveredCategory != null) {
+            guiGraphics.renderTooltip(font, hoveredCategory.getTranslatedName(), mouseX, mouseY);
         }
         x = leftPos + ENTRY_X;
         y = topPos + ENTRY_Y;

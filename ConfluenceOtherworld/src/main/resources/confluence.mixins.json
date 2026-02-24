@@ -48,6 +48,7 @@
         "entity.AbstractMinecartMixin",
         "entity.ArrowMixin",
         "entity.DamageSourceMixin",
+        "entity.EnderDragonMixin",
         "entity.EntityMixin",
         "entity.EntityTypeMixin",
         "entity.FishingHookMixin",

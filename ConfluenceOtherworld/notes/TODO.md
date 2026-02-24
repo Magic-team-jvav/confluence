@@ -262,6 +262,12 @@
     - 怪物变黑（纯视觉效果）
     - 怪物的血量x1.0~1.5
     - 怪物的刷新量减少
+    - 怪物会产生一个本体不死它就不死的黑影
+
+  - Paper Water Bucket and Face Mask(paper_water_bucket_and_face_mask)
+    - 受伤会获得debuff 破甲 持续40秒，再次获得会升级并刷新时长
+    - 破甲存在时，每级失去2/4/6/8点护甲值
+    - 破甲可以叠加20级
 
 
 - 来自Discord

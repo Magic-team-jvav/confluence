@@ -1223,6 +1223,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("description.confluence.secret_seeds_selection.boulder_world", "A world of more secrets, parallel timelines, and a disorienting journey awaits your exploration.");
         add("title.confluence.secret_seeds_selection.boulder_world", "Boulder World");
         add("description.confluence.secret_seeds_selection.boulder_world", "You know what? The world is actually one giant boulder. So everything in the world is a boulder.");
+        add("title.confluence.secret_seeds_selection.really_small", "Tiny Me");
+        add("description.confluence.secret_seeds_selection.really_small", "I get all the reasons, but why is this bird so big?");
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);

@@ -42,10 +42,12 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
+import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
@@ -161,7 +163,7 @@ public final class PlayerUtils {
         BestiarySyncPacketS2C.syncEntries(player);
         ExtraInventorySyncPacketS2C.sendToClient(player, player);
         PlayerPiggyBankContainer.of(player).setChanged(); // 自动同步
-        FishingPowerInfoPacketS2C.sendAndGet(player);
+        FishingPowerInfoPacketS2C.sendToClient(player);
         VisibilityPacketS2C.sendEcho(player);
         syncMana2Client(player);
         VisibilityPacketS2C.sendTheConstantPostEffect(player);
@@ -184,7 +186,10 @@ public final class PlayerUtils {
     }
 
     public static float getFishingPower(ServerPlayer player) {
-        float base = TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
+        float base = player.getLuck() + TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
+        if (player.fishing != null) {
+            base += player.fishing.luck;
+        }
         if (EverBeneficial.of(player).isGummyWormUsed()) {
             base += 3.0F;
         }
@@ -221,6 +226,14 @@ public final class PlayerUtils {
             base *= 1.1F;
         }
         return base;
+    }
+
+    /// 获取完整的渔力
+    public static float getFinalFishingPower(ServerPlayer player) {
+        float power = (player.fishing == null ? 0 : player.fishing.luck) + player.getLuck() + getFishingPower(player);
+        IBait bait = IBait.of(IPlayer.of(player).confluence$getCurrentBait());
+        if (bait != null) power *= (1 + bait.getBaitBonus());
+        return power;
     }
 
     public static Tuple<ItemStack, Integer> getMaxDiggingPowerItem(Player player) {
@@ -462,7 +475,7 @@ public final class PlayerUtils {
 
     public static void flushPrimitiveValueData(ServerPlayer player) {
         ManaStorage.of(player).flushAbility(player);
-        FishingPowerInfoPacketS2C.sendAndGet(player);
+        FishingPowerInfoPacketS2C.sendToClient(player);
         VisibilityPacketS2C.sendEcho(player);
     }
 }

@@ -33,7 +33,6 @@ import org.confluence.mod.network.c2s.HouseSelectPacketC2S;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
 import org.confluence.terraentity.entity.npc.house.IHouseDetector;
-import org.jetbrains.annotations.NotNull;
 
 public class HouseSelectHUD implements LayeredDraw.Layer {
     private static final GuiSprite crosshair = new GuiSprite(Confluence.asResource("hud/house_select/crosshair"), 15, 15);
@@ -78,7 +77,7 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
     private static Component regionText;
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, @NotNull DeltaTracker deltaTracker) {
+    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!inSelectHUD) return;
 
         Minecraft minecraft = Minecraft.getInstance();

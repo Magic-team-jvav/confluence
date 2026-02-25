@@ -28,11 +28,8 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.item.fishing.AbstractFishingPole;
-import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.mod.util.PlayerUtils;
 
 public interface IFishingHook extends IExtraSyncedData<FishingHook> {
     void confluence$setIsLavaHook();
@@ -52,7 +49,8 @@ public interface IFishingHook extends IExtraSyncedData<FishingHook> {
     }
 
     static boolean isValidBlock(FishingHook self, BlockState instance, Block block, boolean original) {
-        if (original || instance.is(ModBlocks.HONEY.get()) || instance.is(ModBlocks.SHIMMER.get())) return true;
+        if (original || instance.is(ModBlocks.HONEY.get()) || instance.is(ModBlocks.SHIMMER.get()))
+            return true;
         return of(self).confluence$isLavaHook() && self.isInLava() && instance.is(Blocks.LAVA);
     }
 
@@ -73,14 +71,10 @@ public interface IFishingHook extends IExtraSyncedData<FishingHook> {
         return self.isInLava() ? ParticleTypes.LAVA : original;
     }
 
-    static LootParams modifyLuck(FishingHook self, LootParams params, ItemStack stack) {
+    static LootParams modifyLuck(FishingHook self, LootParams params) {
         Player owner = self.getPlayerOwner();
-        if (owner != null) {
-            float luck = self.luck;
-            luck += TCUtils.getValue(owner, AccessoryItems.FISHING$POWER);
-            IBait bait = IBait.of(AbstractFishingPole.getBait(self.registryAccess(), stack));
-            if (bait != null) luck *= (1 + bait.getBaitBonus());
-            params.luck = luck;
+        if (owner instanceof ServerPlayer player) {
+            params.luck = PlayerUtils.getFishingPower(player);
         }
         return params;
     }

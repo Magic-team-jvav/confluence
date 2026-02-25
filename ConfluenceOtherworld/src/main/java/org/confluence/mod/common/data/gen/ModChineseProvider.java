@@ -3108,6 +3108,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FishingPoleItems.MECHANICS_ROD.get(), "机械师钓竿");
         add(FishingPoleItems.SITTING_DUCKS_FISHING_POLE.get(), "冤大头钓竿");
         add(FishingPoleItems.GOLDEN_FISHING_ROD.get(), "金钓竿");
+        add(FishingPoleItems.DEV_FISHING_ROD.get(), "开发者钓竿");
 
 
         add(BaitItems.APPRENTICE_BAIT.get(), "学徒诱饵");

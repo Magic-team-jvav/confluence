@@ -25,9 +25,7 @@ public record FishingPowerInfoPacketS2C(float value) implements IPacketS2C {
         ClientPacketHandler.handleFishingPower(this);
     }
 
-    public static float sendAndGet(ServerPlayer serverPlayer) {
-        float fishingPower = PlayerUtils.getFishingPower(serverPlayer);
-        PacketDistributor.sendToPlayer(serverPlayer, new FishingPowerInfoPacketS2C(fishingPower));
-        return fishingPower;
+    public static void sendToClient(ServerPlayer player) {
+        PacketDistributor.sendToPlayer(player, new FishingPowerInfoPacketS2C(PlayerUtils.getFishingPower(player)));
     }
 }

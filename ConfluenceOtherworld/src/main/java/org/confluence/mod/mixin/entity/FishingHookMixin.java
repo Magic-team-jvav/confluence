@@ -3,7 +3,6 @@ package org.confluence.mod.mixin.entity;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.llamalad7.mixinextras.sugar.Local;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceKey;
@@ -118,8 +117,8 @@ public abstract class FishingHookMixin implements IFishingHook {
     }
 
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
-    private LootParams modifyLuck(LootParams params, @Local(argsOnly = true) ItemStack stack) {
-        return IFishingHook.modifyLuck(confluence$self(), params, stack);
+    private LootParams modifyLuck(LootParams params) {
+        return IFishingHook.modifyLuck(confluence$self(), params);
     }
 
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/ReloadableServerRegistries$Holder;getLootTable(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/level/storage/loot/LootTable;"))

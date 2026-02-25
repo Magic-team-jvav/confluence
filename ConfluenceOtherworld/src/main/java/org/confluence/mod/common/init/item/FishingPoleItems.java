@@ -20,7 +20,8 @@ public class FishingPoleItems {
             MECHANICS_ROD = register("mechanics_rod", MechanicsRod::new),
             SITTING_DUCKS_FISHING_POLE = register("sitting_ducks_fishing_pole", SittingDucksFishingPole::new),
             HOTLINE_FISHING_HOOK = register("hotline_fishing_hook", HotlineFishingHookItem::new),
-            GOLDEN_FISHING_ROD = register("golden_fishing_rod", GoldenFishingRod::new);
+            GOLDEN_FISHING_ROD = register("golden_fishing_rod", GoldenFishingRod::new),
+            DEV_FISHING_ROD = register("dev_fishing_rod", DevFishingRod::new);
 
     private static DeferredItem<AbstractFishingPole> register(String name, Supplier<AbstractFishingPole> supplier) {
         return ITEMS.register(name, supplier);

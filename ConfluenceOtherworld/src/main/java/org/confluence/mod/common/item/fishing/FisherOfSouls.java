@@ -18,7 +18,7 @@ public class FisherOfSouls extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("fisher_of_souls");
 
     public FisherOfSouls() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(256), ModRarity.BLUE);
+        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE), ModRarity.BLUE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

@@ -29,7 +29,6 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -41,20 +40,20 @@ public class BaitItem extends Item implements IBait {
     private final float bonus;
     private final @Nullable Supplier<? extends EntityType<?>> supplier;
     private final Consumer<Entity> consumer;
-    private final List<Component> commonTooltips;
 
     public BaitItem(ModRarity rarity, float bonus, @Nullable Supplier<? extends EntityType<?>> supplier, Consumer<Entity> consumer) {
         super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity).stacksTo(9999));
         this.bonus = bonus;
         this.supplier = supplier;
         this.consumer = consumer;
-        this.commonTooltips = createCommonTooltips();
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
         if (supplier != null) {
-            if (!(context.getLevel() instanceof ServerLevel level)) return InteractionResult.SUCCESS;
+            if (!(context.getLevel() instanceof ServerLevel level)) {
+                return InteractionResult.SUCCESS;
+            }
 
             ItemStack itemstack = context.getItemInHand();
             BlockPos blockpos = context.getClickedPos();
@@ -100,11 +99,15 @@ public class BaitItem extends Item implements IBait {
         if (supplier != null) {
             ItemStack itemstack = player.getItemInHand(usedHand);
             BlockHitResult blockhitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
-            if (blockhitresult.getType() != HitResult.Type.BLOCK) return InteractionResultHolder.pass(itemstack);
+            if (blockhitresult.getType() != HitResult.Type.BLOCK) {
+                return InteractionResultHolder.pass(itemstack);
+            }
             if (!(level instanceof ServerLevel)) return InteractionResultHolder.success(itemstack);
 
             BlockPos blockpos = blockhitresult.getBlockPos();
-            if (!(level.getBlockState(blockpos).getBlock() instanceof LiquidBlock)) return InteractionResultHolder.pass(itemstack);
+            if (!(level.getBlockState(blockpos).getBlock() instanceof LiquidBlock)) {
+                return InteractionResultHolder.pass(itemstack);
+            }
 
             if (level.mayInteract(player, blockpos) && player.mayUseItemAt(blockpos, blockhitresult.getDirection(), itemstack)) {
                 EntityType<?> entitytype = supplier.get();
@@ -122,13 +125,6 @@ public class BaitItem extends Item implements IBait {
         return super.use(level, player, usedHand);
     }
 
-    private List<Component> createCommonTooltips() {
-        List<Component> tooltips = new ArrayList<>();
-        tooltips.add(Component.translatable("tooltip.item.confluence.bait.common.0")
-                .withStyle(ChatFormatting.GRAY));
-        return tooltips;
-    }
-
     @Override
     public float getBaitBonus() {
         return bonus;
@@ -136,12 +132,10 @@ public class BaitItem extends Item implements IBait {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.addAll(commonTooltips);
-
+        tooltipComponents.add(Component.translatable("tooltip.item.confluence.bait.common.0")
+                .withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("info.confluence.bait",
                         ATTRIBUTE_MODIFIER_FORMAT.format(getBaitBonus() * 100.0))
                 .withStyle(style -> style.withColor(ChatFormatting.BLUE)));
-
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

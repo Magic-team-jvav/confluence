@@ -17,22 +17,22 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.Nullable;
 
-public record LootComponent(ResourceKey<LootTable> value) implements DataComponentType<LootComponent> {
+public record LootComponent(
+        ResourceKey<LootTable> value) implements DataComponentType<LootComponent> {
     public static final Codec<LootComponent> CODEC = ResourceKey.codec(Registries.LOOT_TABLE).xmap(LootComponent::new, LootComponent::value);
     public static final StreamCodec<ByteBuf, LootComponent> STREAM_CODEC = ResourceKey.streamCodec(Registries.LOOT_TABLE).map(LootComponent::new, LootComponent::value);
 
-    public static boolean open(ServerPlayer serverPlayer, ItemStack itemStack) {
+    public static boolean open(ServerPlayer player, ItemStack itemStack) {
         LootComponent lootComponent = itemStack.get(ModDataComponentTypes.LOOT);
         if (lootComponent != null) {
-            float fishingPower = PlayerUtils.getFishingPower(serverPlayer);
-            LootParams lootparams = new LootParams.Builder(serverPlayer.serverLevel())
-                    .withParameter(LootContextParams.ORIGIN, serverPlayer.position())
-                    .withParameter(LootContextParams.THIS_ENTITY, serverPlayer)
-                    .withLuck(fishingPower)
+            LootParams lootparams = new LootParams.Builder(player.serverLevel())
+                    .withParameter(LootContextParams.ORIGIN, player.position())
+                    .withParameter(LootContextParams.THIS_ENTITY, player)
+                    .withLuck(PlayerUtils.getFishingPower(player))
                     .create(LootContextParamSets.GIFT);
-            LootTable loottable = serverPlayer.server.reloadableRegistries().getLootTable(lootComponent.value());
+            LootTable loottable = player.server.reloadableRegistries().getLootTable(lootComponent.value());
             for (ItemStack loot : loottable.getRandomItems(lootparams)) {
-                if (!serverPlayer.addItem(loot)) serverPlayer.drop(loot, false, false);
+                if (!player.addItem(loot)) player.drop(loot, false, false);
             }
             return true;
         }
@@ -51,7 +51,9 @@ public record LootComponent(ResourceKey<LootTable> value) implements DataCompone
 
     @Override
     public boolean equals(Object o) {
-        return o == this || (o instanceof LootComponent(ResourceKey<LootTable> value1) && value == value1);
+        return o == this || (o instanceof LootComponent(
+                ResourceKey<LootTable> value1
+        ) && value == value1);
     }
 
     @Override

@@ -1,11 +1,8 @@
 package org.confluence.mod.common.item.fishing;
 
-import com.google.common.collect.ImmutableMultimap;
-import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -19,12 +16,9 @@ import org.confluence.mod.common.init.item.ModItems;
 
 public class ChumCaster extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("chum_caster");
-    private static final ImmutableMultimap<Holder<Attribute>, AttributeModifier> LUCK = ImmutableMultimap.of(
-
-    );
 
     public ChumCaster() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(384), ModRarity.GREEN);
+        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE), ModRarity.GREEN);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

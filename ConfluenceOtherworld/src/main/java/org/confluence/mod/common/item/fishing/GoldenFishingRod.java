@@ -18,7 +18,7 @@ public class GoldenFishingRod extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("golden_fishing");
 
     public GoldenFishingRod() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(512), ModRarity.ORANGE);
+        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE), ModRarity.ORANGE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

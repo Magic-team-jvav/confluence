@@ -67,8 +67,8 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         ItemStack stack = player.getItemInHand(hand);
         if (player.fishing != null) {
             if (!level.isClientSide) {
-                consumeBait(player, stack);
                 int i = player.fishing.retrieve(stack);
+                consumeBait(player, stack);
                 ItemStack original = stack.copy();
                 stack.hurtAndBreak(i, player, LivingEntity.getSlotForHand(hand));
                 if (stack.isEmpty()) {
@@ -80,25 +80,27 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         } else {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), getThrowSound(), SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             if (level instanceof ServerLevel serverLevel) {
-                int luckBonus = EnchantmentHelper.getFishingLuckBonus(serverLevel, stack, player) + (int) FishingPowerInfoPacketS2C.sendAndGet((ServerPlayer) player);
+                int luckBonus = EnchantmentHelper.getFishingLuckBonus(serverLevel, stack, player);
                 int speedBonus = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, stack, player) * 20.0F);
-                FishingHook fishingHook;
+                FishingHook hook;
                 FishingBobber curio = CuriosUtils.findCurio(player, FishingBobber.class);
                 if (curio == null) {
-                    fishingHook = getHook(stack, player, level, luckBonus, speedBonus);
+                    hook = getHook(stack, player, level, luckBonus, speedBonus);
                 } else {
-                    fishingHook = new CurioFishingHook(player, level, luckBonus, speedBonus, curio.variant);
+                    hook = new CurioFishingHook(player, level, luckBonus, speedBonus, curio.variant);
                 }
 
                 ItemStack bait = IBait.getFirstBait(player.getInventory()).split(1);
-                setBait(level.registryAccess(), stack, bait);
+                setBait(player.registryAccess(), stack, bait);
                 IPlayer.of(player).confluence$setCurrentBait(bait);
 
                 if (this == FishingPoleItems.HOTLINE_FISHING_HOOK.get() ||
                         (!bait.isEmpty() && bait.is(ModTags.Items.LAVA_PROOF_BAIT)) ||
                         TCUtils.hasType(player, AccessoryItems.LAVAPROOF$FISHING$HOOK)
-                ) IFishingHook.of(fishingHook).confluence$setIsLavaHook();
-                level.addFreshEntity(fishingHook);
+                ) IFishingHook.of(hook).confluence$setIsLavaHook();
+
+                FishingPowerInfoPacketS2C.sendToClient((ServerPlayer) player);
+                level.addFreshEntity(hook);
             }
             player.awardStat(Stats.ITEM_USED.get(this));
             player.gameEvent(GameEvent.ITEM_INTERACT_START);
@@ -116,7 +118,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
                     iPlayer.confluence$setCurrentBait(getBait(level.registryAccess(), stack));
                 }
             } else if (!bait.isEmpty() && !(player.getMainHandItem().getItem() instanceof AbstractFishingPole)) {
-                if (player.addItem(bait)) {
+                if (!player.addItem(bait)) {
                     player.drop(bait, true);
                 }
                 setBait(level.registryAccess(), stack, ItemStack.EMPTY);
@@ -166,7 +168,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         });
     }
 
-    public void consumeBait(Player player, ItemStack fishingPole) {
+    public static void consumeBait(Player player, ItemStack fishingPole) {
         RegistryAccess provider = player.registryAccess();
         ItemStack bait = getBait(provider, fishingPole);
         if (bait.isEmpty()) return;

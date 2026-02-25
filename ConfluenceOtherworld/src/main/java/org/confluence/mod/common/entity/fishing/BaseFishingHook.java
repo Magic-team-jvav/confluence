@@ -16,12 +16,12 @@ import java.util.function.IntFunction;
 public class BaseFishingHook extends AbstractFishingHook implements VariantHolder<BaseFishingHook.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(BaseFishingHook.class, EntityDataSerializers.INT);
 
-    public BaseFishingHook(EntityType<BaseFishingHook> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public BaseFishingHook(EntityType<BaseFishingHook> entityType, Level level) {
+        super(entityType, level);
     }
 
-    public BaseFishingHook(Player player, Level pLevel, int pLuck, int pLureSpeed, Variant variant) {
-        super(ModEntities.BASE_FISHING_HOOK.get(), pLevel, pLuck, pLureSpeed);
+    public BaseFishingHook(Player player, Level level, int luck, int lureSpeed, Variant variant) {
+        super(ModEntities.BASE_FISHING_HOOK.get(), level, luck, lureSpeed);
         setVariant(variant);
         setup(player);
     }
@@ -33,8 +33,8 @@ public class BaseFishingHook extends AbstractFishingHook implements VariantHolde
     }
 
     @Override
-    public void setVariant(Variant pVariant) {
-        entityData.set(DATA_VARIANT_ID, pVariant.id);
+    public void setVariant(Variant variant) {
+        entityData.set(DATA_VARIANT_ID, variant.id);
     }
 
     @Override

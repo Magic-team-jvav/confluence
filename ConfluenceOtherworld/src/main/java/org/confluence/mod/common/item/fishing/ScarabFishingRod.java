@@ -18,7 +18,7 @@ public class ScarabFishingRod extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("scarab_fishing_rod");
 
     public ScarabFishingRod() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(256), ModRarity.BLUE);
+        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE), ModRarity.BLUE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

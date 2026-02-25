@@ -18,7 +18,7 @@ public class MechanicsRod extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("mechanic_rod");
 
     public MechanicsRod() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(384), ModRarity.GREEN);
+        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE), ModRarity.GREEN);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.35, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

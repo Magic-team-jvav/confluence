@@ -49,8 +49,9 @@ public interface IFishingHook extends IExtraSyncedData<FishingHook> {
     }
 
     static boolean isValidBlock(FishingHook self, BlockState instance, Block block, boolean original) {
-        if (original || instance.is(ModBlocks.HONEY.get()) || instance.is(ModBlocks.SHIMMER.get()))
+        if (original || instance.is(ModBlocks.HONEY.get()) || instance.is(ModBlocks.SHIMMER.get())) {
             return true;
+        }
         return of(self).confluence$isLavaHook() && self.isInLava() && instance.is(Blocks.LAVA);
     }
 

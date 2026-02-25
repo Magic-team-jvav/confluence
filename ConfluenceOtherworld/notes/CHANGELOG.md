@@ -31,3 +31,37 @@
 - 更多装饰方块以及合成
 - 新秘密种子really small
   - 将人物缩小的全新体验！
+
+# Changelog (1.2.4):
+
+## Notes:
+
+## Fixes:
+
+- Fixed an issue where the luck bonus from bait was not taking effect.
+- Fixed a crash related to accessory attributes.
+- Fixed a layering error in the achievement category rendering.
+- Fixed invincibility frame issues with Deerclops' ice spikes, and added the corresponding immunities for Deerclops.
+
+## Improvements:
+
+- Moved the position of the achievement button.
+- Improved the vertical bouncing capability of Boulders.
+- Improved Stalk blocks.
+- Improved the Tuff Display Stand.
+
+## Adjustments:
+
+- Synced with Terraria version 1.4.5:
+  - The generation amount for Hardmode Ore clusters is now equal across all three tiers.
+- Adjusted crafting recipes for Hardmode Ore series, as well as Marble and Granite recipes.
+- Reverted the Depth Meter drop rate change.
+
+## Additions:
+
+- King Slime will now summon Spiked Slimes in Expert Mode and above.
+- Conflux Legacy now includes a fix for the vanilla swoop attack, which has a configuration option.
+- Added more Boulders and their crafting recipes.
+- Added more decorative blocks and their crafting recipes.
+- Added a new secret seed: Really Small
+  - A brand new experience that shrinks your character!

@@ -1229,7 +1229,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.DEPTH_METER))
-                        .add(EmptyLootItem.emptyItem().setWeight(199))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.BAT_BAT).setWeight(3).setQuality(1))

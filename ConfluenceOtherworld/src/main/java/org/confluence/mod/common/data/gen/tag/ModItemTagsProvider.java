@@ -1298,6 +1298,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.LIHZAHRD_BRICKS.asItem(),
                 DecorativeBlocks.RAINBOW_BRICKS.asItem(),
                 DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.asItem(),
+                DecorativeBlocks.MOON_PLATE.asItem(),
                 DecorativeBlocks.FLESH_BLOCK.asItem(),
                 DecorativeBlocks.LESION_BLOCK.asItem(),
                 DecorativeBlocks.SANDSTONE_BRICKS.asItem(),
@@ -1442,7 +1443,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TESpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
                 TESpawnEggItems.PLANTERA_SPAWN_EGG.get(),
                 TreasureBagItems.THE_TWINS_TREASURE_BAG.get(),
-                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get()
+                TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
+                HoeShovelItems.COBALT_HOE_SHOVEL.get(),
+                HoeShovelItems.PALLADIUM_HOE_SHOVEL.get(),
+                HoeShovelItems.MYTHRIL_HOE_SHOVEL.get(),
+                HoeShovelItems.ORICHALCUM_HOE_SHOVEL.get(),
+                HoeShovelItems.ADAMANTITE_HOE_SHOVEL.get(),
+                HoeShovelItems.TITANIUM_HOE_SHOVEL.get(),
+                HoeShovelItems.HALLOWED_HOE_SHOVEL.get(),
+                HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

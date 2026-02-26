@@ -539,6 +539,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.confluence.pickaxe_power", "镐力：%s%%");
         add("tooltip.confluence.hammer_power", "锤力：%s%%");
         add("tooltip.confluence.armor_penetration", "盔甲穿透：%s");
+        add("tooltip.confluence.effect_duration", "%s分钟持续时间");
 
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");

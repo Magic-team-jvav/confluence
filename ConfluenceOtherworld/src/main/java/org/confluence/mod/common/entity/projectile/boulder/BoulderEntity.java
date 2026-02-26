@@ -123,7 +123,7 @@ public class BoulderEntity extends Projectile {
 
         onHit(deltaMovement);
 
-        if (tickCount == maxRemoveTick || getDeltaMovement().length() < minRemoveSpeed && stillTickCount == maxStillTick) {
+        if (tickCount >= maxRemoveTick || getDeltaMovement().length() < minRemoveSpeed && stillTickCount == maxStillTick) {
             onRemove();
             return;
         }
@@ -133,8 +133,6 @@ public class BoulderEntity extends Projectile {
         } else {
             stillTickCount = 0;
         }
-
-        tickCount++;
     }
 
     protected void rotate(Vec3 deltaMovement) {

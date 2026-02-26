@@ -151,6 +151,8 @@
         "client.model.EntityRendererProvider$ContextMixin",
         "client.model.HumanoidArmorLayerMixin",
         "client.model.HumanoidModelMixin",
+        "client.model.ModelBakeryMixin",
+        "client.model.ModelManagerMixin",
         "client.model.ModelPartMixin",
         "client.renderer.BlockModelShaperMixin",
         "client.renderer.GameRendererMixin",

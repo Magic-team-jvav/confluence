@@ -5,16 +5,6 @@
             <PatternLayout pattern="%highlight{[%d{HH:mm:ss.SSS}] [%t/%level] [%c{1.}] - %msg%n}"
                            disableAnsi="false"
                            noConsoleNoAnsi="false"/>
-            <Filters>
-                <!-- 过滤缺失纹理的警告 -->
-                <RegexFilter regex="Missing textures in model .*:\n.*"
-                             onMatch="DENY"
-                             onMismatch="NEUTRAL"/>
-                <!-- 过滤模型加载失败的警告 -->
-                <RegexFilter regex="Unable to load model: '.*' referenced from: .*: .*"
-                             onMatch="DENY"
-                             onMismatch="NEUTRAL"/>
-            </Filters>
         </Console>
 
         <RollingRandomAccessFile name="File" fileName="logs/latest.log"

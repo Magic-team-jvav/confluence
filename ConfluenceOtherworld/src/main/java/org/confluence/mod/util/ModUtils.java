@@ -89,7 +89,6 @@ import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 public final class ModUtils {
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    public static final String DEV_ITEM_ATTRIBUTES_KEY = "Attributes";
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {
         int copper_count = amount % UPGRADES_COUNT;

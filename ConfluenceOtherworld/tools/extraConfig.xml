@@ -6,10 +6,6 @@
                            disableAnsi="false"
                            noConsoleNoAnsi="false"/>
             <Filters>
-                <!-- 过滤 blockstate 缺失模型的警告 -->
-                <RegexFilter regex="Exception loading blockstate definition: '.*' missing model for variant: '.*'"
-                             onMatch="DENY"
-                             onMismatch="NEUTRAL"/>
                 <!-- 过滤缺失纹理的警告 -->
                 <RegexFilter regex="Missing textures in model .*:\n.*"
                              onMatch="DENY"

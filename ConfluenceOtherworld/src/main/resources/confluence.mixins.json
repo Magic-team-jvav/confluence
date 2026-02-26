@@ -146,6 +146,7 @@
         "client.gui.LevelLoadingScreenMixin",
         "client.gui.ToastComponent$ToastInstanceMixin",
         "client.gui.WorldSelectionList$WorldListEntryMixin",
+        "client.model.BlockStateModelLoaderMixin",
         "client.model.EntityModelSetMixin",
         "client.model.EntityRendererProvider$ContextMixin",
         "client.model.HumanoidArmorLayerMixin",

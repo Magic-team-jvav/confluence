@@ -1,1 +1,7 @@
-{}
+{
+    "variants": {
+        "": {
+            "model": "confluence:block/stone_pressure_block"
+        }
+    }
+}

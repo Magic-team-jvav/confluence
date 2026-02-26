@@ -5,7 +5,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.worldgen.biome.*;
-import terrablender.api.EndBiomeRegistry;
 import terrablender.api.Regions;
 import terrablender.api.SurfaceRuleManager;
 
@@ -37,8 +36,6 @@ public final class ModBiomes {
         Regions.register(new GlowingMushroomRegion(Confluence.asResource("glowing_mushroom"), 2));
         Regions.register(new AshForestRegion(Confluence.asResource("ash_forest"), 1));
         Regions.register(new AshWastelandRegion(Confluence.asResource("ash_wasteland"), 1));
-        EndBiomeRegistry.registerHighlandsBiome(CHORUS_FOREST, 1);
-        EndBiomeRegistry.registerMidlandsBiome(INVERSE_FOREST, 1);
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, SurfaceRuleData.makeConfluenceOverWorldRules());
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.NETHER, MODID, SurfaceRuleData.makeConfluenceNetherRules());
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.END, MODID, SurfaceRuleData.makeConfluenceEndRules());

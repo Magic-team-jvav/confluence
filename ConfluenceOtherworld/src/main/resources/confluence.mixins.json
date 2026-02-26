@@ -89,6 +89,7 @@
         "integration.terra_entity.TravelingMerchantNPCMixin",
         "integration.terra_furniture.TFPinWheelMixin",
         "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
+        "integration.terrablender.MixinTheEndBiomeSourceSquared",
         "integration.touhoulittlemaid.EntityMaidMixin",
         "integration.touhoulittlemaid.MaidFishingHookMixin",
         "integration.waystones.PlayerWaystoneManagerMixin",

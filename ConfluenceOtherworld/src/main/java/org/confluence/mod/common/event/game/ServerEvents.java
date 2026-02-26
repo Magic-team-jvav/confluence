@@ -11,6 +11,7 @@ import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
 import org.confluence.mod.util.OverworldUtils;
 
 @EventBusSubscriber(modid = Confluence.MODID)
@@ -19,6 +20,7 @@ public final class ServerEvents {
     public static void serverAboutToStart(ServerAboutToStartEvent event) {
         PathService.INSTANCE.onServerStart();
         NetworkService.INSTANCE.onServerStart();
+        TheEndBiomeHolder.open(event.getServer());
     }
 
     @SubscribeEvent
@@ -30,6 +32,7 @@ public final class ServerEvents {
     @SubscribeEvent
     public static void serverStopping(ServerStoppingEvent event) {
         GameEventSystem.INSTANCE.close(event.getServer());
+        TheEndBiomeHolder.close();
     }
 
     @SubscribeEvent

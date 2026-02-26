@@ -318,8 +318,8 @@ public class DecorativeBlocks {
     public static final DeferredBlock<SoulGlassBlock> SOUL_GLASS = registerWithItem("soul_glass", () -> new SoulGlassBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
     public static final DeferredBlock<Block> FLINX_FUR_BLOCK = registerWithItem("flinx_fur_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.TERRACOTTA_PINK)));
     public static final DeferredBlock<WoolCarpetBlock> FLINX_FUR_CARPET = registerWithItem("flinx_fur_carpet", () -> new WoolCarpetBlock(DyeColor.PINK, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_PINK).strength(0.1F).sound(SoundType.WOOL).ignitedByLava()));
-    public static final DeferredBlock<Block> COLORED_WOOL = registerWithItem("colored_wool", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.TERRACOTTA_PINK)));
-    public static final DeferredBlock<WoolCarpetBlock> COLORED_CARPET = registerWithItem("colored_carpet", () -> new WoolCarpetBlock(DyeColor.PINK, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_PINK).strength(0.1F).sound(SoundType.WOOL).ignitedByLava()));
+    public static final DeferredBlock<Block> RAINBOW_WOOL = registerWithItem("rainbow_wool", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.TERRACOTTA_PINK)));
+    public static final DeferredBlock<WoolCarpetBlock> RAINBOW_CARPET = registerWithItem("colored_carpet", () -> new WoolCarpetBlock(DyeColor.PINK, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_PINK).strength(0.1F).sound(SoundType.WOOL).ignitedByLava()));
 
 
     // 圣物

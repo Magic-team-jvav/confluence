@@ -461,10 +461,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
         // 地毯
         shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(DecorativeBlocks.COLORED_WOOL)
+                '#', Ingredient.of(DecorativeBlocks.RAINBOW_WOOL)
         ), List.of(
                 "##"
-        )), DecorativeBlocks.COLORED_CARPET.toStack(3));
+        )), DecorativeBlocks.RAINBOW_CARPET.toStack(3));
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(DecorativeBlocks.FLINX_FUR_BLOCK)
         ), List.of(

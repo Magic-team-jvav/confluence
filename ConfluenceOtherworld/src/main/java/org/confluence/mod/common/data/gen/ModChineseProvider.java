@@ -1944,8 +1944,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(DecorativeBlocks.FLINX_FUR_BLOCK.get(), "小雪怪皮毛块");
         add(DecorativeBlocks.FLINX_FUR_CARPET.get(), "小雪怪皮毛地毯");
-        add(DecorativeBlocks.COLORED_WOOL.get(), "多彩羊毛");
-        add(DecorativeBlocks.COLORED_CARPET.get(), "多彩地毯");
+        add(DecorativeBlocks.RAINBOW_WOOL.get(), "多彩羊毛");
+        add(DecorativeBlocks.RAINBOW_CARPET.get(), "多彩地毯");
 
 
         add(DecorativeBlocks.SANDSTONE_BRICKS.get(), "砂岩砖");

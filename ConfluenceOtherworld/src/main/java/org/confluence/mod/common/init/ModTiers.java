@@ -61,6 +61,7 @@ public final class ModTiers {
             case IRON -> 40;
             case DIAMOND -> 59;
             case NETHERITE -> 90;
+            default -> -1; // 有模组添加了新枚举
         };
     }
 

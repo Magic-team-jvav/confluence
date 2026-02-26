@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/inverse_grass_block_top",
+    "side": "confluence:block/inverse_grass_block_side",
+    "top": "block/end_stone"
+  }
+}

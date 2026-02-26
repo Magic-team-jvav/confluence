@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.worldgen.biome.*;
+import terrablender.api.EndBiomeRegistry;
 import terrablender.api.Regions;
 import terrablender.api.SurfaceRuleManager;
 
@@ -23,6 +24,8 @@ public final class ModBiomes {
     public static final ResourceKey<Biome> ASH_FOREST = register("ash_forest");
     public static final ResourceKey<Biome> ASH_WASTELAND = register("ash_wasteland");
     public static final ResourceKey<Biome> GLOWING_MUSHROOM = register("glowing_mushroom");
+    public static final ResourceKey<Biome> CHORUS_FOREST = register("chorus_forest");
+    public static final ResourceKey<Biome> INVERSE_FOREST = register("inverse_forest");
 
     private static ResourceKey<Biome> register(String name) {
         return ResourceKey.create(Registries.BIOME, Confluence.asResource(name));
@@ -34,8 +37,11 @@ public final class ModBiomes {
         Regions.register(new GlowingMushroomRegion(Confluence.asResource("glowing_mushroom"), 2));
         Regions.register(new AshForestRegion(Confluence.asResource("ash_forest"), 1));
         Regions.register(new AshWastelandRegion(Confluence.asResource("ash_wasteland"), 1));
+        EndBiomeRegistry.registerHighlandsBiome(CHORUS_FOREST, 1);
+        EndBiomeRegistry.registerMidlandsBiome(INVERSE_FOREST, 1);
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, SurfaceRuleData.makeConfluenceOverWorldRules());
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.NETHER, MODID, SurfaceRuleData.makeConfluenceNetherRules());
+        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.END, MODID, SurfaceRuleData.makeConfluenceEndRules());
         SurfaceRuleManager.addToDefaultSurfaceRulesAtStage(SurfaceRuleManager.RuleCategory.OVERWORLD, SurfaceRuleManager.RuleStage.BEFORE_BEDROCK, 0, SurfaceRuleData.makeMinecraftOverWorldRules());
     }
 }

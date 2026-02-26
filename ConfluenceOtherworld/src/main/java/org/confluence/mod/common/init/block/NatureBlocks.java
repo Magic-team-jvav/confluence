@@ -212,6 +212,16 @@ public class NatureBlocks {
     public static final DeferredBlock<MudPathBlock> MUSHROOM_PATH = registerWithItem("mushroom_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
     public static final DeferredBlock<AshPathBlock> ASH_PATH = registerWithItem("ash_path", () -> new AshPathBlock(BlockBehaviour.Properties.ofFullCopy(NatureBlocks.ASH_BLOCK.get()).mapColor(MapColor.COLOR_GRAY)));
 
+    // 末地 - 通用
+    public static final DeferredBlock<Block> END_DIRT = registerWithItem("end_dirt", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+
+    // 末地 - 紫颂主题
+    public static final DeferredBlock<Block> VOID_GRASS_BLOCK = registerWithItem("void_grass_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+    public static final DeferredBlock<BasePlantBlock> VOID_GRASS = registerWithItem("void_grass", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
+
+    // 末地 - 倒悬主题
+    public static final DeferredBlock<Block> INVERSE_GRASS_BLOCK = registerWithItem("inverse_grass_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+
     // 王朝木
     public static final LogBlockSet DYNASTY_LOG_BLOCKS = LogBlockSet.builder("dynasty", true, DYNASTY).leaves(null).build();
 

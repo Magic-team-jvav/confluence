@@ -1,0 +1,15 @@
+{
+  "variants": {
+    "": [
+        {
+            "model": "confluence:block/void_grass"
+        },
+        {
+            "model": "confluence:block/void_grass_0"
+        },
+        {
+            "model": "confluence:block/void_grass_1"
+        }
+    ]
+  }
+}

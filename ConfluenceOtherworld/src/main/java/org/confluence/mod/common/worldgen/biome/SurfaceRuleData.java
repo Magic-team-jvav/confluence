@@ -48,6 +48,10 @@ public class SurfaceRuleData {
         return SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, state(NatureBlocks.ASH_GRASS_BLOCK.get())), state(NatureBlocks.ASH_BLOCK.get()));
     }
 
+    private static SurfaceRules.RuleSource chorusGrassSurface() {
+        return SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, state(NatureBlocks.VOID_GRASS_BLOCK.get())), state(NatureBlocks.END_DIRT.get()));
+    }
+
     private static SurfaceRules.RuleSource jungleGrassSurface() {
         return SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, state(NatureBlocks.JUNGLE_GRASS_BLOCK.get())), state(Blocks.MUD));
     }
@@ -115,6 +119,22 @@ public class SurfaceRuleData {
                         SurfaceRules.ifTrue(bedrockRoofSeed,
                                 SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
                                         state(NatureBlocks.ASH_BLOCK.get())
+                                )
+                        )
+                )
+        );
+    }
+
+    public static SurfaceRules.RuleSource makeConfluenceEndRules() {
+        return SurfaceRules.sequence(
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.CHORUS_FOREST),
+                        SurfaceRules.ifTrue(bedrockRoofSeed,
+                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, chorusGrassSurface()),
+                                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(4, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
+                                                state(Blocks.END_STONE)
+                                        )
                                 )
                         )
                 )

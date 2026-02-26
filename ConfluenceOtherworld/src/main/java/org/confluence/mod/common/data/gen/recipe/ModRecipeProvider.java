@@ -226,7 +226,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.MOON_PLATE));
 
         loom(recipeOutput, ModBlocks.SILK_ROPE.toStack(30), Ingredient.of(MaterialItems.SILK));
-        loom(recipeOutput, MaterialItems.SILK.toStack(), AmountIngredient.of(7, Items.COBWEB));
+        loom(recipeOutput, MaterialItems.SILK.toStack(), Ingredient.of(Items.COBWEB));
         loom(recipeOutput, new ItemStack(Items.STRING, 4), Ingredient.of((ItemTags.WOOL)));
         baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, Tags.Items.GEMS_DIAMOND), Ingredient.of(Tags.Items.GEMS_DIAMOND), ArmorItems.DIAMOND_ROBE.toStack());
         baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_RUBY), Ingredient.of(ModTags.Items.GEMS_RUBY), ArmorItems.RUBY_ROBE.toStack());

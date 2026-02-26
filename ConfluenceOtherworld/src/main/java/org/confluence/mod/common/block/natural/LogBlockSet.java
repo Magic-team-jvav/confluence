@@ -27,7 +27,6 @@ import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.GroupItem;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -466,7 +465,7 @@ public class LogBlockSet {
             this.hangingSignItem = HangingSignItem::new;
         }
 
-        public Builder planks(@NotNull Function<BlockBehaviour.Properties, ? extends Block> function) {
+        public Builder planks(Function<BlockBehaviour.Properties, ? extends Block> function) {
             this.planks = function;
             return this;
         }
@@ -567,7 +566,7 @@ public class LogBlockSet {
             return this;
         }
 
-        public Builder sapling(@NotNull Function<BlockBehaviour.Properties, ? extends SaplingBlock> function) {
+        public Builder sapling(Function<BlockBehaviour.Properties, ? extends SaplingBlock> function) {
             this.sapling = function;
             return this;
         }

@@ -22,6 +22,7 @@ public class TheEndBiomeHolder {
 
     public static void open(MinecraftServer server) {
         RegistryAccess registryAccess = server.registryAccess();
+        long seed = server.getWorldData().worldGenOptions().seed();
         HolderLookup.RegistryLookup<Biome> biomes = registryAccess.lookupOrThrow(Registries.BIOME);
 
         chorusForest = biomes.getOrThrow(ModBiomes.CHORUS_FOREST);

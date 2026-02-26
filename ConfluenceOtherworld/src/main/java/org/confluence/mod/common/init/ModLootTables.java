@@ -75,7 +75,7 @@ public final class ModLootTables {
 
     public static final ResourceKey<LootTable> HERB_BAG_INNER = register("gameplay/herb_bag_inner");
 
-    public static final ResourceKey<LootTable> RAINBOW_WOOL = register("gameplay/rainbow_wool");
+    public static final ResourceKey<LootTable> SHEEP_RAINBOW_WOOL = register("entities/sheep_rainbow_wool");
 
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
 

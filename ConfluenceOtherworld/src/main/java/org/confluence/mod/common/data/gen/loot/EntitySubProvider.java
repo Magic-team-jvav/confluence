@@ -8,12 +8,9 @@ import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -1156,21 +1153,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9667))
                 )
         );
-        /*
-        add(EntityType.SHEEP, Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/confluence/rainbow_sheep"), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(Items.MUTTON)
-                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
-                                                .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
-                                                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
-                                )
-                )
+        LootPool.Builder rainbowSheep = LootPool.lootPool()
+                .add(LootItem.lootTableItem(Items.MUTTON)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
+                        .apply(SmeltItemFunction.smelted().when(shouldSmeltLoot()))
+                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F))));
+        add(ModEntities.RAINBOW_SHEEP.get(), LootTable.lootTable().withPool(rainbowSheep));
+        add(ModEntities.RAINBOW_SHEEP.get(), ModLootTables.SHEEP_RAINBOW_WOOL, LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.RAINBOW_WOOL)))
+                .withPool(rainbowSheep)
         );
-        this.add(EntityType.SHEEP, ModLootTables.RAINBOW_WOOL, createSheepTable(DecorativeBlocks.RAINBOW_WOOL));
-         */
     }
 
     private static LootTable.Builder ghoulCommon() {

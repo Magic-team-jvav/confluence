@@ -56,6 +56,8 @@ import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
+import org.confluence.mod.client.model.entity.RainbowSheepFurModel;
+import org.confluence.mod.client.model.entity.RainbowSheepModel;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.client.model.entity.fishing.BloodyFishingHookModel;
@@ -67,10 +69,7 @@ import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.particle.*;
 import org.confluence.mod.client.renderer.block.*;
-import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
-import org.confluence.mod.client.renderer.entity.EmptyEntityRenderer;
-import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
-import org.confluence.mod.client.renderer.entity.TreasureBagRenderer;
+import org.confluence.mod.client.renderer.entity.*;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
 import org.confluence.mod.client.renderer.entity.bestiary.SlimeZombieRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
@@ -260,6 +259,9 @@ public final class ModClientEvents {
         event.registerLayerDefinition(FlailModel.LAYER_LOCATION, FlailModel::createBodyLayer);
 
         event.registerLayerDefinition(WeatherVaneBlockModel.LAYER_LOCATION, WeatherVaneBlockModel::createBodyLayer);
+
+        event.registerLayerDefinition(RainbowSheepModel.LAYER_LOCATION, RainbowSheepModel::createBodyLayer);
+        event.registerLayerDefinition(RainbowSheepFurModel.LAYER_LOCATION, RainbowSheepFurModel::createFurLayer);
     }
 
     @SubscribeEvent
@@ -389,6 +391,8 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(STAR_CANNON_BULLET.get(), StarCannonBulletRenderer::new);
         event.registerEntityRenderer(BEE_GUN_BULLET.get(), BeeProjectileRenderer::new);
+
+        event.registerEntityRenderer(RAINBOW_SHEEP.get(), RainbowSheepRenderer::new);
 
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(AltarBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), ClientUtils.rendererProvider(SkyMillBlockRenderer::new));

@@ -1221,6 +1221,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.terra_entity.dragonfly.4", "橙蜻蜓");
         add("entity.terra_entity.dragonfly.5", "红蜻蜓");
         add("entity.terra_entity.dragonfly.6", "黄蜻蜓");
+        add("entity.confluence.rainbow_sheep", "彩虹羊");
 
         // Special world seeds
         add("title.confluence.secret_seeds_selection.empty", "信息");
@@ -1944,8 +1945,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(DecorativeBlocks.FLINX_FUR_BLOCK.get(), "小雪怪皮毛块");
         add(DecorativeBlocks.FLINX_FUR_CARPET.get(), "小雪怪皮毛地毯");
-        add(DecorativeBlocks.RAINBOW_WOOL.get(), "多彩羊毛");
-        add(DecorativeBlocks.RAINBOW_CARPET.get(), "多彩地毯");
+        add(DecorativeBlocks.RAINBOW_WOOL.get(), "彩虹羊毛");
+        add(DecorativeBlocks.RAINBOW_CARPET.get(), "彩虹地毯");
 
 
         add(DecorativeBlocks.SANDSTONE_BRICKS.get(), "砂岩砖");
@@ -2933,6 +2934,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.ENEMY_BANNER.get(), "敌怪旗");
 
         add(ModItems.SCRYING_ORB.get(), "占卜球");
+        add(ModItems.RAINBOW_SHEEP_SPAWN_EGG.get(), "彩虹羊刷怪蛋");
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");

@@ -640,6 +640,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.glowing_mushroom", "发光蘑菇群系");
         add("biome.confluence.ash_wasteland", "灰烬荒地");
         add("biome.confluence.ash_forest", "灰烬木林");
+        add("biome.confluence.chorus_forest", "紫颂森林");
+        add("biome.confluence.inverse_forest", "倒悬森林");
 
         add("biome.minecraft.confluence_sky", "太空层");
 

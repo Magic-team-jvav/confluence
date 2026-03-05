@@ -73,8 +73,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /// 注：NPC默认生成在对应玩家出生点
-public final class NPCSpawner implements IGlobalData {
-    public static final NPCSpawner INSTANCE = new NPCSpawner();
+public enum NPCSpawner implements IGlobalData {
+    INSTANCE;
     public static final int CURRENT_VERSION = 1;
     public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC = new Codec<>() {
         @Override
@@ -119,8 +119,6 @@ public final class NPCSpawner implements IGlobalData {
     private boolean isAdvancedCombatTechniquesUsed = false; // 先进战斗技术
     private boolean isAdvancedCombatTechniquesVolumeTwoUsed = false; // 先进战斗技术：卷二
     private boolean isPeddlersSatchelUsed = false; // 商贩背包
-
-    private NPCSpawner() {}
 
     public Iterable<EntityType<?>> getNpcSpawned() {
         return npcSpawned;

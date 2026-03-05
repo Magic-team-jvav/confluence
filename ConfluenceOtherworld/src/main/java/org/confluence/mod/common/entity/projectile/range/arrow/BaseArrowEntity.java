@@ -28,6 +28,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.EnchantmentUtil;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
+import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +41,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BaseArrowEntity extends AbstractArrow {
-    protected float minSpeedAttackFactor = 0.5f;//速度影响伤害的最小系数
+    protected float minSpeedAttackFactor = 0.5f; // 速度影响伤害的最小系数
     @Nullable Item arrowItem;
     private ParticleEmitter emitter;
 
@@ -71,68 +72,67 @@ public class BaseArrowEntity extends AbstractArrow {
 
     public BaseArrowEntity(EntityType<? extends AbstractArrow> entityType, Level level) {
         super(entityType, level);
+        IAbstractArrow.of(this).confluence$setDamageNotAffectedBySpeedBonus(true);
     }
 
-    /**
-     * 自定义箭矢
-     *
-     * @param owner           发射者
-     * @param pickupItemStack 捡起的物品
-     * @param firedFromWeapon 发射的武器
-     * @param arrow           预定义的箭的类型
-     */
+    /// 自定义箭矢
+    ///
+    /// @param owner           发射者
+    /// @param pickupItemStack 捡起的物品
+    /// @param firedFromWeapon 发射的武器
+    /// @param arrow           预定义的箭的类型
     public BaseArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow) {
         super(entityType, owner, owner.level(), pickupItemStack, firedFromWeapon);
         this.arrowItem = arrow;
         this.baseArrowFactory = arrow == null ? null : arrow.getModifier();
-        if (baseArrowFactory == null)// 这时候应该为实体的木箭转化
+        if (baseArrowFactory == null) { // 这时候应该为实体的木箭转化
             this.modify = new Builder();
-        else
+        } else {
             this.modify = baseArrowFactory.attr.get();
-
+        }
+        IAbstractArrow.of(this).confluence$setDamageNotAffectedBySpeedBonus(true);
     }
 
-    /**
-     * 自定义箭矢
-     *
-     * @param owner           发射者
-     * @param pickupItemStack 捡起的物品
-     * @param firedFromWeapon 发射的武器
-     * @param arrow           预定义的箭的类型
-     * @param modifyConsumer  属性额外修饰
-     */
+    /// 自定义箭矢
+    ///
+    /// @param owner           发射者
+    /// @param pickupItemStack 捡起的物品
+    /// @param firedFromWeapon 发射的武器
+    /// @param arrow           预定义的箭的类型
+    /// @param modifyConsumer  属性额外修饰
     public BaseArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @NotNull BaseTerraArrowItem arrow, BaseTerraArrowItem.ModifyArrowBuilder modifyConsumer) {
         this(entityType, owner, pickupItemStack, firedFromWeapon, arrow);
-        if (modifyConsumer != null)
+        if (modifyConsumer != null) {
             modifyConsumer.applyModifiers(modify);
+        }
         if ((modify.type & Tag.auto_discard) != 0) {
             this.pickup = Pickup.DISALLOWED;
         }
     }
 
-    /**
-     * 自定义箭矢
-     *
-     * @param pickupItemStack 捡起的物品
-     * @param firedFromWeapon 发射的武器
-     * @param arrow           预定义的箭的类型
-     */
+    /// 自定义箭矢
+    ///
+    /// @param pickupItemStack 捡起的物品
+    /// @param firedFromWeapon 发射的武器
+    /// @param arrow           预定义的箭的类型
     public BaseArrowEntity(EntityType<? extends AbstractArrow> entityType, double x, double y, double z, Level level, ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon, @Nullable BaseTerraArrowItem arrow) {
         super(entityType, x, y, z, level, pickupItemStack, firedFromWeapon);
         this.arrowItem = arrow;
         this.baseArrowFactory = arrow == null ? null : arrow.getModifier();
-        if (baseArrowFactory == null)// 这时候应该为实体的木箭转化 -- 保留注释
+        if (baseArrowFactory == null) { // 这时候应该为实体的木箭转化 -- 保留注释
             this.modify = new Builder();
-        else
+        } else {
             this.modify = baseArrowFactory.attr.get();
+        }
+        IAbstractArrow.of(this).confluence$setDamageNotAffectedBySpeedBonus(true);
     }
 
     public void modify(Consumer<Builder> consumer) {
         consumer.accept(modify);
     }
 
+    @Override
     public void onAddedToLevel() {
-
         if ((modify.type & Tag.no_gravity) != 0) this.setNoGravity(true);
         if (baseArrowFactory != null) {
             entityData.set(TEXTURE_PATH, baseArrowFactory.path);

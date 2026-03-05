@@ -10,12 +10,10 @@ import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 
-public final class SpearAttackPacketC2S implements IPacketC2S {
-    public static final SpearAttackPacketC2S INSTANCE = new SpearAttackPacketC2S();
+public enum SpearAttackPacketC2S implements IPacketC2S {
+    INSTANCE;
     public static final Type<SpearAttackPacketC2S> TYPE = Confluence.createType("spear_attack");
     public static final StreamCodec<ByteBuf, SpearAttackPacketC2S> STREAM_CODEC = StreamCodec.unit(INSTANCE);
-
-    private SpearAttackPacketC2S() {}
 
     @Override
     public Type<SpearAttackPacketC2S> type() {

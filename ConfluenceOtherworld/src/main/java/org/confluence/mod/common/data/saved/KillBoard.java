@@ -29,8 +29,8 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 
 import java.util.Set;
 
-public final class KillBoard implements IGlobalData {
-    public static final KillBoard INSTANCE = new KillBoard();
+public enum KillBoard implements IGlobalData {
+    INSTANCE;
     public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = ExtraCodecs.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec());
     public static final Codec<Object2BooleanMap<ResourceKey<? extends GameEvent>>> DEFEATED_EVENTS_CODEC = ExtraCodecs.object2BooleanMap(GameEvent.KEY_CODEC);
     public static final StreamCodec<RegistryFriendlyByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ByteBufCodecs.registry(Registries.ENTITY_TYPE));
@@ -39,8 +39,6 @@ public final class KillBoard implements IGlobalData {
     private Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
     private Object2BooleanMap<ResourceKey<? extends GameEvent>> defeatedEvents = new Object2BooleanOpenHashMap<>();
     private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
-
-    private KillBoard() {}
 
     public boolean isDefeated(EntityType<?> entityType) {
         return defeatedBosses.getBoolean(entityType);

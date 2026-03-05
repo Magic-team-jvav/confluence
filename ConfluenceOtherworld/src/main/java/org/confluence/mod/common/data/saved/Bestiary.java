@@ -32,9 +32,9 @@ import org.confluence.mod.util.ModUtils;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public final class Bestiary implements IGlobalData {
+public enum Bestiary implements IGlobalData {
+    INSTANCE;
     public static final Codec<Map<String, BestiaryEntry>> CODEC = Codec.unboundedMap(Codec.STRING, BestiaryEntry.CODEC);
-    public static final Bestiary INSTANCE = new Bestiary();
     private static final Object2BooleanMap<EntityType<?>> AVAILABLE = new Object2BooleanOpenCustomHashMap<>(new Hash.Strategy<>() {
         @Override
         public int hashCode(EntityType<?> o) {
@@ -48,8 +48,6 @@ public final class Bestiary implements IGlobalData {
     });
 
     private Map<String, BestiaryEntry> entries = new Object2ObjectOpenHashMap<>();
-
-    private Bestiary() {}
 
     @Override
     public void decode(CompoundTag tag) {

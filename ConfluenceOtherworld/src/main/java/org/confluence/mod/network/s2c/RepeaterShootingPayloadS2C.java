@@ -10,12 +10,10 @@ import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.RepeaterHud;
 
-public final class RepeaterShootingPayloadS2C implements IPacketS2C {
-    public static final RepeaterShootingPayloadS2C INSTANCE = new RepeaterShootingPayloadS2C();
+public enum RepeaterShootingPayloadS2C implements IPacketS2C {
+    INSTANCE;
     public static final CustomPacketPayload.Type<RepeaterShootingPayloadS2C> TYPE = new CustomPacketPayload.Type<>(Confluence.asResource("repeater_shooting_payload"));
     public static final StreamCodec<ByteBuf, RepeaterShootingPayloadS2C> STREAM_CODEC = StreamCodec.unit(INSTANCE);
-
-    private RepeaterShootingPayloadS2C() {}
 
     @Override
     public Type<RepeaterShootingPayloadS2C> type() {

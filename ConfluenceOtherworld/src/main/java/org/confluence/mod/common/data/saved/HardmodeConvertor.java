@@ -21,7 +21,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
@@ -189,7 +188,7 @@ public final class HardmodeConvertor implements IGlobalData {
                     }
                     if (isGrassBlock) {
                         BlockPos above = blockPos.above();
-                        if (Block.isShapeFullBlock(chunkAccess.getBlockState(above).getCollisionShape(chunkAccess, above))) {
+                        if (!chunkAccess.getBlockState(above).isSolidRender(chunkAccess, above)) {
                             chunkAccess.setBlockState(blockPos, target, false);
                         }
                     } else {

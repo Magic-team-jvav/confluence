@@ -64,7 +64,7 @@ public class CoinItem extends BlockItem {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
-        if (player != null && player.isCrouching()) {
+        if (player != null && player.isCrouching() && upgrade != null && context.getItemInHand().getCount() >= UPGRADES_COUNT) {
             if (context.getLevel().isClientSide) {
                 player.playSound(ModSoundEvents.TERRA_OPERATION.get());
             } else {

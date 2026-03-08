@@ -183,7 +183,6 @@
         "integration.jei.TypedItemStackMixin$S1Mixin",
         "integration.journeymap.EffectMixin",
         "integration.loot_beams_refork.ConfigHandlersMixin",
-        "integration.particlestorm.EmitterShapeMixin",
         "integration.prism_lib.ItemColorsMixin",
         "integration.prism_lib.item_borders.ItemBordersConfigMixin",
         "integration.sodium.BlockOcclusionCacheMixin",

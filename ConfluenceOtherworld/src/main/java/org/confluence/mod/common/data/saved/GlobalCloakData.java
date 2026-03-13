@@ -32,8 +32,8 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class GlobalCloakData implements IGlobalData {
-    public static final GlobalCloakData INSTANCE = new GlobalCloakData();
+public enum GlobalCloakData implements IGlobalData {
+    INSTANCE;
     public static final Codec<Map<BlockState, BooleanObjectPair<BlockState>>> BLOCK_MAP_CODEC = LibCodecUtils.notStringKeyMap(
             "source", BlockState.CODEC,
             "pair", LibCodecUtils.booleanObjectPair("cloaked", "target", BlockState.CODEC)
@@ -59,8 +59,6 @@ public final class GlobalCloakData implements IGlobalData {
     private Map<BlockState, BlockBehaviour.Properties> backupProperties = new IdentityHashMap<>();
     private Map<Item, BooleanObjectPair<Item>> itemMap = new IdentityHashMap<>();
     private int version;
-
-    private GlobalCloakData() {}
 
     public void fix(ServerLevel level) {
         if (version >= VERSION) return;

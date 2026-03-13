@@ -640,6 +640,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.glowing_mushroom", "发光蘑菇群系");
         add("biome.confluence.ash_wasteland", "灰烬荒地");
         add("biome.confluence.ash_forest", "灰烬木林");
+        add("biome.confluence.chorus_forest", "紫颂森林");
+        add("biome.confluence.inverse_forest", "倒悬森林");
 
         add("biome.minecraft.confluence_sky", "太空层");
 
@@ -2474,6 +2476,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.FLINX_FUR.get(), "小雪怪皮毛");
         add(MaterialItems.AETHERIUM_SHARD.get(), "以太碎片");
         add(MaterialItems.AETHERIUM_GOLD.get(), "嬗金");
+        add(MaterialItems.LUNAGROW.get(), "月长石");
+        add(MaterialItems.DRAGONSAL.get(), "龙涎石");
         add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
         add(MaterialItems.CHINA_BOWL.get(), "陶瓷碗");
         add(MaterialItems.EMPTY_BULLET.get(), "空心子弹");

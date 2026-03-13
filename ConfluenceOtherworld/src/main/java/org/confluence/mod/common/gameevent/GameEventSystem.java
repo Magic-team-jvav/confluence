@@ -30,8 +30,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public final class GameEventSystem implements IGlobalData {
-    public static final GameEventSystem INSTANCE = new GameEventSystem();
+public enum GameEventSystem implements IGlobalData {
+    INSTANCE;
     public static final ResourceKey<GameEvent> ALL_EVENT_KEY = GameEvent.createKey(Confluence.asResource("all_event"));
 
     private final Map<ResourceKey<? extends GameEvent>, GameEvent> events = Util.make(new IdentityHashMap<>(), map -> {
@@ -48,8 +48,6 @@ public final class GameEventSystem implements IGlobalData {
     });
     private transient int startedEventAmount;
     private transient int startedNonEnvEventAmount;
-
-    private GameEventSystem() {}
 
     public void syncAll(ServerPlayer player) {
         List<ResourceKey<? extends GameEvent>> started = new ArrayList<>(events.size());

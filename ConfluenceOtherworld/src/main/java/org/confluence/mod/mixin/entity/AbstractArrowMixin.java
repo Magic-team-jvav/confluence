@@ -1,15 +1,12 @@
 package org.confluence.mod.mixin.entity;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.network.SetEntityDataPacketS2C;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IAbstractArrow;
@@ -21,40 +18,23 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractArrow.class)
-public abstract class AbstractArrowMixin extends Projectile implements IAbstractArrow {
+public abstract class AbstractArrowMixin implements IAbstractArrow {
     @Unique
     private static final byte[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
-    @Unique
-    private boolean confluence$fromShortBow = false;
-    /// 落地是否立即消失
     @Unique
     private boolean confluence$isDisappearingOnGround;
     @Unique
     private boolean confluence$damageNotAffectedBySpeedBonus;
 
-    private AbstractArrowMixin(EntityType<? extends Projectile> entityType, Level level) {
-        super(entityType, level);
-    }
-
-    @Override
-    public boolean confluence$isShootFromShortBow() {
-        return confluence$fromShortBow;
-    }
-
-    @Override
-    public void confluence$setShootFromShortBow(boolean is) {
-        confluence$setData(SetEntityDataPacketS2C.DATA_BOOLEAN, is);
-    }
-
     @Override
     public void confluence$setData(byte dataId, Object o) {
         IAbstractArrow.super.confluence$setData(dataId, o);
-        this.confluence$fromShortBow = (boolean) o;
+        this.confluence$damageNotAffectedBySpeedBonus = (boolean) o;
     }
 
     @Override
     public Object confluence$getData(byte dataId) {
-        return confluence$fromShortBow;
+        return confluence$damageNotAffectedBySpeedBonus;
     }
 
     @Override
@@ -62,15 +42,14 @@ public abstract class AbstractArrowMixin extends Projectile implements IAbstract
         return confluence$dataIds;
     }
 
-    /// 伤害不受速度影响
     @Override
     public boolean confluence$isDamageNotAffectedBySpeedBonus() {
-        return confluence$damageNotAffectedBySpeedBonus || confluence$isShootFromShortBow();
+        return confluence$damageNotAffectedBySpeedBonus;
     }
 
     @Override
-    public void confluence$setDamageNotAffectedBySpeedBonus(boolean is) {
-        confluence$damageNotAffectedBySpeedBonus = is;
+    public void confluence$setDamageNotAffectedBySpeedBonus(boolean value) {
+        confluence$setData(SetEntityDataPacketS2C.DATA_BOOLEAN, value);
     }
 
     @Override
@@ -79,8 +58,8 @@ public abstract class AbstractArrowMixin extends Projectile implements IAbstract
     }
 
     @Override
-    public void confluence$setDisappearingOnGround(boolean confluence$isDisappearingOnGround) {
-        this.confluence$isDisappearingOnGround = confluence$isDisappearingOnGround;
+    public void confluence$setDisappearingOnGround(boolean value) {
+        this.confluence$isDisappearingOnGround = value;
     }
 
     @ModifyVariable(method = "shoot", at = @At("HEAD"), argsOnly = true, ordinal = 0)
@@ -91,28 +70,27 @@ public abstract class AbstractArrowMixin extends Projectile implements IAbstract
         return velocity;
     }
 
-    @ModifyExpressionValue(method = "onHitEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;length()D"))
-    private double shortBowLength(double original) {
-        return confluence$isDamageNotAffectedBySpeedBonus() ? 1.0 : original;
+    @WrapOperation(method = "onHitEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;length()D"))
+    private double notScale(Vec3 instance, Operation<Double> original) {
+        return confluence$isDamageNotAffectedBySpeedBonus() ? 1.0 : original.call(instance);
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
-    private void addShortBow(CompoundTag pCompound, CallbackInfo ci) {
-        pCompound.putBoolean("confluence:from_short_bow", confluence$isShootFromShortBow());
-        pCompound.putBoolean("confluence:damage_not_affected_by_speed_bonus", confluence$damageNotAffectedBySpeedBonus);
+    private void add(CompoundTag compound, CallbackInfo ci) {
+        compound.putBoolean(DNABSB_KEY, confluence$isDamageNotAffectedBySpeedBonus());
+        compound.putBoolean(DOG_KEY, confluence$isDisappearingOnGround());
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
-    private void readShortBow(CompoundTag pCompound, CallbackInfo ci) {
-        confluence$setShootFromShortBow(pCompound.getBoolean("confluence:from_short_bow"));
-        confluence$damageNotAffectedBySpeedBonus = pCompound.getBoolean("confluence:damage_not_affected_by_speed_bonus");
+    private void read(CompoundTag compound, CallbackInfo ci) {
+        confluence$setDamageNotAffectedBySpeedBonus(compound.getBoolean(DNABSB_KEY));
+        confluence$setDisappearingOnGround(compound.getBoolean(DOG_KEY));
     }
 
-    @WrapMethod(method = "onHitBlock")
-    private void onHitBlock(BlockHitResult result, Operation<Void> original) {
-        original.call(result);
+    @Inject(method = "onHitBlock", at = @At("TAIL"))
+    private void disappear(BlockHitResult result, CallbackInfo ci) {
         if (confluence$isDisappearingOnGround()) {
-            discard();
+            confluence$self().discard();
         }
     }
 }

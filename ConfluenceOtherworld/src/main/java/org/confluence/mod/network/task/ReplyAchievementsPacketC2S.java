@@ -6,9 +6,8 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.PlayerAdvancements;
-import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.confluence.lib.network.IPacketC2S;
+import org.confluence.lib.network.IPacket;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.AchievementUtils;
 
@@ -19,7 +18,7 @@ import java.util.UUID;
 public record ReplyAchievementsPacketC2S(
         UUID uuid,
         PlayerAdvancements.Data data
-) implements IPacketC2S {
+) implements IPacket {
     public static final Type<ReplyAchievementsPacketC2S> TYPE = Confluence.createType("sync_achievements");
     public static final StreamCodec<FriendlyByteBuf, ReplyAchievementsPacketC2S> STREAM_CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC, ReplyAchievementsPacketC2S::uuid,
@@ -39,9 +38,6 @@ public record ReplyAchievementsPacketC2S(
         attr.set(map);
         context.finishCurrentTask(AchievementsTask.TYPE);
     }
-
-    @Override
-    public void work(ServerPlayer player) {}
 
     @Override
     public Type<ReplyAchievementsPacketC2S> type() {

@@ -170,7 +170,7 @@ public final class ModClientSetups {
     static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
     static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null && player.getInventory().getSelected() == itemStack) {
+        if (player != null && player.getMainHandItem() == itemStack) {
             ItemStack stack = IPlayer.of(player).confluence$getCurrentBait();
             if (!stack.isEmpty()) {
                 PoseStack pose = guiGraphics.pose();

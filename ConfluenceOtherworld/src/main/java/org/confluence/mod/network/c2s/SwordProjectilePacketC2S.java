@@ -3,6 +3,7 @@ package org.confluence.mod.network.c2s;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
@@ -32,6 +33,7 @@ public final class SwordProjectilePacketC2S implements IPacketC2S {
             if (data == null) return;
             sword.genProjectile(player, stack, data);
             player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
+            player.swing(InteractionHand.MAIN_HAND, true);
         }
     }
 

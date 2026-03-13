@@ -12,7 +12,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
@@ -60,7 +59,9 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
 
             if (!level().isClientSide && getOwner() instanceof LivingEntity living) {
                 HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-                if (hitresult.getType() == HitResult.Type.ENTITY) {
+                if (hitresult.getType() == HitResult.Type.BLOCK) {
+                    onHitBlock((BlockHitResult) hitresult);
+                } else if (hitresult.getType() == HitResult.Type.ENTITY) {
                     onHitEntity((EntityHitResult) hitresult);
                 }
                 double dist = position().distanceTo(startPos);
@@ -96,11 +97,6 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
                 }
             }
         }
-    }
-
-    @Override
-    protected void onInsideBlock(BlockState state) {
-        state.onProjectileHit(level(), state, new BlockHitResult(position(), getDirection(), blockPosition(), true), this);
     }
 
     @Override

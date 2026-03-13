@@ -115,6 +115,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> FLINX_FUR = register("flinx_fur", ModRarity.BLUE);
     public static final DeferredItem<Item> AETHERIUM_SHARD = register("aetherium_shard", ModRarity.ORANGE);
     public static final DeferredItem<Item> AETHERIUM_GOLD = register("aetherium_gold", ModRarity.ORANGE);
+    public static final DeferredItem<Item> LUNAGROW = register("lunagrow", ModRarity.LIGHT_RED);
+    public static final DeferredItem<Item> DRAGONSAL = register("dragonsal", ModRarity.PINK);
 
     public static final DeferredItem<Item> PEARL = register("pearl", ModRarity.BLUE);
     public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl", ModRarity.BLUE);

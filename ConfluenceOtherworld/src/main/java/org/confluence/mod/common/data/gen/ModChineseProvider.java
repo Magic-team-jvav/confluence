@@ -1332,6 +1332,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.ROLLING_CACTUS_BOULDER.get(), "仙人球");
         add(ModEntities.ROLLING_CACTUS_SPIKE.get(), "仙人球尖刺");
         add(ModEntities.TOMBSTONE_BOULDER.get(), "墓石巨石");
+        add(ModEntities.LIFECRYSTAL_BOULDER.get(), "生命水晶巨石");
         add(ModEntities.BOULDER_3X.get(), "3x3巨石");
         add(ModEntities.SPIKY_BALL_PROJECTILE.get(), "尖球");
         add(ModEntities.THROWN_WATER_PROJECTILE.get(), "掷出的液体瓶");
@@ -2946,6 +2947,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SPIDER_BOULDER.get(), "蜘蛛巨石");
         add(FunctionalBlocks.LAVA_BOULDER.get(), "熔岩巨石");
         add(FunctionalBlocks.RAINBOW_BOULDER.get(), "彩虹巨石");
+        add(FunctionalBlocks.LIFECRYSTAL_BOULDER.get(), "生命水晶巨石");
         add(FunctionalBlocks.GHOULDER.get(), "鬼石");
         add(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get(), "瞬爆TNT");
         add(FunctionalBlocks.SWITCH.get(), "开关");

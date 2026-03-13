@@ -25,12 +25,14 @@ import org.confluence.mod.common.block.common.EnchantedFragileBricksBlock;
 import org.confluence.mod.common.block.functional.*;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
 import org.confluence.mod.common.block.functional.boulder.ContactEffectBoulderBlock;
+import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
 import org.confluence.mod.common.block.functional.crafting.*;
 import org.confluence.mod.common.block.functional.crafting.LoomBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.TreeHolesBlock;
 import org.confluence.mod.common.entity.projectile.boulder.*;
+import org.confluence.mod.common.entity.projectile.boulder.LifecrystalBoulderEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -159,6 +161,8 @@ public class FunctionalBlocks {
     public static final DeferredBlock<BoulderBlock> POO_BOULDER = registerWithEntity("poo_boulder", () -> new ContactEffectBoulderBlock(PooBoulderEntity::new, ContactEffectBoulderBlock.ContactEffect.createEffect(new MobEffectInstanceData(ModEffects.STINKY, 20 * 3))));
     public static final DeferredBlock<BoulderBlock> SPIDER_BOULDER = registerWithEntity("spider_boulder", () -> new BoulderBlock(SpiderBoulderEntity::new));
     public static final DeferredBlock<BoulderBlock> RAINBOW_BOULDER = registerWithEntity("rainbow_boulder", () -> new BoulderBlock(RainbowBoulderEntity::new));
+    public static final DeferredBlock<GeoBoulderBlock> LIFECRYSTAL_BOULDER = registerGeoBoulder("lifecrystal_boulder", () -> new GeoBoulderBlock(LifecrystalBoulderEntity::new), GeoBoulderBlock.BItem::new);
+    public static final Supplier<BlockEntityType<GeoBoulderBlock.BEntity>> LIFECRYSTAL_BOULDER_ENTITY = BLOCK_ENTITIES.register("lifecrystal_boulder_entity", () -> BlockEntityType.Builder.of(GeoBoulderBlock.BEntity::new, LIFECRYSTAL_BOULDER.get()).build(DSL.remainderType()));
     public static final DeferredBlock<DetonatorBlock> DETONATOR = registerWithEntity("detonator", () -> new DetonatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_OBSIDIAN_BRICKS = registerWithEntity("mechanical_fragile_obsidian_bricks", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS), DecorativeBlocks.OBSIDIAN_BRICKS.get()::defaultBlockState));
@@ -238,6 +242,16 @@ public class FunctionalBlocks {
     private static <B extends Block & EntityBlock & INetworkBlock> DeferredBlock<B> registerWithEntity(String id, Supplier<B> supplier, Function<B, BlockItem> function) {
         DeferredBlock<B> holder = registerWithItem(id, supplier, function);
         MECHANICAL_BLOCKS.add(holder);
+        return holder;
+    }
+
+    private static <B extends Block & EntityBlock> DeferredBlock<B> registerGeoBoulder(String id, Supplier<B> supplier) {
+        DeferredBlock<B> holder = registerWithItem(id, supplier);
+        return holder;
+    }
+
+    private static <B extends Block & EntityBlock> DeferredBlock<B> registerGeoBoulder(String id, Supplier<B> supplier, Function<B, BlockItem> function) {
+        DeferredBlock<B> holder = registerWithItem(id, supplier, function);
         return holder;
     }
 

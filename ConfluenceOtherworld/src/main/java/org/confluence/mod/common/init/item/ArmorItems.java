@@ -820,6 +820,15 @@ public class ArmorItems {
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.13F))
             .tooltips(2));
 
+    public static final DeferredItem<BaseArmorItem> SOUL_HOOD = register("soul_hood", ModArmorMaterials.SOUL_HOOD_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/soul_robe")
+            .rarity(ModRarity.GREEN)
+    );
+    public static final DeferredItem<BaseArmorItem> SOUL_ROBE = register("soul_robe", ModArmorMaterials.SOUL_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/soul_robe")
+            .rarity(ModRarity.GREEN)
+           );
+
     public static final DeferredItem<BaseArmorItem> GOGGLES = register("goggles", ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, builder -> {});
     public static final DeferredItem<BaseArmorItem> GREEN_CAP = register("green_cap", ModArmorMaterials.GREEN_CAP_MATERIAL, ArmorItem.Type.HELMET, builder -> {});
     public static final DeferredItem<BaseArmorItem> VIKING_HELMET = register("viking_helmet", ModArmorMaterials.VIKING_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder

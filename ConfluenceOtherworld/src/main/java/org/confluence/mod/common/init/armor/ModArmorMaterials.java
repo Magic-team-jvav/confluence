@@ -204,6 +204,8 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> MYSTIC_ROBE_ARMOR_MATERIAL = registerSingletonMaterial("mystic_robe_material", ArmorItem.Type.CHESTPLATE, 2, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "mystic_robe", 0, 0);
     public static final Holder<ArmorMaterial> DIAMOND_ROBE_ARMOR_MATERIAL = registerSingletonMaterial("diamond_robe_material", ArmorItem.Type.CHESTPLATE, 3, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.DIAMOND), "diamond_robe", 0, 0);
     public static final Holder<ArmorMaterial> AMBER_ROBE_ARMOR_MATERIAL = registerSingletonMaterial("amber_robe_material", ArmorItem.Type.CHESTPLATE, 3, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.AMBER), "amber_robe", 0, 0);
+    public static final Holder<ArmorMaterial> SOUL_HOOD_ARMOR_MATERIAL = registerSingletonMaterial("soul_hood_material", ArmorItem.Type.HELMET, 3, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.LEATHER), "soul_hood", 0, 0);
+    public static final Holder<ArmorMaterial> SOUL_ROPE_ARMOR_MATERIAL = registerSingletonMaterial("soul_rope_material", ArmorItem.Type.CHESTPLATE, 5, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.LEATHER), "soul_rope", 0, 0);
 
     public static final Holder<ArmorMaterial> JUNGLE_ARMOR_MATERIALS = registerArmorMaterial("jungle_armor_materials", 3, 6, 6, 3, 15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.JUNGLE_SPORE), "jungle", 2, 0);
 

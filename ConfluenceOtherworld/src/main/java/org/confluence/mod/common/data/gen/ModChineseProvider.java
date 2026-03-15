@@ -3492,6 +3492,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.MYSTIC_ROBE.get(), "神秘长袍");
         add(ArmorItems.DIAMOND_ROBE.get(), "钻石长袍");
         add(ArmorItems.AMBER_ROBE.get(), "琥珀长袍");
+        add(ArmorItems.SOUL_HOOD.get(), "灵魂头套");
+        add(ArmorItems.SOUL_ROBE.get(), "灵魂长袍");
 
 
         // 任务鱼

@@ -33,17 +33,17 @@ public class LifecrystalBoulderRenderer extends GeoEntityRenderer<LifecrystalBou
     }
 
     private static class LifecrystalBoulderModel extends GeoModel<LifecrystalBoulderEntity> {
-        public static final ResourceLocation MODEL = LifeCrystalBlockModel.MODEL;
-        public static final ResourceLocation TEXTURE = LifeCrystalBlockModel.TEXTURE;
+        public static final ResourceLocation ENTITY_MODEL = LifeCrystalBlockModel.ENTITY_MODEL;
+        public static final ResourceLocation ENTITY_TEXTURE = LifeCrystalBlockModel.ENTITY_TEXTURE;
 
         @Override
         public ResourceLocation getModelResource(LifecrystalBoulderEntity animatable) {
-            return MODEL;
+            return ENTITY_MODEL;
         }
 
         @Override
         public ResourceLocation getTextureResource(LifecrystalBoulderEntity animatable) {
-            return TEXTURE;
+            return ENTITY_TEXTURE;
         }
 
         @Override

@@ -69,6 +69,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("chat.type.advancement.achievement", "%s达成了成就%s");
         add("chat.confluence.magic_conch", "你听取海洋声音的位置[%s]已记录");
         add("chat.confluence.demon_conch", "你听取恶魔呼喊的位置[%s]已记录");
+        add("chat.confluence.crystal_marked", "虚空能量产生共鸣。已记录坐标与朝向。");
+        add("chat.confluence.link_too_far", "共鸣过于微弱。链接失败（最大距离：100格）。");
+        add("chat.confluence.link_not_opposite", "维度失调。两个连接面必须完全相对。");
+        add("chat.confluence.crystal_cleared", "虚空链接数据已清除。");
+        add("chat.confluence.link_success", "虚空链接已成功建立！");
         add("options.difficulty.legendary", "§a传奇");
         add("message.confluence.choking", "你被噎住了,需要喝水才行");
         add("message.confluence.advancement_combat_techniques", "书中的知识赋予了城镇居民力量！");
@@ -624,6 +629,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.lucy_the_axe.0", "“我爱露西！”");
         add("tooltip.item.confluence.key_of_light.0", "“汇聚了大量灵魂的精华”");
         add("tooltip.item.confluence.key_of_night.0", "“汇聚了大量灵魂的精华”");
+
+        add("tooltip.confluence.void_crystal.clear_hint", "蹲下 + 右键以清除记录的数据");
+        add("tooltip.confluence.void_crystal.pos", "§7记录位置: §fX:%d Y:%d Z:%d");
+        add("tooltip.confluence.void_crystal.face", "§7记录朝向: §d%s");
+        add("tooltip.confluence.void_crystal.empty", "§8右键点击虚空根系以开始链接。");
 
         new ConfigurationLanguageSubProvider(this::add, false);
 
@@ -2498,6 +2508,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.DAYBLOOM.get(), "太阳花");
         add(MaterialItems.DEATHWEED.get(), "死亡草");
         add(MaterialItems.JUNGLE_SPORE.get(), "丛林孢子");
+        // 末地 - 紫颂主题物品
+        add(MaterialItems.VOID_CRYSTAL.get(), "虚空水晶");
 
 
         add(SwordItems.COPPER_SHORT_SWORD.get(), "铜短剑");

@@ -15,6 +15,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.CursedFlameItem;
 import org.confluence.mod.common.item.common.GelItem;
 import org.confluence.mod.common.item.common.MushroomItem;
+import org.confluence.mod.common.item.common.VoidCrystalItem;
 
 public class MaterialItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -150,6 +151,9 @@ public class MaterialItems {
     public static final DeferredItem<Item> GLOWING_MUSHROOM = ITEMS.register("glowing_mushroom", () -> new MushroomItem(NatureBlocks.GLOWING_MUSHROOM.get(), 0.0F));
     public static final DeferredItem<Item> LIFE_MUSHROOM = ITEMS.register("life_mushroom", () -> new MushroomItem(NatureBlocks.LIFE_MUSHROOM.get(), 6.0F));
     public static final DeferredItem<Item> JUNGLE_SPORE = ITEMS.register("jungle_spore", () -> new Item(new Item.Properties()));
+    // 末地 - 紫颂主题物品
+    public static final DeferredItem<Item> VOID_CRYSTAL = ITEMS.register("void_crystal", VoidCrystalItem::new);
+
 
     // 困难模式
     public static final DeferredItem<Item> SOUL_OF_VOIGHT = ITEMS.register("soul_of_voight", () -> new TooltipItem(new Item.Properties(), ModRarity.ORANGE, TooltipItem.getTooltipsFromString("soul_of_voight", 1, ChatFormatting.GRAY)));

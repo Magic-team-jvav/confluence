@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -65,7 +66,9 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         EnumProperty<ConnectType> prop = CONNECTION_PROPERTIES.get(direction);
         ConnectType currentType = state.getValue(prop);
+
         if (currentType == ConnectType.CONNECT_BY_PORTAL) return state;
+
         ConnectType newType = neighborState.is(this) ? ConnectType.CONNECT : ConnectType.DIS_CONNECT;
         return state.setValue(prop, newType);
     }
@@ -75,6 +78,7 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
         CONNECTION_PROPERTIES.values().forEach(builder::add);
     }
 
+    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new BEntity(pos, state);
@@ -83,15 +87,20 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {
-            BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof BEntity rootEntity) {
-                BlockPos linkedPos = rootEntity.getLinkedPos();
-                boolean hasPortalSide = CONNECTION_PROPERTIES.values().stream().anyMatch(prop -> state.getValue(prop) == ConnectType.CONNECT_BY_PORTAL);
+            if (level instanceof ServerLevel serverLevel) {
+                BlockEntity be = level.getBlockEntity(pos);
+                if (be instanceof BEntity rootEntity) {
+                    BlockPos linkedPos = rootEntity.getLinkedPos();
 
-                if (hasPortalSide && linkedPos != null) {
-                    BlockState linkedState = level.getBlockState(linkedPos);
-                    if (linkedState.is(this)) {
-                        level.destroyBlock(linkedPos, true);
+                    boolean hasPortalSide = CONNECTION_PROPERTIES.values().stream().anyMatch(prop -> state.getValue(prop) == ConnectType.CONNECT_BY_PORTAL);
+
+                    if (hasPortalSide && linkedPos != null) {
+                        serverLevel.getChunkAt(linkedPos);
+
+                        BlockState linkedState = level.getBlockState(linkedPos);
+                        if (linkedState.is(this)) {
+                            level.destroyBlock(linkedPos, true);
+                        }
                     }
                 }
             }

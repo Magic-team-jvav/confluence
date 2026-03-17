@@ -1,0 +1,7 @@
+{
+  "parent": "block/leaves",
+  "textures": {
+    "all": "confluence:block/gaze_leaves",
+    "particle": "confluence:block/gaze_leaves"
+  }
+}

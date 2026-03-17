@@ -652,6 +652,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.ash_forest", "灰烬木林");
         add("biome.confluence.chorus_forest", "紫颂森林");
         add("biome.confluence.inverse_forest", "倒悬森林");
+        add("biome.confluence.silver_soul_forest", "银魄森林");
 
         add("biome.minecraft.confluence_sky", "太空层");
 
@@ -1173,7 +1174,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.minecraft.zombie.raincoat", "雨衣僵尸");
         add("entity.minecraft.zombie.frozen", "冰雪僵尸");
         add("entity.terra_entity.duck.0", "野鸭");
-        add("entity.terra_entity.duck.1", "鸭");;
+        add("entity.terra_entity.duck.1", "鸭");
         add("entity.terra_entity.demon_eye.dilated", "涣散恶魔眼");
         add("entity.terra_entity.demon_eye.dilated_small", "小涣散恶魔眼");
         add("entity.terra_entity.demon_eye.sleepy", "瞌睡恶魔眼");
@@ -1779,11 +1780,31 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_BLOCK.get(), "灰烬块");
         add(NatureBlocks.ASH_GRASS_BLOCK.get(), "灰烬草方块");
         add(NatureBlocks.ASH_GRASS.get(), "灰烬草");
+
         add(NatureBlocks.END_DIRT.get(), "终末土");
+
         add(NatureBlocks.VOID_GRASS_BLOCK.get(), "虚空草方块");
         add(NatureBlocks.VOID_GRASS.get(), "虚空草");
         add(NatureBlocks.VOID_TREE_ROOT_BLOCK.get(), "虚空树根");
+        add(NatureBlocks.VOID_LOG_BLOCKS.BUTTON.get(), "虚空木按钮");
+        add(NatureBlocks.VOID_LOG_BLOCKS.PLANKS.get(), "虚空木板");
+        add(NatureBlocks.VOID_LOG_BLOCKS.LOG.get(), "虚空原木");
+        add(NatureBlocks.VOID_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮虚空原木");
+        add(NatureBlocks.VOID_LOG_BLOCKS.STRIPPED_WOOD.get(), "去皮虚空木");
+        add(NatureBlocks.VOID_LOG_BLOCKS.DOOR.get(), "虚空木门");
+        add(NatureBlocks.VOID_LOG_BLOCKS.TRAPDOOR.get(), "虚空木活板门");
+        add(NatureBlocks.VOID_LOG_BLOCKS.SIGN.get(), "虚空木告示牌");
+        add(NatureBlocks.VOID_LOG_BLOCKS.HANGING_SIGN.get(), "悬挂式虚空木告示牌");
+        add(NatureBlocks.VOID_LOG_BLOCKS.STAIRS.get(), "虚空木楼梯");
+        add(NatureBlocks.VOID_LOG_BLOCKS.SLAB.get(), "虚空木台阶");
+        add(NatureBlocks.VOID_LOG_BLOCKS.WOOD.get(), "虚空木");
+        add(NatureBlocks.VOID_LOG_BLOCKS.FENCE.get(), "虚空木栅栏");
+        add(NatureBlocks.VOID_LOG_BLOCKS.FENCE_GATE.get(), "虚空木栅栏门");
+        add(NatureBlocks.VOID_LOG_BLOCKS.PRESSURE_PLATE.get(), "虚空木压力板");
+        add(NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get(), "虚空树叶");
+
         add(NatureBlocks.INVERSE_GRASS_BLOCK.get(), "晖落草方块");
+
         add(NatureBlocks.DESERT_GRASS.get(), "沙漠草");
         add(NatureBlocks.DESERT_TALL_GRASS.get(), "沙漠高草");
         add(NatureBlocks.PACKED_DIRT.get(), "板结泥土");

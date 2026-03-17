@@ -25,6 +25,7 @@ public final class ModBiomes {
     public static final ResourceKey<Biome> GLOWING_MUSHROOM = register("glowing_mushroom");
     public static final ResourceKey<Biome> CHORUS_FOREST = register("chorus_forest");
     public static final ResourceKey<Biome> INVERSE_FOREST = register("inverse_forest");
+    public static final ResourceKey<Biome> SILVER_SOUL_FOREST = register("silver_soul_forest");
 
     private static ResourceKey<Biome> register(String name) {
         return ResourceKey.create(Registries.BIOME, Confluence.asResource(name));

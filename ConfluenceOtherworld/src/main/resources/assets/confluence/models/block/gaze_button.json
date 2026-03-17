@@ -1,0 +1,7 @@
+{
+  "parent": "block/button",
+  "textures": {
+    "texture": "confluence:block/gaze_planks"
+  },
+  "render_type": "solid"
+}

@@ -8,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -18,14 +19,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class VoidTreeRootBlock extends Block implements EntityBlock {
+
+    private static final float RADIUS = 0.25F;
+
+    private static final Map<BlockState, VoxelShape> SHAPE_MAP = new ConcurrentHashMap<>();
 
     public static final Map<Direction, EnumProperty<ConnectType>> CONNECTION_PROPERTIES =
             Util.make(new EnumMap<>(Direction.class), map -> {
@@ -49,13 +57,55 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
     }
 
     @Override
+    public net.minecraft.world.level.material.PushReaction getPistonPushReaction(BlockState state) {
+        return net.minecraft.world.level.material.PushReaction.DESTROY;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, net.minecraft.world.phys.shapes.CollisionContext context) {
+        return SHAPE_MAP.computeIfAbsent(state, s -> {
+            double min = 0.5 - RADIUS;
+            double max = 0.5 + RADIUS;
+            VoxelShape shape = Block.box(min * 16, min * 16, min * 16, max * 16, max * 16, max * 16);
+
+            for (Direction direction : LibUtils.DIRECTIONS) {
+                ConnectType type = s.getValue(CONNECTION_PROPERTIES.get(direction));
+
+                if (type != ConnectType.DIS_CONNECT) {
+                    shape = Shapes.or(shape, getArmShape(direction));
+                }
+            }
+            return shape;
+        });
+    }
+
+    private VoxelShape getArmShape(Direction direction) {
+        double min = 0.5 - RADIUS;
+        double max = 0.5 + RADIUS;
+
+        return switch (direction) {
+            case DOWN -> Block.box(min * 16, 0, min * 16, max * 16, max * 16, max * 16);
+            case UP -> Block.box(min * 16, min * 16, min * 16, max * 16, 16, max * 16);
+            case NORTH -> Block.box(min * 16, min * 16, 0, max * 16, max * 16, max * 16);
+            case SOUTH -> Block.box(min * 16, min * 16, min * 16, max * 16, max * 16, 16);
+            case WEST -> Block.box(0, min * 16, min * 16, max * 16, max * 16, max * 16);
+            case EAST -> Block.box(min * 16, min * 16, min * 16, 16, max * 16, max * 16);
+        };
+    }
+
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = this.defaultBlockState();
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         for (Direction direction : LibUtils.DIRECTIONS) {
             BlockState neighborState = level.getBlockState(pos.relative(direction));
-            if (neighborState.is(this)) {
+            if (neighborState.is(this)
+                    || neighborState.is(NatureBlocks.VOID_LOG_BLOCKS.LOG.get())
+                    || neighborState.is(NatureBlocks.VOID_LOG_BLOCKS.WOOD.get())
+                    || neighborState.is(NatureBlocks.VOID_LOG_BLOCKS.STRIPPED_LOG.get())
+                    || neighborState.is(NatureBlocks.VOID_LOG_BLOCKS.STRIPPED_WOOD.get())
+            ) {
                 state = state.setValue(CONNECTION_PROPERTIES.get(direction), ConnectType.CONNECT);
             }
         }

@@ -1,0 +1,9 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/gaze_planks",
+    "top": "confluence:block/gaze_planks",
+    "side": "confluence:block/gaze_planks"
+  },
+  "render_type": "solid"
+}

@@ -1584,6 +1584,11 @@ public class ModDataProvider {
                     .mobSpawnSettings(new MobSpawnSettings.Builder().build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, Biomes::addDefaultGenerations)).build()
             );
+            context.register(ModBiomes.SILVER_SOUL_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
+                    .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
+                    .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, Biomes::addDefaultGenerations)).build()
+            );
         }
 
         private static void addDefaultGenerations(BiomeGenerationSettings.Builder builder) {

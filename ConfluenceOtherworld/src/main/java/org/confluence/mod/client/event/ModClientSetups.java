@@ -29,6 +29,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -40,9 +41,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.IItemDecorator;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -81,12 +81,13 @@ import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.awt.*;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static net.minecraft.client.renderer.RenderStateShard.*;
+import static org.confluence.lib.color.IntegerRGB.VOID_B;
 
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
@@ -94,9 +95,36 @@ import static net.minecraft.client.renderer.RenderStateShard.*;
 public final class ModClientSetups {
     public static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
     public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
+    private static final NormalNoise normalNoise = NormalNoise.create(RandomSource.create(0), new NormalNoise.NoiseParameters(-5, 1.0, 1.0, 1.0, 1.0));
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
         private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");
         private static final ResourceLocation FLOWING = Confluence.asResource("block/fluid/honey_flowing");
+        private static final Vector3f FOG_COLOR = new Vector3f(1.0F, 1.0F, 0.0F);
+
+        @Override
+        public ResourceLocation getStillTexture() {
+            return STILL;
+        }
+
+        @Override
+        public ResourceLocation getFlowingTexture() {
+            return FLOWING;
+        }
+
+        @Override
+        public Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {
+            return FOG_COLOR;
+        }
+
+        @Override
+        public void modifyFogRender(Camera camera, FogRenderer.FogMode mode, float renderDistance, float partialTick, float nearDistance, float farDistance, FogShape shape) {
+            RenderSystem.setShaderFogStart(0.125F);
+            RenderSystem.setShaderFogEnd(5.0F);
+        }
+    };
+    static final IClientFluidTypeExtensions VOID_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
+        private static final ResourceLocation STILL = Confluence.asResource("block/fluid/void_still");
+        private static final ResourceLocation FLOWING = Confluence.asResource("block/fluid/void_flowing");
         private static final Vector3f FOG_COLOR = new Vector3f(1.0F, 1.0F, 0.0F);
 
         @Override
@@ -234,20 +262,57 @@ public final class ModClientSetups {
             return true;
         }
     };
-    static final BlockColor HALLOW_LEAVES_COLOR = new BlockColor() {
+    static final BlockColor HALLOW_LEAVES_COLOR = (state, level, pos, tintIndex) -> {
+        if (pos == null) return -1;
+        double scale = 1.5;
+        int r = (int) Mth.clamp((
+                normalNoise.getValue(
+                        pos.getX() * scale,
+                        pos.getY() * scale,
+                        pos.getZ() * scale
+                ) + 1) / 2 * 255, 0, 255);
+        int g = (int) Mth.clamp((
+                normalNoise.getValue(
+                        (pos.getX() + 50) * scale,
+                        (pos.getY() + 50) * scale,
+                        (pos.getZ() + 50) * scale
+                ) + 1) / 2 * 255, 0, 255);
+        int b = (int) Mth.clamp((
+                normalNoise.getValue(
+                        (pos.getX() + 100) * scale,
+                        (pos.getY() + 100) * scale,
+                        (pos.getZ() + 100) * scale
+                ) + 1) / 2 * 255 + 255 - r - g, 0, 255);
+        float[] hsb = Color.RGBtoHSB(r, g, b, null);
+
+        return Color.HSBtoRGB(hsb[0], 0.5F, 1.0F);
+    };
+
+    static final BlockColor VOID_LEAVES_COLOR = new BlockColor() {
         @Override
         public int getColor(BlockState state, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos, int tintIndex) {
-            if (pos == null) return -1;
-            IntegerRGB x = hallowMixture(Math.abs(pos.getX()) % 12);
-            IntegerRGB y = hallowMixture(Math.abs(pos.getY()) % 12);
-            IntegerRGB z = hallowMixture(Math.abs(pos.getZ()) % 12);
-            return x.mixture(y, 0.5F).mixture(z, 0.5F).get();
+            if (pos == null) return VOID_B.get();
+
+            double scale = 3;
+            double noiseVal = normalNoise.getValue(
+                    pos.getX() * scale,
+                    pos.getY() * scale,
+                    pos.getZ() * scale
+            );
+
+            double m = (noiseVal + 1) * 6;
+            return hallowMixtureSmooth(m).get();
         }
 
-        private static IntegerRGB hallowMixture(int m) {
-            if (m <= 4) return IntegerRGB.HALLOW_A.mixture(IntegerRGB.HALLOW_B, m * 0.25F);
-            if (m <= 8) return IntegerRGB.HALLOW_B.mixture(IntegerRGB.HALLOW_C, (m - 4) * 0.25F);
-            return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
+        private static IntegerRGB hallowMixtureSmooth(double m) {
+            m = m % 12.0;
+            if (m < 0) m += 12.0;
+
+            if (m <= 4) {
+                return IntegerRGB.VOID_A.mixture(VOID_B, (float) (m / 6.0));
+            } else {
+                return VOID_B.mixture(IntegerRGB.VOID_C, (float) ((m - 6) / 6.0));
+            }
         }
     };
 
@@ -279,7 +344,6 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.CURSED_FLAME_BLOCK.get(), cutout);
-        // 如果方块没有如期cutout渲染，请检查blockstate里是否调用了没有cutout的模型
     }
 
     static void registerItemProperties() {
@@ -288,13 +352,6 @@ public final class ModClientSetups {
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
-    }
-
-    static void eventBus(Consumer<IEventBus> consumer) {
-        ModList.get().getModContainerById(Confluence.MODID).ifPresent(container -> {
-            IEventBus eventBus = container.getEventBus();
-            if (eventBus != null) consumer.accept(eventBus);
-        });
     }
 
     public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = LibUtils.isModLoaded("ctm") || LibUtils.isModLoaded("fusion") || LibUtils.isModLoaded("continuity");
@@ -308,22 +365,6 @@ public final class ModClientSetups {
                     .setCullState(NO_CULL)
                     .setOverlayState(OVERLAY)
                     .createCompositeState(false));
-
-    public static final RenderType COLORED_TRANSLUCENT_UNLIT = RenderType.create(
-            "colored_translucent_unlit",
-            DefaultVertexFormat.POSITION_COLOR, // 仍然只需要位置和颜色
-            VertexFormat.Mode.QUADS,
-            256,
-            true, // affectsCrumbling 设为 true，对于半透明物体更安全
-            true, // sortOnUpload 设为 true，半透明物体需要排序才能正确渲染
-            RenderType.CompositeState.builder()
-                    .setShaderState(RENDERTYPE_LINES_SHADER) // 换成支持透明度的着色器
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY) // 关键：启用标准透明度混合
-                    .setCullState(CULL) // 保留背面剔除
-                    .setLightmapState(NO_LIGHTMAP) // 关键：禁用光照贴图
-                    .setTextureState(NO_TEXTURE) // 仍然不绑定纹理
-                    .createCompositeState(false)
-    );
 
     public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
     public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
@@ -354,9 +395,7 @@ public final class ModClientSetups {
             }
             return 0.0F;
         };
-        CrossbowItems.ITEMS.getEntries().forEach(item -> {
-            ItemProperties.register(item.get(), pulling, crossbowPulling);
-        });
+        CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, crossbowPulling));
     }
 
     public static void registerFishingPoleProperties() {

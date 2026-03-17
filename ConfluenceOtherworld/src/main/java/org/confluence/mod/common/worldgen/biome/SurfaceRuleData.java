@@ -52,6 +52,10 @@ public class SurfaceRuleData {
         return SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, state(NatureBlocks.VOID_GRASS_BLOCK.get())), state(NatureBlocks.END_DIRT.get()));
     }
 
+    private static SurfaceRules.RuleSource silverSoulGrassSurface() {
+        return SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, state(NatureBlocks.MOONLIT_GRASS_BLOCK.get())), state(NatureBlocks.END_DIRT.get()));
+    }
+
     private static SurfaceRules.RuleSource jungleGrassSurface() {
         return SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, state(NatureBlocks.JUNGLE_GRASS_BLOCK.get())), state(Blocks.MUD));
     }
@@ -127,12 +131,37 @@ public class SurfaceRuleData {
 
     public static SurfaceRules.RuleSource makeConfluenceEndRules() {
         return SurfaceRules.sequence(
+                //紫頌森林
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.CHORUS_FOREST),
                         SurfaceRules.ifTrue(bedrockRoofSeed,
                                 SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
                                         SurfaceRules.sequence(
                                                 SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, chorusGrassSurface()),
                                                 SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(4, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
+                                                state(Blocks.END_STONE)
+                                        )
+                                )
+                        )
+                ),
+
+                //暉落森林
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.INVERSE_FOREST),
+                        SurfaceRules.ifTrue(bedrockRoofSeed,
+                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, state(NatureBlocks.INVERSE_GRASS_BLOCK.get())),
+                                                state(Blocks.END_STONE)
+                                        )
+                                )
+                        )
+                ),
+
+                //銀魄森林
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.SILVER_SOUL_FOREST),
+                        SurfaceRules.ifTrue(bedrockRoofSeed,
+                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, silverSoulGrassSurface()),
                                                 state(Blocks.END_STONE)
                                         )
                                 )

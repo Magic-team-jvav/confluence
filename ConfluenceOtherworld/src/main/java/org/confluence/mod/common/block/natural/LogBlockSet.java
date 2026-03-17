@@ -591,7 +591,10 @@ public class LogBlockSet {
         ASH("ash"),
         DYNASTY("dynasty"),
         PINE("pine"),
+        GAZE("gaze"),
+        VOID("void"),
         SPOOKY("spooky"),
+        SILVER_WILLOW("silver_willow"),
         FEY("fey");
 
         public final BlockSetType SET;

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "confluence:block/stripped_gaze_wood",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "confluence:block/stripped_gaze_wood"
+    },
+    "axis=z": {
+      "model": "confluence:block/stripped_gaze_wood",
+      "x": 90
+    }
+  }
+}

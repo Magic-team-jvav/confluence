@@ -165,7 +165,7 @@ repositories {
     }
 }
 
-boolean sodium = true // 钠
+boolean sodium = false // 钠
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false // FTB系列

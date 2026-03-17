@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "confluence:block/void_planks",
+    "top": "confluence:block/void_planks",
+    "side": "confluence:block/void_planks"
+  },
+  "render_type": "solid"
+}

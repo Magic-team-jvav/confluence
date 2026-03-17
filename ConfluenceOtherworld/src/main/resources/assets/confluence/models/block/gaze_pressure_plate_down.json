@@ -1,0 +1,7 @@
+{
+  "parent": "block/pressure_plate_down",
+  "textures": {
+    "texture": "confluence:block/gaze_planks"
+  },
+  "render_type": "solid"
+}

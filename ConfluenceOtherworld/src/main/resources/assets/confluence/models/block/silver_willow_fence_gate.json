@@ -1,0 +1,7 @@
+{
+  "parent": "block/template_fence_gate",
+  "textures": {
+    "texture": "confluence:block/silver_willow_planks"
+  },
+  "render_type": "solid"
+}

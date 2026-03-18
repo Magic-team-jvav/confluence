@@ -31,7 +31,7 @@ public class TheEndBiomeHolder {
 
         chorusForest = biomes.getOrThrow(ModBiomes.CHORUS_FOREST);
         inverseForest = biomes.getOrThrow(ModBiomes.INVERSE_FOREST);
-        silverSoulForest = biomes.getOrThrow(ModBiomes.SILVER_SOUL_FOREST);
+        silverSoulForest = biomes.getOrThrow(ModBiomes.MOONBLIGHT_FOREST);
 
         improvedNoise = new ImprovedNoise(RandomSource.create(seed));
 

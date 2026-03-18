@@ -652,8 +652,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.ash_wasteland", "灰烬荒地");
         add("biome.confluence.ash_forest", "灰烬木林");
         add("biome.confluence.chorus_forest", "紫颂森林");
+        add("biome.confluence.chorus_plains", "紫颂平原");
         add("biome.confluence.inverse_forest", "倒悬森林");
-        add("biome.confluence.silver_soul_forest", "银魄森林");
+        add("biome.confluence.inverse_plains", "倒悬平原");
+        add("biome.confluence.moonblight_forest", "月蚀森林");
+        add("biome.confluence.moonblight_plains", "月蚀平原");
 
         add("biome.minecraft.confluence_sky", "太空层");
 

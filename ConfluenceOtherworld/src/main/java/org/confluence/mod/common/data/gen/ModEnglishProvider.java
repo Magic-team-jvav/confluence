@@ -111,6 +111,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("chat.type.advancement.achievement", "%s has achieved the achievement %s");
         add("chat.confluence.magic_conch", "The location where you listen to the sound of the ocean [%s] has been recorded");
         add("chat.confluence.demon_conch", "The location where you listen to the sound of the demon [%s] has been recorded");
+        add("chat.confluence.crystal_marked", "Void energy resonated. Position and face recorded.");
+        add("chat.confluence.link_too_far", "The resonance is too weak. Connection failed (Maximum distance: 100 blocks).");
+        add("chat.confluence.link_not_opposite", "Dimensional misalignment. Faces must be opposite to each other.");
+        add("chat.confluence.crystal_cleared", "Void link data has been cleared.");
+        add("chat.confluence.link_success", "A void link has been established successfully!");
+        add("chat.confluence.link_same_block", "Cannot link a root to itself!");
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
         add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
@@ -641,6 +647,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.lucy_the_axe.0", "'I love Lucy!'");
         add("tooltip.item.confluence.key_of_light.0", "Charged with the essence of many souls");
         add("tooltip.item.confluence.key_of_night.0", "Charged with the essence of many souls");
+
+        add("tooltip.confluence.void_crystal.clear_hint", "Sneak + Right-click to clear recorded data");
+        add("tooltip.confluence.void_crystal.pos", "§7Recorded Position: §fX:%d Y:%d Z:%d");
+        add("tooltip.confluence.void_crystal.face", "§7Facing: §d%s");
+        add("tooltip.confluence.void_crystal.empty", "§8Right-click a Void Root to begin linking.");
 
         add("attribute.name.repeater.arrow_capacity", "Arrow Capacity");
         add("attribute.name.repeater.attack_speed", "Arrow Speed");

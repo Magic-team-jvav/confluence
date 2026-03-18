@@ -69,6 +69,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("chat.type.advancement.achievement", "%s达成了成就%s");
         add("chat.confluence.magic_conch", "你听取海洋声音的位置[%s]已记录");
         add("chat.confluence.demon_conch", "你听取恶魔呼喊的位置[%s]已记录");
+        add("chat.confluence.crystal_marked", "虚空能量产生共鸣。已记录坐标与朝向。");
+        add("chat.confluence.link_too_far", "共鸣过于微弱。链接失败（最大距离：100格）。");
+        add("chat.confluence.link_not_opposite", "维度失调。两个连接面必须完全相对。");
+        add("chat.confluence.crystal_cleared", "虚空链接数据已清除。");
+        add("chat.confluence.link_success", "虚空链接已成功建立！");
+        add("chat.confluence.link_same_block", "无法将根系链接到自身！");
         add("options.difficulty.legendary", "§a传奇");
         add("message.confluence.choking", "你被噎住了,需要喝水才行");
         add("message.confluence.advancement_combat_techniques", "书中的知识赋予了城镇居民力量！");
@@ -625,6 +631,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.key_of_light.0", "“汇聚了大量灵魂的精华”");
         add("tooltip.item.confluence.key_of_night.0", "“汇聚了大量灵魂的精华”");
 
+        add("tooltip.confluence.void_crystal.clear_hint", "蹲下 + 右键以清除记录的数据");
+        add("tooltip.confluence.void_crystal.pos", "§7记录位置: §fX:%d Y:%d Z:%d");
+        add("tooltip.confluence.void_crystal.face", "§7记录朝向: §d%s");
+        add("tooltip.confluence.void_crystal.empty", "§8右键点击虚空根系以开始链接。");
+
         new ConfigurationLanguageSubProvider(this::add, false);
 
         //生物群系
@@ -642,6 +653,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.ash_forest", "灰烬木林");
         add("biome.confluence.chorus_forest", "紫颂森林");
         add("biome.confluence.inverse_forest", "倒悬森林");
+        add("biome.confluence.silver_soul_forest", "银魄森林");
 
         add("biome.minecraft.confluence_sky", "太空层");
 
@@ -1163,7 +1175,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.minecraft.zombie.raincoat", "雨衣僵尸");
         add("entity.minecraft.zombie.frozen", "冰雪僵尸");
         add("entity.terra_entity.duck.0", "野鸭");
-        add("entity.terra_entity.duck.1", "鸭");;
+        add("entity.terra_entity.duck.1", "鸭");
         add("entity.terra_entity.demon_eye.dilated", "涣散恶魔眼");
         add("entity.terra_entity.demon_eye.dilated_small", "小涣散恶魔眼");
         add("entity.terra_entity.demon_eye.sleepy", "瞌睡恶魔眼");
@@ -1770,10 +1782,31 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_BLOCK.get(), "灰烬块");
         add(NatureBlocks.ASH_GRASS_BLOCK.get(), "灰烬草方块");
         add(NatureBlocks.ASH_GRASS.get(), "灰烬草");
+
         add(NatureBlocks.END_DIRT.get(), "终末土");
+
         add(NatureBlocks.VOID_GRASS_BLOCK.get(), "虚空草方块");
         add(NatureBlocks.VOID_GRASS.get(), "虚空草");
+        add(NatureBlocks.VOID_TREE_ROOT_BLOCK.get(), "虚空树根");
+        add(NatureBlocks.VOID_LOG_BLOCKS.BUTTON.get(), "虚空木按钮");
+        add(NatureBlocks.VOID_LOG_BLOCKS.PLANKS.get(), "虚空木板");
+        add(NatureBlocks.VOID_LOG_BLOCKS.LOG.get(), "虚空原木");
+        add(NatureBlocks.VOID_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮虚空原木");
+        add(NatureBlocks.VOID_LOG_BLOCKS.STRIPPED_WOOD.get(), "去皮虚空木");
+        add(NatureBlocks.VOID_LOG_BLOCKS.DOOR.get(), "虚空木门");
+        add(NatureBlocks.VOID_LOG_BLOCKS.TRAPDOOR.get(), "虚空木活板门");
+        add(NatureBlocks.VOID_LOG_BLOCKS.SIGN.get(), "虚空木告示牌");
+        add(NatureBlocks.VOID_LOG_BLOCKS.HANGING_SIGN.get(), "悬挂式虚空木告示牌");
+        add(NatureBlocks.VOID_LOG_BLOCKS.STAIRS.get(), "虚空木楼梯");
+        add(NatureBlocks.VOID_LOG_BLOCKS.SLAB.get(), "虚空木台阶");
+        add(NatureBlocks.VOID_LOG_BLOCKS.WOOD.get(), "虚空木");
+        add(NatureBlocks.VOID_LOG_BLOCKS.FENCE.get(), "虚空木栅栏");
+        add(NatureBlocks.VOID_LOG_BLOCKS.FENCE_GATE.get(), "虚空木栅栏门");
+        add(NatureBlocks.VOID_LOG_BLOCKS.PRESSURE_PLATE.get(), "虚空木压力板");
+        add(NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get(), "虚空树叶");
+
         add(NatureBlocks.INVERSE_GRASS_BLOCK.get(), "晖落草方块");
+
         add(NatureBlocks.DESERT_GRASS.get(), "沙漠草");
         add(NatureBlocks.DESERT_TALL_GRASS.get(), "沙漠高草");
         add(NatureBlocks.PACKED_DIRT.get(), "板结泥土");
@@ -2498,6 +2531,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.DAYBLOOM.get(), "太阳花");
         add(MaterialItems.DEATHWEED.get(), "死亡草");
         add(MaterialItems.JUNGLE_SPORE.get(), "丛林孢子");
+        // 末地 - 紫颂主题物品
+        add(MaterialItems.VOID_CRYSTAL.get(), "虚空水晶");
 
 
         add(SwordItems.COPPER_SHORT_SWORD.get(), "铜短剑");

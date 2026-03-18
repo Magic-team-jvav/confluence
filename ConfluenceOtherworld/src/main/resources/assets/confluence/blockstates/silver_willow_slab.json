@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "confluence:block/silver_willow_slab"
+    },
+    "type=top": {
+      "model": "confluence:block/silver_willow_slab_top"
+    },
+    "type=double": {
+      "model": "confluence:block/silver_willow_slab_full"
+    }
+  }
+}

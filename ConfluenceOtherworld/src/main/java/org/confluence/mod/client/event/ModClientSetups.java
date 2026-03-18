@@ -288,31 +288,21 @@ public final class ModClientSetups {
         return Color.HSBtoRGB(hsb[0], 0.5F, 1.0F);
     };
 
-    static final BlockColor VOID_LEAVES_COLOR = new BlockColor() {
-        @Override
-        public int getColor(BlockState state, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos, int tintIndex) {
-            if (pos == null) return VOID_B.get();
+    static final BlockColor VOID_LEAVES_COLOR = (state, level, pos, tintIndex) -> {
+        if (pos == null) return VOID_B.get();
 
-            double scale = 3;
-            double noiseVal = normalNoise.getValue(
-                    pos.getX() * scale,
-                    pos.getY() * scale,
-                    pos.getZ() * scale
-            );
+        double scale = 3;
+        double noiseVal = normalNoise.getValue(
+                pos.getX() * scale,
+                pos.getY() * scale,
+                pos.getZ() * scale
+        );
 
-            double m = (noiseVal + 1) * 6;
-            return hallowMixtureSmooth(m).get();
-        }
-
-        private static IntegerRGB hallowMixtureSmooth(double m) {
-            m = m % 12.0;
-            if (m < 0) m += 12.0;
-
-            if (m <= 4) {
-                return IntegerRGB.VOID_A.mixture(VOID_B, (float) (m / 6.0));
-            } else {
-                return VOID_B.mixture(IntegerRGB.VOID_C, (float) ((m - 6) / 6.0));
-            }
+        float t = (float) (noiseVal + 1) * 0.5F;
+        if (t < 0.5F) {
+            return IntegerRGB.VOID_A.mixture(VOID_B, t * 2).get();
+        } else {
+            return VOID_B.mixture(IntegerRGB.VOID_C, (t - 0.5F) * 2).get();
         }
     };
 

@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -20,6 +21,10 @@ public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRo
     private static final Minecraft MC = Minecraft.getInstance();
     private static final ResourceLocation VOID_PORTAL = Confluence.asResource("textures/block/void_portal.png");
 
+    private static final long X_MIX = 1640531527L;
+    private static final long Y_MIX = 3801415689L;
+    private static final long Z_MIX = 2654435761L;
+
     @Override
     public int getViewDistance() {
         return MC.options.renderDistance().get() * 16;
@@ -31,22 +36,34 @@ public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRo
         Level level = voidBlockEntity.getLevel();
         if ((level == null)) return;
         RandomSource random = level.random;
+        BlockPos pos = voidBlockEntity.getBlockPos();
         long gameTime = level.getGameTime();
+
+        long x = pos.getX();
+        long y = pos.getY();
+        long z = pos.getZ();
+
+        long seed = (x * X_MIX) ^ (y * Y_MIX) ^ (z * Z_MIX);
+
         for (int i = 0; i < 6; i ++){
             Direction direction = Direction.from3DDataValue(i);
             EnumProperty<VoidTreeRootBlock.ConnectType> prop = VoidTreeRootBlock.CONNECTION_PROPERTIES.get(direction);
-            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL) portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 60, 1.5F, 0.005F);
-            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL) portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 120, 1.5F, 0.0075F);
-            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL) portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 0, 2.0F, 0.01F);
+            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL) portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 60, 1.5F, 0.005F, seed);
+            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL) portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 120, 1.5F, 0.0075F, seed);
+            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL) portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 0, 2.0F, 0.01F, seed);
         }
     }
 
-    private static void portal(PoseStack poseStack, long gameTime, Direction face, float partialTick, MultiBufferSource bufferSource, int packedOverlay, RandomSource random, float rotate, float scale, float offset) {
-        long lowTime = gameTime / 3;
+    private static void portal(PoseStack poseStack, long gameTime, Direction face, float partialTick, MultiBufferSource bufferSource, int packedOverlay, RandomSource random, float rotate, float scale, float offset, long seed) {
+
+        RandomSource localRandom = RandomSource.create(seed);
+
+        long lowTime = gameTime / 3 + localRandom.nextInt(10);
         float V = (lowTime % 10) * 0.1F;
 
         float size = scale + random.nextFloat() * 0.2F;
         float hSize = size / 2;
+
 
         poseStack.pushPose();
         {
@@ -63,7 +80,7 @@ public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRo
             } else if (face == Direction.WEST) {
                 poseStack.mulPose(Axis.ZP.rotationDegrees(90));
             }
-            poseStack.mulPose(Axis.YP.rotationDegrees(rotate + gameTime * 2 + partialTick + random.nextFloat() * 6));
+            poseStack.mulPose(Axis.YP.rotationDegrees(rotate + gameTime * 2 + partialTick + random.nextFloat() * 6 + localRandom.nextInt(361)));
 
             poseStack.translate(-0.5D, -0.5D, -0.5D);
 
@@ -77,25 +94,25 @@ public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRo
                     .setUv(0.0F, V)
                     .setOverlay(packedOverlay)
                     .setLight(light)
-                    .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                    .setNormal(0.0F, 1.0F, 0.0F);
             quadBuffer.addVertex(pose, 0.5F - hSize, 1.0F + offset, 0.5F + hSize)
                     .setColor(r, g, b, alpha)
                     .setUv(0.0F, V + 0.1F)
                     .setOverlay(packedOverlay)
                     .setLight(light)
-                    .setNormal(pose, 0.0F, 1.0F, 0.0F);
-            quadBuffer.addVertex(pose, 0.5F + hSize, 1.0F + offset, 0.5F + hSize)
+                    .setNormal(0.0F, 1.0F, 0.0F);
+            quadBuffer.addVertex(pose,0.5F + hSize, 1.0F + offset, 0.5F + hSize)
                     .setColor(r, g, b, alpha)
                     .setUv(1.0F, V + 0.1F)
                     .setOverlay(packedOverlay)
                     .setLight(light)
-                    .setNormal(pose, 0.0F, 1.0F, 0.0F);
-            quadBuffer.addVertex(pose, 0.5F + hSize, 1.0F + offset, 0.5F - hSize)
+                    .setNormal(0.0F, 1.0F, 0.0F);
+            quadBuffer.addVertex(pose,0.5F + hSize, 1.0F + offset, 0.5F - hSize)
                     .setColor(r, g, b, alpha)
                     .setUv(1.0F, V)
                     .setOverlay(packedOverlay)
                     .setLight(light)
-                    .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                    .setNormal(0.0F, 1.0F, 0.0F);
         }
         poseStack.popPose();
     }

@@ -178,6 +178,10 @@ public class OreBlocks {
     public static final DeferredBlock<RedStoneOreBlock> CORRUPTION_REDSTONE_ORE = simpleBlockRegister("corruption_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE)));
     public static final DeferredBlock<RedStoneOreBlock> FLESHIFICATION_REDSTONE_ORE = simpleBlockRegister("fleshification_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE)));
 
+    public static final DeferredBlock<LunartearOreBlock> LUNARTEAR_ORE = simpleBlockRegister("lunartear_ore", LunartearOreBlock::new);
+    public static final DeferredBlock<DragonsalOreBlock> DRAGONSAL_ORE = simpleBlockRegister("dragonsal_ore", DragonsalOreBlock::new);
+
+
     public static final DeferredBlock<StepRevealingBlock> DEEPSLATE_COBALT_ORE = simpleBlockRegister("deepslate_cobalt_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(15.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<Block> RAW_COBALT_BLOCK = simpleBlockRegister("raw_cobalt_block");
     public static final DeferredBlock<Block> COBALT_BLOCK = simpleBlockRegister("cobalt_block");

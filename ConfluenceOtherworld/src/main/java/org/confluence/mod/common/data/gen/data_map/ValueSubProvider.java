@@ -186,7 +186,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.RAW_ADAMANTITE, 1500)
                 .add(MaterialItems.RAW_TITANIUM, 1700)
                 .add(MaterialItems.RAW_CHLOROPHYTE, 1500)
-                .add(MaterialItems.LUNAGROW, 1100)
+                .add(MaterialItems.LUNARTEAR, 1100)
                 .add(MaterialItems.DRAGONSAL, 1500)
                 .add(MaterialItems.RAW_LUMINITE, 3000);
         builder

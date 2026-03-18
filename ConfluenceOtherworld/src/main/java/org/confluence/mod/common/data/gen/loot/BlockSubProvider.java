@@ -285,6 +285,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         add(COLD_CRYSTAL_ORE.get(), block -> createOreDrop(block, COLD_CRYSTAL.get()));
         add(GELSTONE_ORE.get(), block -> createOreDrop(block, GELSTONE.get()));
+
+        add(LUNARTEAR_ORE.get(), block -> createOreDrop(block, LUNARTEAR.get()));
+        add(DRAGONSAL_ORE.get(), block -> createOreDrop(block, DRAGONSAL.get()));
         // endregion ore
 
         // region natural
@@ -307,6 +310,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(CRIMSON_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         add(MUSHROOM_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         add(HALLOW_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
+        add(VOID_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, END_DIRT));
+        add(INVERSE_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, END_DIRT));
+        add(MOONLIT_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, END_DIRT));
 
         add(CORRUPT_CACTUS.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.CACTUS));
         add(CRIMSON_CACTUS.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.CACTUS));
@@ -620,6 +626,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CRIMSON_TAPERED_BLOCK.get());
         dropSelf(HALLOW_TAPERED_BLOCK.get());
 
+        dropSelf(END_DIRT.get());
+        dropSelf(VOID_TREE_ROOT_BLOCK.get());
+
 
 
 
@@ -748,6 +757,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         addGrassLoot(CORRUPT_GRASS.get(), CORRUPT_GRASS.asItem());
         addGrassLoot(HALLOW_GRASS.get(), HALLOW_GRASS.asItem());
         addGrassLoot(CRIMSON_GRASS.get(), CRIMSON_GRASS.asItem());
+        addGrassLoot(VOID_GRASS.get(), VOID_GRASS.asItem());
 
         addGrassLoot(CATTAIL_BLOCK.get(), ModItems.CATTAIL.get());
         addGrassLoot(JUNGLE_CATTAIL_BLOCK.get(), ModItems.JUNGLE_CATTAIL.get());

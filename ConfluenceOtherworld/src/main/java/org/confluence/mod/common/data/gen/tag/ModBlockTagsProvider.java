@@ -508,7 +508,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RAIN_CLOUD_BLOCK.get(),
                 BOUNCY_CLOUD_BLOCK.get(),
                 SNOW_CLOUD_BLOCK.get(),
-                STAR_CLOUD_BLOCK.get()
+                STAR_CLOUD_BLOCK.get(),
+
+                VOID_GRASS_BLOCK.get(),
+                INVERSE_GRASS_BLOCK.get(),
+                MOONLIT_GRASS_BLOCK.get(),
+                END_DIRT.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
@@ -820,7 +825,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WALL_OF_FLESH_RELIC.get(),
                 HILL_OF_FLESH_RELIC.get(),
                 THE_TWINS_RELIC.get(),
-                SKELETRON_PRIME_RELIC.get()
+                SKELETRON_PRIME_RELIC.get(),
+                VOID_GRASS_BLOCK.get(),
+                INVERSE_GRASS_BLOCK.get(),
+                MOONLIT_GRASS_BLOCK.get(),
+                END_DIRT.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_METEORITE,
@@ -884,7 +893,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PINK_BRICK_SLAB.get(),
                 BLUE_BRICK_COLUMN.get(),
                 GREEN_BRICK_COLUMN.get(),
-                PINK_BRICK_COLUMN.get()
+                PINK_BRICK_COLUMN.get(),
+
+                LUNARTEAR_ORE.get()
         );
         tag(ModTags.Blocks.NEEDS_6_LEVEL).addTags(
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_MYTHRIL,
@@ -903,6 +914,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_TITANIUM,
                 ModTags.Blocks.STORAGE_BLOCKS_TITANIUM,
                 ModTags.Blocks.ORES_TITANIUM
+                ).add(
+                DRAGONSAL_ORE.get()
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);

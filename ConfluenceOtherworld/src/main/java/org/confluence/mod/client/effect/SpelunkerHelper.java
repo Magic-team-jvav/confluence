@@ -309,6 +309,10 @@ public class SpelunkerHelper extends AbstractBufferManager {
         // 石英
         putTargetWithTexture(Blocks.NETHER_QUARTZ_ORE, 0xe2ccbc, true, ShowType.SPELUNKER, Items.QUARTZ);
 
+        // 末地矿石
+        putMaterialTarget(LUNARTEAR_ORE.get(), 0x4bbcff, true, ShowType.SPELUNKER, LUNARTEAR);
+        putMaterialTarget(DRAGONSAL_ORE.get(), 0xe300e9, true, ShowType.SPELUNKER, DRAGONSAL);
+
         // 新三矿 todo仅敲除祭坛后可探测
         putMaterialTarget(DEEPSLATE_COBALT_ORE.get(), 0x0060e9, true, ShowType.SPELUNKER, RAW_COBALT);
         putMaterialTarget(DEEPSLATE_PALLADIUM_ORE.get(), 0xe97500, true, ShowType.SPELUNKER, RAW_PALLADIUM);

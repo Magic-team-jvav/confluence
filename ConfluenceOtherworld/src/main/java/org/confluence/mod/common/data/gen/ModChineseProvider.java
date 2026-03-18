@@ -74,6 +74,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("chat.confluence.link_not_opposite", "维度失调。两个连接面必须完全相对。");
         add("chat.confluence.crystal_cleared", "虚空链接数据已清除。");
         add("chat.confluence.link_success", "虚空链接已成功建立！");
+        add("chat.confluence.link_same_block", "无法将根系链接到自身！");
         add("options.difficulty.legendary", "§a传奇");
         add("message.confluence.choking", "你被噎住了,需要喝水才行");
         add("message.confluence.advancement_combat_techniques", "书中的知识赋予了城镇居民力量！");

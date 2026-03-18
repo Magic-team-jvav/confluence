@@ -116,6 +116,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("chat.confluence.link_not_opposite", "Dimensional misalignment. Faces must be opposite to each other.");
         add("chat.confluence.crystal_cleared", "Void link data has been cleared.");
         add("chat.confluence.link_success", "A void link has been established successfully!");
+        add("chat.confluence.link_same_block", "Cannot link a root to itself!");
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
         add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");

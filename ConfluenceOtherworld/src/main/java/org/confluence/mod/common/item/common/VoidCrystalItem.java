@@ -38,7 +38,6 @@ public class VoidCrystalItem extends Item {
             if (handleClear(stack, level, player)) {
                 return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
             }
-            return InteractionResultHolder.fail(stack);
         }
         return InteractionResultHolder.pass(stack);
     }
@@ -48,11 +47,12 @@ public class VoidCrystalItem extends Item {
         Level level = context.getLevel();
         Player player = context.getPlayer();
         ItemStack stack = context.getItemInHand();
-
-        if (player != null && player.isShiftKeyDown() && handleClear(stack, level, player)) return InteractionResult.sidedSuccess(level.isClientSide);
-
         BlockPos pos = context.getClickedPos();
         BlockState state = level.getBlockState(pos);
+
+        if (player != null && player.isShiftKeyDown()) {
+            if (handleClear(stack, level, player)) return InteractionResult.sidedSuccess(level.isClientSide);
+        }
 
         if (!(state.getBlock() instanceof VoidTreeRootBlock)) return InteractionResult.PASS;
         if (level.isClientSide) return InteractionResult.SUCCESS;
@@ -72,7 +72,6 @@ public class VoidCrystalItem extends Item {
     private void markPosition(ItemStack stack, CompoundTag tag, BlockPos pos, Direction face, @Nullable Player player, Level level) {
         tag.putLong("FirstPos", pos.asLong());
         tag.putInt("FirstFace", face.get3DDataValue());
-
         stack.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
 
         if (player != null) {
@@ -86,19 +85,12 @@ public class VoidCrystalItem extends Item {
         Direction firstFace = Direction.from3DDataValue(tag.getInt("FirstFace"));
 
         if (player == null) return;
-
         if (pos.equals(firstPos)) {
             notifyError(player, level, pos, "chat.confluence.link_same_block");
             return;
         }
-
         if (!pos.closerThan(firstPos, 100)) {
             notifyError(player, level, pos, "chat.confluence.link_too_far");
-            return;
-        }
-
-        if (secondFace != firstFace.getOpposite()) {
-            notifyError(player, level, pos, "chat.confluence.link_not_opposite");
             return;
         }
 
@@ -106,11 +98,8 @@ public class VoidCrystalItem extends Item {
             player.displayClientMessage(Component.translatable("chat.confluence.link_success").withStyle(ChatFormatting.GREEN), true);
             level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0F, 1.5F);
 
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-            } else {
-                updateNbt(stack, tag, true);
-            }
+            if (!player.getAbilities().instabuild) stack.shrink(1);
+            else updateNbt(stack, tag, true);
         } else {
             notifyError(player, level, pos, "chat.confluence.link_failed_generic");
         }
@@ -135,12 +124,8 @@ public class VoidCrystalItem extends Item {
             workingTag.remove("FirstPos");
             workingTag.remove("FirstFace");
         }
-
-        if (workingTag.isEmpty()) {
-            stack.remove(ConfluenceMagicLib.NBT);
-        } else {
-            stack.set(ConfluenceMagicLib.NBT, new NbtComponent(workingTag));
-        }
+        if (workingTag.isEmpty()) stack.remove(ConfluenceMagicLib.NBT);
+        else stack.set(ConfluenceMagicLib.NBT, new NbtComponent(workingTag));
     }
 
     private void notifyError(@Nullable Player player, Level level, BlockPos pos, String translationKey) {
@@ -155,10 +140,8 @@ public class VoidCrystalItem extends Item {
         if (tag != null && tag.contains("FirstPos")) {
             BlockPos pos = BlockPos.of(tag.getLong("FirstPos"));
             Direction face = Direction.from3DDataValue(tag.getInt("FirstFace"));
-
             tooltip.add(Component.translatable("tooltip.confluence.void_crystal.pos", pos.getX(), pos.getY(), pos.getZ()).withStyle(ChatFormatting.GRAY));
             tooltip.add(Component.translatable("tooltip.confluence.void_crystal.face", face.getSerializedName()).withStyle(ChatFormatting.DARK_PURPLE));
-            tooltip.add(Component.translatable("tooltip.confluence.void_crystal.clear_hint").withStyle(ChatFormatting.RED, ChatFormatting.ITALIC));
         } else {
             tooltip.add(Component.translatable("tooltip.confluence.void_crystal.empty").withStyle(ChatFormatting.DARK_GRAY));
         }
@@ -168,20 +151,17 @@ public class VoidCrystalItem extends Item {
         BlockState s1 = level.getBlockState(pos1);
         BlockState s2 = level.getBlockState(pos2);
 
-        if (!(s1.getBlock() instanceof VoidTreeRootBlock) || !(s2.getBlock() instanceof VoidTreeRootBlock)) return false;
+        if (!(s1.getBlock() instanceof VoidTreeRootBlock root) || !(s2.getBlock() instanceof VoidTreeRootBlock)) return false;
 
-        BlockState newState1 = s1.setValue(VoidTreeRootBlock.CONNECTION_PROPERTIES.get(face1), VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL);
-        BlockState newState2 = s2.setValue(VoidTreeRootBlock.CONNECTION_PROPERTIES.get(face2), VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL);
-
-        level.setBlock(pos1, newState1, 3);
-        level.setBlock(pos2, newState2, 3);
+        level.setBlock(pos1, s1.setValue(VoidTreeRootBlock.CONNECTION_PROPERTIES.get(face1), VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL), 3);
+        level.setBlock(pos2, s2.setValue(VoidTreeRootBlock.CONNECTION_PROPERTIES.get(face2), VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL), 3);
 
         if (level.getBlockEntity(pos1) instanceof VoidTreeRootBlock.BEntity be1 && level.getBlockEntity(pos2) instanceof VoidTreeRootBlock.BEntity be2) {
+            be1.addLink(face1, pos2);
+            be2.addLink(face2, pos1);
 
-            be1.setLinkedPos(pos2);
-            be2.setLinkedPos(pos1);
-            be1.setChanged();
-            be2.setChanged();
+            level.scheduleTick(pos1, root, 1);
+            level.scheduleTick(pos2, root, 1);
             return true;
         }
         return false;

@@ -94,6 +94,11 @@ public class VoidCrystalItem extends Item {
             return;
         }
 
+        if (secondFace != firstFace.getOpposite()) {
+            notifyError(player, level, pos, "chat.confluence.link_not_opposite");
+            return;
+        }
+
         if (linkRoots(level, firstPos, pos, firstFace, secondFace)) {
             player.displayClientMessage(Component.translatable("chat.confluence.link_success").withStyle(ChatFormatting.GREEN), true);
             level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0F, 1.5F);

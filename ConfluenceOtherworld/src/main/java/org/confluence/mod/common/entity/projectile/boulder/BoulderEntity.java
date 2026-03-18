@@ -31,6 +31,7 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,6 +67,7 @@ public class BoulderEntity extends Projectile {
     public double minRemoveSpeed = 0.007; // 最小移除速度
     public double bounceFactor = 0.3;
     public double frictionFactor = 0.9;
+    public int generation = 0; // 分裂代数，0为原始巨石
 
     protected int stillTickCount; // 静止刻计时
 
@@ -91,11 +93,56 @@ public class BoulderEntity extends Projectile {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
+        // FTW种子：只有原版巨石才会分裂，变种巨石不分裂
+        if (generation < 1 && getClass() == BoulderEntity.class && ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel)) {
+            splitIntoSmallerBoulders(serverLevel);
+        }
         removeEffect(serverLevel);
         BlockPos blockPos = blockPosition();
         sendRemoveParticle(serverLevel, blockPos);
         playRemoveSound(serverLevel, blockPos);
         discard();
+    }
+
+    /**
+     * FTW种子：分裂成两个较小的巨石
+     */
+    protected void splitIntoSmallerBoulders(ServerLevel serverLevel) {
+        float newRadius = radius * 0.5F;
+        int newGeneration = generation + 1;
+        
+        // 计算分裂方向（左右各偏移一定角度）
+        Vec3 currentMotion = getDeltaMovement();
+        double currentYaw = -Math.toDegrees(Math.atan2(currentMotion.x, currentMotion.z));
+        
+        for (int i = 0; i < 2; i++) {
+            double offsetYaw = (i == 0 ? 60 : -60); // 左右偏移60度
+            double newYaw = currentYaw + offsetYaw;
+            
+            Vec3 newMotion = new Vec3(
+                Math.sin(newYaw) * speed * 0.8,
+                1,
+                Math.cos(newYaw) * speed * 0.8
+            );
+            
+            BoulderEntity splitBoulder = createSplitBoulder(serverLevel, newRadius, newGeneration);
+            if (splitBoulder != null) {
+                splitBoulder.setPos(position());
+                splitBoulder.setDeltaMovement(newMotion);
+                serverLevel.addFreshEntity(splitBoulder);
+            }
+        }
+    }
+
+    /**
+     * 创建分裂的子巨石
+     */
+    protected BoulderEntity createSplitBoulder(ServerLevel serverLevel, float newRadius, int newGeneration) {
+        BoulderEntity splitBoulder = new BoulderEntity((Level) serverLevel, position(), getBlockState());
+        splitBoulder.radius = newRadius;
+        splitBoulder.generation = newGeneration;
+        splitBoulder.speed = speed * 0.9;
+        return splitBoulder;
     }
 
     /**
@@ -323,6 +370,7 @@ public class BoulderEntity extends Projectile {
         if (tag.contains("MaxStillTick")) maxStillTick = tag.getInt("MaxStillTick");
         if (tag.contains("Speed")) speed = tag.getDouble("Speed");
         if (tag.contains("MinRemoveSpeed")) minRemoveSpeed = tag.getDouble("MinRemoveSpeed");
+        if (tag.contains("Generation")) generation = tag.getInt("Generation");
     }
 
     @Override
@@ -335,5 +383,6 @@ public class BoulderEntity extends Projectile {
         tag.putInt("MaxStillTick", maxStillTick);
         tag.putDouble("Speed", speed);
         tag.putDouble("MinRemoveSpeed", minRemoveSpeed);
+        tag.putInt("Generation", generation);
     }
 }

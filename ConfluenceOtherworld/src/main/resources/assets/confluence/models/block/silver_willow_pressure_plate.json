@@ -1,7 +1,0 @@
-{
-  "parent": "block/pressure_plate_up",
-  "textures": {
-    "texture": "confluence:block/silver_willow_planks"
-  },
-  "render_type": "solid"
-}

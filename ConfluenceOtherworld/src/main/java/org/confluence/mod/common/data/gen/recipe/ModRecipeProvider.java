@@ -65,6 +65,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 100);
+        cooking(recipeOutput, SmeltingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 100);
 
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 100);
@@ -94,6 +95,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 200);
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 200);

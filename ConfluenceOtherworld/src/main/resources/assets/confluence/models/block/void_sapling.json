@@ -1,8 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "confluence:block/void_sapling",
-    "particle": "confluence:block/void_sapling"
-  },
-  "render_type": "cutout"
-}

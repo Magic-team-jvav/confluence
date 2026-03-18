@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/stripped_gaze_log",
-    "particle": "confluence:block/stripped_gaze_log"
-  },
-  "render_type": "solid"
-}

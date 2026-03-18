@@ -266,8 +266,13 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(SANCTIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
         add(CORRUPTION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
         add(FLESHIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
+
+        add(CORRUPTION_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
+        add(SANCTIFICATION_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
+        add(FLESHIFICATION_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
         add(CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
         add(DEEPSLATE_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
+
         add(DEEPSLATE_COBALT_ORE.get(), block -> createOreDrop(block, RAW_COBALT.get()));
         add(DEEPSLATE_PALLADIUM_ORE.get(), block -> createOreDrop(block, RAW_PALLADIUM.get()));
         add(DEEPSLATE_MYTHRIL_ORE.get(), block -> createOreDrop(block, RAW_MYTHRIL.get()));

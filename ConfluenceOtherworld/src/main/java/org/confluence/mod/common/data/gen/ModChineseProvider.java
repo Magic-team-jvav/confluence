@@ -1804,7 +1804,42 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.VOID_LOG_BLOCKS.PRESSURE_PLATE.get(), "虚空木压力板");
         add(NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get(), "虚空树叶");
 
+        add(NatureBlocks.GAZE_LOG_BLOCKS.BUTTON.get(), "垂眸木按钮");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.PLANKS.get(), "垂眸木板");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.LOG.get(), "垂眸原木");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮垂眸原木");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.STRIPPED_WOOD.get(), "去皮垂眸木");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.DOOR.get(), "垂眸木门");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.TRAPDOOR.get(), "垂眸木活板门");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.SIGN.get(), "垂眸木告示牌");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.HANGING_SIGN.get(), "悬挂式垂眸木告示牌");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.STAIRS.get(), "垂眸木楼梯");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.SLAB.get(), "垂眸木台阶");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.WOOD.get(), "垂眸木");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.FENCE.get(), "垂眸木栅栏");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.FENCE_GATE.get(), "垂眸木栅栏门");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.PRESSURE_PLATE.get(), "垂眸木压力板");
+        add(NatureBlocks.GAZE_LOG_BLOCKS.LEAVES.get(), "垂眸树叶");
+
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.BUTTON.get(), "月辉柳木按钮");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.PLANKS.get(), "月辉柳木板");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LOG.get(), "月辉柳原木");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮月辉柳原木");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.STRIPPED_WOOD.get(), "去皮月辉柳木");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.DOOR.get(), "月辉柳木门");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.TRAPDOOR.get(), "月辉柳木活板门");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.SIGN.get(), "月辉柳木告示牌");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.HANGING_SIGN.get(), "悬挂式月辉柳木告示牌");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.STAIRS.get(), "月辉柳木楼梯");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.SLAB.get(), "月辉柳木台阶");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.WOOD.get(), "月辉柳木");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.FENCE.get(), "月辉柳木栅栏");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.FENCE_GATE.get(), "月辉柳木栅栏门");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.PRESSURE_PLATE.get(), "月辉柳木压力板");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LEAVES.get(), "月辉柳树叶");
+
         add(NatureBlocks.INVERSE_GRASS_BLOCK.get(), "晖落草方块");
+        add(NatureBlocks.MOONLIT_GRASS_BLOCK.get(), "月华草方块");
 
         add(NatureBlocks.DESERT_GRASS.get(), "沙漠草");
         add(NatureBlocks.DESERT_TALL_GRASS.get(), "沙漠高草");

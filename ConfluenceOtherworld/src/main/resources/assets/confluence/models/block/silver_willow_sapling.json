@@ -1,8 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "confluence:block/silver_willow_sapling",
-    "particle": "confluence:block/silver_willow_sapling"
-  },
-  "render_type": "cutout"
-}

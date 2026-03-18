@@ -1,9 +1,0 @@
-{
-  "parent": "block/stairs",
-  "textures": {
-    "bottom": "confluence:block/silver_willow_planks",
-    "top": "confluence:block/silver_willow_planks",
-    "side": "confluence:block/silver_willow_planks"
-  },
-  "render_type": "solid"
-}

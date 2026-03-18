@@ -1,8 +1,0 @@
-{
-  "parent": "block/template_orientable_trapdoor_open",
-  "textures": {
-    "texture": "confluence:block/silver_willow_trapdoor",
-    "particle": "confluence:block/silver_willow_trapdoor"
-  },
-  "render_type": "cutout"
-}

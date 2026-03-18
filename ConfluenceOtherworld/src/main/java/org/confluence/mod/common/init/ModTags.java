@@ -396,6 +396,7 @@ public final class ModTags {
         public static final TagKey<Item> DIAMOND_ORE_SMELTING = register("diamond_ore_smelting");
         public static final TagKey<Item> EMERALD_ORE_SMELTING = register("emerald_ore_smelting");
         public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
+        public static final TagKey<Item> LAPIS_ORE_SMELTING = register("lapis_ore_smelting");
 
         public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
         public static final TagKey<Item> PREFIX_MELEE_ONLY = register("prefix_melee_only");

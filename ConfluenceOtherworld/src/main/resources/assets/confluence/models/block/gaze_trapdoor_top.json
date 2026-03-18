@@ -1,8 +1,0 @@
-{
-  "parent": "block/template_orientable_trapdoor_top",
-  "textures": {
-    "texture": "confluence:block/gaze_trapdoor",
-    "particle": "confluence:block/gaze_trapdoor"
-  },
-  "render_type": "cutout"
-}

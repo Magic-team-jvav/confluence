@@ -228,7 +228,7 @@ public class NatureBlocks {
 
     // 末地 - 月光主题
     public static final DeferredBlock<Block> MOONLIT_GRASS_BLOCK = registerWithItem("moonlit_grass_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY)));
-    public static final LogBlockSet SILVER_WILLOW_LOG_BLOCKS = LogBlockSet.builder("silver_willow", true, SILVER_WILLOW).build();
+    public static final LogBlockSet MOONGLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("moonglow_willow", true, MOONGLOW_WILLOW).build();
 
     // 王朝木
     public static final LogBlockSet DYNASTY_LOG_BLOCKS = LogBlockSet.builder("dynasty", true, DYNASTY).leaves(null).build();

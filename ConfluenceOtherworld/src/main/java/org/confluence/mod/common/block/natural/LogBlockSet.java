@@ -594,7 +594,7 @@ public class LogBlockSet {
         GAZE("gaze"),
         VOID("void"),
         SPOOKY("spooky"),
-        SILVER_WILLOW("silver_willow"),
+        MOONGLOW_WILLOW("moonglow_willow"),
         FEY("fey");
 
         public final BlockSetType SET;

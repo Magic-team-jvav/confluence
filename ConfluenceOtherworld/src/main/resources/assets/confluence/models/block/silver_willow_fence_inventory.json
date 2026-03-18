@@ -1,8 +1,0 @@
-{
-  "parent": "block/fence_inventory",
-  "textures": {
-    "texture": "confluence:block/silver_willow_planks",
-    "particle": "confluence:block/silver_willow_planks"
-  },
-  "render_type": "solid"
-}

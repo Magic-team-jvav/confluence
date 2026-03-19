@@ -945,19 +945,19 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.mining_helmet.0", "Provides light when worn");
         add("armor_set_bonus.confluence.mining_set.0", "10% increased mining speed");
         // Plank Set
-        add("armor_set_bonus.confluence.plank_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.plank_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 Armor");
 
         add("armor_set_bonus.confluence.ash_set.0", "Reduces lava contact damage by 50%");
         add("armor_set_bonus.confluence.ash_set.1", "Reduces fire duration taken by 35%");
         // Base Ore
-        add("armor_set_bonus.confluence.copper_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.tin_set.0", "+2 Aromor");
-        add("armor_set_bonus.confluence.lead_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.silver_set.0", "+2 Aromor");
-        add("armor_set_bonus.confluence.tungsten_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.golden_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.platinum_set.0", "+2 Aromor");
+        add("armor_set_bonus.confluence.copper_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.tin_set.0", "+2 Armor");
+        add("armor_set_bonus.confluence.lead_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.silver_set.0", "+2 Armor");
+        add("armor_set_bonus.confluence.tungsten_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.golden_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.platinum_set.0", "+2 Armor");
         // Snow Set
         add("armor_set_bonus.confluence.snow_set.0", "Cannot be frozen or chilled");
         add("armor_set_bonus.confluence.pink_snow_set.0", "Cannot be frozen or chilled");

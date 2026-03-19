@@ -1931,6 +1931,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get(), "猴面包树苗");
         add(NatureBlocks.PINE_LOG_BLOCKS.SAPLING.get(), "松树苗");
         add(NatureBlocks.PRUNED_PINE_SAPLING.get(), "修枝松树苗");
+        add(NatureBlocks.VOID_LOG_BLOCKS.SAPLING.get(), "虚空树苗");
 
 
         add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");

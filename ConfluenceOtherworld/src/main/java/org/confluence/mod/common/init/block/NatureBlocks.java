@@ -220,7 +220,7 @@ public class NatureBlocks {
     public static final DeferredBlock<BasePlantBlock> VOID_GRASS = registerWithItem("void_grass", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
     public static final DeferredBlock<VoidTreeRootBlock> VOID_TREE_ROOT_BLOCK = registerWithItem("void_tree_root_block", VoidTreeRootBlock::new);
     public static final Supplier<BlockEntityType<VoidTreeRootBlock.BEntity>> VOID_TREE_ROOT_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("void_tree_root_block", () -> BlockEntityType.Builder.of(VoidTreeRootBlock.BEntity::new, VOID_TREE_ROOT_BLOCK.get()).build(DSL.remainderType()));
-    public static final LogBlockSet VOID_LOG_BLOCKS = LogBlockSet.builder("void", true, VOID).build();
+    public static final LogBlockSet VOID_LOG_BLOCKS = LogBlockSet.builder("void", true, VOID).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.VOID_GROWER, properties, null, VOID_GRASS_BLOCK, END_DIRT)).build();
 
     // 末地 - 倒悬主题
     public static final DeferredBlock<Block> INVERSE_GRASS_BLOCK = registerWithItem("inverse_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));

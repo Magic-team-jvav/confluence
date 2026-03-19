@@ -119,6 +119,9 @@ public class ModDataProvider {
 
     private static <T> HolderLookup.RegistryLookup<T> registryLookup(ResourceKey<Registry<T>> key, HolderGetter<T> holderGetter) {
         return new HolderLookup.RegistryLookup<>() {
+            private final Map<ResourceKey<T>, Optional<Holder.Reference<T>>> holders = new IdentityHashMap<>();
+            private final Map<TagKey<T>, Optional<HolderSet.Named<T>>> tags = new IdentityHashMap<>();
+
             @Override
             public ResourceKey<? extends Registry<? extends T>> key() {
                 return key;
@@ -131,22 +134,32 @@ public class ModDataProvider {
 
             @Override
             public Stream<Holder.Reference<T>> listElements() {
-                return Stream.empty();
+                return holders.values().stream().filter(Optional::isPresent).map(Optional::get);
+            }
+
+            @Override
+            public Stream<ResourceKey<T>> listElementIds() {
+                return holders.keySet().stream();
             }
 
             @Override
             public Stream<HolderSet.Named<T>> listTags() {
-                return Stream.empty();
+                return tags.values().stream().filter(Optional::isPresent).map(Optional::get);
+            }
+
+            @Override
+            public Stream<TagKey<T>> listTagIds() {
+                return tags.keySet().stream();
             }
 
             @Override
             public Optional<Holder.Reference<T>> get(ResourceKey<T> resourceKey) {
-                return holderGetter.get(resourceKey);
+                return holders.computeIfAbsent(resourceKey, holderGetter::get);
             }
 
             @Override
             public Optional<HolderSet.Named<T>> get(TagKey<T> tagKey) {
-                return holderGetter.get(tagKey);
+                return tags.computeIfAbsent(tagKey, holderGetter::get);
             }
         };
     }

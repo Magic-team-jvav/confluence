@@ -7,14 +7,20 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.biome.TheEndBiomeSource;
+import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import org.confluence.mod.common.init.ModBiomes;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import terrablender.api.EndBiomeRegistry;
+import terrablender.core.TerraBlender;
+import terrablender.worldgen.noise.LayeredNoiseUtil;
 
+import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
 public class TheEndBiomeHolder {
-
     private static Holder<Biome> chorusForest;
     private static Holder<Biome> inverseForest;
     private static Holder<Biome> moonlightForest;
@@ -36,7 +42,21 @@ public class TheEndBiomeHolder {
 
         improvedNoise = new ImprovedNoise(RandomSource.create(seed));
 
+        fixTerraBlender(server);
+
         initialized = true;
+    }
+
+    private static void fixTerraBlender(MinecraftServer server) {
+        RegistryAccess registryAccess = server.registryAccess();
+        LevelStem levelStem = registryAccess.holderOrThrow(LevelStem.END).value();
+        if (levelStem.generator().getBiomeSource() instanceof TheEndBiomeSource biomeSource) {
+            try {
+                Field islandsArea = biomeSource.getClass().getDeclaredField("islandsArea");
+                islandsArea.setAccessible(true);
+                islandsArea.set(biomeSource, LayeredNoiseUtil.biomeArea(registryAccess, seed, TerraBlender.CONFIG.endIslandBiomeSize, EndBiomeRegistry.getIslandBiomes()));
+            } catch (Exception ignored) {}
+        }
     }
 
     public static void close() {
@@ -67,15 +87,23 @@ public class TheEndBiomeHolder {
             long sectionX = SectionPos.blockToSectionCoord(blockX);
             long sectionZ = SectionPos.blockToSectionCoord(blockZ);
             if (sectionX * sectionX + sectionZ * sectionZ > 4096L) {
+                double heightNoise = sampler.erosion().compute(new DensityFunction.SinglePointContext(blockX, blockY, blockZ));
+                if (heightNoise < -0.0625) {
+                    return;
+                }
+
                 double biomeScale = 0.025;
                 double heightScale = 0.25;
                 double trueNoise = rippleNoise(blockX, blockY, blockZ, 3000);
-                double heightNoise = blockY + improvedNoise.noise(x * heightScale, 0, z * heightScale) * 5;
+                heightNoise = blockY + improvedNoise.noise(x * heightScale, 0, z * heightScale) * 5;
                 double biomeNoise = improvedNoise.noise(x * biomeScale, y * biomeScale, z * biomeScale);
                 if (trueNoise > 0.75) {
                     if (heightNoise > 30) {
-                        if (biomeNoise > 0) cir.setReturnValue(chorusForest);
-                        else cir.setReturnValue(moonlightForest);
+                        if (biomeNoise > 0) {
+                            cir.setReturnValue(chorusForest);
+                        } else {
+                            cir.setReturnValue(moonlightForest);
+                        }
                     } else {
                         cir.setReturnValue(inverseForest);
                     }

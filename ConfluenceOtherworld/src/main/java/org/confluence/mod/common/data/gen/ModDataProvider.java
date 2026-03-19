@@ -845,6 +845,7 @@ public class ModDataProvider {
         private static final HeightRangePlacement throughUnderground = HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(OverworldUtils.getSurfaceY())); // 地下层
         private static final HeightRangePlacement bottomThroughUnderground = HeightRangePlacement.uniform(VerticalAnchor.BOTTOM, VerticalAnchor.absolute(OverworldUtils.getSurfaceY())); // 地底到地下层
         private static final HeightRangePlacement throughCave = HeightRangePlacement.uniform(VerticalAnchor.BOTTOM, VerticalAnchor.absolute(0)); // 洞穴层
+        private static final HeightRangePlacement the_end = HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(64)); // 洞穴层
         private static final RandomOffsetPlacement ySpread1 = RandomOffsetPlacement.vertical(ConstantInt.of(1));
         private static final RandomOffsetPlacement ySpreadN1 = RandomOffsetPlacement.vertical(ConstantInt.of(-1));
         private static final CountPlacement count1_9$2_1 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(1), 9).add(ConstantInt.of(2), 1).build()));
@@ -910,7 +911,7 @@ public class ModDataProvider {
             register(context, CORRUPT_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, EBONY_TREE, configured.getOrThrow(ModFeatures.Configured.EBONY_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, CORRUPT_GRASS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_GRASS), CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING), biome);
-            register(context, VOID_GRASS, configured.getOrThrow(ConfiguredFeatures.VOID_GRASS), CountPlacement.of(10), inSquare, bottomThroughUnderground, biome);
+            register(context, VOID_GRASS, configured.getOrThrow(ConfiguredFeatures.VOID_GRASS), CountPlacement.of(10), inSquare, the_end, biome);
             register(context, VOID_TREE, configured.getOrThrow(ConfiguredFeatures.VOID_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, VILE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VILE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, SHADOW_TREE, configured.getOrThrow(ModFeatures.Configured.SHADOW_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);

@@ -22,13 +22,9 @@ public abstract class MixinTheEndBiomeSourceSquared {
         TheEndBiomeHolder.replaceBiome(x, y, z, sampler, cir);
     }
 
-    /// 不要标记为cancellable
     @TargetHandler(mixin = "terrablender.mixin.MixinTheEndBiomeSource", name = "onCollectPossibleBiomes")
     @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
     private void addConfluence(CallbackInfoReturnable<Stream<Holder<Biome>>> cir, CallbackInfo ci) {
-        Stream<Holder<Biome>> stream = cir.getReturnValue();
-        if (stream != null) {
-            cir.setReturnValue(TheEndBiomeHolder.addConfluenceBiomes(stream));
-        }
+        TheEndBiomeHolder.addConfluenceBiomes(cir);
     }
 }

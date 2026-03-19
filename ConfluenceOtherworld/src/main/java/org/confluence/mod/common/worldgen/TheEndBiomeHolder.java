@@ -49,12 +49,13 @@ public class TheEndBiomeHolder {
         initialized = false;
     }
 
-    public static Stream<Holder<Biome>> addConfluenceBiomes(Stream<Holder<Biome>> original) {
-        if (initialized && chorusForest != null && inverseForest != null && moonlightForest != null) {
+    public static void addConfluenceBiomes(CallbackInfoReturnable<Stream<Holder<Biome>>> cir) {
+        if (initialized) {
+            Stream<Holder<Biome>> stream = cir.getReturnValue();
+            if (stream == null) return;
             Stream<Holder<Biome>> myBiomes = Stream.of(chorusForest, inverseForest, moonlightForest);
-            return Stream.concat(original, myBiomes);
+            cir.setReturnValue(Stream.concat(cir.getReturnValue(), myBiomes));
         }
-        return original;
     }
 
     /// [terrablender.mixin.MixinTheEndBiomeSource#onGetNoiseBiome]

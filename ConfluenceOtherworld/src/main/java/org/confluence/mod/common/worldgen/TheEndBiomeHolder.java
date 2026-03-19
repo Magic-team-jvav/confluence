@@ -11,6 +11,7 @@ import net.minecraft.world.level.biome.TheEndBiomeSource;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.confluence.mod.common.init.ModBiomes;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import terrablender.api.EndBiomeRegistry;
@@ -27,7 +28,7 @@ public class TheEndBiomeHolder {
 
     private static long seed;
 
-    private static ImprovedNoise improvedNoise;
+    private static NormalNoise normalNoise;
 
     private static boolean initialized = false;
 
@@ -40,7 +41,7 @@ public class TheEndBiomeHolder {
         inverseForest = biomes.getOrThrow(ModBiomes.INVERSE_FOREST);
         moonlightForest = biomes.getOrThrow(ModBiomes.MOONBLIGHT_FOREST);
 
-        improvedNoise = new ImprovedNoise(RandomSource.create(seed));
+        normalNoise = NormalNoise.create(RandomSource.create(seed), new NormalNoise.NoiseParameters(-5, 1.0, 1.0, 1.0, 1.0));;
 
         fixTerraBlender(server);
 
@@ -92,12 +93,12 @@ public class TheEndBiomeHolder {
                     return;
                 }
 
-                double biomeScale = 0.025;
+                double biomeScale = 0.5;
                 double heightScale = 0.25;
                 double trueNoise = rippleNoise(blockX, blockY, blockZ, 3000);
-                heightNoise = blockY + improvedNoise.noise(x * heightScale, 0, z * heightScale) * 5;
-                double biomeNoise = improvedNoise.noise(x * biomeScale, y * biomeScale, z * biomeScale);
-                if (trueNoise > 0.75) {
+                heightNoise = blockY + normalNoise.getValue(x * heightScale, 0, z * heightScale) * 5;
+                double biomeNoise = normalNoise.getValue(x * biomeScale, y * biomeScale, z * biomeScale);
+                if (trueNoise > 0) {
                     if (heightNoise > 30) {
                         if (biomeNoise > 0) {
                             cir.setReturnValue(chorusForest);
@@ -113,10 +114,9 @@ public class TheEndBiomeHolder {
     }
 
     public static double rippleNoise(int x, int y, int z, int radius) {
-        double scale = 0.001;
-        double scale1 = 0.005;
-        double base = improvedNoise.noise(x * scale, y * scale, z * scale); // 降低频率
-        return (((Math.sin(base * 20) / 2 + 0.5) * radiusSet(radius, x, z) * 2) + Math.sin(improvedNoise.noise(x * scale1, y * scale1, z * scale1) * 20) * 0.3); // 波纹映射
+        double scale = 0.01;
+        double base = normalNoise.getValue(x * scale, y * scale, z * scale); // 降低频率
+        return (Math.sin(base * 20) * radiusSet(radius, x, z)); // 波纹映射
     }
 
     public static double radiusSet(int radius, int x, int z) {

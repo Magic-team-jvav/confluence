@@ -81,9 +81,8 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
                     break;
                 }
             }
-            if (end) break;
+            if (end) continue;
             for (int j = 0; j <= 15; j++) {
-                if (j == 15) break;
                 BlockPos debugPos = rootMiddlePos.offset(0, -j, 0);
                 if (!level.getBlockState(debugPos.below()).canBeReplaced()) {
                     rootDebugSet.add(debugPos.asLong());

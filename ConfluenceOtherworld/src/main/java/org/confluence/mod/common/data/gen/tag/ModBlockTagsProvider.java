@@ -67,7 +67,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 VOID_LOG_BLOCKS.STRIPPED_LOG.get(),
                 Blocks.END_STONE,
                 VOID_GRASS_BLOCK.get(),
-                END_DIRT.get()
+                END_DIRT.get(),
+                MOONLIT_GRASS_BLOCK.get(),
+                INVERSE_GRASS_BLOCK.get()
+        );
+        tag(ModTags.Blocks.VOID_TREE_CAN_SURVIVE).add(
+                Blocks.END_STONE,
+                VOID_GRASS_BLOCK.get(),
+                END_DIRT.get(),
+                MOONLIT_GRASS_BLOCK.get(),
+                INVERSE_GRASS_BLOCK.get()
         );
         tag(ModTags.Blocks.GELSTONE_ORE_REPLACEMENT).add(Blocks.MUD, Blocks.CLAY, Blocks.STONE);
         tag(BlockTags.ANVIL).add(LEAD_ANVIL.get(), CHIPPED_LEAD_ANVIL.get(), DAMAGED_LEAD_ANVIL.get());

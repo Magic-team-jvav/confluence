@@ -53,6 +53,7 @@ public final class ModTags {
         public static final TagKey<Block> RELIC = register("relic"); // 圣物
         public static final TagKey<Block> CATTAIL_CAN_SURVIVE = register("cattail_can_survive");
         public static final TagKey<Block> VOID_TREE_ROOT_CAN_CONNECT = register("void_tree_root_can_connect");
+        public static final TagKey<Block> VOID_TREE_CAN_SURVIVE = register("void_tree_can_survive");
 
         public static final TagKey<Block> PURE_CONVERSION_GRASS_BLOCK = register("pure_conversion_grass_block");
         public static final TagKey<Block> PURE_CONVERSION_JUNGLE_GRASS_BLOCK = register("pure_conversion_jungle_grass_block");

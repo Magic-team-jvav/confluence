@@ -31,6 +31,7 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
         super(pCodec);
     }
     private static final TagKey<Block> VOID_TREE_ROOT_CAN_CONNECT = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "void_tree_root_can_connect"));
+    private static final TagKey<Block> VOID_TREE_CAN_SURVIVE = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "void_tree_can_survive"));
 
     @Override
     public boolean place(FeaturePlaceContext<Config> pContext) {
@@ -38,6 +39,8 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
         BlockPos basePos = pContext.origin();
+
+        if (!level.getBlockState(basePos.below()).is(VOID_TREE_CAN_SURVIVE)) return false;
 
         BlockState trunkBlock = config.trunk().getState(random, basePos);
         BlockState rootBlock = config.root().getState(random, basePos);
@@ -68,9 +71,17 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
             int height = random.nextInt(2);
             BlockPos rootPos = basePos.offset(0, height, 0);
             BlockPos rootMiddlePos = basePos.offset(0, height, 0).relative(direction, length);
+            boolean end = false;
             for (int j = 0; j <= length; j++) {
-                rootDebugSet.add(rootPos.relative(direction, j).asLong());
+                BlockPos debugPos = rootPos.relative(direction, j);
+                if (level.getBlockState(debugPos).canBeReplaced()) rootDebugSet.add(debugPos.asLong());
+                else {
+                    rootSet.addAll(rootDebugSet);
+                    end = true;
+                    break;
+                }
             }
+            if (end) break;
             for (int j = 0; j <= 15; j++) {
                 if (j == 15) break;
                 BlockPos debugPos = rootMiddlePos.offset(0, -j, 0);

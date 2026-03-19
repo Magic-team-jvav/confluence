@@ -1808,6 +1808,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.VOID_LOG_BLOCKS.FENCE_GATE.get(), "虚空木栅栏门");
         add(NatureBlocks.VOID_LOG_BLOCKS.PRESSURE_PLATE.get(), "虚空木压力板");
         add(NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get(), "虚空树叶");
+        add(NatureBlocks.VOID_LOG_BLOCKS.SAPLING.get(), "虚空树苗");
 
         add(NatureBlocks.GAZE_LOG_BLOCKS.BUTTON.get(), "垂眸木按钮");
         add(NatureBlocks.GAZE_LOG_BLOCKS.PLANKS.get(), "垂眸木板");
@@ -1931,7 +1932,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get(), "猴面包树苗");
         add(NatureBlocks.PINE_LOG_BLOCKS.SAPLING.get(), "松树苗");
         add(NatureBlocks.PRUNED_PINE_SAPLING.get(), "修枝松树苗");
-        add(NatureBlocks.VOID_LOG_BLOCKS.SAPLING.get(), "虚空树苗");
 
 
         add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");

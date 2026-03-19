@@ -150,7 +150,7 @@ public final class ModFeatures {
         public static final TreeGrower CHINESE_PINE_GROWER = registerSmallTree("chinese_pine", Configured.CHINESE_PINE_TREE);
         public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow", Configured.YELLOW_WILLOW_TREE);
         public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab", Configured.BAOBAB_TREE);
-        public static final TreeGrower VOID_GROWER = registerBigTree("void", Configured.VOID_TREE);
+        public static final TreeGrower VOID_GROWER = registerSmallTree("void", Configured.VOID_TREE);
 
         private static TreeGrower registerSmallTree(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
             return new TreeGrower(Confluence.asPlainId(name), Optional.empty(), Optional.of(tree), Optional.empty());

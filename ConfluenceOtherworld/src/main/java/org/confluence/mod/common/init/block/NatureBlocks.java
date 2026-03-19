@@ -213,21 +213,21 @@ public class NatureBlocks {
     public static final DeferredBlock<AshPathBlock> ASH_PATH = registerWithItem("ash_path", () -> new AshPathBlock(BlockBehaviour.Properties.ofFullCopy(NatureBlocks.ASH_BLOCK.get()).mapColor(MapColor.COLOR_GRAY)));
 
     // 末地 - 通用
-    public static final DeferredBlock<Block> END_DIRT = registerWithItem("end_dirt", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+    public static final DeferredBlock<Block> END_DIRT = registerWithItem("end_dirt", EndDirtBlock::new);
 
     // 末地 - 紫颂主题
-    public static final DeferredBlock<Block> VOID_GRASS_BLOCK = registerWithItem("void_grass_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+    public static final DeferredBlock<Block> VOID_GRASS_BLOCK = registerWithItem("void_grass_block", () -> new EndGrassBlock(NatureBlocks.END_DIRT));
     public static final DeferredBlock<BasePlantBlock> VOID_GRASS = registerWithItem("void_grass", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
     public static final DeferredBlock<VoidTreeRootBlock> VOID_TREE_ROOT_BLOCK = registerWithItem("void_tree_root_block", VoidTreeRootBlock::new);
     public static final Supplier<BlockEntityType<VoidTreeRootBlock.BEntity>> VOID_TREE_ROOT_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("void_tree_root_block", () -> BlockEntityType.Builder.of(VoidTreeRootBlock.BEntity::new, VOID_TREE_ROOT_BLOCK.get()).build(DSL.remainderType()));
     public static final LogBlockSet VOID_LOG_BLOCKS = LogBlockSet.builder("void", true, VOID).build();
 
     // 末地 - 倒悬主题
-    public static final DeferredBlock<Block> INVERSE_GRASS_BLOCK = registerWithItem("inverse_grass_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+    public static final DeferredBlock<Block> INVERSE_GRASS_BLOCK = registerWithItem("inverse_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));
     public static final LogBlockSet GAZE_LOG_BLOCKS = LogBlockSet.builder("gaze", true, GAZE).build();
 
     // 末地 - 月光主题
-    public static final DeferredBlock<Block> MOONLIT_GRASS_BLOCK = registerWithItem("moonlit_grass_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+    public static final DeferredBlock<Block> MOONLIT_GRASS_BLOCK = registerWithItem("moonlit_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));
     public static final LogBlockSet MOONGLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("moonglow_willow", true, MOONGLOW_WILLOW).build();
 
     // 王朝木

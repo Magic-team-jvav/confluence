@@ -4,10 +4,12 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ParticleUtils;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -49,6 +51,7 @@ import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -416,6 +419,50 @@ public final class PlayerEvents {
     public static void naturalHeal(PlayerNaturalHealEvent event) {
         if (PlayerUtils.skipHealIfOnFire(event.getEntity())) {
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onBonemeal(BonemealEvent event) {
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = event.getState();
+
+        if (!state.is(Blocks.END_STONE)) return;
+
+        Block moonlitBlock = NatureBlocks.MOONLIT_GRASS_BLOCK.get();
+        Block inverseBlock = NatureBlocks.INVERSE_GRASS_BLOCK.get();
+
+        boolean canGrowMoonlit = false;
+        boolean canGrowInverse = false;
+
+        for (BlockPos nearbyPos : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
+            Block neighbor = level.getBlockState(nearbyPos).getBlock();
+            if (neighbor == moonlitBlock) canGrowMoonlit = true;
+            if (neighbor == inverseBlock) canGrowInverse = true;
+            if (canGrowMoonlit && canGrowInverse) break;
+        }
+
+        boolean upSpace = level.getBlockState(pos.above()).propagatesSkylightDown(level, pos);
+        boolean downSpace = level.getBlockState(pos.below()).propagatesSkylightDown(level, pos);
+
+        BlockState result = null;
+
+        if (canGrowMoonlit && canGrowInverse && upSpace && downSpace) {
+            result = level.random.nextBoolean() ? moonlitBlock.defaultBlockState() : inverseBlock.defaultBlockState();
+        } else if (canGrowMoonlit && upSpace) {
+            result = moonlitBlock.defaultBlockState();
+        } else if (canGrowInverse && downSpace) {
+            result = inverseBlock.defaultBlockState();
+        }
+
+        if (result != null) {
+            if (!level.isClientSide) {
+                level.setBlockAndUpdate(pos, result);
+                level.levelEvent(1505, pos, 15);
+                ParticleUtils.spawnParticles(level, pos, 45, 3.0, 1.0, false, ParticleTypes.HAPPY_VILLAGER);
+            }
+            event.setSuccessful(true);
         }
     }
 }

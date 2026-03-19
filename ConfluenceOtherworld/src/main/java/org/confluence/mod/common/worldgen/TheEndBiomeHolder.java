@@ -14,9 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.stream.Stream;
 
 public class TheEndBiomeHolder {
+
     private static Holder<Biome> chorusForest;
     private static Holder<Biome> inverseForest;
-    private static Holder<Biome> silverSoulForest;
+    private static Holder<Biome> moonlightForest;
 
     private static long seed;
 
@@ -31,7 +32,7 @@ public class TheEndBiomeHolder {
 
         chorusForest = biomes.getOrThrow(ModBiomes.CHORUS_FOREST);
         inverseForest = biomes.getOrThrow(ModBiomes.INVERSE_FOREST);
-        silverSoulForest = biomes.getOrThrow(ModBiomes.MOONBLIGHT_FOREST);
+        moonlightForest = biomes.getOrThrow(ModBiomes.MOONBLIGHT_FOREST);
 
         improvedNoise = new ImprovedNoise(RandomSource.create(seed));
 
@@ -41,6 +42,7 @@ public class TheEndBiomeHolder {
     public static void close() {
         chorusForest = null;
         inverseForest = null;
+        moonlightForest = null;
 
         seed = 0;
 
@@ -48,8 +50,9 @@ public class TheEndBiomeHolder {
     }
 
     public static Stream<Holder<Biome>> addConfluenceBiomes(Stream<Holder<Biome>> original) {
-        if (initialized) {
-            return Stream.concat(original, Stream.of(chorusForest, inverseForest));
+        if (initialized && chorusForest != null && inverseForest != null && moonlightForest != null) {
+            Stream<Holder<Biome>> myBiomes = Stream.of(chorusForest, inverseForest, moonlightForest);
+            return Stream.concat(original, myBiomes);
         }
         return original;
     }
@@ -71,7 +74,7 @@ public class TheEndBiomeHolder {
                 if (trueNoise > 0.75) {
                     if (heightNoise > 30) {
                         if (biomeNoise > 0) cir.setReturnValue(chorusForest);
-                        else cir.setReturnValue(silverSoulForest);
+                        else cir.setReturnValue(moonlightForest);
                     } else {
                         cir.setReturnValue(inverseForest);
                     }

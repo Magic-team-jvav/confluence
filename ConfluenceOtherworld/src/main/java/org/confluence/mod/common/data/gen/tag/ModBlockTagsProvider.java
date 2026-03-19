@@ -60,6 +60,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DIATOMACEOUS.get()
         );
         tag(ModTags.Blocks.COLD_CRYSTAL_ORE_REPLACEMENT).add(Blocks.PACKED_ICE, Blocks.SNOW_BLOCK);
+        tag(ModTags.Blocks.VOID_TREE_ROOT_CAN_CONNECT).add(
+                VOID_LOG_BLOCKS.LOG.get(),
+                VOID_LOG_BLOCKS.WOOD.get(),
+                VOID_LOG_BLOCKS.STRIPPED_WOOD.get(),
+                VOID_LOG_BLOCKS.STRIPPED_LOG.get(),
+                Blocks.END_STONE,
+                VOID_GRASS_BLOCK.get(),
+                END_DIRT.get()
+        );
         tag(ModTags.Blocks.GELSTONE_ORE_REPLACEMENT).add(Blocks.MUD, Blocks.CLAY, Blocks.STONE);
         tag(BlockTags.ANVIL).add(LEAD_ANVIL.get(), CHIPPED_LEAD_ANVIL.get(), DAMAGED_LEAD_ANVIL.get());
         tag(ModTags.Blocks.VINES).add(

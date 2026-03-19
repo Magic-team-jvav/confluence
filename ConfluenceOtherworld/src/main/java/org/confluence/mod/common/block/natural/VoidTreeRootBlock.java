@@ -4,12 +4,16 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -34,6 +38,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class VoidTreeRootBlock extends Block implements EntityBlock {
     private static final float RADIUS = 0.25F;
+
+    private static final TagKey<Block> VOID_TREE_ROOT_CAN_CONNECT = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "void_tree_root_can_connect"));
+
     private static final Map<BlockState, VoxelShape> SHAPE_MAP = new ConcurrentHashMap<>();
     public static final Map<Direction, EnumProperty<ConnectType>> CONNECTION_PROPERTIES =
             Util.make(new EnumMap<>(Direction.class), map -> {
@@ -122,7 +129,7 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
         BlockState state = this.defaultBlockState();
         for (Direction d : LibUtils.DIRECTIONS) {
             BlockState n = context.getLevel().getBlockState(context.getClickedPos().relative(d));
-            if (n.is(this) || n.is(NatureBlocks.VOID_LOG_BLOCKS.LOG.get())) {
+            if (n.is(this) || n.is(VOID_TREE_ROOT_CAN_CONNECT)) {
                 state = state.setValue(CONNECTION_PROPERTIES.get(d), ConnectType.CONNECT);
             }
         }
@@ -132,7 +139,7 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
     @Override
     public BlockState updateShape(BlockState state, Direction d, BlockState ns, LevelAccessor level, BlockPos pos, BlockPos np) {
         if (state.getValue(CONNECTION_PROPERTIES.get(d)) == ConnectType.CONNECT_BY_PORTAL) return state;
-        return state.setValue(CONNECTION_PROPERTIES.get(d), ns.is(this) ? ConnectType.CONNECT : ConnectType.DIS_CONNECT);
+        return state.setValue(CONNECTION_PROPERTIES.get(d), (ns.is(this) || ns.is(VOID_TREE_ROOT_CAN_CONNECT)) ? ConnectType.CONNECT : ConnectType.DIS_CONNECT);
     }
 
     @Override

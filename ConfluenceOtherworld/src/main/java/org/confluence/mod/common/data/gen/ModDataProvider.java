@@ -296,6 +296,8 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> ADDITIONAL_ANCIENT_DEBRIS = key("additional_ancient_debris");
         private static final ResourceKey<ConfiguredFeature<?, ?>> PLATINUM_VEIN_WITH_DETONATOR = key("platinum_vein_with_detonator");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GOLD_VEIN_WITH_DETONATOR = key("gold_vein_with_detonator");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> VOID_GRASS = key("void_grass");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> VOID_TREE = key("void_tree");
 
         private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
             return Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, path);
@@ -384,6 +386,7 @@ public class ModDataProvider {
             herb(context, CORRUPT_GRASS, 45, NatureBlocks.CORRUPT_GRASS.get());
             herb(context, VILE_MUSHROOM, 12, NatureBlocks.VILE_MUSHROOM.get());
             herb(context, CRIMSON_GRASS, 28, NatureBlocks.CRIMSON_GRASS.get());
+            herb(context, VOID_GRASS, 180, NatureBlocks.VOID_GRASS.get());
             herb(context, VICIOUS_MUSHROOM, 12, NatureBlocks.VICIOUS_MUSHROOM.get());
             herb(context, GLOWING_MUSHROOM, 180, NatureBlocks.GLOWING_MUSHROOM.get());
             herb(context, ASH_GRASS, 180, NatureBlocks.ASH_GRASS.get());
@@ -514,6 +517,7 @@ public class ModDataProvider {
                     ),
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
             )));
+            register(context, VOID_TREE, ModFeatures.VOID_TREE.get(), new VoidTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.VOID_LOG_BLOCKS.LOG.get().defaultBlockState()), BlockStateProvider.simple(NatureBlocks.VOID_TREE_ROOT_BLOCK.get().defaultBlockState()), BlockStateProvider.simple(NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get().defaultBlockState())));
             register(context, THIN_ICE_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(3, 4, 32, 32, 0.5F, BlockStateProvider.simple(NatureBlocks.THIN_ICE_BLOCK.get())));
             register(context, POWDER_SNOW_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(0, 2, 10, 32, 0.3F, BlockStateProvider.simple(Blocks.POWDER_SNOW)));
             register(context, FALLING_SAND_TRAP, ModFeatures.FALLING_SAND_TRAP.get(), new FallingSandTrapFeature.Config(BlockStateProvider.simple(Blocks.SAND), 4, 4, 4, 16));
@@ -814,6 +818,8 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> ADDITIONAL_ANCIENT_DEBRIS = key("additional_ancient_debris");
         private static final ResourceKey<PlacedFeature> PLATINUM_VEIN_WITH_DETONATOR = key("platinum_vein_with_detonator");
         private static final ResourceKey<PlacedFeature> GOLD_VEIN_WITH_DETONATOR = key("gold_vein_with_detonator");
+        private static final ResourceKey<PlacedFeature> VOID_GRASS = key("void_grass");
+        private static final ResourceKey<PlacedFeature> VOID_TREE = key("void_tree");
 
         private static ResourceKey<PlacedFeature> key(String path) {
             return Confluence.asResourceKey(Registries.PLACED_FEATURE, path);
@@ -904,6 +910,8 @@ public class ModDataProvider {
             register(context, CORRUPT_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, EBONY_TREE, configured.getOrThrow(ModFeatures.Configured.EBONY_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, CORRUPT_GRASS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_GRASS), CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING), biome);
+            register(context, VOID_GRASS, configured.getOrThrow(ConfiguredFeatures.VOID_GRASS), CountPlacement.of(10), inSquare, bottomThroughUnderground, biome);
+            register(context, VOID_TREE, configured.getOrThrow(ConfiguredFeatures.VOID_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, VILE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VILE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, SHADOW_TREE, configured.getOrThrow(ModFeatures.Configured.SHADOW_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, CRIMSON_GRASS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_GRASS), CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING), biome);
@@ -1577,7 +1585,10 @@ public class ModDataProvider {
             context.register(ModBiomes.CHORUS_FOREST, new Biome.BiomeBuilder().temperature(2f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder().build())
-                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, Biomes::addDefaultGenerations)).build()
+                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_GRASS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_TREE);
+                    })).build()
             );
             context.register(ModBiomes.CHORUS_PLAINS, new Biome.BiomeBuilder().temperature(2f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())

@@ -1,7 +1,6 @@
 package org.confluence.mod.mixin.integration.terrablender;
 
 import com.bawnorton.mixinsquared.TargetHandler;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
@@ -23,8 +22,13 @@ public abstract class MixinTheEndBiomeSourceSquared {
         TheEndBiomeHolder.replaceBiome(x, y, z, sampler, cir);
     }
 
-    @ModifyReturnValue(method = "collectPossibleBiomes", at = @At("RETURN"))
-    private Stream<Holder<Biome>> addConfluence(Stream<Holder<Biome>> original) {
-        return TheEndBiomeHolder.addConfluenceBiomes(original);
+    /// 不要标记为cancellable
+    @TargetHandler(mixin = "terrablender.mixin.MixinTheEndBiomeSource", name = "onCollectPossibleBiomes")
+    @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
+    private void addConfluence(CallbackInfoReturnable<Stream<Holder<Biome>>> cir, CallbackInfo ci) {
+        Stream<Holder<Biome>> stream = cir.getReturnValue();
+        if (stream != null) {
+            cir.setReturnValue(TheEndBiomeHolder.addConfluenceBiomes(stream));
+        }
     }
 }

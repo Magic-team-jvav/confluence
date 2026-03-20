@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.integration.prism_lib;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
@@ -13,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(targets = "com.anthonyhilyard.prism.item.ItemColors", remap = false)
 public abstract class ItemColorsMixin {
     @Inject(method = "getColorForItem", at = @At("HEAD"), cancellable = true)
-    private static void rarity(ItemStack item, TextColor defaultColor, CallbackInfoReturnable<TextColor> cir) {
+    private static void rarity(CallbackInfoReturnable<TextColor> cir, @Local(argsOnly = true) ItemStack item) {
         TextColor textColor = PrismLibHelper.getRarityColor(item);
         if (textColor != null) cir.setReturnValue(textColor);
     }

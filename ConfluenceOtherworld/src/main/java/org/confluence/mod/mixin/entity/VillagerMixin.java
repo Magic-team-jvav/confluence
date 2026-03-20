@@ -4,13 +4,10 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.mod.common.init.ModVillagers;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.util.TCUtils;
@@ -41,7 +38,7 @@ public abstract class VillagerMixin {
     }
 
     @Inject(method = "finalizeSpawn", at = @At("RETURN"))
-    private void setVillagerType(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, SpawnGroupData spawnGroupData, CallbackInfoReturnable<SpawnGroupData> cir) {
+    private void setVillagerType(CallbackInfoReturnable<SpawnGroupData> cir) {
         ModVillagers.setVillagerType((Villager) (Object) this);
     }
 }

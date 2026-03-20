@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +26,17 @@ public abstract class ItemInHandRendererMixin {
     protected abstract void renderPlayerArm(PoseStack poseStack, MultiBufferSource buffer, int packedLight, float equippedProgress, float swingProgress, HumanoidArm side);
 
     @Inject(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z", ordinal = 0))
-    private void check(AbstractClientPlayer player, float partialTicks, float pitch, InteractionHand hand, float swingProgress, ItemStack stack, float equippedProgress, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, CallbackInfo ci, @Local HumanoidArm humanoidarm) {
+    private void check(
+            CallbackInfo ci,
+            @Local(argsOnly = true) AbstractClientPlayer player,
+            @Local(argsOnly = true, ordinal = 2) float swingProgress,
+            @Local(argsOnly = true) ItemStack stack,
+            @Local(argsOnly = true, ordinal = 3) float equippedProgress,
+            @Local(argsOnly = true) PoseStack poseStack,
+            @Local(argsOnly = true) MultiBufferSource buffer,
+            @Local(argsOnly = true) int combinedLight,
+            @Local HumanoidArm humanoidarm
+    ) {
         if (stack.is(SwordItems.ZOMBIE_ARM)) {
             if (!player.isInvisible()) {
                 renderPlayerArm(poseStack, buffer, combinedLight, equippedProgress, swingProgress, humanoidarm);

@@ -11,13 +11,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 @Mixin(value = DemonHeart.class, remap = false)
 public abstract class DemonHeartMixin {
     @Inject(method = "lambda$use$0", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$ModifyExpression(Ljava/lang/Object;)Ljava/lang/Object;"))
-    private static void update(ItemStack itemStack, ServerPlayer player, ICuriosItemHandler iCuriosItemHandler, CallbackInfo ci, @Local ICurioStacksHandler iCurioStacksHandler) {
+    private static void update(CallbackInfo ci, @Local(argsOnly = true) ServerPlayer player, @Local(name = "iCurioStacksHandler") ICurioStacksHandler iCurioStacksHandler) {
         int slots = iCurioStacksHandler.getSlots();
         player.playSound(ModSoundEvents.TRANSMUTATION_USE.get());
         ExtraInventory.of(player).updateAccessorySize(player, slots);

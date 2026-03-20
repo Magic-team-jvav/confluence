@@ -20,7 +20,7 @@ public abstract class AdvancementWidgetMixin {
     private AdvancementNode advancementNode;
 
     @Inject(method = "drawConnectivity", at = @At("HEAD"), cancellable = true)
-    private void disconnect(GuiGraphics pGuiGraphics, int pX, int pY, boolean pDropShadow, CallbackInfo ci) {
+    private void disconnect(CallbackInfo ci) {
         if (AchievementToast.hideLink(advancementNode.holder().id(), false)) {
             ci.cancel();
         }

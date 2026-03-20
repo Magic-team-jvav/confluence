@@ -43,7 +43,6 @@
         "chunk.LevelChunkSectionMixin",
         "chunk.NoiseChunkGenMixin",
         "chunk.PalettedContainerMixin",
-        "chunk.ProtoChunkMixin",
         "entity.AbstractArrowMixin",
         "entity.AbstractMinecartMixin",
         "entity.ArrowMixin",

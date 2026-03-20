@@ -93,7 +93,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     }
 
     @Inject(method = "checkFallDamage", at = @At("HEAD"), cancellable = true)
-    private void fall(double motionY, boolean onGround, BlockState blockState, BlockPos blockPos, CallbackInfo ci) {
+    private void fall(CallbackInfo ci, @Local(argsOnly = true) double motionY, @Local(argsOnly = true) BlockState blockState, @Local(argsOnly = true) BlockPos blockPos) {
         LivingEntity self = confluence$self();
         if (fallDistance >= 2.5F && blockState.is(NatureBlocks.THIN_ICE_BLOCK)) {
             if (TCUtils.isIceSafe(self)) return;

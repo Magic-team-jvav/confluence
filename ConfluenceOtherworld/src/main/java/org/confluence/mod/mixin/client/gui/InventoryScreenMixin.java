@@ -39,7 +39,7 @@ public abstract class InventoryScreenMixin implements IInventoryScreen {
     }
 
     @Inject(method = "lambda$init$0(Lnet/minecraft/client/gui/components/Button;)V", at = @At("TAIL"))
-    private void toggle(Button p_313434_, CallbackInfo ci) {
+    private void toggle(CallbackInfo ci) {
         confluence$setExtraButtonVisibility(!recipeBookComponent.isVisible(), confluence$self().getGuiLeft());
     }
 }

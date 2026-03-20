@@ -48,7 +48,7 @@ public abstract class PlayerMixin implements IPlayer {
     }
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
-    private void attack(Entity target, CallbackInfo ci, @Local DamageSource damagesource, @Local(ordinal = 2) boolean flag1) {
+    private void attack(CallbackInfo ci, @Local DamageSource damagesource, @Local(ordinal = 2) boolean flag1) {
         ((IDamageSource) damagesource).confluence$setCritical(flag1);
     }
 

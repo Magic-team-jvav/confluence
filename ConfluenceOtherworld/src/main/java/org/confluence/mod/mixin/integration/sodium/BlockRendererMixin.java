@@ -23,9 +23,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * @see org.confluence.mod.mixin.client.renderer.ModelBlockRendererMixin
- */
+/// @see org.confluence.mod.mixin.client.renderer.ModelBlockRendererMixin
 @Pseudo
 @Mixin(targets = "net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockRenderer", remap = false)
 public abstract class BlockRendererMixin {
@@ -42,7 +40,7 @@ public abstract class BlockRendererMixin {
         colorData.set(LocalBrushData.getColor(confluence$pos, ((ModelQuadView) (Object) quad).getLightFace())); // 并非冗余
     }
 
-    @ModifyVariable(method = "processQuad", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;colorizeQuad(Lnet/caffeinemc/mods/sodium/client/render/frapi/mesh/MutableQuadViewImpl;I)V"))
+    @ModifyVariable(method = "processQuad", at = @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/pipeline/BlockRenderer;colorizeQuad(Lnet/caffeinemc/mods/sodium/client/render/frapi/mesh/MutableQuadViewImpl;I)V"), name = "emissive")
     private boolean illuminant(boolean emissive, @Share("colorData") LocalIntRef colorData) {
         return emissive || colorData.get() == BrushData.ILLUMINANT_COLOR;
     }

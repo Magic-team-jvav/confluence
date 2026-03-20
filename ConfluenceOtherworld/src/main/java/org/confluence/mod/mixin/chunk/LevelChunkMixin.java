@@ -48,12 +48,12 @@ public abstract class LevelChunkMixin extends ChunkAccess {
     }
 
     @Inject(method = "<init>(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/chunk/ProtoChunk;Lnet/minecraft/world/level/chunk/LevelChunk$PostLoadProcessor;)V", at = @At("RETURN"))
-    private void protoToLevel(ServerLevel level, ProtoChunk chunk, LevelChunk.PostLoadProcessor postLoad, CallbackInfo ci) {
+    private void protoToLevel(CallbackInfo ci, @Local(argsOnly = true) ServerLevel level, @Local(argsOnly = true) ProtoChunk chunk) {
         DynamicBiomeUtils.applyDynamicBiome(chunk, level.registryAccess().lookupOrThrow(Registries.BIOME));
     }
 
     @Inject(method = "setBlockState", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getBlock()Lnet/minecraft/world/level/block/Block;"/*这个位置才开始真正的放方块流程*/))
-    private void setBlock(BlockPos pos, BlockState targetState, boolean isMoving, CallbackInfoReturnable<BlockState> cir, @Local LevelChunkSection section, @Local(ordinal = 1) BlockState beforeState) {
+    private void setBlock(CallbackInfoReturnable<BlockState> cir, @Local(argsOnly = true) BlockPos pos, @Local(argsOnly = true) BlockState targetState, @Local LevelChunkSection section, @Local(ordinal = 1) BlockState beforeState) {
         DynamicBiomeUtils.COUNTER.forEach((predicate, consumer) -> {
             boolean before = predicate.test(beforeState);
             boolean after = predicate.test(targetState);

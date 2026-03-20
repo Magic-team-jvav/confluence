@@ -6,7 +6,7 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
-import com.mojang.datafixers.DataFixer;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.advancements.AdvancementHolder;
@@ -15,7 +15,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.PlayerList;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
@@ -40,7 +39,7 @@ import java.util.Map;
 public abstract class LocalPlayerAdvancementsMixin {
     @Shadow
     @Final
-    private Map<AdvancementHolder, AdvancementProgress> progress;
+    public Map<AdvancementHolder, AdvancementProgress> progress;
 
     @Shadow
     @Final
@@ -59,7 +58,7 @@ public abstract class LocalPlayerAdvancementsMixin {
     private Path confluence$savePath;
 
     @Inject(method = "<init>", at = @At("CTOR_HEAD"))
-    private void cacheConfluence(DataFixer dataFixer, PlayerList playerList, ServerAdvancementManager manager, Path playerSavePath, ServerPlayer player, CallbackInfo ci) {
+    private void cacheConfluence(CallbackInfo ci, @Local(argsOnly = true) ServerPlayer player) {
         this.confluence$savePath = AchievementUtils.CONFLUENCE_ACHIEVEMENTS_DIR.resolve(player.getUUID() + ".json");
     }
 

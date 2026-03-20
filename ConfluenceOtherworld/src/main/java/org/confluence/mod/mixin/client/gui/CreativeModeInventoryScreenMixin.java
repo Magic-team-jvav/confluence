@@ -1,7 +1,7 @@
 package org.confluence.mod.mixin.client.gui;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +25,7 @@ public abstract class CreativeModeInventoryScreenMixin {
     protected abstract void refreshCurrentTabContents(Collection<ItemStack> items);
 
     @Inject(method = "slotClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen$ItemPickerMenu;getCarried()Lnet/minecraft/world/item/ItemStack;", ordinal = 7), cancellable = true)
-    private void checkIsGroupItem(Slot slot, int slotId, int mouseButton, ClickType type, CallbackInfo ci) {
+    private void checkIsGroupItem(CallbackInfo ci, @Local(argsOnly = true) Slot slot) {
         if (!GroupItem.enable || selectedTab == ModTabs.DEVELOPER.get()) return;
         ItemStack stack = slot.getItem();
         if (stack.is(GroupItem.getInstance())) {

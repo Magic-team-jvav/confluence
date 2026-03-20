@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Properties;
-
 @Mixin(DedicatedServerProperties.class)
 public abstract class DedicatedServerPropertiesMixin {
     @Mutable
@@ -22,7 +20,7 @@ public abstract class DedicatedServerPropertiesMixin {
     public WorldOptions worldOptions;
 
     @Inject(method = "<init>", at = @At(value = "NEW", target = "(Lcom/google/gson/JsonObject;Ljava/lang/String;)Lnet/minecraft/server/dedicated/DedicatedServerProperties$WorldDimensionData;"))
-    private void modify(Properties properties, CallbackInfo ci, @Local String s) {
+    private void modify(CallbackInfo ci, @Local String s) {
         if (!s.isEmpty()) {
             this.worldOptions = ModSecretSeeds.matchSeed(s, worldOptions).left();
         }

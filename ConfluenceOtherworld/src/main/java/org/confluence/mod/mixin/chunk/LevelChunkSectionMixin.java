@@ -1,8 +1,6 @@
 package org.confluence.mod.mixin.chunk;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainerRO;
@@ -56,12 +54,12 @@ public abstract class LevelChunkSectionMixin implements ILevelChunkSection {
 
     // 我忘记为什么要写这个了，不写就崩溃
     @Inject(method = "<init>(Lnet/minecraft/core/Registry;)V", at = @At("RETURN"))
-    private void constr(Registry<Biome> pBiomeRegistry, CallbackInfo ci) {
+    private void constr(CallbackInfo ci) {
         confluence$backupBiome = biomes.recreate();
     }
 
     @Inject(method = "read", at = @At("RETURN"))
-    private void read(FriendlyByteBuf buffer, CallbackInfo ci) {
+    private void read(CallbackInfo ci) {
         try {
             recalcBlockCounts();
         } catch (Exception e) {

@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.mixed.ILocalPlayer;
@@ -55,7 +54,7 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
     // 客户端玩家受伤没事件的
     // 受伤让视角返回自己
     @Inject(method = "hurt", at = @At("HEAD"))
-    private void hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    private void hurt(CallbackInfoReturnable<Boolean> cir) {
         ScryingOrb.stopSpectating();
     }
 }

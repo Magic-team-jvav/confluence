@@ -1,12 +1,9 @@
 package org.confluence.mod.mixin;
 
-import com.google.gson.JsonElement;
 import net.minecraft.Util;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ServerAdvancementManager;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.profiling.ProfilerFiller;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
@@ -24,7 +21,7 @@ public abstract class ServerAdvancementManagerMixin {
     private Map<ResourceLocation, AdvancementHolder> advancements;
 
     @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At("TAIL"))
-    private void confluence$setLocation(Map<ResourceLocation, JsonElement> p_136034_, ResourceManager p_136035_, ProfilerFiller p_136036_, CallbackInfo ci) {
+    private void confluence$setLocation(CallbackInfo ci) {
         AchievementOffsetLoader.WAITING_FOR.thenAcceptAsync(v -> {
             for (Map.Entry<ResourceLocation, AchievementOffset> entry : AchievementOffsetLoader.getDisplayOffset().entrySet()) {
                 AdvancementHolder advancement = advancements.get(entry.getKey());

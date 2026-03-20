@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = ItemStackHandler.class, priority = 1100)
 public abstract class ItemStackHandlerMixin {
     @Inject(method = "getSlotLimit", at = @At("RETURN"), cancellable = true)
-    private void modify(int slot, CallbackInfoReturnable<Integer> cir) {
+    private void modify(CallbackInfoReturnable<Integer> cir) {
         cir.setReturnValue(LibUtils.getMaxStackSize(cir.getReturnValue()));
     }
 }

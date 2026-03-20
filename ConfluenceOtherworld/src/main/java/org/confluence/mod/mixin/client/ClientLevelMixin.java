@@ -41,7 +41,7 @@ public abstract class ClientLevelMixin implements LevelReader, SelfGetter<Client
     private Minecraft minecraft;
 
     @Inject(method = "animateTick", at = @At("HEAD"))
-    private void preAnimateTick(int posX, int posY, int posZ, CallbackInfo ci) {
+    private void preAnimateTick(CallbackInfo ci) {
         if (minecraft.player == null) return;
         Holder<Biome> biome = getBiome(minecraft.player.blockPosition());
         this.confluence$blockParticles = WeatherHandler.getBlockParticles(biome);
@@ -49,7 +49,7 @@ public abstract class ClientLevelMixin implements LevelReader, SelfGetter<Client
     }
 
     @Inject(method = "doAnimateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;isEmpty()Z"))
-    private void tick(int posX, int posY, int posZ, int range, RandomSource random, Block block, BlockPos.MutableBlockPos blockPos, CallbackInfo ci, @Local BlockState blockstate, @Local FluidState fluidstate) {
+    private void tick(CallbackInfo ci, @Local(argsOnly = true) BlockPos.MutableBlockPos blockPos, @Local BlockState blockstate, @Local FluidState fluidstate) {
         int i1 = ClientConfigs.showWindParticles;
         if (i1 == 0 || WeatherHandler.windDirection == null) return;
         i1 = 100 - i1;

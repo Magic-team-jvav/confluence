@@ -1,8 +1,8 @@
 package org.confluence.mod.mixin.block;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
@@ -27,7 +27,7 @@ public abstract class CropBlockMixin {
     public static int MAX_AGE;
 
     @Inject(method = "entityInside", at = @At("TAIL"))
-    private void explode(BlockState state, Level level, BlockPos pos, Entity entity, CallbackInfo ci) {
+    private void explode(CallbackInfo ci, @Local(argsOnly = true) BlockState state, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos) {
         if (state.is(Blocks.POTATOES) && state.getValue(AGE) == MAX_AGE && level instanceof ServerLevel serverLevel && ModSecretSeeds.NO_TRAPS.match(serverLevel)) {
             level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 2.5F, false, Level.ExplosionInteraction.BLOCK);
         }

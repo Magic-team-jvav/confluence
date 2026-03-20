@@ -31,7 +31,7 @@ public abstract class ManaCapMixin {
     }
 
     @Inject(method = "setMaxMana", at = @At("TAIL"))
-    private void updateMana(int maxMana, CallbackInfo ci) {
+    private void updateMana(CallbackInfo ci) {
         ArsNouveauHelper.updateMana(entity);
     }
 

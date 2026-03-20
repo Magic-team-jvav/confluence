@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
-import java.util.OptionalLong;
 import java.util.stream.Stream;
 
 @Mixin(WorldOptions.class)
@@ -108,17 +107,17 @@ public abstract class WorldOptionsMixin implements IWorldOptions {
     }
 
     @Inject(method = "withSeed", at = @At("RETURN"))
-    private void withSecretFlag1(OptionalLong seed, CallbackInfoReturnable<WorldOptions> cir) {
+    private void withSecretFlag1(CallbackInfoReturnable<WorldOptions> cir) {
         IWorldOptions.of(cir.getReturnValue()).confluence$withSecretFlag(confluence$secretFlag);
     }
 
     @Inject(method = "withStructures", at = @At("RETURN"))
-    private void withSecretFlag2(boolean generateStructures, CallbackInfoReturnable<WorldOptions> cir) {
+    private void withSecretFlag2(CallbackInfoReturnable<WorldOptions> cir) {
         IWorldOptions.of(cir.getReturnValue()).confluence$withSecretFlag(confluence$secretFlag);
     }
 
     @Inject(method = "withBonusChest", at = @At("RETURN"))
-    private void withSecretFlag3(boolean generateBonusChest, CallbackInfoReturnable<WorldOptions> cir) {
+    private void withSecretFlag3(CallbackInfoReturnable<WorldOptions> cir) {
         IWorldOptions.of(cir.getReturnValue()).confluence$withSecretFlag(confluence$secretFlag);
     }
 }

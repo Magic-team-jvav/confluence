@@ -41,7 +41,7 @@ public abstract class InventoryMixin {
     protected abstract boolean hasRemainingSpaceForItem(ItemStack destination, ItemStack origin);
 
     @Inject(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
-    private void add2Extra(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
+    private void add2Extra(CallbackInfoReturnable<Boolean> cir, @Local(argsOnly = true) ItemStack stack) {
         if (stack.is(ModTags.Items.COINS)) {
             ExtraInventory extraInventory = ExtraInventory.of(player);
             if (confluence$insert2Extra(SIZE_COINS, extraInventory, stack, extraInventory1 -> {

@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -22,7 +23,7 @@ public abstract class ClientboundUpdateMobEffectPacketMixin implements IClientbo
     }
 
     @Inject(method = "<init>(ILnet/minecraft/world/effect/MobEffectInstance;Z)V", at = @At("TAIL"))
-    private void init(int entityId, MobEffectInstance effect, boolean blend, CallbackInfo ci) {
+    private void init(CallbackInfo ci, @Local(argsOnly = true) MobEffectInstance effect) {
         this.confluence$enabled = IMobEffectInstance.of(effect).confluence$isEnabled();
     }
 

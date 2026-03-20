@@ -62,15 +62,15 @@ public abstract class BlockBehaviourMixin {
         protected BlockBehaviour.BlockStateBase.Cache cache;
 
         @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("RETURN"), cancellable = true)
-        private void shimmer(BlockGetter pLevel, BlockPos pPos, CollisionContext pContext, CallbackInfoReturnable<VoxelShape> cir) {
-            if (cache == null || asState().getDestroySpeed(pLevel, pPos) == -1) return;
-            if (pContext instanceof EntityCollisionContext context && context.getEntity() instanceof LivingEntity living && living.hasEffect(ModEffects.SHIMMER)) {
+        private void shimmer(BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
+            if (cache == null || asState().getDestroySpeed(level, pos) == -1) return;
+            if (context instanceof EntityCollisionContext ec && ec.getEntity() instanceof LivingEntity living && living.hasEffect(ModEffects.SHIMMER)) {
                 cir.setReturnValue(Shapes.empty());
             }
         }
 
         @Inject(method = "onRemove", at = @At("HEAD"))
-        private void removeData(Level level, BlockPos pos, BlockState newState, boolean movedByPiston, CallbackInfo ci) {
+        private void removeData(CallbackInfo ci, @Local(argsOnly = true) Level level, @Local(argsOnly = true) BlockPos pos, @Local(argsOnly = true) BlockState newState) {
             if (!isAir && !level.isClientSide && getBlock() != newState.getBlock()) {
                 Map<ChunkPos, BrushData> dataMap = ChunkBrushData.of(level).getDataMap();
                 if (!dataMap.isEmpty()) {

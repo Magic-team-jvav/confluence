@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.client.gui;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
@@ -27,7 +28,7 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
     private ResourceLocation confluence$worldIcon;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void loadSecretFlag(WorldSelectionList this$0, WorldSelectionList worldSelectionList, LevelSummary summary, CallbackInfo ci) {
+    private void loadSecretFlag(CallbackInfo ci, @Local(argsOnly = true) LevelSummary summary) {
         try {
             LevelStorageSource.LevelStorageAccess levelStorageAccess = minecraft.getLevelSource().validateAndCreateAccess(summary.getLevelId());
             this.confluence$secretFlag = levelStorageAccess.getDataTag().get("WorldGenSettings").orElseEmptyMap().get("secret_flag").asLong(0L);
@@ -36,7 +37,7 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
     }
 
     @Inject(method = "render", at = @At("TAIL"))
-    private void renderSecretFlagIcon(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick, CallbackInfo ci) {
+    private void renderSecretFlagIcon(CallbackInfo ci, @Local(argsOnly = true) GuiGraphics guiGraphics, @Local(argsOnly = true, ordinal = 1) int top, @Local(argsOnly = true, ordinal = 2) int left) {
         if (confluence$worldIcon == null) {
             this.confluence$worldIcon = IWorldOptions.getWorldIcon(confluence$secretFlag);
         }

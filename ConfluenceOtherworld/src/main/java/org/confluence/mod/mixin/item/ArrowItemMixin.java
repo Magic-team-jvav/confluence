@@ -1,12 +1,12 @@
 package org.confluence.mod.mixin.item;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
@@ -32,7 +32,7 @@ public abstract class ArrowItemMixin {
     }
 
     @Inject(method = "createArrow", at = @At("HEAD"), cancellable = true)
-    public void createArrow(Level level, ItemStack ammo, LivingEntity shooter, @Nullable ItemStack weapon, CallbackInfoReturnable<AbstractArrow> cir) {
+    public void createArrow(CallbackInfoReturnable<AbstractArrow> cir, @Local(argsOnly = true, ordinal = 0) ItemStack ammo, @Local(argsOnly = true) LivingEntity shooter, @Local(argsOnly = true, ordinal = 1) @Nullable ItemStack weapon) {
         if (weapon != null && weapon.getItem() instanceof ITerraArrowProjectileWeaponItem<?> bow) {
             BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder = bow.getModifyArrowBuilder();
             if (modifyArrowBuilder.entityTransform != null) {

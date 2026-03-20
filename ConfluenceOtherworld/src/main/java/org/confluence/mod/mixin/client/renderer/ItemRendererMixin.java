@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.client.renderer;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,21 +13,20 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.renderer.item.SpecialItemRenderingUtil;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemRenderer.class)
-public abstract class ItemRendererMixin {
+public abstract class ItemRendererMixin implements SelfGetter<ItemRenderer> {
     @Shadow
     @Final
     private Minecraft minecraft;
@@ -38,7 +38,18 @@ public abstract class ItemRendererMixin {
     public abstract BakedModel getModel(ItemStack stack, @Nullable Level level, @Nullable LivingEntity entity, int seed);
 
     @Inject(method = "renderStatic(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/level/Level;III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V", shift = At.Shift.AFTER))
-    private void renderArrowInBow(@Nullable LivingEntity entity, ItemStack itemStack, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, CallbackInfo ci) {
+    private void renderArrowInBow(
+            CallbackInfo ci,
+            @Local(argsOnly = true) @Nullable LivingEntity entity,
+            @Local(argsOnly = true) ItemDisplayContext displayContext,
+            @Local(argsOnly = true) boolean leftHand,
+            @Local(argsOnly = true) PoseStack poseStack,
+            @Local(argsOnly = true) MultiBufferSource bufferSource,
+            @Local(argsOnly = true) @Nullable Level level,
+            @Local(argsOnly = true, ordinal = 0) int combinedLight,
+            @Local(argsOnly = true, ordinal = 1) int combinedOverlay,
+            @Local(argsOnly = true, ordinal = 2) int seed
+    ) {
         if (entity == null) return;
         Player player = minecraft.player;
         if (entity != player) {
@@ -54,7 +65,7 @@ public abstract class ItemRendererMixin {
         stack = player.getItemInHand(hand);
         Item item = stack.getItem();
         if (item instanceof BaseTerraRepeaterItem) {
-            SpecialItemRenderingUtil.repeaterArrowRenderer(confluence$of(), entity, displayContext, leftHand, poseStack, bufferSource, level, combinedLight, combinedOverlay, seed, player, stack);
+            SpecialItemRenderingUtil.repeaterArrowRenderer(confluence$self(), entity, displayContext, leftHand, poseStack, bufferSource, level, combinedLight, combinedOverlay, seed, player, stack);
             return;
         }
 
@@ -63,12 +74,7 @@ public abstract class ItemRendererMixin {
         }
 
         if (item instanceof BaseTerraBowItem) {
-            SpecialItemRenderingUtil.bowArrowRenderer(confluence$of(), entity, displayContext, leftHand, poseStack, bufferSource, level, combinedLight, combinedOverlay, seed, player, stack);
+            SpecialItemRenderingUtil.bowArrowRenderer(confluence$self(), entity, displayContext, leftHand, poseStack, bufferSource, level, combinedLight, combinedOverlay, seed, player, stack);
         }
-    }
-
-    @Unique
-    private @NotNull ItemRenderer confluence$of() {
-        return (ItemRenderer) (Object) this;
     }
 }

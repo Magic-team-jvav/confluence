@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,7 +45,7 @@ public abstract class GuiGraphicsMixin implements SelfGetter<GuiGraphics> {
     }
 
     @Inject(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V"))
-    private void renderItemDecorations(Font font, ItemStack stack, int x, int y, @Nullable String text, CallbackInfo ci) {
+    private void renderItemDecorations(CallbackInfo ci, @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true, ordinal = 0) int x, @Local(argsOnly = true, ordinal = 1) int y) {
         if (stack.is(ModTags.Items.DEATH)) {
             pose.pushPose();
             pose.translate(0.0F, 0.0F, 200.0F);

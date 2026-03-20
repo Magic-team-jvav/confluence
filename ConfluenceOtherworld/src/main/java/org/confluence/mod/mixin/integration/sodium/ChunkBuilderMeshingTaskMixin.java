@@ -12,9 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 
-/**
- * @see org.confluence.mod.mixin.client.renderer.SectionCompilerMixin
- */
+/// @see org.confluence.mod.mixin.client.renderer.SectionCompilerMixin
 @Pseudo
 @Mixin(targets = "net.caffeinemc.mods.sodium.client.render.chunk.compile.tasks.ChunkBuilderMeshingTask", remap = false)
 public abstract class ChunkBuilderMeshingTaskMixin {

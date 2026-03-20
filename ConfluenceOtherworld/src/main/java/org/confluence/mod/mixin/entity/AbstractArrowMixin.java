@@ -5,7 +5,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.network.SetEntityDataPacketS2C;
 import org.confluence.mod.common.init.ModEffects;
@@ -88,7 +87,7 @@ public abstract class AbstractArrowMixin implements IAbstractArrow {
     }
 
     @Inject(method = "onHitBlock", at = @At("TAIL"))
-    private void disappear(BlockHitResult result, CallbackInfo ci) {
+    private void disappear(CallbackInfo ci) {
         if (confluence$isDisappearingOnGround()) {
             confluence$self().discard();
         }

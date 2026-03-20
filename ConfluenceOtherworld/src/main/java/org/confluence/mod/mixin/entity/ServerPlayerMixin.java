@@ -100,7 +100,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     }
 
     @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
-    private void checkMarathon(double dx, double dy, double dz, CallbackInfo ci) {
+    private void checkMarathon(CallbackInfo ci) {
         if (!confluence$marathon_medalist) {
             this.confluence$marathon_medalist = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon_medalist);
         }

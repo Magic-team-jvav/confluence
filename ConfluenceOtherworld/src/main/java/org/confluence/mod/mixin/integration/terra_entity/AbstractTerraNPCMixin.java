@@ -2,8 +2,6 @@ package org.confluence.mod.mixin.integration.terra_entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
@@ -49,7 +47,7 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC, SelfGe
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void init(EntityType<? extends AbstractTerraNPC> entityType, Level level, CallbackInfo ci) {
+    private void init(CallbackInfo ci) {
         initName();
     }
 
@@ -77,7 +75,7 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC, SelfGe
     }
 
     @Inject(method = "removeWhenFarAway", at = @At("HEAD"), cancellable = true)
-    private void denyRemove(double distanceToClosestPlayer, CallbackInfoReturnable<Boolean> cir) {
+    private void denyRemove(CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(false);
     }
 }

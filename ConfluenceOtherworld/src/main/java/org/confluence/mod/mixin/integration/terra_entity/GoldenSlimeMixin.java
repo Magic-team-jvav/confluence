@@ -1,7 +1,6 @@
 package org.confluence.mod.mixin.integration.terra_entity;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.particle.WholeItemParticleOptions;
@@ -15,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = GoldenSlime.class, remap = false)
 public abstract class GoldenSlimeMixin implements SelfGetter<GoldenSlime> {
     @Inject(method = "actuallyHurt", at = @At("TAIL"))
-    private void particle(DamageSource damageSource, float damageAmount, CallbackInfo ci) {
+    private void particle(CallbackInfo ci) {
         GoldenSlime living = confluence$self();
         if (living.level() instanceof ServerLevel level) {
             for (int i = 0; i < 3; i++) {

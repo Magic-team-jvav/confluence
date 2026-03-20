@@ -1,8 +1,8 @@
 package org.confluence.mod.mixin.integration.terra_entity;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.color.GlobalColors;
@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = AnglerNPC.class, remap = false)
 public abstract class AnglerNPCMixin implements SelfGetter<AnglerNPC> {
     @Inject(method = "mobInteract", at = @At(value = "RETURN", ordinal = 0))
-    private void setAnglerAdded(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
+    private void setAnglerAdded(CallbackInfoReturnable<InteractionResult> cir, @Local(argsOnly = true) Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             AnglerNPC npc = confluence$self();
             NPCSpawner.Region region = NPCSpawner.getNpcSpawnRegion(serverPlayer);

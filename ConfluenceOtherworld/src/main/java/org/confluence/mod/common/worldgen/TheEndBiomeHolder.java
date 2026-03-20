@@ -10,7 +10,6 @@ import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.TheEndBiomeSource;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.confluence.mod.common.init.ModBiomes;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;

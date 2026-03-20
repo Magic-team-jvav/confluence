@@ -1490,6 +1490,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.FOLLOWER_BOULDER.asItem(),
                 FunctionalBlocks.EXPLODE_BOULDER.asItem(),
                 FunctionalBlocks.ROLLING_CACTUS_BOULDER.asItem(),
+                FunctionalBlocks.LIFECRYSTAL_BOULDER.asItem(),
                 FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.asItem(),
                 FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.asItem(),
                 FunctionalBlocks.LAND_MINE.asItem(),

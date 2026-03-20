@@ -27,5 +27,9 @@ run-data/
 *.ref
 *.map
 
+#vscode
+.vscode/
+.history/
+
 generated/
 build/

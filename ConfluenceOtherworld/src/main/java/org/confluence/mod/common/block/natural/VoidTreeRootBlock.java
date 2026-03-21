@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -32,15 +31,15 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class VoidTreeRootBlock extends Block implements EntityBlock {
     private static final float RADIUS = 0.25F;
-
     private static final TagKey<Block> VOID_TREE_ROOT_CAN_CONNECT = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "void_tree_root_can_connect"));
-
     private static final Map<BlockState, VoxelShape> SHAPE_MAP = new ConcurrentHashMap<>();
     public static final Map<Direction, EnumProperty<ConnectType>> CONNECTION_PROPERTIES =
             Util.make(new EnumMap<>(Direction.class), map -> {
@@ -59,11 +58,11 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public boolean isSignalSource(BlockState state) { return true; }
+    public boolean isSignalSource(BlockState state) {return true;}
 
     @Override
     public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        if (level.getBlockEntity(pos) instanceof BEntity be) return be.remoteInputPower;
+        if (level.getBlockEntity(pos) instanceof BEntity be) return be.getMaxRemotePower();
         return 0;
     }
 
@@ -78,9 +77,7 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
 
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean moved) {
-        if (!level.isClientSide && !level.getBlockTicks().hasScheduledTick(pos, this)) {
-            level.scheduleTick(pos, this, 1);
-        }
+        if (!level.isClientSide) level.scheduleTick(pos, this, 1);
     }
 
     @Override
@@ -93,7 +90,8 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
         if (!state.is(newState.getBlock())) {
             if (level instanceof ServerLevel sl && level.getBlockEntity(pos) instanceof BEntity be) {
                 be.linkedPositions.values().forEach(target -> {
-                    if (sl.isLoaded(target) && sl.getBlockState(target).is(this)) sl.destroyBlock(target, true);
+                    if (sl.isLoaded(target) && sl.getBlockState(target).is(this))
+                        sl.destroyBlock(target, true);
                 });
             }
             super.onRemove(state, level, pos, newState, isMoving);
@@ -106,7 +104,8 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
             double min = 0.5 - RADIUS, max = 0.5 + RADIUS;
             VoxelShape shape = Block.box(min * 16, min * 16, min * 16, max * 16, max * 16, max * 16);
             for (Direction d : LibUtils.DIRECTIONS) {
-                if (s.getValue(CONNECTION_PROPERTIES.get(d)) != ConnectType.DIS_CONNECT) shape = Shapes.or(shape, getArmShape(d));
+                if (s.getValue(CONNECTION_PROPERTIES.get(d)) != ConnectType.DIS_CONNECT)
+                    shape = Shapes.or(shape, getArmShape(d));
             }
             return shape;
         });
@@ -129,60 +128,63 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
         BlockState state = this.defaultBlockState();
         for (Direction d : LibUtils.DIRECTIONS) {
             BlockState n = context.getLevel().getBlockState(context.getClickedPos().relative(d));
-            if (n.is(this) || n.is(VOID_TREE_ROOT_CAN_CONNECT)) {
+            if (n.is(this) || n.is(VOID_TREE_ROOT_CAN_CONNECT))
                 state = state.setValue(CONNECTION_PROPERTIES.get(d), ConnectType.CONNECT);
-            }
         }
         return state;
     }
 
     @Override
     public BlockState updateShape(BlockState state, Direction d, BlockState ns, LevelAccessor level, BlockPos pos, BlockPos np) {
-        if (state.getValue(CONNECTION_PROPERTIES.get(d)) == ConnectType.CONNECT_BY_PORTAL) return state;
+        if (state.getValue(CONNECTION_PROPERTIES.get(d)) == ConnectType.CONNECT_BY_PORTAL)
+            return state;
         return state.setValue(CONNECTION_PROPERTIES.get(d), (ns.is(this) || ns.is(VOID_TREE_ROOT_CAN_CONNECT)) ? ConnectType.CONNECT : ConnectType.DIS_CONNECT);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        CONNECTION_PROPERTIES.values().forEach(builder::add);
-    }
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {CONNECTION_PROPERTIES.values().forEach(builder::add);}
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new BEntity(pos, state); }
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {return new BEntity(pos, state);}
 
     public static class BEntity extends BlockEntity {
         public final Map<Direction, BlockPos> linkedPositions = new EnumMap<>(Direction.class);
+        private final Map<BlockPos, Integer> remotePowerSources = new HashMap<>();
         private int localInputPower = 0;
-        public int remoteInputPower = 0;
-        private int lastSentPower = -1;
+        private int lastMaxRemotePower = 0;
 
         public BEntity(BlockPos pos, BlockState state) {
             super(NatureBlocks.VOID_TREE_ROOT_BLOCK_ENTITY.get(), pos, state);
         }
 
+        public int getMaxRemotePower() {
+            if (remotePowerSources.isEmpty()) return 0;
+            return Collections.max(remotePowerSources.values());
+        }
+
         public void evaluateAndSync() {
             if (level == null || level.isClientSide) return;
             int maxIn = 0;
-            BlockState state = getBlockState();
+            int currentRemote = getMaxRemotePower();
             for (Direction dir : LibUtils.DIRECTIONS) {
                 int s = level.getSignal(worldPosition.relative(dir), dir);
-                if (state.getValue(CONNECTION_PROPERTIES.get(dir)) == ConnectType.CONNECT_BY_PORTAL) {
-                    if (s <= this.remoteInputPower) s = 0;
+                if (getBlockState().getValue(CONNECTION_PROPERTIES.get(dir)) == ConnectType.CONNECT_BY_PORTAL) {
+                    if (s <= currentRemote) s = 0;
                 }
                 if (s > maxIn) maxIn = s;
             }
+
             if (this.localInputPower != maxIn) {
                 this.localInputPower = maxIn;
                 this.setChanged();
                 int toSend = Math.max(0, this.localInputPower - 1);
-                if (toSend != lastSentPower && level instanceof ServerLevel sl) {
-                    lastSentPower = toSend;
+                if (level instanceof ServerLevel sl) {
                     sl.getServer().execute(() -> {
                         if (!this.isRemoved()) {
                             linkedPositions.values().forEach(target -> {
                                 if (sl.isLoaded(target) && sl.getBlockEntity(target) instanceof BEntity remoteBE) {
-                                    remoteBE.receivePower(toSend);
+                                    remoteBE.receivePower(worldPosition, toSend);
                                 }
                             });
                         }
@@ -191,9 +193,13 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
             }
         }
 
-        public void receivePower(int p) {
-            if (this.remoteInputPower != p) {
-                this.remoteInputPower = p;
+        public void receivePower(BlockPos source, int p) {
+            if (p <= 0) remotePowerSources.remove(source);
+            else remotePowerSources.put(source, p);
+
+            int currentMax = getMaxRemotePower();
+            if (this.lastMaxRemotePower != currentMax) {
+                this.lastMaxRemotePower = currentMax;
                 this.setChanged();
                 if (level != null) {
                     level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
@@ -205,20 +211,31 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
         public void addLink(Direction d, BlockPos p) {
             this.linkedPositions.put(d, p);
             this.setChanged();
-            if (level != null && !level.isClientSide) level.scheduleTick(worldPosition, getBlockState().getBlock(), 1);
+            if (level != null && !level.isClientSide)
+                level.scheduleTick(worldPosition, getBlockState().getBlock(), 1);
         }
 
         @Override
         protected void saveAdditional(CompoundTag tag, HolderLookup.Provider r) {
             super.saveAdditional(tag, r);
-            ListTag list = new ListTag();
+            ListTag links = new ListTag();
             linkedPositions.forEach((d, p) -> {
                 CompoundTag e = new CompoundTag();
-                e.putInt("d", d.ordinal()); e.putLong("p", p.asLong());
-                list.add(e);
+                e.putInt("d", d.ordinal());
+                e.putLong("p", p.asLong());
+                links.add(e);
             });
-            tag.put("Links", list);
-            tag.putInt("LP", localInputPower); tag.putInt("RP", remoteInputPower);
+            tag.put("Links", links);
+
+            ListTag powers = new ListTag();
+            remotePowerSources.forEach((pos, p) -> {
+                CompoundTag e = new CompoundTag();
+                e.putLong("pos", pos.asLong());
+                e.putInt("p", p);
+                powers.add(e);
+            });
+            tag.put("RemotePowers", powers);
+            tag.putInt("LP", localInputPower);
         }
 
         @Override
@@ -232,14 +249,26 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
                     linkedPositions.put(Direction.values()[e.getInt("d")], BlockPos.of(e.getLong("p")));
                 }
             }
-            localInputPower = tag.getInt("LP"); remoteInputPower = tag.getInt("RP");
+            remotePowerSources.clear();
+            if (tag.contains("RemotePowers")) {
+                ListTag list = tag.getList("RemotePowers", Tag.TAG_COMPOUND);
+                for (int i = 0; i < list.size(); i++) {
+                    CompoundTag e = list.getCompound(i);
+                    remotePowerSources.put(BlockPos.of(e.getLong("pos")), e.getInt("p"));
+                }
+            }
+            localInputPower = tag.getInt("LP");
+            lastMaxRemotePower = getMaxRemotePower();
         }
     }
 
     public enum ConnectType implements StringRepresentable {
         CONNECT("connect"), DIS_CONNECT("dis_connect"), CONNECT_BY_PORTAL("connect_by_portal");
         private final String n;
+
         ConnectType(String n) {this.n = n;}
-        @Override public String getSerializedName() {return n;}
+
+        @Override
+        public String getSerializedName() {return n;}
     }
 }

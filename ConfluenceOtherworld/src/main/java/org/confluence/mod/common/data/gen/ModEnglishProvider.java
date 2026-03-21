@@ -158,6 +158,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.enable_pvp", "%s has enabled PvP!");
         add("message.confluence.disable_pvp.button", "Disable PvP");
         add("message.confluence.disable_pvp", "%s has disabled PvP!");
+        add("message.confluence.too_easy.ready", "Too Easy!");
 
         for (Team team : Team.TEAMS) {
             String name = team.getSerializedName();

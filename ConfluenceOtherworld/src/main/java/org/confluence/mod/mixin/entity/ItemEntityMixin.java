@@ -2,6 +2,7 @@ package org.confluence.mod.mixin.entity;
 
 import net.minecraft.Util;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -14,8 +15,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.saved.GamePhase;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModAdvancements;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -23,6 +22,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.PrefixUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -54,7 +54,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void endTick(CallbackInfo ci) {
-        ItemEntity self = (ItemEntity) (Object) this;
+        ItemEntity self = confluence$self();
         Level level = self.level();
         if (level.isClientSide || self.isRemoved()) return;
         if (confluence$item_coolDown < 0) this.confluence$item_coolDown = 0;
@@ -113,7 +113,6 @@ public abstract class ItemEntityMixin implements IItemEntity {
         ItemEntity source = event.getSource();
         ItemStack sourceItem = source.getItem();
 
-        GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase();
         List<RecipeHolder<ItemTransmutationRecipe>> recipes = source.level().getRecipeManager().getRecipesFor(ModRecipes.ITEM_TRANSMUTATION_TYPE.get(), new SingleRecipeInput(sourceItem), source.level());
         for (RecipeHolder<ItemTransmutationRecipe> recipeHolder : recipes) {
             ItemTransmutationRecipe recipe = recipeHolder.value();
@@ -138,9 +137,10 @@ public abstract class ItemEntityMixin implements IItemEntity {
 
         if (sourceItem.getDamageValue() != 0) return;
         RegistryAccess registryAccess = source.level().registryAccess();
-        boolean isHardmode = gamePhase.isHardmode();
+        MinecraftServer server = ((ServerLevel) source.level()).getServer();
+        boolean isHardmode = IMinecraftServer.isHardmode(server);
         RandomSource random = source.level().random;
-        for (RecipeHolder<?> recipeHolder : ((ServerLevel) source.level()).getServer().getRecipeManager().getRecipes()) {
+        for (RecipeHolder<?> recipeHolder : server.getRecipeManager().getRecipes()) {
             Recipe<?> recipe = recipeHolder.value();
             if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe) {
                 continue;

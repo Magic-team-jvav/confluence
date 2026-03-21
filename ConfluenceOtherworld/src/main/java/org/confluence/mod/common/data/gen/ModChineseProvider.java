@@ -116,6 +116,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.enable_pvp", "%s已启用PvP！");
         add("message.confluence.disable_pvp.button", "禁用玩家对决");
         add("message.confluence.disable_pvp", "%s已禁用PvP！");
+        add("message.confluence.too_easy.ready", "太容易了！");
 
         add("team.confluence.white", "白");
         add("team.confluence.light_gray", "淡灰");

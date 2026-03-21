@@ -65,7 +65,8 @@ public class SecretSeedsSelectionScreen extends Screen {
     private static final Codec<Set<SecretSeed>> UNLOCKED_SECRET_SEEDS_CODEC = ModSecretSeeds.CODEC.listOf().xmap(LinkedHashSet::new, ArrayList::new);
     private static final SecretSeed[] SECRET_SEEDS = new SecretSeed[]{
             ModSecretSeeds.BOULDER_WORLD,
-            ModSecretSeeds.REALLY_SMALL
+            ModSecretSeeds.REALLY_SMALL,
+            ModSecretSeeds.TOO_EASY
     };
     private static final Long2ObjectArrayMap<Triple<ResourceLocation, Component, Component>> DESCRIPTIONS = Util.make(new Long2ObjectArrayMap<>(12), map -> {
         ResourceLocation normal = Confluence.asResource("textures/gui/secret_seeds_selection/world_icon/normal.png");
@@ -307,12 +308,17 @@ public class SecretSeedsSelectionScreen extends Screen {
             ObjectLongPair<OptionalLong> pair = ModSecretSeeds.tryMatch(seedEdit.getValue(), Arrays.stream(SECRET_SEEDS).toList());
             long flag = pair.rightLong();
             boolean save = false;
+            boolean normal = selection.get(0);
             for (SecretSeed seed : SECRET_SEEDS) {
                 if (seed.match(flag)) {
                     save |= !unlockedSecretSeeds.containsKey(seed);
                     unlockedSecretSeeds.put(seed, true);
+                    if (normal) {
+                        normal = false;
+                    }
                 }
             }
+            selection.put(0, normal);
             if (save) {
                 try {
                     FileUtil.createDirectoriesSafe(UNLOCKED_SECRET_SEEDS_PATH.getParent());

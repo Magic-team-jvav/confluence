@@ -58,44 +58,36 @@ public final class ModConnectives {
         register(DecorativeBlocks.SOUL_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.SOUL_GLASS));
     }
 
-    /**
-     * 目前仅用来注册机壳
-     *
-     * @param entry    注册连接材质的方块
-     * @param consumer 所注册的连接行为
-     */
+    /// 目前仅用来注册机壳
+    ///
+    /// @param entry    注册连接材质的方块
+    /// @param consumer 所注册的连接行为
     private static <T extends Block> void registerCasingConnectivity(T entry, BiConsumer<T, CasingConnectivity> consumer) {
         consumer.accept(entry, CASING_CONNECTIVITY);
     }
 
-    /**
-     * 注册常规连接材质
-     *
-     * @param entry            注册连接材质的方块
-     * @param behaviorSupplier 所注册的连接行为
-     */
+    /// 注册常规连接材质
+    ///
+    /// @param entry            注册连接材质的方块
+    /// @param behaviorSupplier 所注册的连接行为
     private static void register(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier) {
         MODEL_SWAPPER.getCustomBlockModels().register(entry, model -> new CTModel(model, behaviorSupplier.get()));
     }
 
-    /**
-     * 注册随机连接材质
-     *
-     * @param entry            注册连接材质的方块
-     * @param behaviorSupplier 所注册的连接行为
-     * @param width            可选的数量，即贴图的宽高比。如256x128的贴图是2
-     */
+    /// 注册随机连接材质
+    ///
+    /// @param entry            注册连接材质的方块
+    /// @param behaviorSupplier 所注册的连接行为
+    /// @param width            可选的数量，即贴图的宽高比。如256x128的贴图是2
     private static void registerRandomize(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier, int width) {
         MODEL_SWAPPER.getCustomBlockModels().register(entry, model -> new RandomizeCTModel(model, behaviorSupplier.get(), width));
     }
 
-    /**
-     * 注册权重连接材质
-     *
-     * @param entry            注册连接材质的方块
-     * @param behaviorSupplier 所注册的连接行为
-     * @param weights          一个权重数组
-     */
+    /// 注册权重连接材质
+    ///
+    /// @param entry            注册连接材质的方块
+    /// @param behaviorSupplier 所注册的连接行为
+    /// @param weights          一个权重数组
     private static void registerWeighted(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier, int... weights) {
         MODEL_SWAPPER.getCustomBlockModels().register(entry, model -> new WeightedCTModel(model, behaviorSupplier.get(), weights));
     }

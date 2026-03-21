@@ -113,6 +113,7 @@ public enum KillBoard implements IGlobalData {
     }
 
     public void setGamePhase(MinecraftServer server, GamePhase gamePhase) {
+        if (this.gamePhase == gamePhase) return;
         this.gamePhase = gamePhase;
         KillBoardSyncPacketS2C.sendToAll();
         if (gamePhase.isGraduated()) {

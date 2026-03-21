@@ -64,6 +64,7 @@ import org.confluence.mod.common.item.common.StaffOfRegrowth;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
+import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -107,6 +108,7 @@ public final class PlayerEvents {
             ReallySmall.giveStepStool(player);
             ReallySmall.scalePlayer(player);
         }
+        TooEasy.setToHardmode(player.server);
     }
 
     @SubscribeEvent

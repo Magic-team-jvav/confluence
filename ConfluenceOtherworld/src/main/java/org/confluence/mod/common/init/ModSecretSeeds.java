@@ -33,6 +33,7 @@ public final class ModSecretSeeds {
     // 新增的
     public static final SecretSeed BOULDER_WORLD = register(Confluence.asResource("boulder_world"), BoulderWorld::new); //  1000000000_00000000
     public static final SecretSeed REALLY_SMALL = register(ReallySmall.ID, ReallySmall::new); //                                10000000000_00000000
+    public static final SecretSeed TOO_EASY = register(Confluence.asResource("too_easy"), TooEasy::new); //              100000000000_00000000
 
     /// 0b00000001: 1.腐化
     /// 0b00000010: 2.猩红

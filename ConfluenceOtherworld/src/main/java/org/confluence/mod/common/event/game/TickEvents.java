@@ -10,6 +10,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.TaskScheduler;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -22,6 +23,7 @@ import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
+import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
@@ -52,6 +54,10 @@ public final class TickEvents {
         }
         NPCSpawner.respawnNPC(level, dayTime);
 
+        TaskScheduler scheduler = TooEasy.getScheduler(false);
+        if (scheduler != null) {
+            scheduler.tick(1);
+        }
         HardmodeConvertor.INSTANCE.scheduleRefill(level);
     }
 

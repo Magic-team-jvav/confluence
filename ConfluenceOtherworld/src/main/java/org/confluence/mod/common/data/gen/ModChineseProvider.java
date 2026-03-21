@@ -1270,6 +1270,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("description.confluence.secret_seeds_selection.boulder_world", "你知道吗？世界其实是一个巨大的巨石。所以世界上的万物都是巨石。");
         add("title.confluence.secret_seeds_selection.really_small", "小小的我");
         add("description.confluence.secret_seeds_selection.really_small", "道理我都懂，可是这只鸟为什么这么大？");
+        add("title.confluence.secret_seeds_selection.too_easy", "太简单了");
+        add("description.confluence.secret_seeds_selection.too_easy", "敬酒不吃吃罚酒...（世界开局就是困难模式）");
 
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");

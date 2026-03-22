@@ -55,6 +55,8 @@ public abstract class LevelLoadingScreenMixin implements ILevelLoadingScreen {
             } else {
                 cir.setReturnValue(PLACING_TRAPS);
             }
+        } else if ((confluence$secretFlag & IWorldOptions.TOO_EASY_MASK) != 0) {
+            cir.setReturnValue(TOO_EASY);
         }
     }
 

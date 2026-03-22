@@ -49,6 +49,7 @@ import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.network.event.RegisterConfigurationTasksEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.ModifyRegistriesEvent;
 import net.neoforged.neoforgespi.locating.IModFile;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
@@ -594,5 +595,10 @@ public final class ModEvents {
     public static void registerEvilMaterialReplaces(RegisterEvilMaterialReplacesEvent event) {
         event.register(MaterialItems.DEMONITE_INGOT, MaterialItems.CRIMTANE_INGOT);
         event.register(NatureBlocks.VILE_MUSHROOM, NatureBlocks.VICIOUS_MUSHROOM);
+    }
+
+    @SubscribeEvent
+    public static void modifyRegistries(ModifyRegistriesEvent event) {
+
     }
 }

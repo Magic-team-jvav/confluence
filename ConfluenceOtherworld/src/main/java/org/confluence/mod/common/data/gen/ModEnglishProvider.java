@@ -407,6 +407,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("worldgen.confluence.generating_wavy_caves", "Generating wavy caves");
         add("worldgen.confluence.not_placing_traps", "Not placing traps");
         add("worldgen.confluence.placing_boulders", "Placing Boulders");
+        add("worldgen.confluence.too_easy", "Creating easy world...");
         add("secret_seed.the_constant.in_darkness_for_3_second", "It is very dark...you feel in danger...");
 
         add("info.confluence.weather_radio.clear", "Weather: Clear, Wind Speed: %s");

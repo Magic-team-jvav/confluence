@@ -43,6 +43,8 @@ public interface IWorldOptions {
     long GFB_MASK = ModSecretSeeds.GET_FIXED_BOI.getFlag();
     long SKYBLOCK_MASK = ModSecretSeeds.SKYBLOCK.getFlag();
     long BW_MASK = ModSecretSeeds.BOULDER_WORLD.getFlag();
+    long REALLY_SMALL_MASK = ModSecretSeeds.REALLY_SMALL.getFlag();
+    long TOO_EASY_MASK = ModSecretSeeds.TOO_EASY.getFlag();
 
 
     ResourceLocation UNKNOWN_WORLD_ICON = Confluence.asResource("world_icon/unknown");

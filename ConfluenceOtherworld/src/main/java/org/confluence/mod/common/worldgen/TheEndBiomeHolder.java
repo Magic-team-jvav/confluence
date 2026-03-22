@@ -8,10 +8,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.TheEndBiomeSource;
+import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.mixin.DimensionTypeAccessor;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import terrablender.api.EndBiomeRegistry;
 import terrablender.core.TerraBlender;
@@ -40,7 +42,7 @@ public class TheEndBiomeHolder {
         inverseForest = biomes.getOrThrow(ModBiomes.INVERSE_FOREST);
         moonlightForest = biomes.getOrThrow(ModBiomes.MOONBLIGHT_FOREST);
 
-        normalNoise = NormalNoise.create(RandomSource.create(seed), new NormalNoise.NoiseParameters(-5, 1.0, 1.0, 1.0, 1.0));;
+        normalNoise = NormalNoise.create(RandomSource.create(seed), -5, 1.0, 1.0, 1.0, 1.0);
 
         fixTerraBlender(server);
 
@@ -122,5 +124,18 @@ public class TheEndBiomeHolder {
         int transit = 100;
         float dis = Mth.sqrt(x * x + z * z);
         return (Mth.abs(Mth.abs(dis / transit - (float) radius / transit - 1) - 1) - Mth.sqrt(dis / transit - (float) radius / transit - 2) + 2) / 2;
+    }
+
+    public static void modifyDimensionType(DimensionType type) {
+        DimensionTypeAccessor accessor = (DimensionTypeAccessor) (Record) type;
+        if (accessor.getMinY() > -64) {
+            accessor.setMinY(-64);
+        }
+        if (accessor.getHeight() < 384) {
+            accessor.setHeight(384);
+        }
+        if (accessor.getLogicalHeight() < 384) {
+            accessor.setLogicalHeight(384);
+        }
     }
 }

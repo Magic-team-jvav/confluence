@@ -390,6 +390,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("worldgen.confluence.generating_wavy_caves", "正在生成皱曲洞穴");
         add("worldgen.confluence.not_placing_traps", "不在放置机关");
         add("worldgen.confluence.placing_boulders", "正在放置巨石");
+        add("worldgen.confluence.too_easy", "正在创建简单的世界……");
         add("secret_seed.the_constant.in_darkness_for_3_second", "非常黑暗……你觉得有危险……");
 
         add("info.confluence.weather_radio.clear", "天气: 晴天, 风速: %s");

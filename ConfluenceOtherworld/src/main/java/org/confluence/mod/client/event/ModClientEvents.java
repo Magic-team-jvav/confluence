@@ -592,7 +592,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerCustomBestiaryEntryModel(RegisterCustomBestiaryEntryRendererEvent event) {
         EntityRendererProvider.Context context = event.getContext();
-        event.registerBaseWorm(TEMonsterEntities.DEVOURER);
+        event.registeSurefaceWorm(TEMonsterEntities.DEVOURER);
         event.registerBaseWorm(TEMonsterEntities.TOMB_CRAWLER);
         event.registerBaseWorm(TEMonsterEntities.GIANT_WORM);
         event.registerBaseWorm(TEMonsterEntities.LEECH);

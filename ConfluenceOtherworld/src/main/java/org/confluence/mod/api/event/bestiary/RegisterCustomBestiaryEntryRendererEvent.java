@@ -13,6 +13,7 @@ import org.confluence.mod.client.renderer.entity.bestiary.GeoWormBestiaryEntryRe
 import org.confluence.terraentity.entity.monster.BaseWorm;
 import org.confluence.terraentity.entity.monster.BaseWormPart;
 import org.confluence.terraentity.entity.monster.BoneSerpent;
+import org.confluence.terraentity.entity.monster.SurefaceWorm;
 
 import java.util.Map;
 
@@ -33,6 +34,9 @@ public class RegisterCustomBestiaryEntryRendererEvent extends Event implements I
     }
 
     public void registerBaseWorm(DeferredHolder<EntityType<?>, EntityType<BaseWorm<BaseWormPart>>> holder) {
+        register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer<>(context, holder.getId()));
+    }
+     public void registeSurefaceWorm(DeferredHolder<EntityType<?>, EntityType<SurefaceWorm<BaseWormPart>>> holder) {
         register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer<>(context, holder.getId()));
     }
     public void registerBoneSerpent(DeferredHolder<EntityType<?>, EntityType<BoneSerpent<BaseWormPart>>> holder) {

@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "confluence:block/gloom_obsidian_bricks",
+    "top": "confluence:block/gloom_obsidian_bricks",
+    "side": "confluence:block/gloom_obsidian_bricks"
+  },
+  "render_type": "solid"
+}

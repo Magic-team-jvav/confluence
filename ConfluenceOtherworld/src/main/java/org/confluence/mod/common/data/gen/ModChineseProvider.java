@@ -1793,9 +1793,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_GRASS.get(), "灰烬草");
 
         add(NatureBlocks.END_DIRT.get(), "终末土");
+        add(NatureBlocks.VOID_WEAVE.get(), "虚空构造体");
 
         add(NatureBlocks.VOID_GRASS_BLOCK.get(), "虚空草方块");
         add(NatureBlocks.VOID_GRASS.get(), "虚空草");
+        add(NatureBlocks.VOID_VIOLET.get(), "虚空紫罗兰");
+        add(NatureBlocks.TALL_VOID_GRASS.get(), "虚空高草");
         add(NatureBlocks.VOID_TREE_ROOT_BLOCK.get(), "虚空树根");
         add(NatureBlocks.VOID_LOG_BLOCKS.BUTTON.get(), "虚空木按钮");
         add(NatureBlocks.VOID_LOG_BLOCKS.PLANKS.get(), "虚空木板");
@@ -1831,6 +1834,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.GAZE_LOG_BLOCKS.FENCE_GATE.get(), "垂眸木栅栏门");
         add(NatureBlocks.GAZE_LOG_BLOCKS.PRESSURE_PLATE.get(), "垂眸木压力板");
         add(NatureBlocks.GAZE_LOG_BLOCKS.LEAVES.get(), "垂眸树叶");
+        add(NatureBlocks.INVERSE_GRASS_BLOCK.get(), "晖落草方块");
 
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.BUTTON.get(), "月辉柳木按钮");
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.PLANKS.get(), "月辉柳木板");
@@ -1848,9 +1852,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.FENCE_GATE.get(), "月辉柳木栅栏门");
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.PRESSURE_PLATE.get(), "月辉柳木压力板");
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LEAVES.get(), "月辉柳树叶");
-
-        add(NatureBlocks.INVERSE_GRASS_BLOCK.get(), "晖落草方块");
         add(NatureBlocks.MOONLIT_GRASS_BLOCK.get(), "月华草方块");
+
+        add(NatureBlocks.GLOOM_OBSIDIAN.get(), "黯虚黑曜石");
 
         add(NatureBlocks.DESERT_GRASS.get(), "沙漠草");
         add(NatureBlocks.DESERT_TALL_GRASS.get(), "沙漠高草");
@@ -1967,6 +1971,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
         add(NatureBlocks.SHIMMER_DROOPING_VINE_PLANT.get(), "微光垂藤");
         add(NatureBlocks.PINE_DROOPING_VINE.get(), "松树垂藤");
+        add(NatureBlocks.SILENT_DROOPING_VINE.get(), "寂籁垂藤");
 
         add(NatureBlocks.SHIMMER_RICE.get(), "微光水稻");
         add(NatureBlocks.SHIMMER_CORAL_TUBE.get(), "微光珊瑚管");

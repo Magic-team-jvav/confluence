@@ -277,6 +277,7 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> VICIOUS_MUSHROOM = key("vicious_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM = key("glowing_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_VINE = key("glowing_mushroom_vine");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> SILENT_DROOPING_VINE = key("silent_drooping_vine");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_CATTAILS = key("glowing_mushroom_cattails");
         private static final ResourceKey<ConfiguredFeature<?, ?>> ASH_GRASS = key("ash_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> JUNGLE_ROSE = key("jungle_rose");
@@ -310,8 +311,13 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> PLATINUM_VEIN_WITH_DETONATOR = key("platinum_vein_with_detonator");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GOLD_VEIN_WITH_DETONATOR = key("gold_vein_with_detonator");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VOID_GRASS = key("void_grass");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> TALL_VOID_GRASS = key("tall_void_grass");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> VOID_VIOLET = key("void_violet");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VOID_TREE = key("void_tree");
-        private static final ResourceKey<ConfiguredFeature<?, ?>> BROKEN_STONE = key("broken_stone");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> END_BROKEN_STONE = key("end_broken_stone");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> VOID_HUGE_STONE = key("void_huge_stone");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> END_HUGE_STONE = key("end_huge_stone");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> DRAGONSAL_ORE = key("dragonsal_ore");
 
         private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
             return Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, path);
@@ -401,6 +407,8 @@ public class ModDataProvider {
             herb(context, VILE_MUSHROOM, 12, NatureBlocks.VILE_MUSHROOM.get());
             herb(context, CRIMSON_GRASS, 28, NatureBlocks.CRIMSON_GRASS.get());
             herb(context, VOID_GRASS, 180, NatureBlocks.VOID_GRASS.get());
+            herb(context, TALL_VOID_GRASS, 180, NatureBlocks.TALL_VOID_GRASS.get());
+            herb(context, VOID_VIOLET, 180, NatureBlocks.VOID_VIOLET.get());
             herb(context, VICIOUS_MUSHROOM, 12, NatureBlocks.VICIOUS_MUSHROOM.get());
             herb(context, GLOWING_MUSHROOM, 180, NatureBlocks.GLOWING_MUSHROOM.get());
             herb(context, ASH_GRASS, 180, NatureBlocks.ASH_GRASS.get());
@@ -476,6 +484,7 @@ public class ModDataProvider {
                     BlockStateProvider.simple(Blocks.MYCELIUM)
             ));
             register(context, GLOWING_MUSHROOM_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_VINE.get()), false, 1, 9));
+            register(context, SILENT_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.SILENT_DROOPING_VINE.get()), false, 1, 15));
             register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAIL_BLOCK.get()), 0, 1.0F, 20));
             register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
@@ -532,7 +541,10 @@ public class ModDataProvider {
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
             )));
             register(context, VOID_TREE, ModFeatures.VOID_TREE.get(), new VoidTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.VOID_LOG_BLOCKS.LOG.get().defaultBlockState()), BlockStateProvider.simple(NatureBlocks.VOID_TREE_ROOT_BLOCK.get().defaultBlockState()), BlockStateProvider.simple(NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get().defaultBlockState())));
-            register(context, BROKEN_STONE, ModFeatures.BROKEN_STONE.get(), new BrokenStoneFeature.Config(30, 50, 5, 5));
+            register(context, END_BROKEN_STONE, ModFeatures.BROKEN_STONE.get(), new BrokenStoneFeature.Config(30, 50, 5, 5, BlockStateProvider.simple(NatureBlocks.VOID_WEAVE.get()), 0.2F, BrokenStoneFeature.ResidueType.ALL, ModTags.Blocks.END_BROKEN_STONE_CAN_MOVE));
+            register(context, VOID_HUGE_STONE, ModFeatures.HUGE_STONE.get(), new HugeStoneFeature.Config(7, 8, BlockStateProvider.simple(NatureBlocks.GLOOM_OBSIDIAN.get()), BlockStateProvider.simple(NatureBlocks.VOID_WEAVE.get()), 2.0F));
+            register(context, END_HUGE_STONE, ModFeatures.HUGE_STONE.get(), new HugeStoneFeature.Config(7, 8, BlockStateProvider.simple(Blocks.END_STONE), BlockStateProvider.simple(NatureBlocks.GLOOM_OBSIDIAN.get()), 2.0F));
+            register(context, DRAGONSAL_ORE, ModFeatures.BILAYER_ORE.get(), new BilayerOreFeature.Config(1, 5, BlockStateProvider.simple(OreBlocks.DRAGONSAL_ORE.get()), BlockStateProvider.simple(OreBlocks.LUNARTEAR_ORE.get()), ModTags.Blocks.DRAGONSAL_ORE_REPLACE));
             register(context, THIN_ICE_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(3, 4, 32, 32, 0.5F, BlockStateProvider.simple(NatureBlocks.THIN_ICE_BLOCK.get())));
             register(context, POWDER_SNOW_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(0, 2, 10, 32, 0.3F, BlockStateProvider.simple(Blocks.POWDER_SNOW)));
             register(context, FALLING_SAND_TRAP, ModFeatures.FALLING_SAND_TRAP.get(), new FallingSandTrapFeature.Config(BlockStateProvider.simple(Blocks.SAND), 4, 4, 4, 16));
@@ -797,6 +809,7 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_TREE = key("glowing_mushroom_tree");
         private static final ResourceKey<PlacedFeature> HUGE_LIFE_MUSHROOM_TREE = key("huge_life_mushroom_tree");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_VINE = key("glowing_mushroom_vine");
+        private static final ResourceKey<PlacedFeature> SILENT_DROOPING_VINE = key("silent_drooping_vine");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_CATTAILS = key("glowing_mushroom_cattails");
         private static final ResourceKey<PlacedFeature> ASH_TREE = key("ash_tree");
         private static final ResourceKey<PlacedFeature> ASH_GRASS = key("ash_grass");
@@ -834,8 +847,14 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> PLATINUM_VEIN_WITH_DETONATOR = key("platinum_vein_with_detonator");
         private static final ResourceKey<PlacedFeature> GOLD_VEIN_WITH_DETONATOR = key("gold_vein_with_detonator");
         private static final ResourceKey<PlacedFeature> VOID_GRASS = key("void_grass");
+        private static final ResourceKey<PlacedFeature> TALL_VOID_GRASS = key("tall_void_grass");
+        private static final ResourceKey<PlacedFeature> VOID_VIOLET = key("void_violet");
         private static final ResourceKey<PlacedFeature> VOID_TREE = key("void_tree");
+        private static final ResourceKey<PlacedFeature> VOID_TREE_LESS = key("void_tree_less");
         private static final ResourceKey<PlacedFeature> END_BROKEN_STONE = key("end_broken_stone");
+        private static final ResourceKey<PlacedFeature> VOID_HUGE_STONE = key("void_huge_stone");
+        private static final ResourceKey<PlacedFeature> END_HUGE_STONE = key("end_huge_stone");
+        private static final ResourceKey<PlacedFeature> DRAGONSAL_ORE = key("dragonsal_ore");
 
         private static ResourceKey<PlacedFeature> key(String path) {
             return Confluence.asResourceKey(Registries.PLACED_FEATURE, path);
@@ -845,6 +864,7 @@ public class ModDataProvider {
         private static final SecretFlagPlacement noTraps = SecretFlagPlacement.of(IWorldOptions.NT_MASK);
         private static final HeightmapPlacement oceanFloor = HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR);
         private static final HeightmapPlacement worldSurfaceWG = HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG);
+        private static final HeightmapPlacement worldSurface = HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE);
         private static final BlockPredicate air = BlockPredicate.matchesBlocks(Blocks.AIR);
         private static final EnvironmentScanPlacement targetSolidAllowedAir = EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), air, 12);
         private static final EnvironmentScanPlacement targetSturdyAllowedAir = EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.hasSturdyFace(new Vec3i(0, -1, 0), Direction.UP), air, 12);
@@ -866,6 +886,12 @@ public class ModDataProvider {
         private static final RandomOffsetPlacement ySpreadN1 = RandomOffsetPlacement.vertical(ConstantInt.of(-1));
         private static final CountPlacement count1_9$2_1 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(1), 9).add(ConstantInt.of(2), 1).build()));
         private static final CountPlacement count0_2$1_3 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(0), 2).add(ConstantInt.of(1), 3).build()));
+        private static final CountPlacement count1_5 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(0), 4).add(ConstantInt.of(1), 1).build()));
+        private static final CountPlacement count1_10 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(0), 9).add(ConstantInt.of(1), 1).build()));
+        private static final HeightRangePlacement heightRandom10_100 = HeightRangePlacement.uniform(
+                VerticalAnchor.absolute(10),
+                VerticalAnchor.absolute(100)
+        );
 
         private static void bootstrap(BootstrapContext<PlacedFeature> context) {
             HolderGetter<ConfiguredFeature<?, ?>> configured = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -928,9 +954,15 @@ public class ModDataProvider {
             register(context, CORRUPT_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, EBONY_TREE, configured.getOrThrow(ModFeatures.Configured.EBONY_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, CORRUPT_GRASS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_GRASS), CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING), biome);
-            register(context, VOID_GRASS, configured.getOrThrow(ConfiguredFeatures.VOID_GRASS), CountPlacement.of(10), inSquare, the_end, biome);
+            register(context, VOID_GRASS, configured.getOrThrow(ConfiguredFeatures.VOID_GRASS), CountPlacement.of(30), inSquare, the_end, biome);
+            register(context, TALL_VOID_GRASS, configured.getOrThrow(ConfiguredFeatures.TALL_VOID_GRASS), CountPlacement.of(10), inSquare, the_end, biome);
+            register(context, VOID_VIOLET, configured.getOrThrow(ConfiguredFeatures.VOID_VIOLET), CountPlacement.of(5), inSquare, the_end, biome);
             register(context, VOID_TREE, configured.getOrThrow(ConfiguredFeatures.VOID_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
-            register(context, END_BROKEN_STONE, configured.getOrThrow(ConfiguredFeatures.BROKEN_STONE), count0_2$1_3, inSquare, surfaceWaterDepth0, oceanFloor, biome);
+            register(context, VOID_TREE_LESS, configured.getOrThrow(ConfiguredFeatures.VOID_TREE), count1_10, inSquare, surfaceWaterDepth0, oceanFloor, biome);
+            register(context, END_BROKEN_STONE, configured.getOrThrow(ConfiguredFeatures.END_BROKEN_STONE), count0_2$1_3, inSquare, oceanFloor, biome);
+            register(context, VOID_HUGE_STONE, configured.getOrThrow(ConfiguredFeatures.VOID_HUGE_STONE), count1_5, inSquare, worldSurfaceWG, biome);
+            register(context, END_HUGE_STONE, configured.getOrThrow(ConfiguredFeatures.END_HUGE_STONE), count1_5, inSquare, worldSurfaceWG, biome);
+            register(context, DRAGONSAL_ORE, configured.getOrThrow(ConfiguredFeatures.DRAGONSAL_ORE), count3, inSquare, heightRandom10_100, biome);
             register(context, VILE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VILE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, SHADOW_TREE, configured.getOrThrow(ModFeatures.Configured.SHADOW_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, CRIMSON_GRASS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_GRASS), CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING), biome);
@@ -942,6 +974,7 @@ public class ModDataProvider {
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), biome);
             register(context, HUGE_LIFE_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.HUGE_LIFE_MUSHROOM_TREE), RarityFilter.onAverageOnceEvery(30), biome);
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), CountPlacement.of(144), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
+            register(context, SILENT_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.SILENT_DROOPING_VINE), CountPlacement.of(72), inSquare, bottomThroughUnderground, heightRandom10_100, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesTag(ModTags.Blocks.VOID_TREE_CAN_SURVIVE), air, 20), ySpreadN1, biome);
             register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), CountOnEveryLayerPlacement.of(32), bottomThroughUnderground, ySpreadN1, biome);
             register(context, ASH_TREE, configured.getOrThrow(ModFeatures.Configured.ASH_TREE), CountOnEveryLayerPlacement.of(4), targetSturdyAllowedAir, biome);
             register(context, ASH_GRASS, configured.getOrThrow(ConfiguredFeatures.ASH_GRASS), CountPlacement.of(20), inSquare, bottomThroughTop, biome);
@@ -1606,34 +1639,57 @@ public class ModDataProvider {
                     .mobSpawnSettings(new MobSpawnSettings.Builder().build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_GRASS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_VOID_GRASS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_VIOLET);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_TREE);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_TREE_LESS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SILENT_DROOPING_VINE);
+                        builder.addFeature(GenerationStep.Decoration.LAKES, PlacedFeatures.VOID_HUGE_STONE);
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
                         builder.addFeature(GenerationStep.Decoration.RAW_GENERATION, PlacedFeatures.END_BROKEN_STONE);
                     })).build()
             );
             context.register(ModBiomes.CHORUS_PLAINS, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder().build())
-                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, Biomes::addDefaultGenerations)).build()
+                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_GRASS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_VOID_GRASS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_VIOLET);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_TREE_LESS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SILENT_DROOPING_VINE);
+                        builder.addFeature(GenerationStep.Decoration.LAKES, PlacedFeatures.VOID_HUGE_STONE);
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
+                        builder.addFeature(GenerationStep.Decoration.RAW_GENERATION, PlacedFeatures.END_BROKEN_STONE);
+                    })).build()
             );
             context.register(ModBiomes.INVERSE_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder().build())
-                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, Biomes::addDefaultGenerations)).build()
+                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
+                    })).build()
             );
             context.register(ModBiomes.INVERSE_PLAINS, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder().build())
-                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, Biomes::addDefaultGenerations)).build()
+                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
+                    })).build()
             );
             context.register(ModBiomes.MOONBLIGHT_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder().build())
-                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, Biomes::addDefaultGenerations)).build()
+                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
+                    })).build()
             );
             context.register(ModBiomes.MOONBLIGHT_PLAINS, new Biome.BiomeBuilder().temperature(2f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder().build())
-                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, Biomes::addDefaultGenerations)).build()
+                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
+                    })).build()
             );
         }
 

@@ -26,6 +26,9 @@ public class TheEndBiomeHolder {
     private static Holder<Biome> chorusForest;
     private static Holder<Biome> inverseForest;
     private static Holder<Biome> moonlightForest;
+    private static Holder<Biome> chorusPlains;
+    private static Holder<Biome> inversePlains;
+    private static Holder<Biome> moonlightPlains;
 
     private static long seed;
 
@@ -41,6 +44,9 @@ public class TheEndBiomeHolder {
         chorusForest = biomes.getOrThrow(ModBiomes.CHORUS_FOREST);
         inverseForest = biomes.getOrThrow(ModBiomes.INVERSE_FOREST);
         moonlightForest = biomes.getOrThrow(ModBiomes.MOONBLIGHT_FOREST);
+        chorusPlains = biomes.getOrThrow(ModBiomes.CHORUS_PLAINS);
+        inversePlains = biomes.getOrThrow(ModBiomes.INVERSE_PLAINS);
+        moonlightPlains = biomes.getOrThrow(ModBiomes.MOONBLIGHT_PLAINS);
 
         normalNoise = NormalNoise.create(RandomSource.create(seed), -5, 1.0, 1.0, 1.0, 1.0);
 
@@ -65,6 +71,9 @@ public class TheEndBiomeHolder {
         chorusForest = null;
         inverseForest = null;
         moonlightForest = null;
+        chorusPlains = null;
+        inversePlains = null;
+        moonlightPlains = null;
 
         seed = 0;
 
@@ -75,7 +84,7 @@ public class TheEndBiomeHolder {
         if (initialized) {
             Stream<Holder<Biome>> stream = cir.getReturnValue();
             if (stream == null) return;
-            Stream<Holder<Biome>> myBiomes = Stream.of(chorusForest, inverseForest, moonlightForest);
+            Stream<Holder<Biome>> myBiomes = Stream.of(chorusForest, inverseForest, moonlightForest, chorusPlains, inversePlains, moonlightPlains);
             cir.setReturnValue(Stream.concat(cir.getReturnValue(), myBiomes));
         }
     }
@@ -95,19 +104,21 @@ public class TheEndBiomeHolder {
                 }
 
                 double biomeScale = 0.5;
+                double treeScale = 0.45;
                 double heightScale = 0.25;
                 double trueNoise = rippleNoise(blockX, blockY, blockZ, 3000);
                 heightNoise = blockY + normalNoise.getValue(x * heightScale, 0, z * heightScale) * 5;
                 double biomeNoise = normalNoise.getValue(x * biomeScale, y * biomeScale, z * biomeScale);
+                double treeNoise = normalNoise.getValue(x * treeScale, y * treeScale, z * treeScale);
                 if (trueNoise > 0) {
                     if (heightNoise > 30) {
                         if (biomeNoise > 0) {
-                            cir.setReturnValue(chorusForest);
+                            cir.setReturnValue((treeNoise > 0) ? chorusForest : chorusPlains);
                         } else {
-                            cir.setReturnValue(moonlightForest);
+                            cir.setReturnValue((treeNoise > 0) ? moonlightForest : moonlightPlains);
                         }
                     } else {
-                        cir.setReturnValue(inverseForest);
+                        cir.setReturnValue((treeNoise > 0) ? inverseForest : inversePlains);
                     }
                 }
             }

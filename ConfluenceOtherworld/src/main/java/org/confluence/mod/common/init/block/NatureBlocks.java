@@ -1,21 +1,25 @@
 package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.block.TransparentLeavesBlock;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.common.SoulGlassBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.sapling.BaseSaplingBlock;
@@ -32,6 +36,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static net.minecraft.world.level.block.Blocks.GLASS;
+import static net.minecraft.world.level.block.Blocks.OBSIDIAN;
 import static org.confluence.mod.common.block.natural.LogBlockSet.WoodSetType.*;
 
 @ParametersAreNonnullByDefault
@@ -214,10 +220,13 @@ public class NatureBlocks {
 
     // 末地 - 通用
     public static final DeferredBlock<Block> END_DIRT = registerWithItem("end_dirt", EndDirtBlock::new);
+    public static final DeferredBlock<VoidWeaveBlock> VOID_WEAVE = registerWithItem("void_weave", () -> new VoidWeaveBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
 
     // 末地 - 紫颂主题
     public static final DeferredBlock<Block> VOID_GRASS_BLOCK = registerWithItem("void_grass_block", () -> new EndGrassBlock(NatureBlocks.END_DIRT));
     public static final DeferredBlock<BasePlantBlock> VOID_GRASS = registerWithItem("void_grass", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
+    public static final DeferredBlock<BasePlantBlock> VOID_VIOLET = registerWithItem("void_violet", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
+    public static final DeferredBlock<BaseTallPlantBlock> TALL_VOID_GRASS = registerWithItem("tall_void_grass", () -> new BaseTallPlantBlock(VOID_GRASS_BLOCK.get()));
     public static final DeferredBlock<VoidTreeRootBlock> VOID_TREE_ROOT_BLOCK = registerWithItem("void_tree_root_block", VoidTreeRootBlock::new);
     public static final Supplier<BlockEntityType<VoidTreeRootBlock.BEntity>> VOID_TREE_ROOT_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("void_tree_root_block", () -> BlockEntityType.Builder.of(VoidTreeRootBlock.BEntity::new, VOID_TREE_ROOT_BLOCK.get()).build(DSL.remainderType()));
     public static final LogBlockSet VOID_LOG_BLOCKS = LogBlockSet.builder("void", true, VOID).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.VOID_GROWER, properties, ModTags.Blocks.VOID_TREE_CAN_SURVIVE, VOID_GRASS_BLOCK, END_DIRT)).build();
@@ -229,6 +238,9 @@ public class NatureBlocks {
     // 末地 - 月光主题
     public static final DeferredBlock<Block> MOONLIT_GRASS_BLOCK = registerWithItem("moonlit_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));
     public static final LogBlockSet MOONGLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("moonglow_willow", true, MOONGLOW_WILLOW).build();
+
+    // 地獄 - 黯虛主題
+    public static final DeferredBlock<Block> GLOOM_OBSIDIAN = registerWithItem("gloom_obsidian", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OBSIDIAN)));
 
     // 王朝木
     public static final LogBlockSet DYNASTY_LOG_BLOCKS = LogBlockSet.builder("dynasty", true, DYNASTY).leaves(null).build();
@@ -296,6 +308,13 @@ public class NatureBlocks {
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> CRIMSON_DROOPING_VINE = registerWithItem("crimson_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> HALLOW_DROOPING_VINE = registerWithItem("hallow_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, true, true));
     public static final DeferredBlock<BaseDroopingPlantsHeadBlock> PINE_DROOPING_VINE = registerWithItem("pine_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(8, false, true, () -> List.of(NatureBlocks.PINE_LOG_BLOCKS.LEAVES.get(), NatureBlocks.PINE_LOG_BLOCKS.LOG.get())));
+    public static final DeferredBlock<BaseDroopingPlantsHeadBlock> SILENT_DROOPING_VINE = registerWithItem("silent_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, false, true, () -> List.of(
+            Blocks.END_STONE,
+            VOID_GRASS_BLOCK.get(),
+            END_DIRT.get(),
+            MOONLIT_GRASS_BLOCK.get(),
+            INVERSE_GRASS_BLOCK.get()
+    )));
 
     //微光环境物块
     public static final DeferredBlock<ShimmerDroopingVinesBlock> SHIMMER_DROOPING_VINE = registerWithoutItem("shimmer_drooping_vine", () -> new ShimmerDroopingVinesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES)));

@@ -78,6 +78,20 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MOONLIT_GRASS_BLOCK.get(),
                 INVERSE_GRASS_BLOCK.get()
         );
+        tag(ModTags.Blocks.DRAGONSAL_ORE_REPLACE).add(
+                Blocks.END_STONE,
+                END_DIRT.get()
+        );
+        tag(ModTags.Blocks.END_BROKEN_STONE_CAN_MOVE).add(
+                Blocks.END_STONE,
+                VOID_GRASS_BLOCK.get(),
+                END_DIRT.get(),
+                MOONLIT_GRASS_BLOCK.get(),
+                INVERSE_GRASS_BLOCK.get(),
+                VOID_GRASS.get(),
+                VOID_VIOLET.get(),
+                TALL_VOID_GRASS.get()
+        );
         tag(ModTags.Blocks.GELSTONE_ORE_REPLACEMENT).add(Blocks.MUD, Blocks.CLAY, Blocks.STONE);
         tag(BlockTags.ANVIL).add(LEAD_ANVIL.get(), CHIPPED_LEAD_ANVIL.get(), DAMAGED_LEAD_ANVIL.get());
         tag(ModTags.Blocks.VINES).add(

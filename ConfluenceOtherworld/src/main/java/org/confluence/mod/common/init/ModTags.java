@@ -54,6 +54,8 @@ public final class ModTags {
         public static final TagKey<Block> CATTAIL_CAN_SURVIVE = register("cattail_can_survive");
         public static final TagKey<Block> VOID_TREE_ROOT_CAN_CONNECT = register("void_tree_root_can_connect");
         public static final TagKey<Block> VOID_TREE_CAN_SURVIVE = register("void_tree_can_survive");
+        public static final TagKey<Block> DRAGONSAL_ORE_REPLACE = register("dragonsal_ore_replace");
+        public static final TagKey<Block> END_BROKEN_STONE_CAN_MOVE = register("end_broken_stone_can_move");
 
         public static final TagKey<Block> PURE_CONVERSION_GRASS_BLOCK = register("pure_conversion_grass_block");
         public static final TagKey<Block> PURE_CONVERSION_JUNGLE_GRASS_BLOCK = register("pure_conversion_jungle_grass_block");

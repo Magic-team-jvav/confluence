@@ -42,6 +42,10 @@ public class DecorativeBlocks {
     public static final DeferredBlock<PooBlock> POO_BLOCK = registerWithItem("poo_block", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
 
     // 砖
+    public static final DeferredBlock<Block> GLOOM_OBSIDIAN_BRICKS = registerWithItem("gloom_obsidian_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OBSIDIAN).mapColor(MapColor.COLOR_BLACK)));
+    public static final DeferredBlock<StairBlock> GLOOM_OBSIDIAN_BRICKS_STAIRS = registerWithItem("gloom_obsidian_bricks_stairs", () -> new StairBlock(GLOOM_OBSIDIAN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(OBSIDIAN).mapColor(MapColor.COLOR_BLACK)));
+    public static final DeferredBlock<SlabBlock> GLOOM_OBSIDIAN_BRICKS_SLAB = registerWithItem("gloom_obsidian_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(OBSIDIAN).mapColor(MapColor.COLOR_BLACK)));
+
     public static final DeferredBlock<Block> BLUE_ICE_BRICKS = registerWithItem("blue_ice_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
     public static final DeferredBlock<StairBlock> BLUE_ICE_BRICKS_STAIRS = registerWithItem("blue_ice_bricks_stairs", () -> new StairBlock(BLUE_ICE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
     public static final DeferredBlock<SlabBlock> BLUE_ICE_BRICKS_SLAB = registerWithItem("blue_ice_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));

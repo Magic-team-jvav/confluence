@@ -13,17 +13,16 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.TallGrassBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
-import org.confluence.mod.common.data.saved.KillBoard;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class BaseTallPlantBlock extends TallGrassBlock {
+public class BaseTallPlantBlock extends DoublePlantBlock {
     public static final MapCodec<BaseTallPlantBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(propertiesCodec(),
             BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("ground").forGetter(block -> block.survive)
     ).apply(instance, BaseTallPlantBlock::new));
@@ -50,7 +49,7 @@ public class BaseTallPlantBlock extends TallGrassBlock {
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos blockpos = pos.below();
         BlockState groundState = level.getBlockState(blockpos);
-        return mayPlaceOn(groundState, level, blockpos) && level.isEmptyBlock(pos.above());
+        return mayPlaceOn(groundState, level, blockpos) && level.getBlockState(pos.above()).canBeReplaced();
     }
 
     @Override
@@ -65,14 +64,9 @@ public class BaseTallPlantBlock extends TallGrassBlock {
 
     @Override
     public BlockState updateShape(BlockState originState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        BlockState after = super.updateShape(originState, facing, facingState, level, currentPos, facingPos);
-        if (facing == Direction.UP && !facingState.isAir()) {
-            return Blocks.AIR.defaultBlockState();
-        }
-        if (facing != Direction.DOWN) return after;
-        ISpreadable.Type type = facingState.getBlock() instanceof ISpreadable spreadable ? spreadable.getSpreadType() : ISpreadable.Type.PURE;
-        BlockState transformResult = type.getNotNull(originState, KillBoard.INSTANCE.getGamePhase().isHardmode());
-        return transformResult.canSurvive(level, currentPos) ? transformResult : Blocks.AIR.defaultBlockState();
+        if (facing == originState.getValue(HALF).getDirectionToOther()) return (facingState.is(originState.getBlock()) && (facingState.getValue(HALF) != originState.getValue(HALF))) ? originState : Blocks.AIR.defaultBlockState();
+        if ((originState.getValue(HALF) == DoubleBlockHalf.LOWER) && !canSurvive(originState, level, currentPos)) return Blocks.AIR.defaultBlockState();
+        return originState;
     }
 
     @Override

@@ -38,7 +38,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
@@ -87,7 +86,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static net.minecraft.client.renderer.RenderStateShard.*;
-import static org.confluence.lib.color.IntegerRGB.VOID_B;
+import static org.confluence.lib.color.IntegerRGB.*;
 
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
@@ -288,8 +287,12 @@ public final class ModClientSetups {
         return Color.HSBtoRGB(hsb[0], 0.5F, 1.0F);
     };
 
-    static final BlockColor VOID_LEAVES_COLOR = (state, level, pos, tintIndex) -> {
-        if (pos == null) return VOID_B.get();
+    static final BlockColor VOID_LEAVES_COLOR = (state, level, pos, tintIndex) -> ThreeColor(pos, VOID_A, VOID_B, VOID_C);
+
+    static final BlockColor VOID_WEAVE_COLOR = (state, level, pos, tintIndex) -> ThreeColor(pos, VOID_WEAVE_A, VOID_WEAVE_B, VOID_WEAVE_C);
+
+    private static int ThreeColor(@Nullable BlockPos pos, IntegerRGB colorA, IntegerRGB colorB, IntegerRGB colorC) {
+        if (pos == null) return colorB.get();
 
         double scale = 3;
         double noiseVal = normalNoise.getValue(
@@ -300,11 +303,11 @@ public final class ModClientSetups {
 
         float t = (float) (noiseVal + 1) * 0.5F;
         if (t < 0.5F) {
-            return IntegerRGB.VOID_A.mixture(VOID_B, t * 2).get();
+            return colorA.mixture(colorB, t * 2).get();
         } else {
-            return VOID_B.mixture(IntegerRGB.VOID_C, (t - 0.5F) * 2).get();
+            return colorB.mixture(colorC, (t - 0.5F) * 2).get();
         }
-    };
+    }
 
     static boolean guideCheckedJEI = LibUtils.isModLoaded("jei") || LibUtils.isModLoaded("emi");
 

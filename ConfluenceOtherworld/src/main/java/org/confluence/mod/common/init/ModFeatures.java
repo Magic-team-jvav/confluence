@@ -54,6 +54,8 @@ public final class ModFeatures {
     public static final Supplier<PineTreeFeature> PINE_TREE = FEATURES.register("pine_tree", () -> new PineTreeFeature(PineTreeFeature.Config.CODEC));
     public static final Supplier<VoidTreeFeature> VOID_TREE = FEATURES.register("void_tree", () -> new VoidTreeFeature(VoidTreeFeature.Config.CODEC));
     public static final Supplier<BrokenStoneFeature> BROKEN_STONE = FEATURES.register("broken_stone", () -> new BrokenStoneFeature(BrokenStoneFeature.Config.CODEC));
+    public static final Supplier<HugeStoneFeature> HUGE_STONE = FEATURES.register("huge_stone", () -> new HugeStoneFeature(HugeStoneFeature.Config.CODEC));
+    public static final Supplier<BilayerOreFeature> BILAYER_ORE = FEATURES.register("bilayer_ore", () -> new BilayerOreFeature(BilayerOreFeature.Config.CODEC));
     public static final Supplier<ChineseStylePineTreeFeature> CHINESE_STYLE_PINE_TREE = FEATURES.register("chinese_style_pine_tree", () -> new ChineseStylePineTreeFeature(ChineseStylePineTreeFeature.Config.CODEC));
     public static final Supplier<BranchTreeFeature> BRANCH_TREE = FEATURES.register("branch_tree", () -> new BranchTreeFeature(BranchTreeFeature.Config.CODEC));
     public static final Supplier<MeteoriteFeature> METEORITE = FEATURES.register("meteorite", () -> new MeteoriteFeature(MeteoriteFeature.Config.CODEC));

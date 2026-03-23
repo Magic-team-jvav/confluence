@@ -438,6 +438,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SOUL_OF_SIGHT_IN_A_BOTTLE.get(),
                 SOUL_OF_BRIGHT_IN_A_BOTTLE.get(),
                 SOUL_OF_VOIGHT_IN_A_BOTTLE.get(),
+                GLOOM_OBSIDIAN.get(),
+                GLOOM_OBSIDIAN_BRICKS.get(),
+                GLOOM_OBSIDIAN_BRICKS_STAIRS.get(),
+                GLOOM_OBSIDIAN_BRICKS_SLAB.get(),
 
                 CrateBlocks.IRON_CRATE.get(),
                 CrateBlocks.GOLDEN_CRATE.get(),
@@ -467,6 +471,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 COLD_CRYSTAL_BLOCK.get(),
                 CRYSTAL_SHARDS.get(),
                 GELATIN_CRYSTAL.get(),
+                VOID_WEAVE.get(),
 
                 ICE_TAPERED_BLOCK.get(),
                 DESERT_TAPERED_BLOCK.get(),
@@ -1158,6 +1163,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         OBSIDIAN_BRICKS.get(),
                         OBSIDIAN_SMALL_BRICKS.get(),
                         CHISELED_OBSIDIAN_BRICKS.get(),
+                        GLOOM_OBSIDIAN_BRICKS.get(),
                         RAINBOW_BRICKS.get(),
                         GRANITE_BRICKS.get(),
                         CHISELED_GRANITE_BRICKS.get(),
@@ -1320,7 +1326,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OBSIDIAN_BRICKS_SLAB.get(),
                 OBSIDIAN_BRICKS_STAIRS.get(),
                 OBSIDIAN_BRICKS_DOOR.get(),
-                OBSIDIAN_SMALL_BRICKS.get()
+                OBSIDIAN_SMALL_BRICKS.get(),
+                GLOOM_OBSIDIAN_BRICKS.get(),
+                GLOOM_OBSIDIAN_BRICKS_SLAB.get(),
+                GLOOM_OBSIDIAN_BRICKS_STAIRS.get(),
+                GLOOM_OBSIDIAN.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(ASH_BLOCK.get());
         tag(Tags.Blocks.ORE_RATES_SINGULAR).addTags(

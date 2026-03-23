@@ -460,6 +460,10 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(OBSIDIAN_BRICKS.get());
         dropSelf(OBSIDIAN_BRICKS_SLAB.get());
         dropSelf(OBSIDIAN_BRICKS_STAIRS.get());
+        dropSelf(GLOOM_OBSIDIAN.get());
+        dropSelf(GLOOM_OBSIDIAN_BRICKS.get());
+        dropSelf(GLOOM_OBSIDIAN_BRICKS_STAIRS.get());
+        dropSelf(GLOOM_OBSIDIAN_BRICKS_SLAB.get());
 
         dropSelf(OBSIDIAN_SMALL_BRICKS.get());
         dropSelf(SMOOTH_OBSIDIAN.get());
@@ -536,6 +540,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(DARK_AETHERIUM_BLOCK.get());
 
         dropSelf(JUNGLE_ROSE.get());
+        dropSelf(VOID_VIOLET.get());
 
         dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
         dropOther(LIFE_FRUIT.get(),ConsumableItems.LIFE_FRUIT.get());
@@ -557,6 +562,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropWhenSilkTouch(PURPLE_PURE_GLASS.get());
         dropWhenSilkTouch(MAGENTA_PURE_GLASS.get());
         dropWhenSilkTouch(PINK_PURE_GLASS.get());
+
+        dropWhenSilkTouch(VOID_WEAVE.get());
 
 
         //chain
@@ -627,6 +634,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(HALLOW_TAPERED_BLOCK.get());
 
         dropSelf(END_DIRT.get());
+
         dropSelf(VOID_TREE_ROOT_BLOCK.get());
 
 

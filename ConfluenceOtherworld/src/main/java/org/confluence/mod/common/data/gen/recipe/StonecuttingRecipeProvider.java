@@ -38,6 +38,10 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, DecorativeBlocks.OBSIDIAN_BRICKS.toStack(4), Ingredient.of(Blocks.OBSIDIAN));
         stonecutting(recipeOutput, DecorativeBlocks.OBSIDIAN_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
         stonecutting(recipeOutput, DecorativeBlocks.OBSIDIAN_BRICKS_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
+        stonecutting(recipeOutput, DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.toStack(4), Ingredient.of(NatureBlocks.GLOOM_OBSIDIAN));
+        stonecutting(recipeOutput, DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS));
+        stonecutting(recipeOutput, DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS));
+
         stonecutting(recipeOutput, DecorativeBlocks.BLUE_BRICK_COLUMN.toStack(), Ingredient.of(DecorativeBlocks.BLUE_BRICKS));
         stonecutting(recipeOutput, DecorativeBlocks.BLUE_BRICK_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.BLUE_BRICKS));
         stonecutting(recipeOutput, DecorativeBlocks.BLUE_BRICK_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.BLUE_BRICKS));

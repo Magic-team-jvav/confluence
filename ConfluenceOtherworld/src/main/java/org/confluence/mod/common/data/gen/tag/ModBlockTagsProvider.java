@@ -294,6 +294,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GRANITE_COLUMN.get(),
                 GRANITE_BRICKS.get(),
                 CHISELED_OBSIDIAN_BRICKS.get(),
+                PACKED_DIRT.get(),
 
                 MARBLE_COLUMN.get(),
                 MARBLE_BRICKS.get(),
@@ -602,7 +603,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 CORRUPT_CACTUS.get(),
                 CRIMSON_CACTUS.get(),
-                HALLOW_CACTUS.get()
+                HALLOW_CACTUS.get(),
+
+                WHITE_PUMPKIN.get(),
+                CARVED_WHITE_PUMPKIN.get(),
+                JOHNNY_O_LANTERN.get()
         );
         tag(BlockTags.INCORRECT_FOR_WOODEN_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
         tag(BlockTags.INCORRECT_FOR_GOLD_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
@@ -750,6 +755,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GRANITE_COLUMN.get(),
                 GRANITE_BRICKS.get(),
                 CRACKED_GRANITE_BRICKS.get(),
+                PACKED_DIRT.get(),
+
+                WHITE_PUMPKIN.get(),
+                CARVED_WHITE_PUMPKIN.get(),
+                JOHNNY_O_LANTERN.get(),
 
                 MARBLE_COLUMN.get(),
                 MARBLE_BRICKS.get(),

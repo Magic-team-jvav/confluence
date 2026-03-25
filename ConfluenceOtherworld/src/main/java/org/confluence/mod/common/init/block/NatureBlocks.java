@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -29,6 +30,7 @@ import org.confluence.mod.common.block.natural.spreadable.*;
 import org.confluence.mod.common.block.natural.spreadable.extended.*;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -188,7 +190,8 @@ public class NatureBlocks {
     // 萨瓦纳草原
     public static final LogBlockSet BAOBAB_LOG_BLOCKS = LogBlockSet.builder("baobab", true, BAOBAB).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.BAOBAB_GROWER, properties, null, getSupplier(Blocks.GRASS_BLOCK), getSupplier(Blocks.DIRT))).build();
 
-
+    // 黑森林
+    public static final DeferredBlock<WhitePumpkinBlock> WHITE_PUMPKIN = registerWithItem("white_pumpkin", () -> new WhitePumpkinBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).instrument(NoteBlockInstrument.DIDGERIDOO).strength(1.0F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
     // 黄柳
     public static final LogBlockSet YELLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("yellow_willow", true, YELLOW_WILLOW).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.YELLOW_WILLOW_GROWER, properties, null, getSupplier(Blocks.GRASS_BLOCK), getSupplier(Blocks.DIRT))).build();
     // 万圣节

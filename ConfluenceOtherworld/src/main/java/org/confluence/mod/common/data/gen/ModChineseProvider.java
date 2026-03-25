@@ -2017,6 +2017,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CORRUPT_CACTUS.get(), "腐化仙人掌");
         add(NatureBlocks.CRIMSON_CACTUS.get(), "猩红仙人掌");
         add(NatureBlocks.HALLOW_CACTUS.get(), "神圣仙人掌");
+        add(NatureBlocks.WHITE_PUMPKIN.get(), "白南瓜");
+        add(DecorativeBlocks.CARVED_WHITE_PUMPKIN.get(), "雕刻白南瓜");
+        add(DecorativeBlocks.JOHNNY_O_LANTERN.get(), "白南瓜灯");
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");

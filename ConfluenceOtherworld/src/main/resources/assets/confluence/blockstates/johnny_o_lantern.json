@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "facing=east": [
+      { "model": "confluence:block/johnny_o_lantern", "y": 90, "weight": 120 },
+      { "model": "confluence:block/johnny_o_lantern_1", "y": 90, "weight": 10 }
+    ],
+    "facing=north": [
+      { "model": "confluence:block/johnny_o_lantern", "weight": 120 },
+      { "model": "confluence:block/johnny_o_lantern_1", "weight": 10 }
+    ],
+    "facing=south": [
+      { "model": "confluence:block/johnny_o_lantern", "y": 180, "weight": 120 },
+      { "model": "confluence:block/johnny_o_lantern_1", "y": 180, "weight": 10 }
+    ],
+    "facing=west": [
+      { "model": "confluence:block/johnny_o_lantern", "y": 270, "weight": 120 },
+      { "model": "confluence:block/johnny_o_lantern_1", "y": 270, "weight": 10 }
+    ]
+  }
+}

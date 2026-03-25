@@ -542,6 +542,10 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(JUNGLE_ROSE.get());
         dropSelf(VOID_VIOLET.get());
 
+        dropSelf(WHITE_PUMPKIN.get());
+        dropSelf(CARVED_WHITE_PUMPKIN.get());
+        dropSelf(JOHNNY_O_LANTERN.get());
+
         dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
         dropOther(LIFE_FRUIT.get(),ConsumableItems.LIFE_FRUIT.get());
 

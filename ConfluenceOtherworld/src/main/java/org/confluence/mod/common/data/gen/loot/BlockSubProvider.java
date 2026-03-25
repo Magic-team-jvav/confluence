@@ -547,6 +547,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(WHITE_PUMPKIN.get());
         dropSelf(CARVED_WHITE_PUMPKIN.get());
         dropSelf(JOHNNY_O_LANTERN.get());
+        this.add(WHITE_PUMPKIN_STEM.get(), p_252178_ -> this.createStemDrops(p_252178_, FoodItems.WHITE_PUMPKIN_SEED.get()));
+        this.add(ATTACHED_WHITE_PUMPKIN_STEM.get(), p_250849_ -> this.createAttachedStemDrops(p_250849_, FoodItems.WHITE_PUMPKIN_SEED.get()));
 
         this.add(ICE_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(FoodItems.ICE_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));
         this.add(GOLDEN_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(Items.GLISTERING_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));

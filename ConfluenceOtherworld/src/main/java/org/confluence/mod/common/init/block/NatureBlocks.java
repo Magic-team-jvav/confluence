@@ -3,6 +3,9 @@ package org.confluence.mod.common.init.block;
 import com.mojang.datafixers.DSL;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.BlockItem;
@@ -191,7 +194,36 @@ public class NatureBlocks {
     public static final LogBlockSet BAOBAB_LOG_BLOCKS = LogBlockSet.builder("baobab", true, BAOBAB).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.BAOBAB_GROWER, properties, null, getSupplier(Blocks.GRASS_BLOCK), getSupplier(Blocks.DIRT))).build();
 
     // 黑森林
-    public static final DeferredBlock<WhitePumpkinBlock> WHITE_PUMPKIN = registerWithItem("white_pumpkin", () -> new WhitePumpkinBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).instrument(NoteBlockInstrument.DIDGERIDOO).strength(1.0F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<WhitePumpkinBlock> WHITE_PUMPKIN = registerWithItem("white_pumpkin", () -> new WhitePumpkinBlock(
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.TERRACOTTA_WHITE)
+                    .strength(1.0F)
+                    .sound(SoundType.WOOD)
+                    .pushReaction(PushReaction.DESTROY)
+    ));
+    public static final DeferredBlock<Block> WHITE_PUMPKIN_STEM = registerWithoutItem("white_pumpkin_stem", () -> new StemBlock(
+            WHITE_PUMPKIN.getKey(),
+            ResourceKey.create(Registries.BLOCK, Confluence.asResource("attached_white_pumpkin_stem")),
+            FoodItems.WHITE_PUMPKIN_SEED.getKey(),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.HARD_CROP)
+                    .pushReaction(PushReaction.DESTROY)
+    ));
+    public static final DeferredBlock<Block> ATTACHED_WHITE_PUMPKIN_STEM = registerWithoutItem("attached_white_pumpkin_stem", () -> new AttachedStemBlock(
+            WHITE_PUMPKIN_STEM.getKey(),
+            WHITE_PUMPKIN.getKey(),
+            FoodItems.WHITE_PUMPKIN_SEED.getKey(),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.PLANT)
+                    .noCollission()
+                    .instabreak()
+                    .sound(SoundType.WOOD)
+                    .pushReaction(PushReaction.DESTROY)
+    ));
     // 黄柳
     public static final LogBlockSet YELLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("yellow_willow", true, YELLOW_WILLOW).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.YELLOW_WILLOW_GROWER, properties, null, getSupplier(Blocks.GRASS_BLOCK), getSupplier(Blocks.DIRT))).build();
     // 万圣节

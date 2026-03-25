@@ -388,6 +388,7 @@ public class FoodItems {
     public static final DeferredItem<Item> SHIVERTHORN_SEED = ITEMS.register("shiverthorn_seed", () -> new HerbSeedItem(ModBlocks.SHIVERTHORN.get()));
     public static final DeferredItem<Item> DAYBLOOM_SEED = ITEMS.register("daybloom_seed", () -> new HerbSeedItem(ModBlocks.DAYBLOOM.get()));
     public static final DeferredItem<Item> DEATHWEED_SEED = ITEMS.register("deathweed_seed", () -> new HerbSeedItem(ModBlocks.DEATHWEED.get()));
+    public static final DeferredItem<Item> WHITE_PUMPKIN_SEED = ITEMS.register("white_pumpkin_seed", () -> new ItemNameBlockItem(NatureBlocks.WHITE_PUMPKIN_STEM.get(), new Item.Properties()));
 
     public static DeferredItem<BaseFoodItem> registerFood(String name, Consumer<BaseFoodItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

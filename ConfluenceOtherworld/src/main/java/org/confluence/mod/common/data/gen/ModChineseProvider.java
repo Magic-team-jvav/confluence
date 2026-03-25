@@ -2018,6 +2018,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CRIMSON_CACTUS.get(), "猩红仙人掌");
         add(NatureBlocks.HALLOW_CACTUS.get(), "神圣仙人掌");
         add(NatureBlocks.WHITE_PUMPKIN.get(), "白南瓜");
+        add(NatureBlocks.WHITE_PUMPKIN_STEM.get(), "白南瓜茎");
+        add(NatureBlocks.ATTACHED_WHITE_PUMPKIN_STEM.get(), "结果的白南瓜茎");
         add(DecorativeBlocks.CARVED_WHITE_PUMPKIN.get(), "雕刻白南瓜");
         add(DecorativeBlocks.JOHNNY_O_LANTERN.get(), "白南瓜灯");
 
@@ -3790,6 +3792,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.STELLAR_BLOSSOM_SEED.get(), "星辰花种子");
         add(FoodItems.CLOUDWEAVER_SEED.get(), "云织草种子");
         add(FoodItems.FLOATING_WHEAT_SEED.get(), "飘飘麦种子");
+        add(FoodItems.WHITE_PUMPKIN_SEED.get(), "白色南瓜种子");
 
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "黏性绷带");

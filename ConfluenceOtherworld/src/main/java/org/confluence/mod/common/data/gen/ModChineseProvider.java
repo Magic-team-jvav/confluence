@@ -2022,6 +2022,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ATTACHED_WHITE_PUMPKIN_STEM.get(), "结果的白南瓜茎");
         add(DecorativeBlocks.CARVED_WHITE_PUMPKIN.get(), "雕刻白南瓜");
         add(DecorativeBlocks.JOHNNY_O_LANTERN.get(), "白南瓜灯");
+        add(DecorativeBlocks.GOLDEN_MELON.get(), "金西瓜");
+        add(DecorativeBlocks.ICE_MELON.get(), "冰西瓜");
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
@@ -3730,6 +3732,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.GREEN_DUMPLING.get(), "青团");
         add(FoodItems.BOULDER_BREAD.get(), "巨石面包");
         add(FoodItems.HONEY_GUMMI.get(), "蜜凝糖");
+        add(FoodItems.ICE_MELON_SLICE.get(), "冰镇西瓜片");
+        add(FoodItems.COLDBLOOD_PUMPKIN_PIE.get(), "冷血南瓜派");
         //赞助
         add(FoodItems.PINK_COLA.get(), "粉色可乐");
         add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");
@@ -3792,7 +3796,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.STELLAR_BLOSSOM_SEED.get(), "星辰花种子");
         add(FoodItems.CLOUDWEAVER_SEED.get(), "云织草种子");
         add(FoodItems.FLOATING_WHEAT_SEED.get(), "飘飘麦种子");
-        add(FoodItems.WHITE_PUMPKIN_SEED.get(), "白色南瓜种子");
+        add(FoodItems.WHITE_PUMPKIN_SEED.get(), "白南瓜种子");
 
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "黏性绷带");

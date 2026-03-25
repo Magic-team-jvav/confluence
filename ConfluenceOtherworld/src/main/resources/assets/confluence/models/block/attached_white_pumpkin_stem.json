@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stem_fruit",
+  "textures": {
+    "stem": "confluence:block/white_pumpkin_stem",
+    "upperstem": "confluence:block/attached_white_pumpkin_stem"
+  },
+    "render_type": "cutout"
+}

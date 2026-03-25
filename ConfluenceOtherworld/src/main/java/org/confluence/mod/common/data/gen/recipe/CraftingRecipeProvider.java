@@ -123,6 +123,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(output, MaterialItems.DEMONITE_NUGGET, ModTags.Items.NUGGETS_DEMONITE, MaterialItems.DEMONITE_INGOT, ModTags.Items.INGOTS_DEMONITE);
         compressAndDecompressNine(output, MaterialItems.CRIMTANE_NUGGET, ModTags.Items.NUGGETS_CRIMTANE, MaterialItems.CRIMTANE_INGOT, ModTags.Items.INGOTS_CRIMTANE);
         compressAndDecompressNine(output, MaterialItems.HELLSTONE_NUGGET, ModTags.Items.NUGGETS_HELLSTONE, MaterialItems.HELLSTONE_INGOT, ModTags.Items.INGOTS_HELLSTONE);
+
         // 铅砧
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(ModTags.Items.STORAGE_BLOCKS_LEAD),
@@ -199,7 +200,27 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 new ItemStack(PotionItems.BOTTLE.get()),
                 Ingredient.of(Items.GLASS_BOTTLE)
         );
-
+        // 冰镇西瓜片 冰西瓜互换
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'I', Ingredient.of(FoodItems.ICE_MELON_SLICE)
+        ), List.of(
+                "III",
+                "III",
+                "III"
+        )), DecorativeBlocks.ICE_MELON.toStack());
+        shapeless(output, new ItemStack(FoodItems.ICE_MELON_SLICE.get(), 9), Ingredient.of(DecorativeBlocks.ICE_MELON));
+        // 金西瓜片 金西瓜互换
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'I', Ingredient.of(Items.GLISTERING_MELON_SLICE)
+        ), List.of(
+                "III",
+                "III",
+                "III"
+        )), DecorativeBlocks.GOLDEN_MELON.toStack());
+        shapeless(output, new ItemStack(Items.GLISTERING_MELON_SLICE, 9), Ingredient.of(DecorativeBlocks.GOLDEN_MELON));
+        shapeless(output, new ItemStack(FoodItems.COLDBLOOD_PUMPKIN_PIE.get()), Ingredient.of(Items.EGG), Ingredient.of(Items.SUGAR), Ingredient.of(NatureBlocks.WHITE_PUMPKIN));
+        shapeless(output, new ItemStack(FoodItems.WHITE_PUMPKIN_SEED.get(),4), Ingredient.of(NatureBlocks.WHITE_PUMPKIN));
+        shapeless(output, new ItemStack(DecorativeBlocks.JOHNNY_O_LANTERN.get(),4), Ingredient.of(NatureBlocks.WHITE_PUMPKIN), Ingredient.of(Items.TORCH));
         // 各种片
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Blocks.SAND)

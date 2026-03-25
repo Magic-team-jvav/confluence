@@ -494,6 +494,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 SANDSTONE_CHEST.get(),
 
+                GOLDEN_MELON.get(),
+
                 KING_SLIME_RELIC.get(),
                 EYE_OF_CTHULHU_RELIC.get(),
                 BRAIN_OF_CTHULHU_RELIC.get(),
@@ -607,7 +609,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 WHITE_PUMPKIN.get(),
                 CARVED_WHITE_PUMPKIN.get(),
-                JOHNNY_O_LANTERN.get()
+                JOHNNY_O_LANTERN.get(),
+                ICE_MELON.get()
         );
         tag(BlockTags.INCORRECT_FOR_WOODEN_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
         tag(BlockTags.INCORRECT_FOR_GOLD_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
@@ -760,6 +763,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WHITE_PUMPKIN.get(),
                 CARVED_WHITE_PUMPKIN.get(),
                 JOHNNY_O_LANTERN.get(),
+                GOLDEN_MELON.get(),
+                ICE_MELON.get(),
 
                 MARBLE_COLUMN.get(),
                 MARBLE_BRICKS.get(),

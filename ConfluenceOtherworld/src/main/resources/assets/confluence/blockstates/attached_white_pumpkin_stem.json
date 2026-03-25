@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/attached_white_pumpkin_stem",
+      "y": 180
+    },
+    "facing=north": {
+      "model": "confluence:block/attached_white_pumpkin_stem",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "confluence:block/attached_white_pumpkin_stem",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "confluence:block/attached_white_pumpkin_stem"
+    }
+  }
+}

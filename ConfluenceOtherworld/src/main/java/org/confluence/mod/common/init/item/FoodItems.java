@@ -3,6 +3,7 @@ package org.confluence.mod.common.init.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -367,16 +368,15 @@ public class FoodItems {
             ).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
 
     public static final DeferredItem<BaseFoodItem> HONEY_GUMMI = registerFood("honey_gummi",
-            builder -> builder.rarity(ModRarity.ORANGE)
-                    .food(hasEffectProperties(
-                            12,
-                            6.0f,
-                            new ModFoodPropertiesBuilder.EffectData(TCEffects.HONEY, 200, 0, 1.0f)
-                    ))
-                    .duration(d -> 15)
-                    .useAnim(u -> UseAnim.EAT)
-                    .eatingSound(s -> SoundEvents.GENERIC_EAT));
+            builder -> builder.rarity(ModRarity.ORANGE).food(hasEffectProperties(12, 6.0f, new ModFoodPropertiesBuilder.EffectData(TCEffects.HONEY, 200, 0, 1.0f)))
+                    .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT));
 
+    public static final DeferredItem<BaseFoodItem> ICE_MELON_SLICE = registerFood("ice_melon_slice", builder -> builder.rarity(ModRarity.BLUE)
+            .food(ModFoodProperties.plentySatisfiedProperties(600, 3, 2.5f)).duration(d -> 10).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT));
+
+    public static final DeferredItem<BaseFoodItem> COLDBLOOD_PUMPKIN_PIE = registerFood("coldblood_pumpkin_pie",
+            builder -> builder.rarity(ModRarity.ORANGE).food(hasEffectProperties(8, 4.8f, new ModFoodPropertiesBuilder.EffectData(MobEffects.DAMAGE_BOOST, 2400, 0, 1.0f)))
+                    .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT));
     // 种子
     public static final DeferredItem<Item> STELLAR_BLOSSOM_SEED = ITEMS.register("stellar_blossom_seed", () -> new ItemNameBlockItem(NatureBlocks.STELLAR_BLOSSOM.get(), new Item.Properties()));
     public static final DeferredItem<Item> CLOUDWEAVER_SEED = ITEMS.register("cloudweaver_seed", () -> new ItemNameBlockItem(NatureBlocks.CLOUDWEAVER.get(), new Item.Properties()));

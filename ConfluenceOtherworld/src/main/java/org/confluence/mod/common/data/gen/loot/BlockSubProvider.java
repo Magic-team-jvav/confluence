@@ -15,12 +15,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CaveVines;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.LimitCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -112,8 +115,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(OPAL_BLOCK.get());
         dropSelf(GELSTONE_BLOCK.get());
         dropSelf(COLD_CRYSTAL_BLOCK.get());
-        dropSelf(NatureBlocks.CRYSTAL_SHARDS.get());
-
+        this.add(NatureBlocks.CRYSTAL_SHARDS.get(), p_344211_ -> this.createSilkTouchDispatchTable(p_344211_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344211_, LootItem.lootTableItem(NatureBlocks.CRYSTAL_SHARDS.get().asItem()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F))).apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))))));
         dropSelf(EXTRACTINATOR.get());
         dropSelf(SKY_MILL.get());
         dropSelf(COOKING_POT.get());
@@ -545,6 +547,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(WHITE_PUMPKIN.get());
         dropSelf(CARVED_WHITE_PUMPKIN.get());
         dropSelf(JOHNNY_O_LANTERN.get());
+
+        this.add(ICE_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(FoodItems.ICE_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));
+        this.add(GOLDEN_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(Items.GLISTERING_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));
+
+
 
         dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
         dropOther(LIFE_FRUIT.get(),ConsumableItems.LIFE_FRUIT.get());

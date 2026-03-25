@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/stem_growth0",
+  "textures": {
+    "stem": "confluence:block/white_pumpkin_stem"
+  },
+    "render_type": "cutout"
+}

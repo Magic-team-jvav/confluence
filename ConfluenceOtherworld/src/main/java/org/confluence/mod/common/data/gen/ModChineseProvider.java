@@ -1995,6 +1995,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.EBONY_CATTAIL_BLOCK.get(), "腐化香蒲");
         add(NatureBlocks.CRIMSON_CATTAIL_BLOCK.get(), "猩红香蒲");
         add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
+        add(NatureBlocks.BALLOON_MELON.get(), "气球瓜");
+        add(NatureBlocks.BALLOON_STEM.get(), "气球茎");
+        add(NatureBlocks.BALLOON_ATTACHED_STEM.get(), "结果的气球茎");
         add(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get(), "猩红捕蝇草");
         add(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get(), "嗜血结晶");
         add(NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get(), "分解源萃");
@@ -3797,6 +3800,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.CLOUDWEAVER_SEED.get(), "云织草种子");
         add(FoodItems.FLOATING_WHEAT_SEED.get(), "飘飘麦种子");
         add(FoodItems.WHITE_PUMPKIN_SEED.get(), "白南瓜种子");
+        add(FoodItems.BALLOON_SEED.get(), "气球瓜种子");
 
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "黏性绷带");
@@ -4139,6 +4143,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.HAPPY.get(), "快乐", "移动速度提高，怪物生成减少");
         addEffect(ModEffects.ENEMY_BANNER.get(), "敌怪旗", "提高对以下怪的伤害和防御：%s");
         addEffect(ModEffects.SUMMONING.get(), "召唤", "仆从数量上限增加1");
+        addEffect(ModEffects.AROMATIC_SATIATION.get(), "芳息饱腹", "持续回复饥饿与饱和");
 
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");

@@ -128,7 +128,7 @@ public final class ModEffects {
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5)  //0.5 就大概是翻倍了，数值暂定
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5));
     public static final DeferredHolder<MobEffect, MobEffect> ENEMY_BANNER = EFFECTS.register("enemy_banner", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0000));
-
+    public static final DeferredHolder<MobEffect, MobEffect> AROMATIC_SATIATION = EFFECTS.register("aromatic_satiation", AromaticSatiationEffect::new);
 
     // 药剂
     public static final DeferredHolder<MobEffect, FlaskEffect> WEAPON_IMBUE_FIRE = EFFECTS.register("weapon_imbue_fire", FlaskOfFireEffect::new);

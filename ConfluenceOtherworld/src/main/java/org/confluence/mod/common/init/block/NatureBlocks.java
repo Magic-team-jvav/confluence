@@ -324,6 +324,19 @@ public class NatureBlocks {
     public static final DeferredBlock<CloudWeaverBlock> CLOUDWEAVER = registerWithItem("cloudweaver", () -> new CloudWeaverBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).offsetType(BlockBehaviour.OffsetType.NONE)));
     public static final DeferredBlock<FloatingWheatBlock> FLOATING_WHEAT = registerWithItem("floating_wheat", () -> new FloatingWheatBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).offsetType(BlockBehaviour.OffsetType.NONE)));
 
+    public static final DeferredBlock<BalloonMelonBlock> BALLOON_MELON = registerWithItem("balloon_melon", BalloonMelonBlock::new);
+    public static final DeferredBlock<BalloonAttachedStemBlock> BALLOON_ATTACHED_STEM = registerWithItem("balloon_attached_stem", () -> new BalloonAttachedStemBlock(
+            BALLOON_MELON.getKey(),
+            Confluence.asResourceKey(Registries.BLOCK,"balloon_stem"),
+            FoodItems.BALLOON_SEED.getKey(),
+            BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)
+    ));
+    public static final DeferredBlock<BalloonStemBlock> BALLOON_STEM = registerWithItem("balloon_stem", () -> new BalloonStemBlock(
+            BALLOON_MELON.getKey(),
+            BALLOON_ATTACHED_STEM.getKey(),
+            FoodItems.BALLOON_SEED.getKey()
+    ));
+
     // 枝杈
     public static final DeferredBlock<BranchesBlock> AMBER_BRANCHES = registerWithItem("amber_branches", () -> new BranchesBlock(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE, BlockTags.BASE_STONE_OVERWORLD));
     public static final DeferredBlock<BranchesBlock> RUBY_BRANCHES = registerWithItem("ruby_branches", () -> new BranchesBlock(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE, BlockTags.BASE_STONE_OVERWORLD));

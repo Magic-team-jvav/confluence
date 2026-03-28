@@ -17,7 +17,7 @@ import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.mixin.ServerPlayerAccessor;
+import org.confluence.mod.mixin.accessor.ServerPlayerAccessor;
 import org.confluence.mod.util.PlayerUtils;
 
 public final class EmptyTargetSweepPacketC2S implements IPacketC2S {

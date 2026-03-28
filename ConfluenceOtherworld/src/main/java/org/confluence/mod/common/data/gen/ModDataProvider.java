@@ -1636,7 +1636,7 @@ public class ModDataProvider {
             );
             context.register(ModBiomes.CHORUS_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
-                    .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                    .mobSpawnSettings(mobSpawnSettings(BiomeDefaultFeatures::endSpawns))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_VOID_GRASS);
@@ -1651,7 +1651,7 @@ public class ModDataProvider {
             );
             context.register(ModBiomes.CHORUS_PLAINS, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
-                    .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                    .mobSpawnSettings(mobSpawnSettings(BiomeDefaultFeatures::endSpawns))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VOID_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_VOID_GRASS);
@@ -1665,32 +1665,42 @@ public class ModDataProvider {
             );
             context.register(ModBiomes.INVERSE_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
-                    .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                    .mobSpawnSettings(mobSpawnSettings(builder -> {
+                        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.INVERSE_ENDERMAN.get(), 10, 4, 4));
+                    }))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
                     })).build()
             );
             context.register(ModBiomes.INVERSE_PLAINS, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
-                    .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                    .mobSpawnSettings(mobSpawnSettings(builder -> {
+                        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.INVERSE_ENDERMAN.get(), 10, 4, 4));
+                    }))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
                     })).build()
             );
             context.register(ModBiomes.MOONBLIGHT_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
-                    .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                    .mobSpawnSettings(mobSpawnSettings(BiomeDefaultFeatures::endSpawns))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
                     })).build()
             );
             context.register(ModBiomes.MOONBLIGHT_PLAINS, new Biome.BiomeBuilder().temperature(2f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
-                    .mobSpawnSettings(new MobSpawnSettings.Builder().build())
+                    .mobSpawnSettings(mobSpawnSettings(BiomeDefaultFeatures::endSpawns))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
                     })).build()
             );
+        }
+
+        private static MobSpawnSettings mobSpawnSettings(Consumer<MobSpawnSettings.Builder> consumer) {
+            MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder();
+            consumer.accept(builder);
+            return builder.build();
         }
 
         private static void addDefaultGenerations(BiomeGenerationSettings.Builder builder) {

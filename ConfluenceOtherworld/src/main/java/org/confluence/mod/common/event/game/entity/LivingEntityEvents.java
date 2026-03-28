@@ -50,6 +50,7 @@ import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -376,7 +377,8 @@ public final class LivingEntityEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void finalizeSpawn(FinalizeSpawnEvent event) {
         Mob mob = event.getEntity();
-        if (mob.getType() == EntityType.ZOMBIE) {
+        EntityType<?> type = mob.getType();
+        if (type == EntityType.ZOMBIE) {
             BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
             Holder<Biome> biome = mob.level().getBiome(blockPos);
             DifficultyInstance difficulty = event.getDifficulty();
@@ -396,7 +398,7 @@ public final class LivingEntityEvents {
                 mob.addTag("raincoat_zombie");
                 event.setCanceled(true);
             }
-        } else if (mob.getType() == EntityType.SKELETON) {
+        } else if (type == EntityType.SKELETON) {
             DifficultyInstance difficulty = event.getDifficulty();
             if (!mob.level().canSeeSky(BlockPos.containing(event.getX(), event.getY(), event.getZ())) && mob.getRandom().nextFloat() < 0.01F) {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
@@ -417,11 +419,13 @@ public final class LivingEntityEvents {
                     mob.level().addFreshEntity(goldenSlime);
                 }
             }
-        } else {
+        } else if (type == TEAnimals.WORM.get()) {
             SimpleVariantAnimal worm = TEAnimals.WORM.get().tryCast(mob);
             if (worm != null) {
                 TEHelper.finalizeWormSpawn(worm);
             }
+        } else if (type == ModEntities.INVERSE_ENDERMAN.get()) {
+            mob.moveTo(mob.getX(), mob.getY() - mob.getBbHeight(), mob.getZ());
         }
 
         if (!event.isCanceled()) {

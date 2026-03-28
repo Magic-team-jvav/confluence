@@ -13,7 +13,7 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.confluence.mod.common.init.ModBiomes;
-import org.confluence.mod.mixin.DimensionTypeAccessor;
+import org.confluence.mod.mixin.accessor.DimensionTypeAccessor;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import terrablender.api.EndBiomeRegistry;
 import terrablender.core.TerraBlender;

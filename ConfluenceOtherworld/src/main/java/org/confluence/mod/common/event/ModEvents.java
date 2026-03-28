@@ -67,6 +67,8 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.*;
+import org.confluence.mod.common.entity.InverseEnderMan;
+import org.confluence.mod.common.entity.InverseEntityType;
 import org.confluence.mod.common.entity.RainbowSheep;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
@@ -267,6 +269,7 @@ public final class ModEvents {
     public static void entityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
         event.put(ModEntities.RAINBOW_SHEEP.get(), RainbowSheep.createAttributes().build());
+        event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -364,7 +367,7 @@ public final class ModEvents {
 //        event.registerEntity(Capabilities.ItemHandler.ENTITY, EntityType.PLAYER, (player, context) -> player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void registerSpawnReplacements(RegisterSpawnPlacementsEvent event) {
         event.register(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
             if (DateUtils.isQingMing(DateUtils.getLunar()) && serverLevel instanceof Level level) {
@@ -373,6 +376,7 @@ public final class ModEvents {
             }
             return false;
         }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.INVERSE_ENDERMAN.get(), InverseEntityType.ON_CEIL, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, InverseEnderMan::checkInverseEnderManSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         ModLoader.postEvent(new RegisterBestiaryKeyEvent()); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
     }

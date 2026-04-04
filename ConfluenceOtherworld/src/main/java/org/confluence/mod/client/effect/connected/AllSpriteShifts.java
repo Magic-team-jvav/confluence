@@ -1,63 +1,51 @@
 package org.confluence.mod.client.effect.connected;
 
+import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 
 public class AllSpriteShifts {
-    public static final CTSpriteShiftEntry ECHO_BLOCK = omni("echo_block");
-    public static final CTSpriteShiftEntry BLUE_GEL_BLOCK = omni("blue_gel_block");
-    public static final CTSpriteShiftEntry FROZEN_GEL_BLOCK = omni("frozen_gel_block");
     public static final CTSpriteShiftEntry ANDESITE_CASING = omni("andesite_casing");
-    public static final CTSpriteShiftEntry SUN_PLATE = omni("sun_plate");
-    public static final CTSpriteShiftEntry MOON_PLATE = omni("moon_plate");
-    public static final CTSpriteShiftEntry PURE_GLASS = omni("pure_glass");
-    public static final CTSpriteShiftEntry WHITE_PURE_GLASS = omni("white_pure_glass");
-    public static final CTSpriteShiftEntry LIGHT_GRAY_PURE_GLASS = omni("light_gray_pure_glass");
-    public static final CTSpriteShiftEntry GRAY_PURE_GLASS = omni("gray_pure_glass");
-    public static final CTSpriteShiftEntry BLACK_PURE_GLASS = omni("black_pure_glass");
-    public static final CTSpriteShiftEntry BROWN_PURE_GLASS = omni("brown_pure_glass");
-    public static final CTSpriteShiftEntry RED_PURE_GLASS = omni("red_pure_glass");
-    public static final CTSpriteShiftEntry ORANGE_PURE_GLASS = omni("orange_pure_glass");
-    public static final CTSpriteShiftEntry YELLOW_PURE_GLASS = omni("yellow_pure_glass");
-    public static final CTSpriteShiftEntry LIME_PURE_GLASS = omni("lime_pure_glass");
-    public static final CTSpriteShiftEntry GREEN_PURE_GLASS = omni("green_pure_glass");
-    public static final CTSpriteShiftEntry CYAN_PURE_GLASS = omni("cyan_pure_glass");
-    public static final CTSpriteShiftEntry LIGHT_BLUE_PURE_GLASS = omni("light_blue_pure_glass");
-    public static final CTSpriteShiftEntry BLUE_PURE_GLASS = omni("blue_pure_glass");
-    public static final CTSpriteShiftEntry PURPLE_PURE_GLASS = omni("purple_pure_glass");
-    public static final CTSpriteShiftEntry MAGENTA_PURE_GLASS = omni("magenta_pure_glass");
-    public static final CTSpriteShiftEntry PINK_PURE_GLASS = omni("pink_pure_glass");
-    public static final CTSpriteShiftEntry CHISELED_PALM_PLANKS = vertical("chiseled_palm_planks");
-    public static final CTSpriteShiftEntry GRANITE_COLUMN = vertical("granite_column");
-    public static final CTSpriteShiftEntry MARBLE_COLUMN = vertical("marble_column");
-    public static final CTSpriteShiftEntry SOUL_GLASS = omni("soul_glass");
-
-    public static final CTSpriteShiftEntry WHITE_PAPER_PANE = omni("white_paper_pane");
-    public static final CTSpriteShiftEntry WHITE_PAPER_PANE_LAMP = omni("white_paper_pane_lamp");
-    public static final CTSpriteShiftEntry MALACHITE_PAPER_PANE = omni("malachite_paper_pane");
-    public static final CTSpriteShiftEntry MALACHITE_PAPER_PANE_LAMP = omni("malachite_paper_pane_lamp");
 
     private static CTSpriteShiftEntry omni(String name) {
-        return getCT(AllCTTypes.OMNIDIRECTIONAL, name);
+        return getCT(AllCTTypes.OMNIDIRECTIONAL, name, 1);
     }
 
     private static CTSpriteShiftEntry horizontal(String name) {
-        return getCT(AllCTTypes.HORIZONTAL, name);
+        return getCT(AllCTTypes.HORIZONTAL, name, 1);
     }
 
     private static CTSpriteShiftEntry vertical(String name) {
-        return getCT(AllCTTypes.VERTICAL, name);
+        return getCT(AllCTTypes.VERTICAL, name, 1);
+    }
+
+    private static CTSpriteShiftEntry omni(String name, int textureAmount) {
+        return getCT(AllCTTypes.OMNIDIRECTIONAL, name, textureAmount);
+    }
+
+    private static CTSpriteShiftEntry horizontal(String name, int textureAmount) {
+        return getCT(AllCTTypes.HORIZONTAL, name, textureAmount);
+    }
+
+    private static CTSpriteShiftEntry vertical(String name, int textureAmount) {
+        return getCT(AllCTTypes.VERTICAL, name, textureAmount);
     }
 
     private static SpriteShiftEntry get(String originalLocation, String targetLocation) {
         return SpriteShifter.get(Confluence.asResource(originalLocation), Confluence.asResource(targetLocation));
     }
 
-    private static CTSpriteShiftEntry getCT(CTType type, String blockTextureName, String connectedTextureName) {
-        return CTSpriteShifter.getCT(type, Confluence.asResource("block/" + blockTextureName), Confluence.asResource("block/" + connectedTextureName + "_connected"));
+    public static CTSpriteShiftEntry getCT(CTType type, String blockTextureName, int textureAmount) {
+        return getCT(type, blockTextureName, blockTextureName, textureAmount);
     }
 
-    private static CTSpriteShiftEntry getCT(CTType type, String blockTextureName) {
-        return getCT(type, blockTextureName, blockTextureName);
+    public static CTSpriteShiftEntry getCT(CTType type, String blockTextureName, String connectedTextureName, int textureAmount) {
+        if (textureAmount < 1) {
+            throw new IllegalArgumentException("textureAmount must be at least 1");
+        }
+        ResourceLocation[] connected = new ResourceLocation[textureAmount];
+        for (int i = 0; i < textureAmount; i++) {
+            connected[i] = Confluence.asResource("block/connected/" + connectedTextureName + "_" + i);
+        }
+        return CTSpriteShifter.getCT(type, Confluence.asResource("block/" + blockTextureName), connected);
     }
-
 }

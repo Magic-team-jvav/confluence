@@ -14,29 +14,17 @@ public class CTSpriteShiftEntry extends SpriteShiftEntry {
         return type;
     }
 
-    /**
-     * @replaced <code>(localU) * 16</code> to <code>localU</code>
-     * @see TextureAtlasSprite#getU(float)
-     */
-    public float getTargetU(float localU, int index) {
-        float uOffset = (float) (index % type.getSheetSize());
-        return getTarget().getU((getUnInterpolatedU(getOriginal(), localU) + uOffset) / ((float) type.getSheetSize()));
+    /// @replaced <code>(localU) * 16</code> to <code>localU</code>
+    /// @see TextureAtlasSprite#getU(float)
+    public float getTargetU(float localU, int indicesIndex, int targetIndex) {
+        float uOffset = (float) (indicesIndex % type.getSheetSize());
+        return getTarget(targetIndex).getU((getUnInterpolatedU(getOriginal(), localU) + uOffset) / ((float) type.getSheetSize()));
     }
 
-    /**
-     * @replaced <code>(localV) * 16</code> to <code>localV</code>
-     * @see TextureAtlasSprite#getV(float)
-     */
-    public float getTargetV(float localV, int index) {
-        float vOffset = (float) (index / type.getSheetSize());
-        return getTarget().getV((getUnInterpolatedV(getOriginal(), localV) + vOffset) / ((float) type.getSheetSize()));
-    }
-
-    // Confluence Custom Start
-    public float getSelectedTargetU(float localU, int index, int selected, int width) {
-        int sheetSize = type.getSheetSize();
-        int total = sheetSize * width;
-        float uOffset = (index % sheetSize) + (total - sheetSize) * selected;
-        return getTarget().getU((getUnInterpolatedU(getOriginal(), localU) + uOffset) / total);
+    /// @replaced <code>(localV) * 16</code> to <code>localV</code>
+    /// @see TextureAtlasSprite#getV(float)
+    public float getTargetV(float localV, int indicesIndex, int targetIndex) {
+        float vOffset = (float) (indicesIndex / type.getSheetSize());
+        return getTarget(targetIndex).getV((getUnInterpolatedV(getOriginal(), localV) + vOffset) / ((float) type.getSheetSize()));
     }
 }

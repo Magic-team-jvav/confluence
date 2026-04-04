@@ -26,7 +26,6 @@ import java.util.concurrent.CompletableFuture;
 import static org.confluence.mod.Confluence.MODID;
 import static org.confluence.mod.common.init.block.ChestBlocks.*;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
-import static org.confluence.mod.common.init.block.DecorativeBlocks.CHISELED_LEAD_BRICKS;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.ModBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.*;
@@ -278,7 +277,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DISC_BLOCK.get(),
                 DISC_STAIRS.get(),
                 DISC_SLAB.get(),
-                MOON_PLATE.get(),
                 MOON_PLATE_SLAB.get(),
                 MOON_PLATE_STAIRS.get(),
                 OBSIDIAN_BRICKS.get(),

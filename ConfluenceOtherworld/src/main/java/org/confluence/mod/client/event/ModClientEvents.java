@@ -16,7 +16,6 @@ import net.minecraft.core.DefaultedMappedRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
@@ -510,7 +509,7 @@ public final class ModClientEvents {
         TextureAtlas atlas = event.getAtlas();
         StitchedSprite.onTextureStitchPost(atlas);
 
-        if (InventoryMenu.BLOCK_ATLAS.equals(atlas.location())) {
+        if (ModClientSetups.VANILLA_BLOCK_ATLAS.equals(atlas.location())) {
             Map<ResourceLocation, TextureAtlasSprite> textures = atlas.getTextures();
             for (ResourceLocation key : ClientUtils.ORIGINAL) {
                 TextureAtlasSprite sprite = textures.get(key);
@@ -522,6 +521,11 @@ public final class ModClientEvents {
             }
             ClientUtils.ORIGINAL.clear();
         }
+    }
+
+    @SubscribeEvent
+    public static void registerMaterialAtlasesEvent(RegisterMaterialAtlasesEvent event) {
+        event.register(ModClientSetups.ENTITY_BLOOD_ATLAS, Confluence.asResource("entity_blood"));
     }
 
     @SubscribeEvent

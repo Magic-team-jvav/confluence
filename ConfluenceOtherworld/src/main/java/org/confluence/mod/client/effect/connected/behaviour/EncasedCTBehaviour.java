@@ -35,5 +35,4 @@ public class EncasedCTBehaviour extends ConnectedTextureBehaviour.Base {
 	public CTSpriteShiftEntry getShift(BlockState state, Direction direction, @Nullable TextureAtlasSprite sprite) {
 		return shift;
 	}
-
 }

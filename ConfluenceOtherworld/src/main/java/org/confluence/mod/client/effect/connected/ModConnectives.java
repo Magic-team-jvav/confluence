@@ -4,6 +4,7 @@ import net.minecraft.world.level.block.Block;
 import org.confluence.mod.client.effect.connected.behaviour.ConnectedTextureBehaviour;
 import org.confluence.mod.client.effect.connected.behaviour.EncasedCTBehaviour;
 import org.confluence.mod.client.effect.connected.behaviour.SimpleCTBehaviour;
+import org.confluence.mod.client.effect.connected.custom.PillarCTModel;
 import org.confluence.mod.client.effect.connected.custom.RandomizeCTModel;
 import org.confluence.mod.client.effect.connected.custom.WeightedCTModel;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -22,40 +23,42 @@ public final class ModConnectives {
         register(ModBlocks.ANDESITE_CASING.get(), () -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING));
         registerCasingConnectivity(ModBlocks.ANDESITE_CASING.get(), (block, cc) -> cc.makeCasing(block, AllSpriteShifts.ANDESITE_CASING));
 
-        register(DecorativeBlocks.SUN_PLATE.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.SUN_PLATE));
-        registerRandomize(DecorativeBlocks.MOON_PLATE.get(),  () -> new SimpleCTBehaviour(AllSpriteShifts.MOON_PLATE),10);
-        registerWeighted(DecorativeBlocks.BLUE_GEL_BLOCK.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BLUE_GEL_BLOCK), 5, 1);
-        registerWeighted(DecorativeBlocks.FROZEN_GEL_BLOCK.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.FROZEN_GEL_BLOCK), 5, 1);
-        register(FunctionalBlocks.ECHO_BLOCK.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.ECHO_BLOCK));
+        register(DecorativeBlocks.SUN_PLATE.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "sun_plate"));
+        registerRandomize(DecorativeBlocks.MOON_PLATE.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "moon_plate", 10), 10);
+        registerWeighted(DecorativeBlocks.BLUE_GEL_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "blue_gel_block", 2), 5, 1);
+        registerWeighted(DecorativeBlocks.FROZEN_GEL_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "frozen_gel_block", 2), 5, 1);
+        register(FunctionalBlocks.ECHO_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "echo_block"));
 
-        register(NatureBlocks.PALM_LOG_BLOCKS.CHISELED_PLANKS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CHISELED_PALM_PLANKS));
-        register(DecorativeBlocks.GRANITE_COLUMN.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.GRANITE_COLUMN));
-        register(DecorativeBlocks.MARBLE_COLUMN.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MARBLE_COLUMN));
+        register(NatureBlocks.PALM_LOG_BLOCKS.CHISELED_PLANKS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "chiseled_palm_planks"));
+        register(DecorativeBlocks.GRANITE_COLUMN.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "granite_column"));
+        register(DecorativeBlocks.MARBLE_COLUMN.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "marble_column"));
 
-        register(DecorativeBlocks.WHITE_PAPER_PANE.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PAPER_PANE));
-        register(DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PAPER_PANE_LAMP));
-        register(DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MALACHITE_PAPER_PANE_LAMP));
-        register(DecorativeBlocks.MALACHITE_PAPER_PANE.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MALACHITE_PAPER_PANE));
+        register(DecorativeBlocks.WHITE_PAPER_PANE.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "white_paper_pane"));
+        register(DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "white_paper_pane_lamp"));
+        register(DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "malachite_paper_pane_lamp"));
+        register(DecorativeBlocks.MALACHITE_PAPER_PANE.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "malachite_paper_pane"));
 
-        registerWeighted(DecorativeBlocks.WHITE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.LIGHT_GRAY_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.GRAY_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.GRAY_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.BLACK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BLACK_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.BROWN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BROWN_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.RED_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.RED_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.ORANGE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.ORANGE_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.YELLOW_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.YELLOW_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.LIME_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.LIME_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.GREEN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.GREEN_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.CYAN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CYAN_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.LIGHT_BLUE_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.BLUE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.BLUE_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.PURPLE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PURPLE_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MAGENTA_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.PINK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PINK_PURE_GLASS), 1, 5);
-        registerWeighted(DecorativeBlocks.PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.PURE_GLASS), 1, 5);
+        registerWeighted(DecorativeBlocks.WHITE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "white_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "light_gray_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.GRAY_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "gray_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.BLACK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "black_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.BROWN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "brown_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.RED_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "red_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.ORANGE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "orange_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.YELLOW_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "yellow_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.LIME_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "lime_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.GREEN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "green_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.CYAN_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "cyan_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "light_blue_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.BLUE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "blue_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.PURPLE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "purple_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "magenta_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.PINK_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "pink_pure_glass", 2), 1, 5);
+        registerWeighted(DecorativeBlocks.PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "pure_glass", 2), 1, 5);
 
-        register(DecorativeBlocks.SOUL_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.SOUL_GLASS));
+        register(DecorativeBlocks.SOUL_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "soul_glass"));
+
+        registerPillar(DecorativeBlocks.LIGHT_BLUE_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "light_blue_balloon");
     }
 
     /// 目前仅用来注册机壳
@@ -90,5 +93,14 @@ public final class ModConnectives {
     /// @param weights          一个权重数组
     private static void registerWeighted(Block entry, Supplier<ConnectedTextureBehaviour> behaviorSupplier, int... weights) {
         MODEL_SWAPPER.getCustomBlockModels().register(entry, model -> new WeightedCTModel(model, behaviorSupplier.get(), weights));
+    }
+
+    /// 注册top bottom side的连接材质模型
+    ///
+    /// @param entry            注册连接材质的方块
+    /// @param type             连接类型
+    /// @param blockTextureName 块贴图名称
+    private static void registerPillar(Block entry, CTType type, String blockTextureName) {
+        MODEL_SWAPPER.getCustomBlockModels().register(entry, model -> new PillarCTModel(model, type, blockTextureName));
     }
 }

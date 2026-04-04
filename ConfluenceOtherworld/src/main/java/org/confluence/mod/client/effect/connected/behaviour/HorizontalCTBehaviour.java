@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.client.effect.connected.CTSpriteShiftEntry;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class HorizontalCTBehaviour extends ConnectedTextureBehaviour.Base {
 	protected CTSpriteShiftEntry topShift;
@@ -20,7 +20,7 @@ public class HorizontalCTBehaviour extends ConnectedTextureBehaviour.Base {
 	}
 
 	@Override
-	public CTSpriteShiftEntry getShift(BlockState state, Direction direction, @NotNull TextureAtlasSprite sprite) {
+	public CTSpriteShiftEntry getShift(BlockState state, Direction direction, @Nullable TextureAtlasSprite sprite) {
 		return direction.getAxis().isHorizontal() ? layerShift : topShift;
 	}
 }

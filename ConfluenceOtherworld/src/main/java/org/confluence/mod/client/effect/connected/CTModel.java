@@ -53,13 +53,15 @@ public class CTModel extends BakedModelWrapperWithData {
 		List<BakedQuad> quads = super.getQuads(state, side, rand, extraData, renderType);
 		CTData data = extraData.get(CT_PROPERTY);
 		if (data == null) return quads;
+        int targetIndex = getTargetIndex(side, rand);
+        if (targetIndex == -1) return quads;
 		quads = new ArrayList<>(quads);
 
 		for (int i = 0; i < quads.size(); i++) {
 			BakedQuad quad = quads.get(i);
 
-			int index = data.get(quad.getDirection());
-			if (index == -1)
+			int indicesIndex = data.get(quad.getDirection());
+			if (indicesIndex == -1)
 				continue;
 
 			CTSpriteShiftEntry spriteShift = behaviour.getShift(state, quad.getDirection(), quad.getSprite());
@@ -74,8 +76,8 @@ public class CTModel extends BakedModelWrapperWithData {
 			for (int vertex = 0; vertex < 4; vertex++) {
 				float u = BakedQuadHelper.getU(vertexData, vertex);
 				float v = BakedQuadHelper.getV(vertexData, vertex);
-				BakedQuadHelper.setU(vertexData, vertex, spriteShift.getTargetU(u, index));
-				BakedQuadHelper.setV(vertexData, vertex, spriteShift.getTargetV(v, index));
+				BakedQuadHelper.setU(vertexData, vertex, spriteShift.getTargetU(u, indicesIndex, targetIndex));
+				BakedQuadHelper.setV(vertexData, vertex, spriteShift.getTargetV(v, indicesIndex, targetIndex));
 			}
 
 			quads.set(i, newQuad);
@@ -83,6 +85,10 @@ public class CTModel extends BakedModelWrapperWithData {
 
 		return quads;
 	}
+
+    protected int getTargetIndex(Direction side, RandomSource random) {
+        return 0;
+    }
 
 	protected static class CTData {
 		private final int[] indices;
@@ -100,5 +106,4 @@ public class CTModel extends BakedModelWrapperWithData {
 			return indices[face.get3DDataValue()];
 		}
 	}
-
 }

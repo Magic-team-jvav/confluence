@@ -165,6 +165,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 200);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 30);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 200);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
 
 

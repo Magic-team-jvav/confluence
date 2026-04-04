@@ -26,7 +26,8 @@ public class EndGrassBlock extends Block {
         if (!level.isAreaLoaded(pos, 3)) return;
         boolean isInverse = state.is(NatureBlocks.INVERSE_GRASS_BLOCK.get());
         BlockPos checkPos = isInverse ? pos.below() : pos.above();
-        if (level.getBlockState(checkPos).isSolid()) {
+        BlockState checkState = level.getBlockState(checkPos);
+        if (checkState.isSolidRender(level, checkPos)) {
             level.setBlockAndUpdate(pos, degenerateTo.get().defaultBlockState());
         }
     }

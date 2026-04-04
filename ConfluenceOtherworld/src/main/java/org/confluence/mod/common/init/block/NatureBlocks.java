@@ -41,8 +41,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static net.minecraft.world.level.block.Blocks.GLASS;
-import static net.minecraft.world.level.block.Blocks.OBSIDIAN;
+import static net.minecraft.world.level.block.Blocks.*;
 import static org.confluence.mod.common.block.natural.LogBlockSet.WoodSetType.*;
 
 @ParametersAreNonnullByDefault
@@ -269,7 +268,7 @@ public class NatureBlocks {
     // 末地 - 倒悬主题
     public static final DeferredBlock<Block> INVERSE_GRASS_BLOCK = registerWithItem("inverse_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));
     public static final LogBlockSet GAZE_LOG_BLOCKS = LogBlockSet.builder("gaze", true, GAZE).build();
-
+    public static final DeferredBlock<Block> INVERSE_TUBER = registerWithItem("inverse_tuber", () -> new CandyBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_GREEN)));
     // 末地 - 月光主题
     public static final DeferredBlock<Block> MOONLIT_GRASS_BLOCK = registerWithItem("moonlit_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));
     public static final LogBlockSet MOONGLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("moonglow_willow", true, MOONGLOW_WILLOW).build();

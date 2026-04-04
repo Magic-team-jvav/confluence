@@ -1855,6 +1855,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.MOONLIT_GRASS_BLOCK.get(), "月华草方块");
 
         add(NatureBlocks.GLOOM_OBSIDIAN.get(), "黯虚黑曜石");
+        add(NatureBlocks.INVERSE_TUBER.get(), "晖落块茎");
 
         add(NatureBlocks.DESERT_GRASS.get(), "沙漠草");
         add(NatureBlocks.DESERT_TALL_GRASS.get(), "沙漠高草");
@@ -2027,6 +2028,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.JOHNNY_O_LANTERN.get(), "白南瓜灯");
         add(DecorativeBlocks.GOLDEN_MELON.get(), "金西瓜");
         add(DecorativeBlocks.ICE_MELON.get(), "冰西瓜");
+
+        add(DecorativeBlocks.LIGHT_BLUE_BALLOON.get(), "淡蓝色气球");
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");

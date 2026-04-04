@@ -1,9 +1,9 @@
 {
 "parent":"block/cube_bottom_top",
 "textures":{
-"bottom":"confluence:block/sun_plate",
-"top":"confluence:block/sun_plate",
-"side":"confluence:block/sun_plate"
+"bottom":"confluence:block/moon_plate",
+"top":"confluence:block/moon_plate",
+"side":"confluence:block/moon_plate"
 },
 "render_type":"solid"
 }

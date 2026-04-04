@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/stony_log_end",
+		"0": "confluence:block/stony_log_top",
 		"1": "confluence:block/topaz_branches",
-		"particle": "confluence:block/stony_log_end"
+		"particle": "confluence:block/stony_log_top"
 	},
 	"elements": [
 		{

@@ -30,6 +30,7 @@ public final class CommonConfigs {
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
     public static BooleanValue ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES;
     private static BooleanValue DRAGON_CHARGE_PLAYER;
+    public static BooleanValue STOP_ASK_FOR_SOFTCORE;
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
@@ -162,6 +163,7 @@ public final class CommonConfigs {
             NPC_INVULNERABLE_TO_PLAYER = builder.define("npcInvulnerableToPlayer", true);
             ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
             DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
+            STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);
             builder.pop();
         }
         {

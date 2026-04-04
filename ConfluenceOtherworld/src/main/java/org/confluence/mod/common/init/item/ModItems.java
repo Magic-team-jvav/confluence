@@ -87,6 +87,7 @@ public final class ModItems {
 
     public static final DeferredItem<BestiaryItem> BESTIARY = HIDDEN.register("bestiary", BestiaryItem::new);
     public static final DeferredItem<GroupItem> GROUP = HIDDEN.register("group", GroupItem::new);
+    public static final DeferredItem<Item> BACKGROUND_IMAGE_MAKER = HIDDEN.register("background_image_maker", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.MASTER));
 
     public static final DeferredItem<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN.get(), ModRarity.WHITE, ModItems.SILVER_COIN, 100));
     public static final DeferredItem<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN.get(), ModRarity.ORANGE, ModItems.GOLD_COIN, 100));

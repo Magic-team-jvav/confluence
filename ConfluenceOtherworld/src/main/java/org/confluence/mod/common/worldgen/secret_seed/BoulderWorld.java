@@ -28,6 +28,11 @@ public class BoulderWorld extends SecretSeed {
         return "redigit".equals(seed);
     }
 
+    @Override
+    public boolean isHided() {
+        return true;
+    }
+
     public static void createBoulderWhenBlockDestroy(ServerPlayer serverPlayer, BlockState blockState, BlockPos pos) {
         if (ModSecretSeeds.BOULDER_WORLD.match(serverPlayer.server) && serverPlayer.level().random.nextFloat() <= 0.01F) {
             if (blockState.getCollisionShape(serverPlayer.level(), pos) == Shapes.block()) {

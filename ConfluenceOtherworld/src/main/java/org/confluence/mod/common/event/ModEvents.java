@@ -80,6 +80,7 @@ import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
+import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
@@ -254,6 +255,7 @@ public final class ModEvents {
                 .playToServer(GiveBannerPacketC2S.TYPE, GiveBannerPacketC2S.STREAM_CODEC, GiveBannerPacketC2S::handle)
 
                 .playBidirectional(TeamPacket.TYPE, TeamPacket.STREAM_CODEC, TeamPacket::handle)
+                .playBidirectional(AskForSoftcorePacket.TYPE, AskForSoftcorePacket.STREAM_CODEC, AskForSoftcorePacket::handle)
 
                 .configurationToClient(RequestAchievementsPacketS2C.TYPE, RequestAchievementsPacketS2C.STREAM_CODEC, RequestAchievementsPacketS2C::handle)
                 .configurationToServer(ReplyAchievementsPacketC2S.TYPE, ReplyAchievementsPacketC2S.STREAM_CODEC, ReplyAchievementsPacketC2S::handle)

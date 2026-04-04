@@ -23,6 +23,11 @@ public class TooEasy extends SecretSeed {
         return "too easy".equals(seed);
     }
 
+    @Override
+    public boolean isHided() {
+        return true;
+    }
+
     public static void setToHardmode(MinecraftServer server) {
         if (ModSecretSeeds.TOO_EASY.match(server) && !KillBoard.INSTANCE.getGamePhase().isHardmode()) {
             if (getScheduler(false) != null) return;

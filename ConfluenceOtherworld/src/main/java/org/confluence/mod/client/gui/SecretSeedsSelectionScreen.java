@@ -46,28 +46,15 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class SecretSeedsSelectionScreen extends Screen {
     public static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("seed_icon"), Confluence.asResource("seed_icon_highlighted"));
     private static final ResourceLocation FIRST = Confluence.asResource("textures/gui/secret_seeds_selection/first.png");
-    private static final SecretSeed[] SPECIAL_SEEDS = new SecretSeed[]{
-            ModSecretSeeds.NOT_THE_BEES,
-            ModSecretSeeds.DRUNK_WORLD,
-            ModSecretSeeds.CELEBRATIONMK10,
-            ModSecretSeeds.THE_CONSTANT,
-            ModSecretSeeds.FOR_THE_WORTHY,
-            ModSecretSeeds.NO_TRAPS,
-            ModSecretSeeds.DONT_DIG_UP,
-            ModSecretSeeds.GET_FIXED_BOI,
-            ModSecretSeeds.SKYBLOCK
-    };
+    private static final SecretSeed[] SPECIAL_SEEDS = ModSecretSeeds.VALUES.stream().filter(Predicate.not(SecretSeed::isHided)).toArray(SecretSeed[]::new);
     private static final Path UNLOCKED_SECRET_SEEDS_PATH = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("unlocked_secret_seeds.json");
     private static final Codec<Set<SecretSeed>> UNLOCKED_SECRET_SEEDS_CODEC = ModSecretSeeds.CODEC.listOf().xmap(LinkedHashSet::new, ArrayList::new);
-    private static final SecretSeed[] SECRET_SEEDS = new SecretSeed[]{
-            ModSecretSeeds.BOULDER_WORLD,
-            ModSecretSeeds.REALLY_SMALL,
-            ModSecretSeeds.TOO_EASY
-    };
+    private static final SecretSeed[] SECRET_SEEDS = ModSecretSeeds.VALUES.stream().filter(SecretSeed::isHided).toArray(SecretSeed[]::new);
     private static final Long2ObjectArrayMap<Triple<ResourceLocation, Component, Component>> DESCRIPTIONS = Util.make(new Long2ObjectArrayMap<>(12), map -> {
         ResourceLocation normal = Confluence.asResource("textures/gui/secret_seeds_selection/world_icon/normal.png");
         map.defaultReturnValue(new ImmutableTriple<>(

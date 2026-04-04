@@ -53,6 +53,7 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.DynamicBiomeUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Contract;
@@ -283,6 +284,12 @@ public final class ModCommands {
                             return 1;
                         }))
                 )
+                .then(Commands.literal("stopAskForSoftcore").executes(context -> {
+                    ServerLevel overworld = context.getSource().getServer().getLevel(OverworldUtils.dimension());
+                    if (overworld == null) return 0;
+                    ConfluenceData.get(overworld).setStopAskForSoftcore(true);
+                    return 1;
+                }))
         );
     }
 

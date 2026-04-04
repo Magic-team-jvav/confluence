@@ -225,6 +225,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.deerclopsNatureSpawning", "Deerclops Natural Spawning");
         add("confluence.configuration.dragonChargePlayer", "Fix Ender Dragon attacking players");
         add("confluence.configuration.dragonChargePlayer.tooltip", "When enabled, the Ender Dragon will dive to attack players");
+        add("confluence.configuration.stopAskForSoftcore", "Stop Ask for Softcore");
+        add("confluence.configuration.stopAskForSoftcore.tooltip", "When enabled, the server will not ask for the Softcore.");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Soul.button", "Soul");
@@ -468,6 +470,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.deerclopsNatureSpawning", "巨鹿自然生成");
         add("confluence.configuration.dragonChargePlayer", "末影龙攻击玩家修复");
         add("confluence.configuration.dragonChargePlayer.tooltip", "开启后，末影龙将会俯冲攻击玩家");
+        add("confluence.configuration.stopAskForSoftcore", "停止请求软核模式");
+        add("confluence.configuration.stopAskForSoftcore.tooltip", "开启后，服务器将不会请求软核模式");
+
+
 
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");

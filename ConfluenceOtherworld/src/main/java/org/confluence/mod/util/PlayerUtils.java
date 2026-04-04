@@ -47,6 +47,7 @@ import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -467,5 +468,14 @@ public final class PlayerUtils {
         ManaStorage.of(player).flushAbility(player);
         FishingPowerInfoPacketS2C.sendToClient(player);
         VisibilityPacketS2C.sendEcho(player);
+    }
+
+    public static void askForSoftcore(ServerPlayer player) {
+        if (CommonConfigs.STOP_ASK_FOR_SOFTCORE.get()) return;
+        ServerLevel overworld = player.server.getLevel(OverworldUtils.dimension());
+        if (overworld == null) return;
+        if (overworld.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) return;
+        if (ConfluenceData.get(overworld).isStopAskForSoftcore()) return;
+        PacketDistributor.sendToPlayer(player, new AskForSoftcorePacket(true));
     }
 }

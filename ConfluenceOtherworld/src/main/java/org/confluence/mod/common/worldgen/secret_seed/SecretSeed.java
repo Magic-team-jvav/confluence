@@ -7,6 +7,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.mixed.IMinecraftServer;
+import org.jetbrains.annotations.ApiStatus;
 
 public abstract class SecretSeed {
     private final long flag;
@@ -45,5 +46,10 @@ public abstract class SecretSeed {
 
     public boolean match(long secretFlag) {
         return (secretFlag & flag) != 0;
+    }
+
+    @ApiStatus.OverrideOnly
+    public boolean isHided() {
+        return false;
     }
 }

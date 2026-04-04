@@ -22,6 +22,11 @@ public class ReallySmall extends SecretSeed {
         return "really small".equals(seed);
     }
 
+    @Override
+    public boolean isHided() {
+        return true;
+    }
+
     public static void giveStepStool(ServerPlayer player) {
         CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
         if (!tag.getBoolean("confluence:initial_step_stool")) {

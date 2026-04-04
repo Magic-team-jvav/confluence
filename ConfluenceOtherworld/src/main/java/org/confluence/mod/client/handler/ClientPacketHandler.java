@@ -176,4 +176,14 @@ public final class ClientPacketHandler {
         GlobalCloakData.INSTANCE.rollbackAllProperties();
         ILevelRenderer.rebuildAllChunks();
     }
+
+    private static boolean askForSoftcoreLayer = false;
+
+    public static void setAskForSoftcoreLayer(boolean b) {
+        askForSoftcoreLayer = b;
+    }
+
+    public static boolean isAskForSoftcoreLayer() {
+        return askForSoftcoreLayer;
+    }
 }

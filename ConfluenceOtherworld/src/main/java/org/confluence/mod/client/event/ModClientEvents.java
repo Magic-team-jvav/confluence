@@ -195,6 +195,7 @@ public final class ModClientEvents {
 
         event.registerBelow(VanillaGuiLayers.CROSSHAIR, Confluence.asResource("house_select"), new HouseSelectHUD());
         event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
+        event.registerAboveAll(Confluence.asResource("ask_for_softcore"), new AskForSoftcoreLayer());
     }
 
     @SubscribeEvent

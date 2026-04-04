@@ -109,6 +109,8 @@ public final class PlayerEvents {
             ReallySmall.scalePlayer(player);
         }
         TooEasy.setToHardmode(player.server);
+
+        PlayerUtils.askForSoftcore(player);
     }
 
     @SubscribeEvent

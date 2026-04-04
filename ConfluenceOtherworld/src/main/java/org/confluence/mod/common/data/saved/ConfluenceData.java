@@ -34,6 +34,7 @@ public final class ConfluenceData extends SavedData {
     private int revealStep = -1;
     private final MeteoriteTracker meteoriteTracker = MeteoriteTracker.INSTANCE;
     private int evilBrokenCount = 0;
+    private boolean stopAskForSoftcore = false;
 
     ConfluenceData() {
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
@@ -52,6 +53,7 @@ public final class ConfluenceData extends SavedData {
         this.revealStep = nbt.getInt("revealStep");
         this.meteoriteTracker.deserialize(nbt);
         this.evilBrokenCount = nbt.getInt("evilBrokenCount");
+        this.stopAskForSoftcore = nbt.getBoolean("stopAskForSoftcore");
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
@@ -98,6 +100,7 @@ public final class ConfluenceData extends SavedData {
         nbt.putInt("revealStep", revealStep);
         meteoriteTracker.serialize(nbt);
         nbt.putInt("evilBrokenCount", evilBrokenCount);
+        nbt.putBoolean("stopAskForSoftcore", stopAskForSoftcore);
         return nbt;
     }
 
@@ -143,9 +146,7 @@ public final class ConfluenceData extends SavedData {
         return false;
     }
 
-    /**
-     * 一般为[-1, 8]
-     */
+    /// 一般为[-1, 8]
     public int getRevealStep() {
         return revealStep;
     }
@@ -169,6 +170,15 @@ public final class ConfluenceData extends SavedData {
 
     public int getEvilBrokenCount() {
         return evilBrokenCount;
+    }
+
+    public void setStopAskForSoftcore(boolean stop) {
+        this.stopAskForSoftcore = stop;
+        setDirty();
+    }
+
+    public boolean isStopAskForSoftcore() {
+        return stopAskForSoftcore;
     }
 
     public static void updateWind(ServerLevel level) {

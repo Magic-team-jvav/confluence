@@ -56,7 +56,7 @@ public final class ModSecretSeeds {
         return new ObjectBooleanImmutablePair<>(worldOptions.withSeed(OptionalLong.of(pair.key().orElseGet(WorldOptions::randomSeed))), pair.rightLong() != 0);
     }
 
-    /// 可以匹配
+    /// 可以匹配诸如：
     ///
     /// secret seed
     ///

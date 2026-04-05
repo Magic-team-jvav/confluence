@@ -26,12 +26,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
@@ -66,6 +64,7 @@ import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.item.common.StaffOfRegrowth;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
+import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -187,14 +186,7 @@ public final class PlayerEvents {
         DungeonCompass.matches(player, event.getHand(), level, itemStack, blockState, blockPos);
 
         if (player instanceof ServerPlayer serverPlayer) {
-            if (blockState.getBlock() instanceof BedBlock bedBlock && ModSecretSeeds.NEVER_SLEEP.match(serverPlayer.server)) {
-                level.removeBlock(blockPos, false);
-                BlockPos blockpos = blockPos.relative(blockState.getValue(BedBlock.FACING).getOpposite());
-                if (level.getBlockState(blockpos).is(bedBlock)) {
-                    level.removeBlock(blockpos, false);
-                }
-                Vec3 vec3 = blockpos.getCenter();
-                level.explode(null, level.damageSources().badRespawnPointExplosion(vec3), null, vec3, 5.0F, true, Level.ExplosionInteraction.BLOCK);
+            if (NeverSleep.boom(serverPlayer.server, blockState, level, blockPos)) {
                 event.setCancellationResult(InteractionResult.SUCCESS);
             }
         }

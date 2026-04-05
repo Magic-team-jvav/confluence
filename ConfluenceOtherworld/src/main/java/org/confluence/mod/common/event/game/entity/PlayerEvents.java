@@ -12,6 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -25,10 +26,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
@@ -182,6 +185,19 @@ public final class PlayerEvents {
         }
 
         DungeonCompass.matches(player, event.getHand(), level, itemStack, blockState, blockPos);
+
+        if (player instanceof ServerPlayer serverPlayer) {
+            if (blockState.getBlock() instanceof BedBlock bedBlock && ModSecretSeeds.NEVER_SLEEP.match(serverPlayer.server)) {
+                level.removeBlock(blockPos, false);
+                BlockPos blockpos = blockPos.relative(blockState.getValue(BedBlock.FACING).getOpposite());
+                if (level.getBlockState(blockpos).is(bedBlock)) {
+                    level.removeBlock(blockpos, false);
+                }
+                Vec3 vec3 = blockpos.getCenter();
+                level.explode(null, level.damageSources().badRespawnPointExplosion(vec3), null, vec3, 5.0F, true, Level.ExplosionInteraction.BLOCK);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -406,6 +422,8 @@ public final class PlayerEvents {
     public static void canSleep(CanPlayerSleepEvent event) {
         if (BloodMoonGameEvent.INSTANCE.started()) {
             event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
+        } else if (ModSecretSeeds.NEVER_SLEEP.match(event.getEntity().server)) {
+            event.setProblem(Player.BedSleepingProblem.OTHER_PROBLEM);
         }
     }
 
@@ -413,6 +431,13 @@ public final class PlayerEvents {
     public static void canContinueSleeping(CanContinueSleepingEvent event) {
         if (event.mayContinueSleeping() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setContinueSleeping(false);
+        }
+    }
+
+    @SubscribeEvent
+    public static void canSpawnPhantom(PlayerSpawnPhantomsEvent event) {
+        if (ModSecretSeeds.NEVER_SLEEP.match(((ServerPlayer) event.getEntity()).server)) {
+            event.setResult(PlayerSpawnPhantomsEvent.Result.ALLOW);
         }
     }
 

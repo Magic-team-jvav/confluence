@@ -578,24 +578,24 @@ public class LogBlockSet {
         }
     }
 
-    public enum WoodSetType {
-        EBONY("ebony"),
-        PEARL("pearl"),
-        SHADOW("shadow"),
-        PALM("palm"),
-        BAOBAB("baobab"),
-        GLOWING_MUSHROOM("glowing_mushroom"),
-        YELLOW_WILLOW("yellow_willow"),
-        LIVING("living"),
-        LIVING_MAHOGANY("living_mahogany"),
-        ASH("ash"),
-        DYNASTY("dynasty"),
-        PINE("pine"),
-        GAZE("gaze"),
-        VOID("void"),
-        SPOOKY("spooky"),
-        MOONGLOW_WILLOW("moonglow_willow"),
-        FEY("fey");
+    public static class WoodSetType {
+        public static final WoodSetType EBONY = new WoodSetType("ebony");
+        public static final WoodSetType PEARL = new WoodSetType("pearl");
+        public static final WoodSetType SHADOW = new WoodSetType("shadow");
+        public static final WoodSetType PALM = new WoodSetType("palm");
+        public static final WoodSetType BAOBAB = new WoodSetType("baobab");
+        public static final WoodSetType GLOWING_MUSHROOM = new WoodSetType("glowing_mushroom");
+        public static final WoodSetType YELLOW_WILLOW = new WoodSetType("yellow_willow");
+        public static final WoodSetType LIVING = new WoodSetType("living");
+        public static final WoodSetType LIVING_MAHOGANY = new WoodSetType("living_mahogany");
+        public static final WoodSetType ASH = new WoodSetType("ash");
+        public static final WoodSetType DYNASTY = new WoodSetType("dynasty");
+        public static final WoodSetType PINE = new WoodSetType("pine");
+        public static final WoodSetType GAZE = new WoodSetType("gaze");
+        public static final WoodSetType VOID = new WoodSetType("void");
+        public static final WoodSetType SPOOKY = new WoodSetType("spooky");
+        public static final WoodSetType MOONGLOW_WILLOW = new WoodSetType("moonglow_willow");
+        public static final WoodSetType FEY = new WoodSetType("fey");
 
         public final BlockSetType SET;
         public final WoodType TYPE;

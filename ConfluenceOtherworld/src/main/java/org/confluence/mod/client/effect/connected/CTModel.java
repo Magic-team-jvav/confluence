@@ -53,7 +53,7 @@ public class CTModel extends BakedModelWrapperWithData {
 		List<BakedQuad> quads = super.getQuads(state, side, rand, extraData, renderType);
 		CTData data = extraData.get(CT_PROPERTY);
 		if (data == null) return quads;
-        int targetIndex = getTargetIndex(side, rand);
+        int targetIndex = getTargetIndex(rand);
         if (targetIndex == -1) return quads;
 		quads = new ArrayList<>(quads);
 
@@ -86,7 +86,7 @@ public class CTModel extends BakedModelWrapperWithData {
 		return quads;
 	}
 
-    protected int getTargetIndex(Direction side, RandomSource random) {
+    protected int getTargetIndex(RandomSource random) {
         return 0;
     }
 

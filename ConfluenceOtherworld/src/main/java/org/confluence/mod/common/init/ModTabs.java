@@ -96,6 +96,7 @@ public final class ModTabs {
                         output.accept(ConsumableItems.MANA_CRYSTAL);
                         output.accept(ConsumableItems.LIFE_CRYSTAL);
                         output.accept(ConsumableItems.LIFE_FRUIT);
+                        output.accept(FoodItems.END_DRAGON_FRUIT);
                         CreativeModeTab.Output finalOutput = output;
                         MaterialItems.ITEMS.getEntries().forEach(item -> finalOutput.accept(item.get()));
                         output.accept(ModBlocks.POO);
@@ -106,7 +107,7 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
                         CreativeModeTab.Output finalOutput = output;
-                        Consumer<Supplier<? extends ItemLike>> action = item -> finalOutput.accept(item.get());
+                        Consumer<DeferredHolder<?, ?>> action = item -> finalOutput.accept((ItemLike) item.get());
                         ModItems.ITEMS.getEntries().forEach(action);
                         output.accept(TCItems.DEMON_HEART);
                         ConsumableItems.ITEMS.getEntries().forEach(action);

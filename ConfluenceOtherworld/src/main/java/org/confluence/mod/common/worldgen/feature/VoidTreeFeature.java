@@ -18,7 +18,9 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.block.natural.EndDragonFruitBlock;
 import org.confluence.mod.common.block.natural.VoidTreeRootBlock;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.joml.Vector3d;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,9 +141,27 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
             level.setBlock(placePos, rootPlace, 3);
         });
         trunkSet.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock, 3));
+        placeDragonFruits(level, trunkSet, random);
         updateLeavesOptimized(level, trunkSet, leavesSet, true, false);
 
         return true;
+    }
+
+    private void placeDragonFruits(WorldGenLevel level, LongOpenHashSet trunkSet, RandomSource random) {
+        if (random.nextFloat() > 0.4F) return;
+        int count = random.nextInt(1, 4);
+        Direction[] horizontalDirections = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST};
+        for (int i = 0; i < count; i++) {
+            BlockPos trunkPos = BlockPos.of(trunkSet.toLongArray()[random.nextInt(2, trunkSet.size())]);
+            Direction direction = horizontalDirections[random.nextInt(4)];
+            BlockPos fruitPos = trunkPos.relative(direction);
+            if (level.getBlockState(fruitPos).canBeReplaced()) {
+                int age = random.nextInt(EndDragonFruitBlock.MAX_AGE + 1);
+                level.setBlock(fruitPos, NatureBlocks.END_DRAGON_FRUIT.get().defaultBlockState()
+                        .setValue(EndDragonFruitBlock.FACING, direction)
+                        .setValue(EndDragonFruitBlock.AGE, age), 3);
+            }
+        }
     }
 
     public record Config(BlockStateProvider trunk, BlockStateProvider root,

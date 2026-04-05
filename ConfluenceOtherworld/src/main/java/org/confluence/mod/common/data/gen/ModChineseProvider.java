@@ -3651,6 +3651,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.CHERRY.get(), "樱桃");
         add(FoodItems.COCONUT.get(), "椰子");
         add(FoodItems.DRAGON_FRUIT.get(), "火龙果");
+        add(FoodItems.END_DRAGON_FRUIT.get(), "龙果");
         add(FoodItems.GRAPE_FRUIT.get(), "葡萄柚");
         add(FoodItems.LEMON.get(), "柠檬");
         add(FoodItems.MANGO.get(), "芒果");

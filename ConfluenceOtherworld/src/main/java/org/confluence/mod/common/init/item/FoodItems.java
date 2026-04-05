@@ -175,6 +175,10 @@ public class FoodItems {
             () -> ModFoodProperties.wellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> DRAGON_FRUIT = registerNormalFood("dragon_fruit", ModRarity.GREEN,
             () -> ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f));
+    public static final DeferredItem<BaseFoodItem.BItem> END_DRAGON_FRUIT = registerBlockItemFood("end_dragon_fruit",
+            builder -> builder.rarity(ModRarity.BLUE)
+                    .food(ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f))
+                    .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), NatureBlocks.END_DRAGON_FRUIT);
     public static final DeferredItem<BaseFoodItem> GRAPE_FRUIT = registerNormalFood("grape_fruit", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> LEMON = registerNormalFood("lemon", ModRarity.BLUE,

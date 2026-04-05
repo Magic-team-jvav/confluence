@@ -86,6 +86,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.prefix_separator", " ");
         add("confluence.game_event", "Game Event");
 
+        add("confluence.difficulty_notice.ask", "You are in mediumcore! Do you want to change to softcore?");
+        add("confluence.difficulty_notice.sure", "Sure");
+        add("confluence.difficulty_notice.sure.tip", "Set keepInventory to true");
+        add("confluence.difficulty_notice.never", "Never");
+        add("confluence.difficulty_notice.never.tip", "Don't show this message again");
+        add("confluence.difficulty_notice.tip", "Hold Alt to select");
+
         add("itemGroup.confluence.log", "Log");
         add("itemGroup.confluence.leaves", "Leaves");
         add("itemGroup.confluence.sapling", "Sapling");

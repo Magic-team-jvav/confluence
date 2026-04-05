@@ -44,6 +44,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.prefix_separator", " ");
         add("confluence.game_event", "Game Event");
 
+        add("confluence.difficulty_notice.ask", "你现在处于中核模式！是否转换到软核模式？");
+        add("confluence.difficulty_notice.sure", "确定");
+        add("confluence.difficulty_notice.sure.tip", "已设置死亡保留物品栏");
+        add("confluence.difficulty_notice.never", "不再提醒");
+        add("confluence.difficulty_notice.never.tip", "不再提醒该消息");
+        add("confluence.difficulty_notice.tip", "按住 Alt 键进行选择");
+
         add("itemGroup.confluence.log", "原木");
         add("itemGroup.confluence.leaves", "树叶");
         add("itemGroup.confluence.sapling", "树苗");

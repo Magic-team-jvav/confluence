@@ -16,12 +16,12 @@ import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.network.AskForSoftcorePacket;
 
 public class AskForSoftcoreLayer implements LayeredDraw.Layer {
-    private static final Component ask = Component.literal("You are in mediumcore! Do you want to change to softcore?");
-    private static final Component sure = Component.literal("Sure").withStyle(ChatFormatting.GREEN);
-    private static final Component sureTip = Component.literal("Set keepInventory to true");
-    private static final Component never = Component.literal("Never").withStyle(ChatFormatting.RED);
-    private static final Component neverTip = Component.literal("Don't show this message again");
-    private static final Component tip = Component.literal("Hold Alt to select");
+    private static final Component ask = Component.translatable("confluence.difficulty_notice.ask");
+    private static final Component sure = Component.translatable("confluence.difficulty_notice.sure").withStyle(ChatFormatting.GREEN);
+    private static final Component sureTip = Component.translatable("confluence.difficulty_notice.sure.tip");
+    private static final Component never = Component.translatable("confluence.difficulty_notice.never").withStyle(ChatFormatting.RED);
+    private static final Component neverTip = Component.translatable("confluence.difficulty_notice.never.tip");
+    private static final Component tip = Component.translatable("confluence.difficulty_notice.tip");
     private static long stamp = -1;
 
     @Override

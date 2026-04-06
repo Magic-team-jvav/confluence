@@ -108,8 +108,8 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(SawmillCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SAWMILL_TYPE.get()));
         registration.addRecipes(SolidifierCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SOLIDIFIER_TYPE.get()));
         registration.addRecipes(HardmodeAnvilCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_ANVIL_TYPE.get()));
-        registration.addRecipes(ExtractinatorCategory.EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.EXTRACTINATOR, level.registryAccess()));
-        registration.addRecipes(ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR, level.registryAccess()));
+        registration.addRecipes(ExtractinatorCategory.EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.EXTRACTINATOR));
+        registration.addRecipes(ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR));
         registration.addRecipes(HardmodeForgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_FORGE_TYPE.get()));
         registration.addRecipes(LoomCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.LOOM_TYPE.get()));
         registration.addRecipes(DyeVatCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.DYE_VAT_TYPE.get()));

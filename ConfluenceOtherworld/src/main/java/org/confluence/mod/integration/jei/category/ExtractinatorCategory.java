@@ -19,25 +19,19 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.ExtractinatorData;
-import org.confluence.mod.common.init.ModTags;
 
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -139,26 +133,16 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
         inputSlot.setPosition(scrollGridWidget.getScreenRectangle().position().x() + 1, 1);
     }
 
-    public static List<IngredientPair> collectAll(DataMapType<Item, ExtractinatorData> type, RegistryAccess registryAccess) {
-        HolderLookup.RegistryLookup<Item> lookup = registryAccess.lookupOrThrow(Registries.ITEM);
-        Map<Item, ExtractinatorData> map = new IdentityHashMap<>();
-        collectAny(map, type, lookup, Tags.Items.GRAVELS);
-        collectAny(map, type, lookup, ModTags.Items.DESERT_FOSSIL);
-        collectAny(map, type, lookup, ModTags.Items.JUNK);
-        collectAny(map, type, lookup, ModTags.Items.MARINE_GRAVEL);
-        collectAny(map, type, lookup, ModTags.Items.SILT_BLOCK);
-        collectAny(map, type, lookup, ModTags.Items.SLUSH);
+    public static List<IngredientPair> collectAll(DataMapType<Item, ExtractinatorData> type) {
+        Map<ResourceKey<Item>, ExtractinatorData> map = BuiltInRegistries.ITEM.getDataMap(type);
         List<IngredientPair> list = Lists.newArrayListWithExpectedSize(map.size());
-        map.forEach((item, data) -> list.add(new IngredientPair(item.getDefaultInstance(), data)));
+        map.forEach((key, data) -> {
+            Item item = BuiltInRegistries.ITEM.get(key);
+            if (item != null) {
+                list.add(new IngredientPair(item.getDefaultInstance(), data));
+            }
+        });
         return list;
-    }
-
-    // 没有合并多个Data
-    private static void collectAny(Map<Item, ExtractinatorData> map, DataMapType<Item, ExtractinatorData> type, HolderLookup.RegistryLookup<Item> lookup, TagKey<Item> tagKey) {
-        lookup.get(tagKey).ifPresent(holders -> holders.stream().forEach(itemHolder -> {
-            ExtractinatorData data = itemHolder.getData(type);
-            if (data != null) map.put(itemHolder.value(), data);
-        }));
     }
 
     public record IngredientPair(ItemStack ingredient, ExtractinatorData data) {}

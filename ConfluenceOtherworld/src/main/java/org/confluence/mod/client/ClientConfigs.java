@@ -14,7 +14,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
@@ -175,9 +174,7 @@ public final class ClientConfigs {
         {
             builder.push("Entity");
             BLOODY_EFFECT = builder.define("bloodyEffect", true);
-            if (!LibUtils.isModLoaded("yes_steve_model")) {
-                GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
-            }
+            GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
             DAMAGE_INDICATOR = builder.define("damageIndicator", true);
             HEAL_INDICATOR = builder.define("healIndicator", true);
             builder.pop();

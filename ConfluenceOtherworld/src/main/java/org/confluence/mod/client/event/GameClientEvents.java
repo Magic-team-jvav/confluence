@@ -356,6 +356,7 @@ public final class GameClientEvents {
         boolean dead = living.isDeadOrDying();
         if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
             living.level().getProfiler().push("entity_dismemberment");
+            IClientLivingEntity.of(living).confluence$deadO(dead); // 阻断下一次post
             DeathAnimUtils.livingDeath(living);
             living.level().getProfiler().pop();
         }

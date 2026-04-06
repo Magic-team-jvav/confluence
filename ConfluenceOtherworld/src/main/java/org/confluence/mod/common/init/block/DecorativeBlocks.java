@@ -334,8 +334,22 @@ public class DecorativeBlocks {
     public static final DeferredBlock<WoolCarpetBlock> RAINBOW_CARPET = registerWithItem("rainbow_carpet", () -> new WoolCarpetBlock(DyeColor.PINK, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_PINK).strength(0.1F).sound(SoundType.WOOL).ignitedByLava()));
 
     // 气球
+    public static final DeferredBlock<Block> WHITE_BALLOON = registerWithItem("white_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.SNOW)));
+    public static final DeferredBlock<Block> LIGHT_GRAY_BALLOON = registerWithItem("light_gray_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+    public static final DeferredBlock<Block> GRAY_BALLOON = registerWithItem("gray_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_GRAY)));
+    public static final DeferredBlock<Block> BLACK_BALLOON = registerWithItem("black_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_BLACK)));
+    public static final DeferredBlock<Block> BROWN_BALLOON = registerWithItem("brown_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_BROWN)));
+    public static final DeferredBlock<Block> RED_BALLOON = registerWithItem("red_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_RED)));
+    public static final DeferredBlock<Block> ORANGE_BALLOON = registerWithItem("orange_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_ORANGE)));
+    public static final DeferredBlock<Block> YELLOW_BALLOON = registerWithItem("yellow_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_YELLOW)));
+    public static final DeferredBlock<Block> LIME_BALLOON = registerWithItem("lime_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_LIGHT_GREEN)));
+    public static final DeferredBlock<Block> GREEN_BALLOON = registerWithItem("green_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_GREEN)));
+    public static final DeferredBlock<Block> CYAN_BALLOON = registerWithItem("cyan_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_CYAN)));
     public static final DeferredBlock<Block> LIGHT_BLUE_BALLOON = registerWithItem("light_blue_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_BLUE)));
-
+    public static final DeferredBlock<Block> BLUE_BALLOON = registerWithItem("blue_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_BLUE)));
+    public static final DeferredBlock<Block> PURPLE_BALLOON = registerWithItem("purple_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_PURPLE)));
+    public static final DeferredBlock<Block> MAGENTA_BALLOON = registerWithItem("magenta_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_MAGENTA)));
+    public static final DeferredBlock<Block> PINK_BALLOON = registerWithItem("pink_balloon", () -> new Block(BlockBehaviour.Properties.ofFullCopy(WHITE_WOOL).mapColor(MapColor.COLOR_PINK)));
     // 圣物
     public static final DeferredBlock<RelicBlock> KING_SLIME_RELIC = registerRelic("king_slime_relic");
     public static final DeferredBlock<RelicBlock> EYE_OF_CTHULHU_RELIC = registerRelic("eye_of_cthulhu_relic");

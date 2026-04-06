@@ -2038,7 +2038,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.GOLDEN_MELON.get(), "金西瓜");
         add(DecorativeBlocks.ICE_MELON.get(), "冰西瓜");
 
+        add(DecorativeBlocks.WHITE_BALLOON.get(), "白色气球");
+        add(DecorativeBlocks.LIGHT_GRAY_BALLOON.get(), "淡灰色气球");
+        add(DecorativeBlocks.GRAY_BALLOON.get(), "灰色气球");
+        add(DecorativeBlocks.BLACK_BALLOON.get(), "黑色气球");
+        add(DecorativeBlocks.BROWN_BALLOON.get(), "棕色气球");
+        add(DecorativeBlocks.RED_BALLOON.get(), "红色气球");
+        add(DecorativeBlocks.ORANGE_BALLOON.get(), "橙色气球");
+        add(DecorativeBlocks.YELLOW_BALLOON.get(), "黄色气球");
+        add(DecorativeBlocks.LIME_BALLOON.get(), "黄绿色气球");
+        add(DecorativeBlocks.GREEN_BALLOON.get(), "绿色气球");
+        add(DecorativeBlocks.CYAN_BALLOON.get(), "青色气球");
         add(DecorativeBlocks.LIGHT_BLUE_BALLOON.get(), "淡蓝色气球");
+        add(DecorativeBlocks.BLUE_BALLOON.get(), "蓝色气球");
+        add(DecorativeBlocks.PURPLE_BALLOON.get(), "紫色气球");
+        add(DecorativeBlocks.MAGENTA_BALLOON.get(), "品红气球");
+        add(DecorativeBlocks.PINK_BALLOON.get(), "粉红气球");
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");

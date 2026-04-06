@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/balloon_melon_bottom",
+    "side": "confluence:block/balloon_melon_side",
+    "top": "confluence:block/balloon_melon_top"
+  }
+}

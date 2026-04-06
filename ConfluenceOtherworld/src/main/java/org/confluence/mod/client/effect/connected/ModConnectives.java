@@ -58,7 +58,7 @@ public final class ModConnectives {
 
         register(DecorativeBlocks.SOUL_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "soul_glass"));
 
-        registerPillar(DecorativeBlocks.LIGHT_BLUE_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "light_blue_balloon");
+        registerPillar(NatureBlocks.BALLOON_MELON.get(), AllCTTypes.OMNIDIRECTIONAL, "balloon_melon");
     }
 
     /// 目前仅用来注册机壳

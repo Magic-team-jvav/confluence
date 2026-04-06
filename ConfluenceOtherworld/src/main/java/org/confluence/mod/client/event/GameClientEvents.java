@@ -354,13 +354,14 @@ public final class GameClientEvents {
     public static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity living = event.getEntity();
         boolean dead = living.isDeadOrDying();
-        if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
+        IClientLivingEntity i = IClientLivingEntity.of(living);
+        if (dead != i.confluence$deadO()) {
             living.level().getProfiler().push("entity_dismemberment");
-            IClientLivingEntity.of(living).confluence$deadO(dead); // 阻断下一次post
+            i.confluence$deadO(dead); // 阻断下一次post
             DeathAnimUtils.livingDeath(living);
             living.level().getProfiler().pop();
         }
-        IClientLivingEntity.of(living).confluence$deadO(dead);
+        i.confluence$deadO(dead);
     }
 
     @SubscribeEvent

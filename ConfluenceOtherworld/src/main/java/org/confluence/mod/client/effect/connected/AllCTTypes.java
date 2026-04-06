@@ -23,7 +23,7 @@ public abstract class AllCTTypes implements CTType {
             return (context.up ? 1 : 0) + (context.down ? 2 : 0);
         }
     };
-    public static final AllCTTypes OMNIDIRECTIONAL = new AllCTTypes("omnidirectional", 8, ConnectedTextureBehaviour.ContextRequirement.builder().all().build()) {
+    public static final AllCTTypes OMNIDIRECTIONAL = new AllCTTypes("omnidirectional", 7, ConnectedTextureBehaviour.ContextRequirement.builder().all().build()) {
         @Override
         public int getTextureIndex(ConnectedTextureBehaviour.CTContext context) {
             int tileX = 0, tileY = 0;
@@ -70,8 +70,8 @@ public abstract class AllCTTypes implements CTType {
                 }
                 if (!context.up) {
                     if (context.bottomLeft || context.bottomRight) {
-                        tileY = 7;
-                        tileX = -1 + (context.bottomLeft ? 1 : 0) + (context.bottomRight ? 1 : 0) * 2;
+                        tileY = 0;
+                        tileX = 4 - 1 + (context.bottomLeft ? 1 : 0) + (context.bottomRight ? 1 : 0) * 2;
                     }
                 }
             }
@@ -82,7 +82,7 @@ public abstract class AllCTTypes implements CTType {
                     tileX += 3;
             }
 
-            return tileX + 8 * tileY;
+            return tileX + 7 * tileY;
         }
     };
     public static final AllCTTypes CROSS = new AllCTTypes("cross", 4, ConnectedTextureBehaviour.ContextRequirement.builder().axisAligned().build()) {

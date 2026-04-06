@@ -685,7 +685,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
             dropSelf(blockSet.FULL.get());
             dropSelf(blockSet.STAIRS.get());
             dropSelf(blockSet.SLAB.get());
-            dropSelf(blockSet.WALLS.get());
+            dropSelf(blockSet.WALL.get());
         }
 
         CrateBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));

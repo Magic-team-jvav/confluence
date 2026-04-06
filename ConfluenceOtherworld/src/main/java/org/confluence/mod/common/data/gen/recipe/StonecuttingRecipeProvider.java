@@ -161,7 +161,7 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
             Ingredient full = Ingredient.of(blockSet.FULL.get());
             stonecutting(recipeOutput, blockSet.STAIRS.toStack(), full);
             stonecutting(recipeOutput, blockSet.SLAB.toStack(2), full);
-            stonecutting(recipeOutput, blockSet.WALLS.toStack(), full);
+            stonecutting(recipeOutput, blockSet.WALL.toStack(), full);
 
             for (ObjectIntPair<Supplier<? extends ItemLike>> material : blockSet.materials) {
                 Ingredient ingredient = Ingredient.of(material.left().get().asItem().getDefaultInstance());
@@ -169,7 +169,7 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
                 stonecutting(recipeOutput, blockSet.FULL.toStack(amount), ingredient);
                 stonecutting(recipeOutput, blockSet.STAIRS.toStack(amount), ingredient);
                 stonecutting(recipeOutput, blockSet.SLAB.toStack(amount * 2), ingredient);
-                stonecutting(recipeOutput, blockSet.WALLS.toStack(amount), ingredient);
+                stonecutting(recipeOutput, blockSet.WALL.toStack(amount), ingredient);
             }
         }
     }

@@ -9,6 +9,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 
@@ -27,67 +28,77 @@ public class ModBlockStateProvider extends BlockStateProvider {
             simpleBlock(block.get());
         });
 
-        for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
-            simpleBlock(logBlockSet.PLANKS.get());
-            String id = logBlockSet.id;
-            if (logBlockSet.LOG.isBound()) logBlock(logBlockSet.LOG.get());
-            if (logBlockSet.STRIPPED_LOG.isBound()) logBlock(logBlockSet.STRIPPED_LOG.get());
-            if (logBlockSet.LEAVES.isBound()) {
+        for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            simpleBlock(blockSet.PLANKS.get());
+            String id = blockSet.id;
+            if (blockSet.LOG.isBound()) logBlock(blockSet.LOG.get());
+            if (blockSet.STRIPPED_LOG.isBound()) logBlock(blockSet.STRIPPED_LOG.get());
+            if (blockSet.LEAVES.isBound()) {
                 try {
                     ConfiguredModel configuredModel = new ConfiguredModel(models()
                             .withExistingParent(id + "_leaves", "block/leaves").texture("all", Confluence.asResource("block/" + id + "_leaves")));
-                    getVariantBuilder(logBlockSet.LEAVES.get()).partialState().setModels(configuredModel);
+                    getVariantBuilder(blockSet.LEAVES.get()).partialState().setModels(configuredModel);
                 } catch (Exception ignored) {}
             }
-            if (logBlockSet.WOOD.isBound()) {
+            if (blockSet.WOOD.isBound()) {
                 try {
                     ResourceLocation log = Confluence.asResource("block/" + id + "_log");
                     ModelFile model = models().cubeColumn(id + "_wood", log, log);
-                    axisBlock(logBlockSet.WOOD.get(), model, model);
+                    axisBlock(blockSet.WOOD.get(), model, model);
                 } catch (Exception ignored) {}
             }
-            if (logBlockSet.STRIPPED_WOOD.isBound()) {
+            if (blockSet.STRIPPED_WOOD.isBound()) {
                 try {
                     ResourceLocation log = Confluence.asResource("block/stripped_" + id + "_log");
                     ModelFile model = models().cubeColumn("stripped_" + id + "_wood", log, log);
-                    axisBlock(logBlockSet.STRIPPED_WOOD.get(), model, model);
+                    axisBlock(blockSet.STRIPPED_WOOD.get(), model, model);
                 } catch (Exception ignored) {}
             }
             ResourceLocation planks = Confluence.asResource("block/" + id + "_planks");
-            if (logBlockSet.BUTTON.isBound()) {
+            if (blockSet.BUTTON.isBound()) {
                 try {
-                    buttonBlock(logBlockSet.BUTTON.get(), planks);
+                    buttonBlock(blockSet.BUTTON.get(), planks);
                     models().withExistingParent(id + "_button_inventory", "block/button_inventory").texture("texture", planks);
                 } catch (Exception ignored) {}
             }
-            if (logBlockSet.FENCE.isBound()) {
+            if (blockSet.FENCE.isBound()) {
                 try {
-                    fenceBlock(logBlockSet.FENCE.get(), planks);
+                    fenceBlock(blockSet.FENCE.get(), planks);
                     models().withExistingParent(id + "_fence_inventory", "block/fence_inventory").texture("texture", planks);
                 } catch (Exception ignored) {}
             }
-            if (logBlockSet.FENCE_GATE.isBound())
-                fenceGateBlock(logBlockSet.FENCE_GATE.get(), planks);
-            if (logBlockSet.PRESSURE_PLATE.isBound())
-                pressurePlateBlock(logBlockSet.PRESSURE_PLATE.get(), planks);
-            if (logBlockSet.SLAB.isBound()) slabBlock(logBlockSet.SLAB.get(), planks, planks);
-            if (logBlockSet.STAIRS.isBound()) stairsBlock(logBlockSet.STAIRS.get(), planks);
-            if (logBlockSet.SIGN.isBound())
-                signBlock(logBlockSet.SIGN.get(), logBlockSet.WALL_SIGN.get(), planks);
-            if (logBlockSet.TRAPDOOR.isBound())
-                trapdoorBlockWithRenderType(logBlockSet.TRAPDOOR.get(), Confluence.asResource("block/" + id + "_trapdoor"), true, "cutout");
-            if (logBlockSet.DOOR.isBound()) {
-                doorBlockWithRenderType(logBlockSet.DOOR.get(), Confluence.asResource("block/" + id + "_door_bottom"), Confluence.asResource("block/" + id + "_door_top"), "cutout");
+            if (blockSet.FENCE_GATE.isBound())
+                fenceGateBlock(blockSet.FENCE_GATE.get(), planks);
+            if (blockSet.PRESSURE_PLATE.isBound())
+                pressurePlateBlock(blockSet.PRESSURE_PLATE.get(), planks);
+            if (blockSet.SLAB.isBound()) slabBlock(blockSet.SLAB.get(), planks, planks);
+            if (blockSet.STAIRS.isBound()) stairsBlock(blockSet.STAIRS.get(), planks);
+            if (blockSet.SIGN.isBound())
+                signBlock(blockSet.SIGN.get(), blockSet.WALL_SIGN.get(), planks);
+            if (blockSet.TRAPDOOR.isBound())
+                trapdoorBlockWithRenderType(blockSet.TRAPDOOR.get(), Confluence.asResource("block/" + id + "_trapdoor"), true, "cutout");
+            if (blockSet.DOOR.isBound()) {
+                doorBlockWithRenderType(blockSet.DOOR.get(), Confluence.asResource("block/" + id + "_door_bottom"), Confluence.asResource("block/" + id + "_door_top"), "cutout");
             }
-            if (logBlockSet.HANGING_SIGN.isBound())
-                hangingSignBlock(logBlockSet.HANGING_SIGN.get(), logBlockSet.WALL_HANGING_SIGN.get(), planks);
-            if (logBlockSet.CHISELED_PLANKS.isBound())
-                simpleBlock(logBlockSet.CHISELED_PLANKS.get());
-            if (logBlockSet.SAPLING.isBound()) {
+            if (blockSet.HANGING_SIGN.isBound())
+                hangingSignBlock(blockSet.HANGING_SIGN.get(), blockSet.WALL_HANGING_SIGN.get(), planks);
+            if (blockSet.CHISELED_PLANKS.isBound())
+                simpleBlock(blockSet.CHISELED_PLANKS.get());
+            if (blockSet.SAPLING.isBound()) {
                 try {
                     models().withExistingParent(id + "_sapling", "block/cross").texture("cross", Confluence.asResource("block/" + id + "_sapling"));
                 } catch (Exception ignored) {}
             }
+        }
+
+        for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
+            ResourceLocation full = Confluence.asResource("block/" + blockSet.id);
+            try {
+                simpleBlock(blockSet.FULL.get(), models().cubeAll(blockSet.id, full));
+            } catch (Exception ignored) {}
+            stairsBlock(blockSet.STAIRS.get(), full);
+            slabBlock(blockSet.SLAB.get(), full, full);
+            wallBlock(blockSet.WALL.get(), full);
         }
     }
 
@@ -123,6 +134,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
     public void slabBlock(SlabBlock block, ResourceLocation doubleslab, ResourceLocation texture) {
         try {
             super.slabBlock(block, doubleslab, texture);
+        } catch (Exception ignored) {}
+    }
+
+    @Override
+    public void wallBlock(WallBlock block, ResourceLocation texture) {
+        try {
+            super.wallBlock(block, texture);
         } catch (Exception ignored) {}
     }
 

@@ -30,7 +30,7 @@ public class DecoBlockSet {
     public final DeferredBlock<Block> FULL;
     public final DeferredBlock<StairBlock> STAIRS;
     public final DeferredBlock<SlabBlock> SLAB;
-    public final DeferredBlock<WallBlock> WALLS;
+    public final DeferredBlock<WallBlock> WALL;
 
     DecoBlockSet(Builder builder) {
         this.id = builder.id;
@@ -40,7 +40,7 @@ public class DecoBlockSet {
         this.FULL = ModBlocks.registerWithItem(id, () -> builder.full.apply(builder.properties.get()));
         this.STAIRS = ModBlocks.registerWithItem(id + "_stairs", () -> builder.stairs.apply(FULL.get().defaultBlockState(), builder.properties.get()));
         this.SLAB = ModBlocks.registerWithItem(id + "_slab", () -> builder.slab.apply(builder.properties.get()));
-        this.WALLS = ModBlocks.registerWithItem(id + "_wall", () -> builder.wall.apply(builder.properties.get().forceSolidOn()));
+        this.WALL = ModBlocks.registerWithItem(id + "_wall", () -> builder.wall.apply(builder.properties.get().forceSolidOn()));
 
         DECO_BLOCK_SETS.add(this);
     }
@@ -49,7 +49,7 @@ public class DecoBlockSet {
         tag.add(FULL.get());
         tag.add(STAIRS.get());
         tag.add(SLAB.get());
-        tag.add(WALLS.get());
+        tag.add(WALL.get());
     }
 
     public static Builder builder(String id, Supplier<BlockBehaviour.Properties> supplier) {

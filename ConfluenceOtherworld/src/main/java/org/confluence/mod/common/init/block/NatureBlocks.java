@@ -1,21 +1,17 @@
 package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -23,7 +19,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.block.TransparentLeavesBlock;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.common.SoulGlassBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.sapling.BaseSaplingBlock;
@@ -264,15 +259,84 @@ public class NatureBlocks {
     public static final DeferredBlock<VoidTreeRootBlock> VOID_TREE_ROOT_BLOCK = registerWithItem("void_tree_root_block", VoidTreeRootBlock::new);
     public static final Supplier<BlockEntityType<VoidTreeRootBlock.BEntity>> VOID_TREE_ROOT_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("void_tree_root_block", () -> BlockEntityType.Builder.of(VoidTreeRootBlock.BEntity::new, VOID_TREE_ROOT_BLOCK.get()).build(DSL.remainderType()));
     public static final LogBlockSet VOID_LOG_BLOCKS = LogBlockSet.builder("void", true, VOID).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.VOID_GROWER, properties, ModTags.Blocks.VOID_TREE_CAN_SURVIVE, VOID_GRASS_BLOCK, END_DIRT)).build();
-    public static final DeferredBlock<EndDragonFruitBlock> END_DRAGON_FRUIT = registerWithoutItem("end_dragon_fruit_block", () -> new EndDragonFruitBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.2F).sound(SoundType.CROP).randomTicks()));
+    public static final DeferredBlock<DragonsBreathPepperBlock> DRAGONS_BREATH_PEPPER = registerWithoutItem("dragons_breath_pepper", () -> new DragonsBreathPepperBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.2F).sound(SoundType.CROP).randomTicks()));
 
     // 末地 - 倒悬主题
     public static final DeferredBlock<Block> INVERSE_GRASS_BLOCK = registerWithItem("inverse_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));
     public static final LogBlockSet GAZE_LOG_BLOCKS = LogBlockSet.builder("gaze", true, GAZE).build();
-    public static final DeferredBlock<Block> INVERSE_TUBER = registerWithItem("inverse_tuber", () -> new CandyBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_GREEN)));
+    public static final DeferredBlock<Block> GAZE_TUBER = registerWithItem("gaze_tuber", () -> new CandyBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_GREEN)));
+
     // 末地 - 月光主题
     public static final DeferredBlock<Block> MOONLIT_GRASS_BLOCK = registerWithItem("moonlit_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));
     public static final LogBlockSet MOONGLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("moonglow_willow", true, MOONGLOW_WILLOW).build();
+    public static final DeferredBlock<Block> DEAD_LUNAR_CORAL_BLOCK = registerWithItem("dead_lunar_coral_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEAD_BRAIN_CORAL_BLOCK)));
+    public static final DeferredBlock<BaseCoralPlantBlock> DEAD_LUNAR_CORAL = registerWithItem("dead_lunar_coral",
+            () -> new BaseCoralPlantBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_YELLOW)
+                            .noCollission()
+                            .instabreak()
+                            .sound(SoundType.WET_GRASS)
+                            .pushReaction(PushReaction.DESTROY)
+            )
+    );
+    public static final DeferredBlock<BaseCoralWallFanBlock> DEAD_LUNAR_CORAL_WALL_FAN = registerWithoutItem("dead_lunar_coral_wall_fan",
+            () -> new BaseCoralWallFanBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_GRAY)
+                            .forceSolidOn()
+                            .instrument(NoteBlockInstrument.BASEDRUM)
+                            .requiresCorrectToolForDrops()
+                            .noCollission()
+                            .instabreak()
+            )
+    );
+    public static final DeferredBlock<LunarCoralFanBlock> DEAD_LUNAR_CORAL_FAN = registerWithItem("dead_lunar_coral_fan",
+            () -> new LunarCoralFanBlock(
+                    DEAD_LUNAR_CORAL_WALL_FAN.get(),
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_YELLOW)
+                            .noCollission()
+                            .instabreak()
+                            .sound(SoundType.WET_GRASS)
+                            .pushReaction(PushReaction.DESTROY)
+            )
+    );
+    public static final DeferredBlock<LunarCoralBlock> LUNAR_CORAL_BLOCK = registerWithItem("lunar_coral_block", () -> new LunarCoralBlock(DEAD_LUNAR_CORAL_BLOCK.get(), BlockBehaviour.Properties.ofFullCopy(BRAIN_CORAL_BLOCK)));
+    public static final DeferredBlock<LunarCoralPlantBlock> LUNAR_CORAL = registerWithItem("lunar_coral",
+            () -> new LunarCoralPlantBlock(
+                    DEAD_LUNAR_CORAL.get(),
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_YELLOW)
+                            .noCollission()
+                            .instabreak()
+                            .sound(SoundType.WET_GRASS)
+                            .pushReaction(PushReaction.DESTROY)
+            )
+    );
+    public static final DeferredBlock<LunarCoralWallFanBlock> LUNAR_CORAL_WALL_FAN = registerWithoutItem("lunar_coral_wall_fan",
+            () -> new LunarCoralWallFanBlock(
+                    DEAD_LUNAR_CORAL_WALL_FAN.get(),
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_YELLOW)
+                            .noCollission()
+                            .instabreak()
+                            .sound(SoundType.WET_GRASS)
+                            .pushReaction(PushReaction.DESTROY)
+            )
+    );
+    public static final DeferredBlock<LunarCoralFanBlock> LUNAR_CORAL_FAN = registerWithItem("lunar_coral_fan",
+            () -> new LunarCoralFanBlock(
+                    DEAD_LUNAR_CORAL_FAN.get(),
+                    LUNAR_CORAL_WALL_FAN.get(),
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_YELLOW)
+                            .noCollission()
+                            .instabreak()
+                            .sound(SoundType.WET_GRASS)
+                            .pushReaction(PushReaction.DESTROY)
+            )
+    );
 
     // 地獄 - 黯虛主題
     public static final DeferredBlock<Block> GLOOM_OBSIDIAN = registerWithItem("gloom_obsidian", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OBSIDIAN)));
@@ -362,6 +426,10 @@ public class NatureBlocks {
             END_DIRT.get(),
             MOONLIT_GRASS_BLOCK.get(),
             INVERSE_GRASS_BLOCK.get()
+    )));
+    public static final DeferredBlock<BaseDroopingPlantsHeadBlock> MOONGLOW_WILLOW_DROOPING_VINE = registerWithItem("moonglow_willow_drooping_vine", () -> new BaseDroopingPlantsHeadBlock(10, false, true, () -> List.of(
+            NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LOG.get(),
+            NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LEAVES.get()
     )));
 
     //微光环境物块

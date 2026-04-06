@@ -91,6 +91,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 VOID_VIOLET.get(),
                 TALL_VOID_GRASS.get()
         );
+        tag(ModTags.Blocks.LUNAR_CORAL_DRY).add(
+                Blocks.LAVA,
+                Blocks.MAGMA_BLOCK,
+                VOID.get()
+        );
         tag(ModTags.Blocks.GELSTONE_ORE_REPLACEMENT).add(Blocks.MUD, Blocks.CLAY, Blocks.STONE);
         tag(BlockTags.ANVIL).add(LEAD_ANVIL.get(), CHIPPED_LEAD_ANVIL.get(), DAMAGED_LEAD_ANVIL.get());
         tag(ModTags.Blocks.VINES).add(

@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +39,11 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
     public void render(TuffBoothBlock.TuffBoothBlockEntity boothEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         Player player = MC.player;
         if (player == null || boothEntity.getLevel() == null) return;
+
+        BlockPos pos = boothEntity.getBlockPos();
+        Vector3d posVct = new Vector3d(pos.getX(), pos.getY(), pos.getZ());
+        VertexConsumer quadBuffer = bufferSource.getBuffer(RenderType.debugQuads());
+        //drawCube(poseStack, 1, 255, 255, 255, 255, posVct, new Vector3d(0, 0, 0), false, 0, 0, quadBuffer);
 
         ItemStack playHand = player.getMainHandItem();
         ItemStack displayStack = boothEntity.getItemHandler().getStackInSlot(0);
@@ -104,6 +110,9 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
 
         poseStack.pushPose();
         poseStack.translate(0.5, 1.25 + ySwing, 0.5);
+        if (!stack.isEmpty() && booth.getBlockState().getValue(TuffBoothBlock.SHOW_NAME)) {
+            renderLabel(poseStack, buffer, stack);
+        }
         poseStack.mulPose(Axis.YP.rotation((float) ((renderTime % 360) / 60.0F * Mth.TWO_PI)));
 
         if (hit != null && !hand.isEmpty() && hit.y > 0.5) {
@@ -119,10 +128,6 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
         if (!stack.isEmpty()) {
             MC.getItemRenderer().render(stack, ItemDisplayContext.GROUND, false, poseStack, buffer, light, overlay,
                     MC.getItemRenderer().getModel(stack, booth.getLevel(), null, 0));
-
-            if (booth.getBlockState().getValue(TuffBoothBlock.SHOW_NAME)) {
-                renderLabel(poseStack, buffer, stack);
-            }
         }
         poseStack.popPose();
     }

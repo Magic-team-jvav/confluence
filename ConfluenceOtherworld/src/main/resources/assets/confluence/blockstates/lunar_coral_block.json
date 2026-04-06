@@ -1,0 +1,16 @@
+{
+  "variants": {
+      "humidity=3": {
+          "model": "confluence:block/lunar_coral_block"
+      },
+      "humidity=2": {
+          "model": "confluence:block/lunar_coral_block_0"
+      },
+      "humidity=1": {
+          "model": "confluence:block/lunar_coral_block_1"
+      },
+      "humidity=0": {
+          "model": "confluence:block/lunar_coral_block_2"
+      }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/coral_fan",
+  "textures": {
+    "fan": "confluence:block/lunar_coral_fan_1"
+  },
+    "render_type": "cutout_mipped"
+}

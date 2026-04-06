@@ -1862,9 +1862,17 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.PRESSURE_PLATE.get(), "月辉柳木压力板");
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LEAVES.get(), "月辉柳树叶");
         add(NatureBlocks.MOONLIT_GRASS_BLOCK.get(), "月华草方块");
+        add(NatureBlocks.DEAD_LUNAR_CORAL_BLOCK.get(), "失活的望月珊瑚块");
+        add(NatureBlocks.DEAD_LUNAR_CORAL.get(), "失活的望月珊瑚");
+        add(NatureBlocks.DEAD_LUNAR_CORAL_FAN.get(), "失活的望月珊瑚扇");
+        add(NatureBlocks.DEAD_LUNAR_CORAL_WALL_FAN.get(), "墙上的失活望月珊瑚扇");
+        add(NatureBlocks.LUNAR_CORAL_BLOCK.get(), "望月珊瑚块");
+        add(NatureBlocks.LUNAR_CORAL.get(), "望月珊瑚");
+        add(NatureBlocks.LUNAR_CORAL_FAN.get(), "望月珊瑚扇");
+        add(NatureBlocks.LUNAR_CORAL_WALL_FAN.get(), "墙上的望月珊瑚扇");
 
         add(NatureBlocks.GLOOM_OBSIDIAN.get(), "黯虚黑曜石");
-        add(NatureBlocks.INVERSE_TUBER.get(), "晖落块茎");
+        add(NatureBlocks.GAZE_TUBER.get(), "晖落块茎");
 
         add(NatureBlocks.DESERT_GRASS.get(), "沙漠草");
         add(NatureBlocks.DESERT_TALL_GRASS.get(), "沙漠高草");
@@ -1982,6 +1990,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SHIMMER_DROOPING_VINE_PLANT.get(), "微光垂藤");
         add(NatureBlocks.PINE_DROOPING_VINE.get(), "松树垂藤");
         add(NatureBlocks.SILENT_DROOPING_VINE.get(), "寂籁垂藤");
+        add(NatureBlocks.MOONGLOW_WILLOW_DROOPING_VINE.get(), "月辉柳垂叶");
 
         add(NatureBlocks.SHIMMER_RICE.get(), "微光水稻");
         add(NatureBlocks.SHIMMER_CORAL_TUBE.get(), "微光珊瑚管");

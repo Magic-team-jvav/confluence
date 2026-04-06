@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.block.natural.EndDragonFruitBlock;
+import org.confluence.mod.common.block.natural.DragonsBreathPepperBlock;
 import org.confluence.mod.common.block.natural.VoidTreeRootBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.joml.Vector3d;
@@ -156,10 +156,10 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
             Direction direction = horizontalDirections[random.nextInt(4)];
             BlockPos fruitPos = trunkPos.relative(direction);
             if (level.getBlockState(fruitPos).canBeReplaced()) {
-                int age = random.nextInt(EndDragonFruitBlock.MAX_AGE + 1);
-                level.setBlock(fruitPos, NatureBlocks.END_DRAGON_FRUIT.get().defaultBlockState()
-                        .setValue(EndDragonFruitBlock.FACING, direction)
-                        .setValue(EndDragonFruitBlock.AGE, age), 3);
+                int age = random.nextInt(DragonsBreathPepperBlock.MAX_AGE + 1);
+                level.setBlock(fruitPos, NatureBlocks.DRAGONS_BREATH_PEPPER.get().defaultBlockState()
+                        .setValue(DragonsBreathPepperBlock.FACING, direction)
+                        .setValue(DragonsBreathPepperBlock.AGE, age), 3);
             }
         }
     }

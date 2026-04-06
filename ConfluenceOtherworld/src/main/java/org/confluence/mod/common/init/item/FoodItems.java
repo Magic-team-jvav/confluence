@@ -3,7 +3,6 @@ package org.confluence.mod.common.init.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -11,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -178,7 +176,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem.BItem> END_DRAGON_FRUIT = registerBlockItemFood("end_dragon_fruit",
             builder -> builder.rarity(ModRarity.BLUE)
                     .food(ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f))
-                    .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), NatureBlocks.END_DRAGON_FRUIT);
+                    .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), NatureBlocks.DRAGONS_BREATH_PEPPER);
     public static final DeferredItem<BaseFoodItem> GRAPE_FRUIT = registerNormalFood("grape_fruit", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> LEMON = registerNormalFood("lemon", ModRarity.BLUE,

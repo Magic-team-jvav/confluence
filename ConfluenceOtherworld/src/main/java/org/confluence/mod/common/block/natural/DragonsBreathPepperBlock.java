@@ -20,9 +20,9 @@ import java.util.Map;
 /**
  * 现在龙果的生长速度等属性暂时与可可果相同，若需修改，overrider andomTick方法
  */
-public class EndDragonFruitBlock extends CocoaBlock {
+public class DragonsBreathPepperBlock extends CocoaBlock {
     @SuppressWarnings("unchecked")
-    public static final MapCodec<CocoaBlock> CODEC = (MapCodec<CocoaBlock>) (MapCodec<?>) simpleCodec(EndDragonFruitBlock::new);
+    public static final MapCodec<CocoaBlock> CODEC = (MapCodec<CocoaBlock>) (MapCodec<?>) simpleCodec(DragonsBreathPepperBlock::new);
 
     private static final Map<Direction, VoxelShape[]> SHAPES = new EnumMap<>(Direction.class);
     /**
@@ -51,7 +51,7 @@ public class EndDragonFruitBlock extends CocoaBlock {
         });
     }
 
-    public EndDragonFruitBlock(BlockBehaviour.Properties properties) {
+    public DragonsBreathPepperBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
 

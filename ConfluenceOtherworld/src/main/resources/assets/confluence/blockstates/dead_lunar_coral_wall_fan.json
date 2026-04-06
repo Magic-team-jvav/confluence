@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/dead_lunar_coral_wall_fan",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "confluence:block/dead_lunar_coral_wall_fan"
+    },
+    "facing=south": {
+      "model": "confluence:block/dead_lunar_coral_wall_fan",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "confluence:block/dead_lunar_coral_wall_fan",
+      "y": 270
+    }
+  }
+}

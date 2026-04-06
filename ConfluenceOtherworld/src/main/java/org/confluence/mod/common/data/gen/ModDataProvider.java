@@ -498,6 +498,17 @@ public class ModDataProvider {
                             10
                     )
             );
+            register(context, ModFeatures.Configured.MOONGLOW_WILLOW_TREE, ModFeatures.MOONGLOW_WILLOW_TREE.get(), new MoonglowWillowTreeFeature.Config(
+                            BlockStateProvider.simple(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LOG.get()),
+                            BlockStateProvider.simple(NatureBlocks.MOONGLOW_WILLOW_DROOPING_VINE.get()),
+                            BlockStateProvider.simple(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LEAVES.get())
+                    )
+            );
+            register(context, ModFeatures.Configured.LUNAR_CORAL, ModFeatures.LUNAR_CORAL.get(), new LunarCoralFeature.Config(
+                            BlockStateProvider.simple(NatureBlocks.LUNAR_CORAL_BLOCK.get()),
+                            BlockStateProvider.simple(NatureBlocks.LUNAR_CORAL.get())
+                    )
+            );
             register(context, ModFeatures.Configured.CHINESE_PINE_TREE, ModFeatures.CHINESE_STYLE_PINE_TREE.get(), new ChineseStylePineTreeFeature.Config(
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "confluence:block/lunar_coral_2"
+  },
+    "render_type": "cutout_mipped"
+}

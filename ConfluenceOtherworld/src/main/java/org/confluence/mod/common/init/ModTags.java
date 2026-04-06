@@ -56,6 +56,7 @@ public final class ModTags {
         public static final TagKey<Block> VOID_TREE_CAN_SURVIVE = register("void_tree_can_survive");
         public static final TagKey<Block> DRAGONSAL_ORE_REPLACE = register("dragonsal_ore_replace");
         public static final TagKey<Block> END_BROKEN_STONE_CAN_MOVE = register("end_broken_stone_can_move");
+        public static final TagKey<Block> LUNAR_CORAL_DRY = register("lunar_coral_dry");
 
         public static final TagKey<Block> PURE_CONVERSION_GRASS_BLOCK = register("pure_conversion_grass_block");
         public static final TagKey<Block> PURE_CONVERSION_JUNGLE_GRASS_BLOCK = register("pure_conversion_jungle_grass_block");

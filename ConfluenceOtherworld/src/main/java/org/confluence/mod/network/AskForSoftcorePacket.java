@@ -33,10 +33,10 @@ public record AskForSoftcorePacket(boolean accept) implements IPacket {
         ServerLevel overworld = player.server.overworld();
         if (accept) {
             overworld.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, player.server);
-            player.sendSystemMessage(Component.literal("Has been set to softcore"));
+            player.sendSystemMessage(Component.translatable("confluence.difficulty_notice.softcore.tip"));
         } else {
             ConfluenceData.get(overworld).setStopAskForSoftcore(true);
-            player.sendSystemMessage(Component.literal("Will never ask for softcore"));
+            player.sendSystemMessage(Component.translatable("confluence.difficulty_notice.never.softcore.tip"));
         }
     }
 }

@@ -65,7 +65,7 @@ public final class BoulderRainGameEvent implements GameEvent {
                     double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
                     int cx = SectionPos.blockToSectionCoord(x);
                     int cz = SectionPos.blockToSectionCoord(z);
-                    if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                    if (LibUtils.getChunkIfLoaded(level, cx, cz) == null) {
                         continue;
                     }
                     level.addFreshEntity(new BoulderEntity(level, new Vec3(x, position.y + 64, z), blockState));

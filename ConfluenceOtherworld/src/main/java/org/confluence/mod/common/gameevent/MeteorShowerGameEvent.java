@@ -6,6 +6,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -70,6 +71,7 @@ public final class MeteorShowerGameEvent implements GameEvent {
         if (spawned.size() >= CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_BASE.get() + players.size() * CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_PER_PLAYER.get()) {
             return;
         }
+        ServerChunkCache chunkCache = level.getChunkSource();
         for (ServerPlayer player : players) {
             NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
@@ -83,7 +85,7 @@ public final class MeteorShowerGameEvent implements GameEvent {
                 double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
                 int cx = SectionPos.blockToSectionCoord(x);
                 int cz = SectionPos.blockToSectionCoord(z);
-                if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                if (LibUtils.getChunkIfLoaded(chunkCache, cx, cz) == null) {
                     continue;
                 }
                 EntityType<SimpleVariantAnimal> type = TEAnimals.WORM.get();

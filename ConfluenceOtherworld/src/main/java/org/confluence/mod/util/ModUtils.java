@@ -41,11 +41,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.common.NeoForge;
@@ -294,13 +296,16 @@ public final class ModUtils {
     /// 由于暮色森林使原版的该方法会访问区块，于是复制一份来用
     ///
     /// @see Level#isRainingAt(BlockPos)
-    public static boolean isRainingAt(Level level, BlockPos pos) {
+    public static boolean isRainingAt(ServerLevel level, BlockPos pos) {
         if (!level.isRaining()) return false;
         if (!level.canSeeSky(pos)) return false;
-        if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()) {
+        ChunkAccess chunk = LibUtils.getChunkIfLoaded(level, pos);
+        if (chunk == null || chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) > pos.getY()) {
             return false;
         }
-        return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
+        Holder<Biome> biome = LibUtils.getBiomeManagerThatChunkMustBeLoaded(level).getBiome(pos);
+        if (biome.is(Biomes.THE_VOID)) return false;
+        return biome.value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
     }
 
     public static void makeItemAntigravity(ItemEntity entity) {

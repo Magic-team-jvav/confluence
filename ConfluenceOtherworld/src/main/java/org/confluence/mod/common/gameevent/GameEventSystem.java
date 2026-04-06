@@ -195,7 +195,7 @@ public enum GameEventSystem implements IGlobalData {
 
     public static void removeUnTracked(Set<Entity> spawned, ServerLevel level) {
         spawned.removeIf(entity -> {
-            if (LibUtils.getChunkIfLoaded(level.getChunkSource(), entity.chunkPosition()) == null) {
+            if (LibUtils.getChunkIfLoaded(level, entity.chunkPosition()) == null) {
                 entity.discard();
                 return true;
             }
@@ -238,7 +238,7 @@ public enum GameEventSystem implements IGlobalData {
                 double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
                 int cx = SectionPos.blockToSectionCoord(x);
                 int cz = SectionPos.blockToSectionCoord(z);
-                if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                if (LibUtils.getChunkIfLoaded(level, cx, cz) == null) {
                     continue;
                 }
                 BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, spawnerData.type, Mth.floor(x), Mth.floor(z));

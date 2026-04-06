@@ -35,7 +35,7 @@ public class ChlorophyteOreBlock extends Block {
             BlockPos relative = pos.relative(direction);
             BlockState relState = level.getBlockState(relative);
             ChunkAccess chunk;
-            if (level.isOutsideBuildHeight(pos) || ((chunk = LibUtils.getChunkIfLoaded(level.getChunkSource(), relative)) == null)) {
+            if (level.isOutsideBuildHeight(pos) || ((chunk = LibUtils.getChunkIfLoaded(level, relative)) == null)) {
                 continue;
             }
             ILevelChunkSection section = ILevelChunkSection.of(chunk.getSection(level.getSectionIndex(relative.getY())));

@@ -38,7 +38,7 @@ public class RandomTeleportPotionItem extends AbstractPotionItem {
         int cx = SectionPos.blockToSectionCoord(nx);
         int cz = SectionPos.blockToSectionCoord(nz);
         long chunkPos = ChunkPos.asLong(cx, cz);
-        boolean loaded = LibUtils.getChunkIfLoaded(serverLevel.getChunkSource(), cx, cz) != null ||
+        boolean loaded = LibUtils.getChunkIfLoaded(serverLevel, cx, cz) != null ||
                 serverLevel.getForcedChunks().contains(chunkPos);
         if (!loaded) serverLevel.setChunkForced(cx, cz, true);
         teleport:

@@ -6,10 +6,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.ModUtils;
@@ -37,7 +37,7 @@ public final class TEHelper {
 
     /// [蠕虫](https://terraria.wiki.gg/zh/wiki/%E8%A0%95%E8%99%AB)
     public static boolean wormSpawnRules(EntityType<SimpleVariantAnimal> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!(level instanceof Level level1)) return false;
+        if (!(level instanceof ServerLevel level1)) return false;
         int y = pos.getY();
         int surfaceY = OverworldUtils.getSurfaceY();
         if (y > surfaceY && y < OverworldUtils.getSpaceY() && ModUtils.isRainingAt(level1, pos)) {

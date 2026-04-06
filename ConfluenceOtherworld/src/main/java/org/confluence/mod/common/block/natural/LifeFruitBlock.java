@@ -64,7 +64,7 @@ public class LifeFruitBlock extends Block {
             int range = (isExpert ? 122 : 102) / 3;
             Long2ObjectMap<ChunkAccess> map = new Long2ObjectArrayMap<>();
             for (BlockPos blockPos : BlockPos.betweenClosed(pos.offset(-range, -range, -range), pos.offset(range, range, range))) {
-                ChunkAccess access = map.computeIfAbsent(ChunkPos.asLong(blockPos), l -> LibUtils.getChunkIfLoaded(level.getChunkSource(), ChunkPos.getX(l), ChunkPos.getZ(l)));
+                ChunkAccess access = map.computeIfAbsent(ChunkPos.asLong(blockPos), l -> LibUtils.getChunkIfLoaded(level, ChunkPos.getX(l), ChunkPos.getZ(l)));
                 if (access != null && access.getBlockState(blockPos).is(NatureBlocks.LIFE_FRUIT)) {
                     return false;
                 }

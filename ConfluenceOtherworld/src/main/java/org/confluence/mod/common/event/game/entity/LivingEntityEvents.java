@@ -376,11 +376,12 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void finalizeSpawn(FinalizeSpawnEvent event) {
+        ServerLevel level = event.getLevel().getLevel();
         Mob mob = event.getEntity();
         EntityType<?> type = mob.getType();
         if (type == EntityType.ZOMBIE) {
             BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
-            Holder<Biome> biome = mob.level().getBiome(blockPos);
+            Holder<Biome> biome = level.getBiome(blockPos);
             DifficultyInstance difficulty = event.getDifficulty();
             if (biome.is(Tags.Biomes.IS_ICY) || biome.is(Tags.Biomes.IS_SNOWY)) {
                 boolean pink = mob.getRandom().nextFloat() < 0.01F;
@@ -391,7 +392,7 @@ public final class LivingEntityEvents {
                 mob.setCustomName(Component.translatable("entity.confluence.frozen_zombie"));
                 mob.addTag("frozen_zombie");
                 event.setCanceled(true);
-            } else if (ModUtils.isRainingAt(mob.level(), blockPos)) {
+            } else if (ModUtils.isRainingAt(level, blockPos)) {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
                 mob.setCustomName(Component.translatable("entity.confluence.raincoat_zombie"));
@@ -400,7 +401,7 @@ public final class LivingEntityEvents {
             }
         } else if (type == EntityType.SKELETON) {
             DifficultyInstance difficulty = event.getDifficulty();
-            if (!mob.level().canSeeSky(BlockPos.containing(event.getX(), event.getY(), event.getZ())) && mob.getRandom().nextFloat() < 0.01F) {
+            if (!level.canSeeSky(BlockPos.containing(event.getX(), event.getY(), event.getZ())) && mob.getRandom().nextFloat() < 0.01F) {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, ArmorItems.MINING_LEGGINGS.get(), 1.0F);
@@ -413,10 +414,10 @@ public final class LivingEntityEvents {
         } else if (event.getSpawnType() == MobSpawnType.NATURAL && mob instanceof Slime slime) {
             if ((ModSecretSeeds.CELEBRATIONMK10.match() || ModSecretSeeds.GET_FIXED_BOI.match()) && mob.getRandom().nextInt(140) == 1) {
                 event.setCanceled(true);
-                GoldenSlime goldenSlime = TEMonsterEntities.GOLDEN_SLIME.get().create(mob.level());
+                GoldenSlime goldenSlime = TEMonsterEntities.GOLDEN_SLIME.get().create(level);
                 if (goldenSlime != null) {
                     goldenSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
-                    mob.level().addFreshEntity(goldenSlime);
+                    level.addFreshEntity(goldenSlime);
                 }
             }
         } else if (type == TEAnimals.WORM.get()) {

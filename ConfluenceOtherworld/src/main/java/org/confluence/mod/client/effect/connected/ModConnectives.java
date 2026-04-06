@@ -59,6 +59,22 @@ public final class ModConnectives {
         register(DecorativeBlocks.SOUL_GLASS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "soul_glass"));
 
         registerPillar(NatureBlocks.BALLOON_MELON.get(), AllCTTypes.OMNIDIRECTIONAL, "balloon_melon");
+        registerPillar(DecorativeBlocks.WHITE_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "white_balloon");
+        registerPillar(DecorativeBlocks.LIGHT_GRAY_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "light_gray_balloon");
+        registerPillar(DecorativeBlocks.GRAY_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "gray_balloon");
+        registerPillar(DecorativeBlocks.BLACK_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "black_balloon");
+        registerPillar(DecorativeBlocks.BROWN_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "brown_balloon");
+        registerPillar(DecorativeBlocks.RED_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "red_balloon");
+        registerPillar(DecorativeBlocks.ORANGE_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "orange_balloon");
+        registerPillar(DecorativeBlocks.YELLOW_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "yellow_balloon");
+        registerPillar(DecorativeBlocks.LIME_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "lime_balloon");
+        registerPillar(DecorativeBlocks.GREEN_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "green_balloon");
+        registerPillar(DecorativeBlocks.CYAN_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "cyan_balloon");
+        registerPillar(DecorativeBlocks.LIGHT_BLUE_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "light_blue_balloon");
+        registerPillar(DecorativeBlocks.BLUE_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "blue_balloon");
+        registerPillar(DecorativeBlocks.PURPLE_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "purple_balloon");
+        registerPillar(DecorativeBlocks.MAGENTA_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "magenta_balloon");
+        registerPillar(DecorativeBlocks.PINK_BALLOON.get(), AllCTTypes.OMNIDIRECTIONAL, "pink_balloon");
     }
 
     /// 目前仅用来注册机壳

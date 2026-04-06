@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen.recipe;
 
+import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -8,9 +9,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.StonecutterRecipe;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -18,6 +21,7 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import static org.confluence.mod.common.data.gen.recipe.ModRecipeProvider.createAdvancementHolder;
 
@@ -151,6 +155,23 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, DecorativeBlocks.PEARLSTONE_BRICKS.toStack(9), Ingredient.of(NatureBlocks.PEARLSTONE));
         stonecutting(recipeOutput, DecorativeBlocks.PEARLSTONE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.PEARLSTONE_BRICKS));
         stonecutting(recipeOutput, DecorativeBlocks.PEARLSTONE_BRICKS_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.PEARLSTONE_BRICKS));
+
+        for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
+            if (!blockSet.stonecutting) continue;
+            Ingredient full = Ingredient.of(blockSet.FULL.get());
+            stonecutting(recipeOutput, blockSet.STAIRS.toStack(), full);
+            stonecutting(recipeOutput, blockSet.SLAB.toStack(2), full);
+            stonecutting(recipeOutput, blockSet.WALLS.toStack(), full);
+
+            for (ObjectIntPair<Supplier<? extends ItemLike>> material : blockSet.materials) {
+                Ingredient ingredient = Ingredient.of(material.left().get().asItem().getDefaultInstance());
+                int amount = material.rightInt();
+                stonecutting(recipeOutput, blockSet.FULL.toStack(amount), ingredient);
+                stonecutting(recipeOutput, blockSet.STAIRS.toStack(amount), ingredient);
+                stonecutting(recipeOutput, blockSet.SLAB.toStack(amount * 2), ingredient);
+                stonecutting(recipeOutput, blockSet.WALLS.toStack(amount), ingredient);
+            }
+        }
     }
 
     protected void stonecutting(RecipeOutput recipeOutput, String suffix, ItemStack result, Ingredient ingredient) {

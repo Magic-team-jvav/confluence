@@ -1,0 +1,108 @@
+package org.confluence.mod.common.block.palettes;
+
+import it.unimi.dsi.fastutil.objects.ObjectIntImmutablePair;
+import it.unimi.dsi.fastutil.objects.ObjectIntPair;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+public class DecoBlockSet {
+    public static final List<DecoBlockSet> DECO_BLOCK_SETS = new ArrayList<>();
+
+    public final String id;
+    public final List<ObjectIntPair<Supplier<? extends ItemLike>>> materials;
+    public final boolean stonecutting;
+
+    public final DeferredBlock<Block> FULL;
+    public final DeferredBlock<StairBlock> STAIRS;
+    public final DeferredBlock<SlabBlock> SLAB;
+    public final DeferredBlock<WallBlock> WALLS;
+
+    DecoBlockSet(Builder builder) {
+        this.id = builder.id;
+        this.materials = builder.materials;
+        this.stonecutting = builder.stonecutting;
+
+        this.FULL = ModBlocks.registerWithItem(id, () -> builder.full.apply(builder.properties.get()));
+        this.STAIRS = ModBlocks.registerWithItem(id + "_stairs", () -> builder.stairs.apply(FULL.get().defaultBlockState(), builder.properties.get()));
+        this.SLAB = ModBlocks.registerWithItem(id + "_slab", () -> builder.slab.apply(builder.properties.get()));
+        this.WALLS = ModBlocks.registerWithItem(id + "_wall", () -> builder.wall.apply(builder.properties.get().forceSolidOn()));
+
+        DECO_BLOCK_SETS.add(this);
+    }
+
+    public void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> tag) {
+        tag.add(FULL.get());
+        tag.add(STAIRS.get());
+        tag.add(SLAB.get());
+        tag.add(WALLS.get());
+    }
+
+    public static Builder builder(String id, Supplier<BlockBehaviour.Properties> supplier) {
+        return new Builder(id, supplier);
+    }
+
+    public static class Builder {
+        private final String id;
+        private final Supplier<BlockBehaviour.Properties> properties;
+        private final List<ObjectIntPair<Supplier<? extends ItemLike>>> materials = new ArrayList<>();
+        private boolean stonecutting = false;
+        private Function<BlockBehaviour.Properties, ? extends Block> full = Block::new;
+        private BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> stairs = StairBlock::new;
+        private Function<BlockBehaviour.Properties, ? extends SlabBlock> slab = SlabBlock::new;
+        private Function<BlockBehaviour.Properties, ? extends WallBlock> wall = WallBlock::new;
+
+        Builder(String id, Supplier<BlockBehaviour.Properties> supplier) {
+            this.id = id;
+            this.properties = supplier;
+        }
+
+        public Builder stonecutting() {
+            this.stonecutting = true;
+            return this;
+        }
+
+        public Builder material(Supplier<? extends ItemLike> supplier, int toAmount) {
+            materials.add(new ObjectIntImmutablePair<>(supplier, toAmount));
+            return this;
+        }
+
+        public Builder full(Function<BlockBehaviour.Properties, ? extends Block> function) {
+            this.full = function;
+            return this;
+        }
+
+        public Builder slab(@Nullable Function<BlockBehaviour.Properties, ? extends SlabBlock> function) {
+            this.slab = function;
+            return this;
+        }
+
+        public Builder stair(@Nullable BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> function) {
+            this.stairs = function;
+            return this;
+        }
+
+        public Builder wall(@Nullable Function<BlockBehaviour.Properties, ? extends WallBlock> function) {
+            this.wall = function;
+            return this;
+        }
+
+        public DecoBlockSet build() {
+            return new DecoBlockSet(this);
+        }
+    }
+}

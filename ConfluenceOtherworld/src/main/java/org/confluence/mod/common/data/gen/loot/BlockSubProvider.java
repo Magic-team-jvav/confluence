@@ -37,6 +37,7 @@ import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
+import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -660,24 +661,31 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
 
 
-        for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
-            dropSelf(logBlocks.PLANKS.get());
-            if (logBlocks.LOG.isBound()) dropSelf(logBlocks.LOG.get());
-            if (logBlocks.STRIPPED_LOG.isBound()) dropSelf(logBlocks.STRIPPED_LOG.get());
-            if (logBlocks.WOOD.isBound()) dropSelf(logBlocks.WOOD.get());
-            if (logBlocks.STRIPPED_WOOD.isBound()) dropSelf(logBlocks.STRIPPED_WOOD.get());
-            if (logBlocks.BUTTON.isBound()) dropSelf(logBlocks.BUTTON.get());
-            if (logBlocks.FENCE.isBound()) dropSelf(logBlocks.FENCE.get());
-            if (logBlocks.FENCE_GATE.isBound()) dropSelf(logBlocks.FENCE_GATE.get());
-            if (logBlocks.PRESSURE_PLATE.isBound()) dropSelf(logBlocks.PRESSURE_PLATE.get());
-            if (logBlocks.SLAB.isBound()) add(logBlocks.SLAB.get(), this::createSlabItemTable);
-            if (logBlocks.STAIRS.isBound()) dropSelf(logBlocks.STAIRS.get());
-            if (logBlocks.SIGN.isBound()) dropSelf(logBlocks.SIGN.get());
-            if (logBlocks.TRAPDOOR.isBound()) dropSelf(logBlocks.TRAPDOOR.get());
-            if (logBlocks.DOOR.isBound()) add(logBlocks.DOOR.get(), this::createDoorTable);
-            if (logBlocks.HANGING_SIGN.isBound()) dropSelf(logBlocks.HANGING_SIGN.get());
-            if (logBlocks.CHISELED_PLANKS.isBound()) dropSelf(logBlocks.CHISELED_PLANKS.get());
-            if (logBlocks.SAPLING.isBound()) dropSelf(logBlocks.SAPLING.get());
+        for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            dropSelf(blockSet.PLANKS.get());
+            if (blockSet.LOG.isBound()) dropSelf(blockSet.LOG.get());
+            if (blockSet.STRIPPED_LOG.isBound()) dropSelf(blockSet.STRIPPED_LOG.get());
+            if (blockSet.WOOD.isBound()) dropSelf(blockSet.WOOD.get());
+            if (blockSet.STRIPPED_WOOD.isBound()) dropSelf(blockSet.STRIPPED_WOOD.get());
+            if (blockSet.BUTTON.isBound()) dropSelf(blockSet.BUTTON.get());
+            if (blockSet.FENCE.isBound()) dropSelf(blockSet.FENCE.get());
+            if (blockSet.FENCE_GATE.isBound()) dropSelf(blockSet.FENCE_GATE.get());
+            if (blockSet.PRESSURE_PLATE.isBound()) dropSelf(blockSet.PRESSURE_PLATE.get());
+            if (blockSet.SLAB.isBound()) add(blockSet.SLAB.get(), this::createSlabItemTable);
+            if (blockSet.STAIRS.isBound()) dropSelf(blockSet.STAIRS.get());
+            if (blockSet.SIGN.isBound()) dropSelf(blockSet.SIGN.get());
+            if (blockSet.TRAPDOOR.isBound()) dropSelf(blockSet.TRAPDOOR.get());
+            if (blockSet.DOOR.isBound()) add(blockSet.DOOR.get(), this::createDoorTable);
+            if (blockSet.HANGING_SIGN.isBound()) dropSelf(blockSet.HANGING_SIGN.get());
+            if (blockSet.CHISELED_PLANKS.isBound()) dropSelf(blockSet.CHISELED_PLANKS.get());
+            if (blockSet.SAPLING.isBound()) dropSelf(blockSet.SAPLING.get());
+        }
+
+        for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
+            dropSelf(blockSet.FULL.get());
+            dropSelf(blockSet.STAIRS.get());
+            dropSelf(blockSet.SLAB.get());
+            dropSelf(blockSet.WALLS.get());
         }
 
         CrateBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));

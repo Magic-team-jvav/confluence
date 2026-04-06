@@ -964,7 +964,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_TITANIUM,
                 ModTags.Blocks.STORAGE_BLOCKS_TITANIUM,
                 ModTags.Blocks.ORES_TITANIUM
-                ).add(
+        ).add(
                 DRAGONSAL_ORE.get()
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
@@ -1777,34 +1777,34 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.RELIC).add(RELIC_BLOCKS.stream().map(DeferredHolder::get).toArray(Block[]::new));
         { // 没沙子是防止河流里的沙子被误判成沙漠
             tag(ModTags.Blocks.HALLOW_DESERT_BLOCKS).add(
-                PEARLSAND.get(),
-                PEARLSANDSTONE.get(),
-                HARDENED_PEARLSAND_BLOCK.get(),
-                MOISTENED_PEARLSAND_BLOCK.get());
+                    PEARLSAND.get(),
+                    PEARLSANDSTONE.get(),
+                    HARDENED_PEARLSAND_BLOCK.get(),
+                    MOISTENED_PEARLSAND_BLOCK.get());
             tag(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS).add(PINK_ICE.get(), PINK_PACKED_ICE.get());
             tag(ModTags.Blocks.CRIMSON_DESERT_BLOCKS).add(
-                CRIMSAND.get(),
-                CRIMSANDSTONE.get(),
-                HARDENED_CRIMSAND_BLOCK.get(),
-                MOISTENED_CRIMSAND_BLOCK.get());
+                    CRIMSAND.get(),
+                    CRIMSANDSTONE.get(),
+                    HARDENED_CRIMSAND_BLOCK.get(),
+                    MOISTENED_CRIMSAND_BLOCK.get());
             tag(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS).add(RED_ICE.get(), RED_PACKED_ICE.get());
             tag(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS).add(
-                EBONSAND.get(),
-                EBONSANDSTONE.get(),
-                HARDENED_EBONSAND_BLOCK.get(),
-                MOISTENED_EBONSAND_BLOCK.get());
+                    EBONSAND.get(),
+                    EBONSANDSTONE.get(),
+                    HARDENED_EBONSAND_BLOCK.get(),
+                    MOISTENED_EBONSAND_BLOCK.get());
             tag(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS).add(PURPLE_ICE.get(), PURPLE_PACKED_ICE.get());
         }
         tag(ModTags.Blocks.GLOWING_MUSHROOM_BLOCKS).add(
-            MUSHROOM_GRASS_BLOCK.get(),
-            MUSHROOM_PATH.get(),
-            GLOWING_MUSHROOM.get(),
-            GLOWING_MUSHROOM_CATTAIL_BLOCK.get(),
-            GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(),
-            GLOWING_MUSHROOM_STEM_BLOCK.get(),
-            GLOWING_MUSHROOM_PILEUS_BLOCK.get(),
-            GLOWING_MUSHROOM_VINE.get(),
-            GLOWING_MUSHROOM_MOSS.get()
+                MUSHROOM_GRASS_BLOCK.get(),
+                MUSHROOM_PATH.get(),
+                GLOWING_MUSHROOM.get(),
+                GLOWING_MUSHROOM_CATTAIL_BLOCK.get(),
+                GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(),
+                GLOWING_MUSHROOM_STEM_BLOCK.get(),
+                GLOWING_MUSHROOM_PILEUS_BLOCK.get(),
+                GLOWING_MUSHROOM_VINE.get(),
+                GLOWING_MUSHROOM_MOSS.get()
         );
         tag(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION).add(
                         Blocks.BAMBOO,

@@ -449,7 +449,7 @@ public class LogBlockSet {
         private Function<BlockBehaviour.Properties, ? extends Block> chiseledPlanks = Block::new;
         private Function<BlockBehaviour.Properties, ? extends SaplingBlock> sapling;
 
-        public Builder(String id, boolean ignitedByLava, WoodSetType woodSetType) {
+        Builder(String id, boolean ignitedByLava, WoodSetType woodSetType) {
             this.id = id;
             this.ignitedByLava = ignitedByLava;
             this.button = properties -> new ButtonBlock(woodSetType.SET, 30, properties);

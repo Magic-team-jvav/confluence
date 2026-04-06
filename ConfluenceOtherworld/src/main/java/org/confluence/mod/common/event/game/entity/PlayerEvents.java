@@ -19,10 +19,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
@@ -194,17 +191,18 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void interact$EntityInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof LivingEntity targetEntity)
-            healChocking:{
-                if (!targetEntity.hasEffect(ModEffects.CHOKING)) break healChocking;
-                ItemStack stack = serverPlayer.getMainHandItem();
-                if (!ModUtils.isWaterBottle(stack)) break healChocking;
-                targetEntity.removeEffect(ModEffects.CHOKING);
-                ItemStack emptyBottle = stack.is(PotionItems.BOTTLED_WATER) ? PotionItems.BOTTLE.toStack() : Items.GLASS_BOTTLE.getDefaultInstance();
-                if (serverPlayer.hasInfiniteMaterials()) break healChocking;
-                serverPlayer.getInventory().add(emptyBottle);
-                stack.shrink(1);
-            }
+        if (event.getEntity() instanceof ServerPlayer player &&
+                event.getTarget() instanceof LivingEntity living
+        ) healChocking:{
+            if (!living.hasEffect(ModEffects.CHOKING)) break healChocking;
+            ItemStack stack = player.getMainHandItem();
+            if (!ModUtils.isWaterBottle(stack)) break healChocking;
+            living.removeEffect(ModEffects.CHOKING);
+            ItemStack emptyBottle = stack.is(PotionItems.BOTTLED_WATER)
+                    ? PotionItems.BOTTLE.toStack()
+                    : Items.GLASS_BOTTLE.getDefaultInstance();
+            player.setItemInHand(InteractionHand.MAIN_HAND, ItemUtils.createFilledResult(stack, player, emptyBottle));
+        }
     }
 
     @SubscribeEvent

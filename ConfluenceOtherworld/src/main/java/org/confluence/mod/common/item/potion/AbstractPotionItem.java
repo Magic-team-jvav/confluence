@@ -3,7 +3,9 @@ package org.confluence.mod.common.item.potion;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -16,12 +18,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.block.natural.spreadable.conversion_table.MoistenConversionTable;
 import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.mixed.IMinecraftServer;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,7 +46,8 @@ public abstract class AbstractPotionItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if (canUse(player.getItemInHand(hand), level, player)) return ItemUtils.startUsingInstantly(level, player, hand);
+        if (canUse(player.getItemInHand(hand), level, player))
+            return ItemUtils.startUsingInstantly(level, player, hand);
         return InteractionResultHolder.fail(player.getItemInHand(hand));
     }
 
@@ -84,23 +86,20 @@ public abstract class AbstractPotionItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
-        BlockPos pos = context.getClickedPos();
         Player player = context.getPlayer();
         ItemStack stack = context.getItemInHand();
-        BlockState state = level.getBlockState(pos);
-        if (!level.isClientSide && player != null && stack.is(PotionItems.BOTTLED_WATER.get())) {
-            Block block = state.getBlock();
-            Block newBlock = null;
-            if (block == Blocks.SAND) newBlock = NatureBlocks.MOISTENED_SAND_BLOCK.get();
-            else if (block == Blocks.RED_SAND) newBlock = NatureBlocks.MOISTENED_RED_SAND_BLOCK.get();
-            else if (block == NatureBlocks.EBONSAND.get()) newBlock = NatureBlocks.MOISTENED_EBONSAND_BLOCK.get();
-            else if (block == NatureBlocks.PEARLSAND.get()) newBlock = NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
-            else if (block == NatureBlocks.CRIMSAND.get()) newBlock = NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get();
-            if (newBlock != null) {
+        if (player instanceof ServerPlayer serverPlayer &&
+                context.getClickedFace() != Direction.DOWN &&
+                stack.is(PotionItems.BOTTLED_WATER.get())
+        ) {
+            BlockPos pos = context.getClickedPos();
+            BlockState source = level.getBlockState(pos);
+            BlockState target = MoistenConversionTable.INSTANCE.get(source, IMinecraftServer.isHardmode(serverPlayer.server));
+            if (target != null) {
                 level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 1.0F);
                 player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));
                 player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-                level.setBlockAndUpdate(pos, newBlock.defaultBlockState());
+                level.setBlockAndUpdate(pos, target);
                 return InteractionResult.SUCCESS;
             }
         }
@@ -110,7 +109,9 @@ public abstract class AbstractPotionItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         String key = "tooltip." + stack.getDescriptionId() + ".0";
-        if (I18n.exists(key)) tooltipComponents.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+        if (I18n.exists(key)) {
+            tooltipComponents.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+        }
     }
 
     public static <T extends AbstractPotionItem> void use(Player player, float required, Class<T> type, ToIntFunction<T> function) {

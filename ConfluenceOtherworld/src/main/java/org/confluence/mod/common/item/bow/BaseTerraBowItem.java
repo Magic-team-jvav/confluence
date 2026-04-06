@@ -29,11 +29,9 @@ import org.joml.Quaternionf;
 
 import java.util.List;
 
-/**
- * 泰拉弓箭基类
- *
- * @author Coffee
- */
+/// 泰拉弓箭基类
+///
+/// @author Coffee
 public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem> {
     private final float baseDamage;
     private final BaseArrowEntity.Builder arrowModifier;

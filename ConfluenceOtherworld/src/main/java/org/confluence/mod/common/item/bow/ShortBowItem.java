@@ -8,7 +8,6 @@ import org.confluence.mod.mixed.IAbstractArrow;
 public class ShortBowItem extends BaseTerraBowItem {
     public static final int MAX_DRAW_DURATION = 5; // 满蓄力时间为5 tick
 
-
     public ShortBowItem(float baseDamage, int durability) {
         super(baseDamage, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(durability));
     }

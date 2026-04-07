@@ -389,15 +389,15 @@ public class NatureBlocks {
     public static final DeferredBlock<FloatingWheatBlock> FLOATING_WHEAT = registerWithItem("floating_wheat", () -> new FloatingWheatBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT).offsetType(BlockBehaviour.OffsetType.NONE)));
 
     public static final DeferredBlock<BalloonMelonBlock> BALLOON_MELON = registerWithItem("balloon_melon", BalloonMelonBlock::new);
-    public static final DeferredBlock<BalloonAttachedStemBlock> BALLOON_ATTACHED_STEM = registerWithItem("balloon_attached_stem", () -> new BalloonAttachedStemBlock(
+    public static final DeferredBlock<BalloonAttachedStemBlock> ATTACHED_BALLOON_STEM = registerWithoutItem("attached_balloon_stem", () -> new BalloonAttachedStemBlock(
             BALLOON_MELON.getKey(),
             Confluence.asResourceKey(Registries.BLOCK,"balloon_stem"),
             FoodItems.BALLOON_SEED.getKey(),
             BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)
     ));
-    public static final DeferredBlock<BalloonStemBlock> BALLOON_STEM = registerWithItem("balloon_stem", () -> new BalloonStemBlock(
+    public static final DeferredBlock<BalloonStemBlock> BALLOON_STEM = registerWithoutItem("balloon_stem", () -> new BalloonStemBlock(
             BALLOON_MELON.getKey(),
-            BALLOON_ATTACHED_STEM.getKey(),
+            ATTACHED_BALLOON_STEM.getKey(),
             FoodItems.BALLOON_SEED.getKey()
     ));
 

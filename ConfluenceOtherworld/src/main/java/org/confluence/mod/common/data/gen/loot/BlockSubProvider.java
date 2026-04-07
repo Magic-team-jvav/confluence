@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CaveVines;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -31,6 +33,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
@@ -46,6 +49,7 @@ import org.confluence.mod.common.init.item.*;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static net.minecraft.world.level.block.Blocks.WHITE_WOOL;
 import static net.minecraft.world.level.storage.loot.functions.SetItemCountFunction.setCount;
 import static net.minecraft.world.level.storage.loot.predicates.ExplosionCondition.survivesExplosion;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
@@ -485,6 +489,29 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CHISELED_MARBLE_BRICKS.get());
         dropSelf(MARBLE_CHESSBOARD_BRICKS.get());
         dropSelf(MARBLE_ETERNAL_CHESSBOARD_BRICKS.get());
+
+        dropSelf(WHITE_BALLOON.get());
+        dropSelf(LIGHT_GRAY_BALLOON.get());
+        dropSelf(GRAY_BALLOON.get());
+        dropSelf(BLACK_BALLOON.get());
+        dropSelf(BROWN_BALLOON.get());
+        dropSelf(RED_BALLOON.get());
+        dropSelf(ORANGE_BALLOON.get());
+        dropSelf(YELLOW_BALLOON.get());
+        dropSelf(LIME_BALLOON.get());
+        dropSelf(GREEN_BALLOON.get());
+        dropSelf(CYAN_BALLOON.get());
+        dropSelf(LIGHT_BLUE_BALLOON.get());
+        dropSelf(BLUE_BALLOON.get());
+        dropSelf(PURPLE_BALLOON.get());
+        dropSelf(MAGENTA_BALLOON.get());
+        dropSelf(PINK_BALLOON.get());
+
+        add(BALLOON_MELON.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED))
+                        .add(EmptyLootItem.emptyItem().setWeight(3)))
+        );
 
         dropSelf(WHITE_PAPER_PANE.get());
         dropSelf(WHITE_PAPER_PANE_LAMP.get());

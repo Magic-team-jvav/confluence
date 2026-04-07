@@ -2,8 +2,8 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "confluence:block/void_log_side",
-		"particle": "confluence:block/void_log_side"
+		"0": "confluence:block/void_log",
+		"particle": "confluence:block/void_log"
 	},
 	"elements": [
 		{

@@ -35,22 +35,26 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     public static final MapCodec<BaseDroopingPlantsHeadBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("side").forGetter(b -> b.side),
             Codec.INT.fieldOf("max_age").forGetter(b -> b.maxAgeValue),
+            Direction.CODEC.fieldOf("growth_direction").forGetter(b -> b.growthDirection),
             Codec.BOOL.fieldOf("is_natural_growth").forGetter(b -> b.isNaturalGrowth),
             Codec.BOOL.fieldOf("is_climbable").forGetter(b -> b.isClimbable),
             BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("attached_block")
                     .forGetter(b -> b.attachedBlocksSupplier.get())
-    ).apply(instance, (side, maxAge, isNatural, isClimbable, blocks) -> new BaseDroopingPlantsHeadBlock(side, maxAge, isNatural, isClimbable, () -> blocks)));
+    ).apply(instance, (side, maxAge, growthDirection, isNatural, isClimbable, blocks) ->
+            new BaseDroopingPlantsHeadBlock(side, maxAge, growthDirection, isNatural, isClimbable, () -> blocks)));
 
     protected final int side;
     protected final int maxAgeValue;
+    protected final Direction growthDirection;
     protected final boolean isNaturalGrowth;
     protected final boolean isClimbable;
     protected final Supplier<List<Block>> attachedBlocksSupplier;
 
-    public BaseDroopingPlantsHeadBlock(int side, int maxAge, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlocksSupplier) {
-        super(Properties.of().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY).randomTicks(), Direction.DOWN, createShape(side), true, 0.1);
+    private BaseDroopingPlantsHeadBlock(int side, int maxAge, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlocksSupplier) {
+        super(Properties.of().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY).randomTicks(), growthDirection, createShape(side, growthDirection), true, 0.1);
         this.side = side;
         this.maxAgeValue = Math.min(maxAge, 25);
+        this.growthDirection = growthDirection;
         this.isNaturalGrowth = isNaturalGrowth;
         this.isClimbable = isClimbable;
         this.attachedBlocksSupplier = attachedBlocksSupplier;
@@ -60,12 +64,24 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
                 .setValue(PART, VinePart.HEAD));
     }
 
-    public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlock) {
-        this(side, 25, isNaturalGrowth, isClimbable, attachedBlock);
+    public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable) {
+        this(side, 25, Direction.DOWN, isNaturalGrowth, isClimbable, List::of);
     }
 
-    public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable) {
-        this(side, 25, isNaturalGrowth, isClimbable, () -> List.of());
+    public BaseDroopingPlantsHeadBlock(int side, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable) {
+        this(side, 25, growthDirection, isNaturalGrowth, isClimbable, List::of);
+    }
+
+    public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlock) {
+        this(side, 25, Direction.DOWN, isNaturalGrowth, isClimbable, attachedBlock);
+    }
+
+    public BaseDroopingPlantsHeadBlock(int side, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlock) {
+        this(side, 25, growthDirection, isNaturalGrowth, isClimbable, attachedBlock);
+    }
+
+    public BaseDroopingPlantsHeadBlock(int side, int maxAge, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable) {
+        this(side, maxAge, growthDirection, isNaturalGrowth, isClimbable, List::of);
     }
 
     @Override
@@ -80,7 +96,7 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockPos supportPos = pos.above();
+        BlockPos supportPos = pos.relative(growthDirection.getOpposite());
         BlockState supportState = level.getBlockState(supportPos);
         if (supportState.is(this)) return true;
         return isAnchor(supportState);
@@ -112,12 +128,12 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     }
 
     private BlockState calculatePart(LevelReader level, BlockPos pos, BlockState state) {
-        boolean hasVineBelow = level.getBlockState(pos.below()).is(this);
-        boolean isSupportedByAnchor = isAnchor(level.getBlockState(pos.above()));
+        boolean hasVineBelow = level.getBlockState(pos.relative(growthDirection)).is(this);
+        boolean isSupportedByAnchor = isAnchor(level.getBlockState(pos.relative(growthDirection.getOpposite())));
         if (!hasVineBelow) {
             return state.setValue(PART, VinePart.HEAD);
         } else {
-            if (isSupportedByAnchor && !level.getBlockState(pos.above()).is(this)) {
+            if (isSupportedByAnchor && !level.getBlockState(pos.relative(growthDirection.getOpposite())).is(this)) {
                 return state.setValue(PART, VinePart.TAIL);
             }
             return state.setValue(PART, VinePart.BODY);
@@ -159,9 +175,13 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    private static VoxelShape createShape(int side) {
+    private static VoxelShape createShape(int side, Direction direction) {
         double margin = (16.0 - side) / 2.0;
-        return Block.box(margin, 0.0, margin, 16.0 - margin, 16.0, 16.0 - margin);
+        return switch (direction) {
+            case DOWN, UP -> Block.box(margin, 0.0, margin, 16.0 - margin, 16.0, 16.0 - margin);
+            case NORTH, SOUTH -> Block.box(margin, margin, 0.0, 16.0 - margin, 16.0 - margin, 16.0);
+            case WEST, EAST -> Block.box(0.0, margin, margin, 16.0, 16.0 - margin, 16.0 - margin);
+        };
     }
 
     @Override

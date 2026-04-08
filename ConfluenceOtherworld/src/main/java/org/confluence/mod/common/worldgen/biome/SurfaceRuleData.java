@@ -203,6 +203,30 @@ public class SurfaceRuleData {
                                         )
                                 )
                         )
+                ),
+
+                // 朔月滩涂
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.DARK_MOON_FLATS),
+                        SurfaceRules.ifTrue(bedrockRoofSeed,
+                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(2, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
+                                                state(Blocks.END_STONE)
+                                        )
+                                )
+                        )
+                ),
+
+                // 映月空海
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.MOONLIT_DRY_SEA),
+                        SurfaceRules.ifTrue(bedrockRoofSeed,
+                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(6, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
+                                                state(Blocks.END_STONE)
+                                        )
+                                )
+                        )
                 )
         );
     }

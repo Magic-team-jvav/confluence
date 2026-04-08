@@ -2,23 +2,44 @@ package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CoralWallFanBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.ToolItems;
+
+import static org.confluence.mod.util.ModUtils.isWaterBottle;
 
 public class LunarCoralWallFanBlock extends CoralWallFanBlock {
 
+    private static final TagKey<Block> LUNAR_CORAL_DRY = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "lunar_coral_dry"));
+    public static final IntegerProperty HUMIDITY = IntegerProperty.create("humidity", 0, 3);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private final Block deadBlock;
@@ -26,6 +47,43 @@ public class LunarCoralWallFanBlock extends CoralWallFanBlock {
     public LunarCoralWallFanBlock(Block deadBlock, Properties properties) {
         super(deadBlock, properties);
         this.deadBlock = deadBlock;
+        this.registerDefaultState(this.stateDefinition.any().setValue(HUMIDITY, 0));
+    }
+
+    protected boolean scanForDry(BlockGetter level, BlockPos pos) {
+        for (Direction direction : Direction.values()) {
+            BlockState nextBlock = level.getBlockState(pos.relative(direction));
+            if (nextBlock.is(LUNAR_CORAL_DRY)) return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(HUMIDITY);
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!level.isClientSide) {
+            boolean waterLogged = state.getValue(WATERLOGGED);
+            int humidity = state.getValue(HUMIDITY);
+            if (isWaterBottle(stack)) {
+                if (humidity < 3) level.setBlock(pos, state.setValue(HUMIDITY, humidity + 1).setValue(WATERLOGGED, waterLogged), 2);
+                else level.setBlock(pos, this.deadBlock.defaultBlockState().setValue(WATERLOGGED, waterLogged), 2);
+                ItemStack bottle = (stack.is(Items.POTION)) ? new ItemStack(Items.GLASS_BOTTLE) : PotionItems.BOTTLE.toStack();
+                player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, bottle));
+                level.playSound(null, pos, SoundEvents.MUD_STEP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                return ItemInteractionResult.SUCCESS;
+            } else if ((humidity > 0) && (stack.is(ToolItems.SUPER_ABSORBANT_SPONGE) || stack.is(ToolItems.ULTRA_ABSORBANT_SPONGE))) {
+                level.setBlock(pos, state.setValue(HUMIDITY, humidity - 1).setValue(WATERLOGGED, waterLogged), 2);
+                level.playSound(null, pos, SoundEvents.BRUSH_GENERIC, SoundSource.BLOCKS, 1.0F, 1.0F);
+                return ItemInteractionResult.SUCCESS;
+            }
+        }
+
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     protected static boolean scanForWater(BlockState state, BlockGetter level, BlockPos pos) {
@@ -44,8 +102,20 @@ public class LunarCoralWallFanBlock extends CoralWallFanBlock {
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        boolean waterLogged = state.getValue(WATERLOGGED);
         if (scanForWater(state, level, pos)) {
-            level.setBlock(pos, this.deadBlock.defaultBlockState().setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(FACING, state.getValue(FACING)), 2);
+            int humidity = state.getValue(HUMIDITY);
+            if (humidity < 3) {
+                level.setBlock(pos, state.setValue(HUMIDITY, humidity + 1).setValue(WATERLOGGED, waterLogged), 2);
+                level.scheduleTick(pos, this, 60 + level.getRandom().nextInt(40));
+            }
+            else level.setBlock(pos, this.deadBlock.defaultBlockState(), 2);
+        } else if (this.scanForDry(level, pos)) {
+            int humidity = state.getValue(HUMIDITY);
+            if (humidity > 0) {
+                level.setBlock(pos, state.setValue(HUMIDITY, humidity - 1).setValue(WATERLOGGED, waterLogged), 2);
+                level.scheduleTick(pos, this, 60 + level.getRandom().nextInt(40));
+            }
         }
     }
 
@@ -65,8 +135,6 @@ public class LunarCoralWallFanBlock extends CoralWallFanBlock {
 
     @Override
     protected void tryScheduleDieTick(BlockState state, LevelAccessor level, BlockPos pos) {
-        if (scanForWater(state, level, pos)) {
-            level.scheduleTick(pos, this, 60 + level.getRandom().nextInt(40));
-        }
+        if ((this.deadBlock != null) && (scanForWater(state, level, pos) || this.scanForDry(level, pos))) level.scheduleTick(pos, this, 60 + level.getRandom().nextInt(40));
     }
 }

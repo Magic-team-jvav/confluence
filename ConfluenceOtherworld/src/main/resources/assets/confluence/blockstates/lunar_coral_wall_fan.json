@@ -1,19 +1,64 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "confluence:block/lunar_coral_wall_fan",
-      "y": 90
-    },
-    "facing=north": {
-      "model": "confluence:block/lunar_coral_wall_fan"
-    },
-    "facing=south": {
-      "model": "confluence:block/lunar_coral_wall_fan",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "confluence:block/lunar_coral_wall_fan",
-      "y": 270
-    }
+      "facing=east,humidity=3": {
+          "model": "confluence:block/lunar_coral_wall_fan",
+          "y": 90
+      },
+      "facing=north,humidity=3": {
+          "model": "confluence:block/lunar_coral_wall_fan"
+      },
+      "facing=south,humidity=3": {
+          "model": "confluence:block/lunar_coral_wall_fan",
+          "y": 180
+      },
+      "facing=west,humidity=3": {
+          "model": "confluence:block/lunar_coral_wall_fan",
+          "y": 270
+      },
+      "facing=east,humidity=2": {
+          "model": "confluence:block/lunar_coral_wall_fan_0",
+          "y": 90
+      },
+      "facing=north,humidity=2": {
+          "model": "confluence:block/lunar_coral_wall_fan_0"
+      },
+      "facing=south,humidity=2": {
+          "model": "confluence:block/lunar_coral_wall_fan_0",
+          "y": 180
+      },
+      "facing=west,humidity=2": {
+          "model": "confluence:block/lunar_coral_wall_fan_0",
+          "y": 270
+      },
+      "facing=east,humidity=1": {
+          "model": "confluence:block/lunar_coral_wall_fan_1",
+          "y": 90
+      },
+      "facing=north,humidity=1": {
+          "model": "confluence:block/lunar_coral_wall_fan_1"
+      },
+      "facing=south,humidity=1": {
+          "model": "confluence:block/lunar_coral_wall_fan_1",
+          "y": 180
+      },
+      "facing=west,humidity=1": {
+          "model": "confluence:block/lunar_coral_wall_fan_1",
+          "y": 270
+      },
+      "facing=east,humidity=0": {
+          "model": "confluence:block/lunar_coral_wall_fan_2",
+          "y": 90
+      },
+      "facing=north,humidity=0": {
+          "model": "confluence:block/lunar_coral_wall_fan_2"
+      },
+      "facing=south,humidity=0": {
+          "model": "confluence:block/lunar_coral_wall_fan_2",
+          "y": 180
+      },
+      "facing=west,humidity=0": {
+          "model": "confluence:block/lunar_coral_wall_fan_2",
+          "y": 270
+      }
   }
 }

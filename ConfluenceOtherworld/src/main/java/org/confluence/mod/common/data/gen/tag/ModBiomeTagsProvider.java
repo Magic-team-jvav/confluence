@@ -114,7 +114,9 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.INVERSE_FOREST,
                 ModBiomes.INVERSE_PLAINS,
                 ModBiomes.MOONBLIGHT_FOREST,
-                ModBiomes.MOONBLIGHT_PLAINS
+                ModBiomes.MOONBLIGHT_PLAINS,
+                ModBiomes.MOONLIT_DRY_SEA,
+                ModBiomes.DARK_MOON_FLATS
         );
     }
 }

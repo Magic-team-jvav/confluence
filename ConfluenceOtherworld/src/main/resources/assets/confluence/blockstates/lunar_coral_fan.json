@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
-      "model": "confluence:block/lunar_coral_fan"
-    }
+      "humidity=3": {
+          "model": "confluence:block/lunar_coral_fan"
+      },
+      "humidity=2": {
+          "model": "confluence:block/lunar_coral_fan_0"
+      },
+      "humidity=1": {
+          "model": "confluence:block/lunar_coral_fan_1"
+      },
+      "humidity=0": {
+          "model": "confluence:block/lunar_coral_fan_2"
+      }
   }
 }

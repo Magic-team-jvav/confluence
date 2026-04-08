@@ -5,9 +5,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -25,6 +29,7 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
     public MoonglowWillowTreeFeature(Codec<Config> pCodec) {
         super(pCodec);
     }
+    private static final TagKey<Block> END_PLANT_CAN_SURVIVE = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "end_plant_can_survive"));
 
     @Override
     public boolean place(FeaturePlaceContext<Config> pContext) {
@@ -32,6 +37,8 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
         BlockPos basePos = pContext.origin();
+
+        if (!level.getBlockState(basePos.below()).is(END_PLANT_CAN_SURVIVE)) return false;
 
         BlockState trunkBlock = config.trunk().getState(random, basePos);
         BlockState vineBlock = config.vine().getState(random, basePos);
@@ -122,8 +129,13 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
         for (Long debugLong : vineSet) {
             BlockPos debugPos = BlockPos.of(debugLong);
             BlockState debugState = level.getBlockState(debugPos.above());
-            if (!debugState.is(trunkBlock.getBlock()) && !debugState.is(leavesBlock.getBlock()) && !debugState.is(vineBlock.getBlock()))
-                level.setBlock(debugPos, Blocks.AIR.defaultBlockState(), 3);
+            if (!debugState.is(trunkBlock.getBlock()) && !debugState.is(leavesBlock.getBlock()) && !debugState.is(vineBlock.getBlock())) {
+                BlockPos checkPos = debugPos;
+                while (level.getBlockState(checkPos).is(vineBlock.getBlock())) {
+                    level.setBlock(checkPos, Blocks.AIR.defaultBlockState(), 3);
+                    checkPos = checkPos.below();
+                }
+            }
         }
 
         return true;

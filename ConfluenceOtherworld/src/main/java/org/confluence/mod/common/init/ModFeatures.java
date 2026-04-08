@@ -46,7 +46,7 @@ public final class ModFeatures {
     public static final Supplier<SimpleBlockNBTFeature> SIMPLE_BLOCK_NBT = FEATURES.register("simple_block_nbt", () -> new SimpleBlockNBTFeature(SimpleBlockNBTFeature.Config.CODEC));
     public static final Supplier<PalmTreeFeature> PALM_TREE = FEATURES.register("palm_tree", () -> new PalmTreeFeature(PalmTreeFeature.Config.CODEC));
     public static final Supplier<DroopingVineTreeFeature> DROOPING_VINE_TREE = FEATURES.register("drooping_vine_tree", () -> new DroopingVineTreeFeature(DroopingVineTreeFeature.Config.CODEC));
-    public static final Supplier<DroopingBlockFeature> DROOPING_BLOCK = FEATURES.register("drooping_block", () -> new DroopingBlockFeature(DroopingBlockFeature.Config.CODEC));
+    public static final Supplier<BlockPostFeature> BLOCK_POST = FEATURES.register("block_post", () -> new BlockPostFeature(BlockPostFeature.Config.CODEC));
     public static final Supplier<CattailsFeature> CATTAILS = FEATURES.register("cattails", () -> new CattailsFeature(CattailsFeature.Config.CODEC));
     public static final Supplier<MushroomTreeFeature> MUSHROOM_TREE = FEATURES.register("mushroom_tree", () -> new MushroomTreeFeature(MushroomTreeFeature.Config.CODEC));
     public static final Supplier<HugeMushroomTreeFeature> HUGE_MUSHROOM_TREE = FEATURES.register("huge_mushroom_tree", () -> new HugeMushroomTreeFeature(HugeMushroomTreeFeature.Config.CODEC));
@@ -131,7 +131,6 @@ public final class ModFeatures {
         public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> PINE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("pine_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> MOONGLOW_WILLOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("moonglow_willow_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> LUNAR_CORAL = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("lunar_coral"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> CHINESE_PINE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("chinese_pine_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> LIFE_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("life_mushroom_tree"));

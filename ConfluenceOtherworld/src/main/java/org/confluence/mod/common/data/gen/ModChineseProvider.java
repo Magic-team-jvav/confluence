@@ -668,6 +668,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.inverse_plains", "倒悬平原");
         add("biome.confluence.moonblight_forest", "月蚀森林");
         add("biome.confluence.moonblight_plains", "月蚀平原");
+        add("biome.confluence.moonlit_dry_sea", "映月空海");
+        add("biome.confluence.dark_moon_flats", "朔月滩涂");
 
         add("biome.minecraft.confluence_sky", "太空层");
 
@@ -1870,6 +1872,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LUNAR_CORAL.get(), "望月珊瑚");
         add(NatureBlocks.LUNAR_CORAL_FAN.get(), "望月珊瑚扇");
         add(NatureBlocks.LUNAR_CORAL_WALL_FAN.get(), "墙上的望月珊瑚扇");
+        add(NatureBlocks.WITHERED_SEA_SILK.get(), "枯海沧丝");
+        add(NatureBlocks.SILVER_GRASS.get(), "银月草");
+        add(NatureBlocks.TALL_SILVER_GRASS.get(), "银月高草");
 
         add(NatureBlocks.GLOOM_OBSIDIAN.get(), "黯虚黑曜石");
         add(NatureBlocks.GAZE_TUBER.get(), "晖落块茎");

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -258,7 +259,7 @@ public class NatureBlocks {
     public static final DeferredBlock<BaseTallPlantBlock> TALL_VOID_GRASS = registerWithItem("tall_void_grass", () -> new BaseTallPlantBlock(VOID_GRASS_BLOCK.get()));
     public static final DeferredBlock<VoidTreeRootBlock> VOID_TREE_ROOT_BLOCK = registerWithItem("void_tree_root_block", VoidTreeRootBlock::new);
     public static final Supplier<BlockEntityType<VoidTreeRootBlock.BEntity>> VOID_TREE_ROOT_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("void_tree_root_block", () -> BlockEntityType.Builder.of(VoidTreeRootBlock.BEntity::new, VOID_TREE_ROOT_BLOCK.get()).build(DSL.remainderType()));
-    public static final LogBlockSet VOID_LOG_BLOCKS = LogBlockSet.builder("void", true, VOID).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.VOID_GROWER, properties, ModTags.Blocks.VOID_TREE_CAN_SURVIVE, VOID_GRASS_BLOCK, END_DIRT)).build();
+    public static final LogBlockSet VOID_LOG_BLOCKS = LogBlockSet.builder("void", true, VOID).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.VOID_GROWER, properties, ModTags.Blocks.END_PLANT_CAN_SURVIVE, VOID_GRASS_BLOCK, END_DIRT)).build();
     public static final DeferredBlock<DragonsBreathPepperBlock> DRAGONS_BREATH_PEPPER = registerWithoutItem("dragons_breath_pepper", () -> new DragonsBreathPepperBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.2F).sound(SoundType.CROP).randomTicks()));
 
     // 末地 - 倒悬主题
@@ -337,6 +338,8 @@ public class NatureBlocks {
                             .pushReaction(PushReaction.DESTROY)
             )
     );
+    public static final DeferredBlock<BasePlantBlock> SILVER_GRASS = registerWithItem("silver_grass", () -> new BasePlantBlock(MOONLIT_GRASS_BLOCK.get(), END_DIRT.get()));
+    public static final DeferredBlock<BaseTallPlantBlock> TALL_SILVER_GRASS = registerWithItem("tall_silver_grass", () -> new BaseTallPlantBlock(MOONLIT_GRASS_BLOCK.get(), END_DIRT.get()));
 
     // 地獄 - 黯虛主題
     public static final DeferredBlock<Block> GLOOM_OBSIDIAN = registerWithItem("gloom_obsidian", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OBSIDIAN)));
@@ -431,6 +434,13 @@ public class NatureBlocks {
             NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LOG.get(),
             NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LEAVES.get()
     )));
+    public static final DeferredBlock<BaseDroopingPlantsHeadBlock> WITHERED_SEA_SILK = registerWithItem("withered_sea_silk", () -> new BaseDroopingPlantsHeadBlock(10, Direction.UP, false, true, () -> List.of(
+            Blocks.END_STONE,
+            VOID_GRASS_BLOCK.get(),
+            END_DIRT.get(),
+            MOONLIT_GRASS_BLOCK.get(),
+            INVERSE_GRASS_BLOCK.get()
+    ), 15));
 
     //微光环境物块
     public static final DeferredBlock<ShimmerDroopingVinesBlock> SHIMMER_DROOPING_VINE = registerWithoutItem("shimmer_drooping_vine", () -> new ShimmerDroopingVinesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES)));

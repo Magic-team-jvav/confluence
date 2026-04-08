@@ -1,4 +1,5 @@
 {
+	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"render_type": "cutout",
 	"textures": {
@@ -6,21 +7,21 @@
 	},
 	"elements": [
 		{
-			"from": [8, 16, -2],
-			"to": [8, 32, 18],
+			"from": [8, -16, -2],
+			"to": [8, 0, 18],
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 16, 8]},
 			"faces": {
-				"east": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "up" },
-				"west": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "up" }
+				"east": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "down"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "down"}
 			}
 		},
 		{
-			"from": [-2, 16, 8],
-			"to": [18, 32, 8],
+			"from": [-2, -16, 8],
+			"to": [18, 0, 8],
 			"rotation": {"angle": 45, "axis": "y", "origin": [8, 16, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "up" },
-				"south": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "up" }
+				"north": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "down"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "down"}
 			}
 		},
 		{

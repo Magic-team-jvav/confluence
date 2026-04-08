@@ -33,7 +33,7 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
         super(pCodec);
     }
     private static final TagKey<Block> VOID_TREE_ROOT_CAN_CONNECT = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "void_tree_root_can_connect"));
-    private static final TagKey<Block> VOID_TREE_CAN_SURVIVE = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "void_tree_can_survive"));
+    private static final TagKey<Block> END_PLANT_CAN_SURVIVE = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "end_plant_can_survive"));
 
     @Override
     public boolean place(FeaturePlaceContext<Config> pContext) {
@@ -42,7 +42,7 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
         WorldGenLevel level = pContext.level();
         BlockPos basePos = pContext.origin();
 
-        if (!level.getBlockState(basePos.below()).is(VOID_TREE_CAN_SURVIVE)) return false;
+        if (!level.getBlockState(basePos.below()).is(END_PLANT_CAN_SURVIVE)) return false;
 
         BlockState trunkBlock = config.trunk().getState(random, basePos);
         BlockState rootBlock = config.root().getState(random, basePos);

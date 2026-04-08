@@ -29,6 +29,8 @@ public final class ModBiomes {
     public static final ResourceKey<Biome> INVERSE_PLAINS = register("inverse_plains");
     public static final ResourceKey<Biome> MOONBLIGHT_FOREST = register("moonblight_forest");
     public static final ResourceKey<Biome> MOONBLIGHT_PLAINS = register("moonblight_plains");
+    public static final ResourceKey<Biome> MOONLIT_DRY_SEA = register("moonlit_dry_sea");
+    public static final ResourceKey<Biome> DARK_MOON_FLATS = register("dark_moon_flats");
 
     private static ResourceKey<Biome> register(String name) {
         return ResourceKey.create(Registries.BIOME, Confluence.asResource(name));

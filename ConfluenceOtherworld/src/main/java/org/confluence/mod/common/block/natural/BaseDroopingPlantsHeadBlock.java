@@ -39,9 +39,10 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
             Codec.BOOL.fieldOf("is_natural_growth").forGetter(b -> b.isNaturalGrowth),
             Codec.BOOL.fieldOf("is_climbable").forGetter(b -> b.isClimbable),
             BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("attached_block")
-                    .forGetter(b -> b.attachedBlocksSupplier.get())
-    ).apply(instance, (side, maxAge, growthDirection, isNatural, isClimbable, blocks) ->
-            new BaseDroopingPlantsHeadBlock(side, maxAge, growthDirection, isNatural, isClimbable, () -> blocks)));
+                    .forGetter(b -> b.attachedBlocksSupplier.get()),
+            Codec.INT.fieldOf("light_level").forGetter(b -> b.lightLevel)
+    ).apply(instance, (side, maxAge, growthDirection, isNatural, isClimbable, blocks, lightLevel) ->
+            new BaseDroopingPlantsHeadBlock(side, maxAge, growthDirection, isNatural, isClimbable, () -> blocks, lightLevel)));
 
     protected final int side;
     protected final int maxAgeValue;
@@ -49,15 +50,24 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     protected final boolean isNaturalGrowth;
     protected final boolean isClimbable;
     protected final Supplier<List<Block>> attachedBlocksSupplier;
+    private final int lightLevel;
 
-    private BaseDroopingPlantsHeadBlock(int side, int maxAge, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlocksSupplier) {
-        super(Properties.of().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY).randomTicks(), growthDirection, createShape(side, growthDirection), true, 0.1);
+    private BaseDroopingPlantsHeadBlock(int side, int maxAge, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlocksSupplier, int lightLevel) {
+        super(Properties.of()
+                .noCollission()
+                .instabreak()
+                .sound(SoundType.GRASS)
+                .pushReaction(PushReaction.DESTROY)
+                .randomTicks()
+                .lightLevel((state) -> lightLevel)
+                , growthDirection, createShape(side, growthDirection), true, 0.1);
         this.side = side;
         this.maxAgeValue = Math.min(maxAge, 25);
         this.growthDirection = growthDirection;
         this.isNaturalGrowth = isNaturalGrowth;
         this.isClimbable = isClimbable;
         this.attachedBlocksSupplier = attachedBlocksSupplier;
+        this.lightLevel = lightLevel;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(AGE, 0)
                 .setValue(WATERLOGGED, false)
@@ -65,23 +75,27 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     }
 
     public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable) {
-        this(side, 25, Direction.DOWN, isNaturalGrowth, isClimbable, List::of);
+        this(side, 25, Direction.DOWN, isNaturalGrowth, isClimbable, List::of, 0);
     }
 
     public BaseDroopingPlantsHeadBlock(int side, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable) {
-        this(side, 25, growthDirection, isNaturalGrowth, isClimbable, List::of);
+        this(side, 25, growthDirection, isNaturalGrowth, isClimbable, List::of, 0);
     }
 
     public BaseDroopingPlantsHeadBlock(int side, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlock) {
-        this(side, 25, Direction.DOWN, isNaturalGrowth, isClimbable, attachedBlock);
+        this(side, 25, Direction.DOWN, isNaturalGrowth, isClimbable, attachedBlock, 0);
     }
 
     public BaseDroopingPlantsHeadBlock(int side, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlock) {
-        this(side, 25, growthDirection, isNaturalGrowth, isClimbable, attachedBlock);
+        this(side, 25, growthDirection, isNaturalGrowth, isClimbable, attachedBlock, 0);
+    }
+
+    public BaseDroopingPlantsHeadBlock(int side, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlock, int lightLevel) {
+        this(side, 25, growthDirection, isNaturalGrowth, isClimbable, attachedBlock, lightLevel);
     }
 
     public BaseDroopingPlantsHeadBlock(int side, int maxAge, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable) {
-        this(side, maxAge, growthDirection, isNaturalGrowth, isClimbable, List::of);
+        this(side, maxAge, growthDirection, isNaturalGrowth, isClimbable, List::of, 0);
     }
 
     @Override

@@ -70,7 +70,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MOONLIT_GRASS_BLOCK.get(),
                 INVERSE_GRASS_BLOCK.get()
         );
-        tag(ModTags.Blocks.VOID_TREE_CAN_SURVIVE).add(
+        tag(ModTags.Blocks.END_PLANT_CAN_SURVIVE).add(
                 Blocks.END_STONE,
                 VOID_GRASS_BLOCK.get(),
                 END_DIRT.get(),
@@ -89,7 +89,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 INVERSE_GRASS_BLOCK.get(),
                 VOID_GRASS.get(),
                 VOID_VIOLET.get(),
-                TALL_VOID_GRASS.get()
+                TALL_VOID_GRASS.get(),
+                SILVER_GRASS.get(),
+                TALL_SILVER_GRASS.get()
         );
         tag(ModTags.Blocks.LUNAR_CORAL_DRY).add(
                 Blocks.LAVA,

@@ -121,8 +121,8 @@ public final class SlimeRainGameEvent implements GameEvent {
                 MobSpawnSettings.SpawnerData spawnerData = random.get();
                 int count = level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount);
                 for (int j = 0; j < count; j++) {
-                    double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
-                    double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
+                    double x = GameEventSystem.randomFromTo(level.random, position.x, 24, 32);
+                    double z = GameEventSystem.randomFromTo(level.random, position.z, 24, 32);
                     int cx = SectionPos.blockToSectionCoord(x);
                     int cz = SectionPos.blockToSectionCoord(z);
                     if (LibUtils.getChunkIfLoaded(level, cx, cz) == null) {

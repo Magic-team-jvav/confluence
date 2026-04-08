@@ -2,9 +2,9 @@
 	"credit": "Made with Blockbench",
     "render_type": "cutout",
 	"textures": {
-		"0": "confluence:block/ash_log_side",
-		"1": "confluence:block/ash_log_end",
-		"particle": "confluence:block/ash_log_side"
+		"0": "confluence:block/ash_log",
+		"1": "confluence:block/ash_log_top",
+		"particle": "confluence:block/ash_log"
 	},
 	"elements": [
 		{

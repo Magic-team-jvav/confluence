@@ -4,7 +4,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"2": "confluence:block/ash_branches",
-		"particle": "confluence:block/ash_log_side"
+		"particle": "confluence:block/ash_log"
 	},
 	"elements": [
 		{

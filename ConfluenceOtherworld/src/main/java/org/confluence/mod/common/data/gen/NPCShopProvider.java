@@ -516,7 +516,6 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(FoodItems.BALLOON_SEED.get())
                 .add(NatureBlocks.BALLOON_MELON.get())
                 .add(DecorativeBlocks.WHITE_BALLOON.get())
-                .add(DecorativeBlocks.WHITE_BALLOON.get())
                 .add(DecorativeBlocks.LIGHT_GRAY_BALLOON.get())
                 .add(DecorativeBlocks.GRAY_BALLOON.get())
                 .add(DecorativeBlocks.BLACK_BALLOON.get())

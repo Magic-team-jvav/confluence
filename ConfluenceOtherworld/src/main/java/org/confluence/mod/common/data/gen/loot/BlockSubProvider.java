@@ -507,10 +507,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(MAGENTA_BALLOON.get());
         dropSelf(PINK_BALLOON.get());
 
-        add(BALLOON_MELON.get(), LootTable.lootTable()
+
+        add(ATTACHED_BALLOON_STEM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED))
-                        .add(EmptyLootItem.emptyItem().setWeight(3)))
+                        .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(EmptyLootItem.emptyItem()))
         );
 
         dropSelf(WHITE_PAPER_PANE.get());
@@ -879,44 +880,89 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                 .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CropBlock.AGE, 7));
         add(NatureBlocks.CLOUDWEAVER.get(), createCropDrops(NatureBlocks.CLOUDWEAVER.get(), MaterialItems.WEAVING_CLOUD_COTTON.asItem(), FoodItems.CLOUDWEAVER_SEED.get(), lootitemcondition$builder1));
 
-        LootTable.Builder lootTableBuilder = LootTable.lootTable();
+        LootTable.Builder stellarLoot = LootTable.lootTable();
+
         for (int age = 1; age <= 5; age++) {
-            lootTableBuilder.withPool(LootPool.lootPool()
+            stellarLoot.withPool(LootPool.lootPool()
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                             .setProperties(StatePropertiesPredicate.Builder.properties()
                                     .hasProperty(CropBlock.AGE, age)))
                     .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get())));
         }
-        lootTableBuilder.withPool(LootPool.lootPool()
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get()))
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 0))));
-        lootTableBuilder.withPool(LootPool.lootPool()
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 6)))
                 .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get())
-                        .apply(setCount(ConstantValue.exactly(2))))
-        );
-        lootTableBuilder.withPool(LootPool.lootPool()
+                        .apply(setCount(ConstantValue.exactly(2)))));
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 6)))
                 .add(LootItem.lootTableItem(STAR_PETALS.get())));
-        lootTableBuilder.withPool(LootPool.lootPool()
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 7)))
-                .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get()).apply(setCount(UniformGenerator.between(2, 3))))
-        );
-        lootTableBuilder.withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get())
+                        .apply(setCount(UniformGenerator.between(2, 3)))));
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 7)))
-                .add(LootItem.lootTableItem(STAR_PETALS.get())).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
-                .apply(setCount(UniformGenerator.between(2, 5))));
-        add(STELLAR_BLOSSOM.get(), lootTableBuilder);
+                .add(LootItem.lootTableItem(STAR_PETALS.get())
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 5.0F)))
+                        .apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
+                ));
+
+        add(STELLAR_BLOSSOM.get(), stellarLoot);
+
+        LootTable.Builder balloonLoot = LootTable.lootTable();
+
+        for (int age = 1; age <= 5; age++) {
+            balloonLoot.withPool(LootPool.lootPool()
+                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                    .hasProperty(CropBlock.AGE, age)))
+                    .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get())));
+        }
+
+        balloonLoot.withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get()))
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 0))));
+
+        balloonLoot.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 6)))
+                .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get())
+                        .apply(setCount(ConstantValue.exactly(2)))));
+
+        balloonLoot.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 6)))
+                .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get())));
+
+        balloonLoot.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 7)))
+                .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get())
+                        .apply(setCount(UniformGenerator.between(2, 3)))));
+        add(BALLOON_STEM.get(), balloonLoot);
         addCoinPileDrop(COPPER_COIN.get());
         addCoinPileDrop(SILVER_COIN.get());
         addCoinPileDrop(GOLD_COIN.get());

@@ -40,6 +40,7 @@ public final class ModTags {
         public static final TagKey<Block> GELSTONE_ORE_REPLACEMENT = register("gelstone_ore_replacement");
         public static final TagKey<Block> OPAL_ORE_REPLACEMENT = register("opal_ore_replacement");
         public static final TagKey<Block> ROPE = register("rope"); // 汇流的绳子
+        public static final TagKey<Block> BALLOON = register("balloon"); // 汇流的气球
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = register("mineable_with_hammer"); // 使用锤子挖掘更快
         public static final TagKey<Block> MINEABLE_WITH_HAMAXE = register("mineable_with_hamaxe"); // 锤斧
         public static final TagKey<Block> MINEABLE_WITH_HOE_SHOVEL = register("mineable_with_hoe_shovel"); // 锄锹

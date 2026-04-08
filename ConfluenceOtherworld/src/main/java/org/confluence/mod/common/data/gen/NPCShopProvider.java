@@ -14,10 +14,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.util.LibDateUtils;
@@ -30,10 +34,7 @@ import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.CrateBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.terra_entity.npc_trade.DeferredMoneyTradeItem;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
@@ -66,6 +67,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+
+import static net.minecraft.world.level.block.Blocks.WHITE_WOOL;
 
 /// 生成单个NPC单个配方
 ///
@@ -510,6 +513,25 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(ConsumableItems.SMOKE_BOMB)
                 .add(MaterialItems.CONFETTI)
                 .add(MinecartItems.PARTY_WAGON)
+                .add(FoodItems.BALLOON_SEED.get())
+                .add(NatureBlocks.BALLOON_MELON.get())
+                .add(DecorativeBlocks.WHITE_BALLOON.get())
+                .add(DecorativeBlocks.WHITE_BALLOON.get())
+                .add(DecorativeBlocks.LIGHT_GRAY_BALLOON.get())
+                .add(DecorativeBlocks.GRAY_BALLOON.get())
+                .add(DecorativeBlocks.BLACK_BALLOON.get())
+                .add(DecorativeBlocks.BROWN_BALLOON.get())
+                .add(DecorativeBlocks.RED_BALLOON.get())
+                .add(DecorativeBlocks.ORANGE_BALLOON.get())
+                .add(DecorativeBlocks.YELLOW_BALLOON.get())
+                .add(DecorativeBlocks.LIME_BALLOON.get())
+                .add(DecorativeBlocks.GREEN_BALLOON.get())
+                .add(DecorativeBlocks.CYAN_BALLOON.get())
+                .add(DecorativeBlocks.LIGHT_BLUE_BALLOON.get())
+                .add(DecorativeBlocks.BLUE_BALLOON.get())
+                .add(DecorativeBlocks.PURPLE_BALLOON.get())
+                .add(DecorativeBlocks.MAGENTA_BALLOON.get())
+                .add(DecorativeBlocks.PINK_BALLOON.get())
                 .add(SellTrade.INSTANCE)
                 .build());
 

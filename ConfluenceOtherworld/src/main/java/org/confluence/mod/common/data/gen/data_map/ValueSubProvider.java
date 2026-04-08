@@ -1702,6 +1702,7 @@ public final class ValueSubProvider {
                 .add(FoodItems.MOONGLOW_SEED, 16)
                 .add(FoodItems.SHIVERTHORN_SEED, 16)
                 .add(FoodItems.STELLAR_BLOSSOM_SEED, silver5)
+                .add(FoodItems.BALLOON_SEED, silver5)
                 .add(FoodItems.WATERLEAF_SEED, 16);
         builder
                 .add(FoodItems.COOKED_SHRIMP, silver5 + silver10)
@@ -2007,6 +2008,27 @@ public final class ValueSubProvider {
                 .add(Blocks.WAXED_OXIDIZED_COPPER_TRAPDOOR, 10)
                 .add(Blocks.WAXED_WEATHERED_COPPER_TRAPDOOR, 10)
                 .add(Blocks.WEATHERED_COPPER_TRAPDOOR, 10)
+        ;
+        // 气球
+        builder
+                .add(DecorativeBlocks.WHITE_BALLOON ,20)
+                .add(DecorativeBlocks.LIGHT_GRAY_BALLOON ,20)
+                .add(DecorativeBlocks.GRAY_BALLOON ,20)
+                .add(DecorativeBlocks.BLACK_BALLOON ,20)
+                .add(DecorativeBlocks.BROWN_BALLOON ,20)
+                .add(DecorativeBlocks.RED_BALLOON ,20)
+                .add(DecorativeBlocks.ORANGE_BALLOON ,20)
+                .add(DecorativeBlocks.YELLOW_BALLOON ,20)
+                .add(DecorativeBlocks.LIME_BALLOON ,20)
+                .add(DecorativeBlocks.GREEN_BALLOON ,20)
+                .add(DecorativeBlocks.CYAN_BALLOON ,20)
+                .add(DecorativeBlocks.LIGHT_BLUE_BALLOON ,20)
+                .add(DecorativeBlocks.BLUE_BALLOON ,20)
+                .add(DecorativeBlocks.PURPLE_BALLOON ,20)
+                .add(DecorativeBlocks.MAGENTA_BALLOON ,20)
+                .add(DecorativeBlocks.PINK_BALLOON ,20)
+                .add(DecorativeBlocks.PINK_BALLOON ,20)
+                .add(NatureBlocks.BALLOON_MELON ,silver5 + silver2)
         ;
         // 圣物
         for (DeferredBlock<RelicBlock> block : DecorativeBlocks.RELIC_BLOCKS) {

@@ -26,7 +26,7 @@ public class BalloonMelonBlock extends Block {
     public BalloonMelonBlock() {
         super(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_LIGHT_GREEN)
-                .strength(1.0F)
+                .strength(0.1F)
                 .sound(SoundType.WOOD)
                 .pushReaction(PushReaction.DESTROY));
     }

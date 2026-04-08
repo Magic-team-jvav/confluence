@@ -79,6 +79,7 @@ public final class ModVillagers {
             tier2.add(new SkyVillagerItemListing(Items.EMERALD, 2, FoodItems.PLUM.get(), 7, 25, 0.05F));
             tier2.add(new SkyVillagerItemListing(Items.EMERALD, 6, FoodItems.HONEY_MOONCAKES.get(), 7, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(MaterialItems.FALLING_STAR.get(), IntegerRange.of(20, 22), Items.EMERALD, 2, 7, 25, 0.05F));
+            tier4.add(new SkyVillagerItemListing(Items.EMERALD, FoodItems.BALLOON_SEED.get(), 2, 7, 25, 0.05F));
             tier5.add(new SkyVillagerItemListing(Items.EMERALD, FoodItems.CLOUDWEAVER_SEED.get(), 2, 7, 25, 0.05F));
             tier5.add(new SkyVillagerItemListing(Items.EMERALD, FoodItems.STELLAR_BLOSSOM_SEED.get(), 2, 7, 25, 0.05F));
             tier5.add(new SkyVillagerItemListing(Items.EMERALD, FoodItems.FLOATING_WHEAT_SEED.get(), 2, 7, 25, 0.05F));

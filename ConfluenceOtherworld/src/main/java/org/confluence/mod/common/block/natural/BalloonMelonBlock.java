@@ -51,7 +51,7 @@ public class BalloonMelonBlock extends Block {
         if (!level.isClientSide) {
                 var silkTouchBinding = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH);
                 int silkLevel = player.getMainHandItem().getEnchantmentLevel(silkTouchBinding);
-                if (silkLevel <= 0) {
+                if (silkLevel <= 0 || player.getMainHandItem().isEmpty()) {
                     this.spawnRecoveryCloud(level, pos);
             }
         }

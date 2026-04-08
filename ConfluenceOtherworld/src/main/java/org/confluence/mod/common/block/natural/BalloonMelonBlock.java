@@ -1,10 +1,12 @@
 package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -45,9 +47,15 @@ public class BalloonMelonBlock extends Block {
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         this.spawnDestroyParticles(level, player, pos, state);
         level.gameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Context.of(player, state));
+
         if (!level.isClientSide) {
-            this.spawnRecoveryCloud(level, pos);
+                var silkTouchBinding = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH);
+                int silkLevel = player.getMainHandItem().getEnchantmentLevel(silkTouchBinding);
+                if (silkLevel <= 0) {
+                    this.spawnRecoveryCloud(level, pos);
+            }
         }
+
         return super.playerWillDestroy(level, pos, state, player);
     }
 

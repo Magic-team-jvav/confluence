@@ -24,6 +24,7 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
@@ -441,7 +442,7 @@ public final class PlayerUtils {
         if (player.hasEffect(ModEffects.AMMO_BOX) && player.getRandom().nextFloat() < 0.2F) {
             return true;
         }
-        return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
+        return LibMathUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
     }
 
     public static boolean skipHealIfOnFire(Player player) {

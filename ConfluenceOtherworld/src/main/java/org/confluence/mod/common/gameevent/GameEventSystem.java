@@ -10,7 +10,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,6 +20,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModLoader;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.NaturalSpawnerUtil;
 import org.confluence.mod.Confluence;
@@ -235,8 +235,8 @@ public enum GameEventSystem implements IGlobalData {
             MobSpawnSettings.SpawnerData spawnerData = random.get();
             int count = data.getCount(level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount));
             for (int j = 0; j < count; j++) {
-                double x = randomFromTo(level.random, position.x, 24, 32);
-                double z = randomFromTo(level.random, position.z, 24, 32);
+                double x = LibMathUtils.randomFromTo(level.random, position.x, 24, 32);
+                double z = LibMathUtils.randomFromTo(level.random, position.z, 24, 32);
                 int cx = SectionPos.blockToSectionCoord(x);
                 int cz = SectionPos.blockToSectionCoord(z);
                 if (LibUtils.getChunkIfLoaded(level, cx, cz) == null) {
@@ -253,17 +253,5 @@ public enum GameEventSystem implements IGlobalData {
                 }
             }
         }
-    }
-
-    /// original-to.....original-from_____original_____original+from.....original+to
-    /// @return value belongs to \[original-to, original-from\] or \[original+from, original+to\]
-    public static double randomFromTo(RandomSource random, double original, double from, double to) {
-        if (from >= to) {
-            throw new IllegalArgumentException("from must be less than to");
-        }
-        if (random.nextBoolean()) {
-            return Mth.nextDouble(random, original + from, original + to);
-        }
-        return Mth.nextDouble(random, original - from, original - to);
     }
 }

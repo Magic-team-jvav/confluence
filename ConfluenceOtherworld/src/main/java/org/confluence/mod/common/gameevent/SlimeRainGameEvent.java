@@ -22,6 +22,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.NaturalSpawnerUtil;
 import org.confluence.mod.Confluence;
@@ -121,8 +122,8 @@ public final class SlimeRainGameEvent implements GameEvent {
                 MobSpawnSettings.SpawnerData spawnerData = random.get();
                 int count = level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount);
                 for (int j = 0; j < count; j++) {
-                    double x = GameEventSystem.randomFromTo(level.random, position.x, 24, 32);
-                    double z = GameEventSystem.randomFromTo(level.random, position.z, 24, 32);
+                    double x = LibMathUtils.randomFromTo(level.random, position.x, 24, 32);
+                    double z = LibMathUtils.randomFromTo(level.random, position.z, 24, 32);
                     int cx = SectionPos.blockToSectionCoord(x);
                     int cz = SectionPos.blockToSectionCoord(z);
                     if (LibUtils.getChunkIfLoaded(level, cx, cz) == null) {

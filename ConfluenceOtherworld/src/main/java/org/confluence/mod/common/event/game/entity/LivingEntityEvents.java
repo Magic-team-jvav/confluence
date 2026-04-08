@@ -28,6 +28,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -524,7 +525,7 @@ public final class LivingEntityEvents {
         if (BloodMoonGameEvent.INSTANCE.started()) {
             Mob mob = event.getEntity();
             if (mob instanceof Enemy && mob.position().y > OverworldUtils.getSurfaceY()) {
-                event.setSize(LibUtils.multiplyInt(event.getSize(), 2, mob.getRandom()));
+                event.setSize(LibMathUtils.multiplyInt(event.getSize(), 2, mob.getRandom()));
             }
         }
     }

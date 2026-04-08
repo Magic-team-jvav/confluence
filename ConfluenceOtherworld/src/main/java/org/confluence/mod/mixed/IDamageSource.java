@@ -11,7 +11,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.confluence.lib.mixed.CriticalDamageSource;
 import org.confluence.lib.mixed.SelfGetter;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +31,7 @@ public interface IDamageSource extends CriticalDamageSource, SelfGetter<DamageSo
     static float processCritical(@Nullable Entity attacker, float amount, LivingEntity victim, DamageSource damageSource) {
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
-            if (LibUtils.checkChance(player.getAttributeValue(TCAttributes.CRIT_CHANCE), player.getRandom())) {
+            if (LibMathUtils.checkChance(player.getAttributeValue(TCAttributes.CRIT_CHANCE), player.getRandom())) {
                 amount *= 1.5F;
                 player.crit(victim);
                 crit = true;

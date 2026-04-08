@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
@@ -149,7 +149,7 @@ public class FallingStarItemEntity extends ItemEntity {
         int interval = CommonConfigs.FALLING_STAR_INTERVAL.get();
         if (MeteorShowerGameEvent.INSTANCE.started()) {
             float factor = CommonConfigs.METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER.get().floatValue();
-            return LibUtils.divideInt(interval, factor, level.random);
+            return LibMathUtils.divideInt(interval, factor, level.random);
         }
         return interval;
     }

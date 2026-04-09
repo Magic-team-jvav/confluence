@@ -128,17 +128,17 @@ public class TheEndBiomeHolder {
                 double treeNoise = normalNoise.getValue(x * treeScale, y * treeScale, z * treeScale);
                 double humidityNoise = normalNoise.getValue(x * humidityScale, y * humidityScale, z * humidityScale);
                 if (trueNoise > 0) {
-                    if (heightNoise > 30) {
-                        if (biomeNoise > 0) {
+                    if (biomeNoise > 0) {
+                        if (heightNoise > 30) {
                             cir.setReturnValue((treeNoise > 0) ? chorusForest : chorusPlains);
                         } else {
-                            if (humidityNoise > 0.3) cir.setReturnValue(moonlightForest);
-                            else if (humidityNoise > 0) cir.setReturnValue(moonlightPlains);
-                            else if (humidityNoise > -0.3) cir.setReturnValue(darkMoonFlats);
-                            else cir.setReturnValue(moonlitDrySea);
+                            cir.setReturnValue((treeNoise > 0) ? inverseForest : inversePlains);
                         }
                     } else {
-                        cir.setReturnValue((treeNoise > 0) ? inverseForest : inversePlains);
+                        if (humidityNoise > 0.3) cir.setReturnValue(moonlightForest);
+                        else if (humidityNoise > 0) cir.setReturnValue(moonlightPlains);
+                        else if (humidityNoise > -0.3) cir.setReturnValue(darkMoonFlats);
+                        else cir.setReturnValue(moonlitDrySea);
                     }
                 }
             }

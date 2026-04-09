@@ -11,7 +11,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.CarvingMask;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
@@ -31,11 +30,12 @@ public class DrySeaCarver extends WorldCarver<CarverConfiguration> {
 
     @Override
     public boolean carve(CarvingContext context, CarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
-        int x = chunkPos.getBlockX(random.nextInt(0, 16));
-        int z = chunkPos.getBlockZ(random.nextInt(0, 16));
-        int y = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x, z);
 
-        if (y < 20) return false;
+        long chunkSeed = chunkPos.x * 341873128712L + chunkPos.z * 132897987541L + 114514L;
+        RandomSource stableRandom = RandomSource.create(chunkSeed);
+
+        int x = chunkPos.getBlockX(stableRandom.nextInt(0, 16));
+        int z = chunkPos.getBlockZ(stableRandom.nextInt(0, 16));
 
         BlockPos basePos;
         Map<Long, Integer> newYMap = new HashMap<>();
@@ -43,27 +43,26 @@ public class DrySeaCarver extends WorldCarver<CarverConfiguration> {
         int newX = x;
         int newZ = z;
         List<BlockPos> posList = new ArrayList<>();
-        int count = random.nextInt(5, 11);
+        int count = stableRandom.nextInt(5, 11);
 
         for (int c = 0; c < count; c++) {
             posList.clear();
-            int radius = random.nextInt(5, 8);
+            int radius = stableRandom.nextInt(5, 14);
 
-            int finalY = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, newX, newZ);
-            if (finalY < 20) continue;
+            int finalY = 57;
 
             basePos = new BlockPos(newX, finalY, newZ);
             long currentKey = BlockPos.asLong(newX, 0, newZ);
-            int height = Math.max(finalY, newYMap.getOrDefault(currentKey, Integer.MIN_VALUE)) + random.nextInt(6, 12) - finalY;
+            int height = Math.max(finalY, newYMap.getOrDefault(currentKey, Integer.MIN_VALUE)) + stableRandom.nextInt(6, 12) - finalY;
             int thirdHeight = height / 3;
-            int xOffset = random.nextInt(-3, 4);
-            int zOffset = random.nextInt(-3, 4);
+            int xOffset = stableRandom.nextInt(-3, 4);
+            int zOffset = stableRandom.nextInt(-3, 4);
 
-            int[] layerRadii = {random.nextInt(2, 4), radius + 2, radius - 1, radius - 1, radius + 3, radius};
+            int[] layerRadii = {stableRandom.nextInt(2, 4), radius + 2, radius - 1, radius - 1, radius + 3, radius};
 
-            int[] layerYOffsets = {-random.nextInt(5, 7), 0, thirdHeight, thirdHeight * 2, height - 2, height};
+            int[] layerYOffsets = {-stableRandom.nextInt(5, 7), 0, thirdHeight, thirdHeight * 2, height - 2, height};
 
-            int[] layerCount = {random.nextInt(4, 6), random.nextInt(6, 9), random.nextInt(4, 6), random.nextInt(4, 6), random.nextInt(7, 10), random.nextInt(7, 10)};
+            int[] layerCount = {stableRandom.nextInt(4, 6), stableRandom.nextInt(6, 9), stableRandom.nextInt(4, 6), stableRandom.nextInt(4, 6), stableRandom.nextInt(7, 10), stableRandom.nextInt(7, 10)};
 
             List<Vector3d> groupDown = new ArrayList<>();
             List<Vector3d> groupMid  = new ArrayList<>();
@@ -73,7 +72,7 @@ public class DrySeaCarver extends WorldCarver<CarverConfiguration> {
                 int xOff = (i <= 3) ? 0 : xOffset;
                 int zOff = (i <= 3) ? 0 : zOffset;
 
-                List<Vector3d> targetGroup = randomRound(layerRadii[i], layerCount[i], random, basePos.offset(xOff, layerYOffsets[i], zOff));
+                List<Vector3d> targetGroup = randomRound(layerRadii[i], layerCount[i], stableRandom, basePos.offset(xOff, layerYOffsets[i], zOff));
 
                 if (i < 2) {
                     groupDown.addAll(targetGroup);
@@ -103,8 +102,8 @@ public class DrySeaCarver extends WorldCarver<CarverConfiguration> {
                 );
             }
 
-            float rotate = 2 * Mth.PI * random.nextFloat();
-            int offsetDis = random.nextInt(10, 15);
+            float rotate = 2 * Mth.PI * stableRandom.nextFloat();
+            int offsetDis = stableRandom.nextInt(10, 15);
 
             newX += (int) (Mth.sin(rotate) * offsetDis);
             newZ += (int) (Mth.cos(rotate) * offsetDis);

@@ -191,10 +191,10 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
 
     private static VoxelShape createShape(int side, Direction direction) {
         double margin = (16.0 - side) / 2.0;
-        return switch (direction) {
-            case DOWN, UP -> Block.box(margin, 0.0, margin, 16.0 - margin, 16.0, 16.0 - margin);
-            case NORTH, SOUTH -> Block.box(margin, margin, 0.0, 16.0 - margin, 16.0 - margin, 16.0);
-            case WEST, EAST -> Block.box(0.0, margin, margin, 16.0, 16.0 - margin, 16.0 - margin);
+        return switch (direction.getAxis()) {
+            case X -> Block.box(0.0, margin, margin, 16.0, 16.0 - margin, 16.0 - margin);
+            case Y -> Block.box(margin, 0.0, margin, 16.0 - margin, 16.0, 16.0 - margin);
+            case Z -> Block.box(margin, margin, 0.0, 16.0 - margin, 16.0 - margin, 16.0);
         };
     }
 

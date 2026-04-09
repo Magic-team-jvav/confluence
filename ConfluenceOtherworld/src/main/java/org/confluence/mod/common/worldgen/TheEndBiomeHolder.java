@@ -113,8 +113,8 @@ public class TheEndBiomeHolder {
             long sectionX = SectionPos.blockToSectionCoord(blockX);
             long sectionZ = SectionPos.blockToSectionCoord(blockZ);
             if (sectionX * sectionX + sectionZ * sectionZ > 4096L) {
-                double heightNoise = sampler.erosion().compute(new DensityFunction.SinglePointContext(blockX, blockY, blockZ));
-                if (heightNoise < -0.0625) {
+                double erosion = sampler.erosion().compute(new DensityFunction.SinglePointContext(blockX, blockY, blockZ));
+                if (erosion < -0.0625) {
                     return;
                 }
 
@@ -123,7 +123,7 @@ public class TheEndBiomeHolder {
                 double humidityScale = 0.2;
                 double heightScale = 0.25;
                 double trueNoise = rippleNoise(blockX, blockY, blockZ, 3000);
-                heightNoise = blockY + normalNoise.getValue(x * heightScale, 0, z * heightScale) * 5;
+                double heightNoise = blockY + normalNoise.getValue(x * heightScale, 0, z * heightScale) * 5;
                 double biomeNoise = normalNoise.getValue(x * biomeScale, y * biomeScale, z * biomeScale);
                 double treeNoise = normalNoise.getValue(x * treeScale, y * treeScale, z * treeScale);
                 double humidityNoise = normalNoise.getValue(x * humidityScale, y * humidityScale, z * humidityScale);

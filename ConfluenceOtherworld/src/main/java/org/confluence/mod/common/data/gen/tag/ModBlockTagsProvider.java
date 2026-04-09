@@ -1052,23 +1052,23 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(Tags.Blocks.ROPES).add(ROPE.get(), VINE_ROPE.get(), SILK_ROPE.get(), WEB_ROPE.get(), PINE_NEEDLE_HANDMADE_ROPE_SET.get());
 
         tag(ModTags.Blocks.BALLOON).add(
-                        NatureBlocks.BALLOON_MELON.get(),
-                        DecorativeBlocks.WHITE_BALLOON.get(),
-                        DecorativeBlocks.LIGHT_GRAY_BALLOON.get(),
-                        DecorativeBlocks.GRAY_BALLOON.get(),
-                        DecorativeBlocks.BLACK_BALLOON.get(),
-                        DecorativeBlocks.BROWN_BALLOON.get(),
-                        DecorativeBlocks.RED_BALLOON.get(),
-                        DecorativeBlocks.ORANGE_BALLOON.get(),
-                        DecorativeBlocks.YELLOW_BALLOON.get(),
-                        DecorativeBlocks.LIME_BALLOON.get(),
-                        DecorativeBlocks.GREEN_BALLOON.get(),
-                        DecorativeBlocks.CYAN_BALLOON.get(),
-                        DecorativeBlocks.LIGHT_BLUE_BALLOON.get(),
-                        DecorativeBlocks.BLUE_BALLOON.get(),
-                        DecorativeBlocks.PURPLE_BALLOON.get(),
-                        DecorativeBlocks.MAGENTA_BALLOON.get(),
-                        DecorativeBlocks.PINK_BALLOON.get()
+                NatureBlocks.BALLOON_MELON.get(),
+                DecorativeBlocks.WHITE_BALLOON.get(),
+                DecorativeBlocks.LIGHT_GRAY_BALLOON.get(),
+                DecorativeBlocks.GRAY_BALLOON.get(),
+                DecorativeBlocks.BLACK_BALLOON.get(),
+                DecorativeBlocks.BROWN_BALLOON.get(),
+                DecorativeBlocks.RED_BALLOON.get(),
+                DecorativeBlocks.ORANGE_BALLOON.get(),
+                DecorativeBlocks.YELLOW_BALLOON.get(),
+                DecorativeBlocks.LIME_BALLOON.get(),
+                DecorativeBlocks.GREEN_BALLOON.get(),
+                DecorativeBlocks.CYAN_BALLOON.get(),
+                DecorativeBlocks.LIGHT_BLUE_BALLOON.get(),
+                DecorativeBlocks.BLUE_BALLOON.get(),
+                DecorativeBlocks.PURPLE_BALLOON.get(),
+                DecorativeBlocks.MAGENTA_BALLOON.get(),
+                DecorativeBlocks.PINK_BALLOON.get()
         );
         tag(BlockTags.STAIRS).add(
                 SUN_PLATE_STAIRS.get(),

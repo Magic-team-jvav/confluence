@@ -1,7 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.player.Player;
@@ -49,10 +48,10 @@ public class BalloonMelonBlock extends Block {
         level.gameEvent(GameEvent.BLOCK_DESTROY, pos, GameEvent.Context.of(player, state));
 
         if (!level.isClientSide) {
-                var silkTouchBinding = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH);
-                int silkLevel = player.getMainHandItem().getEnchantmentLevel(silkTouchBinding);
-                if (silkLevel <= 0 || player.getMainHandItem().isEmpty()) {
-                    this.spawnRecoveryCloud(level, pos);
+            var silkTouchBinding = level.registryAccess().holderOrThrow(Enchantments.SILK_TOUCH);
+            int silkLevel = player.getMainHandItem().getEnchantmentLevel(silkTouchBinding);
+            if (silkLevel <= 0 || player.getMainHandItem().isEmpty()) {
+                this.spawnRecoveryCloud(level, pos);
             }
         }
 

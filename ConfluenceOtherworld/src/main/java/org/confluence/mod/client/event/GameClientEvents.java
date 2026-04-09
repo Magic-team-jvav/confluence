@@ -259,7 +259,7 @@ public final class GameClientEvents {
         if (ClientConfigs.sellPriceDisplay.test()) {
             int price = ValueComponent.getValue(itemStack, 0);
             if (price > 0) {
-                toolTip.add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
+                toolTip.add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ClientUtils.formatPrice(price)));
             }
         }
         ModArmorBonus.addBonusTooltip(event.getEntity(), itemStack, toolTip);

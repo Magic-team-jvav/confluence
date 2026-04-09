@@ -1134,7 +1134,6 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredWorldCarver<?>> DESERT_CAVE_CARVER = key("desert_cave_carver");
         private static final ResourceKey<ConfiguredWorldCarver<?>> DEMONIC_CAVE_CARVER = key("demonic_cave_carver");
         private static final ResourceKey<ConfiguredWorldCarver<?>> GLOWING_MUSHROOM_CAVE_CARVER = key("glowing_mushroom_cave_carver");
-        private static final ResourceKey<ConfiguredWorldCarver<?>> DRY_SEA_CARVER = key("dry_sea_carver");
         private static final ResourceKey<ConfiguredWorldCarver<?>> JUNGLE_CAVE_CARVER = key("jungle_cave_carver");
         private static final ResourceKey<ConfiguredWorldCarver<?>> WAVY_CAVE_CARVER = key("wavy_cave_carver");
 
@@ -1166,14 +1165,6 @@ public class ModDataProvider {
             context.register(GLOWING_MUSHROOM_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.GLOWING_MUSHROOM_CAVE_CARVER.get(), new CarverConfiguration(
                     0.6F,
                     UniformHeight.of(VerticalAnchor.absolute(-40), VerticalAnchor.absolute(-10)),
-                    ConstantFloat.of(6),
-                    aboveBottom8,
-                    CarverDebugSettings.DEFAULT,
-                    replaceable
-            )));
-            context.register(DRY_SEA_CARVER, new ConfiguredWorldCarver<>(ModCarvers.DRY_SEA_CARVER.get(), new CarverConfiguration(
-                    0.05F,
-                    ConstantHeight.ZERO, // 没有用上的参数
                     ConstantFloat.of(6),
                     aboveBottom8,
                     CarverDebugSettings.DEFAULT,
@@ -1682,7 +1673,6 @@ public class ModDataProvider {
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);
-                        builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.DRY_SEA_CARVER);
                         builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.GLOWING_MUSHROOM_CAVE_CARVER);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.HUGE_LIFE_MUSHROOM_TREE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM);
@@ -1766,7 +1756,6 @@ public class ModDataProvider {
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
                     .mobSpawnSettings(mobSpawnSettings(BiomeDefaultFeatures::endSpawns))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
-                        builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.DRY_SEA_CARVER);
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
                         builder.addFeature(GenerationStep.Decoration.LAKES, PlacedFeatures.LUNAR_CORAL);
                         builder.addFeature(GenerationStep.Decoration.LAKES, PlacedFeatures.LUNAR_CORAL_HUGE_STONE);

@@ -75,7 +75,8 @@ public class LogBlockSet {
     public final DeferredBlock<SaplingBlock> SAPLING;
 
     LogBlockSet(Builder builder) {
-        if ((builder.log == null && builder.strippedLog != null) || (builder.wood == null && builder.strippedWood != null)) throw new NullPointerException();
+        if ((builder.log == null && builder.strippedLog != null) || (builder.wood == null && builder.strippedWood != null))
+            throw new NullPointerException();
         this.id = builder.id;
         this.ignitedByLava = builder.ignitedByLava;
         this.PLANKS = registerWithItem(id + "_planks", () -> builder.planks.apply(ignitedByLava(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD))));
@@ -115,7 +116,8 @@ public class LogBlockSet {
     }
 
     private static <B extends Block> DeferredBlock<B> register(@Nullable Function<BlockBehaviour.Properties, ? extends B> function, String name, boolean withItem, Supplier<BlockBehaviour.Properties> properties) {
-        if (function == null) return DeferredBlock.createBlock(Confluence.asResourceKey(Registries.BLOCK, name));
+        if (function == null)
+            return DeferredBlock.createBlock(Confluence.asResourceKey(Registries.BLOCK, name));
         Supplier<B> supplier = () -> function.apply(properties.get());
         return withItem ? registerWithItem(name, supplier) : registerWithoutItem(name, supplier);
     }
@@ -173,130 +175,131 @@ public class LogBlockSet {
         var allHangingSigns = provider.apply(BlockTags.ALL_HANGING_SIGNS);
         var saplings = provider.apply(BlockTags.SAPLINGS);
 
-        for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-            boolean ignitedByLava = logBlocks.ignitedByLava;
-            Block planksBlock = logBlocks.PLANKS.get();
+        for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
+            boolean ignitedByLava = blockSet.ignitedByLava;
+            Block planksBlock = blockSet.PLANKS.get();
             planks.add(planksBlock);
-            if (logBlocks.LOG.isBound()) {
-                Block value = logBlocks.LOG.get();
+            if (blockSet.LOG.isBound()) {
+                Block value = blockSet.LOG.get();
                 completes.add(value);
                 if (ignitedByLava) burn.add(value);
                 logs.add(value);
             }
-            if (logBlocks.STRIPPED_LOG.isBound()) {
-                Block value = logBlocks.STRIPPED_LOG.get();
+            if (blockSet.STRIPPED_LOG.isBound()) {
+                Block value = blockSet.STRIPPED_LOG.get();
                 completes.add(value);
                 if (ignitedByLava) burn.add(value);
                 logs.add(value);
                 cStrippedLogs.add(value);
             }
-            if (logBlocks.WOOD.isBound()) {
-                Block value = logBlocks.WOOD.get();
+            if (blockSet.WOOD.isBound()) {
+                Block value = blockSet.WOOD.get();
                 completes.add(value);
                 if (ignitedByLava) burn.add(value);
                 logs.add(value);
             }
-            if (logBlocks.STRIPPED_WOOD.isBound()) {
-                Block value = logBlocks.STRIPPED_WOOD.get();
+            if (blockSet.STRIPPED_WOOD.isBound()) {
+                Block value = blockSet.STRIPPED_WOOD.get();
                 completes.add(value);
                 if (ignitedByLava) burn.add(value);
                 logs.add(value);
             }
-            if (logBlocks.LEAVES.isBound()) {
-                Block value = logBlocks.LEAVES.get();
+            if (blockSet.LEAVES.isBound()) {
+                Block value = blockSet.LEAVES.get();
                 completes.add(value);
                 leaves.add(value);
             }
-            if (logBlocks.BUTTON.isBound()) {
-                Block value = logBlocks.BUTTON.get();
+            if (blockSet.BUTTON.isBound()) {
+                Block value = blockSet.BUTTON.get();
                 buttons.add(value);
                 woodenButtons.add(value);
             }
-            if (logBlocks.FENCE.isBound()) {
-                Block value = logBlocks.FENCE.get();
+            if (blockSet.FENCE.isBound()) {
+                Block value = blockSet.FENCE.get();
                 fences.add(value);
                 woodenFences.add(value);
                 cFences.add(value);
                 cFencesWooden.add(value);
             }
-            if (logBlocks.FENCE_GATE.isBound()) {
-                Block value = logBlocks.FENCE_GATE.get();
+            if (blockSet.FENCE_GATE.isBound()) {
+                Block value = blockSet.FENCE_GATE.get();
                 fenceGates.add(value);
                 cFenceGates.add(value);
                 cFenceGatesWooden.add(value);
             }
-            if (logBlocks.PRESSURE_PLATE.isBound()) {
-                Block value = logBlocks.PRESSURE_PLATE.get();
+            if (blockSet.PRESSURE_PLATE.isBound()) {
+                Block value = blockSet.PRESSURE_PLATE.get();
                 woodenPressurePlates.add(value);
             }
-            if (logBlocks.SLAB.isBound()) {
-                Block value = logBlocks.SLAB.get();
+            if (blockSet.SLAB.isBound()) {
+                Block value = blockSet.SLAB.get();
                 slabs.add(value);
                 woodenSlabs.add(value);
             }
-            if (logBlocks.STAIRS.isBound()) {
-                Block value = logBlocks.STAIRS.get();
+            if (blockSet.STAIRS.isBound()) {
+                Block value = blockSet.STAIRS.get();
                 stairs.add(value);
                 woodenStairs.add(value);
             }
-            if (logBlocks.SIGN.isBound()) {
-                Block value = logBlocks.SIGN.get();
+            if (blockSet.SIGN.isBound()) {
+                Block value = blockSet.SIGN.get();
                 standingSigns.add(value);
                 signs.add(value);
             }
-            if (logBlocks.WALL_SIGN.isBound()) {
-                Block value = logBlocks.WALL_SIGN.get();
+            if (blockSet.WALL_SIGN.isBound()) {
+                Block value = blockSet.WALL_SIGN.get();
                 wallSigns.add(value);
                 signs.add(value);
             }
-            if (logBlocks.TRAPDOOR.isBound()) {
-                Block value = logBlocks.TRAPDOOR.get();
+            if (blockSet.TRAPDOOR.isBound()) {
+                Block value = blockSet.TRAPDOOR.get();
                 trapdoors.add(value);
                 woodenTrapdoors.add(value);
             }
-            if (logBlocks.DOOR.isBound()) {
-                Block value = logBlocks.DOOR.get();
+            if (blockSet.DOOR.isBound()) {
+                Block value = blockSet.DOOR.get();
                 doors.add(value);
                 woodenDoors.add(value);
             }
-            if (logBlocks.HANGING_SIGN.isBound()) {
-                Block value = logBlocks.HANGING_SIGN.get();
+            if (blockSet.HANGING_SIGN.isBound()) {
+                Block value = blockSet.HANGING_SIGN.get();
                 ceilingHangingSigns.add(value);
                 allHangingSigns.add(value);
             }
-            if (logBlocks.WALL_HANGING_SIGN.isBound()) {
-                Block value = logBlocks.WALL_HANGING_SIGN.get();
+            if (blockSet.WALL_HANGING_SIGN.isBound()) {
+                Block value = blockSet.WALL_HANGING_SIGN.get();
                 wallHangingSigns.add(value);
                 allHangingSigns.add(value);
             }
-            if (logBlocks.CHISELED_PLANKS.isBound()) {
-                Block value = logBlocks.CHISELED_PLANKS.get();
+            if (blockSet.CHISELED_PLANKS.isBound()) {
+                Block value = blockSet.CHISELED_PLANKS.get();
                 planks.add(value);
             }
-            if (logBlocks.SAPLING.isBound()) {
-                Block value = logBlocks.SAPLING.get();
+            if (blockSet.SAPLING.isBound()) {
+                Block value = blockSet.SAPLING.get();
                 saplings.add(value);
             }
         }
     }
 
     public static void acceptBuilding(CreativeModeTab.Output output) {
-        for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-            output.accept(logBlocks.PLANKS.get());
-            if (logBlocks.STRIPPED_LOG.isBound()) output.accept(logBlocks.STRIPPED_LOG.get());
-            if (logBlocks.WOOD.isBound()) output.accept(logBlocks.WOOD.get());
-            if (logBlocks.STRIPPED_WOOD.isBound()) output.accept(logBlocks.STRIPPED_WOOD.get());
-            if (logBlocks.BUTTON.isBound()) output.accept(logBlocks.BUTTON.get());
-            if (logBlocks.FENCE.isBound()) output.accept(logBlocks.FENCE.get());
-            if (logBlocks.FENCE_GATE.isBound()) output.accept(logBlocks.FENCE_GATE.get());
-            if (logBlocks.PRESSURE_PLATE.isBound()) output.accept(logBlocks.PRESSURE_PLATE.get());
-            if (logBlocks.SLAB.isBound()) output.accept(logBlocks.SLAB.get());
-            if (logBlocks.STAIRS.isBound()) output.accept(logBlocks.STAIRS.get());
-            if (logBlocks.SIGN_ITEM.isBound()) output.accept(logBlocks.SIGN_ITEM.get());
-            if (logBlocks.TRAPDOOR.isBound()) output.accept(logBlocks.TRAPDOOR.get());
-            if (logBlocks.DOOR.isBound()) output.accept(logBlocks.DOOR.get());
-            if (logBlocks.HANGING_SIGN_ITEM.isBound()) output.accept(logBlocks.HANGING_SIGN_ITEM.get());
-            if (logBlocks.CHISELED_PLANKS.isBound()) output.accept(logBlocks.CHISELED_PLANKS.get());
+        for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
+            output.accept(blockSet.PLANKS.get());
+            if (blockSet.STRIPPED_LOG.isBound()) output.accept(blockSet.STRIPPED_LOG.get());
+            if (blockSet.WOOD.isBound()) output.accept(blockSet.WOOD.get());
+            if (blockSet.STRIPPED_WOOD.isBound()) output.accept(blockSet.STRIPPED_WOOD.get());
+            if (blockSet.BUTTON.isBound()) output.accept(blockSet.BUTTON.get());
+            if (blockSet.FENCE.isBound()) output.accept(blockSet.FENCE.get());
+            if (blockSet.FENCE_GATE.isBound()) output.accept(blockSet.FENCE_GATE.get());
+            if (blockSet.PRESSURE_PLATE.isBound()) output.accept(blockSet.PRESSURE_PLATE.get());
+            if (blockSet.SLAB.isBound()) output.accept(blockSet.SLAB.get());
+            if (blockSet.STAIRS.isBound()) output.accept(blockSet.STAIRS.get());
+            if (blockSet.SIGN_ITEM.isBound()) output.accept(blockSet.SIGN_ITEM.get());
+            if (blockSet.TRAPDOOR.isBound()) output.accept(blockSet.TRAPDOOR.get());
+            if (blockSet.DOOR.isBound()) output.accept(blockSet.DOOR.get());
+            if (blockSet.HANGING_SIGN_ITEM.isBound())
+                output.accept(blockSet.HANGING_SIGN_ITEM.get());
+            if (blockSet.CHISELED_PLANKS.isBound()) output.accept(blockSet.CHISELED_PLANKS.get());
         }
     }
 
@@ -306,30 +309,30 @@ public class LogBlockSet {
             List<ItemStack> log = Lists.newArrayListWithCapacity(size);
             List<ItemStack> leaves = Lists.newArrayListWithCapacity(size);
             List<ItemStack> sapling = Lists.newArrayListWithCapacity(size);
-            for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-                if (logBlocks.LOG.isBound()) log.add(logBlocks.LOG.toStack());
-                if (logBlocks.LEAVES.isBound()) leaves.add(logBlocks.LEAVES.toStack());
-                if (logBlocks.SAPLING.isBound()) sapling.add(logBlocks.SAPLING.toStack());
+            for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
+                if (blockSet.LOG.isBound()) log.add(blockSet.LOG.toStack());
+                if (blockSet.LEAVES.isBound()) leaves.add(blockSet.LEAVES.toStack());
+                if (blockSet.SAPLING.isBound()) sapling.add(blockSet.SAPLING.toStack());
             }
             output.accept(GroupItem.of(Component.translatable("itemGroup.confluence.log"), log));
             output.accept(GroupItem.of(Component.translatable("itemGroup.confluence.leaves"), leaves));
             output.accept(GroupItem.of(Component.translatable("itemGroup.confluence.sapling"), sapling));
         } else {
-            for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-                if (logBlocks.LOG.isBound()) output.accept(logBlocks.LOG);
-                if (logBlocks.LEAVES.isBound()) output.accept(logBlocks.LEAVES);
-                if (logBlocks.SAPLING.isBound()) output.accept(logBlocks.SAPLING);
+            for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
+                if (blockSet.LOG.isBound()) output.accept(blockSet.LOG);
+                if (blockSet.LEAVES.isBound()) output.accept(blockSet.LEAVES);
+                if (blockSet.SAPLING.isBound()) output.accept(blockSet.SAPLING);
             }
         }
     }
 
     public static void wrapStrip() {
-        for (LogBlockSet logBlockSet : LOG_BLOCK_SETS) {
-            if (logBlockSet.LOG.isBound() && logBlockSet.STRIPPED_LOG.isBound()) {
-                WRAPPED_STRIP_TABLE.put(logBlockSet.LOG.get(), logBlockSet.STRIPPED_LOG.get());
+        for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
+            if (blockSet.LOG.isBound() && blockSet.STRIPPED_LOG.isBound()) {
+                WRAPPED_STRIP_TABLE.put(blockSet.LOG.get(), blockSet.STRIPPED_LOG.get());
             }
-            if (logBlockSet.WOOD.isBound() && logBlockSet.STRIPPED_WOOD.isBound()) {
-                WRAPPED_STRIP_TABLE.put(logBlockSet.WOOD.get(), logBlockSet.STRIPPED_WOOD.get());
+            if (blockSet.WOOD.isBound() && blockSet.STRIPPED_WOOD.isBound()) {
+                WRAPPED_STRIP_TABLE.put(blockSet.WOOD.get(), blockSet.STRIPPED_WOOD.get());
             }
         }
     }
@@ -337,9 +340,9 @@ public class LogBlockSet {
     public static Block[] getSignBlocks() {
         if (SIGN_BLOCKS == null) {
             List<Block> list = new ArrayList<>();
-            for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-                if (logBlocks.SIGN.isBound()) list.add(logBlocks.SIGN.get());
-                if (logBlocks.WALL_SIGN.isBound()) list.add(logBlocks.WALL_SIGN.get());
+            for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
+                if (blockSet.SIGN.isBound()) list.add(blockSet.SIGN.get());
+                if (blockSet.WALL_SIGN.isBound()) list.add(blockSet.WALL_SIGN.get());
             }
             SIGN_BLOCKS = list.toArray(new Block[0]);
         }
@@ -349,9 +352,10 @@ public class LogBlockSet {
     public static Block[] getHangingSignBlocks() {
         if (HANGING_SIGN_BLOCKS == null) {
             List<Block> list = new ArrayList<>();
-            for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-                if (logBlocks.HANGING_SIGN.isBound()) list.add(logBlocks.HANGING_SIGN.get());
-                if (logBlocks.WALL_HANGING_SIGN.isBound()) list.add(logBlocks.WALL_HANGING_SIGN.get());
+            for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
+                if (blockSet.HANGING_SIGN.isBound()) list.add(blockSet.HANGING_SIGN.get());
+                if (blockSet.WALL_HANGING_SIGN.isBound())
+                    list.add(blockSet.WALL_HANGING_SIGN.get());
             }
             HANGING_SIGN_BLOCKS = list.toArray(new Block[0]);
         }
@@ -360,61 +364,61 @@ public class LogBlockSet {
 
     public static void setFlammable() {
         FireBlock fireblock = (FireBlock) Blocks.FIRE;
-        for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-            boolean ignitedByLava = logBlocks.ignitedByLava;
+        for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
+            boolean ignitedByLava = blockSet.ignitedByLava;
             if (ignitedByLava) {
-                fireblock.setFlammable(logBlocks.PLANKS.get(), 5, 20);
+                fireblock.setFlammable(blockSet.PLANKS.get(), 5, 20);
             }
-            if (logBlocks.LOG.isBound()) {
-                Block value = logBlocks.LOG.get();
+            if (blockSet.LOG.isBound()) {
+                Block value = blockSet.LOG.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 5);
                 }
             }
-            if (logBlocks.STRIPPED_LOG.isBound()) {
-                Block value = logBlocks.STRIPPED_LOG.get();
+            if (blockSet.STRIPPED_LOG.isBound()) {
+                Block value = blockSet.STRIPPED_LOG.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 5);
                 }
             }
-            if (logBlocks.WOOD.isBound()) {
-                Block value = logBlocks.WOOD.get();
+            if (blockSet.WOOD.isBound()) {
+                Block value = blockSet.WOOD.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 5);
                 }
             }
-            if (logBlocks.STRIPPED_WOOD.isBound()) {
-                Block value = logBlocks.STRIPPED_WOOD.get();
+            if (blockSet.STRIPPED_WOOD.isBound()) {
+                Block value = blockSet.STRIPPED_WOOD.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 5);
                 }
             }
-            if (logBlocks.LEAVES.isBound()) {
-                Block value = logBlocks.LEAVES.get();
+            if (blockSet.LEAVES.isBound()) {
+                Block value = blockSet.LEAVES.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 30, 60);
                 }
             }
-            if (logBlocks.FENCE.isBound()) {
-                Block value = logBlocks.FENCE.get();
+            if (blockSet.FENCE.isBound()) {
+                Block value = blockSet.FENCE.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 20);
                 }
             }
-            if (logBlocks.FENCE_GATE.isBound()) {
-                Block value = logBlocks.FENCE_GATE.get();
+            if (blockSet.FENCE_GATE.isBound()) {
+                Block value = blockSet.FENCE_GATE.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 20);
                 }
             }
-            if (logBlocks.SLAB.isBound()) {
-                Block value = logBlocks.SLAB.get();
+            if (blockSet.SLAB.isBound()) {
+                Block value = blockSet.SLAB.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 20);
                 }
             }
-            if (logBlocks.STAIRS.isBound()) {
-                Block value = logBlocks.STAIRS.get();
+            if (blockSet.STAIRS.isBound()) {
+                Block value = blockSet.STAIRS.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 20);
                 }
@@ -535,7 +539,7 @@ public class LogBlockSet {
                 this.wallSign = wallSign;
                 this.signItem = signItem;
             } else {
-                throw new NullPointerException();
+                throw new IllegalArgumentException("sign must be bound to a standing sign, wall sign, and sign item");
             }
             return this;
         }
@@ -555,9 +559,13 @@ public class LogBlockSet {
                 @Nullable Function<BlockBehaviour.Properties, ? extends WallHangingSignBlock> wallHangingSign,
                 @Nullable TriFunction<CeilingHangingSignBlock, WallHangingSignBlock, Item.Properties, ? extends HangingSignItem> hangingSignItem
         ) {
-            this.ceilingHangingSign = ceilingHangingSign;
-            this.wallHangingSign = wallHangingSign;
-            this.hangingSignItem = hangingSignItem;
+            if ((ceilingHangingSign == null && wallHangingSign == null && hangingSignItem == null) || (ceilingHangingSign != null && wallHangingSign != null && hangingSignItem != null)) {
+                this.ceilingHangingSign = ceilingHangingSign;
+                this.wallHangingSign = wallHangingSign;
+                this.hangingSignItem = hangingSignItem;
+            } else {
+                throw new IllegalArgumentException("hanging sign must be bound to a ceiling hanging sign, wall hanging sign, and hanging sign item");
+            }
             return this;
         }
 
@@ -572,9 +580,9 @@ public class LogBlockSet {
         }
 
         public LogBlockSet build() {
-            LogBlockSet logBlockSet = new LogBlockSet(this);
-            LOG_BLOCK_SETS.add(logBlockSet);
-            return logBlockSet;
+            LogBlockSet blockSet = new LogBlockSet(this);
+            LOG_BLOCK_SETS.add(blockSet);
+            return blockSet;
         }
     }
 

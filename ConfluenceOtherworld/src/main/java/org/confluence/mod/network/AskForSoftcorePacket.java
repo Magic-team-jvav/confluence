@@ -33,10 +33,10 @@ public record AskForSoftcorePacket(boolean accept) implements IPacket {
         ServerLevel overworld = player.server.overworld();
         if (accept) {
             overworld.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).set(true, player.server);
-            player.sendSystemMessage(Component.translatable("confluence.difficulty_notice.softcore.tip"));
+            player.sendSystemMessage(Component.translatable("confluence.difficulty_notice.softcore.done"));
         } else {
             ConfluenceData.get(overworld).setStopAskForSoftcore(true);
-            player.sendSystemMessage(Component.translatable("confluence.difficulty_notice.never.softcore.tip"));
+            player.sendSystemMessage(Component.translatable("confluence.difficulty_notice.never.done"));
         }
     }
 }

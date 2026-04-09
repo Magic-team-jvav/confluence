@@ -68,25 +68,25 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         });
 
         IntrinsicTagAppender<Item> notFlammableWood = tag(ItemTags.NON_FLAMMABLE_WOOD);
-        for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
-            if (logBlockSet.ignitedByLava) continue;
-            notFlammableWood.add(logBlockSet.PLANKS.asItem());
-            if (logBlockSet.LOG.isBound()) notFlammableWood.add(logBlockSet.LOG.asItem());
-            if (logBlockSet.WOOD.isBound()) notFlammableWood.add(logBlockSet.WOOD.asItem());
-            if (logBlockSet.STRIPPED_LOG.isBound())
-                notFlammableWood.add(logBlockSet.STRIPPED_LOG.asItem());
-            if (logBlockSet.STRIPPED_WOOD.isBound())
-                notFlammableWood.add(logBlockSet.STRIPPED_WOOD.asItem());
-            if (logBlockSet.STAIRS.isBound()) notFlammableWood.add(logBlockSet.STAIRS.asItem());
-            if (logBlockSet.SLAB.isBound()) notFlammableWood.add(logBlockSet.SLAB.asItem());
-            if (logBlockSet.BUTTON.isBound()) notFlammableWood.add(logBlockSet.BUTTON.asItem());
-            if (logBlockSet.FENCE.isBound()) notFlammableWood.add(logBlockSet.FENCE.asItem());
-            if (logBlockSet.FENCE_GATE.isBound())
-                notFlammableWood.add(logBlockSet.FENCE_GATE.asItem());
-            if (logBlockSet.SIGN.isBound()) notFlammableWood.add(logBlockSet.SIGN.asItem());
-            if (logBlockSet.PRESSURE_PLATE.isBound())
-                notFlammableWood.add(logBlockSet.PRESSURE_PLATE.asItem());
-            if (logBlockSet.DOOR.isBound()) notFlammableWood.add(logBlockSet.DOOR.asItem());
+        for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            if (blockSet.ignitedByLava) continue;
+            notFlammableWood.add(blockSet.PLANKS.asItem());
+            if (blockSet.LOG.isBound()) notFlammableWood.add(blockSet.LOG.asItem());
+            if (blockSet.WOOD.isBound()) notFlammableWood.add(blockSet.WOOD.asItem());
+            if (blockSet.STRIPPED_LOG.isBound())
+                notFlammableWood.add(blockSet.STRIPPED_LOG.asItem());
+            if (blockSet.STRIPPED_WOOD.isBound())
+                notFlammableWood.add(blockSet.STRIPPED_WOOD.asItem());
+            if (blockSet.STAIRS.isBound()) notFlammableWood.add(blockSet.STAIRS.asItem());
+            if (blockSet.SLAB.isBound()) notFlammableWood.add(blockSet.SLAB.asItem());
+            if (blockSet.BUTTON.isBound()) notFlammableWood.add(blockSet.BUTTON.asItem());
+            if (blockSet.FENCE.isBound()) notFlammableWood.add(blockSet.FENCE.asItem());
+            if (blockSet.FENCE_GATE.isBound())
+                notFlammableWood.add(blockSet.FENCE_GATE.asItem());
+            if (blockSet.SIGN.isBound()) notFlammableWood.add(blockSet.SIGN.asItem());
+            if (blockSet.PRESSURE_PLATE.isBound())
+                notFlammableWood.add(blockSet.PRESSURE_PLATE.asItem());
+            if (blockSet.DOOR.isBound()) notFlammableWood.add(blockSet.DOOR.asItem());
         }
 
         tag(ModTags.Items.REPEATER_ENCHANTABLE);

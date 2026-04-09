@@ -88,17 +88,17 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "replace_spruce_planks_from_stripped_wood", addItem(Items.SPRUCE_PLANKS, Items.STRIPPED_SPRUCE_WOOD, 9));
         item(recipeOutput, "replace_cherry_planks_from_stripped_wood", addItem(Items.CHERRY_PLANKS, Items.STRIPPED_CHERRY_WOOD, 9));
 
-        for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
-            String id = logBlockSet.id;
-            if (logBlockSet.LOG.isBound()) {
-                item(recipeOutput, "replace_" + id + "_planks", addItem(logBlockSet.PLANKS, logBlockSet.LOG, 9));
-                item(recipeOutput, id + "_log_from_oak_log", addItem(Blocks.OAK_LOG, logBlockSet.LOG));
+        for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            String id = blockSet.id;
+            if (blockSet.LOG.isBound()) {
+                item(recipeOutput, "replace_" + id + "_planks", addItem(blockSet.PLANKS, blockSet.LOG, 9));
+                item(recipeOutput, id + "_log_from_oak_log", addItem(Blocks.OAK_LOG, blockSet.LOG));
             }
-            if (logBlockSet.WOOD.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_wood", addItem(logBlockSet.PLANKS, logBlockSet.WOOD, 9));
-            if (logBlockSet.STRIPPED_LOG.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_stripped_log", addItem(logBlockSet.PLANKS, logBlockSet.STRIPPED_LOG, 9));
-            if (logBlockSet.STRIPPED_WOOD.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_stripped_wood", addItem(logBlockSet.PLANKS, logBlockSet.STRIPPED_WOOD, 9));
-            if (logBlockSet.SLAB.isBound()) item(recipeOutput, id + "_slab_to_planks", addItem(logBlockSet.SLAB, logBlockSet.PLANKS, 4));
-            if (logBlockSet.STAIRS.isBound()) item(recipeOutput, id + "_stairs_to_planks", addItem(logBlockSet.STAIRS, logBlockSet.PLANKS, 2));
+            if (blockSet.WOOD.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_wood", addItem(blockSet.PLANKS, blockSet.WOOD, 9));
+            if (blockSet.STRIPPED_LOG.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_stripped_log", addItem(blockSet.PLANKS, blockSet.STRIPPED_LOG, 9));
+            if (blockSet.STRIPPED_WOOD.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_stripped_wood", addItem(blockSet.PLANKS, blockSet.STRIPPED_WOOD, 9));
+            if (blockSet.SLAB.isBound()) item(recipeOutput, id + "_slab_to_planks", addItem(blockSet.SLAB, blockSet.PLANKS, 4));
+            if (blockSet.STAIRS.isBound()) item(recipeOutput, id + "_stairs_to_planks", addItem(blockSet.STAIRS, blockSet.PLANKS, 2));
         }
 
         item(recipeOutput, "oak_slab_to_planks", addItem(Items.OAK_SLAB, Items.OAK_PLANKS, 4));

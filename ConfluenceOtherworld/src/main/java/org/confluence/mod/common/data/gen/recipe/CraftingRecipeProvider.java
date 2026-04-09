@@ -255,8 +255,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '#', Ingredient.of(NatureBlocks.GRANITE)
         ), CHEST_PATTERN), ChestBlocks.GRANITE_CHEST.toStack());
 
-        for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
-            registerWoodRecipes(output, logBlockSet);
+        for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            registerWoodRecipes(output, blockSet);
         }
 
         shaped(output, ShapedRecipePattern.of(Map.of(
@@ -1050,91 +1050,91 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
     }
 
     // 木头配方
-    private void registerWoodRecipes(RecipeOutput output, LogBlockSet logBlockSet) {
-        ItemLike[] logs = Streams.of(logBlockSet.LOG, logBlockSet.STRIPPED_LOG, logBlockSet.WOOD, logBlockSet.STRIPPED_WOOD).filter(DeferredHolder::isBound).toArray(ItemLike[]::new);
-        if (logs.length > 0) shapeless(output, logBlockSet.PLANKS.toStack(4), Ingredient.of(logs));
-        shapeless(output, logBlockSet.BUTTON.toStack(), Ingredient.of(logBlockSet.PLANKS));
-        if (logBlockSet.LOG.isBound() && logBlockSet.WOOD.isBound())
+    private void registerWoodRecipes(RecipeOutput output, LogBlockSet blockSet) {
+        ItemLike[] logs = Streams.of(blockSet.LOG, blockSet.STRIPPED_LOG, blockSet.WOOD, blockSet.STRIPPED_WOOD).filter(DeferredHolder::isBound).toArray(ItemLike[]::new);
+        if (logs.length > 0) shapeless(output, blockSet.PLANKS.toStack(4), Ingredient.of(logs));
+        shapeless(output, blockSet.BUTTON.toStack(), Ingredient.of(blockSet.PLANKS));
+        if (blockSet.LOG.isBound() && blockSet.WOOD.isBound())
             shaped(output, ShapedRecipePattern.of(Map.of(
-                    '#', Ingredient.of(logBlockSet.LOG)
+                    '#', Ingredient.of(blockSet.LOG)
             ), List.of(
                     "##",
                     "##"
-            )), logBlockSet.WOOD.toStack(3));
-        if (logBlockSet.STRIPPED_LOG.isBound() && logBlockSet.STRIPPED_WOOD.isBound())
+            )), blockSet.WOOD.toStack(3));
+        if (blockSet.STRIPPED_LOG.isBound() && blockSet.STRIPPED_WOOD.isBound())
             shaped(output, ShapedRecipePattern.of(Map.of(
-                    '#', Ingredient.of(logBlockSet.STRIPPED_LOG)
+                    '#', Ingredient.of(blockSet.STRIPPED_LOG)
             ), List.of(
                     "##",
                     "##"
-            )), logBlockSet.STRIPPED_WOOD.toStack(3));
-        if (logBlockSet.STAIRS.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.PLANKS)
+            )), blockSet.STRIPPED_WOOD.toStack(3));
+        if (blockSet.STAIRS.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(blockSet.PLANKS)
         ), List.of(
                 "#  ",
                 "## ",
                 "###"
-        )), logBlockSet.STAIRS.toStack(4));
-        if (logBlockSet.SLAB.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.PLANKS)
+        )), blockSet.STAIRS.toStack(4));
+        if (blockSet.SLAB.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(blockSet.PLANKS)
         ), List.of(
                 "###"
-        )), logBlockSet.SLAB.toStack(6));
-        if (logBlockSet.FENCE.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.PLANKS),
+        )), blockSet.SLAB.toStack(6));
+        if (blockSet.FENCE.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(blockSet.PLANKS),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "#/#",
                 "#/#"
-        )), logBlockSet.FENCE.toStack(3));
-        if (logBlockSet.FENCE_GATE.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.PLANKS),
+        )), blockSet.FENCE.toStack(3));
+        if (blockSet.FENCE_GATE.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(blockSet.PLANKS),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "/#/",
                 "/#/"
-        )), logBlockSet.FENCE_GATE.toStack());
-        if (logBlockSet.DOOR.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.PLANKS)
+        )), blockSet.FENCE_GATE.toStack());
+        if (blockSet.DOOR.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(blockSet.PLANKS)
         ), List.of(
                 "##",
                 "##",
                 "##"
-        )), logBlockSet.DOOR.toStack(3));
-        if (logBlockSet.TRAPDOOR.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.PLANKS)
+        )), blockSet.DOOR.toStack(3));
+        if (blockSet.TRAPDOOR.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(blockSet.PLANKS)
         ), List.of(
                 "###",
                 "###"
-        )), logBlockSet.TRAPDOOR.toStack(2));
-        if (logBlockSet.PRESSURE_PLATE.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.PLANKS)
+        )), blockSet.TRAPDOOR.toStack(2));
+        if (blockSet.PRESSURE_PLATE.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(blockSet.PLANKS)
         ), List.of(
                 "##"
-        )), logBlockSet.PRESSURE_PLATE.toStack());
-        if (logBlockSet.SIGN_ITEM.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.PLANKS),
+        )), blockSet.PRESSURE_PLATE.toStack());
+        if (blockSet.SIGN_ITEM.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(blockSet.PLANKS),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "###",
                 "###",
                 " / "
-        )), logBlockSet.SIGN_ITEM.toStack(3));
-        if (logBlockSet.CHISELED_PLANKS.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(logBlockSet.SLAB)
+        )), blockSet.SIGN_ITEM.toStack(3));
+        if (blockSet.CHISELED_PLANKS.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(blockSet.SLAB)
         ), List.of(
                 "#",
                 "#"
-        )), logBlockSet.CHISELED_PLANKS.toStack());
-        if (logBlockSet.HANGING_SIGN.isBound() && logBlockSet.STRIPPED_LOG.isBound())
+        )), blockSet.CHISELED_PLANKS.toStack());
+        if (blockSet.HANGING_SIGN.isBound() && blockSet.STRIPPED_LOG.isBound())
             shaped(output, ShapedRecipePattern.of(Map.of(
                     '|', Ingredient.of(Blocks.CHAIN),
-                    '#', Ingredient.of(logBlockSet.STRIPPED_LOG)
+                    '#', Ingredient.of(blockSet.STRIPPED_LOG)
             ), List.of(
                     "| |",
                     "###",
                     "###"
-            )), logBlockSet.HANGING_SIGN.toStack(6));
+            )), blockSet.HANGING_SIGN.toStack(6));
     }
 
     private void registerBoatRecipes(RecipeOutput output, LogBlockSet woodSet, ItemLike boatItem, ItemLike chestBoatItem) {

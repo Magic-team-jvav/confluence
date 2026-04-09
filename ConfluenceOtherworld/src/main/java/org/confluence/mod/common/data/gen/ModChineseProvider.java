@@ -44,14 +44,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.prefix_separator", " ");
         add("confluence.game_event", "Game Event");
 
-        add("confluence.difficulty_notice.ask", "你现在处于中核模式！是否转换到软核模式？");
+        add("confluence.difficulty_notice.ask", "你现在处于中核模式！是否更改为到软核模式？");
         add("confluence.difficulty_notice.sure", "确定");
-        add("confluence.difficulty_notice.sure.tip", "已设置死亡保留物品栏");
-        add("confluence.difficulty_notice.never", "不再提醒");
-        add("confluence.difficulty_notice.never.tip", "不再提醒该消息");
-        add("confluence.difficulty_notice.tip", "按住 Alt 键进行选择");
-        add("confluence.difficulty_notice.softcore.tip", "已转换到软核模式");
-        add("confluence.difficulty_notice.never.softcore.tip", "不再提醒软核模式提示");
+        add("confluence.difficulty_notice.sure.tip", "将会设置为死亡不掉落");
+        add("confluence.difficulty_notice.never", "永不");
+        add("confluence.difficulty_notice.never.tip", "拒绝该次询问，并且再也不弹出该询问");
+        add("confluence.difficulty_notice.tip", "按住Alt键呼出鼠标以进行选择");
+        add("confluence.difficulty_notice.softcore.done", "已更改为软核模式");
+        add("confluence.difficulty_notice.never.done", "将不再弹出该询问");
 
         add("itemGroup.confluence.log", "原木");
         add("itemGroup.confluence.leaves", "树叶");

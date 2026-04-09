@@ -50,7 +50,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.difficulty_notice.never", "永不");
         add("confluence.difficulty_notice.never.tip", "拒绝该次询问，并且再也不弹出该询问");
         add("confluence.difficulty_notice.tip", "按住Alt键呼出鼠标以进行选择");
-        add("confluence.difficulty_notice.softcore.done", "已更改为软核模式");
+        add("confluence.difficulty_notice.sure.done", "已更改为软核模式");
         add("confluence.difficulty_notice.never.done", "将不再弹出该询问");
 
         add("itemGroup.confluence.log", "原木");

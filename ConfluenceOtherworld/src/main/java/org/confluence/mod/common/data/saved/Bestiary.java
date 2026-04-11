@@ -20,6 +20,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
@@ -90,7 +91,7 @@ public enum Bestiary implements IGlobalData {
             AttributeMap map = living.getAttributes();
             entry.maxHealth = getAttributeBaseValue(map, Attributes.MAX_HEALTH);
             entry.knockbackResistance = getAttributeBaseValue(map, Attributes.KNOCKBACK_RESISTANCE);
-            entry.attackDamage = getAttributeBaseValue(map, Attributes.ATTACK_DAMAGE);
+            entry.attackDamage = getAttributeBaseValue(map, LibAttributes.getAttackDamage());
             entry.armor = getAttributeBaseValue(map, Attributes.ARMOR);
             entry.drops = living instanceof Enemy ? (int) ModUtils.getLivingBaseMoneyDrops(living, living.level()) : 0;
             return entry;

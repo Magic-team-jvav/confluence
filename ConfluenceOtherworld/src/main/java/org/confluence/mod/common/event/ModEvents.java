@@ -51,6 +51,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.ModifyRegistriesEvent;
 import net.neoforged.neoforgespi.locating.IModFile;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.event.NameFixRegisterEvent;
@@ -126,7 +127,7 @@ public final class ModEvents {
                 if (Attributes.MAX_HEALTH.value() instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 65536;
                 }
-                if (Attributes.ATTACK_DAMAGE.value() instanceof RangedAttribute rangedAttribute) {
+                if (LibAttributes.getAttackDamage().value() instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 65536;
                 }
             }

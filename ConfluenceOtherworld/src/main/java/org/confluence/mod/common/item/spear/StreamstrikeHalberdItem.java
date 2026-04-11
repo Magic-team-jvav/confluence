@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
@@ -19,7 +20,7 @@ public class StreamstrikeHalberdItem extends AbstractSpearItem {
     public StreamstrikeHalberdItem() {
         super(new Properties().attributes(ItemAttributeModifiers.builder()
                 .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, 6, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 7.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(LibAttributes.getAttackDamage(), new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 7.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(Confluence.asResource("base_swim_speed"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
                 .build()), ModRarity.BLUE, 15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),

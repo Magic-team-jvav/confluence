@@ -5,10 +5,10 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
@@ -29,7 +29,7 @@ public final class TEEvents {
 
     public static void modifyAttributes(EntityAttributeModificationEvent event) {
         new AttributeRegistration(event)
-                .set(TCAttributes.ARMOR_PENETRATION)
+                .set(LibAttributes.getArmorPenetration())
                 .register(TEBossEntities.QUEEN_BEE.get(), 2)
                 .register(TEBossEntities.SKELETRON.get(), 4)
                 .register(TEBossEntities.SKELETRON_HAND.get(), 4)

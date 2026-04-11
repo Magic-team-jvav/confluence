@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import org.confluence.lib.network.IPacket;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.client.gui.hud.AskForSoftcoreLayer;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 
 public record AskForSoftcorePacket(boolean accept) implements IPacket {
@@ -25,7 +25,7 @@ public record AskForSoftcorePacket(boolean accept) implements IPacket {
 
     @Override
     public void s2c(Player player) {
-        ClientPacketHandler.setAskForSoftcoreLayer(true);
+        AskForSoftcoreLayer.setAskForSoftcoreLayer(true);
     }
 
     @Override

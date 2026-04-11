@@ -23,9 +23,11 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.event.CustomPickupRangeEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -78,6 +80,9 @@ public final class PlayerUtils {
         case 2 -> ModItems.GOLD_COIN.get();
         default -> ModItems.PLATINUM_COIN.get();
     };
+    public static final CustomPickupRangeEvent.RangeType MANA_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("mana"));
+    public static final CustomPickupRangeEvent.RangeType COIN_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("coin"));
+    public static final CustomPickupRangeEvent.RangeType HEART_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("heart"));
 
     public static void syncMana2Client(ServerPlayer player, ManaStorage manaStorage) {
         PacketDistributor.sendToPlayer(player, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));

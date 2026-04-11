@@ -3,8 +3,8 @@ package org.confluence.mod.mixin.client;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
+import org.confluence.mod.client.gui.hud.AskForSoftcoreLayer;
 import org.confluence.mod.client.gui.hud.HouseSelectHUD;
-import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +25,7 @@ public abstract class MouseHandlerMixin {
 
     @WrapWithCondition(method = "onPress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MouseHandler;grabMouse()V"))
     private boolean cancelGrab(MouseHandler instance) {
-        if (HouseSelectHUD.inSelectHUD || ClientPacketHandler.isAskForSoftcoreLayer()) {
+        if (HouseSelectHUD.inSelectHUD || AskForSoftcoreLayer.isAskForSoftcoreLayer()) {
             return false;
         }
         return true;

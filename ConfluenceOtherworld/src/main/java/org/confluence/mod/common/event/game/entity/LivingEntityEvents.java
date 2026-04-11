@@ -5,6 +5,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -27,10 +28,12 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.event.ArmorPenetrationEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -60,25 +63,27 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
+import org.confluence.mod.common.item.mana.CrystalVileShardItem;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.integration.terra_entity.TEHelper;
-import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
+import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.api.entity.IMinion;
 import org.confluence.terraentity.entity.animal.SimpleVariantAnimal;
 import org.confluence.terraentity.entity.boss.Skeletron;
 import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.summon.AbstractSummonMob;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -86,6 +91,7 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.Collection;
 import java.util.List;
@@ -196,9 +202,7 @@ public final class LivingEntityEvents {
         LivingEntity victim = event.getEntity();
         if (!(victim.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
-        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
-            return;
-        }
+        if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
         @Nullable Entity attacker = damageSource.getEntity();
 
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
@@ -222,7 +226,6 @@ public final class LivingEntityEvents {
             amount *= 0.5F;
         }
         amount = SwordItems.processEffect(damageSource, attacker, victim, amount);
-        amount = IDamageSource.processCritical(attacker, amount, victim, damageSource);
         event.setNewDamage(amount);
     }
 
@@ -527,6 +530,45 @@ public final class LivingEntityEvents {
             if (mob instanceof Enemy && mob.position().y > OverworldUtils.getSurfaceY()) {
                 event.setSize(LibMathUtils.multiplyInt(event.getSize(), 2, mob.getRandom()));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            PlayerUtils.flushPrimitiveValueData(player);
+        }
+    }
+
+    @SubscribeEvent
+    public static void curioChange(CurioChangeEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            if (PrefixUtils.canInit(event.getTo())) {
+                PrefixUtils.initPrefix(player.getRandom(), event.getTo());
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void toBeBestiaryEntry(ToBeBestiaryEntryEvent event) {
+        LivingEntity living = event.getEntity();
+        if (living instanceof AbstractSummonMob) {
+            event.setCanceled(true);
+        } else {
+            EntityType<?> type = living.getType();
+            if (type.is(ModTags.EntityTypes.BESTIARY_BLACKLIST)) {
+                event.setCanceled(true);
+            } else if (type == TEBossEntities.SKELETRON_HAND.get()) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void armorPenetration(ArmorPenetrationEvent event) {
+        Entity direct = event.getDamageSource().getDirectEntity();
+        if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get()) {
+            event.setPenetration(event.getPenetration() + CrystalVileShardItem.ARMOR_PENETRATION);
         }
     }
 }

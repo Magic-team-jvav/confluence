@@ -51,6 +51,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
@@ -196,7 +197,7 @@ public final class ModUtils {
     }
 
     public static double getLivingBaseMoneyDrops(LivingEntity living, Level level) {
-        AttributeInstance attack = living.getAttribute(Attributes.ATTACK_DAMAGE);
+        AttributeInstance attack = living.getAttribute(LibAttributes.getAttackDamage());
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
         double healthFactor = living.getMaxHealth() * 0.15;

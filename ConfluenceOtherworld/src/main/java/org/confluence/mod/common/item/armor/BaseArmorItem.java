@@ -11,13 +11,13 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
@@ -28,8 +28,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terra_curio.api.primitive.PrimitiveValue;
 import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
-import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terraentity.init.TEAttributes;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -151,19 +149,19 @@ public class BaseArmorItem extends ArmorItem {
         }
 
         public Builder meleeDamage(double value) {
-            return attribute(Attributes.ATTACK_DAMAGE, value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getAttackDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder rangedDamage(double value) {
-            return attribute(TCAttributes.getRangedDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getRangedDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder magicDamage(double value) {
-            return attribute(TCAttributes.getMagicDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getMagicDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder summonDamage(double value) {
-            return attribute(TEAttributes.SUMMON_DAMAGE, value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getSummonDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder fourClassesDamage(double value) {
@@ -171,7 +169,7 @@ public class BaseArmorItem extends ArmorItem {
         }
 
         public Builder criticalChance(double value) {
-            return attribute(TCAttributes.getCriticalChance(), value, AttributeModifier.Operation.ADD_VALUE);
+            return attribute(LibAttributes.getCriticalChance(), value, AttributeModifier.Operation.ADD_VALUE);
         }
 
         public Builder setGolden() {

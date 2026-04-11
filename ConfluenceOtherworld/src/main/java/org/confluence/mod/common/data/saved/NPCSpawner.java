@@ -38,6 +38,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.LibCodecUtils;
@@ -658,7 +659,7 @@ public enum NPCSpawner implements IGlobalData {
         if (armor != null) {
             armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));
         }
-        AttributeInstance attackDamage = living.getAttribute(Attributes.ATTACK_DAMAGE);
+        AttributeInstance attackDamage = living.getAttribute(LibAttributes.getAttackDamage());
         if (attackDamage != null) {
             attackDamage.addOrReplacePermanentModifier(new AttributeModifier(id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         }

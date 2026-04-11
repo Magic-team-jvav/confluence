@@ -75,7 +75,6 @@
         "integration.terra_curio.AccessoriesAttachmentMixin",
         "integration.terra_curio.DemonHeartMixin",
         "integration.terra_curio.StarClockEntityMixin",
-        "integration.terra_curio.TCAttributesMixin",
         "integration.terra_entity.AbstractTerraNPCMixin",
         "integration.terra_entity.AnglerNPCMixin",
         "integration.terra_entity.DemonEyeMixin",

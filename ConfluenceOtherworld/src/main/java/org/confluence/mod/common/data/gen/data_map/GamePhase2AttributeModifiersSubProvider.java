@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.common.extensions.IHolderExtension;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
@@ -24,7 +25,7 @@ public final class GamePhase2AttributeModifiersSubProvider {
     private static final ResourceLocation id = Confluence.asResource("game_phase_modifier");
 
     private static final AttributeModifiersValue VANILLA_MINECRAFT_MONSTER_ENHANCEMENT = AttributeModifiersValue.builder()
-            .add(Attributes.ATTACK_DAMAGE, id, 2.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(LibAttributes.getAttackDamage(), id, 2.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .add(Attributes.MAX_HEALTH, id, 2.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .add(Attributes.ARMOR, id, 2.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .build();
@@ -35,18 +36,18 @@ public final class GamePhase2AttributeModifiersSubProvider {
 
     private static final AttributeModifiersValue NORMAL_CHANGE_1 = AttributeModifiersValue.builder()
             .add(Attributes.MAX_HEALTH, id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(Attributes.ATTACK_DAMAGE, id, -0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(LibAttributes.getAttackDamage(), id, -0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .build();
 
     private static final AttributeModifiersValue NORMAL_CHANGE_2 = AttributeModifiersValue.builder()
             .add(Attributes.MAX_HEALTH, id, 1.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(Attributes.ATTACK_DAMAGE, id, 0.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(LibAttributes.getAttackDamage(), id, 0.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .build();
 
     private static final AttributeModifiersValue NORMAL_CHANGE_3 = AttributeModifiersValue.builder()
             .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(Attributes.ATTACK_DAMAGE, id, 1.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(LibAttributes.getAttackDamage(), id, 1.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .build();
 
@@ -93,34 +94,34 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TEMonsterEntities.BLUE_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 4.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 5.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 4.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 4.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.GREEN_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 7.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 6.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 6.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 8.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 11, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 11, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.ICE_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 3.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 3.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
@@ -152,12 +153,12 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TEMonsterEntities.CAVE_BAT, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 3.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
@@ -179,7 +180,7 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TEMonsterEntities.DARK_CASTER, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 1.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 0.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 0.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
@@ -215,12 +216,12 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TEMonsterEntities.GIANT_WORM, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 3.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 3.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
@@ -277,12 +278,12 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TEMonsterEntities.SPORE_BAT, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 3.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
@@ -309,12 +310,12 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TEMonsterEntities.FLYING_FISH, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 3.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ATTACK_DAMAGE, id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
@@ -355,12 +356,12 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 // MC原版敌对怪物
                 .add(EntityType.ZOMBIE.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
@@ -396,12 +397,12 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(EntityType.HUSK.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
@@ -450,36 +451,36 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(EntityType.ZOGLIN.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(EntityType.ZOMBIE_VILLAGER.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(EntityType.DROWNED.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
@@ -498,12 +499,12 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(EntityType.ZOMBIFIED_PIGLIN.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
@@ -581,13 +582,13 @@ public final class GamePhase2AttributeModifiersSubProvider {
 //                ))
 //                .add(EntityType.WOLF.builtInRegistryHolder(), Map.of(
 //                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+//                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
 //                                .add(Attributes.MAX_HEALTH, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
 //                                .build()
 //                ))
 //                .add(EntityType.IRON_GOLEM.builtInRegistryHolder(), Map.of(
 //                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+//                                .add(LibAttributes.getAttackDamage(), id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
 //                                .build()
 //                ))
 //                .add(EntityType.HORSE.builtInRegistryHolder(), Map.of(

@@ -9,11 +9,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -43,7 +43,7 @@ public abstract class DamageSettableProjectile extends Projectile {
         PrefixComponent component = itemStack.get(ModDataComponentTypes.PREFIX);
         if (component == null) return damage;
         double d0 = damage;
-        for (AttributeModifier modifier : component.modifiers().get().get(Attributes.ATTACK_DAMAGE)) {
+        for (AttributeModifier modifier : component.modifiers().get().get(LibAttributes.getAttackDamage())) {
             if (modifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
                 d0 += modifier.amount();
             }
@@ -56,7 +56,7 @@ public abstract class DamageSettableProjectile extends Projectile {
             }
             d0 = d1;
         }
-        return (float) Attributes.ATTACK_DAMAGE.value().sanitizeValue(d0);
+        return (float) LibAttributes.getAttackDamage().value().sanitizeValue(d0);
     }
 
     public float getDamage() {

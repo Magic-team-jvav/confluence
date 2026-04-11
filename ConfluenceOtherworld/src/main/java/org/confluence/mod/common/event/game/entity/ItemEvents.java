@@ -1,7 +1,9 @@
-package org.confluence.mod.common.event.game;
+package org.confluence.mod.common.event.game.entity;
 
 import net.minecraft.core.Holder;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -15,22 +17,30 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
+import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.gun.ManaGunItem;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_guns.api.event.GunEvent;
 
 import java.util.Collection;
@@ -100,7 +110,7 @@ public final class ItemEvents {
     @SubscribeEvent
     public static void ammoData(GunEvent.AmmoDataEvent event) {
         Player player = event.getPlayer();
-        float velocityModify = (float) player.getAttributeValue(TCAttributes.getRangedVelocity());
+        float velocityModify = (float) player.getAttributeValue(LibAttributes.getRangedVelocity());
         float knockbackModify = (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
 
         if (event.getGun() instanceof ManaGunItem manaGunItem) {
@@ -126,5 +136,35 @@ public final class ItemEvents {
     @SubscribeEvent
     public static void extraInventory(GunEvent.InventoryExtraEvent event) {
         event.addAmmoFirst(ExtraInventory.of(event.getPlayer()).getAllAmmo());
+    }
+
+    @SubscribeEvent
+    public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
+        if (!event.isInfinity() && PlayerUtils.shouldSkipConsumeAmmo(event.getPlayer())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void shimmerItemTransmutation$Pre(ShimmerItemTransmutationEvent.Pre event) {
+        ItemEntity source = event.getSource();
+        if (source.getItem().is(ConsumableItems.SLIME_CROWN) && SlimeRainGameEvent.INSTANCE.forceStart()) {
+            source.level().playSound(null, source.getX(), source.getY(), source.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
+            source.discard();
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
+        if (event.getTargets() == null) return;
+        MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+        if (currentServer == null) return;
+
+        boolean corrupt = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
+        boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
+        if (corrupt == crimson) return;
+
+        event.setTargets(RegisterEvilMaterialReplacesEvent.replaceTargets(event.getTargets(), corrupt, crimson));
     }
 }

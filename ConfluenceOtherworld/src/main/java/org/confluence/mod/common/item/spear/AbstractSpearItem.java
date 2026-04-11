@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
@@ -169,7 +170,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {}
 
     protected boolean hurtVictim(DamageSource damageSource, LivingEntity owner, Entity victim) {
-        return victim.hurt(damageSource, (float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        return victim.hurt(damageSource, (float) owner.getAttributeValue(LibAttributes.getAttackDamage()));
     }
 
     protected boolean canHitEntity(Entity target, LivingEntity owner) {
@@ -222,7 +223,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     public static ItemAttributeModifiers attributes(float extraRange, float extraDamage) {
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extraRange, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, extraDamage, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(LibAttributes.getAttackDamage(), new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, extraDamage, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
     }
 

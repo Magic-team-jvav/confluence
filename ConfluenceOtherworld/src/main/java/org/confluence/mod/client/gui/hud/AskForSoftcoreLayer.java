@@ -12,7 +12,6 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.network.AskForSoftcorePacket;
 
 public class AskForSoftcoreLayer implements LayeredDraw.Layer {
@@ -23,14 +22,23 @@ public class AskForSoftcoreLayer implements LayeredDraw.Layer {
     private static final Component neverTip = Component.translatable("confluence.difficulty_notice.never.tip");
     private static final Component tip = Component.translatable("confluence.difficulty_notice.tip");
     private static long stamp = -1;
+    private static boolean askForSoftcoreLayer = false;
+
+    public static void setAskForSoftcoreLayer(boolean b) {
+        askForSoftcoreLayer = b;
+    }
+
+    public static boolean isAskForSoftcoreLayer() {
+        return askForSoftcoreLayer;
+    }
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (ClientPacketHandler.isAskForSoftcoreLayer()) {
+        if (isAskForSoftcoreLayer()) {
             Minecraft minecraft = Minecraft.getInstance();
             Window window = minecraft.getWindow();
             if (InputConstants.isKeyDown(window.getWindow(), InputConstants.KEY_ESCAPE)) {
-                ClientPacketHandler.setAskForSoftcoreLayer(false);
+                setAskForSoftcoreLayer(false);
                 return;
             }
             MouseHandler handler = minecraft.mouseHandler;
@@ -63,7 +71,7 @@ public class AskForSoftcoreLayer implements LayeredDraw.Layer {
                 guiGraphics.renderTooltip(font, sureTip, mouseX, mouseY);
                 if (altDown && clicked) {
                     PacketDistributor.sendToServer(new AskForSoftcorePacket(true));
-                    ClientPacketHandler.setAskForSoftcoreLayer(false);
+                    setAskForSoftcoreLayer(false);
                     return;
                 }
             }
@@ -76,7 +84,7 @@ public class AskForSoftcoreLayer implements LayeredDraw.Layer {
                 guiGraphics.renderTooltip(font, neverTip, mouseX, mouseY);
                 if (altDown && clicked) {
                     PacketDistributor.sendToServer(new AskForSoftcorePacket(false));
-                    ClientPacketHandler.setAskForSoftcoreLayer(false);
+                    setAskForSoftcoreLayer(false);
                     return;
                 }
             }
@@ -89,7 +97,7 @@ public class AskForSoftcoreLayer implements LayeredDraw.Layer {
             Component remain = Component.literal(second + " s");
             guiGraphics.drawString(font, remain, x - font.width(remain) / 2, y + 15, 0xFFFFFF);
             if (second <= 0) {
-                ClientPacketHandler.setAskForSoftcoreLayer(false);
+                setAskForSoftcoreLayer(false);
             }
         } else if (stamp != -1) {
             stamp = -1;

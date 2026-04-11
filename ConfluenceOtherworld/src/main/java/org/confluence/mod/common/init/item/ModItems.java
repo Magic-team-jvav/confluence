@@ -25,6 +25,7 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
@@ -39,7 +40,6 @@ import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sponsor.*;
 import org.confluence.mod.integration.sodium.iris.IrisHelper;
 import org.confluence.mod.util.DateUtils;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -216,7 +216,7 @@ public final class ModItems {
                 builder.add(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(BASE_BLOCK_INTERACTION_RANGE_ID, blockInteractionRange, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
             if (attackKnockback != 0)
                 builder.add(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(BASE_ATTACK_KNOCKBACK_ID, attackKnockback, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-            builder.add(TCAttributes.getCriticalChance(), new AttributeModifier(BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+            builder.add(LibAttributes.getCriticalChance(), new AttributeModifier(BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
         };
     }
 
@@ -224,7 +224,7 @@ public final class ModItems {
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
         consumer.accept(builder);
         return builder.add(
-                Attributes.ATTACK_DAMAGE,
+                LibAttributes.getAttackDamage(),
                 new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE),
                 EquipmentSlotGroup.MAINHAND
         ).add(

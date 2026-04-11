@@ -6,6 +6,7 @@ import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
@@ -27,16 +28,20 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
+import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
+import org.confluence.lib.event.CustomPickupRangeEvent;
 import org.confluence.lib.event.PlayerNaturalHealEvent;
+import org.confluence.lib.event.SwitchItemFunctionEvent;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
+import org.confluence.mod.api.event.*;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
@@ -45,29 +50,31 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.effect.beneficial.HeartReachEffect;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.PotionItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
-import org.confluence.mod.common.item.common.CoinItem;
-import org.confluence.mod.common.item.common.DungeonCompass;
-import org.confluence.mod.common.item.common.EverBeneficialItem;
-import org.confluence.mod.common.item.common.StaffOfRegrowth;
+import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
+import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
+import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.AchievementsDataSyncPacketS2C;
+import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -75,6 +82,8 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.monster.WoodenMimic;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+
+import java.util.Objects;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
 
@@ -433,7 +442,7 @@ public final class PlayerEvents {
 
     /// 阻止自然回血的药水效果，已改为使用EffectCure，并提取到Lib了
     ///
-    /// @see org.confluence.lib.common.event.GameEvents#playerNaturalHeal
+    /// @see LibGameEvents#playerNaturalHeal
     @SubscribeEvent
     public static void naturalHeal(PlayerNaturalHealEvent event) {
         if (PlayerUtils.skipHealIfOnFire(event.getEntity())) {
@@ -483,5 +492,84 @@ public final class PlayerEvents {
             }
             event.setSuccessful(true);
         }
+    }
+
+    @SubscribeEvent
+    public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            PlayerUtils.flushPrimitiveValueData(player);
+        }
+    }
+
+    @SubscribeEvent
+    public static void additionalMana(AdditionalManaEvent event) {
+        ArsNouveauHelper.additionalMana(event);
+        IronSpellHelper.additionalMana(event);
+    }
+
+    @SubscribeEvent
+    public static void switchItemFunction$Post(SwitchItemFunctionEvent.Post event) {
+        Player player = event.getEntity();
+        if (player instanceof ServerPlayer serverPlayer) {
+            VisibilityPacketS2C.sendEcho(serverPlayer);
+        }
+        PlayerSpecialData data = PlayerSpecialData.of(player);
+        Item item = event.getStack().getItem();
+        boolean c = item == ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get();
+        if (c || item == ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.get()) {
+            data.setCouldHurtCritters(event.isEnabled());
+        }
+        if (c || item == ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.get()) {
+            data.setCouldDamageEnvironment(event.isEnabled());
+        }
+    }
+
+    @SubscribeEvent
+    public static void rightClickRailBlock(MinecartAbilityEvent.RightClickRailBlock event) {
+        AbstractMinecart minecart = event.getMinecart();
+        if (minecart != null) return;
+
+        ServerLevel level = (ServerLevel) event.getEntity().level();
+        BlockPos blockPos = event.getBlockPos();
+        boolean ascending = event.getRailBlock().getRailDirection(event.getBlockState(), level, blockPos, null).isAscending();
+        double x = blockPos.getX() + 0.5;
+        double y = blockPos.getY() + 0.0625 + (ascending ? 0.5 : 0.0);
+        double z = blockPos.getZ() + 0.5;
+        ItemStack minecartItem = event.getMinecartItem();
+
+        if (minecartItem.isEmpty()) {
+            event.setMinecart(new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.WOODEN));
+        } else if (minecartItem.getItem() == Items.MINECART) {
+            event.setMinecart(new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.VANILLA));
+        } else if (minecartItem.getItem() instanceof BaseMinecartItem baseMinecartItem) {
+            event.setMinecart(Objects.requireNonNull(baseMinecartItem.createMinecart(level, x, y, z, AbstractMinecart.Type.RIDEABLE, minecartItem, event.getEntity())));
+        }
+    }
+
+    @SubscribeEvent
+    public static void dismountOnMinecart(MinecartAbilityEvent.DismountOnMinecart event) {
+        if (event.getMinecartItem() == null && event.getMinecart().getMinecartType() == AbstractMinecart.Type.RIDEABLE) {
+            event.setMinecartItem(IAbstractMinecart.of(event.getMinecart()).confluence$getDropItem().getDefaultInstance());
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void getArmorSetBonus(GetArmorSetBonusDataEvent event) {
+        ArmorSetBonusKey key = event.getKey();
+        if (key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
+            if (key.chest() == ArmorItems.WIZARD_HAT.get()) {
+                event.setNeoData(ModArmorBonus.WIZARD_HAT_SET_BONUS);
+            } else if (key.chest() == ArmorItems.MAGIC_HAT.get()) {
+                event.setNeoData(ModArmorBonus.MAGIC_HAT_SET_BONUS);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void customPickupRange(CustomPickupRangeEvent event) {
+        Player player = event.getEntity();
+        event.addRange(PlayerUtils.MANA_RANGE, TCUtils.getValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.PROVIDE_MANA));
+        event.addRange(PlayerUtils.COIN_RANGE, TCUtils.getValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.COINS));
+        event.addRange(PlayerUtils.HEART_RANGE, HeartReachEffect.getRange(player), stack -> stack.is(ModTags.Items.PROVIDE_LIFE));
     }
 }

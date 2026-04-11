@@ -14,6 +14,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -23,13 +25,11 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.accessory.*;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.api.primitive.*;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terra_curio.common.item.curio.health.BandOfRegeneration;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.init.TEAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +81,9 @@ public class AccessoryItems {
     public static final DeferredItem<BaseCurioItem> NATURES_GIFT = registerCurio("natures_gift", builder -> builder.rarity(ORANGE).accessories(of(MANA$USE$REDUCE, 0.06F))),
             MANA_FLOWER = registerCurio("mana_flower", builder -> builder.tooltips(1).rarity(LIGHT_RED).accessories(units(AUTO$GET$MANA), of(MANA$USE$REDUCE, 0.08F))),
             CELESTIAL_MAGNET = registerCurio("celestial_magnet", builder -> builder.rarity(LIGHT_RED).accessories(of(MANA$PICKUP$RANGE, new Tuple<>(12.5F, 0)))),
-            CELESTIAL_EMBLEM = registerCurio("celestial_emblem", builder -> builder.rarity(PINK).accessories(of(MANA$PICKUP$RANGE, new Tuple<>(12.5F, 0))).attribute(TCAttributes.getMagicDamage(), 0.15, ADD_MULTIPLIED_TOTAL)),
+            CELESTIAL_EMBLEM = registerCurio("celestial_emblem", builder -> builder.rarity(PINK).accessories(of(MANA$PICKUP$RANGE, new Tuple<>(12.5F, 0))).attribute(LibAttributes.getMagicDamage(), 0.15, ADD_MULTIPLIED_TOTAL)),
             MAGNET_FLOWER = registerCurio("magnet_flower", builder -> builder.tooltips(2).rarity(PINK).accessories(units(AUTO$GET$MANA), of(MANA$USE$REDUCE, 0.08F), of(MANA$PICKUP$RANGE, new Tuple<>(12.5F, 0)))),
-            ARCANE_FLOWER = registerCurio("arcane_flower", builder -> builder.tooltips(2).rarity(PINK).accessories(units(AUTO$GET$MANA), of(MANA$USE$REDUCE, 0.08F)).attribute(TCAttributes.AGGRO, -400, ADD_VALUE)),
+            ARCANE_FLOWER = registerCurio("arcane_flower", builder -> builder.tooltips(2).rarity(PINK).accessories(units(AUTO$GET$MANA), of(MANA$USE$REDUCE, 0.08F)).attribute(ConfluenceMagicLib.AGGRO, -400, ADD_VALUE)),
             BAND_OF_STARPOWER = registerCurio("band_of_starpower", builder -> builder.accessories(of(ADDITIONAL$MANA, 20))),
             MANA_REGENERATION_BAND = registerCurio("mana_regeneration_band", builder -> builder.tooltips(1).accessories(units(FAST$MANA$GENERATION), of(ADDITIONAL$MANA, 20))),
             MAGIC_CUFFS = registerCurio("magic_cuffs", builder -> builder.tooltips(1).rarity(GREEN).accessories(units(HURT$GET$MANA, FAST$MANA$GENERATION), of(ADDITIONAL$MANA, 20))),
@@ -128,15 +128,15 @@ public class AccessoryItems {
             SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).tooltips(1).accessories(units(SPECTRE$GOGGLES)))), // 幽灵护目镜
             CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.rarity(PINK).accessories(of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.SHIMMER)))); // 炫彩斗篷
 
-    public static final DeferredItem<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
-            APPRENTICES_SCARF = registerCurio("apprentices_scarf", builder -> builder.noTooltip().rarity(PINK).attribute(TEAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 学徒围巾
-            SQUIRES_SHIELD = registerCurio("squires_shield", builder -> builder.noTooltip().rarity(PINK).attribute(TEAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 侍卫护盾
-            HUNTRESSS_BUCKLER = registerCurio("huntresss_buckler", builder -> builder.noTooltip().rarity(PINK).attribute(TEAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 女猎人圆盾
-            MONKS_BELT = registerCurio("monks_belt", builder -> builder.rarity(PINK).noTooltip().attribute(TEAttributes.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 武僧腰带
-            HERCULES_BEETLE = registerCurio("hercules_beetle", builder -> builder.noTooltip().rarity(LIME).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL).attribute(TEAttributes.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 大力士甲虫
-            NECROMANTIC_SCROLL = registerCurio("necromantic_scroll", builder -> builder.noTooltip().rarity(YELLOW).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.1, ADD_MULTIPLIED_TOTAL)), // 死灵卷轴
-            PAPYRUS_SCARAB = registerCurio("papyrus_scarab", builder -> builder.noTooltip().rarity(YELLOW).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL).attribute(TEAttributes.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 甲虫莎草纸
-            PYGMY_NECKLACE = registerCurio("pygmy_necklace", builder -> builder.noTooltip().rarity(LIME).attribute(TEAttributes.MINION_CAPACITY, 1.0, ADD_VALUE)); // 矮人项链
+    public static final DeferredItem<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(LibAttributes.getSummonDamage(), 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
+            APPRENTICES_SCARF = registerCurio("apprentices_scarf", builder -> builder.noTooltip().rarity(PINK).attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 学徒围巾
+            SQUIRES_SHIELD = registerCurio("squires_shield", builder -> builder.noTooltip().rarity(PINK).attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 侍卫护盾
+            HUNTRESSS_BUCKLER = registerCurio("huntresss_buckler", builder -> builder.noTooltip().rarity(PINK).attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 女猎人圆盾
+            MONKS_BELT = registerCurio("monks_belt", builder -> builder.rarity(PINK).noTooltip().attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 武僧腰带
+            HERCULES_BEETLE = registerCurio("hercules_beetle", builder -> builder.noTooltip().rarity(LIME).attribute(LibAttributes.getSummonDamage(), 0.15, ADD_MULTIPLIED_TOTAL).attribute(ConfluenceMagicLib.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 大力士甲虫
+            NECROMANTIC_SCROLL = registerCurio("necromantic_scroll", builder -> builder.noTooltip().rarity(YELLOW).attribute(ConfluenceMagicLib.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 死灵卷轴
+            PAPYRUS_SCARAB = registerCurio("papyrus_scarab", builder -> builder.noTooltip().rarity(YELLOW).attribute(ConfluenceMagicLib.MINION_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.15, ADD_MULTIPLIED_TOTAL).attribute(ConfluenceMagicLib.SUMMON_KNOCKBACK, 2.0, ADD_VALUE)), // 甲虫莎草纸
+            PYGMY_NECKLACE = registerCurio("pygmy_necklace", builder -> builder.noTooltip().rarity(LIME).attribute(ConfluenceMagicLib.MINION_CAPACITY, 1.0, ADD_VALUE)); // 矮人项链
 
     public static final DeferredItem<BaseCurioItem> FLEDGLING_WINGS = registerWings("fledgling_wings", WHITE, 0.3F, 28, true, false);  // 飞行高度：12
     public static final DeferredItem<BaseCurioItem> ANGEL_WINGS = registerWings("angel_wings", PINK, 0.6F, 50, true, false);  // 飞行高度：34

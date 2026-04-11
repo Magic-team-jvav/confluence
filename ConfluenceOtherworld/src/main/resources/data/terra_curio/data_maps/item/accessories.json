@@ -72,21 +72,21 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.ranged_damage": [
+                "confluence_magic_lib:generic.ranged_damage": [
                     {
                         "id": "terra_curio:avenger_emblem",
                         "amount": 0.12,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.magic_damage": [
+                "confluence_magic_lib:generic.magic_damage": [
                     {
                         "id": "terra_curio:avenger_emblem",
                         "amount": 0.12,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "confluence_magic_lib:player.summon_damage": [
                     {
                         "id": "terra_curio:avenger_emblem",
                         "amount": 0.12,
@@ -104,32 +104,32 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.ranged_damage": [
+                "confluence_magic_lib:generic.ranged_damage": [
                     {
                         "id": "terra_curio:destroyer_emblem",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.magic_damage": [
+                "confluence_magic_lib:generic.magic_damage": [
                     {
                         "id": "terra_curio:destroyer_emblem",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "confluence_magic_lib:player.summon_damage": [
                     {
                         "id": "terra_curio:destroyer_emblem",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.crit_chance": [
+                "confluence_magic_lib:generic.critical_chance": [
                     {
                         "id": "terra_curio:destroyer_emblem",
                         "amount": 0.08,
-                        "operation": "add_multiplied_total"
+                        "operation": "add_value"
                     }
                 ]
             }
@@ -143,21 +143,21 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.ranged_damage": [
+                "confluence_magic_lib:generic.ranged_damage": [
                     {
                         "id": "terra_curio:putrid_scent",
                         "amount": 0.05,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.magic_damage": [
+                "confluence_magic_lib:generic.magic_damage": [
                     {
                         "id": "terra_curio:putrid_scent",
                         "amount": 0.05,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "confluence_magic_lib:player.summon_damage": [
                     {
                         "id": "terra_curio:putrid_scent",
                         "amount": 0.05,
@@ -189,28 +189,28 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.ranged_damage": [
+                "confluence_magic_lib:generic.ranged_damage": [
                     {
                         "id": "terra_curio:moon_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.magic_damage": [
+                "confluence_magic_lib:generic.magic_damage": [
                     {
                         "id": "terra_curio:moon_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "confluence_magic_lib:player.summon_damage": [
                     {
                         "id": "terra_curio:moon_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.crit_chance": [
+                "confluence_magic_lib:generic.critical_chance": [
                     {
                         "id": "terra_curio:moon_stone",
                         "amount": 0.02,
@@ -231,7 +231,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_knockback": [
+                "confluence_magic_lib:player.summon_knockback": [
                     {
                         "id": "terra_curio:moon_stone",
                         "amount": 0.5,
@@ -256,28 +256,28 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.ranged_damage": [
+                "confluence_magic_lib:generic.ranged_damage": [
                     {
                         "id": "terra_curio:sun_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.magic_damage": [
+                "confluence_magic_lib:generic.magic_damage": [
                     {
                         "id": "terra_curio:sun_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "confluence_magic_lib:player.summon_damage": [
                     {
                         "id": "terra_curio:sun_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.crit_chance": [
+                "confluence_magic_lib:generic.critical_chance": [
                     {
                         "id": "terra_curio:sun_stone",
                         "amount": 0.02,
@@ -298,7 +298,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_knockback": [
+                "confluence_magic_lib:player.summon_knockback": [
                     {
                         "id": "terra_curio:sun_stone",
                         "amount": 0.5,
@@ -323,28 +323,28 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.ranged_damage": [
+                "confluence_magic_lib:generic.ranged_damage": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.magic_damage": [
+                "confluence_magic_lib:generic.magic_damage": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "confluence_magic_lib:player.summon_damage": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.crit_chance": [
+                "confluence_magic_lib:generic.critical_chance": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.02,
@@ -365,7 +365,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_knockback": [
+                "confluence_magic_lib:player.summon_knockback": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.5,
@@ -390,28 +390,28 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.ranged_damage": [
+                "confluence_magic_lib:generic.ranged_damage": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.magic_damage": [
+                "confluence_magic_lib:generic.magic_damage": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "confluence_magic_lib:player.summon_damage": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.1,
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_curio:generic.crit_chance": [
+                "confluence_magic_lib:generic.critical_chance": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.02,
@@ -432,7 +432,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_knockback": [
+                "confluence_magic_lib:player.summon_knockback": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.5,

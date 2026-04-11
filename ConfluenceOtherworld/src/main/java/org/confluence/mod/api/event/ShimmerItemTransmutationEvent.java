@@ -2,27 +2,26 @@ package org.confluence.mod.api.event;
 
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
+import net.neoforged.neoforge.event.entity.item.ItemEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 /// This event is Server side only.
-public abstract class ShimmerItemTransmutationEvent extends Event {
-    protected final ItemEntity source;
+public abstract class ShimmerItemTransmutationEvent extends ItemEvent {
     protected int coolDown;
     protected int shrink = 0;
     protected double speedY;
 
     public ShimmerItemTransmutationEvent(ItemEntity source) {
-        this.source = source;
+        super(source);
         this.coolDown = source.lifespan;
         this.speedY = 0.1;
     }
 
     public ItemEntity getSource() {
-        return source;
+        return getEntity();
     }
 
     /// Shrink item stack's count. Defaults to 0.

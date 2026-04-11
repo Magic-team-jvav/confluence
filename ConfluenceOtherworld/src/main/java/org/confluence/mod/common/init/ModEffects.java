@@ -9,6 +9,7 @@ import net.neoforged.neoforge.common.EffectCure;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.effect.PublicMobEffect;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.effect.beneficial.*;
@@ -18,8 +19,6 @@ import org.confluence.mod.common.effect.flask.FlaskOfGoldEffect;
 import org.confluence.mod.common.effect.harmful.*;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
-import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terraentity.init.TEAttributes;
 
 public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Confluence.MODID);
@@ -35,12 +34,12 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> LIFE_FORCE = EFFECTS.register("life_force", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFC0CB)
             .addAttributeModifier(Attributes.MAX_HEALTH, Confluence.asResource("life_force"), 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> RAGE = EFFECTS.register("rage", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF4500)
-            .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("rage"), 0.1, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(LibAttributes.getCriticalChance(), Confluence.asResource("rage"), 0.1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> WRATH = EFFECTS.register("wrath", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF8C00)
-            .addAttributeModifier(Attributes.ATTACK_DAMAGE, Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .addAttributeModifier(TCAttributes.getRangedDamage(), Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .addAttributeModifier(TCAttributes.getMagicDamage(), Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .addAttributeModifier(TEAttributes.SUMMON_DAMAGE, Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(LibAttributes.getAttackDamage(), Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(LibAttributes.getRangedDamage(), Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(LibAttributes.getMagicDamage(), Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(LibAttributes.getSummonDamage(), Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
     );
     public static final DeferredHolder<MobEffect, MobEffect> THORNS = EFFECTS.register("thorns", ThornsEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> MANA_REGENERATION = EFFECTS.register("mana_regeneration", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x6600CC));
@@ -51,7 +50,7 @@ public final class ModEffects {
             .addAttributeModifier(Attributes.BLOCK_INTERACTION_RANGE, Confluence.asResource("builder"), 3, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> FISHING = EFFECTS.register("fishing", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x00BFFF));
     public static final DeferredHolder<MobEffect, MobEffect> MAGIC_POWER = EFFECTS.register("magic_power", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xCC00CC)
-            .addAttributeModifier(TCAttributes.getMagicDamage(), Confluence.asResource("magic_power"), 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .addAttributeModifier(LibAttributes.getMagicDamage(), Confluence.asResource("magic_power"), 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> OBSIDIAN_SKIN = EFFECTS.register("obsidian_skin", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x660066));
     public static final DeferredHolder<MobEffect, MobEffect> LUCK_EFFECT = EFFECTS.register("luck", LuckEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> WATER_WALKING = EFFECTS.register("water_walking", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x0000BB));
@@ -87,9 +86,9 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> THE_BAST_DEFENSE = EFFECTS.register("the_bast_defense", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x000000)
             .addAttributeModifier(Attributes.ARMOR, Confluence.asResource("the_bast_defense"), 5.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> SHARPENED = EFFECTS.register("sharpened", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xDDDDDD)
-            .addAttributeModifier(TCAttributes.getArmorPenetration(), Confluence.asResource("sharpened"), 12.0, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(LibAttributes.getArmorPenetration(), Confluence.asResource("sharpened"), 12.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> BEWITCHED = EFFECTS.register("bewitched", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xDDAA33)
-            .addAttributeModifier(TEAttributes.MINION_CAPACITY, Confluence.asResource("bewitched"), 1.0, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(ConfluenceMagicLib.MINION_CAPACITY, Confluence.asResource("bewitched"), 1.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> AMMO_BOX = EFFECTS.register("ammo_box", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x119911));
     public static final DeferredHolder<MobEffect, MobEffect> COZY_FIRE = EFFECTS.register("cozy_fire", CozyFireEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> HEART_LANTERN = EFFECTS.register("heart_lantern", HeartLanternEffect::new);
@@ -100,18 +99,18 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> MIDAS = EFFECTS.register("midas", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xFFAA00));
     public static final DeferredHolder<MobEffect, MobEffect> TIPSY = EFFECTS.register("tipsy", () -> new PublicMobEffect(MobEffectCategory.NEUTRAL, 0xBBBB00)
             .addAttributeModifier(Attributes.ARMOR, Confluence.asResource("tipsy"), -2, AttributeModifier.Operation.ADD_VALUE)
-            .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("tipsy"), 0.02, AttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(LibAttributes.getCriticalChance(), Confluence.asResource("tipsy"), 0.02, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_SPEED, Confluence.asResource("tipsy"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .addAttributeModifier(Attributes.ATTACK_DAMAGE, Confluence.asResource("tipsy"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .addAttributeModifier(LibAttributes.getAttackDamage(), Confluence.asResource("tipsy"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> CLAIRVOYANCE = EFFECTS.register("clairvoyance", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x9999FF)
-            .addAttributeModifier(TCAttributes.getMagicDamage(), Confluence.asResource("clairvoyance"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("clairvoyance"), 0.02, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(LibAttributes.getMagicDamage(), Confluence.asResource("clairvoyance"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(LibAttributes.getCriticalChance(), Confluence.asResource("clairvoyance"), 0.02, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> HOLY_PROTECTION = EFFECTS.register("holy_protection", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8888FF));
     public static final DeferredHolder<MobEffect, MobEffect> TITANIUM_BARRIER = EFFECTS.register("titanium_barrier", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xb9bfbf));
     public static final DeferredHolder<MobEffect, MobEffect> FROSTBITE = EFFECTS.register("frostbite", FrostbiteEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SHADOWFLAME = EFFECTS.register("shadowflame", ShadowflameEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SUMMONING = EFFECTS.register("summoning", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x9cf257)
-            .addAttributeModifier(TEAttributes.MINION_CAPACITY, Confluence.asResource("summoning"), 1, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(ConfluenceMagicLib.MINION_CAPACITY, Confluence.asResource("summoning"), 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> WATER_CANDLE = EFFECTS.register("water_candle", WaterCandleEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> PEACE_CANDLE = EFFECTS.register("peace_candle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xda9ae0)
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.26)

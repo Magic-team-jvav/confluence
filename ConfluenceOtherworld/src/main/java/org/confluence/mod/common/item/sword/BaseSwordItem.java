@@ -25,6 +25,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
@@ -114,7 +115,7 @@ public class BaseSwordItem extends SwordItem {
             data.generation().genProjectile(living, weapon, data.getVelocity(living), () -> {
                 if (BuiltInRegistries.ENTITY_TYPE.get(data.projType()).create(living.level()) instanceof SwordProjectile projectile) {
                     projectile.setProjComponent(data);
-                    projectile.addAttackDamage((float) (data.damageFactor() * living.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+                    projectile.addAttackDamage((float) (data.damageFactor() * living.getAttributeValue(LibAttributes.getAttackDamage())));
                     return projectile;
                 } else {
                     living.sendSystemMessage(Component.literal("Error DataComponent sword_projectile: projType must be a SwordProjectile"));
@@ -270,7 +271,7 @@ public class BaseSwordItem extends SwordItem {
             properties.durability(tier.getUses())
                     .component(ConfluenceMagicLib.MOD_RARITY, rarity)
                     .component(DataComponents.ATTRIBUTE_MODIFIERS, attributeModifiersBuilder
-                            .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage - 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                            .add(LibAttributes.getAttackDamage(), new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage - 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                             .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, rawSpeed - 4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                             .build()
                     );

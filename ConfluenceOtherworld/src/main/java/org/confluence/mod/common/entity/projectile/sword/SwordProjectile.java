@@ -21,7 +21,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.api.entity.IAttackableProjectile;
 import org.confluence.terraentity.api.entity.ICollisionAttackEntity;
 import org.confluence.terraentity.utils.TEUtils;
@@ -30,17 +29,13 @@ import org.joml.Vector3f;
 
 import java.util.Comparator;
 
-/**
- * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
- */
+/// 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
 public abstract class SwordProjectile extends AbstractHurtingProjectile implements ICollisionAttackEntity {
-
     // 可调参数
     public int lifetime = 40;
     public int hitCount = 1;
     protected float attackDamageFactor = 1F;
     protected float baseAttackDamage = 0;
-    protected float criticalChance = 0.0F;
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
     protected boolean canPenalize = false;
@@ -139,16 +134,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         super.onAddedToLevel();
         var owner1 = getOwner();
         if (owner1 instanceof LivingEntity owner) {
-            AttributeInstance attributeInstance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
-
-            if (attributeInstance != null) {
-
-                this.knockBack += (float) attributeInstance.getValue();
-            }
-            if (TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE)) return;
-            attributeInstance = owner.getAttribute(TCAttributes.CRIT_CHANCE);
-            if (attributeInstance != null) {
-                this.criticalChance = (float) attributeInstance.getValue();
+            AttributeInstance instance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
+            if (instance != null) {
+                this.knockBack += (float) instance.getValue();
             }
 
             var entities = level().getEntities(this, getBoundingBox().inflate(50), e -> e instanceof LivingEntity living && living.isAlive() && e != owner1);

@@ -9,13 +9,13 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.armor.ModArmorMaterials;
 import org.confluence.mod.common.item.armor.BaseArmorItem;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.init.TEAttributes;
 
 import java.util.function.Consumer;
 
@@ -287,7 +287,7 @@ public class ArmorItems {
             .geo("armor/spore_root_armor")
             .rarity(ModRarity.BLUE)
             .summonDamage(0.02)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> SPORE_ROOT_CHESTPLATE = register("spore_root_chestplate", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/spore_root_armor")
             .rarity(ModRarity.BLUE)
@@ -344,12 +344,12 @@ public class ArmorItems {
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.04)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BEE_CHESTPLATE = register("bee_chestplate", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.04)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BEE_LEGGINGS = register("bee_leggings", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
@@ -366,7 +366,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> OBSIDIAN_CHESTPLATE = register("obsidian_chestplate", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/obsidian_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> OBSIDIAN_LEGGINGS = register("obsidian_leggings", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/obsidian_armor")
             .rarity(ModRarity.BLUE)
@@ -508,17 +508,17 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> SPIDER_HELMET = register("spider_helmet", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
             .summonDamage(0.05));
     public static final DeferredItem<BaseArmorItem> SPIDER_CHESTPLATE = register("spider_chestplate", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
             .summonDamage(0.05));
     public static final DeferredItem<BaseArmorItem> SPIDER_LEGGINGS = register("spider_leggings", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> SPIDER_BOOTS = register("spider_boots", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
@@ -745,21 +745,21 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> TIKI_MASK = register("tiki_mask", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
             .summonDamage(0.10));
     public static final DeferredItem<BaseArmorItem> TIKI_SHIRT = register("tiki_shirt", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
             .summonDamage(0.10));
     public static final DeferredItem<BaseArmorItem> TIKI_LEGGINGS = register("tiki_leggings", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
-            .attribute(TEAttributes.WHIP_RANGE,0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(ConfluenceMagicLib.WHIP_RANGE,0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredItem<BaseArmorItem> TIKI_BOOTS = register("tiki_boots", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
             .summonDamage(0.10));
 
     public static final DeferredItem<BaseArmorItem> WIZARD_HAT = register("wizard_hat", ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
@@ -838,7 +838,7 @@ public class ArmorItems {
             .geo("armor/flinx_fur_coat_armor")
             .rarity(ModRarity.GREEN)
             .summonDamage(0.05)
-            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
 
     private static DeferredItem<BaseArmorItem> register(String name, Holder<ArmorMaterial> material, ArmorItem.Type type, Consumer<BaseArmorItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

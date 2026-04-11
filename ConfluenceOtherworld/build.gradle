@@ -180,7 +180,7 @@ boolean itemborders = false // 物品边框
 boolean advancementPlaques = false // 进度牌匾
 boolean dynamicCrosshair = false // 动态准星
 boolean kubejs = false
-boolean quark = true
+boolean quark = false
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }

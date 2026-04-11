@@ -12,20 +12,18 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.confluence.terraentity.init.TEAttributes;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
@@ -99,11 +97,11 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
         AttributeModifier modifier = new AttributeModifier(ID, 0.2 * LibUtils.getItemStackNbtNoCopy(stack).getByte("count"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         return ImmutableMultimap.of(
-                Attributes.ATTACK_DAMAGE, modifier,
-                TCAttributes.getMagicDamage(), modifier,
-                TCAttributes.getRangedDamage(), modifier,
-                TEAttributes.SUMMON_DAMAGE, modifier,
-                TCAttributes.getCriticalChance(), modifier
+                LibAttributes.getAttackDamage(), modifier,
+                LibAttributes.getMagicDamage(), modifier,
+                LibAttributes.getRangedDamage(), modifier,
+                LibAttributes.getSummonDamage(), modifier,
+                LibAttributes.getCriticalChance(), modifier
         );
     }
 

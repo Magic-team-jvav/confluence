@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
@@ -29,7 +30,6 @@ import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_curio.common.init.TCAttributes;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -60,7 +60,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, double critChance) {
         this(new Properties().stacksTo(1), rarity, factory, damage, manaCost, rawVelocity, cooldown);
         if (critChance == 0.0) return;
-        addAttributeModifiers(builder -> builder.add(TCAttributes.getCriticalChance(), new AttributeModifier(ID, critChance, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
+        addAttributeModifiers(builder -> builder.add(LibAttributes.getCriticalChance(), new AttributeModifier(ID, critChance, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
     }
 
     @Override

@@ -14,9 +14,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.api.entity.IGeneration;
 import org.confluence.terraentity.api.entity.ITrackType;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
@@ -154,7 +154,7 @@ public record SwordProjectileComponent(
 
     public float getVelocity(LivingEntity living) {
         float velocity = baseSpeed();
-        AttributeInstance attributeInstance = living.getAttribute(TCAttributes.getRangedVelocity());
+        AttributeInstance attributeInstance = living.getAttribute(LibAttributes.getRangedVelocity());
         if (attributeInstance != null) return velocity * (float) attributeInstance.getValue();
         return velocity;
     }
@@ -162,7 +162,8 @@ public record SwordProjectileComponent(
     public int getAttackSpeed(LivingEntity living) {
         int cooldown = cooldown();
         AttributeInstance attributeInstance = living.getAttribute(Attributes.ATTACK_SPEED);
-        if (attributeInstance != null) return Math.max(cooldown - (int) (attributeInstance.getValue() / 3.0), 0);
+        if (attributeInstance != null)
+            return Math.max(cooldown - (int) (attributeInstance.getValue() / 3.0), 0);
         return cooldown;
     }
 }

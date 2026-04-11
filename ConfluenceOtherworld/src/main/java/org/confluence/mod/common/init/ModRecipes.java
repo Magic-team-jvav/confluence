@@ -26,6 +26,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
+import org.confluence.mod.common.recipe.special.DragonPepperExtractingRecipe;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -68,6 +69,8 @@ public final class ModRecipes {
     public static final Supplier<RecipeSerializer<?>> DYE_VAT_SERIALIZER = SERIALIZERS.register("dye_vat", DyeVatRecipe.Serializer::new);
 
     public static final DeferredHolder<RecipeSerializer<?>, BoomBunnyRecipe.Serializer> BOOM_BUNNY_SERIALIZER = SERIALIZERS.register("boom_bunny", BoomBunnyRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeSerializer<?>, DragonPepperExtractingRecipe.Serializer> DRAGON_PEPPER_EXTRACTING_SERIALIZER = SERIALIZERS.register("dragon_pepper_extracting", DragonPepperExtractingRecipe.Serializer::new);
 
     private static <R extends Recipe<?>> Supplier<RecipeType<R>> registerType(String id) {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {

@@ -11,14 +11,20 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CocoaBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.FoodItems;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 /**
- * 现在龙果的生长速度等属性暂时与可可果相同，若需修改，overrider andomTick方法
+ * 现在龙果的生长速度等属性暂时与可可果相同，若需修改，overrider randomTick方法
  */
 public class DragonsBreathPepperBlock extends CocoaBlock {
     @SuppressWarnings("unchecked")
@@ -82,5 +88,35 @@ public class DragonsBreathPepperBlock extends CocoaBlock {
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPES.get(state.getValue(FACING))[state.getValue(AGE)];
+    }
+
+    @Override
+    protected List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder params) {
+        int age = state.getValue(AGE);
+        int maturity = age;
+        int count = age == 2 ? 1 : 1;//掉一个即可，不改是因为懒了，反正效果一样
+        List<ItemStack> drops = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            drops.add(createMaturityStack(maturity));
+        }
+        return drops;
+    }
+
+    public static ItemStack createMaturityStack(int maturity) {
+        ItemStack stack = FoodItems.END_DRAGON_PEPPER.toStack();
+        net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
+        tag.putInt("Maturity", maturity);
+        stack.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
+        return stack;
+    }
+
+    public static int getMaturity(ItemStack stack) {
+        net.minecraft.nbt.CompoundTag tag = org.confluence.lib.util.LibUtils.getItemStackNbtIfPresent(stack);
+        if (tag == null || !tag.contains("Maturity")) return 0;
+        return tag.getInt("Maturity");
+    }
+
+    public static boolean isMature(ItemStack stack) {
+        return getMaturity(stack) >= 2;
     }
 }

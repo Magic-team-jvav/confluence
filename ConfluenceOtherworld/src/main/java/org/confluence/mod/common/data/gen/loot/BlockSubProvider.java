@@ -37,7 +37,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
-import org.confluence.mod.common.block.natural.DragonsBreathPepperBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
@@ -587,13 +586,6 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
         dropOther(LIFE_FRUIT.get(),ConsumableItems.LIFE_FRUIT.get());
-        add(NatureBlocks.DRAGONS_BREATH_PEPPER.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                .add(LootItem.lootTableItem(FoodItems.END_DRAGON_FRUIT.get())))
-                .withPool(LootPool.lootPool()
-                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(NatureBlocks.DRAGONS_BREATH_PEPPER.get())
-                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(DragonsBreathPepperBlock.AGE, 2)))
-                .add(LootItem.lootTableItem(FoodItems.END_DRAGON_FRUIT.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))));
 
         dropWhenSilkTouch(PURE_GLASS.get());
         dropWhenSilkTouch(WHITE_PURE_GLASS.get());

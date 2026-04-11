@@ -1828,6 +1828,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.VOID_LOG_BLOCKS.PRESSURE_PLATE.get(), "虚空木压力板");
         add(NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get(), "虚空树叶");
         add(NatureBlocks.VOID_LOG_BLOCKS.SAPLING.get(), "虚空树苗");
+        add(NatureBlocks.DRAGONS_BREATH_PEPPER.get(), "龙息辣椒");
 
         add(NatureBlocks.GAZE_LOG_BLOCKS.BUTTON.get(), "垂眸木按钮");
         add(NatureBlocks.GAZE_LOG_BLOCKS.PLANKS.get(), "垂眸木板");
@@ -3689,7 +3690,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.CHERRY.get(), "樱桃");
         add(FoodItems.COCONUT.get(), "椰子");
         add(FoodItems.DRAGON_FRUIT.get(), "火龙果");
-        add(FoodItems.END_DRAGON_FRUIT.get(), "龙果");
+        add(FoodItems.END_DRAGON_PEPPER.get(), "龙息辣椒");
+        add(FoodItems.END_DRAGON_PEPPER_SEED.get(), "龙息辣椒种子");
         add(FoodItems.GRAPE_FRUIT.get(), "葡萄柚");
         add(FoodItems.LEMON.get(), "柠檬");
         add(FoodItems.MANGO.get(), "芒果");

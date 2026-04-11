@@ -96,7 +96,8 @@ public final class ModTabs {
                         output.accept(ConsumableItems.MANA_CRYSTAL);
                         output.accept(ConsumableItems.LIFE_CRYSTAL);
                         output.accept(ConsumableItems.LIFE_FRUIT);
-                        output.accept(FoodItems.END_DRAGON_FRUIT);
+                        output.accept(FoodItems.END_DRAGON_PEPPER);
+                        output.accept(FoodItems.END_DRAGON_PEPPER_SEED);
                         CreativeModeTab.Output finalOutput = output;
                         MaterialItems.ITEMS.getEntries().forEach(item -> finalOutput.accept(item.get()));
                         output.accept(ModBlocks.POO);

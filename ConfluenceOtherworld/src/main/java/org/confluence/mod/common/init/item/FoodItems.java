@@ -173,10 +173,10 @@ public class FoodItems {
             () -> ModFoodProperties.wellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> DRAGON_FRUIT = registerNormalFood("dragon_fruit", ModRarity.GREEN,
             () -> ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f));
-    public static final DeferredItem<BaseFoodItem.BItem> END_DRAGON_FRUIT = registerBlockItemFood("end_dragon_fruit",
+    public static final DeferredItem<BaseFoodItem> END_DRAGON_PEPPER = registerFood("end_dragon_pepper",
             builder -> builder.rarity(ModRarity.BLUE)
                     .food(ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f))
-                    .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), NatureBlocks.DRAGONS_BREATH_PEPPER);
+                    .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT));
     public static final DeferredItem<BaseFoodItem> GRAPE_FRUIT = registerNormalFood("grape_fruit", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> LEMON = registerNormalFood("lemon", ModRarity.BLUE,
@@ -392,6 +392,7 @@ public class FoodItems {
     public static final DeferredItem<Item> DEATHWEED_SEED = ITEMS.register("deathweed_seed", () -> new HerbSeedItem(ModBlocks.DEATHWEED.get()));
     public static final DeferredItem<Item> WHITE_PUMPKIN_SEED = ITEMS.register("white_pumpkin_seed", () -> new ItemNameBlockItem(NatureBlocks.WHITE_PUMPKIN_STEM.get(), new Item.Properties()));
     public static final DeferredItem<Item> BALLOON_SEED = ITEMS.register("balloon_seed", () -> new ItemNameBlockItem(NatureBlocks.BALLOON_STEM.get(), new Item.Properties()));
+    public static final DeferredItem<Item> END_DRAGON_PEPPER_SEED = ITEMS.register("end_dragon_pepper_seed", () -> new ItemNameBlockItem(NatureBlocks.DRAGONS_BREATH_PEPPER.get(), new Item.Properties()));
 
     public static DeferredItem<BaseFoodItem> registerFood(String name, Consumer<BaseFoodItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

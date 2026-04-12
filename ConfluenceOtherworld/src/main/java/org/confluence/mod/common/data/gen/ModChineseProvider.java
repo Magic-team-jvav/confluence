@@ -1284,6 +1284,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("description.confluence.secret_seeds_selection.really_small", "道理我都懂，可是这只鸟为什么这么大？");
         add("title.confluence.secret_seeds_selection.too_easy", "太简单了");
         add("description.confluence.secret_seeds_selection.too_easy", "敬酒不吃吃罚酒...（世界开局就是困难模式）");
+        add("title.confluence.secret_seeds_selection.never_sleep", "永不睡觉");
+        add("description.confluence.secret_seeds_selection.never_sleep", "睡觉太浪费时间了！我们应该永远不睡觉！（无法使用床）");
 
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");

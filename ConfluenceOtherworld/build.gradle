@@ -163,6 +163,10 @@ repositories {
         name "org.confluenceSnapshots"
         url "https://maven.confluence.ink/snapshots"
     }
+    maven {
+        name = "Ageratum" // 藿香
+        url = "https://maven.anvilcraft.dev/releases"
+    }
 }
 
 boolean sodium = true // 钠
@@ -297,8 +301,9 @@ dependencies {
         runtimeOnly "curse.maven:lithium-360438:6290413"
     }
 
+    compileOnly "dev.anvilcraft.resource:ageratum-neoforge-1.21.1:${ageratum_version}"
     if (true) {
-        runtimeOnly files("libs/ageratum-neoforge-1.21.1-${ageratum_version}.jar")
+        runtimeOnly "dev.anvilcraft.resource:ageratum-neoforge-1.21.1:${ageratum_version}"
     }
 
     /**********************************************************/

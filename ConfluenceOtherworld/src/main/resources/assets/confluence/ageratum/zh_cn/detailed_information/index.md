@@ -26,3 +26,4 @@ title: "详细信息"
 
 [特殊世界种子](special_world_seeds/index.md)
 
+[属性](attribute/index.md)

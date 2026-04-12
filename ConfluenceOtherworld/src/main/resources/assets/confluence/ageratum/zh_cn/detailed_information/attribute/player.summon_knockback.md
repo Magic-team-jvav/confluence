@@ -1,10 +1,10 @@
 ---
-title: 召唤击退
+title: 仆从击退
 author: Westernat
 version: 1.3.0
 ---
 
-# 召唤击退
+# 仆从击退
 
 ::: info
 该属性目前没有任何实际作用
@@ -25,3 +25,4 @@ version: 1.3.0
 ## 历史
 
 - 1.3.0: 命名空间从`terra_entity`更改为`confluence_magic_lib`
+- 1.0.0: 添加了召唤击退属性

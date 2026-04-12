@@ -9,12 +9,12 @@ version: 1.3.0
 ---
 
 ## 新手教程
-[基本玩法]()
+[教程](guide/index.md)
 
 ---
 
 ## 热点问题
-[热点问题]()
+[热点问题](hot_issues/index.md)
 
 ## 更新日志
 [更新日志](confluence_changelog/changelog1.3.0.md)

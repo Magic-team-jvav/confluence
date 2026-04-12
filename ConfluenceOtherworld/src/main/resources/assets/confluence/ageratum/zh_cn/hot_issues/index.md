@@ -40,7 +40,7 @@ version: 1.3.0
 
 
 ## 我找不到巫毒恶魔？
-### [群系列表](biome_list.md)
+### 在[灰烬荒地](ash_wasteland.md)或[灰烬木林](ash_forest.md)寻找
 
 ---
 # 注意事项

@@ -21,6 +21,7 @@ import org.confluence.mod.common.data.fixer.RegistriesFixer;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
@@ -51,6 +52,7 @@ public final class Confluence {
         ModFeatures.register(eventBus);
         ModEnchantments.register(eventBus);
         WaystonesHelper.register(eventBus);
+        AgeratumHelper.register(eventBus);
         CreateHelper.register(eventBus);
         ModAdvancements.register(eventBus);
 

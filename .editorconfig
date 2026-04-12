@@ -334,7 +334,7 @@ ij_json_spaces_within_brackets = false
 ij_json_wrap_long_lines = false
 
 [{*.markdown,*.md}]
-indent_size = 2
+indent_size = 4
 insert_final_newline = false
 trim_trailing_whitespace = false
 ij_continuation_indent_size = 4

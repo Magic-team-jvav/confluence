@@ -50,7 +50,6 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.data.saved.Team;
-import org.confluence.mod.common.effect.beneficial.HeartReachEffect;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
@@ -570,6 +569,6 @@ public final class PlayerEvents {
         Player player = event.getEntity();
         event.addRange(PlayerUtils.MANA_RANGE, TCUtils.getValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.PROVIDE_MANA));
         event.addRange(PlayerUtils.COIN_RANGE, TCUtils.getValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.COINS));
-        event.addRange(PlayerUtils.HEART_RANGE, HeartReachEffect.getRange(player), stack -> stack.is(ModTags.Items.PROVIDE_LIFE));
+        event.addRange(PlayerUtils.HEART_RANGE, ModEffects.getHeartReachRange(player), stack -> stack.is(ModTags.Items.PROVIDE_LIFE));
     }
 }

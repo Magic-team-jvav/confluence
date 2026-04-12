@@ -12,7 +12,7 @@ public class CozyFireEffect extends MobEffect {
     @Override
     public boolean shouldApplyEffectTickThisTick(int tickCount, int amplifier) {
         int interval = 20 >> amplifier;
-        return interval > 0 ? tickCount % interval == 0 : true;
+        return interval <= 1 || tickCount % interval == 0;
     }
 
     @Override

@@ -45,10 +45,8 @@ import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
-import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
-import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -268,16 +266,18 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void mobEffect$Added(MobEffectEvent.Added event) {
-        MobEffectInstance effectInstance = event.getEffectInstance();
-        LoveEffect.onAdd(effectInstance, event.getEntity(), event.getEffectSource());
-        FlaskEffect.removeAnotherFlaskEffects(effectInstance, event.getEntity());
+        MobEffectInstance instance = event.getEffectInstance();
+        if (event.getEffectSource() != null) {
+            ModEffects.onLoveEffectAdd(instance, event.getEntity(), event.getEffectSource());
+        }
+        FlaskEffect.removeAnotherFlaskEffects(instance, event.getEntity());
     }
 
     @SubscribeEvent
     public static void mobEffect$Remove(MobEffectEvent.Remove event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
         if (effectInstance == null) return;
-        LuckEffect.onRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.amplifier);
+        ModEffects.onLuckEffectRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.amplifier);
     }
 
     @SubscribeEvent

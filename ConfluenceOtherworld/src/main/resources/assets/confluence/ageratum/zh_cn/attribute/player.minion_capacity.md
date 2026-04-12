@@ -27,3 +27,4 @@ version: 1.3.0
 ## 历史
 
 - 1.3.0: 命名空间从`terra_entity`更改为`confluence_magic_lib`
+- 1.0.0: 添加了仆从容量属性

@@ -38,3 +38,4 @@ color=#AA0000>67</color>**。
 ## 历史
 
 - 1.3.0: 命名空间从`terra_curio`更改为`confluence_magic_lib`
+- 1.0.0: 添加了暴击率属性

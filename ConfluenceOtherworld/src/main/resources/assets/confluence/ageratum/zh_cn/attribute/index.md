@@ -18,8 +18,8 @@ version: 1.3.0
 ## 玩家
 
 - [仇恨值](player.aggro.md)
-- [怪物生成数量系数](player.mob_spawn_count_multiplier.md)
-- [怪物生成速度系数](player.mob_spawn_speed_multiplier.md)
+- [生物生成数量系数](player.mob_spawn_count_multiplier.md)
+- [生物生成速度系数](player.mob_spawn_speed_multiplier.md)
 - [拾取范围](player.pickup_range.md)
 - [仆从标记伤害](player.mark_damage.md)
 - [仆从容量](player.minion_capacity.md)

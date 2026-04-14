@@ -18,17 +18,18 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
 import org.confluence.mod.common.init.armor.ModArmorMaterials;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.function.Consumer;
 
 public class BaseVanityArmorItem extends BaseArmorItem implements GeoItem {
+    protected static final String DEFAULT_NAME = "vanity_armor/dead_mans_seater";
     protected final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
     protected final String name;
 
@@ -67,7 +68,7 @@ public class BaseVanityArmorItem extends BaseArmorItem implements GeoItem {
                 if (renderer == null) {
                     ResourceLocation textureResource = Confluence.asResource("textures/item/" + name + ".png");
                     if (Minecraft.getInstance().getResourceManager().getResource(textureResource).isEmpty()) {
-                        this.renderer = new NormalArmorItemRenderer<>("vanity_armor/dead_mans_seater");
+                        this.renderer = new NormalArmorItemRenderer<>(DEFAULT_NAME);
                     } else {
                         this.renderer = new NormalArmorItemRenderer<>(name);
                     }

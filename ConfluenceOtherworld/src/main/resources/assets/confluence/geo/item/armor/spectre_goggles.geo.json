@@ -4,8 +4,8 @@
 		{
 			"description": {
 				"identifier": "geometry.unknown",
-				"texture_width": 64,
-				"texture_height": 64,
+				"texture_width": 25,
+				"texture_height": 25,
 				"visible_bounds_width": 3,
 				"visible_bounds_height": 3.5,
 				"visible_bounds_offset": [0, 1.25, 0]
@@ -20,8 +20,30 @@
 					"parent": "bipedHead",
 					"pivot": [0, 24, 0],
 					"cubes": [
-						{"origin": [-4.25, 26, -6], "size": [8.5, 4, 5], "uv": [24, 16]},
-						{"origin": [-4.25, 27, -1], "size": [8.5, 3, 5.25], "uv": [24, 0]}
+						{
+							"origin": [-4.25, 26, -6],
+							"size": [8.5, 4, 5],
+							"uv": {
+								"north": {"uv": [0, 12], "uv_size": [9, 4]},
+								"east": {"uv": [20, 0], "uv_size": [5, 4]},
+								"south": {"uv": [10, 12], "uv_size": [9, 4]},
+								"west": {"uv": [20, 5], "uv_size": [5, 4]},
+								"up": {"uv": [0, 0], "uv_size": [9, 5]},
+								"down": {"uv": [0, 11], "uv_size": [9, -5]}
+							}
+						},
+						{
+							"origin": [-4.25, 27, -1],
+							"size": [8.5, 3, 5.25],
+							"uv": {
+								"north": {"uv": [0, 17], "uv_size": [9, 3]},
+								"east": {"uv": [20, 10], "uv_size": [5, 3]},
+								"south": {"uv": [10, 17], "uv_size": [9, 3]},
+								"west": {"uv": [20, 14], "uv_size": [5, 3]},
+								"up": {"uv": [10, 0], "uv_size": [9, 5]},
+								"down": {"uv": [10, 11], "uv_size": [9, -5]}
+							}
+						}
 					]
 				},
 				{

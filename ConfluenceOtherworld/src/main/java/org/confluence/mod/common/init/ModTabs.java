@@ -14,6 +14,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.util.EnchantmentUtils;
@@ -58,6 +59,7 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
                         LogBlockSet.acceptBuilding(output);
+                        DecoBlockSet.acceptBuilding(output);
                         CreativeModeTab.Output finalOutput = output;
                         DecorativeBlocks.BLOCKS.getEntries().forEach(block -> finalOutput.accept(block.get()));
                         StatueBlocks.BLOCKS.getEntries().forEach(block -> finalOutput.accept(block.get()));

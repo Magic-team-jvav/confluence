@@ -395,9 +395,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(PACKED_ICE_BRICKS.get());
         dropSelf(PACKED_ICE_BRICKS_STAIRS.get());
         dropSelf(PACKED_ICE_BRICKS_SLAB.get());
-        dropSelf(SNOW_BRICKS.get());
-        dropSelf(SNOW_BRICKS_STAIRS.get());
-        dropSelf(SNOW_BRICKS_SLAB.get());
+        dropSelf(SNOW_BRICKS.FULL.get());
+        dropSelf(SNOW_BRICKS.STAIRS.get());
+        dropSelf(SNOW_BRICKS.SLAB.get());
         dropSelf(COPPER_BRICKS.get());
         dropSelf(COPPER_BRICKS_STAIRS.get());
         dropSelf(COPPER_BRICKS_SLAB.get());

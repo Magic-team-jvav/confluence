@@ -3,6 +3,9 @@ package org.confluence.mod.common.block.palettes;
 import it.unimi.dsi.fastutil.objects.ObjectIntImmutablePair;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
@@ -45,11 +48,37 @@ public class DecoBlockSet {
         DECO_BLOCK_SETS.add(this);
     }
 
-    public void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> tag) {
-        tag.add(FULL.get());
-        tag.add(STAIRS.get());
-        tag.add(SLAB.get());
-        tag.add(WALL.get());
+    public static void acceptBuilding(CreativeModeTab.Output output) {
+        for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
+            output.accept(blockSet.FULL.get());
+            if (blockSet.STAIRS.isBound()) output.accept(blockSet.STAIRS.get());
+            if (blockSet.SLAB.isBound()) output.accept(blockSet.SLAB.get());
+            if (blockSet.WALL.isBound()) output.accept(blockSet.WALL.get());
+        }
+    }
+
+    public static void acceptDecoTags(Function<TagKey<Block>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block>> provider) {
+        var stairs = provider.apply(BlockTags.STAIRS);
+        var slabs = provider.apply(BlockTags.SLABS);
+        var walls = provider.apply(BlockTags.WALLS);
+
+        for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
+            if (blockSet.FULL.isBound()) {
+                // 基础方块一般不需要通用tag，除非你要加
+            }
+            if (blockSet.STAIRS.isBound()) {
+                Block value = blockSet.STAIRS.get();
+                stairs.add(value);
+            }
+            if (blockSet.SLAB.isBound()) {
+                Block value = blockSet.SLAB.get();
+                slabs.add(value);
+            }
+            if (blockSet.WALL.isBound()) {
+                Block value = blockSet.WALL.get();
+                walls.add(value);
+            }
+        }
     }
 
     public static Builder builder(String id, Supplier<BlockBehaviour.Properties> supplier) {

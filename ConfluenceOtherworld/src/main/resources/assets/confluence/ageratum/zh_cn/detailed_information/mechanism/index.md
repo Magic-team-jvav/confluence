@@ -9,3 +9,4 @@ title: "机制"
 ### [NPC入住说明](npc_house.md)
 ### [任务鱼列表](quested_fishing.md)
 ### [村民以及交易列表](villagers_and_trade_tables.md)
+### [陨石](meteorite.md)

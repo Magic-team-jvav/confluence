@@ -2111,10 +2111,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.PEARLSANDSTONE_BRICKS_WALL.get(), "珍珠砂岩砖墙");
 
 
-        add(DecorativeBlocks.SNOW_BRICKS.get(), "雪砖");
-        add(DecorativeBlocks.SNOW_BRICKS_STAIRS.get(), "雪砖楼梯");
-        add(DecorativeBlocks.SNOW_BRICKS_SLAB.get(), "雪砖台阶");
-        add(DecorativeBlocks.SNOW_BRICKS_WALL.get(), "雪砖墙");
+        add(DecorativeBlocks.SNOW_BRICKS.FULL.get(), "雪砖");
+        add(DecorativeBlocks.SNOW_BRICKS.STAIRS.get(), "雪砖楼梯");
+        add(DecorativeBlocks.SNOW_BRICKS.SLAB.get(), "雪砖台阶");
+        add(DecorativeBlocks.SNOW_BRICKS.WALL.get(), "雪砖墙");
         add(DecorativeBlocks.BLUE_ICE_BRICKS.get(), "蓝冰砖");
         add(DecorativeBlocks.BLUE_ICE_BRICKS_STAIRS.get(), "蓝冰砖楼梯");
         add(DecorativeBlocks.BLUE_ICE_BRICKS_SLAB.get(), "蓝冰砖台阶");

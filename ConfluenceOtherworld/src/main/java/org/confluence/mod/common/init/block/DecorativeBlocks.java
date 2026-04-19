@@ -16,8 +16,11 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.*;
 import org.confluence.mod.common.block.natural.*;
+import org.confluence.mod.common.block.natural.sapling.BaseSaplingBlock;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
 import org.confluence.mod.common.block.palettes.ConnectedStainedGlassBlock;
+import org.confluence.mod.common.block.palettes.DecoBlockSet;
+import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.level.block.Blocks.*;
+import static org.confluence.mod.common.block.natural.LogBlockSet.WoodSetType.EBONY;
 
 public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -87,10 +91,12 @@ public class DecorativeBlocks {
     public static final DeferredBlock<SlabBlock> CRIMSANDSTONE_BRICKS_SLAB = registerWithItem("crimsandstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
     public static final DeferredBlock<WallBlock> CRIMSANDSTONE_BRICKS_WALL = registerWithItem("crimsandstone_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
 
-    public static final DeferredBlock<Block> SNOW_BRICKS = registerWithItem("snow_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<StairBlock> SNOW_BRICKS_STAIRS = registerWithItem("snow_bricks_stairs", () -> new StairBlock(SNOW_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<SlabBlock> SNOW_BRICKS_SLAB = registerWithItem("snow_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<WallBlock> SNOW_BRICKS_WALL = registerWithItem("snow_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
+//    public static final DeferredBlock<Block> SNOW_BRICKS = registerWithItem("snow_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
+//    public static final DeferredBlock<StairBlock> SNOW_BRICKS_STAIRS = registerWithItem("snow_bricks_stairs", () -> new StairBlock(SNOW_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
+//    public static final DeferredBlock<SlabBlock> SNOW_BRICKS_SLAB = registerWithItem("snow_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
+//    public static final DeferredBlock<WallBlock> SNOW_BRICKS_WALL = registerWithItem("snow_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
+
+    public static final DecoBlockSet SNOW_BRICKS = DecoBlockSet.builder("snow_bricks",  () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
 
     public static final DeferredBlock<Block> AETHERIUM_BRICKS = registerWithItem("aetherium_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PINK)));
 

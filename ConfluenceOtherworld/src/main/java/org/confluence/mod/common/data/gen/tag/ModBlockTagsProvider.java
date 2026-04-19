@@ -14,6 +14,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.integration.mrcrayfish.furniture.MrCrayfishFurnitureHelper;
@@ -40,6 +41,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         LogBlockSet.acceptTags(this::tag);
+        DecoBlockSet.acceptDecoTags(this::tag);
         IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE);
         IntrinsicTagAppender<Block> mineableWithHammer = tag(ModTags.Blocks.MINEABLE_WITH_HAMMER);
         OreBlocks.acceptTag(mineableWithPickaxe);
@@ -213,9 +215,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SAPPHIRE_BLOCK.get(),
                 AMETHYST_BLOCK.get(),
                 JADE_BLOCK.get(),
-                SNOW_BRICKS.get(),
-                SNOW_BRICKS_STAIRS.get(),
-                SNOW_BRICKS_SLAB.get(),
+                SNOW_BRICKS.FULL.get(),
+                SNOW_BRICKS.STAIRS.get(),
+                SNOW_BRICKS.SLAB.get(),
+                SNOW_BRICKS.WALL.get(),
                 BLUE_ICE_BRICKS.get(),
                 BLUE_ICE_BRICKS_STAIRS.get(),
                 BLUE_ICE_BRICKS_SLAB.get(),
@@ -684,9 +687,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CORRUPTION_EMERALD_ORE.get(),
                 FLESHIFICATION_EMERALD_ORE.get(),
 
-                SNOW_BRICKS.get(),
-                SNOW_BRICKS_STAIRS.get(),
-                SNOW_BRICKS_SLAB.get(),
+                SNOW_BRICKS.FULL.get(),
+                SNOW_BRICKS.STAIRS.get(),
+                SNOW_BRICKS.WALL.get(),
+                SNOW_BRICKS.SLAB.get(),
                 BLUE_ICE_BRICKS.get(),
                 BLUE_ICE_BRICKS_STAIRS.get(),
                 BLUE_ICE_BRICKS_SLAB.get(),
@@ -1081,7 +1085,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONSANDSTONE_BRICKS_STAIRS.get(),
                 CRIMSANDSTONE_BRICKS_STAIRS.get(),
                 PEARLSANDSTONE_BRICKS_STAIRS.get(),
-                SNOW_BRICKS_STAIRS.get(),
+                SNOW_BRICKS.STAIRS.get(),
                 BLUE_ICE_BRICKS_STAIRS.get(),
                 PACKED_ICE_BRICKS_STAIRS.get(),
                 COPPER_BRICKS_STAIRS.get(),
@@ -1112,7 +1116,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONSANDSTONE_BRICKS_SLAB.get(),
                 CRIMSANDSTONE_BRICKS_SLAB.get(),
                 PEARLSANDSTONE_BRICKS_SLAB.get(),
-                SNOW_BRICKS_SLAB.get(),
+                SNOW_BRICKS.SLAB.get(),
                 BLUE_ICE_BRICKS_SLAB.get(),
                 PACKED_ICE_BRICKS_SLAB.get(),
                 COPPER_BRICKS_SLAB.get(),
@@ -1176,7 +1180,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                         HELLSTONE_BRICKS.get(),
                         SANDSTONE_BRICKS.get(),
-                        SNOW_BRICKS.get(),
+                        SNOW_BRICKS.FULL.get(),
                         BLUE_ICE_BRICKS.get(),
                         PACKED_ICE_BRICKS.get(),
                         COPPER_BRICKS.get(),

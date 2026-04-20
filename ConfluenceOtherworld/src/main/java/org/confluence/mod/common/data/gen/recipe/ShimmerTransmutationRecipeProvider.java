@@ -298,8 +298,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, Blocks.PUMPKIN, Blocks.CACTUS);
         item(recipeOutput, Blocks.CACTUS, Blocks.PUMPKIN);
         item(recipeOutput, Blocks.SNOW_BLOCK, NatureBlocks.AETHERIUM_BLOCK);
-        item(recipeOutput, DecorativeBlocks.SUN_PLATE, DecorativeBlocks.MOON_PLATE);
-        item(recipeOutput, DecorativeBlocks.MOON_PLATE, DecorativeBlocks.SUN_PLATE);
+        item(recipeOutput, DecorativeBlocks.SUN_PLATE.FULL, DecorativeBlocks.MOON_PLATE.FULL);
+        item(recipeOutput, DecorativeBlocks.MOON_PLATE.FULL, DecorativeBlocks.SUN_PLATE.FULL);
         item(recipeOutput, "acacia_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.ACACIA_LOG));
         item(recipeOutput, "birch_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.BIRCH_LOG));
         item(recipeOutput, "cherry_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.CHERRY_LOG));

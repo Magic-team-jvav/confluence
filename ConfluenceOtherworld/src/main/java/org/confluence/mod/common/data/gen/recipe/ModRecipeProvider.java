@@ -215,22 +215,25 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, DecorativeBlocks.STAR_CLOUD_BLOCK.toStack(10), Ingredient.of(MaterialItems.FALLING_STAR), AmountIngredient.of(10,NatureBlocks.CLOUD_BLOCK));
-        skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE),Ingredient.of(ModTags.Items.LEAD_AND_IRON));
-        skyMill(recipeOutput, DecorativeBlocks.DISC_BLOCK.toStack(4), Ingredient.of(DecorativeBlocks.SUN_PLATE));
-        skyMill(recipeOutput, DecorativeBlocks.SKYWARE_DOOR.toStack(), AmountIngredient.of(2, DecorativeBlocks.SUN_PLATE));
-        skyMill(recipeOutput, DecorativeBlocks.SKYWARE_GLASS_DOOR.toStack(), AmountIngredient.of(2, DecorativeBlocks.SUN_PLATE), Ingredient.of(DecorativeBlocks.PURE_GLASS));
-        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE.toStack(25), AmountIngredient.of(25, Items.COBBLESTONE), Ingredient.of(MaterialItems.FALLING_STAR));
-        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.SUN_PLATE));
-        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.SUN_PLATE));
+        skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE.FULL),Ingredient.of(ModTags.Items.LEAD_AND_IRON));
+        skyMill(recipeOutput, DecorativeBlocks.DISC_BLOCK.FULL.toStack(4), Ingredient.of(DecorativeBlocks.SUN_PLATE.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.SKYWARE_DOOR.toStack(), AmountIngredient.of(2, DecorativeBlocks.SUN_PLATE.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.SKYWARE_GLASS_DOOR.toStack(), AmountIngredient.of(2, DecorativeBlocks.SUN_PLATE.FULL), Ingredient.of(DecorativeBlocks.PURE_GLASS));
+        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE.FULL.toStack(25), AmountIngredient.of(25, Items.COBBLESTONE), Ingredient.of(MaterialItems.FALLING_STAR));
+        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE.STAIRS.toStack(), Ingredient.of(DecorativeBlocks.SUN_PLATE.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE.WALL.toStack(), Ingredient.of(DecorativeBlocks.SUN_PLATE.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE.SLAB.toStack(2), Ingredient.of(DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(recipeOutput, NatureBlocks.CLOUD_BLOCK.toStack(2), Ingredient.of(MaterialItems.WEAVING_CLOUD_COTTON));
         skyMill(recipeOutput, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
-        skyMill(recipeOutput, TFBlocks.SKYWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE));
-        skyMill(recipeOutput, TFBlocks.DUSKWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.MOON_PLATE));
-        skyMill(recipeOutput, DecorativeBlocks.DISC_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.DISC_BLOCK));
-        skyMill(recipeOutput, DecorativeBlocks.DISC_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.DISC_BLOCK));
-        skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.MOON_PLATE));
-        skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.MOON_PLATE));
+        skyMill(recipeOutput, TFBlocks.SKYWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE.FULL));
+        skyMill(recipeOutput, TFBlocks.DUSKWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.MOON_PLATE.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.DISC_BLOCK.STAIRS.toStack(), Ingredient.of(DecorativeBlocks.DISC_BLOCK.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.DISC_BLOCK.WALL.toStack(), Ingredient.of(DecorativeBlocks.DISC_BLOCK.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.DISC_BLOCK.SLAB.toStack(2), Ingredient.of(DecorativeBlocks.DISC_BLOCK.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE.WALL.toStack(), Ingredient.of(DecorativeBlocks.MOON_PLATE.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE.STAIRS.toStack(), Ingredient.of(DecorativeBlocks.MOON_PLATE.FULL));
+        skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE.SLAB.toStack(2), Ingredient.of(DecorativeBlocks.MOON_PLATE.FULL));
 
         loom(recipeOutput, ModBlocks.SILK_ROPE.toStack(30), Ingredient.of(MaterialItems.SILK));
         loom(recipeOutput, MaterialItems.SILK.toStack(), Ingredient.of(Items.COBWEB));
@@ -350,8 +353,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         hellforge(recipeOutput, MaterialItems.MYTHRIL_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_MYTHRIL));
         hellforge(recipeOutput, ToolItems.LAVAPROOF_BUG_NET.toStack(), 0.3F, 200, false, AmountIngredient.of(15, MaterialItems.HELLSTONE_INGOT), Ingredient.of(ToolItems.BUG_NET));
 
-        hellforge(recipeOutput, DecorativeBlocks.OBSIDIAN_BRICKS.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(Items.OBSIDIAN));
-        hellforge(recipeOutput, DecorativeBlocks.METEORITE_BRICKS.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(ModTags.Items.RAW_MATERIALS_METEORITE));
+        hellforge(recipeOutput, DecorativeBlocks.OBSIDIAN_BRICKS.FULL.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(Items.OBSIDIAN));
+        hellforge(recipeOutput, DecorativeBlocks.METEORITE_BRICKS.FULL.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(ModTags.Items.RAW_MATERIALS_METEORITE));
         hellforge(recipeOutput, OreBlocks.HELLSTONE_BRICKS.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(ModTags.Items.RAW_MATERIALS_HELLSTONE));
 
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_HELMET.toStack(), 0.5F, 200, true,

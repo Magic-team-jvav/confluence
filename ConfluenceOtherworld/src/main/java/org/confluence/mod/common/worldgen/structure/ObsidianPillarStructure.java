@@ -159,7 +159,7 @@ public class ObsidianPillarStructure extends Structure {
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     NatureBlocks.GLOOM_OBSIDIAN.get().defaultBlockState(),
-                    DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.get().defaultBlockState(),
+                    DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.FULL.get().defaultBlockState(),
                     NatureBlocks.VOID_WEAVE.get().defaultBlockState()
             ), builder);
         });

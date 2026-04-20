@@ -2089,90 +2089,126 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.RAINBOW_CARPET.get(), "彩虹地毯");
 
 
-        add(DecorativeBlocks.SANDSTONE_BRICKS.get(), "砂岩砖");
-        add(DecorativeBlocks.SANDSTONE_BRICKS_STAIRS.get(), "砂岩砖楼梯");
-        add(DecorativeBlocks.SANDSTONE_BRICKS_SLAB.get(), "砂岩砖台阶");
-        add(DecorativeBlocks.SANDSTONE_BRICKS_WALL.get(), "砂岩砖墙");
-        add(DecorativeBlocks.RED_SANDSTONE_BRICKS.get(), "红砂岩砖");
-        add(DecorativeBlocks.RED_SANDSTONE_BRICKS_STAIRS.get(), "红砂岩砖楼梯");
-        add(DecorativeBlocks.RED_SANDSTONE_BRICKS_SLAB.get(), "红砂岩砖台阶");
-        add(DecorativeBlocks.RED_SANDSTONE_BRICKS_WALL.get(), "红砂岩砖墙");
-        add(DecorativeBlocks.EBONSANDSTONE_BRICKS.get(), "黑檀砂岩砖");
-        add(DecorativeBlocks.EBONSANDSTONE_BRICKS_STAIRS.get(), "黑檀砂岩砖楼梯");
-        add(DecorativeBlocks.EBONSANDSTONE_BRICKS_SLAB.get(), "黑檀砂岩砖台阶");
-        add(DecorativeBlocks.EBONSANDSTONE_BRICKS_WALL.get(), "黑檀砂岩砖墙");
-        add(DecorativeBlocks.CRIMSANDSTONE_BRICKS.get(), "猩红砂岩砖");
-        add(DecorativeBlocks.CRIMSANDSTONE_BRICKS_STAIRS.get(), "猩红砂岩砖楼梯");
-        add(DecorativeBlocks.CRIMSANDSTONE_BRICKS_SLAB.get(), "猩红砂岩砖台阶");
-        add(DecorativeBlocks.CRIMSANDSTONE_BRICKS_WALL.get(), "猩红砂岩砖墙");
-        add(DecorativeBlocks.PEARLSANDSTONE_BRICKS.get(), "珍珠砂岩砖");
-        add(DecorativeBlocks.PEARLSANDSTONE_BRICKS_STAIRS.get(), "珍珠砂岩楼梯");
-        add(DecorativeBlocks.PEARLSANDSTONE_BRICKS_SLAB.get(), "珍珠砂岩台阶");
-        add(DecorativeBlocks.PEARLSANDSTONE_BRICKS_WALL.get(), "珍珠砂岩砖墙");
+        add(DecorativeBlocks.SANDSTONE_BRICKS.FULL.get(), "砂岩砖");
+        add(DecorativeBlocks.SANDSTONE_BRICKS.STAIRS.get(), "砂岩砖楼梯");
+        add(DecorativeBlocks.SANDSTONE_BRICKS.SLAB.get(), "砂岩砖台阶");
+        add(DecorativeBlocks.SANDSTONE_BRICKS.WALL.get(), "砂岩砖墙");
+
+        add(DecorativeBlocks.RED_SANDSTONE_BRICKS.FULL.get(), "红砂岩砖");
+        add(DecorativeBlocks.RED_SANDSTONE_BRICKS.STAIRS.get(), "红砂岩砖楼梯");
+        add(DecorativeBlocks.RED_SANDSTONE_BRICKS.SLAB.get(), "红砂岩砖台阶");
+        add(DecorativeBlocks.RED_SANDSTONE_BRICKS.WALL.get(), "红砂岩砖墙");
+
+        add(DecorativeBlocks.EBONSANDSTONE_BRICKS.FULL.get(), "黑檀砂岩砖");
+        add(DecorativeBlocks.EBONSANDSTONE_BRICKS.STAIRS.get(), "黑檀砂岩砖楼梯");
+        add(DecorativeBlocks.EBONSANDSTONE_BRICKS.SLAB.get(), "黑檀砂岩砖台阶");
+        add(DecorativeBlocks.EBONSANDSTONE_BRICKS.WALL.get(), "黑檀砂岩砖墙");
+
+        add(DecorativeBlocks.CRIMSANDSTONE_BRICKS.FULL.get(), "猩红砂岩砖");
+        add(DecorativeBlocks.CRIMSANDSTONE_BRICKS.STAIRS.get(), "猩红砂岩砖楼梯");
+        add(DecorativeBlocks.CRIMSANDSTONE_BRICKS.SLAB.get(), "猩红砂岩砖台阶");
+        add(DecorativeBlocks.CRIMSANDSTONE_BRICKS.WALL.get(), "猩红砂岩砖墙");
+
+        add(DecorativeBlocks.PEARLSANDSTONE_BRICKS.FULL.get(), "珍珠砂岩砖");
+        add(DecorativeBlocks.PEARLSANDSTONE_BRICKS.STAIRS.get(), "珍珠砂岩砖楼梯");
+        add(DecorativeBlocks.PEARLSANDSTONE_BRICKS.SLAB.get(), "珍珠砂岩砖台阶");
+        add(DecorativeBlocks.PEARLSANDSTONE_BRICKS.WALL.get(), "珍珠砂岩砖墙");
 
 
         add(DecorativeBlocks.SNOW_BRICKS.FULL.get(), "雪砖");
-        add(DecorativeBlocks.SNOW_BRICKS.STAIRS.get(), "雪砖楼梯");
-        add(DecorativeBlocks.SNOW_BRICKS.SLAB.get(), "雪砖台阶");
+        add(DecorativeBlocks.SNOW_BRICKS.STAIRS.get(),"雪砖楼梯");
+        add(DecorativeBlocks.SNOW_BRICKS.SLAB.get(),"雪砖台阶");
         add(DecorativeBlocks.SNOW_BRICKS.WALL.get(), "雪砖墙");
-        add(DecorativeBlocks.BLUE_ICE_BRICKS.get(), "蓝冰砖");
-        add(DecorativeBlocks.BLUE_ICE_BRICKS_STAIRS.get(), "蓝冰砖楼梯");
-        add(DecorativeBlocks.BLUE_ICE_BRICKS_SLAB.get(), "蓝冰砖台阶");
-        add(DecorativeBlocks.PACKED_ICE_BRICKS.get(), "浮冰砖");
-        add(DecorativeBlocks.PACKED_ICE_BRICKS_STAIRS.get(), "浮冰砖楼梯");
-        add(DecorativeBlocks.PACKED_ICE_BRICKS_SLAB.get(), "浮冰砖台阶");
-        add(DecorativeBlocks.COPPER_BRICKS.get(), "铜砖");
-        add(DecorativeBlocks.COPPER_BRICKS_STAIRS.get(), "铜砖楼梯");
-        add(DecorativeBlocks.COPPER_BRICKS_SLAB.get(), "铜砖台阶");
+
+        add(DecorativeBlocks.BLUE_ICE_BRICKS.FULL.get(), "蓝冰砖");
+        add(DecorativeBlocks.BLUE_ICE_BRICKS.STAIRS.get(), "蓝冰砖楼梯");
+        add(DecorativeBlocks.BLUE_ICE_BRICKS.SLAB.get(), "蓝冰砖台阶");
+        add(DecorativeBlocks.BLUE_ICE_BRICKS.WALL.get(), "蓝冰砖墙");
+
+        add(DecorativeBlocks.PACKED_ICE_BRICKS.FULL.get(), "浮冰砖");
+        add(DecorativeBlocks.PACKED_ICE_BRICKS.STAIRS.get(), "浮冰砖楼梯");
+        add(DecorativeBlocks.PACKED_ICE_BRICKS.SLAB.get(), "浮冰砖台阶");
+        add(DecorativeBlocks.PACKED_ICE_BRICKS.WALL.get(), "浮冰砖墙");
+
+        add(DecorativeBlocks.COPPER_BRICKS.FULL.get(), "铜砖");
+        add(DecorativeBlocks.COPPER_BRICKS.STAIRS.get(), "铜砖楼梯");
+        add(DecorativeBlocks.COPPER_BRICKS.SLAB.get(), "铜砖台阶");
+        add(DecorativeBlocks.COPPER_BRICKS.WALL.get(), "铜砖墙");
         add(DecorativeBlocks.CHISELED_COPPER_BRICKS.get(), "雕纹铜砖");
         add(DecorativeBlocks.COPPER_TILES.get(), "铜瓦");
-        add(DecorativeBlocks.LEAD_BRICKS.get(), "铅砖");
-        add(DecorativeBlocks.LEAD_BRICKS_STAIRS.get(), "铅砖楼梯");
-        add(DecorativeBlocks.LEAD_BRICKS_SLAB.get(), "铅砖台阶");
-        add(DecorativeBlocks.CHISELED_LEAD_BRICKS.get(), "雕纹铅砖");
-        add(DecorativeBlocks.GOLDEN_BRICKS.get(), "金砖");
-        add(DecorativeBlocks.GOLDEN_BRICKS_STAIRS.get(), "金砖楼梯");
-        add(DecorativeBlocks.GOLDEN_BRICKS_SLAB.get(), "金砖台阶");
-        add(DecorativeBlocks.CHISELED_GOLDEN_BRICKS.get(), "雕纹金砖");
-        add(DecorativeBlocks.IRON_BRICKS.get(), "铁砖");
-        add(DecorativeBlocks.IRON_BRICKS_STAIRS.get(), "铁砖楼梯");
-        add(DecorativeBlocks.IRON_BRICKS_SLAB.get(), "铁砖台阶");
-        add(DecorativeBlocks.CHISELED_IRON_BRICKS.get(), "雕纹铁砖");
-        add(DecorativeBlocks.SILVER_BRICKS.get(), "银砖");
-        add(DecorativeBlocks.SILVER_BRICKS_STAIRS.get(), "银砖楼梯");
-        add(DecorativeBlocks.SILVER_BRICKS_SLAB.get(), "银砖台阶");
-        add(DecorativeBlocks.CHISELED_SILVER_BRICKS.get(), "雕纹银砖");
-        add(DecorativeBlocks.PLATINUM_BRICKS.get(), "铂金砖");
-        add(DecorativeBlocks.PLATINUM_BRICKS_STAIRS.get(), "铂金砖楼梯");
-        add(DecorativeBlocks.PLATINUM_BRICKS_SLAB.get(), "铂金砖台阶");
-        add(DecorativeBlocks.CHISELED_PLATINUM_BRICKS.get(), "雕纹铂金砖");
-        add(DecorativeBlocks.METEORITE_BRICKS.get(), "陨石砖");
-        add(DecorativeBlocks.METEORITE_BRICKS_STAIRS.get(), "陨石砖楼梯");
-        add(DecorativeBlocks.METEORITE_BRICKS_SLAB.get(), "陨石砖台阶");
-        add(DecorativeBlocks.TIN_BRICKS.get(), "锡砖");
-        add(DecorativeBlocks.TIN_BRICKS_STAIRS.get(), "锡砖楼梯");
-        add(DecorativeBlocks.TIN_BRICKS_SLAB.get(), "锡砖台阶");
+
+        add(DecorativeBlocks.TIN_BRICKS.FULL.get(), "锡砖");
+        add(DecorativeBlocks.TIN_BRICKS.STAIRS.get(), "锡砖楼梯");
+        add(DecorativeBlocks.TIN_BRICKS.SLAB.get(), "锡砖台阶");
+        add(DecorativeBlocks.TIN_BRICKS.WALL.get(), "锡砖墙");
         add(DecorativeBlocks.CHISELED_TIN_BRICKS.get(), "雕纹锡砖");
         add(DecorativeBlocks.TIN_TILES.get(), "锡瓦");
-        add(DecorativeBlocks.TUNGSTEN_BRICKS.get(), "钨砖");
-        add(DecorativeBlocks.TUNGSTEN_BRICKS_STAIRS.get(), "钨砖楼梯");
-        add(DecorativeBlocks.TUNGSTEN_BRICKS_SLAB.get(), "钨砖台阶");
+
+        add(DecorativeBlocks.IRON_BRICKS.FULL.get(), "铁砖");
+        add(DecorativeBlocks.IRON_BRICKS.STAIRS.get(), "铁砖楼梯");
+        add(DecorativeBlocks.IRON_BRICKS.SLAB.get(), "铁砖台阶");
+        add(DecorativeBlocks.IRON_BRICKS.WALL.get(), "铁砖墙");
+        add(DecorativeBlocks.CHISELED_IRON_BRICKS.get(), "雕纹铁砖");
+
+        add(DecorativeBlocks.LEAD_BRICKS.FULL.get(), "铅砖");
+        add(DecorativeBlocks.LEAD_BRICKS.STAIRS.get(), "铅砖楼梯");
+        add(DecorativeBlocks.LEAD_BRICKS.SLAB.get(), "铅砖台阶");
+        add(DecorativeBlocks.LEAD_BRICKS.WALL.get(), "铅砖墙");
+        add(DecorativeBlocks.CHISELED_LEAD_BRICKS.get(), "雕纹铅砖");
+
+        add(DecorativeBlocks.SILVER_BRICKS.FULL.get(), "银砖");
+        add(DecorativeBlocks.SILVER_BRICKS.STAIRS.get(), "银砖楼梯");
+        add(DecorativeBlocks.SILVER_BRICKS.SLAB.get(), "银砖台阶");
+        add(DecorativeBlocks.SILVER_BRICKS.WALL.get(), "银砖墙");
+        add(DecorativeBlocks.CHISELED_SILVER_BRICKS.get(), "雕纹银砖");
+
+        add(DecorativeBlocks.TUNGSTEN_BRICKS.FULL.get(), "钨砖");
+        add(DecorativeBlocks.TUNGSTEN_BRICKS.STAIRS.get(), "钨砖楼梯");
+        add(DecorativeBlocks.TUNGSTEN_BRICKS.SLAB.get(), "钨砖台阶");
+        add(DecorativeBlocks.TUNGSTEN_BRICKS.WALL.get(), "钨砖墙");
         add(DecorativeBlocks.CHISELED_TUNGSTEN_BRICKS.get(), "雕纹钨砖");
-        add(DecorativeBlocks.CRIMTANE_ORE_BRICKS.get(), "猩红矿砖");
-        add(DecorativeBlocks.CRIMTANE_ORE_BRICKS_STAIRS.get(), "猩红矿砖楼梯");
-        add(DecorativeBlocks.CRIMTANE_ORE_BRICKS_SLAB.get(), "猩红矿砖台阶");
-        add(DecorativeBlocks.CRIMSTONE_BRICKS.get(), "猩红石砖");
-        add(DecorativeBlocks.CRIMSTONE_BRICKS_STAIRS.get(), "猩红石砖楼梯");
-        add(DecorativeBlocks.CRIMSTONE_BRICKS_SLAB.get(), "猩红石砖台阶");
-        add(DecorativeBlocks.EBONSTONE_BRICKS.get(), "黑檀石砖");
-        add(DecorativeBlocks.EBONSTONE_BRICKS_STAIRS.get(), "黑檀石砖楼梯");
-        add(DecorativeBlocks.EBONSTONE_BRICKS_SLAB.get(), "黑檀石砖台阶");
-        add(DecorativeBlocks.PEARLSTONE_BRICKS.get(), "珍珠石砖");
-        add(DecorativeBlocks.PEARLSTONE_BRICKS_STAIRS.get(), "珍珠石砖楼梯");
-        add(DecorativeBlocks.PEARLSTONE_BRICKS_SLAB.get(), "珍珠石砖台阶");
-        add(DecorativeBlocks.DEMONITE_ORE_BRICKS.get(), "魔矿砖");
-        add(DecorativeBlocks.DEMONITE_ORE_BRICKS_STAIRS.get(), "魔矿砖楼梯");
-        add(DecorativeBlocks.DEMONITE_ORE_BRICKS_SLAB.get(), "魔矿砖台阶");
+
+        add(DecorativeBlocks.GOLDEN_BRICKS.FULL.get(), "金砖");
+        add(DecorativeBlocks.GOLDEN_BRICKS.STAIRS.get(), "金砖楼梯");
+        add(DecorativeBlocks.GOLDEN_BRICKS.SLAB.get(), "金砖台阶");
+        add(DecorativeBlocks.GOLDEN_BRICKS.WALL.get(), "金砖墙");
+        add(DecorativeBlocks.CHISELED_GOLDEN_BRICKS.get(), "雕纹金砖");
+
+        add(DecorativeBlocks.PLATINUM_BRICKS.FULL.get(), "铂金砖");
+        add(DecorativeBlocks.PLATINUM_BRICKS.STAIRS.get(), "铂金砖楼梯");
+        add(DecorativeBlocks.PLATINUM_BRICKS.SLAB.get(), "铂金砖台阶");
+        add(DecorativeBlocks.PLATINUM_BRICKS.WALL.get(), "铂金砖墙");
+        add(DecorativeBlocks.CHISELED_PLATINUM_BRICKS.get(), "雕纹铂金砖");
+
+        add(DecorativeBlocks.DEMONITE_ORE_BRICKS.FULL.get(), "魔矿砖");
+        add(DecorativeBlocks.DEMONITE_ORE_BRICKS.STAIRS.get(), "魔矿砖楼梯");
+        add(DecorativeBlocks.DEMONITE_ORE_BRICKS.SLAB.get(), "魔矿砖台阶");
+        add(DecorativeBlocks.DEMONITE_ORE_BRICKS.WALL.get(), "魔矿砖墙");
+
+        add(DecorativeBlocks.EBONSTONE_BRICKS.FULL.get(), "黑檀石砖");
+        add(DecorativeBlocks.EBONSTONE_BRICKS.STAIRS.get(), "黑檀石砖楼梯");
+        add(DecorativeBlocks.EBONSTONE_BRICKS.SLAB.get(), "黑檀石砖台阶");
+        add(DecorativeBlocks.EBONSTONE_BRICKS.WALL.get(), "黑檀石砖墙");
+
+        add(DecorativeBlocks.METEORITE_BRICKS.FULL.get(), "陨石砖");
+        add(DecorativeBlocks.METEORITE_BRICKS.STAIRS.get(), "陨石砖楼梯");
+        add(DecorativeBlocks.METEORITE_BRICKS.SLAB.get(), "陨石砖台阶");
+        add(DecorativeBlocks.METEORITE_BRICKS.WALL.get(), "陨石砖墙");
+
+        add(DecorativeBlocks.CRIMTANE_ORE_BRICKS.FULL.get(), "猩红矿砖");
+        add(DecorativeBlocks.CRIMTANE_ORE_BRICKS.STAIRS.get(), "猩红矿砖楼梯");
+        add(DecorativeBlocks.CRIMTANE_ORE_BRICKS.SLAB.get(), "猩红矿砖台阶");
+        add(DecorativeBlocks.CRIMTANE_ORE_BRICKS.WALL.get(), "猩红矿砖墙");
+
+        add(DecorativeBlocks.CRIMSTONE_BRICKS.FULL.get(), "猩红石砖");
+        add(DecorativeBlocks.CRIMSTONE_BRICKS.STAIRS.get(), "猩红石砖楼梯");
+        add(DecorativeBlocks.CRIMSTONE_BRICKS.SLAB.get(), "猩红石砖台阶");
+        add(DecorativeBlocks.CRIMSTONE_BRICKS.WALL.get(), "猩红石砖墙");
+
+        add(DecorativeBlocks.PEARLSTONE_BRICKS.FULL.get(), "珍珠石砖");
+        add(DecorativeBlocks.PEARLSTONE_BRICKS.STAIRS.get(), "珍珠石砖楼梯");
+        add(DecorativeBlocks.PEARLSTONE_BRICKS.SLAB.get(), "珍珠石砖台阶");
+        add(DecorativeBlocks.PEARLSTONE_BRICKS.WALL.get(), "珍珠石砖墙");
 
         add(DecorativeBlocks.BLUE_GEL_BLOCK.get(), "凝胶块");
         add(DecorativeBlocks.PINK_GEL_BLOCK.get(), "粉凝胶块");
@@ -2181,23 +2217,31 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.GREEN_CANDY_BLOCK.get(), "绿色糖块");
         add(DecorativeBlocks.FLESH_BLOCK.get(), "血肉块");
 
-        add(DecorativeBlocks.SUN_PLATE.get(), "日盘块");
-        add(DecorativeBlocks.SUN_PLATE_STAIRS.get(), "日盘楼梯");
-        add(DecorativeBlocks.SUN_PLATE_SLAB.get(), "日盘台阶");
+        add(DecorativeBlocks.SUN_PLATE.FULL.get(), "日盘块");
+        add(DecorativeBlocks.SUN_PLATE.STAIRS.get(), "日盘楼梯");
+        add(DecorativeBlocks.SUN_PLATE.SLAB.get(), "日盘台阶");
+        add(DecorativeBlocks.SUN_PLATE.WALL.get(), "日盘墙");
         add(DecorativeBlocks.SKYWARE_DOOR.get(), "天域门");
         add(DecorativeBlocks.SKYWARE_GLASS_DOOR.get(), "天域玻璃门");
-        add(DecorativeBlocks.OBSIDIAN_BRICKS.get(), "黑曜石砖");
+        add(DecorativeBlocks.OBSIDIAN_BRICKS.FULL.get(), "黑曜石砖");
         add(DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.get(), "切制黑曜石砖");
-        add(DecorativeBlocks.OBSIDIAN_BRICKS_STAIRS.get(), "黑曜石砖楼梯");
-        add(DecorativeBlocks.OBSIDIAN_BRICKS_SLAB.get(), "黑曜石砖台阶");
+        add(DecorativeBlocks.OBSIDIAN_BRICKS.STAIRS.get(), "黑曜石砖楼梯");
+        add(DecorativeBlocks.OBSIDIAN_BRICKS.SLAB.get(), "黑曜石砖台阶");
+        add(DecorativeBlocks.OBSIDIAN_BRICKS.WALL.get(), "黑曜石砖墙");
         add(DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get(), "黑曜石砖门");
-        add(DecorativeBlocks.SMOOTH_OBSIDIAN.get(), "光滑黑曜石块");
         add(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.get(), "雕纹黑曜石块");
-        add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.get(), "黯虚黑曜石砖");
-        add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS_STAIRS.get(), "黯虚黑曜石砖楼梯");
-        add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS_SLAB.get(), "黯虚黑曜石砖台阶");
+        add(DecorativeBlocks.SMOOTH_OBSIDIAN.get(), "光滑黑曜石块");
+        add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.FULL.get(), "黯虚黑曜石砖");
+        add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.STAIRS.get(), "黯虚黑曜石砖楼梯");
+        add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.SLAB.get(), "黯虚黑曜石砖台阶");
+        add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.WALL.get(), "黯虚黑曜石砖墙");
         add(DecorativeBlocks.CRYSTAL_BLOCK.get(), "水晶块");
-        add(DecorativeBlocks.RAINBOW_BRICKS.get(), "彩虹砖");
+        add(DecorativeBlocks.RAINBOW_BRICKS.FULL.get(), "彩虹砖");
+        add(DecorativeBlocks.RAINBOW_BRICKS.STAIRS.get(), "彩虹砖楼梯");
+        add(DecorativeBlocks.RAINBOW_BRICKS.SLAB.get(), "彩虹砖台阶");
+        add(DecorativeBlocks.RAINBOW_BRICKS.WALL.get(), "彩虹砖墙");
+
+
         add(DecorativeBlocks.ASPHALT_BLOCK.get(), "沥青块");
         add(DecorativeBlocks.CHISELED_OAK_PLANKS.get(), "雕纹橡木木板");
         add(DecorativeBlocks.CHISELED_SPRUCE_PLANKS.get(), "雕纹云杉木板");
@@ -2246,12 +2290,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.PURPLE_PURE_GLASS.get(), "紫色纯净玻璃");
         add(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), "品红纯净玻璃");
         add(DecorativeBlocks.PINK_PURE_GLASS.get(), "粉红纯净玻璃");
-        add(DecorativeBlocks.DISC_BLOCK.get(), "飞盘块");
-        add(DecorativeBlocks.DISC_STAIRS.get(), "飞盘楼梯");
-        add(DecorativeBlocks.DISC_SLAB.get(), "飞盘台阶");
-        add(DecorativeBlocks.MOON_PLATE.get(), "月盘块");
-        add(DecorativeBlocks.MOON_PLATE_STAIRS.get(), "月盘楼梯");
-        add(DecorativeBlocks.MOON_PLATE_SLAB.get(), "月盘台阶");
+        add(DecorativeBlocks.DISC_BLOCK.FULL.get(), "飞盘块");
+        add(DecorativeBlocks.DISC_BLOCK.STAIRS.get(), "飞盘楼梯");
+        add(DecorativeBlocks.DISC_BLOCK.SLAB.get(), "飞盘台阶");
+        add(DecorativeBlocks.MOON_PLATE.FULL.get(), "月盘块");
+        add(DecorativeBlocks.MOON_PLATE.STAIRS.get(), "月盘楼梯");
+        add(DecorativeBlocks.MOON_PLATE.SLAB.get(), "月盘台阶");
         add(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(), "木石板条块");
         add(DecorativeBlocks.LIHZAHRD_BRICKS.get(), "丛林蜥蜴砖");
         add(DecorativeBlocks.RUBY_CHAIN.get(), "红玉锁链");
@@ -2264,24 +2308,30 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SILK_CHAIN.get(), "蛛丝锁链");
         add(DecorativeBlocks.BONE_CHAIN.get(), "骨头锁链");
         add(DecorativeBlocks.FLOATING_WHEAT_BALE.get(), "飘飘麦捆");
-        add(DecorativeBlocks.BLUE_BRICKS.get(), "蓝色地牢砖");
-        add(DecorativeBlocks.GREEN_BRICKS.get(), "绿色地牢砖");
-        add(DecorativeBlocks.PINK_BRICKS.get(), "粉色地牢砖");
+        add(DecorativeBlocks.BLUE_BRICKS.FULL.get(), "蓝色地牢砖");
+        add(DecorativeBlocks.GREEN_BRICKS.FULL.get(), "绿色地牢砖");
+        add(DecorativeBlocks.PINK_BRICKS.FULL.get(), "粉色地牢砖");
         add(DecorativeBlocks.BLUE_BRICK_COLUMN.get(), "蓝色地牢砖柱");
         add(DecorativeBlocks.GREEN_BRICK_COLUMN.get(), "绿色地牢砖柱");
         add(DecorativeBlocks.PINK_BRICK_COLUMN.get(), "粉色地牢砖柱");
 
-        add(DecorativeBlocks.BLUE_BRICK_STAIRS.get(), "蓝色地牢砖楼梯");
-        add(DecorativeBlocks.GREEN_BRICK_STAIRS.get(), "绿色地牢砖楼梯");
-        add(DecorativeBlocks.PINK_BRICK_STAIRS.get(), "粉色地牢砖楼梯");
-        add(DecorativeBlocks.BLUE_BRICK_SLAB.get(), "蓝色地牢砖台阶");
-        add(DecorativeBlocks.GREEN_BRICK_SLAB.get(), "绿色地牢砖台阶");
-        add(DecorativeBlocks.PINK_BRICK_SLAB.get(), "粉色地牢砖台阶");
+        add(DecorativeBlocks.BLUE_BRICKS.STAIRS.get(), "蓝色地牢砖楼梯");
+        add(DecorativeBlocks.GREEN_BRICKS.STAIRS.get(), "绿色地牢砖楼梯");
+        add(DecorativeBlocks.PINK_BRICKS.STAIRS.get(), "粉色地牢砖楼梯");
+        add(DecorativeBlocks.BLUE_BRICKS.SLAB.get(), "蓝色地牢砖台阶");
+        add(DecorativeBlocks.GREEN_BRICKS.SLAB.get(), "绿色地牢砖台阶");
+        add(DecorativeBlocks.PINK_BRICKS.SLAB.get(), "粉色地牢砖台阶");
+        add(DecorativeBlocks.BLUE_BRICKS.WALL.get(), "蓝色地牢砖墙");
+        add(DecorativeBlocks.GREEN_BRICKS.WALL.get(), "绿色地牢砖墙");
+        add(DecorativeBlocks.PINK_BRICKS.WALL.get(), "粉色地牢砖墙");
         add(DecorativeBlocks.DUNGEON_DOOR.get(), "地牢门");
         add(DecorativeBlocks.CHISELED_BLUE_BRICKS.get(), "雕纹蓝色地牢砖");
         add(DecorativeBlocks.CHISELED_GREEN_BRICKS.get(), "雕纹绿色地牢砖");
         add(DecorativeBlocks.CHISELED_PINK_BRICKS.get(), "雕纹粉色地牢砖");
-        add(DecorativeBlocks.AETHERIUM_BRICKS.get(), "以太砖");
+        add(DecorativeBlocks.AETHERIUM_BRICKS.FULL.get(), "以太砖");
+        add(DecorativeBlocks.AETHERIUM_BRICKS.STAIRS.get(), "以太楼梯");
+        add(DecorativeBlocks.AETHERIUM_BRICKS.SLAB.get(), "以太台阶");
+        add(DecorativeBlocks.AETHERIUM_BRICKS.WALL.get(), "以太墙");
         add(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get(), "云块蹦床");
         add(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get(), "弹力云块");
         add(DecorativeBlocks.STAR_CLOUD_BLOCK.get(), "星星云");

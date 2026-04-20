@@ -92,7 +92,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/dungeon_crate"), environmentCrateCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS.FULL).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))
@@ -385,7 +385,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/stockade_crate"),environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS.FULL).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))

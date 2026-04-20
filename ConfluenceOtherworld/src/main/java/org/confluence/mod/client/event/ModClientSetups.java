@@ -335,7 +335,7 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURPLE_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PINK_PURE_GLASS.get(), translucent);
-        ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PACKED_ICE_BRICKS.get(), translucent);
+        ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PACKED_ICE_BRICKS.FULL.get(), translucent);
         RenderType cutout = RenderType.cutout();
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.EVER_POWERED_RAIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);

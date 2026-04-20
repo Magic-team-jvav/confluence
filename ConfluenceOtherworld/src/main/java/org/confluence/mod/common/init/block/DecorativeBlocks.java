@@ -54,55 +54,20 @@ public class DecorativeBlocks {
     public static final DeferredBlock<PooBlock> POO_BLOCK = registerWithItem("poo_block", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
 
     // 砖
-    public static final DeferredBlock<Block> GLOOM_OBSIDIAN_BRICKS = registerWithItem("gloom_obsidian_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OBSIDIAN).mapColor(MapColor.COLOR_BLACK)));
-    public static final DeferredBlock<StairBlock> GLOOM_OBSIDIAN_BRICKS_STAIRS = registerWithItem("gloom_obsidian_bricks_stairs", () -> new StairBlock(GLOOM_OBSIDIAN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(OBSIDIAN).mapColor(MapColor.COLOR_BLACK)));
-    public static final DeferredBlock<SlabBlock> GLOOM_OBSIDIAN_BRICKS_SLAB = registerWithItem("gloom_obsidian_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(OBSIDIAN).mapColor(MapColor.COLOR_BLACK)));
-
-    public static final DeferredBlock<Block> BLUE_ICE_BRICKS = registerWithItem("blue_ice_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
-    public static final DeferredBlock<StairBlock> BLUE_ICE_BRICKS_STAIRS = registerWithItem("blue_ice_bricks_stairs", () -> new StairBlock(BLUE_ICE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
-    public static final DeferredBlock<SlabBlock> BLUE_ICE_BRICKS_SLAB = registerWithItem("blue_ice_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
-
-    public static final DeferredBlock<Block> PACKED_ICE_BRICKS = registerWithItem("packed_ice_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(PACKED_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
-    public static final DeferredBlock<StairBlock> PACKED_ICE_BRICKS_STAIRS = registerWithItem("packed_ice_bricks_stairs", () -> new StairBlock(PACKED_ICE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PACKED_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
-    public static final DeferredBlock<SlabBlock> PACKED_ICE_BRICKS_SLAB = registerWithItem("packed_ice_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(PACKED_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
-
-    public static final DeferredBlock<Block> SANDSTONE_BRICKS = registerWithItem("sandstone_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.SAND)));
-    public static final DeferredBlock<StairBlock> SANDSTONE_BRICKS_STAIRS = registerWithItem("sandstone_bricks_stairs", () -> new StairBlock(SANDSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(RED_SANDSTONE).mapColor(MapColor.SAND)));
-    public static final DeferredBlock<SlabBlock> SANDSTONE_BRICKS_SLAB = registerWithItem("sandstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.SAND)));
-    public static final DeferredBlock<WallBlock> SANDSTONE_BRICKS_WALL = registerWithItem("sandstone_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.SAND)));
-
-    public static final DeferredBlock<Block> RED_SANDSTONE_BRICKS = registerWithItem("red_sandstone_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(RED_SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<StairBlock> RED_SANDSTONE_BRICKS_STAIRS = registerWithItem("red_sandstone_bricks_stairs", () -> new StairBlock(RED_SANDSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(RED_SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<SlabBlock> RED_SANDSTONE_BRICKS_SLAB = registerWithItem("red_sandstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(RED_SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<WallBlock> RED_SANDSTONE_BRICKS_WALL = registerWithItem("red_sandstone_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(RED_SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
-
-    public static final DeferredBlock<Block> EBONSANDSTONE_BRICKS = registerWithItem("ebonsandstone_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
-    public static final DeferredBlock<StairBlock> EBONSANDSTONE_BRICKS_STAIRS = registerWithItem("ebonsandstone_bricks_stairs", () -> new StairBlock(SANDSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
-    public static final DeferredBlock<SlabBlock> EBONSANDSTONE_BRICKS_SLAB = registerWithItem("ebonsandstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
-    public static final DeferredBlock<WallBlock> EBONSANDSTONE_BRICKS_WALL = registerWithItem("ebonsandstone_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
-
-    public static final DeferredBlock<Block> PEARLSANDSTONE_BRICKS = registerWithItem("pearlsandstone_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<StairBlock> PEARLSANDSTONE_BRICKS_STAIRS = registerWithItem("pearlsandstone_bricks_stairs", () -> new StairBlock(SANDSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<SlabBlock> PEARLSANDSTONE_BRICKS_SLAB = registerWithItem("pearlsandstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<WallBlock> PEARLSANDSTONE_BRICKS_WALL = registerWithItem("pearlsandstone_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-
-    public static final DeferredBlock<Block> CRIMSANDSTONE_BRICKS = registerWithItem("crimsandstone_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
-    public static final DeferredBlock<StairBlock> CRIMSANDSTONE_BRICKS_STAIRS = registerWithItem("crimsandstone_bricks_stairs", () -> new StairBlock(SANDSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
-    public static final DeferredBlock<SlabBlock> CRIMSANDSTONE_BRICKS_SLAB = registerWithItem("crimsandstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
-    public static final DeferredBlock<WallBlock> CRIMSANDSTONE_BRICKS_WALL = registerWithItem("crimsandstone_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
-
-//    public static final DeferredBlock<Block> SNOW_BRICKS = registerWithItem("snow_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-//    public static final DeferredBlock<StairBlock> SNOW_BRICKS_STAIRS = registerWithItem("snow_bricks_stairs", () -> new StairBlock(SNOW_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-//    public static final DeferredBlock<SlabBlock> SNOW_BRICKS_SLAB = registerWithItem("snow_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-//    public static final DeferredBlock<WallBlock> SNOW_BRICKS_WALL = registerWithItem("snow_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-
-    public static final DecoBlockSet SNOW_BRICKS = DecoBlockSet.builder("snow_bricks",  () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
-
-    public static final DeferredBlock<Block> AETHERIUM_BRICKS = registerWithItem("aetherium_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PINK)));
+    public static final DecoBlockSet GLOOM_OBSIDIAN_BRICKS = DecoBlockSet.builder("gloom_obsidian_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).mapColor(MapColor.COLOR_BLACK)).stonecutting().build();
+    public static final DecoBlockSet BLUE_ICE_BRICKS = DecoBlockSet.builder("blue_ice_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)).stonecutting().build();
+    public static final DecoBlockSet PACKED_ICE_BRICKS = DecoBlockSet.builder("packed_ice_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)).stonecutting().build();
+    public static final DecoBlockSet SANDSTONE_BRICKS = DecoBlockSet.builder("sandstone_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.SAND)).stonecutting().build();
+    public static final DecoBlockSet RED_SANDSTONE_BRICKS = DecoBlockSet.builder("red_sandstone_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.RED_SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)).stonecutting().build();
+    public static final DecoBlockSet EBONSANDSTONE_BRICKS = DecoBlockSet.builder("ebonsandstone_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_PURPLE)).stonecutting().build();
+    public static final DecoBlockSet PEARLSANDSTONE_BRICKS = DecoBlockSet.builder("pearlsandstone_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
+    public static final DecoBlockSet CRIMSANDSTONE_BRICKS = DecoBlockSet.builder("crimsandstone_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)).stonecutting().build();
+    public static final DecoBlockSet SNOW_BRICKS = DecoBlockSet.builder("snow_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
+    public static final DecoBlockSet AETHERIUM_BRICKS = DecoBlockSet.builder("aetherium_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
+    public static final DecoBlockSet RAINBOW_BRICKS = DecoBlockSet.builder("rainbow_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
 
     public static final DeferredBlock<Block> CRYSTAL_BLOCK = registerWithItem("crystal_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(MapColor.TERRACOTTA_WHITE)));
 
-    public static final DeferredBlock<Block> RAINBOW_BRICKS = copyBlockRegister("rainbow_bricks", STONE_BRICKS);
 
     public static final DeferredBlock<CloudBlock> FLOATING_WHEAT_BALE = registerWithItem("floating_wheat_bale", () -> new CloudBlock(BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_LIGHT_BLUE)
@@ -170,58 +135,30 @@ public class DecorativeBlocks {
     public static final DeferredBlock<ConnectedStainedGlassBlock> PINK_PURE_GLASS = registerWithItem("pink_pure_glass", () -> new ConnectedStainedGlassBlock(DyeColor.PINK, BlockBehaviour.Properties.ofFullCopy(PINK_STAINED_GLASS).mapColor(MapColor.COLOR_PINK)));
 
     // 矿砖
-    public static final DeferredBlock<Block> COPPER_BRICKS = registerWithItem("copper_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)));
-    public static final DeferredBlock<StairBlock> COPPER_BRICKS_STAIRS = registerWithItem("copper_bricks_stairs", () -> new StairBlock(COPPER_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)));
-    public static final DeferredBlock<SlabBlock> COPPER_BRICKS_SLAB = registerWithItem("copper_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)));
+    public static final DecoBlockSet COPPER_BRICKS = DecoBlockSet.builder("copper_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)).stonecutting().build();
     public static final DeferredBlock<Block> CHISELED_COPPER_BRICKS = registerWithItem("chiseled_copper_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)));
     public static final DeferredBlock<Block> COPPER_TILES = registerWithItem("copper_tiles", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)));
-    public static final DeferredBlock<Block> TIN_BRICKS = registerWithItem("tin_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)));
-    public static final DeferredBlock<StairBlock> TIN_BRICKS_STAIRS = registerWithItem("tin_bricks_stairs", () -> new StairBlock(TIN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)));
-    public static final DeferredBlock<SlabBlock> TIN_BRICKS_SLAB = registerWithItem("tin_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)));
+    public static final DecoBlockSet TIN_BRICKS = DecoBlockSet.builder("tin_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)).stonecutting().build();
     public static final DeferredBlock<Block> CHISELED_TIN_BRICKS = registerWithItem("chiseled_tin_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)));
     public static final DeferredBlock<Block> TIN_TILES = registerWithItem("tin_tiles", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)));
-    public static final DeferredBlock<Block> IRON_BRICKS = registerWithItem("iron_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GRAY)));
-    public static final DeferredBlock<StairBlock> IRON_BRICKS_STAIRS = registerWithItem("iron_bricks_stairs", () -> new StairBlock(IRON_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GRAY)));
-    public static final DeferredBlock<SlabBlock> IRON_BRICKS_SLAB = registerWithItem("iron_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GRAY)));
+    public static final DecoBlockSet IRON_BRICKS = DecoBlockSet.builder("iron_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GRAY)).stonecutting().build();
     public static final DeferredBlock<Block> CHISELED_IRON_BRICKS = registerWithItem("chiseled_iron_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GRAY)));
-    public static final DeferredBlock<Block> LEAD_BRICKS = registerWithItem("lead_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_GRAY)));
-    public static final DeferredBlock<StairBlock> LEAD_BRICKS_STAIRS = registerWithItem("lead_bricks_stairs", () -> new StairBlock(LEAD_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_GRAY)));
-    public static final DeferredBlock<SlabBlock> LEAD_BRICKS_SLAB = registerWithItem("lead_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_GRAY)));
+    public static final DecoBlockSet LEAD_BRICKS = DecoBlockSet.builder("lead_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_GRAY)).stonecutting().build();
     public static final DeferredBlock<Block> CHISELED_LEAD_BRICKS = registerWithItem("chiseled_lead_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_GRAY)));
-    public static final DeferredBlock<Block> SILVER_BRICKS = registerWithItem("silver_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<StairBlock> SILVER_BRICKS_STAIRS = registerWithItem("silver_bricks_stairs", () -> new StairBlock(SILVER_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<SlabBlock> SILVER_BRICKS_SLAB = registerWithItem("silver_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DecoBlockSet SILVER_BRICKS = DecoBlockSet.builder("silver_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
     public static final DeferredBlock<Block> CHISELED_SILVER_BRICKS = registerWithItem("chiseled_silver_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_GRAY)));
-    public static final DeferredBlock<Block> TUNGSTEN_BRICKS = registerWithItem("tungsten_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GREEN)));
-    public static final DeferredBlock<StairBlock> TUNGSTEN_BRICKS_STAIRS = registerWithItem("tungsten_bricks_stairs", () -> new StairBlock(TUNGSTEN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GREEN)));
-    public static final DeferredBlock<SlabBlock> TUNGSTEN_BRICKS_SLAB = registerWithItem("tungsten_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GREEN)));
+    public static final DecoBlockSet TUNGSTEN_BRICKS = DecoBlockSet.builder("tungsten_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GREEN)).stonecutting().build();
     public static final DeferredBlock<Block> CHISELED_TUNGSTEN_BRICKS = registerWithItem("chiseled_tungsten_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_LIGHT_GREEN)));
-    public static final DeferredBlock<Block> GOLDEN_BRICKS = registerWithItem("golden_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)));
-    public static final DeferredBlock<StairBlock> GOLDEN_BRICKS_STAIRS = registerWithItem("golden_bricks_stairs", () -> new StairBlock(GOLDEN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)));
-    public static final DeferredBlock<SlabBlock> GOLDEN_BRICKS_SLAB = registerWithItem("golden_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)));
+    public static final DecoBlockSet GOLDEN_BRICKS = DecoBlockSet.builder("golden_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)).stonecutting().build();
     public static final DeferredBlock<Block> CHISELED_GOLDEN_BRICKS = registerWithItem("chiseled_golden_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_YELLOW)));
-    public static final DeferredBlock<Block> PLATINUM_BRICKS = registerWithItem("platinum_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_CYAN)));
-    public static final DeferredBlock<StairBlock> PLATINUM_BRICKS_STAIRS = registerWithItem("platinum_bricks_stairs", () -> new StairBlock(PLATINUM_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_CYAN)));
-    public static final DeferredBlock<SlabBlock> PLATINUM_BRICKS_SLAB = registerWithItem("platinum_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_CYAN)));
+    public static final DecoBlockSet PLATINUM_BRICKS = DecoBlockSet.builder("platinum_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_CYAN)).stonecutting().build();
     public static final DeferredBlock<Block> CHISELED_PLATINUM_BRICKS = registerWithItem("chiseled_platinum_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_CYAN)));
-    public static final DeferredBlock<Block> DEMONITE_ORE_BRICKS = registerWithItem("demonite_ore_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<StairBlock> DEMONITE_ORE_BRICKS_STAIRS = registerWithItem("demonite_ore_bricks_stairs", () -> new StairBlock(DEMONITE_ORE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<SlabBlock> DEMONITE_ORE_BRICKS_SLAB = registerWithItem("demonite_ore_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<Block> EBONSTONE_BRICKS = registerWithItem("ebonstone_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PURPLE)));
-    public static final DeferredBlock<StairBlock> EBONSTONE_BRICKS_STAIRS = registerWithItem("ebonstone_bricks_stairs", () -> new StairBlock(EBONSTONE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PURPLE)));
-    public static final DeferredBlock<SlabBlock> EBONSTONE_BRICKS_SLAB = registerWithItem("ebonstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PURPLE)));
-    public static final DeferredBlock<Block> METEORITE_BRICKS = registerWithItem("meteorite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)));
-    public static final DeferredBlock<StairBlock> METEORITE_BRICKS_STAIRS = registerWithItem("meteorite_bricks_stairs", () -> new StairBlock(METEORITE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)));
-    public static final DeferredBlock<SlabBlock> METEORITE_BRICKS_SLAB = registerWithItem("meteorite_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)));
-    public static final DeferredBlock<Block> CRIMTANE_ORE_BRICKS = registerWithItem("crimtane_ore_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<StairBlock> CRIMTANE_ORE_BRICKS_STAIRS = registerWithItem("crimtane_ore_bricks_stairs", () -> new StairBlock(CRIMTANE_ORE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<SlabBlock> CRIMTANE_ORE_BRICKS_SLAB = registerWithItem("crimtane_ore_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<Block> CRIMSTONE_BRICKS = registerWithItem("crimstone_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<StairBlock> CRIMSTONE_BRICKS_STAIRS = registerWithItem("crimstone_bricks_stairs", () -> new StairBlock(CRIMSTONE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<SlabBlock> CRIMSTONE_BRICKS_SLAB = registerWithItem("crimstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<Block> PEARLSTONE_BRICKS = registerWithItem("pearlstone_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PINK)));
-    public static final DeferredBlock<StairBlock> PEARLSTONE_BRICKS_STAIRS = registerWithItem("pearlstone_bricks_stairs", () -> new StairBlock(PEARLSTONE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PINK)));
-    public static final DeferredBlock<SlabBlock> PEARLSTONE_BRICKS_SLAB = registerWithItem("pearlstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PINK)));
+    public static final DecoBlockSet DEMONITE_ORE_BRICKS = DecoBlockSet.builder("demonite_ore_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
+    public static final DecoBlockSet EBONSTONE_BRICKS = DecoBlockSet.builder("ebonstone_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PURPLE)).stonecutting().build();
+    public static final DecoBlockSet METEORITE_BRICKS = DecoBlockSet.builder("meteorite_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)).stonecutting().build();
+    public static final DecoBlockSet CRIMTANE_ORE_BRICKS = DecoBlockSet.builder("crimtane_ore_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_RED)).stonecutting().build();
+    public static final DecoBlockSet CRIMSTONE_BRICKS = DecoBlockSet.builder("crimstone_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_RED)).stonecutting().build();
+    public static final DecoBlockSet PEARLSTONE_BRICKS = DecoBlockSet.builder("pearlstone_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PINK)).stonecutting().build();
 
     public static final DeferredBlock<Block> GREEN_CANDY_BLOCK = registerWithItem("green_candy_block", () -> new CandyBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_GREEN)));
     public static final DeferredBlock<Block> RED_CANDY_BLOCK = registerWithItem("red_candy_block", () -> new CandyBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_RED)));
@@ -230,23 +167,14 @@ public class DecorativeBlocks {
     public static final DeferredBlock<HalfTransparentBlock> PINK_GEL_BLOCK = registerWithItem("pink_gel_block", () -> new HalfTransparentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).sound(SoundType.SLIME_BLOCK).noOcclusion()));
 
     // 天域
-    public static final DeferredBlock<Block> SUN_PLATE = registerWithItem("sun_plate", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_BLUE)));
-    public static final DeferredBlock<StairBlock> SUN_PLATE_STAIRS = registerWithItem("sun_plate_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
-    public static final DeferredBlock<SlabBlock> SUN_PLATE_SLAB = registerWithItem("sun_plate_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
+    public static final DecoBlockSet SUN_PLATE = DecoBlockSet.builder("sun_plate", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_BLUE)).stonecutting().build();
     public static final DeferredBlock<DoorBlock> SKYWARE_DOOR = registerWithItem("skyware_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.of().mapColor(BLUE_ICE.defaultMapColor()).instrument(NoteBlockInstrument.BASS).strength(4.0F).noOcclusion().pushReaction(PushReaction.DESTROY)));
     public static final DeferredBlock<DoorBlock> SKYWARE_GLASS_DOOR = registerWithItem("skyware_glass_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.of().mapColor(BLUE_ICE.defaultMapColor()).instrument(NoteBlockInstrument.BASS).strength(4.0F).noOcclusion().pushReaction(PushReaction.DESTROY)));
-    public static final DeferredBlock<Block> DISC_BLOCK = registerWithItem("disc_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_YELLOW)));
-    public static final DeferredBlock<StairBlock> DISC_STAIRS = registerWithItem("disc_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
-    public static final DeferredBlock<SlabBlock> DISC_SLAB = registerWithItem("disc_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
-    public static final DeferredBlock<Block> MOON_PLATE = registerWithItem("moon_plate", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_BLUE)));
-    public static final DeferredBlock<StairBlock> MOON_PLATE_STAIRS = registerWithItem("moon_plate_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
-    public static final DeferredBlock<SlabBlock> MOON_PLATE_SLAB = registerWithItem("moon_plate_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
-
+    public static final DecoBlockSet DISC_BLOCK = DecoBlockSet.builder("disc_block", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_YELLOW)).stonecutting().build();
+    public static final DecoBlockSet MOON_PLATE = DecoBlockSet.builder("moon_plate", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_BLUE)).stonecutting().build();
     // 黑曜石
-    public static final DeferredBlock<Block> OBSIDIAN_BRICKS = copyBlockRegister("obsidian_bricks", OBSIDIAN);
+    public static final DecoBlockSet OBSIDIAN_BRICKS = DecoBlockSet.builder("obsidian_bricks", () -> BlockBehaviour.Properties.ofFullCopy(OBSIDIAN).mapColor(MapColor.COLOR_BLACK)).stonecutting().build();
     public static final DeferredBlock<Block> OBSIDIAN_SMALL_BRICKS = copyBlockRegister("obsidian_small_bricks", OBSIDIAN);
-    public static final DeferredBlock<StairBlock> OBSIDIAN_BRICKS_STAIRS = registerWithItem("obsidian_bricks_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(OBSIDIAN)));
-    public static final DeferredBlock<SlabBlock> OBSIDIAN_BRICKS_SLAB = registerWithItem("obsidian_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(OBSIDIAN)));
     public static final DeferredBlock<DoorBlock> OBSIDIAN_BRICKS_DOOR = registerWithItem("obsidian_bricks_door", () -> new DoorBlock(
             BlockSetType.STONE,
             BlockBehaviour.Properties.of()
@@ -290,21 +218,15 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> POLISHED_MARBLE = registerWithItem("polished_marble", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
 
     // 地牢
-    public static final DeferredBlock<Block> BLUE_BRICKS = registerWithItem("blue_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<Block> GREEN_BRICKS = registerWithItem("green_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<Block> PINK_BRICKS = registerWithItem("pink_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DecoBlockSet BLUE_BRICKS = DecoBlockSet.builder("blue_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))).stonecutting().build();
+    public static final DecoBlockSet GREEN_BRICKS = DecoBlockSet.builder("green_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))).stonecutting().build();
+    public static final DecoBlockSet PINK_BRICKS = DecoBlockSet.builder("pink_bricks", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))).stonecutting().build();
     public static final DeferredBlock<CrackedBricksBlock> CRACKED_BLUE_BRICKS = registerWithItem("cracked_blue_bricks", () -> new CrackedBricksBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).strength(0).mapColor(DyeColor.BLUE)));
     public static final DeferredBlock<CrackedBricksBlock> CRACKED_GREEN_BRICKS = registerWithItem("cracked_green_bricks", () -> new CrackedBricksBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).strength(0).mapColor(DyeColor.GREEN)));
     public static final DeferredBlock<CrackedBricksBlock> CRACKED_PINK_BRICKS = registerWithItem("cracked_pink_bricks", () -> new CrackedBricksBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).strength(0).mapColor(DyeColor.PINK)));
     public static final DeferredBlock<Block> CHISELED_BLUE_BRICKS = registerWithItem("chiseled_blue_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<Block> CHISELED_GREEN_BRICKS = registerWithItem("chiseled_green_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<Block> CHISELED_PINK_BRICKS = registerWithItem("chiseled_pink_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<StairBlock> BLUE_BRICK_STAIRS = registerWithItem("blue_brick_stairs", () -> new StairBlock(BLUE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_STAIRS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<StairBlock> GREEN_BRICK_STAIRS = registerWithItem("green_brick_stairs", () -> new StairBlock(GREEN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_STAIRS).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<StairBlock> PINK_BRICK_STAIRS = registerWithItem("pink_brick_stairs", () -> new StairBlock(PINK_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_STAIRS).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<SlabBlock> BLUE_BRICK_SLAB = registerWithItem("blue_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_SLAB).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<SlabBlock> GREEN_BRICK_SLAB = registerWithItem("green_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_SLAB).mapColor(DyeColor.GREEN).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<SlabBlock> PINK_BRICK_SLAB = registerWithItem("pink_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_SLAB).mapColor(DyeColor.PINK).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<DoorBlock> DUNGEON_DOOR = registerWithItem("dungeon_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.ofFullCopy(IRON_DOOR).mapColor(DyeColor.GRAY).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<EnchantedBricksBlock> ENCHANTED_BLUE_BRICKS = registerWithItem("enchanted_blue_bricks", () -> new EnchantedBricksBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<EnchantedBricksBlock> ENCHANTED_GREEN_BRICKS = registerWithItem("enchanted_green_bricks", () -> new EnchantedBricksBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));

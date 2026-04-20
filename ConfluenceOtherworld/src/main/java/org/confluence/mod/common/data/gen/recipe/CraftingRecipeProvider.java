@@ -616,9 +616,9 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, NatureBlocks.AMETHYST_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_AMETHYST));
 
         // 基础石砖
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS,4);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE), DecorativeBlocks.CRIMSTONE_BRICKS,4);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE), DecorativeBlocks.PEARLSTONE_BRICKS,4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS.FULL,4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE), DecorativeBlocks.CRIMSTONE_BRICKS.FULL,4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE), DecorativeBlocks.PEARLSTONE_BRICKS.FULL,4);
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.MARBLE), DecorativeBlocks.POLISHED_MARBLE,4);
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.GRANITE), DecorativeBlocks.POLISHED_GRANITE,4);
         // 锁链

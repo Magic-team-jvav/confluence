@@ -23,8 +23,8 @@ public final class ModConnectives {
         register(ModBlocks.ANDESITE_CASING.get(), () -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING));
         registerCasingConnectivity(ModBlocks.ANDESITE_CASING.get(), (block, cc) -> cc.makeCasing(block, AllSpriteShifts.ANDESITE_CASING));
 
-        register(DecorativeBlocks.SUN_PLATE.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "sun_plate"));
-        registerRandomize(DecorativeBlocks.MOON_PLATE.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "moon_plate", 10), 10);
+        register(DecorativeBlocks.SUN_PLATE.FULL.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "sun_plate"));
+        registerRandomize(DecorativeBlocks.MOON_PLATE.FULL.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "moon_plate", 10), 10);
         registerWeighted(DecorativeBlocks.BLUE_GEL_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "blue_gel_block", 2), 5, 1);
         registerWeighted(DecorativeBlocks.FROZEN_GEL_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "frozen_gel_block", 2), 5, 1);
         register(FunctionalBlocks.ECHO_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "echo_block"));

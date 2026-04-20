@@ -63,18 +63,15 @@ public class DecoBlockSet {
         var walls = provider.apply(BlockTags.WALLS);
 
         for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
-            if (blockSet.FULL.isBound()) {
-                // 基础方块一般不需要通用tag，除非你要加
-            }
-            if (blockSet.STAIRS.isBound()) {
+            {
                 Block value = blockSet.STAIRS.get();
                 stairs.add(value);
             }
-            if (blockSet.SLAB.isBound()) {
+            {
                 Block value = blockSet.SLAB.get();
                 slabs.add(value);
             }
-            if (blockSet.WALL.isBound()) {
+            {
                 Block value = blockSet.WALL.get();
                 walls.add(value);
             }

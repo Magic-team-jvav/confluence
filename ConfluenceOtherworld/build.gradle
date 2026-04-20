@@ -169,7 +169,7 @@ repositories {
     }
 }
 
-boolean sodium = true // 钠
+boolean sodium = false // 钠
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false // FTB系列
@@ -199,9 +199,16 @@ dependencies {
     compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
     implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
 
-    compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
+    compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
     if (true) {
-        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
+        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+        runtimeOnly("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+        runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+        runtimeOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+
+        // 航空学
+        runtimeOnly "maven.modrinth:create-aeronautics:1.0.3+mc1.21.1"
+        runtimeOnly "maven.modrinth:sable:1.0.6+mc1.21.1"
     }
 
     compileOnly "curse.maven:jade-324717:6011258"

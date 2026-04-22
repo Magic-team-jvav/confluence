@@ -32,15 +32,23 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-
-import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
 public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCategory.IngredientPair> {
     public static final RecipeType<IngredientPair> EXTRACTINATOR = new RecipeType<>(Confluence.asResource("extractinator"), IngredientPair.class);
     public static final RecipeType<IngredientPair> CHLOROPHYTE_EXTRACTINATOR = new RecipeType<>(Confluence.asResource("chlorophyte_extractinator"), IngredientPair.class);
     private static final IIngredientRenderer<ItemStack> INGREDIENT_RENDERER = new IIngredientRenderer<>() {
+        private static final DecimalFormat FORMAT;
+
+        static {
+            FORMAT = new DecimalFormat("#.####");
+            FORMAT.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
+        }
+
         @Override
         public void render(GuiGraphics guiGraphics, ItemStack ingredient) {
             RenderSystem.enableDepthTest();
@@ -58,7 +66,7 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
                 lines.add(1, data.min == data.max
                         ? Component.translatable("tooltip.jei.count_exact", data.min)
                         : Component.translatable("tooltip.jei.count_range", data.min, data.max));
-                lines.add(2, Component.translatable("tooltip.jei.drop_chance", ATTRIBUTE_MODIFIER_FORMAT.format(data.chance * 100)));
+                lines.add(2, Component.translatable("tooltip.jei.drop_chance", FORMAT.format(data.chance * 100)));
                 return lines;
 
             }
@@ -110,9 +118,9 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
                 if (entry.isEmpty()) continue;
                 builder.addOutputSlot()
                         .addIngredientsUnsafe(List.of(new DataItemStack(
-                                entry.item,
-                                entry.minCount * pool.minRoll,
-                                entry.maxCount * pool.maxRoll,
+                                entry.item(),
+                                entry.minCount() * pool.minRoll,
+                                entry.maxCount() * pool.maxRoll,
                                 (float) entry.getWeight().asInt() / pool.totalWeight
                         )))
                         .setCustomRenderer(VanillaTypes.ITEM_STACK, INGREDIENT_RENDERER)

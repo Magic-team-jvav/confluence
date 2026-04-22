@@ -185,6 +185,7 @@ boolean advancementPlaques = false // 进度牌匾
 boolean dynamicCrosshair = false // 动态准星
 boolean kubejs = false
 boolean quark = false
+boolean cobblemon = true
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -200,7 +201,7 @@ dependencies {
     implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
 
     compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
-    if (true) {
+    if (false) {
         runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
         runtimeOnly("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
         runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
@@ -376,7 +377,7 @@ dependencies {
     if (observable || ftb || kubejs) {
         runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
     }
-    if (observable || ipn || lootBeams) {
+    if (observable || ipn || lootBeams || cobblemon) {
         runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"
     }
     if (false) {
@@ -421,6 +422,10 @@ dependencies {
     if (quark) {
         runtimeOnly "curse.maven:quark-243121:7640331"
         runtimeOnly "curse.maven:zeta-968868:7640154"
+    }
+    if (cobblemon) {
+        runtimeOnly "maven.modrinth:cobblemon:S1TrAn8c"
+        runtimeOnly "maven.modrinth:cobblemonraiddens:1fgFn6iS" // 0.7.6
     }
 }
 

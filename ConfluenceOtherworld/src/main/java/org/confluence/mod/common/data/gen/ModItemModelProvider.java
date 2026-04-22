@@ -41,7 +41,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
+        ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
 
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
@@ -167,7 +167,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
 
-        customModels.add(createDir(CreateHelper.ITEMS,"materials/"));
+        CreateHelper.acceptModels(reg -> customModels.add(createDir(reg, "materials/")));
 
         genModels(customModels, "item/generated");
 
@@ -198,13 +198,19 @@ public class ModItemModelProvider extends ItemModelProvider {
                 } else if (item1 instanceof BlockItem item2) {
                     Block block = item2.getBlock();
                     switch (block) {
-                        case DoorBlock ignored -> withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/decoration/door/" + path));
-                        case TrapDoorBlock ignored -> withExistingParent(path, Confluence.asResource("block/" + path + "_bottom"));
-                        case SaplingBlock ignored -> withExistingParent(path, "item/generated").texture("layer0", "confluence:block/" + path);
-                        case ButtonBlock ignored -> withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
-                        case FenceBlock ignored -> withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
+                        case DoorBlock ignored ->
+                                withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/decoration/door/" + path));
+                        case TrapDoorBlock ignored ->
+                                withExistingParent(path, Confluence.asResource("block/" + path + "_bottom"));
+                        case SaplingBlock ignored ->
+                                withExistingParent(path, "item/generated").texture("layer0", "confluence:block/" + path);
+                        case ButtonBlock ignored ->
+                                withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
+                        case FenceBlock ignored ->
+                                withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
                         //case LeavesBlock ignored -> withExistingParent(path, "block/leaves").texture("all", Confluence.asResource("block/" + path + "_item"));
-                        case ChainBlock ignored -> withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/chain/" + path));
+                        case ChainBlock ignored ->
+                                withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/chain/" + path));
                         default -> withExistingParent(path, Confluence.asResource("block/" + path));
                     }
                 }

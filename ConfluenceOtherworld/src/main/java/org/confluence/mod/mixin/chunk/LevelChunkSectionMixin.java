@@ -44,7 +44,7 @@ public abstract class LevelChunkSectionMixin implements ILevelChunkSection {
 
     @Override
     public void confluence$setBackupBiome(PalettedContainerRO<Holder<Biome>> biome) {
-        confluence$backupBiome = biome;
+        this.confluence$backupBiome = biome;
     }
 
     @Override
@@ -52,10 +52,14 @@ public abstract class LevelChunkSectionMixin implements ILevelChunkSection {
         this.biomes = biomes;
     }
 
-    // 我忘记为什么要写这个了，不写就崩溃
-    @Inject(method = "<init>(Lnet/minecraft/core/Registry;)V", at = @At("RETURN"))
+    /// 不写这个会没有初始化confluence$backupBiome，导致区块保存失败
+    /// [ChunkSerializerMixin#write]
+    @Inject(method = {
+            "<init>(Lnet/minecraft/core/Registry;)V",
+            "<init>(Lnet/minecraft/world/level/chunk/PalettedContainer;Lnet/minecraft/world/level/chunk/PalettedContainerRO;)V"
+    }, at = @At("TAIL"))
     private void constr(CallbackInfo ci) {
-        confluence$backupBiome = biomes.recreate();
+        this.confluence$backupBiome = biomes.recreate();
     }
 
     @Inject(method = "read", at = @At("RETURN"))

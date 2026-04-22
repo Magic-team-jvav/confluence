@@ -115,6 +115,9 @@ public final class BloodMoonGameEvent implements GameEvent {
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             AchievementUtils.awardAchievement(player, "bloodbath");
         }
+        for (Entity entity : spawned) {
+            entity.discard();
+        }
         spawned.clear();
     }
 

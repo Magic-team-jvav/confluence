@@ -42,6 +42,10 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, DecorativeBlocks.SMOOTH_OBSIDIAN.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS.FULL));
         stonecutting(recipeOutput, DecorativeBlocks.AETHERIUM_BRICKS.FULL.toStack(4), Ingredient.of(NatureBlocks.AETHERIUM_BLOCK));
         stonecutting(recipeOutput, DecorativeBlocks.OBSIDIAN_BRICKS.FULL.toStack(4), Ingredient.of(Blocks.OBSIDIAN));
+        stonecutting(recipeOutput, DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.FULL.toStack(4), Ingredient.of(NatureBlocks.GLOOM_OBSIDIAN));
+        stonecutting(recipeOutput, DecorativeBlocks.SNOW_BRICKS.FULL.toStack(1), Ingredient.of(Blocks.SNOW));
+        stonecutting(recipeOutput, DecorativeBlocks.BLUE_ICE_BRICKS.FULL.toStack(4), Ingredient.of(Blocks.BLUE_ICE));
+        stonecutting(recipeOutput, DecorativeBlocks.PACKED_ICE_BRICKS.FULL.toStack(4), Ingredient.of(Blocks.PACKED_ICE));
 
         stonecutting(recipeOutput, DecorativeBlocks.GOLDEN_BRICKS.FULL.toStack(9), Ingredient.of(Items.GOLD_BLOCK));
         stonecutting(recipeOutput, DecorativeBlocks.CHISELED_GOLDEN_BRICKS.toStack(9), Ingredient.of(Items.GOLD_BLOCK));
@@ -71,17 +75,17 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, FunctionalBlocks.TUFF_BOOTH.toStack(), Ingredient.of(Items.TUFF));
 
         stonecutting(recipeOutput, "_from_granite", DecorativeBlocks.GRANITE_COLUMN.toStack(), Ingredient.of(NatureBlocks.GRANITE));
-        stonecutting(recipeOutput, "_from_granite", DecorativeBlocks.GRANITE_BRICKS.toStack(), Ingredient.of(NatureBlocks.GRANITE));
+        stonecutting(recipeOutput, "_from_granite", DecorativeBlocks.GRANITE_BRICKS.FULL.toStack(), Ingredient.of(NatureBlocks.GRANITE));
         stonecutting(recipeOutput, "_from_granite", DecorativeBlocks.POLISHED_GRANITE.toStack(), Ingredient.of(NatureBlocks.GRANITE));
         stonecutting(recipeOutput, "_from_granite", DecorativeBlocks.CHISELED_GRANITE_BRICKS.toStack(), Ingredient.of(NatureBlocks.GRANITE));
 
         stonecutting(recipeOutput, "_from_polished_granite", DecorativeBlocks.GRANITE_COLUMN.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_GRANITE));
-        stonecutting(recipeOutput, "_from_polished_granite", DecorativeBlocks.GRANITE_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_GRANITE));
+        stonecutting(recipeOutput, "_from_polished_granite", DecorativeBlocks.GRANITE_BRICKS.FULL.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_GRANITE));
         stonecutting(recipeOutput, "_from_polished_granite", DecorativeBlocks.CHISELED_GRANITE_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_GRANITE));
 
         stonecutting(recipeOutput, "_from_calcite", NatureBlocks.MARBLE.toStack(), Ingredient.of(Blocks.CALCITE));
         stonecutting(recipeOutput, "_from_calcite", DecorativeBlocks.MARBLE_COLUMN.toStack(), Ingredient.of(Blocks.CALCITE));
-        stonecutting(recipeOutput, "_from_calcite", DecorativeBlocks.MARBLE_BRICKS.toStack(), Ingredient.of(Blocks.CALCITE));
+        stonecutting(recipeOutput, "_from_calcite", DecorativeBlocks.MARBLE_BRICKS.FULL.toStack(), Ingredient.of(Blocks.CALCITE));
         stonecutting(recipeOutput, "_from_calcite", DecorativeBlocks.POLISHED_MARBLE.toStack(), Ingredient.of(Blocks.CALCITE));
         stonecutting(recipeOutput, "_from_calcite", DecorativeBlocks.MARBLE_SMALL_BRICKS.toStack(), Ingredient.of(Blocks.CALCITE));
         stonecutting(recipeOutput, "_from_calcite", DecorativeBlocks.CHISELED_MARBLE_BRICKS.toStack(), Ingredient.of(Blocks.CALCITE));
@@ -89,7 +93,7 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, "_from_calcite", DecorativeBlocks.MARBLE_ETERNAL_CHESSBOARD_BRICKS.toStack(), Ingredient.of(Blocks.CALCITE));
 
         stonecutting(recipeOutput, "_from_marble", DecorativeBlocks.MARBLE_COLUMN.toStack(), Ingredient.of(NatureBlocks.MARBLE));
-        stonecutting(recipeOutput, "_from_marble", DecorativeBlocks.MARBLE_BRICKS.toStack(), Ingredient.of(NatureBlocks.MARBLE));
+        stonecutting(recipeOutput, "_from_marble", DecorativeBlocks.MARBLE_BRICKS.FULL.toStack(), Ingredient.of(NatureBlocks.MARBLE));
         stonecutting(recipeOutput, "_from_marble", DecorativeBlocks.POLISHED_MARBLE.toStack(), Ingredient.of(NatureBlocks.MARBLE));
         stonecutting(recipeOutput, "_from_marble", DecorativeBlocks.MARBLE_SMALL_BRICKS.toStack(), Ingredient.of(NatureBlocks.MARBLE));
         stonecutting(recipeOutput, "_from_marble", DecorativeBlocks.CHISELED_MARBLE_BRICKS.toStack(), Ingredient.of(NatureBlocks.MARBLE));
@@ -97,7 +101,7 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, "_from_marble", DecorativeBlocks.MARBLE_ETERNAL_CHESSBOARD_BRICKS.toStack(), Ingredient.of(NatureBlocks.MARBLE));
 
         stonecutting(recipeOutput, "_from_polished_marble", DecorativeBlocks.MARBLE_COLUMN.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_MARBLE));
-        stonecutting(recipeOutput, "_from_polished_marble", DecorativeBlocks.MARBLE_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_MARBLE));
+        stonecutting(recipeOutput, "_from_polished_marble", DecorativeBlocks.MARBLE_BRICKS.FULL.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_MARBLE));
         stonecutting(recipeOutput, "_from_polished_marble", DecorativeBlocks.MARBLE_SMALL_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_MARBLE));
         stonecutting(recipeOutput, "_from_polished_marble", DecorativeBlocks.CHISELED_MARBLE_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_MARBLE));
         stonecutting(recipeOutput, "_from_polished_marble", DecorativeBlocks.MARBLE_CHESSBOARD_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_MARBLE));

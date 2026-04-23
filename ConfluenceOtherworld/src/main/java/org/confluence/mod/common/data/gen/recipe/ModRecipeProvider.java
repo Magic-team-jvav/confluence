@@ -123,8 +123,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.DIATOMACEOUS), DecorativeBlocks.PURE_GLASS.toStack(), 0.3F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "gold_nugget_from_gold_cooking", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
 
-        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(DecorativeBlocks.MARBLE_BRICKS), DecorativeBlocks.CRACKED_MARBLE_BRICKS.toStack(), 0.1F, 200);
-        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(DecorativeBlocks.GRANITE_BRICKS), DecorativeBlocks.CRACKED_GRANITE_BRICKS.toStack(), 0.1F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(DecorativeBlocks.MARBLE_BRICKS.FULL), DecorativeBlocks.CRACKED_MARBLE_BRICKS.toStack(), 0.1F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(DecorativeBlocks.GRANITE_BRICKS.FULL), DecorativeBlocks.CRACKED_GRANITE_BRICKS.toStack(), 0.1F, 200);
 
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.2F, 200);

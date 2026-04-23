@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.integration.lithium;
+package org.confluence.mod.mixin.integration.citadel;
 
 import net.neoforged.fml.loading.LoadingModList;
 import org.objectweb.asm.tree.ClassNode;
@@ -8,12 +8,12 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-public class LithiumIntegrationMixinPlugin implements IMixinConfigPlugin {
+public class CitadelIntegrationMixinPlugin implements IMixinConfigPlugin {
     private boolean shouldApply;
 
     @Override
     public void onLoad(String mixinPackage) {
-        this.shouldApply = LoadingModList.get().getModFileById("lithium") != null;
+        this.shouldApply = LoadingModList.get().getModFileById("citadel") != null;
     }
 
     @Override

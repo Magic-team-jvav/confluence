@@ -314,6 +314,11 @@ dependencies {
         runtimeOnly "dev.anvilcraft.resource:ageratum-neoforge-1.21.1:${ageratum_version}"
     }
 
+    compileOnly "curse.maven:citadel-331936:7476597"
+    if (false) {
+        runtimeOnly "curse.maven:citadel-331936:7476597"
+    }
+
     /**********************************************************/
 
     runtimeOnly "curse.maven:worldedit-225608:5830452"
@@ -333,6 +338,7 @@ dependencies {
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
     //runtimeOnly "maven.modrinth:lootr:4dt0SxY0"
     //runtimeOnly "curse.maven:official-divinerpg-363543:7371103"
+//    runtimeOnly "maven.modrinth:biolith:byVGeYWw"
     if (false) {
         runtimeOnly "maven.modrinth:l_enders-cataclysm:3.16"
         runtimeOnly "maven.modrinth:lionfish-api:2.6"

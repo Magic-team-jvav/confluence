@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.EffectCures;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -245,8 +246,12 @@ public class FoodItems {
     //不返还容器
     public static final DeferredItem<BaseFoodItem> JOJA_COLA = registerDrinkingFood("joja_cola", ModRarity.WHITE,
             () -> ModFoodProperties.wellFedProperties(2400, 4, 1.5f), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //乔家可乐
-    public static final DeferredItem<BaseFoodItem> CARTON_OF_MILK = registerDrinkingFood("carton_of_milk", ModRarity.GREEN,
-            () -> ModFoodProperties.wellFedProperties(24000, 4, 1.5f), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //卡通牛奶
+    public static final DeferredItem<BaseFoodItem> CARTON_OF_MILK = registerDrinkingFood(
+            "carton_of_milk", ModRarity.GREEN,
+            () -> ModFoodProperties.wellFedProperties(24000, 4, 1.5f),
+            20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK,
+            builder -> builder.setFinishUsingCallback((stack, level, living) -> living.removeEffectsCuredBy(EffectCures.MILK))
+    ); //卡通牛奶
     public static final DeferredItem<BaseFoodItem> TEACUP = registerDrinkingFood("teacup", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(6000, 4, 1.5f), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //一小杯茶
     public static final DeferredItem<BaseFoodItem> COFFEE = registerDrinkingFood("coffee", ModRarity.GREEN,
@@ -326,7 +331,8 @@ public class FoodItems {
                         if (!l.isClientSide && !p.hasEffect(ModEffects.POTION_SICKNESS)) {
                             p.heal(24);
                             p.addEffect(new MobEffectInstance(ModEffects.POTION_SICKNESS, 1200));
-                        }}));
+                        }
+                    }));
     //赞助
     public static final DeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola",
             builder -> builder.rarity(ModRarity.EXPERT).food(hasEffectProperties(1, 0.5f,
@@ -426,8 +432,18 @@ public class FoodItems {
     }
 
     public static DeferredItem<BaseFoodItem> registerDrinkingFood(String name, ModRarity rarity, Supplier<FoodProperties> foodProperties, int duration, UseAnim useAnim, SoundEvent drinkingSoundType, SoundEvent eatingSoundType) {
+        return registerDrinkingFood(name, rarity, foodProperties, duration, useAnim, drinkingSoundType, eatingSoundType, builder -> {});
+    }
+
+    public static DeferredItem<BaseFoodItem> registerDrinkingFood(String name, ModRarity rarity, Supplier<FoodProperties> foodProperties, int duration, UseAnim useAnim, SoundEvent drinkingSoundType, SoundEvent eatingSoundType, Consumer<BaseFoodItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder().rarity(rarity).stackTo(64).food(foodProperties.get()).duration(d -> duration).useAnim(u -> useAnim).drinkingSound(s -> drinkingSoundType).eatingSound(e -> eatingSoundType);
+            BaseFoodItem.Builder builder = BaseFoodItem.builder()
+                    .rarity(rarity).stackTo(64).food(foodProperties.get())
+                    .duration(d -> duration)
+                    .useAnim(u -> useAnim)
+                    .drinkingSound(s -> drinkingSoundType)
+                    .eatingSound(e -> eatingSoundType);
+            consumer.accept(builder);
             return builder.build();
         });
     }

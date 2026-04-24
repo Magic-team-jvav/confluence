@@ -27,6 +27,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
+import org.confluence.mod.integration.sable.SableHelper;
 
 import java.util.function.IntFunction;
 
@@ -38,6 +39,10 @@ public abstract class AbstractHookEntity extends Projectile {
     protected BlockPos hookPos;
     protected BlockState hookedState;
     public float lastDelta = 0.0F;
+
+    // region sable
+    public final Object[] subLevel = new Object[2];
+    // endregion sable
 
     public AbstractHookEntity(EntityType<? extends AbstractHookEntity> entityType, Level pLevel) {
         super(entityType, pLevel);
@@ -119,6 +124,7 @@ public abstract class AbstractHookEntity extends Projectile {
                 setHookState(HookState.POP);
             }
         }
+        SableHelper.doAbstractHookEntity$tick(this);
     }
 
     @Override
@@ -127,13 +133,14 @@ public abstract class AbstractHookEntity extends Projectile {
     }
 
     @Override
-    protected void onHitBlock(BlockHitResult result) {
+    protected final void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        Vec3 vec3 = result.getLocation().subtract(position());
-        setDeltaMovement(vec3);
-        Vec3 vec31 = vec3.normalize().scale(0.05F);
-        setPosRaw(getX() - vec31.x, getY() - vec31.y, getZ() - vec31.z);
-        setPos(getX() + vec3.x, getY() + vec3.y, getZ() + vec3.z);
+        if (SableHelper.doAbstractHookEntity$onHitBlock(this, result)) {
+            Vec3 vec3 = result.getLocation().subtract(position());
+            setDeltaMovement(vec3);
+            Vec3 vec31 = vec3.normalize().scale(0.05F);
+            setPosRaw(getX() - vec31.x + vec3.x, getY() - vec31.y + vec3.y, getZ() - vec31.z + vec3.z);
+        }
     }
 
     protected void onHooked(BlockHitResult hitResult, ItemStack itemStack) {
@@ -145,7 +152,7 @@ public abstract class AbstractHookEntity extends Projectile {
         this.hookPos = blockPos;
         this.hookedState = blockState;
         this.hasImpulse = true;
-        float ratio = getOwner() == null ? 1 : Mth.sqrt((float) blockPos.distSqr(getOwner().blockPosition())) / Mth.sqrt(hookRangeSqr);
+        float ratio = getOwner() == null ? 1 : Mth.clamp(Mth.sqrt((float) blockPos.distSqr(getOwner().blockPosition())) / Mth.sqrt(hookRangeSqr), 0, 1);
         playSound(ModSoundEvents.HOOK_ATTACH.get(), 0.5F * ratio, 1.0F);
         if (level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState).setPos(blockPos),

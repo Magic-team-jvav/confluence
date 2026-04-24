@@ -40,6 +40,10 @@ neoForge {
         client1 {
             client()
             programArguments.addAll "--username", "Confluence1"
+
+            jvmArguments.addAll([
+                    "-XX:+HeapDumpOnOutOfMemoryError"
+            ])
         }
         client2 {
             client()
@@ -167,6 +171,18 @@ repositories {
         name = "Ageratum" // 藿香
         url = "https://maven.anvilcraft.dev/releases"
     }
+    exclusiveContent { // Sable
+        forRepository {
+            maven {
+                url = "https://maven.ryanhcode.dev/releases"
+                name = "RyanHCode Maven"
+            }
+        }
+        filter {
+            includeGroup("dev.ryanhcode.sable")
+            includeGroup("dev.ryanhcode.sable-companion")
+        }
+    }
 }
 
 boolean sodium = false // 钠
@@ -201,16 +217,18 @@ dependencies {
     implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
 
     compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
-    if (false) {
+    if (true) {
         runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
         runtimeOnly("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
         runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
         runtimeOnly("com.tterrag.registrate:Registrate:${registrate_version}")
 
-        // 航空学
-        runtimeOnly "maven.modrinth:create-aeronautics:1.0.3+mc1.21.1"
-        runtimeOnly "maven.modrinth:sable:1.0.6+mc1.21.1"
+        // 航空学 v1.1.3
+        runtimeOnly "maven.modrinth:create-aeronautics:1sv6OtSz"
+        runtimeOnly "maven.modrinth:sable:g8CObHcP"
     }
+
+    api "dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:${sable_companion_version}"
 
     compileOnly "curse.maven:jade-324717:6011258"
     runtimeOnly "curse.maven:jade-324717:6011258"

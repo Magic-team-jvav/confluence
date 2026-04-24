@@ -23,6 +23,7 @@ import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntit
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
+import org.confluence.mod.integration.sable.SableHelper;
 
 /// Fast Link:
 ///
@@ -182,7 +183,8 @@ public final class ModEntities {
     }
 
     private static <E extends AbstractHookEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerHook(String name, EntityType.EntityFactory<E> supplier) {
-        return ENTITIES.register(name, id -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build(id.toString()));
+        int updateInterval = SableHelper.IS_LOADED ? 1 : 20;
+        return ENTITIES.register(name, id -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(updateInterval).build(id.toString()));
     }
 
     private static <E extends BaseBombEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerBomb(String name, EntityType.EntityFactory<E> supplier, float size) {

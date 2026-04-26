@@ -478,7 +478,7 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FLIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_VOIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_BRIGHT);
-        if (GroupItem.enable) {
+        if (StartupConfigs.itemGroups()) {
             event.registerItem(GroupItemExtension.INSTANCE, GroupItem.getInstance());
         }
         event.registerItem(ModClientSetups.GLINT_RAINBOW_EXTENSIONS, TreasureBagItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
@@ -615,7 +615,7 @@ public final class ModClientEvents {
                 event.register(item, ModClientSetups.REPEATER_AMMO);
             }
         }
-        if (GroupItem.enable) {
+        if (StartupConfigs.itemGroups()) {
             ResourceLocation plus = Confluence.asResource("plus");
             ResourceLocation minus = Confluence.asResource("minus");
             event.register(GroupItem.getInstance(), (guiGraphics, font, stack, xOffset, yOffset) -> {

@@ -21,8 +21,8 @@ import java.util.Map;
 
 public final class TEHelper {
     // 替换配方
-    public static void processRecipes(Map<ResourceLocation, JsonElement> objectMap) {
-        objectMap.entrySet().removeIf(entry -> TerraEntity.MODID.equals(entry.getKey().getNamespace()));
+    public static void processRecipes(Map<ResourceLocation, JsonElement> recipes) {
+        recipes.entrySet().removeIf(entry -> TerraEntity.MODID.equals(entry.getKey().getNamespace()));
     }
 
     // 重定向战利品表

@@ -1,26 +1,33 @@
 package org.confluence.mod.common.item;
 
 import com.google.common.collect.AbstractIterator;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemStackLinkedSet;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.*;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModTabs;
 import org.confluence.mod.mixed.IClientItemStack;
+import org.jetbrains.annotations.Unmodifiable;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GroupItem extends Item {
-    public static boolean enable = false;
     private static GroupItem instance;
 
     public GroupItem() {
@@ -35,14 +42,30 @@ public class GroupItem extends Item {
         return instance;
     }
 
-    public static ItemStack of(Component name, ItemStack... stacks) {
+    public static boolean isInvalidCreativeModeTab(ResourceKey<CreativeModeTab> key) {
+        return key == CreativeModeTabs.SEARCH || key == ModTabs.DEVELOPER.getKey();
+    }
+
+    public static boolean isInvalidCreativeModeTab(CreativeModeTab tab) {
+        return BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(tab).map(GroupItem::isInvalidCreativeModeTab).orElse(false);
+    }
+
+    /// Only In Client
+    public static int getGroupId(ItemStack stack) {
+        if (stack.is(getInstance())) {
+            return stack.getOrDefault(ModDataComponentTypes.GROUP_STACKS, GroupItem.Stacks.EMPTY).getId();
+        }
+        return IClientItemStack.of(stack).confluence$getGroupId();
+    }
+
+    public static ItemStack of(ResourceLocation name, ItemStack... stacks) {
         return of(name, Arrays.asList(stacks));
     }
 
-    public static ItemStack of(Component name, List<ItemStack> stacks) {
-        ItemStack itemStack = instance.getDefaultInstance();
-        itemStack.set(ModDataComponentTypes.GROUP_STACKS, Stacks.of(false, stacks));
-        itemStack.set(DataComponents.CUSTOM_NAME, name);
+    public static ItemStack of(ResourceLocation name, List<ItemStack> stacks) {
+        ItemStack itemStack = getInstance().getDefaultInstance();
+        itemStack.set(ModDataComponentTypes.GROUP_STACKS, Stacks.of(name, false, stacks));
+        itemStack.set(DataComponents.CUSTOM_NAME, Component.translatable("itemGroup." + name.getNamespace() + "." + name.getPath()));
         return itemStack;
     }
 
@@ -53,29 +76,47 @@ public class GroupItem extends Item {
     }
 
     public static class Stacks implements DataComponentType<Stacks> {
-        public static final Stacks EMPTY = new Stacks(false, List.of());
+        public static final Stacks EMPTY = new Stacks(Confluence.asResource("empty"), false, List.of(), -1);
         public static final Codec<Stacks> CODEC = Codec.unit(EMPTY);
         public static final StreamCodec<ByteBuf, Stacks> STREAM_CODEC = StreamCodec.unit(EMPTY);
         private static final AtomicInteger cachedId = new AtomicInteger();
 
         public transient long lastRenderTime;
         public transient int lastRenderIndex;
-        public transient int id = -1;
+        private transient ObjectLinkedOpenCustomHashSet<ItemStack> duplicateChecker;
 
-        private final boolean visible;
-        private final List<ItemStack> values;
+        private transient final ResourceLocation name;
+        private transient final boolean visible;
+        private transient final List<ItemStack> values;
+        private transient final int id;
 
-        private Stacks(boolean visible, List<ItemStack> values) {
+        private Stacks(ResourceLocation name, boolean visible, List<ItemStack> values, int id) {
+            this.name = name;
             this.visible = visible;
             this.values = values;
+            this.id = id;
+            if (LibUtils.isPhysicalClient()) {
+                for (ItemStack stack : values) {
+                    IClientItemStack.of(stack).confluence$setGroupId(id);
+                }
+            }
+        }
+
+        public ResourceLocation getName() {
+            return name;
         }
 
         public boolean isVisible() {
             return visible;
         }
 
+        @Unmodifiable
         public List<ItemStack> getValues() {
             return values;
+        }
+
+        public int getId() {
+            return id;
         }
 
         @Override
@@ -90,38 +131,63 @@ public class GroupItem extends Item {
 
         @Override
         public final boolean equals(Object o) {
-            return o == this || (o instanceof Stacks stacks && stacks.visible == visible && stacks.id == id && stacks.values.equals(values));
+            return o == this || (o instanceof Stacks stacks && stacks.visible == visible && stacks.id == id && stacks.name.equals(name) && stacks.values.equals(values));
         }
 
         @Override
         public int hashCode() {
-            int result = Boolean.hashCode(visible);
-            result = 31 * result + id;
+            int result = name.hashCode();
             result = 31 * result + values.hashCode();
+            result = 31 * result + Boolean.hashCode(visible);
+            result = 31 * result + id;
             return result;
         }
 
         @Override
         public String toString() {
             return "Stacks{" +
-                    "visible=" + visible +
+                    "name=" + name +
+                    ", visible=" + visible +
                     ", values=" + values +
+                    ", id=" + id +
                     '}';
         }
 
         public Stacks toggleVisibility() {
-            Stacks stacks = new Stacks(!visible, values);
+            Stacks stacks = new Stacks(name, !visible, values, id == -1 ? cachedId.getAndIncrement() : id);
             stacks.lastRenderTime = lastRenderTime;
             stacks.lastRenderIndex = lastRenderIndex;
-            stacks.id = id;
             return stacks;
         }
 
-        public static Stacks of(boolean visible, ItemStack... stacks) {
-            return of(visible, Arrays.asList(stacks));
+        public Stacks withValues(ItemStack... stacks) {
+            return withValues(Arrays.asList(stacks));
         }
 
-        public static Stacks of(boolean visible, List<ItemStack> stacks) {
+        public Stacks withValues(List<ItemStack> stacks) {
+            if (stacks.isEmpty()) return this;
+            ImmutableList.Builder<ItemStack> builder = ImmutableList.builder();
+            builder.addAll(values);
+            for (ItemStack stack : stacks) {
+                if (duplicateChecker == null) {
+                    this.duplicateChecker = new ObjectLinkedOpenCustomHashSet<>(values, ItemStackLinkedSet.TYPE_AND_TAG);
+                }
+                if (duplicateChecker.contains(stack)) continue;
+                builder.add(stack);
+                duplicateChecker.add(stack);
+            }
+            Stacks data = new Stacks(name, visible, builder.build(), id == -1 ? cachedId.getAndIncrement() : id);
+            data.lastRenderTime = lastRenderTime;
+            data.lastRenderIndex = lastRenderIndex;
+            data.duplicateChecker = duplicateChecker.clone();
+            return data;
+        }
+
+        public static Stacks of(ResourceLocation name, boolean visible, ItemStack... stacks) {
+            return of(name, visible, Arrays.asList(stacks));
+        }
+
+        public static Stacks of(ResourceLocation name, boolean visible, List<ItemStack> stacks) {
             int id = cachedId.getAndIncrement();
             Set<ItemStack> set = ItemStackLinkedSet.createTypeAndComponentsSet();
             for (ItemStack stack : stacks) {
@@ -130,9 +196,53 @@ public class GroupItem extends Item {
                 }
                 set.add(stack);
             }
-            Stacks stacks1 = new Stacks(visible, Lists.newArrayList(set));
-            stacks1.id = id;
-            return stacks1;
+            return new Stacks(name, visible, Lists.newArrayList(set), id);
+        }
+    }
+
+    public static BelongsTo belongsTo(String path) {
+        return new BelongsTo(Confluence.asResource(path));
+    }
+
+    public static CreativeModeTab.Output belongsTo(String path, CreativeModeTab.Output output) {
+        if (StartupConfigs.itemGroups()) {
+            return belongsTo(belongsTo(path), output);
+        }
+        return output;
+    }
+
+    public static CreativeModeTab.Output belongsTo(BelongsTo belongsTo, CreativeModeTab.Output output) {
+        if (StartupConfigs.itemGroups()) {
+            return (stack, tabVisibility) -> {
+                stack.set(ModDataComponentTypes.BELONGS_TO_GROUP, belongsTo);
+                output.accept(stack, tabVisibility);
+            };
+        }
+        return output;
+    }
+
+    public record BelongsTo(ResourceLocation name) implements DataComponentType<BelongsTo> {
+        public static final Codec<BelongsTo> CODEC = ResourceLocation.CODEC.xmap(BelongsTo::new, BelongsTo::name);
+        public static final StreamCodec<ByteBuf, BelongsTo> STREAM_CODEC = ResourceLocation.STREAM_CODEC.map(BelongsTo::new, BelongsTo::name);
+
+        @Override
+        public Codec<BelongsTo> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public StreamCodec<? super RegistryFriendlyByteBuf, BelongsTo> streamCodec() {
+            return STREAM_CODEC;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return o == this || (o instanceof BelongsTo(ResourceLocation rl) && rl.equals(name));
+        }
+
+        @Override
+        public int hashCode() {
+            return name.hashCode();
         }
     }
 
@@ -172,7 +282,7 @@ public class GroupItem extends Item {
                         return values.get(index++);
                     } else if (unfiltered.hasNext()) {
                         ItemStack element = unfiltered.next();
-                        if (element.is(instance)) {
+                        if (element.is(getInstance())) {
                             index = 0;
                             Stacks stacks = element.getOrDefault(ModDataComponentTypes.GROUP_STACKS, Stacks.EMPTY);
                             values = stacks.visible ? stacks.values : List.of();

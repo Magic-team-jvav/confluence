@@ -34,17 +34,18 @@ public class SableAbstractHookEntity {
 
         thiz.setPosRaw(position.x, position.y, position.z);
 
-        thiz.subLevel[0] = pose3dc;
+        thiz.sableData = new Object[2];
+        thiz.sableData[0] = pose3dc;
         Vector3dc pos = pose3dc.rotationPoint();
-        thiz.subLevel[1] = localPosition.subtract(pos.x(), pos.y(), pos.z());
+        thiz.sableData[1] = localPosition.subtract(pos.x(), pos.y(), pos.z());
 
         return SUCCESS;
     }
 
     public static void tick(AbstractHookEntity thiz) {
-        if (thiz.subLevel[0] instanceof Pose3dc pose && thiz.subLevel[1] instanceof Vec3 delta) {
+        if (thiz.sableData != null && thiz.sableData[0] instanceof Pose3dc pose && thiz.sableData[1] instanceof Vec3 delta) {
             Vector3d mutableDelta = new Vector3d(delta.x, delta.y, delta.z);
-            pose.rotationPoint().add(mutableDelta, mutableDelta);
+            mutableDelta.add(pose.rotationPoint());
             Vector3d pos = pose.transformPosition(mutableDelta);
             thiz.setPos(pos.x, pos.y, pos.z);
         }

@@ -1,14 +1,16 @@
 package org.confluence.mod.integration.terra_curio;
 
+import com.google.gson.JsonElement;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.terra_curio.TerraCurio;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public final class TCRemoval {
-    public static final List<ResourceLocation> RECIPES = Util.make(new ArrayList<>(), list -> {
+public final class TCHelper {
+    private static final List<ResourceLocation> RECIPES = Util.make(new ArrayList<>(), list -> {
         list.add(TerraCurio.asResource("blizzard_in_a_bottle"));
         list.add(TerraCurio.asResource("life_form_analyzer"));
         list.add(TerraCurio.asResource("obsidian_skull"));
@@ -24,4 +26,10 @@ public final class TCRemoval {
         list.add(TerraCurio.asResource("magic_mirror_from_gold_ingot"));
         list.add(TerraCurio.asResource("magic_mirror_from_platinum_ingot"));
     });
+
+    public static void processRecipes(Map<ResourceLocation, JsonElement> recipes) {
+        for (ResourceLocation recipe : RECIPES) {
+            recipes.remove(recipe);
+        }
+    }
 }

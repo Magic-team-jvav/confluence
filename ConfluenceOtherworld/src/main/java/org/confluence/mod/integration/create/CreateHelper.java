@@ -1,16 +1,22 @@
 package org.confluence.mod.integration.create;
 
+import com.google.common.collect.Multimap;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.apache.commons.lang3.mutable.MutableObject;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTabs;
 
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -45,6 +51,12 @@ public class CreateHelper {
     public static void acceptModels(Consumer<DeferredRegister.Items> consumer) {
         if (IS_LOADED) {
             consumer.accept(CreateHelper.ITEMS);
+        }
+    }
+
+    public static void buildRecipes(MutableObject<Map<ResourceLocation, RecipeHolder<?>>> byName, MutableObject<Multimap<RecipeType<?>, RecipeHolder<?>>> byType) {
+        if (IS_LOADED) {
+            FillingRecipeCreator.createShimmer(byName, byType);
         }
     }
 }

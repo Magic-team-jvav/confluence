@@ -4,13 +4,11 @@ import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModBoatTypes;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings("all")
@@ -66,11 +64,6 @@ public class BoatItems {
 
     private static DeferredItem<BoatItem> chestBoat(String name, Supplier<Boat.Type> type) {
         return CHEST_BOAT_ITEMS.register(name, () -> new BoatItem(true, type.get(), new Item.Properties().stacksTo(1)));
-    }
-
-    public static void forEach(Consumer<DeferredHolder<Item, ? extends Item>> action) {
-        BOAT_ITEMS.getEntries().forEach(action);
-        CHEST_BOAT_ITEMS.getEntries().forEach(action);
     }
 
     public static void register(IEventBus eventBus) {

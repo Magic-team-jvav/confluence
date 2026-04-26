@@ -41,7 +41,7 @@ public abstract class AbstractHookEntity extends Projectile {
     public float lastDelta = 0.0F;
 
     // region sable
-    public final Object[] subLevel = new Object[2];
+    public Object[] sableData;
     // endregion sable
 
     public AbstractHookEntity(EntityType<? extends AbstractHookEntity> entityType, Level pLevel) {

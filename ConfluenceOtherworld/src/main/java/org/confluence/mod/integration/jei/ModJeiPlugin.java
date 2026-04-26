@@ -7,6 +7,8 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
+import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.registration.*;
@@ -30,12 +32,14 @@ import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.common.menu.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.integration.jei.category.*;
@@ -49,7 +53,7 @@ public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
     public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
     public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
-    public static IJeiRuntime jeiRuntime;
+    public static @Nullable IJeiRuntime jeiRuntime;
 
     public static List<ToastComponent.ToastInstance<?>> filterAchievements(List<ToastComponent.ToastInstance<?>> original) {
         List<ToastComponent.ToastInstance<?>> list = new ArrayList<>(original);
@@ -184,6 +188,26 @@ public final class ModJeiPlugin implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         ModJeiPlugin.jeiRuntime = jeiRuntime;
+    }
+
+    @Override
+    public void onRuntimeUnavailable() {
+        ModJeiPlugin.jeiRuntime = null;
+    }
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistration registration) {
+        registration.registerSubtypeInterpreter(GroupItem.getInstance(), new ISubtypeInterpreter<>() {
+            @Override
+            public Object getSubtypeData(ItemStack ingredient, UidContext context) {
+                return ingredient.getOrDefault(ModDataComponentTypes.GROUP_STACKS, GroupItem.Stacks.EMPTY);
+            }
+
+            @Override
+            public String getLegacyStringSubtypeInfo(ItemStack ingredient, UidContext context) {
+                return getSubtypeData(ingredient, context).toString();
+            }
+        });
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

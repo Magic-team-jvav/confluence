@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin;
+package org.confluence.mod.mixin.accessor;
 
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.world.entity.*;

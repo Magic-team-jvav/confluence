@@ -59,7 +59,7 @@ public final class ModRecipes {
     public static final Supplier<RecipeSerializer<?>> CRYSTAL_BALL_SERIALIZER = SERIALIZERS.register("crystal_ball", CrystalBallRecipe.Serializer::new);
     public static final Supplier<RecipeType<HardmodeAnvilRecipe>> HARDMODE_ANVIL_TYPE = registerType("hardmode_anvil");
     public static final Supplier<RecipeSerializer<?>> HARDMODE_ANVIL_SERIALIZER = SERIALIZERS.register("hardmode_anvil", HardmodeAnvilRecipe.Serializer::new);
-    public static final Supplier<RecipeType<ItemTransmutationRecipe>> ITEM_TRANSMUTATION_TYPE = registerType("item_transmutation");
+    public static final DeferredHolder<RecipeType<?>, RecipeType<ItemTransmutationRecipe>> ITEM_TRANSMUTATION_TYPE = registerType("item_transmutation");
     public static final Supplier<RecipeSerializer<?>> ITEM_TRANSMUTATION_SERIALIZER = SERIALIZERS.register("item_transmutation", ItemTransmutationRecipe.Serializer::new);
     public static final Supplier<RecipeType<HardmodeForgeRecipe>> HARDMODE_FORGE_TYPE = registerType("hardmode_forge");
     public static final Supplier<RecipeSerializer<?>> HARDMODE_FORGE_SERIALIZER = SERIALIZERS.register("hardmode_forge", HardmodeForgeRecipe.Serializer::new);
@@ -72,7 +72,7 @@ public final class ModRecipes {
 
     public static final DeferredHolder<RecipeSerializer<?>, DragonPepperExtractingRecipe.Serializer> DRAGON_PEPPER_EXTRACTING_SERIALIZER = SERIALIZERS.register("dragon_pepper_extracting", DragonPepperExtractingRecipe.Serializer::new);
 
-    private static <R extends Recipe<?>> Supplier<RecipeType<R>> registerType(String id) {
+    private static <R extends Recipe<?>> DeferredHolder<RecipeType<?>, RecipeType<R>> registerType(String id) {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {
             @Override
             public String toString() {

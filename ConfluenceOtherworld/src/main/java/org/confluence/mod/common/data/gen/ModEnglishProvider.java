@@ -8,9 +8,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -31,7 +30,6 @@ import org.confluence.terraentity.utils.RecipeDrawerUtils;
 
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class ModEnglishProvider extends LanguageProvider {
     CompletableFuture<HolderLookup.Provider> lookup;
@@ -1158,7 +1156,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.minecraft.zombie.raincoat", "Raincoat Zombie");
         add("entity.minecraft.zombie.frozen", "Frost Zombie");
         add("entity.terra_entity.duck.0", "Wild Duck");
-        add("entity.terra_entity.duck.1", "Duck");;
+        add("entity.terra_entity.duck.1", "Duck");
         add("entity.terra_entity.demon_eye.dilated", "Dilated Demon Eye");
         add("entity.terra_entity.demon_eye.dilated_small", "Small Dilated Demon Eye");
         add("entity.terra_entity.demon_eye.sleepy", "Sleepy Demon Eye");
@@ -1250,57 +1248,57 @@ public class ModEnglishProvider extends LanguageProvider {
         add("description.confluence.secret_seeds_selection.really_small", "I get all the reasons, but why is this bird so big?");
         add("title.confluence.secret_seeds_selection.too_easy", "Too Easy");
         add("description.confluence.secret_seeds_selection.too_easy", "So, you have elected the way of pain... (World starts in Hardmode)");
-        Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
-        ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
-        CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
-        DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);
-        FunctionalBlocks.BLOCKS.getEntries().forEach(blockAction);
-        ModBlocks.BLOCKS.getEntries().forEach(blockAction);
-        NatureBlocks.BLOCKS.getEntries().forEach(blockAction);
-        OreBlocks.BLOCKS.getEntries().forEach(blockAction);
-        PotBlocks.BLOCKS.getEntries().forEach(blockAction);
-        StatueBlocks.BLOCKS.getEntries().forEach(blockAction);
 
-        Consumer<DeferredHolder<Item, ? extends Item>> itemAction = item -> add(item.get(), LibUtils.toTitleCase(item.getId().getPath()));
-        AccessoryItems.ITEMS.getEntries().forEach(itemAction);
-        ArmorItems.ITEMS.getEntries().forEach(itemAction);
-        ArrowItems.ITEMS.getEntries().forEach(itemAction);
-        AxeItems.ITEMS.getEntries().forEach(itemAction);
-        BaitItems.ITEMS.getEntries().forEach(itemAction);
-        BoatItems.forEach(itemAction);
-        BowItems.ITEMS.getEntries().forEach(itemAction);
-        ChainsawItems.ITEMS.getEntries().forEach(itemAction);
-        ConsumableItems.ITEMS.getEntries().forEach(itemAction);
-        CrossbowItems.ITEMS.getEntries().forEach(itemAction);
-        VanityArmorItems.ITEMS.getEntries().forEach(itemAction);
-        DrillItems.ITEMS.getEntries().forEach(itemAction);
-        FishingPoleItems.ITEMS.getEntries().forEach(itemAction);
-        FoodItems.ITEMS.getEntries().forEach(itemAction);
-        HamaxeItems.ITEMS.getEntries().forEach(itemAction);
-        HoeShovelItems.ITEMS.getEntries().forEach(itemAction);
-        HammerItems.ITEMS.getEntries().forEach(itemAction);
-        HoeItems.ITEMS.getEntries().forEach(itemAction);
-        HookItems.ITEMS.getEntries().forEach(itemAction);
-        IconItems.ITEMS.getEntries().forEach(itemAction);
-        LanceItems.ITEMS.getEntries().forEach(itemAction);
-        LightPetItems.ITEMS.getEntries().forEach(itemAction);
-        ManaWeaponItems.ITEMS.getEntries().forEach(itemAction);
-        MaterialItems.ITEMS.getEntries().forEach(itemAction);
-        MinecartItems.ITEMS.getEntries().forEach(itemAction);
-        ModItems.ITEMS.getEntries().forEach(itemAction);
-        ModItems.HIDDEN.getEntries().forEach(itemAction);
-        ModItems.BLOCK_ITEMS.getEntries().forEach(itemAction);
-        PaintItems.ITEMS.getEntries().forEach(itemAction);
-        PickaxeAxeItems.ITEMS.getEntries().forEach(itemAction);
-        PickaxeItems.ITEMS.getEntries().forEach(itemAction);
-        PotionItems.ITEMS.getEntries().forEach(itemAction);
-        QuestedFishes.ITEMS.getEntries().forEach(itemAction);
-        ShovelItems.ITEMS.getEntries().forEach(itemAction);
-        SwordItems.ITEMS.getEntries().forEach(itemAction);
-        SpearItems.ITEMS.getEntries().forEach(itemAction);
-        ToolItems.ITEMS.getEntries().forEach(itemAction);
-        TreasureBagItems.ITEMS.getEntries().forEach(itemAction);
-        GunItems.ITEMS.getEntries().forEach(itemAction);
+        addAll(ChestBlocks.BLOCKS);
+        addAll(CrateBlocks.BLOCKS);
+        addAll(DecorativeBlocks.BLOCKS);
+        addAll(FunctionalBlocks.BLOCKS);
+        addAll(ModBlocks.BLOCKS);
+        addAll(NatureBlocks.BLOCKS);
+        addAll(OreBlocks.BLOCKS);
+        addAll(PotBlocks.BLOCKS);
+        addAll(StatueBlocks.BLOCKS);
+
+        addAll(AccessoryItems.ITEMS);
+        addAll(ArmorItems.ITEMS);
+        addAll(ArrowItems.ITEMS);
+        addAll(AxeItems.ITEMS);
+        addAll(BaitItems.ITEMS);
+        addAll(BoatItems.BOAT_ITEMS);
+        addAll(BoatItems.CHEST_BOAT_ITEMS);
+        addAll(BowItems.ITEMS);
+        addAll(ChainsawItems.ITEMS);
+        addAll(ConsumableItems.ITEMS);
+        addAll(CrossbowItems.ITEMS);
+        addAll(VanityArmorItems.ITEMS);
+        addAll(DrillItems.ITEMS);
+        addAll(FishingPoleItems.ITEMS);
+        addAll(FoodItems.ITEMS);
+        addAll(HamaxeItems.ITEMS);
+        addAll(HoeShovelItems.ITEMS);
+        addAll(HammerItems.ITEMS);
+        addAll(HoeItems.ITEMS);
+        addAll(HookItems.ITEMS);
+        addAll(IconItems.ITEMS);
+        addAll(LanceItems.ITEMS);
+        addAll(LightPetItems.ITEMS);
+        addAll(ManaWeaponItems.ITEMS);
+        addAll(MaterialItems.ITEMS);
+        addAll(MinecartItems.ITEMS);
+        addAll(ModItems.ITEMS);
+        addAll(ModItems.HIDDEN);
+        addAll(ModItems.BLOCK_ITEMS);
+        addAll(PaintItems.ITEMS);
+        addAll(PickaxeAxeItems.ITEMS);
+        addAll(PickaxeItems.ITEMS);
+        addAll(PotionItems.ITEMS);
+        addAll(QuestedFishes.ITEMS);
+        addAll(ShovelItems.ITEMS);
+        addAll(SwordItems.ITEMS);
+        addAll(SpearItems.ITEMS);
+        addAll(ToolItems.ITEMS);
+        addAll(TreasureBagItems.ITEMS);
+        addAll(GunItems.ITEMS);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));
@@ -1491,5 +1489,13 @@ public class ModEnglishProvider extends LanguageProvider {
 
     private String formatString(String name) {
         return RecipeDrawerUtils.formatString(name);
+    }
+
+    private void addAll(DeferredRegister.Items register) {
+        register.getEntries().forEach(item -> add(item.get(), LibUtils.toTitleCase(item.getId().getPath())));
+    }
+
+    private void addAll(DeferredRegister.Blocks register) {
+        register.getEntries().forEach(block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath())));
     }
 }

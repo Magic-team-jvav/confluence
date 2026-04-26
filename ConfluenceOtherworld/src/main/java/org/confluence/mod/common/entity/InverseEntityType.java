@@ -12,7 +12,7 @@ import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
-import org.confluence.mod.mixin.EntityType$BuilderAccessor;
+import org.confluence.mod.mixin.accessor.EntityType$BuilderAccessor;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;

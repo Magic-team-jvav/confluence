@@ -19,7 +19,7 @@ public class FilterEntry {
     public static final FilterEntry DESERT = register("desert", 30, 48, 1, 9, 12);
     public static final FilterEntry UNDERGROUND_DESERT = register("underground_desert", 40, 62, 2, 13, 12);
     public static final FilterEntry SNOW = register("snow", 50, 77, 1, 12, 14);
-    public static final FilterEntry UNDERGROUND_SNOW = register("underground_snow", 60, 92, 1, 13, 13);
+    public static final FilterEntry ICE = register("ice", 60, 92, 1, 13, 13);
     public static final FilterEntry THE_CORRUPTION = register("the_corruption", 70, 107, 2, 12, 11);
     public static final FilterEntry UNDERGROUND_CORRUPTION = register("underground_corruption", 80, 122, 1, 13, 13);
     public static final FilterEntry CORRUPT_DESERT = register("corrupt_desert", 90, 138, 2, 9, 12);

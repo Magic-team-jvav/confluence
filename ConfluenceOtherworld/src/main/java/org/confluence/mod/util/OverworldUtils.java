@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
@@ -160,5 +161,38 @@ public final class OverworldUtils {
     /// default -64
     public static int getCaveY() {
         return -60;
+    }
+
+    public static boolean isDesert(Holder<Biome> holder) {
+        return holder.is(Tags.Biomes.IS_DESERT);
+    }
+
+    /// 对应泰拉的地表雪原和地下雪原，由于MC的这两个群系不以高度为判据，所以使用的时候请先用该方法判断是否是雪原,再以y轴高度判断
+    public static boolean isSnowy(Holder<Biome> holder) {
+        return holder.is(Tags.Biomes.IS_SNOWY) || holder.is(Tags.Biomes.IS_ICY);
+    }
+
+    public static boolean isOcean(Holder<Biome> holder) {
+        return holder.is(Tags.Biomes.IS_OCEAN);
+    }
+
+    public static boolean isJungle(Holder<Biome> holder) {
+        return holder.is(Tags.Biomes.IS_JUNGLE);
+    }
+
+    public static boolean isMushroom(Holder<Biome> holder) {
+        return holder.is(ModBiomes.GLOWING_MUSHROOM);
+    }
+
+    public static boolean isCorruption(Holder<Biome> holder) {
+        return holder.is(ModTags.Biomes.THE_CORRUPTION);
+    }
+
+    public static boolean isCrimson(Holder<Biome> holder) {
+        return holder.is(ModTags.Biomes.THE_CRIMSON);
+    }
+
+    public static boolean isHallow(Holder<Biome> holder) {
+        return holder.is(ModTags.Biomes.THE_HALLOW);
     }
 }

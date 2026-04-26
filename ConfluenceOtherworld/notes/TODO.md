@@ -157,7 +157,6 @@
 - “关闭了配置：死亡掉落金币，然后复活之后虽然背包里的金币没少， 但是还是会掉落一份钱，然后一死就会获得双倍的金币”（需要复现）
 - NPC花费储蓄罐的钱币失效（疑似模组冲突，未查明原因）
 
-
 #### 已结案问题 (搬运这里的内容请不要把这个标题删掉，谢谢) (越靠上越新)
 
 ## 其它
@@ -173,16 +172,16 @@
 - 重构鞭子并改为左键
 - 渔夫任务改为全局（这需要重构罢）
 - 左右键统一：
-  - 战士武器统一为左键，法师武器右键，鞭子左键，召唤杖右键
-  - 射手武器，投掷武器右键（由于枪可调整，所以不算，默认左键）
-  - 符合“挥舞”左，使用“右”的统一
+    - 战士武器统一为左键，法师武器右键，鞭子左键，召唤杖右键
+    - 射手武器，投掷武器右键（由于枪可调整，所以不算，默认左键）
+    - 符合“挥舞”左，使用“右”的统一
 - 优化地牢尖刺的摆放（现在的太jb卡了）
 - 1.4.5更改
-  - 死人毛衣具有4防御，效果：陷阱造成的伤害和减益时间减少50%，最多减少78点伤害
-  - 蜂窝，混沌之脑，不再因受到非敌方危险物伤害而触发。
-  - 使用熔线钓竿，且饰品有防熔岩钓钩或防熔岩渔具袋时，提高上鱼速度50%
-  - 踉跄效果能提高排便的速度75%
-  - 利器站给予的盔甲穿透效果只适用于近战武器和投掷物品
+    - 死人毛衣具有4防御，效果：陷阱造成的伤害和减益时间减少50%，最多减少78点伤害
+    - 蜂窝，混沌之脑，不再因受到非敌方危险物伤害而触发。
+    - 使用熔线钓竿，且饰品有防熔岩钓钩或防熔岩渔具袋时，提高上鱼速度50%
+    - 踉跄效果能提高排便的速度75%
+    - 利器站给予的盔甲穿透效果只适用于近战武器和投掷物品
 
 - 只在有WayStone时卖晶塔改成正常售卖但WayStone不存在时仅提示语
 - 晶塔在WayStone不存在时正常售卖，交互改成提示WayStone缺失(古老的法术连结需要更多信息)
@@ -202,96 +201,90 @@
 | 肉前 | 1/3       | 1/30          |
 | 肉后 | 1/3       | 1/60          |
 
-
 - （bug表现）如果是一个已经确定是猩红的世界，点“重建”之后在世界生成里生成选项改成“腐化之地”，这个世界的邪恶祭坛依然是猩红祭坛，但是邪恶地形是正常改成腐化的
 
 
-
-
-
-
- 
-
 - 待加入：
-  - 虚空背包
-  - 解压球
+    - 虚空背包
+    - 解压球
 - 特殊种子：
-  - 饥荒世界新增饥饿条归0立刻死亡
-  - ftw世界挖树叶掉落炸弹改为掉落闪电苦力怕
-  - 优化no_traps的幽匿陷阱（加CD或是只检测玩家发出的声音）
+    - 饥荒世界新增饥饿条归0立刻死亡
+    - ftw世界挖树叶掉落炸弹改为掉落闪电苦力怕
+    - 优化no_traps的幽匿陷阱（加CD或是只检测玩家发出的声音）
 - 秘密种子：
 - 泰拉的：
-  - does that sparkle(does_that_sparkle)
-    - 自然生成神圣之地
+    - does that sparkle(does_that_sparkle)
+        - 自然生成神圣之地
 
-  - fish mox(fish_mox)
-    - 不生成邪恶
+    - fish mox(fish_mox)
+        - 不生成邪恶
 
-  - more traps please(more_traps_please)
-    - 没有陷阱
+    - more traps please(more_traps_please)
+        - 没有陷阱
 
-  - hocus pocus(hocus_pocus)
-    - 常驻万圣节
+    - hocus pocus(hocus_pocus)
+        - 常驻万圣节
 
-  - jingle all the way(jingle_all_the_way)
-    - 常驻圣诞节
+    - jingle all the way(jingle_all_the_way)
+        - 常驻圣诞节
 
-  - too easy(too_easy)
-    - 开局困难模式
+    - too easy(too_easy)
+        - 开局困难模式
 
-  - what a horrible night to have a curse(what_a_horrible_night_to_have_a_curse)
-    - 玩家在地下生成
-    - 地下具有火把地物
-    - 被阳光照到会迅速降低生命值
+    - what a horrible night to have a curse(what_a_horrible_night_to_have_a_curse)
+        - 玩家在地下生成
+        - 地下具有火把地物
+        - 被阳光照到会迅速降低生命值
 
 - 原创的：
-  - it's so hot in here(its_so_hot_in_here)
-    - 每隔五分钟给予一次无限时长的干噎，干噎造成的伤害提高40点
-    - 开局给个空瓶子
-    - 玩家移动（300-600）格就会自燃一次
+    - it's so hot in here(its_so_hot_in_here)
+        - 每隔五分钟给予一次无限时长的干噎，干噎造成的伤害提高40点
+        - 开局给个空瓶子
+        - 玩家移动（300-600）格就会自燃一次
 
-  - elbow strike the ground(elbow_strike_the_ground)
-    - 玩家总是处于重力翻转的状态（不喝重力药水不能翻回来）
-    - 摔落伤害提高40点
-    - 玩家移动到y330以上时会死亡
-    - 开局头顶（即脚底）会生成一块木板
+    - elbow strike the ground(elbow_strike_the_ground)
+        - 玩家总是处于重力翻转的状态（不喝重力药水不能翻回来）
+        - 摔落伤害提高40点
+        - 玩家移动到y330以上时会死亡
+        - 开局头顶（即脚底）会生成一块木板
 
-  - satan's bolete(satans_bolete)
-    - 吃什么喝什么都会被额外赋予一个随机时长（3秒-12分钟）的随机效果
+    - satan's bolete(satans_bolete)
+        - 吃什么喝什么都会被额外赋予一个随机时长（3秒-12分钟）的随机效果
 
-  - dave's front yard(daves_front_yard)
-    - 常驻灵雾
+    - dave's front yard(daves_front_yard)
+        - 常驻灵雾
 
-  - heartbroken(heartbroken)
-    - 玩家死亡会重置生命水晶加成
+    - heartbroken(heartbroken)
+        - 玩家死亡会重置生命水晶加成
 
-  - act three abyss(act_three_abyss)
-    - 被怪物击中后会在2秒内损失20魔力
-    - 怪物变黑（纯视觉效果）
-    - 怪物的血量x1.0~1.5
-    - 怪物的刷新量减少
-    - 怪物会产生一个本体不死它就不死的黑影
+    - act three abyss(act_three_abyss)
+        - 被怪物击中后会在2秒内损失20魔力
+        - 怪物变黑（纯视觉效果）
+        - 怪物的血量x1.0~1.5
+        - 怪物的刷新量减少
+        - 怪物会产生一个本体不死它就不死的黑影
 
-  - Paper Water Bucket and Face Mask(paper_water_bucket_and_face_mask)
-    - 受伤会获得debuff 破甲 持续40秒，再次获得会升级并刷新时长
-    - 破甲存在时，每级失去2/4/6/8点护甲值
-    - 破甲可以叠加20级
+    - Paper Water Bucket and Face Mask(paper_water_bucket_and_face_mask)
+        - 受伤会获得debuff 破甲 持续40秒，再次获得会升级并刷新时长
+        - 破甲存在时，每级失去2/4/6/8点护甲值
+        - 破甲可以叠加20级
 
 
 - 来自Discord
-  - Other mod furniture compat with NPC housing
-  - you can use the spear and yoyos while shielding
-  - Can we add sheeps name jeb_ in the hallow and make them drop rainbow wool? Seem relatable
+    - Other mod furniture compat with NPC housing
+    - you can use the spear and yoyos while shielding
+    - Can we add sheeps name jeb_ in the hallow and make them drop rainbow wool? Seem relatable
 
 优化列表：
 
 - 巨鹿需要加点跳跃
 - 1.4.5相关：
-  - 改版光剑，颌骨剑，骨剑，骨镐，僵尸臂
-  - 泰拉闪电以及相关配置
-  - tooltip“可与导线连接”（我还没写）
-  - tooltip“可提炼”（我还没写）
-  - 单个套装部件的提示信息中会显示套装奖励。
+    - 改版光剑，颌骨剑，骨剑，骨镐，僵尸臂
+    - 泰拉闪电以及相关配置
+    - tooltip“可与导线连接”（我还没写）
+    - tooltip“可提炼”（我还没写）
+    - 单个套装部件的提示信息中会显示套装奖励。
+- 玻璃瓶能装汇流蜂蜜
 
 # 附属bug存放处
 
@@ -322,33 +315,33 @@
 - **类型**：法师武器
 - **获取位置**：空岛村 - 讲台下方
 - **特殊机制**：
-  - 无法攻击，需先“寻找遗落的蕴魔书页”解锁功能
-  - 五种书页对应五种弹幕，弹幕外观为附魔文字
-  - 每种弹幕对应独特的伤害类型和粒子效果
+    - 无法攻击，需先“寻找遗落的蕴魔书页”解锁功能
+    - 五种书页对应五种弹幕，弹幕外观为附魔文字
+    - 每种弹幕对应独特的伤害类型和粒子效果
 
 ## 星钢剑
 
 - **类型**：战士武器
 - **获取位置**：空岛村 - 铁匠铺（小概率生成）
 - **特殊效果**：
-  - 拾取魔力星后1秒内，触发2.5倍伤害暴击
-  - 轻击敌怪时，概率使敌怪掉落魔力星
+    - 拾取魔力星后1秒内，触发2.5倍伤害暴击
+    - 轻击敌怪时，概率使敌怪掉落魔力星
 
 ## 稻草人
 
 - **类型**：射手武器
 - **获取位置**：空岛村 - 鸟妖应对岗（概率生成）
 - **核心能力**：
-  - 蓄力射击可驱离鸟妖（使鸟妖远离）
-  - 对飞行单位造成1.5倍伤害
+    - 蓄力射击可驱离鸟妖（使鸟妖远离）
+    - 对飞行单位造成1.5倍伤害
 
 ## 日盘操作器
 
 - **类型**：召唤武器
 - **获取位置**：云舶兽停岗
 - **召唤物特性**：
-  - 日盘傀儡
-  - 日盘傀儡在夜间造成1.5倍伤害
+    - 日盘傀儡
+    - 日盘傀儡在夜间造成1.5倍伤害
 
 ## 通用机制：星象影响
 

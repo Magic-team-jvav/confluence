@@ -25,6 +25,26 @@ jobs:
           java-version: 21
           cache: "gradle"
 
+      # 新增：为所有子模块创建缺失的 settings.gradle，使其能独立解析插件
+      - name: Ensure submodule settings.gradle
+        run: |
+          # 需要添加 settings.gradle 的子模块列表（根据项目实际 include 的模块名）
+          SUBMODULES="Confluence-Magic-Lib TerraEntity TerraCurio TerraGuns TerraFurniture TheTrackers"
+          for mod in $SUBMODULES; do
+            if [ -d "$mod" ] && [ ! -f "$mod/settings.gradle" ]; then
+              cat > "$mod/settings.gradle" << 'EOF'
+              pluginManagement {
+                  repositories {
+                      gradlePluginPortal()
+                      maven { url = "https://maven.neoforged.net/releases" }
+                      maven { url = "https://maven.firstdark.dev/releases" }
+                  }
+              }
+              EOF
+              echo "Created $mod/settings.gradle"
+            fi
+          done
+
       - name: Prepare Permissions and Assets
         run: |
           find . -name "gradlew" -exec chmod +x {} +

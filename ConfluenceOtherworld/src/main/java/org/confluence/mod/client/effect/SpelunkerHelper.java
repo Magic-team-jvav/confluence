@@ -55,9 +55,7 @@ import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock
 public class SpelunkerHelper extends AbstractBufferManager {
     /// 调参表
     public int range = 30; // 球形侦测范围
-    public int textRange = 30; // 球形显示文本范围
     public float maxAlpha = 0.8f; // 边框最大alpha(0 - 1)
-    public int textRenderType = 0; // 0表示文字面向玩家,默认是摄像机方向
     public int centerInternal = 50; // 中心块间距的平方
 
     private final Map<Block, Entry> targets = new HashMap<>();
@@ -313,7 +311,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putMaterialTarget(LUNARTEAR_ORE.get(), 0x4bbcff, true, ShowType.SPELUNKER, LUNARTEAR);
         putMaterialTarget(DRAGONSAL_ORE.get(), 0xe300e9, true, ShowType.SPELUNKER, DRAGONSAL);
 
-        // 新三矿 todo仅敲除祭坛后可探测
+        // 新三矿
         putMaterialTarget(DEEPSLATE_COBALT_ORE.get(), 0x0060e9, true, ShowType.SPELUNKER, RAW_COBALT);
         putMaterialTarget(DEEPSLATE_PALLADIUM_ORE.get(), 0xe97500, true, ShowType.SPELUNKER, RAW_PALLADIUM);
         putMaterialTarget(DEEPSLATE_MYTHRIL_ORE.get(), 0x00e9ae, true, ShowType.SPELUNKER, RAW_MYTHRIL);

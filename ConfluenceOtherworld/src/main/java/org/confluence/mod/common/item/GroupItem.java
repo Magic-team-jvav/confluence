@@ -1,8 +1,6 @@
 package org.confluence.mod.common.item;
 
 import com.google.common.collect.AbstractIterator;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenCustomHashSet;
@@ -50,14 +48,6 @@ public class GroupItem extends Item {
         return BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(tab).map(GroupItem::isInvalidCreativeModeTab).orElse(false);
     }
 
-    /// Only In Client
-    public static int getGroupId(ItemStack stack) {
-        if (stack.is(getInstance())) {
-            return stack.getOrDefault(ModDataComponentTypes.GROUP_STACKS, GroupItem.Stacks.EMPTY).getId();
-        }
-        return IClientItemStack.of(stack).confluence$getGroupId();
-    }
-
     public static ItemStack of(ResourceLocation name, ItemStack... stacks) {
         return of(name, Arrays.asList(stacks));
     }
@@ -76,21 +66,21 @@ public class GroupItem extends Item {
     }
 
     public static class Stacks implements DataComponentType<Stacks> {
-        public static final Stacks EMPTY = new Stacks(Confluence.asResource("empty"), false, List.of(), -1);
+        public static final Stacks EMPTY = new Stacks(Confluence.asResource("empty"), false, new ItemStack[0], -1);
         public static final Codec<Stacks> CODEC = Codec.unit(EMPTY);
         public static final StreamCodec<ByteBuf, Stacks> STREAM_CODEC = StreamCodec.unit(EMPTY);
         private static final AtomicInteger cachedId = new AtomicInteger();
 
-        public transient long lastRenderTime;
-        public transient int lastRenderIndex;
         private transient ObjectLinkedOpenCustomHashSet<ItemStack> duplicateChecker;
+        private transient int lastIndex;
+        private transient long lastAdvanceTime;
 
         private transient final ResourceLocation name;
         private transient final boolean visible;
-        private transient final List<ItemStack> values;
+        private transient final ItemStack[] values;
         private transient final int id;
 
-        private Stacks(ResourceLocation name, boolean visible, List<ItemStack> values, int id) {
+        private Stacks(ResourceLocation name, boolean visible, ItemStack[] values, int id) {
             this.name = name;
             this.visible = visible;
             this.values = values;
@@ -111,8 +101,25 @@ public class GroupItem extends Item {
         }
 
         @Unmodifiable
-        public List<ItemStack> getValues() {
+        public ItemStack[] getValues() {
             return values;
+        }
+
+        public ItemStack getCurrentRendered(long currentAdvanceTime) {
+            int length = values.length;
+            if (length == 0) {
+                return ItemStack.EMPTY;
+            }
+            if (length == 1) {
+                return values[0];
+            }
+            if (currentAdvanceTime != lastAdvanceTime) {
+                this.lastAdvanceTime = currentAdvanceTime;
+                if (++lastIndex >= length) {
+                    this.lastIndex = 0;
+                }
+            }
+            return values[lastIndex];
         }
 
         public int getId() {
@@ -148,37 +155,32 @@ public class GroupItem extends Item {
             return "Stacks{" +
                     "name=" + name +
                     ", visible=" + visible +
-                    ", values=" + values +
+                    ", values=" + Arrays.toString(values) +
                     ", id=" + id +
                     '}';
         }
 
         public Stacks toggleVisibility() {
-            Stacks stacks = new Stacks(name, !visible, values, id == -1 ? cachedId.getAndIncrement() : id);
-            stacks.lastRenderTime = lastRenderTime;
-            stacks.lastRenderIndex = lastRenderIndex;
-            return stacks;
+            return new Stacks(name, !visible, values, id == -1 ? cachedId.getAndIncrement() : id);
         }
 
         public Stacks withValues(ItemStack... stacks) {
-            return withValues(Arrays.asList(stacks));
-        }
-
-        public Stacks withValues(List<ItemStack> stacks) {
-            if (stacks.isEmpty()) return this;
-            ImmutableList.Builder<ItemStack> builder = ImmutableList.builder();
-            builder.addAll(values);
+            if (stacks.length == 0) return this;
+            ItemStack[] src = new ItemStack[values.length + stacks.length];
+            System.arraycopy(values, 0, src, 0, values.length);
+            int i = 0;
             for (ItemStack stack : stacks) {
                 if (duplicateChecker == null) {
                     this.duplicateChecker = new ObjectLinkedOpenCustomHashSet<>(values, ItemStackLinkedSet.TYPE_AND_TAG);
                 }
                 if (duplicateChecker.contains(stack)) continue;
-                builder.add(stack);
+                src[values.length + i] = stack;
                 duplicateChecker.add(stack);
+                ++i;
             }
-            Stacks data = new Stacks(name, visible, builder.build(), id == -1 ? cachedId.getAndIncrement() : id);
-            data.lastRenderTime = lastRenderTime;
-            data.lastRenderIndex = lastRenderIndex;
+            ItemStack[] dest = new ItemStack[values.length + i];
+            System.arraycopy(src, 0, dest, 0, dest.length);
+            Stacks data = new Stacks(name, visible, dest, id == -1 ? cachedId.getAndIncrement() : id);
             data.duplicateChecker = duplicateChecker.clone();
             return data;
         }
@@ -196,7 +198,7 @@ public class GroupItem extends Item {
                 }
                 set.add(stack);
             }
-            return new Stacks(name, visible, Lists.newArrayList(set), id);
+            return new Stacks(name, visible, set.toArray(ItemStack[]::new), id);
         }
     }
 
@@ -273,19 +275,19 @@ public class GroupItem extends Item {
             Iterator<ItemStack> unfiltered = delegate.iterator();
             return new AbstractIterator<>() {
                 int index = 0;
-                List<ItemStack> values = List.of();
+                ItemStack[] values = new ItemStack[0];
 
                 @Override
                 @CheckForNull
                 protected ItemStack computeNext() {
-                    if (index < values.size()) {
-                        return values.get(index++);
+                    if (index < values.length) {
+                        return values[index++];
                     } else if (unfiltered.hasNext()) {
                         ItemStack element = unfiltered.next();
                         if (element.is(getInstance())) {
                             index = 0;
                             Stacks stacks = element.getOrDefault(ModDataComponentTypes.GROUP_STACKS, Stacks.EMPTY);
-                            values = stacks.visible ? stacks.values : List.of();
+                            values = stacks.visible ? stacks.values : new ItemStack[0];
                             return element;
                         }
                         return element;

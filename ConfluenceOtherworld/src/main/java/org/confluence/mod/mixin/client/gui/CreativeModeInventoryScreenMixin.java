@@ -25,19 +25,29 @@ public abstract class CreativeModeInventoryScreenMixin implements SelfGetter<Cre
     private static CreativeModeTab selectedTab;
 
     @Unique
-    private CreativeModeTab confluence$lastCreativeModeTab = selectedTab;
+    private CreativeModeTab confluence$lastCreativeModeTab;
 
     @Shadow
     protected abstract void refreshCurrentTabContents(Collection<ItemStack> items);
 
-    @Inject(method = "containerTick", at = @At("HEAD"))
-    private void check(CallbackInfo ci) {
+    @Unique
+    private void confluence$check() {
         if (confluence$lastCreativeModeTab != selectedTab) {
             this.confluence$lastCreativeModeTab = selectedTab;
             IAbstractContainerScreen.of(confluence$self()).confluence$setShouldRenderGroupBackground(
                     StartupConfigs.itemGroups() && !GroupItem.isInvalidCreativeModeTab(selectedTab)
             );
         }
+    }
+
+    @Inject(method = "init", at = @At("TAIL"))
+    private void onInit(CallbackInfo ci) {
+        confluence$check();
+    }
+
+    @Inject(method = "containerTick", at = @At("HEAD"))
+    private void onTick(CallbackInfo ci) {
+        confluence$check();
     }
 
     @Inject(method = "slotClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen$ItemPickerMenu;getCarried()Lnet/minecraft/world/item/ItemStack;", ordinal = 7), cancellable = true)

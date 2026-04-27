@@ -11,8 +11,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.GroupItem;
 
-import java.util.List;
-
 public class GroupItemExtension implements IClientItemExtensions {
     public static final GroupItemExtension INSTANCE = new GroupItemExtension();
     private BlockEntityWithoutLevelRenderer renderer;
@@ -28,18 +26,10 @@ public class GroupItemExtension implements IClientItemExtensions {
                 public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
                     GroupItem.Stacks stacks = stack.get(ModDataComponentTypes.GROUP_STACKS);
                     if (stacks == null) return;
-                    List<ItemStack> values = stacks.getValues();
-                    int size = values.size();
-                    if (size == 0) return;
-                    long time = System.currentTimeMillis();
-                    if (time - stacks.lastRenderTime >= 1000) {
-                        stacks.lastRenderTime = time;
-                        if (++stacks.lastRenderIndex >= size) {
-                            stacks.lastRenderIndex = 0;
-                        }
-                    }
-                    ItemStack itemStack = values.get(stacks.lastRenderIndex);
+                    long time = minecraft.level == null ? System.currentTimeMillis() / 1000 : minecraft.level.getGameTime() / 20;
+                    ItemStack itemStack = stacks.getCurrentRendered(time);
                     BakedModel bakedModel = minecraft.getItemRenderer().getModel(itemStack, minecraft.level, minecraft.player, 251014);
+
                     poseStack.pushPose();
                     poseStack.translate(0.5F, 0.5F, 0.5F);
                     minecraft.getItemRenderer().render(itemStack, displayContext, false, poseStack, buffer, packedLight, packedOverlay, bakedModel);

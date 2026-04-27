@@ -178,8 +178,10 @@ public class LogBlockSet {
 
         for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
             boolean ignitedByLava = blockSet.ignitedByLava;
-            Block planksBlock = blockSet.PLANKS.get();
-            planks.add(planksBlock);
+            {
+                Block value = blockSet.PLANKS.get();
+                planks.add(value);
+            }
             if (blockSet.LOG.isBound()) {
                 Block value = blockSet.LOG.get();
                 completes.add(value);
@@ -284,54 +286,34 @@ public class LogBlockSet {
     }
 
     public static void acceptBuilding(CreativeModeTab.Output output) {
-        CreativeModeTab.Output planks = GroupItem.belongsTo("planks", output);
-        CreativeModeTab.Output strippedLog = GroupItem.belongsTo("stripped_log", output);
-        CreativeModeTab.Output wood = GroupItem.belongsTo("wood", output);
-        CreativeModeTab.Output strippedWood = GroupItem.belongsTo("stripped_wood", output);
-        CreativeModeTab.Output button = GroupItem.belongsTo("button", output);
-        CreativeModeTab.Output fence = GroupItem.belongsTo("fence", output);
-        CreativeModeTab.Output fenceGate = GroupItem.belongsTo("fence_gate", output);
-        CreativeModeTab.Output pressurePlate = GroupItem.belongsTo("pressure_plate", output);
-        CreativeModeTab.Output slab = GroupItem.belongsTo("slab", output);
-        CreativeModeTab.Output stairs = GroupItem.belongsTo("stairs", output);
-        CreativeModeTab.Output sign = GroupItem.belongsTo("sign", output);
-        CreativeModeTab.Output trapdoor = GroupItem.belongsTo("trapdoor", output);
-        CreativeModeTab.Output door = GroupItem.belongsTo("door", output);
-        CreativeModeTab.Output hangingSign = GroupItem.belongsTo("hanging_sign", output);
-        CreativeModeTab.Output chiseledPlanks = GroupItem.belongsTo("chiseled_planks", output);
         for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
-            planks.accept(blockSet.PLANKS.get());
-            if (blockSet.STRIPPED_LOG.isBound()) strippedLog.accept(blockSet.STRIPPED_LOG.get());
-            if (blockSet.WOOD.isBound()) wood.accept(blockSet.WOOD.get());
-            if (blockSet.STRIPPED_WOOD.isBound()) strippedWood.accept(blockSet.STRIPPED_WOOD.get());
-            if (blockSet.BUTTON.isBound()) button.accept(blockSet.BUTTON.get());
-            if (blockSet.FENCE.isBound()) fence.accept(blockSet.FENCE.get());
-            if (blockSet.FENCE_GATE.isBound()) fenceGate.accept(blockSet.FENCE_GATE.get());
-            if (blockSet.PRESSURE_PLATE.isBound()) {
-                pressurePlate.accept(blockSet.PRESSURE_PLATE.get());
-            }
-            if (blockSet.SLAB.isBound()) slab.accept(blockSet.SLAB.get());
-            if (blockSet.STAIRS.isBound()) stairs.accept(blockSet.STAIRS.get());
-            if (blockSet.SIGN_ITEM.isBound()) sign.accept(blockSet.SIGN_ITEM.get());
-            if (blockSet.TRAPDOOR.isBound()) trapdoor.accept(blockSet.TRAPDOOR.get());
-            if (blockSet.DOOR.isBound()) door.accept(blockSet.DOOR.get());
-            if (blockSet.HANGING_SIGN_ITEM.isBound()) {
-                hangingSign.accept(blockSet.HANGING_SIGN_ITEM.get());
-            }
-            if (blockSet.CHISELED_PLANKS.isBound()) {
-                chiseledPlanks.accept(blockSet.CHISELED_PLANKS.get());
-            }
+            CreativeModeTab.Output o = GroupItem.belongsTo(blockSet.id, output);
+
+            o.accept(blockSet.PLANKS.get());
+            if (blockSet.STRIPPED_LOG.isBound()) o.accept(blockSet.STRIPPED_LOG.get());
+            if (blockSet.WOOD.isBound()) o.accept(blockSet.WOOD.get());
+            if (blockSet.STRIPPED_WOOD.isBound()) o.accept(blockSet.STRIPPED_WOOD.get());
+            if (blockSet.BUTTON.isBound()) o.accept(blockSet.BUTTON.get());
+            if (blockSet.FENCE.isBound()) o.accept(blockSet.FENCE.get());
+            if (blockSet.FENCE_GATE.isBound()) o.accept(blockSet.FENCE_GATE.get());
+            if (blockSet.PRESSURE_PLATE.isBound()) o.accept(blockSet.PRESSURE_PLATE.get());
+            if (blockSet.SLAB.isBound()) o.accept(blockSet.SLAB.get());
+            if (blockSet.STAIRS.isBound()) o.accept(blockSet.STAIRS.get());
+            if (blockSet.SIGN_ITEM.isBound()) o.accept(blockSet.SIGN_ITEM.get());
+            if (blockSet.TRAPDOOR.isBound()) o.accept(blockSet.TRAPDOOR.get());
+            if (blockSet.DOOR.isBound()) o.accept(blockSet.DOOR.get());
+            if (blockSet.HANGING_SIGN_ITEM.isBound()) o.accept(blockSet.HANGING_SIGN_ITEM.get());
+            if (blockSet.CHISELED_PLANKS.isBound()) o.accept(blockSet.CHISELED_PLANKS.get());
         }
     }
 
     public static void acceptNature(CreativeModeTab.Output output) {
-        CreativeModeTab.Output log = GroupItem.belongsTo("log", output);
-        CreativeModeTab.Output leaves = GroupItem.belongsTo("leaves", output);
-        CreativeModeTab.Output sapling = GroupItem.belongsTo("sapling", output);
         for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
-            if (blockSet.LOG.isBound()) log.accept(blockSet.LOG);
-            if (blockSet.LEAVES.isBound()) leaves.accept(blockSet.LEAVES);
-            if (blockSet.SAPLING.isBound()) sapling.accept(blockSet.SAPLING);
+            CreativeModeTab.Output o = GroupItem.belongsTo(blockSet.id, output);
+
+            if (blockSet.LOG.isBound()) o.accept(blockSet.LOG);
+            if (blockSet.LEAVES.isBound()) o.accept(blockSet.LEAVES);
+            if (blockSet.SAPLING.isBound()) o.accept(blockSet.SAPLING);
         }
     }
 

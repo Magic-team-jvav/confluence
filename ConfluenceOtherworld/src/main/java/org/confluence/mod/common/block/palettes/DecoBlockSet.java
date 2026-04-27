@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.item.GroupItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -50,10 +51,12 @@ public class DecoBlockSet {
 
     public static void acceptBuilding(CreativeModeTab.Output output) {
         for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
-            output.accept(blockSet.FULL.get());
-            if (blockSet.STAIRS.isBound()) output.accept(blockSet.STAIRS.get());
-            if (blockSet.SLAB.isBound()) output.accept(blockSet.SLAB.get());
-            if (blockSet.WALL.isBound()) output.accept(blockSet.WALL.get());
+            CreativeModeTab.Output o = GroupItem.belongsTo(blockSet.id, output);
+
+            o.accept(blockSet.FULL.get());
+            o.accept(blockSet.STAIRS.get());
+            o.accept(blockSet.SLAB.get());
+            o.accept(blockSet.WALL.get());
         }
     }
 

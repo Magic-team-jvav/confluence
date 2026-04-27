@@ -115,6 +115,7 @@
         "level.DifficultyMixin",
         "level.LevelMixin",
         "level.PlacedFeatureMixin",
+        "level.ServerLevelMixin",
         "level.TreeFeatureMixin",
         "level.WorldOptionsMixin"
     ],
@@ -200,9 +201,9 @@
         "integration.waystones.WaystoneSelectionScreenBaseMixin"
     ],
     "server": [
-        "server.DedicatedServerMixin",
-        "server.DedicatedServerPropertiesMixin",
-        "server.ServerWatchdogMixin"
+        "dedicated_server.DedicatedServerMixin",
+        "dedicated_server.DedicatedServerPropertiesMixin",
+        "dedicated_server.ServerWatchdogMixin"
     ],
     "injectors": {
         "defaultRequire": 1

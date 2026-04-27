@@ -178,6 +178,8 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<RainbowSheep>> RAINBOW_SHEEP = ENTITIES.register("rainbow_sheep", id -> EntityType.Builder.of(RainbowSheep::new, MobCategory.CREATURE).sized(0.9F, 1.3F).eyeHeight(1.235F).passengerAttachments(1.2375F).clientTrackingRange(10).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<InverseEnderMan>> INVERSE_ENDERMAN = ENTITIES.register("inverse_enderman", id -> InverseEntityType.create(InverseEnderMan::new, MobCategory.MONSTER, id.toString(), builder -> builder.sized(0.6F, 2.9F).eyeHeight(2.55F).passengerAttachments(2.80625F).clientTrackingRange(8)));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<AccumulatingEnergyEntity>> ACCUMULATING_ENERGY = ENTITIES.register("accumulating_energy", id -> EntityType.Builder.of(AccumulatingEnergyEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(1).build(id.toString()));
+
     private static <E extends BaseMinecartEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerMinecart(String name, EntityType.EntityFactory<E> factory) {
         return ENTITIES.register(name, id -> EntityType.Builder.of(factory, MobCategory.MISC).sized(0.98F, 0.7F).passengerAttachments(0.1875F).clientTrackingRange(8).build(id.toString()));
     }

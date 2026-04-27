@@ -52,13 +52,14 @@ public abstract class CreativeModeInventoryScreenMixin implements SelfGetter<Cre
 
     @Inject(method = "slotClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen$ItemPickerMenu;getCarried()Lnet/minecraft/world/item/ItemStack;", ordinal = 7), cancellable = true)
     private void checkIsGroupItem(CallbackInfo ci, @Local(argsOnly = true) Slot slot) {
-        if (!StartupConfigs.itemGroups() || GroupItem.isInvalidCreativeModeTab(selectedTab)) return;
-        ItemStack stack = slot.getItem();
-        if (stack.is(GroupItem.getInstance())) {
-            GroupItem.toggleVisibility(stack);
-            ICreativeModeTab.of(selectedTab).confluence$buildGroup();
-            refreshCurrentTabContents(selectedTab.getDisplayItems());
-            ci.cancel();
+        if (IAbstractContainerScreen.of(confluence$self()).confluence$shouldRenderGroupBackground()) {
+            ItemStack stack = slot.getItem();
+            if (stack.is(GroupItem.getInstance())) {
+                GroupItem.toggleVisibility(stack);
+                ICreativeModeTab.of(selectedTab).confluence$buildGroup();
+                refreshCurrentTabContents(selectedTab.getDisplayItems());
+                ci.cancel();
+            }
         }
     }
 }

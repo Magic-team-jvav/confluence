@@ -203,18 +203,26 @@ boolean kubejs = false
 boolean quark = false
 boolean cobblemon = false
 
+boolean offline = true
+
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
     implementation jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
-    implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
+//    implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
+    implementation jarJar(files("libs/particlestorm-1.1.6.jar"))
     implementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}")
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
-    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
-    implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
+    if (offline) {
+        compileOnly(annotationProcessor(files("libs/mixinsquared-common-0.3.3.jar")))
+        implementation(jarJar(files("libs/mixinsquared-neoforge-0.3.3.jar")))
+    } else {
+        compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
+        implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
+    }
 
     compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
     compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }

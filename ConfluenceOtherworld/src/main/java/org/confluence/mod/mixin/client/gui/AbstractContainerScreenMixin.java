@@ -25,6 +25,11 @@ public abstract class AbstractContainerScreenMixin implements IAbstractContainer
         this.confluence$shouldRenderGroupBackground = should;
     }
 
+    @Override
+    public boolean confluence$shouldRenderGroupBackground() {
+        return confluence$shouldRenderGroupBackground;
+    }
+
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
     private void onMouseClicked(double mouseX, double mouseY, int button, CallbackInfoReturnable<Boolean> cir) {
         TriState triState = confluence$onMouseClicked(mouseX, mouseY, button);

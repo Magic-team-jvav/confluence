@@ -396,6 +396,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(RAINBOW_SHEEP.get(), RainbowSheepRenderer::new);
         event.registerEntityRenderer(INVERSE_ENDERMAN.get(), EndermanRenderer::new);
 
+        event.registerEntityRenderer(ACCUMULATING_ENERGY.get(), NoopRenderer::new);
+
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(AltarBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), ClientUtils.rendererProvider(SkyMillBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), ClientUtils.rendererProvider(ExtractinatorBlockRenderer::new));

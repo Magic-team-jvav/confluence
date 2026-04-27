@@ -23,6 +23,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.EventHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -122,14 +123,14 @@ public class TerraStyleExplosion extends Explosion {
             Explosion.BlockInteraction blockInteraction = switch (explosionInteraction) {
                 case NONE -> Explosion.BlockInteraction.KEEP;
                 case BLOCK -> getDestroyType(level, GameRules.RULE_BLOCK_EXPLOSION_DROP_DECAY);
-                case MOB -> net.neoforged.neoforge.event.EventHooks.canEntityGrief(level, source)
+                case MOB -> EventHooks.canEntityGrief(level, source)
                         ? getDestroyType(level, GameRules.RULE_MOB_EXPLOSION_DROP_DECAY)
                         : Explosion.BlockInteraction.KEEP;
                 case TNT -> getDestroyType(level, GameRules.RULE_TNT_EXPLOSION_DROP_DECAY);
                 case TRIGGER -> Explosion.BlockInteraction.TRIGGER_BLOCK;
             };
             Explosion explosion = new TerraStyleExplosion(level, source, damageSource, damageCalculator, x, y, z, radius, blockInteraction);
-            if (net.neoforged.neoforge.event.EventHooks.onExplosionStart(level, explosion)) return explosion;
+            if (EventHooks.onExplosionStart(level, explosion)) return explosion;
             explosion.explode();
             explosion.finalizeExplosion(false);
             if (!explosion.interactsWithBlocks()) {

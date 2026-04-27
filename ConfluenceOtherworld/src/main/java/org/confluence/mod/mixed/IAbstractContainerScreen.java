@@ -21,7 +21,9 @@ public interface IAbstractContainerScreen {
         return TriState.DEFAULT;
     }
 
-    default void confluence$setShouldRenderGroupBackground(boolean should) {}
+    void confluence$setShouldRenderGroupBackground(boolean should);
+
+    boolean confluence$shouldRenderGroupBackground();
 
     static IAbstractContainerScreen of(AbstractContainerScreen<?> screen) {
         return (IAbstractContainerScreen) screen;

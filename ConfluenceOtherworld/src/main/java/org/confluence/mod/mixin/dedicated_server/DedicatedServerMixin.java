@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.server;
+package org.confluence.mod.mixin.dedicated_server;
 
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.confluence.mod.mixed.IDedicatedServer;

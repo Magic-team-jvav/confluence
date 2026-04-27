@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.server;
+package org.confluence.mod.mixin.dedicated_server;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.server.dedicated.DedicatedServer;

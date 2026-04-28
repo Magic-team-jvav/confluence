@@ -25,26 +25,42 @@ jobs:
           java-version: 21
 
       - name: Setup Gradle
-        id: setup-gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.10
 
+      - name: Force Fix Settings
+        run: |
+          cat > settings.gradle << 'EOF'
+          pluginManagement {
+              repositories {
+                  gradlePluginPortal()
+                  mavenCentral()
+                  maven { url = "https://maven.neoforged.net/releases" }
+                  maven { url = "https://maven.firstdark.dev/releases" }
+              }
+          }
+          plugins {
+              id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+          }
+
+          include(":ConfluenceOtherworld")
+          def projectName = ["Confluence-Magic-Lib", "TerraEntity", "TerraCurio", "TerraGuns", "TerraFurniture", "TheTrackers"]
+          projectName.each { name -> include ":" + name }
+          EOF
+
       - name: Prepare Assets
         run: |
-          GRADLE_HOME=$(gradle -g /tmp/dummy -v | grep "Gradle home" | cut -d ':' -f 2 | xargs)
-          echo "GRADLE_HOME is $GRADLE_HOME"
+          GRADLE_BIN=$(which gradle)
 
-          export PATH="$GRADLE_HOME/bin:$PATH"
-
-          gradle :Confluence-Magic-Lib:runData \
-                 :TerraEntity:runData \
-                 :TerraCurio:runData \
-                 :TerraGuns:runData \
-                 :TerraFurniture:runData \
-                 :TheTrackers:runData \
-                 :ConfluenceOtherworld:runData \
-                 --no-configuration-cache -Dorg.gradle.daemon=false
+          $GRADLE_BIN :Confluence-Magic-Lib:runData \
+                      :TerraEntity:runData \
+                      :TerraCurio:runData \
+                      :TerraGuns:runData \
+                      :TerraFurniture:runData \
+                      :TheTrackers:runData \
+                      :ConfluenceOtherworld:runData \
+                      --no-configuration-cache --refresh-dependencies
 
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld

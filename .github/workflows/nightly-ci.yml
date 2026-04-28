@@ -27,25 +27,23 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: wrapper
+          gradle-version: 8.10
 
       - name: Prepare Assets
         run: |
-          find . -name "gradlew" -exec chmod +x {} +
-
-          ./gradlew :Confluence-Magic-Lib:runData \
-                    :TerraEntity:runData \
-                    :TerraCurio:runData \
-                    :TerraGuns:runData \
-                    :TerraFurniture:runData \
-                    :TheTrackers:runData \
-                    :ConfluenceOtherworld:runData \
-                    --no-configuration-cache
+          gradle :Confluence-Magic-Lib:runData \
+                 :TerraEntity:runData \
+                 :TerraCurio:runData \
+                 :TerraGuns:runData \
+                 :TerraFurniture:runData \
+                 :TheTrackers:runData \
+                 :ConfluenceOtherworld:runData \
+                 --no-configuration-cache
 
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: |
-          ./gradlew build --no-configuration-cache
+          gradle build --no-configuration-cache
 
       - name: Get version with date suffix
         id: version

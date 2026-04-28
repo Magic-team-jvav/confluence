@@ -27,45 +27,25 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: 8.10
-
-      - name: Force Fix Settings
-        run: |
-          cat > settings.gradle << 'EOF'
-          pluginManagement {
-              repositories {
-                  gradlePluginPortal()
-                  mavenCentral()
-                  maven { url = "https://maven.neoforged.net/releases" }
-                  maven { url = "https://maven.firstdark.dev/releases" }
-              }
-          }
-          plugins {
-              id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
-          }
-
-          include(":ConfluenceOtherworld")
-          def projectName = ["Confluence-Magic-Lib", "TerraEntity", "TerraCurio", "TerraGuns", "TerraFurniture", "TheTrackers"]
-          projectName.each { name -> include ":" + name }
-          EOF
+          gradle-version: wrapper
 
       - name: Prepare Assets
         run: |
-          GRADLE_BIN=$(which gradle)
+          find . -name "gradlew" -exec chmod +x {} +
 
-          $GRADLE_BIN :Confluence-Magic-Lib:runData \
-                      :TerraEntity:runData \
-                      :TerraCurio:runData \
-                      :TerraGuns:runData \
-                      :TerraFurniture:runData \
-                      :TheTrackers:runData \
-                      :ConfluenceOtherworld:runData \
-                      --no-configuration-cache --refresh-dependencies
+          ./gradlew :Confluence-Magic-Lib:runData \
+                    :TerraEntity:runData \
+                    :TerraCurio:runData \
+                    :TerraGuns:runData \
+                    :TerraFurniture:runData \
+                    :TheTrackers:runData \
+                    :ConfluenceOtherworld:runData \
+                    --no-configuration-cache
 
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: |
-          gradle build --no-configuration-cache
+          ./gradlew build --no-configuration-cache
 
       - name: Get version with date suffix
         id: version

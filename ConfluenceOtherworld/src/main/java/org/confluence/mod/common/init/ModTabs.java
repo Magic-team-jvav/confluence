@@ -38,12 +38,395 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.natural_blocks"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-
                         LogBlockSet.acceptNature(output);
-                        acceptAll(OreBlocks.BLOCKS, output);
-                        acceptAll(NatureBlocks.BLOCKS, output);
                         acceptAll(PotBlocks.BLOCKS, output, "pot");
+
+                        CreativeModeTab.Output pine = GroupItem.belongsTo("pine", output);
+                        pine.accept(NatureBlocks.PRUNED_PINE_SAPLING);
+                        pine.accept(NatureBlocks.PINE_DROOPING_VINE);
+
+
+                        CreativeModeTab.Output ash = GroupItem.belongsTo("ash", output);
+                        ash.accept(NatureBlocks.ASH_BRANCHES);
+
+                        CreativeModeTab.Output yellow_willow = GroupItem.belongsTo("yellow_willow", output);
+                        yellow_willow.accept(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES);
+
+                        CreativeModeTab.Output moonglow_willow = GroupItem.belongsTo("moonglow_willow", output);
+                        moonglow_willow.accept(NatureBlocks.MOONGLOW_WILLOW_DROOPING_VINE);
+
+                        CreativeModeTab.Output void_output = GroupItem.belongsTo("void", output);
+                        void_output.accept(NatureBlocks.SILENT_DROOPING_VINE);
+
+                        CreativeModeTab.Output stone_tree = GroupItem.belongsTo("stone_tree", output);
+                        stone_tree.accept(NatureBlocks.STONY_LOG);
+                        stone_tree.accept(NatureBlocks.AMBER_BRANCHES);
+                        stone_tree.accept(NatureBlocks.RUBY_BRANCHES);
+                        stone_tree.accept(NatureBlocks.TOPAZ_BRANCHES);
+                        stone_tree.accept(NatureBlocks.JADE_BRANCHES);
+                        stone_tree.accept(NatureBlocks.DIAMOND_BRANCHES);
+                        stone_tree.accept(NatureBlocks.SAPPHIRE_BRANCHES);
+                        stone_tree.accept(NatureBlocks.AMETHYST_BRANCHES);
+                        stone_tree.accept(NatureBlocks.RUBY_SAPLING);
+                        stone_tree.accept(NatureBlocks.AMBER_SAPLING);
+                        stone_tree.accept(NatureBlocks.TOPAZ_SAPLING);
+                        stone_tree.accept(NatureBlocks.JADE_SAPLING);
+                        stone_tree.accept(NatureBlocks.DIAMOND_SAPLING);
+                        stone_tree.accept(NatureBlocks.SAPPHIRE_SAPLING);
+                        stone_tree.accept(NatureBlocks.AMETHYST_SAPLING);
+
+                        CreativeModeTab.Output natural_environment = GroupItem.belongsTo("natural_environment", output);
+                        natural_environment.accept(NatureBlocks.FOREST_DROOPING_VINE);
+                        natural_environment.accept(ModItems.CATTAIL);
+                        natural_environment.accept(NatureBlocks.SILT_BLOCK);
+                        natural_environment.accept(NatureBlocks.LIFE_CRYSTAL_BLOCK);
+                        natural_environment.accept(NatureBlocks.GRANITE);
+                        natural_environment.accept(NatureBlocks.GRANITE_TAPERED_BLOCK);
+                        natural_environment.accept(NatureBlocks.MARBLE);
+                        natural_environment.accept(NatureBlocks.MARBLE_TAPERED_BLOCK);
+
+                        CreativeModeTab.Output corruption = GroupItem.belongsTo("corruption", output);
+                        corruption.accept(NatureBlocks.CORRUPT_GRASS_BLOCK);
+                        corruption.accept(NatureBlocks.EBONSTONE);
+                        corruption.accept(NatureBlocks.COBBLED_EBONSTONE);
+                        corruption.accept(NatureBlocks.EBONSANDSTONE);
+                        corruption.accept(NatureBlocks.HARDENED_EBONSAND_BLOCK);
+                        corruption.accept(NatureBlocks.EBONSAND);
+                        corruption.accept(NatureBlocks.MOISTENED_EBONSAND_BLOCK);
+                        corruption.accept(NatureBlocks.PURPLE_ICE);
+                        corruption.accept(NatureBlocks.PURPLE_PACKED_ICE);
+                        corruption.accept(NatureBlocks.EBONSAND_LAYER_BLOCK);
+                        corruption.accept(NatureBlocks.CORRUPTION_THORN);
+                        corruption.accept(NatureBlocks.CORRUPT_GRASS);
+                        corruption.accept(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK);
+                        corruption.accept(NatureBlocks.CORRUPT_CACTUS);
+                        corruption.accept(NatureBlocks.CORRUPT_TAPERED_BLOCK);
+                        corruption.accept(ModItems.EBONY_CATTAIL);
+                        corruption.accept(NatureBlocks.CORRUPT_DROOPING_VINE);
+
+                        CreativeModeTab.Output hallow = GroupItem.belongsTo("hallow", output);
+                        hallow.accept(NatureBlocks.HALLOW_GRASS_BLOCK);
+                        hallow.accept(NatureBlocks.HALLOW_GRASS);
+                        hallow.accept(NatureBlocks.PEARLSTONE);
+                        hallow.accept(NatureBlocks.COBBLED_PEARLSTONE);
+                        hallow.accept(NatureBlocks.HARDENED_PEARLSAND_BLOCK);
+                        hallow.accept(NatureBlocks.PEARLSANDSTONE);
+                        hallow.accept(NatureBlocks.PEARLSAND);
+                        hallow.accept(NatureBlocks.MOISTENED_PEARLSAND_BLOCK);
+                        hallow.accept(NatureBlocks.PEARLSAND_LAYER_BLOCK);
+                        hallow.accept(NatureBlocks.PINK_ICE);
+                        hallow.accept(NatureBlocks.PINK_PACKED_ICE);
+                        hallow.accept(NatureBlocks.HALLOW_CACTUS);
+                        hallow.accept(NatureBlocks.HALLOW_TAPERED_BLOCK);
+                        hallow.accept(ModItems.HALLOW_CATTAIL);
+                        hallow.accept(NatureBlocks.HALLOW_DROOPING_VINE);
+
+                        CreativeModeTab.Output crimson = GroupItem.belongsTo("crimson", output);
+                        crimson.accept(NatureBlocks.CRIMSON_GRASS_BLOCK);
+                        crimson.accept(NatureBlocks.CRIMSTONE);
+                        crimson.accept(NatureBlocks.COBBLED_CRIMSTONE);
+                        crimson.accept(NatureBlocks.HARDENED_CRIMSAND_BLOCK);
+                        crimson.accept(NatureBlocks.CRIMSANDSTONE);
+                        crimson.accept(NatureBlocks.CRIMSAND);
+                        crimson.accept(NatureBlocks.MOISTENED_CRIMSAND_BLOCK);
+                        crimson.accept(NatureBlocks.CRIMSON_THORN);
+                        crimson.accept(NatureBlocks.CRIMSON_GRASS);
+                        crimson.accept(NatureBlocks.CRIMSAND_LAYER_BLOCK);
+                        crimson.accept(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK);
+                        crimson.accept(NatureBlocks.RED_ICE);
+                        crimson.accept(NatureBlocks.RED_PACKED_ICE);
+                        crimson.accept(NatureBlocks.CRIMSON_CACTUS);
+                        crimson.accept(NatureBlocks.CRIMSON_TAPERED_BLOCK);
+                        crimson.accept(ModItems.CRIMSON_CATTAIL);
+                        crimson.accept(NatureBlocks.CRIMSON_DROOPING_VINE);
+
+                        CreativeModeTab.Output mushroom = GroupItem.belongsTo("mushroom", output);
+                        mushroom.accept(NatureBlocks.MUSHROOM_GRASS_BLOCK);
+                        mushroom.accept(NatureBlocks.MUSHROOM_PATH);
+                        mushroom.accept(NatureBlocks.GLOWING_MUSHROOM_INDUSIUM_BLOCK);
+                        mushroom.accept(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK);
+                        mushroom.accept(NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK);
+                        mushroom.accept(NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK);
+                        mushroom.accept(NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK);
+                        mushroom.accept(NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK);
+                        mushroom.accept(NatureBlocks.HANGING_MYCELIUM);
+                        mushroom.accept(NatureBlocks.MYCELIAL_DIRT);
+                        mushroom.accept(ModItems.GLOWING_MUSHROOM_CATTAIL);
+                        mushroom.accept(NatureBlocks.GLOWING_MUSHROOM_VINE);
+
+                        CreativeModeTab.Output desert = GroupItem.belongsTo("desert", output);
+                        desert.accept(NatureBlocks.DESERT_TAPERED_BLOCK);
+                        desert.accept(NatureBlocks.SMALL_DESERT_PLANT);
+                        desert.accept(NatureBlocks.BIG_DESERT_PLANT);
+                        desert.accept(NatureBlocks.SMALL_CACTUS);
+                        desert.accept(NatureBlocks.DESERT_GRASS);
+                        desert.accept(NatureBlocks.DESERT_TALL_GRASS);
+                        desert.accept(NatureBlocks.PACKED_DIRT);
+                        desert.accept(NatureBlocks.HARDENED_SAND_BLOCK);
+                        desert.accept(NatureBlocks.MOISTENED_SAND_BLOCK);
+                        desert.accept(NatureBlocks.HARDENED_RED_SAND_BLOCK);
+                        desert.accept(NatureBlocks.MOISTENED_RED_SAND_BLOCK);
+                        desert.accept(NatureBlocks.SAND_LAYER_BLOCK);
+                        desert.accept(NatureBlocks.RED_SAND_LAYER_BLOCK);
+                        desert.accept(NatureBlocks.DESERT_FOSSIL);
+
+                        CreativeModeTab.Output ocean = GroupItem.belongsTo("ocean", output);
+                        ocean.accept(NatureBlocks.DIATOMACEOUS);
+                        ocean.accept(NatureBlocks.MARINE_GRAVEL);
+
+                        CreativeModeTab.Output snow = GroupItem.belongsTo("snow", output);
+                        snow.accept(NatureBlocks.SLUSH);
+                        snow.accept(NatureBlocks.THIN_ICE_BLOCK);
+                        snow.accept(NatureBlocks.ICE_TAPERED_BLOCK);
+
+
+                        CreativeModeTab.Output jungle = GroupItem.belongsTo("jungle", output);
+                        jungle.accept(NatureBlocks.JUNGLE_GRASS_BLOCK);
+                        jungle.accept(NatureBlocks.JUNGLE_THORN);
+                        jungle.accept(NatureBlocks.PLANTERA_THORN);
+                        jungle.accept(NatureBlocks.JUNGLE_HIVE_BLOCK);
+                        jungle.accept(NatureBlocks.JUNGLE_ROSE);
+                        jungle.accept(NatureBlocks.LARVA);
+                        jungle.accept(NatureBlocks.JUNGLE_PATH);
+                        jungle.accept(NatureBlocks.THIN_HONEY_BLOCK);
+                        jungle.accept(NatureBlocks.LOOSE_HONEY_BLOCK);
+                        jungle.accept(ModItems.JUNGLE_CATTAIL);
+                        jungle.accept(NatureBlocks.JUNGLE_DROOPING_VINE);
+
+                        CreativeModeTab.Output end = GroupItem.belongsTo("end", output);
+                        end.accept(NatureBlocks.END_DIRT);
+                        end.accept(NatureBlocks.VOID_WEAVE);
+                        end.accept(NatureBlocks.VOID_GRASS_BLOCK);
+                        end.accept(NatureBlocks.VOID_GRASS);
+                        end.accept(NatureBlocks.VOID_VIOLET);
+                        end.accept(NatureBlocks.TALL_VOID_GRASS);
+                        end.accept(NatureBlocks.VOID_TREE_ROOT_BLOCK);
+                        end.accept(NatureBlocks.INVERSE_GRASS_BLOCK);
+                        end.accept(NatureBlocks.GAZE_TUBER);
+                        end.accept(NatureBlocks.MOONLIT_GRASS_BLOCK);
+                        end.accept(NatureBlocks.DEAD_LUNAR_CORAL_BLOCK);
+                        end.accept(NatureBlocks.DEAD_LUNAR_CORAL);
+                        end.accept(NatureBlocks.DEAD_LUNAR_CORAL_FAN);
+                        end.accept(NatureBlocks.LUNAR_CORAL_BLOCK);
+                        end.accept(NatureBlocks.LUNAR_CORAL);
+                        end.accept(NatureBlocks.LUNAR_CORAL_FAN);
+                        end.accept(NatureBlocks.SILVER_GRASS);
+                        end.accept(NatureBlocks.TALL_SILVER_GRASS);
+                        end.accept(NatureBlocks.WITHERED_SEA_SILK);
+
+                        CreativeModeTab.Output nether = GroupItem.belongsTo("nether", output);
+                        nether.accept(NatureBlocks.ASH_BLOCK);
+                        nether.accept(NatureBlocks.ASH_GRASS_BLOCK);
+                        nether.accept(NatureBlocks.ASH_PATH);
+                        nether.accept(NatureBlocks.ASH_GRASS);
+                        nether.accept(NatureBlocks.GLOOM_OBSIDIAN);
+
+                        CreativeModeTab.Output skyland = GroupItem.belongsTo("skyland", output);
+                        skyland.accept(NatureBlocks.CLOUD_BLOCK);
+                        skyland.accept(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK);
+                        skyland.accept(NatureBlocks.RAIN_CLOUD_BLOCK);
+                        skyland.accept(NatureBlocks.SNOW_CLOUD_BLOCK);
+
+                        CreativeModeTab.Output crops = GroupItem.belongsTo("crops", output);
+                        crops.accept(NatureBlocks.STELLAR_BLOSSOM);
+                        crops.accept(NatureBlocks.CLOUDWEAVER);
+                        crops.accept(NatureBlocks.FLOATING_WHEAT);
+                        crops.accept(NatureBlocks.BALLOON_MELON);
+                        crops.accept(NatureBlocks.WHITE_PUMPKIN);
+
+                        CreativeModeTab.Output shimmer = GroupItem.belongsTo("shimmer", output);
+                        shimmer.accept(NatureBlocks.SHIMMER_RICE);
+                        shimmer.accept(NatureBlocks.SHIMMER_CORAL_TUBE);
+                        shimmer.accept(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY);
+                        shimmer.accept(NatureBlocks.SHIMMER_CRYSTALS_BLOCK);
+                        shimmer.accept(NatureBlocks.AETHERIUM_BLOCK);
+                        shimmer.accept(NatureBlocks.DARK_AETHERIUM_BLOCK);
+
+                        CreativeModeTab.Output moss = GroupItem.belongsTo("moss", output);
+                        moss.accept(NatureBlocks.GREEN_MOSS);
+                        moss.accept(NatureBlocks.BROWN_MOSS);
+                        moss.accept(NatureBlocks.RED_MOSS);
+                        moss.accept(NatureBlocks.BLUE_MOSS);
+                        moss.accept(NatureBlocks.PURPLE_MOSS);
+                        moss.accept(NatureBlocks.LAVA_MOSS);
+                        moss.accept(NatureBlocks.KRYPTON_MOSS);
+                        moss.accept(NatureBlocks.XENON_MOSS);
+                        moss.accept(NatureBlocks.ARGON_MOSS);
+                        moss.accept(NatureBlocks.NEON_MOSS);
+                        moss.accept(NatureBlocks.HELIUM_MOSS);
+                        moss.accept(NatureBlocks.GLOWING_MUSHROOM_MOSS);
+
+                        CreativeModeTab.Output special_plants = GroupItem.belongsTo("special_plants", output);
+                        special_plants.accept(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK);
+                        special_plants.accept(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK);
+                        special_plants.accept(NatureBlocks.CORRODED_WORM_ROOTS_BLOCK);
+                        special_plants.accept(NatureBlocks.CORRUPTED_OVARIES_BLOCK);
+                        special_plants.accept(NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK);
+
+                        CreativeModeTab.Output miscellaneous = GroupItem.belongsTo("miscellaneous", output);
+                        miscellaneous.accept(NatureBlocks.LOST_PAPER_BLOCK);
+
+                        CreativeModeTab.Output sanctificationOres = GroupItem.belongsTo("sanctification_ores", output);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_COAL_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_COPPER_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_TIN_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_IRON_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_LEAD_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_SILVER_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_TUNGSTEN_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_GOLD_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_PLATINUM_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_EMERALD_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_DIAMOND_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_LAPIS_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_REDSTONE_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_RUBY_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_AMBER_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_TOPAZ_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_JADE_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_SAPPHIRE_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_AMETHYST_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_DEMONITE_ORE);
+                        sanctificationOres.accept(OreBlocks.SANCTIFICATION_CRIMTANE_ORE);
+
+                        CreativeModeTab.Output corruptionOres = GroupItem.belongsTo("corruption_ores", output);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_COAL_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_COPPER_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_TIN_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_IRON_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_LEAD_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_SILVER_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_TUNGSTEN_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_GOLD_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_PLATINUM_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_EMERALD_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_DIAMOND_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_LAPIS_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_REDSTONE_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_RUBY_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_AMBER_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_TOPAZ_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_JADE_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_SAPPHIRE_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_AMETHYST_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_DEMONITE_ORE);
+                        corruptionOres.accept(OreBlocks.CORRUPTION_CRIMTANE_ORE);
+
+                        CreativeModeTab.Output fleshificationOres = GroupItem.belongsTo("fleshification_ores", output);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_COAL_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_COPPER_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_TIN_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_IRON_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_LEAD_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_SILVER_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_TUNGSTEN_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_GOLD_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_PLATINUM_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_EMERALD_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_DIAMOND_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_LAPIS_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_REDSTONE_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_RUBY_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_AMBER_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_TOPAZ_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_JADE_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_SAPPHIRE_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_AMETHYST_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_DEMONITE_ORE);
+                        fleshificationOres.accept(OreBlocks.FLESHIFICATION_CRIMTANE_ORE);
+
+                        CreativeModeTab.Output normalOres = GroupItem.belongsTo("normal_ores", output);
+                        normalOres.accept(OreBlocks.TIN_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_TIN_ORE);
+                        normalOres.accept(OreBlocks.LEAD_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_LEAD_ORE);
+                        normalOres.accept(OreBlocks.SILVER_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_SILVER_ORE);
+                        normalOres.accept(OreBlocks.TUNGSTEN_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_TUNGSTEN_ORE);
+                        normalOres.accept(OreBlocks.PLATINUM_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_PLATINUM_ORE);
+                        normalOres.accept(OreBlocks.METEORITE_ORE);
+                        normalOres.accept(OreBlocks.DEMONITE_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_DEMONITE_ORE);
+                        normalOres.accept(OreBlocks.CRIMTANE_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_CRIMTANE_ORE);
+                        normalOres.accept(OreBlocks.CHLOROPHYTE_ORE);
+                        normalOres.accept(OreBlocks.OPAL_ORE);
+                        normalOres.accept(OreBlocks.GELSTONE_ORE);
+                        normalOres.accept(OreBlocks.COLD_CRYSTAL_ORE);
+                        normalOres.accept(OreBlocks.HELLSTONE);
+                        normalOres.accept(OreBlocks.ASH_HELLSTONE);
+                        normalOres.accept(OreBlocks.RUBY_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_RUBY_ORE);
+                        normalOres.accept(OreBlocks.AMBER_ORE);
+                        normalOres.accept(OreBlocks.RED_SAND_AMBER_ORE);
+                        normalOres.accept(OreBlocks.TOPAZ_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_TOPAZ_ORE);
+                        normalOres.accept(OreBlocks.JADE_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_JADE_ORE);
+                        normalOres.accept(OreBlocks.SAPPHIRE_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_SAPPHIRE_ORE);
+                        normalOres.accept(OreBlocks.AMETHYST_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_AMETHYST_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_COBALT_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_PALLADIUM_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_MYTHRIL_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_ORICHALCUM_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_ADAMANTITE_ORE);
+                        normalOres.accept(OreBlocks.DEEPSLATE_TITANIUM_ORE);
+                        normalOres.accept(OreBlocks.LUNARTEAR_ORE);
+                        normalOres.accept(OreBlocks.DRAGONSAL_ORE);
+                        normalOres.accept(OreBlocks.SPORE_ROOT_BLOCK);
+                        normalOres.accept(OreBlocks.WINTER_MARROW_BLOCK);
+
+                        CreativeModeTab.Output rawOreBlocks = GroupItem.belongsTo("raw_ore_blocks", output);
+                        rawOreBlocks.accept(OreBlocks.RAW_TIN_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_LEAD_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_SILVER_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_TUNGSTEN_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_PLATINUM_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_METEORITE_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_DEMONITE_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_CRIMTANE_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_CHLOROPHYTE_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_HELLSTONE_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_COBALT_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_PALLADIUM_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_MYTHRIL_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_ORICHALCUM_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_ADAMANTITE_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_TITANIUM_BLOCK);
+                        rawOreBlocks.accept(OreBlocks.RAW_LUMINITE_BLOCK);
+
+                        CreativeModeTab.Output oreStorageBlocks = GroupItem.belongsTo("ore_storage_blocks", output);
+                        oreStorageBlocks.accept(OreBlocks.TIN_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.LEAD_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.SILVER_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.TUNGSTEN_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.PLATINUM_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.METEORITE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.DEMONITE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.CRIMTANE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.HALLOWED_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.CHLOROPHYTE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.SHROOMITE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.SPECTRE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.LUMINITE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.HELLSTONE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.HELLSTONE_BRICKS);
+                        oreStorageBlocks.accept(OreBlocks.COBALT_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.PALLADIUM_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.MYTHRIL_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.ORICHALCUM_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.ADAMANTITE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.TITANIUM_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.STURDY_FOSSIL_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.OPAL_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.GELSTONE_BLOCK);
+                        oreStorageBlocks.accept(OreBlocks.COLD_CRYSTAL_BLOCK);
                     })
+
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                     .build()
     );
@@ -52,11 +435,217 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.building_blocks"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-
                         LogBlockSet.acceptBuilding(output);
                         DecoBlockSet.acceptBuilding(output);
                         acceptAll(DecorativeBlocks.BLOCKS, output);
                         acceptAll(StatueBlocks.BLOCKS, output, "statue");
+
+                        CreativeModeTab.Output granite_marble = GroupItem.belongsTo("granite_marble", output);
+                        granite_marble.accept(DecorativeBlocks.GRANITE_BRICKS.FULL.get());
+                        granite_marble.accept(DecorativeBlocks.GRANITE_BRICKS.STAIRS.get());
+                        granite_marble.accept(DecorativeBlocks.GRANITE_BRICKS.SLAB.get());
+                        granite_marble.accept(DecorativeBlocks.GRANITE_BRICKS.WALL.get());
+                        granite_marble.accept(DecorativeBlocks.CRACKED_GRANITE_BRICKS.get());
+                        granite_marble.accept(DecorativeBlocks.CHISELED_GRANITE_BRICKS.get());
+                        granite_marble.accept(DecorativeBlocks.GRANITE_COLUMN.get());
+                        granite_marble.accept(DecorativeBlocks.POLISHED_GRANITE.get());
+                        granite_marble.accept(DecorativeBlocks.MARBLE_COLUMN.get());
+                        granite_marble.accept(DecorativeBlocks.MARBLE_BRICKS.FULL.get());
+                        granite_marble.accept(DecorativeBlocks.MARBLE_BRICKS.STAIRS.get());
+                        granite_marble.accept(DecorativeBlocks.MARBLE_BRICKS.SLAB.get());
+                        granite_marble.accept(DecorativeBlocks.MARBLE_BRICKS.WALL.get());
+                        granite_marble.accept(DecorativeBlocks.CRACKED_MARBLE_BRICKS.get());
+                        granite_marble.accept(DecorativeBlocks.CHISELED_MARBLE_BRICKS.get());
+                        granite_marble.accept(DecorativeBlocks.MARBLE_CHESSBOARD_BRICKS.get());
+                        granite_marble.accept(DecorativeBlocks.MARBLE_ETERNAL_CHESSBOARD_BRICKS.get());
+                        granite_marble.accept(DecorativeBlocks.MARBLE_SMALL_BRICKS.get());
+                        granite_marble.accept(DecorativeBlocks.GILDED_MARBLE.get());
+                        granite_marble.accept(DecorativeBlocks.POLISHED_MARBLE.get());
+
+                        CreativeModeTab.Output pure_glass = GroupItem.belongsTo("pure_glass", output);
+                        pure_glass.accept(DecorativeBlocks.PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.WHITE_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.GRAY_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.BLACK_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.BROWN_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.RED_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.ORANGE_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.YELLOW_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.LIME_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.GREEN_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.CYAN_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.BLUE_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.PURPLE_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.MAGENTA_PURE_GLASS.get());
+                        pure_glass.accept(DecorativeBlocks.PINK_PURE_GLASS.get());
+
+                        CreativeModeTab.Output special_building = GroupItem.belongsTo("special_building", output);
+                        special_building.accept(DecorativeBlocks.DISC_BLOCK.FULL.get());
+                        special_building.accept(DecorativeBlocks.DISC_BLOCK.STAIRS.get());
+                        special_building.accept(DecorativeBlocks.DISC_BLOCK.SLAB.get());
+                        special_building.accept(DecorativeBlocks.MOON_PLATE.FULL.get());
+                        special_building.accept(DecorativeBlocks.MOON_PLATE.STAIRS.get());
+                        special_building.accept(DecorativeBlocks.MOON_PLATE.SLAB.get());
+                        special_building.accept(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get());
+                        special_building.accept(DecorativeBlocks.LIHZAHRD_BRICKS.get());
+                        special_building.accept(DecorativeBlocks.CRISPY_HONEY_BLOCK.get());
+                        special_building.accept(DecorativeBlocks.SWORD_IN_STONE.get());
+                        special_building.accept(DecorativeBlocks.REMAINS_BLOCK.get());
+                        special_building.accept(DecorativeBlocks.POO_BLOCK.get());
+
+                        CreativeModeTab.Output chains = GroupItem.belongsTo("chains", output);
+                        chains.accept(DecorativeBlocks.RUBY_CHAIN.get());
+                        chains.accept(DecorativeBlocks.AMBER_CHAIN.get());
+                        chains.accept(DecorativeBlocks.TOPAZ_CHAIN.get());
+                        chains.accept(DecorativeBlocks.JADE_CHAIN.get());
+                        chains.accept(DecorativeBlocks.SAPPHIRE_CHAIN.get());
+                        chains.accept(DecorativeBlocks.DIAMOND_CHAIN.get());
+                        chains.accept(DecorativeBlocks.AMETHYST_CHAIN.get());
+                        chains.accept(DecorativeBlocks.SILK_CHAIN.get());
+                        chains.accept(DecorativeBlocks.BONE_CHAIN.get());
+
+                        CreativeModeTab.Output dungeon_bricks = GroupItem.belongsTo("dungeon_bricks", output);
+                        dungeon_bricks.accept(DecorativeBlocks.BLUE_BRICKS.FULL.get());
+                        dungeon_bricks.accept(DecorativeBlocks.GREEN_BRICKS.FULL.get());
+                        dungeon_bricks.accept(DecorativeBlocks.PINK_BRICKS.FULL.get());
+                        dungeon_bricks.accept(DecorativeBlocks.BLUE_BRICK_COLUMN.get());
+                        dungeon_bricks.accept(DecorativeBlocks.GREEN_BRICK_COLUMN.get());
+                        dungeon_bricks.accept(DecorativeBlocks.PINK_BRICK_COLUMN.get());
+                        dungeon_bricks.accept(DecorativeBlocks.BLUE_BRICKS.STAIRS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.GREEN_BRICKS.STAIRS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.PINK_BRICKS.STAIRS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.BLUE_BRICKS.SLAB.get());
+                        dungeon_bricks.accept(DecorativeBlocks.GREEN_BRICKS.SLAB.get());
+                        dungeon_bricks.accept(DecorativeBlocks.PINK_BRICKS.SLAB.get());
+                        dungeon_bricks.accept(DecorativeBlocks.BLUE_BRICKS.WALL.get());
+                        dungeon_bricks.accept(DecorativeBlocks.GREEN_BRICKS.WALL.get());
+                        dungeon_bricks.accept(DecorativeBlocks.PINK_BRICKS.WALL.get());
+                        dungeon_bricks.accept(DecorativeBlocks.CHISELED_BLUE_BRICKS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.CHISELED_GREEN_BRICKS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.CHISELED_PINK_BRICKS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.CRACKED_BLUE_BRICKS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.CRACKED_GREEN_BRICKS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.CRACKED_PINK_BRICKS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.ENCHANTED_BLUE_BRICKS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.ENCHANTED_GREEN_BRICKS.get());
+                        dungeon_bricks.accept(DecorativeBlocks.ENCHANTED_PINK_BRICKS.get());
+
+                        CreativeModeTab.Output aetherium = GroupItem.belongsTo("aetherium", output);
+                        aetherium.accept(DecorativeBlocks.AETHERIUM_BRICKS.FULL.get());
+                        aetherium.accept(DecorativeBlocks.AETHERIUM_BRICKS.STAIRS.get());
+                        aetherium.accept(DecorativeBlocks.AETHERIUM_BRICKS.SLAB.get());
+                        aetherium.accept(DecorativeBlocks.AETHERIUM_BRICKS.WALL.get());
+
+                        CreativeModeTab.Output cloud_decor = GroupItem.belongsTo("cloud_decor", output);
+                        cloud_decor.accept(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get());
+                        cloud_decor.accept(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get());
+                        cloud_decor.accept(DecorativeBlocks.STAR_CLOUD_BLOCK.get());
+                        cloud_decor.accept(DecorativeBlocks.FLOATING_WHEAT_BALE.get());
+
+                        CreativeModeTab.Output doors_panes = GroupItem.belongsTo("doors_panes", output);
+                        doors_panes.accept(DecorativeBlocks.DUNGEON_DOOR.get());
+                        doors_panes.accept(DecorativeBlocks.LIHZAHRD_DOOR.get());
+                        doors_panes.accept(DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR.get());
+                        doors_panes.accept(DecorativeBlocks.CHRISTMAS_PINE_DOOR.get());
+                        doors_panes.accept(DecorativeBlocks.CHRISTMAS_PINE_TRAPDOOR.get());
+                        doors_panes.accept(DecorativeBlocks.WHITE_PAPER_PANE.get());
+                        doors_panes.accept(DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get());
+                        doors_panes.accept(DecorativeBlocks.MALACHITE_PAPER_PANE.get());
+                        doors_panes.accept(DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP.get());
+
+                        CreativeModeTab.Output letter_statues = GroupItem.belongsTo("letter_statues", output);
+                        letter_statues.accept(StatueBlocks.A_STATUE.get());
+                        letter_statues.accept(StatueBlocks.B_STATUE.get());
+                        letter_statues.accept(StatueBlocks.C_STATUE.get());
+                        letter_statues.accept(StatueBlocks.D_STATUE.get());
+                        letter_statues.accept(StatueBlocks.E_STATUE.get());
+                        letter_statues.accept(StatueBlocks.F_STATUE.get());
+                        letter_statues.accept(StatueBlocks.G_STATUE.get());
+                        letter_statues.accept(StatueBlocks.H_STATUE.get());
+                        letter_statues.accept(StatueBlocks.I_STATUE.get());
+                        letter_statues.accept(StatueBlocks.J_STATUE.get());
+                        letter_statues.accept(StatueBlocks.K_STATUE.get());
+                        letter_statues.accept(StatueBlocks.L_STATUE.get());
+                        letter_statues.accept(StatueBlocks.M_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N_STATUE.get());
+                        letter_statues.accept(StatueBlocks.O_STATUE.get());
+                        letter_statues.accept(StatueBlocks.P_STATUE.get());
+                        letter_statues.accept(StatueBlocks.Q_STATUE.get());
+                        letter_statues.accept(StatueBlocks.R_STATUE.get());
+                        letter_statues.accept(StatueBlocks.S_STATUE.get());
+                        letter_statues.accept(StatueBlocks.T_STATUE.get());
+                        letter_statues.accept(StatueBlocks.U_STATUE.get());
+                        letter_statues.accept(StatueBlocks.V_STATUE.get());
+                        letter_statues.accept(StatueBlocks.W_STATUE.get());
+                        letter_statues.accept(StatueBlocks.X_STATUE.get());
+                        letter_statues.accept(StatueBlocks.Y_STATUE.get());
+                        letter_statues.accept(StatueBlocks.Z_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N0_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N1_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N2_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N3_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N4_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N5_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N6_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N7_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N8_STATUE.get());
+                        letter_statues.accept(StatueBlocks.N9_STATUE.get());
+                        letter_statues.accept(StatueBlocks.PERIOD_STATUE.get());
+                        letter_statues.accept(StatueBlocks.EXCLAMATION_MARK_STATUE.get());
+                        letter_statues.accept(StatueBlocks.QUESTION_MARK_STATUE.get());
+
+                        CreativeModeTab.Output entity_statues = GroupItem.belongsTo("entity_statues", output);
+                        entity_statues.accept(StatueBlocks.ANVIL_STATUE.get());
+                        entity_statues.accept(StatueBlocks.ARMOR_STATUE.get());
+                        entity_statues.accept(StatueBlocks.AXE_STATUE.get());
+                        entity_statues.accept(StatueBlocks.BOOMERANG_STATUE.get());
+                        entity_statues.accept(StatueBlocks.BOOT_STATUE.get());
+                        entity_statues.accept(StatueBlocks.BOW_STATUE.get());
+                        entity_statues.accept(StatueBlocks.CROSS_STATUE.get());
+                        entity_statues.accept(StatueBlocks.GARGOYLE_STATUE.get());
+                        entity_statues.accept(StatueBlocks.GLOOM_STATUE.get());
+                        entity_statues.accept(StatueBlocks.HAMMER_STATUE.get());
+                        entity_statues.accept(StatueBlocks.PICKAXE_STATUE.get());
+                        entity_statues.accept(StatueBlocks.PILLAR_STATUE.get());
+                        entity_statues.accept(StatueBlocks.POT_STATUE.get());
+                        entity_statues.accept(StatueBlocks.POTION_STATUE.get());
+                        entity_statues.accept(StatueBlocks.REAPER_STATUE.get());
+                        entity_statues.accept(StatueBlocks.SHIELD_STATUE.get());
+                        entity_statues.accept(StatueBlocks.SPEAR_STATUE.get());
+                        entity_statues.accept(StatueBlocks.SUNFLOWER_STATUE.get());
+                        entity_statues.accept(StatueBlocks.SWORD_STATUE.get());
+                        entity_statues.accept(StatueBlocks.TREE_STATUE.get());
+                        entity_statues.accept(StatueBlocks.WOMEN_STATUE.get());
+                        entity_statues.accept(StatueBlocks.LIHZAHRD_STATUE.get());
+                        entity_statues.accept(StatueBlocks.LIHZAHRD_GUARDIAN_STATUE.get());
+                        entity_statues.accept(StatueBlocks.LIHZAHRD_WATCHER_STATUE.get());
+                        entity_statues.accept(StatueBlocks.ARMED_ZOMBIE_STATUE.get());
+                        entity_statues.accept(StatueBlocks.BONE_SKELETON_STATUE.get());
+                        entity_statues.accept(StatueBlocks.CORRUPT_STATUE.get());
+                        entity_statues.accept(StatueBlocks.DRIPPLER_STATUE.get());
+                        entity_statues.accept(StatueBlocks.EYEBALL_STATUE.get());
+                        entity_statues.accept(StatueBlocks.SKELETON_STATUE.get());
+                        entity_statues.accept(StatueBlocks.SLIME_STATUE.get());
+                        entity_statues.accept(StatueBlocks.BOMB_STATUE.get());
+                        entity_statues.accept(StatueBlocks.HEART_STATUE.get());
+                        entity_statues.accept(StatueBlocks.STAR_STATUE.get());
+                        entity_statues.accept(StatueBlocks.BAST_STATUE.get());
+
+                        CreativeModeTab.Output boss_relics = GroupItem.belongsTo("boss_relics", output);
+                        boss_relics.accept(DecorativeBlocks.KING_SLIME_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.EYE_OF_CTHULHU_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.BRAIN_OF_CTHULHU_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.EATER_OF_WORLDS_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.QUEEN_BEE_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.DEERCLOPS_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.SKELETRON_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.WALL_OF_FLESH_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.HILL_OF_FLESH_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.THE_TWINS_RELIC.get());
+                        boss_relics.accept(DecorativeBlocks.SKELETRON_PRIME_RELIC.get());
+
                     })
                     .withTabsBefore(NATURAL_BLOCKS.getId())
                     .build()
@@ -65,6 +654,7 @@ public final class ModTabs {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MECHANICAL = TABS.register("mechanical",
             () -> CreativeModeTab.builder().icon(IconItems.MECHANICAL_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.mechanical"))
+
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
                         output.accept(ToolItems.RED_WRENCH);
@@ -80,8 +670,137 @@ public final class ModTabs {
                         output.accept(TFBlocks.TRASH_CAN);
                         output.accept(FunctionalBlocks.WATER_CANDLE);
                         output.accept(ModBlocks.ENEMY_BANNER);
+
+                        CreativeModeTab.Output boulders = GroupItem.belongsTo("boulders", output);
+                        boulders.accept(FunctionalBlocks.ECHO_BLOCK.get());
+                        boulders.accept(FunctionalBlocks.NORMAL_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.OAK_LOG_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.FOLLOWER_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.EXPLODE_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.BOUNCY_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.POO_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.SPIDER_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.LAVA_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.RAINBOW_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.LIFECRYSTAL_BOULDER.get());
+                        boulders.accept(FunctionalBlocks.GHOULDER.get());
+                        boulders.accept(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get());
+
+                        CreativeModeTab.Output redstone_traps = GroupItem.belongsTo("redstone_traps", output);
+                        redstone_traps.accept(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get());
+                        redstone_traps.accept(FunctionalBlocks.SWITCH.get());
+                        redstone_traps.accept(FunctionalBlocks.SIGNAL_ADAPTER.get());
+                        redstone_traps.accept(FunctionalBlocks.DART_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.STONE_DART_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.DEEPSLATE_DART_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.SUPER_DART_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.FLAME_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.SPIKY_BALL_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.SPEAR_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.SHIMMER_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.GRAVITATION_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.PNEUMATIC_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.SCULK_TRAP.get());
+                        redstone_traps.accept(FunctionalBlocks.LAND_MINE.get());
+                        redstone_traps.accept(FunctionalBlocks.DETONATOR.get());
+                        redstone_traps.accept(FunctionalBlocks.LEVER.get());
+
+                        CreativeModeTab.Output timers_plates = GroupItem.belongsTo("timers_plates", output);
+                        timers_plates.accept(FunctionalBlocks.TIMERS_BLOCK_1_1.get());
+                        timers_plates.accept(FunctionalBlocks.TIMERS_BLOCK_3_1.get());
+                        timers_plates.accept(FunctionalBlocks.TIMERS_BLOCK_5_1.get());
+                        timers_plates.accept(FunctionalBlocks.TIMERS_BLOCK_1_2.get());
+                        timers_plates.accept(FunctionalBlocks.TIMERS_BLOCK_1_4.get());
+                        timers_plates.accept(FunctionalBlocks.PLAYER_PRESSURE_PLATE.get());
+                        timers_plates.accept(FunctionalBlocks.STONE_PRESSURE_PLATE.get());
+                        timers_plates.accept(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get());
+                        timers_plates.accept(FunctionalBlocks.STONE_PRESSURE_BLOCK.get());
+                        timers_plates.accept(FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK.get());
+
+                        CreativeModeTab.Output crafting_stations = GroupItem.belongsTo("crafting_stations", output);
+                        crafting_stations.accept(FunctionalBlocks.SHARPENING_STATION.get());
+                        crafting_stations.accept(FunctionalBlocks.BEWITCHING_TABLE.get());
+                        crafting_stations.accept(FunctionalBlocks.EXTRACTINATOR.get());
+                        crafting_stations.accept(FunctionalBlocks.SKY_MILL.get());
+                        crafting_stations.accept(FunctionalBlocks.HEAVY_WORK_BENCH.get());
+                        crafting_stations.accept(FunctionalBlocks.CRYSTAL_BALL.get());
+                        crafting_stations.accept(FunctionalBlocks.HELLFORGE.get());
+                        crafting_stations.accept(FunctionalBlocks.ADAMANTITE_FORGE.get());
+                        crafting_stations.accept(FunctionalBlocks.TITANIUM_FORGE.get());
+                        crafting_stations.accept(FunctionalBlocks.ALCHEMY_TABLE.get());
+                        crafting_stations.accept(FunctionalBlocks.SAWMILL.get());
+                        crafting_stations.accept(FunctionalBlocks.LOOM.get());
+                        crafting_stations.accept(FunctionalBlocks.DYE_VAT.get());
+                        crafting_stations.accept(FunctionalBlocks.SOLIDIFIER.get());
+                        crafting_stations.accept(FunctionalBlocks.KEG.get());
+                        crafting_stations.accept(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get());
+                        crafting_stations.accept(FunctionalBlocks.BLEND_O_MATIC.get());
+                        crafting_stations.accept(FunctionalBlocks.MEAT_GRINDER.get());
+
+                        CreativeModeTab.Output storage = GroupItem.belongsTo("storage", output);
+                        storage.accept(ChestBlocks.CRIMSON_CHEST.get());
+                        storage.accept(ChestBlocks.CORRUPTION_CHEST.get());
+                        storage.accept(ChestBlocks.JUNGLE_CHEST.get());
+                        storage.accept(ChestBlocks.ICE_CHEST.get());
+                        storage.accept(ChestBlocks.DESERT_CHEST.get());
+                        storage.accept(ChestBlocks.OCEAN_CHEST.get());
+                        storage.accept(ChestBlocks.UNIVERSE_CHEST.get());
+                        storage.accept(ChestBlocks.HALLOWED_CHEST.get());
+                        storage.accept(ChestBlocks.MECHANIC_SAFE_CHEST.get());
+                        storage.accept(FunctionalBlocks.PIGGY_BANK.get());
+                        storage.accept(FunctionalBlocks.SAFE.get());
+                        storage.accept(FunctionalBlocks.AMMO_BOX.get());
+                        storage.accept(FunctionalBlocks.MAGIC_MAIL_BOX.get());
+
+                        CreativeModeTab.Output altars_anvils = GroupItem.belongsTo("altars_anvils", output);
+                        altars_anvils.accept(FunctionalBlocks.CRIMSON_ALTAR.get());
+                        altars_anvils.accept(FunctionalBlocks.DEMON_ALTAR.get());
+                        altars_anvils.accept(FunctionalBlocks.LEAD_ANVIL.get());
+                        altars_anvils.accept(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get());
+                        altars_anvils.accept(FunctionalBlocks.DAMAGED_LEAD_ANVIL.get());
+                        altars_anvils.accept(FunctionalBlocks.MYTHRIL_ANVIL.get());
+                        altars_anvils.accept(FunctionalBlocks.ORICHALCUM_ANVIL.get());
+
+                        CreativeModeTab.Output spikes_hazards = GroupItem.belongsTo("spikes_hazards", output);
+                        spikes_hazards.accept(FunctionalBlocks.SPIKE.get());
+                        spikes_hazards.accept(FunctionalBlocks.WOODEN_SPIKE.get());
+                        spikes_hazards.accept(FunctionalBlocks.FRAGILE_SANDSTONE.get());
+                        spikes_hazards.accept(FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get());
+                        spikes_hazards.accept(FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get());
+                        spikes_hazards.accept(FunctionalBlocks.FRAGILE_BLUE_BRICKS.get());
+                        spikes_hazards.accept(FunctionalBlocks.FRAGILE_GREEN_BRICKS.get());
+                        spikes_hazards.accept(FunctionalBlocks.FRAGILE_PINK_BRICKS.get());
+                        spikes_hazards.accept(FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get());
+                        spikes_hazards.accept(FunctionalBlocks.ENCHANTED_FRAGILE_GREEN_BRICKS.get());
+                        spikes_hazards.accept(FunctionalBlocks.ENCHANTED_FRAGILE_PINK_BRICKS.get());
+
+                        CreativeModeTab.Output lanterns_souls = GroupItem.belongsTo("lanterns_souls", output);
+                        lanterns_souls.accept(FunctionalBlocks.HEART_LANTERN.get());
+                        lanterns_souls.accept(FunctionalBlocks.STAR_IN_A_BOTTLE.get());
+                        lanterns_souls.accept(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get());
+                        lanterns_souls.accept(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.get());
+                        lanterns_souls.accept(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.get());
+                        lanterns_souls.accept(FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.get());
+                        lanterns_souls.accept(FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.get());
+                        lanterns_souls.accept(FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.get());
+                        lanterns_souls.accept(FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.get());
+                        lanterns_souls.accept(FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.get());
+
+                        CreativeModeTab.Output misc_functional = GroupItem.belongsTo("misc_functional", output);
+                        misc_functional.accept(FunctionalBlocks.EVER_POWERED_RAIL.get());
+                        misc_functional.accept(FunctionalBlocks.LIFE_CAMPFIRE.get());
+                        misc_functional.accept(FunctionalBlocks.SILLY_BALLOON_MACHINE.get());
+                        misc_functional.accept(FunctionalBlocks.WEATHER_VANE.get());
+                        misc_functional.accept(FunctionalBlocks.COOKING_POT.get());
+                        misc_functional.accept(FunctionalBlocks.GEYSER_BLOCK.get());
+                        misc_functional.accept(FunctionalBlocks.CAULDRON.get());
+                        misc_functional.accept(FunctionalBlocks.ANNOUNCEMENT_BOX.get());
+                        misc_functional.accept(FunctionalBlocks.TREE_HOLES_BLOCK.get());
+                        misc_functional.accept(FunctionalBlocks.LOCK_BLOCK.get());
+                        misc_functional.accept(FunctionalBlocks.TUFF_BOOTH.get());
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
+
                     .build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
             () -> CreativeModeTab.builder().icon(IconItems.MATERIAL_ICON::toStack)
@@ -89,13 +808,160 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
-                        output.accept(ConsumableItems.MANA_CRYSTAL);
-                        output.accept(ConsumableItems.LIFE_CRYSTAL);
-                        output.accept(ConsumableItems.LIFE_FRUIT);
-                        output.accept(FoodItems.END_DRAGON_PEPPER);
-                        output.accept(FoodItems.END_DRAGON_PEPPER_SEED);
-                        acceptAll(MaterialItems.ITEMS, output);
-                        output.accept(ModBlocks.POO);
+                        CreativeModeTab.Output metal_materials = GroupItem.belongsTo("metal_materials", output);
+                        metal_materials.accept(MaterialItems.RAW_TIN.get());
+                        metal_materials.accept(MaterialItems.TIN_INGOT.get());
+                        metal_materials.accept(MaterialItems.TIN_NUGGET.get());
+                        metal_materials.accept(MaterialItems.RAW_LEAD.get());
+                        metal_materials.accept(MaterialItems.LEAD_INGOT.get());
+                        metal_materials.accept(MaterialItems.LEAD_NUGGET.get());
+                        metal_materials.accept(MaterialItems.RAW_SILVER.get());
+                        metal_materials.accept(MaterialItems.SILVER_INGOT.get());
+                        metal_materials.accept(MaterialItems.SILVER_NUGGET.get());
+                        metal_materials.accept(MaterialItems.RAW_TUNGSTEN.get());
+                        metal_materials.accept(MaterialItems.TUNGSTEN_INGOT.get());
+                        metal_materials.accept(MaterialItems.TUNGSTEN_NUGGET.get());
+                        metal_materials.accept(MaterialItems.RAW_PLATINUM.get());
+                        metal_materials.accept(MaterialItems.PLATINUM_INGOT.get());
+                        metal_materials.accept(MaterialItems.PLATINUM_NUGGET.get());
+                        metal_materials.accept(MaterialItems.RAW_METEORITE.get());
+                        metal_materials.accept(MaterialItems.METEORITE_INGOT.get());
+                        metal_materials.accept(MaterialItems.METEORITE_NUGGET.get());
+                        metal_materials.accept(MaterialItems.RAW_DEMONITE.get());
+                        metal_materials.accept(MaterialItems.DEMONITE_INGOT.get());
+                        metal_materials.accept(MaterialItems.DEMONITE_NUGGET.get());
+                        metal_materials.accept(MaterialItems.RAW_CRIMTANE.get());
+                        metal_materials.accept(MaterialItems.CRIMTANE_INGOT.get());
+                        metal_materials.accept(MaterialItems.CRIMTANE_NUGGET.get());
+                        metal_materials.accept(MaterialItems.RAW_HELLSTONE.get());
+                        metal_materials.accept(MaterialItems.HELLSTONE_INGOT.get());
+                        metal_materials.accept(MaterialItems.HELLSTONE_NUGGET.get());
+                        metal_materials.accept(MaterialItems.RAW_COBALT.get());
+                        metal_materials.accept(MaterialItems.COBALT_INGOT.get());
+                        metal_materials.accept(MaterialItems.RAW_PALLADIUM.get());
+                        metal_materials.accept(MaterialItems.PALLADIUM_INGOT.get());
+                        metal_materials.accept(MaterialItems.RAW_MYTHRIL.get());
+                        metal_materials.accept(MaterialItems.MYTHRIL_INGOT.get());
+                        metal_materials.accept(MaterialItems.RAW_ORICHALCUM.get());
+                        metal_materials.accept(MaterialItems.ORICHALCUM_INGOT.get());
+                        metal_materials.accept(MaterialItems.RAW_ADAMANTITE.get());
+                        metal_materials.accept(MaterialItems.ADAMANTITE_INGOT.get());
+                        metal_materials.accept(MaterialItems.RAW_TITANIUM.get());
+                        metal_materials.accept(MaterialItems.TITANIUM_INGOT.get());
+                        metal_materials.accept(MaterialItems.RAW_CHLOROPHYTE.get());
+                        metal_materials.accept(MaterialItems.CHLOROPHYTE_INGOT.get());
+                        metal_materials.accept(MaterialItems.RAW_LUMINITE.get());
+                        metal_materials.accept(MaterialItems.LUMINITE_INGOT.get());
+                        metal_materials.accept(MaterialItems.HALLOWED_INGOT.get());
+                        metal_materials.accept(MaterialItems.SHROOMITE_INGOT.get());
+                        metal_materials.accept(MaterialItems.SPECTRE_INGOT.get());
+
+                        CreativeModeTab.Output gems_crystals = GroupItem.belongsTo("gems_crystals", output);
+                        gems_crystals.accept(MaterialItems.RUBY.get());
+                        gems_crystals.accept(MaterialItems.AMBER.get());
+                        gems_crystals.accept(MaterialItems.TOPAZ.get());
+                        gems_crystals.accept(MaterialItems.JADE.get());
+                        gems_crystals.accept(MaterialItems.SAPPHIRE.get());
+                        gems_crystals.accept(MaterialItems.AMETHYST.get());
+                        gems_crystals.accept(MaterialItems.CRYSTAL_SHARDS.get());
+                        gems_crystals.accept(MaterialItems.DARK_SHARD.get());
+                        gems_crystals.accept(MaterialItems.LIGHT_SHARD.get());
+                        gems_crystals.accept(MaterialItems.COLD_CRYSTAL.get());
+                        gems_crystals.accept(MaterialItems.VOID_CRYSTAL.get());
+                        gems_crystals.accept(MaterialItems.OPAL.get());
+
+                        CreativeModeTab.Output souls_special = GroupItem.belongsTo("souls_special", output);
+                        souls_special.accept(MaterialItems.SOUL_OF_LIGHT.get());
+                        souls_special.accept(MaterialItems.SOUL_OF_NIGHT.get());
+                        souls_special.accept(MaterialItems.SOUL_OF_FLIGHT.get());
+                        souls_special.accept(MaterialItems.SOUL_OF_MIGHT.get());
+                        souls_special.accept(MaterialItems.SOUL_OF_SIGHT.get());
+                        souls_special.accept(MaterialItems.SOUL_OF_FRIGHT.get());
+                        souls_special.accept(MaterialItems.SOUL_OF_VOIGHT.get());
+                        souls_special.accept(MaterialItems.SOUL_OF_BRIGHT.get());
+                        souls_special.accept(MaterialItems.ECTOPLASM.get());
+                        souls_special.accept(MaterialItems.FORBIDDEN_FRAGMENT.get());
+                        souls_special.accept(MaterialItems.FROST_CORE.get());
+                        souls_special.accept(MaterialItems.AETHERIUM_SHARD.get());
+                        souls_special.accept(MaterialItems.AETHERIUM_GOLD.get());
+                        souls_special.accept(MaterialItems.LUNARTEAR.get());
+                        souls_special.accept(MaterialItems.DRAGONSAL.get());
+
+                        CreativeModeTab.Output monster_drops = GroupItem.belongsTo("monster_drops", output);
+                        monster_drops.accept(MaterialItems.ROTTEN_CHUNK.get());
+                        monster_drops.accept(MaterialItems.WORM_TOOTH.get());
+                        monster_drops.accept(MaterialItems.VERTEBRA.get());
+                        monster_drops.accept(MaterialItems.BLOOD_CLOT_POWDER.get());
+                        monster_drops.accept(MaterialItems.ROTTEN_BONE.get());
+                        monster_drops.accept(MaterialItems.FILAMENTOUS_FIN.get());
+                        monster_drops.accept(MaterialItems.LENS.get());
+                        monster_drops.accept(MaterialItems.BLACK_LENS.get());
+                        monster_drops.accept(MaterialItems.ANTLION_MANDIBLE.get());
+                        monster_drops.accept(MaterialItems.STINGER.get());
+                        monster_drops.accept(MaterialItems.MAN_EATER_VINE.get());
+                        monster_drops.accept(MaterialItems.BLACK_INK.get());
+                        monster_drops.accept(MaterialItems.SHARK_FIN.get());
+                        monster_drops.accept(MaterialItems.SHADOW_SCALE.get());
+                        monster_drops.accept(MaterialItems.TISSUE_SAMPLE.get());
+                        monster_drops.accept(MaterialItems.ROYAL_WAX.get());
+                        monster_drops.accept(MaterialItems.SPIDER_FANG.get());
+                        monster_drops.accept(MaterialItems.GEL.get());
+                        monster_drops.accept(MaterialItems.PINK_GEL.get());
+                        monster_drops.accept(MaterialItems.HARPY_FEATHER.get());
+                        monster_drops.accept(MaterialItems.GIANT_HARPY_FEATHER.get());
+                        monster_drops.accept(MaterialItems.FLINX_FUR.get());
+
+                        CreativeModeTab.Output plants_herbs = GroupItem.belongsTo("plants_herbs", output);
+                        plants_herbs.accept(MaterialItems.WATERLEAF.get());
+                        plants_herbs.accept(MaterialItems.FIREBLOSSOM.get());
+                        plants_herbs.accept(MaterialItems.MOONGLOW.get());
+                        plants_herbs.accept(MaterialItems.BLINKROOT.get());
+                        plants_herbs.accept(MaterialItems.SHIVERTHORN.get());
+                        plants_herbs.accept(MaterialItems.DAYBLOOM.get());
+                        plants_herbs.accept(MaterialItems.DEATHWEED.get());
+                        plants_herbs.accept(MaterialItems.JUNGLE_SPORE.get());
+                        plants_herbs.accept(MaterialItems.SPORE_ROOT.get());
+
+                        CreativeModeTab.Output crafting_items = GroupItem.belongsTo("crafting_items", output);
+                        crafting_items.accept(MaterialItems.PEARLWOOD_STICK.get());
+                        crafting_items.accept(MaterialItems.CURSED_FLAME.get());
+                        crafting_items.accept(MaterialItems.ICHOR.get());
+                        crafting_items.accept(MaterialItems.PIXIE_DUST.get());
+                        crafting_items.accept(MaterialItems.UNICORN_HORN.get());
+                        crafting_items.accept(MaterialItems.ANCIENT_CLOTH.get());
+                        crafting_items.accept(MaterialItems.PEARL.get());
+                        crafting_items.accept(MaterialItems.BLACK_PEARL.get());
+                        crafting_items.accept(MaterialItems.PINK_PEARL.get());
+                        crafting_items.accept(MaterialItems.HOOK.get());
+                        crafting_items.accept(MaterialItems.SILK.get());
+                        crafting_items.accept(MaterialItems.STURDY_FOSSIL.get());
+                        crafting_items.accept(MaterialItems.HEIM.get());
+                        crafting_items.accept(MaterialItems.GELSTONE.get());
+                        crafting_items.accept(MaterialItems.WINTER_MARROW.get());
+                        crafting_items.accept(MaterialItems.RAW_ASPHALT.get());
+                        crafting_items.accept(MaterialItems.TATTERED_CLOTH.get());
+                        crafting_items.accept(MaterialItems.SPELL_TOME.get());
+                        crafting_items.accept(MaterialItems.CHINA_PLATE.get());
+                        crafting_items.accept(MaterialItems.CHINA_BOWL.get());
+                        crafting_items.accept(MaterialItems.EMPTY_BULLET.get());
+                        crafting_items.accept(MaterialItems.EXPLOSIVE_POWDER.get());
+                        crafting_items.accept(MaterialItems.GOLD_DUST.get());
+                        crafting_items.accept(MaterialItems.COG.get());
+                        crafting_items.accept(MaterialItems.NANITES.get());
+                        crafting_items.accept(MaterialItems.CONFETTI.get());
+                        crafting_items.accept(MaterialItems.VIAL_OF_VENOM.get());
+                        crafting_items.accept(MaterialItems.BELL.get());
+                        crafting_items.accept(MaterialItems.HARP.get());
+                        crafting_items.accept(MaterialItems.MECHANICAL_WHEEL_PIECE.get());
+                        crafting_items.accept(MaterialItems.MECHANICAL_WAGON_PIECE.get());
+                        crafting_items.accept(MaterialItems.MECHANICAL_BATTERY_PIECE.get());
+
+                        CreativeModeTab.Output sky_special = GroupItem.belongsTo("sky_special", output);
+                        sky_special.accept(MaterialItems.FALLING_STAR.get());
+                        sky_special.accept(MaterialItems.STAR_PETALS.get());
+                        sky_special.accept(MaterialItems.FLOATING_WHEAT_HEADS.get());
+                        sky_special.accept(MaterialItems.WEAVING_CLOUD_COTTON.get());
+
                     })
                     .withTabsBefore(MECHANICAL.getId())
                     .build());
@@ -109,13 +975,95 @@ public final class ModTabs {
                         output.accept(TCItems.DEMON_HEART);
                         acceptAll(ConsumableItems.ITEMS, output);
                         acceptAll(TreasureBagItems.ITEMS, output, "treasure_bag");
-
                         acceptAll(ModBlocks.TOMBSTONES.keySet(), GroupItem.belongsTo("tombstone", output));
-
                         acceptAll(BaitItems.ITEMS, output, "bait");
                         acceptAll(QuestedFishes.ITEMS, output, "quested_fish");
                         acceptAll(CrateBlocks.BLOCKS, output, "crate");
                         acceptAll(PaintItems.ITEMS, output, "paint");
+
+                        CreativeModeTab.Output throwing_weapons = GroupItem.belongsTo("throwing_weapons", output);
+                        throwing_weapons.accept(ConsumableItems.SHURIKEN.get());
+                        throwing_weapons.accept(ConsumableItems.THROWING_KNIVE.get());
+                        throwing_weapons.accept(ConsumableItems.BONE_THROWING_KNIFE.get());
+                        throwing_weapons.accept(ConsumableItems.FROST_DAGGERFISH.get());
+                        throwing_weapons.accept(ConsumableItems.JAVELIN.get());
+                        throwing_weapons.accept(ConsumableItems.DUNGEON_DEMON_BONE.get());
+                        throwing_weapons.accept(ConsumableItems.SPIKY_BALL.get());
+
+                        CreativeModeTab.Output bombs_explosives = GroupItem.belongsTo("bombs_explosives", output);
+                        bombs_explosives.accept(ConsumableItems.BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.BOUNCY_BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.STICKY_BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.SCARAB_BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.BOMB_FISH.get());
+                        bombs_explosives.accept(ConsumableItems.DYNAMITE.get());
+                        bombs_explosives.accept(ConsumableItems.BOUNCY_DYNAMITE.get());
+                        bombs_explosives.accept(ConsumableItems.STICKY_DYNAMITE.get());
+                        bombs_explosives.accept(ConsumableItems.GRENADE.get());
+                        bombs_explosives.accept(ConsumableItems.BOUNCY_GRENADE.get());
+                        bombs_explosives.accept(ConsumableItems.STICKY_GRENADE.get());
+                        bombs_explosives.accept(ConsumableItems.BEENADE.get());
+                        bombs_explosives.accept(ConsumableItems.SMOKE_BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.DIRT_BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.STICKY_DIRT_BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.DRY_BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.WET_BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.LAVA_BOMB.get());
+                        bombs_explosives.accept(ConsumableItems.HONEY_BOMB.get());
+
+                        CreativeModeTab.Output boss_summons = GroupItem.belongsTo("boss_summons", output);
+                        boss_summons.accept(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get());
+                        boss_summons.accept(ConsumableItems.SLIME_CROWN.get());
+                        boss_summons.accept(ConsumableItems.WORM_FOOD.get());
+                        boss_summons.accept(ConsumableItems.BLOODY_SPINE.get());
+                        boss_summons.accept(ConsumableItems.ABEEMINATION.get());
+                        boss_summons.accept(ConsumableItems.DEER_THING.get());
+
+                        CreativeModeTab.Output environment_items = GroupItem.belongsTo("environment_items", output);
+                        environment_items.accept(ConsumableItems.HOLY_WATER.get());
+                        environment_items.accept(ConsumableItems.UNHOLY_WATER.get());
+                        environment_items.accept(ConsumableItems.BLOOD_WATER.get());
+                        environment_items.accept(ConsumableItems.VILE_POWDER.get());
+                        environment_items.accept(ConsumableItems.VICIOUS_POWDER.get());
+                        environment_items.accept(ConsumableItems.PURIFICATION_POWDER.get());
+                        environment_items.accept(ConsumableItems.FERTILIZER.get());
+
+                        CreativeModeTab.Output stat_boosters = GroupItem.belongsTo("stat_boosters", output);
+                        stat_boosters.accept(ConsumableItems.MANA_CRYSTAL.get());
+                        stat_boosters.accept(ConsumableItems.LIFE_CRYSTAL.get());
+                        stat_boosters.accept(ConsumableItems.LIFE_FRUIT.get());
+                        stat_boosters.accept(ConsumableItems.VITAL_CRYSTAL.get());
+                        stat_boosters.accept(ConsumableItems.ARCANE_CRYSTAL.get());
+
+                        CreativeModeTab.Output loot_gifts = GroupItem.belongsTo("loot_gifts", output);
+                        loot_gifts.accept(ConsumableItems.CHRISTMAS_GIFT.get());
+                        loot_gifts.accept(ConsumableItems.RED_ENVELOPE.get());
+                        loot_gifts.accept(ConsumableItems.GOODIE_BAG.get());
+                        loot_gifts.accept(ConsumableItems.DELUXE_PACKAGE.get());
+                        loot_gifts.accept(ConsumableItems.HERB_BAG.get());
+                        loot_gifts.accept(ConsumableItems.CAN_OF_WORMS.get());
+                        loot_gifts.accept(ConsumableItems.GOLDEN_LOCK_BOX.get());
+                        loot_gifts.accept(ConsumableItems.OBSIDIAN_LOCK_BOX.get());
+
+                        CreativeModeTab.Output consumable_special = GroupItem.belongsTo("consumable_special", output);
+                        consumable_special.accept(ConsumableItems.MINECART_UPGRADE_KIT.get());
+                        consumable_special.accept(ConsumableItems.ARTISAN_LOAF.get());
+                        consumable_special.accept(ConsumableItems.GALAXY_PEARL.get());
+                        consumable_special.accept(ConsumableItems.AEGIS_APPLE.get());
+                        consumable_special.accept(ConsumableItems.AMBROSIA.get());
+                        consumable_special.accept(ConsumableItems.GUMMY_WORM.get());
+                        consumable_special.accept(ConsumableItems.CLAM.get());
+                        consumable_special.accept(ConsumableItems.PINE_CONE.get());
+                        consumable_special.accept(ConsumableItems.SUGAR_TANGERINE.get());
+                        consumable_special.accept(ConsumableItems.ROTTEN_BONE_DUST.get());
+                        consumable_special.accept(ConsumableItems.BLOODSTAINED_POWDER.get());
+                        consumable_special.accept(ConsumableItems.BLOOD_TEAR.get());
+                        consumable_special.accept(ConsumableItems.GOBLIN_BATTLE_STANDARD.get());
+
+                        CreativeModeTab.Output books_accessories = GroupItem.belongsTo("books_accessories", output);
+                        books_accessories.accept(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get());
+                        books_accessories.accept(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get());
+                        books_accessories.accept(ConsumableItems.PEDDLERS_SATCHEL.get());
                     })
                     .withTabsBefore(MATERIALS.getId())
                     .build());
@@ -137,6 +1085,22 @@ public final class ModTabs {
                         output = new WipNotDisplayOutput(output);
 
                         acceptAll(ToolItems.ITEMS, output);
+                        acceptAll(AxeItems.ITEMS, output, "axe");
+                        acceptAll(PickaxeItems.ITEMS, output, "pickaxe");
+                        acceptAll(PickaxeAxeItems.ITEMS, output, "pickaxe_axe");
+                        acceptAll(DrillItems.ITEMS, output, "drill");
+                        acceptAll(ChainsawItems.ITEMS, output, "chainsaw");
+                        acceptAll(HamaxeItems.ITEMS, output, "hamaxe");
+                        acceptAll(HoeShovelItems.ITEMS, output, "how_shovel");
+                        acceptAll(GardenShearsItems.ITEMS, output, "garden_shears");
+                        acceptAll(HammerItems.ITEMS, output, "hammer");
+                        acceptAll(HookItems.ITEMS, output, "hook");
+                        acceptAll(MinecartItems.ITEMS, output, "minecart");
+                        acceptAll(FishingPoleItems.ITEMS, output, "fishing_pole");
+                        acceptAll(HoeItems.ITEMS, output, "hoe");
+                        acceptAll(ShovelItems.ITEMS, output, "shovel");
+                        acceptAll(BoatItems.BOAT_ITEMS, output, "boat");
+                        acceptAll(BoatItems.CHEST_BOAT_ITEMS, output, "chest_boat");
 
                         CreativeModeTab.Output rope = GroupItem.belongsTo("rope", output);
                         rope.accept(ModBlocks.ROPE);
@@ -154,22 +1118,75 @@ public final class ModTabs {
                         wand.accept(ModItems.LIVING_MAHOGANY_WAND);
                         wand.accept(ModItems.RICH_MAHOGANY_LEAF_WAND);
 
-                        acceptAll(AxeItems.ITEMS, output, "axe");
-                        acceptAll(PickaxeItems.ITEMS, output, "pickaxe");
-                        acceptAll(PickaxeAxeItems.ITEMS, output, "pickaxe_axe");
-                        acceptAll(DrillItems.ITEMS, output, "drill");
-                        acceptAll(ChainsawItems.ITEMS, output, "chainsaw");
-                        acceptAll(HamaxeItems.ITEMS, output, "hamaxe");
-                        acceptAll(HoeShovelItems.ITEMS, output, "how_shovel");
-                        acceptAll(GardenShearsItems.ITEMS, output, "garden_shears");
-                        acceptAll(HammerItems.ITEMS, output, "hammer");
-                        acceptAll(HookItems.ITEMS, output, "hook");
-                        acceptAll(MinecartItems.ITEMS, output, "minecart");
-                        acceptAll(FishingPoleItems.ITEMS, output, "fishing_pole");
-                        acceptAll(HoeItems.ITEMS, output, "hoe");
-                        acceptAll(ShovelItems.ITEMS, output, "shovel");
-                        acceptAll(BoatItems.BOAT_ITEMS, output, "boat");
-                        acceptAll(BoatItems.CHEST_BOAT_ITEMS, output, "chest_boat");
+                        CreativeModeTab.Output wiring_tools = GroupItem.belongsTo("wiring_tools", output);
+                        wiring_tools.accept(ToolItems.RED_WRENCH.get());
+                        wiring_tools.accept(ToolItems.BLUE_WRENCH.get());
+                        wiring_tools.accept(ToolItems.GREEN_WRENCH.get());
+                        wiring_tools.accept(ToolItems.YELLOW_WRENCH.get());
+                        wiring_tools.accept(ToolItems.WIRE_CUTTER.get());
+
+                        CreativeModeTab.Output keys = GroupItem.belongsTo("keys", output);
+                        keys.accept(ToolItems.GOLDEN_DUNGEON_KEY.get());
+                        keys.accept(ToolItems.GOLDEN_KEY.get());
+                        keys.accept(ToolItems.SHADOW_KEY.get());
+                        keys.accept(ToolItems.TEMPLE_KEY.get());
+                        keys.accept(ToolItems.JUNGLE_KEY.get());
+                        keys.accept(ToolItems.CORRUPTION_KEY.get());
+                        keys.accept(ToolItems.CRIMSON_KEY.get());
+                        keys.accept(ToolItems.HALLOWED_KEY.get());
+                        keys.accept(ToolItems.FROZEN_KEY.get());
+                        keys.accept(ToolItems.DESERT_KEY.get());
+                        keys.accept(ToolItems.OCEAN_KEY.get());
+                        keys.accept(ToolItems.UNIVERSE_KEY.get());
+                        keys.accept(ToolItems.RUST_IRON_KEY.get());
+                        keys.accept(ToolItems.MECHANIC_SAFE_KEY.get());
+                        keys.accept(ToolItems.KEY_OF_LIGHT.get());
+                        keys.accept(ToolItems.KEY_OF_NIGHT.get());
+
+                        CreativeModeTab.Output buckets_liquids = GroupItem.belongsTo("buckets_liquids", output);
+                        buckets_liquids.accept(ToolItems.HONEY_BUCKET.get());
+                        buckets_liquids.accept(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get());
+                        buckets_liquids.accept(ToolItems.BOTTOMLESS_WATER_BUCKET.get());
+                        buckets_liquids.accept(ToolItems.BOTTOMLESS_LAVA_BUCKET.get());
+                        buckets_liquids.accept(ToolItems.BOTTOMLESS_HONEY_BUCKET.get());
+                        buckets_liquids.accept(ToolItems.EMPTY_DROPPER.get());
+                        buckets_liquids.accept(ToolItems.MAGIC_SAND_DROPPER.get());
+                        buckets_liquids.accept(ToolItems.MAGIC_HONEY_DROPPER.get());
+                        buckets_liquids.accept(ToolItems.MAGIC_LAVA_DROPPER.get());
+                        buckets_liquids.accept(ToolItems.MAGIC_WATER_DROPPER.get());
+
+                        CreativeModeTab.Output nets_ropes = GroupItem.belongsTo("nets_ropes", output);
+                        nets_ropes.accept(ToolItems.BUG_NET.get());
+                        nets_ropes.accept(ToolItems.LAVAPROOF_BUG_NET.get());
+                        nets_ropes.accept(ToolItems.DEV_BUG_NET.get());
+                        nets_ropes.accept(ToolItems.GOLDEN_BUG_NET.get());
+                        nets_ropes.accept(ToolItems.ROPE_COIL.get());
+                        nets_ropes.accept(ToolItems.VINE_ROPE_COIL.get());
+                        nets_ropes.accept(ToolItems.SILK_ROPE_COIL.get());
+                        nets_ropes.accept(ToolItems.WEB_ROPE_COIL.get());
+
+                        CreativeModeTab.Output sponges = GroupItem.belongsTo("sponges", output);
+                        sponges.accept(ToolItems.SUPER_ABSORBANT_SPONGE.get());
+                        sponges.accept(ToolItems.HONEY_ABSORBANT_SPONGE.get());
+                        sponges.accept(ToolItems.LAVA_ABSORBANT_SPONGE.get());
+                        sponges.accept(ToolItems.ULTRA_ABSORBANT_SPONGE.get());
+
+                        CreativeModeTab.Output utility_tools = GroupItem.belongsTo("utility_tools", output);
+                        utility_tools.accept(ToolItems.ICE_MIRROR.get());
+                        utility_tools.accept(ToolItems.MAGIC_CONCH.get());
+                        utility_tools.accept(ToolItems.DEMON_CONCH.get());
+                        utility_tools.accept(ToolItems.METEOR_COMPASS.get());
+                        utility_tools.accept(ToolItems.DUNGEON_COMPASS.get());
+                        utility_tools.accept(ToolItems.BINOCULARS.get());
+                        utility_tools.accept(ToolItems.ENCUMBERING_STONE.get());
+                        utility_tools.accept(ToolItems.NPC_INVITATION.get());
+
+                        CreativeModeTab.Output guide_books = GroupItem.belongsTo("guide_books", output);
+                        guide_books.accept(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.get());
+                        guide_books.accept(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.get());
+                        guide_books.accept(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get());
+
+
                     })
                     .withTabsBefore(FOOD_AND_POTIONS.getId())
                     .build());
@@ -179,10 +1196,409 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.armors"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-
-                        output.accept(TCItems.DIVING_HELMET);
                         acceptAll(ArmorItems.ITEMS, output);
                         acceptAll(VanityArmorItems.ITEMS, output);
+
+                        CreativeModeTab.Output cactus_armor = GroupItem.belongsTo("cactus_armor", output);
+                        cactus_armor.accept(ArmorItems.CACTUS_HELMET.get());
+                        cactus_armor.accept(ArmorItems.CACTUS_CHESTPLATE.get());
+                        cactus_armor.accept(ArmorItems.CACTUS_LEGGINGS.get());
+                        cactus_armor.accept(ArmorItems.CACTUS_BOOTS.get());
+
+                        CreativeModeTab.Output plank_armor = GroupItem.belongsTo("plank_armor", output);
+                        plank_armor.accept(ArmorItems.PLANK_HELMET.get());
+                        plank_armor.accept(ArmorItems.PLANK_CHESTPLATE.get());
+                        plank_armor.accept(ArmorItems.PLANK_LEGGINGS.get());
+                        plank_armor.accept(ArmorItems.PLANK_BOOTS.get());
+
+                        CreativeModeTab.Output ebony_armor = GroupItem.belongsTo("ebony_armor", output);
+                        ebony_armor.accept(ArmorItems.EBONY_HELMET.get());
+                        ebony_armor.accept(ArmorItems.EBONY_CHESTPLATE.get());
+                        ebony_armor.accept(ArmorItems.EBONY_LEGGINGS.get());
+                        ebony_armor.accept(ArmorItems.EBONY_BOOTS.get());
+
+                        CreativeModeTab.Output shadow_plank_armor = GroupItem.belongsTo("shadow_plank_armor", output);
+                        shadow_plank_armor.accept(ArmorItems.SHADOW_PLANK_HELMET.get());
+                        shadow_plank_armor.accept(ArmorItems.SHADOW_PLANK_CHESTPLATE.get());
+                        shadow_plank_armor.accept(ArmorItems.SHADOW_PLANK_LEGGINGS.get());
+                        shadow_plank_armor.accept(ArmorItems.SHADOW_PLANK_BOOTS.get());
+
+                        CreativeModeTab.Output pearl_armor = GroupItem.belongsTo("pearl_armor", output);
+                        pearl_armor.accept(ArmorItems.PEARL_HELMET.get());
+                        pearl_armor.accept(ArmorItems.PEARL_CHESTPLATE.get());
+                        pearl_armor.accept(ArmorItems.PEARL_LEGGINGS.get());
+                        pearl_armor.accept(ArmorItems.PEARL_BOOTS.get());
+
+                        CreativeModeTab.Output ash_armor = GroupItem.belongsTo("ash_armor", output);
+                        ash_armor.accept(ArmorItems.ASH_HELMET.get());
+                        ash_armor.accept(ArmorItems.ASH_CHESTPLATE.get());
+                        ash_armor.accept(ArmorItems.ASH_LEGGINGS.get());
+                        ash_armor.accept(ArmorItems.ASH_BOOTS.get());
+
+                        CreativeModeTab.Output pumpkin_armor = GroupItem.belongsTo("pumpkin_armor", output);
+                        pumpkin_armor.accept(ArmorItems.PUMPKIN_HELMET.get());
+                        pumpkin_armor.accept(ArmorItems.PUMPKIN_CHESTPLATE.get());
+                        pumpkin_armor.accept(ArmorItems.PUMPKIN_LEGGINGS.get());
+                        pumpkin_armor.accept(ArmorItems.PUMPKIN_BOOTS.get());
+
+                        CreativeModeTab.Output rain_wear = GroupItem.belongsTo("rain_wear", output);
+                        rain_wear.accept(ArmorItems.RAIN_CAP.get());
+                        rain_wear.accept(ArmorItems.RAINCOAT.get());
+
+                        CreativeModeTab.Output snow_insulated_wear = GroupItem.belongsTo("snow_insulated_wear", output);
+                        snow_insulated_wear.accept(ArmorItems.SNOW_CAPS.get());
+                        snow_insulated_wear.accept(ArmorItems.SNOW_SUITS.get());
+                        snow_insulated_wear.accept(ArmorItems.INSULATED_PANTS.get());
+                        snow_insulated_wear.accept(ArmorItems.INSULATED_SHOES.get());
+
+                        CreativeModeTab.Output pink_snow_insulated_wear = GroupItem.belongsTo("pink_snow_insulated_wear", output);
+                        pink_snow_insulated_wear.accept(ArmorItems.PINK_SNOW_CAPS.get());
+                        pink_snow_insulated_wear.accept(ArmorItems.PINK_SNOW_SUITS.get());
+                        pink_snow_insulated_wear.accept(ArmorItems.PINK_INSULATED_PANTS.get());
+                        pink_snow_insulated_wear.accept(ArmorItems.PINK_INSULATED_SHOES.get());
+
+                        CreativeModeTab.Output obsidian_armor = GroupItem.belongsTo("obsidian_armor", output);
+                        obsidian_armor.accept(ArmorItems.OBSIDIAN_HELMET.get());
+                        obsidian_armor.accept(ArmorItems.OBSIDIAN_CHESTPLATE.get());
+                        obsidian_armor.accept(ArmorItems.OBSIDIAN_LEGGINGS.get());
+                        obsidian_armor.accept(ArmorItems.OBSIDIAN_BOOTS.get());
+
+                        CreativeModeTab.Output gladiator_armor = GroupItem.belongsTo("gladiator_armor", output);
+                        gladiator_armor.accept(ArmorItems.GLADIATOR_HELMET.get());
+                        gladiator_armor.accept(ArmorItems.GLADIATOR_CHESTPLATE.get());
+                        gladiator_armor.accept(ArmorItems.GLADIATOR_LEGGINGS.get());
+                        gladiator_armor.accept(ArmorItems.GLADIATOR_BOOTS.get());
+
+                        CreativeModeTab.Output meteor_armor = GroupItem.belongsTo("meteor_armor", output);
+                        meteor_armor.accept(ArmorItems.METEOR_HELMET.get());
+                        meteor_armor.accept(ArmorItems.METEOR_CHESTPLATE.get());
+                        meteor_armor.accept(ArmorItems.METEOR_LEGGINGS.get());
+                        meteor_armor.accept(ArmorItems.METEOR_BOOTS.get());
+
+                        CreativeModeTab.Output copper_armor = GroupItem.belongsTo("copper_armor", output);
+                        copper_armor.accept(ArmorItems.COPPER_HELMET.get());
+                        copper_armor.accept(ArmorItems.COPPER_CHESTPLATE.get());
+                        copper_armor.accept(ArmorItems.COPPER_LEGGINGS.get());
+                        copper_armor.accept(ArmorItems.COPPER_BOOTS.get());
+
+                        CreativeModeTab.Output tin_armor = GroupItem.belongsTo("tin_armor", output);
+                        tin_armor.accept(ArmorItems.TIN_HELMET.get());
+                        tin_armor.accept(ArmorItems.TIN_CHESTPLATE.get());
+                        tin_armor.accept(ArmorItems.TIN_LEGGINGS.get());
+                        tin_armor.accept(ArmorItems.TIN_BOOTS.get());
+
+                        CreativeModeTab.Output lead_armor = GroupItem.belongsTo("lead_armor", output);
+                        lead_armor.accept(ArmorItems.LEAD_HELMET.get());
+                        lead_armor.accept(ArmorItems.LEAD_CHESTPLATE.get());
+                        lead_armor.accept(ArmorItems.LEAD_LEGGINGS.get());
+                        lead_armor.accept(ArmorItems.LEAD_BOOTS.get());
+
+                        CreativeModeTab.Output silver_armor = GroupItem.belongsTo("silver_armor", output);
+                        silver_armor.accept(ArmorItems.SILVER_HELMET.get());
+                        silver_armor.accept(ArmorItems.SILVER_CHESTPLATE.get());
+                        silver_armor.accept(ArmorItems.SILVER_LEGGINGS.get());
+                        silver_armor.accept(ArmorItems.SILVER_BOOTS.get());
+
+                        CreativeModeTab.Output tungsten_armor = GroupItem.belongsTo("tungsten_armor", output);
+                        tungsten_armor.accept(ArmorItems.TUNGSTEN_HELMET.get());
+                        tungsten_armor.accept(ArmorItems.TUNGSTEN_CHESTPLATE.get());
+                        tungsten_armor.accept(ArmorItems.TUNGSTEN_LEGGINGS.get());
+                        tungsten_armor.accept(ArmorItems.TUNGSTEN_BOOTS.get());
+
+                        CreativeModeTab.Output golden_armor = GroupItem.belongsTo("golden_armor", output);
+                        golden_armor.accept(ArmorItems.GOLDEN_HELMET.get());
+                        golden_armor.accept(ArmorItems.GOLDEN_CHESTPLATE.get());
+                        golden_armor.accept(ArmorItems.GOLDEN_LEGGINGS.get());
+                        golden_armor.accept(ArmorItems.GOLDEN_BOOTS.get());
+
+                        CreativeModeTab.Output platinum_armor = GroupItem.belongsTo("platinum_armor", output);
+                        platinum_armor.accept(ArmorItems.PLATINUM_HELMET.get());
+                        platinum_armor.accept(ArmorItems.PLATINUM_CHESTPLATE.get());
+                        platinum_armor.accept(ArmorItems.PLATINUM_LEGGINGS.get());
+                        platinum_armor.accept(ArmorItems.PLATINUM_BOOTS.get());
+
+                        CreativeModeTab.Output fossil_armor = GroupItem.belongsTo("fossil_armor", output);
+                        fossil_armor.accept(ArmorItems.FOSSIL_HELMET.get());
+                        fossil_armor.accept(ArmorItems.FOSSIL_CHESTPLATE.get());
+                        fossil_armor.accept(ArmorItems.FOSSIL_LEGGINGS.get());
+                        fossil_armor.accept(ArmorItems.FOSSIL_BOOTS.get());
+
+                        CreativeModeTab.Output bee_armor = GroupItem.belongsTo("bee_armor", output);
+                        bee_armor.accept(ArmorItems.BEE_HELMET.get());
+                        bee_armor.accept(ArmorItems.BEE_CHESTPLATE.get());
+                        bee_armor.accept(ArmorItems.BEE_LEGGINGS.get());
+                        bee_armor.accept(ArmorItems.BEE_BOOTS.get());
+
+                        CreativeModeTab.Output ninja_armor = GroupItem.belongsTo("ninja_armor", output);
+                        ninja_armor.accept(ArmorItems.NINJA_HELMET.get());
+                        ninja_armor.accept(ArmorItems.NINJA_CHESTPLATE.get());
+                        ninja_armor.accept(ArmorItems.NINJA_LEGGINGS.get());
+                        ninja_armor.accept(ArmorItems.NINJA_BOOTS.get());
+
+                        CreativeModeTab.Output spore_root_armor = GroupItem.belongsTo("spore_root_armor", output);
+                        spore_root_armor.accept(ArmorItems.SPORE_ROOT_HELMET.get());
+                        spore_root_armor.accept(ArmorItems.SPORE_ROOT_CHESTPLATE.get());
+                        spore_root_armor.accept(ArmorItems.SPORE_ROOT_LEGGINGS.get());
+                        spore_root_armor.accept(ArmorItems.SPORE_ROOT_BOOTS.get());
+
+                        CreativeModeTab.Output cold_crystal_armor = GroupItem.belongsTo("cold_crystal_armor", output);
+                        cold_crystal_armor.accept(ArmorItems.COLD_CRYSTAL_HELMET.get());
+                        cold_crystal_armor.accept(ArmorItems.COLD_CRYSTAL_CHESTPLATE.get());
+                        cold_crystal_armor.accept(ArmorItems.COLD_CRYSTAL_LEGGINGS.get());
+                        cold_crystal_armor.accept(ArmorItems.COLD_CRYSTAL_BOOTS.get());
+
+                        CreativeModeTab.Output heim_armor = GroupItem.belongsTo("heim_armor", output);
+                        heim_armor.accept(ArmorItems.HEIM_HELMET.get());
+                        heim_armor.accept(ArmorItems.HEIM_CHESTPLATE.get());
+                        heim_armor.accept(ArmorItems.HEIM_LEGGINGS.get());
+                        heim_armor.accept(ArmorItems.HEIM_BOOTS.get());
+
+                        CreativeModeTab.Output shadow_armor = GroupItem.belongsTo("shadow_armor", output);
+                        shadow_armor.accept(ArmorItems.SHADOW_HELMET.get());
+                        shadow_armor.accept(ArmorItems.SHADOW_CHESTPLATE.get());
+                        shadow_armor.accept(ArmorItems.SHADOW_LEGGINGS.get());
+                        shadow_armor.accept(ArmorItems.SHADOW_BOOTS.get());
+
+                        CreativeModeTab.Output crimson_armor = GroupItem.belongsTo("crimson_armor", output);
+                        crimson_armor.accept(ArmorItems.CRIMSON_HELMET.get());
+                        crimson_armor.accept(ArmorItems.CRIMSON_CHESTPLATE.get());
+                        crimson_armor.accept(ArmorItems.CRIMSON_LEGGINGS.get());
+                        crimson_armor.accept(ArmorItems.CRIMSON_BOOTS.get());
+
+                        CreativeModeTab.Output mining_armor = GroupItem.belongsTo("mining_armor", output);
+                        mining_armor.accept(ArmorItems.MINING_HELMET.get());
+                        mining_armor.accept(ArmorItems.MINING_CHESTPLATE.get());
+                        mining_armor.accept(ArmorItems.MINING_LEGGINGS.get());
+                        mining_armor.accept(ArmorItems.MINING_BOOTS.get());
+
+                        CreativeModeTab.Output angler_wear = GroupItem.belongsTo("angler_wear", output);
+                        angler_wear.accept(ArmorItems.ANGLER_HAT.get());
+                        angler_wear.accept(ArmorItems.ANGLER_VEST.get());
+                        angler_wear.accept(ArmorItems.ANGLER_PANTS.get());
+
+                        CreativeModeTab.Output molten_armor = GroupItem.belongsTo("molten_armor", output);
+                        molten_armor.accept(ArmorItems.MOLTEN_HELMET.get());
+                        molten_armor.accept(ArmorItems.MOLTEN_CHESTPLATE.get());
+                        molten_armor.accept(ArmorItems.MOLTEN_LEGGINGS.get());
+                        molten_armor.accept(ArmorItems.MOLTEN_BOOTS.get());
+
+                        CreativeModeTab.Output necro_armor = GroupItem.belongsTo("necro_armor", output);
+                        necro_armor.accept(ArmorItems.NECRO_HELMET.get());
+                        necro_armor.accept(ArmorItems.NECRO_CHESTPLATE.get());
+                        necro_armor.accept(ArmorItems.NECRO_LEGGINGS.get());
+                        necro_armor.accept(ArmorItems.NECRO_BOOTS.get());
+
+                        CreativeModeTab.Output jungle_armor = GroupItem.belongsTo("jungle_armor", output);
+                        jungle_armor.accept(ArmorItems.JUNGLE_HELMET.get());
+                        jungle_armor.accept(ArmorItems.JUNGLE_CHESTPLATE.get());
+                        jungle_armor.accept(ArmorItems.JUNGLE_LEGGINGS.get());
+                        jungle_armor.accept(ArmorItems.JUNGLE_BOOTS.get());
+
+                        CreativeModeTab.Output spider_armor = GroupItem.belongsTo("spider_armor", output);
+                        spider_armor.accept(ArmorItems.SPIDER_HELMET.get());
+                        spider_armor.accept(ArmorItems.SPIDER_CHESTPLATE.get());
+                        spider_armor.accept(ArmorItems.SPIDER_LEGGINGS.get());
+                        spider_armor.accept(ArmorItems.SPIDER_BOOTS.get());
+
+                        CreativeModeTab.Output tiki_armor = GroupItem.belongsTo("tiki_armor", output);
+                        tiki_armor.accept(ArmorItems.TIKI_MASK.get());
+                        tiki_armor.accept(ArmorItems.TIKI_SHIRT.get());
+                        tiki_armor.accept(ArmorItems.TIKI_LEGGINGS.get());
+                        tiki_armor.accept(ArmorItems.TIKI_BOOTS.get());
+
+                        CreativeModeTab.Output cobalt_armor = GroupItem.belongsTo("cobalt_armor", output);
+                        cobalt_armor.accept(ArmorItems.COBALT_MASK.get());
+                        cobalt_armor.accept(ArmorItems.COBALT_HAT.get());
+                        cobalt_armor.accept(ArmorItems.COBALT_HELMET.get());
+                        cobalt_armor.accept(ArmorItems.COBALT_CHESTPLATE.get());
+                        cobalt_armor.accept(ArmorItems.COBALT_LEGGINGS.get());
+                        cobalt_armor.accept(ArmorItems.COBALT_BOOTS.get());
+
+                        CreativeModeTab.Output palladium_armor = GroupItem.belongsTo("palladium_armor", output);
+                        palladium_armor.accept(ArmorItems.PALLADIUM_MASK.get());
+                        palladium_armor.accept(ArmorItems.PALLADIUM_HEADGEAR.get());
+                        palladium_armor.accept(ArmorItems.PALLADIUM_HELMET.get());
+                        palladium_armor.accept(ArmorItems.PALLADIUM_CHESTPLATE.get());
+                        palladium_armor.accept(ArmorItems.PALLADIUM_LEGGINGS.get());
+                        palladium_armor.accept(ArmorItems.PALLADIUM_BOOTS.get());
+
+                        CreativeModeTab.Output mythril_armor = GroupItem.belongsTo("mythril_armor", output);
+                        mythril_armor.accept(ArmorItems.MYTHRIL_HOOD.get());
+                        mythril_armor.accept(ArmorItems.MYTHRIL_HAT.get());
+                        mythril_armor.accept(ArmorItems.MYTHRIL_HELMET.get());
+                        mythril_armor.accept(ArmorItems.MYTHRIL_CHESTPLATE.get());
+                        mythril_armor.accept(ArmorItems.MYTHRIL_LEGGINGS.get());
+                        mythril_armor.accept(ArmorItems.MYTHRIL_BOOTS.get());
+
+                        CreativeModeTab.Output orichalcum_armor = GroupItem.belongsTo("orichalcum_armor", output);
+                        orichalcum_armor.accept(ArmorItems.ORICHALCUM_HEADGEAR.get());
+                        orichalcum_armor.accept(ArmorItems.ORICHALCUM_MASK.get());
+                        orichalcum_armor.accept(ArmorItems.ORICHALCUM_HELMET.get());
+                        orichalcum_armor.accept(ArmorItems.ORICHALCUM_CHESTPLATE.get());
+                        orichalcum_armor.accept(ArmorItems.ORICHALCUM_LEGGINGS.get());
+                        orichalcum_armor.accept(ArmorItems.ORICHALCUM_BOOTS.get());
+
+                        CreativeModeTab.Output adamantite_armor = GroupItem.belongsTo("adamantite_armor", output);
+                        adamantite_armor.accept(ArmorItems.ADAMANTITE_HEADGEAR.get());
+                        adamantite_armor.accept(ArmorItems.ADAMANTITE_MASK.get());
+                        adamantite_armor.accept(ArmorItems.ADAMANTITE_HELMET.get());
+                        adamantite_armor.accept(ArmorItems.ADAMANTITE_CHESTPLATE.get());
+                        adamantite_armor.accept(ArmorItems.ADAMANTITE_LEGGINGS.get());
+                        adamantite_armor.accept(ArmorItems.ADAMANTITE_BOOTS.get());
+
+                        CreativeModeTab.Output titanium_armor = GroupItem.belongsTo("titanium_armor", output);
+                        titanium_armor.accept(ArmorItems.TITANIUM_HEADGEAR.get());
+                        titanium_armor.accept(ArmorItems.TITANIUM_MASK.get());
+                        titanium_armor.accept(ArmorItems.TITANIUM_HELMET.get());
+                        titanium_armor.accept(ArmorItems.TITANIUM_CHESTPLATE.get());
+                        titanium_armor.accept(ArmorItems.TITANIUM_LEGGINGS.get());
+                        titanium_armor.accept(ArmorItems.TITANIUM_BOOTS.get());
+
+                        CreativeModeTab.Output crystal_assassin_armor = GroupItem.belongsTo("crystal_assassin_armor", output);
+                        crystal_assassin_armor.accept(ArmorItems.CRYSTAL_ASSASSIN_HELMET.get());
+                        crystal_assassin_armor.accept(ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.get());
+                        crystal_assassin_armor.accept(ArmorItems.CRYSTAL_ASSASSIN_LEGGINGS.get());
+                        crystal_assassin_armor.accept(ArmorItems.CRYSTAL_ASSASSIN_BOOTS.get());
+
+                        CreativeModeTab.Output hallowed_armor = GroupItem.belongsTo("hallowed_armor", output);
+                        hallowed_armor.accept(ArmorItems.HALLOWED_HEADGEAR.get());
+                        hallowed_armor.accept(ArmorItems.HALLOWED_HOOD.get());
+                        hallowed_armor.accept(ArmorItems.HALLOWED_MASK.get());
+                        hallowed_armor.accept(ArmorItems.HALLOWED_HELMET.get());
+                        hallowed_armor.accept(ArmorItems.HALLOWED_CHESTPLATE.get());
+                        hallowed_armor.accept(ArmorItems.HALLOWED_LEGGINGS.get());
+                        hallowed_armor.accept(ArmorItems.HALLOWED_BOOTS.get());
+
+                        CreativeModeTab.Output robe_misc_wear = GroupItem.belongsTo("robe_misc_wear", output);
+                        robe_misc_wear.accept(ArmorItems.GOGGLES.get());
+                        robe_misc_wear.accept(ArmorItems.GREEN_CAP.get());
+                        robe_misc_wear.accept(ArmorItems.VIKING_HELMET.get());
+                        robe_misc_wear.accept(ArmorItems.FLINX_FUR_COAT.get());
+                        robe_misc_wear.accept(ArmorItems.WIZARD_HAT.get());
+                        robe_misc_wear.accept(ArmorItems.MAGIC_HAT.get());
+                        robe_misc_wear.accept(ArmorItems.AMETHYST_ROBE.get());
+                        robe_misc_wear.accept(ArmorItems.TOPAZ_ROBE.get());
+                        robe_misc_wear.accept(ArmorItems.SAPPHIRE_ROBE.get());
+                        robe_misc_wear.accept(ArmorItems.JADE_ROBE.get());
+                        robe_misc_wear.accept(ArmorItems.RUBY_ROBE.get());
+                        robe_misc_wear.accept(ArmorItems.MYSTIC_ROBE.get());
+                        robe_misc_wear.accept(ArmorItems.DIAMOND_ROBE.get());
+                        robe_misc_wear.accept(ArmorItems.AMBER_ROBE.get());
+                        robe_misc_wear.accept(ArmorItems.SOUL_HOOD.get());
+                        robe_misc_wear.accept(ArmorItems.SOUL_ROBE.get());
+                        output.accept(TCItems.DIVING_HELMET);
+
+                        CreativeModeTab.Output dead_mans_sweater = GroupItem.belongsTo("dead_mans_sweater", output);
+                        dead_mans_sweater.accept(VanityArmorItems.DEAD_MANS_SWEATER.get());
+
+                        CreativeModeTab.Output robe_vanity = GroupItem.belongsTo("robe_vanity", output);
+                        robe_vanity.accept(VanityArmorItems.ROBE.get());
+
+                        CreativeModeTab.Output top_hat_set = GroupItem.belongsTo("top_hat_set", output);
+                        top_hat_set.accept(VanityArmorItems.TOP_HAT.get());
+
+                        CreativeModeTab.Output tuxedo_set = GroupItem.belongsTo("tuxedo_set", output);
+                        tuxedo_set.accept(VanityArmorItems.TUXEDO_SHIRT.get());
+                        tuxedo_set.accept(VanityArmorItems.TUXEDO_PANTS.get());
+                        tuxedo_set.accept(VanityArmorItems.TUXEDO_SHOES.get());
+
+                        CreativeModeTab.Output summer_hat = GroupItem.belongsTo("summer_hat", output);
+                        summer_hat.accept(VanityArmorItems.SUMMER_HAT.get());
+
+                        CreativeModeTab.Output bunny_hood = GroupItem.belongsTo("bunny_hood", output);
+                        bunny_hood.accept(VanityArmorItems.BUNNY_HOOD.get());
+
+                        CreativeModeTab.Output plumbers_set = GroupItem.belongsTo("plumbers_set", output);
+                        plumbers_set.accept(VanityArmorItems.PLUMBERS_HAT.get());
+                        plumbers_set.accept(VanityArmorItems.PLUMBERS_SHIRT.get());
+                        plumbers_set.accept(VanityArmorItems.PLUMBERS_PANTS.get());
+                        plumbers_set.accept(VanityArmorItems.PLUMBERS_SHOES.get());
+
+                        CreativeModeTab.Output heros_set = GroupItem.belongsTo("heros_set", output);
+                        heros_set.accept(VanityArmorItems.HEROS_HAT.get());
+                        heros_set.accept(VanityArmorItems.HEROS_SHIRT.get());
+                        heros_set.accept(VanityArmorItems.HEROS_PANTS.get());
+                        heros_set.accept(VanityArmorItems.HEROS_SHOES.get());
+
+                        CreativeModeTab.Output archaeologists_set = GroupItem.belongsTo("archaeologists_set", output);
+                        archaeologists_set.accept(VanityArmorItems.ARCHAEOLOGISTS_HAT.get());
+                        archaeologists_set.accept(VanityArmorItems.ARCHAEOLOGISTS_JACKET.get());
+                        archaeologists_set.accept(VanityArmorItems.ARCHAEOLOGISTS_PANTS.get());
+                        archaeologists_set.accept(VanityArmorItems.ARCHAEOLOGISTS_SHOES.get());
+
+                        CreativeModeTab.Output clothiers_set = GroupItem.belongsTo("clothiers_set", output);
+                        clothiers_set.accept(VanityArmorItems.CLOTHIERS_HAT.get());
+                        clothiers_set.accept(VanityArmorItems.CLOTHIERS_JACKET.get());
+                        clothiers_set.accept(VanityArmorItems.CLOTHIERS_PANTS.get());
+                        clothiers_set.accept(VanityArmorItems.CLOTHIERS_SHOES.get());
+
+                        CreativeModeTab.Output robot_hat = GroupItem.belongsTo("robot_hat", output);
+                        robot_hat.accept(VanityArmorItems.ROBOT_HAT.get());
+
+                        CreativeModeTab.Output familiar_set = GroupItem.belongsTo("familiar_set", output);
+                        familiar_set.accept(VanityArmorItems.FAMILIAR_WIG.get());
+                        familiar_set.accept(VanityArmorItems.FAMILIAR_SHIRT.get());
+                        familiar_set.accept(VanityArmorItems.FAMILIAR_PANTS.get());
+                        familiar_set.accept(VanityArmorItems.FAMILIAR_SHOES.get());
+
+                        CreativeModeTab.Output mime_mask = GroupItem.belongsTo("mime_mask", output);
+                        mime_mask.accept(VanityArmorItems.MIME_MASK.get());
+
+                        CreativeModeTab.Output doctors_set = GroupItem.belongsTo("doctors_set", output);
+                        doctors_set.accept(VanityArmorItems.THE_DOCTORS_SHIRT.get());
+                        doctors_set.accept(VanityArmorItems.THE_DOCTORS_PANTS.get());
+                        doctors_set.accept(VanityArmorItems.THE_DOCTORS_SHOES.get());
+
+                        CreativeModeTab.Output guy_fawkes_set = GroupItem.belongsTo("guy_fawkes_set", output);
+                        guy_fawkes_set.accept(VanityArmorItems.GUY_FAWKES_MASK.get());
+                        guy_fawkes_set.accept(VanityArmorItems.GUY_FAWKES_HAT.get());
+                        guy_fawkes_set.accept(VanityArmorItems.GUY_FAWKES_MASK_SET.get());
+
+                        CreativeModeTab.Output mummy_set = GroupItem.belongsTo("mummy_set", output);
+                        mummy_set.accept(VanityArmorItems.MUMMY_MASK.get());
+                        mummy_set.accept(VanityArmorItems.MUMMY_SHIRT.get());
+                        mummy_set.accept(VanityArmorItems.MUMMY_PANTS.get());
+                        mummy_set.accept(VanityArmorItems.MUMMY_SHOES.get());
+
+                        CreativeModeTab.Output gold_crown = GroupItem.belongsTo("gold_crown", output);
+                        gold_crown.accept(VanityArmorItems.GOLD_CROWN.get());
+
+                        CreativeModeTab.Output platinum_crown = GroupItem.belongsTo("platinum_crown", output);
+                        platinum_crown.accept(VanityArmorItems.PLATINUM_CROWN.get());
+
+                        CreativeModeTab.Output all_dyes = GroupItem.belongsTo("all_dyes", output);
+                        all_dyes.accept(VanityArmorItems.DYE.get());
+                        all_dyes.accept(VanityArmorItems.RED_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_RED_DYE.get());
+                        all_dyes.accept(VanityArmorItems.ORANGE_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_ORANGE_DYE.get());
+                        all_dyes.accept(VanityArmorItems.YELLOW_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_YELLOW_DYE.get());
+                        all_dyes.accept(VanityArmorItems.LIME_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_LIME_DYE.get());
+                        all_dyes.accept(VanityArmorItems.GREEN_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_GREEN_DYE.get());
+                        all_dyes.accept(VanityArmorItems.TEAL_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_TEAL_DYE.get());
+                        all_dyes.accept(VanityArmorItems.CYAN_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_CYAN_DYE.get());
+                        all_dyes.accept(VanityArmorItems.SKY_BLUE_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_SKY_BLUE_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BLUE_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_BLUE_DYE.get());
+                        all_dyes.accept(VanityArmorItems.PURPLE_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_PURPLE_DYE.get());
+                        all_dyes.accept(VanityArmorItems.VIOLET_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_VIOLET_DYE.get());
+                        all_dyes.accept(VanityArmorItems.PINK_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BRIGHT_PINK_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BLACK_DYE.get());
+                        all_dyes.accept(VanityArmorItems.GRAY_DYE.get());
+                        all_dyes.accept(VanityArmorItems.SILVER_DYE.get());
+                        all_dyes.accept(VanityArmorItems.BROWN_DYE.get());
+                        all_dyes.accept(VanityArmorItems.TEAM_DYE.get());
+
+
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WARRIORS = TABS.register("warriors",

@@ -25,27 +25,31 @@ jobs:
           java-version: 21
 
       - name: Setup Gradle
+        id: setup-gradle
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.10
 
       - name: Prepare Assets
         run: |
-          find . -name "gradlew" -exec chmod +x {} +
+          GRADLE_HOME=$(gradle -g /tmp/dummy -v | grep "Gradle home" | cut -d ':' -f 2 | xargs)
+          echo "GRADLE_HOME is $GRADLE_HOME"
 
-          ./gradlew :Confluence-Magic-Lib:runData \
-                    :TerraEntity:runData \
-                    :TerraCurio:runData \
-                    :TerraGuns:runData \
-                    :TerraFurniture:runData \
-                    :TheTrackers:runData \
-                    :ConfluenceOtherworld:runData \
-                    --no-configuration-cache
+          export PATH="$GRADLE_HOME/bin:$PATH"
+
+          gradle :Confluence-Magic-Lib:runData \
+                 :TerraEntity:runData \
+                 :TerraCurio:runData \
+                 :TerraGuns:runData \
+                 :TerraFurniture:runData \
+                 :TheTrackers:runData \
+                 :ConfluenceOtherworld:runData \
+                 --no-configuration-cache -Dorg.gradle.daemon=false
 
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: |
-          ./gradlew build
+          gradle build --no-configuration-cache
 
       - name: Get version with date suffix
         id: version

@@ -157,6 +157,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+        // block
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
         event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
         event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
@@ -172,7 +173,8 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.LOOM.get(), LoomScreen::new);
         event.register(ModMenuTypes.DYE_VAT.get(), DyeVatScreen::new);
         event.register(ModMenuTypes.DYE_MIX.get(), DyeMixScreen::new);
-
+        event.register(ModMenuTypes.PIGGY_BANK.get(), PiggyBankScreen::new);
+        // npc
         event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
     }

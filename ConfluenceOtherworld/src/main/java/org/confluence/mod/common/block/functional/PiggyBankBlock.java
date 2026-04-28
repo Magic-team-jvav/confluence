@@ -9,8 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
@@ -24,6 +23,7 @@ import org.confluence.lib.common.PlayerContainer;
 import org.confluence.lib.common.block.HorizontalDirectionalWaterloggedBlock;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.menu.PiggyBankMenu;
 
 public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implements EntityBlock {
     private static final VoxelShape SHAPE_X = box(2, 0, 4, 14, 10, 12);
@@ -49,9 +49,13 @@ public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implem
             if (level.isClientSide) {
                 return InteractionResult.SUCCESS;
             }
-            PlayerPiggyBankContainer container = PlayerPiggyBankContainer.of(player);
-            container.setActiveContainer(entity);
-            player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, container, 6), Component.translatable("container.confluence.piggy_bank")));
+            player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> {
+                PiggyBankMenu menu = new PiggyBankMenu(id, inventory, ContainerLevelAccess.create(level, pos));
+                PlayerPiggyBankContainer container = menu.getContainer();
+                container.setActiveContainer(entity);
+                container.startOpen(player1);
+                return menu;
+            }, Component.translatable("container.confluence.piggy_bank")));
             PiglinAi.angerNearbyPiglins(player, true);
             level.playSound(null, pos, SoundEvents.PIG_AMBIENT, SoundSource.BLOCKS);
             return InteractionResult.CONSUME;

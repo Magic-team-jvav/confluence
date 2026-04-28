@@ -25,13 +25,14 @@ jobs:
           java-version: 21
 
       - name: Setup Gradle
-        id: setup-gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: 8.10.2
+          gradle-version: wrapper
 
       - name: Prepare Assets
         run: |
+          find . -name "gradlew" -exec chmod +x {} +
+
           ./gradlew :Confluence-Magic-Lib:runData \
                     :TerraEntity:runData \
                     :TerraCurio:runData \
@@ -44,7 +45,7 @@ jobs:
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: |
-          ../gradlew build --no-configuration-cache
+          ./gradlew build --no-configuration-cache
 
       - name: Get version with date suffix
         id: version

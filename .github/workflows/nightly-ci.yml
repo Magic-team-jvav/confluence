@@ -28,10 +28,12 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.10
-          cache-disabled: false
+          cache-overwrite-data: true
 
-      - name: Prepare Permissions and Assets
+      - name: Prepare Assets
         run: |
+          gradle -v
+
           gradle :Confluence-Magic-Lib:runData \
                  :TerraEntity:runData \
                  :TerraCurio:runData \

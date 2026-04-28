@@ -28,24 +28,25 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: 8.10
-          cache-overwrite-data: true
 
       - name: Prepare Assets
         run: |
-          gradle -v
+          find . -name "gradlew" -exec chmod +x {} +
 
-          gradle :Confluence-Magic-Lib:runData \
-                 :TerraEntity:runData \
-                 :TerraCurio:runData \
-                 :TerraGuns:runData \
-                 :TerraFurniture:runData \
-                 :TheTrackers:runData \
-                 :ConfluenceOtherworld:runData --no-configuration-cache
+          ./gradlew :Confluence-Magic-Lib:runData \
+                    :TerraEntity:runData \
+                    :TerraCurio:runData \
+                    :TerraGuns:runData \
+                    :TerraFurniture:runData \
+                    :TheTrackers:runData \
+                    :ConfluenceOtherworld:runData \
+                    --no-configuration-cache
 
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: |
-          gradle build
+          chmod +x gradlew
+          ./gradlew build
 
       - name: Get version with date suffix
         id: version

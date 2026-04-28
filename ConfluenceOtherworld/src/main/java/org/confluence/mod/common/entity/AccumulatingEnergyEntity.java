@@ -30,13 +30,13 @@ public class AccumulatingEnergyEntity extends Entity {
     protected static final EntityDataAccessor<Integer> ATTACHED_ENTITY = SynchedEntityData.defineId(AccumulatingEnergyEntity.class, EntityDataSerializers.INT);
 
     protected ParticleEmitter emitter;
-    protected LightningBolt lightningBolt;
+    protected @Nullable LightningBolt lightningBolt;
 
     public AccumulatingEnergyEntity(EntityType<? extends AccumulatingEnergyEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public AccumulatingEnergyEntity(EntityType<? extends AccumulatingEnergyEntity> entityType, Level level, LightningBolt lightningBolt) {
+    public AccumulatingEnergyEntity(EntityType<? extends AccumulatingEnergyEntity> entityType, Level level, @Nullable LightningBolt lightningBolt) {
         super(entityType, level);
         this.lightningBolt = lightningBolt;
     }

@@ -25,7 +25,8 @@ public abstract class ServerLevelMixin implements SelfGetter<ServerLevel> {
 
     @WrapOperation(method = "tickChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z", ordinal = 1))
     private boolean skipVanilla(ServerLevel instance, Entity entity, Operation<Boolean> original) {
-        if (CommonConfigs.TERRA_STYLE_LIGHTNING_BOLT.get() && entity instanceof LightningBolt lightningBolt) {
+        if (CommonConfigs.TERRA_STYLE_LIGHTNING_BOLT.get()) {
+            LightningBolt lightningBolt = entity instanceof LightningBolt lb ? lb : null;
             AccumulatingEnergyEntity accumulatingEnergy = new AccumulatingEnergyEntity(ModEntities.ACCUMULATING_ENERGY.get(), confluence$self(), lightningBolt);
             accumulatingEnergy.moveTo(entity.position());
             return original.call(instance, accumulatingEnergy);

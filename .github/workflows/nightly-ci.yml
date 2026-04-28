@@ -25,25 +25,26 @@ jobs:
           java-version: 21
 
       - name: Setup Gradle
+        id: setup-gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: 8.10
+          gradle-version: 8.10.2
 
       - name: Prepare Assets
         run: |
-          gradle :Confluence-Magic-Lib:runData \
-                 :TerraEntity:runData \
-                 :TerraCurio:runData \
-                 :TerraGuns:runData \
-                 :TerraFurniture:runData \
-                 :TheTrackers:runData \
-                 :ConfluenceOtherworld:runData \
-                 --no-configuration-cache
+          ./gradlew :Confluence-Magic-Lib:runData \
+                    :TerraEntity:runData \
+                    :TerraCurio:runData \
+                    :TerraGuns:runData \
+                    :TerraFurniture:runData \
+                    :TheTrackers:runData \
+                    :ConfluenceOtherworld:runData \
+                    --no-configuration-cache
 
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: |
-          gradle build --no-configuration-cache
+          ../gradlew build --no-configuration-cache
 
       - name: Get version with date suffix
         id: version

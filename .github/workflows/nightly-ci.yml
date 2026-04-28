@@ -45,7 +45,6 @@ jobs:
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: |
-          chmod +x gradlew
           ./gradlew build
 
       - name: Get version with date suffix

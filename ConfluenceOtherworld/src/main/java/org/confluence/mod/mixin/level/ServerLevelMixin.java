@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LightningBolt;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.AccumulatingEnergyEntity;
@@ -24,12 +25,10 @@ public abstract class ServerLevelMixin implements SelfGetter<ServerLevel> {
 
     @WrapOperation(method = "tickChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z", ordinal = 1))
     private boolean skipVanilla(ServerLevel instance, Entity entity, Operation<Boolean> original) {
-        if (CommonConfigs.TERRA_STYLE_LIGHTNING_BOLT.get()) {
-            AccumulatingEnergyEntity accumulatingEnergy = ModEntities.ACCUMULATING_ENERGY.get().create(confluence$self());
-            if (accumulatingEnergy != null) {
-                accumulatingEnergy.moveTo(entity.position());
-                return original.call(instance, accumulatingEnergy);
-            }
+        if (CommonConfigs.TERRA_STYLE_LIGHTNING_BOLT.get() && entity instanceof LightningBolt lightningBolt) {
+            AccumulatingEnergyEntity accumulatingEnergy = new AccumulatingEnergyEntity(ModEntities.ACCUMULATING_ENERGY.get(), confluence$self(), lightningBolt);
+            accumulatingEnergy.moveTo(entity.position());
+            return original.call(instance, accumulatingEnergy);
         }
         return original.call(instance, entity);
     }

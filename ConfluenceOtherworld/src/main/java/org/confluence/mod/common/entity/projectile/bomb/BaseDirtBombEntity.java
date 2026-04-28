@@ -9,6 +9,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
@@ -16,17 +17,18 @@ import org.confluence.mod.util.TerraStyleExplosion;
 public class BaseDirtBombEntity extends BaseBombEntity {
     protected int radius = 4;
     protected BlockState toFill = Blocks.DIRT.defaultBlockState();
+    protected BlockState toFillWhenInWater = Blocks.MUD.defaultBlockState();
 
-    public BaseDirtBombEntity(EntityType<? extends BaseDirtBombEntity> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public BaseDirtBombEntity(EntityType<? extends BaseDirtBombEntity> type, Level level) {
+        super(type, level);
     }
 
-    public BaseDirtBombEntity(EntityType<? extends BaseDirtBombEntity> pEntityType, LivingEntity pShooter) {
-        super(pEntityType, pShooter);
+    public BaseDirtBombEntity(EntityType<? extends BaseDirtBombEntity> type, LivingEntity shooter) {
+        super(type, shooter);
     }
 
-    public BaseDirtBombEntity(LivingEntity pShooter) {
-        super(ModEntities.DIRT_BOMB.get(), pShooter);
+    public BaseDirtBombEntity(LivingEntity shooter) {
+        super(ModEntities.DIRT_BOMB.get(), shooter);
     }
 
     @Override
@@ -41,8 +43,12 @@ public class BaseDirtBombEntity extends BaseBombEntity {
                 for (int k = -radius; k < radius; k++) {
                     int z = blockPos.getZ() + k;
                     mutable.set(x, y, z);
-                    if (mutable.distSqr(blockPos) <= radiusSqr && level.getBlockState(mutable).isEmpty()) {
-                        level.setBlockAndUpdate(mutable, toFill);
+                    if (mutable.distSqr(blockPos) <= radiusSqr) {
+                        BlockState state = level.getBlockState(mutable);
+                        if (state.canBeReplaced()) {
+                            level.destroyBlock(mutable, true, getOwner());
+                            level.setBlockAndUpdate(mutable, state.getFluidState().is(Tags.Fluids.WATER) ? toFillWhenInWater : toFill);
+                        }
                     }
                 }
             }

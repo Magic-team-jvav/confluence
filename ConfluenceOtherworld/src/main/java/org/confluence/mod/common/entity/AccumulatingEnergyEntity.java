@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
@@ -29,14 +30,24 @@ public class AccumulatingEnergyEntity extends Entity {
     protected static final EntityDataAccessor<Integer> ATTACHED_ENTITY = SynchedEntityData.defineId(AccumulatingEnergyEntity.class, EntityDataSerializers.INT);
 
     protected ParticleEmitter emitter;
+    protected LightningBolt lightningBolt;
 
     public AccumulatingEnergyEntity(EntityType<? extends AccumulatingEnergyEntity> entityType, Level level) {
         super(entityType, level);
     }
 
+    public AccumulatingEnergyEntity(EntityType<? extends AccumulatingEnergyEntity> entityType, Level level, LightningBolt lightningBolt) {
+        super(entityType, level);
+        this.lightningBolt = lightningBolt;
+    }
+
     @Override
     public void tick() {
         super.tick();
+
+        if (!isInWaterOrBubble() && getAttachedEntity() == null && level().getBlockState(getOnPos()).getFluidState().is(Tags.Fluids.WATER)) {
+            setPos(position().add(0, -0.75, 0));
+        }
 
         if (!level().isClientSide) {
             Entity attachedEntity = getAttachedEntity();
@@ -59,7 +70,9 @@ public class AccumulatingEnergyEntity extends Entity {
                 setPos(attachedEntity.position());
             }
             if (tickCount > 160) {
-                LightningBolt lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level());
+                if (lightningBolt == null) {
+                    this.lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level());
+                }
                 lightningBolt.setPos(position());
                 lightningBolt.setVisualOnly(true);
                 lightningBolt.setDamage(0);
@@ -88,12 +101,12 @@ public class AccumulatingEnergyEntity extends Entity {
                 for (Entity entity : entities) {
                     if (entity.getType() == EntityType.PLAYER) {
                         if (ftw) {
-                            lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), blockPosition(), 16, 32, 48, 80));
+                            lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), entity.blockPosition(), 16, 32, 48, 80));
                         } else {
-                            lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), blockPosition(), 8, 16, 32, 48));
+                            lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), entity.blockPosition(), 8, 16, 32, 48));
                         }
                     } else {
-                        lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), blockPosition(), 100, 200, 300));
+                        lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), entity.blockPosition(), 100, 200, 300));
                     }
                     if (EventHooks.onEntityStruckByLightning(entity, lightningBolt)) continue;
                     entity.thunderHit((ServerLevel) level(), lightningBolt);

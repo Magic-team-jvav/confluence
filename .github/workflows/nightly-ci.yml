@@ -23,7 +23,6 @@ jobs:
         with:
           distribution: "temurin"
           java-version: 21
-          cache: "gradle"
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
@@ -32,20 +31,18 @@ jobs:
 
       - name: Prepare Permissions and Assets
         run: |
-          find . -name "gradlew" -exec chmod +x {} +
-          ./gradlew :Confluence-Magic-Lib:runData \
-                    :TerraEntity:runData \
-                    :TerraCurio:runData \
-                    :TerraGuns:runData \
-                    :TerraFurniture:runData \
-                    :TheTrackers:runData \
-                    :ConfluenceOtherworld:runData --no-configuration-cache
+          gradle :Confluence-Magic-Lib:runData \
+                 :TerraEntity:runData \
+                 :TerraCurio:runData \
+                 :TerraGuns:runData \
+                 :TerraFurniture:runData \
+                 :TheTrackers:runData \
+                 :ConfluenceOtherworld:runData --no-configuration-cache
 
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: |
-          chmod +x gradlew
-          ./gradlew build
+          gradle build
 
       - name: Get version with date suffix
         id: version

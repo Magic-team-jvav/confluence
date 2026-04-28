@@ -13,6 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
@@ -61,6 +62,7 @@ public final class MeteorShowerGameEvent implements GameEvent {
     @Override
     public void tick() {
         if (!started) return;
+        if (!level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) return;
         Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
             forceEnd();

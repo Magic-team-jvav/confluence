@@ -52,7 +52,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.difficulty_notice.tip", "按住Alt键呼出鼠标以进行选择");
         add("confluence.difficulty_notice.sure.done", "已更改为软核模式");
         add("confluence.difficulty_notice.never.done", "将不再弹出该询问");
-// 自然方块分类
+        // 自然方块分类
         add("itemGroup.confluence.ebony", "乌木");
         add("itemGroup.confluence.pearl", "珍珠木");
         add("itemGroup.confluence.shadow", "暗影木");
@@ -70,7 +70,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.pine", "松木");
         add("itemGroup.confluence.fey", "仙灵木");
         add("itemGroup.confluence.stone_tree", "石质树");
-
 
         add("itemGroup.confluence.natural_environment", "自然环境");
         add("itemGroup.confluence.corruption", "腐化");
@@ -98,35 +97,69 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.raw_ore_blocks", "粗矿石块");
         add("itemGroup.confluence.ore_storage_blocks", "矿石存储块");
 // 建筑方块分类
-        add("itemGroup.confluence.granite_marble", "花岗岩 & 大理石");
-        add("itemGroup.confluence.pure_glass", "纯净玻璃");
+
+        add("itemGroup.confluence.gloom_obsidian_bricks", "黯虚黑曜石砖");
+        add("itemGroup.confluence.blue_ice_bricks", "蓝冰砖");
+        add("itemGroup.confluence.packed_ice_bricks", "浮冰砖");
+        add("itemGroup.confluence.sandstone_bricks", "砂岩砖");
+        add("itemGroup.confluence.red_sandstone_bricks", "红砂岩砖");
+        add("itemGroup.confluence.ebonsandstone_bricks", "黑檀砂岩砖");
+        add("itemGroup.confluence.pearlsandstone_bricks", "珍珠砂岩砖");
+        add("itemGroup.confluence.crimsandstone_bricks", "猩红砂岩砖");
+        add("itemGroup.confluence.snow_bricks", "雪砖");
+        add("itemGroup.confluence.aetherium_bricks", "以太砖");
+        add("itemGroup.confluence.rainbow_bricks", "彩虹砖");
+        add("itemGroup.confluence.copper_bricks", "铜砖");
+        add("itemGroup.confluence.tin_bricks", "锡砖");
+        add("itemGroup.confluence.iron_bricks", "铁砖");
+        add("itemGroup.confluence.lead_bricks", "铅砖");
+        add("itemGroup.confluence.silver_bricks", "银砖");
+        add("itemGroup.confluence.tungsten_bricks", "钨砖");
+        add("itemGroup.confluence.golden_bricks", "金砖");
+        add("itemGroup.confluence.platinum_bricks", "铂砖");
+        add("itemGroup.confluence.demonite_ore_bricks", "魔矿砖");
+        add("itemGroup.confluence.ebonstone_bricks", "黑檀石砖");
+        add("itemGroup.confluence.meteorite_bricks", "陨石砖");
+        add("itemGroup.confluence.crimtane_ore_bricks", "猩红矿砖");
+        add("itemGroup.confluence.crimstone_bricks", "猩红石砖");
+        add("itemGroup.confluence.pearlstone_bricks", "珍珠石砖");
+        add("itemGroup.confluence.sun_plate", "日盘");
+        add("itemGroup.confluence.disc_block", "飞盘");
+        add("itemGroup.confluence.moon_plate", "月盘");
+        add("itemGroup.confluence.obsidian_bricks", "黑曜石砖");
+        add("itemGroup.confluence.granite_bricks", "花岗岩砖");
+        add("itemGroup.confluence.marble_bricks", "大理石砖");
+        add("itemGroup.confluence.blue_bricks", "蓝色地牢砖");
+        add("itemGroup.confluence.green_bricks", "绿色地牢砖");
+        add("itemGroup.confluence.pink_bricks", "粉色地牢砖");
+
+        add("itemGroup.confluence.glass", "玻璃");
         add("itemGroup.confluence.special_building", "特殊建筑");
         add("itemGroup.confluence.chains", "锁链");
-        add("itemGroup.confluence.dungeon_bricks", "地牢砖块");
         add("itemGroup.confluence.aetherium", "以太");
         add("itemGroup.confluence.cloud_decor", "云装饰");
-        add("itemGroup.confluence.doors_panes", "门与玻璃板");
+        add("itemGroup.confluence.doors", "门");
         add("itemGroup.confluence.letter_statues", "字母雕像");
         add("itemGroup.confluence.entity_statues", "实体雕像");
         add("itemGroup.confluence.boss_relics", "Boss 遗物");
+        add("itemGroup.confluence.balloons", "气球");
+        add("itemGroup.confluence.gem_blocks", "宝石块");
+        add("itemGroup.confluence.fur_wool", "皮毛");
 // 机械功能方块
         add("itemGroup.confluence.boulders", "巨石");
-        add("itemGroup.confluence.redstone_traps", "红石陷阱");
-        add("itemGroup.confluence.timers_plates", "计时器与压力板");
+        add("itemGroup.confluence.redstone_circuit_traps", "红石电路机关");
+        add("itemGroup.confluence.trigger", "触发器");
         add("itemGroup.confluence.crafting_stations", "合成站");
         add("itemGroup.confluence.storage", "存储");
-        add("itemGroup.confluence.altars_anvils", "祭坛与铁砧");
-        add("itemGroup.confluence.spikes_hazards", "尖刺与危险物");
-        add("itemGroup.confluence.lanterns_souls", "灯笼与灵魂瓶");
+        add("itemGroup.confluence.souls", "灵魂瓶");
         add("itemGroup.confluence.misc_functional", "杂项功能方块");
 // 材料
         add("itemGroup.confluence.metal_materials", "金属材料");
-        add("itemGroup.confluence.gems_crystals", "宝石与水晶");
+        add("itemGroup.confluence.natural_materials", "自然材料");
         add("itemGroup.confluence.souls_special", "灵魂与特殊材料");
         add("itemGroup.confluence.monster_drops", "怪物掉落");
         add("itemGroup.confluence.plants_herbs", "植物与草药");
-        add("itemGroup.confluence.crafting_items", "合成物品");
-        add("itemGroup.confluence.sky_special", "空岛特殊物品");
+        add("itemGroup.confluence.crafting_materials", "合成材料");
 // 杂项
         add("itemGroup.confluence.throwing_weapons", "投掷武器");
         add("itemGroup.confluence.bombs_explosives", "炸弹与爆炸物");
@@ -2371,6 +2404,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.RED_CANDY_BLOCK.get(), "红色糖块");
         add(DecorativeBlocks.GREEN_CANDY_BLOCK.get(), "绿色糖块");
         add(DecorativeBlocks.FLESH_BLOCK.get(), "血肉块");
+        add(DecorativeBlocks.LESION_BLOCK.get(), "病变块");
 
         add(DecorativeBlocks.SUN_PLATE.FULL.get(), "日盘块");
         add(DecorativeBlocks.SUN_PLATE.STAIRS.get(), "日盘楼梯");

@@ -1180,9 +1180,6 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.armors"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-                        acceptAll(ArmorItems.ITEMS, output);
-                        acceptAll(VanityArmorItems.ITEMS, output);
-
                         CreativeModeTab.Output cactus_armor = GroupItem.belongsTo("cactus_armor", output);
                         cactus_armor.accept(ArmorItems.CACTUS_HELMET.get());
                         cactus_armor.accept(ArmorItems.CACTUS_CHESTPLATE.get());
@@ -1453,44 +1450,72 @@ public final class ModTabs {
                         hallowed_armor.accept(ArmorItems.HALLOWED_LEGGINGS.get());
                         hallowed_armor.accept(ArmorItems.HALLOWED_BOOTS.get());
 
-                        CreativeModeTab.Output robe_misc_wear = GroupItem.belongsTo("robe_misc_wear", output);
-                        robe_misc_wear.accept(ArmorItems.GOGGLES.get());
-                        robe_misc_wear.accept(ArmorItems.GREEN_CAP.get());
-                        robe_misc_wear.accept(ArmorItems.VIKING_HELMET.get());
-                        robe_misc_wear.accept(ArmorItems.FLINX_FUR_COAT.get());
-                        robe_misc_wear.accept(ArmorItems.WIZARD_HAT.get());
-                        robe_misc_wear.accept(ArmorItems.MAGIC_HAT.get());
-                        robe_misc_wear.accept(ArmorItems.AMETHYST_ROBE.get());
-                        robe_misc_wear.accept(ArmorItems.TOPAZ_ROBE.get());
-                        robe_misc_wear.accept(ArmorItems.SAPPHIRE_ROBE.get());
-                        robe_misc_wear.accept(ArmorItems.JADE_ROBE.get());
-                        robe_misc_wear.accept(ArmorItems.RUBY_ROBE.get());
-                        robe_misc_wear.accept(ArmorItems.MYSTIC_ROBE.get());
-                        robe_misc_wear.accept(ArmorItems.DIAMOND_ROBE.get());
-                        robe_misc_wear.accept(ArmorItems.AMBER_ROBE.get());
-                        robe_misc_wear.accept(ArmorItems.SOUL_HOOD.get());
-                        robe_misc_wear.accept(ArmorItems.SOUL_ROBE.get());
+                        CreativeModeTab.Output magic_robes = GroupItem.belongsTo("magic_robes", output);
+                        magic_robes.accept(ArmorItems.AMETHYST_ROBE.get());
+                        magic_robes.accept(ArmorItems.TOPAZ_ROBE.get());
+                        magic_robes.accept(ArmorItems.SAPPHIRE_ROBE.get());
+                        magic_robes.accept(ArmorItems.JADE_ROBE.get());
+                        magic_robes.accept(ArmorItems.RUBY_ROBE.get());
+                        magic_robes.accept(ArmorItems.MYSTIC_ROBE.get());
+                        magic_robes.accept(ArmorItems.DIAMOND_ROBE.get());
+                        magic_robes.accept(ArmorItems.AMBER_ROBE.get());
+                        magic_robes.accept(ArmorItems.SOUL_ROBE.get());
+                        magic_robes.accept(VanityArmorItems.ROBE.get());
+
+                        CreativeModeTab.Output single_vanity = GroupItem.belongsTo("single_vanity", output);
+                        single_vanity.accept(ArmorItems.GOGGLES.get());
+                        single_vanity.accept(ArmorItems.GREEN_CAP.get());
+                        single_vanity.accept(ArmorItems.VIKING_HELMET.get());
+                        single_vanity.accept(ArmorItems.WIZARD_HAT.get());
+                        single_vanity.accept(ArmorItems.MAGIC_HAT.get());
+                        single_vanity.accept(ArmorItems.SOUL_HOOD.get());
+                        single_vanity.accept(VanityArmorItems.DEAD_MANS_SWEATER.get());
+                        single_vanity.accept(VanityArmorItems.TOP_HAT.get());
+                        single_vanity.accept(VanityArmorItems.SUMMER_HAT.get());
+                        single_vanity.accept(VanityArmorItems.BUNNY_HOOD.get());
+                        single_vanity.accept(VanityArmorItems.ROBOT_HAT.get());
+                        single_vanity.accept(VanityArmorItems.MIME_MASK.get());
+                        single_vanity.accept(VanityArmorItems.GOLD_CROWN.get());
+                        single_vanity.accept(VanityArmorItems.PLATINUM_CROWN.get());
+                        single_vanity.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(TCItems.DIVING_HELMET);
 
-                        CreativeModeTab.Output dead_mans_sweater = GroupItem.belongsTo("dead_mans_sweater", output);
-                        dead_mans_sweater.accept(VanityArmorItems.DEAD_MANS_SWEATER.get());
-
-                        CreativeModeTab.Output robe_vanity = GroupItem.belongsTo("robe_vanity", output);
-                        robe_vanity.accept(VanityArmorItems.ROBE.get());
-
-                        CreativeModeTab.Output top_hat_set = GroupItem.belongsTo("top_hat_set", output);
-                        top_hat_set.accept(VanityArmorItems.TOP_HAT.get());
+                        CreativeModeTab.Output dyes = GroupItem.belongsTo("dyes", output);
+                        dyes.accept(VanityArmorItems.DYE.get());
+                        dyes.accept(VanityArmorItems.RED_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_RED_DYE.get());
+                        dyes.accept(VanityArmorItems.ORANGE_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_ORANGE_DYE.get());
+                        dyes.accept(VanityArmorItems.YELLOW_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_YELLOW_DYE.get());
+                        dyes.accept(VanityArmorItems.LIME_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_LIME_DYE.get());
+                        dyes.accept(VanityArmorItems.GREEN_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_GREEN_DYE.get());
+                        dyes.accept(VanityArmorItems.TEAL_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_TEAL_DYE.get());
+                        dyes.accept(VanityArmorItems.CYAN_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_CYAN_DYE.get());
+                        dyes.accept(VanityArmorItems.SKY_BLUE_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_SKY_BLUE_DYE.get());
+                        dyes.accept(VanityArmorItems.BLUE_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_BLUE_DYE.get());
+                        dyes.accept(VanityArmorItems.PURPLE_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_PURPLE_DYE.get());
+                        dyes.accept(VanityArmorItems.VIOLET_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_VIOLET_DYE.get());
+                        dyes.accept(VanityArmorItems.PINK_DYE.get());
+                        dyes.accept(VanityArmorItems.BRIGHT_PINK_DYE.get());
+                        dyes.accept(VanityArmorItems.BLACK_DYE.get());
+                        dyes.accept(VanityArmorItems.GRAY_DYE.get());
+                        dyes.accept(VanityArmorItems.SILVER_DYE.get());
+                        dyes.accept(VanityArmorItems.BROWN_DYE.get());
+                        dyes.accept(VanityArmorItems.TEAM_DYE.get());
 
                         CreativeModeTab.Output tuxedo_set = GroupItem.belongsTo("tuxedo_set", output);
                         tuxedo_set.accept(VanityArmorItems.TUXEDO_SHIRT.get());
                         tuxedo_set.accept(VanityArmorItems.TUXEDO_PANTS.get());
                         tuxedo_set.accept(VanityArmorItems.TUXEDO_SHOES.get());
-
-                        CreativeModeTab.Output summer_hat = GroupItem.belongsTo("summer_hat", output);
-                        summer_hat.accept(VanityArmorItems.SUMMER_HAT.get());
-
-                        CreativeModeTab.Output bunny_hood = GroupItem.belongsTo("bunny_hood", output);
-                        bunny_hood.accept(VanityArmorItems.BUNNY_HOOD.get());
 
                         CreativeModeTab.Output plumbers_set = GroupItem.belongsTo("plumbers_set", output);
                         plumbers_set.accept(VanityArmorItems.PLUMBERS_HAT.get());
@@ -1516,17 +1541,11 @@ public final class ModTabs {
                         clothiers_set.accept(VanityArmorItems.CLOTHIERS_PANTS.get());
                         clothiers_set.accept(VanityArmorItems.CLOTHIERS_SHOES.get());
 
-                        CreativeModeTab.Output robot_hat = GroupItem.belongsTo("robot_hat", output);
-                        robot_hat.accept(VanityArmorItems.ROBOT_HAT.get());
-
                         CreativeModeTab.Output familiar_set = GroupItem.belongsTo("familiar_set", output);
                         familiar_set.accept(VanityArmorItems.FAMILIAR_WIG.get());
                         familiar_set.accept(VanityArmorItems.FAMILIAR_SHIRT.get());
                         familiar_set.accept(VanityArmorItems.FAMILIAR_PANTS.get());
                         familiar_set.accept(VanityArmorItems.FAMILIAR_SHOES.get());
-
-                        CreativeModeTab.Output mime_mask = GroupItem.belongsTo("mime_mask", output);
-                        mime_mask.accept(VanityArmorItems.MIME_MASK.get());
 
                         CreativeModeTab.Output doctors_set = GroupItem.belongsTo("doctors_set", output);
                         doctors_set.accept(VanityArmorItems.THE_DOCTORS_SHIRT.get());
@@ -1543,46 +1562,6 @@ public final class ModTabs {
                         mummy_set.accept(VanityArmorItems.MUMMY_SHIRT.get());
                         mummy_set.accept(VanityArmorItems.MUMMY_PANTS.get());
                         mummy_set.accept(VanityArmorItems.MUMMY_SHOES.get());
-
-                        CreativeModeTab.Output gold_crown = GroupItem.belongsTo("gold_crown", output);
-                        gold_crown.accept(VanityArmorItems.GOLD_CROWN.get());
-
-                        CreativeModeTab.Output platinum_crown = GroupItem.belongsTo("platinum_crown", output);
-                        platinum_crown.accept(VanityArmorItems.PLATINUM_CROWN.get());
-
-                        CreativeModeTab.Output all_dyes = GroupItem.belongsTo("all_dyes", output);
-                        all_dyes.accept(VanityArmorItems.DYE.get());
-                        all_dyes.accept(VanityArmorItems.RED_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_RED_DYE.get());
-                        all_dyes.accept(VanityArmorItems.ORANGE_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_ORANGE_DYE.get());
-                        all_dyes.accept(VanityArmorItems.YELLOW_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_YELLOW_DYE.get());
-                        all_dyes.accept(VanityArmorItems.LIME_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_LIME_DYE.get());
-                        all_dyes.accept(VanityArmorItems.GREEN_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_GREEN_DYE.get());
-                        all_dyes.accept(VanityArmorItems.TEAL_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_TEAL_DYE.get());
-                        all_dyes.accept(VanityArmorItems.CYAN_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_CYAN_DYE.get());
-                        all_dyes.accept(VanityArmorItems.SKY_BLUE_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_SKY_BLUE_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BLUE_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_BLUE_DYE.get());
-                        all_dyes.accept(VanityArmorItems.PURPLE_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_PURPLE_DYE.get());
-                        all_dyes.accept(VanityArmorItems.VIOLET_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_VIOLET_DYE.get());
-                        all_dyes.accept(VanityArmorItems.PINK_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BRIGHT_PINK_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BLACK_DYE.get());
-                        all_dyes.accept(VanityArmorItems.GRAY_DYE.get());
-                        all_dyes.accept(VanityArmorItems.SILVER_DYE.get());
-                        all_dyes.accept(VanityArmorItems.BROWN_DYE.get());
-                        all_dyes.accept(VanityArmorItems.TEAM_DYE.get());
-
-
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WARRIORS = TABS.register("warriors",

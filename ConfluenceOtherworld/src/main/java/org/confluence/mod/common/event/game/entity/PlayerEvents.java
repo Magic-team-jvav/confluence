@@ -8,12 +8,15 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -21,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
@@ -28,6 +32,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -271,12 +278,34 @@ public final class PlayerEvents {
     public static void interact$RightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
         if (player.isSpectator()) return;
-        ItemStack itemStack = event.getItemStack();
-        if (itemStack.is(ModTags.Items.MANA_WEAPON) && player.hasEffect(ModEffects.SILENCED)) {
+        ItemStack stack = event.getItemStack();
+
+        if (stack.is(ModTags.Items.MANA_WEAPON) && player.hasEffect(ModEffects.SILENCED)) {
             event.setCanceled(true);
-        } else if (!itemStack.isEmpty()) {
+        } else if (!stack.isEmpty()) {
             if (player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.CURSED)) {
                 event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void useItemOnBlock(UseItemOnBlockEvent event) {
+        ItemStack stack = event.getItemStack();
+        Player player = event.getPlayer();
+        if (player != null && stack.is(Items.GLASS_BOTTLE)) {
+            Level level = event.getLevel();
+            BlockHitResult hitResult = Item.getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
+            if (hitResult.getType() == HitResult.Type.BLOCK) {
+                BlockPos pos = hitResult.getBlockPos();
+                if (level.mayInteract(player, pos) && level.getFluidState(pos).is(ModFluids.HONEY.fluid().get())) {
+                    level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
+                    level.gameEvent(player, GameEvent.FLUID_PICKUP, pos);
+                    player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+                    ItemUtils.createFilledResult(stack, player, Items.HONEY_BOTTLE.getDefaultInstance());
+                    player.swing(event.getHand());
+                    event.cancelWithResult(ItemInteractionResult.sidedSuccess(level.isClientSide));
+                }
             }
         }
     }

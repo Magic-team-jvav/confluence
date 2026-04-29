@@ -36,6 +36,11 @@ public abstract class WorldOptionsMixin implements IWorldOptions {
     private int confluence$version = CURRENT_VERSION;
 
     @Override
+    public void confluence$resetSecretFlag() {
+        this.confluence$secretFlag = 0;
+    }
+
+    @Override
     public void confluence$withSecretFlag(long flag) {
         this.confluence$secretFlag |= flag;
     }

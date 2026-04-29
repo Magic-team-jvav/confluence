@@ -895,6 +895,7 @@ public final class ModTabs {
                         monster_drops.accept(MaterialItems.HOOK.get());
                         monster_drops.accept(MaterialItems.ANCIENT_CLOTH.get());
                         monster_drops.accept(MaterialItems.ECTOPLASM.get());
+                        monster_drops.accept(ModItems.WHOOPIE_CUSHION.get());
 
                         CreativeModeTab.Output plants_herbs = GroupItem.belongsTo("plants_herbs", output);
                         plants_herbs.accept(MaterialItems.WATERLEAF.get());
@@ -945,14 +946,22 @@ public final class ModTabs {
                         output = new WipNotDisplayOutput(output);
 
                         acceptAll(ModItems.ITEMS, output);
-                        output.accept(TCItems.DEMON_HEART);
                         acceptAll(ConsumableItems.ITEMS, output);
+
+                        // 如果删掉上边两行就会崩
                         acceptAll(TreasureBagItems.ITEMS, output, "treasure_bag");
                         acceptAll(ModBlocks.TOMBSTONES.keySet(), GroupItem.belongsTo("tombstone", output));
                         acceptAll(BaitItems.ITEMS, output, "bait");
                         acceptAll(QuestedFishes.ITEMS, output, "quested_fish");
                         acceptAll(CrateBlocks.BLOCKS, output, "crate");
                         acceptAll(PaintItems.ITEMS, output, "paint");
+
+                        CreativeModeTab.Output coins = GroupItem.belongsTo("coins", output);
+                        coins.accept(ModItems.COPPER_COIN.get());
+                        coins.accept(ModItems.SILVER_COIN.get());
+                        coins.accept(ModItems.GOLD_COIN.get());
+                        coins.accept(ModItems.PLATINUM_COIN.get());
+                        coins.accept(ModItems.EMERALD_COIN.get());
 
                         CreativeModeTab.Output throwing_weapons = GroupItem.belongsTo("throwing_weapons", output);
                         throwing_weapons.accept(ConsumableItems.SHURIKEN.get());
@@ -984,13 +993,17 @@ public final class ModTabs {
                         bombs_explosives.accept(ConsumableItems.LAVA_BOMB.get());
                         bombs_explosives.accept(ConsumableItems.HONEY_BOMB.get());
 
-                        CreativeModeTab.Output boss_summons = GroupItem.belongsTo("boss_summons", output);
-                        boss_summons.accept(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get());
-                        boss_summons.accept(ConsumableItems.SLIME_CROWN.get());
-                        boss_summons.accept(ConsumableItems.WORM_FOOD.get());
-                        boss_summons.accept(ConsumableItems.BLOODY_SPINE.get());
-                        boss_summons.accept(ConsumableItems.ABEEMINATION.get());
-                        boss_summons.accept(ConsumableItems.DEER_THING.get());
+                        CreativeModeTab.Output boss_event_summons = GroupItem.belongsTo("boss_event_summons", output);
+                        boss_event_summons.accept(ConsumableItems.SUSPICIOUS_LOOKING_EYE.get());
+                        boss_event_summons.accept(ConsumableItems.SLIME_CROWN.get());
+                        boss_event_summons.accept(ConsumableItems.WORM_FOOD.get());
+                        boss_event_summons.accept(ConsumableItems.BLOODY_SPINE.get());
+                        boss_event_summons.accept(ConsumableItems.ABEEMINATION.get());
+                        boss_event_summons.accept(ConsumableItems.DEER_THING.get());
+                        boss_event_summons.accept(AccessoryItems.CLOTHIER_VOODOO_DOLL.get());
+                        boss_event_summons.accept(AccessoryItems.GUIDE_VOODOO_DOLL.get());
+                        boss_event_summons.accept(ConsumableItems.BLOOD_TEAR.get());
+                        boss_event_summons.accept(ConsumableItems.GOBLIN_BATTLE_STANDARD.get());
 
                         CreativeModeTab.Output environment_items = GroupItem.belongsTo("environment_items", output);
                         environment_items.accept(ConsumableItems.HOLY_WATER.get());
@@ -1000,13 +1013,32 @@ public final class ModTabs {
                         environment_items.accept(ConsumableItems.VICIOUS_POWDER.get());
                         environment_items.accept(ConsumableItems.PURIFICATION_POWDER.get());
                         environment_items.accept(ConsumableItems.FERTILIZER.get());
+                        environment_items.accept(ConsumableItems.ROTTEN_BONE_DUST.get());
+                        environment_items.accept(ConsumableItems.BLOODSTAINED_POWDER.get());
+                        environment_items.accept(ModItems.GRASS_SEED.get());
+                        environment_items.accept(ModItems.JUNGLE_GRASS_SEED.get());
+                        environment_items.accept(ModItems.MUSHROOM_GRASS_SEED.get());
+                        environment_items.accept(ModItems.CORRUPT_SEED.get());
+                        environment_items.accept(ModItems.CRIMSON_SEED.get());
+                        environment_items.accept(ModItems.HALLOWED_SEED.get());
+                        environment_items.accept(ModItems.ASH_GRASS_SEED.get());
 
-                        CreativeModeTab.Output stat_boosters = GroupItem.belongsTo("stat_boosters", output);
-                        stat_boosters.accept(ConsumableItems.MANA_CRYSTAL.get());
-                        stat_boosters.accept(ConsumableItems.LIFE_CRYSTAL.get());
-                        stat_boosters.accept(ConsumableItems.LIFE_FRUIT.get());
-                        stat_boosters.accept(ConsumableItems.VITAL_CRYSTAL.get());
-                        stat_boosters.accept(ConsumableItems.ARCANE_CRYSTAL.get());
+                        CreativeModeTab.Output gain = GroupItem.belongsTo("gain", output);
+                        gain.accept(ConsumableItems.MANA_CRYSTAL.get());
+                        gain.accept(ConsumableItems.LIFE_CRYSTAL.get());
+                        gain.accept(ConsumableItems.LIFE_FRUIT.get());
+                        gain.accept(ConsumableItems.VITAL_CRYSTAL.get());
+                        gain.accept(ConsumableItems.ARCANE_CRYSTAL.get());
+                        gain.accept(ConsumableItems.MINECART_UPGRADE_KIT.get());
+                        gain.accept(ConsumableItems.ARTISAN_LOAF.get());
+                        gain.accept(ConsumableItems.GALAXY_PEARL.get());
+                        gain.accept(ConsumableItems.AEGIS_APPLE.get());
+                        gain.accept(ConsumableItems.AMBROSIA.get());
+                        gain.accept(ConsumableItems.GUMMY_WORM.get());
+                        gain.accept(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get());
+                        gain.accept(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get());
+                        gain.accept(ConsumableItems.PEDDLERS_SATCHEL.get());
+                        gain.accept(TCItems.DEMON_HEART.get());
 
                         CreativeModeTab.Output loot_gifts = GroupItem.belongsTo("loot_gifts", output);
                         loot_gifts.accept(ConsumableItems.CHRISTMAS_GIFT.get());
@@ -1017,26 +1049,10 @@ public final class ModTabs {
                         loot_gifts.accept(ConsumableItems.CAN_OF_WORMS.get());
                         loot_gifts.accept(ConsumableItems.GOLDEN_LOCK_BOX.get());
                         loot_gifts.accept(ConsumableItems.OBSIDIAN_LOCK_BOX.get());
+                        loot_gifts.accept(ConsumableItems.CLAM.get());
+                        loot_gifts.accept(ConsumableItems.PINE_CONE.get());
+                        loot_gifts.accept(ConsumableItems.SUGAR_TANGERINE.get());
 
-                        CreativeModeTab.Output consumable_special = GroupItem.belongsTo("consumable_special", output);
-                        consumable_special.accept(ConsumableItems.MINECART_UPGRADE_KIT.get());
-                        consumable_special.accept(ConsumableItems.ARTISAN_LOAF.get());
-                        consumable_special.accept(ConsumableItems.GALAXY_PEARL.get());
-                        consumable_special.accept(ConsumableItems.AEGIS_APPLE.get());
-                        consumable_special.accept(ConsumableItems.AMBROSIA.get());
-                        consumable_special.accept(ConsumableItems.GUMMY_WORM.get());
-                        consumable_special.accept(ConsumableItems.CLAM.get());
-                        consumable_special.accept(ConsumableItems.PINE_CONE.get());
-                        consumable_special.accept(ConsumableItems.SUGAR_TANGERINE.get());
-                        consumable_special.accept(ConsumableItems.ROTTEN_BONE_DUST.get());
-                        consumable_special.accept(ConsumableItems.BLOODSTAINED_POWDER.get());
-                        consumable_special.accept(ConsumableItems.BLOOD_TEAR.get());
-                        consumable_special.accept(ConsumableItems.GOBLIN_BATTLE_STANDARD.get());
-
-                        CreativeModeTab.Output books_accessories = GroupItem.belongsTo("books_accessories", output);
-                        books_accessories.accept(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get());
-                        books_accessories.accept(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get());
-                        books_accessories.accept(ConsumableItems.PEDDLERS_SATCHEL.get());
                     })
                     .withTabsBefore(MATERIALS.getId())
                     .build());
@@ -1057,7 +1073,6 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
-                        acceptAll(ToolItems.ITEMS, output);
                         acceptAll(AxeItems.ITEMS, output, "axe");
                         acceptAll(PickaxeItems.ITEMS, output, "pickaxe");
                         acceptAll(PickaxeAxeItems.ITEMS, output, "pickaxe_axe");
@@ -1075,21 +1090,12 @@ public final class ModTabs {
                         acceptAll(BoatItems.BOAT_ITEMS, output, "boat");
                         acceptAll(BoatItems.CHEST_BOAT_ITEMS, output, "chest_boat");
 
-                        CreativeModeTab.Output rope = GroupItem.belongsTo("rope", output);
-                        rope.accept(ModBlocks.ROPE);
-                        rope.accept(ModBlocks.VINE_ROPE);
-                        rope.accept(ModBlocks.SILK_ROPE);
-                        rope.accept(ModBlocks.WEB_ROPE);
-
-                        output.accept(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET);
-                        output.accept(TCItems.MAGIC_MIRROR);
-                        output.accept(TCItems.CELL_PHONE);
-
                         CreativeModeTab.Output wand = GroupItem.belongsTo("wand", output);
                         wand.accept(ModItems.LIVING_WOOD_WAND);
                         wand.accept(ModItems.LEAF_WAND);
                         wand.accept(ModItems.LIVING_MAHOGANY_WAND);
                         wand.accept(ModItems.RICH_MAHOGANY_LEAF_WAND);
+                        wand.accept(ModItems.HIVE_WAND);
 
                         CreativeModeTab.Output wiring_tools = GroupItem.belongsTo("wiring_tools", output);
                         wiring_tools.accept(ToolItems.RED_WRENCH.get());
@@ -1127,25 +1133,32 @@ public final class ModTabs {
                         buckets_liquids.accept(ToolItems.MAGIC_HONEY_DROPPER.get());
                         buckets_liquids.accept(ToolItems.MAGIC_LAVA_DROPPER.get());
                         buckets_liquids.accept(ToolItems.MAGIC_WATER_DROPPER.get());
+                        buckets_liquids.accept(ToolItems.SUPER_ABSORBANT_SPONGE.get());
+                        buckets_liquids.accept(ToolItems.HONEY_ABSORBANT_SPONGE.get());
+                        buckets_liquids.accept(ToolItems.LAVA_ABSORBANT_SPONGE.get());
+                        buckets_liquids.accept(ToolItems.ULTRA_ABSORBANT_SPONGE.get());
 
-                        CreativeModeTab.Output nets_ropes = GroupItem.belongsTo("nets_ropes", output);
-                        nets_ropes.accept(ToolItems.BUG_NET.get());
-                        nets_ropes.accept(ToolItems.LAVAPROOF_BUG_NET.get());
-                        nets_ropes.accept(ToolItems.DEV_BUG_NET.get());
-                        nets_ropes.accept(ToolItems.GOLDEN_BUG_NET.get());
-                        nets_ropes.accept(ToolItems.ROPE_COIL.get());
-                        nets_ropes.accept(ToolItems.VINE_ROPE_COIL.get());
-                        nets_ropes.accept(ToolItems.SILK_ROPE_COIL.get());
-                        nets_ropes.accept(ToolItems.WEB_ROPE_COIL.get());
+                        CreativeModeTab.Output nets = GroupItem.belongsTo("nets", output);
+                        nets.accept(ToolItems.BUG_NET.get());
+                        nets.accept(ToolItems.DEV_BUG_NET.get());
+                        nets.accept(ToolItems.GOLDEN_BUG_NET.get());
+                        nets.accept(ToolItems.LAVAPROOF_BUG_NET.get());
 
-                        CreativeModeTab.Output sponges = GroupItem.belongsTo("sponges", output);
-                        sponges.accept(ToolItems.SUPER_ABSORBANT_SPONGE.get());
-                        sponges.accept(ToolItems.HONEY_ABSORBANT_SPONGE.get());
-                        sponges.accept(ToolItems.LAVA_ABSORBANT_SPONGE.get());
-                        sponges.accept(ToolItems.ULTRA_ABSORBANT_SPONGE.get());
+                        CreativeModeTab.Output ropes = GroupItem.belongsTo("ropes", output);
+                        ropes.accept(ToolItems.ROPE_COIL.get());
+                        ropes.accept(ToolItems.VINE_ROPE_COIL.get());
+                        ropes.accept(ToolItems.SILK_ROPE_COIL.get());
+                        ropes.accept(ToolItems.WEB_ROPE_COIL.get());
+                        ropes.accept(ModBlocks.ROPE);
+                        ropes.accept(ModBlocks.VINE_ROPE);
+                        ropes.accept(ModBlocks.SILK_ROPE);
+                        ropes.accept(ModBlocks.WEB_ROPE);
+                        output.accept(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET);
 
                         CreativeModeTab.Output utility_tools = GroupItem.belongsTo("utility_tools", output);
                         utility_tools.accept(ToolItems.ICE_MIRROR.get());
+                        utility_tools.accept(TCItems.MAGIC_MIRROR);
+                        utility_tools.accept(TCItems.CELL_PHONE);
                         utility_tools.accept(ToolItems.MAGIC_CONCH.get());
                         utility_tools.accept(ToolItems.DEMON_CONCH.get());
                         utility_tools.accept(ToolItems.METEOR_COMPASS.get());
@@ -1153,13 +1166,11 @@ public final class ModTabs {
                         utility_tools.accept(ToolItems.BINOCULARS.get());
                         utility_tools.accept(ToolItems.ENCUMBERING_STONE.get());
                         utility_tools.accept(ToolItems.NPC_INVITATION.get());
-
-                        CreativeModeTab.Output guide_books = GroupItem.belongsTo("guide_books", output);
-                        guide_books.accept(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.get());
-                        guide_books.accept(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.get());
-                        guide_books.accept(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get());
-
-
+                        utility_tools.accept(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.get());
+                        utility_tools.accept(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.get());
+                        utility_tools.accept(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get());
+                        utility_tools.accept(ModItems.SCRYING_ORB.get());
+                        utility_tools.accept(ModItems.ENEMY_BANNER.get());
                     })
                     .withTabsBefore(FOOD_AND_POTIONS.getId())
                     .build());

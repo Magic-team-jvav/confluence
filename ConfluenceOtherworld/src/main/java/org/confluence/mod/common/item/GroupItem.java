@@ -16,9 +16,11 @@ import net.minecraft.world.item.*;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.api.event.CustomGroupItemIconEvent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModTabs;
 import org.confluence.mod.mixed.IClientItemStack;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Unmodifiable;
 
 import javax.annotation.CheckForNull;
@@ -28,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GroupItem extends Item {
     private static GroupItem instance;
 
+    @ApiStatus.Internal
     public GroupItem() {
         super(new Properties().stacksTo(1));
         if (instance != null) {
@@ -40,8 +43,8 @@ public class GroupItem extends Item {
         return instance;
     }
 
-    public static boolean isInvalidCreativeModeTab(ResourceKey<CreativeModeTab> key) {
-        return key == CreativeModeTabs.SEARCH || key == ModTabs.DEVELOPER.getKey();
+    public static boolean isInvalidCreativeModeTab(ResourceKey<CreativeModeTab> tabKey) {
+        return tabKey == CreativeModeTabs.SEARCH || tabKey == ModTabs.DEVELOPER.getKey();
     }
 
     public static boolean isInvalidCreativeModeTab(CreativeModeTab tab) {
@@ -59,6 +62,7 @@ public class GroupItem extends Item {
         return itemStack;
     }
 
+    @ApiStatus.Internal
     public static void toggleVisibility(ItemStack group) {
         Stacks stacks = group.get(ModDataComponentTypes.GROUP_STACKS);
         if (stacks == null) throw new NullPointerException("Stacks must non-null!");
@@ -74,6 +78,7 @@ public class GroupItem extends Item {
         private transient ObjectLinkedOpenCustomHashSet<ItemStack> duplicateChecker;
         private transient int lastIndex;
         private transient long lastAdvanceTime;
+        private transient ItemStack iconStack;
 
         private transient final ResourceLocation name;
         private transient final boolean visible;
@@ -105,7 +110,11 @@ public class GroupItem extends Item {
             return values;
         }
 
+        @ApiStatus.Internal
         public ItemStack getCurrentRendered(long currentAdvanceTime) {
+            if (iconStack != null) {
+                return iconStack;
+            }
             int length = values.length;
             if (length == 0) {
                 return ItemStack.EMPTY;
@@ -144,7 +153,7 @@ public class GroupItem extends Item {
         @Override
         public int hashCode() {
             int result = name.hashCode();
-            result = 31 * result + values.hashCode();
+            result = 31 * result + Arrays.hashCode(values);
             result = 31 * result + Boolean.hashCode(visible);
             result = 31 * result + id;
             return result;
@@ -160,11 +169,17 @@ public class GroupItem extends Item {
                     '}';
         }
 
+        @ApiStatus.Internal
         public Stacks toggleVisibility() {
-            return new Stacks(name, !visible, values, id == -1 ? cachedId.getAndIncrement() : id);
+            Stacks data = new Stacks(name, !visible, values, id == -1 ? cachedId.getAndIncrement() : id);
+            if (iconStack != null) {
+                data.iconStack = iconStack.copy();
+            }
+            return data;
         }
 
-        public Stacks withValues(ItemStack... stacks) {
+        @ApiStatus.Internal
+        public Stacks withValues(ResourceKey<CreativeModeTab> tabKey, ItemStack... stacks) {
             if (stacks.length == 0) return this;
             ItemStack[] src = new ItemStack[values.length + stacks.length];
             System.arraycopy(values, 0, src, 0, values.length);
@@ -182,6 +197,7 @@ public class GroupItem extends Item {
             System.arraycopy(src, 0, dest, 0, dest.length);
             Stacks data = new Stacks(name, visible, dest, id == -1 ? cachedId.getAndIncrement() : id);
             data.duplicateChecker = duplicateChecker.clone();
+            data.iconStack = iconStack == null ? CustomGroupItemIconEvent.getIcon(tabKey, name) : iconStack.copy();
             return data;
         }
 
@@ -248,13 +264,8 @@ public class GroupItem extends Item {
         }
     }
 
-    public static class DisplayItems implements Collection<ItemStack> {
-        private final Collection<ItemStack> delegate;
-
-        public DisplayItems(Collection<ItemStack> delegate) {
-            this.delegate = delegate;
-        }
-
+    @ApiStatus.Internal
+    public record DisplayItems(Collection<ItemStack> delegate) implements Collection<ItemStack> {
         @Override
         public int size() {
             return delegate.size();

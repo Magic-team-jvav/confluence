@@ -62,6 +62,7 @@ import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
+import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
@@ -96,7 +97,12 @@ import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.confluence.terra_curio.client.TCKeyBindings;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.api.event.NPCEvent;
+import org.confluence.terraentity.api.npc.trade.ITradeHolder;
+import org.confluence.terraentity.client.gui.container.DialogScreen;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.mixed.IPlayer;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Iterator;
@@ -345,6 +351,16 @@ public final class GameClientEvents {
                         public void setFocused(boolean focused) {}
                     });
                     break;
+                }
+            }
+        }
+
+        if (screen instanceof DialogScreen) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null) {
+                @Nullable ITradeHolder holder = IPlayer.of(player).terra_entity$getTradeHolder();
+                if (holder instanceof AbstractTerraNPC npc && npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()) {
+                    event.addListener(WithForgeTradeScreen.createReforgeButton(screen.width * 2 / 3, screen.height / 2 + 25));
                 }
             }
         }

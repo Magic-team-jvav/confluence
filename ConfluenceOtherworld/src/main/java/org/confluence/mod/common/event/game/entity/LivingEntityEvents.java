@@ -63,6 +63,8 @@ import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
 import org.confluence.mod.common.item.mana.CrystalVileShardItem;
+import org.confluence.lib.mixed.CriticalDamageSource;
+import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
@@ -251,6 +253,19 @@ public final class LivingEntityEvents {
         if (attacker instanceof ServerPlayer player) {
             ModArmorBonus.onAttacked(player, damageSource, victim);
             LucyTheAxe.onDamageLiving(player, victim);
+            // 记录星钢剑的暴击结果，供postHurtEnemy使用
+            if (player.getMainHandItem().getItem() instanceof StarSteelSword) {
+                boolean isCrit = damageSource instanceof CriticalDamageSource cds && cds.confluence$isCritical();
+                StarSteelSword.recordCritResult(player, isCrit);
+            }
+            // 星钢剑：拾取魔力星后1秒内暴击伤害*2.5
+            if (damageSource instanceof CriticalDamageSource cds
+                    && cds.confluence$isCritical()
+                    && player.getMainHandItem().getItem() instanceof StarSteelSword
+                    && StarSteelSword.hasCritBuff(player)) {
+                float extraDamage = amount * (StarSteelSword.CRIT_MULTIPLIER / 1.5F - 1.0F);
+                victim.setHealth(victim.getHealth() - extraDamage);
+            }
         }
     }
 

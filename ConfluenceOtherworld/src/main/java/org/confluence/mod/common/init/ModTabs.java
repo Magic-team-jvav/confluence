@@ -1622,6 +1622,7 @@ public final class ModTabs {
                         pre_hardmode_broadswords.accept(SwordItems.ENCHANTED_SWORD.get());
                         pre_hardmode_broadswords.accept(SwordItems.BLADE_OF_GRASS.get());
                         pre_hardmode_broadswords.accept(SwordItems.NIGHTS_EDGE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.STAR_STEEL_SWORD.get());
                         pre_hardmode_broadswords.accept(SwordItems.RED_PHASEBLADE.get());
                         pre_hardmode_broadswords.accept(SwordItems.ORANGE_PHASEBLADE.get());
                         pre_hardmode_broadswords.accept(SwordItems.YELLOW_PHASEBLADE.get());

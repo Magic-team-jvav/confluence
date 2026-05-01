@@ -68,6 +68,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
+import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
@@ -246,6 +247,7 @@ public final class PlayerEvents {
 
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
             ManaStorage.of(player).receiveMana(() -> itemStack.getCount() * 100.0F);
+            StarSteelSword.onManaStarPickup(player);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
         } else if (itemStack.is(ModTags.Items.PROVIDE_LIFE)) {

@@ -823,24 +823,13 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.SPICY_PEPPER.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                        .add(EmptyLootItem.emptyItem().setWeight(159)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.POMEGRANATE.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                        .add(EmptyLootItem.emptyItem().setWeight(159)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(19)))
-        );
-        add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.SPICY_PEPPER.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(199)))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.POMEGRANATE.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(199)))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(19)))
+                        .add(EmptyLootItem.emptyItem().setWeight(15)))
         );
         addGrassLoot(ASH_GRASS.get(), ASH_GRASS.asItem());
         addGrassLoot(DESERT_GRASS.get(), DESERT_GRASS.asItem());

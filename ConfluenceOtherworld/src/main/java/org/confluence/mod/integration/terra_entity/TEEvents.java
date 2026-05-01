@@ -7,6 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.integration.terra_entity.init.AdditionalChesterTypes;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;

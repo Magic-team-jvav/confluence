@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.terra_entity;
+package org.confluence.mod.integration.terra_entity.init;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleMenuProvider;
@@ -7,8 +7,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.attachment.PlayerSafeContainer;
+import org.confluence.mod.common.menu.PiggyBankMenu;
 import org.confluence.terraentity.registries.TERegistries;
 import org.confluence.terraentity.registries.chester.ChesterType;
 
@@ -18,7 +18,7 @@ public class AdditionalChesterTypes {
     public static final DeferredRegister<ChesterType> TYPES = DeferredRegister.create(TERegistries.CHESTER_TYPES, Confluence.MODID);
 
     public static final Supplier<ChesterType> PIGGY_BANK = TYPES.register("piggy_bank", () -> new ChesterType(Component.translatable("container.confluence.piggy_bank"),
-            () -> new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, PlayerPiggyBankContainer.of(player1), 6), Component.translatable("container.confluence.piggy_bank"))
+            () -> new SimpleMenuProvider((id, inventory, player1) -> new PiggyBankMenu(id, inventory), Component.translatable("container.confluence.piggy_bank"))
     ));
 
     public static final Supplier<ChesterType> SAFE = TYPES.register("safe", () -> new ChesterType(Component.translatable("container.confluence.safe"),

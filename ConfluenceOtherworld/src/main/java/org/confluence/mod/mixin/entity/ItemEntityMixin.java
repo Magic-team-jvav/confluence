@@ -151,7 +151,8 @@ public abstract class ItemEntityMixin implements IItemEntity {
                 List<ItemStack> results = new ArrayList<>();
                 for (Ingredient ingredient : recipe.getIngredients()) {
                     ItemStack[] itemStacks = ingredient.getItems();
-                    if (itemStacks.length == 0 || Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDMODE))) {
+                    if (itemStacks.length == 0) continue;
+                    if (!isHardmode && Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDMODE))) {
                         continue;
                     }
                     ItemStack input = Util.getRandom(itemStacks, random);

@@ -5,12 +5,11 @@ import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.spongepowered.asm.mixin.Final;
@@ -48,22 +47,12 @@ public abstract class InventoryMixin {
                 for (int i = 0; i < SIZE_COINS; i++) {
                     ItemStack coins = extraInventory.getCoins(i);
                     int count = coins.getCount();
-                    if (count >= UPGRADES_COUNT) {
-                        Item coin = coins.getItem();
-                        ItemStack itemStack = null;
-                        if (coin == ModItems.COPPER_COIN.get()) {
-                            itemStack = ModItems.SILVER_COIN.get().getDefaultInstance();
-                        } else if (coin == ModItems.SILVER_COIN.get()) {
-                            itemStack = ModItems.GOLD_COIN.get().getDefaultInstance();
-                        } else if (coin == ModItems.GOLD_COIN.get()) {
-                            itemStack = ModItems.PLATINUM_COIN.get().getDefaultInstance();
-                        }
-                        if (itemStack != null) {
-                            coins.setCount(count % UPGRADES_COUNT);
-                            extraInventory1.setCoins(i, coins);
-                            itemStack.setCount(count / UPGRADES_COUNT);
-                            confluence$insert2Extra(SIZE_COINS, extraInventory1, itemStack, extraInventory2 -> {}, extraInventory1::getCoins, extraInventory1::setCoins);
-                        }
+                    if (count >= UPGRADES_COUNT && coins.getItem() instanceof CoinItem coinItem && coinItem.upgrade != null) {
+                        ItemStack itemStack = coinItem.upgrade.get().getDefaultInstance();
+                        coins.setCount(count % UPGRADES_COUNT);
+                        extraInventory1.setCoins(i, coins);
+                        itemStack.setCount(count / UPGRADES_COUNT);
+                        confluence$insert2Extra(SIZE_COINS, extraInventory1, itemStack, extraInventory2 -> {}, extraInventory1::getCoins, extraInventory1::setCoins);
                     }
                 }
             }, extraInventory::getCoins, extraInventory::setCoins)) {
@@ -71,7 +60,7 @@ public abstract class InventoryMixin {
                 cir.setReturnValue(true);
             }
         } else if (stack.is(ModTags.Items.AMMO)) {
-            if (CommonConfigs.ammoSlotsItemBlackList.stream().anyMatch(stack.getItem().builtInRegistryHolder()::is) ||
+            if (CommonConfigs.ammoSlotsItemBlackList.stream().anyMatch(stack.getItemHolder()::is) ||
                     CommonConfigs.ammoSlotsTagBlackList.stream().anyMatch(stack::is)) return;
             ExtraInventory extraInventory = ExtraInventory.of(player);
             if (confluence$insert2Extra(SIZE_AMMO, extraInventory, stack, extraInventory2 -> {}, extraInventory::getAmmo, extraInventory::setAmmo)) {

@@ -341,13 +341,31 @@ public enum NPCSpawner implements IGlobalData {
             if (trySpawnGoblinTinkerer(player, pos, region)) continue;
             if (trySpawnWitchDoctor(player, pos, region)) continue;
             if (trySpawnPartyGirl(player, pos, region)) continue;
-            // 巫师
+            if (trySpawnWizard(player, pos, region)) continue;
             // 税收官
-            // 松露人
+            if (trySpawnTruffle(player, pos, region)) continue;
             // 海盗
             // 蒸汽朋克人
             // 机器侠
         }
+    }
+
+    private boolean trySpawnTruffle(ServerPlayer player, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.TRUFFLE.get())) {
+            if (IMinecraftServer.isHardmode(player.server)) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRUFFLE.get());
+            }
+        }
+        return false;
+    }
+
+    private boolean trySpawnWizard(ServerPlayer player, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.WIZARD.get())) {
+            if (IMinecraftServer.isHardmode(player.server)) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.WIZARD.get());
+            }
+        }
+        return false;
     }
 
     private boolean trySpawnZoologist(ServerPlayer player, BlockPos pos, Region region) {

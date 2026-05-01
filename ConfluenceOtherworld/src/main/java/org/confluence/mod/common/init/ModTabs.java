@@ -227,6 +227,9 @@ public final class ModTabs {
                         skyland.accept(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK);
                         skyland.accept(NatureBlocks.RAIN_CLOUD_BLOCK);
                         skyland.accept(NatureBlocks.SNOW_CLOUD_BLOCK);
+                        skyland.accept(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get());
+                        skyland.accept(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get());
+                        skyland.accept(DecorativeBlocks.STAR_CLOUD_BLOCK.get());
 
                         CreativeModeTab.Output crops = GroupItem.belongsTo("crops", output);
                         crops.accept(NatureBlocks.STELLAR_BLOSSOM);
@@ -569,11 +572,6 @@ public final class ModTabs {
                         pink_bricks.accept(DecorativeBlocks.CRACKED_PINK_BRICKS.get());
                         pink_bricks.accept(DecorativeBlocks.ENCHANTED_PINK_BRICKS.get());
 
-                        CreativeModeTab.Output cloud_decor = GroupItem.belongsTo("cloud_decor", output);
-                        cloud_decor.accept(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get());
-                        cloud_decor.accept(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get());
-                        cloud_decor.accept(DecorativeBlocks.STAR_CLOUD_BLOCK.get());
-
                         CreativeModeTab.Output doors = GroupItem.belongsTo("doors", output);
                         doors.accept(DecorativeBlocks.DUNGEON_DOOR.get());
                         doors.accept(DecorativeBlocks.LIHZAHRD_DOOR.get());
@@ -638,17 +636,16 @@ public final class ModTabs {
 
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-                        output.accept(ToolItems.RED_WRENCH);
-                        output.accept(ToolItems.GREEN_WRENCH);
-                        output.accept(ToolItems.BLUE_WRENCH);
-                        output.accept(ToolItems.YELLOW_WRENCH);
-                        output.accept(ToolItems.WIRE_CUTTER);
-                        output.accept(TFBlocks.GLASS_KILN);
-                        output.accept(TFBlocks.LIVING_LOOM);
-                        output.accept(TFBlocks.ICE_MACHINE);
-                        output.accept(TFBlocks.TRASH_CAN);
-                        output.accept(FunctionalBlocks.WATER_CANDLE);
+
+
                         output.accept(ModBlocks.ENEMY_BANNER);
+
+                        CreativeModeTab.Output wiring_tools = GroupItem.belongsTo("wiring_tools", output);
+                        wiring_tools.accept(ToolItems.RED_WRENCH.get());
+                        wiring_tools.accept(ToolItems.BLUE_WRENCH.get());
+                        wiring_tools.accept(ToolItems.GREEN_WRENCH.get());
+                        wiring_tools.accept(ToolItems.YELLOW_WRENCH.get());
+                        wiring_tools.accept(ToolItems.WIRE_CUTTER.get());
 
                         CreativeModeTab.Output boulders = GroupItem.belongsTo("boulders", output);
                         boulders.accept(FunctionalBlocks.ECHO_BLOCK.get());
@@ -735,6 +732,9 @@ public final class ModTabs {
                         crafting_stations.accept(FunctionalBlocks.ORICHALCUM_ANVIL.get());
                         crafting_stations.accept(FunctionalBlocks.COOKING_POT.get());
                         crafting_stations.accept(FunctionalBlocks.CAULDRON.get());
+                        crafting_stations.accept(TFBlocks.GLASS_KILN);
+                        crafting_stations.accept(TFBlocks.LIVING_LOOM);
+                        crafting_stations.accept(TFBlocks.ICE_MACHINE);
 
                         CreativeModeTab.Output storage = GroupItem.belongsTo("storage", output);
                         storage.accept(ChestBlocks.CRIMSON_CHEST.get());
@@ -749,6 +749,7 @@ public final class ModTabs {
                         storage.accept(FunctionalBlocks.PIGGY_BANK.get());
                         storage.accept(FunctionalBlocks.SAFE.get());
                         storage.accept(FunctionalBlocks.MAGIC_MAIL_BOX.get());
+                        storage.accept(TFBlocks.TRASH_CAN);
 
                         CreativeModeTab.Output souls = GroupItem.belongsTo("souls", output);
                         souls.accept(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get());
@@ -773,7 +774,8 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.TREE_HOLES_BLOCK.get());
                         misc_functional.accept(FunctionalBlocks.LOCK_BLOCK.get());
                         misc_functional.accept(FunctionalBlocks.TUFF_BOOTH.get());
-
+                        misc_functional.accept(FunctionalBlocks.WATER_CANDLE);
+                        misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
                         WaystonesHelper.accept(output);
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
@@ -840,7 +842,9 @@ public final class ModTabs {
                         natural_materials.accept(MaterialItems.JADE.get());
                         natural_materials.accept(MaterialItems.SAPPHIRE.get());
                         natural_materials.accept(MaterialItems.AMETHYST.get());
-
+                        natural_materials.accept(MaterialItems.PEARL.get());
+                        natural_materials.accept(MaterialItems.BLACK_PEARL.get());
+                        natural_materials.accept(MaterialItems.PINK_PEARL.get());
                         natural_materials.accept(MaterialItems.LIGHT_SHARD.get());
                         natural_materials.accept(MaterialItems.COLD_CRYSTAL.get());
                         natural_materials.accept(MaterialItems.VOID_CRYSTAL.get());
@@ -915,29 +919,26 @@ public final class ModTabs {
                         plants_herbs.accept(MaterialItems.FLOATING_WHEAT_HEADS.get());
                         plants_herbs.accept(MaterialItems.WEAVING_CLOUD_COTTON.get());
 
-                        CreativeModeTab.Output crafting_items = GroupItem.belongsTo("crafting_items", output);
-                        crafting_items.accept(MaterialItems.PEARLWOOD_STICK.get());
-                        crafting_items.accept(MaterialItems.AETHERIUM_GOLD.get());
-                        crafting_items.accept(MaterialItems.PEARL.get());
-                        crafting_items.accept(MaterialItems.BLACK_PEARL.get());
-                        crafting_items.accept(MaterialItems.PINK_PEARL.get());
-                        crafting_items.accept(MaterialItems.SILK.get());
-                        crafting_items.accept(MaterialItems.RAW_ASPHALT.get());
-                        crafting_items.accept(MaterialItems.SPELL_TOME.get());
-                        crafting_items.accept(MaterialItems.CHINA_PLATE.get());
-                        crafting_items.accept(MaterialItems.CHINA_BOWL.get());
-                        crafting_items.accept(MaterialItems.EMPTY_BULLET.get());
-                        crafting_items.accept(MaterialItems.EXPLOSIVE_POWDER.get());
-                        crafting_items.accept(MaterialItems.GOLD_DUST.get());
-                        crafting_items.accept(MaterialItems.COG.get());
-                        crafting_items.accept(MaterialItems.NANITES.get());
-                        crafting_items.accept(MaterialItems.CONFETTI.get());
-                        crafting_items.accept(MaterialItems.VIAL_OF_VENOM.get());
-                        crafting_items.accept(MaterialItems.BELL.get());
-                        crafting_items.accept(MaterialItems.HARP.get());
-                        crafting_items.accept(MaterialItems.MECHANICAL_WHEEL_PIECE.get());
-                        crafting_items.accept(MaterialItems.MECHANICAL_WAGON_PIECE.get());
-                        crafting_items.accept(MaterialItems.MECHANICAL_BATTERY_PIECE.get());
+                        CreativeModeTab.Output crafting_materials = GroupItem.belongsTo("crafting_materials", output);
+                        crafting_materials.accept(MaterialItems.PEARLWOOD_STICK.get());
+                        crafting_materials.accept(MaterialItems.AETHERIUM_GOLD.get());
+                        crafting_materials.accept(MaterialItems.SILK.get());
+                        crafting_materials.accept(MaterialItems.RAW_ASPHALT.get());
+                        crafting_materials.accept(MaterialItems.SPELL_TOME.get());
+                        crafting_materials.accept(MaterialItems.CHINA_PLATE.get());
+                        crafting_materials.accept(MaterialItems.CHINA_BOWL.get());
+                        crafting_materials.accept(MaterialItems.EMPTY_BULLET.get());
+                        crafting_materials.accept(MaterialItems.EXPLOSIVE_POWDER.get());
+                        crafting_materials.accept(MaterialItems.GOLD_DUST.get());
+                        crafting_materials.accept(MaterialItems.COG.get());
+                        crafting_materials.accept(MaterialItems.NANITES.get());
+                        crafting_materials.accept(MaterialItems.CONFETTI.get());
+                        crafting_materials.accept(MaterialItems.VIAL_OF_VENOM.get());
+                        crafting_materials.accept(MaterialItems.BELL.get());
+                        crafting_materials.accept(MaterialItems.HARP.get());
+                        crafting_materials.accept(MaterialItems.MECHANICAL_WHEEL_PIECE.get());
+                        crafting_materials.accept(MaterialItems.MECHANICAL_WAGON_PIECE.get());
+                        crafting_materials.accept(MaterialItems.MECHANICAL_BATTERY_PIECE.get());
 
                     })
                     .withTabsBefore(MECHANICAL.getId())
@@ -1075,7 +1076,6 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.tools"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-
                         acceptAll(AxeItems.ITEMS, output, "axe");
                         acceptAll(PickaxeItems.ITEMS, output, "pickaxe");
                         acceptAll(PickaxeAxeItems.ITEMS, output, "pickaxe_axe");
@@ -1573,7 +1573,78 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
-                        acceptAll(SwordItems.ITEMS, output); // todo 分类肉前矿石，肉后矿石等
+                        CreativeModeTab.Output short_swords = GroupItem.belongsTo("short_swords", output);
+                        short_swords.accept(SwordItems.COPPER_SHORT_SWORD.get());
+                        short_swords.accept(SwordItems.TIN_SHORT_SWORD.get());
+                        short_swords.accept(SwordItems.IRON_SHORT_SWORD.get());
+                        short_swords.accept(SwordItems.LEAD_SHORT_SWORD.get());
+                        short_swords.accept(SwordItems.SILVER_SHORT_SWORD.get());
+                        short_swords.accept(SwordItems.TUNGSTEN_SHORT_SWORD.get());
+                        short_swords.accept(SwordItems.GOLDEN_SHORT_SWORD.get());
+                        short_swords.accept(SwordItems.PLATINUM_SHORT_SWORD.get());
+                        short_swords.accept(SwordItems.GLADIUS.get());
+
+                        CreativeModeTab.Output pre_hardmode_broadswords = GroupItem.belongsTo("pre_hardmode_broadswords", output);
+                        pre_hardmode_broadswords.accept(SwordItems.CACTUS_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.EBONWOOD_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.SHADEWOOD_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.ASH_WOOD_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.PEARLWOOD_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.COPPER_BROADSWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.TIN_BROADSWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.LEAD_BROADSWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.SILVER_BROADSWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.TUNGSTEN_BROADSWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.GOLDEN_BROADSWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.PLATINUM_BROADSWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.FAKE_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.CANDY_CANE_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.FALCON_BLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.ZOMBIE_ARM.get());
+                        pre_hardmode_broadswords.accept(SwordItems.MANDIBLE_BLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.BONE_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.STYLISH_SCISSORS.get());
+                        pre_hardmode_broadswords.accept(SwordItems.EXOTIC_SCIMITAR.get());
+                        pre_hardmode_broadswords.accept(SwordItems.BREATHING_REED.get());
+                        pre_hardmode_broadswords.accept(SwordItems.UMBRELLA.get());
+                        pre_hardmode_broadswords.accept(SwordItems.TRAGIC_UMBRELLA.get());
+                        pre_hardmode_broadswords.accept(SwordItems.KATANA.get());
+                        pre_hardmode_broadswords.accept(SwordItems.TERRAGRIM.get());
+                        pre_hardmode_broadswords.accept(SwordItems.PURPLE_CLUBBERFISH.get());
+                        pre_hardmode_broadswords.accept(SwordItems.LIGHTS_BANE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.BLOOD_BUTCHERER.get());
+                        pre_hardmode_broadswords.accept(SwordItems.VOLCANO.get());
+                        pre_hardmode_broadswords.accept(SwordItems.BAT_BAT.get());
+                        pre_hardmode_broadswords.accept(SwordItems.TENTACLE_MACE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.BEE_KEEPER.get());
+                        pre_hardmode_broadswords.accept(SwordItems.ICE_BLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.STARFURY.get());
+                        pre_hardmode_broadswords.accept(SwordItems.ENCHANTED_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.BLADE_OF_GRASS.get());
+                        pre_hardmode_broadswords.accept(SwordItems.NIGHTS_EDGE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.RED_PHASEBLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.ORANGE_PHASEBLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.YELLOW_PHASEBLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.GREEN_PHASEBLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.BLUE_PHASEBLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.PURPLE_PHASEBLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.WHITE_PHASEBLADE.get());
+                        pre_hardmode_broadswords.accept(SwordItems.BROKEN_SWEET_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.SWEET_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.MURAMASA.get());
+                        pre_hardmode_broadswords.accept(SwordItems.DEVELOPER_SWORD.get());
+                        pre_hardmode_broadswords.accept(SwordItems.CROWBAR.get());
+
+                        CreativeModeTab.Output hardmode_broadswords = GroupItem.belongsTo("hardmode_broadswords", output);
+                        hardmode_broadswords.accept(SwordItems.COBALT_SWORD.get());
+                        hardmode_broadswords.accept(SwordItems.PALLADIUM_SWORD.get());
+                        hardmode_broadswords.accept(SwordItems.MYTHRIL_SWORD.get());
+                        hardmode_broadswords.accept(SwordItems.ORICHALCUM_SWORD.get());
+                        hardmode_broadswords.accept(SwordItems.ADAMANTITE_SWORD.get());
+                        hardmode_broadswords.accept(SwordItems.TITANIUM_SWORD.get());
+                        hardmode_broadswords.accept(SwordItems.BREAKER_BLADE.get());
+                        hardmode_broadswords.accept(SwordItems.WAFFLES_IRON.get());
+
                         acceptAll(TEBoomerangItems.ITEMS, output, "boomerang");
                         acceptAll(SpearItems.ITEMS, output, "spear");
                         acceptAll(LanceItems.ITEMS, output, "lance");

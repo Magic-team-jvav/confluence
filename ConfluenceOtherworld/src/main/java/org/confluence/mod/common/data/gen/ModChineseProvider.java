@@ -70,6 +70,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.pine", "松木");
         add("itemGroup.confluence.fey", "仙灵木");
         add("itemGroup.confluence.stone_tree", "石质树");
+        add("itemGroup.confluence.pot", "罐子");
 
         add("itemGroup.confluence.natural_environment", "自然环境");
         add("itemGroup.confluence.corruption", "腐化");
@@ -136,11 +137,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.glass", "玻璃");
         add("itemGroup.confluence.special_building", "特殊建筑");
         add("itemGroup.confluence.chains", "锁链");
-        add("itemGroup.confluence.aetherium", "以太");
-        add("itemGroup.confluence.cloud_decor", "云装饰");
         add("itemGroup.confluence.doors", "门");
-        add("itemGroup.confluence.letter_statues", "字母雕像");
-        add("itemGroup.confluence.entity_statues", "实体雕像");
+        add("itemGroup.confluence.statue", "雕像");
         add("itemGroup.confluence.boss_relics", "Boss 遗物");
         add("itemGroup.confluence.balloons", "气球");
         add("itemGroup.confluence.gem_blocks", "宝石块");
@@ -253,6 +251,18 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.doctors_set", "博士套装");
         add("itemGroup.confluence.guy_fawkes_set", "盖伊·福克斯套装");
         add("itemGroup.confluence.mummy_set", "木乃伊套装");
+
+        add("itemGroup.confluence.boomerang", "回旋镖");
+        add("itemGroup.confluence.spear", "长矛");
+        add("itemGroup.confluence.lance", "骑枪");
+        add("itemGroup.confluence.short_swords", "短剑");
+        add("itemGroup.confluence.pre_hardmode_broadswords", "困难模式前阔剑");
+        add("itemGroup.confluence.hardmode_broadswords", "困难模式后阔剑");
+
+        add("itemGroup.confluence.bow", "弓");
+        add("itemGroup.confluence.crossbow", "弩");
+        add("itemGroup.confluence.arrow", "箭");
+        add("itemGroup.confluence.bullet", "子弹");
 
         add("itemGroup.confluence.gun", "枪械");
         add("config.jade.plugin_confluence.jade_network_component", "机械信息");

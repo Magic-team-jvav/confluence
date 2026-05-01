@@ -73,8 +73,8 @@ public final class ModSecretSeeds {
             for (int i = 0; i < split.length; i++) {
                 String s = split[i].trim().toLowerCase(Locale.ROOT);
                 for (SecretSeed secretSeed : seeds) {
-                    if (secretSeed.match(s)) {
-                        flag |= secretSeed.getFlag();
+                    if (!secretSeed.match(flag) && secretSeed.match(s)) {
+                        flag = secretSeed.applyFlag(flag);
                         if (i == endIndex) { // 如果是最后一个，先尝试进行匹配，匹配失败则作为标识符
                             missmatchLast = false;
                             break;
@@ -90,8 +90,8 @@ public final class ModSecretSeeds {
         } else {
             String s = seed.trim().toLowerCase(Locale.ROOT);
             for (SecretSeed secretSeed : seeds) {
-                if (secretSeed.match(s)) {
-                    flag = secretSeed.getFlag();
+                if (!secretSeed.match(flag) && secretSeed.match(s)) {
+                    flag = secretSeed.applyFlag(flag);
                     break;
                 }
             }

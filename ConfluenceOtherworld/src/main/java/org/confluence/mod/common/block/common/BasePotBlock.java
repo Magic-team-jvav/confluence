@@ -39,10 +39,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
-import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -50,6 +47,7 @@ import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
@@ -144,12 +142,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         Vec3 center = blockPos.getCenter();
         if (summonHole(serverLevel, center)) return;
         if (dropGoldKey(serverLevel, blockPos, center)) return;
-        if (ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel) && level.random.nextFloat() < 0.25F) {
-            BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
-            bomb.setPos(center);
-            level.addFreshEntity(bomb);
-            return;
-        }
+        if (ForTheWorthy.summonPoweredCreeper(serverLevel, blockPos)) return;
         if (dropPotion(serverLevel, blockPos, center)) return;
         if (dropWormhole(serverLevel, center)) return;
         boolean flag = switch (serverLevel.random.nextInt(7)) {

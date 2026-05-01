@@ -28,8 +28,12 @@ public abstract class SecretSeed {
         return id;
     }
 
+    public long applyFlag(long original) {
+        return original | flag;
+    }
+
     public boolean match(MinecraftServer server) {
-        return IMinecraftServer.of(server).confluence$matchesSecretFlag(this);
+        return match(IMinecraftServer.of(server).confluence$getSecretFlag());
     }
 
     public boolean match(ServerLevel serverLevel) {

@@ -273,7 +273,7 @@ public class SecretSeedsSelectionScreen extends Screen {
                 }
                 for (Object2BooleanMap.Entry<SecretSeed> entry : unlockedSecretSeeds.object2BooleanEntrySet()) {
                     if (entry.getBooleanValue()) {
-                        flag |= entry.getKey().getFlag();
+                        flag = entry.getKey().applyFlag(flag);
                     }
                 }
                 IWorldOptions.of(worldOptions).confluence$withSecretFlag(flag);

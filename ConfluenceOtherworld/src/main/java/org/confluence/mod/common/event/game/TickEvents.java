@@ -75,6 +75,7 @@ public final class TickEvents {
             AchievementUtils.quietNeighborhood(player, level, gameTime);
             AchievementUtils.aRareRealm(player, gameTime);
             TheConstant.applyDarkness(player, level, gameTime);
+            TheConstant.instantlyDieWhenHasNoFoodLevel(player);
             DungeonStructure.checkSkeletronDefeated(player, level);
             ChunkDropletsData.syncDroplets(player);
             ModArmorBonus.afterTick(player, gameTime);

@@ -97,7 +97,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.normal_ores", "普通矿石");
         add("itemGroup.confluence.raw_ore_blocks", "粗矿石块");
         add("itemGroup.confluence.ore_storage_blocks", "矿石存储块");
-// 建筑方块分类
+        // 建筑方块分类
 
         add("itemGroup.confluence.gloom_obsidian_bricks", "黯虚黑曜石砖");
         add("itemGroup.confluence.blue_ice_bricks", "蓝冰砖");
@@ -143,7 +143,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.balloons", "气球");
         add("itemGroup.confluence.gem_blocks", "宝石块");
         add("itemGroup.confluence.fur_wool", "皮毛");
-// 机械功能方块
+        // 机械功能方块
         add("itemGroup.confluence.boulders", "巨石");
         add("itemGroup.confluence.redstone_circuit_traps", "红石电路机关");
         add("itemGroup.confluence.trigger", "触发器");
@@ -151,14 +151,15 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.storage", "存储");
         add("itemGroup.confluence.souls", "灵魂瓶");
         add("itemGroup.confluence.misc_functional", "杂项功能方块");
-// 材料
+        add("itemGroup.confluence.pylon", "晶塔");
+        // 材料
         add("itemGroup.confluence.metal_materials", "金属材料");
         add("itemGroup.confluence.natural_materials", "自然材料");
         add("itemGroup.confluence.souls_special", "灵魂与特殊材料");
         add("itemGroup.confluence.monster_drops", "怪物掉落");
         add("itemGroup.confluence.plants_herbs", "植物与草药");
         add("itemGroup.confluence.crafting_materials", "合成材料");
-// 杂项
+        // 杂项
         add("itemGroup.confluence.treasure_bag", "宝藏袋");
         add("itemGroup.confluence.tombstone", "墓石");
         add("itemGroup.confluence.bait", "诱饵");
@@ -171,7 +172,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.environment_items", "环境物品");
         add("itemGroup.confluence.gain", "增益");
         add("itemGroup.confluence.loot_gifts", "战利品与礼物");
-// 工具
+        // 工具
         add("itemGroup.confluence.ropes", "绳索");
         add("itemGroup.confluence.wand", "魔杖");
         add("itemGroup.confluence.wiring_tools", "电路工具");
@@ -195,7 +196,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.shovel", "铲子");
         add("itemGroup.confluence.boat", "船");
         add("itemGroup.confluence.chest_boat", "箱船");
-// 盔甲
+        // 盔甲
         add("itemGroup.confluence.cactus_armor", "仙人掌盔甲");
         add("itemGroup.confluence.plank_armor", "木板盔甲");
         add("itemGroup.confluence.ebony_armor", "乌木盔甲");
@@ -258,6 +259,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.short_swords", "短剑");
         add("itemGroup.confluence.pre_hardmode_broadswords", "困难模式前阔剑");
         add("itemGroup.confluence.hardmode_broadswords", "困难模式后阔剑");
+        add("itemGroup.confluence.yoyo", "悠悠球");
 
         add("itemGroup.confluence.bow", "弓");
         add("itemGroup.confluence.crossbow", "弩");
@@ -333,7 +335,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.enable_pvp", "%s已启用PvP！");
         add("message.confluence.disable_pvp.button", "禁用玩家对决");
         add("message.confluence.disable_pvp", "%s已禁用PvP！");
-        add("message.confluence.too_easy.ready", "太容易了！");
+        add("message.confluence.too_easy.ready", "轻而易举呀！");
 
         add("team.confluence.white", "白");
         add("team.confluence.light_gray", "淡灰");
@@ -467,9 +469,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "放在物品栏中时能防止你伤害小动物");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "放在物品栏中时能防止你意外破坏环境");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "右键点击停用/激活其效果");
-//        add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
+        //        add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
         add("tooltip.item.confluence.repeater.0", "左键长按发射");
         add("tooltip.item.confluence.repeater.1", "在背包中右键取出箭矢");
+        add("tooltip.item.confluence.wireable.0", "可接线");
+        add("tooltip.item.confluence.can_be_extractinated.0", "可提炼");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");

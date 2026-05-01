@@ -25,6 +25,7 @@ import org.confluence.mod.common.block.common.EnchantedFragileBricksBlock;
 import org.confluence.mod.common.block.functional.*;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
 import org.confluence.mod.common.block.functional.boulder.ContactEffectBoulderBlock;
+import org.confluence.mod.common.block.functional.boulder.FullCollisionBoulderBlock;
 import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
 import org.confluence.mod.common.block.functional.crafting.*;
 import org.confluence.mod.common.block.functional.crafting.LoomBlock;
@@ -151,7 +152,7 @@ public class FunctionalBlocks {
     public static final DeferredBlock<TimersBlock> TIMERS_BLOCK_1_4 = registerWithEntity("timers_1_4", () -> new TimersBlock(5)); // 1/4s
     public static final DeferredBlock<GeyserBlock> GEYSER_BLOCK = registerWithEntity("geyser_block", GeyserBlock::new);
     public static final DeferredBlock<BoulderBlock> NORMAL_BOULDER = registerWithEntity("normal_boulder", BoulderBlock::new);
-    public static final DeferredBlock<BoulderBlock> OAK_LOG_BOULDER = registerWithEntity("oak_log_boulder", BoulderBlock::new);
+    public static final DeferredBlock<FullCollisionBoulderBlock> OAK_LOG_BOULDER = registerWithEntity("oak_log_boulder", FullCollisionBoulderBlock::new);
     public static final DeferredBlock<BoulderBlock> FOLLOWER_BOULDER = registerWithEntity("follower_boulder", () -> new BoulderBlock(FollowerBoulderEntity::new));
     public static final DeferredBlock<BoulderBlock> EXPLODE_BOULDER = registerWithEntity("explode_boulder", () -> new BoulderBlock(ExplodeBoulderEntity::new));
     public static final DeferredBlock<BoulderBlock> ROLLING_CACTUS_BOULDER = registerWithEntity("rolling_cactus_boulder", () -> new ContactEffectBoulderBlock(RollingCactusBoulderEntity::new, ContactEffectBoulderBlock.ContactEffect.createHurt((entity) -> entity instanceof Player ? 19.0F : 1.5F, (level) -> level.damageSources().cactus())));

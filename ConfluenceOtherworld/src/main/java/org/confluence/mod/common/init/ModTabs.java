@@ -26,6 +26,7 @@ import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
+import org.confluence.terraentity.init.item.TEYoyosItems;
 
 import java.util.Collection;
 import java.util.List;
@@ -648,7 +649,6 @@ public final class ModTabs {
                         wiring_tools.accept(ToolItems.WIRE_CUTTER.get());
 
                         CreativeModeTab.Output boulders = GroupItem.belongsTo("boulders", output);
-                        boulders.accept(FunctionalBlocks.ECHO_BLOCK.get());
                         boulders.accept(FunctionalBlocks.NORMAL_BOULDER.get());
                         boulders.accept(FunctionalBlocks.OAK_LOG_BOULDER.get());
                         boulders.accept(FunctionalBlocks.FOLLOWER_BOULDER.get());
@@ -776,6 +776,7 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.TUFF_BOOTH.get());
                         misc_functional.accept(FunctionalBlocks.WATER_CANDLE);
                         misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
+                        misc_functional.accept(FunctionalBlocks.ECHO_BLOCK.get());
                         WaystonesHelper.accept(output);
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
@@ -845,7 +846,6 @@ public final class ModTabs {
                         natural_materials.accept(MaterialItems.PEARL.get());
                         natural_materials.accept(MaterialItems.BLACK_PEARL.get());
                         natural_materials.accept(MaterialItems.PINK_PEARL.get());
-                        natural_materials.accept(MaterialItems.LIGHT_SHARD.get());
                         natural_materials.accept(MaterialItems.COLD_CRYSTAL.get());
                         natural_materials.accept(MaterialItems.VOID_CRYSTAL.get());
                         natural_materials.accept(MaterialItems.OPAL.get());
@@ -893,6 +893,7 @@ public final class ModTabs {
                         monster_drops.accept(MaterialItems.FLINX_FUR.get());
                         monster_drops.accept(MaterialItems.CRYSTAL_SHARDS.get());
                         monster_drops.accept(MaterialItems.DARK_SHARD.get());
+                        monster_drops.accept(MaterialItems.LIGHT_SHARD.get());
                         monster_drops.accept(MaterialItems.CURSED_FLAME.get());
                         monster_drops.accept(MaterialItems.ICHOR.get());
                         monster_drops.accept(MaterialItems.PIXIE_DUST.get());
@@ -903,6 +904,9 @@ public final class ModTabs {
                         monster_drops.accept(MaterialItems.ANCIENT_CLOTH.get());
                         monster_drops.accept(MaterialItems.ECTOPLASM.get());
                         monster_drops.accept(ModItems.WHOOPIE_CUSHION.get());
+                        monster_drops.accept(MaterialItems.MECHANICAL_WHEEL_PIECE.get());
+                        monster_drops.accept(MaterialItems.MECHANICAL_WAGON_PIECE.get());
+                        monster_drops.accept(MaterialItems.MECHANICAL_BATTERY_PIECE.get());
 
                         CreativeModeTab.Output plants_herbs = GroupItem.belongsTo("plants_herbs", output);
                         plants_herbs.accept(MaterialItems.WATERLEAF.get());
@@ -936,9 +940,7 @@ public final class ModTabs {
                         crafting_materials.accept(MaterialItems.VIAL_OF_VENOM.get());
                         crafting_materials.accept(MaterialItems.BELL.get());
                         crafting_materials.accept(MaterialItems.HARP.get());
-                        crafting_materials.accept(MaterialItems.MECHANICAL_WHEEL_PIECE.get());
-                        crafting_materials.accept(MaterialItems.MECHANICAL_WAGON_PIECE.get());
-                        crafting_materials.accept(MaterialItems.MECHANICAL_BATTERY_PIECE.get());
+
 
                     })
                     .withTabsBefore(MECHANICAL.getId())
@@ -1645,6 +1647,16 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.BREAKER_BLADE.get());
                         hardmode_broadswords.accept(SwordItems.WAFFLES_IRON.get());
 
+                        CreativeModeTab.Output yoyo = GroupItem.belongsTo("yoyo", output);
+                        yoyo.accept(TEYoyosItems.AMAZON.get());
+                        yoyo.accept(TEYoyosItems.ARTERY.get());
+                        yoyo.accept(TEYoyosItems.CASCADE.get());
+                        yoyo.accept(TEYoyosItems.CODE_1.get());
+                        yoyo.accept(TEYoyosItems.HIVE_FIVE.get());
+                        yoyo.accept(TEYoyosItems.MALAISE.get());
+                        yoyo.accept(TEYoyosItems.RALLY.get());
+                        yoyo.accept(TEYoyosItems.VALOR.get());
+                        yoyo.accept(TEYoyosItems.WOODEN_YOYO.get());
                         acceptAll(TEBoomerangItems.ITEMS, output, "boomerang");
                         acceptAll(SpearItems.ITEMS, output, "spear");
                         acceptAll(LanceItems.ITEMS, output, "lance");

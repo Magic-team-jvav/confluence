@@ -278,9 +278,9 @@ public final class CommonConfigs {
                 GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH = builder.defineInRange("goblinArmyEventRequiredPlayerMaxHealth", 24, 0, 1024);
                 GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_ARMOR = builder.defineInRange("goblinArmyEventRequiredPlayerArmor", 16, 0, 1024);
                 GOBLIN_ARMY_EVENT_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 3, 1, 1024);
-                GOBLIN_ARMY_EVENT_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 3, 1, 1024);
-                GOBLIN_ARMY_EVENT_HARDMODE_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 30, 1, 1024);
-                GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 60, 1, 1024);
+                GOBLIN_ARMY_EVENT_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyDefeatedEventInvertChance", 30, 1, 1024);
+                GOBLIN_ARMY_EVENT_HARDMODE_INVERT_CHANCE = builder.defineInRange("goblinArmyHardmodeEventInvertChance", 3, 1, 1024);
+                GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyEventHardmodeDefeatedInvertChance", 60, 1, 1024);
                 GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_BASE = builder.defineInRange("goblinArmyEventRequiredKillCountBase", 80, 1, 1024);
                 GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_PER_PLAYER = builder.defineInRange("goblinArmyEventRequiredKillCountPerPlayer", 40, 1, 1024);
                 builder.pop();

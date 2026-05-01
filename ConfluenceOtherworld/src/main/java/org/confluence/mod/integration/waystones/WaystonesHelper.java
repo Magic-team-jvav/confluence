@@ -7,9 +7,7 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -17,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -25,15 +22,15 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.data_map.ValueSubProvider;
 import org.confluence.mod.common.init.ModBiomes;
-import org.confluence.mod.common.init.ModTabs;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.GroupItem;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -48,15 +45,15 @@ public class WaystonesHelper {
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     // 确保不要在任何地方直接调用它们！在没安装指路石模组时这些注册项不会被注册
-    public static final DeferredBlock<Block> FOREST_PYLON = register("forest_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.CYAN).lightLevel(state -> 10), (world, pos, biome) -> biome.is(Tags.Biomes.IS_FOREST) || biome.is(Tags.Biomes.IS_PLAINS));
-    public static final DeferredBlock<Block> SNOW_PYLON = register("snow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.WHITE).lightLevel(state -> 10), (world, pos, biome) -> biome.is(Tags.Biomes.IS_SNOWY) || biome.is(Tags.Biomes.IS_ICY));
-    public static final DeferredBlock<Block> DESERT_PYLON = register("desert_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.YELLOW).lightLevel(state -> 10), (world, pos, biome) -> biome.is(Tags.Biomes.IS_DESERT) || biome.is(Tags.Biomes.IS_BADLANDS));
-    public static final DeferredBlock<Block> CAVERN_PYLON = register("cavern_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GRAY).lightLevel(state -> 10), (world, pos, biome) -> world.dimensionType().bedWorks() && pos.getY() < world.getMinBuildHeight() + 104);
-    public static final DeferredBlock<Block> OCEAN_PYLON = register("ocean_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BLUE).lightLevel(state -> 10), (world, pos, biome) -> biome.is(Tags.Biomes.IS_OCEAN));
-    public static final DeferredBlock<Block> JUNGLE_PYLON = register("jungle_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GREEN).lightLevel(state -> 10), (world, pos, biome) -> biome.is(Tags.Biomes.IS_JUNGLE));
-    public static final DeferredBlock<Block> HALLOW_PYLON = register("hallow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.LIGHT_BLUE).lightLevel(state -> 10), (world, pos, biome) -> biome.is(ModTags.Biomes.THE_HALLOW));
-    public static final DeferredBlock<Block> MUSHROOM_PYLON = register("mushroom_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.PURPLE).lightLevel(state -> 10), (world, pos, biome) -> biome.is(ModBiomes.GLOWING_MUSHROOM));
-    public static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BROWN).lightLevel(state -> 10), (world, pos, biome) -> true);
+    public static final DeferredBlock<Block> FOREST_PYLON = register("forest_pylon", DyeColor.CYAN, (world, pos, biome) -> biome.is(Tags.Biomes.IS_FOREST) || biome.is(Tags.Biomes.IS_PLAINS));
+    public static final DeferredBlock<Block> SNOW_PYLON = register("snow_pylon", DyeColor.WHITE, (world, pos, biome) -> biome.is(Tags.Biomes.IS_SNOWY) || biome.is(Tags.Biomes.IS_ICY));
+    public static final DeferredBlock<Block> DESERT_PYLON = register("desert_pylon", DyeColor.YELLOW, (world, pos, biome) -> biome.is(Tags.Biomes.IS_DESERT) || biome.is(Tags.Biomes.IS_BADLANDS));
+    public static final DeferredBlock<Block> CAVERN_PYLON = register("cavern_pylon", DyeColor.GRAY, (world, pos, biome) -> world.dimensionType().bedWorks() && pos.getY() < world.getMinBuildHeight() + 104);
+    public static final DeferredBlock<Block> OCEAN_PYLON = register("ocean_pylon", DyeColor.BLUE, (world, pos, biome) -> biome.is(Tags.Biomes.IS_OCEAN));
+    public static final DeferredBlock<Block> JUNGLE_PYLON = register("jungle_pylon", DyeColor.GREEN, (world, pos, biome) -> biome.is(Tags.Biomes.IS_JUNGLE));
+    public static final DeferredBlock<Block> HALLOW_PYLON = register("hallow_pylon", DyeColor.LIGHT_BLUE, (world, pos, biome) -> biome.is(ModTags.Biomes.THE_HALLOW));
+    public static final DeferredBlock<Block> MUSHROOM_PYLON = register("mushroom_pylon", DyeColor.PURPLE, (world, pos, biome) -> biome.is(ModBiomes.GLOWING_MUSHROOM));
+    public static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", DyeColor.BROWN, (world, pos, biome) -> true);
 
     public static final Supplier<BlockEntityType<PylonBlock.BEntity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.BEntity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
@@ -74,19 +71,22 @@ public class WaystonesHelper {
         return block;
     }
 
+    private static DeferredBlock<Block> register(String name, DyeColor dyeColor, PylonBlock.Survive survive) {
+        return register(name, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(dyeColor).lightLevel(state -> 10), survive);
+    }
+
     public static void register(IEventBus eventBus) {
         if (IS_LOADED) {
             BLOCKS.register(eventBus);
             BLOCK_ENTITY_TYPES.register(eventBus);
             ITEMS.register(eventBus);
-            eventBus.addListener(WaystonesHelper::buildCreativeModeTabContents);
         }
     }
 
-    private static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTab() == ModTabs.MECHANICAL.get()) {
-            WipNotDisplayOutput output = new WipNotDisplayOutput(event);
-            ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+    public static void accept(CreativeModeTab.Output output) {
+        if (IS_LOADED) {
+            List<ItemStack> pylons = ITEMS.getEntries().stream().map(holder -> holder.get().getDefaultInstance()).toList();
+            output.accept(GroupItem.of(Confluence.asResource("pylon"), pylons));
         }
     }
 

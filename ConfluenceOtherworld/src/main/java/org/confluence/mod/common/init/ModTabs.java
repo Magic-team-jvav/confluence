@@ -15,6 +15,7 @@ import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.GroupItem;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
@@ -772,6 +773,8 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.TREE_HOLES_BLOCK.get());
                         misc_functional.accept(FunctionalBlocks.LOCK_BLOCK.get());
                         misc_functional.accept(FunctionalBlocks.TUFF_BOOTH.get());
+
+                        WaystonesHelper.accept(output);
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
 

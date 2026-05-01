@@ -106,8 +106,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> CRATE = EFFECTS.register("crate", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xD88B3F));
     public static final DeferredHolder<MobEffect, MobEffect> THE_BAST_DEFENSE = EFFECTS.register("the_bast_defense", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x000000)
             .addAttributeModifier(Attributes.ARMOR, id, 5.0, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredHolder<MobEffect, MobEffect> SHARPENED = EFFECTS.register("sharpened", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xDDDDDD)
-            .addAttributeModifier(LibAttributes.getArmorPenetration(), id, 12.0, AttributeModifier.Operation.ADD_VALUE));
+    public static final DeferredHolder<MobEffect, MobEffect> SHARPENED = EFFECTS.register("sharpened", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xDDDDDD)); // 改为事件
     public static final DeferredHolder<MobEffect, MobEffect> BEWITCHED = EFFECTS.register("bewitched", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xDDAA33)
             .addAttributeModifier(ConfluenceMagicLib.MINION_CAPACITY, id, 1.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> AMMO_BOX = EFFECTS.register("ammo_box", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x119911));

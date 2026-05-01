@@ -28,6 +28,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.LibTags;
 import org.confluence.lib.event.ArmorPenetrationEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
@@ -566,9 +567,18 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void armorPenetration(ArmorPenetrationEvent event) {
-        Entity direct = event.getDamageSource().getDirectEntity();
+        DamageSource damageSource = event.getDamageSource();
+
+        @Nullable Entity direct = damageSource.getDirectEntity();
         if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get()) {
             event.setPenetration(event.getPenetration() + CrystalVileShardItem.ARMOR_PENETRATION);
+        }
+
+        if (damageSource.getEntity() instanceof LivingEntity living &&
+                damageSource.is(LibTags.DamageTypes.AS_MELEE_ATTACK) &&
+                living.hasEffect(ModEffects.SHARPENED)
+        ) {
+            event.setPenetration(event.getPenetration() + 12);
         }
     }
 }

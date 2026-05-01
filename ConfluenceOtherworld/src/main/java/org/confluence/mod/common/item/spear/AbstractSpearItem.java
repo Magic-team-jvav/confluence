@@ -29,7 +29,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
@@ -66,14 +65,13 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     protected final List<Keyframe<MathValue>> keyframes;
     private TooltipComponent component;
 
-    /**
-     * @param attackDuration 攻击持续时间，值越大攻击时间越长
-     * @param attackInterval 攻击间隔，每造成两次伤害之间的时间
-     * @param keyframes      应用于长矛攻击的关键帧，建议匹配攻击持续时间
-     */
+    /// @param attackDuration 攻击持续时间，值越大攻击时间越长
+    /// @param attackInterval 攻击间隔，每造成两次伤害之间的时间
+    /// @param keyframes      应用于长矛攻击的关键帧，建议匹配攻击持续时间
     public AbstractSpearItem(Properties properties, ModRarity rarity, int attackDuration, int attackInterval, List<Keyframe<MathValue>> keyframes) {
         super(properties.stacksTo(1), rarity, collectTooltips(attackDuration, attackInterval));
-        if (attackInterval < 1) throw new IllegalArgumentException("attackInterval must be greater than or equal to 1, currently is " + attackInterval);
+        if (attackInterval < 1)
+            throw new IllegalArgumentException("attackInterval must be greater than or equal to 1, currently is " + attackInterval);
         this.attackDuration = attackDuration;
         this.attackInterval = attackInterval;
         this.keyframes = keyframes;
@@ -143,14 +141,13 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
 
                 for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> canHitEntity(target, owner))) {
-                    if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
+                    if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty())
+                        continue;
                     owner.setLastHurtMob(victim);
-                    if (victim instanceof PartEntity<?> partEntity) {
-                        victim = partEntity.getParent();
-                    }
-                    onHitEntity(stack, (ServerLevel) level, owner, victim);
+                    victim = LibUtils.tryFindBeImpacted(victim);
+                    onHitEntity(stack, owner.serverLevel(), owner, victim);
                 }
-                onStingTick(stack, (ServerLevel) level, owner, endVec, attackDuration - tickCount < attackInterval);
+                onStingTick(stack, owner.serverLevel(), owner, endVec, attackDuration - tickCount < attackInterval);
             }
         }
     }

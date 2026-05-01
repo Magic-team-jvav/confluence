@@ -17,7 +17,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
@@ -88,12 +87,7 @@ public class BugNetItem extends TooltipItem {
                 player, from, to, aabb, entity -> !entity.isSpectator() && entity.isPickable(), squared
         );
         if (entityHitResult != null && entityHitResult.getLocation().distanceToSqr(from) < sqr) l:{
-            LivingEntity interactionTarget;
-            if (entityHitResult.getEntity() instanceof LivingEntity living) {
-                interactionTarget = living;
-            } else if (entityHitResult.getEntity() instanceof PartEntity<?> part && part.getParent() instanceof LivingEntity living) {
-                interactionTarget = living;
-            } else {
+            if (!(LibUtils.tryFindBeImpacted(entityHitResult.getEntity()) instanceof LivingEntity interactionTarget)) {
                 break l;
             }
             if (player.isLocalPlayer()) {

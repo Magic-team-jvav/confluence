@@ -51,7 +51,7 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
     public FlailBall(Level pLevel, Entity owner, InteractionHand hand, FlailItem flailItem) {
         this(pLevel, flailItem);
         setOwner(owner);
-        radians = (float) Math.toRadians(owner.getYRot());
+        radians = owner.getYRot() * Mth.DEG_TO_RAD;
         this.hand = hand;
         offset = hand == InteractionHand.MAIN_HAND ? -0.6f : 0.6f;
         getEntityData().set(DATA_OFFSET, offset);

@@ -226,9 +226,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 return true;
             }
 
-            Entity victim = LibUtils.getOwner(target);
             LivingEntity hurter;
-            if (victim instanceof LivingEntity living) {
+            if (LibUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
                 hurter = living;
             } else {
                 return false;

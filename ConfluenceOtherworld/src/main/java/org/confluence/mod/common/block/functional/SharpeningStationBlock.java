@@ -26,8 +26,8 @@ public class SharpeningStationBlock extends HorizontalDirectionalBlock {
             box(2, 0, 0, 14, 4, 16)
     );
     private static final VoxelShape Z_AXIS_SHAPE = Shapes.or(
-                box(2, 2, 5, 14, 14, 11),
-                box(0, 0, 2, 16, 4, 14)
+            box(2, 2, 5, 14, 14, 11),
+            box(0, 0, 2, 16, 4, 14)
     );
 
     @Override

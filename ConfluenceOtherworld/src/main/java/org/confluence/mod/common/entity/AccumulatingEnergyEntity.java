@@ -113,6 +113,7 @@ public class AccumulatingEnergyEntity extends Entity {
                 }
 
                 lightningBolt.hitEntities.addAll(entities);
+                lightningBolt.setVisualOnly(false);
                 lightningBolt.setDamage(0);
                 discard();
             }

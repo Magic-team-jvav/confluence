@@ -209,6 +209,9 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goblinArmyEventRequiredPlayerMaxHealth", "Required Player Max Health to Trigger Event");
         add("confluence.configuration.goblinArmyEventRequiredPlayerArmor", "Required Player Armor to Trigger Event");
         add("confluence.configuration.goblinArmyEventInvertChance", "Event Trigger Chance (Denominator)");
+        add("confluence.configuration.goblinArmyDefeatedEventInvertChance", "Event Trigger Chance After Defeat (Denominator)");
+        add("confluence.configuration.goblinArmyHardmodeEventInvertChance", "Hardmode Event Trigger Chance (Denominator)");
+        add("confluence.configuration.goblinArmyEventHardmodeDefeatedInvertChance", "Hardmode Post-Defeat Event Trigger Chance (Denominator)");
         add("confluence.configuration.goblinArmyEventRequiredKillCountBase", "Required Kills (Base Value)");
         add("confluence.configuration.goblinArmyEventRequiredKillCountPerPlayer", "Required Kills Increase Per Player");
         add("confluence.configuration.MeteorShower", "Meteor Shower");
@@ -227,6 +230,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.dragonChargePlayer.tooltip", "When enabled, the Ender Dragon will dive to attack players");
         add("confluence.configuration.stopAskForSoftcore", "Stop Ask for Softcore");
         add("confluence.configuration.stopAskForSoftcore.tooltip", "When enabled, the server will not ask for the Softcore.");
+        add("confluence.configuration.LightningBolt", "Lightning Bolt");
+        add("confluence.configuration.LightningBolt.tooltip", "Adjust Lightning Bolt");
+        add("confluence.configuration.terraStyleLightningBolt", "Terraria-Style Lightning Bolt");
+        add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "Lightning Bolt Frequency Multiplier");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Soul.button", "Soul");
@@ -454,6 +461,9 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goblinArmyEventRequiredPlayerMaxHealth", "事件触发所需玩家最大生命值");
         add("confluence.configuration.goblinArmyEventRequiredPlayerArmor", "事件触发所需玩家护甲值");
         add("confluence.configuration.goblinArmyEventInvertChance", "事件触发概率（分母）");
+        add("confluence.configuration.goblinArmyDefeatedEventInvertChance", "被击败后事件触发概率（分母）");
+        add("confluence.configuration.goblinArmyHardmodeEventInvertChance", "困难模式下事件触发概率（分母）");
+        add("confluence.configuration.goblinArmyEventHardmodeDefeatedInvertChance", "困难模式下被击败后被击败后事件触发概率（分母）");
         add("confluence.configuration.goblinArmyEventRequiredKillCountBase", "所需击杀数量基础");
         add("confluence.configuration.goblinArmyEventRequiredKillCountPerPlayer", "每位玩家提升所需击杀数量基础");
         add("confluence.configuration.MeteorShower", "流星雨");
@@ -472,6 +482,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.dragonChargePlayer.tooltip", "开启后，末影龙将会俯冲攻击玩家");
         add("confluence.configuration.stopAskForSoftcore", "停止请求软核模式");
         add("confluence.configuration.stopAskForSoftcore.tooltip", "开启后，服务器将不会请求软核模式");
+        add("confluence.configuration.LightningBolt", "闪电束");
+        add("confluence.configuration.LightningBolt.tooltip", "调整闪电束");
+        add("confluence.configuration.terraStyleLightningBolt", "泰拉闪电束");
+        add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "闪电束频率提升倍率");
 
 
 

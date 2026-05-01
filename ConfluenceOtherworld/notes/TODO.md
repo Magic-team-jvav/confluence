@@ -164,7 +164,6 @@
 - 魔法飞弹（不知道怎么实现）
 - 矿车拐弯时遇到墙角会停
 - 掘墓者铲（铲+锤）
-- 大风天事件
 - 派对事件
 - 为养蜂人射弹添加巨型（蜂巢背包效果）
 - 重构小动物生成（还有其他生成，如鬼魂在墓地自然生成）
@@ -186,10 +185,19 @@
 - 事件：大风天、沙尘暴（雾与粒子）、暴风雪（雾与粒子）（我将会进一步撰写事件note）
 - 环境改造器以及溶液
 - 更换一部分制作站GUI
+- 水母会穿过玻璃窗
+- 狩猎药水会显示黄蜂召唤物
+- 召唤物给予的debuff会作用到队友身上包括着火
+- 攻击来自怪物的弹幕会导致玩家被反伤
+- 独眼巨鹿死的瞬间（且在技能释放途中）会对近距离玩家造成若干次不明伤害
+- https://mclo.gs/MFfPBHi 服务器无法使用召唤道具
+- 巨鹿需要加跳跃AI
+- 嵌套的法杖粒子base_mana_staff_projectile_expiration.particle和霹雳法杖粒子thunder_zapper_expiration.particle在游戏中不体现
 
 - 待加入：
     - 虚空背包
     - 解压球
+    - 需要藿香教程书的获取
 - 秘密种子：
 - 泰拉的：
     - does that sparkle(does_that_sparkle)
@@ -256,11 +264,11 @@
 
 优化列表：
 
-- 巨鹿需要加点跳跃
+
 - 1.4.5相关：
     - 改版光剑，颌骨剑，骨剑，骨镐，僵尸臂
-    - tooltip“可与导线连接”（我还没写）
-    - tooltip“可提炼”（我还没写）
+    - tooltip“可与导线连接”（"tooltip.item.confluence.wireable.0"）
+    - tooltip“可提炼”（"tooltip.item.confluence.can_be_extractinated.0"）
     - 单个套装部件的提示信息中会显示套装奖励。
 
 # 附属bug存放处

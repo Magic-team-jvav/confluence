@@ -191,7 +191,6 @@
 - 独眼巨鹿死的瞬间（且在技能释放途中）会对近距离玩家造成若干次不明伤害
 - https://mclo.gs/MFfPBHi 服务器无法使用召唤道具
 - 巨鹿需要加跳跃AI
-- 嵌套的法杖粒子base_mana_staff_projectile_expiration.particle和霹雳法杖粒子thunder_zapper_expiration.particle在游戏中不体现
 
 - 待加入：
     - 虚空背包

@@ -23,7 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.api.entity.Boss;
-import org.confluence.lib.event.CustomPickupRangeEvent;
+import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;

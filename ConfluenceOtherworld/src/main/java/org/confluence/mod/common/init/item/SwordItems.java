@@ -19,11 +19,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.*;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.common.item.sword.GeoSwordItem;
-import org.confluence.mod.common.item.sword.Phaseblade;
-import org.confluence.mod.common.item.sword.StarSteelSword;
-import org.confluence.mod.common.item.sword.SweetSword;
+import org.confluence.mod.common.item.sword.*;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.mod.common.item.sword.legacy.SwordStrategy;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
@@ -186,9 +182,7 @@ public class SwordItems {
             ))))
     ));
 
-    public static final DeferredItem<BaseSwordItem> STAR_STEEL_SWORD = register("star_steel_sword", () -> new StarSteelSword(ModTiers.UNBREAKABLE, ModRarity.BLUE, 8, 2.2F, new BaseSwordItem.ModifierBuilder()
-            .setPostHurtEnemy((stack, target, attacker) -> StarSteelSword.tryDropManaStar(target, attacker))
-            .addTooltip(p -> p.withColor(0xc0e8ff))));
+    public static final DeferredItem<BaseSwordItem> STAR_STEEL_SWORD = register("star_steel_sword", StarSteelSword::new);
 
     public static DeferredItem<BaseSwordItem> register(String name, Supplier<BaseSwordItem> supplier) {
         return ITEMS.register(name, supplier);

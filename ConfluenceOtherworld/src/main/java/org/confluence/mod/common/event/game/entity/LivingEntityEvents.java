@@ -28,8 +28,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.api.event.ArmorPenetrationEvent;
+import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
 import org.confluence.lib.common.LibTags;
-import org.confluence.lib.event.ArmorPenetrationEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
@@ -63,7 +64,6 @@ import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
 import org.confluence.mod.common.item.mana.CrystalVileShardItem;
-import org.confluence.lib.mixed.CriticalDamageSource;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
@@ -253,19 +253,14 @@ public final class LivingEntityEvents {
         if (attacker instanceof ServerPlayer player) {
             ModArmorBonus.onAttacked(player, damageSource, victim);
             LucyTheAxe.onDamageLiving(player, victim);
-            // 记录星钢剑的暴击结果，供postHurtEnemy使用
-            if (player.getMainHandItem().getItem() instanceof StarSteelSword) {
-                boolean isCrit = damageSource instanceof CriticalDamageSource cds && cds.confluence$isCritical();
-                StarSteelSword.recordCritResult(player, isCrit);
-            }
-            // 星钢剑：拾取魔力星后1秒内暴击伤害*2.5
-            if (damageSource instanceof CriticalDamageSource cds
-                    && cds.confluence$isCritical()
-                    && player.getMainHandItem().getItem() instanceof StarSteelSword
-                    && StarSteelSword.hasCritBuff(player)) {
-                float extraDamage = amount * (StarSteelSword.CRIT_MULTIPLIER / 1.5F - 1.0F);
-                victim.setHealth(victim.getHealth() - extraDamage);
-            }
+            StarSteelSword.tryDropManaStar(victim, player);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void processCriticalDamage(ProcessCriticalDamageEvent event) {
+        if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
+            StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
         }
     }
 

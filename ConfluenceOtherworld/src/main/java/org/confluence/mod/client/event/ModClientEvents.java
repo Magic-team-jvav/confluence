@@ -31,8 +31,11 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.LibStartupConfig;
 import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.common.item.ColoredItem;
+import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
@@ -79,7 +82,10 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRen
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
-import org.confluence.mod.client.renderer.item.*;
+import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
+import org.confluence.mod.client.renderer.item.EnemyBannerItemRenderer;
+import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
+import org.confluence.mod.client.renderer.item.ShortSwordInHandRenderer;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
@@ -90,7 +96,6 @@ import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
@@ -482,9 +487,6 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FLIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_VOIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_BRIGHT);
-        if (StartupConfigs.itemGroups()) {
-            event.registerItem(GroupItemExtension.INSTANCE, GroupItem.getInstance());
-        }
         event.registerItem(ModClientSetups.GLINT_RAINBOW_EXTENSIONS, TreasureBagItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(new EnemyBannerItemRenderer(), ModItems.ENEMY_BANNER);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
@@ -619,11 +621,11 @@ public final class ModClientEvents {
                 event.register(item, ModClientSetups.REPEATER_AMMO);
             }
         }
-        if (StartupConfigs.itemGroups()) {
+        if (LibStartupConfig.itemGroups()) {
             ResourceLocation plus = Confluence.asResource("plus");
             ResourceLocation minus = Confluence.asResource("minus");
             event.register(GroupItem.getInstance(), (guiGraphics, font, stack, xOffset, yOffset) -> {
-                GroupItem.Stacks stacks = stack.get(ModDataComponentTypes.GROUP_STACKS);
+                GroupItem.Stacks stacks = stack.get(ConfluenceMagicLib.GROUP_STACKS);
                 if (stacks != null) {
                     PoseStack pose = guiGraphics.pose();
                     pose.pushPose();

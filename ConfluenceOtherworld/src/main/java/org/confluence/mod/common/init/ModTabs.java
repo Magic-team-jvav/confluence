@@ -8,13 +8,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.item.GroupItem;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -40,24 +40,24 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.natural_blocks"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
+
                         LogBlockSet.acceptNature(output);
                         acceptAll(PotBlocks.BLOCKS, output, "pot");
 
-                        CreativeModeTab.Output pine = GroupItem.belongsTo("pine", output);
+                        CreativeModeTab.Output pine = GroupItem.belongsTo(NatureBlocks.PINE_LOG_BLOCKS.id, output);
                         pine.accept(NatureBlocks.PRUNED_PINE_SAPLING);
                         pine.accept(NatureBlocks.PINE_DROOPING_VINE);
 
-
-                        CreativeModeTab.Output ash = GroupItem.belongsTo("ash", output);
+                        CreativeModeTab.Output ash = GroupItem.belongsTo(NatureBlocks.ASH_LOG_BLOCKS.id, output);
                         ash.accept(NatureBlocks.ASH_BRANCHES);
 
-                        CreativeModeTab.Output yellow_willow = GroupItem.belongsTo("yellow_willow", output);
+                        CreativeModeTab.Output yellow_willow = GroupItem.belongsTo(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.id, output);
                         yellow_willow.accept(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES);
 
-                        CreativeModeTab.Output moonglow_willow = GroupItem.belongsTo("moonglow_willow", output);
+                        CreativeModeTab.Output moonglow_willow = GroupItem.belongsTo(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.id, output);
                         moonglow_willow.accept(NatureBlocks.MOONGLOW_WILLOW_DROOPING_VINE);
 
-                        CreativeModeTab.Output void_output = GroupItem.belongsTo("void", output);
+                        CreativeModeTab.Output void_output = GroupItem.belongsTo(NatureBlocks.VOID_LOG_BLOCKS.id, output);
                         void_output.accept(NatureBlocks.SILENT_DROOPING_VINE);
 
                         CreativeModeTab.Output stone_tree = GroupItem.belongsTo("stone_tree", output);
@@ -431,7 +431,6 @@ public final class ModTabs {
                         oreStorageBlocks.accept(OreBlocks.GELSTONE_BLOCK);
                         oreStorageBlocks.accept(OreBlocks.COLD_CRYSTAL_BLOCK);
                     })
-
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                     .build()
     );
@@ -457,22 +456,22 @@ public final class ModTabs {
                         tin_bricks.accept(DecorativeBlocks.CHISELED_TIN_BRICKS.get());
                         tin_bricks.accept(DecorativeBlocks.TIN_TILES.get());
 
-                        CreativeModeTab.Output iron_bricks = GroupItem.belongsTo("iron_bricks", output);
+                        CreativeModeTab.Output iron_bricks = GroupItem.belongsTo(DecorativeBlocks.IRON_BRICKS.id, output);
                         iron_bricks.accept(DecorativeBlocks.CHISELED_IRON_BRICKS.get());
 
-                        CreativeModeTab.Output lead_bricks = GroupItem.belongsTo("lead_bricks", output);
+                        CreativeModeTab.Output lead_bricks = GroupItem.belongsTo(DecorativeBlocks.LEAD_BRICKS.id, output);
                         lead_bricks.accept(DecorativeBlocks.CHISELED_LEAD_BRICKS.get());
 
-                        CreativeModeTab.Output silver_bricks = GroupItem.belongsTo("silver_bricks", output);
+                        CreativeModeTab.Output silver_bricks = GroupItem.belongsTo(DecorativeBlocks.SILVER_BRICKS.id, output);
                         silver_bricks.accept(DecorativeBlocks.CHISELED_SILVER_BRICKS.get());
 
-                        CreativeModeTab.Output tungsten_bricks = GroupItem.belongsTo("tungsten_bricks", output);
+                        CreativeModeTab.Output tungsten_bricks = GroupItem.belongsTo(DecorativeBlocks.TUNGSTEN_BRICKS.id, output);
                         tungsten_bricks.accept(DecorativeBlocks.CHISELED_TUNGSTEN_BRICKS.get());
 
-                        CreativeModeTab.Output golden_bricks = GroupItem.belongsTo("golden_bricks", output);
+                        CreativeModeTab.Output golden_bricks = GroupItem.belongsTo(DecorativeBlocks.GOLDEN_BRICKS.id, output);
                         golden_bricks.accept(DecorativeBlocks.CHISELED_GOLDEN_BRICKS.get());
 
-                        CreativeModeTab.Output platinum_bricks = GroupItem.belongsTo("platinum_bricks", output);
+                        CreativeModeTab.Output platinum_bricks = GroupItem.belongsTo(DecorativeBlocks.PLATINUM_BRICKS.id, output);
                         platinum_bricks.accept(DecorativeBlocks.CHISELED_PLATINUM_BRICKS.get());
 
                         CreativeModeTab.Output marble_bricks = GroupItem.belongsTo("marble_bricks", output);
@@ -634,10 +633,8 @@ public final class ModTabs {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MECHANICAL = TABS.register("mechanical",
             () -> CreativeModeTab.builder().icon(IconItems.MECHANICAL_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.mechanical"))
-
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-
 
                         output.accept(ModBlocks.ENEMY_BANNER);
 
@@ -780,7 +777,6 @@ public final class ModTabs {
                         WaystonesHelper.accept(output);
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
-
                     .build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
             () -> CreativeModeTab.builder().icon(IconItems.MATERIAL_ICON::toStack)
@@ -940,8 +936,6 @@ public final class ModTabs {
                         crafting_materials.accept(MaterialItems.VIAL_OF_VENOM.get());
                         crafting_materials.accept(MaterialItems.BELL.get());
                         crafting_materials.accept(MaterialItems.HARP.get());
-
-
                     })
                     .withTabsBefore(MECHANICAL.getId())
                     .build());
@@ -951,8 +945,7 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
-                        acceptAll(ModItems.ITEMS, output);
-                        acceptAll(ConsumableItems.ITEMS, output);
+//                        acceptAll(ModItems.ITEMS, output);
 
                         // 如果删掉上边两行就会崩
                         acceptAll(TreasureBagItems.ITEMS, output, "treasure_bag");

@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.item.GroupItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

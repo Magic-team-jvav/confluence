@@ -121,10 +121,8 @@
     ],
     "client": [
         "client.BlockClientMixin",
-        "client.ClientItemStackMixin",
         "client.ClientLevelMixin",
         "client.ClientPacketListenerMixin",
-        "client.CreativeModeTabMixin",
         "client.LevelRendererMixin",
         "client.LocalPlayerAdvancementsMixin",
         "client.MinecraftMixin",
@@ -141,7 +139,6 @@
         "client.gui.ClientAdvancementsMixin",
         "client.gui.CreateWorldScreenMixin",
         "client.gui.CreateWorldScreenMixin$WorldTabMixin",
-        "client.gui.CreativeModeInventoryScreenMixin",
         "client.gui.DeathScreenMixin",
         "client.gui.EffectRenderingInventoryScreenMixin",
         "client.gui.GuiGraphicsMixin",

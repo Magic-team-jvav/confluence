@@ -7,8 +7,6 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
-import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
-import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.registration.*;
@@ -32,14 +30,12 @@ import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.common.menu.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.integration.jei.category.*;
@@ -173,7 +169,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(DyeVatScreen.class, 87, 36, 22, 15, DyeVatCategory.TYPE);
         registration.addRecipeClickArea(CrystalBallScreen.class, 69, 36, 22, 15, CrystalBallCategory.TYPE);
 
-        registration.addGlobalGuiHandler(new ExtraInventoryHandler());
+        registration.addGlobalGuiHandler(ConfluenceScreenHandler.INSTANCE);
     }
 
     @Override
@@ -193,21 +189,6 @@ public final class ModJeiPlugin implements IModPlugin {
     @Override
     public void onRuntimeUnavailable() {
         ModJeiPlugin.jeiRuntime = null;
-    }
-
-    @Override
-    public void registerItemSubtypes(ISubtypeRegistration registration) {
-        registration.registerSubtypeInterpreter(GroupItem.getInstance(), new ISubtypeInterpreter<>() {
-            @Override
-            public Object getSubtypeData(ItemStack ingredient, UidContext context) {
-                return ingredient.getOrDefault(ModDataComponentTypes.GROUP_STACKS, GroupItem.Stacks.EMPTY);
-            }
-
-            @Override
-            public String getLegacyStringSubtypeInfo(ItemStack ingredient, UidContext context) {
-                return getSubtypeData(ingredient, context).toString();
-            }
-        });
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

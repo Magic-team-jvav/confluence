@@ -1,10 +1,7 @@
 package org.confluence.mod.common.event;
 
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
@@ -17,7 +14,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
@@ -53,6 +51,7 @@ import net.neoforged.neoforgespi.locating.IModFile;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.event.CustomGroupItemIconEvent;
 import org.confluence.lib.event.NameFixRegisterEvent;
 import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.lib.util.LibDateUtils;
@@ -60,7 +59,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
-import org.confluence.mod.api.event.CustomGroupItemIconEvent;
 import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -76,7 +74,6 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEEvents;
@@ -99,7 +96,7 @@ import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.mixed.IZombie;
 
-import java.util.*;
+import java.util.Optional;
 import java.util.function.Function;
 
 import static org.confluence.mod.Confluence.MODID;
@@ -307,61 +304,13 @@ public final class ModEvents {
         event.register(AccessoryItems.SPECIAL$PRICE);
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         if (event.getTab() == TCTabs.ACCESSORIES.get()) {
             WipNotDisplayOutput output = new WipNotDisplayOutput(event);
             output.accept(TCItems.EVERLASTING);
             output.accept(TCItems.BASE_POINT);
             output.acceptAll(AccessoryItems.ITEMS);
-        } else if (event.getTab() == ModTabs.MISC.get()) {
-            ItemStack clothierVoodooDollStack = AccessoryItems.CLOTHIER_VOODOO_DOLL.toStack();
-            event.insertAfter(ConsumableItems.DEER_THING.toStack(), clothierVoodooDollStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-            event.insertAfter(clothierVoodooDollStack, AccessoryItems.GUIDE_VOODOO_DOLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-        }
-
-        ResourceKey<CreativeModeTab> tabKey = event.getTabKey();
-        if (StartupConfigs.itemGroups()) {
-            CustomGroupItemIconEvent.post();
-            if (GroupItem.isInvalidCreativeModeTab(tabKey)) {
-                if (tabKey == CreativeModeTabs.SEARCH) { // 移除GroupItem，放入组内搜不到的物品
-                    List<ItemStack> groupStacks = event.getParentEntries().stream().filter(stack -> stack.is(GroupItem.getInstance())).toList();
-                    for (ItemStack groupStack : groupStacks) {
-                        for (ItemStack stack : groupStack.getOrDefault(ModDataComponentTypes.GROUP_STACKS, GroupItem.Stacks.EMPTY).getValues()) {
-                            if (event.getParentEntries().contains(stack)) continue;
-                            event.insertBefore(groupStack, stack, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY); // SearchTab仅使用ParentEntries进行查询
-                        }
-                        event.remove(groupStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS); // SearchTab不需要Group
-                    }
-                }
-            } else { // 收集belongsTo
-                List<Pair<ItemStack, ResourceLocation>> hasBelongsTo = new ArrayList<>();
-                Map<ResourceLocation, ItemStack> groupItems = new HashMap<>();
-                for (ItemStack stack : event.getParentEntries()) {
-                    GroupItem.BelongsTo belongsTo = stack.get(ModDataComponentTypes.BELONGS_TO_GROUP);
-                    if (belongsTo == null) {
-                        if (stack.is(GroupItem.getInstance())) {
-                            GroupItem.Stacks stacks = stack.get(ModDataComponentTypes.GROUP_STACKS);
-                            if (stacks == null) continue;
-                            groupItems.put(stacks.getName(), stack);
-                        }
-                    } else {
-                        hasBelongsTo.add(new Pair<>(stack, belongsTo.name()));
-                    }
-                }
-                for (Pair<ItemStack, ResourceLocation> pair : hasBelongsTo) { // 前面应该已经使用过WipNotDisplayOutput，故在此不检查
-                    ItemStack stack = pair.getFirst();
-                    ItemStack groupStack = groupItems.computeIfAbsent(pair.getSecond(), rl -> {
-                        ItemStack newStack = GroupItem.of(rl);
-                        event.insertBefore(stack, newStack, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY); // Group不加入SearchTab
-                        return newStack;
-                    });
-                    event.remove(stack, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY); // 保留Search，如果有的话
-                    GroupItem.Stacks stacks = groupStack.get(ModDataComponentTypes.GROUP_STACKS);
-                    if (stacks == null) continue;
-                    groupStack.set(ModDataComponentTypes.GROUP_STACKS, stacks.withValues(tabKey, stack));
-                }
-            }
         }
     }
 

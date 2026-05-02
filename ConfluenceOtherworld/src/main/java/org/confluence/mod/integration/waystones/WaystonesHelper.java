@@ -21,13 +21,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.GroupItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.data_map.ValueSubProvider;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.GroupItem;
 
 import java.util.HashMap;
 import java.util.List;

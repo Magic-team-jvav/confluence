@@ -25,9 +25,9 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.function.TriFunction;
+import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.GroupItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

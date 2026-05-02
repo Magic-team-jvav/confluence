@@ -2938,6 +2938,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.ORICHALCUM_SWORD.get(), "山铜剑");
         add(SwordItems.ADAMANTITE_SWORD.get(), "精金剑");
         add(SwordItems.TITANIUM_SWORD.get(), "钛金剑");
+        add(SwordItems.STAR_STEEL_SWORD.get(), "星钢剑");
 
 
         add(SwordItems.CROWBAR.get(), "撬棍");

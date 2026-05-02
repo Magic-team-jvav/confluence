@@ -1667,7 +1667,7 @@ public final class ModTabs {
                         acceptAll(CrossbowItems.ITEMS, output, "crossbow");
                         acceptAll(ArrowItems.ITEMS, output, "arrow");
 
-                        CreativeModeTab.Output gun = GroupItem.belongsTo("gun",output);
+                        CreativeModeTab.Output gun = GroupItem.belongsTo("gun", output);
                         acceptAll(TGItems.GUNS, gun);
                         acceptAll(GunItems.ITEMS, gun);
                         gun.accept(ManaWeaponItems.BEE_GUN);

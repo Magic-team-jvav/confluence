@@ -20,7 +20,6 @@ import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.loading.LoadingModList;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -29,6 +28,7 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.block.natural.JungleHiveBlock;
@@ -199,7 +199,7 @@ public final class ModItems {
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
 
-        if (LoadingModList.get().getModFileById("iris") != null) {
+        if (LibUtils.isModLoaded("iris")) {
             IrisHelper.register(HIDDEN);
         }
     }

@@ -20,9 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-/**
- * <a href="https://www.curseforge.com/minecraft/mc-mods/prism-lib">Prism Lib</a>
- */
+/// [Prism Lib](https://www.curseforge.com/minecraft/mc-mods/prism-lib)
 public class PrismLibHelper {
     public static final boolean IS_LOADED = LibUtils.isModLoaded("prism");
     public static final boolean LEGENDARY_TOOLTIPS = LibUtils.isModLoaded("legendarytooltips");

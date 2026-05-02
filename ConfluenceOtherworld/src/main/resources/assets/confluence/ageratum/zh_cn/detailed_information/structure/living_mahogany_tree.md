@@ -1,6 +1,8 @@
 # LIVING_MAHOGANY_TREE
+
 - 生命红树
 - id：confluence：living_mahogany_tree
+
 ## 结构简介
 
 - 生命红树生成在丛林群系的地表（此处与泰拉瑞亚不同，泰拉瑞亚中生命红树生成在丛林群系的地下）

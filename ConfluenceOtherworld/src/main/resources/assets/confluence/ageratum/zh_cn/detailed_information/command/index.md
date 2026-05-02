@@ -1,6 +1,7 @@
 ---
 title: "指令"
 ---
+
 # 汇流来世中为各种功能新添加的指令
 
-### [指令列表](instruction_list.md)
+### [指令列表](command_list.md)

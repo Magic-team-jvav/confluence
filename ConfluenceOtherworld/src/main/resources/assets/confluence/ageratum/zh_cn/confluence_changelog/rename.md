@@ -2,9 +2,9 @@
 
 ## 由于失误或其它不可抗拒的原因，模组中的物品或方块版本间会有名字差异，此处为参考
 
-# 从1.1.2到1.1.3(From 1.1.2 to 1.1.3)
+# 从1.1.2到1.1.3
 
-## 群系(Biomes)
+## 群系
 
 - `tr_crimson` → `the_crimson`
 - `tr_crimson_desert` → `the_crimson_desert`
@@ -12,7 +12,7 @@
 
 ## 方块(Blocks)
 
-| 原名称(Original Name)               | 修改后名称(Modified Name)          |
+| 原名称                              | 修改后名称                         |
 |----------------------------------|-------------------------------|
 | `ebony_stone`                    | `ebonstone`                   |
 | `pearl_stone`                    | `pearlstone`                  |
@@ -86,7 +86,7 @@
 | `pearl_rock_bricks`              | `pearlstone_bricks`           |
 | `freeze_crate`                   | `frozen_crate`                |
 
-## 物品(Items)
+## 物品
 
 - `raw_tr_crimson` → `raw_crimtane`
 - `tr_crimson_ingot` → `crimtane_ingot`

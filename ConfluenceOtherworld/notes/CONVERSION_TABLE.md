@@ -16,11 +16,12 @@
 
 # Events
 
-| Terraria | Minecraft          |
-|----------|--------------------|
-| rain     | rain, thunder rain |
-| snow     | snow               |
-| blizzard | thunder snow       |
+| Terraria     | Minecraft    |
+|--------------|--------------|
+| rain         | rain         |
+| thunder rain | thunder rain |
+| snow         | snow         |
+| blizzard     | thunder snow |
 
 # Metrology
 

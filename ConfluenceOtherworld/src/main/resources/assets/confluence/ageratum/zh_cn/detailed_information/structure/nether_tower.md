@@ -1,6 +1,8 @@
 # NETHER_TOWER
+
 - 地狱尖塔
 - id：confluence：nether_tower
+
 ## 结构简介
 
 - 地狱尖塔是一座具有两座巨大的塔形下界结构，会生成在下界荒地，或是灰烬荒地

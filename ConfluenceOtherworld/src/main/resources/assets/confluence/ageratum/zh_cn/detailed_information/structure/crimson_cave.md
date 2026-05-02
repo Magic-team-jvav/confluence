@@ -1,6 +1,8 @@
 # CRIMSON_CAVE
+
 - 猩红洞穴
 - id：confluence：crimson_cave
+
 ## 结构简介
 
 - 猩红洞穴在猩红之地生成（在太小的猩红之地有可能不生成），只有在这个地方才会生成猩红心脏

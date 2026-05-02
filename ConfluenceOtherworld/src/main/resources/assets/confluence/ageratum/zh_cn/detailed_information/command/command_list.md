@@ -10,7 +10,7 @@
 - 获取/修改游戏阶段。
 - 如果是修改游戏阶段，则最后的 <gamePhase> 处需填入想要修改的游戏阶段。
 - 举例：
-  - /confluence gamePhase set AFTER_SKELETRON：将游戏阶段设置为“骷髅王后”。
+    - /confluence gamePhase set AFTER_SKELETRON：将游戏阶段设置为“骷髅王后”。
 
 # 指定陨石落地位置
 
@@ -24,7 +24,7 @@
 - <pos> 处需填入 x、y、z 坐标，这是陨石落地的位置的坐标。<tick> 处则为陨石落地的延时。该指令的 y 坐标实际上不会对实际效果有影响。
 
 - 举例：
-  - /confluence meteorite ~ ~ ~ 20：在 20 tick（一秒）后，陨石会在玩家输入指令时的位置落地。
+    - /confluence meteorite ~ ~ ~ 20：在 20 tick（一秒）后，陨石会在玩家输入指令时的位置落地。
 
 # 为指定方块刷上/移除油漆
 
@@ -111,12 +111,12 @@
 
 ## 用途：
 
-- 用于开始或结束某些事件，/confluence gameEvent start <事件id> 为开始事件，/confluence gameEvent end <事件id> 为结束事件。
+- 用于开始或结束某些事件，/confluence gameEvent start <事件id> 为开始事件，/confluence gameEvent end <
+  事件id> 为结束事件。
 
 - 事件id：
-
-  - confluence:slime_rain 史莱姆雨
-  - confluence:blood_moon 血月
-  - confluence:goblin_army 哥布林军队来袭
-  - confluence:lantern_night 灯笼夜
-  - confluence:meteor_shower 流星雨
+    - confluence:slime_rain 史莱姆雨
+    - confluence:blood_moon 血月
+    - confluence:goblin_army 哥布林军队来袭
+    - confluence:lantern_night 灯笼夜
+    - confluence:meteor_shower 流星雨

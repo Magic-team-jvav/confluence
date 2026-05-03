@@ -18,7 +18,3 @@
 	path = Confluence-Magic-Lib
 	url = https://github.com/westernat/Confluence-Magic-Lib
 	branch = neoforge-dev/1.21.1
-[submodule "TheTrackers"]
-	path = TheTrackers
-	url = https://github.com/MakerTechno/TheTrackers
-	branch = neoforge-dev/1.21.1

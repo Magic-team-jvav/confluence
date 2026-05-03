@@ -10,8 +10,7 @@ var projectName = [
         "TerraEntity",
         "TerraCurio",
         "TerraGuns",
-        "TerraFurniture",
-        "TheTrackers"
+        "TerraFurniture"
 ]
 
 version = mod_version + "-beta" + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
@@ -212,6 +211,7 @@ dependencies {
     implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
 //    implementation(jarJar(files("libs/particlestorm-1.1.6.3.jar")))
     implementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}")
+    implementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)

@@ -267,10 +267,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.crossbow", "弩");
         add("itemGroup.confluence.arrow", "箭");
         add("itemGroup.confluence.bullet", "子弹");
-
         add("itemGroup.confluence.gun", "枪械");
 
-        // 生物组 - 中文
         add("itemGroup.confluence.crimson_entity", "猩红生物");
         add("itemGroup.confluence.corruption_entity", "腐化生物");
         add("itemGroup.confluence.hallow_entity", "神圣生物");

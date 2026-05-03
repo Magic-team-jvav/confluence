@@ -291,11 +291,11 @@ public final class ModClientSetups {
         return Color.HSBtoRGB(hsb[0], 0.5F, 1.0F);
     };
 
-    static final BlockColor VOID_LEAVES_COLOR = (state, level, pos, tintIndex) -> ThreeColor(pos, VOID_A, VOID_B, VOID_C);
+    static final BlockColor VOID_LEAVES_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, VOID_A, VOID_B, VOID_C);
 
-    static final BlockColor VOID_WEAVE_COLOR = (state, level, pos, tintIndex) -> ThreeColor(pos, VOID_WEAVE_A, VOID_WEAVE_B, VOID_WEAVE_C);
+    static final BlockColor VOID_WEAVE_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, VOID_WEAVE_A, VOID_WEAVE_B, VOID_WEAVE_C);
 
-    private static int ThreeColor(@Nullable BlockPos pos, IntegerRGB colorA, IntegerRGB colorB, IntegerRGB colorC) {
+    private static int threeColor(@Nullable BlockPos pos, IntegerRGB colorA, IntegerRGB colorB, IntegerRGB colorC) {
         if (pos == null) return colorB.get();
 
         double scale = 3;
@@ -308,9 +308,8 @@ public final class ModClientSetups {
         float t = (float) (noiseVal + 1) * 0.5F;
         if (t < 0.5F) {
             return colorA.mixture(colorB, t * 2).get();
-        } else {
-            return colorB.mixture(colorC, (t - 0.5F) * 2).get();
         }
+        return colorB.mixture(colorC, (t - 0.5F) * 2).get();
     }
 
     static boolean guideCheckedJEI = LibUtils.isModLoaded("jei") || LibUtils.isModLoaded("emi");

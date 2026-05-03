@@ -12,12 +12,12 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.loading.FMLEnvironment;
-import org.confluence.lib.common.block.ISimulatorBlock;
+import org.confluence.lib.common.block.ILibSimulatorBlock;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 
-public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
+public class EchoBlock extends HalfTransparentBlock implements ILibSimulatorBlock {
     public EchoBlock() {
         super(Properties.of().isSuffocating((blockState, blockGetter, blockPos) -> false).noOcclusion());
         registerDefaultState(stateDefinition.any().setValue(StateProperties.VISIBLE, false));

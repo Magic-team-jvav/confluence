@@ -54,7 +54,7 @@ public class AchievementToast implements Toast {
         Font font = toastComponent.getMinecraft().font;
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
-        poseStack.translate(0.0F, guiGraphics.guiHeight() - height(), blitOffset.get());
+        poseStack.translate(0.0F, guiGraphics.guiHeight() - height(), blitOffset.getAsFloat());
         guiGraphics.blit(TEXTURE, 0, 0, 0, 0, width(), height(), 160, 64);
         renderTitle(guiGraphics, timeSinceLastVisible, font);
         renderDescription(guiGraphics, timeSinceLastVisible, font);

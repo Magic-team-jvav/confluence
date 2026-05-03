@@ -57,7 +57,7 @@ public final class EnchantmentUtils {
     public static FloatSupplier processEfficientMagic(FloatSupplier sup, ServerPlayer player) {
         if (LibUtils.anyHandHasItem(player, stack -> EnchantmentHelper.has(stack, ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get()))) {
             ManaStorage manaStorage = ManaStorage.of(player);
-            return () -> sup.get() * Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
+            return () -> sup.getAsFloat() * Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
         }
         return sup;
     }

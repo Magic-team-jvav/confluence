@@ -39,6 +39,7 @@ import java.util.function.Supplier;
 
 import static net.minecraft.world.level.block.Blocks.*;
 import static org.confluence.mod.common.block.natural.LogBlockSet.WoodSetType.*;
+import static org.confluence.mod.common.init.block.DecorativeBlocks.LOST_PAPER_BLOCK;
 
 @ParametersAreNonnullByDefault
 public class NatureBlocks {
@@ -543,7 +544,7 @@ public class NatureBlocks {
     public static final DeferredBlock<DecomposeTheSourceExtractBlock> DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK = registerWithItem("decompose_the_source_extract_block", DecomposeTheSourceExtractBlock::new);
     public static final Supplier<BlockEntityType<DecomposeTheSourceExtractBlock.BEntity>> DECOMPOSE_THE_SOURCE_EXTRACT_ENTITY = ModBlocks.BLOCK_ENTITIES.register("decompose_the_source_extract_entity", () -> BlockEntityType.Builder.of(DecomposeTheSourceExtractBlock.BEntity::new, DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<ShimmerCrystalslBlock> SHIMMER_CRYSTALS_BLOCK = registerWithItem("shimmer_crystals_block", ShimmerCrystalslBlock::new);
-    public static final DeferredBlock<LostPaperBlock> LOST_PAPER_BLOCK = registerWithItem("lost_paper", LostPaperBlock::new);
+
     public static final Supplier<BlockEntityType<LostPaperBlock.BEntity>> LOST_PAPER_ENTITY = ModBlocks.BLOCK_ENTITIES.register("lost_paper", () -> BlockEntityType.Builder.of(LostPaperBlock.BEntity::new, LOST_PAPER_BLOCK.get()).build(DSL.remainderType()));
 
 

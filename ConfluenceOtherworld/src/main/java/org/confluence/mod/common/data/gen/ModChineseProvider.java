@@ -172,6 +172,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.environment_items", "环境物品");
         add("itemGroup.confluence.gain", "增益");
         add("itemGroup.confluence.loot_gifts", "战利品与礼物");
+        add("itemGroup.confluence.coins", "钱币");
         // 工具
         add("itemGroup.confluence.ropes", "绳索");
         add("itemGroup.confluence.wand", "魔杖");
@@ -261,12 +262,36 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.hardmode_broadswords", "困难模式后阔剑");
         add("itemGroup.confluence.yoyo", "悠悠球");
 
+        add("itemGroup.confluence.short_bow", "短弓");
         add("itemGroup.confluence.bow", "弓");
         add("itemGroup.confluence.crossbow", "弩");
         add("itemGroup.confluence.arrow", "箭");
         add("itemGroup.confluence.bullet", "子弹");
 
         add("itemGroup.confluence.gun", "枪械");
+
+        // 生物组 - 中文
+        add("itemGroup.confluence.crimson_entity", "猩红生物");
+        add("itemGroup.confluence.corruption_entity", "腐化生物");
+        add("itemGroup.confluence.hallow_entity", "神圣生物");
+        add("itemGroup.confluence.desert_entity", "沙漠生物");
+        add("itemGroup.confluence.jungle_entity", "丛林生物");
+        add("itemGroup.confluence.ice_entity", "冰雪生物");
+        add("itemGroup.confluence.forest_entity", "森林生物");
+        add("itemGroup.confluence.underground_entity", "地下生物");
+        add("itemGroup.confluence.mushroom_entity", "发光蘑菇地生物");
+        add("itemGroup.confluence.dungeon_entity", "地牢生物");
+        add("itemGroup.confluence.nether_entity", "地狱生物");
+        add("itemGroup.confluence.sky_entity", "天空生物");
+        add("itemGroup.confluence.mimic_entity", "宝箱怪");
+        add("itemGroup.confluence.goblin_entity", "哥布林军队");
+        add("itemGroup.confluence.water_entity", "水生生物");
+        add("itemGroup.confluence.insect_entity", "昆虫生物");
+        add("itemGroup.confluence.npc_entity", "NPC");
+        add("itemGroup.confluence.boss_entity", "Boss");
+        add("itemGroup.confluence.misc_entity", "其他生物");
+
+
         add("config.jade.plugin_confluence.jade_network_component", "机械信息");
         add("config.jade.plugin_confluence.jade_ponder_component", "思索信息");
         add("config.jade.plugin_confluence.jade_tombstone_info", "墓石信息");
@@ -2255,7 +2280,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SMALL_CACTUS.get(), "小型仙人掌");
         add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
         add(NatureBlocks.LARVA.get(), "幼虫");
-        add(NatureBlocks.LOST_PAPER_BLOCK.get(), "遗落纸张");
+        add(DecorativeBlocks.LOST_PAPER_BLOCK.get(), "遗落纸张");
         add(NatureBlocks.CORRUPT_CACTUS.get(), "腐化仙人掌");
         add(NatureBlocks.CRIMSON_CACTUS.get(), "猩红仙人掌");
         add(NatureBlocks.HALLOW_CACTUS.get(), "神圣仙人掌");

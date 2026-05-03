@@ -268,8 +268,7 @@ public final class ModTabs {
                         special_plants.accept(NatureBlocks.CORRUPTED_OVARIES_BLOCK);
                         special_plants.accept(NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK);
 
-                        CreativeModeTab.Output miscellaneous = GroupItem.belongsTo("miscellaneous", output);
-                        miscellaneous.accept(NatureBlocks.LOST_PAPER_BLOCK);
+
 
                         CreativeModeTab.Output sanctificationOres = GroupItem.belongsTo("sanctification_ores", output);
                         sanctificationOres.accept(OreBlocks.SANCTIFICATION_COAL_ORE);
@@ -442,7 +441,7 @@ public final class ModTabs {
                         LogBlockSet.acceptBuilding(output);
                         DecoBlockSet.acceptBuilding(output);
 
-                        CreativeModeTab.Output granite_bricks = GroupItem.belongsTo("granite_bricks", output);
+                        CreativeModeTab.Output granite_bricks = GroupItem.belongsTo(DecorativeBlocks.GRANITE_BRICKS.id, output);
                         granite_bricks.accept(DecorativeBlocks.CRACKED_GRANITE_BRICKS.get());
                         granite_bricks.accept(DecorativeBlocks.CHISELED_GRANITE_BRICKS.get());
                         granite_bricks.accept(DecorativeBlocks.GRANITE_COLUMN.get());
@@ -474,7 +473,7 @@ public final class ModTabs {
                         CreativeModeTab.Output platinum_bricks = GroupItem.belongsTo(DecorativeBlocks.PLATINUM_BRICKS.id, output);
                         platinum_bricks.accept(DecorativeBlocks.CHISELED_PLATINUM_BRICKS.get());
 
-                        CreativeModeTab.Output marble_bricks = GroupItem.belongsTo("marble_bricks", output);
+                        CreativeModeTab.Output marble_bricks = GroupItem.belongsTo(DecorativeBlocks.MARBLE_BRICKS.id, output);
                         marble_bricks.accept(DecorativeBlocks.MARBLE_COLUMN.get());
                         marble_bricks.accept(DecorativeBlocks.CRACKED_MARBLE_BRICKS.get());
                         marble_bricks.accept(DecorativeBlocks.CHISELED_MARBLE_BRICKS.get());
@@ -504,10 +503,8 @@ public final class ModTabs {
                         glass.accept(DecorativeBlocks.PINK_PURE_GLASS.get());
                         glass.accept(DecorativeBlocks.SOUL_GLASS.get());
 
-                        CreativeModeTab.Output lihzahrd_bricks = GroupItem.belongsTo("lihzahrd_bricks", output);
-                        lihzahrd_bricks.accept(DecorativeBlocks.LIHZAHRD_BRICKS.get());
-
                         CreativeModeTab.Output special_building = GroupItem.belongsTo("special_building", output);
+                        special_building.accept(DecorativeBlocks.LOST_PAPER_BLOCK.get());
                         special_building.accept(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get());
                         special_building.accept(DecorativeBlocks.CRISPY_HONEY_BLOCK.get());
                         special_building.accept(DecorativeBlocks.ASPHALT_BLOCK.get());
@@ -542,32 +539,20 @@ public final class ModTabs {
                         chains.accept(DecorativeBlocks.SILK_CHAIN.get());
                         chains.accept(DecorativeBlocks.BONE_CHAIN.get());
 
-                        CreativeModeTab.Output blue_bricks = GroupItem.belongsTo("blue_bricks", output);
-                        blue_bricks.accept(DecorativeBlocks.BLUE_BRICKS.FULL.get());
-                        blue_bricks.accept(DecorativeBlocks.BLUE_BRICKS.STAIRS.get());
-                        blue_bricks.accept(DecorativeBlocks.BLUE_BRICKS.SLAB.get());
-                        blue_bricks.accept(DecorativeBlocks.BLUE_BRICKS.WALL.get());
+                        CreativeModeTab.Output blue_bricks = GroupItem.belongsTo(DecorativeBlocks.BLUE_BRICKS.id, output);
                         blue_bricks.accept(DecorativeBlocks.BLUE_BRICK_COLUMN.get());
                         blue_bricks.accept(DecorativeBlocks.CHISELED_BLUE_BRICKS.get());
                         blue_bricks.accept(DecorativeBlocks.CRACKED_BLUE_BRICKS.get());
                         blue_bricks.accept(DecorativeBlocks.ENCHANTED_BLUE_BRICKS.get());
 
-                        CreativeModeTab.Output green_bricks = GroupItem.belongsTo("green_bricks", output);
-                        green_bricks.accept(DecorativeBlocks.GREEN_BRICKS.FULL.get());
-                        green_bricks.accept(DecorativeBlocks.GREEN_BRICKS.STAIRS.get());
-                        green_bricks.accept(DecorativeBlocks.GREEN_BRICKS.SLAB.get());
-                        green_bricks.accept(DecorativeBlocks.GREEN_BRICKS.WALL.get());
+                        CreativeModeTab.Output green_bricks = GroupItem.belongsTo(DecorativeBlocks.GREEN_BRICKS.id, output);
                         green_bricks.accept(DecorativeBlocks.GREEN_BRICK_COLUMN.get());
                         green_bricks.accept(DecorativeBlocks.CHISELED_GREEN_BRICKS.get());
                         green_bricks.accept(DecorativeBlocks.CRACKED_GREEN_BRICKS.get());
                         green_bricks.accept(DecorativeBlocks.ENCHANTED_GREEN_BRICKS.get());
 
-                        CreativeModeTab.Output pink_bricks = GroupItem.belongsTo("pink_bricks", output);
-                        pink_bricks.accept(DecorativeBlocks.PINK_BRICKS.FULL.get());
+                        CreativeModeTab.Output pink_bricks = GroupItem.belongsTo(DecorativeBlocks.PINK_BRICKS.id, output);
                         pink_bricks.accept(DecorativeBlocks.PINK_BRICK_COLUMN.get());
-                        pink_bricks.accept(DecorativeBlocks.PINK_BRICKS.STAIRS.get());
-                        pink_bricks.accept(DecorativeBlocks.PINK_BRICKS.SLAB.get());
-                        pink_bricks.accept(DecorativeBlocks.PINK_BRICKS.WALL.get());
                         pink_bricks.accept(DecorativeBlocks.CHISELED_PINK_BRICKS.get());
                         pink_bricks.accept(DecorativeBlocks.CRACKED_PINK_BRICKS.get());
                         pink_bricks.accept(DecorativeBlocks.ENCHANTED_PINK_BRICKS.get());
@@ -1663,7 +1648,44 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
-                        acceptAll(BowItems.ITEMS, output, "bow");
+                        CreativeModeTab.Output short_bow = GroupItem.belongsTo("short_bow", output);
+                        short_bow.accept(BowItems.WOODEN_SHORT_BOW.get());
+                        short_bow.accept(BowItems.EBONWOOD_SHORT_BOW.get());
+                        short_bow.accept(BowItems.SHADEWOOD_SHORT_BOW.get());
+                        short_bow.accept(BowItems.ASH_WOOD_SHORT_BOW.get());
+                        short_bow.accept(BowItems.PEARLWOOD_SHORT_BOW.get());
+                        short_bow.accept(BowItems.COPPER_SHORT_BOW.get());
+                        short_bow.accept(BowItems.TIN_SHORT_BOW.get());
+                        short_bow.accept(BowItems.IRON_SHORT_BOW.get());
+                        short_bow.accept(BowItems.LEAD_SHORT_BOW.get());
+                        short_bow.accept(BowItems.SILVER_SHORT_BOW.get());
+                        short_bow.accept(BowItems.TUNGSTEN_SHORT_BOW.get());
+                        short_bow.accept(BowItems.GOLDEN_SHORT_BOW.get());
+                        short_bow.accept(BowItems.PLATINUM_SHORT_BOW.get());
+
+                        CreativeModeTab.Output bow = GroupItem.belongsTo("bow", output);
+                        bow.accept(BowItems.EBONWOOD_BOW.get());
+                        bow.accept(BowItems.SHADEWOOD_BOW.get());
+                        bow.accept(BowItems.ASH_WOOD_BOW.get());
+                        bow.accept(BowItems.PEARLWOOD_BOW.get());
+                        bow.accept(BowItems.COPPER_BOW.get());
+                        bow.accept(BowItems.TIN_BOW.get());
+                        bow.accept(BowItems.IRON_BOW.get());
+                        bow.accept(BowItems.LEAD_BOW.get());
+                        bow.accept(BowItems.SILVER_BOW.get());
+                        bow.accept(BowItems.TUNGSTEN_BOW.get());
+                        bow.accept(BowItems.GOLDEN_BOW.get());
+                        bow.accept(BowItems.PLATINUM_BOW.get());
+                        bow.accept(BowItems.HUNTING_BOW.get());
+                        bow.accept(BowItems.FOSSIL_BOW.get());
+                        bow.accept(BowItems.DEMON_BOW.get());
+                        bow.accept(BowItems.TENDON_BOW.get());
+                        bow.accept(BowItems.THE_BEES_KNEES.get());
+                        bow.accept(BowItems.MOLTEN_FURY.get());
+                        bow.accept(BowItems.HELLWING_BOW.get());
+                        bow.accept(BowItems.DAEDALUS_STORM_BOW.get());
+                        bow.accept(BowItems.DEVELOPER_BOW.get());
+
                         acceptAll(CrossbowItems.ITEMS, output, "crossbow");
                         acceptAll(ArrowItems.ITEMS, output, "arrow");
 

@@ -213,6 +213,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.environment_items", "Environment Items");
         add("itemGroup.confluence.gain", "Boosts");
         add("itemGroup.confluence.loot_gifts", "Loot & Gifts");
+        add("itemGroup.confluence.coins", "Coins");
 // 工具
         add("itemGroup.confluence.ropes", "Ropes");
         add("itemGroup.confluence.wand", "Wands");
@@ -302,12 +303,33 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.hardmode_broadswords", "Hardmode Broadswords");
         add("itemGroup.confluence.yoyo", "Yoyo");
 
+        add("itemGroup.confluence.short_bow", "Short Bow");
         add("itemGroup.confluence.bow", "Bow");
         add("itemGroup.confluence.crossbow", "Crossbow");
         add("itemGroup.confluence.arrow", "Arrows");
         add("itemGroup.confluence.bullet", "Bullets");
 
         add("itemGroup.confluence.gun", "Guns");
+
+        add("itemGroup.confluence.crimson_entity", "Crimson");
+        add("itemGroup.confluence.corruption_entity", "Corruption");
+        add("itemGroup.confluence.hallow_entity", "Hallow");
+        add("itemGroup.confluence.desert_entity", "Desert");
+        add("itemGroup.confluence.jungle_entity", "Jungle");
+        add("itemGroup.confluence.ice_entity", "Ice");
+        add("itemGroup.confluence.forest_entity", "Forest");
+        add("itemGroup.confluence.underground_entity", "Underground");
+        add("itemGroup.confluence.mushroom_entity", "Mushroom");
+        add("itemGroup.confluence.dungeon_entity", "Dungeon");
+        add("itemGroup.confluence.nether_entity", "Nether");
+        add("itemGroup.confluence.sky_entity", "Sky");
+        add("itemGroup.confluence.mimic_entity", "Mimic");
+        add("itemGroup.confluence.goblin_entity", "Goblin Army");
+        add("itemGroup.confluence.water_entity", "Water Creature");
+        add("itemGroup.confluence.insect_entity", "Insect");
+        add("itemGroup.confluence.npc_entity", "NPC");
+        add("itemGroup.confluence.boss_entity", "Boss");
+        add("itemGroup.confluence.misc_entity", "Misc");
 
         add("config.jade.plugin_confluence.jade_network_component", "Mechanical Info");
         add("config.jade.plugin_confluence.jade_ponder_component", "Ponder Info");

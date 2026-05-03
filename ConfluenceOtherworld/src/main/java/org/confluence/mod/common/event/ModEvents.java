@@ -352,7 +352,7 @@ public final class ModEvents {
             helper.register(Confluence.asResource("shimmer"), NatureBlocks.AETHERIUM_BLOCK.toStack());
             helper.register(Confluence.asResource("moss"), NatureBlocks.LAVA_MOSS.toStack());
             helper.register(Confluence.asResource("special_plants"), NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.toStack());
-            helper.register(Confluence.asResource("miscellaneous"), NatureBlocks.LOST_PAPER_BLOCK.toStack());
+            helper.register(Confluence.asResource("miscellaneous"), DecorativeBlocks.LOST_PAPER_BLOCK.toStack());
             helper.register(Confluence.asResource("sanctification_ores"), OreBlocks.SANCTIFICATION_DIAMOND_ORE.toStack());
             helper.register(Confluence.asResource("corruption_ores"), OreBlocks.CORRUPTION_DIAMOND_ORE.toStack());
             helper.register(Confluence.asResource("fleshification_ores"), OreBlocks.FLESHIFICATION_DIAMOND_ORE.toStack());

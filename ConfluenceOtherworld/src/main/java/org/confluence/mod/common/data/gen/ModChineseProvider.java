@@ -810,6 +810,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.enchanted_sword.1", "“昏暗剑冢中一抹流光”");
         add("tooltip.item.confluence.bee_keeper.0", "神兵的一小部分力量为丛林中的蜂群所占有，沦为嗡嗡作响的蜂群");
         add("tooltip.item.confluence.bee_keeper.1", "“口蜜腹剑”");
+        add("tooltip.item.confluence.star_steel_sword.0", "轻击敌怪时，概率使敌怪掉落魔力星");
+        add("tooltip.item.confluence.star_steel_sword.1", "拾取魔力星后1秒内，触发2.5倍伤害暴击");
 
         add("tooltip.item.confluence.soul_of_light.0", "“光明生物的精华”");
         add("tooltip.item.confluence.soul_of_night.0", "“黑暗生物的精华”");
@@ -4314,6 +4316,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.MUMMY_SHOES.get(), "木乃伊鞋");
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
+        add(VanityArmorItems.SUNGLASSES.get(), "墨镜");
+        add(VanityArmorItems.AVIATORS.get(), "0x33 的飞行员");
+        add(VanityArmorItems.EYE_PATCH.get(), "眼罩");
+        add(VanityArmorItems.HALLOWED_CROWN.get(), "神圣王冠");
         add(VanityArmorItems.DYE.get(), "染料");
         add(VanityArmorItems.RED_DYE.get(), "红染料");
         add(VanityArmorItems.BRIGHT_RED_DYE.get(), "淡红染料");

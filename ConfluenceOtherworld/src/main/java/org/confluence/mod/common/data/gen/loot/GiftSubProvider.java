@@ -1471,6 +1471,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(binoculars_1$30)
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.AVIATORS.get())))
         );
 
 
@@ -1500,6 +1501,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(binoculars_1$30)
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.AVIATORS.get())))
         );
 
 
@@ -1529,6 +1531,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(binoculars_1$30)
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.AVIATORS.get())))
         );
 
 

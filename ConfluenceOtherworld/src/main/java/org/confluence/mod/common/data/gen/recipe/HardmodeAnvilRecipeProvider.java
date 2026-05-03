@@ -635,6 +635,14 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 " /  ",
                 "/   "
         )));
+        // 神圣王冠
+        hardmodeAnvil(recipeOutput, VanityArmorItems.HALLOWED_CROWN.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_HALLOWED)
+        ), List.of(
+                " a ",
+                "aaa",
+                "a a"
+        )));
     }
 
     protected void hardmodeAnvil(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {

@@ -1460,6 +1460,11 @@ public final class ModTabs {
                         single_vanity.accept(VanityArmorItems.MIME_MASK.get());
                         single_vanity.accept(VanityArmorItems.GOLD_CROWN.get());
                         single_vanity.accept(VanityArmorItems.PLATINUM_CROWN.get());
+                        single_vanity.accept(VanityArmorItems.SUNGLASSES.get());
+                        single_vanity.accept(VanityArmorItems.AVIATORS.get());
+                        single_vanity.accept(VanityArmorItems.EYE_PATCH.get());
+                        single_vanity.accept(VanityArmorItems.HALLOWED_CROWN.get());
+                        single_vanity.accept(ArmorItems.FLINX_FUR_COAT.get());
                         single_vanity.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(TCItems.DIVING_HELMET);
 

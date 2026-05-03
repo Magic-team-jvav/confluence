@@ -996,9 +996,9 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_NIGHT));
         shapeless(output, FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_VOIGHT));
 
+        shapeless(output, VanityArmorItems.SUNGLASSES.toStack(), Ingredient.of(MaterialItems.BLACK_LENS), Ingredient.of(MaterialItems.BLACK_LENS));
 
         shapeless(output, ConsumableItems.DRY_BOMB.toStack(), Ingredient.of(ConsumableItems.WET_BOMB, ConsumableItems.HONEY_BOMB, ConsumableItems.LAVA_BOMB));
-
         shapeless(output, ConsumableItems.WET_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.WATER_BUCKET));
         shapeless(output, ConsumableItems.HONEY_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(ToolItems.HONEY_BUCKET));
         shapeless(output, ConsumableItems.LAVA_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.LAVA_BUCKET));

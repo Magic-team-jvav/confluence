@@ -76,6 +76,10 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> MUMMY_SHIRT = registerVanityArmor("mummy_shirt", "vanity_armor/mummy_set", ArmorItem.Type.CHESTPLATE, ModRarity.BLUE);
     public static final DeferredItem<BaseVanityArmorItem> MUMMY_PANTS = registerVanityArmor("mummy_pants", "vanity_armor/mummy_set", ArmorItem.Type.LEGGINGS, ModRarity.BLUE);
     public static final DeferredItem<BaseVanityArmorItem> MUMMY_SHOES = registerVanityArmor("mummy_shoes", "vanity_armor/mummy_set", ArmorItem.Type.BOOTS, ModRarity.BLUE);
+    public static final DeferredItem<BaseVanityArmorItem> SUNGLASSES = registerVanityArmor("sunglasses", ArmorItem.Type.HELMET, ModRarity.GREEN);
+    public static final DeferredItem<BaseVanityArmorItem> AVIATORS = registerVanityArmor("aviators", ArmorItem.Type.HELMET, ModRarity.CYAN);
+    public static final DeferredItem<BaseVanityArmorItem> EYE_PATCH = registerVanityArmor("eye_patch", ArmorItem.Type.HELMET, ModRarity.BLUE);
+    public static final DeferredItem<BaseVanityArmorItem> HALLOWED_CROWN = registerVanityArmor("hallowed_crown", ArmorItem.Type.HELMET, ModRarity.PINK);
 
     public static final DeferredItem<BaseDyeItem> DYE = registerColoredDye("dye", 0x39C5BB);
     public static final DeferredItem<BaseDyeItem> RED_DYE = registerColoredDye("red_dye", 0xDB0909);

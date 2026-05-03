@@ -826,6 +826,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.enchanted_sword.1", "\"A flash of light in the dim sword tomb.\"");
         add("tooltip.item.confluence.bee_keeper.0", "A small part of the divine weapon's power is possessed by the swarm of bees in the jungle, becoming a buzzing hive.");
         add("tooltip.item.confluence.bee_keeper.1", "\"Sweet on the outside, sharp on the inside.\"");
+        add("tooltip.item.confluence.star_steel_sword.0", "Upon hitting an enemy, has a chance to make them drop a Mana Star");
+        add("tooltip.item.confluence.star_steel_sword.1", "Within 1 second after picking up a Mana Star, triggers a 2.5x critical damage multiplier");
 
         add("tooltip.item.confluence.soul_of_light.0", "'The essence of light creatures'");
         add("tooltip.item.confluence.soul_of_night.0", "'The essence of dark creatures'");

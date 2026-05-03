@@ -572,8 +572,8 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.STAR_STEEL_SWORD).setWeight(5))
-                        .add(EmptyLootItem.emptyItem().setWeight(95))
+                        .add(LootItem.lootTableItem(SwordItems.STAR_STEEL_SWORD))
+                        .add(EmptyLootItem.emptyItem().setWeight(3))
                 )
                 //先暂时使用空岛村箱子
         );

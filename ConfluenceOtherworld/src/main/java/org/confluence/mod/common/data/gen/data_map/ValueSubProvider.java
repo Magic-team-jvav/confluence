@@ -1380,6 +1380,10 @@ public final class ValueSubProvider {
         builder
                 .add(VanityArmorItems.GOLD_CROWN, silver20)
                 .add(VanityArmorItems.PLATINUM_CROWN, silver20 + silver10)
+                .add(VanityArmorItems.SUNGLASSES, silver20)
+                .add(VanityArmorItems.AVIATORS, gold1)
+                .add(VanityArmorItems.EYE_PATCH, silver50 + silver10)
+                .add(VanityArmorItems.HALLOWED_CROWN, gold5)
                 .add(VanityArmorItems.RED_DYE, silver20)
                 .add(VanityArmorItems.BRIGHT_RED_DYE, silver20)
                 .add(VanityArmorItems.ORANGE_DYE, silver20)

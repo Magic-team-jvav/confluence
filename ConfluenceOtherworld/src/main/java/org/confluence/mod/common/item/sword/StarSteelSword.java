@@ -23,7 +23,7 @@ public class StarSteelSword extends BaseSwordItem {
     public static final float DROP_STAR_CHANCE = 0.75F;
 
     public StarSteelSword() {
-        super(ModTiers.UNBREAKABLE, ModRarity.BLUE, 8, 2.2F, new BaseSwordItem.ModifierBuilder().addTooltip(p -> p.withColor(0xc0e8ff)));
+        super(ModTiers.UNBREAKABLE, ModRarity.BLUE, 9, 2.2F, new BaseSwordItem.ModifierBuilder().addTooltip(p -> p.withColor(0xc0e8ff)).addTooltip(p -> p.withColor(0xc0e8ff)));
     }
 
     public static void onManaStarPickup(Player player) {

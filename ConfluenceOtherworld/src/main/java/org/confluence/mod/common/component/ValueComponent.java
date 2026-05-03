@@ -2,15 +2,20 @@ package org.confluence.mod.common.component;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModDataMaps;
+import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public record ValueComponent(int value) implements DataComponentType<ValueComponent> {
     public static final Codec<ValueComponent> CODEC = Codec.INT.xmap(ValueComponent::new, ValueComponent::value);
@@ -48,5 +53,12 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
 
     public static int getValue(ItemStack itemStack, int defaultValue) {
         return getValue(itemStack, defaultValue, false);
+    }
+
+    public static void addTooltip(ItemStack stack, List<Component> toolTip) {
+        int price = getValue(stack, 0);
+        if (price > 0) {
+            toolTip.add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ClientUtils.formatPrice(price)));
+        }
     }
 }

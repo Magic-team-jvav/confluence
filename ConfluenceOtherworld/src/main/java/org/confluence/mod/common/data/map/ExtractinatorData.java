@@ -3,12 +3,15 @@ package org.confluence.mod.common.data.map;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
@@ -25,6 +28,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.init.ModDataMaps;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +56,14 @@ public record ExtractinatorData(List<Pool> pools) {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public static void addTooltip(Holder<Item> holder, List<Component> toolTip) {
+        if (holder.getData(ModDataMaps.EXTRACTINATOR) != null ||
+                holder.getData(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR) != null
+        ) {
+            toolTip.add(Component.translatable("tooltip.item.confluence.can_be_extractinated.0").withStyle(ChatFormatting.GRAY));
+        }
     }
 
     public record Entry(

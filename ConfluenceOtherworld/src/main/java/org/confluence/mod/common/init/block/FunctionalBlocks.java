@@ -33,7 +33,6 @@ import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.TreeHolesBlock;
 import org.confluence.mod.common.entity.projectile.boulder.*;
-import org.confluence.mod.common.entity.projectile.boulder.LifecrystalBoulderEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -235,7 +234,7 @@ public class FunctionalBlocks {
     }
 
     private static <B extends Block & EntityBlock & INetworkBlock> DeferredBlock<B> registerWithEntity(String id, Supplier<B> supplier) {
-        DeferredBlock<B> holder = registerWithItem(id, supplier);
+        DeferredBlock<B> holder = registerWithItem(id, supplier, block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.wireable.0"));
         MECHANICAL_BLOCKS.add(holder);
         return holder;
     }
@@ -265,10 +264,10 @@ public class FunctionalBlocks {
                         .sound(SoundType.CANDLE)
                         .lightLevel(state -> state.getValue(EffectiveCandleBlock.LIT) ? 15 : 0)
                         .pushReaction(PushReaction.DESTROY), (float) 50, effectData),
-                block -> {
-                    List<Component> tooltips = TooltipItem.getTooltipsFromString(id, 1, ChatFormatting.GRAY);
-                    return new EffectiveCandleBlock.BItem(block, ModRarity.BLUE, tooltips, effectData);
-                }
+                block -> new EffectiveCandleBlock.BItem(block, ModRarity.BLUE, List.of(
+                        Component.translatable("tooltip.item.confluence." + id + ".0").withStyle(ChatFormatting.GRAY),
+                        Component.translatable("tooltip.item.confluence.wireable.0").withStyle(ChatFormatting.GRAY)
+                ), effectData)
         );
     }
 }

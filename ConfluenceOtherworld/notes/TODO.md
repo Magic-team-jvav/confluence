@@ -186,9 +186,6 @@
 - 环境改造器以及溶液
 - 更换一部分制作站GUI
 - 水母会穿过玻璃窗
-- 召唤物给予的debuff会作用到队友身上包括着火
-- 攻击来自怪物的弹幕会导致玩家被反伤
-- 独眼巨鹿死的瞬间（且在技能释放途中）会对近距离玩家造成若干次不明伤害
 - https://mclo.gs/MFfPBHi 服务器无法使用召唤道具
 - 巨鹿需要加跳跃AI
 
@@ -264,8 +261,6 @@
 
 - 1.4.5相关：
     - 改版光剑，颌骨剑，骨剑，骨镐，僵尸臂
-    - tooltip“可与导线连接”（"tooltip.item.confluence.wireable.0"）
-    - tooltip“可提炼”（"tooltip.item.confluence.can_be_extractinated.0"）
     - 单个套装部件的提示信息中会显示套装奖励。
 
 # 附属bug存放处

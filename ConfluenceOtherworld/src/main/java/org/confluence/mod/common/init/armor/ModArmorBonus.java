@@ -353,7 +353,7 @@ public final class ModArmorBonus {
         return VALUE_MAP;
     }
 
-    public static void addBonusTooltip(@Nullable Player player, ItemStack itemStack, List<Component> toolTip) {
+    public static void addTooltip(@Nullable Player player, ItemStack itemStack, List<Component> toolTip) {
         if (player == null) return;
         ArmorSetBonusKey key = PlayerSpecialData.of(player).getArmorSetBonusKey();
         if (key == ArmorSetBonusKey.NONE) return;

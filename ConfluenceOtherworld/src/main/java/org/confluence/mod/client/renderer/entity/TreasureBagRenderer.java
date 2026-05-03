@@ -11,14 +11,13 @@ import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.util.DateUtils;
 import org.joml.Matrix4f;
 
 import java.util.Calendar;
 
-import static org.confluence.lib.util.LibClientUtils.HALF_SQRT_3;
 
 public class TreasureBagRenderer extends ItemEntityRenderer {
     private static final float length = 1.0F;
@@ -46,7 +45,7 @@ public class TreasureBagRenderer extends ItemEntityRenderer {
             float y = Mth.sin(((float) entity.getAge() + partialTicks) / 10.0F + entity.bobOffs) * 0.1F;
             poseStack.translate(0.0F, 0.35F + y, 0.0F);
 
-            RandomSource randomSource = new LegacyRandomSource(time);
+            RandomSource randomSource = RandomSource.create(time);
             for (int i = 0; i < 12; i++) {
                 poseStack.mulPose(Axis.XP.rotationDegrees(i * randomSource.nextInt(60) + delta * randomSource.nextInt(30)));
                 poseStack.mulPose(Axis.YN.rotationDegrees(i * randomSource.nextInt(60) + delta * randomSource.nextInt(60)));
@@ -69,11 +68,11 @@ public class TreasureBagRenderer extends ItemEntityRenderer {
     }
 
     private static void vertex2(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {
-        vertexConsumer.addVertex(matrix4f, -HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
+        vertexConsumer.addVertex(matrix4f, -LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
     }
 
     private static void vertex3(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {
-        vertexConsumer.addVertex(matrix4f, HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
+        vertexConsumer.addVertex(matrix4f, LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
     }
 
     private static void vertex4(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {

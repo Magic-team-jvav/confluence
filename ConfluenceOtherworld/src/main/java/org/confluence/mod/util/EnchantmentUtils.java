@@ -16,6 +16,7 @@ import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEnchantments;
 
@@ -56,7 +57,7 @@ public final class EnchantmentUtils {
     public static FloatSupplier processEfficientMagic(FloatSupplier sup, ServerPlayer player) {
         if (LibUtils.anyHandHasItem(player, stack -> EnchantmentHelper.has(stack, ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get()))) {
             ManaStorage manaStorage = ManaStorage.of(player);
-            return () -> sup.getAsFloat() * Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
+            return () -> sup.get() * Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
         }
         return sup;
     }

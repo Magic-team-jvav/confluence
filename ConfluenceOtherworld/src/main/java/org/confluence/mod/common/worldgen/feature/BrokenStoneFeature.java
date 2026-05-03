@@ -13,7 +13,6 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -39,7 +38,7 @@ public class BrokenStoneFeature extends Feature<BrokenStoneFeature.Config> {
         WorldGenLevel level = pContext.level();
         BlockPos basePos = pContext.origin();
         long seed = random.nextLong();
-        WorldgenRandom worldgenRandom = new WorldgenRandom(new LegacyRandomSource(seed));
+        RandomSource worldgenRandom = new WorldgenRandom(RandomSource.create(seed));
         BlockState air = Blocks.AIR.defaultBlockState();
         TagKey<Block> moveTag = config.moveTag;
 

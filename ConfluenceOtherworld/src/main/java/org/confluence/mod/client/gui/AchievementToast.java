@@ -15,10 +15,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.util.FloatSupplier;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -54,7 +54,7 @@ public class AchievementToast implements Toast {
         Font font = toastComponent.getMinecraft().font;
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
-        poseStack.translate(0.0F, guiGraphics.guiHeight() - height(), blitOffset.getAsFloat());
+        poseStack.translate(0.0F, guiGraphics.guiHeight() - height(), blitOffset.get());
         guiGraphics.blit(TEXTURE, 0, 0, 0, 0, width(), height(), 160, 64);
         renderTitle(guiGraphics, timeSinceLastVisible, font);
         renderDescription(guiGraphics, timeSinceLastVisible, font);

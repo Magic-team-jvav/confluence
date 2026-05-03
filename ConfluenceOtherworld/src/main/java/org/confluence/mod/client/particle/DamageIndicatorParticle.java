@@ -18,7 +18,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
@@ -38,13 +37,12 @@ public class DamageIndicatorParticle extends TextureSheetParticle {
     }
 
     @Override
-    @NotNull
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.CUSTOM;
     }
 
     @Override
-    public void render(@NotNull VertexConsumer pBuffer, Camera camera, float pPartialTicks) {
+    public void render(VertexConsumer pBuffer, Camera camera, float pPartialTicks) {
         Minecraft minecraft = Minecraft.getInstance();
         MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
 
@@ -101,9 +99,8 @@ public class DamageIndicatorParticle extends TextureSheetParticle {
     }
 
     public static class Provider implements ParticleProvider<DamageIndicatorOptions> {
-        @Nullable
         @Override
-        public Particle createParticle(@NotNull DamageIndicatorOptions options, @NotNull ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
+        public @Nullable Particle createParticle(DamageIndicatorOptions options, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
             if (!ClientConfigs.damageIndicator && options.type() == DamageIndicatorOptions.Type.DAMAGE
                     || !ClientConfigs.healIndicator && options.type() == DamageIndicatorOptions.Type.HEAL) {
                 return null;

@@ -9,9 +9,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemEntityRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.item.ItemEntity;
+import org.confluence.lib.util.LibMathUtils;
 import org.joml.Matrix4f;
-
-import static org.confluence.lib.util.LibClientUtils.HALF_SQRT_3;
 
 public class FallingStarRenderer extends ItemEntityRenderer {
     private static final float length = 0.5F;
@@ -50,11 +49,11 @@ public class FallingStarRenderer extends ItemEntityRenderer {
     }
 
     private static void vertex2(VertexConsumer vertexConsumer, Matrix4f matrix4f) {
-        vertexConsumer.addVertex(matrix4f, -HALF_SQRT_3 * width, length, -0.5F * width).setColor(255, 255, 0, 0);
+        vertexConsumer.addVertex(matrix4f, -LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).setColor(255, 255, 0, 0);
     }
 
     private static void vertex3(VertexConsumer vertexConsumer, Matrix4f matrix4f) {
-        vertexConsumer.addVertex(matrix4f, HALF_SQRT_3 * width, length, -0.5F * width).setColor(255, 255, 0, 0);
+        vertexConsumer.addVertex(matrix4f, LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).setColor(255, 255, 0, 0);
     }
 
     private static void vertex4(VertexConsumer vertexConsumer, Matrix4f matrix4f) {

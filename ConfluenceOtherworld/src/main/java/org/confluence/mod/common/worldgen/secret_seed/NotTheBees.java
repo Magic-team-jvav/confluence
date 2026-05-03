@@ -5,8 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.common.init.ModTags;
 
@@ -32,6 +32,6 @@ public class NotTheBees extends SecretSeed {
 
     public static Holder<Biome> replaceBiome(int x, int y, int z, Holder<Biome> original, List<Holder<Biome>> jungle) {
         if (jungle.isEmpty() || skip.stream().anyMatch(original::is)) return original;
-        return Util.getRandom(jungle, new LegacyRandomSource(BlockPos.asLong(x, y, z)));
+        return Util.getRandom(jungle, RandomSource.create(BlockPos.asLong(x, y, z)));
     }
 }

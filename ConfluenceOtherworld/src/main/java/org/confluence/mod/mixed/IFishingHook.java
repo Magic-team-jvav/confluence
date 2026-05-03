@@ -22,7 +22,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.neoforged.neoforge.common.Tags;
-import org.confluence.lib.mixed.IExtraSyncedData;
+import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
@@ -31,7 +31,7 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PlayerUtils;
 
-public interface IFishingHook extends IExtraSyncedData<FishingHook> {
+public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
     void confluence$setIsLavaHook();
 
     boolean confluence$isLavaHook();

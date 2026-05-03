@@ -1,10 +1,10 @@
 package org.confluence.mod.mixed;
 
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import org.confluence.lib.mixed.IExtraSyncedData;
+import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.jetbrains.annotations.ApiStatus;
 
-public interface IAbstractArrow extends IExtraSyncedData<AbstractArrow> {
+public interface IAbstractArrow extends ILibExtraSyncedData<AbstractArrow> {
     @Deprecated(since = "1.3.0", forRemoval = true)
     @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
     default boolean confluence$isShootFromShortBow() {

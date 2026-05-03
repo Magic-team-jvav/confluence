@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -64,7 +63,7 @@ public final class ConfluenceData extends SavedData {
 
     private static void initialize(ServerLevel serverLevel, ConfluenceData data) {
         if (!data.initialized) {
-            RandomSource random = new LegacyRandomSource(serverLevel.getSeed());
+            RandomSource random = RandomSource.create(serverLevel.getSeed());
             List<Float> raList = new ArrayList<>();
             int wEarth = 3 + random.nextInt(3);
             float up = (float) Math.pow(5.0, 1.0 / (wEarth - 1));

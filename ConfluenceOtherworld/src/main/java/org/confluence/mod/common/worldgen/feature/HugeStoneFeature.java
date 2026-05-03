@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -32,7 +31,7 @@ public class HugeStoneFeature extends Feature<HugeStoneFeature.Config> {
         BlockPos basePos = pContext.origin();
         long seed = random.nextLong();
         NormalNoise normalNoise = NormalNoise.create(RandomSource.create(seed), new NormalNoise.NoiseParameters(-5, 1.0, 1.0, 1.0, 1.0));
-        WorldgenRandom worldgenRandom = new WorldgenRandom(new LegacyRandomSource(seed));
+        RandomSource worldgenRandom = new WorldgenRandom(RandomSource.create(seed));
         BlockState stone = config.stone.getState(random, basePos);
         boolean useTecture = (config.stoneTexture != null);
         BlockState stoneTexture;

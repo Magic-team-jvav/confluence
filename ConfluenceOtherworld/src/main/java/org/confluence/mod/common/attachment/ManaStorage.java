@@ -7,12 +7,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.util.EnchantmentUtils;
-import org.confluence.mod.util.FloatSupplier;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.ApiStatus;
@@ -60,13 +60,13 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     public boolean receiveMana(FloatSupplier sup) {
         if (!canReceive()) return false;
-        this.currentMana = Mth.clamp(sup.getAsFloat() + currentMana, 0.0F, getMaxMana());
+        this.currentMana = Mth.clamp(sup.get() + currentMana, 0.0F, getMaxMana());
         return true;
     }
 
     public boolean extractMana(FloatSupplier sup, ServerPlayer serverPlayer) {
         if (!canExtract()) return false;
-        float extract = sup.getAsFloat() * (1.0F - TCUtils.getValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
+        float extract = sup.get() * (1.0F - TCUtils.getValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
         if (PlayerUtils.applyAutoGetMana(serverPlayer, currentMana, extract)) return false;
         this.currentMana = Mth.clamp(currentMana - extract, 0.0F, getMaxMana());
         if (extract > 0.0F) setRegenerateDelay();
@@ -76,7 +76,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     public boolean forceExtractMana(FloatSupplier sup) {
         if (!canExtract()) return false;
-        float extract = sup.getAsFloat();
+        float extract = sup.get();
         if (currentMana < extract) return false;
         this.currentMana = Mth.clamp(currentMana - extract, 0.0F, getMaxMana());
         if (extract > 0.0F) setRegenerateDelay();

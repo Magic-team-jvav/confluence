@@ -13,18 +13,24 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibClientUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.item.mana.MagicMissileItem;
 import org.confluence.terraentity.api.entity.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
 import org.confluence.terraentity.utils.TEUtils;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class MagicMissileProjectile extends AbstractManaProjectile {
     public static final double RANGE = 8.0 * 2 / 3;
 
     private final ITrackType trackType = new BasisTrack(90, 0.4F);
     private boolean shot;
+
+    // ========== 新增：粒子发射器 ==========
+    private ParticleEmitter emitter;
 
     public MagicMissileProjectile(EntityType<? extends MagicMissileProjectile> entityType, Level level) {
         super(entityType, level);
@@ -37,6 +43,13 @@ public class MagicMissileProjectile extends AbstractManaProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
+
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("magic_missile_projectile"));
+            emitter.attachEntity(this);
+            PSGameClient.LOADER.addEmitter(emitter, false);
+        }
+
         LivingEntity owner = getLivingOwner();
         if (owner == null) return;
 

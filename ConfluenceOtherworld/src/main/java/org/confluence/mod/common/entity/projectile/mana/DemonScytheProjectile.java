@@ -20,8 +20,6 @@ public class DemonScytheProjectile extends AbstractManaProjectile implements IAx
 
     public DemonScytheProjectile(LivingEntity living) {
         this(ModEntities.DEMON_SCYTHE_PROJECTILE.get(), living.level());
-        setOwner(living);
-        setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
 
     @Override
@@ -38,11 +36,7 @@ public class DemonScytheProjectile extends AbstractManaProjectile implements IAx
             rotateZ(rotate, getDeltaMovement().lengthSqr(), 0.125F); // 无重力影响
         }
 
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        setPos(offX, offY, offZ);
+        doSimpleMove();
 
         if (tickCount > 200) discard();
     }

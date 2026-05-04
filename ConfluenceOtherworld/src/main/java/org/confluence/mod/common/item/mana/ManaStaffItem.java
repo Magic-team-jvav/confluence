@@ -92,6 +92,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     }
 
     protected void beforeShoot(ServerPlayer player, ItemStack itemStack, E projectile) {
+        projectile.setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
         projectile.setDamage(damage);
         projectile.setDefaultVelocity(velocity);
         projectile.setOwner(player);
@@ -140,6 +141,6 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
 
     @FunctionalInterface
     public interface ProjectileFactory<E extends Projectile> {
-        E create(ServerPlayer serverPlayer);
+        E create(ServerPlayer player);
     }
 }

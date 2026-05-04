@@ -35,7 +35,8 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<SkullProjectile>> BOOK_OF_SKULLS = ITEMS.register("book_of_skulls", () -> new ManaStaffItem<>(ModRarity.GREEN, SkullProjectile::new, 18.2F, 18, 3.5F, 2, 0.04));
     public static final DeferredItem<ManaStaffItem<WaterBoltProjectile>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 19.5F, 10, 4.5F, 7, 0.04));
     public static final DeferredItem<AquaScepterItem> AQUA_SCEPTER = ITEMS.register("aqua_scepter", AquaScepterItem::new);
-    /* 魔法飞弹 */
+    public static final DeferredItem<MagicMissileItem> MAGIC_MISSILE = ITEMS.register("magic_missile", MagicMissileItem::new);
+    public static final DeferredItem<FlamelashItem> FLAMELASH = ITEMS.register("flamelash", FlamelashItem::new);
     public static final DeferredItem<ManaStaffItem<DemonScytheProjectile>> DEMON_SCYTHE = ITEMS.register("demon_scythe", () -> new ManaStaffItem<>(ModRarity.ORANGE, DemonScytheProjectile::new, 25.8f, 14, 0.2F, 3, 0.04));
     public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 29F, 12, 7.5F, 7, 0.04));
     /* 烈焰火鞭 */

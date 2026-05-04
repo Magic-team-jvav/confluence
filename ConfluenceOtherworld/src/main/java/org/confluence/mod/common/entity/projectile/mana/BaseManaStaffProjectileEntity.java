@@ -69,14 +69,10 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     public void baseTick() {
         super.baseTick();
 
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
+        Vec3 vec3 = doSimpleMove();
         if (!isNoGravity()) {
             setDeltaMovement(vec3.x, vec3.y - getGravity(), vec3.z);
         }
-        setPos(offX, offY, offZ);
 
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             Variant variant = getVariant();

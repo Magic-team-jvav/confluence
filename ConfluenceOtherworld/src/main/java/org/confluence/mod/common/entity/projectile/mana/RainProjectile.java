@@ -38,11 +38,7 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
         }
         super.baseTick();
 
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        setPos(offX, offY, offZ);
+        Vec3 vec3 = doSimpleMove();
         setDeltaMovement(vec3.add(0, -0.08, 0));
     }
 

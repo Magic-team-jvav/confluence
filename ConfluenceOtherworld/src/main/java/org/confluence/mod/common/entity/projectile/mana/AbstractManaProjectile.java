@@ -64,15 +64,30 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     }
 
     protected boolean doPenetrateCheck(Entity entity) {
-        if (penetrateSet == null) this.penetrateSet = new HashSet<>();
-        return penetrateSet.add(entity.getUUID());
+        return getPenetrateSet().add(entity.getUUID());
     }
 
     protected void doDiscardInMaxPenetrate(int max) {
-        if (penetrateSet == null) this.penetrateSet = new HashSet<>();
-        if (penetrateSet.size() >= max) {
+        if (penetrateSet == null) return;
+        if (getPenetrateSet().size() >= max) {
             discard();
         }
+    }
+
+    protected Set<UUID> getPenetrateSet() {
+        if (penetrateSet == null) {
+            this.penetrateSet = new HashSet<>();
+        }
+        return penetrateSet;
+    }
+
+    protected Vec3 doSimpleMove() {
+        Vec3 vec3 = getDeltaMovement();
+        double offX = getX() + vec3.x;
+        double offY = getY() + vec3.y;
+        double offZ = getZ() + vec3.z;
+        setPos(offX, offY, offZ);
+        return vec3;
     }
 
     @Override

@@ -24,8 +24,6 @@ public class GoldenShowerProjectile extends AbstractManaProjectile {
 
     public GoldenShowerProjectile(LivingEntity living) {
         this(ModEntities.GOLDEN_SHOWER_PROJECTILE.get(), living.level());
-        setOwner(living);
-        setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
 
     @Override
@@ -39,11 +37,7 @@ public class GoldenShowerProjectile extends AbstractManaProjectile {
             }
         }
 
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        setPos(offX, offY, offZ);
+        Vec3 vec3 = doSimpleMove();
         setDeltaMovement(vec3.add(0.0, -0.24, 0.0));
     }
 

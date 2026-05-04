@@ -37,8 +37,6 @@ public class SkullProjectile extends AbstractManaProjectile {
 
     public SkullProjectile(LivingEntity living) {
         this(ModEntities.SKULL_PROJECTILE.get(), living.level());
-        setOwner(living);
-        setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
 
     @Override
@@ -83,11 +81,7 @@ public class SkullProjectile extends AbstractManaProjectile {
             }
         }
 
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        setPos(offX, offY, offZ);
+        doSimpleMove();
         updateRotation();
     }
 

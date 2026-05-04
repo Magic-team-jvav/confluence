@@ -1,8 +1,8 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -19,10 +19,8 @@ public class CrystalStormProjectile extends AbstractManaProjectile {
         setNoGravity(true);
     }
 
-    public CrystalStormProjectile(Player player) {
-        this(ModEntities.CRYSTAL_STORM_PROJECTILE.get(), player.level());
-        setOwner(player);
-        setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
+    public CrystalStormProjectile(LivingEntity living) {
+        this(ModEntities.CRYSTAL_STORM_PROJECTILE.get(), living.level());
     }
 
     @Override

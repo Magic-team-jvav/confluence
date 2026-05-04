@@ -28,8 +28,6 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
 
     public HurtnadoProjectile(LivingEntity living) {
         this(ModEntities.HURTNADO_PROJECTILE.get(), living.level());
-        setOwner(living);
-        setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
 
     @Override

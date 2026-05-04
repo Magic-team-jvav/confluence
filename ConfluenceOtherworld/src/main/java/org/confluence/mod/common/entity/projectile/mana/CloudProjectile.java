@@ -43,8 +43,6 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
         this.rainType = rainType;
         this.duration = duration;
         this.maxPenetrate = maxPenetrate;
-        setOwner(living);
-        setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
 
     @Override

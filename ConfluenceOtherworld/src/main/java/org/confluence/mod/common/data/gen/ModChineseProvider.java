@@ -1632,6 +1632,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.RAIN_CLOUD_PROJECTILE.get(), "雨云射弹");
         add(ModEntities.RAIN_PROJECTILE.get(), "雨水射弹");
         add(ModEntities.GOLDEN_SHOWER_PROJECTILE.get(), "黄金雨射弹");
+        add(ModEntities.MAGIC_MISSILE_PROJECTILE.get(), "魔法飞弹");
+        add(ModEntities.FLAMELASH_PROJECTILE.get(), "烈焰火鞭");
         add(ModEntities.NIGHTS_EDGE_PROJECTILE.get(), "永夜刃射弹");
         add(ModEntities.GRASS_PROJECTILE.get(), "草剑射弹");
         add(ModEntities.BEE_PROJECTILE.get(), "养蜂人射弹");

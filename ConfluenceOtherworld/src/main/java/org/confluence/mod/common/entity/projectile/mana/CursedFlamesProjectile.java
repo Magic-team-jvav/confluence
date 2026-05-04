@@ -6,7 +6,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -25,10 +24,8 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
         super(entityType, level);
     }
 
-    public CursedFlamesProjectile(Player player) {
-        super(ModEntities.CURSED_FLAMES_PROJECTILE.get(), player.level());
-        setOwner(player);
-        setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
+    public CursedFlamesProjectile(LivingEntity living) {
+        super(ModEntities.CURSED_FLAMES_PROJECTILE.get(), living.level());
     }
 
     @Override

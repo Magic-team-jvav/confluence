@@ -359,6 +359,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.RAIN));
         event.registerEntityRenderer(STORM_SPEAR_SHOT_PROJECTILE.get(), StormSpearShotProjectileRenderer::new);
         event.registerEntityRenderer(GOLDEN_SHOWER_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(MAGIC_MISSILE_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(FLAMELASH_PROJECTILE.get(), NoopRenderer::new);
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);

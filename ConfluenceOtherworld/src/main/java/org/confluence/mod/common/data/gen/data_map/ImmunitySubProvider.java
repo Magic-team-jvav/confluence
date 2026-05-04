@@ -23,6 +23,7 @@ public final class ImmunitySubProvider {
                 .add(TEProjectileEntities.SLIME_SPIKE, new ImmunityDataMap(Immunity.Type.STATIC, 5), false)
                 .add(TEProjectileEntities.FIRE_IMP_PROJ, new ImmunityDataMap(Immunity.Type.LOCAL, 1), false)
                 .add(TEProjectileEntities.SUMMON_BEE_STICK_PROJ, new ImmunityDataMap(Immunity.Type.LOCAL, 1), false)
+                .add(ModEntities.MAGIC_MISSILE_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 7), false)
                 .add(TCEntities.X_BONE, new ImmunityDataMap(Immunity.Type.STATIC, 4), false);
     }
 }

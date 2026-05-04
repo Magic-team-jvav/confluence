@@ -7,7 +7,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.ModItems;
@@ -19,6 +21,8 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import java.util.Optional;
 
 public class BoulderWorld extends SecretSeed {
+    public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");
+
     public BoulderWorld(long flag, ResourceLocation id) {
         super(flag, id);
     }
@@ -33,12 +37,12 @@ public class BoulderWorld extends SecretSeed {
         return true;
     }
 
-    public static void createBoulderWhenBlockDestroy(ServerPlayer serverPlayer, BlockState blockState, BlockPos pos) {
-        if (ModSecretSeeds.BOULDER_WORLD.match(serverPlayer.server) && serverPlayer.level().random.nextFloat() <= 0.01F) {
-            if (blockState.getCollisionShape(serverPlayer.level(), pos) == Shapes.block()) {
-                BoulderEntity entity = new BoulderEntity(serverPlayer.serverLevel(), pos.getCenter(), blockState);
-                entity.targetTo(serverPlayer);
-                serverPlayer.serverLevel().addFreshEntity(entity);
+    public static void createBoulderWhenBlockDestroy(ServerPlayer player, BlockState state, BlockPos pos) {
+        if (ModSecretSeeds.BOULDER_WORLD.match(player.server) && LibMathUtils.checkChance(0.01F, player.getRandom())) {
+            if (state.getCollisionShape(player.level(), pos) == Shapes.block()) {
+                BoulderEntity entity = new BoulderEntity(player.level(), pos.getCenter(), state);
+                entity.targetTo(player);
+                player.level().addFreshEntity(entity);
             }
         }
     }

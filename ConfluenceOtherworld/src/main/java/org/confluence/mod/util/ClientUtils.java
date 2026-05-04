@@ -2,38 +2,29 @@ package org.confluence.mod.util;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.Team;
-import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -50,9 +41,6 @@ public final class ClientUtils {
     public static final String GRAY_SUFFIX = ".gray";
     public static final String NEGATIVE_SUFFIX = ".negative";
     public static final Set<ResourceLocation> ORIGINAL = new HashSet<>();
-    public static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("hud/icon");
-    public static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("hud/overlay");
-    public static final ResourceLocation ICON_0 = Confluence.asResource("hud/icon_0");
     private static final Set<ResourceLocation> failed = new HashSet<>();
     public static final int LEGACY_SIZE = 128;
     public static final int OVERLAY_SIZE = 128;
@@ -234,21 +222,6 @@ public final class ClientUtils {
                 pos.getY() + 2,
                 pos.getZ() + 2
         );
-    }
-
-    private static final PoseStack boulderSun = new PoseStack();
-
-    public static void renderBoulderSun(Minecraft minecraft) {
-        if (ModSecretSeeds.BOULDER_WORLD.match() && minecraft.level.rainLevel <= 0.9F) {
-            MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-            BlockState blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
-            boulderSun.pushPose();
-            boulderSun.mulPose(Axis.ZP.rotation(minecraft.level.getTimeOfDay(0) * Mth.TWO_PI));
-            boulderSun.translate(-5, 100, -5);
-            boulderSun.scale(10, 10, 10);
-            minecraft.getBlockRenderer().renderSingleBlock(blockState, boulderSun, bufferSource, 0xF000F0, OverlayTexture.NO_OVERLAY);
-            boulderSun.popPose();
-        }
     }
 
     public static void postTheConstantEffect(boolean post) {

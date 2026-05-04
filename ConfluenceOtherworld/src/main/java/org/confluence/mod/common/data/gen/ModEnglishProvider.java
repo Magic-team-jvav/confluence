@@ -283,7 +283,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.crystal_assassin_armor", "Crystal Assassin Armor");
         add("itemGroup.confluence.hallowed_armor", "Hallowed Armor");
         add("itemGroup.confluence.magic_robes", "Magic Robes");
-        add("itemGroup.confluence.single_vanity", "Single Vanity");
         add("itemGroup.confluence.dyes", "Dyes");
         add("itemGroup.confluence.tuxedo_set", "Tuxedo Set");
         add("itemGroup.confluence.plumbers_set", "Plumber Set");

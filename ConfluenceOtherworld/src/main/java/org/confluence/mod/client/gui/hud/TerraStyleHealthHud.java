@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 
@@ -76,13 +77,13 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 heartBuff = (typeHeart == 0) ? heartBuff : 0;
                 int heightUV = (typeHeart * 17);
                 if (num == heartNum) {
-                    guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, x, y, 9, 16);
+                    guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, x, y, 9, 16);
                 } else if (num > 0.0F) {
                     float ts = num / heartNum;
                     guiGraphics.pose().pushPose();
                     guiGraphics.pose().translate(x + 4.5F * (1.0F - ts), y + 9.0F * (1.0F - ts), 0.0F);
                     guiGraphics.pose().scale(ts, ts, 1.0F);
-                    guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, 0, 0, 9, 16);
+                    guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, 0, 0, 9, 16);
                     guiGraphics.pose().popPose();
                 }
             }
@@ -103,18 +104,18 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     blitX = countToBlit * 10 - countLine * 100;
                     blitXFirst = (countHeart / 10 == 0) ? 100 - (countHeart - (countHeart / 10) * 10) * 10 : 0;
                     if (countToBlit % 10 == 0) {
-                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 0, heightUV, width + blitX - 1 + blitXFirst, height + blitY, 1, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 0, heightUV, width + blitX - 1 + blitXFirst, height + blitY, 1, 16);
                         if (countToBlit + 1 == countHeart) {
-                            guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
+                            guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
                         } else {
-                            guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
+                            guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
                         }
                     } else if (countToBlit + 1 == countHeart) {
-                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
                     } else if ((countToBlit + 1) % 10 == 0) {
-                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 31, heightUV, width + blitX + blitXFirst, height + blitY, 12, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 31, heightUV, width + blitX + blitXFirst, height + blitY, 12, 16);
                     } else {
-                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
                     }
                     type = (countToBlit < lifeFruitHealth) ? 1 : 0;
                     blitHeart(guiGraphics, type, typeHeart, heartNumList.getFloat(countToBlit), width + blitX + blitXFirst + 1, height + blitY, heartBuff);
@@ -169,12 +170,12 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 int absorptionHealthI = Math.min((int) Math.ceil(absorptionHealth), 20);
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);
-                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, hardcore ? 40 : 0, true);
+                colorDraw(guiGraphics, minecraft, random, ModClientSetups.OVERLAY_SPRITE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, hardcore ? 40 : 0, true);
                 if (absorptionHealth > 0.0F) {
-                    draw(widthHealth, heightHealth, guiGraphics, absorptionHealthI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, 0, 50, true, 1, 20);
+                    draw(widthHealth, heightHealth, guiGraphics, absorptionHealthI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 0, 50, true, 1, 20);
                 }
                 if (heartBuff > 0) {
-                    draw(widthHealth, heightHealth, guiGraphics, healthI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, heartBuff * 20, 50, true, 1, 20);
+                    draw(widthHealth, heightHealth, guiGraphics, healthI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, heartBuff * 20, 50, true, 1, 20);
                 }
             }
         };

@@ -26,6 +26,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
@@ -295,10 +296,10 @@ public final class LivingEntityEvents {
     public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         AchievementUtils.matchingAttire_fashionStatement(event.getSlot().getType(), player);
-        if (event.getTo().is(ModTags.Items.SHOW_SIGNAL)) {
-            VisibilityPacketS2C.sendSignal(player, true);
-        } else if (event.getFrom().is(ModTags.Items.SHOW_SIGNAL)) {
-            VisibilityPacketS2C.sendSignal(player, false);
+        if (event.getSlot().getType() == EquipmentSlot.Type.HAND) {
+            VisibilityPacketS2C.sendSignal(player, event.getTo().is(ModTags.Items.SHOW_SIGNAL));
+        } else if (event.getSlot() == EquipmentSlot.HEAD) {
+            VisibilityPacketS2C.sendSunglasses(player, event.getTo().is(VanityArmorItems.SUNGLASSES) ? TriState.TRUE : TriState.FALSE, TriState.DEFAULT);
         }
     }
 
@@ -322,7 +323,7 @@ public final class LivingEntityEvents {
                 drops.add(new ItemEntity(level, x, y, z, itemStack));
             }
         }
-        if (living.getRandom().nextFloat() < 0.011F) dropsHolidayGift:{ // 掉落节日礼物
+        if (LibMathUtils.checkChance(0.011F, living.getRandom())) dropsHolidayGift:{ // 掉落节日礼物
             Item holidayGift = DateUtils.getHolidayGift(living.getRandom());
             if (holidayGift == Items.AIR) break dropsHolidayGift;
             ItemEntity entity = new ItemEntity(level, x, y, z, holidayGift.getDefaultInstance());

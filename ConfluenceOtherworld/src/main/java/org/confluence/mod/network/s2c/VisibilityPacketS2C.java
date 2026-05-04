@@ -5,16 +5,20 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.item.IFunctionCouldEnable;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
@@ -25,6 +29,7 @@ public record VisibilityPacketS2C(byte mask) implements IPacketS2C {
     public static final byte ECHO = 0b0000010; // 回声
     public static final byte THE_CONSTANT_POST_EFFECT = 0b0000100; // 永恒领域后处理效果
     public static final byte SIGNAL = 0b0001000; // 信号线
+    public static final byte SUNGLASSES = 0b0010000; // 墨镜太阳
     public static final Type<VisibilityPacketS2C> TYPE = Confluence.createType("visibility");
     public static final StreamCodec<ByteBuf, VisibilityPacketS2C> STREAM_CODEC = ByteBufCodecs.BYTE.map(VisibilityPacketS2C::new, VisibilityPacketS2C::mask);
 
@@ -60,13 +65,21 @@ public record VisibilityPacketS2C(byte mask) implements IPacketS2C {
         }
     }
 
-    public static void sendTheConstantPostEffect(ServerPlayer serverPlayer) {
-        boolean secretSeed = ModSecretSeeds.THE_CONSTANT.match(serverPlayer.server);
-        boolean accessory = CuriosUtils.hasCurio(serverPlayer, AccessoryItems.RADIO_THING.get());
-        PacketDistributor.sendToPlayer(serverPlayer, new VisibilityPacketS2C(THE_CONSTANT_POST_EFFECT, secretSeed ^ accessory));
+    public static void sendTheConstantPostEffect(ServerPlayer player) {
+        boolean secretSeed = ModSecretSeeds.THE_CONSTANT.match(player.server);
+        boolean accessory = CuriosUtils.hasCurio(player, AccessoryItems.RADIO_THING.get());
+        PacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(THE_CONSTANT_POST_EFFECT, secretSeed ^ accessory));
     }
 
-    public static void sendSignal(ServerPlayer serverPlayer, boolean visible) {
-        PacketDistributor.sendToPlayer(serverPlayer, new VisibilityPacketS2C(SIGNAL, visible));
+    public static void sendSignal(ServerPlayer player, boolean visible) {
+        PacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(SIGNAL, visible));
+    }
+
+    public static void sendSunglasses(ServerPlayer player, TriState normal, TriState extra) {
+        boolean visible = (normal.isDefault() && player.getItemBySlot(EquipmentSlot.HEAD).is(VanityArmorItems.SUNGLASSES)) || normal.isTrue();
+        if (!visible) {
+            visible = (extra.isDefault() && ExtraInventory.of(player).getVanityArmor(ExtraInventory.VANITY_HEAD_INDEX, false).is(VanityArmorItems.SUNGLASSES)) || extra.isTrue();
+        }
+        PacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(SUNGLASSES, visible));
     }
 }

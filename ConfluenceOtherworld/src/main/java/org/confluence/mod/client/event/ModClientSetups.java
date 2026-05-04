@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -80,7 +79,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.awt.*;
 import java.util.Iterator;
 import java.util.Map;
@@ -90,14 +88,15 @@ import static net.minecraft.client.renderer.RenderStateShard.*;
 import static org.confluence.lib.color.IntegerRGB.*;
 
 @SuppressWarnings("deprecation")
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public final class ModClientSetups {
     public static final ResourceLocation VANILLA_BLOCK_ATLAS = InventoryMenu.BLOCK_ATLAS;
     public static final ResourceLocation ENTITY_BLOOD_ATLAS = Confluence.asResource("textures/atlas/entity_blood.png");
 
     public static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
     public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
+    public static final ResourceLocation LEGACY_SPRITE = Confluence.asResource("hud/icon");
+    public static final ResourceLocation OVERLAY_SPRITE = Confluence.asResource("hud/overlay");
+    public static final ResourceLocation SUNGLASSES_TEXTURE = Confluence.asResource("textures/environment/sunglasses.png"); // todo dynamic texture
     private static final NormalNoise normalNoise = NormalNoise.create(RandomSource.create(0), new NormalNoise.NoiseParameters(-5, 1.0, 1.0, 1.0, 1.0));
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
         private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");

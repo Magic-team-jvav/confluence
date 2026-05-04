@@ -8,27 +8,35 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.IDeathScreen;
 import org.confluence.mod.mixed.ILevelRenderer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.jetbrains.annotations.Nullable;
 
 public final class ClientPacketHandler {
     private static int maxMana = 20;
     private static float currentMana = 20;
-//    private static int maxSoul = 10;
+    //    private static int maxSoul = 10;
 //    private static float currentSoul = 10;
     private static float fishingPower = 0.0F;
     private static boolean echoVisible = false;
     private static long secretFlag = 0L;
     private static boolean showSignal = false;
+    private static boolean sunglasses = false;
 //    private static boolean fallenSoulCoreActive = false;
+
+    public static @Nullable ResourceLocation sunTexture;
 
     private static int luminance = 0;
     private static final Int2IntMap remoteLuminance = new Int2IntArrayMap();
@@ -128,6 +136,10 @@ public final class ClientPacketHandler {
         if ((mask & VisibilityPacketS2C.SIGNAL) != 0) {
             showSignal = visible;
         }
+        if ((mask & VisibilityPacketS2C.SUNGLASSES) != 0) {
+            sunglasses = visible;
+        }
+        chooseSunTexture();
     }
 
     public static void handleSecretFlag(SecretFlagSyncPacketS2C packet) {
@@ -135,6 +147,7 @@ public final class ClientPacketHandler {
         if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
             ILevelRenderer.rebuildAllChunks();
         }
+        chooseSunTexture();
     }
 
     public static void handleDeathInfo(PlayerDeathInfoPacketS2C packet, Player player) {
@@ -175,5 +188,15 @@ public final class ClientPacketHandler {
     public static void handleCloak() {
         GlobalCloakData.INSTANCE.rollbackAllProperties();
         ILevelRenderer.rebuildAllChunks();
+    }
+
+    private static void chooseSunTexture() {
+        if (sunglasses) {
+            sunTexture = ModClientSetups.SUNGLASSES_TEXTURE;
+        } else if (ModSecretSeeds.BOULDER_WORLD.match(ClientPacketHandler.getSecretFlag())) {
+            sunTexture = BoulderWorld.BOULDER_SUN_TEXTURE;
+        } else {
+            sunTexture = null;
+        }
     }
 }

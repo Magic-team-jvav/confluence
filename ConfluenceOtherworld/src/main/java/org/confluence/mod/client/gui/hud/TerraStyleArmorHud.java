@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.event.ModClientSetups;
 
 import java.util.Locale;
 
@@ -65,7 +66,7 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
                 int heightArmor = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(59160153);
-                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, ARMOR, ARMOR_HIGH, ARMOR_LOW, armor, widthArmor, heightArmor, OVERLAY_SIZE, 20, true);
+                colorDraw(guiGraphics, minecraft, random, ModClientSetups.OVERLAY_SPRITE, ARMOR, ARMOR_HIGH, ARMOR_LOW, armor, widthArmor, heightArmor, OVERLAY_SIZE, 20, true);
             }
         };
 
@@ -109,7 +110,7 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
             widthOffset = widthOffset > 0 ? widthOffset : 0;
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(-widthOffset, 0.0F, 0.0F);
-            guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 0, 51, widthArmor, heightArmor, 23, 25);
+            guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 0, 51, widthArmor, heightArmor, 23, 25);
             guiGraphics.pose().popPose();
             if (armorToughnessNum == 0) {
                 drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - v - widthOffset, heightArmor + 12.5F - v2, colorArmor);

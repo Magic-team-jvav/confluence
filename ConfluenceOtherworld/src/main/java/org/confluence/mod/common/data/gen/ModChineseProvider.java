@@ -242,7 +242,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.crystal_assassin_armor", "水晶刺客盔甲");
         add("itemGroup.confluence.hallowed_armor", "神圣盔甲");
         add("itemGroup.confluence.magic_robes", "魔法长袍");
-        add("itemGroup.confluence.single_vanity", "单件时装");
         add("itemGroup.confluence.dyes", "染料");
         add("itemGroup.confluence.tuxedo_set", "燕尾服套装");
         add("itemGroup.confluence.plumbers_set", "水管工套装");

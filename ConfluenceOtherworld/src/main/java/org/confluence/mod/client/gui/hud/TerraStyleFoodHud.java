@@ -10,10 +10,12 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.event.ModClientSetups;
 
 import java.util.Locale;
 
-import static org.confluence.mod.util.ClientUtils.*;
+import static org.confluence.mod.util.ClientUtils.OVERLAY_SIZE;
+import static org.confluence.mod.util.ClientUtils.draw;
 
 public class TerraStyleFoodHud implements LayeredDraw.Layer {
     @Override
@@ -61,14 +63,14 @@ public class TerraStyleFoodHud implements LayeredDraw.Layer {
                 int heightFood = guiGraphics.guiHeight() - minecraft.gui.rightHeight;
                 minecraft.gui.rightHeight += 10;
                 for (int i = 0; i < 10; i++) {
-                    guiGraphics.blitSprite(OVERLAY_TEXTURE, OVERLAY_SIZE, OVERLAY_SIZE, 60, 30, (widthFood + i * 8), heightFood, 9, 9);
+                    guiGraphics.blitSprite(ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, OVERLAY_SIZE, 60, 30, (widthFood + i * 8), heightFood, 9, 9);
                 }
                 if (hunger) {
-                    draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, 20, 30, false, 1, 20);
+                    draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 20, 30, false, 1, 20);
                 } else {
-                    draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, 0, 30, false, 1, 20);
+                    draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 0, 30, false, 1, 20);
                 }
-                draw(widthFood, heightFood, guiGraphics, foodSaturationI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, 40, 30, false, 1, 20);
+                draw(widthFood, heightFood, guiGraphics, foodSaturationI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 40, 30, false, 1, 20);
             }
         };
 

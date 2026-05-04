@@ -18,9 +18,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
+import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terraentity.integration.curios.CuriosHelper;
@@ -58,6 +61,11 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     public static final int MINECART_INDEX = 2;
     public static final int HOOK_INDEX = 3;
     public static final int MOUNT_INDEX = 4;
+
+    public static final int VANITY_HEAD_INDEX = 0;
+    public static final int VANITY_CHEST_INDEX = 1;
+    public static final int VANITY_LEGS_INDEX = 2;
+    public static final int VANITY_FEET_INDEX = 3;
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventory> STREAM_CODEC = new StreamCodec<>() {
         @Override
@@ -218,6 +226,9 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
                 ExtraInventoryStackPacketS2C.sendToPlayersTrackingEntityAndSelf(player, player, accessoryDye.size(), i, itemStack);
                 if (previous.getItem() instanceof BaseHookItem hookItem) {
                     hookItem.onUnequip(player, itemStack, previous);
+                }
+                if (i - VANITY_ARMOR_START == VANITY_HEAD_INDEX) {
+                    VisibilityPacketS2C.sendSunglasses(player, TriState.DEFAULT, itemStack.is(VanityArmorItems.SUNGLASSES) ? TriState.TRUE : TriState.FALSE);
                 }
                 previousStacks.set(i, itemStack.copy());
             }

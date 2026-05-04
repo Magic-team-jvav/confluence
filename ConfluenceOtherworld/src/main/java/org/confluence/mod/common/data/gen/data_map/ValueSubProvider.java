@@ -653,6 +653,8 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.SPACE_GUN, silver20 + silver20)
                 .add(ManaWeaponItems.WATER_BOLT, gold1 + silver50)
                 .add(ManaWeaponItems.DEMON_SCYTHE, gold1 + silver50)
+                .add(ManaWeaponItems.MAGIC_MISSILE, gold1 + silver50+ silver20+ silver5)
+                .add(ManaWeaponItems.FLAMELASH, gold2 + silver50)
                 .add(ManaWeaponItems.BOOK_OF_SKULLS, gold1 + silver50)
                 .add(ManaWeaponItems.FLOWER_OF_FIRE, gold2 + silver50)
                 .add(ManaWeaponItems.THUNDER_ZAPPER, 2100)

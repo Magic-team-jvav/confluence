@@ -23,7 +23,7 @@ public class FlamelashItem extends ManaStaffItem<FlamelashProjectile> {
     public static final int COOLDOWN = 2;
 
     public FlamelashItem() {
-        super(ModRarity.ORANGE, FlamelashProjectile::new, 32, 21, 12, COOLDOWN, 0.04);
+        super(ModRarity.ORANGE, FlamelashProjectile::new, 21, 21, 12, COOLDOWN, 0.04);
     }
 
     @Override

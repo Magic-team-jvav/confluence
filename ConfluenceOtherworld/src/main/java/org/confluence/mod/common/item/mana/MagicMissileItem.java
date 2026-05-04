@@ -23,7 +23,7 @@ public class MagicMissileItem extends ManaStaffItem<MagicMissileProjectile> {
     public static final int COOLDOWN = 2;
 
     public MagicMissileItem() {
-        super(ModRarity.GREEN, MagicMissileProjectile::new, 35, 14, 12, COOLDOWN, 0.04);
+        super(ModRarity.GREEN, MagicMissileProjectile::new, 22, 14, 12, COOLDOWN, 0.04);
     }
 
     @Override

@@ -29,7 +29,6 @@ public class MagicMissileProjectile extends AbstractManaProjectile {
     private final ITrackType trackType = new BasisTrack(90, 0.4F);
     private boolean shot;
 
-    // ========== 新增：粒子发射器 ==========
     private ParticleEmitter emitter;
 
     public MagicMissileProjectile(EntityType<? extends MagicMissileProjectile> entityType, Level level) {

@@ -17,18 +17,24 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.item.mana.FlamelashItem;
 import org.confluence.terraentity.api.entity.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
 import org.confluence.terraentity.utils.TEUtils;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class FlamelashProjectile extends AbstractManaProjectile {
     public static final double RANGE = 6.0 * 2 / 3;
 
     private final ITrackType trackType = new BasisTrack(90, 0.4F);
     private boolean shot;
+
+    // 新增：粒子发射器
+    private org.mesdag.particlestorm.particle.ParticleEmitter emitter;
 
     public FlamelashProjectile(EntityType<? extends FlamelashProjectile> entityType, Level level) {
         super(entityType, level);
@@ -41,6 +47,13 @@ public class FlamelashProjectile extends AbstractManaProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
+
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("flamelash_projectile"));
+            emitter.attachEntity(this);
+            PSGameClient.LOADER.addEmitter(emitter, false);
+        }
+
         LivingEntity owner = getLivingOwner();
         if (owner == null) return;
 

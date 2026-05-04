@@ -811,6 +811,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.bee_keeper.1", "“口蜜腹剑”");
         add("tooltip.item.confluence.star_steel_sword.0", "轻击敌怪时，概率使敌怪掉落魔力星");
         add("tooltip.item.confluence.star_steel_sword.1", "拾取魔力星后1秒内，触发2.5倍伤害暴击");
+        add("tooltip.item.confluence.magic_missile.0", "发射一枚可控的飞弹");
+        add("tooltip.item.confluence.flamelash.0", "召唤可控的火球");
 
         add("tooltip.item.confluence.soul_of_light.0", "“光明生物的精华”");
         add("tooltip.item.confluence.soul_of_night.0", "“黑暗生物的精华”");
@@ -3658,6 +3660,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.FLOWER_OF_FIRE.get(), "火之花");
         add(ManaWeaponItems.DEMON_SCYTHE.get(), "恶魔之镰");
         add(ManaWeaponItems.WATER_BOLT.get(), "水矢");
+        add(ManaWeaponItems.MAGIC_MISSILE.get(), "魔法飞弹");
+        add(ManaWeaponItems.FLAMELASH.get(), "烈焰火鞭");
         add(ManaWeaponItems.MAGIC_DAGGER.get(), "魔法飞刀");
         add(ManaWeaponItems.CRYSTAL_STORM.get(), "水晶风暴");
         add(ManaWeaponItems.CURSED_FLAMES.get(), "诅咒焰");

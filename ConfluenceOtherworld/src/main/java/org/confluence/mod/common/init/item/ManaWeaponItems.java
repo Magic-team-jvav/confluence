@@ -36,10 +36,10 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<WaterBoltProjectile>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 19.5F, 10, 4.5F, 7, 0.04));
     public static final DeferredItem<AquaScepterItem> AQUA_SCEPTER = ITEMS.register("aqua_scepter", AquaScepterItem::new);
     public static final DeferredItem<MagicMissileItem> MAGIC_MISSILE = ITEMS.register("magic_missile", MagicMissileItem::new);
-    public static final DeferredItem<FlamelashItem> FLAMELASH = ITEMS.register("flamelash", FlamelashItem::new);
+
     public static final DeferredItem<ManaStaffItem<DemonScytheProjectile>> DEMON_SCYTHE = ITEMS.register("demon_scythe", () -> new ManaStaffItem<>(ModRarity.ORANGE, DemonScytheProjectile::new, 25.8f, 14, 0.2F, 3, 0.04));
     public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 29F, 12, 7.5F, 7, 0.04));
-    /* 烈焰火鞭 */
+    public static final DeferredItem<FlamelashItem> FLAMELASH = ITEMS.register("flamelash", FlamelashItem::new);
     public static final DeferredItem<CloudRodItem> NIMBUS_ROD = ITEMS.register("nimbus_rod", () -> new CloudRodItem(ModRarity.LIGHT_PURPLE, player -> new CloudProjectile(ModEntities.RAIN_CLOUD_PROJECTILE.get(), ModEntities.RAIN_PROJECTILE.get(), player, 2, 5), 15, 30, 16, 3, 0.04).setMaxCloud(2));
     public static final DeferredItem<ManaStaffItem<BallOfFrostProjectile>> FLOWER_OF_FROST = ITEMS.register("flower_of_frost", () -> new ManaStaffItem<>(ModRarity.PINK, BallOfFrostProjectile::new, 35, 11, 9, 4, 0.04));
     public static final DeferredItem<ManaStaffItem<MagicDaggerProjectile>> MAGIC_DAGGER = ITEMS.register("magic_dagger", MagicDaggerItem::new);

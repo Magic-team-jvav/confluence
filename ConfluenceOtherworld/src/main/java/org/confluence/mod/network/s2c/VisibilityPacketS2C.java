@@ -19,6 +19,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.VanityArmorItems;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
@@ -79,6 +80,9 @@ public record VisibilityPacketS2C(byte mask) implements IPacketS2C {
         boolean visible = (normal.isDefault() && player.getItemBySlot(EquipmentSlot.HEAD).is(VanityArmorItems.SUNGLASSES)) || normal.isTrue();
         if (!visible) {
             visible = (extra.isDefault() && ExtraInventory.of(player).getVanityArmor(ExtraInventory.VANITY_HEAD_INDEX, false).is(VanityArmorItems.SUNGLASSES)) || extra.isTrue();
+        }
+        if (visible) {
+            AchievementUtils.awardAchievement(player, "on_fleek");
         }
         PacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(SUNGLASSES, visible));
     }

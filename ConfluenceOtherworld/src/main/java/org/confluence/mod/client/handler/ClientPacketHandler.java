@@ -15,7 +15,6 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.IDeathScreen;
 import org.confluence.mod.mixed.ILevelRenderer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -191,10 +190,13 @@ public final class ClientPacketHandler {
     }
 
     private static void chooseSunTexture() {
-        if (sunglasses) {
+        boolean boulderWorld = ModSecretSeeds.BOULDER_WORLD.match(ClientPacketHandler.getSecretFlag());
+        if (sunglasses && boulderWorld) {
+            sunTexture = ModClientSetups.SUNGLASSES_BOULDER_TEXTURE;
+        } else if (sunglasses) {
             sunTexture = ModClientSetups.SUNGLASSES_TEXTURE;
-        } else if (ModSecretSeeds.BOULDER_WORLD.match(ClientPacketHandler.getSecretFlag())) {
-            sunTexture = BoulderWorld.BOULDER_SUN_TEXTURE;
+        } else if (boulderWorld) {
+            sunTexture = ModClientSetups.BOULDER_SUN_TEXTURE;
         } else {
             sunTexture = null;
         }

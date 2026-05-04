@@ -96,7 +96,11 @@ public final class ModClientSetups {
     public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
     public static final ResourceLocation LEGACY_SPRITE = Confluence.asResource("hud/icon");
     public static final ResourceLocation OVERLAY_SPRITE = Confluence.asResource("hud/overlay");
-    public static final ResourceLocation SUNGLASSES_TEXTURE = Confluence.asResource("textures/environment/sunglasses.png"); // todo dynamic texture
+    // region sun todo dynamic texture
+    public static final ResourceLocation SUNGLASSES_TEXTURE = Confluence.asResource("textures/environment/sunglasses.png");
+    public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");
+    public static final ResourceLocation SUNGLASSES_BOULDER_TEXTURE = Confluence.asResource("textures/environment/sunglasses_boulder.png");
+    // endregion
     private static final NormalNoise normalNoise = NormalNoise.create(RandomSource.create(0), new NormalNoise.NoiseParameters(-5, 1.0, 1.0, 1.0, 1.0));
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
         private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");

@@ -9,7 +9,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.ModItems;
@@ -21,8 +20,6 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import java.util.Optional;
 
 public class BoulderWorld extends SecretSeed {
-    public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");
-
     public BoulderWorld(long flag, ResourceLocation id) {
         super(flag, id);
     }

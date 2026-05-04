@@ -12,6 +12,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.item.IFunctionCouldEnable;
 import org.confluence.lib.network.IPacketS2C;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
@@ -20,6 +21,7 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
@@ -81,7 +83,16 @@ public record VisibilityPacketS2C(byte mask) implements IPacketS2C {
         if (!visible) {
             visible = (extra.isDefault() && ExtraInventory.of(player).getVanityArmor(ExtraInventory.VANITY_HEAD_INDEX, false).is(VanityArmorItems.SUNGLASSES)) || extra.isTrue();
         }
-        if (visible) {
+        if (visible &&
+                player.getY() > OverworldUtils.getSurfaceY() &&
+                !ModSecretSeeds.DONT_DIG_UP.match(player.server) &&
+                !player.level().isRaining() &&
+                LibDateUtils.isWithinDayTime(
+                        LibDateUtils.getDayTime(5, 30),
+                        LibDateUtils.getDayTime(18, 30),
+                        player.level()
+                )
+        ) {
             AchievementUtils.awardAchievement(player, "on_fleek");
         }
         PacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(SUNGLASSES, visible));

@@ -51,7 +51,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
     protected ItemAttributeModifiers modifiers;
 
     public AbstractFishingPole(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(1));
     }
 
     public AbstractFishingPole(ModRarity rarity) {
@@ -59,7 +59,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
     }
 
     public AbstractFishingPole(Properties properties, ModRarity rarity) {
-        super(properties.component(ConfluenceMagicLib.MOD_RARITY.get(), rarity));
+        this(properties.component(ConfluenceMagicLib.MOD_RARITY.get(), rarity));
     }
 
     @Override
@@ -151,6 +151,11 @@ public abstract class AbstractFishingPole extends FishingRodItem {
     @Override
     public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
         return modifiers == null ? super.getDefaultAttributeModifiers(stack) : modifiers;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return stack.getMaxStackSize() == 1;
     }
 
     public static ItemStack getBait(HolderLookup.Provider provider, ItemStack fishingPole) {

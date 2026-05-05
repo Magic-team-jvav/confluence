@@ -201,6 +201,7 @@ boolean dynamicCrosshair = false // 动态准星
 boolean kubejs = false
 boolean quark = false
 boolean cobblemon = false
+boolean bettercombat = false
 
 boolean offline = true
 
@@ -326,9 +327,8 @@ dependencies {
     compileOnly "curse.maven:dynamiclights-reforged-551736:5807536"
 
     compileOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
-    if (false) {
+    if (bettercombat) {
         runtimeOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
-        runtimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
     }
 
     compileOnly "curse.maven:lithium-360438:6290413"
@@ -407,8 +407,11 @@ dependencies {
         runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.1.8"
         runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.5.0"
     }
-    if (observable || ftb || kubejs) {
+    if (observable || ftb || kubejs || bettercombat) {
         runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    }
+    if (bettercombat) {
+        runtimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
     }
     if (observable || ipn || lootBeams || cobblemon) {
         runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"

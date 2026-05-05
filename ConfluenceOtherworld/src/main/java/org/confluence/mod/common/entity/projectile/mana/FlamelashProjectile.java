@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -32,9 +30,7 @@ public class FlamelashProjectile extends AbstractManaProjectile {
 
     private final ITrackType trackType = new BasisTrack(90, 0.4F);
     private boolean shot;
-
-    // 新增：粒子发射器
-    private org.mesdag.particlestorm.particle.ParticleEmitter emitter;
+    private ParticleEmitter emitter;
 
     public FlamelashProjectile(EntityType<? extends FlamelashProjectile> entityType, Level level) {
         super(entityType, level);
@@ -47,12 +43,6 @@ public class FlamelashProjectile extends AbstractManaProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
-
-        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
-            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("flamelash_projectile"));
-            emitter.attachEntity(this);
-            PSGameClient.LOADER.addEmitter(emitter, false);
-        }
 
         LivingEntity owner = getLivingOwner();
         if (owner == null) return;
@@ -81,6 +71,13 @@ public class FlamelashProjectile extends AbstractManaProjectile {
                 }
                 this.shot = true;
             }
+        }
+
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("flamelash_projectile"));
+            emitter.attachEntity(this);
+            emitter.offsetPos = new Vec3(0, getBbHeight() / 2, 0);
+            PSGameClient.LOADER.addEmitter(emitter, false);
         }
 
         if (!level().isClientSide) {
@@ -119,7 +116,6 @@ public class FlamelashProjectile extends AbstractManaProjectile {
     }
 
     private void doExplosion() {
-        ((ServerLevel) level()).sendParticles(ParticleTypes.EXPLOSION, getX(), getY(), getZ(), 4, 1, 1, 1, 0);
         level().playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.VOICE);
         for (LivingEntity living : level().getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(blockPosition()).inflate(RANGE / 2), this::canHitEntity)) {
             doHurtEntity(living);

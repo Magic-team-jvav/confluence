@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
@@ -28,7 +27,6 @@ public class MagicMissileProjectile extends AbstractManaProjectile {
 
     private final ITrackType trackType = new BasisTrack(90, 0.4F);
     private boolean shot;
-
     private ParticleEmitter emitter;
 
     public MagicMissileProjectile(EntityType<? extends MagicMissileProjectile> entityType, Level level) {
@@ -42,12 +40,6 @@ public class MagicMissileProjectile extends AbstractManaProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
-
-        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
-            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("magic_missile_projectile"));
-            emitter.attachEntity(this);
-            PSGameClient.LOADER.addEmitter(emitter, false);
-        }
 
         LivingEntity owner = getLivingOwner();
         if (owner == null) return;
@@ -77,6 +69,13 @@ public class MagicMissileProjectile extends AbstractManaProjectile {
                 this.shot = true;
             }
         }
+
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("magic_missile_projectile"));
+            emitter.attachEntity(this);
+            emitter.offsetPos = new Vec3(0, getBbHeight() / 2, 0);
+            PSGameClient.LOADER.addEmitter(emitter, false);
+        }
     }
 
     @Override
@@ -93,9 +92,6 @@ public class MagicMissileProjectile extends AbstractManaProjectile {
 
     private void doExplosion() {
         if (level().isClientSide) {
-            for (int i = 0; i < 4; i++) {
-                level().addParticle(ParticleTypes.EXPLOSION, getRandomX(2), getY(4 * random.nextDouble() - 2), getRandomZ(2), 0, 0, 0);
-            }
             level().playSound(LibClientUtils.getPlayer(), blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.VOICE);
         } else {
             for (LivingEntity living : level().getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(blockPosition()).inflate(RANGE / 2), this::canHitEntity)) {

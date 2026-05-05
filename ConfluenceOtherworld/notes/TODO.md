@@ -181,7 +181,6 @@
 
 - 只在有WayStone时卖晶塔改成正常售卖但WayStone不存在时仅提示语
 - 晶塔在WayStone不存在时正常售卖，交互改成提示WayStone缺失(古老的法术连结需要更多信息)
-- https://www.curseforge.com/minecraft/mc-mods/barched（与该模组的崩溃，位置位于https://discord.com/channels/1319581816939745322/1383515990028976130/threads/1482213619272781856）
 - 事件：大风天、沙尘暴（雾与粒子）、暴风雪（雾与粒子）（我将会进一步撰写事件note）
 - 环境改造器以及溶液
 - 更换一部分制作站GUI

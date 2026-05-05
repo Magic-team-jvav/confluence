@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.color.GlobalColors;
@@ -25,10 +26,11 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class BloodMoonGameEvent implements GameEvent {
+public enum BloodMoonGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<BloodMoonGameEvent> KEY = GameEvent.createKey(Confluence.asResource("blood_moon"));
-    public static final BloodMoonGameEvent INSTANCE = new BloodMoonGameEvent();
     public static final String ENTITY_TAG = "spawn_during_blood_moon";
+
     private transient MinecraftServer server;
     private transient ServerLevel level;
     private transient boolean forceStart;
@@ -37,7 +39,14 @@ public final class BloodMoonGameEvent implements GameEvent {
     private transient WeightedRandomList<MobSpawnSettings.SpawnerData> spawnerData = WeightedRandomList.create();
     private boolean started;
 
-    private BloodMoonGameEvent() {}
+    public final CustomSpawner spawner = (level, spawnEnemies, spawnFriendlies) -> {
+        if (!started || !spawnEnemies) return 0;
+        return GameEventSystem.customSpawner(this, level, spawned,
+                CommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_BASE.get(),
+                CommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
+                CommonConfigs.BLOOD_MOON_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
+                spawnerData, ENTITY_TAG, true);
+    };
 
     @Override
     public void open(MinecraftServer server) {
@@ -60,14 +69,7 @@ public final class BloodMoonGameEvent implements GameEvent {
     }
 
     @Override
-    public void tick() {
-        if (!started) return;
-        GameEventSystem.customSpawner(this, level, spawned,
-                CommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_BASE.get(),
-                CommonConfigs.BLOOD_MOON_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
-                CommonConfigs.BLOOD_MOON_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
-                spawnerData, ENTITY_TAG, true);
-    }
+    public void tick() {}
 
     @Override
     public boolean canStart() {

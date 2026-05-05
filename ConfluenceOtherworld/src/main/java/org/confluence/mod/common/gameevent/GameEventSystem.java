@@ -204,7 +204,7 @@ public enum GameEventSystem implements IGlobalData {
         });
     }
 
-    public static void customSpawner(
+    public static int customSpawner(
             GameEvent event,
             ServerLevel level,
             Set<Entity> spawned,
@@ -218,11 +218,12 @@ public enum GameEventSystem implements IGlobalData {
         Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
             event.forceEnd();
-            return;
+            return 0;
         }
         removeUnTracked(spawned, level);
         List<ServerPlayer> players = level.players();
-        if (spawned.size() >= base + players.size() * perPlayer) return;
+        if (spawned.size() >= base + players.size() * perPlayer) return 0;
+        int last = spawned.size();
         for (ServerPlayer player : players) {
             NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
@@ -253,5 +254,6 @@ public enum GameEventSystem implements IGlobalData {
                 }
             }
         }
+        return spawned.size() - last;
     }
 }

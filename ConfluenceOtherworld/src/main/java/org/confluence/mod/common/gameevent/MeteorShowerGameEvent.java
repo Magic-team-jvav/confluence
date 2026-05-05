@@ -13,7 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
@@ -31,10 +31,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public final class MeteorShowerGameEvent implements GameEvent {
+public enum MeteorShowerGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<MeteorShowerGameEvent> KEY = GameEvent.createKey(Confluence.asResource("meteor_shower"));
-    public static final MeteorShowerGameEvent INSTANCE = new MeteorShowerGameEvent();
     public static final String ENTITY_TAG = "spawn_during_meteor_shower";
+
     private transient boolean isCelebrationMK10;
     private transient ServerLevel level;
     private transient boolean forceStart;
@@ -42,38 +43,20 @@ public final class MeteorShowerGameEvent implements GameEvent {
     private transient final Set<Entity> spawned = new HashSet<>();
     private boolean started;
 
-    private MeteorShowerGameEvent() {}
-
-    @Override
-    public void open(MinecraftServer server) {
-        this.isCelebrationMK10 = ModSecretSeeds.CELEBRATIONMK10.match(server);
-        this.level = OverworldUtils.getLevel(server);
-    }
-
-    @Override
-    public void close(MinecraftServer server) {
-        this.level = null;
-        for (Entity entity : spawned) {
-            entity.discard();
-        }
-        spawned.clear();
-    }
-
-    @Override
-    public void tick() {
-        if (!started) return;
-        if (!level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) return;
+    public final CustomSpawner spawner = (level, spawnEnemies, spawnFriendlies) -> {
+        if (!started || !spawnFriendlies) return 0;
         Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
             forceEnd();
-            return;
+            return 0;
         }
         GameEventSystem.removeUnTracked(spawned, level);
         List<ServerPlayer> players = level.players();
         if (spawned.size() >= CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_BASE.get() + players.size() * CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_PER_PLAYER.get()) {
-            return;
+            return 0;
         }
         ServerChunkCache chunkCache = level.getChunkSource();
+        int last = spawned.size();
         for (ServerPlayer player : players) {
             NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
@@ -100,7 +83,26 @@ public final class MeteorShowerGameEvent implements GameEvent {
                 }
             }
         }
+        return spawned.size() - last;
+    };
+
+    @Override
+    public void open(MinecraftServer server) {
+        this.isCelebrationMK10 = ModSecretSeeds.CELEBRATIONMK10.match(server);
+        this.level = OverworldUtils.getLevel(server);
     }
+
+    @Override
+    public void close(MinecraftServer server) {
+        this.level = null;
+        for (Entity entity : spawned) {
+            entity.discard();
+        }
+        spawned.clear();
+    }
+
+    @Override
+    public void tick() {}
 
     @Override
     public boolean canStart() {

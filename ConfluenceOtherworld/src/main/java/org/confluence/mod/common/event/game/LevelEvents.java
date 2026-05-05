@@ -16,10 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.event.level.BlockDropsEvent;
-import net.neoforged.neoforge.event.level.BlockEvent;
-import net.neoforged.neoforge.event.level.ChunkWatchEvent;
-import net.neoforged.neoforge.event.level.ExplosionEvent;
+import net.neoforged.neoforge.event.level.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
@@ -27,7 +24,11 @@ import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.saved.SpaceSpawner;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
+import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -36,6 +37,7 @@ import org.confluence.mod.common.item.common.StaffOfRegrowth;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
 @EventBusSubscriber(modid = Confluence.MODID)
@@ -109,6 +111,16 @@ public final class LevelEvents {
     public static void farmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
         if (event.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldDamageEnvironment()) {
             event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void modifyCustomSpawners(ModifyCustomSpawnersEvent event) {
+        if (event.getLevel().dimension() == OverworldUtils.dimension()) {
+            event.addCustomSpawner(BloodMoonGameEvent.INSTANCE.spawner);
+            event.addCustomSpawner(GoblinArmyGameEvent.INSTANCE.spawner);
+            event.addCustomSpawner(MeteorShowerGameEvent.INSTANCE.spawner);
+            event.addCustomSpawner(new SpaceSpawner());
         }
     }
 }

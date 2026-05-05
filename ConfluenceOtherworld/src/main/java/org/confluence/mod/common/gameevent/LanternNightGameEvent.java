@@ -15,10 +15,11 @@ import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 
-public final class LanternNightGameEvent implements GameEvent {
+public enum LanternNightGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<LanternNightGameEvent> KEY = GameEvent.createKey(Confluence.asResource("lantern_night"));
-    public static final LanternNightGameEvent INSTANCE = new LanternNightGameEvent();
     private static final AttributeModifier MODIFIER = new AttributeModifier(Confluence.asResource("lantern_night"), 0.3, AttributeModifier.Operation.ADD_VALUE);
+
     private transient MinecraftServer server;
     private transient ServerLevel level;
     private transient boolean forceStart;
@@ -26,8 +27,6 @@ public final class LanternNightGameEvent implements GameEvent {
     private boolean started;
     private boolean scheduled;
     private int cooldown;
-
-    private LanternNightGameEvent() {}
 
     @Override
     public void open(MinecraftServer server) {

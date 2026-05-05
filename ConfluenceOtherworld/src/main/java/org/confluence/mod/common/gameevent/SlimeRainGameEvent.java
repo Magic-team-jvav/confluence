@@ -40,10 +40,11 @@ import java.util.Optional;
 import java.util.Set;
 
 /// [史莱姆雨](https://terraria.wiki.gg/zh/wiki/%E5%8F%B2%E8%8E%B1%E5%A7%86%E9%9B%A8)
-public final class SlimeRainGameEvent implements GameEvent {
+public enum SlimeRainGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<SlimeRainGameEvent> KEY = GameEvent.createKey(Confluence.asResource("slime_rain"));
-    public static final SlimeRainGameEvent INSTANCE = new SlimeRainGameEvent();
     public static final String ENTITY_TAG = "spawn_during_slime_rain";
+
     private static final int _12$00 = LibDateUtils.getDayTime(12, 0);
     private transient MinecraftServer server;
     private transient ServerLevel level;
@@ -57,8 +58,6 @@ public final class SlimeRainGameEvent implements GameEvent {
     private transient boolean haveKingSlime;
     private transient final Set<Entity> spawned = new HashSet<>();
     private transient WeightedRandomList<MobSpawnSettings.SpawnerData> spawnerData = WeightedRandomList.create();
-
-    private SlimeRainGameEvent() {}
 
     @Override
     public void open(MinecraftServer server) {

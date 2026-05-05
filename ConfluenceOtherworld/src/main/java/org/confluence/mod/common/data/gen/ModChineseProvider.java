@@ -205,6 +205,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.pearl_armor", "珍珠盔甲");
         add("itemGroup.confluence.ash_armor", "灰烬盔甲");
         add("itemGroup.confluence.pumpkin_armor", "南瓜盔甲");
+        add("itemGroup.confluence.hunters_armor", "猎人盔甲");
         add("itemGroup.confluence.rain_wear", "雨衣套装");
         add("itemGroup.confluence.snow_insulated_wear", "防寒套装");
         add("itemGroup.confluence.pink_snow_insulated_wear", "粉色防寒套装");
@@ -1254,6 +1255,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.cactus_set.0", "攻击者因为仙人掌尖刺受到伤害");
         // 南瓜
         add("armor_set_bonus.confluence.pumpkin_set.0", "伤害提高10%");
+        // 猎人
+        add("armor_set_bonus.confluence.hunters_set.0", "为击中的敌人附加狩猎效果");
         // 忍者
         add("armor_set_bonus.confluence.ninja_set.0", "移动速度提高20%");
         // 化石
@@ -3756,6 +3759,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.PUMPKIN_HELMET.get(), "南瓜头盔");
         add(ArmorItems.PUMPKIN_LEGGINGS.get(), "南瓜护腿");
         add(ArmorItems.PUMPKIN_BOOTS.get(), "南瓜靴子");
+        add(ArmorItems.HUNERS_HELMET.get(), "猎人头盔");
+        add(ArmorItems.HUNERS_CHESTPLATE.get(), "猎人胸甲");
+        add(ArmorItems.HUNERS_LEGGINGS.get(), "猎人护腿");
+        add(ArmorItems.HUNERS_BOOTS.get(), "猎人靴子");
         add(ArmorItems.RAIN_CAP.get(), "雨帽");
         add(ArmorItems.RAINCOAT.get(), "雨衣");
         add(ArmorItems.SNOW_CAPS.get(), "防雪帽");

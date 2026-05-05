@@ -19,6 +19,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 
 import java.util.function.Consumer;
 
+
 public class ArmorItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
@@ -196,6 +197,23 @@ public class ArmorItems {
             .geo("armor/ninja_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.015));
+
+    public static final DeferredItem<BaseArmorItem> HUNERS_HELMET = register("hunters_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/hunters_armor")
+            .rarity(ModRarity.BLUE)
+            .rangedDamage(0.05));
+    public static final DeferredItem<BaseArmorItem> HUNERS_CHESTPLATE = register("hunters_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/hunters_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(ConfluenceMagicLib.SKIP_CONSUME_AMMO_CHANCE, 0.10, AttributeModifier.Operation.ADD_VALUE));
+    public static final DeferredItem<BaseArmorItem> HUNERS_LEGGINGS = register("hunters_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/hunters_armor")
+            .rarity(ModRarity.BLUE)
+            .rangedDamage(0.05));
+    public static final DeferredItem<BaseArmorItem> HUNERS_BOOTS = register("hunters_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/hunters_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(ConfluenceMagicLib.SKIP_CONSUME_AMMO_CHANCE, 0.10, AttributeModifier.Operation.ADD_VALUE));;
 
     public static final DeferredItem<BaseArmorItem> LEAD_HELMET = register("lead_helmet", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/lead_armor")

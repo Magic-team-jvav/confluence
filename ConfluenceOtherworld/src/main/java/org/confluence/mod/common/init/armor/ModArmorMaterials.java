@@ -131,6 +131,11 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.BLACK_INK,
             "ninja", 1.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> HUNERS_ARMOR_MATERIALS = registerArmorMaterial("hunters_armor_materials",
+            3, 5, 5, 2,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
+            "hunters", 1.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> OBSIDIAN_ARMOR_MATERIALS = registerArmorMaterial("obsidian_armor_materials",
             3, 6, 5, 3,
             13, SoundEvents.ARMOR_EQUIP_LEATHER, Blocks.OBSIDIAN,

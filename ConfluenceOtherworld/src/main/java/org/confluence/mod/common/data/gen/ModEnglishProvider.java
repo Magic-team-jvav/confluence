@@ -246,6 +246,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.pearl_armor", "Pearl Armor");
         add("itemGroup.confluence.ash_armor", "Ash Armor");
         add("itemGroup.confluence.pumpkin_armor", "Pumpkin Armor");
+        add("itemGroup.confluence.hunters_armor", "Hunters Armor");
         add("itemGroup.confluence.rain_wear", "Rain Coat");
         add("itemGroup.confluence.snow_insulated_wear", "Snow Insulated Wear");
         add("itemGroup.confluence.pink_snow_insulated_wear", "Pink Snow Insulated Wear");
@@ -1227,6 +1228,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.pumpkin_set.0", "10% increased damage");
         // Ninja Set
         add("armor_set_bonus.confluence.ninja_set.0", "20% increased movement speed");
+        // Hunters Set
+        add("armor_set_bonus.confluence.hunters_set.0", "Applies Hunt effect to struck enemies");
         // Fossil Set
         add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
         // Cold Crystal Set

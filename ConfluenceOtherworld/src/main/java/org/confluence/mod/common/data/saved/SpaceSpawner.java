@@ -27,7 +27,7 @@ import java.util.Optional;
 public class SpaceSpawner implements CustomSpawner {
     private int nextTick;
     private final WeightedRandomList<Pair> spawnerData = WeightedRandomList.create(
-            new Pair(new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 3, 1, 2), (level, pos, csd, sd) -> {
+            new Pair(new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 3, 1, 1), (level, pos, csd, sd) -> {
                 RandomSource random = level.random;
                 int i = 0;
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);
@@ -63,7 +63,7 @@ public class SpaceSpawner implements CustomSpawner {
                 }
                 return i;
             }),
-            new Pair(new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 1, 1, 1), (level, pos, csd, sd) -> {
+            new Pair(new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 2, 1, 1), (level, pos, csd, sd) -> {
                 RandomSource random = level.random;
                 int i = 0;
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);

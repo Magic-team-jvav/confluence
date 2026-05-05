@@ -923,8 +923,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.the_crimson", "The Crimson");
         add("biome.confluence.the_crimson_desert", "The Crimson Desert");
         add("biome.confluence.the_crimson_tundra", "The Crimson Tundra");
-
         add("biome.minecraft.confluence_sky", "Space");
+        add("biome.confluence.chorus_forest", "Chorus Forest");
+        add("biome.confluence.chorus_plains", "Chorus Plains");
+        add("biome.confluence.dark_moon_flats", "Dark Moon Flats");
+        add("biome.confluence.inverse_forest", "Inverse Forest");
+        add("biome.confluence.inverse_plains", "Inverse Plains");
+        add("biome.confluence.moonblight_forest", "Moonblight Forest");
+        add("biome.confluence.moonblight_plains", "Moonblight Plains");
+        add("biome.confluence.moonlit_dry_sea", "Moonlit Dry Sea");
 
         new AchievementsLanguageSubProvider(this::add, true);
 
@@ -1511,10 +1518,12 @@ public class ModEnglishProvider extends LanguageProvider {
         addAll(ChainsawItems.ITEMS);
         addAll(ConsumableItems.ITEMS);
         addAll(CrossbowItems.ITEMS);
-        addAll(VanityArmorItems.ITEMS);
         addAll(DrillItems.ITEMS);
         addAll(FishingPoleItems.ITEMS);
+        addAll(FlailItems.ITEMS);
         addAll(FoodItems.ITEMS);
+        addAll(GardenShearsItems.ITEMS);
+        addAll(GunItems.ITEMS);
         addAll(HamaxeItems.ITEMS);
         addAll(HoeShovelItems.ITEMS);
         addAll(HammerItems.ITEMS);
@@ -1539,7 +1548,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addAll(SpearItems.ITEMS);
         addAll(ToolItems.ITEMS);
         addAll(TreasureBagItems.ITEMS);
-        addAll(GunItems.ITEMS);
+        addAll(VanityArmorItems.ITEMS);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));
@@ -1673,6 +1682,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");
         addEffect(ModEffects.ENEMY_BANNER.get(), "Increased damage and defense from the following: %s");
         addEffect(ModEffects.SUMMONING.get(), "Increased your max number of minions by 1");
+        addEffect(ModEffects.AROMATIC_SATIATION.get(), "Continuous response to hunger and satiety");
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
         addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");
@@ -1687,6 +1697,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(TEEffects.CRIMSON_STORM.get(), "You are trapped in the storm, there is no escape.");
         addEffect(TEEffects.HORRIFIED.get(), "You have seen something nasty, there is no escape.");
         addEffect(TEEffects.THE_TONGUE.get(), "You are being sucked into the mouth");
+        addEffect(TEEffects.SCARED.get(), "Like a bird startled by the sound of a bow, fleeing in all directions");
 
         add("item.confluence.spawn_eggs", "%s Spawn Egg");
 

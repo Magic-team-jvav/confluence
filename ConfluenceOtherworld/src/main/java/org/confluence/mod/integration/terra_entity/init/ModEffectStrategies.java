@@ -15,6 +15,7 @@ import org.confluence.terraentity.registries.hit_effect.variant.PrefabEffect;
 import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -77,6 +78,18 @@ public final class ModEffectStrategies {
      */
     private static final DeferredHolder<EffectStrategy, EffectStrategy> BEE_KEEPER_EFFECT = createEffect("bee_keeper",
             ON_HIT_PROJECTILE_COUNT.apply((level) -> ModEntities.BEE_PROJECTILE.get().create(level).addAttackDamage(2), 3));
+
+    /**
+     * 稻草人
+     * 参数：baseSpeed=0.3, baseTime=16.0(tick), baseRangeRandomMin=0.8, baseRangeRandomMax=1.2, baseOffsetMax=1.5, baseCubeRange=0（单体驱离）
+     */
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> SINGLE_DRIVE_AWAY = createEffect("single_drive_away",
+        (owner, target) -> {
+            if (target instanceof LivingEntity livingTarget) {
+                livingTarget.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                org.confluence.terraentity.init.TEEffects.SCARED.getDelegate(), 16 , 0 ));
+            }
+        });
 
     // 北斗飞镖
 //    private static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp",

@@ -1529,6 +1529,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
+        add(ModEntities.DRIVE_AWAY_ARROW.get(), "驱离箭");
         add(ModEntities.ANTI_GRAVITY_HOOK.get(), "反重力钩");
         add(ModEntities.BALL_OF_FIRE_PROJECTILE.get(), "火球弹");
         add(ModEntities.BASE_FISHING_HOOK.get(), "钓鱼钩");
@@ -3710,7 +3711,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.THE_BEES_KNEES.get(), "蜂膝弓");
         add(BowItems.MOLTEN_FURY.get(), "熔火之怒");
         add(BowItems.HELLWING_BOW.get(), "地狱之翼弓");
-
+        add(BowItems.SCAREBOW.get(), "稻草人弓");
 
         add(BowItems.DAEDALUS_STORM_BOW.get(), "代达罗斯风暴弓");
         add(BowItems.DEVELOPER_BOW.get(), "开发者弓");
@@ -4509,7 +4510,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(TEEffects.CRIMSON_STORM.get(), "猩红风暴", "你已陷入风暴，无可逃脱。");
         addEffect(TEEffects.HORRIFIED.get(), "惊恐", "你已看到污秽之物，无可逃脱。");
         addEffect(TEEffects.THE_TONGUE.get(), "狂卷之舌", "你被吸入嘴中");
-
+        addEffect(TEEffects.SCARED.get(), "惊慌", "如惊弓之鸟，四处逃串");
         add("item.confluence.spawn_eggs", "%s刷怪蛋");
 
         // 车万女仆

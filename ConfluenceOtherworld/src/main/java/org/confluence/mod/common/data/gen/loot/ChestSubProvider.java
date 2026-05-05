@@ -573,9 +573,15 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(manaEnchantedBookBuilder)
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
+                //星钢剑
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.STAR_STEEL_SWORD))
                         .add(EmptyLootItem.emptyItem().setWeight(3))
+                )
+                //稻草人弓
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BowItems.SCAREBOW.get()).setWeight(15))
+                        .add(EmptyLootItem.emptyItem().setWeight(85))
                 )
                 //先暂时使用空岛村箱子
         );

@@ -1687,6 +1687,7 @@ public final class ModTabs {
                         bow.accept(BowItems.THE_BEES_KNEES.get());
                         bow.accept(BowItems.MOLTEN_FURY.get());
                         bow.accept(BowItems.HELLWING_BOW.get());
+                        bow.accept(BowItems.SCAREBOW.get());
                         bow.accept(BowItems.DAEDALUS_STORM_BOW.get());
                         bow.accept(BowItems.DEVELOPER_BOW.get());
 

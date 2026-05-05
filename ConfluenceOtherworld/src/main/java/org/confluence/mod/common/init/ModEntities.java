@@ -19,6 +19,7 @@ import org.confluence.mod.common.entity.projectile.boulder.*;
 import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
+import org.confluence.mod.common.entity.projectile.range.arrow.DriveAwayArrow;
 import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
@@ -95,6 +96,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<BaseArrowEntity>> ARROW_PROJECTILE = ENTITIES.register("arrow_projectile", id -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<BeeArrow>> BEE_ARROW = ENTITIES.register("bee_arrow_projectile", id -> EntityType.Builder.<BeeArrow>of(BeeArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<HellBatArrowEntity>> HELL_BAT_ARROW = ENTITIES.register("hell_bat_arrow_projectile", id -> EntityType.Builder.<HellBatArrowEntity>of(HellBatArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<DriveAwayArrow>> DRIVE_AWAY_ARROW = ENTITIES.register("drive_away_arrow", id -> EntityType.Builder.<DriveAwayArrow>of(DriveAwayArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
 
     // 其它
     public static final DeferredHolder<EntityType<?>, EntityType<BoulderEntity>> BOULDER = ENTITIES.register("boulder", id -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));

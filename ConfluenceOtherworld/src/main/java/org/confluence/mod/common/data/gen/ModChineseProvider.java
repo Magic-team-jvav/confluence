@@ -206,6 +206,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.ash_armor", "灰烬盔甲");
         add("itemGroup.confluence.pumpkin_armor", "南瓜盔甲");
         add("itemGroup.confluence.hunters_armor", "猎人盔甲");
+        add("itemGroup.confluence.guards_armor", "守卫盔甲");
+        add("itemGroup.confluence.spelunker_armor", "探穴者盔甲");
         add("itemGroup.confluence.rain_wear", "雨衣套装");
         add("itemGroup.confluence.snow_insulated_wear", "防寒套装");
         add("itemGroup.confluence.pink_snow_insulated_wear", "粉色防寒套装");
@@ -1257,6 +1259,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.pumpkin_set.0", "伤害提高10%");
         // 猎人
         add("armor_set_bonus.confluence.hunters_set.0", "为击中的敌人附加狩猎效果");
+        // 守卫
+        add("armor_set_bonus.confluence.guards_set.0", "10%几率省下弹药");
+        // 探穴者
+        add("armor_set_bonus.confluence.spelunker_set.0", "仆从数量上限增加1");
+        add("armor_set_bonus.confluence.spelunker_set.1", "提升洞穴探险药水时长2分钟");
         // 忍者
         add("armor_set_bonus.confluence.ninja_set.0", "移动速度提高20%");
         // 化石
@@ -1646,7 +1653,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.FROST_DAGGERFISH_PROJECTILE.get(), "寒霜飞鱼射弹");
         add(ModEntities.DUNGEON_DEMON_BONE_PROJECTILE.get(), "地牢魔骨射弹");
         add(ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), "风暴之矛射弹");
-        add(ModEntities.RAIN_PROJECTILE.get(), "彩虹射弹");
+        add(ModEntities.RAINBOW_PROJECTILE.get(), "彩虹射弹");
         add(ModEntities.SKY_FRACTURE.get(), "裂天剑");
 
 
@@ -3765,6 +3772,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.HUNERS_CHESTPLATE.get(), "猎人胸甲");
         add(ArmorItems.HUNERS_LEGGINGS.get(), "猎人护腿");
         add(ArmorItems.HUNERS_BOOTS.get(), "猎人靴子");
+        add(ArmorItems.GUARDS_HELMET.get(), "守卫头盔");
+        add(ArmorItems.GUARDS_CHESTPLATE.get(), "守卫胸甲");
+        add(ArmorItems.GUARDS_LEGGINGS.get(), "守卫护腿");
+        add(ArmorItems.GUARDS_BOOTS.get(), "守卫靴子");
+        add(ArmorItems.SPELUNKER_HELMET.get(), "探穴者头盔");
+        add(ArmorItems.SPELUNKER_CHESTPLATE.get(), "探穴者胸甲");
+        add(ArmorItems.SPELUNKER_LEGGINGS.get(), "探穴者护腿");
+        add(ArmorItems.SPELUNKER_BOOTS.get(), "探穴者靴子");
         add(ArmorItems.RAIN_CAP.get(), "雨帽");
         add(ArmorItems.RAINCOAT.get(), "雨衣");
         add(ArmorItems.SNOW_CAPS.get(), "防雪帽");

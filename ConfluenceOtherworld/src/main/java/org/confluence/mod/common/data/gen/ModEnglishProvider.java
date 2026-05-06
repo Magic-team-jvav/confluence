@@ -247,6 +247,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.ash_armor", "Ash Armor");
         add("itemGroup.confluence.pumpkin_armor", "Pumpkin Armor");
         add("itemGroup.confluence.hunters_armor", "Hunters Armor");
+        add("itemGroup.confluence.guards_armor", "Guards Armor");
         add("itemGroup.confluence.rain_wear", "Rain Coat");
         add("itemGroup.confluence.snow_insulated_wear", "Snow Insulated Wear");
         add("itemGroup.confluence.pink_snow_insulated_wear", "Pink Snow Insulated Wear");
@@ -1230,6 +1231,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.ninja_set.0", "20% increased movement speed");
         // Hunters Set
         add("armor_set_bonus.confluence.hunters_set.0", "Applies Hunt effect to struck enemies");
+        // Guards Set
+        add("armor_set_bonus.confluence.guards_set.0", "10% chance to save ammo");
+        // Spelunker Set
+        add("armor_set_bonus.confluence.spelunker_set.0", "Increases your max number of minions by 1");
+        add("armor_set_bonus.confluence.spelunker_set.1", "Increase the duration of spelunker potions by 2 minutes");
         // Fossil Set
         add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
         // Cold Crystal Set

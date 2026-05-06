@@ -199,22 +199,57 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
             .criticalChance(0.015));
 
-    public static final DeferredItem<BaseArmorItem> HUNERS_HELMET = register("hunters_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final DeferredItem<BaseArmorItem> HUNERS_HELMET = register("hunters_helmet", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
             .rangedDamage(0.05));
-    public static final DeferredItem<BaseArmorItem> HUNERS_CHESTPLATE = register("hunters_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final DeferredItem<BaseArmorItem> HUNERS_CHESTPLATE = register("hunters_chestplate", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
             .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F)));
-    public static final DeferredItem<BaseArmorItem> HUNERS_LEGGINGS = register("hunters_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final DeferredItem<BaseArmorItem> HUNERS_LEGGINGS = register("hunters_leggings", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
             .rangedDamage(0.05));
-    public static final DeferredItem<BaseArmorItem> HUNERS_BOOTS = register("hunters_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final DeferredItem<BaseArmorItem> HUNERS_BOOTS = register("hunters_boots", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
             .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F)));
+
+    public static final DeferredItem<BaseArmorItem> GUARDS_HELMET = register("guards_helmet", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/guards_armor")
+            .rarity(ModRarity.GREEN)
+            .rangedDamage(0.05));
+    public static final DeferredItem<BaseArmorItem> GUARDS_CHESTPLATE = register("guards_chestplate", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/guards_armor")
+            .rarity(ModRarity.GREEN)
+            .rangedDamage(0.05));
+    public static final DeferredItem<BaseArmorItem> GUARDS_LEGGINGS = register("guards_leggings", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/guards_armor")
+            .rarity(ModRarity.GREEN)
+            .criticalChance(0.04));
+    public static final DeferredItem<BaseArmorItem> GUARDS_BOOTS = register("guards_boots", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/guards_armor")
+            .rarity(ModRarity.GREEN)
+            .criticalChance(0.04));
+
+    public static final DeferredItem<BaseArmorItem> SPELUNKER_HELMET = register("spelunker_helmet", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/spelunker_armor")
+            .rarity(ModRarity.GREEN)
+            .meleeDamage(0.07));
+    public static final DeferredItem<BaseArmorItem> SPELUNKER_CHESTPLATE = register("spelunker_chestplate", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/spelunker_armor")
+            .rarity(ModRarity.GREEN)
+            .summonDamage(0.05));
+    public static final DeferredItem<BaseArmorItem> SPELUNKER_LEGGINGS = register("spelunker_leggings", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/spelunker_armor")
+            .rarity(ModRarity.GREEN)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    public static final DeferredItem<BaseArmorItem> SPELUNKER_BOOTS = register("spelunker_boots", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/spelunker_armor")
+            .rarity(ModRarity.GREEN)
+            .summonDamage(0.07));
+
 
     public static final DeferredItem<BaseArmorItem> LEAD_HELMET = register("lead_helmet", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/lead_armor")

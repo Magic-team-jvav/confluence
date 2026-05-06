@@ -1305,6 +1305,18 @@ public final class ModTabs {
                         hunters_armor.accept(ArmorItems.HUNERS_LEGGINGS.get());
                         hunters_armor.accept(ArmorItems.HUNERS_BOOTS.get());
 
+                        CreativeModeTab.Output guards_armor = GroupItem.belongsTo("guards_armor", output);
+                        guards_armor.accept(ArmorItems.GUARDS_HELMET.get());
+                        guards_armor.accept(ArmorItems.GUARDS_CHESTPLATE.get());
+                        guards_armor.accept(ArmorItems.GUARDS_LEGGINGS.get());
+                        guards_armor.accept(ArmorItems.GUARDS_BOOTS.get());
+
+                        CreativeModeTab.Output spelunker_armor = GroupItem.belongsTo("spelunker_armor", output);
+                        spelunker_armor.accept(ArmorItems.SPELUNKER_HELMET.get());
+                        spelunker_armor.accept(ArmorItems.SPELUNKER_CHESTPLATE.get());
+                        spelunker_armor.accept(ArmorItems.SPELUNKER_LEGGINGS.get());
+                        spelunker_armor.accept(ArmorItems.SPELUNKER_BOOTS.get());
+
                         CreativeModeTab.Output spore_root_armor = GroupItem.belongsTo("spore_root_armor", output);
                         spore_root_armor.accept(ArmorItems.SPORE_ROOT_HELMET.get());
                         spore_root_armor.accept(ArmorItems.SPORE_ROOT_CHESTPLATE.get());

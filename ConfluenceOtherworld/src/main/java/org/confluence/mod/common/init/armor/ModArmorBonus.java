@@ -130,6 +130,14 @@ public final class ModArmorBonus {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             // todo 移动时身后有拖影效果
         });
+        register("guards_set", 1, GUARDS_HELMET, GUARDS_CHESTPLATE, GUARDS_LEGGINGS, GUARDS_BOOTS, key -> {
+            key.of(SKIP$CONSUME$AMMO$CHANCE, 0.1F);
+        });
+        register("spelunker_set", 2, SPELUNKER_HELMET, SPELUNKER_CHESTPLATE, SPELUNKER_LEGGINGS, SPELUNKER_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE));
+            // todo 蜡烛粒子
+            // todo 提升洞穴探索药水时长2分钟
+        });
         register("lead_set", 1, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS, armor(1));
         register("silver_set", 1, SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, armor(2));
         register("tungsten_set", 1, TUNGSTEN_HELMET, TUNGSTEN_CHESTPLATE, TUNGSTEN_LEGGINGS, TUNGSTEN_BOOTS, armor(1));

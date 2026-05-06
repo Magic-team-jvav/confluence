@@ -136,6 +136,16 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
             "hunters", 1.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> GUARDS_ARMOR_MATERIALS = registerArmorMaterial("guards_armor_materials",
+            3, 5, 5, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
+            "guards", 1.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> SPELUNKER_ARMOR_MATERIALS = registerArmorMaterial("spelunker_armor_materials",
+            3, 7, 7, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
+            "spelunker", 1.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> OBSIDIAN_ARMOR_MATERIALS = registerArmorMaterial("obsidian_armor_materials",
             3, 6, 5, 3,
             13, SoundEvents.ARMOR_EQUIP_LEATHER, Blocks.OBSIDIAN,

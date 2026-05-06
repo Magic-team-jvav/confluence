@@ -101,14 +101,16 @@ public final class ItemEvents {
     }
 
     @SubscribeEvent
-    public static void shirkAmmo(GunEvent.ShrinkBulletEvent event) {
+    public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
         if (event.getGun() instanceof ManaGunItem) {
+            event.setCanceled(true);
+        } else if (!event.isInfinity() && PlayerUtils.shouldSkipConsumeAmmo(event.getPlayer())) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void ammoData(GunEvent.AmmoDataEvent event) {
+    public static void gun$AmmoData(GunEvent.AmmoDataEvent event) {
         Player player = event.getPlayer();
         float velocityModify = (float) player.getAttributeValue(LibAttributes.getRangedVelocity());
         float knockbackModify = (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
@@ -127,22 +129,15 @@ public final class ItemEvents {
     }
 
     @SubscribeEvent
-    public static void ammoSelection(GunEvent.AmmoSelectionEvent event) {
+    public static void gun$AmmoSelection(GunEvent.AmmoSelectionEvent event) {
         if (GunItems.STAR_CANNON.toStack().is(event.getGun())) {
             event.setSelected(event.getAmmo().is(MaterialItems.FALLING_STAR.get()));
         }
     }
 
     @SubscribeEvent
-    public static void extraInventory(GunEvent.InventoryExtraEvent event) {
+    public static void gun$InventoryExtra(GunEvent.InventoryExtraEvent event) {
         event.addAmmoFirst(ExtraInventory.of(event.getPlayer()).getAllAmmo());
-    }
-
-    @SubscribeEvent
-    public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
-        if (!event.isInfinity() && PlayerUtils.shouldSkipConsumeAmmo(event.getPlayer())) {
-            event.setCanceled(true);
-        }
     }
 
     @SubscribeEvent

@@ -32,15 +32,15 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
     }
 
     @Override
-    protected void beforeShoot(ServerPlayer player, ItemStack itemStack, HurtnadoProjectile projectile) {
-        super.beforeShoot(player, itemStack, projectile);
+    protected void beforeShoot(ServerPlayer player, ItemStack stack, HurtnadoProjectile projectile) {
+        super.beforeShoot(player, stack, projectile);
         projectile.addDeltaMovement(new Vec3(0.0, 0.4, 0.0));
     }
 
     @Override
-    protected void afterShoot(ServerPlayer player, ItemStack itemStack, HurtnadoProjectile projectile) {
-        super.afterShoot(player, itemStack, projectile);
-        LibUtils.updateItemStackNbt(itemStack, tag -> {
+    protected void afterShoot(ServerPlayer player, ItemStack stack, HurtnadoProjectile projectile) {
+        super.afterShoot(player, stack, projectile);
+        LibUtils.updateItemStackNbt(stack, tag -> {
             if (tag.hasUUID("UUID") && player.serverLevel().getEntity(tag.getUUID("UUID")) instanceof HurtnadoProjectile projectile1) {
                 projectile1.discard();
             }

@@ -10,27 +10,27 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
-import org.confluence.mod.common.item.mana.MagicMissileItem;
+import org.confluence.mod.common.item.mana.RainbowRodItem;
 
-public class MagicMissileProjectile extends BaseDraggingProjectile {
+public class RainbowProjectile extends BaseDraggingProjectile {
     public static final double RANGE = 8.0 * 2 / 3;
 
-    public MagicMissileProjectile(EntityType<? extends MagicMissileProjectile> entityType, Level level) {
+    public RainbowProjectile(EntityType<? extends BaseDraggingProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
-    public MagicMissileProjectile(LivingEntity living) {
-        this(ModEntities.MAGIC_MISSILE_PROJECTILE.get(), living.level());
-    }
-
-    @Override
-    protected BaseDraggingStaffItem<?> getDraggingStaff() {
-        return ManaWeaponItems.MAGIC_MISSILE.get();
+    public RainbowProjectile(LivingEntity living) {
+        this(ModEntities.RAINBOW_PROJECTILE.get(), living.level());
     }
 
     @Override
     protected int getCooldown() {
-        return MagicMissileItem.COOLDOWN;
+        return RainbowRodItem.COOLDOWN;
+    }
+
+    @Override
+    protected BaseDraggingStaffItem<?> getDraggingStaff() {
+        return ManaWeaponItems.RAINBOW_ROD.get();
     }
 
     @Override
@@ -41,7 +41,9 @@ public class MagicMissileProjectile extends BaseDraggingProjectile {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        doExplosion(RANGE);
+        if (shot) {
+            doExplosion(RANGE);
+        }
     }
 
     @Override

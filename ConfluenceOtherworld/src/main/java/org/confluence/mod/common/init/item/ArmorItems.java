@@ -12,6 +12,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.armor.ModArmorMaterials;
 import org.confluence.mod.common.item.armor.BaseArmorItem;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
@@ -205,7 +206,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> HUNERS_CHESTPLATE = register("hunters_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(ConfluenceMagicLib.SKIP_CONSUME_AMMO_CHANCE, 0.10, AttributeModifier.Operation.ADD_VALUE));
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F)));
     public static final DeferredItem<BaseArmorItem> HUNERS_LEGGINGS = register("hunters_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
@@ -213,7 +214,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> HUNERS_BOOTS = register("hunters_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(ConfluenceMagicLib.SKIP_CONSUME_AMMO_CHANCE, 0.10, AttributeModifier.Operation.ADD_VALUE));;
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F)));
 
     public static final DeferredItem<BaseArmorItem> LEAD_HELMET = register("lead_helmet", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/lead_armor")
@@ -773,7 +774,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> TIKI_LEGGINGS = register("tiki_leggings", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
-            .attribute(ConfluenceMagicLib.WHIP_RANGE,0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(ConfluenceMagicLib.WHIP_RANGE, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredItem<BaseArmorItem> TIKI_BOOTS = register("tiki_boots", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
@@ -845,7 +846,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> SOUL_ROBE = register("soul_robe", ModArmorMaterials.SOUL_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/soul_robe")
             .rarity(ModRarity.GREEN)
-           );
+    );
 
     public static final DeferredItem<BaseArmorItem> GOGGLES = register("goggles", ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, builder -> {});
     public static final DeferredItem<BaseArmorItem> GREEN_CAP = register("green_cap", ModArmorMaterials.GREEN_CAP_MATERIAL, ArmorItem.Type.HELMET, builder -> {});

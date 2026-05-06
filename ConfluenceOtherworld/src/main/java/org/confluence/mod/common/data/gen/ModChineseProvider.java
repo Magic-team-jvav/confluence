@@ -1646,6 +1646,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.FROST_DAGGERFISH_PROJECTILE.get(), "寒霜飞鱼射弹");
         add(ModEntities.DUNGEON_DEMON_BONE_PROJECTILE.get(), "地牢魔骨射弹");
         add(ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), "风暴之矛射弹");
+        add(ModEntities.RAIN_PROJECTILE.get(), "彩虹射弹");
+        add(ModEntities.SKY_FRACTURE.get(), "裂天剑");
 
 
         //region blocks

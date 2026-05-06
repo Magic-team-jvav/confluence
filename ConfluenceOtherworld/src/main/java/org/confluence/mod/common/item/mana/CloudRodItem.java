@@ -44,9 +44,9 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
     }
 
     @Override
-    protected void beforeShoot(ServerPlayer player, ItemStack itemStack, CloudProjectile projectile) {
-        super.beforeShoot(player, itemStack, projectile);
-        CompoundTag tag = LibUtils.getItemStackNbtNoCopy(itemStack);
+    protected void beforeShoot(ServerPlayer player, ItemStack stack, CloudProjectile projectile) {
+        super.beforeShoot(player, stack, projectile);
+        CompoundTag tag = LibUtils.getItemStackNbtNoCopy(stack);
         ListTag clouds = tag.getList("Clouds", CompoundTag.TAG_INT_ARRAY);
         if (clouds.size() == maxCloud) {
             UUID removed = NbtUtils.loadUUID(clouds.removeFirst());
@@ -79,9 +79,9 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
     }
 
     @Override
-    protected void afterShoot(ServerPlayer player, ItemStack itemStack, CloudProjectile projectile) {
-        super.afterShoot(player, itemStack, projectile);
-        LibUtils.updateItemStackNbt(itemStack, tag -> {
+    protected void afterShoot(ServerPlayer player, ItemStack stack, CloudProjectile projectile) {
+        super.afterShoot(player, stack, projectile);
+        LibUtils.updateItemStackNbt(stack, tag -> {
             ListTag clouds = new ListTag();
             clouds.addAll(tag.getList("Clouds", Tag.TAG_INT_ARRAY));
             clouds.add(NbtUtils.createUUID(projectile.getUUID()));

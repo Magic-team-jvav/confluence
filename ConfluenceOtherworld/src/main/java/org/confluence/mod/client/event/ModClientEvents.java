@@ -362,6 +362,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(GOLDEN_SHOWER_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(MAGIC_MISSILE_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(FLAMELASH_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(RAINBOW_PROJECTILE.get(), NoopRenderer::new); // todo 粒子
+        event.registerEntityRenderer(SKY_FRACTURE.get(), NoopRenderer::new); // todo 模型
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);

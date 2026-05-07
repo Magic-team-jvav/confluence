@@ -17,7 +17,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.ModPrefix;
-import org.confluence.mod.common.data.fixer.RegistriesFixer;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
@@ -59,7 +58,6 @@ public final class Confluence {
         TFReferences.init();
         ModFluids.initialize();
         ModPrefix.initialize();
-        RegistriesFixer.initialize();
 
         ModTabs.TABS.register(eventBus);
         ModEntities.ENTITIES.register(eventBus);

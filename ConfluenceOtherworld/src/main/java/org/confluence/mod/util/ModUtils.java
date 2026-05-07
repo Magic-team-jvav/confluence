@@ -82,6 +82,7 @@ import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.utils.TEUtils;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -255,7 +256,8 @@ public final class ModUtils {
         }
     }
 
-    @Deprecated
+    @Deprecated(since = "1.3.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
     public static Component formatPrice(int price) {
         return ClientUtils.formatPrice(price);
     }

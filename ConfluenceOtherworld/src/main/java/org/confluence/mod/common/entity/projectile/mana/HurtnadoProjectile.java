@@ -5,17 +5,17 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.UnaryOperator;
 
 public class HurtnadoProjectile extends AbstractManaProjectile implements Immunity {
     private Entity target;
@@ -37,16 +37,7 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
             return;
         }
         super.baseTick();
-
-        Vec3 vec3 = getDeltaMovement();
-        move(MoverType.SELF, vec3.add(0.0, -getGravity(), 0.0));
-        Vec3 motion = getDeltaMovement();
-        if (!vec3.equals(motion)) {
-            if (motion.x != vec3.x) motion = new Vec3(-vec3.x, vec3.y, vec3.z);
-            if (motion.y != vec3.y) motion = new Vec3(vec3.x, -vec3.y, vec3.z);
-            if (motion.z != vec3.z) motion = new Vec3(vec3.x, vec3.y, -vec3.z);
-        }
-        setDeltaMovement(motion.add(0.0, -getGravity(), 0.0));
+        doBouncyMove(true, this::doNothing, UnaryOperator.identity());
 
         if (level().isClientSide) {
             if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;

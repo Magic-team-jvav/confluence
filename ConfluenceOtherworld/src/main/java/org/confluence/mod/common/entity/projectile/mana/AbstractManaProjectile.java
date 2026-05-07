@@ -1,12 +1,15 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -14,30 +17,40 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.jetbrains.annotations.ApiStatus;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     protected boolean localVelocity = false;
-    private Set<UUID> penetrateSet;
+    private Set<UUID> penetrateSet; // use getter
+    protected int collideCount;
+    protected ParticleEmitter emitter;
+    private Runnable particleChecker = this::doNothing;
 
     public AbstractManaProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
+    protected final void doNothing() {}
+
     @Override
-    public void tick() {
+    public final void tick() {
         if (getOwner() == null) {
             discard();
         } else {
             super.tick();
+            particleChecker.run();
             doHitCheck();
         }
     }
 
+    /// common
     protected void doHitCheck() {
         HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();
@@ -49,10 +62,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         }
     }
 
-    @ApiStatus.OverrideOnly
-    @Override
-    protected void onHitEntity(EntityHitResult result) {}
-
+    /// common
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
         if (target.hurt(getDamageSource(), getCalculatedDamage())) {
             if (knockbackStrength > 0 || knockbackMotionY > 0) {
@@ -63,24 +73,31 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         return false;
     }
 
+    /// server side only
     protected boolean doPenetrateCheck(Entity entity) {
+        if (level().isClientSide) return false;
         return getPenetrateSet().add(entity.getUUID());
     }
 
+    /// server side only
     protected void doDiscardInMaxPenetrate(int max) {
+        if (level().isClientSide) return;
         if (penetrateSet == null) return;
         if (getPenetrateSet().size() >= max) {
             discard();
         }
     }
 
+    /// server side only
     protected Set<UUID> getPenetrateSet() {
+        if (level().isClientSide) return Set.of();
         if (penetrateSet == null) {
             this.penetrateSet = new HashSet<>();
         }
         return penetrateSet;
     }
 
+    /// common
     protected Vec3 doSimpleMove() {
         Vec3 vec3 = getDeltaMovement();
         double offX = getX() + vec3.x;
@@ -88,6 +105,65 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         double offZ = getZ() + vec3.z;
         setPos(offX, offY, offZ);
         return vec3;
+    }
+
+    /// for afterBounce
+    ///
+    /// server side only
+    ///
+    /// @param maxCollide Inclusive
+    protected void doCollisionCheck(int maxCollide) {
+        if (this.collideCount++ >= maxCollide && !level().isClientSide) {
+            discard();
+        }
+    }
+
+    /// common
+    protected void doBouncyMove(boolean gravity, Runnable afterBounce, UnaryOperator<Vec3> finalMotion) {
+        Vec3 vec3 = getDeltaMovement();
+        move(MoverType.SELF, gravity ? vec3.add(0, -getGravity(), 0) : vec3);
+        Vec3 motion = getDeltaMovement();
+        if (!vec3.equals(motion)) {
+            if (motion.x != vec3.x) motion = new Vec3(-vec3.x, vec3.y, vec3.z);
+            if (motion.y != vec3.y) motion = new Vec3(vec3.x, -vec3.y, vec3.z);
+            if (motion.z != vec3.z) motion = new Vec3(vec3.x, vec3.y, -vec3.z);
+            afterBounce.run();
+        }
+        Vec3 apply = finalMotion.apply(motion);
+        setDeltaMovement(gravity ? apply.add(0, -getGravity(), 0) : apply);
+    }
+
+    /// client side only
+    protected void withParticle(ResourceLocation particleId, Runnable afterCreate) {
+        this.particleChecker = () -> {
+            if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+                this.emitter = new ParticleEmitter(level(), position(), particleId);
+                emitter.attachEntity(this);
+                afterCreate.run();
+                PSGameClient.LOADER.addEmitter(emitter, false);
+            }
+        };
+    }
+
+    /// client side only
+    protected void withParticle(ResourceLocation particleId) {
+        withParticle(particleId, () -> emitter.offsetPos = new Vec3(0, getBbHeight() / 2, 0));
+    }
+
+    /// server side only
+    ///
+    /// @param maxAge Exclusive
+    protected void doAgeCheck(int maxAge) {
+        if (tickCount > maxAge && !level().isClientSide) {
+            discard();
+        }
+    }
+
+    /// server side only
+    protected void doFluidCheck(Predicate<FluidState> predicate) {
+        if (!level().isClientSide && predicate.test(getInBlockState().getFluidState())) {
+            discard();
+        }
     }
 
     @Override
@@ -112,12 +188,14 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Age", tickCount);
+        compound.putInt("CollideCount", collideCount);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.tickCount = compound.getInt("Age");
+        this.collideCount = compound.getInt("CollideCount");
     }
 
     @Override

@@ -7,19 +7,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
-import org.mesdag.particlestorm.PSGameClient;
-import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 // todo 专家模式下，黄金雨对毁灭者及其探测怪仅造成 75% 伤害。
 public class GoldenShowerProjectile extends AbstractManaProjectile {
-    private ParticleEmitter emitter;
-
     public GoldenShowerProjectile(EntityType<GoldenShowerProjectile> entityType, Level level) {
         super(entityType, level);
+        withParticle(Confluence.asResource("golden_shower"));
     }
 
     public GoldenShowerProjectile(LivingEntity living) {
@@ -29,23 +25,15 @@ public class GoldenShowerProjectile extends AbstractManaProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
-        if (level().isClientSide) {
-            if (emitter == null || emitter.isRemoved()) {
-                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("golden_shower"));
-                emitter.attachEntity(this);
-                PSGameClient.LOADER.addEmitter(emitter, false);
-            }
-        }
-
-        Vec3 vec3 = doSimpleMove();
-        setDeltaMovement(vec3.add(0.0, -0.24, 0.0));
+        setDeltaMovement(doSimpleMove().add(0.0, -0.24, 0.0));
     }
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        if (level().isClientSide) return;
-        discard();
+        if (!level().isClientSide) {
+            discard();
+        }
     }
 
     @Override

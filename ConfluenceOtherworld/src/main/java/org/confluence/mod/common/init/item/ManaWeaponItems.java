@@ -1,5 +1,7 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -48,4 +50,6 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = ITEMS.register("crystal_vile_shard", CrystalVileShardItem::new);
     public static final DeferredItem<RainbowRodItem> RAINBOW_ROD = ITEMS.register("rainbow_rod0", RainbowRodItem::new);
     public static final DeferredItem<SkyFractureItem> SKY_FRACTURE = ITEMS.register("sky_fracture", SkyFractureItem::new);
+    public static final DeferredItem<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = ITEMS.register("crystal_serpent", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04)
+            .withTooltip(Component.translatable("tooltip.item.confluence.crystal_serpent.0").withStyle(ChatFormatting.GRAY)));
 }

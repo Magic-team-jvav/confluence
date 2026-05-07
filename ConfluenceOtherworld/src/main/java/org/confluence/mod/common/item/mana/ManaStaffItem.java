@@ -30,7 +30,9 @@ import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -41,6 +43,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     protected final int manaCost;
     protected final float velocity;
     protected final int cooldown;
+    private @Nullable List<Component> tooltips;
 
     public ManaStaffItem(Properties properties, ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown) {
         super(properties, rarity);
@@ -61,6 +64,11 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         this(new Properties().stacksTo(1), rarity, factory, damage, manaCost, rawVelocity, cooldown);
         if (critChance == 0.0) return;
         addAttributeModifiers(builder -> builder.add(LibAttributes.getCriticalChance(), new AttributeModifier(ID, critChance, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
+    }
+
+    public ManaStaffItem<E> withTooltip(Component... tooltips) {
+        this.tooltips = Arrays.asList(tooltips);
+        return this;
     }
 
     @Override
@@ -137,6 +145,9 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         tooltipComponents.add(Component.translatable("tooltip.confluence.mana_cost", manaCost).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.velocity", velocity).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.cooldown", cooldown).withStyle(ChatFormatting.GRAY));
+        if (tooltips != null) {
+            tooltipComponents.addAll(tooltips);
+        }
     }
 
     @FunctionalInterface

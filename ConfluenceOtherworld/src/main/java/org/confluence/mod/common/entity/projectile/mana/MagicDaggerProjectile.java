@@ -52,9 +52,12 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
+        // super.onHitBlock(result); 跳过创建物品
         BlockState blockstate = level().getBlockState(result.getBlockPos());
         blockstate.onProjectileHit(level(), blockstate, result, this);
-        discard();
+        if (!level().isClientSide) {
+            discard();
+        }
     }
 
     @Override

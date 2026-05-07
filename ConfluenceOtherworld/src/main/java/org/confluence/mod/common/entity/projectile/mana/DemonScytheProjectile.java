@@ -37,8 +37,7 @@ public class DemonScytheProjectile extends AbstractManaProjectile implements IAx
         }
 
         doSimpleMove();
-
-        if (tickCount > 200) discard();
+        doAgeCheck(200);
     }
 
     @Override

@@ -46,7 +46,6 @@ public class MagicMissileProjectile extends BaseDraggingProjectile {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        super.onHitEntity(result);
         doExplosion(RANGE);
     }
 }

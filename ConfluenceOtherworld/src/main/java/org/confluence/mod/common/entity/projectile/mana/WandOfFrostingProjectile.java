@@ -11,11 +11,11 @@ public class WandOfFrostingProjectile extends BaseManaStaffProjectileEntity {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
-        if (!level().isClientSide && entityHitResult.getEntity() instanceof LivingEntity living) {
+    protected void onHitEntity(EntityHitResult result) {
+        if (!level().isClientSide && result.getEntity() instanceof LivingEntity living) {
             int duration = living.getRandom().nextFloat() < 2.0F / 3.0F ? 40 : 60;
             living.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, duration));
         }
-        super.onHitEntity(entityHitResult);
+        super.onHitEntity(result); // 必须调用
     }
 }

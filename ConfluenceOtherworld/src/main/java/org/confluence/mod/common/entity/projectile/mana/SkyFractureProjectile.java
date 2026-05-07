@@ -14,13 +14,12 @@ public class SkyFractureProjectile extends AbstractManaProjectile {
     }
 
     public SkyFractureProjectile(LivingEntity living) {
-        this(ModEntities.SKY_FRACTURE.get(), living.level());
+        this(ModEntities.SKY_FRACTURE_PROJECTILE.get(), living.level());
     }
 
     @Override
     public void baseTick() {
         super.baseTick();
-
         doSimpleMove();
     }
 

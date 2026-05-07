@@ -18,14 +18,11 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.particlestorm.PSGameClient;
-import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.Comparator;
 import java.util.UUID;
 
 public class SkullProjectile extends AbstractManaProjectile {
-    private ParticleEmitter trail;
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(SkullProjectile.class, EntityDataSerializers.INT);
     private UUID targetUUID;
     private transient LivingEntity target;
@@ -33,6 +30,7 @@ public class SkullProjectile extends AbstractManaProjectile {
     public SkullProjectile(EntityType<SkullProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
+        withParticle(Confluence.asResource("skull_projectile_flame"));
     }
 
     public SkullProjectile(LivingEntity living) {
@@ -73,14 +71,6 @@ public class SkullProjectile extends AbstractManaProjectile {
             setTarget(null);
         }
 
-        if (level().isClientSide) {
-            if (trail == null || trail.isRemoved()) {
-                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("skull_projectile_flame"));
-                trail.attachEntity(this);
-                PSGameClient.LOADER.addEmitter(trail, false);
-            }
-        }
-
         doSimpleMove();
         updateRotation();
     }
@@ -88,7 +78,9 @@ public class SkullProjectile extends AbstractManaProjectile {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        discard();
+        if (!level().isClientSide) {
+            discard();
+        }
     }
 
     @Override

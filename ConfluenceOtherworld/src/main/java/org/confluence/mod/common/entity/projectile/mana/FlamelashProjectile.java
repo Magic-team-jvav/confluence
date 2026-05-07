@@ -9,7 +9,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -49,17 +48,8 @@ public class FlamelashProjectile extends BaseDraggingProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
-
-        if (!level().isClientSide) {
-            if (tickCount > 1200) {
-                discard();
-            } else {
-                FluidState fluidState = level().getFluidState(blockPosition());
-                if (fluidState.is(Tags.Fluids.WATER) || fluidState.is(Tags.Fluids.HONEY)) {
-                    discard();
-                }
-            }
-        }
+        doFluidCheck(fluidState -> fluidState.is(Tags.Fluids.WATER) || fluidState.is(Tags.Fluids.HONEY));
+        doAgeCheck(1200);
     }
 
     @Override
@@ -72,9 +62,7 @@ public class FlamelashProjectile extends BaseDraggingProjectile {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        super.onHitEntity(result);
         if (level().isClientSide) return;
-
         Entity entity = result.getEntity();
         if (doPenetrateCheck(entity)) { // todo 如果有足够大的空间，其射弹可以击中同一目标两次：当其穿透敌怪后转一圈可再次击中敌怪。
             if (getPenetrateSet().size() < 2) {

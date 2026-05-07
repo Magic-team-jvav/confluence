@@ -32,9 +32,6 @@ import java.util.Map;
 
 public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     protected static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(BaseManaStaffProjectileEntity.class, EntityDataSerializers.INT);
-    protected int penetrateCount = 2;
-
-    protected ParticleEmitter emitter;
 
     public BaseManaStaffProjectileEntity(EntityType<? extends BaseManaStaffProjectileEntity> entityType, Level level) {
         super(entityType, level);
@@ -97,7 +94,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
 
-        if (tickCount > 200) discard();
+        doAgeCheck(200);
     }
 
     @Override
@@ -107,11 +104,11 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
-        Entity entity = entityHitResult.getEntity();
+    protected void onHitEntity(EntityHitResult result) {
+        Entity entity = result.getEntity();
         if (doPenetrateCheck(entity)) {
             doHurtAndKnockback(entity, 0.5, 0.2);
-            doDiscardInMaxPenetrate(penetrateCount);
+            doDiscardInMaxPenetrate(2);
         }
     }
 
@@ -153,7 +150,8 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         return getVariant().knockBack;
     }
 
-    public record Variant(int id, String name, double gravity, float knockBack, FloatRGB color) implements StringRepresentable {
+    public record Variant(int id, String name, double gravity, float knockBack,
+                          FloatRGB color) implements StringRepresentable {
         public static final List<Variant> VALUES = new ArrayList<>();
 
         public static final Variant AMETHYST = register("amethyst", -1.0, 3.25F, 0.91765F, 0.41961F, 1F);

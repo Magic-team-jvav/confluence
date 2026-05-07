@@ -15,16 +15,14 @@ import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.terraentity.api.entity.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
 import org.confluence.terraentity.utils.TEUtils;
-import org.mesdag.particlestorm.PSGameClient;
-import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
     protected boolean shot;
     protected ITrackType trackType = new BasisTrack(90, 0.4F);
-    protected ParticleEmitter emitter;
 
     public BaseDraggingProjectile(EntityType<? extends BaseDraggingProjectile> entityType, Level level) {
         super(entityType, level);
+        withParticle(getParticleId());
     }
 
     @Override
@@ -39,8 +37,6 @@ public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
         } else {
             dragOrShoot(owner);
         }
-
-        createParticleEmitter();
     }
 
     protected abstract int getCooldown();
@@ -64,15 +60,6 @@ public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
 
     protected int getTrackingRange() {
         return 50 * 2 / 3;
-    }
-
-    protected void createParticleEmitter() {
-        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
-            this.emitter = new ParticleEmitter(level(), position(), getParticleId());
-            emitter.attachEntity(this);
-            emitter.offsetPos = new Vec3(0, getBbHeight() / 2, 0);
-            PSGameClient.LOADER.addEmitter(emitter, false);
-        }
     }
 
     protected void dragOrShoot(LivingEntity owner) {

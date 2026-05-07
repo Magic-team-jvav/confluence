@@ -3,21 +3,17 @@ package org.confluence.mod.common.entity.projectile.mana;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
-import org.mesdag.particlestorm.PSGameClient;
-import org.mesdag.particlestorm.particle.ParticleEmitter;
+
+import java.util.function.UnaryOperator;
 
 public class WaterBoltProjectile extends AbstractManaProjectile {
-    private int collideCount = 0;
-    private ParticleEmitter emitter;
-
     public WaterBoltProjectile(EntityType<WaterBoltProjectile> entityType, Level level) {
         super(entityType, level);
+        withParticle(Confluence.asResource("water_stream"));
     }
 
     public WaterBoltProjectile(LivingEntity living) {
@@ -26,33 +22,9 @@ public class WaterBoltProjectile extends AbstractManaProjectile {
 
     @Override
     public void baseTick() {
-        if (tickCount > 600) {
-            discard();
-            return;
-        }
         super.baseTick();
-
-        Vec3 vec3 = getDeltaMovement();
-        move(MoverType.SELF, vec3);
-        Vec3 motion = getDeltaMovement();
-        if (!vec3.equals(motion)) {
-            if (motion.x != vec3.x) motion = new Vec3(-vec3.x, vec3.y, vec3.z);
-            if (motion.y != vec3.y) motion = new Vec3(vec3.x, -vec3.y, vec3.z);
-            if (motion.z != vec3.z) motion = new Vec3(vec3.x, vec3.y, -vec3.z);
-            if (this.collideCount++ >= 5) {
-                discard();
-                return;
-            }
-        }
-        setDeltaMovement(motion);
-
-        if (level().isClientSide) {
-            if (emitter == null || emitter.isRemoved()) {
-                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("water_stream"));
-                emitter.attachEntity(this);
-                PSGameClient.LOADER.addEmitter(emitter, false);
-            }
-        }
+        doBouncyMove(false, () -> doCollisionCheck(5), UnaryOperator.identity());
+        doAgeCheck(600);
     }
 
     @Override

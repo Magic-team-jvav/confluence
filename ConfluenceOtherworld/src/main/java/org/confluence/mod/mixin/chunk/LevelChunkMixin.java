@@ -59,10 +59,10 @@ public abstract class LevelChunkMixin extends ChunkAccess {
             boolean after = predicate.test(targetState);
             if (before == after) return;
             if (before) {
-                consumer.accept(ILevelChunkSection.of(section).confluence$getBlockCounts(), -1);
+                consumer.accept((short) -1, ILevelChunkSection.of(section).confluence$getBlockCounts());
             }
             if (after) {
-                consumer.accept(ILevelChunkSection.of(section).confluence$getBlockCounts(), 1);
+                consumer.accept((short) 1, ILevelChunkSection.of(section).confluence$getBlockCounts());
             }
         });
 

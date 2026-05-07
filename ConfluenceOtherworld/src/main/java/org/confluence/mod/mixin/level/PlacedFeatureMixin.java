@@ -12,11 +12,13 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
+import net.neoforged.neoforge.common.util.TriState;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.confluence.mod.util.OverworldUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.function.Consumer;
@@ -28,6 +30,9 @@ public abstract class PlacedFeatureMixin {
     @Final
     private Holder<ConfiguredFeature<?, ?>> feature;
 
+    @Unique
+    private TriState confluence$isPine = TriState.DEFAULT;
+
     @WrapOperation(method = "placeWithContext", at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;forEach(Ljava/util/function/Consumer;)V"))
     private void wrap(
             Stream<BlockPos> instance,
@@ -37,19 +42,27 @@ public abstract class PlacedFeatureMixin {
             @Local(argsOnly = true) RandomSource source,
             @Local MutableBoolean success
     ) {
-        if (feature.value().feature() instanceof TreeFeature) {
-            ResourceLocation id = feature.unwrapKey().map(ResourceKey::location).orElse(null);
-            if (id != null) {
-                original.call(instance, (Consumer<BlockPos>) pos -> {
-                    if (OverworldUtils.replacePine(id, context, source, pos)) {
-                        success.setTrue();
-                    } else {
-                        consumer.accept(pos);
-                    }
-                });
-                return;
+        if (confluence$isPine.isDefault()) check:{
+            if (feature.value().feature() instanceof TreeFeature) {
+                ResourceLocation id = feature.unwrapKey().map(ResourceKey::location).orElse(null);
+                if (id != null && id.getPath().equals("pine") && id.getNamespace().equals("minecraft")) {
+                    this.confluence$isPine = TriState.TRUE;
+                    break check;
+                }
             }
+            this.confluence$isPine = TriState.FALSE;
         }
-        original.call(instance, consumer);
+
+        if (confluence$isPine.isTrue()) {
+            original.call(instance, (Consumer<BlockPos>) pos -> {
+                if (OverworldUtils.replacePine(context, source, pos)) {
+                    success.setTrue();
+                } else {
+                    consumer.accept(pos);
+                }
+            });
+        } else {
+            original.call(instance, consumer);
+        }
     }
 }

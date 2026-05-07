@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.NaturalSpawnerUtil;
-import org.confluence.lib.util.function.integer.ToIntFunction4;
+import org.confluence.lib.util.function.ints.ToIntFunction4;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 

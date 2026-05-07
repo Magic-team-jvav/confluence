@@ -8,7 +8,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
@@ -32,6 +31,7 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
+import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
@@ -50,6 +50,7 @@ public final class OverworldUtils {
 
     private static TriState notTheBees = TriState.DEFAULT;
 
+    @ApiStatus.Internal
     public static void replaceBiome(
             MultiNoiseBiomeSource biomeSource,
             int x,
@@ -86,6 +87,7 @@ public final class OverworldUtils {
         cir.setReturnValue(replaced);
     }
 
+    @ApiStatus.Internal
     public static void replaceTree(FeaturePlaceContext<TreeConfiguration> context, CallbackInfoReturnable<Boolean> cir) {
         WorldGenLevel level = context.level();
         if (!(level instanceof WorldGenRegion)) return;
@@ -111,8 +113,9 @@ public final class OverworldUtils {
         }
     }
 
+    @ApiStatus.Internal
     public static boolean replaceLogBoulder(WorldGenLevel instance, BlockPos blockPos, BlockState blockState, int i, Operation<Boolean> original) {
-        if (ModSecretSeeds.NO_TRAPS.match(instance.getLevel().getServer()) && blockState.is(Blocks.OAK_LOG) && blockState.getValue(BlockStateProperties.AXIS) == Direction.Axis.Y) {
+        if (blockState.is(Blocks.OAK_LOG) && ModSecretSeeds.NO_TRAPS.match(instance.getLevel().getServer()) && blockState.getValue(BlockStateProperties.AXIS) == Direction.Axis.Y) {
             if (instance.getRandom().nextFloat() < 0.2F) {
                 blockState = FunctionalBlocks.OAK_LOG_BOULDER.get().defaultBlockState();
             }
@@ -120,13 +123,11 @@ public final class OverworldUtils {
         return original.call(instance, blockPos, blockState, i);
     }
 
-    public static boolean replacePine(ResourceLocation feature, PlacementContext context, RandomSource random, BlockPos pos) {
+    @ApiStatus.Internal
+    public static boolean replacePine(PlacementContext context, RandomSource random, BlockPos pos) {
         WorldGenLevel level = context.getLevel();
         if (!(level instanceof WorldGenRegion)) return false;
-        if (feature.getPath().equals("pine") &&
-                feature.getNamespace().equals("minecraft") &&
-                random.nextInt(4) == 0
-        ) {
+        if (random.nextInt(4) == 0) {
             return level.registryAccess().holderOrThrow(ModFeatures.Configured.PINE_TREE).value()
                     .place(level, context.generator(), random, pos);
         }

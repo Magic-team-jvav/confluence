@@ -465,7 +465,7 @@ public final class PlayerUtils {
     public static void applySunflowerEffect(ServerPlayer player, ServerLevel level, long gameTime) {
         if (gameTime % 200 == 0) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
-            if (iSection != null && iSection.confluence$getBlockCounts().sunflower.get() > 0) {
+            if (iSection != null && iSection.confluence$getBlockCounts().sunflower > 0) {
                 player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 220));
             }
         }

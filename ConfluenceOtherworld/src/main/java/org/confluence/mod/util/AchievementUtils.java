@@ -223,7 +223,7 @@ public final class AchievementUtils {
         return false;
     }
 
-    public static void luckyBreak_watchYourStep(ServerPlayer player, DamageSource damageSource, Entity sourceEntity) {
+    public static void luckyBreak_watchYourStep(ServerPlayer player, DamageSource damageSource, @Nullable Entity sourceEntity) {
         if (player.isAlive()) {
             if (player.getHealth() / player.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
                 awardAchievement(player, "lucky_break");

@@ -35,7 +35,7 @@ public class EctoMistHelper {
         turnOn = true;
         if (player.level().getGameTime() % 40 == 2) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
-            effectiveTombstones = iSection == null ? 0 : iSection.confluence$getBlockCounts().tomb.get() - iSection.confluence$getBlockCounts().sunflower.get();
+            effectiveTombstones = iSection == null ? 0 : iSection.confluence$getBlockCounts().tomb - iSection.confluence$getBlockCounts().sunflower;
         }
         if (isGraveyard() && !minecraft.isPaused() && player.getRandom().nextInt(10) == 0) {
             player.level().addParticle(ModParticleTypes.ECTO_MIST.get(),

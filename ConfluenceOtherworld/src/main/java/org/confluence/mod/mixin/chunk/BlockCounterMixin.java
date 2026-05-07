@@ -26,7 +26,7 @@ public abstract class BlockCounterMixin {
         if (confluence$section == null) return;
         DynamicBiomeUtils.COUNTER.forEach((predicate, consumer) -> {
             if (predicate.test(state)) {
-                consumer.accept(confluence$section.confluence$getBlockCounts(), count);
+                consumer.accept((short) count, confluence$section.confluence$getBlockCounts());
             }
         });
     }

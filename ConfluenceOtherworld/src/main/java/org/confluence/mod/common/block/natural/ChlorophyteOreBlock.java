@@ -39,7 +39,7 @@ public class ChlorophyteOreBlock extends Block {
                 continue;
             }
             ILevelChunkSection section = ILevelChunkSection.of(chunk.getSection(level.getSectionIndex(relative.getY())));
-            if (section.confluence$getBlockCounts().chlorophyte.get() > 125) {
+            if (section.confluence$getBlockCounts().chlorophyte > 125) {
                 continue;
             }
             if (level.isLoaded(relative) && (relState.is(Blocks.MUD) || (relState.is(NatureBlocks.JUNGLE_GRASS_BLOCK) && !level.canSeeSky(relative)))) {

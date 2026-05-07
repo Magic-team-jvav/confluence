@@ -216,6 +216,23 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
             .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F)));
 
+    public static final DeferredItem<BaseArmorItem> SCALE_MAIL_HELMET = register("scale_mail_helmet", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/scale_mail_armor")
+            .rarity(ModRarity.BLUE)
+            .meleeDamage(0.05));
+    public static final DeferredItem<BaseArmorItem> SCALE_MAIL_CHESTPLATE = register("scale_mail_chestplate", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/scale_mail_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.05));
+    public static final DeferredItem<BaseArmorItem> SCALE_MAIL_LEGGINGS = register("scale_mail_leggings", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/scale_mail_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.ATTACK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    public static final DeferredItem<BaseArmorItem> SCALE_MAIL_BOOTS = register("scale_mail_boots", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/scale_mail_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+
     public static final DeferredItem<BaseArmorItem> GUARDS_HELMET = register("guards_helmet", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/guards_armor")
             .rarity(ModRarity.GREEN)

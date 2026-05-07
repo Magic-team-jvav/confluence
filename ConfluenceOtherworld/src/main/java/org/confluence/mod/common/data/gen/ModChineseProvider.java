@@ -816,6 +816,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.star_steel_sword.1", "拾取魔力星后1秒内，触发2.5倍伤害暴击");
         add("tooltip.item.confluence.magic_missile.0", "发射一枚可控的飞弹");
         add("tooltip.item.confluence.flamelash.0", "召唤可控的火球");
+        add("tooltip.item.confluence.rainbow_rod.0", "发射可控的彩虹");
+        add("tooltip.item.confluence.crystal_serpent.0", "射出爆炸水晶电荷");
 
         add("tooltip.item.confluence.soul_of_light.0", "“光明生物的精华”");
         add("tooltip.item.confluence.soul_of_night.0", "“黑暗生物的精华”");
@@ -3686,6 +3688,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.NIMBUS_ROD.get(), "雨云魔杖");
         add(ManaWeaponItems.GOLDEN_SHOWER.get(), "黄金雨");
         add(ManaWeaponItems.CRYSTAL_VILE_SHARD.get(), "魔晶碎块");
+        add(ManaWeaponItems.RAINBOW_ROD.get(), "彩虹魔杖");
+        add(ManaWeaponItems.SKY_FRACTURE.get(), "裂天剑");
+        add(ManaWeaponItems.CRYSTAL_SERPENT.get(), "水晶蛇");
 
         add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
         add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
@@ -3782,6 +3787,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.SPELUNKER_CHESTPLATE.get(), "探穴者胸甲");
         add(ArmorItems.SPELUNKER_LEGGINGS.get(), "探穴者护腿");
         add(ArmorItems.SPELUNKER_BOOTS.get(), "探穴者靴子");
+        add(ArmorItems.SCALE_MAIL_HELMET.get(), "鳞甲头盔");
+        add(ArmorItems.SCALE_MAIL_CHESTPLATE.get(), "鳞甲胸甲");
+        add(ArmorItems.SCALE_MAIL_LEGGINGS.get(), "鳞甲护腿");
+        add(ArmorItems.SCALE_MAIL_BOOTS.get(), "鳞甲靴子");
         add(ArmorItems.RAIN_CAP.get(), "雨帽");
         add(ArmorItems.RAINCOAT.get(), "雨衣");
         add(ArmorItems.SNOW_CAPS.get(), "防雪帽");

@@ -643,6 +643,29 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "aaa",
                 "a a"
         )));
+        // 裂天剑
+        hardmodeAnvil(recipeOutput, ManaWeaponItems.SKY_FRACTURE.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.LIGHT_SHARD),
+                'b', AmountIngredient.of(8,MaterialItems.SOUL_OF_LIGHT),
+                'c', Ingredient.of(ManaWeaponItems.MAGIC_MISSILE)
+        ), List.of(
+                " b ",
+                "aca",
+                " b "
+        )));
+        // 彩虹魔杖
+        hardmodeAnvil(recipeOutput, ManaWeaponItems.RAINBOW_ROD.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(10,MaterialItems.PIXIE_DUST),
+                'd', AmountIngredient.of(15,MaterialItems.SOUL_OF_SIGHT),
+                'c', AmountIngredient.of(10,MaterialItems.CRYSTAL_SHARDS),
+                'b', AmountIngredient.of(4,MaterialItems.SOUL_OF_LIGHT),
+                'e', AmountIngredient.of(2,MaterialItems.UNICORN_HORN)
+        ), List.of(
+                " a ",
+                "bdb",
+                " c ",
+                " e "
+        )));
     }
 
     protected void hardmodeAnvil(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {

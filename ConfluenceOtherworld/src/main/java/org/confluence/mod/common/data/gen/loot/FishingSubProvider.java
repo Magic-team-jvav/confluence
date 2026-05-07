@@ -263,6 +263,9 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(LootItem.lootTableItem(FunctionalBlocks.ALCHEMY_TABLE).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setStructures(isDungeon).setY(caveThroughSurface)
                         )).setWeight(7))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.CRYSTAL_SERPENT).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSurface)
+                        )).setWeight(7))
                 )
         );
         // 钓鱼总战利品表

@@ -14,6 +14,7 @@ import org.confluence.mod.common.item.mana.MagicMissileItem;
 
 public class MagicMissileProjectile extends BaseDraggingProjectile {
     public static final double RANGE = 8.0 * 2 / 3;
+    public static final double KNOCKBACK = 0.75;
 
     public MagicMissileProjectile(EntityType<? extends MagicMissileProjectile> entityType, Level level) {
         super(entityType, level);
@@ -41,11 +42,11 @@ public class MagicMissileProjectile extends BaseDraggingProjectile {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        doExplosion(RANGE);
+        doExplosion(RANGE, KNOCKBACK);
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        doExplosion(RANGE);
+        doExplosion(RANGE, KNOCKBACK);
     }
 }

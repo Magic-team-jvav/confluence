@@ -21,12 +21,10 @@ import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixin.accessor.ServerPlayerAccessor;
 import org.confluence.mod.util.PlayerUtils;
 
-public final class EmptyTargetSweepPacketC2S implements IPacketC2S {
-    private static final EmptyTargetSweepPacketC2S INSTANCE = new EmptyTargetSweepPacketC2S();
+public enum EmptyTargetSweepPacketC2S implements IPacketC2S {
+    INSTANCE;
     public static final Type<EmptyTargetSweepPacketC2S> TYPE = Confluence.createType("empty_target_sweep");
     public static final StreamCodec<ByteBuf, EmptyTargetSweepPacketC2S> STREAM_CODEC = StreamCodec.unit(INSTANCE);
-
-    private EmptyTargetSweepPacketC2S() {}
 
     @Override
     public Type<EmptyTargetSweepPacketC2S> type() {

@@ -4,7 +4,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
@@ -24,7 +23,10 @@ import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.accessory.*;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.api.primitive.*;
+import org.confluence.terra_curio.api.primitive.FloatValue;
+import org.confluence.terra_curio.api.primitive.IntegerValue;
+import org.confluence.terra_curio.api.primitive.MayFlyAbilityValue;
+import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
@@ -48,23 +50,25 @@ public class AccessoryItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
     public static final List<DeferredItem<BaseCurioItem>> WINGS = new ArrayList<>();
 
-    public static final ValueType<Unit, UnitValue> LUCKY$COIN = ValueType.ofUnit("lucky_coin");
-    public static final ValueType<Unit, UnitValue> VINE$ROPE = ValueType.ofUnit("vine_rope");
-    public static final ValueType<Unit, UnitValue> AUTO$GET$MANA = ValueType.ofUnit("auto_get_mama");
-    public static final ValueType<Unit, UnitValue> HURT$GET$MANA = ValueType.ofUnit("hurt_get_mana");
-    public static final ValueType<Unit, UnitValue> FAST$MANA$GENERATION = ValueType.ofUnit("faset_mana_regeneration");
-    public static final ValueType<Unit, UnitValue> HIGH$TEST$FISHING$LINE = ValueType.ofUnit("high_test_fishing_line");
-    public static final ValueType<Unit, UnitValue> TACKLE$BOX = ValueType.ofUnit("tackle_box");
-    public static final ValueType<Unit, UnitValue> LAVAPROOF$FISHING$HOOK = ValueType.ofUnit("lavaproof_fishing_hook");
-    public static final ValueType<Unit, UnitValue> SPECTRE$GOGGLES = ValueType.ofUnit("spectre_goggles");
-    public static final ValueType<Unit, UnitValue> PAINT$SPRAYER = ValueType.ofUnit("paint_sprayer");
-    public static final ValueType<Unit, UnitValue> CLOTHIER$KILLER = ValueType.ofUnit("clothier_killer");
+    public static final ValueType.UnitType LUCKY$COIN = ValueType.ofUnit("lucky_coin");
+    public static final ValueType.UnitType VINE$ROPE = ValueType.ofUnit("vine_rope");
+    public static final ValueType.UnitType AUTO$GET$MANA = ValueType.ofUnit("auto_get_mama");
+    public static final ValueType.UnitType HURT$GET$MANA = ValueType.ofUnit("hurt_get_mana");
+    public static final ValueType.UnitType FAST$MANA$GENERATION = ValueType.ofUnit("faset_mana_regeneration");
+    public static final ValueType.UnitType HIGH$TEST$FISHING$LINE = ValueType.ofUnit("high_test_fishing_line");
+    public static final ValueType.UnitType TACKLE$BOX = ValueType.ofUnit("tackle_box");
+    public static final ValueType.UnitType LAVAPROOF$FISHING$HOOK = ValueType.ofUnit("lavaproof_fishing_hook");
+    public static final ValueType.UnitType SPECTRE$GOGGLES = ValueType.ofUnit("spectre_goggles");
+    public static final ValueType.UnitType PAINT$SPRAYER = ValueType.ofUnit("paint_sprayer");
+    public static final ValueType.UnitType CLOTHIER$KILLER = ValueType.ofUnit("clothier_killer");
+    public static final ValueType.UnitType $AFK = ValueType.ofUnit("afk"); // todo
+    public static int AFK_INDEX = -1;
 
-    public static final ValueType<Float, FloatValue> MANA$USE$REDUCE = ValueType.ofFloat("mana_use_reduce", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
-    public static final ValueType<Float, FloatValue> REDUCE$HEALING$COOLDOWN = ValueType.ofFloat("reduce_healing_cooldown", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
-    public static final ValueType<Float, FloatValue> FISHING$POWER = ValueType.ofFloat("fishing_power", FloatValue.ADDITION, 0.0F);
-    public static final ValueType<Integer, IntegerValue> ADDITIONAL$MANA = ValueType.ofInteger("additional_mana", IntegerValue.ADDITION, 0);
-    public static final ValueType<Integer, IntegerValue> SPECIAL$PRICE = ValueType.ofInteger("special_price", IntegerValue.GET_MAX, 0);
+    public static final ValueType.FloatType MANA$USE$REDUCE = ValueType.ofFloat("mana_use_reduce", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
+    public static final ValueType.FloatType REDUCE$HEALING$COOLDOWN = ValueType.ofFloat("reduce_healing_cooldown", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
+    public static final ValueType.FloatType FISHING$POWER = ValueType.ofFloat("fishing_power", FloatValue.ADDITION, 0.0F);
+    public static final ValueType.IntegerType ADDITIONAL$MANA = ValueType.ofInteger("additional_mana", IntegerValue.ADDITION, 0);
+    public static final ValueType.IntegerType SPECIAL$PRICE = ValueType.ofInteger("special_price", IntegerValue.GET_MAX, 0);
     public static final ValueType<Tuple<Float, Integer>, PickupRangeAbilityValue> MANA$PICKUP$RANGE = ValueType.create("mana_pickup_range", PickupRangeAbilityValue.COMBINE_RULE, PickupRangeAbilityValue.CODEC, new Tuple<>(1.75F, 0), PickupRangeAbilityValue::new);
     public static final ValueType<Tuple<Float, Integer>, PickupRangeAbilityValue> COIN$PICKUP$RANGE = ValueType.create("coin_pickup_range", PickupRangeAbilityValue.COMBINE_RULE, PickupRangeAbilityValue.CODEC, new Tuple<>(2.0F, 0), PickupRangeAbilityValue::new);
 
@@ -126,7 +130,8 @@ public class AccessoryItems {
             GUIDE_TO_PLANT_FIBER_CORDAGE = registerCurio("guide_to_plant_fiber_cordage", builder -> builder.accessories(units(VINE$ROPE))), // 植物纤维绳索宝典
             RADIO_THING = registerDirectly("radio_thing", name -> new RadioThing(BaseCurioItem.builder(name).rarity(BLUE).tooltips(1))), // 收音机
             SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).tooltips(1).accessories(units(SPECTRE$GOGGLES)))), // 幽灵护目镜
-            CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.rarity(PINK).accessories(of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.SHIMMER)))); // 炫彩斗篷
+            CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.rarity(PINK).accessories(of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.SHIMMER)))), // 炫彩斗篷
+            STRESS_BALL = registerCurio("stress_ball", builder -> builder.rarity(BLUE).accessories(units($AFK)).tooltips(1));
 
     public static final DeferredItem<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(LibAttributes.getSummonDamage(), 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
             APPRENTICES_SCARF = registerCurio("apprentices_scarf", builder -> builder.noTooltip().rarity(PINK).attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 学徒围巾

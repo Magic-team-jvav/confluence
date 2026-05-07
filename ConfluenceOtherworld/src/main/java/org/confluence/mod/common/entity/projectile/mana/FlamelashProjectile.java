@@ -1,15 +1,12 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.entity.EntityTypeTest;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.neoforge.common.Tags;
@@ -21,6 +18,9 @@ import org.confluence.mod.common.item.mana.FlamelashItem;
 
 public class FlamelashProjectile extends BaseDraggingProjectile {
     public static final double RANGE = 6.0 * 2 / 3;
+    public static final double KNOCKBACK = 0.65;
+
+    private boolean penetrated;
 
     public FlamelashProjectile(EntityType<? extends FlamelashProjectile> entityType, Level level) {
         super(entityType, level);
@@ -55,35 +55,40 @@ public class FlamelashProjectile extends BaseDraggingProjectile {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        if (!level().isClientSide) {
-            doExplosion(RANGE);
-        }
+        doExplosion(RANGE, KNOCKBACK);
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (level().isClientSide) return;
-        Entity entity = result.getEntity();
-        if (doPenetrateCheck(entity)) { // todo 如果有足够大的空间，其射弹可以击中同一目标两次：当其穿透敌怪后转一圈可再次击中敌怪。
-            if (getPenetrateSet().size() < 2) {
-                doHurtEntity(entity);
-            } else {
-                doExplosion(RANGE);
+        if (penetrated) {
+            doExplosion(RANGE, KNOCKBACK);
+        } else {
+            this.penetrated = true;
+            doHurtAndKnockback(result.getEntity(), KNOCKBACK, 0.2);
+        }
+    }
+
+    @Override
+    protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
+        if (super.doHurtAndKnockback(target, knockbackStrength, knockbackMotionY)) {
+            if (random.nextBoolean()) {
+                target.igniteForTicks(Mth.randomBetweenInclusive(random, 80, 160));
             }
+            return true;
         }
+        return false;
     }
 
-    protected void doExplosion(double range) {
-        level().playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.VOICE);
-        for (LivingEntity living : level().getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(blockPosition()).inflate(range / 2), this::canHitEntity)) {
-            doHurtEntity(living);
-        }
-        discard();
+    @Override
+    protected void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putBoolean("Penetrated", penetrated);
     }
 
-    private void doHurtEntity(Entity entity) {
-        if (doHurtAndKnockback(entity, 0.65, 0.2) && random.nextBoolean()) {
-            entity.igniteForTicks(Mth.randomBetweenInclusive(random, 80, 160));
-        }
+    @Override
+    protected void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.penetrated = compound.getBoolean("Penetrated");
     }
 }

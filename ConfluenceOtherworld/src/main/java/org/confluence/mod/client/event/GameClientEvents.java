@@ -156,7 +156,8 @@ public final class GameClientEvents {
             LucyTheAxeHandler.handle(player.getId());
             if (minecraft.options.keyAttack.isDown() &&
                     player.getMainHandItem().getItem() instanceof BaseSwordItem sword &&
-                    !player.getCooldowns().isOnCooldown(sword)) {
+                    !player.getCooldowns().isOnCooldown(sword)
+            ) {
                 SwordProjectilePacketC2S.sendToServer();
             }
             HouseSelectHUD.updatePlayerRegionAt(player);

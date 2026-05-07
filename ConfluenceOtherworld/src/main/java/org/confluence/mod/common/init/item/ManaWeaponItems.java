@@ -48,7 +48,7 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = ITEMS.register("cursed_flames", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 32, 9, 10, 5, 0.04));
     public static final DeferredItem<GoldenShowerItem> GOLDEN_SHOWER = ITEMS.register("golden_shower", GoldenShowerItem::new);
     public static final DeferredItem<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = ITEMS.register("crystal_vile_shard", CrystalVileShardItem::new);
-    public static final DeferredItem<RainbowRodItem> RAINBOW_ROD = ITEMS.register("rainbow_rod0", RainbowRodItem::new);
+    public static final DeferredItem<RainbowRodItem> RAINBOW_ROD = ITEMS.register("rainbow_rod", RainbowRodItem::new);
     public static final DeferredItem<SkyFractureItem> SKY_FRACTURE = ITEMS.register("sky_fracture", SkyFractureItem::new);
     public static final DeferredItem<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = ITEMS.register("crystal_serpent", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04)
             .withTooltip(Component.translatable("tooltip.item.confluence.crystal_serpent.0").withStyle(ChatFormatting.GRAY)));

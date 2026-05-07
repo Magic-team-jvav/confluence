@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.terraentity.api.entity.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
@@ -77,14 +76,12 @@ public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
         }
     }
 
-    protected void doExplosion(double range) {
-        if (level().isClientSide) {
-            level().playSound(LibClientUtils.getPlayer(), blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.VOICE);
-        } else {
-            for (LivingEntity living : level().getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(blockPosition()).inflate(range / 2), this::canHitEntity)) {
-                doHurtAndKnockback(living, 0.75, 0.2);
-            }
-            discard();
+    protected void doExplosion(double range, double knockback) {
+        if (level().isClientSide) return;
+        level().playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.VOICE);
+        for (LivingEntity living : level().getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(blockPosition()).inflate(range / 2), this::canHitEntity)) {
+            doHurtAndKnockback(living, knockback, 0.2);
         }
+        discard();
     }
 }

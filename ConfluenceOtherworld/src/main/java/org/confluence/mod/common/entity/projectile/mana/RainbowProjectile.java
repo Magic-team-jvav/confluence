@@ -14,6 +14,7 @@ import org.confluence.mod.common.item.mana.RainbowRodItem;
 
 public class RainbowProjectile extends BaseDraggingProjectile {
     public static final double RANGE = 8.0 * 2 / 3;
+    public static final double KNOCKBACK = 0.75;
 
     public RainbowProjectile(EntityType<? extends BaseDraggingProjectile> entityType, Level level) {
         super(entityType, level);
@@ -42,12 +43,12 @@ public class RainbowProjectile extends BaseDraggingProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (shot) {
-            doExplosion(RANGE);
+            doExplosion(RANGE, KNOCKBACK);
         }
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        doExplosion(RANGE);
+        doExplosion(RANGE, KNOCKBACK);
     }
 }

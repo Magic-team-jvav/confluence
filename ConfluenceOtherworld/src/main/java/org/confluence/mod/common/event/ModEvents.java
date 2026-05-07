@@ -89,6 +89,7 @@ import org.confluence.mod.network.task.RequestAchievementsPacketS2C;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.RepeaterContentsComponentHandler;
+import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
@@ -291,6 +292,7 @@ public final class ModEvents {
         event.register(AccessoryItems.SPECTRE$GOGGLES);
         event.register(AccessoryItems.PAINT$SPRAYER);
         event.register(AccessoryItems.CLOTHIER$KILLER);
+        event.register(AccessoryItems.$AFK);
     }
 
     @SubscribeEvent
@@ -302,6 +304,11 @@ public final class ModEvents {
         event.register(AccessoryItems.REDUCE$HEALING$COOLDOWN);
         event.register(AccessoryItems.FISHING$POWER);
         event.register(AccessoryItems.SPECIAL$PRICE);
+    }
+
+    @SubscribeEvent
+    public static void registerAccessoriesComponentUnitValueTypeLocalSync(RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent event) {
+        AccessoryItems.AFK_INDEX = event.register(AccessoryItems.$AFK);
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

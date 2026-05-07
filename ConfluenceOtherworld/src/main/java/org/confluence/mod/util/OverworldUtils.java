@@ -5,26 +5,28 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.util.TriState;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -35,7 +37,6 @@ import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /// 用于维度补丁模组
@@ -48,7 +49,36 @@ public final class OverworldUtils {
         return Level.NETHER;
     }
 
-    private static TriState notTheBees = TriState.DEFAULT;
+    private static boolean uninitialized = true;
+    private static MinecraftServer server;
+    private static boolean notTheBees;
+    private static Holder<Biome> plains;
+    private static ConfiguredFeature<?, ?> yellowWillowTree;
+    private static ConfiguredFeature<?, ?> cherry;
+    private static ConfiguredFeature<?, ?> pineTree;
+
+    @ApiStatus.Internal
+    public static void open(MinecraftServer server) {
+        uninitialized = false;
+        OverworldUtils.server = server;
+        notTheBees = ModSecretSeeds.NOT_THE_BEES.match(server);
+        plains = server.registryAccess().holderOrThrow(Biomes.PLAINS);
+        Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
+        yellowWillowTree = registry.getOrThrow(ModFeatures.Configured.YELLOW_WILLOW_TREE);
+        cherry = registry.getOrThrow(TreeFeatures.CHERRY);
+        pineTree = registry.getOrThrow(ModFeatures.Configured.PINE_TREE);
+    }
+
+    @ApiStatus.Internal
+    public static void close() {
+        uninitialized = true;
+        server = null;
+        notTheBees = false;
+        plains = null;
+        yellowWillowTree = null;
+        cherry = null;
+        pineTree = null;
+    }
 
     @ApiStatus.Internal
     public static void replaceBiome(
@@ -58,15 +88,12 @@ public final class OverworldUtils {
             int z,
             CallbackInfoReturnable<Holder<Biome>> cir,
             Supplier<List<Holder<Biome>>> jungleGetter,
-            Supplier<Pair<Holder<Biome>, Holder<Biome>>> biomePairGetter,
-            Function<RegistryAccess, Holder<Biome>> protectionFactory
+            Supplier<Pair<Holder<Biome>, Holder<Biome>>> biomePairGetter
     ) {
+        if (uninitialized) return;
         Holder<Biome> replaced = cir.getReturnValue();
         if (replaced == null) return;
-        if ((notTheBees.isDefault()
-                ? (notTheBees = ModSecretSeeds.NOT_THE_BEES.match() ? TriState.TRUE : TriState.FALSE)
-                : notTheBees).isTrue()
-        ) {
+        if (notTheBees) {
             List<Holder<Biome>> jungle = jungleGetter.get();
             if (!jungle.isEmpty()) {
                 replaced = NotTheBees.replaceBiome(x, y, z, replaced, jungle);
@@ -77,11 +104,10 @@ public final class OverworldUtils {
                 replaced = pair.getSecond();
             }
         }
-        MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
-        if (currentServer != null && (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.THE_CRIMSON))) {
-            BlockPos spawnPos = currentServer.getWorldData().overworldData().getSpawnPos();
-            if (Math.abs((spawnPos.getX() >> 2) - x) <= 50 || Math.abs((spawnPos.getZ() >> 2) - z) <= 50) {
-                replaced = protectionFactory.apply(currentServer.registryAccess());
+        if (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.THE_CRIMSON)) {
+            BlockPos spawnPos = server.getWorldData().overworldData().getSpawnPos();
+            if (Mth.lengthSquared(spawnPos.getX() - x, spawnPos.getZ() - z) <= 128 * 128) {
+                replaced = plains;
             }
         }
         cir.setReturnValue(replaced);
@@ -89,6 +115,7 @@ public final class OverworldUtils {
 
     @ApiStatus.Internal
     public static void replaceTree(FeaturePlaceContext<TreeConfiguration> context, CallbackInfoReturnable<Boolean> cir) {
+        if (uninitialized) return;
         WorldGenLevel level = context.level();
         if (!(level instanceof WorldGenRegion)) return;
         BlockPos origin = context.origin();
@@ -101,12 +128,10 @@ public final class OverworldUtils {
             float v = ModSecretSeeds.DRUNK_WORLD.match() ? 0.02F : 0.01F;
             if (random.nextFloat() < v) {
                 if (random.nextFloat() < 0.75F) {
-                    boolean placed = level.registryAccess().holderOrThrow(ModFeatures.Configured.YELLOW_WILLOW_TREE).value()
-                            .place(level, context.chunkGenerator(), random, origin);
+                    boolean placed = yellowWillowTree.place(level, context.chunkGenerator(), random, origin);
                     if (placed) cir.setReturnValue(true);
                 } else {
-                    boolean placed = level.registryAccess().holderOrThrow(TreeFeatures.CHERRY).value()
-                            .place(level, context.chunkGenerator(), random, origin);
+                    boolean placed = cherry.place(level, context.chunkGenerator(), random, origin);
                     if (placed) cir.setReturnValue(true);
                 }
             }
@@ -125,11 +150,11 @@ public final class OverworldUtils {
 
     @ApiStatus.Internal
     public static boolean replacePine(PlacementContext context, RandomSource random, BlockPos pos) {
+        if (uninitialized) return false;
         WorldGenLevel level = context.getLevel();
         if (!(level instanceof WorldGenRegion)) return false;
         if (random.nextInt(4) == 0) {
-            return level.registryAccess().holderOrThrow(ModFeatures.Configured.PINE_TREE).value()
-                    .place(level, context.generator(), random, pos);
+            return pineTree.place(level, context.generator(), random, pos);
         }
         return false;
     }

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.event.game;
 
+import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -21,7 +22,9 @@ public final class ServerEvents {
     public static void serverAboutToStart(ServerAboutToStartEvent event) {
         PathService.INSTANCE.onServerStart();
         NetworkService.INSTANCE.onServerStart();
-        TheEndBiomeHolder.open(event.getServer());
+        MinecraftServer server = event.getServer();
+        TheEndBiomeHolder.open(server);
+        OverworldUtils.open(server);
     }
 
     @SubscribeEvent
@@ -34,6 +37,7 @@ public final class ServerEvents {
     public static void serverStopping(ServerStoppingEvent event) {
         GameEventSystem.INSTANCE.close(event.getServer());
         TheEndBiomeHolder.close();
+        OverworldUtils.close();
     }
 
     @SubscribeEvent

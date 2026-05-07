@@ -1,7 +1,5 @@
 package org.confluence.mod.mixin.level;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -20,9 +18,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 import java.util.function.Consumer;
-import java.util.stream.Stream;
 
 @Mixin(PlacedFeature.class)
 public abstract class PlacedFeatureMixin {
@@ -33,16 +31,28 @@ public abstract class PlacedFeatureMixin {
     @Unique
     private TriState confluence$isPine = TriState.DEFAULT;
 
-    @WrapOperation(method = "placeWithContext", at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;forEach(Ljava/util/function/Consumer;)V"))
-    private void wrap(
-            Stream<BlockPos> instance,
+    @ModifyArg(method = "placeWithContext", at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;forEach(Ljava/util/function/Consumer;)V"))
+    private Consumer<BlockPos> wrap(
             Consumer<BlockPos> consumer,
-            Operation<Void> original,
             @Local(argsOnly = true) PlacementContext context,
             @Local(argsOnly = true) RandomSource source,
             @Local MutableBoolean success
     ) {
-        if (confluence$isPine.isDefault()) check:{
+        if (confluence$isPine == TriState.FALSE) { // 大概率为false，所以只需要检查一次
+            return consumer;
+        }
+
+        if (confluence$isPine == TriState.TRUE) { // 不是false，大概率就是true
+            return pos -> {
+                if (OverworldUtils.replacePine(context, source, pos)) {
+                    success.setTrue();
+                } else {
+                    consumer.accept(pos);
+                }
+            };
+        }
+
+        if (confluence$isPine == TriState.DEFAULT) check:{ // 小概率为default
             if (feature.value().feature() instanceof TreeFeature) {
                 ResourceLocation id = feature.unwrapKey().map(ResourceKey::location).orElse(null);
                 if (id != null && id.getPath().equals("pine") && id.getNamespace().equals("minecraft")) {
@@ -53,16 +63,6 @@ public abstract class PlacedFeatureMixin {
             this.confluence$isPine = TriState.FALSE;
         }
 
-        if (confluence$isPine.isTrue()) {
-            original.call(instance, (Consumer<BlockPos>) pos -> {
-                if (OverworldUtils.replacePine(context, source, pos)) {
-                    success.setTrue();
-                } else {
-                    consumer.accept(pos);
-                }
-            });
-        } else {
-            original.call(instance, consumer);
-        }
+        return consumer; // 放过这一次替换
     }
 }

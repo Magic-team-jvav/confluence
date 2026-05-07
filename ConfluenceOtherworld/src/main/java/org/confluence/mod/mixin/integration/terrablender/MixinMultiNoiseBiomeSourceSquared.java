@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.levelgen.WorldOptions;
@@ -40,8 +39,6 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBi
     private List<Holder<Biome>> confluence$jungle;
     @Unique
     private Pair<Holder<Biome>, Holder<Biome>> confluence$biomePair;
-    @Unique
-    private Holder<Biome> confluence$protection;
 
     @TargetHandler(mixin = "terrablender.mixin.MixinMultiNoiseBiomeSource", name = "getNoiseBiome")
     @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
@@ -53,12 +50,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBi
                 confluence$jungle.addAll(set);
             }
             return confluence$jungle;
-        }, this::confluence$getBiomePair, registryAccess -> {
-            if (confluence$protection == null) {
-                this.confluence$protection = registryAccess.holderOrThrow(Biomes.PLAINS);
-            }
-            return confluence$protection;
-        });
+        }, this::confluence$getBiomePair);
     }
 
     @Override

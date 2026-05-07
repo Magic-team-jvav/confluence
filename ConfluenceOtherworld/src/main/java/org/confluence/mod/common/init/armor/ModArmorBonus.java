@@ -1,14 +1,18 @@
 package org.confluence.mod.common.init.armor;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -39,6 +43,7 @@ import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
 import org.confluence.mod.common.event.game.GameEvents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.armor.type.EnhanceEffectDuration;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.api.primitive.*;
@@ -84,6 +89,7 @@ public final class ModArmorBonus {
     public static final ValueType.UnitType LAVA$IMMUNE = ValueType.UnitType.of(Confluence.asResource("lava_immune"));
     public static final ValueType.IntegerType DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA = ValueType.IntegerType.of(Confluence.asResource("durability_repair_amount_per_second_in_lava"), IntegerValue.GET_MAX, 0);
     public static final ValueType.IntegerType FORTUNE = ValueType.IntegerType.of(Confluence.asResource("fortune"), AS_ENCHANTMENT_INT_CR, 0);
+    public static final ValueType<Object2IntMap<Holder<MobEffect>>, EnhanceEffectDuration> ENHANCE$EFFECT$DURATION = ValueType.create(Confluence.asResource("enhance_effect_duration"), EnhanceEffectDuration.MERGE, EnhanceEffectDuration.CODEC, Object2IntMaps.emptyMap(), EnhanceEffectDuration::new);
     // endregion
 
     // region key
@@ -136,7 +142,7 @@ public final class ModArmorBonus {
         register("spelunker_set", 2, SPELUNKER_HELMET, SPELUNKER_CHESTPLATE, SPELUNKER_LEGGINGS, SPELUNKER_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE));
             // todo 蜡烛粒子
-            // todo 提升洞穴探索药水时长2分钟
+            key.of(ENHANCE$EFFECT$DURATION, Object2IntMaps.singleton(ModEffects.SPELUNKER, 2400));
         });
         register("lead_set", 1, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS, armor(1));
         register("silver_set", 1, SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, armor(2));
@@ -267,13 +273,14 @@ public final class ModArmorBonus {
                     .add(Attributes.MOVEMENT_SPEED, key.id, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
-
-        // 提基套装
         register("tiki_set", 2, TIKI_MASK, TIKI_SHIRT, TIKI_LEGGINGS, TIKI_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                     .add(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
                     .add(ConfluenceMagicLib.WHIP_RANGE, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .build());
+        });
+        register("hunters", 1, HUNERS_HELMET, HUNERS_CHESTPLATE, HUNERS_LEGGINGS, HUNERS_BOOTS, key -> {
+            key.of(HURT$ENEMY$AWARD$EFFECTS, List.of(new MobEffectInstanceData(ModEffects.HUNTER, 100)));
         });
 
         /// todo 巫师套装

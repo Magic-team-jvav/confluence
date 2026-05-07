@@ -1,5 +1,6 @@
 package org.confluence.mod.common.event.game.entity;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -283,6 +284,12 @@ public final class LivingEntityEvents {
             ModEffects.onLoveEffectAdd(instance, event.getEntity(), event.getEffectSource());
         }
         FlaskEffect.removeAnotherFlaskEffects(instance, event.getEntity());
+
+        if (event.getEntity() instanceof Player player) {
+            Object2IntMap<Holder<MobEffect>> value = ModArmorBonus.getValue(player, ModArmorBonus.ENHANCE$EFFECT$DURATION);
+            int extraDuration = value.getInt(instance.getEffect());
+            instance.duration += extraDuration;
+        }
     }
 
     @SubscribeEvent

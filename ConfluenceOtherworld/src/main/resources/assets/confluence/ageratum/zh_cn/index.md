@@ -23,7 +23,7 @@ version: 1.3.0
 
 ## 更新日志
 
-[更新日志](confluence_changelog/changelog1.3.0.md)
+[更新日志](confluence_changelog/changelog.md)
 
 ---
 

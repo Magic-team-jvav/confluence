@@ -178,19 +178,19 @@
 
 ## 属性
 
-| 原名称                                   | 修改后名称                                          |
-|---------------------------------------|------------------------------------------------|
-| terra_curio:generic.armor_penetration | confluence_magic_lib:generic.armor_penetration |
-| terra_curio:generic.crit_chance       | confluence_magic_lib:generic.critical_chance   |
-| terra_curio:generic.dodge_chance      | confluence_magic_lib:generic.dodge_chance      |
-| terra_curio:generic.magic_damage      | confluence_magic_lib:generic.magic_damage      |
-| terra_curio:generic.ranged_damage     | confluence_magic_lib:generic.ranged_damage     |
-| terra_curio:generic.ranged_velocity   | confluence_magic_lib:generic.ranged_velocity   |
-| terra_curio:player.aggro              | confluence_magic_lib:player.aggro              |
-| terra_entity:player.mark_damage       | confluence_magic_lib:player.mark_damage        |
-| terra_entity:player.minion_capacity   | confluence_magic_lib:player.minion_capacity    |
-| terra_curio:player.pickup_range       | confluence_magic_lib:player.pickup_range       |
-| terra_entity:player.sentry_capacity   | confluence_magic_lib:player.sentry_capacity    |
-| terra_entity:player.summon_damage     | confluence_magic_lib:player.summon_damage      |
-| terra_entity:player.summon_knockback  | confluence_magic_lib:player.summon_knockback   |
-| terra_entity:player.whip_range        | confluence_magic_lib:player.whip_range         |
+| 原名称                                     | 修改后名称                                            |
+|-----------------------------------------|--------------------------------------------------|
+| `terra_curio:generic.armor_penetration` | `confluence_magic_lib:generic.armor_penetration` |
+| `terra_curio:generic.crit_chance`       | `confluence_magic_lib:generic.critical_chance`   |
+| `terra_curio:generic.dodge_chance`      | `confluence_magic_lib:generic.dodge_chance`      |
+| `terra_curio:generic.magic_damage`      | `confluence_magic_lib:generic.magic_damage`      |
+| `terra_curio:generic.ranged_damage`     | `confluence_magic_lib:generic.ranged_damage`     |
+| `terra_curio:generic.ranged_velocity`   | `confluence_magic_lib:generic.ranged_velocity`   |
+| `terra_curio:player.aggro`              | `confluence_magic_lib:player.aggro`              |
+| `terra_entity:player.mark_damage`       | `confluence_magic_lib:player.mark_damage`        |
+| `terra_entity:player.minion_capacity`   | `confluence_magic_lib:player.minion_capacity`    |
+| `terra_curio:player.pickup_range`       | `confluence_magic_lib:player.pickup_range`       |
+| `terra_entity:player.sentry_capacity`   | `confluence_magic_lib:player.sentry_capacity`    |
+| `terra_entity:player.summon_damage`     | `confluence_magic_lib:player.summon_damage`      |
+| `terra_entity:player.summon_knockback`  | `confluence_magic_lib:player.summon_knockback`   |
+| `terra_entity:player.whip_range`        | `confluence_magic_lib:player.whip_range`         |

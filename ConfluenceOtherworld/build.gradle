@@ -168,7 +168,7 @@ repositories {
     }
     maven {
         name = "Ageratum" // 藿香
-        url = "https://maven.anvilcraft.dev/releases"
+        url = "https://server.cjsah.net:1002/maven"
     }
     exclusiveContent { // Sable
         forRepository {
@@ -203,7 +203,7 @@ boolean quark = false
 boolean cobblemon = false
 boolean bettercombat = false
 
-boolean offline = true
+boolean offline = false
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -216,6 +216,8 @@ dependencies {
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
+
+    implementation jarJar(files('libs/LanguageFixer.jar'))
 
     if (offline) {
         compileOnly(annotationProcessor(files("libs/mixinsquared-common-0.3.3.jar")))

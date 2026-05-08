@@ -6,6 +6,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.common.BaseShovelItem;
+import org.confluence.mod.common.item.shovel.GraveDiggersShovel;
 
 import static org.confluence.mod.common.init.item.ModItems.unbreakable;
 
@@ -21,4 +22,5 @@ public class ShovelItems {
     public static final DeferredItem<BaseShovelItem> PLATINUM_SHOVEL = ITEMS.register("platinum_shovel", () -> new BaseShovelItem(ModTiers.PLATINUM, 5.5f, 1,ModRarity.COMMON));
     public static final DeferredItem<BaseShovelItem> SHADOW_SHOVEL = ITEMS.register("shadow_shovel", () -> new BaseShovelItem(ModTiers.DEMONITE, 6f, 1,unbreakable(),ModRarity.BLUE));
     public static final DeferredItem<BaseShovelItem> MINER = ITEMS.register("miner", () -> new BaseShovelItem(ModTiers.CRIMTANE, 6.5f, 1,unbreakable(),ModRarity.BLUE));
+    public static final DeferredItem<GraveDiggersShovel> GRAVE_DIGGERS_SHOVEL = ITEMS.register("grave_diggers_shovel", () -> new GraveDiggersShovel(7.0f, 1,unbreakable(), ModRarity.GREEN));
 }

@@ -3105,6 +3105,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ShovelItems.PLATINUM_SHOVEL.get(), "铂金锹");
         add(ShovelItems.SHADOW_SHOVEL.get(), "暗影锹");
         add(ShovelItems.MINER.get(), "采掘者");
+        add(ShovelItems.GRAVE_DIGGERS_SHOVEL.get(), "掘墓者");
 
 
         add(PickaxeItems.COPPER_PICKAXE.get(), "铜镐");

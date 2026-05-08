@@ -1323,6 +1323,12 @@ public final class ModTabs {
                         spelunker_armor.accept(ArmorItems.SPELUNKER_LEGGINGS.get());
                         spelunker_armor.accept(ArmorItems.SPELUNKER_BOOTS.get());
 
+                        CreativeModeTab.Output hermit_armor = GroupItem.belongsTo("hermit_armor", output);
+                        hermit_armor.accept(ArmorItems.HERMIT_HELMET.get());
+                        hermit_armor.accept(ArmorItems.HERMIT_CHESTPLATE.get());
+                        hermit_armor.accept(ArmorItems.HERMIT_LEGGINGS.get());
+                        hermit_armor.accept(ArmorItems.HERMIT_BOOTS.get());
+
                         CreativeModeTab.Output spore_root_armor = GroupItem.belongsTo("spore_root_armor", output);
                         spore_root_armor.accept(ArmorItems.SPORE_ROOT_HELMET.get());
                         spore_root_armor.accept(ArmorItems.SPORE_ROOT_CHESTPLATE.get());

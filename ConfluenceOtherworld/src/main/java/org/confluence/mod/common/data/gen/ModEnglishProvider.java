@@ -248,6 +248,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.pumpkin_armor", "Pumpkin Armor");
         add("itemGroup.confluence.hunters_armor", "Hunters Armor");
         add("itemGroup.confluence.guards_armor", "Guards Armor");
+        add("itemGroup.confluence.spelunker_armor", "Spelunker Armor");
+        add("itemGroup.confluence.hermit_armor", "Hermit Armor");
         add("itemGroup.confluence.rain_wear", "Rain Coat");
         add("itemGroup.confluence.snow_insulated_wear", "Snow Insulated Wear");
         add("itemGroup.confluence.pink_snow_insulated_wear", "Pink Snow Insulated Wear");

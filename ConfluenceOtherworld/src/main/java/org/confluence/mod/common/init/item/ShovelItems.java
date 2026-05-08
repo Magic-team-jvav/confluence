@@ -22,5 +22,5 @@ public class ShovelItems {
     public static final DeferredItem<BaseShovelItem> PLATINUM_SHOVEL = ITEMS.register("platinum_shovel", () -> new BaseShovelItem(ModTiers.PLATINUM, 5.5f, 1,ModRarity.COMMON));
     public static final DeferredItem<BaseShovelItem> SHADOW_SHOVEL = ITEMS.register("shadow_shovel", () -> new BaseShovelItem(ModTiers.DEMONITE, 6f, 1,unbreakable(),ModRarity.BLUE));
     public static final DeferredItem<BaseShovelItem> MINER = ITEMS.register("miner", () -> new BaseShovelItem(ModTiers.CRIMTANE, 6.5f, 1,unbreakable(),ModRarity.BLUE));
-    public static final DeferredItem<GraveDiggersShovel> GRAVE_DIGGERS_SHOVEL = ITEMS.register("grave_diggers_shovel", () -> new GraveDiggersShovel(7.0f, 1,unbreakable(), ModRarity.GREEN));
+    public static final DeferredItem<GraveDiggersShovel> GRAVE_DIGGERS_SHOVEL = ITEMS.register("grave_diggers_shovel", () -> new GraveDiggersShovel(4.5f, 1, ModRarity.GREEN));
 }

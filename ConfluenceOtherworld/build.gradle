@@ -229,7 +229,7 @@ dependencies {
 
     compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
     compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    if (false) {
+    if (true) {
         runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
         runtimeOnly("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
         runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
@@ -237,7 +237,7 @@ dependencies {
 
         // 航空学 v1.1.3
         runtimeOnly "maven.modrinth:create-aeronautics:1sv6OtSz"
-        runtimeOnly "maven.modrinth:sable:g8CObHcP"
+//        runtimeOnly "maven.modrinth:sable:g8CObHcP"
     }
 
     api "dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:${sable_companion_version}"

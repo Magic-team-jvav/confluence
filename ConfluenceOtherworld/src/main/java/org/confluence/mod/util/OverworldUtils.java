@@ -22,9 +22,6 @@ import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.DensityFunctions;
-import net.minecraft.world.level.levelgen.NoiseRouterData;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -35,9 +32,7 @@ import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.worldgen.AboveYAddConstantDensityFunction;
 import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
-import org.confluence.mod.mixed.IDensityFunctions$Ap2;
 import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -162,18 +157,6 @@ public final class OverworldUtils {
             return pineTree.place(level, context.generator(), random, pos);
         }
         return false;
-    }
-
-    @ApiStatus.Internal
-    public static void modifyDepth(ServerLevel level) {
-        if (ModSecretSeeds.DRUNK_WORLD.match(level)) {
-            DensityFunction function = level.registryAccess().holderOrThrow(NoiseRouterData.DEPTH).value();
-            if (function instanceof IDensityFunctions$Ap2 ap2 && ap2.confluence$getType() == DensityFunctions.TwoArgumentSimpleFunction.Type.ADD) {
-                DensityFunction copy = DensityFunctions.add(ap2.confluence$getArg(true), ap2.confluence$getArg(false));
-                DensityFunction limit = new AboveYAddConstantDensityFunction(copy, getSeaLevel(), 0.2);
-                ap2.confluence$setArgs(limit, DensityFunctions.zero());
-            }
-        }
     }
 
     /// 获取主世界

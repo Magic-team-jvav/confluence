@@ -55,4 +55,8 @@ class AllAgeratum {
             }
         });
     }
+
+    public static void giveIngameWiki(ServerPlayer player) {
+        player.addItem(INGAME_WIKI.toStack());
+    }
 }

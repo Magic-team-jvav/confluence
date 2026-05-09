@@ -74,6 +74,7 @@ import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
+import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IAbstractMinecart;
@@ -365,9 +366,13 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         AdvancementHolder advancement = event.getAdvancement();
+        ServerPlayer player = (ServerPlayer) event.getEntity();
         if (!advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(true) && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
-            ServerPlayer player = (ServerPlayer) event.getEntity();
             player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
+        }
+
+        if (Confluence.MODID.equals(advancement.id().getNamespace()) && "achievements/new_world".equals(advancement.id().getPath())) {
+            AgeratumHelper.giveIngameWiki(player);
         }
     }
 

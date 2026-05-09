@@ -73,6 +73,7 @@ public final class Confluence {
         ModLootTables.ItemConditions.TYPES.register(eventBus);
         ModTradeLockProviderTypes.TYPES.register(eventBus);
         ModCommands.ARGUMENT_TYPE_INFOS.register(eventBus);
+        ModDensityFunctionTypes.TYPES.register(eventBus);
     }
 
     public static void registerGameRules() {

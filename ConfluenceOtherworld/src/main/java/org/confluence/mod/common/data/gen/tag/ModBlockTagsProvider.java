@@ -504,6 +504,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GLOOM_OBSIDIAN_BRICKS.STAIRS.get(),
                 GLOOM_OBSIDIAN_BRICKS.SLAB.get(),
                 GLOOM_OBSIDIAN_BRICKS.WALL.get(),
+                CRYING_OBSIDIAN_BRICKS.FULL.get(),
+                CRYING_OBSIDIAN_BRICKS.STAIRS.get(),
+                CRYING_OBSIDIAN_BRICKS.SLAB.get(),
+                CRYING_OBSIDIAN_BRICKS.WALL.get(),
 
                 CrateBlocks.IRON_CRATE.get(),
                 CrateBlocks.GOLDEN_CRATE.get(),
@@ -1429,6 +1433,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GLOOM_OBSIDIAN_BRICKS.FULL.get(),
                 GLOOM_OBSIDIAN_BRICKS.SLAB.get(),
                 GLOOM_OBSIDIAN_BRICKS.STAIRS.get(),
+                GLOOM_OBSIDIAN_BRICKS.WALL.get(),
+                CRYING_OBSIDIAN_BRICKS.FULL.get(),
+                CRYING_OBSIDIAN_BRICKS.SLAB.get(),
+                CRYING_OBSIDIAN_BRICKS.STAIRS.get(),
+                CRYING_OBSIDIAN_BRICKS.WALL.get(),
                 GLOOM_OBSIDIAN.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(ASH_BLOCK.get());

@@ -505,6 +505,18 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .setResult(VanityArmorItems.GUY_FAWKES_MASK_SET.toStack())
                         .setProperties(halloweens)
                         .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(VanityArmorItems.CLOTHIERS_JACKET.toStack())
+                        .setProperties(halloweens)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(VanityArmorItems.CLOTHIERS_PANTS.toStack())
+                        .setProperties(halloweens)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(VanityArmorItems.CLOTHIERS_SHOES.toStack())
+                        .setProperties(halloweens)
+                        .build())
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -599,7 +611,10 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(MaterialItems.SPELL_TOME)
                 .add(Items.BOOK)
                 .add(ToolItems.EMPTY_DROPPER)
-                // 巫师帽（万圣节）
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(VanityArmorItems.WIZARDS_HAT.toStack())
+                        .setProperties(halloweens)
+                        .build())
                 // 杀戮牌组（血月）
                 .add(SellTrade.INSTANCE)
                 .build());

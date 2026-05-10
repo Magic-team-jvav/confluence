@@ -263,6 +263,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, SwordItems.ZOMBIE_ARM, ModItems.WHOOPIE_CUSHION);
         item(recipeOutput, TCItems.PUTRID_SCENT, TCItems.FLESH_KNUCKLES);
         item(recipeOutput, TCItems.FLESH_KNUCKLES, TCItems.PUTRID_SCENT);
+        item(recipeOutput, VanityArmorItems.PEDDLERS_HAT, ConsumableItems.PEDDLERS_SATCHEL);
 
         item(recipeOutput, ConsumableItems.LIFE_CRYSTAL, ConsumableItems.VITAL_CRYSTAL);
         item(recipeOutput, ConsumableItems.MANA_CRYSTAL, ConsumableItems.ARCANE_CRYSTAL);

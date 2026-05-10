@@ -2304,6 +2304,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
         add(NatureBlocks.LARVA.get(), "幼虫");
         add(DecorativeBlocks.LOST_PAPER_BLOCK.get(), "遗落纸张");
+        add(DecorativeBlocks.MURAL_BLOCK.get(), "壁画方块");
         add(NatureBlocks.CORRUPT_CACTUS.get(), "腐化仙人掌");
         add(NatureBlocks.CRIMSON_CACTUS.get(), "猩红仙人掌");
         add(NatureBlocks.HALLOW_CACTUS.get(), "神圣仙人掌");
@@ -2492,10 +2493,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get(), "黑曜石砖门");
         add(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.get(), "雕纹黑曜石块");
         add(DecorativeBlocks.SMOOTH_OBSIDIAN.get(), "光滑黑曜石块");
+
         add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.FULL.get(), "黯虚黑曜石砖");
         add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.STAIRS.get(), "黯虚黑曜石砖楼梯");
         add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.SLAB.get(), "黯虚黑曜石砖台阶");
         add(DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.WALL.get(), "黯虚黑曜石砖墙");
+        add(DecorativeBlocks.CRYING_OBSIDIAN_BRICKS.FULL.get(), "哭泣的黑曜石砖");
+        add(DecorativeBlocks.CRYING_OBSIDIAN_BRICKS.STAIRS.get(), "哭泣的黑曜石砖楼梯");
+        add(DecorativeBlocks.CRYING_OBSIDIAN_BRICKS.SLAB.get(), "哭泣的黑曜石砖台阶");
+        add(DecorativeBlocks.CRYING_OBSIDIAN_BRICKS.WALL.get(), "哭泣的黑曜石砖墙");
         add(DecorativeBlocks.CRYSTAL_BLOCK.get(), "水晶块");
         add(DecorativeBlocks.RAINBOW_BRICKS.FULL.get(), "彩虹砖");
         add(DecorativeBlocks.RAINBOW_BRICKS.STAIRS.get(), "彩虹砖楼梯");
@@ -4374,6 +4380,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.AVIATORS.get(), "0x33 的飞行员");
         add(VanityArmorItems.EYE_PATCH.get(), "眼罩");
         add(VanityArmorItems.HALLOWED_CROWN.get(), "神圣王冠");
+        add(VanityArmorItems.WIZARDS_HAT.get(), "巫师的帽子");
+        add(VanityArmorItems.PEDDLERS_HAT.get(), "商贩帽");
+       // add(VanityArmorItems.BUCKET_HAT.get(), "水桶帽");
         add(VanityArmorItems.DYE.get(), "染料");
         add(VanityArmorItems.RED_DYE.get(), "红染料");
         add(VanityArmorItems.BRIGHT_RED_DYE.get(), "淡红染料");

@@ -684,6 +684,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(7))
                 )
         );
+        add(TENpcEntities.TRAVELING_MERCHANT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/traveling_merchant"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(VanityArmorItems.PEDDLERS_HAT))
+                )
+        );
+        add(TENpcEntities.CLOTHIER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/clothier"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(VanityArmorItems.CLOTHIERS_HAT))
+                )
+        );
         add(TEAnimals.DUCK.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/duck"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_DUCK).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)

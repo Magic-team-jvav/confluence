@@ -43,6 +43,7 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, DecorativeBlocks.AETHERIUM_BRICKS.FULL.toStack(4), Ingredient.of(NatureBlocks.AETHERIUM_BLOCK));
         stonecutting(recipeOutput, DecorativeBlocks.OBSIDIAN_BRICKS.FULL.toStack(4), Ingredient.of(Blocks.OBSIDIAN));
         stonecutting(recipeOutput, DecorativeBlocks.GLOOM_OBSIDIAN_BRICKS.FULL.toStack(4), Ingredient.of(NatureBlocks.GLOOM_OBSIDIAN));
+        stonecutting(recipeOutput, DecorativeBlocks.CRYING_OBSIDIAN_BRICKS.FULL.toStack(4), Ingredient.of(Blocks.CRYING_OBSIDIAN));
         stonecutting(recipeOutput, DecorativeBlocks.SNOW_BRICKS.FULL.toStack(1), Ingredient.of(Blocks.SNOW));
         stonecutting(recipeOutput, DecorativeBlocks.BLUE_ICE_BRICKS.FULL.toStack(4), Ingredient.of(Blocks.BLUE_ICE));
         stonecutting(recipeOutput, DecorativeBlocks.PACKED_ICE_BRICKS.FULL.toStack(4), Ingredient.of(Blocks.PACKED_ICE));

@@ -142,9 +142,9 @@ public final class ModArmorMaterials {
             "scale_mail", 2.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> HERMIT_ARMOR_ARMOR_MATERIALS = registerArmorMaterial("hermit_armor_armor_materials",
-            2, 5, 5, 2,
+            2, 4, 4, 2,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
-            "hermit", 1.0F, 0.0F
+            "hermit", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> GUARDS_ARMOR_MATERIALS = registerArmorMaterial("guards_armor_materials",
             3, 5, 5, 3,

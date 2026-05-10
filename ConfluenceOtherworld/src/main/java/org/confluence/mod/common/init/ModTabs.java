@@ -418,7 +418,6 @@ public final class ModTabs {
                         oreStorageBlocks.accept(OreBlocks.SPECTRE_BLOCK);
                         oreStorageBlocks.accept(OreBlocks.LUMINITE_BLOCK);
                         oreStorageBlocks.accept(OreBlocks.HELLSTONE_BLOCK);
-                        oreStorageBlocks.accept(OreBlocks.HELLSTONE_BRICKS);
                         oreStorageBlocks.accept(OreBlocks.COBALT_BLOCK);
                         oreStorageBlocks.accept(OreBlocks.PALLADIUM_BLOCK);
                         oreStorageBlocks.accept(OreBlocks.MYTHRIL_BLOCK);
@@ -505,6 +504,8 @@ public final class ModTabs {
 
                         CreativeModeTab.Output special_building = GroupItem.belongsTo("special_building", output);
                         special_building.accept(DecorativeBlocks.LOST_PAPER_BLOCK.get());
+                        special_building.accept(OreBlocks.HELLSTONE_BRICKS);
+                        special_building.accept(DecorativeBlocks.MURAL_BLOCK.get());
                         special_building.accept(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get());
                         special_building.accept(DecorativeBlocks.CRISPY_HONEY_BLOCK.get());
                         special_building.accept(DecorativeBlocks.ASPHALT_BLOCK.get());
@@ -512,7 +513,6 @@ public final class ModTabs {
                         special_building.accept(DecorativeBlocks.REMAINS_BLOCK.get());
                         special_building.accept(DecorativeBlocks.POO_BLOCK.get());
                         special_building.accept(DecorativeBlocks.FLOATING_WHEAT_BALE.get());
-                        special_building.accept(DecorativeBlocks.MURAL_BLOCK.get());
                         special_building.accept(DecorativeBlocks.CARVED_WHITE_PUMPKIN.get());
                         special_building.accept(DecorativeBlocks.JOHNNY_O_LANTERN.get());
                         special_building.accept(DecorativeBlocks.CRYSTAL_BLOCK.get());
@@ -608,6 +608,7 @@ public final class ModTabs {
                         fur_wool.accept(DecorativeBlocks.FLINX_FUR_CARPET.get());
                         fur_wool.accept(DecorativeBlocks.RAINBOW_WOOL.get());
                         fur_wool.accept(DecorativeBlocks.RAINBOW_CARPET.get());
+
 
                         acceptAll(StatueBlocks.BLOCKS, output, "statue");
                     })
@@ -1512,6 +1513,9 @@ public final class ModTabs {
                         output.accept(VanityArmorItems.AVIATORS.get());
                         output.accept(VanityArmorItems.EYE_PATCH.get());
                         output.accept(VanityArmorItems.HALLOWED_CROWN.get());
+                        output.accept(VanityArmorItems.WIZARDS_HAT.get());
+                        output.accept(VanityArmorItems.PEDDLERS_HAT.get());
+                       // output.accept(VanityArmorItems.BUCKET_HAT.get());
                         output.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(TCItems.DIVING_HELMET);

@@ -11,6 +11,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
@@ -1351,6 +1352,72 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "bcb",
                 " d "
         )), CrossbowItems.PALLADIUM_REPEATER.toStack());
+
+        // 隐匿者套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, Blocks.DARK_OAK_LOG)
+        ), List.of(
+                "aaa",
+                "a a"
+        )), ArmorItems.HERMIT_HELMET.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4, Blocks.DARK_OAK_LOG),
+                'b', AmountIngredient.of(4, Items.AMETHYST_SHARD,MaterialItems.AMETHYST),
+                'c', AmountIngredient.of(4, Items.EMERALD,MaterialItems.JADE)
+        ), List.of(
+                "a a",
+                "bcb",
+                "bab"
+        )), ArmorItems.HERMIT_CHESTPLATE.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4, Blocks.DARK_OAK_LOG)
+        ), List.of(
+                "aaa",
+                "a a",
+                "a a"
+        )), ArmorItems.HERMIT_LEGGINGS.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4, Blocks.DARK_OAK_LOG)
+        ), List.of(
+                "a a",
+                "a a"
+        )), ArmorItems.HERMIT_BOOTS.toStack());
+
+        // 蓝隐匿者套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, MaterialItems.GLOWING_MUSHROOM)
+        ), List.of(
+                "aaa",
+                "a a"
+        )), ArmorItems.BLUE_HERMIT_HELMET.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, MaterialItems.GLOWING_MUSHROOM),
+                'b', AmountIngredient.of(4, Items.AMETHYST_SHARD,MaterialItems.AMETHYST),
+                'c', AmountIngredient.of(4, Items.EMERALD,MaterialItems.JADE)
+        ), List.of(
+                "a a",
+                "ccc",
+                "bab"
+        )), ArmorItems.BLUE_HERMIT_CHESTPLATE.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, MaterialItems.GLOWING_MUSHROOM)
+        ), List.of(
+                "aaa",
+                "a a",
+                "a a"
+        )), ArmorItems.BLUE_HERMIT_LEGGINGS.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(6, MaterialItems.GLOWING_MUSHROOM)
+        ), List.of(
+                "a a",
+                "a a"
+        )), ArmorItems.BLUE_HERMIT_BOOTS.toStack());
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(30),Ingredient.of(MaterialItems.STURDY_FOSSIL));

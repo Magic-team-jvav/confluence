@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -7,12 +8,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class CrystalChargeProjectile extends AbstractManaProjectile {
+    private ParticleEmitter emitter;
     public CrystalChargeProjectile(EntityType<? extends CrystalChargeProjectile> entityType, Level level) {
         super(entityType, level);
-//        withParticle(getType() == ModEntities.CRYSTAL_CHARGE_1_PROJECTILE.get() ? big : small);
+        withParticle(Confluence.asResource("crystal_serpent_projectile"));
     }
 
     public CrystalChargeProjectile(LivingEntity living) {

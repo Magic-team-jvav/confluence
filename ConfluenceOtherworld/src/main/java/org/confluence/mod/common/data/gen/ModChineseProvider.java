@@ -2613,6 +2613,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.REMAINS_BLOCK.get(), "遗骸");
         add(DecorativeBlocks.LIHZAHRD_DOOR.get(), "丛林蜥蜴门");
 
+
         add(DecorativeBlocks.WHITE_PAPER_PANE.get(), "缟白纸窗格");
         add(DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get(), "缟白纸窗格灯");
         add(DecorativeBlocks.MALACHITE_PAPER_PANE.get(), "石绿纸窗格");

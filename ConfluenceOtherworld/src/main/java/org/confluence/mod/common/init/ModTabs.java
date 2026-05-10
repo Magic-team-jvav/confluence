@@ -719,6 +719,19 @@ public final class ModTabs {
                         crafting_stations.accept(TFBlocks.ICE_MACHINE);
 
                         CreativeModeTab.Output storage = GroupItem.belongsTo("storage", output);
+                        storage.accept(ChestBlocks.SHADOW_CHEST.get());
+                        storage.accept(ChestBlocks.FROZEN_CHEST.get());
+                        storage.accept(ChestBlocks.IVY_CHEST.get());
+                        storage.accept(ChestBlocks.RICH_MAHOGANY_CHEST.get());
+                        storage.accept(ChestBlocks.MARBLE_CHEST.get());
+                        storage.accept(ChestBlocks.GRANITE_CHEST.get());
+                        storage.accept(ChestBlocks.WATER_CHEST.get());
+                        storage.accept(ChestBlocks.SKYWARE_CHEST.get());
+                        storage.accept(ChestBlocks.DEATH_WOODEN_CHEST.get());
+                        storage.accept(ChestBlocks.SANDSTONE_CHEST.get());
+                        storage.accept(ChestBlocks.LIVING_WOOD_CHEST.get());
+                        storage.accept(ChestBlocks.DUNGEON_CHEST.get());
+                        storage.accept(ChestBlocks.CRIMSON_CHEST.get());
                         storage.accept(ChestBlocks.CRIMSON_CHEST.get());
                         storage.accept(ChestBlocks.CORRUPTION_CHEST.get());
                         storage.accept(ChestBlocks.JUNGLE_CHEST.get());

@@ -250,6 +250,24 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
            );
 
+    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_HELMET = register("blue_hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/blue_hermit_armor")
+            .rarity(ModRarity.GREEN)
+            .fourClassesDamage(0.04));
+    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_CHESTPLATE = register("blue_hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/blue_hermit_armor")
+            .rarity(ModRarity.GREEN)
+            .criticalChance(0.03));
+    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_LEGGINGS = register("blue_hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/blue_hermit_armor")
+            .rarity(ModRarity.GREEN)
+            .fourClassesDamage(0.04));
+    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_BOOTS = register("blue_hermit_boots", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/blue_hermit_armor")
+            .rarity(ModRarity.GREEN)
+    );
+
+
     public static final DeferredItem<BaseArmorItem> GUARDS_HELMET = register("guards_helmet", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/guards_armor")
             .rarity(ModRarity.GREEN)

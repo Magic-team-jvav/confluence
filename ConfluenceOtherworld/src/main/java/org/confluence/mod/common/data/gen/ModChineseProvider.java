@@ -209,6 +209,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.guards_armor", "守卫盔甲");
         add("itemGroup.confluence.spelunker_armor", "探穴者盔甲");
         add("itemGroup.confluence.hermit_armor", "隐匿者盔甲");
+        add("itemGroup.confluence.blue_hermit_armor", "蓝隐匿者盔甲");
+        add("itemGroup.confluence.scale_mail_armor", "鳞甲盔甲");
         add("itemGroup.confluence.rain_wear", "雨衣套装");
         add("itemGroup.confluence.snow_insulated_wear", "防寒套装");
         add("itemGroup.confluence.pink_snow_insulated_wear", "粉色防寒套装");
@@ -3797,6 +3799,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.HERMIT_CHESTPLATE.get(), "隐匿者胸甲");
         add(ArmorItems.HERMIT_LEGGINGS.get(), "隐匿者护腿");
         add(ArmorItems.HERMIT_BOOTS.get(), "隐匿者靴子");
+        add(ArmorItems.BLUE_HERMIT_HELMET.get(), "蓝隐匿者头盔");
+        add(ArmorItems.BLUE_HERMIT_CHESTPLATE.get(), "蓝隐匿者胸甲");
+        add(ArmorItems.BLUE_HERMIT_LEGGINGS.get(), "蓝隐匿者护腿");
+        add(ArmorItems.BLUE_HERMIT_BOOTS.get(), "蓝隐匿者靴子");
         add(ArmorItems.RAIN_CAP.get(), "雨帽");
         add(ArmorItems.RAINCOAT.get(), "雨衣");
         add(ArmorItems.SNOW_CAPS.get(), "防雪帽");

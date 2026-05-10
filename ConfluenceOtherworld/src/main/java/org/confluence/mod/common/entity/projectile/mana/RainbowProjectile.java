@@ -36,7 +36,7 @@ public class RainbowProjectile extends BaseDraggingProjectile {
 
     @Override
     protected ResourceLocation getParticleId() {
-        return Confluence.asResource("magic_missile_projectile");
+        return Confluence.asResource("rainbow_projectile");
     }
 
     @Override

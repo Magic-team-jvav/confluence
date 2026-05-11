@@ -339,7 +339,7 @@ dependencies {
     }
 
     compileOnly "dev.anvilcraft.resource:ageratum-neoforge-1.21.1:${ageratum_version}"
-    if (true) {
+    if (false) {
         runtimeOnly "dev.anvilcraft.resource:ageratum-neoforge-1.21.1:${ageratum_version}"
     }
 

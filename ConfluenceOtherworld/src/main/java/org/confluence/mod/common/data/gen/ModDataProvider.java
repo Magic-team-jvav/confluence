@@ -515,7 +515,10 @@ public class ModDataProvider {
             register(context, LUNAR_CORAL, ModFeatures.LUNAR_CORAL.get(), new LunarCoralFeature.Config(
                             BlockStateProvider.simple(NatureBlocks.LUNAR_CORAL_BLOCK.get()),
                             BlockStateProvider.simple(NatureBlocks.LUNAR_CORAL.get()),
-                            BlockStateProvider.simple(NatureBlocks.LUNAR_CORAL_FAN.get())
+                            BlockStateProvider.simple(NatureBlocks.LUNAR_CORAL_FAN.get()),
+                            BlockStateProvider.simple(NatureBlocks.DREAM_BUBBLE.get()),
+                            BlockStateProvider.simple(NatureBlocks.GLOW_CORALITE.get()),
+                            0.2F
                     )
             );
             register(context, WITHERED_SEA_SILK, ModFeatures.BLOCK_POST.get(), new BlockPostFeature.Config(
@@ -1003,7 +1006,7 @@ public class ModDataProvider {
             register(context, MOONGLOW_WILLOW_TREE, configured.getOrThrow(ConfiguredFeatures.MOONGLOW_WILLOW_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, VOID_TREE_LESS, configured.getOrThrow(ConfiguredFeatures.VOID_TREE), count1_10, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, MOONGLOW_WILLOW_TREE_LESS, configured.getOrThrow(ConfiguredFeatures.MOONGLOW_WILLOW_TREE), count1_10, inSquare, worldSurfaceWG, biome);
-            register(context, WITHERED_SEA_SILK, configured.getOrThrow(ConfiguredFeatures.WITHERED_SEA_SILK), inSquare, worldSurfaceWG, biome);
+            register(context, WITHERED_SEA_SILK, configured.getOrThrow(ConfiguredFeatures.WITHERED_SEA_SILK), CountPlacement.of(3), inSquare, worldSurfaceWG, biome);
             register(context, END_BROKEN_STONE, configured.getOrThrow(ConfiguredFeatures.END_BROKEN_STONE), count0_2$1_3, inSquare, oceanFloor, biome);
             register(context, END_BROKEN_STONE_LESS, configured.getOrThrow(ConfiguredFeatures.END_BROKEN_STONE), count1_10, inSquare, oceanFloor, biome);
             register(context, VOID_HUGE_STONE, configured.getOrThrow(ConfiguredFeatures.VOID_HUGE_STONE), count1_5, inSquare, worldSurfaceWG, biome);

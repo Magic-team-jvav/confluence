@@ -294,14 +294,14 @@ public final class ModClientSetups {
         return Color.HSBtoRGB(hsb[0], 0.5F, 1.0F);
     };
 
-    static final BlockColor VOID_LEAVES_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, VOID_A, VOID_B, VOID_C);
+    static final BlockColor VOID_LEAVES_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, VOID_A, VOID_B, VOID_C, 3);
 
-    static final BlockColor VOID_WEAVE_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, VOID_WEAVE_A, VOID_WEAVE_B, VOID_WEAVE_C);
+    static final BlockColor VOID_WEAVE_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, VOID_WEAVE_A, VOID_WEAVE_B, VOID_WEAVE_C, 3);
 
-    private static int threeColor(@Nullable BlockPos pos, IntegerRGB colorA, IntegerRGB colorB, IntegerRGB colorC) {
+    static final BlockColor DREAM_BUBBLE_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, DREAM_BUBBLE_A, DREAM_BUBBLE_B, DREAM_BUBBLE_C, 2);
+
+    private static int threeColor(@Nullable BlockPos pos, IntegerRGB colorA, IntegerRGB colorB, IntegerRGB colorC, double scale) {
         if (pos == null) return colorB.get();
-
-        double scale = 3;
         double noiseVal = normalNoise.getValue(
                 pos.getX() * scale,
                 pos.getY() * scale,

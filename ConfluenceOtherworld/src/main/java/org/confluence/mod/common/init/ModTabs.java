@@ -215,6 +215,17 @@ public final class ModTabs {
                         end.accept(NatureBlocks.SILVER_GRASS);
                         end.accept(NatureBlocks.TALL_SILVER_GRASS);
                         end.accept(NatureBlocks.WITHERED_SEA_SILK);
+                        end.accept(NatureBlocks.VOID_CRYSTAL_BLOCK);
+                        end.accept(NatureBlocks.BUDDING_VOID_CRYSTAL);
+                        end.accept(NatureBlocks.SMALL_VOID_CRYSTAL_BUD);
+                        end.accept(NatureBlocks.MEDIUM_VOID_CRYSTAL_BUD);
+                        end.accept(NatureBlocks.LARGE_VOID_CRYSTAL_BUD);
+                        end.accept(NatureBlocks.VOID_CRYSTAL_CLUSTER);
+                        end.accept(NatureBlocks.VOID_HUMUS);
+                        end.accept(NatureBlocks.TWILIGHT_ELLFLOWER);
+                        end.accept(NatureBlocks.INVERSE_GRASS);
+                        end.accept(NatureBlocks.TALL_INVERSE_GRASS);
+                        end.accept(NatureBlocks.GLOW_CORALITE);
 
                         CreativeModeTab.Output nether = GroupItem.belongsTo("nether", output);
                         nether.accept(NatureBlocks.ASH_BLOCK);

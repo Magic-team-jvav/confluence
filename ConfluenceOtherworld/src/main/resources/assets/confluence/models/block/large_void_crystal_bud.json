@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/large_void_crystal_bud",
+    "particle": "confluence:block/large_void_crystal_bud"
+  },
+  "render_type": "cutout"
+}

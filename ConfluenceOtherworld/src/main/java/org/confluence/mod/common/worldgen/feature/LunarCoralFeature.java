@@ -11,13 +11,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -28,15 +24,8 @@ import org.confluence.mod.common.block.natural.LunarCoralFanBlock;
 import org.confluence.mod.common.block.natural.LunarCoralPlantBlock;
 import org.joml.Vector2i;
 import org.joml.Vector3d;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import static org.confluence.lib.util.VectorUtils.ballPos;
-import static org.confluence.lib.util.VectorUtils.lightningPathList;
-import static org.confluence.mod.common.block.natural.LunarCoralBlock.HUMIDITY;
 
 public class LunarCoralFeature extends Feature<LunarCoralFeature.Config> {
     public LunarCoralFeature(Codec<Config> pCodec) {
@@ -48,21 +37,22 @@ public class LunarCoralFeature extends Feature<LunarCoralFeature.Config> {
 
     @Override
     public boolean place(FeaturePlaceContext<Config> pContext) {
-        RandomSource random = pContext.random();
-        Config config = pContext.config();
-        WorldGenLevel level = pContext.level();
-        BlockPos basePos = pContext.origin().offset(0, -5, 0);
-
-        BlockState coralBlock = config.coral().getState(random, basePos);
-        BlockState coralPlantBlock = config.coralPlant().getState(random, basePos);
-        BlockState coralFanBlock = config.coralFan().getState(random, basePos);
-
-        float density = 1F;
-        float length = 1.5F;
-        int count = random.nextInt(4, 15);
-        float halfCount = (float) count / 2;
-        float rotateStep = 2 * Mth.PI / count;
-        float rotateStart = random.nextFloat() * 2 * Mth.PI;
+        final RandomSource random = pContext.random();
+        final Config config = pContext.config();
+        final WorldGenLevel level = pContext.level();
+        final BlockPos basePos = pContext.origin().offset(0, -5, 0);
+        final BlockState coralBlock = config.coral().getState(random, basePos);
+        final BlockState coralPlantBlock = config.coralPlant().getState(random, basePos);
+        final BlockState coralFanBlock = config.coralFan().getState(random, basePos);
+        final BlockState bubbleBlock = config.bubble().getState(random, basePos);
+        final BlockState coraliteBlock = config.coralite().getState(random, basePos);
+        final float density = 1F;
+        final float length = 1.5F;
+        final int count = random.nextInt(4, 15);
+        final float halfCount = (float) count / 2;
+        final float rotateStep = 2 * Mth.PI / count;
+        final float rotateStart = random.nextFloat() * 2 * Mth.PI;
+        final boolean bubble = config.bubbleChance > random.nextFloat();
         float radiusMax = 1;
 
         for (int c = 0; c < count; c++) {
@@ -108,6 +98,11 @@ public class LunarCoralFeature extends Feature<LunarCoralFeature.Config> {
                             Vector2i pos = new Vector2i(x, z);
                             placeMap.put(pos, y);
                             stateMap.put(pos, coralBlock.trySetValue(LunarCoralBlock.HUMIDITY, (int) (debugZ / ((upLine + 0.5) / 4))));
+
+                            if (bubble) {
+                                float line = debugZ / upLine;
+                                if (line > 0.6 && line < 0.7) stateMap.put(pos, coraliteBlock);
+                            }
                         }
                     }
                 }
@@ -162,14 +157,63 @@ public class LunarCoralFeature extends Feature<LunarCoralFeature.Config> {
             }
         }
 
+        if (bubble) {
+            int bubbleCount = random.nextInt(5, 11);
+            for (int i = 0; i < bubbleCount; i++) {
+                ball(random.nextDouble() * 2, bubbleBlock, VectorUtils.toVector3d(basePos.offset((int) (i * (random.nextDouble() - 0.5) * 3), 10 + i * 15 + random.nextInt(-5, 6), (int) (i * (random.nextDouble() - 0.5) * 3))), level);
+            }
+        }
+
         return true;
     }
 
-    public record Config(BlockStateProvider coral, BlockStateProvider coralPlant, BlockStateProvider coralFan) implements FeatureConfiguration {
+    public record Config(
+            BlockStateProvider coral,
+            BlockStateProvider coralPlant,
+            BlockStateProvider coralFan,
+            BlockStateProvider bubble,
+            BlockStateProvider coralite,
+            float bubbleChance
+    ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("coral_block").forGetter(Config::coral),
                 BlockStateProvider.CODEC.fieldOf("coral").forGetter(Config::coralPlant),
-                BlockStateProvider.CODEC.fieldOf("coral_fan").forGetter(Config::coralFan)
+                BlockStateProvider.CODEC.fieldOf("coral_fan").forGetter(Config::coralFan),
+                BlockStateProvider.CODEC.fieldOf("bubble").forGetter(Config::bubble),
+                BlockStateProvider.CODEC.fieldOf("coralite").forGetter(Config::coralite),
+                Codec.FLOAT.fieldOf("bubble_chance").forGetter(Config::bubbleChance)
         ).apply(instance, Config::new));
+    }
+
+    private void ball(double radius, BlockState blockState, Vector3d pos, WorldGenLevel level) {
+        pos.add(0.5, 0.5, 0.5);
+        int radiusInt = (int) radius + 2;
+        double radius_2 = radius * radius;
+        BlockPos basePos = VectorUtils.fromVector3d(pos);
+
+        Map<BlockPos, Boolean> layerMap = new HashMap<>();
+        for (int x = -radiusInt; x < radiusInt; x++) {
+            int x_2 = x * x;
+            for (int y = -radiusInt; y < radiusInt; y++) {
+                int y_2 = y * y;
+                for (int z = -radiusInt; z < radiusInt; z++) {
+                    int z_2 = z * z;
+                    layerMap.put(basePos.offset(x, y, z), (z_2 + y_2 + x_2) < radius_2);
+                }
+            }
+        }
+        for (Map.Entry<BlockPos, Boolean> entry : layerMap.entrySet()) {
+            BlockPos debugPos = entry.getKey();
+            if (!level.getBlockState(debugPos).canBeReplaced()) continue;
+            boolean baseState = entry.getValue();
+            for (BlockPos checkPos : BlockPos.betweenClosed(debugPos, debugPos.offset(1, 1, 1))) {
+                Boolean checkState = layerMap.get(checkPos);
+                if (checkState == null) break;
+                if (checkState != baseState) {
+                    level.setBlock(debugPos, blockState, 3);
+                    break;
+                }
+            }
+        }
     }
 }

@@ -120,8 +120,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static org.confluence.lib.color.IntegerRGB.VOID_B;
-import static org.confluence.lib.color.IntegerRGB.VOID_WEAVE_B;
+import static org.confluence.lib.color.IntegerRGB.*;
 import static org.confluence.mod.common.init.ModEntities.*;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
@@ -444,6 +443,7 @@ public final class ModClientEvents {
         event.register(ModClientSetups.HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get());
         event.register(ModClientSetups.VOID_LEAVES_COLOR, NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get());
         event.register(ModClientSetups.VOID_WEAVE_COLOR, NatureBlocks.VOID_WEAVE.get());
+        event.register(ModClientSetups.DREAM_BUBBLE_COLOR, NatureBlocks.DREAM_BUBBLE.get());
         event.register((state, level, pos, tintIndex) -> level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : FoliageColor.getDefaultColor(), NatureBlocks.BAOBAB_LOG_BLOCKS.LEAVES.get());
         event.register((state, level, pos, tintIndex) -> level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
     }
@@ -451,7 +451,6 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> VOID_B.get(), NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get());
-        event.register((pStack, pTintIndex) -> VOID_WEAVE_B.get(), NatureBlocks.VOID_WEAVE.get());
         event.register((pStack, pTintIndex) -> ColoredItem.getRGBA(pStack), MaterialItems.GEL.get());
         event.register((pStack, pTintIndex) -> GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
         event.register((stack, tintIndex) -> tintIndex == 1 ? PaintItem.getARGB(stack) : 0xFFFFFFFF, PaintItems.PAINT_ITEMS.toArray(new Item[0]));

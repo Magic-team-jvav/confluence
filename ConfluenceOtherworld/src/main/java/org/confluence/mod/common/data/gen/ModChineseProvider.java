@@ -2067,6 +2067,12 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.END_DIRT.get(), "终末土");
         add(NatureBlocks.VOID_WEAVE.get(), "虚空构造体");
+        add(NatureBlocks.VOID_CRYSTAL_BLOCK.get(), "虚空水晶块");
+        add(NatureBlocks.BUDDING_VOID_CRYSTAL.get(), "虚空水晶母岩");
+        add(NatureBlocks.SMALL_VOID_CRYSTAL_BUD.get(), "小型虚空晶芽");
+        add(NatureBlocks.MEDIUM_VOID_CRYSTAL_BUD.get(), "中型虚空晶芽");
+        add(NatureBlocks.LARGE_VOID_CRYSTAL_BUD.get(), "大型虚空晶芽");
+        add(NatureBlocks.VOID_CRYSTAL_CLUSTER.get(), "虚空水晶簇");
 
         add(NatureBlocks.VOID_GRASS_BLOCK.get(), "虚空草方块");
         add(NatureBlocks.VOID_GRASS.get(), "虚空草");
@@ -2109,6 +2115,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.GAZE_LOG_BLOCKS.PRESSURE_PLATE.get(), "垂眸木压力板");
         add(NatureBlocks.GAZE_LOG_BLOCKS.LEAVES.get(), "垂眸树叶");
         add(NatureBlocks.INVERSE_GRASS_BLOCK.get(), "晖落草方块");
+        add(NatureBlocks.VOID_HUMUS.get(), "虚空腐殖土");
+        add(NatureBlocks.TWILIGHT_ELLFLOWER.get(), "落霞铃兰");
+        add(NatureBlocks.INVERSE_GRASS.get(), "晖落草");
+        add(NatureBlocks.TALL_INVERSE_GRASS.get(), "晖落高草");
 
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.BUTTON.get(), "月辉柳木按钮");
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.PLANKS.get(), "月辉柳木板");
@@ -2138,6 +2148,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.WITHERED_SEA_SILK.get(), "枯海沧丝");
         add(NatureBlocks.SILVER_GRASS.get(), "银月草");
         add(NatureBlocks.TALL_SILVER_GRASS.get(), "银月高草");
+        add(NatureBlocks.DREAM_BUBBLE.get(), "梦幻泡影");
+        add(NatureBlocks.GLOW_CORALITE.get(), "荧光珊瑚虫");
 
         add(NatureBlocks.GLOOM_OBSIDIAN.get(), "黯虚黑曜石");
         add(NatureBlocks.GAZE_TUBER.get(), "晖落块茎");

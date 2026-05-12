@@ -23,19 +23,20 @@ public class BlockPostFeature extends Feature<BlockPostFeature.Config> {
 
     @Override
     public boolean place(FeaturePlaceContext<Config> context) {
-        RandomSource random = context.random();
-        Config config = context.config();
-        WorldGenLevel level = context.level();
-        BlockPos baseBlockPos = context.origin();
-        BlockState block = config.block.getState(random, baseBlockPos);
-        int length = config.length + random.nextInt(config.extraLength + 1);
-        boolean toGround = config.toEnd;
-        boolean replace = config.replace;
-        Direction direction = config.direction;
+        final RandomSource random = context.random();
+        final Config config = context.config();
+        final WorldGenLevel level = context.level();
+        final BlockPos baseBlockPos = context.origin();
+        final BlockState block = config.block.getState(random, baseBlockPos);
+        final int length = config.length + random.nextInt(config.extraLength + 1);
+        final boolean toGround = config.toEnd;
+        final boolean replace = config.replace;
+        final Direction direction = config.direction;
+
         if (!replace && !level.getBlockState(baseBlockPos).canBeReplaced()) return false;
 
         BlockPos placePos = baseBlockPos;
-        if (toGround && ((direction == Direction.DOWN) || (direction == Direction.UP)) && !replace) {
+        if (toGround && (direction.getAxis() == Direction.Axis.Y) && !replace) {
             while (level.getBlockState(placePos).canBeReplaced()) {
                 level.setBlock(placePos, block.trySetValue(WATERLOGGED, level.getFluidState(placePos).is(FluidTags.WATER)), 3);
                 placePos = placePos.relative(direction);

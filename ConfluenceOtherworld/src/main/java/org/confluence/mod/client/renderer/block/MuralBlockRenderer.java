@@ -15,7 +15,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.confluence.mod.common.block.common.MuralBlock;
+import org.joml.Matrix3f;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -38,6 +40,17 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.BEntit
         poseStack.translate(0.5F, 0.0F, 0.5F);
         poseStack.mulPose(Axis.YP.rotationDegrees(angle));
         poseStack.translate(0.5F, 1.0F, -0.5F);
+
+        Matrix3f normalMatrix = poseStack.last().normal();
+
+        Vector3f localNormal = new Vector3f(0.0F, 0.0F, -1.0F);
+
+        Vector3f worldNormal = normalMatrix.transform(localNormal);
+
+        float brightness = 0.25F * worldNormal.y() + 0.75F * Math.abs(worldNormal.y())
+                + 0.8F * Math.abs(worldNormal.z())
+                + 0.6F * Math.abs(worldNormal.x());
+
         for (MuralBlock.MuralData data : datas) {
             poseStack.pushPose();
             poseStack.translate(data.x(), data.y(), data.z());
@@ -75,10 +88,14 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.BEntit
                 float maxU = (icon.uOffset() + (float) icon.uWidth()) / (float) icon.textureWidth();
                 float minV = icon.vOffset() / (float) icon.textureHeight();
                 float maxV = (icon.vOffset() + (float) icon.vHeight()) / (float) icon.textureHeight();
-                builder.addVertex(matrix4f, x1, y1, 0).setUv(minU, minV).setColor(-1).setLight(packedLight);
-                builder.addVertex(matrix4f, x1, y2, 0).setUv(minU, maxV).setColor(-1).setLight(packedLight);
-                builder.addVertex(matrix4f, x2, y2, 0).setUv(maxU, maxV).setColor(-1).setLight(packedLight);
-                builder.addVertex(matrix4f, x2, y1, 0).setUv(maxU, minV).setColor(-1).setLight(packedLight);
+
+                int br = (int)(255 * brightness);
+                int iconColor = (0xFF << 24) | (br << 16) | (br << 8) | br;
+
+                builder.addVertex(matrix4f, x1, y1, 0).setUv(minU, minV).setColor(iconColor).setLight(packedLight);
+                builder.addVertex(matrix4f, x1, y2, 0).setUv(minU, maxV).setColor(iconColor).setLight(packedLight);
+                builder.addVertex(matrix4f, x2, y2, 0).setUv(maxU, maxV).setColor(iconColor).setLight(packedLight);
+                builder.addVertex(matrix4f, x2, y1, 0).setUv(maxU, minV).setColor(iconColor).setLight(packedLight);
                 BufferUploader.drawWithShader(builder.buildOrThrow());
                 RenderSystem.disableDepthTest();
                 lightTexture.turnOffLightLayer();

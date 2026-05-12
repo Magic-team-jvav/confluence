@@ -251,12 +251,18 @@ public class NatureBlocks {
 
     // 末地 - 通用
     public static final DeferredBlock<Block> END_DIRT = registerWithItem("end_dirt", EndDirtBlock::new);
-    public static final DeferredBlock<VoidWeaveBlock> VOID_WEAVE = registerWithItem("void_weave", () -> new VoidWeaveBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
+    public static final DeferredBlock<PassableGlowingBlock> VOID_WEAVE = registerWithItem("void_weave", () -> new PassableGlowingBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
+    public static final DeferredBlock<Block> VOID_CRYSTAL_BLOCK = registerWithItem("void_crystal_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(AMETHYST_BLOCK)));
+    public static final DeferredBlock<BuddingVoidCrystal> BUDDING_VOID_CRYSTAL = registerWithItem("budding_void_crystal", () -> new BuddingVoidCrystal(BlockBehaviour.Properties.ofFullCopy(AMETHYST_BLOCK).randomTicks()));
+    public static final DeferredBlock<AmethystClusterBlock> SMALL_VOID_CRYSTAL_BUD = registerWithItem("small_void_crystal_bud", () -> new AmethystClusterBlock(3.0F, 4.0F, BlockBehaviour.Properties.ofFullCopy(AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PURPLE)));
+    public static final DeferredBlock<AmethystClusterBlock> MEDIUM_VOID_CRYSTAL_BUD = registerWithItem("medium_void_crystal_bud", () -> new AmethystClusterBlock(4.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PURPLE)));
+    public static final DeferredBlock<AmethystClusterBlock> LARGE_VOID_CRYSTAL_BUD = registerWithItem("large_void_crystal_bud", () -> new AmethystClusterBlock(5.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PURPLE)));
+    public static final DeferredBlock<AmethystClusterBlock> VOID_CRYSTAL_CLUSTER = registerWithItem("void_crystal_cluster", () -> new AmethystClusterBlock(7.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PURPLE)));
 
     // 末地 - 紫颂主题
     public static final DeferredBlock<Block> VOID_GRASS_BLOCK = registerWithItem("void_grass_block", () -> new EndGrassBlock(NatureBlocks.END_DIRT));
-    public static final DeferredBlock<BasePlantBlock> VOID_GRASS = registerWithItem("void_grass", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
     public static final DeferredBlock<BasePlantBlock> VOID_VIOLET = registerWithItem("void_violet", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
+    public static final DeferredBlock<BasePlantBlock> VOID_GRASS = registerWithItem("void_grass", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
     public static final DeferredBlock<BaseTallPlantBlock> TALL_VOID_GRASS = registerWithItem("tall_void_grass", () -> new BaseTallPlantBlock(VOID_GRASS_BLOCK.get()));
     public static final DeferredBlock<VoidTreeRootBlock> VOID_TREE_ROOT_BLOCK = registerWithItem("void_tree_root_block", VoidTreeRootBlock::new);
     public static final Supplier<BlockEntityType<VoidTreeRootBlock.BEntity>> VOID_TREE_ROOT_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("void_tree_root_block", () -> BlockEntityType.Builder.of(VoidTreeRootBlock.BEntity::new, VOID_TREE_ROOT_BLOCK.get()).build(DSL.remainderType()));
@@ -264,7 +270,11 @@ public class NatureBlocks {
     public static final DeferredBlock<DragonsBreathPepperBlock> DRAGONS_BREATH_PEPPER = registerWithoutItem("dragons_breath_pepper", () -> new DragonsBreathPepperBlock(BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.2F).sound(SoundType.CROP).randomTicks()));
 
     // 末地 - 倒悬主题
+    public static final DeferredBlock<Block> VOID_HUMUS = registerWithItem("void_humus", () -> new Block(BlockBehaviour.Properties.ofFullCopy(DIRT).sound(SoundType.MUD)));
     public static final DeferredBlock<Block> INVERSE_GRASS_BLOCK = registerWithItem("inverse_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));
+    public static final DeferredBlock<InversePlantBlock> TWILIGHT_ELLFLOWER = registerWithItem("twilight_ellflower", () -> new InversePlantBlock(INVERSE_GRASS_BLOCK.get()));
+    public static final DeferredBlock<InversePlantBlock> INVERSE_GRASS = registerWithItem("inverse_grass", () -> new InversePlantBlock(INVERSE_GRASS_BLOCK.get()));
+    public static final DeferredBlock<InverseTallPlantBlock> TALL_INVERSE_GRASS = registerWithItem("tall_inverse_grass", () -> new InverseTallPlantBlock(INVERSE_GRASS_BLOCK.get()));
     public static final LogBlockSet GAZE_LOG_BLOCKS = LogBlockSet.builder("gaze", true, GAZE).build();
     public static final DeferredBlock<Block> GAZE_TUBER = registerWithItem("gaze_tuber", () -> new CandyBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_GREEN)));
 
@@ -339,8 +349,10 @@ public class NatureBlocks {
                             .pushReaction(PushReaction.DESTROY)
             )
     );
+    public static final DeferredBlock<Block> GLOW_CORALITE = registerWithItem("glow_coralite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(DEAD_BRAIN_CORAL_BLOCK).sound(SoundType.MUD).lightLevel(state -> 10)));
     public static final DeferredBlock<BasePlantBlock> SILVER_GRASS = registerWithItem("silver_grass", () -> new BasePlantBlock(MOONLIT_GRASS_BLOCK.get(), END_DIRT.get()));
     public static final DeferredBlock<BaseTallPlantBlock> TALL_SILVER_GRASS = registerWithItem("tall_silver_grass", () -> new BaseTallPlantBlock(MOONLIT_GRASS_BLOCK.get(), END_DIRT.get()));
+    public static final DeferredBlock<PassableGlowingBlock> DREAM_BUBBLE = registerWithItem("dream_bubble", () -> new PassableGlowingBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
 
     // 地獄 - 黯虛主題
     public static final DeferredBlock<Block> GLOOM_OBSIDIAN = registerWithItem("gloom_obsidian", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OBSIDIAN)));

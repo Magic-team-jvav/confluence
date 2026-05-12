@@ -35,7 +35,7 @@ public abstract class GuiGraphicsMixin implements SelfGetter<GuiGraphics> {
     @WrapOperation(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I"))
     private int transform(GuiGraphics instance, Font font, String text, int x, int y, int color, boolean dropShadow, Operation<Integer> original, @Local(argsOnly = true, ordinal = 0) int ox, @Local(argsOnly = true, ordinal = 1) int oy) {
         int w = font.width(text);
-        float scale = text.length() >= 4 ? 0.5F : text.length() == 3 ? 0.75F : 1;
+        float scale = text.length() >= 4 ? 0.5F : (text.length() == 3 ? 0.75F : 1);
         pose.pushPose();
         pose.translate((int) (ox + 16 - (w - 1) * scale), (int) (oy + 16 - 7 * scale), 0);
         pose.scale(scale, scale, 1);

@@ -23,7 +23,7 @@ import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.SwordItems;
-import org.confluence.mod.mixin.accessor.EntityLootSubProviderAccessor;
+import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.NotNull;

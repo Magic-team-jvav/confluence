@@ -17,7 +17,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.init.item.SwordItems;
-import org.confluence.mod.mixin.client.accessor.LivingEntityRendererAccessor;
+import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererAccessor;
 
 public class ZombieArmRenderer {
     private static ZombieArmRenderer INSTANCE;

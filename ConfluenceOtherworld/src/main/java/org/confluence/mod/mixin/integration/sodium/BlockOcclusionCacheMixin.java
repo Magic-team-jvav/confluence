@@ -3,6 +3,7 @@ package org.confluence.mod.mixin.integration.sodium;
 import net.minecraft.core.BlockPos;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.mixin.world.level.block.LocalBlockMixin;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -11,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/// @see org.confluence.mod.mixin.client.BlockClientMixin
+/// @see LocalBlockMixin
 @Pseudo
 @Mixin(targets = "net.caffeinemc.mods.sodium.client.render.chunk.compile.pipeline.BlockOcclusionCache", remap = false)
 public abstract class BlockOcclusionCacheMixin {

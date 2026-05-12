@@ -30,7 +30,8 @@ import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.mixed.IModelPart;
-import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
+import org.confluence.mod.mixin.client.model.AgeableListModelAccessor;
+import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererMixin;
 import org.confluence.terraentity.client.boss.renderer.WallOfFleshRenderer;
 import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
 import org.confluence.terraentity.entity.util.DeathAnimOptions;
@@ -171,7 +172,7 @@ public final class DeathAnimUtils {
 
     /// 让原版Renderer帮我变换，在model.renderToBuffer之前就会返回，就能保留变换的结果
     ///
-    /// [org.confluence.mod.mixin.client.renderer.LivingEntityRendererMixin#postRender]
+    /// [LivingEntityRendererMixin#postRender]
     public static <T extends LivingEntity> void dummyRender(LivingEntityRenderer<T, ?> livingRenderer, LivingEntity entity, PoseStack poseStack) {
         livingRenderer.render((T) entity, entity.getYRot(), 1, poseStack, DummyMultiBufferSource.INSTANCE, 0);
     }

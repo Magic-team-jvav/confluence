@@ -36,6 +36,7 @@ import org.confluence.mod.common.entity.projectile.boulder.*;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.mixin.world.level.block.AnvilBlockMixin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class FunctionalBlocks {
             );
 
 
-    /// [org.confluence.mod.mixin.block.AnvilBlockMixin]
+    /// [AnvilBlockMixin]
     public static final DeferredBlock<AnvilBlock> LEAD_ANVIL = registerWithItem("lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)));
     public static final DeferredBlock<AnvilBlock> CHIPPED_LEAD_ANVIL = registerWithItem("chipped_lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHIPPED_ANVIL)));
     public static final DeferredBlock<AnvilBlock> DAMAGED_LEAD_ANVIL = registerWithItem("damaged_lead_anvil", () -> new AnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DAMAGED_ANVIL)));

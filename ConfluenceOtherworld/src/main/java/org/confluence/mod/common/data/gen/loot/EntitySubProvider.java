@@ -33,7 +33,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
-import org.confluence.mod.mixin.accessor.EntityLootSubProviderAccessor;
+import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.TEEntities;
 import org.confluence.terraentity.init.entity.TEAnimals;

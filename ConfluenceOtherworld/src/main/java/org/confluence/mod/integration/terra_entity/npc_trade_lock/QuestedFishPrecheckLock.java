@@ -13,7 +13,7 @@ import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
-/// check when about to call [org.confluence.mod.mixin.integration.terra_entity.DynamicAnglerTradeTaskMixin]
+/// check when about to call [org.confluence.mod.mixin.integration.terraentity.DynamicAnglerTradeTaskMixin]
 public record QuestedFishPrecheckLock(boolean isCorruption, ITradeLock then) implements ITradeLock {
     public static final MapCodec<QuestedFishPrecheckLock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.BOOL.fieldOf("is_corruption").forGetter(QuestedFishPrecheckLock::isCorruption),

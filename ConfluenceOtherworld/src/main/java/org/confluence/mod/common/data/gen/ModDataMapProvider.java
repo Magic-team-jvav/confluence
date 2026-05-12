@@ -7,7 +7,7 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import org.confluence.mod.common.data.gen.data_map.*;
 import org.confluence.mod.common.init.ModDataMaps;
-import org.confluence.mod.mixin.accessor.DataMapProviderAccessor;
+import org.confluence.mod.mixin.neoforge.common.data.DataMapProviderAccessor;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;

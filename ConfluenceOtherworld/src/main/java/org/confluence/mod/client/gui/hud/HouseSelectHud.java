@@ -34,7 +34,7 @@ import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
 import org.confluence.terraentity.entity.npc.house.IHouseDetector;
 
-public class HouseSelectHUD implements LayeredDraw.Layer {
+public class HouseSelectHud implements LayeredDraw.Layer {
     private static final GuiSprite crosshair = new GuiSprite(Confluence.asResource("hud/house_select/crosshair"), 15, 15);
     private static final Component tip1 = Component.translatable("message.confluence.house_select.tip1");
     private static final Component tip2 = Component.translatable("message.confluence.house_select.tip2");

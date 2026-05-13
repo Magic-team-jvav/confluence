@@ -33,6 +33,11 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.BEntit
         blockEntity.getFront().ifPresent(datas -> renderData(datas, poseStack, light, 360 - direction.toYRot()));
     }
 
+    @Override
+    public boolean shouldRenderOffScreen(MuralBlock.BEntity blockEntity) {
+        return true;
+    }
+
     private void renderData(List<MuralBlock.MuralData> datas, PoseStack poseStack, int packedLight, float angle) {
         Font font = Minecraft.getInstance().font;
         LightTexture lightTexture = Minecraft.getInstance().gameRenderer.lightTexture();

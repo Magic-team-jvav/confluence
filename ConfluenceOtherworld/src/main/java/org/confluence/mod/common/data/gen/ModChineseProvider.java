@@ -296,6 +296,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.npc_entity", "NPC");
         add("itemGroup.confluence.boss_entity", "Boss");
         add("itemGroup.confluence.misc_entity", "其他生物");
+        add("itemGroup.confluence.mural", "壁画");
+        add("itemGroup.confluence.text_books", "文本书");
+        add("itemGroup.confluence.note", "纸条");
 
 
         add("config.jade.plugin_confluence.jade_network_component", "机械信息");
@@ -593,6 +596,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("lore.confluence.mysterious_note_3", "希望看到这张字条的冒险者可以学习顺心，工作顺利，生活事事如意，不管什么阴霾都会很快过去的因为我们都要向着明天前进。");
         add("item.confluence.mysterious_note.name_4", "被啃一半的小纸条");
         add("lore.confluence.mysterious_note_4", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了");
+        add("item.confluence.mysterious_note.name_5", "行将消散的小纸条");
+        add("lore.confluence.mysterious_note_5", "夜宵就应该当早餐吃，反对的人会度过相对健康但非常无趣的一生");
 
 
         add("lore.confluence.mysterious_note.handwriting_0", "✒潦草的笔迹");
@@ -1553,6 +1558,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("description.confluence.secret_seeds_selection.never_sleep", "睡觉太浪费时间了！我们应该永远不睡觉！（无法使用床）");
 
 
+        add("mural.dungeon.ebony_mural", "腐堕巨蠕");
+        add("mural.dungeon.crimson_mural", "精神撕裂");
+
+
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
@@ -2328,7 +2337,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
         add(NatureBlocks.LARVA.get(), "幼虫");
         add(DecorativeBlocks.LOST_PAPER_BLOCK.get(), "遗落纸张");
-        add(DecorativeBlocks.MURAL_BLOCK.get(), "壁画方块");
+        add(DecorativeBlocks.MURAL_BLOCK.get(), "壁画");
         add(NatureBlocks.CORRUPT_CACTUS.get(), "腐化仙人掌");
         add(NatureBlocks.CRIMSON_CACTUS.get(), "猩红仙人掌");
         add(NatureBlocks.HALLOW_CACTUS.get(), "神圣仙人掌");

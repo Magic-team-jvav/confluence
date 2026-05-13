@@ -63,7 +63,7 @@ import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
-import org.confluence.mod.client.gui.hud.HouseSelectHUD;
+import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
@@ -160,7 +160,7 @@ public final class GameClientEvents {
             ) {
                 SwordProjectilePacketC2S.sendToServer();
             }
-            HouseSelectHUD.updatePlayerRegionAt(player);
+            HouseSelectHud.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
             if (ScryingOrb.spectatingPlayer != null && !ScryingOrb.spectatingPlayer.isAlive()) {
                 ScryingOrb.changeTarget(minecraft.level, player);
@@ -205,9 +205,9 @@ public final class GameClientEvents {
         }
 
         if (event.getHand() == InteractionHand.MAIN_HAND) {
-            if (HouseSelectHUD.inSelectHUD) {
+            if (HouseSelectHud.inSelectHUD) {
                 if (event.isUseItem()) {
-                    HouseSelectHUD.selectHouse(player);
+                    HouseSelectHud.selectHouse(player);
                     player.swing(InteractionHand.MAIN_HAND);
                 } else if (event.isAttack()) {
                     event.setCanceled(true);
@@ -235,7 +235,7 @@ public final class GameClientEvents {
                 (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
                 ArsNouveauHelper.cancelRenderManaBar(name) ||
                 IronSpellHelper.cancelRenderManaOverlay(name) ||
-                (HouseSelectHUD.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
+                (HouseSelectHud.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
         ) {
             event.setCanceled(true);
         }
@@ -308,7 +308,7 @@ public final class GameClientEvents {
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
-            HouseSelectHUD.renderRegionInWorld(minecraft);
+            HouseSelectHud.renderRegionInWorld(minecraft);
         }
     }
 

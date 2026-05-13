@@ -25,13 +25,16 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.HitResult;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -181,6 +184,38 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         }
     }
 
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        ItemStack stack = new ItemStack(this);
+
+        if (level.getBlockEntity(pos) instanceof BEntity muralEntity) {
+            BlockEntity headBeToSave = null;
+            int w = muralEntity.getMuralWidth();
+            int h = muralEntity.getMuralHeight();
+
+            if (!(w == -1 || h == -1)) {
+                headBeToSave = muralEntity;
+            } else {
+                Direction facing = state.getValue(FACING);
+                int xOffset = -facing.getStepZ();
+                int zOffset = facing.getStepX();
+                BlockPos relPos = muralEntity.getHeadPos();
+                BlockPos headWorldPos = pos.offset(-xOffset * relPos.getX(), -relPos.getY(), -zOffset * relPos.getX());
+
+                BlockEntity headBe = level.getBlockEntity(headWorldPos);
+                if (headBe instanceof BEntity) {
+                    headBeToSave = headBe;
+                }
+            }
+
+            if (headBeToSave != null) {
+                headBeToSave.setChanged();
+                headBeToSave.saveToItem(stack, level.registryAccess());
+            }
+        }
+
+        return stack;
+    }
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {

@@ -1230,6 +1230,12 @@ public final class ModTabs {
                         pumpkin_armor.accept(ArmorItems.PUMPKIN_LEGGINGS.get());
                         pumpkin_armor.accept(ArmorItems.PUMPKIN_BOOTS.get());
 
+                        CreativeModeTab.Output white_pumpkin_armor = GroupItem.belongsTo("white_pumpkin_armor", output);
+                        pumpkin_armor.accept(ArmorItems.WHITE_PUMPKIN_HELMET.get());
+                        pumpkin_armor.accept(ArmorItems.WHITE_PUMPKIN_CHESTPLATE.get());
+                        pumpkin_armor.accept(ArmorItems.WHITE_PUMPKIN_LEGGINGS.get());
+                        pumpkin_armor.accept(ArmorItems.WHITE_PUMPKIN_BOOTS.get());
+
                         CreativeModeTab.Output rain_wear = GroupItem.belongsTo("rain_wear", output);
                         rain_wear.accept(ArmorItems.RAIN_CAP.get());
                         rain_wear.accept(ArmorItems.RAINCOAT.get());
@@ -1347,6 +1353,18 @@ public final class ModTabs {
                         spelunker_armor.accept(ArmorItems.SPELUNKER_CHESTPLATE.get());
                         spelunker_armor.accept(ArmorItems.SPELUNKER_LEGGINGS.get());
                         spelunker_armor.accept(ArmorItems.SPELUNKER_BOOTS.get());
+
+                        CreativeModeTab.Output thief_armor = GroupItem.belongsTo("thief_armor", output);
+                        thief_armor.accept(ArmorItems.THIEF_HELMET.get());
+                        thief_armor.accept(ArmorItems.THIEF_CHESTPLATE.get());
+                        thief_armor.accept(ArmorItems.THIEF_LEGGINGS.get());
+                        thief_armor.accept(ArmorItems.THIEF_BOOTS.get());
+
+                        CreativeModeTab.Output reinforced_mail_armor = GroupItem.belongsTo("reinforced_mail_armor", output);
+                        reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_HELMET.get());
+                        reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_CHESTPLATE.get());
+                        reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_LEGGINGS.get());
+                        reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_BOOTS.get());
 
                         CreativeModeTab.Output hermit_armor = GroupItem.belongsTo("hermit_armor", output);
                         hermit_armor.accept(ArmorItems.HERMIT_HELMET.get());

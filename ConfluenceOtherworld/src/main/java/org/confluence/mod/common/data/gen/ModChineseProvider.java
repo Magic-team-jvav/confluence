@@ -205,6 +205,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.pearl_armor", "珍珠盔甲");
         add("itemGroup.confluence.ash_armor", "灰烬盔甲");
         add("itemGroup.confluence.pumpkin_armor", "南瓜盔甲");
+        add("itemGroup.confluence.white_pumpkin_armor", "白南瓜盔甲");
+        add("itemGroup.confluence.thief_armor", "窃贼盔甲");
+        add("itemGroup.confluence.reinforced_mail_armor", "强化链甲盔甲");
         add("itemGroup.confluence.hunters_armor", "猎人盔甲");
         add("itemGroup.confluence.guards_armor", "守卫盔甲");
         add("itemGroup.confluence.spelunker_armor", "探穴者盔甲");
@@ -1262,6 +1265,15 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.cactus_set.0", "攻击者因为仙人掌尖刺受到伤害");
         // 南瓜
         add("armor_set_bonus.confluence.pumpkin_set.0", "伤害提高10%");
+        // 白南瓜
+        add("armor_set_bonus.confluence.white_pumpkin_set.0", "近战暴击会回复1点灵魂值");
+        // 窃贼
+        add("armor_set_bonus.confluence.thief_set.0", "近战攻速提高4%");
+        add("armor_set_bonus.confluence.thief_set.1", "远程伤害提高4%");
+        // 强化链甲
+        add("armor_set_bonus.confluence.reinforced_mail_set.0", "5%的概率闪避攻击");
+        add("armor_set_bonus.confluence.reinforced_mail_set.1", "7%伤害减免");
+        add("armor_set_bonus.confluence.reinforced_mail_set.2", "跳跃后3秒降低移速15%");
         // 猎人
         add("armor_set_bonus.confluence.hunters_set.0", "为击中的敌人附加狩猎效果");
         // 守卫
@@ -3798,6 +3810,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.PUMPKIN_HELMET.get(), "南瓜头盔");
         add(ArmorItems.PUMPKIN_LEGGINGS.get(), "南瓜护腿");
         add(ArmorItems.PUMPKIN_BOOTS.get(), "南瓜靴子");
+        add(ArmorItems.WHITE_PUMPKIN_HELMET.get(), "白南瓜头盔");
+        add(ArmorItems.WHITE_PUMPKIN_CHESTPLATE.get(), "白南瓜胸甲");
+        add(ArmorItems.WHITE_PUMPKIN_LEGGINGS.get(), "白南瓜护腿");
+        add(ArmorItems.WHITE_PUMPKIN_BOOTS.get(), "白南瓜靴子");
+        add(ArmorItems.THIEF_HELMET.get(), "窃贼头盔");
+        add(ArmorItems.THIEF_CHESTPLATE.get(), "窃贼胸甲");
+        add(ArmorItems.THIEF_LEGGINGS.get(), "窃贼护腿");
+        add(ArmorItems.THIEF_BOOTS.get(), "窃贼靴子");
         add(ArmorItems.HUNERS_HELMET.get(), "猎人头盔");
         add(ArmorItems.HUNERS_CHESTPLATE.get(), "猎人胸甲");
         add(ArmorItems.HUNERS_LEGGINGS.get(), "猎人护腿");
@@ -3814,6 +3834,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.SCALE_MAIL_CHESTPLATE.get(), "鳞甲胸甲");
         add(ArmorItems.SCALE_MAIL_LEGGINGS.get(), "鳞甲护腿");
         add(ArmorItems.SCALE_MAIL_BOOTS.get(), "鳞甲靴子");
+        add(ArmorItems.REINFORCED_MAIL_HELMET.get(), "强化链甲头盔");
+        add(ArmorItems.REINFORCED_MAIL_CHESTPLATE.get(), "强化链甲胸甲");
+        add(ArmorItems.REINFORCED_MAIL_LEGGINGS.get(), "强化链甲护腿");
+        add(ArmorItems.REINFORCED_MAIL_BOOTS.get(), "强化链甲靴子");
         add(ArmorItems.HERMIT_HELMET.get(), "隐匿者头盔");
         add(ArmorItems.HERMIT_CHESTPLATE.get(), "隐匿者胸甲");
         add(ArmorItems.HERMIT_LEGGINGS.get(), "隐匿者护腿");

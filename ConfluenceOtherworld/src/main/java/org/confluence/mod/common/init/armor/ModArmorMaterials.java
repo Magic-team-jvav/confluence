@@ -131,6 +131,11 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.BLACK_INK,
             "ninja", 1.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> THIEF_CHESTPLATE = registerArmorMaterial("thief_chestplate",
+            3, 5, 5, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.BLACK_INK,
+            "ninja", 1.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> HUNERS_ARMOR_MATERIALS = registerArmorMaterial("hunters_armor_materials",
             3, 5, 5, 2,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
@@ -146,13 +151,18 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
             "hermit", 0.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> REINFORCED_MAIL_ARMOR_MATERIALS = registerArmorMaterial("reinforced_mail_armor_materials",
+            4, 5, 5, 4,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            "reinforced_mail", 2.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> GUARDS_ARMOR_MATERIALS = registerArmorMaterial("guards_armor_materials",
             3, 5, 5, 3,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
             "guards", 1.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> SPELUNKER_ARMOR_MATERIALS = registerArmorMaterial("spelunker_armor_materials",
-            3, 7, 7, 3,
+            3, 5, 5, 3,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
             "spelunker", 1.0F, 0.0F
     );
@@ -165,6 +175,11 @@ public final class ModArmorMaterials {
             3, 6, 6, 3,
             13, SoundEvents.ARMOR_EQUIP_LEATHER, Items.GOLD_INGOT,
             "gladiator", 1.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> WHITE_PUMPKIN_ARMOR_MATERIALS = registerArmorMaterial("white_pumpkin_armor_materials",
+            3, 5, 5, 3,
+            11, SoundEvents.ARMOR_EQUIP_GENERIC, NatureBlocks.WHITE_PUMPKIN,
+            "white_pumpkin", 1.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> METEOR_ARMOR_MATERIALS = registerArmorMaterial("meteor_armor_materials",
             3, 6, 6, 3,

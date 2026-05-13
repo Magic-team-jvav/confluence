@@ -182,6 +182,18 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> PUMPKIN_BOOTS = register("pumpkin_boots", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/pumpkin_armor"));
 
+    public static final DeferredItem<BaseArmorItem> WHITE_PUMPKIN_HELMET = register("white_pumpkin_helmet", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/white_pumpkin_armor"));
+    public static final DeferredItem<BaseArmorItem> WHITE_PUMPKIN_CHESTPLATE = register("white_pumpkin_chestplate", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/white_pumpkin_armor")
+            .criticalChance(0.05));
+    public static final DeferredItem<BaseArmorItem> WHITE_PUMPKIN_LEGGINGS = register("white_pumpkin_leggings", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/white_pumpkin_armor")
+            .meleeDamage(0.04));
+    public static final DeferredItem<BaseArmorItem> WHITE_PUMPKIN_BOOTS = register("white_pumpkin_boots", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/white_pumpkin_armor")
+            .meleeDamage(0.04));
+
     public static final DeferredItem<BaseArmorItem> NINJA_HELMET = register("ninja_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/ninja_armor")
             .rarity(ModRarity.BLUE)
@@ -198,6 +210,27 @@ public class ArmorItems {
             .geo("armor/ninja_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.015));
+
+    public static final DeferredItem<BaseArmorItem> THIEF_HELMET = register("thief_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/thief_armor")
+            .rarity(ModRarity.GREEN)
+            .attribute(Attributes.ATTACK_SPEED, 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    public static final DeferredItem<BaseArmorItem> THIEF_CHESTPLATE = register("thief_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/thief_armor")
+            .rarity(ModRarity.GREEN)
+            .rangedDamage(0.1));
+    public static final DeferredItem<BaseArmorItem> THIEF_LEGGINGS = register("thief_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/thief_armor")
+            .rarity(ModRarity.GREEN)
+            .attribute(Attributes.ATTACK_SPEED, 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    public static final DeferredItem<BaseArmorItem> THIEF_BOOTS = register("thief_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/thief_armor")
+            .rarity(ModRarity.GREEN)
+            .criticalChance(0.05));
+
+
 
     public static final DeferredItem<BaseArmorItem> HUNERS_HELMET = register("hunters_helmet", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hunters_armor")
@@ -232,6 +265,23 @@ public class ArmorItems {
             .geo("armor/scale_mail_armor")
             .rarity(ModRarity.BLUE)
             .attribute(Attributes.MOVEMENT_SPEED, 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+
+    public static final DeferredItem<BaseArmorItem> REINFORCED_MAIL_HELMET = register("reinforced_mail_helmet", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/reinforced_mail_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> REINFORCED_MAIL_CHESTPLATE = register("reinforced_mail_chestplate", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/reinforced_mail_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> REINFORCED_MAIL_LEGGINGS = register("reinforced_mail_leggings", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/reinforced_mail_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> REINFORCED_MAIL_BOOTS = register("reinforced_mail_boots", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/reinforced_mail_armor")
+            .rarity(ModRarity.BLUE)
+    );
 
     public static final DeferredItem<BaseArmorItem> HERMIT_HELMET = register("hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hermit_armor")

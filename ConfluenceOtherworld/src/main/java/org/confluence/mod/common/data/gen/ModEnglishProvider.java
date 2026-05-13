@@ -246,6 +246,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.pearl_armor", "Pearl Armor");
         add("itemGroup.confluence.ash_armor", "Ash Armor");
         add("itemGroup.confluence.pumpkin_armor", "Pumpkin Armor");
+        add("itemGroup.confluence.white_pumpkin_armor", "White Pumpkin Armor");
+        add("itemGroup.confluence.thief_armor", "Thief Armor");
+        add("itemGroup.confluence.reinforced_mail_armor", "Reinforced Mail Armor");
         add("itemGroup.confluence.hunters_armor", "Hunters Armor");
         add("itemGroup.confluence.guards_armor", "Guards Armor");
         add("itemGroup.confluence.spelunker_armor", "Spelunker Armor");
@@ -1233,6 +1236,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.cactus_set.0", "Attackers take damage from the cactus spines");
         // Pumpkin Set
         add("armor_set_bonus.confluence.pumpkin_set.0", "10% increased damage");
+        // White Pumpkin Set
+        add("armor_set_bonus.confluence.white_pumpkin_set.0", "Melee critical hits restore 1 Soul Point");
+        // Thief Set
+        add("armor_set_bonus.confluence.thief_set.0", "Melee attack speed increased by 4%");
+        add("armor_set_bonus.confluence.thief_set.1", "Ranged damage increased by 4%");
+        // Reinforced Mail Set
+        add("armor_set_bonus.confluence.reinforced_mail_set.0", "5% chance to dodge attacks");
+        add("armor_set_bonus.confluence.reinforced_mail_set.1", "7% damage reduction");
+        add("armor_set_bonus.confluence.reinforced_mail_set.2", "Movement speed reduced by 15% for 3 seconds after jumping");
         // Ninja Set
         add("armor_set_bonus.confluence.ninja_set.0", "20% increased movement speed");
         // Hunters Set

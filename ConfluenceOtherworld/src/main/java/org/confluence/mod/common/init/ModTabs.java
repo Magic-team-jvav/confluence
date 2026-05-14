@@ -37,6 +37,8 @@ import org.confluence.terraentity.init.item.TEYoyosItems;
 import java.util.Collection;
 import java.util.List;
 
+import static org.confluence.mod.common.init.ModStacks.MYSTERIOUS_NOTES;
+
 @SuppressWarnings("unused")
 public final class ModTabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Confluence.MODID);
@@ -1083,12 +1085,7 @@ public final class ModTabs {
                         note.accept(ModStacks.STRUCTURE_NOTE_0_0, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                         note.accept(ModStacks.STRUCTURE_NOTE_0_1, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                         note.accept(ModStacks.STRUCTURE_NOTE_1, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        note.accept(ModStacks.MYSTERIOUS_NOTE_0, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        note.accept(ModStacks.MYSTERIOUS_NOTE_1, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        note.accept(ModStacks.MYSTERIOUS_NOTE_2, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        note.accept(ModStacks.MYSTERIOUS_NOTE_3, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        note.accept(ModStacks.MYSTERIOUS_NOTE_4, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        note.accept(ModStacks.MYSTERIOUS_NOTE_5, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        for (ItemStack mysteriousNote : MYSTERIOUS_NOTES) note.accept(mysteriousNote, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
                     })
                     .withTabsBefore(MATERIALS.getId())

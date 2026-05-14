@@ -29,6 +29,7 @@ public final class ModStacks {
     public static final ResourceLocation FONT_UNIFORM = ResourceLocation.fromNamespaceAndPath("minecraft", "uniform");
 
     public static final Component EMPTY_LINE = Component.empty();
+    public static final Component A_BLANK = Component.literal(" ");
 
     public static final Component HANDWRITING_0 = Component.translatable("lore.confluence.mysterious_note.handwriting_0")
             .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC);
@@ -80,7 +81,7 @@ public final class ModStacks {
             makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
                     "lore.confluence.mysterious_note_structure_0_1"),
             EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE,
-            appendComponent(Component.literal(" "), makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
+            appendComponent(A_BLANK, makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
                     "1"))
             ));
     public static final ItemStack STRUCTURE_NOTE_0_1 = createMysteriousNote("item.confluence.mysterious_note.name_structure_0", List.of(
@@ -88,42 +89,38 @@ public final class ModStacks {
             makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
                     "lore.confluence.mysterious_note_structure_1_0"),
             EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE,
-            appendComponent(Component.literal(" "), makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
+            appendComponent(A_BLANK, makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
                     "2"))
     ));
     public static final ItemStack STRUCTURE_NOTE_1 = createMysteriousNote("item.confluence.mysterious_note.name_structure_1", List.of(
             HANDWRITING_0,
             makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
                     "lore.confluence.mysterious_note_structure_2_0"),
-            appendComponent(Component.literal(" "), makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
+            appendComponent(A_BLANK, makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
                     "3")),
-            appendComponent(Component.literal("                       "), makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
+            appendComponent(blankCount(23), makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
                     "4")),
-            appendComponent(Component.literal("                             "), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
+            appendComponent(blankCount(29), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
                     "block.minecraft.amethyst_block")),
-            appendComponent(Component.literal("                             "), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
+            appendComponent(blankCount(29), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
                     "block.minecraft.chiseled_tuff")),
             EMPTY_LINE,
-            appendComponent(Component.literal("                        "), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
+            appendComponent(blankCount(24), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
                     "block.minecraft.crying_obsidian")),
             EMPTY_LINE,
-            appendComponent(Component.literal("                        "), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
+            appendComponent(blankCount(24), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
                     "block.minecraft.chiseled_tuff")),
             EMPTY_LINE,
             EMPTY_LINE
     ));
-    public static final ItemStack MYSTERIOUS_NOTE_0 = createMysteriousNote("item.confluence.mysterious_note.name_0", List.of(makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-            "lore.confluence.mysterious_note_0")));
-    public static final ItemStack MYSTERIOUS_NOTE_1 = createMysteriousNote("item.confluence.mysterious_note.name_1", List.of(makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-            "lore.confluence.mysterious_note_1")));
-    public static final ItemStack MYSTERIOUS_NOTE_2 = createMysteriousNote("item.confluence.mysterious_note.name_2", List.of(makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-            "lore.confluence.mysterious_note_2")));
-    public static final ItemStack MYSTERIOUS_NOTE_3 = createMysteriousNote("item.confluence.mysterious_note.name_3", List.of(makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-            "lore.confluence.mysterious_note_3")));
-    public static final ItemStack MYSTERIOUS_NOTE_4 = createMysteriousNote("item.confluence.mysterious_note.name_4", List.of(makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-            "lore.confluence.mysterious_note_4")));
-    public static final ItemStack MYSTERIOUS_NOTE_5 = createMysteriousNote("item.confluence.mysterious_note.name_5", List.of(makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-            "lore.confluence.mysterious_note_5")));
+    public static final ItemStack[] MYSTERIOUS_NOTES = new ItemStack[6];
+    static {
+        int count = MYSTERIOUS_NOTES.length;
+        for (int i = 0; i < count; i++) {
+            MYSTERIOUS_NOTES[i] = createMysteriousNote("item.confluence.mysterious_note.name_" + i, List.of(makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
+                    "lore.confluence.mysterious_note_" + i)));
+        }
+    }
 
     // 書籍
     public static final ItemStack VILLAGE_EXPLORATION = createWrittenBook(
@@ -281,5 +278,9 @@ public final class ModStacks {
 
     public static MutableComponent appendComponent(Component first, Component second) {
         return first.copy().append(second);
+    }
+
+    public static Component blankCount(int count) {
+        return Component.literal(" ".repeat(Math.max(0, count)));
     }
 }

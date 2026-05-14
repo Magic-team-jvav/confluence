@@ -1524,6 +1524,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.secret_seeds_selection.never_sleep", "Never Sleep");
         add("description.confluence.secret_seeds_selection.never_sleep", "Sleeping is a waste of time! We shall never sleep! (Beds cannot be used)");
 
+        add("mural.dungeon.ebony_mural", "Corrosive Worm");
+        add("mural.dungeon.crimson_mural", "Mind Rend");
+
         addAll(ChestBlocks.BLOCKS);
         addAll(CrateBlocks.BLOCKS);
         addAll(DecorativeBlocks.BLOCKS);

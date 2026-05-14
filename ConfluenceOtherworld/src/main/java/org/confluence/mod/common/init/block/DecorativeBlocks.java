@@ -4,7 +4,6 @@ import com.mojang.datafixers.DSL;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -17,11 +16,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.*;
 import org.confluence.mod.common.block.natural.*;
-import org.confluence.mod.common.block.natural.sapling.BaseSaplingBlock;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
 import org.confluence.mod.common.block.palettes.ConnectedStainedGlassBlock;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
-import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.ArrayList;
@@ -30,7 +27,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.level.block.Blocks.*;
-import static org.confluence.mod.common.block.natural.LogBlockSet.WoodSetType.EBONY;
 
 public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -57,8 +53,6 @@ public class DecorativeBlocks {
     public static final DeferredBlock<PooBlock> POO_BLOCK = registerWithItem("poo_block", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
 
     // 砖
-    public static final DecoBlockSet GLOOM_OBSIDIAN_BRICKS = DecoBlockSet.builder("gloom_obsidian_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).mapColor(MapColor.COLOR_BLACK)).stonecutting().build();
-    public static final DecoBlockSet CRYING_OBSIDIAN_BRICKS = DecoBlockSet.builder("crying_obsidian_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRYING_OBSIDIAN).mapColor(MapColor.COLOR_BLACK)).stonecutting().build();
     public static final DecoBlockSet BLUE_ICE_BRICKS = DecoBlockSet.builder("blue_ice_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)).stonecutting().build();
     public static final DecoBlockSet PACKED_ICE_BRICKS = DecoBlockSet.builder("packed_ice_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)).stonecutting().build();
     public static final DecoBlockSet SANDSTONE_BRICKS = DecoBlockSet.builder("sandstone_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.SAND)).stonecutting().build();
@@ -176,6 +170,7 @@ public class DecorativeBlocks {
     public static final DecoBlockSet DISC_BLOCK = DecoBlockSet.builder("disc_block", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_YELLOW)).stonecutting().build();
     public static final DecoBlockSet MOON_PLATE = DecoBlockSet.builder("moon_plate", () -> BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_BLUE)).stonecutting().build();
     // 黑曜石
+
     public static final DecoBlockSet OBSIDIAN_BRICKS = DecoBlockSet.builder("obsidian_bricks", () -> BlockBehaviour.Properties.ofFullCopy(OBSIDIAN).mapColor(MapColor.COLOR_BLACK)).stonecutting().build();
     public static final DeferredBlock<Block> OBSIDIAN_SMALL_BRICKS = copyBlockRegister("obsidian_small_bricks", OBSIDIAN);
     public static final DeferredBlock<DoorBlock> OBSIDIAN_BRICKS_DOOR = registerWithItem("obsidian_bricks_door", () -> new DoorBlock(
@@ -190,6 +185,8 @@ public class DecorativeBlocks {
     ));
     public static final DeferredBlock<Block> CHISELED_OBSIDIAN_BRICKS = copyBlockRegister("chiseled_obsidian_bricks", OBSIDIAN);
     public static final DeferredBlock<Block> SMOOTH_OBSIDIAN = copyBlockRegister("smooth_obsidian", OBSIDIAN);
+    public static final DecoBlockSet GLOOM_OBSIDIAN_BRICKS = DecoBlockSet.builder("gloom_obsidian_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).mapColor(MapColor.COLOR_BLACK)).stonecutting().build();
+    public static final DecoBlockSet CRYING_OBSIDIAN_BRICKS = DecoBlockSet.builder("crying_obsidian_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRYING_OBSIDIAN).mapColor(MapColor.COLOR_BLACK)).stonecutting().build();
 
     // 王朝木系列
     public static final DeferredBlock<Block> WHITE_PAPER_PANE = copyBlockRegister("white_paper_pane", OAK_PLANKS);

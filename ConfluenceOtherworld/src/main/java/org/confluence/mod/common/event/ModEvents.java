@@ -683,6 +683,9 @@ public final class ModEvents {
                 .register("confluence:hallow_cattails", "confluence:hallow_cattail")
                 .register("confluence:ebony_cattails", "confluence:ebony_cattail")
                 .register("confluence:crimson_cattails", "confluence:crimson_cattail")
+                // 1.2.4 -> 1.3.0
+                .register("confluence:blue_brick_slab", "confluence:blue_bricks_slab")
+                .register("confluence:blue_brick_stairs", "confluence:blue_bricks_stairs")
         ;
     }
 

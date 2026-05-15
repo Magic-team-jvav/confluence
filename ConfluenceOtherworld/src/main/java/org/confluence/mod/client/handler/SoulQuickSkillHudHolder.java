@@ -82,7 +82,7 @@ public final class SoulQuickSkillHudHolder {
         if (!active) {
             return false;
         }
-        setCurrentIndex(ROULETTE_WHEEL_SMALL_HUD_INSTANCE.adjustTarget((int) scrollDeltaY));
+        ROULETTE_WHEEL_SMALL_HUD_INSTANCE.adjustTarget((int) scrollDeltaY);
         return true;
     }
 

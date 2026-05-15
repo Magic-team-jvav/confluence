@@ -1,11 +1,13 @@
 package org.confluence.mod.client.gui.hud.soul;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.HumanoidArm;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
 import org.confluence.mod.client.gui.hud.soul.quick_skill.RouletteWheelSmallHud;
 import org.confluence.mod.client.gui.widget.SoulSkillBox;
+import org.confluence.mod.client.handler.SoulQuickSkillHudHolder;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +23,19 @@ public class CurrentSelectedSkillHud extends BasicHudLayer {
     @Override
     protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         box.render(guiGraphics, 0, 0, deltaTracker.getRealtimeDeltaTicks());
+//        drawSkillBoxIndex(guiGraphics);
+    }
+
+    /**
+     * 绘制技能框索引文本
+     */
+    private void drawSkillBoxIndex(GuiGraphics guiGraphics) {
+        String text = String.valueOf(SoulQuickSkillHudHolder.INSTANCE.getCurrentIndex());
+        int lineWidth = font.width(text);
+        int lineHeight = font.lineHeight;
+        int x = getLeftPos() + (int) (lineWidth / 2f + 16 / 2f);
+        int y = getTopPos() + (int) (lineHeight / 2f + 16 / 2f);
+        guiGraphics.drawString(font, text, x, y, -1);
     }
 
     @Override
@@ -53,6 +68,16 @@ public class CurrentSelectedSkillHud extends BasicHudLayer {
     public void setTopPos(int var1) {
         super.setTopPos(var1);
         box.setY(var1);
+    }
+
+    @Override
+    public int getWidth() {
+        return box.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return box.getHeight();
     }
 
     private int getOffset() {

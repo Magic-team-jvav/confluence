@@ -75,6 +75,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
             return;
         }
         active = true;
+        // 调试
 //        hudHolder.setSkillTotalNumber(4);
         update();
         wheelSelection = -1;

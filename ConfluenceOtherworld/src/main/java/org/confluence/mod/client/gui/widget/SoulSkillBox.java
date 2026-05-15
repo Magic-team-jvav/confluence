@@ -62,22 +62,42 @@ public class SoulSkillBox extends AbstractWidget {
 
     public void renderWidget(GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY, float partialTick) {
         if (isBox) {
-            guiGraphics.blitSprite(BOX, x, y - 2, 32, 32);
+            renderBox(guiGraphics, x, y);
             if (isActivate) {
-                guiGraphics.blitSprite(BOX_ACTIVATE, x, y - 2, 32, 32);
+                renderBoxActivate(guiGraphics, x, y);
             }
             if (isSelect) {
-                guiGraphics.blitSprite(BOX_SELECT, x, y - 2, 32, 32);
+                renderBoxSelect(guiGraphics, x, y);
             }
         }
         if (isSkill && skillStack != null) {
-            guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x + 8, y + 10 - 2, 16, 16);
+            renderSkillIcon(guiGraphics, skillStack, x + 8, y + 10 - 2);
         }
         if (isBox) {
             if (isFlame) {
-                guiGraphics.blitSprite(BOX_ACTIVATE_FLAME, x, y - 2, 32, 32);
+                renderBoxActivateFlame(guiGraphics, x, y);
             }
         }
+    }
+
+    public static void renderBox(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.blitSprite(BOX, x, y - 2, 32, 32);
+    }
+
+    public static void renderBoxActivate(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.blitSprite(BOX_ACTIVATE, x, y - 2, 32, 32);
+    }
+
+    public static void renderBoxSelect(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.blitSprite(BOX_SELECT, x, y - 2, 32, 32);
+    }
+
+    public static void renderBoxActivateFlame(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.blitSprite(BOX_ACTIVATE_FLAME, x, y - 2, 32, 32);
+    }
+
+    public static void renderSkillIcon(GuiGraphics guiGraphics, SoulSkillStack skillStack, int x, int y) {
+        guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, 16, 16);
     }
 
     @Override

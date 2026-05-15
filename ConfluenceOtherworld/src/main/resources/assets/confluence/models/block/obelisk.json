@@ -3,8 +3,8 @@
     "automatic_culling": false,
     "flip_v": true,
     "loader": "neoforge:obj",
-    "model": "confluence:models/obelisk.obj",
-    "mtl_override": "confluence:models/obelisk.mtl",
+    "model": "confluence:models/obj/obelisk.obj",
+    "mtl_override": "confluence:models/obj/obelisk.mtl",
     "textures": {
         "texture0": "confluence:block/obelisk",
         "particle": "minecraft:block/blackstone"

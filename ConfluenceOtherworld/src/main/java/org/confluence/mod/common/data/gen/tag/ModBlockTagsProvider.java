@@ -571,7 +571,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WALL_OF_FLESH_RELIC.get(),
                 HILL_OF_FLESH_RELIC.get(),
                 THE_TWINS_RELIC.get(),
-                SKELETRON_PRIME_RELIC.get()
+                SKELETRON_PRIME_RELIC.get(),
+                MURAL_BLOCK.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);

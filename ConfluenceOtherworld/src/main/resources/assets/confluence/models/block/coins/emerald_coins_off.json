@@ -1,0 +1,11 @@
+{
+    "parent": "minecraft:block/block",
+    "automatic_culling": false,
+    "flip_v": true,
+    "loader": "neoforge:obj",
+    "model": "confluence:models/obj/coins/emerald_coins_off.obj",
+    "mtl_override": "confluence:models/obj/coins/emerald_coins_off.mtl",
+    "textures": {
+        "particle": "minecraft:item/emerald_coin"
+    }
+}

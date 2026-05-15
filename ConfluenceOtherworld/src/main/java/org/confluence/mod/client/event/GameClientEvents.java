@@ -64,6 +64,7 @@ import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
+import org.confluence.mod.client.handler.SoulQuickSkillHudHolder;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
@@ -147,6 +148,7 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         if (player != null) {
+            SoulQuickSkillHudHolder.INSTANCE.handler();
             WeatherHandler.handle();
             MeteorLandingHandler.handle(minecraft, player);
             HookThrowingHandler.handle(player);
@@ -224,6 +226,20 @@ public final class GameClientEvents {
                     Minecraft.getInstance().setScreen(new BackgroundImageMakerScreen());
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void input$MouseScrollingEvent(InputEvent.MouseScrollingEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
+        double mouseX = event.getMouseX();
+        double mouseY = event.getMouseY();
+        double scrollDeltaY = event.getScrollDeltaY();
+        double scrollDeltaX = event.getScrollDeltaX();
+        if (SoulQuickSkillHudHolder.INSTANCE.scrolling(scrollDeltaY)) {
+            event.setCanceled(true);
+            return;
         }
     }
 

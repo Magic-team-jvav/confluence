@@ -18,6 +18,7 @@ import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
+import org.confluence.mod.client.handler.SoulQuickSkillHudHolder;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
@@ -42,6 +43,7 @@ public final class ClientConfigs {
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
     public static int manaOffsetX = 0;
     public static int manaOffsetY = 0;
+    public static SoulQuickSkillHudHolder.Type soulQuickSkillStyle;
     //    public static TerraStyleSoulHud.Soul soulStyle = TerraStyleSoulHud.Soul.OVERLAY;
 //    public static int soulOffsetX = 0;
 //    public static int soulOffsetY = 0;
@@ -72,6 +74,7 @@ public final class ClientConfigs {
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
     private static IntValue MANA_OFFSET_X;
     private static IntValue MANA_OFFSET_Y;
+    private static EnumValue<SoulQuickSkillHudHolder.Type> SOUL_QUICK_SKILL_STYLE;
     //    private static EnumValue<TerraStyleSoulHud.Soul> SOUL_STYLE;
 //    private static IntValue SOUL_OFFSET_X;
 //    private static IntValue SOUL_OFFSET_Y;
@@ -102,6 +105,7 @@ public final class ClientConfigs {
         manaStyle = MANA_STYLE.get();
         manaOffsetX = MANA_OFFSET_X.get();
         manaOffsetY = MANA_OFFSET_Y.get();
+        soulQuickSkillStyle = SOUL_QUICK_SKILL_STYLE.get();
 //        soulStyle = SOUL_STYLE.get();
 //        soulOffsetX = SOUL_OFFSET_X.get();
 //        soulOffsetY = SOUL_OFFSET_Y.get();
@@ -160,6 +164,11 @@ public final class ClientConfigs {
 //                SOUL_OFFSET_Y = builder.defineInRange("soulOffsetY", 0, -256, 256);
 //                builder.pop();
 //            }
+            {
+                builder.push("Soul");
+                SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulQuickSkillStyle", SoulQuickSkillHudHolder.Type.ROULETTE_WHEEL_SMALL);
+                builder.pop();
+            }
             {
                 builder.push("Armor");
                 TERRA_STYLE_ARMOR = builder.define("terraStyleArmor", true);

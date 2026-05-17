@@ -36,6 +36,4 @@ public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
     public boolean isType() {
         return ClientConfigs.soulQuickSkillStyle == getType();
     }
-
-    protected abstract void drawTooltip(GuiGraphics guiGraphics, DeltaTracker deltaTracker, PoseStack poseStack, Font font);
 }

@@ -75,8 +75,6 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
             return;
         }
         active = true;
-        // 调试
-//        hudHolder.setSkillTotalNumber(4);
         update();
         wheelSelection = -1;
         mouseHandler.releaseMouse();
@@ -120,7 +118,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
             }
         }
 
-        for (int i = 0; i < skillTotalNumber; i++){
+        for (int i = 0; i < skillTotalNumber; i++) {
             boxList.get(i).setSkill(hudHolder.getSkillStackList().get(i));
         }
     }
@@ -129,7 +127,6 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     public SoulQuickSkillHudHolder.Type getType() {
         return SoulQuickSkillHudHolder.Type.ROULETTE_WHEEL_BIG;
     }
-
 
     @Override
     protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -191,7 +188,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         renderCurrentSelectedSkillBox(guiGraphics, poseStack, mousePos, deltaTracker);
 
         poseStack.popPose();
-        drawTooltip(guiGraphics, deltaTracker, poseStack, font);
+        drawTooltip(guiGraphics, font);
     }
 
     /**
@@ -249,10 +246,6 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
             // 绘制扇形四边形
             drawSegmentQuad(guiGraphics, poseStack, innerRadius, outerRadius,
                     innerRange, outerRange, colorData);
-
-            // 绘制索引文本
-//            drawSegmentIndex(guiGraphics, poseStack, font, index, outerRadius,
-//                    angleParams.radiansPerSide(), startAngleOffset);
 
             poseStack.popPose();
         }
@@ -322,24 +315,6 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     }
 
     /**
-     * 绘制扇形索引文本
-     */
-    private void drawSegmentIndex(GuiGraphics guiGraphics, PoseStack poseStack, Font font,
-                                  int index, float outerRadius, float radiansPerSide,
-                                  float startAngleOffset) {
-        float angle = (index + 1) * radiansPerSide - radiansPerSide / 2 + startAngleOffset;
-        Vec2 pos = LibMathUtils.pointFromAngle(outerRadius, angle);
-
-        String text = String.valueOf(index);
-        int lineWidth = font.width(text);
-        int lineHeight = font.lineHeight;
-        guiGraphics.drawString(font, text,
-                (int) pos.x - lineWidth / 2,
-                (int) pos.y - lineHeight / 2,
-                -1);
-    }
-
-    /**
      * 绘制技能框
      */
     private void drawSkillBoxes(GuiGraphics guiGraphics, PoseStack poseStack, Font font,
@@ -367,9 +342,6 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
             // 渲染技能框
             renderSkillBox(guiGraphics, soulSkillBox, deltaTracker);
 
-//             绘制索引文本
-//            drawSkillBoxIndex(guiGraphics, poseStack, font, boxIndex, pos);
-
             poseStack.popPose();
         }
 
@@ -387,17 +359,13 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
             SoulSkillBox soulSkillBox = boxList.get(currentIndex);
             if (soulSkillBox != null) {
                 poseStack.translate(-soulSkillBox.getWidth() / 2f, -soulSkillBox.getHeight() / 2f, 0);
-                soulSkillBox.renderWidget(guiGraphics,
-                        0, 0,
-                        (int) mousePos.x, (int) mousePos.y,
-                        deltaTracker.getRealtimeDeltaTicks());
+                soulSkillBox.renderWidget(guiGraphics, 0, 0);
             }
         }
         poseStack.popPose();
     }
 
-    @Override
-    protected void drawTooltip(GuiGraphics guiGraphics, DeltaTracker deltaTracker, PoseStack poseStack, Font font) {
+    protected void drawTooltip(GuiGraphics guiGraphics, Font font) {
         if (wheelSelection < 0 || wheelSelection >= boxList.size()) {
             return;
         }
@@ -431,23 +399,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
      * 渲染技能框
      */
     private void renderSkillBox(GuiGraphics guiGraphics, SoulSkillBox soulSkillBox, DeltaTracker deltaTracker) {
-        soulSkillBox.renderWidget(guiGraphics, 0, 0,
-                (int) getMouseX(), (int) getMouseY(),
-                deltaTracker.getRealtimeDeltaTicks());
-    }
-
-    /**
-     * 绘制技能框索引文本
-     */
-    private void drawSkillBoxIndex(GuiGraphics guiGraphics, PoseStack poseStack, Font font,
-                                   int boxIndex, Vec2 pos) {
-        String text = String.valueOf(boxIndex);
-        int lineWidth = font.width(text);
-        int lineHeight = font.lineHeight;
-        guiGraphics.drawString(font, text,
-                (int) pos.x - lineWidth / 2,
-                (int) pos.y - lineHeight / 2,
-                -1);
+        soulSkillBox.renderWidget(guiGraphics, 0, 0);
     }
 
     /**

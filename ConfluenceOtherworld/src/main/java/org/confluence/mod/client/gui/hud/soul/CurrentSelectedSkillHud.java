@@ -23,19 +23,6 @@ public class CurrentSelectedSkillHud extends BasicHudLayer {
     @Override
     protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         box.render(guiGraphics, 0, 0, deltaTracker.getRealtimeDeltaTicks());
-//        drawSkillBoxIndex(guiGraphics);
-    }
-
-    /**
-     * 绘制技能框索引文本
-     */
-    private void drawSkillBoxIndex(GuiGraphics guiGraphics) {
-        String text = String.valueOf(SoulQuickSkillHudHolder.INSTANCE.getCurrentIndex());
-        int lineWidth = font.width(text);
-        int lineHeight = font.lineHeight;
-        int x = getLeftPos() + (int) (lineWidth / 2f + 16 / 2f);
-        int y = getTopPos() + (int) (lineHeight / 2f + 16 / 2f);
-        guiGraphics.drawString(font, text, x, y, -1);
     }
 
     @Override

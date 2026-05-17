@@ -1,6 +1,7 @@
 package org.confluence.mod.common.soulskill;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,7 +13,6 @@ import java.util.List;
 public class SoulSkillStack {
     public static final SoulSkillStack EMPTY = new SoulSkillStack(SoulSkill.EMPTY);
     private final SoulSkill soulSkill;
-    private int level = 1;
     private int cd = 0;
     private int maxCd = 0;
 
@@ -29,7 +29,7 @@ public class SoulSkillStack {
     }
 
     @Nullable
-    public Component getComponent() {
+    public Component getNarrationComponent() {
         return soulSkill.getComponent(this);
     }
 
@@ -41,26 +41,18 @@ public class SoulSkillStack {
      */
     public static List<FormattedCharSequence> getSkillTooltipLines(SoulSkillStack skillStack) {
         List<FormattedCharSequence> list = new ArrayList<>();
-        list.add(getMessage(skillStack).getVisualOrderText());
-        Component component = skillStack.getComponent();
+        list.add(skillStack.getNameComponent().getVisualOrderText());
+        Component component = skillStack.getNarrationComponent();
         if (component != null) {
             list.add(component.getVisualOrderText());
         }
         return Collections.synchronizedList(list);
     }
 
-    public static @NotNull Component getMessage(SoulSkillStack skillStack) {
-        return Component.translatable(skillStack.getSoulSkill().getId().toString())
-                .append(" ")
-                .append(Component.translatable(String.valueOf(skillStack.getLevel())).withColor(0x2ef0d3));
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getLevel() {
-        return level;
+    @NotNull
+    public Component getNameComponent() {
+        ResourceLocation id = getSoulSkill().getId();
+        return Component.translatable(id.getNamespace() + ".soul_skill." + id.getPath() + ".name");
     }
 
     public int getCd() {

@@ -16,11 +16,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class SoulSkillBox extends AbstractWidget {
+    public static final ResourceLocation BOX_GRAY = Confluence.asResource("hud/soul_quick_skill_hud/box_gray");
     public static final ResourceLocation BOX = Confluence.asResource("hud/soul_quick_skill_hud/box");
     public static final ResourceLocation BOX_ACTIVATE = Confluence.asResource("hud/soul_quick_skill_hud/box_activate");
     public static final ResourceLocation BOX_ACTIVATE_FLAME = Confluence.asResource("hud/soul_quick_skill_hud/box_activate_flame");
     public static final ResourceLocation BOX_SELECT = Confluence.asResource("hud/soul_quick_skill_hud/box_select");
     public static final List<FormattedCharSequence> DEFAULT_CHAR_SEQUENCE;
+    public static final int SKILL_SIZE = 16;
+    public static final int BOX_SIZE = 32;
+    public static final int BOX_GRAY_SIZE = 22;
 
     protected final Minecraft instance;
     protected final Font font;
@@ -46,7 +50,7 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     public SoulSkillBox(int x, int y) {
-        this(x, y, 32, 32, Component.empty());
+        this(x, y, BOX_SIZE, BOX_SIZE, Component.empty());
     }
 
     public SoulSkillBox(int x, int y, int width, int height, Component message) {
@@ -61,6 +65,10 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     public void renderWidget(GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY, float partialTick) {
+        renderWidget(guiGraphics, x, y);
+    }
+
+    public void renderWidget(GuiGraphics guiGraphics, int x, int y) {
         if (isBox) {
             renderBox(guiGraphics, x, y);
             if (isActivate) {
@@ -81,23 +89,38 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     public static void renderBox(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(BOX, x, y - 2, 32, 32);
+        guiGraphics.blitSprite(BOX, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderBoxActivate(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(BOX_ACTIVATE, x, y - 2, 32, 32);
+        guiGraphics.blitSprite(BOX_ACTIVATE, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderBoxSelect(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(BOX_SELECT, x, y - 2, 32, 32);
+        guiGraphics.blitSprite(BOX_SELECT, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderBoxActivateFlame(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(BOX_ACTIVATE_FLAME, x, y - 2, 32, 32);
+        guiGraphics.blitSprite(BOX_ACTIVATE_FLAME, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderSkillIcon(GuiGraphics guiGraphics, SoulSkillStack skillStack, int x, int y) {
-        guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, 16, 16);
+        // TODO 需要添加CD渲染
+        guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, SKILL_SIZE, SKILL_SIZE);
+    }
+
+    public static void renderBoxGray(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.blitSprite(SoulSkillBox.BOX_GRAY, x, y, BOX_GRAY_SIZE, BOX_GRAY_SIZE);
+    }
+
+    public static void drawSkillStackName(GuiGraphics guiGraphics, Font font, int x, int y, SoulSkillStack currentSkillStack, boolean isCenter) {
+        Component nameComponent = currentSkillStack.getNameComponent();
+        int x1 = x;
+        int y1 = y - font.lineHeight / 2;
+        if (isCenter) {
+            x1 -= font.width(nameComponent) / 2;
+        }
+        guiGraphics.drawString(font, nameComponent, x1, y1, -1);
     }
 
     @Override
@@ -108,7 +131,7 @@ public class SoulSkillBox extends AbstractWidget {
     public void setSkill(@Nullable SoulSkillStack skillStack) {
         this.skillStack = skillStack;
         if (skillStack != null) {
-            setTooltip(Tooltip.create(SoulSkillStack.getMessage(skillStack), skillStack.getComponent()));
+            setTooltip(Tooltip.create(skillStack.getNameComponent(), skillStack.getNarrationComponent()));
         } else {
             setTooltip(null);
         }

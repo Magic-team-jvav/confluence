@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SoulSkill {
     public static final SoulSkill EMPTY = new SoulSkill(
-            Confluence.asResource(""),
+            Confluence.asResource("blood_rage"),
             Confluence.asResource("empty"),
             123f);
 
@@ -22,7 +22,7 @@ public class SoulSkill {
     }
 
     public ResourceLocation getIcon() {
-        return icon;
+        return icon.withPrefix("hud/soul_skill/");
     }
 
     public ResourceLocation getId() {

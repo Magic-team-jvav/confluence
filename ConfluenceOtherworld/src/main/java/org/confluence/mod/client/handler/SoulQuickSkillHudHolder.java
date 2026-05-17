@@ -5,6 +5,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.gui.hud.soul.CurrentSelectedSkillHud;
 import org.confluence.mod.client.gui.hud.soul.quick_skill.*;
+import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,8 +19,8 @@ public final class SoulQuickSkillHudHolder {
     public static final SoulQuickSkillHudHolder INSTANCE = new SoulQuickSkillHudHolder();
     public static final RouletteWheelBigHud ROULETTE_WHEEL_BIG_HUD_INSTANCE = new RouletteWheelBigHud();
     public static final RouletteWheelSmallHud ROULETTE_WHEEL_SMALL_HUD_INSTANCE = new RouletteWheelSmallHud();
-    public static final CardHorizontalLHud CARD_HORIZONTAL_L_HUD_INSTANCE = new CardHorizontalLHud();
-    public static final CardHorizontalRHud CARD_HORIZONTAL_R_HUD_INSTANCE = new CardHorizontalRHud();
+    public static final CardHorizontalHud CARD_HORIZONTAL_L_HUD_INSTANCE = new CardHorizontalHud(false);
+    public static final CardHorizontalHud CARD_HORIZONTAL_R_HUD_INSTANCE = new CardHorizontalHud(true);
     public static final CurrentSelectedSkillHud CURRENT_SELECTED_SKILL_HUD_INSTANCE = new CurrentSelectedSkillHud();
 
     // TODO 需要对接玩家本身的
@@ -82,8 +83,15 @@ public final class SoulQuickSkillHudHolder {
         if (!active) {
             return false;
         }
-        ROULETTE_WHEEL_SMALL_HUD_INSTANCE.adjustTarget((int) scrollDeltaY);
+        adjustTarget((int) scrollDeltaY);
         return true;
+    }
+
+    public void adjustTarget(int offset) {
+        ROULETTE_WHEEL_SMALL_HUD_INSTANCE.adjustTarget(offset);
+        CARD_HORIZONTAL_L_HUD_INSTANCE.adjustTarget(offset);
+        CARD_HORIZONTAL_R_HUD_INSTANCE.adjustTarget(offset);
+        setCurrentIndex(SoulQuickSkillHudUtils.calculateSkillIndex(offset, getCurrentIndex(), getSkillTotalNumber()));
     }
 
     private void handleSpellWheelRelease() {

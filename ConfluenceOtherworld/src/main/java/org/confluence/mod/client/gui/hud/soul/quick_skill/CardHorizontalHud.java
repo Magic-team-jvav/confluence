@@ -60,6 +60,9 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     private float targetRotation;
     private float prevRotation;
     private float renderRotation;
+    private float timeO;
+    private float targeTime;
+    private float renderTime;
 
     public CardHorizontalHud(boolean isRight) {
         super();
@@ -71,6 +74,21 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
         float delta = deltaTracker.getRealtimeDeltaTicks();
         renderRotation = Mth.lerp(delta, prevRotation, targetRotation);
         prevRotation = renderRotation;
+        if (active) {
+            if (targeTime * 0.5f < 1) {
+                targeTime = targeTime + delta * 0.5f;
+            }
+        } else {
+            if (targeTime > 0) {
+                targeTime = targeTime - delta * 0.1f;
+            }
+        }
+        timeO = renderTime = Mth.lerp(delta, timeO, targeTime);
+
+        if (renderTime <= 0.001f) {
+            return;
+        }
+
         super.render(guiGraphics, deltaTracker);
     }
 
@@ -147,7 +165,9 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
         // 第二遍：按 Z 顺序渲染
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
-
+        float v2 = CARD_WIDTH * CENTER_SCALE;
+        float clamp = CARD_WIDTH * CENTER_SCALE - Math.clamp(renderTime, 0, 1) * v2;
+        poseStack.translate(isRight ? clamp : -clamp, 0, 0);
         for (int idx : renderOrder) {
             float x = xPosArr[idx];
             float y = yPosArr[idx];

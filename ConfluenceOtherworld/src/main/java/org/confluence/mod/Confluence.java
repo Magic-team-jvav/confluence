@@ -22,6 +22,7 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.create.CreateHelper;
+import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
@@ -74,6 +75,8 @@ public final class Confluence {
         ModTradeLockProviderTypes.TYPES.register(eventBus);
         ModCommands.ARGUMENT_TYPE_INFOS.register(eventBus);
         ModDensityFunctionTypes.TYPES.register(eventBus);
+
+        ModSoulSkills.register(eventBus);
     }
 
     public static void registerGameRules() {

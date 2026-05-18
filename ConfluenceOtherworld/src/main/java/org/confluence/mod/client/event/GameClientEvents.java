@@ -62,9 +62,10 @@ import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
+import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
-import org.confluence.mod.client.handler.SoulQuickSkillHudHolder;
+import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
@@ -148,7 +149,16 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         if (player != null) {
-            SoulQuickSkillHudHolder.INSTANCE.handler();
+            SoulSkillClientHolder.INSTANCE.handler();
+            boolean isSoulOverviewScreen = false;
+            while (ModKeyBindings.SOUL_OVERVIEW.get().consumeClick()) {
+                if (!isSoulOverviewScreen) {
+                    isSoulOverviewScreen = true;
+                }
+            }
+            if (isSoulOverviewScreen) {
+                minecraft.setScreen(new SoulOverviewScreen());
+            }
             WeatherHandler.handle();
             MeteorLandingHandler.handle(minecraft, player);
             HookThrowingHandler.handle(player);
@@ -237,7 +247,7 @@ public final class GameClientEvents {
         double mouseY = event.getMouseY();
         double scrollDeltaY = event.getScrollDeltaY();
         double scrollDeltaX = event.getScrollDeltaX();
-        if (SoulQuickSkillHudHolder.INSTANCE.scrolling(scrollDeltaY)) {
+        if (SoulSkillClientHolder.INSTANCE.scrolling(scrollDeltaY)) {
             event.setCanceled(true);
             return;
         }

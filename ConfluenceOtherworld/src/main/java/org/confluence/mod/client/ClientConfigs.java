@@ -18,7 +18,7 @@ import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
-import org.confluence.mod.client.handler.SoulQuickSkillHudHolder;
+import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
@@ -43,7 +43,7 @@ public final class ClientConfigs {
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
     public static int manaOffsetX = 0;
     public static int manaOffsetY = 0;
-    public static SoulQuickSkillHudHolder.Type soulQuickSkillStyle;
+    public static SoulSkillClientHolder.Type soulQuickSkillStyle;
     //    public static TerraStyleSoulHud.Soul soulStyle = TerraStyleSoulHud.Soul.OVERLAY;
 //    public static int soulOffsetX = 0;
 //    public static int soulOffsetY = 0;
@@ -74,7 +74,7 @@ public final class ClientConfigs {
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
     private static IntValue MANA_OFFSET_X;
     private static IntValue MANA_OFFSET_Y;
-    private static EnumValue<SoulQuickSkillHudHolder.Type> SOUL_QUICK_SKILL_STYLE;
+    private static EnumValue<SoulSkillClientHolder.Type> SOUL_QUICK_SKILL_STYLE;
     //    private static EnumValue<TerraStyleSoulHud.Soul> SOUL_STYLE;
 //    private static IntValue SOUL_OFFSET_X;
 //    private static IntValue SOUL_OFFSET_Y;
@@ -166,7 +166,7 @@ public final class ClientConfigs {
 //            }
             {
                 builder.push("Soul");
-                SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulQuickSkillStyle", SoulQuickSkillHudHolder.Type.ROULETTE_WHEEL_SMALL);
+                SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulQuickSkillStyle", SoulSkillClientHolder.Type.ROULETTE_WHEEL_SMALL);
                 builder.pop();
             }
             {

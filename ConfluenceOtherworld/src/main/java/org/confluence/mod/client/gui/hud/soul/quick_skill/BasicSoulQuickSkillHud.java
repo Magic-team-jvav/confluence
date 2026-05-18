@@ -1,20 +1,27 @@
 package org.confluence.mod.client.gui.hud.soul.quick_skill;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
-import org.confluence.mod.client.handler.SoulQuickSkillHudHolder;
+import org.confluence.mod.client.handler.SoulSkillClientHolder;
 
 public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
     protected boolean active = false;
-    protected final SoulQuickSkillHudHolder hudHolder;
+    protected final SoulSkillClientHolder soulSkillHolder;
+    protected boolean isInit;
 
     public BasicSoulQuickSkillHud() {
         super();
-        hudHolder = SoulQuickSkillHudHolder.INSTANCE;
+        soulSkillHolder = SoulSkillClientHolder.INSTANCE;
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+        if (!isInit){
+            update();
+        }
+        super.render(guiGraphics, deltaTracker);
     }
 
     public void open() {
@@ -31,7 +38,7 @@ public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
 
     public abstract void update();
 
-    public abstract SoulQuickSkillHudHolder.Type getType();
+    public abstract SoulSkillClientHolder.Type getType();
 
     public boolean isType() {
         return ClientConfigs.soulQuickSkillStyle == getType();

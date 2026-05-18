@@ -7,8 +7,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.widget.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulQuickSkillHudHolder;
+import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
+import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
@@ -16,44 +16,56 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Comparator;
 
-/**
- * 水平卡片式灵魂技能快速切换HUD。
- * <p>
- * 卡片沿屏幕左/右侧边缘以弧形排列，中心卡片贴边，远离中心逐渐向屏幕外侧隐藏。
- * 滚动时卡片沿弧线平滑滑动，在屏幕边缘外自然消失和出现。
- */
 public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     // ==================== 可配置参数 ====================
-    /** 中心两侧额外显示的卡片数（默认 2 → 共 5 张） */
+    /**
+     * 中心两侧额外显示的卡片数（默认 2 → 共 5 张）
+     */
     protected static final int ADDITIONAL_COUNT = 3;
-    /** 总槽位数 */
+    /**
+     * 总槽位数
+     */
     protected static final int TOTAL_SLOTS = ADDITIONAL_COUNT * 2 + 1;
-    /** 弧形总跨度（度） */
+    /**
+     * 弧形总跨度（度）
+     */
     protected static final float ARC_ANGLE_DEGREES = 60f;
-    /** 弧形总跨度的一半（弧度） */
+    /**
+     * 弧形总跨度的一半（弧度）
+     */
     private static final float HALF_ARC_RADIANS = (float) Math.toRadians(ARC_ANGLE_DEGREES / 2f);
 
-    /** 中心卡片贴边距离（像素），计入放大后的视觉间距 */
+    /**
+     * 中心卡片贴边距离（像素），计入放大后的视觉间距
+     */
     protected static final float BULGE_DEPTH = 6f;
-    /** 卡片纵向间距（像素） */
+    /**
+     * 卡片纵向间距（像素）
+     */
     protected static final float CARD_SPACING = 20f;
-    /** 弧线凸出幅度（像素），越大曲线越明显 */
+    /**
+     * 弧线凸出幅度（像素），越大曲线越明显
+     */
     protected static final float EXTRA_BULGE = 60f;
-    /** 中心卡片放大倍率 */
+    /**
+     * 中心卡片放大倍率
+     */
     protected static final float CENTER_SCALE = 1.25f;
-    /** 边缘透明度，0=全透明 */
+    /**
+     * 边缘透明度，0=全透明
+     */
     protected static final float EDGE_ALPHA = 0f;
-    /** 可见范围（槽位单位），超出后换位。较大值让卡片在屏幕外消失后再换位 */
+    /**
+     * 可见范围（槽位单位），超出后换位。较大值让卡片在屏幕外消失后再换位
+     */
     private static final float VISIBLE_RANGE = ADDITIONAL_COUNT + 0.4f;
 
     // ==================== 纹理资源 ====================
-    private static final ResourceLocation TEX_L = Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal_l");
-    private static final ResourceLocation TEX_L_SEL = Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal_l_select");
-    private static final ResourceLocation TEX_R = Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal_r");
-    private static final ResourceLocation TEX_R_SEL = Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal_r_select");
+    private static final ResourceLocation TEX = Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal");
+    private static final ResourceLocation TEX_SEL = Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal_select");
 
-    public static final int CARD_WIDTH = 100;
-    public static final int CARD_HEIGHT = 26;
+    public static final int CARD_WIDTH = 128;
+    public static final int CARD_HEIGHT = 32;
 
     protected final boolean isRight;
 
@@ -96,8 +108,8 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!isType()) return;
 
-        int currentIdx = hudHolder.getCurrentIndex();
-        int totalSkills = hudHolder.getSkillTotalNumber();
+        int currentIdx = soulSkillHolder.getCurrentIndex();
+        int totalSkills = soulSkillHolder.getEquippedSkillMaxNumber();
         if (totalSkills <= 0) return;
 
         float totalSlide = renderRotation;
@@ -123,7 +135,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
 
             int effectiveOffset = Math.round(virtualPos);
             int skillIdx = SoulQuickSkillHudUtils.calculateSkillIndex(effectiveOffset, currentIdx, totalSkills);
-            SoulSkillStack stack = hudHolder.getCurrentSkillStack(skillIdx);
+            SoulSkillStack stack = soulSkillHolder.getCurrentSkillStack(skillIdx);
             boolean selected = Math.abs(virtualPos) < 0.5f;
 
             // 弧形坐标
@@ -196,20 +208,16 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     }
 
     private void renderCard(GuiGraphics guiGraphics, @Nullable SoulSkillStack stack, boolean selected, int skillIdx, float scale) {
-        ResourceLocation tex = selected
-                ? (isRight ? TEX_R_SEL : TEX_L_SEL)
-                : (isRight ? TEX_R : TEX_L);
+        ResourceLocation tex = selected ? TEX_SEL : TEX;
         guiGraphics.blitSprite(tex, 0, 0, CARD_WIDTH, CARD_HEIGHT);
 
         if (selected) {
-            SoulSkillBox.renderBoxActivate(guiGraphics, -3, -3);
-        } else {
-            SoulSkillBox.renderBox(guiGraphics, -3, -3);
+            SoulSkillBox.renderBoxActivate(guiGraphics, 0, 0);
         }
 
-        if (stack != null) {
-            SoulSkillBox.renderSkillIcon(guiGraphics, stack, 5, 5);
-            SoulSkillBox.drawSkillStackName(guiGraphics, font, 26, CARD_HEIGHT / 2, stack, false);
+        if (!SoulSkillStack.isEmpty(stack)) {
+            SoulSkillBox.renderSkillIcon(guiGraphics, stack, 8, 8);
+            SoulSkillBox.drawSkillStackName(guiGraphics, font, 28, CARD_HEIGHT / 2, stack, false);
         }
     }
 
@@ -220,6 +228,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     @Override
     public void open() {
         if (!isType()) return;
+        update();
         active = true;
     }
 
@@ -233,8 +242,8 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     public void update() {}
 
     @Override
-    public SoulQuickSkillHudHolder.Type getType() {
-        return isRight ? SoulQuickSkillHudHolder.Type.CARD_HORIZONTAL_R
-                       : SoulQuickSkillHudHolder.Type.CARD_HORIZONTAL_L;
+    public SoulSkillClientHolder.Type getType() {
+        return isRight ? SoulSkillClientHolder.Type.CARD_HORIZONTAL_R
+                : SoulSkillClientHolder.Type.CARD_HORIZONTAL_L;
     }
 }

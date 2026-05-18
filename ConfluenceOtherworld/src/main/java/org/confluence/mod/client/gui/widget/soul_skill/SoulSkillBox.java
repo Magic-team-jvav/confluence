@@ -1,27 +1,23 @@
-package org.confluence.mod.client.gui.widget;
+package org.confluence.mod.client.gui.widget.soul_skill;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public class SoulSkillBox extends AbstractWidget {
     public static final ResourceLocation BOX_GRAY = Confluence.asResource("hud/soul_quick_skill_hud/box_gray");
-    public static final ResourceLocation BOX = Confluence.asResource("hud/soul_quick_skill_hud/box");
-    public static final ResourceLocation BOX_ACTIVATE = Confluence.asResource("hud/soul_quick_skill_hud/box_activate");
-    public static final ResourceLocation BOX_ACTIVATE_FLAME = Confluence.asResource("hud/soul_quick_skill_hud/box_activate_flame");
-    public static final ResourceLocation BOX_SELECT = Confluence.asResource("hud/soul_quick_skill_hud/box_select");
-    public static final List<FormattedCharSequence> DEFAULT_CHAR_SEQUENCE;
+    public static final ResourceLocation BOX = Confluence.asResource("container/soul_overview/box");
+    public static final ResourceLocation BOX_ACTIVATE = Confluence.asResource("container/soul_overview/box_activate");
+    public static final ResourceLocation BOX_ACTIVATE_FLAME = Confluence.asResource("container/soul_overview/box_activate_flame");
+    public static final ResourceLocation BOX_SELECT = Confluence.asResource("container/soul_overview/box_select");
     public static final int SKILL_SIZE = 16;
     public static final int BOX_SIZE = 32;
     public static final int BOX_GRAY_SIZE = 22;
@@ -29,24 +25,21 @@ public class SoulSkillBox extends AbstractWidget {
     protected final Minecraft instance;
     protected final Font font;
     @Nullable
-    private SoulSkillStack skillStack;
+    protected SoulSkillStack soulSkillStack;
     public boolean isBox = true;
     public boolean isSkill = true;
     public boolean isActivate;
     public boolean isSelect;
     public boolean isFlame;
-
-    static {
-        DEFAULT_CHAR_SEQUENCE = SoulSkillStack.getSkillTooltipLines(SoulSkillStack.EMPTY);
-    }
+    public boolean isTooltip;
 
     public SoulSkillBox() {
         this(0, 0);
     }
 
-    public SoulSkillBox(SoulSkillStack skillStack) {
+    public SoulSkillBox(SoulSkillStack soulSkillStack) {
         this(0, 0);
-        setSkill(skillStack);
+        setSkill(soulSkillStack);
     }
 
     public SoulSkillBox(int x, int y) {
@@ -66,6 +59,7 @@ public class SoulSkillBox extends AbstractWidget {
 
     public void renderWidget(GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY, float partialTick) {
         renderWidget(guiGraphics, x, y);
+        renderTooltip(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     public void renderWidget(GuiGraphics guiGraphics, int x, int y) {
@@ -78,14 +72,32 @@ public class SoulSkillBox extends AbstractWidget {
                 renderBoxSelect(guiGraphics, x, y);
             }
         }
-        if (isSkill && skillStack != null) {
-            renderSkillIcon(guiGraphics, skillStack, x + 8, y + 10 - 2);
+        if (isSkill && !SoulSkillStack.isEmpty(soulSkillStack)) {
+            renderSkillIcon(guiGraphics, soulSkillStack, x + 8, y + 10 - 2);
         }
         if (isBox) {
             if (isFlame) {
                 renderBoxActivateFlame(guiGraphics, x, y);
             }
         }
+    }
+
+    public void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        if (SoulSkillStack.isEmpty(soulSkillStack) || !isTooltip || !isSkill) {
+            return;
+        }
+        renderTooltip(font, guiGraphics, soulSkillStack, mouseX, mouseY, partialTick);
+    }
+
+    public static void renderTooltip(Font font, GuiGraphics guiGraphics, SoulSkillStack skillStack, int mouseX, int mouseY, float partialTick) {
+        if (SoulSkillStack.isEmpty(skillStack)) {
+            return;
+        }
+        PoseStack poseStack = guiGraphics.pose();
+        poseStack.pushPose();
+        poseStack.translate(0, 0, 1000);
+        guiGraphics.renderTooltip(font, skillStack.getSkillTooltipLines(), mouseX, mouseY);
+        poseStack.popPose();
     }
 
     public static void renderBox(GuiGraphics guiGraphics, int x, int y) {
@@ -105,6 +117,9 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     public static void renderSkillIcon(GuiGraphics guiGraphics, SoulSkillStack skillStack, int x, int y) {
+        if (SoulSkillStack.isEmpty(skillStack)) {
+            return;
+        }
         // TODO 需要添加CD渲染
         guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, SKILL_SIZE, SKILL_SIZE);
     }
@@ -114,6 +129,9 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     public static void drawSkillStackName(GuiGraphics guiGraphics, Font font, int x, int y, SoulSkillStack currentSkillStack, boolean isCenter) {
+        if (SoulSkillStack.isEmpty(currentSkillStack)) {
+            return;
+        }
         Component nameComponent = currentSkillStack.getNameComponent();
         int x1 = x;
         int y1 = y - font.lineHeight / 2;
@@ -129,21 +147,11 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     public void setSkill(@Nullable SoulSkillStack skillStack) {
-        this.skillStack = skillStack;
-        if (skillStack != null) {
-            setTooltip(Tooltip.create(skillStack.getNameComponent(), skillStack.getNarrationComponent()));
-        } else {
-            setTooltip(null);
-        }
+        this.soulSkillStack = skillStack;
     }
 
     @Nullable
     public SoulSkillStack getSkillStack() {
-        return skillStack;
-    }
-
-    @Override
-    public @Nullable Tooltip getTooltip() {
-        return super.getTooltip();
+        return soulSkillStack;
     }
 }

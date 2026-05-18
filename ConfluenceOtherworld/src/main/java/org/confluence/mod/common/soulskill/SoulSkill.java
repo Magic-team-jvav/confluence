@@ -3,14 +3,10 @@ package org.confluence.mod.common.soulskill;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SoulSkill {
-    public static final SoulSkill EMPTY = new SoulSkill(
-            Confluence.asResource("blood_rage"),
-            Confluence.asResource("empty"),
-            123f);
-
     private final ResourceLocation icon;
     private final ResourceLocation id;
     private final float basicDamage;
@@ -29,6 +25,11 @@ public class SoulSkill {
         return id;
     }
 
+    @NotNull
+    public Component getNameComponent(SoulSkillStack skillStack) {
+        return Component.translatable(id.getNamespace() + ".soul_skill." + id.getPath() + ".name");
+    }
+
     public float getBasicDamage() {
         return basicDamage;
     }
@@ -39,6 +40,10 @@ public class SoulSkill {
 
     @Nullable
     public Component getComponent(SoulSkillStack skillStack) {
-        return Component.empty();
+        return null;
+    }
+
+    public SoulSkillStack getStack() {
+        return new SoulSkillStack(this);
     }
 }

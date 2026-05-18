@@ -6,8 +6,6 @@ import com.mojang.math.Axis;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
@@ -15,8 +13,8 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.soul.CurrentSelectedSkillHud;
-import org.confluence.mod.client.gui.widget.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulQuickSkillHudHolder;
+import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
+import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 
@@ -75,7 +73,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
         if (!isType()) {
             return;
         }
-        CurrentSelectedSkillHud instance = SoulQuickSkillHudHolder.CURRENT_SELECTED_SKILL_HUD_INSTANCE;
+        CurrentSelectedSkillHud instance = SoulSkillClientHolder.CURRENT_SELECTED_SKILL_HUD_INSTANCE;
         PoseStack poseStack = guiGraphics.pose();
         float realtimeDeltaTicks = deltaTracker.getRealtimeDeltaTicks();
 
@@ -132,8 +130,8 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     private void renderSkillBoxes(GuiGraphics guiGraphics, PoseStack poseStack, float realtimeDeltaTicks) {
         poseStack.pushPose();
         float startAngleOffset = RouletteWheelBigHud.START_ANGLE_OFFSET;
-        int totalSkills = hudHolder.getSkillTotalNumber();
-        int currentIdx = hudHolder.getCurrentIndex();
+        int totalSkills = soulSkillHolder.getEquippedSkillMaxNumber();
+        int currentIdx = soulSkillHolder.getCurrentIndex();
 
         // 计算当前轮盘旋转对应的槽位偏移量
         int rotationOffset = SoulQuickSkillHudUtils.calculateRotationOffset(targetAngle, INTERVAL, DISPLAY_COUNT);
@@ -141,8 +139,8 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
         for (int slotIdx = 0; slotIdx < DISPLAY_COUNT; slotIdx++) {
             int skillIdx = SoulQuickSkillHudUtils.getSkillIndex(slotIdx, rotationOffset, currentIdx, totalSkills, DISPLAY_COUNT, HALF_DISPLAY);
 
-            SoulSkillStack stack = hudHolder.getCurrentSkillStack(skillIdx);
-            if (stack == null) {
+            SoulSkillStack stack = soulSkillHolder.getCurrentSkillStack(skillIdx);
+            if (SoulSkillStack.isEmpty(stack)) {
                 continue;
             }
 
@@ -170,7 +168,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
      * 调整目标索引
      */
     public void adjustTarget(int offset) {
-        int totalSkills = hudHolder.getSkillTotalNumber();
+        int totalSkills = soulSkillHolder.getEquippedSkillMaxNumber();
 
         if (totalSkills <= 0) {
             targetAngle = 0;
@@ -186,11 +184,8 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
         if (!isType()) {
             return;
         }
+        update();
         active = true;
-
-        // 调试
-//        hudHolder.setCurrentIndex(0);
-//        targetAngle = 0;
     }
 
     @Override
@@ -202,7 +197,9 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    public void update() {}
+    public void update() {
+
+    }
 
     @Override
     public void init(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -214,15 +211,15 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    public SoulQuickSkillHudHolder.Type getType() {
-        return SoulQuickSkillHudHolder.Type.ROULETTE_WHEEL_SMALL;
+    public SoulSkillClientHolder.Type getType() {
+        return SoulSkillClientHolder.Type.ROULETTE_WHEEL_SMALL;
     }
 
     protected void drawSkillStackName(GuiGraphics guiGraphics, Font font, int x, int y) {
-        SoulSkillStack currentSkillStack = hudHolder.getCurrentSkillStack(hudHolder.getCurrentIndex());
-        if (currentSkillStack == null) {
+        SoulSkillStack stack = soulSkillHolder.getCurrentSkillStack(soulSkillHolder.getCurrentIndex());
+        if (SoulSkillStack.isEmpty(stack)) {
             return;
         }
-        SoulSkillBox.drawSkillStackName(guiGraphics, font, x, y, currentSkillStack, true);
+        SoulSkillBox.drawSkillStackName(guiGraphics, font, x, y, stack, true);
     }
 }

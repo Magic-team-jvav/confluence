@@ -14,8 +14,8 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.client.gui.widget.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulQuickSkillHudHolder;
+import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
+import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
@@ -34,10 +34,8 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     private static final float INNER_RADIUS = 20.0f;                // 轮盘内半径
 
     // 颜色配置
-    private static final Color DEFAULT_COLOR = new Color(10, 8, 3);
-    private static final float DEFAULT_ALPHA = 0.5f;
-    private static final Color HIGHLIGHT_COLOR = new Color(46, 240, 211);
-    private static final float HIGHLIGHT_ALPHA = 0.7f;
+    private static final ColorData DEFAULT_COLOR_DATA = new ColorData(10, 8, 3, 127);
+    private static final ColorData HIGHLIGHT_COLOR_DATA = new ColorData(46, 240, 211, 178);
 
     /**
      * 当前选中的技能索引（-1表示未选择）
@@ -88,7 +86,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         }
 
         if (wheelSelection >= 0) {
-            hudHolder.setCurrentIndex(wheelSelection);
+            soulSkillHolder.setCurrentIndex(wheelSelection);
         }
 
         mouseHandler.grabMouse();
@@ -96,7 +94,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
 
     @Override
     public void update() {
-        int skillTotalNumber = hudHolder.getSkillTotalNumber();
+        int skillTotalNumber = soulSkillHolder.getEquippedSkillMaxNumber();
 
         if (skillTotalNumber <= 0) {
             boxList.clear();
@@ -119,13 +117,13 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         }
 
         for (int i = 0; i < skillTotalNumber; i++) {
-            boxList.get(i).setSkill(hudHolder.getSkillStackList().get(i));
+            boxList.get(i).setSkill(soulSkillHolder.getCurrentSkillStack(i));
         }
     }
 
     @Override
-    public SoulQuickSkillHudHolder.Type getType() {
-        return SoulQuickSkillHudHolder.Type.ROULETTE_WHEEL_BIG;
+    public SoulSkillClientHolder.Type getType() {
+        return SoulSkillClientHolder.Type.ROULETTE_WHEEL_BIG;
     }
 
     @Override
@@ -151,7 +149,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     private void draw(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Font font = getFont();
         Vec2 screenCenter = getScreenCenter();
-        int skillTotalNumber = hudHolder.getSkillTotalNumber();
+        int skillTotalNumber = soulSkillHolder.getEquippedSkillMaxNumber();
 
         if (skillTotalNumber <= 0) {
             return;
@@ -161,10 +159,6 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         float outerRadius = OUTER_RADIUS;
         float innerRadius = INNER_RADIUS;
         float middleRadius = innerRadius + (outerRadius - innerRadius) / 2;
-
-        // 创建颜色数据
-        ColorData defaultColor = new ColorData(DEFAULT_COLOR, DEFAULT_ALPHA);
-        ColorData highlightColor = new ColorData(HIGHLIGHT_COLOR, HIGHLIGHT_ALPHA);
 
         // 计算角度参数
         WheelAngleParams angleParams = calculateWheelAngles(skillTotalNumber);
@@ -181,9 +175,9 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
 
         // 绘制轮盘扇形和技能框
         drawWheelSegments(guiGraphics, poseStack, font, skillTotalNumber, outerRadius,
-                innerRadius, angleParams, defaultColor, highlightColor, startAngleOffset);
+                innerRadius, angleParams, DEFAULT_COLOR_DATA, HIGHLIGHT_COLOR_DATA, startAngleOffset);
         drawSkillBoxes(guiGraphics, poseStack, font, middleRadius, angleParams.radiansPerSkill(),
-                deltaTracker, highlightColor, startAngleOffset);
+                deltaTracker, HIGHLIGHT_COLOR_DATA, startAngleOffset);
 
         renderCurrentSelectedSkillBox(guiGraphics, poseStack, mousePos, deltaTracker);
 
@@ -354,7 +348,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     private void renderCurrentSelectedSkillBox(GuiGraphics guiGraphics, PoseStack poseStack,
                                                Vec2 mousePos, DeltaTracker deltaTracker) {
         poseStack.pushPose();
-        int currentIndex = hudHolder.getCurrentIndex();
+        int currentIndex = soulSkillHolder.getCurrentIndex();
         if (boxList.size() > currentIndex) {
             SoulSkillBox soulSkillBox = boxList.get(currentIndex);
             if (soulSkillBox != null) {
@@ -380,7 +374,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         if (tooltip != null) {
             charSequence = tooltip.toCharSequence(getMinecraft());
         } else {
-            charSequence = SoulSkillBox.DEFAULT_CHAR_SEQUENCE;
+            charSequence = List.of();
         }
 
         guiGraphics.renderTooltip(font, charSequence, (int) getMouseX(), (int) getMouseY());
@@ -488,17 +482,6 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     /**
      * 颜色数据类
      */
-    private static class ColorData {
-        final int red;
-        final int green;
-        final int blue;
-        final int alpha;
-
-        ColorData(Color color, float alphaFactor) {
-            this.red = color.getRed();
-            this.green = color.getGreen();
-            this.blue = color.getBlue();
-            this.alpha = (int) (alphaFactor * 255);
-        }
+    private record ColorData(int red, int green, int blue, int alpha) {
     }
 }

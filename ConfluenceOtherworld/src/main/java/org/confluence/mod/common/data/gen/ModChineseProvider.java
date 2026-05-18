@@ -1561,6 +1561,30 @@ public class ModChineseProvider extends LanguageProvider {
         add("mural.dungeon.ebony_mural", "腐堕巨蠕");
         add("mural.dungeon.crimson_mural", "精神撕裂");
 
+        // 灵魂技能
+        add("confluence.soul_skill.soul_surge.name", "附魂激荡");
+        add("confluence.soul_skill.soul_mark.name", "附魂印记");
+        add("confluence.soul_skill.star_call.name", "魂引天星");
+        add("confluence.soul_skill.spirit_surge.name", "灵魂激荡");
+        add("confluence.soul_skill.surge_blast.name", "灵魂激荡冲击");
+        add("confluence.soul_skill.soul_drain.name", "灵魂透支");
+        add("confluence.soul_skill.spirit_trigger.name", "灵魂引发");
+        add("confluence.soul_skill.soul_plunder.name", "掠夺之魄");
+        add("confluence.soul_skill.confuse_spores.name", "迷魂孢雾");
+        add("confluence.soul_skill.karma_flame.name", "灭却业火");
+        add("confluence.soul_skill.enhanced_soul.name", "强力附魂");
+        add("confluence.soul_skill.empowered_surge.name", "强力激荡");
+        add("confluence.soul_skill.enhanced_lure.name", "强力引魂");
+        add("confluence.soul_skill.profane_soul.name", "亵渎之魂");
+        add("confluence.soul_skill.star_link.name", "星魂联结");
+        add("confluence.soul_skill.star_reversal.name", "星魂逆转");
+        add("confluence.soul_skill.blood_rage.name", "血怒");
+        add("confluence.soul_skill.boiling_blood.name", "血液沸腾");
+        add("confluence.soul_skill.soul_lure.name", "引魂");
+        add("confluence.soul_skill.lure_surge.name", "引魂激荡");
+        add("confluence.soul_skill.law_of_nature.name", "自然法则");
+        add("confluence.soul_skill.nature_wrath.name", "自然之惩戒");
+
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");

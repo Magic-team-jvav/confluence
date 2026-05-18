@@ -1527,6 +1527,30 @@ public class ModEnglishProvider extends LanguageProvider {
         add("mural.dungeon.ebony_mural", "Corrosive Worm");
         add("mural.dungeon.crimson_mural", "Mind Rend");
 
+        // Soul Skill
+        add("confluence.soul_skill.soul_surge.name", "Soul Surge");
+        add("confluence.soul_skill.soul_mark.name", "Soul Mark");
+        add("confluence.soul_skill.star_call.name", "Star Call");
+        add("confluence.soul_skill.spirit_surge.name", "Spirit Surge");
+        add("confluence.soul_skill.surge_blast.name", "Surge Blast");
+        add("confluence.soul_skill.soul_drain.name", "Soul Drain");
+        add("confluence.soul_skill.spirit_trigger.name", "Spirit Trigger");
+        add("confluence.soul_skill.soul_plunder.name", "Soul Plunder");
+        add("confluence.soul_skill.confuse_spores.name", "Confuse Spores");
+        add("confluence.soul_skill.karma_flame.name", "Karma Flame");
+        add("confluence.soul_skill.enhanced_soul.name", "Enhanced Soul");
+        add("confluence.soul_skill.empowered_surge.name", "Empowered Surge");
+        add("confluence.soul_skill.enhanced_lure.name", "Enhanced Lure");
+        add("confluence.soul_skill.profane_soul.name", "Profane Soul");
+        add("confluence.soul_skill.star_link.name", "Star Link");
+        add("confluence.soul_skill.star_reversal.name", "Star Reversal");
+        add("confluence.soul_skill.blood_rage.name", "Blood Rage");
+        add("confluence.soul_skill.boiling_blood.name", "Boiling Blood");
+        add("confluence.soul_skill.soul_lure.name", "Soul Lure");
+        add("confluence.soul_skill.lure_surge.name", "Lure Surge");
+        add("confluence.soul_skill.law_of_nature.name", "Law of Nature");
+        add("confluence.soul_skill.natures_wrath.name", "Nature's Wrath");
+
         addAll(ChestBlocks.BLOCKS);
         addAll(CrateBlocks.BLOCKS);
         addAll(DecorativeBlocks.BLOCKS);

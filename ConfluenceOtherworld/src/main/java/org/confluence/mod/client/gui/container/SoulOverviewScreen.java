@@ -387,7 +387,7 @@ public class SoulOverviewScreen extends Screen {
         int centerY = (int) (this.height * 0.5);
 
         drawLivingTree(guiGraphics, centerX, centerY, time);
-        renderBackgroundDots(guiGraphics, centerX, centerY, 1000, 1500, 1, 3, (float) this.scrollX, (float) this.scrollY, 0.3F, 1.0F, 0xFFFFFFFF);
+        renderBackgroundDots(guiGraphics, centerX, centerY, 1000, 1500, 1, 3, (float) this.scrollX, (float) this.scrollY, 0.1F, 1.0F, 0xFFFFFFFF);
         drawMagic(guiGraphics, centerX, centerY, time);
         tickScrollAnimation(partialTick);
         renderConnections(guiGraphics, partialTick);

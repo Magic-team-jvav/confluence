@@ -43,13 +43,13 @@ import java.util.function.Supplier;
 public class SoulOverviewScreen extends Screen {
     private static final SoulSkillClientHolder HOLDER = SoulSkillClientHolder.INSTANCE;
 
-    private NormalNoise backgroundNoise;
+    private final NormalNoise backgroundNoise;
     /* 组件 */
     public final HotbarWidget hotbar;
     public final List<OverviewNode> nodes;
     public final Map<ResourceLocation, OverviewNode> nodeById = new HashMap<>();
     public final List<NavTab> navTabs = new ArrayList<>();
-    private CenterButton centerButton;
+    private final CenterButton centerButton;
 
     /* 视口状态 */
     public double scrollX, scrollY;
@@ -75,6 +75,54 @@ public class SoulOverviewScreen extends Screen {
         backgroundNoise = NormalNoise.create(RandomSource.create(12345L), -5, 1.0, 1.0, 1.0, 1.0);
 
         initSkillsFromRegistry();
+    }
+
+    private record CachedDot(
+            float baseX, float baseY,
+            float rotationRad,
+            float halfSize,
+            float r, float g, float b, float a,
+            float offsetFactor) {
+    }
+
+    private List<CachedDot> cachedDots;
+
+    private void buildDotCache(int count, float radius, float minSize, float maxSize, int color, float minOffsetFactor, float maxOffsetFactor) {
+        if (cachedDots != null) return;
+        cachedDots = new ArrayList<>(count);
+
+        float r = ((color >> 16) & 0xFF) / 255.0f;
+        float g = ((color >> 8) & 0xFF) / 255.0f;
+        float b = (color & 0xFF) / 255.0f;
+
+        for (int i = 0; i < count; i++) {
+            long seed = (long) i * 73856093L ^ (long) i * 19349663L;
+            seed = (seed ^ (seed >> 13)) * 1274126177L;
+            seed = seed ^ (seed >> 16);
+
+            float r1 = ((seed & 0xFFFF) / 65535.0f);
+            float r2 = (((seed >> 16) & 0xFFFF) / 65535.0f);
+            float r3 = (((seed >> 32) & 0xFFFF) / 65535.0f);
+            float r4 = (((seed >> 48) & 0xFFFF) / 65535.0f);
+
+            long rotSeed = seed * 4121539L;
+            float r5 = ((rotSeed & 0xFFFF) / 65535.0f);
+            float rotation = r5 * 2.0f * (float) Math.PI;
+
+            float distance = radius * (float) Math.sqrt(r1);
+            float angle = r2 * 2.0f * (float) Math.PI;
+            float baseX = distance * (float) Math.cos(angle);
+            float baseY = distance * (float) Math.sin(angle);
+
+            float size = minSize + r3 * (maxSize - minSize);
+            float halfSize = size / 2.0f;
+
+            float a = ((rotSeed >> 16 & 0xFFFF) / 65535.0f);
+
+            float pointOffsetFactor = minOffsetFactor + r4 * (maxOffsetFactor - minOffsetFactor);
+
+            cachedDots.add(new CachedDot(baseX, baseY, rotation, halfSize, r, g, b, a, pointOffsetFactor));
+        }
     }
 
     // ============ 初始化 ============
@@ -339,7 +387,7 @@ public class SoulOverviewScreen extends Screen {
         int centerY = (int) (this.height * 0.5);
 
         drawLivingTree(guiGraphics, centerX, centerY, time);
-        renderBackgroundDots(guiGraphics, centerX, centerY, 300, 150, 1, 3, (float) this.scrollX, (float) this.scrollY, 0.3F, 1.0F, 0xFFFFFFFF);
+        renderBackgroundDots(guiGraphics, centerX, centerY, 1000, 1500, 1, 3, (float) this.scrollX, (float) this.scrollY, 0.3F, 1.0F, 0xFFFFFFFF);
         drawMagic(guiGraphics, centerX, centerY, time);
         tickScrollAnimation(partialTick);
         renderConnections(guiGraphics, partialTick);
@@ -361,7 +409,8 @@ public class SoulOverviewScreen extends Screen {
         final float rotateFactor2 = Mth.sin(time * 0.005f) * 0.5f + 0.5f;
         final float trueRotate2 = 360 * rotateFactor2;
 
-        final float side = 350F;
+        final float virtualTotalWidth = (float) (this.width - this.minScrollX + this.maxScrollX);
+        final float side = virtualTotalWidth * 0.5f;
         final float rotate2 = (float) Math.toRadians(trueRotate1) - rotate;
         final float rotate3 = (float) Math.toRadians(trueRotate2) - rotate;
         final float r360 = Mth.PI * 2;
@@ -585,58 +634,36 @@ public class SoulOverviewScreen extends Screen {
                                       int count, float minSize, float maxSize,
                                       float maxOffsetX, float maxOffsetY,
                                       float minOffsetFactor, float maxOffsetFactor, int color) {
-        float r = ((color >> 16) & 0xFF) / 255.0f;
-        float g = ((color >> 8) & 0xFF) / 255.0f;
-        float b = (color & 0xFF) / 255.0f;
+
+        buildDotCache(count, radius, minSize, maxSize, color, minOffsetFactor, maxOffsetFactor); // 确保缓存已建立
 
         VertexConsumer buffer = guiGraphics.bufferSource().getBuffer(RenderType.gui());
+        PoseStack.Pose pose = guiGraphics.pose().last();
 
-        for (int i = 0; i < count; i++) {
-            long seed = (long) i * 73856093L ^ (long) i * 19349663L;
-            seed = (seed ^ (seed >> 13)) * 1274126177L;
-            seed = seed ^ (seed >> 16);
+        for (CachedDot dot : cachedDots) {
+            float distFactor = dot.offsetFactor;
+            float pointOffsetFactor = minOffsetFactor + distFactor * (maxOffsetFactor - minOffsetFactor);
 
-            float r1 = ((seed & 0xFFFF) / 65535.0f);
-            float r2 = (((seed >> 16) & 0xFFFF) / 65535.0f);
-            float r3 = (((seed >> 32) & 0xFFFF) / 65535.0f);
-            float r4 = (((seed >> 48) & 0xFFFF) / 65535.0f);
+            float drawX = centerX + dot.baseX + maxOffsetX * pointOffsetFactor;
+            float drawY = centerY + dot.baseY + maxOffsetY * pointOffsetFactor;
 
-            long rotSeed = seed * 4121539L;
-            float r5 = ((rotSeed & 0xFFFF) / 65535.0f);
-            float rotation = r5 * 2.0f * (float) Math.PI;
+            float cos = (float) Math.cos(dot.rotationRad);
+            float sin = (float) Math.sin(dot.rotationRad);
+            float hs = dot.halfSize;
 
-            float distance = radius * (float) Math.sqrt(r1);
-            float angle = r2 * 2.0f * (float) Math.PI;
+            float px1 = drawX + (-hs * cos - hs * sin);
+            float py1 = drawY + (-hs * sin + hs * cos);
+            float px2 = drawX + (hs * cos - hs * sin);
+            float py2 = drawY + (hs * sin + hs * cos);
+            float px3 = drawX + (hs * cos - (-hs) * sin);
+            float py3 = drawY + (hs * sin + (-hs) * cos);
+            float px4 = drawX + (-hs * cos - (-hs) * sin);
+            float py4 = drawY + (-hs * sin + (-hs) * cos);
 
-            float baseX = centerX + distance * (float) Math.cos(angle);
-            float baseY = centerY + distance * (float) Math.sin(angle);
-
-            float pointOffsetFactor = minOffsetFactor + r4 * (maxOffsetFactor - minOffsetFactor);
-            float actualMaxOffsetX = maxOffsetX * pointOffsetFactor;
-            float actualMaxOffsetY = maxOffsetY * pointOffsetFactor;
-
-            float drawX = baseX + actualMaxOffsetX;
-            float drawY = baseY + actualMaxOffsetY;
-
-            float size = minSize + r3 * (maxSize - minSize);
-            float halfSize = size / 2.0f;
-
-            guiGraphics.pose().pushPose();
-
-            guiGraphics.pose().translate(drawX, drawY, 0);
-
-            guiGraphics.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees((float) Math.toDegrees(rotation)));
-
-            PoseStack.Pose pose = guiGraphics.pose().last();
-
-            float a = ((rotSeed >> 16 & 0xFFFF) / 65535.0f);
-
-            buffer.addVertex(pose.pose(), -halfSize,  halfSize, 0).setColor(r, g, b, a);
-            buffer.addVertex(pose.pose(),  halfSize,  halfSize, 0).setColor(r, g, b, a);
-            buffer.addVertex(pose.pose(),  halfSize, -halfSize, 0).setColor(r, g, b, a);
-            buffer.addVertex(pose.pose(), -halfSize, -halfSize, 0).setColor(r, g, b, a);
-
-            guiGraphics.pose().popPose();
+            buffer.addVertex(pose.pose(), px1, py1, 0).setColor(dot.r, dot.g, dot.b, dot.a);
+            buffer.addVertex(pose.pose(), px2, py2, 0).setColor(dot.r, dot.g, dot.b, dot.a);
+            buffer.addVertex(pose.pose(), px3, py3, 0).setColor(dot.r, dot.g, dot.b, dot.a);
+            buffer.addVertex(pose.pose(), px4, py4, 0).setColor(dot.r, dot.g, dot.b, dot.a);
         }
 
         guiGraphics.bufferSource().endBatch(RenderType.gui());
@@ -705,7 +732,16 @@ public class SoulOverviewScreen extends Screen {
         int safeScreenRight = screenW + 10;
         int safeScreenBottom = screenH + 10;
 
-        for (int cycle = -2; cycle <= 2; cycle++) {
+        int cyclesOnLine = (int) Math.ceil(totalWidth / cycleWidth);
+
+        int bufferCycles = 2;
+
+        int preCycles = (int) Math.ceil(baseOffset / cycleWidth) + bufferCycles;
+
+        int totalCycles = preCycles + cyclesOnLine + bufferCycles;
+
+        for (int cycle = -preCycles; cycle < (totalCycles - preCycles); cycle++) {
+
             float charX = (isLeftToRight ? (baseOffset + cycle * cycleWidth) : (-baseOffset + cycle * cycleWidth)) / scale;
 
             for (int i = 0; i < text.length(); i++) {

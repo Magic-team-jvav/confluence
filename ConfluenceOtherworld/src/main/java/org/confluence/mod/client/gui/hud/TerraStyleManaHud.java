@@ -7,7 +7,7 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import org.confluence.lib.util.LibClientUtils;
+import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.handler.ClientPacketHandler;
@@ -26,8 +26,8 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !LibClientUtils.shouldDrawSurvivalElements(minecraft)) return;
-        LibClientUtils.setupOverlayRenderState(true, false);
+        if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft)) return;
+        LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
         ClientConfigs.manaStyle.render(guiGraphics, minecraft);

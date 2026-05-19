@@ -17,7 +17,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
-import org.confluence.lib.util.NaturalSpawnerUtil;
+import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.lib.util.function.ints.ToIntFunction4;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
@@ -109,14 +109,14 @@ public class SpaceSpawner implements CustomSpawner {
         if (nextTick > 0) return 0;
         this.nextTick = nextTick + (5 + random.nextInt(5)) * 20;
 
-        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) return 0;
 
         int count = 0;
         for (ServerPlayer player : level.players()) {
             if (player.isSpectator() || player.getY() < OverworldUtils.getSpaceY()) continue;
             BlockPos pos = player.blockPosition();
-            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             for (int i = 0; i < 4; i++) {
                 Optional<Pair> optional = spawnerData.getRandom(random);
                 if (optional.isPresent()) {
@@ -135,7 +135,7 @@ public class SpaceSpawner implements CustomSpawner {
 
     private record Pair(
             MobSpawnSettings.SpawnerData data,
-            ToIntFunction4<ServerLevel, BlockPos, NaturalSpawnerUtil.ChunkSpawnData, MobSpawnSettings.SpawnerData> function
+            ToIntFunction4<ServerLevel, BlockPos, NaturalSpawnerUtils.ChunkSpawnData, MobSpawnSettings.SpawnerData> function
     ) implements WeightedEntry {
         @Override
         public Weight getWeight() {

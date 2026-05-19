@@ -8,8 +8,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.BlockPos;
-import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +24,7 @@ public abstract class ModelBlockRendererMixin {
         if (color == BrushData.EMPTY_COLOR || color == BrushData.ECHO_COLOR) {
             original.call(instance, pose, quad, brightness, red, green, blue, alpha, lightmap, packedOverlay, readAlpha);
         } else if (color == BrushData.ILLUMINANT_COLOR) {
-            original.call(instance, pose, quad, brightness, red, green, blue, alpha, LibClientUtils.FULL_BRIGHT, packedOverlay, readAlpha);
+            original.call(instance, pose, quad, brightness, red, green, blue, alpha, LibRenderUtils.FULL_BRIGHT, packedOverlay, readAlpha);
         } else if (color == BrushData.NEGATIVE_COLOR) {
             if (red != 1.0F || green != 1.0F || blue != 1.0F) {
                 original.call(instance, pose, quad, brightness, 1.0F - red, 1.0F - green, 1.0F - blue, alpha, lightmap, packedOverlay, readAlpha);

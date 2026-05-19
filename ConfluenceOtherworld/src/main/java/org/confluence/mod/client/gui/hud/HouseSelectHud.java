@@ -16,6 +16,7 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,12 +28,14 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.border.WorldBorder;
 import net.minecraft.world.phys.BlockHitResult;
+import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.GuiSprite;
 import org.confluence.mod.network.c2s.HouseSelectPacketC2S;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
 import org.confluence.terraentity.entity.npc.house.IHouseDetector;
+import org.jetbrains.annotations.Nullable;
 
 public class HouseSelectHud implements LayeredDraw.Layer {
     private static final GuiSprite crosshair = new GuiSprite(Confluence.asResource("hud/house_select/crosshair"), 15, 15);
@@ -181,19 +184,38 @@ public class HouseSelectHud implements LayeredDraw.Layer {
     public static void renderRegionInWorld(Minecraft minecraft) {
         if (!inSelectHUD) return;
         Camera camera = minecraft.gameRenderer.getMainCamera();
-        RenderSystem.enableBlend();
-        RenderSystem.enableDepthTest();
+        boolean isBlendDisabled = !LibRenderUtils.isBlendEnabled();
+        if (isBlendDisabled) {
+            RenderSystem.enableBlend();
+        }
+        boolean isDepthTestDisabled = !LibRenderUtils.isDepthTestEnabled();
+        if (isDepthTestDisabled) {
+            RenderSystem.enableDepthTest();
+        }
+        int[] blendFunc = LibRenderUtils.getBlendFunc();
         RenderSystem.blendFuncSeparate(
                 GlStateManager.SourceFactor.SRC_ALPHA,
                 GlStateManager.DestFactor.ONE,
                 GlStateManager.SourceFactor.ONE,
                 GlStateManager.DestFactor.ZERO
         );
-        RenderSystem.depthMask(Minecraft.useShaderTransparency());
+        boolean depthMask = Minecraft.useShaderTransparency();
+        boolean currentDepthMask = LibRenderUtils.getCurrentDepthMask();
+        if (currentDepthMask != depthMask) {
+            RenderSystem.depthMask(depthMask);
+        }
+        @Nullable ShaderInstance shader = RenderSystem.getShader();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        float[] polygonOffset = LibRenderUtils.getPolygonOffset();
         RenderSystem.polygonOffset(-3.0F, -3.0F);
-        RenderSystem.enablePolygonOffset();
-        RenderSystem.disableCull();
+        boolean isPolygonOffsetDisabled = !LibRenderUtils.isPolygonOffsetEnabled();
+        if (isPolygonOffsetDisabled) {
+            RenderSystem.enablePolygonOffset();
+        }
+        boolean cullEnabled = LibRenderUtils.isCullEnabled();
+        if (cullEnabled) {
+            RenderSystem.disableCull();
+        }
         BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         float x = (float) camera.getPosition().x;
         float z = (float) camera.getPosition().z;
@@ -233,12 +255,26 @@ public class HouseSelectHud implements LayeredDraw.Layer {
             BufferUploader.drawWithShader(meshdata);
         }
 
-        RenderSystem.enableCull();
-        RenderSystem.polygonOffset(0.0F, 0.0F);
-        RenderSystem.disablePolygonOffset();
-        RenderSystem.disableBlend();
-        RenderSystem.defaultBlendFunc();
+        if (cullEnabled) {
+            RenderSystem.enableCull();
+        }
+        RenderSystem.polygonOffset(polygonOffset[0], polygonOffset[1]);
+        if (isPolygonOffsetDisabled) {
+            RenderSystem.disablePolygonOffset();
+        }
+        if (isBlendDisabled) {
+            RenderSystem.disableBlend();
+        }
+        RenderSystem.blendFuncSeparate(blendFunc[0], blendFunc[1], blendFunc[2], blendFunc[3]);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.depthMask(true);
+        if (isDepthTestDisabled) {
+            RenderSystem.disableDepthTest();
+        }
+        if (currentDepthMask != depthMask) {
+            RenderSystem.depthMask(currentDepthMask);
+        }
+        if (shader != null) {
+            RenderSystem.setShader(() -> shader);
+        }
     }
 }

@@ -18,7 +18,7 @@ import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.NaturalSpawnerUtil;
+import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -45,7 +45,7 @@ public enum MeteorShowerGameEvent implements GameEvent {
 
     public final CustomSpawner spawner = (level, spawnEnemies, spawnFriendlies) -> {
         if (!started || !spawnFriendlies) return 0;
-        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
             forceEnd();
             return 0;
@@ -58,7 +58,7 @@ public enum MeteorShowerGameEvent implements GameEvent {
         ServerChunkCache chunkCache = level.getChunkSource();
         int last = spawned.size();
         for (ServerPlayer player : players) {
-            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
             if (speed <= 0) continue;
             int interval = Mth.floor(20 * CommonConfigs.METEOR_SHOWER_EVENT_SPAWN_ENCHANTED_NIGHTCRAWLERS_INTERVAL_FACTOR.get() / speed);

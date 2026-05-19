@@ -22,7 +22,7 @@ import net.neoforged.fml.ModLoader;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.NaturalSpawnerUtil;
+import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.CustomGameEventRegisterEvent;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -215,7 +215,7 @@ public enum GameEventSystem implements IGlobalData {
             String entityTag,
             boolean setTarget
     ) {
-        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
             event.forceEnd();
             return 0;
@@ -225,7 +225,7 @@ public enum GameEventSystem implements IGlobalData {
         if (spawned.size() >= base + players.size() * perPlayer) return 0;
         int last = spawned.size();
         for (ServerPlayer player : players) {
-            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
             if (speed <= 0) continue;
             int interval = Mth.floor(20 * intervalFactor / speed);

@@ -24,7 +24,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.NaturalSpawnerUtil;
+import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -93,7 +93,7 @@ public enum SlimeRainGameEvent implements GameEvent {
         if (duration % 20 == 4) {
             this.haveKingSlime = Streams.of(level.getAllEntities()).anyMatch(entity -> entity.getType() == TEBossEntities.KING_SLIME.get());
         }
-        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
             forceEnd();
             return;
@@ -106,7 +106,7 @@ public enum SlimeRainGameEvent implements GameEvent {
         for (ServerPlayer player : players) {
             Vec3 position = player.position();
             double y = position.y + 64;
-            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
             if (speed <= 0) continue;
             int interval = Mth.floor(20 * CommonConfigs.SLIME_RAIN_EVENT_SPAWN_INTERVAL_FACTOR.get() / speed);

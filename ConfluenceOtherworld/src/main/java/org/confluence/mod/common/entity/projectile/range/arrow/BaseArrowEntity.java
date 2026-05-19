@@ -26,7 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.EnchantmentUtil;
+import org.confluence.lib.util.EnchantmentUtils;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
@@ -192,7 +192,7 @@ public class BaseArrowEntity extends AbstractArrow {
         if (this.getWeaponItem() != null) {
             Level var9 = this.level();
             if (var9 instanceof ServerLevel) {
-                int value = EnchantmentUtil.getEnchantmentLevel(Enchantments.POWER, this.getWeaponItem());
+                int value = EnchantmentUtils.getEnchantmentLevel(Enchantments.POWER, this.getWeaponItem());
                 d0 *= (value * 0.1f + 1.0f);
             }
         }

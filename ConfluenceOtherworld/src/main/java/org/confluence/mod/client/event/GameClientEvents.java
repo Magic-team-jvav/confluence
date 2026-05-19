@@ -239,7 +239,7 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
-    public static void input$MouseScrollingEvent(InputEvent.MouseScrollingEvent event) {
+    public static void input$MouseScrolling(InputEvent.MouseScrollingEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         double mouseX = event.getMouseX();

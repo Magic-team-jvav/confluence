@@ -543,7 +543,7 @@ public class SoulOverviewScreen extends Screen {
         drawSmoothGlowingArc(guiGraphics, centerX + treeScale * (treeOffsetX), centerY + treeScale * (treeOffsetY), pointRadius, 0f, r360, rollThickness, 5f, treeLineColor, treeLightInnerColor, treeLightOuterColor, 48);
         drawTextOnArc(guiGraphics, "T I P H E R E T H", centerX + treeScale * (treeOffsetX), centerY + treeScale * (treeOffsetY), pointRadius, Mth.PI, treeLineColor, false, font);
         drawSmoothGlowingArc(guiGraphics, centerX + treeScale * (treeOffsetX), centerY + treeScale * (treeOffsetY + 150), pointRadius, 0f, r360, rollThickness, 5f, treeLineColor, treeLightInnerColor, treeLightOuterColor, 48);
-        drawTextOnArc(guiGraphics, "T E S O D", centerX + treeScale * (treeOffsetX), centerY + treeScale * (treeOffsetY + 150), pointRadius, Mth.PI, treeLineColor, false, font);
+        drawTextOnArc(guiGraphics, "Y E S O D", centerX + treeScale * (treeOffsetX), centerY + treeScale * (treeOffsetY + 150), pointRadius, Mth.PI, treeLineColor, false, font);
         drawSmoothGlowingArc(guiGraphics, centerX + treeScale * (treeOffsetX), centerY + treeScale * (treeOffsetY + 300), pointRadius, 0f, r360, rollThickness, 5f, treeLineColor, treeLightInnerColor, treeLightOuterColor, 48);
         drawTextOnArc(guiGraphics, "M A L K U T H", centerX + treeScale * (treeOffsetX), centerY + treeScale * (treeOffsetY + 300), pointRadius, Mth.PI, treeLineColor, false, font);
         drawSmoothGlowingArc(guiGraphics, centerX + treeScale * (treeOffsetX - 130), centerY + treeScale * (treeOffsetY + 75), pointRadius, 0f, r360, rollThickness, 5f, treeLineColor, treeLightInnerColor, treeLightOuterColor, 48);

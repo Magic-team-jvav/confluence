@@ -20,6 +20,7 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> FALLING_STAR = register("falling_star");
     public static final ResourceKey<DamageType> MAGICAL_PROJECTILE = register("magical_projectile");
     public static final ResourceKey<DamageType> SWORD_PROJECTILE = register("sword_projectile");
+    public static final ResourceKey<DamageType> SPEAR_PROJECTILE = register("spear_projectile");
 
     private static ResourceKey<DamageType> register(String id) {
         return Confluence.asResourceKey(Registries.DAMAGE_TYPE, id);
@@ -46,6 +47,7 @@ public final class ModDamageTypes {
         damageType(context, FALLING_STAR, DamageScaling.ALWAYS, 10);
         damageType(context, MAGICAL_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
         damageType(context, SWORD_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
+        damageType(context, SPEAR_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
     }
 
     private static void damageType(BootstrapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion, DamageEffects effects, DeathMessageType deathMessageType) {

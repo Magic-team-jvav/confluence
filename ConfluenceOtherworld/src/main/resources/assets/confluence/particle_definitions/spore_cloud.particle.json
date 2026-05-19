@@ -4,7 +4,7 @@
 		"description": {
 			"identifier": "confluence:spore_cloud",
 			"basic_render_parameters": {
-				"material": "particles_alpha",
+				"material": "particles_blend",
 				"texture": "confluence:spore_cloud"
 			}
 		},
@@ -22,24 +22,37 @@
 				"rotation": false
 			},
 			"minecraft:emitter_rate_steady": {
-				"spawn_rate": 7,
-				"max_particles": 120
+				"spawn_rate": 60,
+				"max_particles": 60
 			},
 			"minecraft:emitter_lifetime_expression": {},
-			"minecraft:emitter_shape_point": {
-				"offset": ["math.lerp(query.attached_xo, query.attached_x, variable.particle_random_1)-query.attached_xo", "math.lerp(query.attached_yo, query.attached_y, variable.particle_random_1)-query.attached_yo", "math.lerp(query.attached_zo, query.attached_z, variable.particle_random_1)-query.attached_zo"]
+			"minecraft:emitter_shape_sphere": {
+				"radius": 1,
+				"direction": "outwards"
+			},
+			"minecraft:particle_initialization": {
+				"per_render_expression": "variable.alpha=1-variable.particle_age/variable.particle_lifetime;"
 			},
 			"minecraft:particle_lifetime_expression": {
-				"max_lifetime": 0.2
+				"max_lifetime": 0.5
 			},
 			"minecraft:particle_initial_spin": {
 				"rotation": "math.random(-180, 180)"
 			},
 			"minecraft:particle_initial_speed": 1.5,
-			"minecraft:particle_motion_dynamic": {},
+			"minecraft:particle_motion_dynamic": {
+				"linear_drag_coefficient": 4
+			},
 			"minecraft:particle_appearance_billboard": {
 				"size": ["variable.size", "variable.size"],
 				"facing_camera_mode": "rotate_xyz"
+			},
+			"minecraft:particle_motion_collision": {
+				"collision_drag": 0.4,
+				"collision_radius": 0.2
+			},
+			"minecraft:particle_appearance_tinting": {
+				"color": [1, 1, 1, "variable.alpha"]
 			}
 		}
 	}

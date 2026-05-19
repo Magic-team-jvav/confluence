@@ -6,10 +6,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.entity.projectile.StormSpearShotProjectile;
+import org.confluence.mod.common.component.SpearProjectileComponent;
+import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.common.init.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
 
@@ -35,12 +35,22 @@ public class StormSpearItem extends AbstractSpearItem {
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
-            Vec3 viewVector = owner.getViewVector(1.0F);
-            StormSpearShotProjectile projectile = new StormSpearShotProjectile(ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), level);
-            projectile.setPos(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
-            projectile.setDamage((float) owner.getAttributeValue(LibAttributes.getAttackDamage()) * 1.6F);
-            projectile.shoot(viewVector.x, viewVector.y, viewVector.z, 1.92F, 0);
+            SpearProjectileComponent component = SpearProjectileComponent.STORM_SPEAR_PROJ.get();
+            StormSpearProjectile projectile = new StormSpearProjectile(
+                    ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), level);
+
             projectile.setOwner(owner);
+            projectile.setWeapon(owner.getMainHandItem());
+            // setProjComponent 自动从 owner 获取基础攻击伤害
+            projectile.setProjComponent(component, owner);
+
+            // 初始位置：矛尖与玩家之间约1/3处
+            Vec3 spawnPos = owner.getEyePosition().add(tipPos.subtract(owner.getEyePosition()).scale(0.33));
+            projectile.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+
+            // 发射：设置方向、速度、击退，自动同步客户端
+            projectile.fire(owner.getLookAngle(), component.getVelocity(owner), (float) knockBackScale);
+
             level.addFreshEntity(projectile);
         }
     }

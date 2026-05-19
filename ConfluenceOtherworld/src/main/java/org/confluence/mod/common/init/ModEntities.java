@@ -23,6 +23,7 @@ import org.confluence.mod.common.entity.projectile.range.arrow.DriveAwayArrow;
 import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
+import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.integration.sable.SableHelper;
 
@@ -137,7 +138,8 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<FlameCloudEntity>> FLAME_CLOUD = ENTITIES.register("flame_cloud", id -> EntityType.Builder.<FlameCloudEntity>of(FlameCloudEntity::new, MobCategory.MISC).sized(5, 5).clientTrackingRange(6).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<SuperSpikyBallProjectile>> SUPER_SPIKY_BALL_PROJECTILE = ENTITIES.register("super_spiky_ball_projectile", id -> EntityType.Builder.<SuperSpikyBallProjectile>of(SuperSpikyBallProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<SpearEntity>> SPEAR = ENTITIES.register("spear", id -> EntityType.Builder.<SpearEntity>of(SpearEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));
-    public static final DeferredHolder<EntityType<?>, EntityType<StormSpearShotProjectile>> STORM_SPEAR_SHOT_PROJECTILE = ENTITIES.register("storm_spear_shot_projectile", id -> EntityType.Builder.of(StormSpearShotProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(6).fireImmune().build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<StormSpearProjectile>> STORM_SPEAR_SHOT_PROJECTILE = ENTITIES.register("storm_spear_shot_projectile", id -> EntityType.Builder.of(StormSpearProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(6).fireImmune().build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<SporeCloudProjectile>> SPORE_CLOUD_PROJECTILE = ENTITIES.register("spore_cloud_projectile", id -> EntityType.Builder.of(SporeCloudProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(64).updateInterval(1).build(id.toString()));
 
     // 鱼钩
     public static final DeferredHolder<EntityType<?>, EntityType<BaseFishingHook>> BASE_FISHING_HOOK = ENTITIES.register("base_fishing_hook", id -> EntityType.Builder.<BaseFishingHook>of(BaseFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build(id.toString()));

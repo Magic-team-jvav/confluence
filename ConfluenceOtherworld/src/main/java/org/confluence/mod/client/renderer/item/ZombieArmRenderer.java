@@ -38,8 +38,10 @@ public class ZombieArmRenderer {
             zombieModel.rightArm.visible = true;
         }
         if (player.getOffhandItem().is(SwordItems.ZOMBIE_ARM)) {
-            playerModel = playerRenderer.getModel();
-            zombieModel.setAllVisible(false);
+            if (playerModel == null) {
+                playerModel = playerRenderer.getModel();
+                zombieModel.setAllVisible(false);
+            }
             playerModel.leftArm.visible = false;
             playerModel.leftSleeve.visible = false;
             zombieModel.leftArm.visible = true;

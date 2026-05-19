@@ -65,7 +65,6 @@ import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
-import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
@@ -423,9 +422,14 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderArm(RenderArmEvent event) {
         AbstractClientPlayer player = event.getPlayer();
-        PlayerRenderer playerRenderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-        boolean b = ZombieArmRenderer.getInstance().renderHand(playerRenderer, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), player, event.getArm());
-        if (b) event.setCanceled(true);
+        if (ZombieArmRenderer.getInstance().renderHand(
+                (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player),
+                event.getPoseStack(),
+                event.getMultiBufferSource(),
+                event.getPackedLight(),
+                player,
+                event.getArm()
+        )) event.setCanceled(true);
     }
 
     @SubscribeEvent

@@ -1583,7 +1583,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.soul_skill.soul_lure.name", "引魂");
         add("confluence.soul_skill.lure_surge.name", "引魂激荡");
         add("confluence.soul_skill.law_of_nature.name", "自然法则");
-        add("confluence.soul_skill.nature_wrath.name", "自然之惩戒");
+        add("confluence.soul_skill.natures_wrath.name", "自然之惩戒");
 
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");

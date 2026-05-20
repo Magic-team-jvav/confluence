@@ -132,77 +132,91 @@ public class SoulOverviewScreen extends Screen {
             SoulSkill skill = supplier.get();
             HOLDER.addUnlockedSkill(skill);
         }
-
-        // 三列树状布局，坐标原点 = 屏幕中心
-        // 左列 — Soul 系
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_DRAIN)
-                .pos(-160, -160)
-                .connections(ModSoulSkills.SOUL_PLUNDER, ModSoulSkills.BLOOD_RAGE));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_PLUNDER)
-                .pos(-160, -80)
-                .connections(ModSoulSkills.ENHANCED_SOUL, ModSoulSkills.SOUL_DRAIN));
+        // 横向布局，中点开始，坐标原点 = 屏幕中心，左边为buff列技能树，右边为攻击列，坐标原点 = 屏幕中心，40为一段  -x为往左，正x往右，-y往上，正y往下
+// 按照时期排序，第一次献祭为boss前，第二次献祭为邪恶boss时
+// 左列 buff技能树
+        // 强力附魂
         addNode(OverviewNode.Builder.of(ModSoulSkills.ENHANCED_SOUL)
-                .pos(-160, 0)
-                .connections(ModSoulSkills.SOUL_MARK, ModSoulSkills.SOUL_PLUNDER));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_MARK)
-                .pos(-160, 80)
-                .connections(ModSoulSkills.PROFANE_SOUL, ModSoulSkills.ENHANCED_SOUL));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.PROFANE_SOUL)
-                .pos(-160, 160)
-                .connections(ModSoulSkills.SOUL_LURE, ModSoulSkills.SOUL_MARK));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_LURE)
-                .pos(-160, 240)
-                .connections(ModSoulSkills.SOUL_SURGE, ModSoulSkills.PROFANE_SOUL));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_SURGE)
-                .pos(-160, 320)
-                .connections(ModSoulSkills.LURE_SURGE, ModSoulSkills.SOUL_LURE));
-
-        // 中列 — Blood/Nature 系
-        addNode(OverviewNode.Builder.of(ModSoulSkills.BLOOD_RAGE).pos(0, -240));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.BOILING_BLOOD)
-                .pos(0, -160)
-                .connections(ModSoulSkills.CONFUSE_SPORES, ModSoulSkills.BLOOD_RAGE));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.CONFUSE_SPORES)
-                .pos(0, -80)
-                .connections(ModSoulSkills.KARMA_FLAME, ModSoulSkills.BOILING_BLOOD));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.KARMA_FLAME)
-                .pos(0, 0)
-                .connections(ModSoulSkills.LAW_OF_NATURE, ModSoulSkills.CONFUSE_SPORES));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.LAW_OF_NATURE)
-                .pos(0, 80)
-                .connections(ModSoulSkills.NATURES_WRATH, ModSoulSkills.KARMA_FLAME));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.NATURES_WRATH)
-                .pos(0, 160)
-                .connections(ModSoulSkills.SPIRIT_TRIGGER, ModSoulSkills.LAW_OF_NATURE));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SPIRIT_TRIGGER)
-                .pos(0, 240)
-                .connections(ModSoulSkills.SPIRIT_SURGE, ModSoulSkills.NATURES_WRATH));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SPIRIT_SURGE)
-                .pos(0, 320)
-                .connections(ModSoulSkills.EMPOWERED_SURGE, ModSoulSkills.SPIRIT_TRIGGER));
-
-        // 右列 — Star/Lure 系
-        addNode(OverviewNode.Builder.of(ModSoulSkills.ENHANCED_LURE)
-                .pos(160, -160)
-                .connections(ModSoulSkills.LURE_SURGE, ModSoulSkills.BLOOD_RAGE));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.LURE_SURGE)
-                .pos(160, -80)
-                .connections(ModSoulSkills.STAR_CALL, ModSoulSkills.ENHANCED_LURE));
+                .pos(-40, 0));
+        // 魂引天星
         addNode(OverviewNode.Builder.of(ModSoulSkills.STAR_CALL)
-                .pos(160, 0)
-                .connections(ModSoulSkills.STAR_LINK, ModSoulSkills.LURE_SURGE));
+                .pos(-80, -40)
+                .connections(ModSoulSkills.ENHANCED_SOUL));
+        // 血液沸腾
+        addNode(OverviewNode.Builder.of(ModSoulSkills.BOILING_BLOOD)
+                .pos(-80, 80)
+                .connections(ModSoulSkills.ENHANCED_SOUL));
+        // 掠夺之魄
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_PLUNDER)
+                .pos(-80, 40)
+                .connections(ModSoulSkills.ENHANCED_SOUL));
+        // 自然法则
+        addNode(OverviewNode.Builder.of(ModSoulSkills.LAW_OF_NATURE)
+                .pos(-80, -80)
+                .connections(ModSoulSkills.ENHANCED_SOUL));
+        // 附魂激荡
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_SURGE)
+                .pos(-120, 0)
+                .connections(ModSoulSkills.ENHANCED_SOUL));
+        // 灵魂透支
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_DRAIN)
+                .pos(-120, -40));
+        // 星魂联结
         addNode(OverviewNode.Builder.of(ModSoulSkills.STAR_LINK)
-                .pos(160, 80)
-                .connections(ModSoulSkills.STAR_REVERSAL, ModSoulSkills.STAR_CALL));
+                .pos(-160, -40)
+                .connections(ModSoulSkills.STAR_REVERSAL));
+        // 星魂逆转
         addNode(OverviewNode.Builder.of(ModSoulSkills.STAR_REVERSAL)
-                .pos(160, 160)
-                .connections(ModSoulSkills.EMPOWERED_SURGE, ModSoulSkills.STAR_LINK));
+                .pos(-160, -80)
+                .connections(ModSoulSkills.STAR_LINK));
+        // 血怒
+        addNode(OverviewNode.Builder.of(ModSoulSkills.BLOOD_RAGE).pos(-200, -120));
+        // 右列 攻击技能树
+        // 引魂
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_LURE)
+                .pos(40, 0));
+        // 灵魂激荡
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SPIRIT_SURGE)
+                .pos(80, -120));
+        // 自然之惩戒
+        addNode(OverviewNode.Builder.of(ModSoulSkills.NATURES_WRATH)
+                .pos(80, 40)
+                .connections(ModSoulSkills.SOUL_LURE));
+        // 迷魂孢雾
+        addNode(OverviewNode.Builder.of(ModSoulSkills.CONFUSE_SPORES)
+                .pos(80, 80)
+                .connections(ModSoulSkills.SOUL_LURE));
+        // 亵渎之魂
+        addNode(OverviewNode.Builder.of(ModSoulSkills.PROFANE_SOUL)
+                .pos(80, -80)
+                .connections(ModSoulSkills.SOUL_LURE));
+        // 灭却业火
+        addNode(OverviewNode.Builder.of(ModSoulSkills.KARMA_FLAME)
+                .pos(80, -40));
+        // 附魂印记
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_MARK)
+                .pos(120, 50)
+                .connections(ModSoulSkills.SOUL_LURE));
+        // 强力引魂
+        addNode(OverviewNode.Builder.of(ModSoulSkills.ENHANCED_LURE)
+                .pos(120, -40)
+                .connections(ModSoulSkills.SOUL_LURE));
+        // 引魂激荡
+        addNode(OverviewNode.Builder.of(ModSoulSkills.LURE_SURGE)
+                .pos(120, 0)
+                .connections(ModSoulSkills.SPIRIT_SURGE,ModSoulSkills.SOUL_LURE));
+        // 强力激荡
         addNode(OverviewNode.Builder.of(ModSoulSkills.EMPOWERED_SURGE)
-                .pos(160, 240)
-                .connections(ModSoulSkills.SURGE_BLAST, ModSoulSkills.STAR_REVERSAL));
+                .pos(120, -120)
+                .connections(ModSoulSkills.SPIRIT_SURGE));
+        // 灵魂激荡冲击
         addNode(OverviewNode.Builder.of(ModSoulSkills.SURGE_BLAST)
-                .pos(160, 320)
-                .connections(ModSoulSkills.EMPOWERED_SURGE));
+                .pos(160, -120)
+                .connections(ModSoulSkills.SPIRIT_SURGE));
+        // 灵魂引发
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SPIRIT_TRIGGER)
+                .pos(200, -120)
+                .connections(ModSoulSkills.SURGE_BLAST));
     }
 
     private void addNode(OverviewNode.Builder builder) {

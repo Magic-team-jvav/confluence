@@ -164,7 +164,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
 
             // 2. 应用重力
             if (gravity != 0) {
-                velocity = velocity.add(0, gravity, 0);
+                velocity = velocity.add(0, -gravity, 0);
             }
 
             // 3. 应用加速度

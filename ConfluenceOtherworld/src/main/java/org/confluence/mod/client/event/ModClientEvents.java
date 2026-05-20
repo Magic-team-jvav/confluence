@@ -80,6 +80,7 @@ import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
+import org.confluence.mod.common.entity.projectile.spear.NorthPoleProjectile;
 import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
@@ -264,6 +265,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(RainProjectileModel.LAYER_LOCATION, RainProjectileModel::createBodyLayer);
         event.registerLayerDefinition(SkullProjectileModel.LAYER_LOCATION, SkullProjectileModel::createBodyLayer);
         event.registerLayerDefinition(StormSpearProjectile.LAYER_LOCATION, StormSpearProjectile::createBodyLayer);
+        event.registerLayerDefinition(NorthPoleProjectile.LAYER_LOCATION, NorthPoleProjectile::createBodyLayer);
 
         event.registerLayerDefinition(BaseHookModel.LAYER_LOCATION, BaseHookModel::createBodyLayer);
         event.registerLayerDefinition(WebSlingerModel.LAYER_LOCATION, WebSlingerModel::createBodyLayer);
@@ -368,6 +370,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.RAIN));
         event.registerEntityRenderer(STORM_SPEAR_SHOT_PROJECTILE.get(), context -> new SpearProjectileRenderer(context, StormSpearProjectile.LAYER_LOCATION));
         event.registerEntityRenderer(SPORE_CLOUD_PROJECTILE.get(), NoopRenderer::new);//todo 贴图模型粒子
+        event.registerEntityRenderer(NORTH_POLE_PROJECTILE.get(), context -> new SpearProjectileRenderer(context, NorthPoleProjectile.LAYER_LOCATION));
+        event.registerEntityRenderer(NORTH_POLE_SUB_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(GOLDEN_SHOWER_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(MAGIC_MISSILE_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(FLAMELASH_PROJECTILE.get(), NoopRenderer::new);

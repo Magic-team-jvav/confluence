@@ -21,4 +21,5 @@ public class SpearItems {
     public static final DeferredItem<AdamantiteGlaiveItem> TITANIUM_TRIDENT = ITEMS.register("titanium_trident", AdamantiteGlaiveItem::new);
     public static final DeferredItem<GungnirItem> GUNGNIR = ITEMS.register("gungnir", GungnirItem::new);
     public static final DeferredItem<ChlorophytePartisanItem> CHLOROPHYTE_PARTISAN = ITEMS.register("chlorophyte_partisan", ChlorophytePartisanItem::new);
+    public static final DeferredItem<NorthPoleItem> NORTH_POLE = ITEMS.register("north_pole", NorthPoleItem::new);
 }

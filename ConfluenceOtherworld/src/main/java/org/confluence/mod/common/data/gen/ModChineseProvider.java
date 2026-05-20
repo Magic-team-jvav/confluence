@@ -1703,6 +1703,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.FROST_DAGGERFISH_PROJECTILE.get(), "寒霜飞鱼射弹");
         add(ModEntities.DUNGEON_DEMON_BONE_PROJECTILE.get(), "地牢魔骨射弹");
         add(ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), "风暴之矛射弹");
+        add(ModEntities.SPORE_CLOUD_PROJECTILE.get(), "孢子云");
+        add(ModEntities.NORTH_POLE_PROJECTILE.get(), "北极矛射弹");
+        add(ModEntities.NORTH_POLE_SUB_PROJECTILE.get(), "北极矛子射弹");
         add(ModEntities.RAINBOW_PROJECTILE.get(), "彩虹射弹");
         add(ModEntities.SKY_FRACTURE_PROJECTILE.get(), "裂天剑");
         add(ModEntities.CRYSTAL_CHARGE_1_PROJECTILE.get(), "爆炸水晶1");
@@ -3107,6 +3110,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpearItems.TITANIUM_TRIDENT.get(), "钛金三叉戟");
         add(SpearItems.GUNGNIR.get(), "永恒之枪");
         add(SpearItems.CHLOROPHYTE_PARTISAN.get(), "叶绿镋");
+        add(SpearItems.NORTH_POLE.get(), "北极");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻

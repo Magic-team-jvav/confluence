@@ -94,7 +94,7 @@ public record SpearProjectileComponent(
                     Optional.empty(), Optional.empty());
 
     /**
-     * 蘑菇长矛 — 追踪孢子弹射物
+     * 追踪孢子弹射物
      */
     public static final Supplier<SpearProjectileComponent> MUSHROOM_SPEAR_PROJ =
             () -> new SpearProjectileComponent(0.8f, 0.6f, 0.98f, 80, 0.0f, 10,

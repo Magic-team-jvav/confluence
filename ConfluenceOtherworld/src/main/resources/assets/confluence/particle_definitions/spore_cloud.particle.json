@@ -22,7 +22,7 @@
 				"rotation": false
 			},
 			"minecraft:emitter_rate_steady": {
-				"spawn_rate": 60,
+				"spawn_rate": 45,
 				"max_particles": 60
 			},
 			"minecraft:emitter_lifetime_expression": {},
@@ -41,6 +41,7 @@
 			},
 			"minecraft:particle_initial_speed": 1.5,
 			"minecraft:particle_motion_dynamic": {
+				"linear_acceleration": [0, 1, 0],
 				"linear_drag_coefficient": 4
 			},
 			"minecraft:particle_appearance_billboard": {

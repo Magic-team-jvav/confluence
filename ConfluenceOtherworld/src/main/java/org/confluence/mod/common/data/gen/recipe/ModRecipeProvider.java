@@ -355,7 +355,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
         hellforge(recipeOutput, DecorativeBlocks.OBSIDIAN_BRICKS.FULL.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(Items.OBSIDIAN));
         hellforge(recipeOutput, DecorativeBlocks.METEORITE_BRICKS.FULL.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(ModTags.Items.RAW_MATERIALS_METEORITE));
-        hellforge(recipeOutput, OreBlocks.HELLSTONE_BRICKS.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(ModTags.Items.RAW_MATERIALS_HELLSTONE));
+        hellforge(recipeOutput, DecorativeBlocks.HELLSTONE_BRICKS.FULL.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(ModTags.Items.RAW_MATERIALS_HELLSTONE));
 
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_HELMET.toStack(), 0.5F, 200, true,
                 AmountIngredient.of(10, MaterialItems.SILK),

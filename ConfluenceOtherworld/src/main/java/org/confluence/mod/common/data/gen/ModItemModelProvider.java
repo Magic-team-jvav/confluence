@@ -208,6 +208,8 @@ public class ModItemModelProvider extends ItemModelProvider {
                                 withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
                         case FenceBlock ignored ->
                                 withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
+                        case WallBlock ignored ->
+                                withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
                         //case LeavesBlock ignored -> withExistingParent(path, "block/leaves").texture("all", Confluence.asResource("block/" + path + "_item"));
                         case ChainBlock ignored ->
                                 withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/chain/" + path));

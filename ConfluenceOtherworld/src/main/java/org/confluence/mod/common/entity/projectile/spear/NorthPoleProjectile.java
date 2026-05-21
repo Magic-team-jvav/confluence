@@ -12,9 +12,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModParticleTypes;
-import org.mesdag.particlestorm.data.molang.MolangExp;
-import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
-
 /**
  * <h1>北极矛弹射物</h1>
  * 直线弹射物，有重力，不可穿墙，间歇生成子弹射物。

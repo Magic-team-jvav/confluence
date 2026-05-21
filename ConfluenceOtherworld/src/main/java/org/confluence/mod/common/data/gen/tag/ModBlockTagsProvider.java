@@ -1042,7 +1042,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HELLSTONE_BLOCK.get(),
                 RAW_HELLSTONE_BLOCK.get(),
                 ASH_HELLSTONE.get(),
-                HELLSTONE_BRICKS.get(),
+                HELLSTONE_BRICKS.FULL.get(),
                 CORRUPT_TAPERED_BLOCK.get(),
                 CRIMSON_TAPERED_BLOCK.get(),
                 HALLOW_TAPERED_BLOCK.get()
@@ -1102,7 +1102,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.NEEDS_6_LEVEL).addTags(ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_7_LEVEL).addTags(ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_8_LEVEL).addTags(ModTags.Blocks.NEEDS_9_LEVEL);
-        tag(ModTags.Blocks.NEEDS_9_LEVEL).add(LIHZAHRD_DOOR.get(), LIHZAHRD_BRICKS.get(), SUPER_DART_TRAP.get());
+        tag(ModTags.Blocks.NEEDS_9_LEVEL).add(LIHZAHRD_DOOR.get(), LIHZAHRD_BRICKS.FULL.get(), SUPER_DART_TRAP.get());
 
         tag(ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE);
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(
@@ -1230,7 +1230,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         FunctionalBlocks.FRAGILE_GREEN_BRICKS.get(),
                         FunctionalBlocks.FRAGILE_PINK_BRICKS.get(),
 
-                        HELLSTONE_BRICKS.get(),
+                        HELLSTONE_BRICKS.FULL.get(),
                         SANDSTONE_BRICKS.FULL.get(),
                         SNOW_BRICKS.FULL.get(),
                         BLUE_ICE_BRICKS.FULL.get(),
@@ -1282,7 +1282,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         POLISHED_MARBLE.get(),
                         MARBLE_CHESSBOARD_BRICKS.get(),
                         MARBLE_ETERNAL_CHESSBOARD_BRICKS.get(),
-                        LIHZAHRD_BRICKS.get(),
+                        LIHZAHRD_BRICKS.FULL.get(),
                         BLUE_BRICKS.FULL.get(),
                         GREEN_BRICKS.FULL.get(),
                         PINK_BRICKS.FULL.get(),

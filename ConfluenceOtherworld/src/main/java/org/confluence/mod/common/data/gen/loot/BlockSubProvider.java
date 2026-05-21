@@ -106,7 +106,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(LUMINITE_BLOCK.get());
         dropSelf(RAW_LUMINITE_BLOCK.get());
         dropSelf(RAW_HELLSTONE_BLOCK.get());
-        dropSelf(HELLSTONE_BRICKS.get());
+        dropSelf(HELLSTONE_BRICKS.FULL.get());
         dropSelf(DESERT_FOSSIL.get());
         dropSelf(SLUSH.get());
         dropSelf(SILT_BLOCK.get());

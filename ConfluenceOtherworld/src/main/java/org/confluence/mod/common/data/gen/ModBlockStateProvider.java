@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
@@ -141,6 +142,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
     public void wallBlock(WallBlock block, ResourceLocation texture) {
         try {
             super.wallBlock(block, texture);
+            models().withExistingParent(BuiltInRegistries.BLOCK.getKey(block).getPath() + "_inventory", ResourceLocation.withDefaultNamespace("block/wall_inventory"))
+                    .texture("wall", texture);
         } catch (Exception ignored) {}
     }
 

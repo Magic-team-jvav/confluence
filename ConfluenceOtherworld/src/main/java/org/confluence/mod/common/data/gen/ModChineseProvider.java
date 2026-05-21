@@ -133,6 +133,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.blue_bricks", "蓝色地牢砖");
         add("itemGroup.confluence.green_bricks", "绿色地牢砖");
         add("itemGroup.confluence.pink_bricks", "粉色地牢砖");
+        add("itemGroup.confluence.hellstone_bricks", "狱石砖");
+        add("itemGroup.confluence.lihzahrd_bricks", "丛林蜥蜴砖");
+        add("itemGroup.confluence.glowing_mushroom", "发光蘑菇");
 
         add("itemGroup.confluence.glass", "玻璃");
         add("itemGroup.confluence.special_building", "特殊建筑");
@@ -1828,7 +1831,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.HELLSTONE.get(), "下界狱石");
         add(OreBlocks.ASH_HELLSTONE.get(), "灰烬狱石");
         add(OreBlocks.HELLSTONE_BLOCK.get(), "狱石块");
-        add(OreBlocks.HELLSTONE_BRICKS.get(), "狱石砖");
+        add(DecorativeBlocks.HELLSTONE_BRICKS.FULL.get(), "狱石砖");
+        add(DecorativeBlocks.HELLSTONE_BRICKS.STAIRS.get(), "狱石砖楼梯");
+        add(DecorativeBlocks.HELLSTONE_BRICKS.SLAB.get(), "狱石砖台阶");
+        add(DecorativeBlocks.HELLSTONE_BRICKS.WALL.get(), "狱石砖墙");
         add(OreBlocks.RAW_HELLSTONE_BLOCK.get(), "粗狱石矿块");
         add(OreBlocks.LUNARTEAR_ORE.get(), "月泣矿石");
         add(OreBlocks.DRAGONSAL_ORE.get(), "龙涎矿石");
@@ -2630,7 +2636,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.MOON_PLATE.STAIRS.get(), "月盘楼梯");
         add(DecorativeBlocks.MOON_PLATE.SLAB.get(), "月盘台阶");
         add(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(), "木石板条块");
-        add(DecorativeBlocks.LIHZAHRD_BRICKS.get(), "丛林蜥蜴砖");
+        add(DecorativeBlocks.LIHZAHRD_BRICKS.FULL.get(), "丛林蜥蜴砖");
+        add(DecorativeBlocks.LIHZAHRD_BRICKS.STAIRS.get(), "丛林蜥蜴砖楼梯");
+        add(DecorativeBlocks.LIHZAHRD_BRICKS.SLAB.get(), "丛林蜥蜴砖台阶");
+        add(DecorativeBlocks.LIHZAHRD_BRICKS.WALL.get(), "丛林蜥蜴砖墙");
         add(DecorativeBlocks.RUBY_CHAIN.get(), "红玉锁链");
         add(DecorativeBlocks.AMBER_CHAIN.get(), "琥珀锁链");
         add(DecorativeBlocks.TOPAZ_CHAIN.get(), "黄玉锁链");

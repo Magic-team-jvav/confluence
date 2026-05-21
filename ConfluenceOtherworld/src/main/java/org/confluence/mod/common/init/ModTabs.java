@@ -523,7 +523,7 @@ public final class ModTabs {
 
                         CreativeModeTab.Output special_building = GroupItem.belongsTo("special_building", output);
                         special_building.accept(DecorativeBlocks.LOST_PAPER_BLOCK.get());
-                        special_building.accept(OreBlocks.HELLSTONE_BRICKS);
+                        special_building.accept(DecorativeBlocks.HELLSTONE_BRICKS.FULL.get());
                         special_building.accept(DecorativeBlocks.MURAL_BLOCK.get());
                         special_building.accept(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get());
                         special_building.accept(DecorativeBlocks.CRISPY_HONEY_BLOCK.get());

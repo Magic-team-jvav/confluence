@@ -51,9 +51,7 @@ import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
@@ -64,6 +62,8 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     protected final int attackInterval;
     protected final List<Keyframe<MathValue>> keyframes;
     private TooltipComponent component;
+    /** 本次挥击已命中的实体 ID，挥击开始时清空 */
+    private final Set<Integer> struckEntities = new HashSet<>();
 
     /// @param attackDuration 攻击持续时间，值越大攻击时间越长
     /// @param attackInterval 攻击间隔，每造成两次伤害之间的时间
@@ -109,6 +109,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
         if (entity.level() instanceof ServerLevel level && entity.level().getGameTime() - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY) > attackDuration) {
+            struckEntities.clear();
             LibUtils.updateItemStackNbt(stack, tag -> tag.putLong(LAST_ATTACK_TIME_KEY, entity.level().getGameTime()));
             triggerAnim(entity, GeoItem.getOrAssignId(stack, level), "spear", "use");
             onStartSting(stack, level, entity);
@@ -140,12 +141,19 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
                 Vec3 startVec = position.add(viewVector.scale(-0.5));
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
 
-                for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> canHitEntity(target, owner))) {
+                List<Entity> victims = level.getEntities(owner, new AABB(startVec, endVec),
+                        target -> canHitEntity(target, owner)).stream()
+                        .filter(v -> !struckEntities.contains(v.getId()))
+                        .sorted(Comparator.comparingDouble(a -> a.distanceToSqr(owner)))
+                        .toList();
+                for (Entity victim : victims) {
                     if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty())
                         continue;
+                    struckEntities.add(victim.getId());
                     owner.setLastHurtMob(victim);
                     victim = LibUtils.tryFindBeImpacted(victim);
                     onHitEntity(stack, owner.serverLevel(), owner, victim);
+                    break;
                 }
                 onStingTick(stack, owner.serverLevel(), owner, endVec, attackDuration - tickCount < attackInterval);
             }

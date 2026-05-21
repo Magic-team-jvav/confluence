@@ -9,6 +9,7 @@ import net.minecraft.advancements.CriterionProgress;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
@@ -18,8 +19,10 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
 import org.confluence.lib.util.LibClientUtils;
+import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.AchievementUtils;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
@@ -41,6 +44,7 @@ public enum BackgroundLayer {
 
             float[] color = DimensionSpecialEffectsManager.getForType(BuiltinDimensionTypes.OVERWORLD_EFFECTS).getSunriseColor(timeOfDay, partialTick);
             if (color != null) {
+                @Nullable ShaderInstance shader = RenderSystem.getShader();
                 RenderSystem.setShaderColor(1, 1, 1, 1);
                 RenderSystem.setShader(GameRenderer::getPositionColorShader);
                 PoseStack poseStack = guiGraphics.pose();
@@ -61,6 +65,10 @@ public enum BackgroundLayer {
                 builder.addVertex(matrix4f, maxX, minY, 0).setColor(r, g, b, 0);
                 BufferUploader.drawWithShader(builder.buildOrThrow());
                 poseStack.popPose();
+                RenderSystem.setShaderColor(1, 1, 1, 1);
+                if (shader != null) {
+                    RenderSystem.setShader(() -> shader);
+                }
             }
         }
     },
@@ -79,6 +87,7 @@ public enum BackgroundLayer {
             f = Mth.clamp(f, 0.0F, 1.0F);
             f = f * f;
             if (f <= 0) return;
+            @Nullable ShaderInstance shader = RenderSystem.getShader();
             RenderSystem.setShaderColor(f, f, f, f);
             RenderSystem.setShader(GameRenderer::getPositionShader);
 
@@ -104,6 +113,10 @@ public enum BackgroundLayer {
                 builder.addVertex(matrix4f, temp.x, temp.y, 0);
             }
             BufferUploader.drawWithShader(builder.buildOrThrow());
+            RenderSystem.setShaderColor(1, 1, 1, 1);
+            if (shader != null) {
+                RenderSystem.setShader(() -> shader);
+            }
         }
     },
     PLANET {
@@ -270,9 +283,15 @@ public enum BackgroundLayer {
 
         @Override
         public void render(GuiGraphics guiGraphics, float partialTick) {
-            RenderSystem.enableBlend();
+            boolean isBlendDisabled = !LibRenderUtils.isBlendEnabled();
+            if (isBlendDisabled) {
+                RenderSystem.enableBlend();
+            }
             for (CloudSprite sprite : clouds) {
                 sprite.render(guiGraphics, partialTick);
+            }
+            if (isBlendDisabled) {
+                RenderSystem.disableBlend();
             }
         }
 
@@ -291,6 +310,7 @@ public enum BackgroundLayer {
 
             @Override
             public void render(GuiGraphics guiGraphics, float partialTick) {
+                @Nullable ShaderInstance shader = RenderSystem.getShader();
                 RenderSystem.setShaderColor(skyColor, skyColor, skyColor, Mth.lerp(scale, 0.4F, 1.0F));
                 guiGraphics.pose().pushPose();
                 float screenX = fx -= partialTick * speed * scale;
@@ -299,6 +319,10 @@ public enum BackgroundLayer {
                 guiGraphics.pose().scale(scale, scale, 1.0f);
                 guiGraphics.blitSprite(path, textureW, textureH, u, v, 0, 0, 0, w, h);
                 guiGraphics.pose().popPose();
+                RenderSystem.setShaderColor(1, 1, 1, 1);
+                if (shader != null) {
+                    RenderSystem.setShader(() -> shader);
+                }
             }
         }
     },
@@ -421,12 +445,24 @@ public enum BackgroundLayer {
                 }
             }
             skyColor = Mth.lerp(1 - Mth.clamp(Mth.cos(timeOfDay * Mth.TWO_PI) * 2.0F + 0.5F, 0.0F, 1.0F), 0.15F, 1.0F);
-            RenderSystem.enableBlend();
+            boolean isBlendDisabled = !LibRenderUtils.isBlendEnabled();
+            if (isBlendDisabled) {
+                RenderSystem.enableBlend();
+            }
+            int[] blendFunc = LibRenderUtils.getBlendFunc();
+            @Nullable ShaderInstance shader = RenderSystem.getShader();
             for (BackgroundLayer layer : LAYERS) {
                 RenderSystem.setShaderColor(skyColor, skyColor, skyColor, 1);
                 layer.render(guiGraphics, partialTick);
             }
             RenderSystem.setShaderColor(1, 1, 1, 1);
+            if (shader != null) {
+                RenderSystem.setShader(() -> shader);
+            }
+            RenderSystem.blendFuncSeparate(blendFunc[0], blendFunc[1], blendFunc[2], blendFunc[3]);
+            if (isBlendDisabled) {
+                RenderSystem.disableBlend();
+            }
         }
     }
 

@@ -295,6 +295,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 METEORITE_BRICKS.SLAB.get(),
                 METEORITE_BRICKS.WALL.get(),
 
+                HELLSTONE_BRICKS.FULL.get(),
+                HELLSTONE_BRICKS.STAIRS.get(),
+                HELLSTONE_BRICKS.SLAB.get(),
+                HELLSTONE_BRICKS.WALL.get(),
+
                 CRIMTANE_ORE_BRICKS.FULL.get(),
                 CRIMTANE_ORE_BRICKS.STAIRS.get(),
                 CRIMTANE_ORE_BRICKS.SLAB.get(),
@@ -1043,6 +1048,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RAW_HELLSTONE_BLOCK.get(),
                 ASH_HELLSTONE.get(),
                 HELLSTONE_BRICKS.FULL.get(),
+                HELLSTONE_BRICKS.STAIRS.get(),
+                HELLSTONE_BRICKS.SLAB.get(),
+                HELLSTONE_BRICKS.WALL.get(),
                 CORRUPT_TAPERED_BLOCK.get(),
                 CRIMSON_TAPERED_BLOCK.get(),
                 HALLOW_TAPERED_BLOCK.get()

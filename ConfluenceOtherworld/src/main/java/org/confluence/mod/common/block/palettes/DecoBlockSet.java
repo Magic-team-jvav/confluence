@@ -3,6 +3,7 @@ package org.confluence.mod.common.block.palettes;
 import it.unimi.dsi.fastutil.objects.ObjectIntImmutablePair;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.world.item.Item;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
@@ -41,10 +42,10 @@ public class DecoBlockSet {
         this.materials = builder.materials;
         this.stonecutting = builder.stonecutting;
 
-        this.FULL = ModBlocks.registerWithItem(id, () -> builder.full.apply(builder.properties.get()));
-        this.STAIRS = ModBlocks.registerWithItem(id + "_stairs", () -> builder.stairs.apply(FULL.get().defaultBlockState(), builder.properties.get()));
-        this.SLAB = ModBlocks.registerWithItem(id + "_slab", () -> builder.slab.apply(builder.properties.get()));
-        this.WALL = ModBlocks.registerWithItem(id + "_wall", () -> builder.wall.apply(builder.properties.get().forceSolidOn()));
+        this.FULL = ModBlocks.registerWithItem(id, () -> builder.full.apply(builder.properties.get()), builder.itemProperties);
+        this.STAIRS = ModBlocks.registerWithItem(id + "_stairs", () -> builder.stairs.apply(FULL.get().defaultBlockState(), builder.properties.get()), builder.itemProperties);
+        this.SLAB = ModBlocks.registerWithItem(id + "_slab", () -> builder.slab.apply(builder.properties.get()), builder.itemProperties);
+        this.WALL = ModBlocks.registerWithItem(id + "_wall", () -> builder.wall.apply(builder.properties.get().forceSolidOn()), builder.itemProperties);
 
         DECO_BLOCK_SETS.add(this);
     }
@@ -90,6 +91,7 @@ public class DecoBlockSet {
         private final Supplier<BlockBehaviour.Properties> properties;
         private final List<ObjectIntPair<Supplier<? extends ItemLike>>> materials = new ArrayList<>();
         private boolean stonecutting = false;
+        private Item.Properties itemProperties = new Item.Properties();
         private Function<BlockBehaviour.Properties, ? extends Block> full = Block::new;
         private BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> stairs = StairBlock::new;
         private Function<BlockBehaviour.Properties, ? extends SlabBlock> slab = SlabBlock::new;
@@ -102,6 +104,11 @@ public class DecoBlockSet {
 
         public Builder stonecutting() {
             this.stonecutting = true;
+            return this;
+        }
+
+        public Builder itemProperties(Item.Properties properties) {
+            this.itemProperties = properties;
             return this;
         }
 

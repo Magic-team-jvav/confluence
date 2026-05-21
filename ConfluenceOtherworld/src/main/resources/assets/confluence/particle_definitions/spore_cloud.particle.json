@@ -22,12 +22,12 @@
 				"rotation": false
 			},
 			"minecraft:emitter_rate_steady": {
-				"spawn_rate": 45,
-				"max_particles": 60
+				"spawn_rate": 100,
+				"max_particles": 80
 			},
 			"minecraft:emitter_lifetime_expression": {},
 			"minecraft:emitter_shape_sphere": {
-				"radius": 1,
+				"radius": 0.5,
 				"direction": "outwards"
 			},
 			"minecraft:particle_initialization": {
@@ -39,18 +39,17 @@
 			"minecraft:particle_initial_spin": {
 				"rotation": "math.random(-180, 180)"
 			},
-			"minecraft:particle_initial_speed": 1.5,
+			"minecraft:particle_initial_speed": 0.5,
 			"minecraft:particle_motion_dynamic": {
 				"linear_acceleration": [0, 1, 0],
-				"linear_drag_coefficient": 4
+				"linear_drag_coefficient": 2
 			},
 			"minecraft:particle_appearance_billboard": {
 				"size": ["variable.size", "variable.size"],
 				"facing_camera_mode": "rotate_xyz"
 			},
 			"minecraft:particle_motion_collision": {
-				"collision_drag": 0.4,
-				"collision_radius": 0.2
+				"collision_drag": 0.4
 			},
 			"minecraft:particle_appearance_tinting": {
 				"color": [1, 1, 1, "variable.alpha"]

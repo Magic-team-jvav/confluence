@@ -1391,6 +1391,12 @@ public final class ModTabs {
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_LEGGINGS.get());
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_BOOTS.get());
 
+                        CreativeModeTab.Output climbing_armor = GroupItem.belongsTo("climbing_armor", output);
+                        climbing_armor.accept(ArmorItems.CLIMBING_HELMET.get());
+                        climbing_armor.accept(ArmorItems.CLIMBING_CHESTPLATE.get());
+                        climbing_armor.accept(ArmorItems.CLIMBING_LEGGINGS.get());
+                        climbing_armor.accept(ArmorItems.CLIMBING_BOOTS.get());
+
                         CreativeModeTab.Output hermit_armor = GroupItem.belongsTo("hermit_armor", output);
                         hermit_armor.accept(ArmorItems.HERMIT_HELMET.get());
                         hermit_armor.accept(ArmorItems.HERMIT_CHESTPLATE.get());

@@ -211,6 +211,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.white_pumpkin_armor", "白南瓜盔甲");
         add("itemGroup.confluence.thief_armor", "窃贼盔甲");
         add("itemGroup.confluence.reinforced_mail_armor", "强化链甲盔甲");
+        add("itemGroup.confluence.climbing_armor", "登山盔甲");
         add("itemGroup.confluence.hunters_armor", "猎人盔甲");
         add("itemGroup.confluence.guards_armor", "守卫盔甲");
         add("itemGroup.confluence.spelunker_armor", "探穴者盔甲");
@@ -1283,6 +1284,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.reinforced_mail_set.0", "5%的概率闪避攻击");
         add("armor_set_bonus.confluence.reinforced_mail_set.1", "7%伤害减免");
         add("armor_set_bonus.confluence.reinforced_mail_set.2", "跳跃后3秒降低移速15%");
+        // 登山
+        add("armor_set_bonus.confluence.climbing_set.0", "75%击退抗性");
+        add("armor_set_bonus.confluence.climbing_set.1", "被敌怪赋予负面效果时有20%概率免疫");
+        add("armor_set_bonus.confluence.climbing_set.2", "上楼梯高度增加0.5格");
         // 猎人
         add("armor_set_bonus.confluence.hunters_set.0", "为击中的敌人附加狩猎效果");
         // 守卫
@@ -3889,6 +3894,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.REINFORCED_MAIL_CHESTPLATE.get(), "强化链甲胸甲");
         add(ArmorItems.REINFORCED_MAIL_LEGGINGS.get(), "强化链甲护腿");
         add(ArmorItems.REINFORCED_MAIL_BOOTS.get(), "强化链甲靴子");
+        add(ArmorItems.CLIMBING_HELMET.get(), "登山头盔");
+        add(ArmorItems.CLIMBING_CHESTPLATE.get(), "登山胸甲");
+        add(ArmorItems.CLIMBING_LEGGINGS.get(), "登山护腿");
+        add(ArmorItems.CLIMBING_BOOTS.get(), "登山靴子");
         add(ArmorItems.HERMIT_HELMET.get(), "隐匿者头盔");
         add(ArmorItems.HERMIT_CHESTPLATE.get(), "隐匿者胸甲");
         add(ArmorItems.HERMIT_LEGGINGS.get(), "隐匿者护腿");

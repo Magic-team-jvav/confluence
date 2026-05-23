@@ -249,6 +249,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.white_pumpkin_armor", "White Pumpkin Armor");
         add("itemGroup.confluence.thief_armor", "Thief Armor");
         add("itemGroup.confluence.reinforced_mail_armor", "Reinforced Mail Armor");
+        add("itemGroup.confluence.climbing_armor", "Climbing Armor");
         add("itemGroup.confluence.hunters_armor", "Hunters Armor");
         add("itemGroup.confluence.guards_armor", "Guards Armor");
         add("itemGroup.confluence.spelunker_armor", "Spelunker Armor");
@@ -280,6 +281,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.angler_wear", "Angler Outfit");
         add("itemGroup.confluence.molten_armor", "Molten Armor");
         add("itemGroup.confluence.necro_armor", "Necro Armor");
+        add("itemGroup.confluence.seeker_armor", "Seeker Armor");
         add("itemGroup.confluence.jungle_armor", "Jungle Armor");
         add("itemGroup.confluence.spider_armor", "Spider Armor");
         add("itemGroup.confluence.tiki_armor", "Tiki Armor");
@@ -1245,6 +1247,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.reinforced_mail_set.0", "5% chance to dodge attacks");
         add("armor_set_bonus.confluence.reinforced_mail_set.1", "7% damage reduction");
         add("armor_set_bonus.confluence.reinforced_mail_set.2", "Movement speed reduced by 15% for 3 seconds after jumping");
+        // Climbing Set
+        add("armor_set_bonus.confluence.climbing_set.0", "75% Knockback Resistance");
+        add("armor_set_bonus.confluence.climbing_set.1", "20% chance to resist debuffs inflicted by enemies");
+        add("armor_set_bonus.confluence.climbing_set.2", "Step height increased by 0.5 blocks");
         // Ninja Set
         add("armor_set_bonus.confluence.ninja_set.0", "20% increased movement speed");
         // Hunters Set

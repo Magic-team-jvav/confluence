@@ -283,6 +283,23 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
     );
 
+    public static final DeferredItem<BaseArmorItem> CLIMBING_HELMET = register("climbing_helmet", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/climbing_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> CLIMBING_CHESTPLATE = register("climbing_chestplate", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/climbing_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> CLIMBING_LEGGINGS = register("climbing_leggings", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/climbing_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> CLIMBING_BOOTS = register("climbing_boots", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/climbing_armor")
+            .rarity(ModRarity.BLUE)
+    );
+
     public static final DeferredItem<BaseArmorItem> HERMIT_HELMET = register("hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)

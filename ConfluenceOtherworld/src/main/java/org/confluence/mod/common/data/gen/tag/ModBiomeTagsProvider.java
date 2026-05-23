@@ -46,6 +46,24 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.THE_HALLOW_DESERT,
                 ModBiomes.THE_HALLOW_TUNDRA
         );
+        tag(ModTags.Biomes.THE_CHORUS).add(
+                ModBiomes.CHORUS_FOREST,
+                ModBiomes.CHORUS_PLAINS
+        );
+        tag(ModTags.Biomes.THE_INVERSE).add(
+                ModBiomes.INVERSE_FOREST,
+                ModBiomes.INVERSE_PLAINS
+        );
+        tag(ModTags.Biomes.THE_MOONBLIGHT).add(
+                ModBiomes.MOONBLIGHT_FOREST,
+                ModBiomes.MOONBLIGHT_PLAINS,
+                ModBiomes.MOONLIT_DRY_SEA,
+                ModBiomes.DARK_MOON_FLATS
+        );
+        tag(ModTags.Biomes.THE_END_SEA).add(
+                ModBiomes.MOONLIT_DRY_SEA,
+                ModBiomes.DARK_MOON_FLATS
+        );
         tag(ModTags.Biomes.SPREADABLE).addTags(
                 ModTags.Biomes.THE_CORRUPTION,
                 ModTags.Biomes.THE_CRIMSON,

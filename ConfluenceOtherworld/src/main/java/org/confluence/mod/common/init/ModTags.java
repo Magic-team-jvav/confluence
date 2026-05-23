@@ -453,6 +453,10 @@ public final class ModTags {
         public static final TagKey<Biome> THE_CORRUPTION = register("the_corruption");
         public static final TagKey<Biome> THE_CRIMSON = register("the_crimson");
         public static final TagKey<Biome> THE_HALLOW = register("the_hallow");
+        public static final TagKey<Biome> THE_CHORUS = register("the_chorus");
+        public static final TagKey<Biome> THE_INVERSE = register("the_inverse");
+        public static final TagKey<Biome> THE_MOONBLIGHT = register("the_moonblight");
+        public static final TagKey<Biome> THE_END_SEA = register("the_end_sea");
         public static final TagKey<Biome> VANITY_TREES_REPLACEABLE = register("vanity_trees_replaceable");
 
         private static TagKey<Biome> register(String id) {

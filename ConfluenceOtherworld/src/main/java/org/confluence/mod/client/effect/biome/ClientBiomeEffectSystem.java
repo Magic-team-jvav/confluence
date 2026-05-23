@@ -8,8 +8,10 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
@@ -21,6 +23,7 @@ import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
+import java.awt.*;
 import java.util.Map;
 
 public final class ClientBiomeEffectSystem {
@@ -43,11 +46,18 @@ public final class ClientBiomeEffectSystem {
                 Confluence.asResource("textures/environment/crimson_sky.png"),
                 null
         ));
+        EFFECTS.put(Confluence.asResource("moonlit_dry_sea"), new BiomeSkyEffect(
+                holder -> holder.is(ModTags.Biomes.THE_END_SEA),
+                null,
+                MoonlitDrySeaSkyRender::render
+        ));
         ModLoader.postEvent(new BiomeSkyEffectRegisterEvent(EFFECTS));
     }
 
     public static void tick(LocalPlayer player) {
-        if (player.level().dimension() != OverworldUtils.dimension()) {
+        ResourceKey<Level> dimension = player.level().dimension();
+        if (dimension != OverworldUtils.dimension()
+        && dimension != Level.END) {
             current = null;
             target = null;
             blend = 0;

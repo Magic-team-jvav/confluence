@@ -9,10 +9,6 @@
             }
         },
         "components": {
-            "minecraft:emitter_local_space": {
-                "position": true,
-                "rotation": false
-            },
             "minecraft:emitter_rate_steady": {
                 "spawn_rate": 4,
                 "max_particles": 1

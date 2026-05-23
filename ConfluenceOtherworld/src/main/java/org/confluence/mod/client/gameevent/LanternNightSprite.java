@@ -121,7 +121,7 @@ final class LanternNightSprite {
         } else {
             globalY = globalYO = 0;
         }
-        if (emitter == null || emitter.pos.distanceToSqr(player.position()) > 1024 || emitter.isRemoved()) {
+        if (emitter == null || emitter.getPosition().distanceToSqr(player.position()) > 1024 || emitter.isRemoved()) {
             createOrRemoveEmitter(player);
         }
         int spawn = MAX - SPRITES.size();

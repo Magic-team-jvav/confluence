@@ -56,6 +56,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
+import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.AchievementScreen;
@@ -173,6 +174,7 @@ public final class GameClientEvents {
             }
             HouseSelectHud.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
+            ClientBiomeEffectSystem.tick(player);
             if (ScryingOrb.spectatingPlayer != null && !ScryingOrb.spectatingPlayer.isAlive()) {
                 ScryingOrb.changeTarget(minecraft.level, player);
             }
@@ -329,6 +331,7 @@ public final class GameClientEvents {
             StarPhaseHandler.render(event);
             MeteorLandingHandler.render(event);
             ClientGameEventSystem.afterRenderSky(event, player);
+            ClientBiomeEffectSystem.renderSky(player, event);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);

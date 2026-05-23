@@ -41,6 +41,7 @@ import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.ColoredGlintContext;
+import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.connected.CustomBlockModels;
 import org.confluence.mod.client.effect.connected.ModConnectives;
 import org.confluence.mod.client.effect.connected.ModelSwapper;
@@ -80,8 +81,6 @@ import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
-import org.confluence.mod.common.entity.projectile.spear.NorthPoleProjectile;
-import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
@@ -96,6 +95,8 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
+import org.confluence.mod.common.entity.projectile.spear.NorthPoleProjectile;
+import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -123,7 +124,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static org.confluence.lib.color.IntegerRGB.*;
+import static org.confluence.lib.color.IntegerRGB.VOID_B;
 import static org.confluence.mod.common.init.ModEntities.*;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
@@ -144,6 +145,8 @@ public final class ModClientEvents {
             SodiumDynamicLightsHelper.registerDynamicLight();
 
             ClientBestiary.getInstance().registerCustomFilter();
+
+            ClientBiomeEffectSystem.registerEffects();
         });
     }
 

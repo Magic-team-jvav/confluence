@@ -242,6 +242,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.angler_wear", "渔夫套装");
         add("itemGroup.confluence.molten_armor", "熔岩盔甲");
         add("itemGroup.confluence.necro_armor", "死灵盔甲");
+        add("itemGroup.confluence.seeker_armor", "逐灵盔甲");
         add("itemGroup.confluence.jungle_armor", "丛林盔甲");
         add("itemGroup.confluence.spider_armor", "蜘蛛盔甲");
         add("itemGroup.confluence.tiki_armor", "提基盔甲");
@@ -1335,6 +1336,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.jungle_set.0", "魔力消耗降低16%");
         // 死灵
         add("armor_set_bonus.confluence.necro_set.0", "暴击率提高10%");
+        // 逐灵
+        add("armor_set_bonus.confluence.seeker_set.0", "灵魂上限增加40");
+        add("armor_set_bonus.confluence.seeker_set.1", "灵魂值大于20时，伤害提高10%");
         // 暗影
         add("armor_set_bonus.confluence.shadow_set.0", "提高移动速度和加速度");
         // 猩红
@@ -2573,6 +2577,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.RAINBOW_BRICKS.STAIRS.get(), "彩虹砖楼梯");
         add(DecorativeBlocks.RAINBOW_BRICKS.SLAB.get(), "彩虹砖台阶");
         add(DecorativeBlocks.RAINBOW_BRICKS.WALL.get(), "彩虹砖墙");
+
 
 
         add(DecorativeBlocks.ASPHALT_BLOCK.get(), "沥青块");
@@ -3989,6 +3994,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.NECRO_CHESTPLATE.get(), "死灵胸甲");
         add(ArmorItems.NECRO_LEGGINGS.get(), "死灵护腿");
         add(ArmorItems.NECRO_BOOTS.get(), "死灵靴子");
+        add(ArmorItems.SEEKER_HELLMET.get(), "逐灵头盔");
+        add(ArmorItems.SEEKER_CHESTPLATE.get(), "逐灵胸甲");
+        add(ArmorItems.SEEKER_LEGGINGS.get(), "逐灵护腿");
+        add(ArmorItems.SEEKER_BOOTS.get(), "逐灵靴子");
         add(ArmorItems.JUNGLE_HELMET.get(), "丛林头盔");
         add(ArmorItems.JUNGLE_CHESTPLATE.get(), "丛林胸甲");
         add(ArmorItems.JUNGLE_LEGGINGS.get(), "丛林护腿");

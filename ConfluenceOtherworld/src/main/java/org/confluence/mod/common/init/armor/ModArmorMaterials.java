@@ -220,6 +220,10 @@ public final class ModArmorMaterials {
             3, 7, 6, 3,
             16, SoundEvents.ARMOR_EQUIP_LEATHER, ConsumableItems.DUNGEON_DEMON_BONE,
             "necro", 2.0F, 0.0F);
+    public static final Holder<ArmorMaterial> SEEKER_ARMOR_MATERIALS = registerArmorMaterial("seeker_armor_materials",
+            3, 6, 6, 3,
+            16, SoundEvents.ARMOR_EQUIP_LEATHER, ConsumableItems.DUNGEON_DEMON_BONE,
+            "seeker", 2.0F, 0.0F);
     public static final Holder<ArmorMaterial> SPIDER_ARMOR_MATERIALS = registerArmorMaterial("spider_armor_materials",
             3, 7, 7, 3,
             17, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,

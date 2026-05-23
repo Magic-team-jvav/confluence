@@ -1456,6 +1456,12 @@ public final class ModTabs {
                         necro_armor.accept(ArmorItems.NECRO_LEGGINGS.get());
                         necro_armor.accept(ArmorItems.NECRO_BOOTS.get());
 
+                        CreativeModeTab.Output seeker_armor = GroupItem.belongsTo("seeker_armor", output);
+                        seeker_armor.accept(ArmorItems.SEEKER_HELLMET.get());
+                        seeker_armor.accept(ArmorItems.SEEKER_CHESTPLATE.get());
+                        seeker_armor.accept(ArmorItems.SEEKER_LEGGINGS.get());
+                        seeker_armor.accept(ArmorItems.SEEKER_BOOTS.get());
+
                         CreativeModeTab.Output jungle_armor = GroupItem.belongsTo("jungle_armor", output);
                         jungle_armor.accept(ArmorItems.JUNGLE_HELMET.get());
                         jungle_armor.accept(ArmorItems.JUNGLE_CHESTPLATE.get());

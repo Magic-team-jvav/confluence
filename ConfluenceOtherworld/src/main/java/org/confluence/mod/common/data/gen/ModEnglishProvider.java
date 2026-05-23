@@ -1300,6 +1300,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.jungle_set.0", "16% reduced mana costs");
         // Necro Set
         add("armor_set_bonus.confluence.necro_set.0", "10% increased critical strike chance");
+        // Seeker set
+        add("armor_set_bonus.confluence.seeker_set.0", "Increases Soul Capacity by 40");
+        add("armor_set_bonus.confluence.seeker_set.1", "Deal 10% increased damage when Soul is above 20");
         // Shadow Set
         add("armor_set_bonus.confluence.shadow_set.0", "Increased movement speed and acceleration");
         // Crimson Set

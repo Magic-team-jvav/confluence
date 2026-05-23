@@ -597,6 +597,19 @@ public class ArmorItems {
             .rarity(ModRarity.GREEN)
             .rangedDamage(0.025));
 
+    public static final DeferredItem<BaseArmorItem> SEEKER_HELLMET = register("seeker_helmet", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/seeker_armor")
+            .rarity(ModRarity.GREEN));
+    public static final DeferredItem<BaseArmorItem> SEEKER_CHESTPLATE = register("seeker_chestplate", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/seeker_armor")
+            .rarity(ModRarity.GREEN));
+    public static final DeferredItem<BaseArmorItem> SEEKER_LEGGINGS = register("seeker_leggings", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/seeker_armor")
+            .rarity(ModRarity.GREEN));
+    public static final DeferredItem<BaseArmorItem> SEEKER_BOOTS = register("seeker_boots", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/seeker_armor")
+            .rarity(ModRarity.GREEN));
+
     public static final DeferredItem<BaseArmorItem> SHADOW_HELMET = register("shadow_helmet", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/shadow_armor")
             .rarity(ModRarity.BLUE)

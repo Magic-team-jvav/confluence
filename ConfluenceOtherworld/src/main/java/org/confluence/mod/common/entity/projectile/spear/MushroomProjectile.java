@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MushroomProjectile extends SpearProjectile {
     /** 蘑菇弹射物生命周期（tick） */
-    private static final int MUSHROOM_LIFETIME = 20;
+    private static final int MUSHROOM_LIFETIME = 10;
 
     /** 模型层定义 */
     public static final ModelLayerLocation LAYER_LOCATION =
@@ -58,6 +58,7 @@ public class MushroomProjectile extends SpearProjectile {
         // 仅依赖组件加速度衰减产生悬浮减速效果
     }
 
+    //蘑菇孢子是x轴旋转
     @Override
     public com.mojang.math.Axis getSpinAxis() {
         return com.mojang.math.Axis.XP;

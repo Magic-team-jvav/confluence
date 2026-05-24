@@ -319,6 +319,11 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         return Mth.lerp(partialTick, rotate.old, rotate.neo);
     }
 
+    /** 自旋轴，默认绕 Z 轴。子类可覆写此方法以使用不同的旋转轴 */
+    public com.mojang.math.Axis getSpinAxis() {
+        return com.mojang.math.Axis.ZP;
+    }
+
     public void fire(Vec3 direction, float speed, float knockBack) {
         this.direction = direction;
         Vec3 initialVelocity = initVelocity(null, direction, speed);

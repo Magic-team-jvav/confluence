@@ -92,7 +92,15 @@ public record SpearProjectileComponent(
                     Confluence.asResource("orichalcum_halberd_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.empty(), Optional.empty());
-
+    /**
+     * 蘑菇孢子 - 自旋悬浮弹射物
+     */
+    public static final Supplier<SpearProjectileComponent> MUSHROOM_PROJ =
+            () -> new SpearProjectileComponent(1.2f, 0.0f, 0.95f, 50, 0.0f, 12,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    Confluence.asResource("mushroom_projectile"),
+                    Optional.empty(), ForwardGeneration.of(0, 0),
+                    Optional.empty(), Optional.empty());
     /**
      * 追踪孢子弹射物
      */

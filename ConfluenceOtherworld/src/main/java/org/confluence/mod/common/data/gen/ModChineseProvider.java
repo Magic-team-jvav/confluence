@@ -1718,6 +1718,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.SPORE_CLOUD_PROJECTILE.get(), "孢子云");
         add(ModEntities.NORTH_POLE_PROJECTILE.get(), "北极矛射弹");
         add(ModEntities.NORTH_POLE_SUB_PROJECTILE.get(), "北极矛子射弹");
+        add(ModEntities.MUSHROOM_PROJECTILE.get(), "蘑菇孢子射弹");
         add(ModEntities.RAINBOW_PROJECTILE.get(), "彩虹射弹");
         add(ModEntities.SKY_FRACTURE_PROJECTILE.get(), "裂天剑");
         add(ModEntities.CRYSTAL_CHARGE_1_PROJECTILE.get(), "爆炸水晶1");
@@ -3130,6 +3131,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpearItems.GUNGNIR.get(), "永恒之枪");
         add(SpearItems.CHLOROPHYTE_PARTISAN.get(), "叶绿镋");
         add(SpearItems.NORTH_POLE.get(), "北极");
+        add(SpearItems.MUSHROOM_SPEAR.get(), "蘑菇矛");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻

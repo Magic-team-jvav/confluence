@@ -22,4 +22,5 @@ public class SpearItems {
     public static final DeferredItem<GungnirItem> GUNGNIR = ITEMS.register("gungnir", GungnirItem::new);
     public static final DeferredItem<ChlorophytePartisanItem> CHLOROPHYTE_PARTISAN = ITEMS.register("chlorophyte_partisan", ChlorophytePartisanItem::new);
     public static final DeferredItem<NorthPoleItem> NORTH_POLE = ITEMS.register("north_pole", NorthPoleItem::new);
+    public static final DeferredItem<MushroomSpearItem> MUSHROOM_SPEAR = ITEMS.register("mushroom_spear", MushroomSpearItem::new);
 }

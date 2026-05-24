@@ -47,7 +47,7 @@ public class SpearProjectileRenderer extends EntityRenderer<SpearProjectile> {
         float pitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
         poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
         poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
-        poseStack.mulPose(Axis.ZP.rotation(entity.getSpinRotation(partialTick)));
+        poseStack.mulPose(entity.getSpinAxis().rotation(entity.getSpinRotation(partialTick)));
         model.renderToBuffer(poseStack, buffer.getBuffer(model.renderType(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }

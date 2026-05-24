@@ -30,6 +30,9 @@ public final class ClientConfigs {
     public static int showWindParticles = 90;
     public static float minEctoMistEffectRadius = 10;
 
+    public static int rainbowCount = 3;
+    public static boolean rainbowGradient = false;
+
     public static boolean achievementToast = true;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
     public static int customTitle = 71;
@@ -60,6 +63,9 @@ public final class ClientConfigs {
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static IntValue MIN_ECTO_MIST_EFFECT_RADIUS;
+
+    private static IntValue RAINBOW_COUNT;
+    private static BooleanValue RAINBOW_GRADIENT;
 
     private static BooleanValue ACHIEVEMENT_TOAST;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
@@ -92,6 +98,9 @@ public final class ClientConfigs {
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         minEctoMistEffectRadius = MIN_ECTO_MIST_EFFECT_RADIUS.get();
+
+        rainbowCount = RAINBOW_COUNT.get();
+        rainbowGradient = RAINBOW_GRADIENT.get();
 
         achievementToast = ACHIEVEMENT_TOAST.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
@@ -187,6 +196,14 @@ public final class ClientConfigs {
             DAMAGE_INDICATOR = builder.define("damageIndicator", true);
             HEAL_INDICATOR = builder.define("healIndicator", true);
             builder.pop();
+        }
+        {
+            builder.push("Biome");
+            {
+                builder.push("The Hallow");
+                RAINBOW_COUNT = builder.defineInRange("rainbowCount", 3, 0, 20);
+                RAINBOW_GRADIENT = builder.define("rainbowGradient", false);
+            }
         }
 
         container.registerConfig(ModConfig.Type.CLIENT, builder.build());

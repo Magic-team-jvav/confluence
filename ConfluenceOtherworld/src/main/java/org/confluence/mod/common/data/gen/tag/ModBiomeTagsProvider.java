@@ -85,7 +85,18 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.ASH_FOREST,
                 ModBiomes.ASH_WASTELAND,
 
-                ModBiomes.GLOWING_MUSHROOM
+                ModBiomes.GLOWING_MUSHROOM,
+
+                ModBiomes.CHORUS_FOREST,
+                ModBiomes.CHORUS_PLAINS,
+
+                ModBiomes.INVERSE_FOREST,
+                ModBiomes.INVERSE_PLAINS,
+
+                ModBiomes.MOONBLIGHT_FOREST,
+                ModBiomes.MOONBLIGHT_PLAINS,
+                ModBiomes.MOONLIT_DRY_SEA,
+                ModBiomes.DARK_MOON_FLATS
         );
         tag(ModTags.Biomes.IS_FOREST).addTags(
                 // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）

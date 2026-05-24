@@ -46,6 +46,11 @@ public final class ClientBiomeEffectSystem {
                 Confluence.asResource("textures/environment/crimson_sky.png"),
                 null
         ));
+        EFFECTS.put(Confluence.asResource("the_hallow"), new BiomeSkyEffect(
+                holder -> holder.is(ModTags.Biomes.THE_HALLOW),
+                null,
+                TheHallowSkyRender::render
+        ));
         EFFECTS.put(Confluence.asResource("moonlit_dry_sea"), new BiomeSkyEffect(
                 holder -> holder.is(ModTags.Biomes.THE_END_SEA),
                 null,

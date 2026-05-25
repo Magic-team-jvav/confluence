@@ -300,36 +300,53 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
     );
 
-    public static final DeferredItem<BaseArmorItem> HERMIT_HELMET = register("hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final DeferredItem<BaseArmorItem> PHANTOM_HELMET = register("phantom_helmet", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/phantom_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> PHANTOM_CHESTPLATE = register("phantom_chestplate", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/phantom_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.08));
+    public static final DeferredItem<BaseArmorItem> PHANTOM_LEGGINGS = register("phantom_leggings", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/phantom_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> PHANTOM_BOOTS = register("phantom_boots", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/phantom_armor")
+            .rarity(ModRarity.BLUE)
+    );
+
+    public static final DeferredItem<BaseArmorItem> HERMIT_HELMET = register("hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
            );
-    public static final DeferredItem<BaseArmorItem> HERMIT_CHESTPLATE = register("hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final DeferredItem<BaseArmorItem> HERMIT_CHESTPLATE = register("hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.08));
-    public static final DeferredItem<BaseArmorItem> HERMIT_LEGGINGS = register("hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final DeferredItem<BaseArmorItem> HERMIT_LEGGINGS = register("hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
            );
-    public static final DeferredItem<BaseArmorItem> HERMIT_BOOTS = register("hermit_boots", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final DeferredItem<BaseArmorItem> HERMIT_BOOTS = register("hermit_boots", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
            );
 
-    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_HELMET = register("blue_hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_HELMET = register("blue_hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
             .fourClassesDamage(0.04));
-    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_CHESTPLATE = register("blue_hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_CHESTPLATE = register("blue_hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
             .criticalChance(0.03));
-    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_LEGGINGS = register("blue_hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_LEGGINGS = register("blue_hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
             .fourClassesDamage(0.04));
-    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_BOOTS = register("blue_hermit_boots", ModArmorMaterials.HERMIT_ARMOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_BOOTS = register("blue_hermit_boots", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
     );
@@ -1013,6 +1030,15 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> SOUL_ROBE = register("soul_robe", ModArmorMaterials.SOUL_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/soul_robe")
             .rarity(ModRarity.GREEN)
+    );
+
+    public static final DeferredItem<BaseArmorItem> SOULDANCER_HOOD = register("souldancer_hood", ModArmorMaterials.SOULDANCER_HOOD_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/souldancer_robe")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> SOULDANCER_ROBE = register("souldancer_robe", ModArmorMaterials.SOULDANCER_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/souldancer_robe")
+            .rarity(ModRarity.BLUE)
     );
 
     public static final DeferredItem<BaseArmorItem> GOGGLES = register("goggles", ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, builder -> {});

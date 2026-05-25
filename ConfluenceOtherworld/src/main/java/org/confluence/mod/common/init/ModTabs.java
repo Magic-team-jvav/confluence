@@ -1397,6 +1397,12 @@ public final class ModTabs {
                         climbing_armor.accept(ArmorItems.CLIMBING_LEGGINGS.get());
                         climbing_armor.accept(ArmorItems.CLIMBING_BOOTS.get());
 
+                        CreativeModeTab.Output phantom_armor = GroupItem.belongsTo("phantom_armor", output);
+                        phantom_armor.accept(ArmorItems.PHANTOM_HELMET.get());
+                        phantom_armor.accept(ArmorItems.PHANTOM_CHESTPLATE.get());
+                        phantom_armor.accept(ArmorItems.PHANTOM_LEGGINGS.get());
+                        phantom_armor.accept(ArmorItems.PHANTOM_BOOTS.get());
+
                         CreativeModeTab.Output hermit_armor = GroupItem.belongsTo("hermit_armor", output);
                         hermit_armor.accept(ArmorItems.HERMIT_HELMET.get());
                         hermit_armor.accept(ArmorItems.HERMIT_CHESTPLATE.get());
@@ -1559,6 +1565,7 @@ public final class ModTabs {
                         magic_robes.accept(ArmorItems.DIAMOND_ROBE.get());
                         magic_robes.accept(ArmorItems.AMBER_ROBE.get());
                         magic_robes.accept(ArmorItems.SOUL_ROBE.get());
+                        magic_robes.accept(ArmorItems.SOULDANCER_ROBE.get());
                         magic_robes.accept(VanityArmorItems.ROBE.get());
 
                         output.accept(ArmorItems.GOGGLES.get());
@@ -1567,6 +1574,7 @@ public final class ModTabs {
                         output.accept(ArmorItems.WIZARD_HAT.get());
                         output.accept(ArmorItems.MAGIC_HAT.get());
                         output.accept(ArmorItems.SOUL_HOOD.get());
+                        output.accept(ArmorItems.SOULDANCER_HOOD.get());
                         output.accept(VanityArmorItems.DEAD_MANS_SWEATER.get());
                         output.accept(VanityArmorItems.TOP_HAT.get());
                         output.accept(VanityArmorItems.SUMMER_HAT.get());

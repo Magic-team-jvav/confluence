@@ -215,6 +215,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.hunters_armor", "猎人盔甲");
         add("itemGroup.confluence.guards_armor", "守卫盔甲");
         add("itemGroup.confluence.spelunker_armor", "探穴者盔甲");
+        add("itemGroup.confluence.phantom_armor", "幻翼盔甲");
         add("itemGroup.confluence.hermit_armor", "隐匿者盔甲");
         add("itemGroup.confluence.blue_hermit_armor", "蓝隐匿者盔甲");
         add("itemGroup.confluence.scale_mail_armor", "鳞甲盔甲");
@@ -3902,6 +3903,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CLIMBING_CHESTPLATE.get(), "登山胸甲");
         add(ArmorItems.CLIMBING_LEGGINGS.get(), "登山护腿");
         add(ArmorItems.CLIMBING_BOOTS.get(), "登山靴子");
+        add(ArmorItems.PHANTOM_HELMET.get(), "幻翼头盔");
+        add(ArmorItems.PHANTOM_CHESTPLATE.get(), "幻翼胸甲");
+        add(ArmorItems.PHANTOM_LEGGINGS.get(), "幻翼护腿");
+        add(ArmorItems.PHANTOM_BOOTS.get(), "幻翼靴子");
         add(ArmorItems.HERMIT_HELMET.get(), "隐匿者头盔");
         add(ArmorItems.HERMIT_CHESTPLATE.get(), "隐匿者胸甲");
         add(ArmorItems.HERMIT_LEGGINGS.get(), "隐匿者护腿");
@@ -4095,6 +4100,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.AMBER_ROBE.get(), "琥珀长袍");
         add(ArmorItems.SOUL_HOOD.get(), "灵魂头套");
         add(ArmorItems.SOUL_ROBE.get(), "灵魂长袍");
+        add(ArmorItems.SOULDANCER_HOOD.get(), "魂舞头套");
+        add(ArmorItems.SOULDANCER_ROBE.get(), "魂舞长袍");
 
 
         // 任务鱼

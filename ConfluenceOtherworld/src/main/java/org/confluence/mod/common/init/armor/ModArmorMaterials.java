@@ -146,7 +146,12 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
             "scale_mail", 2.0F, 0.0F
     );
-    public static final Holder<ArmorMaterial> HERMIT_ARMOR_ARMOR_MATERIALS = registerArmorMaterial("hermit_armor_armor_materials",
+    public static final Holder<ArmorMaterial> PHANTOM_ARMOR_MATERIALS = registerArmorMaterial("phantom_armor_materials",
+            3, 4, 4, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
+            "hermit", 0.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> HERMIT_ARMOR_MATERIALS = registerArmorMaterial("hermit_armormaterials",
             2, 4, 4, 2,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
             "hermit", 0.0F, 0.0F
@@ -255,6 +260,9 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> AMBER_ROBE_ARMOR_MATERIAL = registerSingletonMaterial("amber_robe_material", ArmorItem.Type.CHESTPLATE, 3, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.AMBER), "amber_robe", 0, 0);
     public static final Holder<ArmorMaterial> SOUL_HOOD_ARMOR_MATERIAL = registerSingletonMaterial("soul_hood_material", ArmorItem.Type.HELMET, 3, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.LEATHER), "soul_hood", 0, 0);
     public static final Holder<ArmorMaterial> SOUL_ROPE_ARMOR_MATERIAL = registerSingletonMaterial("soul_rope_material", ArmorItem.Type.CHESTPLATE, 5, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.LEATHER), "soul_rope", 0, 0);
+    public static final Holder<ArmorMaterial> SOULDANCER_HOOD_ARMOR_MATERIAL = registerSingletonMaterial("souldancer_hood_material", ArmorItem.Type.HELMET, 3, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.LEATHER), "souldancer_hood", 0, 0);
+    public static final Holder<ArmorMaterial> SOULDANCER_ROPE_ARMOR_MATERIAL = registerSingletonMaterial("souldancer_rope_material", ArmorItem.Type.CHESTPLATE, 5, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(Items.LEATHER), "souldancer_rope", 0, 0);
+
 
     public static final Holder<ArmorMaterial> JUNGLE_ARMOR_MATERIALS = registerArmorMaterial("jungle_armor_materials", 3, 6, 6, 3, 15, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.JUNGLE_SPORE), "jungle", 2, 0);
 

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.spear;
 
-import org.confluence.mod.common.component.SpearProjectileComponent;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -17,11 +16,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * <h1>蘑菇弹射物</h1>
  * 自旋悬浮弹射物，可穿墙，单次命中后销毁，无击退。
- * 生命周期 30 tick（约 1.5 秒）。
  */
 public class MushroomProjectile extends SpearProjectile {
-    /** 蘑菇弹射物生命周期（tick） */
-    private static final int MUSHROOM_LIFETIME = 10;
 
     /** 模型层定义 */
     public static final ModelLayerLocation LAYER_LOCATION =
@@ -40,15 +36,6 @@ public class MushroomProjectile extends SpearProjectile {
 
     public MushroomProjectile(EntityType<? extends MushroomProjectile> entityType, Level level) {
         super(entityType, level);
-        this.lifetime = MUSHROOM_LIFETIME;
-        this.knockBack = 0.0f;
-        this.baseKnockBack = 0.0f;
-    }
-
-    @Override
-    public void setProjComponent(SpearProjectileComponent projComponent, LivingEntity owner) {
-        super.setProjComponent(projComponent, owner);
-        this.lifetime = MUSHROOM_LIFETIME;
         this.knockBack = 0.0f;
         this.baseKnockBack = 0.0f;
     }

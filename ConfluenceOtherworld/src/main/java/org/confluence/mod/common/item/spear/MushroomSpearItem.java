@@ -25,7 +25,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
     private final int strikeEndTick;
 
     public MushroomSpearItem() {
-        super(new Properties().attributes(attributes(3, 15F)), ModRarity.BLUE, 40, 5, createKeyframes(
+        super(new Properties().attributes(attributes(6, 30F)), ModRarity.BLUE, 40, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.2, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.8, -12, EasingType.EASE_IN_EXPO),
@@ -101,7 +101,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
             // 刺击结束时，在最远端每隔一格生成一个蘑菇孢子
             if (tickCount == strikeEndTick) {
                 Vec3 lookAngle = owner.getLookAngle();
-                for (float i = 1.0F; i <= 3.0F; i+=1.2F) {
+                for (float i = 1.0F; i <= 2.5F; i+=1.2F) {
                     Vec3 spawnPos = tipPos.add(lookAngle.scale(i));
                     spawnProjectile(owner.serverLevel(), owner, spawnPos.add(forwardOffset), component, lookAngle);
                 }

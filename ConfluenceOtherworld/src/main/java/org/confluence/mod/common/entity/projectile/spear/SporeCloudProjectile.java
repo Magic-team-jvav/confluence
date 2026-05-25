@@ -29,10 +29,8 @@ public class SporeCloudProjectile extends SpearProjectile {
     public float minSpeed = 0.01f;
     /** 伤害间隔 tick */
     public int damageInterval = 10;
-
     public SporeCloudProjectile(EntityType<? extends SporeCloudProjectile> entityType, Level level) {
         super(entityType, level);
-        this.pierceRemaining = Integer.MAX_VALUE;
         this.collisionProperties = new CollisionProperties(1, 1, 0.65F);
     }
 

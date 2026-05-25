@@ -96,7 +96,7 @@ public record SpearProjectileComponent(
      * 蘑菇孢子 - 自旋悬浮弹射物
      */
     public static final Supplier<SpearProjectileComponent> MUSHROOM_PROJ =
-            () -> new SpearProjectileComponent(1.2f, 0.0f, 0.95f, 50, 0.0f, 12,
+            () -> new SpearProjectileComponent(1.0f, 0.0f, 0.95f, 25, 0.0f, 12,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     Confluence.asResource("mushroom_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
@@ -125,11 +125,21 @@ public record SpearProjectileComponent(
      * 叶绿长戟 — 孢子云弹射物
      */
     public static final Supplier<SpearProjectileComponent> SPORE_CLOUD_PROJ =
-            () -> new SpearProjectileComponent(0.8f, 1.2f, 1.0f, 200, 0.0f, 20,
+            () -> new SpearProjectileComponent(0.8f, 1.2f, 1.0f, 200, 0.0f, 20,//注意，该弹射物的生命管理使用速度控制。
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     Confluence.asResource("spore_cloud_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, (float) 1.5),
-                    Optional.of(999), Optional.empty());
+                    Optional.of(Integer.MAX_VALUE), Optional.empty());
+
+    /**
+     * 恶魂长戟 — 恶魂弹射物，水平飞行，无限穿透穿墙
+     */
+    public static final Supplier<SpearProjectileComponent> GHASTLY_PROJECTILE =
+            () -> new SpearProjectileComponent(0.9f, 0.5f, 1.0f, 10, 0.0f, 15,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.GHASTLY_PROJECTILE.getId(),
+                    Optional.empty(), ForwardGeneration.of(0, 0),
+                    Optional.of(Integer.MAX_VALUE), Optional.empty());
 
     public SoundEvent getSoundEvent() {
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);

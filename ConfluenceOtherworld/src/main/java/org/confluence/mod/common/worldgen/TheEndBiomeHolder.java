@@ -118,11 +118,20 @@ public class TheEndBiomeHolder {
                     return;
                 }
 
+                //TODO 等牢鏡調整
+
+                // 以下參數都是數字越大密度越大越稀碎，數字越小密度越小，單一群係也約廣闊
+
                 double biomeScale = 0.5;
+                // 決定了我們的群係組的分佈密度，也就是紫頌和月光群係大類的密度，倒懸是跟著紫頌一起的不用管它
                 double treeScale = 0.45;
+                // 決定了紫頌森林和紫頌平原的分佈密度
                 double humidityScale = 0.2;
+                // 決定了月光系列四種群係的密度
                 double heightScale = 0.25;
-                double trueNoise = rippleNoise(blockX, blockY, blockZ, 3000);
+                // 原版判斷島嶼什麼的，這個別改XXX
+                double trueNoise = rippleNoise(0.01, blockX, blockY, blockZ, 3000);
+                // 第一個參數決定了mod群係和原版群係的分佈區域的密度，最後一個參數決定了末地中心周圍多少米內不生成我們的群係
                 double heightNoise = blockY + normalNoise.getValue(x * heightScale, 0, z * heightScale) * 5;
                 double biomeNoise = normalNoise.getValue(x * biomeScale, y * biomeScale, z * biomeScale);
                 double treeNoise = normalNoise.getValue(x * treeScale, y * treeScale, z * treeScale);
@@ -145,8 +154,7 @@ public class TheEndBiomeHolder {
         }
     }
 
-    public static double rippleNoise(int x, int y, int z, int radius) {
-        double scale = 0.01;
+    public static double rippleNoise(double scale, int x, int y, int z, int radius) {
         double base = normalNoise.getValue(x * scale, y * scale, z * scale); // 降低频率
         return (Math.sin(base * 20) * radiusSet(radius, x, z)); // 波纹映射
     }

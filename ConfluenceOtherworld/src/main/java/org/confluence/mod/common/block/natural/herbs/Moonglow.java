@@ -15,7 +15,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.particle.CrossDustParticleOptions;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 
 public class Moonglow extends BaseHerbBlock {
@@ -32,7 +31,7 @@ public class Moonglow extends BaseHerbBlock {
     }
 
     @Override
-    protected @NotNull ItemLike getBaseSeedId() {
+    protected ItemLike getBaseSeedId() {
         return FoodItems.MOONGLOW_SEED.get();
     }
 

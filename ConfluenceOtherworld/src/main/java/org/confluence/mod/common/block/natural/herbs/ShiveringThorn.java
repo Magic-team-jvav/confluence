@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.particle.CrossDustParticleOptions;
 import org.confluence.mod.common.init.item.FoodItems;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -22,11 +21,11 @@ public class ShiveringThorn extends BaseHerbBlock {
     public static final IntegerProperty PROP_LIGHT = IntegerProperty.create("level", 0, 6);
 
     public ShiveringThorn() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).randomTicks().lightLevel(value -> value.getValue(AGE) == MAX_AGE ? value.getValue(PROP_LIGHT) : 0));
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).randomTicks());
     }
 
     @Override
-    protected @NotNull ItemLike getBaseSeedId() {
+    protected ItemLike getBaseSeedId() {
         return FoodItems.SHIVERTHORN_SEED.get();
     }
 

@@ -14,8 +14,8 @@ import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
-import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.data.molang.compiler.value.Variable;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.ArrayDeque;
@@ -166,7 +166,8 @@ final class LanternNightSprite {
                 }
             };
             emitter.attachEntity(player);
-            PSGameClient.LOADER.addEmitter(emitter, false);
+            emitter.hideOutline = true;
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         } else if (emitter != null) {
             emitter.remove();
             emitter = null;

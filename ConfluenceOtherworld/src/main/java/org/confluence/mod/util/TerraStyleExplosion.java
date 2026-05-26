@@ -29,8 +29,8 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.network.s2c.TerraStyleExplosionPacketS2C;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.ArrayList;
@@ -105,7 +105,7 @@ public class TerraStyleExplosion extends Explosion {
 
     public static void handleClientExplode(Level level, double x, double y, double z, float radius) {
         level.playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 4.0F, (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F, false);
-        PSGameClient.LOADER.addEmitter(new ParticleEmitter(level, new Vec3(x, y, z), PARTICLE_ID, new MolangExp("variable.radius", radius)), false);
+        MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level, new Vec3(x, y, z), PARTICLE_ID, new MolangExp("variable.radius", radius)));
     }
 
     public static Explosion terraExplode(

@@ -22,8 +22,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3f;
-import org.mesdag.particlestorm.PSGameClient;
+import org.joml.Matrix4f;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.List;
@@ -34,7 +34,6 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     protected float diameter = DIAMETER;
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
-    public Vector3f rotation = new Vector3f();
     public ParticleEmitter emitter;
 
     protected int delay = 60;
@@ -59,14 +58,10 @@ public class BaseBombEntity extends ThrowableItemProjectile {
         return Items.AIR;
     }
 
-    /**
-     * 子类可以覆盖的方法，在弹跳前触发
-     */
+    /// 子类可以覆盖的方法，在弹跳前触发
     protected void blockHitCallBack(BlockHitResult hitBlock) {}
 
-    /**
-     * 子类可以覆盖的方法，定义炸弹如何爆炸
-     */
+    /// 子类可以覆盖的方法，定义炸弹如何爆炸
     protected void explodeFunction(ServerLevel level) {
         TerraStyleExplosion.terraExplode(level, this, Explosion.getDefaultDamageSource(level, this), getExplosionDamageCalculator(), getX(), getY(), getZ(), blastPower, Level.ExplosionInteraction.TNT);
     }
@@ -99,7 +94,9 @@ public class BaseBombEntity extends ThrowableItemProjectile {
                 if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
                 this.rotateO = rotate;
                 this.rotate += r / Mth.PI;
-                rotation.set(0.0, 0.0, rotate);
+                if (emitter != null && emitter.isLocalSpace()) {
+                    emitter.parentSpace.rotationXYZ(0, Mth.HALF_PI, rotate);
+                }
             } else {
                 this.rotateO = rotate;
             }
@@ -117,11 +114,10 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     protected void createEmitter() {
         if (emitter == null || emitter.isRemoved()) {
             this.emitter = new ParticleEmitter(level(), position(), getLeadParticle());
-            emitter.offsetRot.set(0.0, Mth.HALF_PI, 0.0);
-            emitter.offsetPos = new Vec3(0.0, DIAMETER, 0.0);
-            emitter.parentRotation = rotation;
             emitter.attachEntity(this);
-            PSGameClient.LOADER.addEmitter(emitter, false);
+            emitter.hideOutline = true;
+            emitter.parentSpace = new Matrix4f().setTranslation(0, DIAMETER, 0);
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
     }
 

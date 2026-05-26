@@ -10,7 +10,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -18,9 +17,10 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.particlestorm.PSGameClient;
+import org.joml.Matrix4f;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.Comparator;
@@ -122,8 +122,9 @@ public class AccumulatingEnergyEntity extends Entity {
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("accumulating_energy"));
             emitter.attachEntity(this);
-            emitter.offsetPos = new Vec3(0, 0.5, 0);
-            PSGameClient.LOADER.addEmitter(emitter, false);
+            emitter.hideOutline = true;
+            emitter.parentSpace = new Matrix4f().setTranslation(0, 0.5F, 0);
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
     }
 

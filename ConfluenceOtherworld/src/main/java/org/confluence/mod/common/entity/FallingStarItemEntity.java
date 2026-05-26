@@ -26,7 +26,8 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.util.OverworldUtils;
-import org.mesdag.particlestorm.PSGameClient;
+import org.joml.Matrix4f;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.HashSet;
@@ -61,10 +62,11 @@ public class FallingStarItemEntity extends ItemEntity {
             if ((emitter == null || emitter.isRemoved())) {
                 this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
                 emitter.attachEntity(this);
-                PSGameClient.LOADER.addEmitter(emitter, false);
+                emitter.hideOutline = true;
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
             }
             float y = Mth.sin(getAge() / 10.0F + bobOffs) * 0.1F;
-            emitter.offsetPos = new Vec3(0, 0.35F + y, 0);
+            emitter.parentSpace = new Matrix4f().setTranslation(0, 0.35F + y, 0);
         }
         super.tick();
         if (LibDateUtils.isDay(level())) {

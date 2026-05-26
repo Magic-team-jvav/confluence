@@ -32,7 +32,7 @@ import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.ArrayList;
@@ -295,7 +295,8 @@ public class BaseArrowEntity extends AbstractArrow {
                 if (location != null) {
                     this.emitter = new ParticleEmitter(level(), position(), location);
                     emitter.attachEntity(this);
-                    PSGameClient.LOADER.addEmitter(emitter, false);
+                    emitter.hideOutline = true;
+                    MolangParticleEngine.INSTANCE.addEmitter(emitter);
                 }
             }
         }

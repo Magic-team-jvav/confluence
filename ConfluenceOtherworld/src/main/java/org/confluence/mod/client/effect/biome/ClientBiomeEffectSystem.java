@@ -33,7 +33,6 @@ public final class ClientBiomeEffectSystem {
     private static @Nullable BiomeSkyEffect current;
     private static @Nullable BiomeSkyEffect target;
     private static float blend;
-    private static int tickCounter;
 
     public static void registerEffects() {
         EFFECTS.put(Confluence.asResource("the_corruption"), new BiomeSkyEffect(
@@ -71,10 +70,8 @@ public final class ClientBiomeEffectSystem {
 
         updateBlend();
 
-        if (++tickCounter % 20 == 0) {
-            Holder<Biome> biome = player.level().getBiome(player.blockPosition());
-            BiomeSkyEffect desired = resolve(biome);
-            applyDesired(desired);
+        if (player.level().getGameTime() % 20 == 0) {
+            applyDesired(resolve(player.level().getBiome(player.blockPosition())));
         }
     }
 

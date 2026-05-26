@@ -210,7 +210,6 @@ dependencies {
 
     implementation jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
     implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
-//    implementation(jarJar(files("libs/particlestorm-1.1.6.3.jar")))
     implementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}")
     implementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 

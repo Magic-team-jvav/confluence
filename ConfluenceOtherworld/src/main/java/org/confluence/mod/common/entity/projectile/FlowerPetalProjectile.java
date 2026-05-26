@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
-import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 // 山铜套装奖励
@@ -41,7 +41,7 @@ public class FlowerPetalProjectile extends Projectile {
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("flower_petal"));
             emitter.attachEntity(this);
-            PSGameClient.LOADER.addEmitter(emitter, false);
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();

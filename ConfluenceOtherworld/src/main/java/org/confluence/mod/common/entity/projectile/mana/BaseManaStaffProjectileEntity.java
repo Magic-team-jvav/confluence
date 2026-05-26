@@ -22,8 +22,8 @@ import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
-import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.ArrayList;
@@ -91,7 +91,8 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
             }
             this.emitter = new ParticleEmitter(level(), position(), particleId, expression);
             emitter.attachEntity(this);
-            PSGameClient.LOADER.addEmitter(emitter, false);
+            emitter.hideOutline = true;
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
 
         doAgeCheck(200);

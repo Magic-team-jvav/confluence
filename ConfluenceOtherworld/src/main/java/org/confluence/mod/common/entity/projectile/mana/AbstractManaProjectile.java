@@ -17,7 +17,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.mesdag.particlestorm.PSGameClient;
+import org.joml.Matrix4f;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.HashSet;
@@ -139,15 +140,16 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
             if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
                 this.emitter = new ParticleEmitter(level(), position(), particleId);
                 emitter.attachEntity(this);
+                emitter.hideOutline = true;
                 afterCreate.run();
-                PSGameClient.LOADER.addEmitter(emitter, false);
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
             }
         };
     }
 
     /// client side only
     protected void withParticle(ResourceLocation particleId) {
-        withParticle(particleId, () -> emitter.offsetPos = new Vec3(0, getBbHeight() / 2, 0));
+        withParticle(particleId, () -> emitter.parentSpace = new Matrix4f().setTranslation(0, getBbHeight() * 0.5F, 0));
     }
 
     /// server side only

@@ -87,7 +87,7 @@ public record SpearProjectileComponent(
      * 直线标准弹射物
      */
     public static final Supplier<SpearProjectileComponent> ORICHALCUM_HALBERD_PROJ =
-            () -> new SpearProjectileComponent(1.2f, 1.2f, 0.95f, 50, 0.0f, 12,
+            () -> new SpearProjectileComponent(1.2f, 1.2f, 0.95f, 20, 0.0f, 12,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     Confluence.asResource("orichalcum_halberd_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
@@ -95,27 +95,18 @@ public record SpearProjectileComponent(
     /**
      * 蘑菇孢子 - 自旋悬浮弹射物
      */
-    public static final Supplier<SpearProjectileComponent> MUSHROOM_PROJ =
-            () -> new SpearProjectileComponent(1.0f, 0.0f, 0.95f, 25, 0.0f, 12,
+    public static final Supplier<SpearProjectileComponent> MUSHROOM_SPEAR_PROJ =
+            () -> new SpearProjectileComponent(1.0f, 0.0f, 0.95f, 20, 0.0f, 12,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     Confluence.asResource("mushroom_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
-                    Optional.empty(), Optional.empty());
-    /**
-     * 追踪孢子弹射物
-     */
-    public static final Supplier<SpearProjectileComponent> MUSHROOM_SPEAR_PROJ =
-            () -> new SpearProjectileComponent(0.8f, 0.6f, 0.98f, 80, 0.0f, 10,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    Confluence.asResource("mushroom_spear_projectile"),
-                    Optional.empty(), ForwardGeneration.of(0, 20),
                     Optional.empty(), Optional.empty());
 
     /**
      * 北极 — 弧形雪花弹射物
      */
     public static final Supplier<SpearProjectileComponent> NORTH_POLE_PROJ =
-            () -> new SpearProjectileComponent(1.0f, 1.0f, 0.99f, 60, 0.03f, 18,
+            () -> new SpearProjectileComponent(1.0f, 1.0f, 0.99f, 120, 0.03f, 18,
                     ModSoundEvents.FROZEN_ARROW.getId(),
                     Confluence.asResource("north_pole_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, 0),

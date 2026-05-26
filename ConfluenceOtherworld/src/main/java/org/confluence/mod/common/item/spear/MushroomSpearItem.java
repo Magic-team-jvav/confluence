@@ -23,12 +23,16 @@ public class MushroomSpearItem extends AbstractSpearItem {
     private final int windUpEndTick;
     /** 刺击结束时刻（tick），前刺达到最远点的时间点 */
     private final int strikeEndTick;
+    /** 收矛时孢子生成的最小间距（格），使收矛阶段密度与刺出阶段一致 */
+    private static final double RETRACT_SPAWN_SPACING = 0.7;
+    /** 上一次生成孢子时矛尖的 z 偏移，用于收矛间距控制 */
+    private double lastSpawnTipZ;
 
     public MushroomSpearItem() {
-        super(new Properties().attributes(attributes(6, 30F)), ModRarity.BLUE, 40, 5, createKeyframes(
+        super(new Properties().attributes(attributes(6, 30F)), ModRarity.BLUE, 20, 2, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
-                K.of(0.2, 6, EasingType.EASE_OUT_BACK),
-                K.of(0.8, -12, EasingType.EASE_IN_EXPO),
+                K.of(0.05, 6, EasingType.EASE_OUT_BACK),
+                K.of(0.70, -12, EasingType.EASE_IN_EXPO),
                 K.of(1.0, 0, EasingType.LINEAR)
         ));
         this.windUpEndTick = computeWindUpEndTick();
@@ -88,23 +92,27 @@ public class MushroomSpearItem extends AbstractSpearItem {
         long gameTime = owner.level().getGameTime();
         long tickCount = gameTime - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY);
 
-        // 释放区间 = [刺击前摇结束时间，刺击结束时间]，在此区间内每tick在矛尖释放一个蘑菇孢子
+        // 刺击阶段：每 tick 在矛尖释放孢子
         if (tickCount > windUpEndTick && tickCount <= strikeEndTick) {
             Vec3 viewVector = owner.getViewVector(1.0F);
             Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
             Vec3 tipPos = position.add(viewVector.scale(getDistance(tickCount, owner)));
             SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
-            // 位置前移1格
             Vec3 forwardOffset = viewVector.scale(1.0);
             spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
-
-            // 刺击结束时，在最远端每隔一格生成一个蘑菇孢子
-            if (tickCount == strikeEndTick) {
-                Vec3 lookAngle = owner.getLookAngle();
-                for (float i = 1.0F; i <= 2.5F; i+=1.2F) {
-                    Vec3 spawnPos = tipPos.add(lookAngle.scale(i));
-                    spawnProjectile(owner.serverLevel(), owner, spawnPos.add(forwardOffset), component, lookAngle);
-                }
+            lastSpawnTipZ = getDistance(tickCount, owner);
+        }
+        // 收矛阶段：按间距控制生成密度，与刺出阶段保持一致
+        else if (tickCount > strikeEndTick && tickCount <= strikeEndTick + 6) {
+            double currentTipZ = getDistance(tickCount, owner);
+            if (Math.abs(currentTipZ - lastSpawnTipZ) >= RETRACT_SPAWN_SPACING) {
+                Vec3 viewVector = owner.getViewVector(1.0F);
+                Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
+                Vec3 tipPos = position.add(viewVector.scale(currentTipZ));
+                SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
+                Vec3 forwardOffset = viewVector.scale(1.0);
+                spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
+                lastSpawnTipZ = currentTipZ;
             }
         }
     }

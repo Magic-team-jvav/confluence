@@ -260,7 +260,7 @@ public class NatureBlocks {
     public static final DeferredBlock<AmethystClusterBlock> VOID_CRYSTAL_CLUSTER = registerWithItem("void_crystal_cluster", () -> new AmethystClusterBlock(7.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PURPLE)));
 
     // 末地 - 紫颂主题
-    public static final DeferredBlock<Block> VOID_GRASS_BLOCK = registerWithItem("void_grass_block", () -> new EndGrassBlock(NatureBlocks.END_DIRT));
+    public static final DeferredBlock<Block> VOID_GRASS_BLOCK = registerWithItem("void_grass_block", () -> new VoidGrassBlock(NatureBlocks.END_DIRT));
     public static final DeferredBlock<BasePlantBlock> VOID_VIOLET = registerWithItem("void_violet", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
     public static final DeferredBlock<BasePlantBlock> VOID_GRASS = registerWithItem("void_grass", () -> new BasePlantBlock(VOID_GRASS_BLOCK.get()));
     public static final DeferredBlock<BaseTallPlantBlock> TALL_VOID_GRASS = registerWithItem("tall_void_grass", () -> new BaseTallPlantBlock(VOID_GRASS_BLOCK.get()));

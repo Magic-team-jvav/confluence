@@ -33,6 +33,11 @@ public final class ClientConfigs {
     public static int rainbowCount = 3;
     public static boolean rainbowGradient = false;
 
+    public static int soulcererBackgroundHue = 270;
+    public static int soulcererBackgroundContrast = 255;
+    public static boolean soulcererBackgroundTree = true;
+    public static boolean soulcererBackgroundMagic = true;
+
     public static boolean achievementToast = true;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
     public static int customTitle = 71;
@@ -66,6 +71,11 @@ public final class ClientConfigs {
 
     private static IntValue RAINBOW_COUNT;
     private static BooleanValue RAINBOW_GRADIENT;
+
+    public static IntValue SOULCERER_BACKGROUND_HUE;
+    public static IntValue SOULCERER_BACKGROUND_CONTRAST;
+    public static BooleanValue SOULCERER_BACKGROUND_TREE;
+    public static BooleanValue SOULCERER_BACKGROUND_MAGIC;
 
     private static BooleanValue ACHIEVEMENT_TOAST;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
@@ -101,6 +111,11 @@ public final class ClientConfigs {
 
         rainbowCount = RAINBOW_COUNT.get();
         rainbowGradient = RAINBOW_GRADIENT.get();
+
+        soulcererBackgroundHue = SOULCERER_BACKGROUND_HUE.get();
+        soulcererBackgroundContrast = SOULCERER_BACKGROUND_CONTRAST.get();
+        soulcererBackgroundTree = SOULCERER_BACKGROUND_TREE.get();
+        soulcererBackgroundMagic = SOULCERER_BACKGROUND_MAGIC.get();
 
         achievementToast = ACHIEVEMENT_TOAST.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
@@ -141,6 +156,14 @@ public final class ClientConfigs {
             ACHIEVEMENT_TOAST = builder.define("achievementToast", true);
             SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
             CUSTOM_TITLE = builder.defineInRange("customTitle", 71, 0, 1000);
+            {
+                builder.push("Soulcerer");
+                SOULCERER_BACKGROUND_HUE = builder.defineInRange("soulcererBackgroundHue", 270, 0, 360);
+                SOULCERER_BACKGROUND_CONTRAST = builder.defineInRange("soulcererBackgroundContrast", 255, 0, 255);
+                SOULCERER_BACKGROUND_TREE = builder.define("soulcererBackgroundTree", true);
+                SOULCERER_BACKGROUND_MAGIC = builder.define("soulcererBackgroundMagic", true);
+                builder.pop();
+            }
             builder.pop();
         }
         {
@@ -203,7 +226,9 @@ public final class ClientConfigs {
                 builder.push("The Hallow");
                 RAINBOW_COUNT = builder.defineInRange("rainbowCount", 3, 0, 20);
                 RAINBOW_GRADIENT = builder.define("rainbowGradient", false);
+                builder.pop();
             }
+            builder.pop();
         }
 
         container.registerConfig(ModConfig.Type.CLIENT, builder.build());

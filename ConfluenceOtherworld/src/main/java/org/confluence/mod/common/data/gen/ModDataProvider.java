@@ -312,6 +312,8 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> GOLD_VEIN_WITH_DETONATOR = key("gold_vein_with_detonator");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VOID_GRASS = key("void_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> TALL_VOID_GRASS = key("tall_void_grass");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> INVERSE_GRASS = key("inverse_grass");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> TALL_INVERSE_GRASS = key("tall_inverse_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_GRASS = key("silver_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> TALL_SILVER_GRASS = key("tall_silver_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VOID_VIOLET = key("void_violet");
@@ -414,6 +416,8 @@ public class ModDataProvider {
             herb(context, CRIMSON_GRASS, 28, NatureBlocks.CRIMSON_GRASS.get());
             herb(context, VOID_GRASS, 180, NatureBlocks.VOID_GRASS.get());
             herb(context, TALL_VOID_GRASS, 180, NatureBlocks.TALL_VOID_GRASS.get());
+            herb(context, INVERSE_GRASS, 180, NatureBlocks.INVERSE_GRASS.get());
+            herb(context, TALL_INVERSE_GRASS, 180, NatureBlocks.TALL_INVERSE_GRASS.get());
             herb(context, SILVER_GRASS, 180, NatureBlocks.SILVER_GRASS.get());
             herb(context, TALL_SILVER_GRASS, 180, NatureBlocks.TALL_SILVER_GRASS.get());
             herb(context, VOID_VIOLET, 180, NatureBlocks.VOID_VIOLET.get());
@@ -881,6 +885,8 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> GOLD_VEIN_WITH_DETONATOR = key("gold_vein_with_detonator");
         private static final ResourceKey<PlacedFeature> VOID_GRASS = key("void_grass");
         private static final ResourceKey<PlacedFeature> TALL_VOID_GRASS = key("tall_void_grass");
+        private static final ResourceKey<PlacedFeature> INVERSE_GRASS = key("inverse_grass");
+        private static final ResourceKey<PlacedFeature> TALL_INVERSE_GRASS = key("tall_inverse_grass");
         private static final ResourceKey<PlacedFeature> SILVER_GRASS = key("silver_grass");
         private static final ResourceKey<PlacedFeature> SEA_SILVER_GRASS = key("sea_silver_grass");
         private static final ResourceKey<PlacedFeature> TALL_SILVER_GRASS = key("tall_silver_grass");
@@ -933,6 +939,10 @@ public class ModDataProvider {
         private static final HeightRangePlacement heightRandom10_100 = HeightRangePlacement.uniform(
                 VerticalAnchor.absolute(10),
                 VerticalAnchor.absolute(100)
+        );
+        private static final HeightRangePlacement heightRandom0_10 = HeightRangePlacement.uniform(
+                VerticalAnchor.absolute(0),
+                VerticalAnchor.absolute(10)
         );
 
         private static void bootstrap(BootstrapContext<PlacedFeature> context) {
@@ -998,6 +1008,8 @@ public class ModDataProvider {
             register(context, CORRUPT_GRASS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_GRASS), CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING), biome);
             register(context, VOID_GRASS, configured.getOrThrow(ConfiguredFeatures.VOID_GRASS), CountPlacement.of(30), inSquare, the_end, biome);
             register(context, TALL_VOID_GRASS, configured.getOrThrow(ConfiguredFeatures.TALL_VOID_GRASS), CountPlacement.of(10), inSquare, the_end, biome);
+            register(context, INVERSE_GRASS, configured.getOrThrow(ConfiguredFeatures.INVERSE_GRASS), CountPlacement.of(40), inSquare, bottomThroughUnderground, heightRandom0_10, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesTag(ModTags.Blocks.END_PLANT_CAN_SURVIVE), air, 20), ySpreadN1, the_end, biome);
+            register(context, TALL_INVERSE_GRASS, configured.getOrThrow(ConfiguredFeatures.TALL_INVERSE_GRASS), CountPlacement.of(12), inSquare, bottomThroughUnderground, heightRandom0_10, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesTag(ModTags.Blocks.END_PLANT_CAN_SURVIVE), air, 20), ySpreadN1, the_end, biome);
             register(context, SILVER_GRASS, configured.getOrThrow(ConfiguredFeatures.SILVER_GRASS), CountPlacement.of(30), inSquare, the_end, biome);
             register(context, SEA_SILVER_GRASS, configured.getOrThrow(ConfiguredFeatures.SILVER_GRASS), CountPlacement.of(10), inSquare, the_end, biome);
             register(context, TALL_SILVER_GRASS, configured.getOrThrow(ConfiguredFeatures.TALL_SILVER_GRASS), CountPlacement.of(10), inSquare, the_end, biome);
@@ -1728,6 +1740,8 @@ public class ModDataProvider {
                     }))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_GRASS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_GRASS);
                     })).build()
             );
             context.register(ModBiomes.INVERSE_PLAINS, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
@@ -1737,6 +1751,8 @@ public class ModDataProvider {
                     }))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_GRASS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_GRASS);
                     })).build()
             );
             context.register(ModBiomes.MOONBLIGHT_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)

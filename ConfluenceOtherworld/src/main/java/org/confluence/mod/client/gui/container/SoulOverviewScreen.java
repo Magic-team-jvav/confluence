@@ -6,6 +6,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
@@ -19,6 +21,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.phys.Vec2;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
 import org.confluence.mod.client.gui.widget.soul_skill.soul_overview.CenterButton;
 import org.confluence.mod.client.gui.widget.soul_skill.soul_overview.HotbarWidget;
@@ -34,7 +37,9 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.lwjgl.glfw.GLFW;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -50,6 +55,9 @@ public class SoulOverviewScreen extends Screen {
     public final Map<ResourceLocation, OverviewNode> nodeById = new HashMap<>();
     public final List<NavTab> navTabs = new ArrayList<>();
     private final CenterButton centerButton;
+    private AbstractSliderButton hueSlider;
+    private AbstractSliderButton contrastSlider;
+    private boolean isSliderVisible = false;
 
     /* 视口状态 */
     public double scrollX, scrollY;
@@ -88,12 +96,17 @@ public class SoulOverviewScreen extends Screen {
     private List<CachedDot> cachedDots;
 
     private void buildDotCache(int count, float radius, float minSize, float maxSize, int color, float minOffsetFactor, float maxOffsetFactor) {
-        if (cachedDots != null) return;
-        cachedDots = new ArrayList<>(count);
-
         float r = ((color >> 16) & 0xFF) / 255.0f;
         float g = ((color >> 8) & 0xFF) / 255.0f;
         float b = (color & 0xFF) / 255.0f;
+
+        if (cachedDots != null && !cachedDots.isEmpty()) {
+            float r1 = cachedDots.getFirst().r;
+            float g1 = cachedDots.getFirst().g;
+            float b1 = cachedDots.getFirst().b;
+            if (r == r1 && g == g1 && b == b1) return;
+        }
+        cachedDots = new ArrayList<>(count);
 
         for (int i = 0; i < count; i++) {
             long seed = (long) i * 73856093L ^ (long) i * 19349663L;
@@ -249,6 +262,47 @@ public class SoulOverviewScreen extends Screen {
         for (HotbarWidget.HotbarSlot widget : hotbar.getSlots()) {
             addRenderableWidget(widget);
         }
+
+        Button hueSliderButton = Button.builder(Component.literal("⚙"), button -> {
+            isSliderVisible = !isSliderVisible;
+        }).bounds(5, this.height - 25, 20, 20).build();
+        addRenderableWidget(hueSliderButton);
+
+        int hue = ClientConfigs.soulcererBackgroundHue;
+        double hueP = hue / 360.0;
+
+        hueSlider = new AbstractSliderButton(5, this.height - 50, 100, 20, Component.literal(hue == 270 ? "默認" : (String.valueOf(hue))), hueP) {
+            @Override
+            protected void updateMessage() {
+                int newHue = (int) (this.value * 360);
+                this.setMessage(Component.literal(newHue == 270 ? "默認" : (String.valueOf(newHue))));
+            }
+
+            @Override
+            protected void applyValue() {
+                int newHue = (int) (this.value * 360);
+                ClientConfigs.SOULCERER_BACKGROUND_HUE.set(newHue);
+                ClientConfigs.soulcererBackgroundHue = newHue;
+            }
+        };
+
+        int contrast = ClientConfigs.soulcererBackgroundContrast;
+        double contrastP = contrast / 255.0;
+
+        contrastSlider = new AbstractSliderButton(5, this.height - 75, 100, 20, Component.literal(contrast == 255 ? "默認" : (String.valueOf(contrast))), contrastP) {
+            @Override
+            protected void updateMessage() {
+                int newContrast = (int) (this.value * 255);
+                this.setMessage(Component.literal(newContrast == 255 ? "默認" : (String.valueOf(newContrast))));
+            }
+
+            @Override
+            protected void applyValue() {
+                int newContrast = (int) (this.value * 255);
+                ClientConfigs.SOULCERER_BACKGROUND_CONTRAST.set(newContrast);
+                ClientConfigs.soulcererBackgroundContrast = newContrast;
+            }
+        };
     }
 
     private void buildNavTabs() {
@@ -386,22 +440,30 @@ public class SoulOverviewScreen extends Screen {
         long gameTime = level.getGameTime();
         float time = gameTime + partialTick;
 
-        guiGraphics.fill(0, 0, this.width, this.height, 0xFF07010e);
+        float h1 = (ClientConfigs.soulcererBackgroundHue - 34) % 360 / 360F;
+        float h2 = ClientConfigs.soulcererBackgroundHue / 360F;
+        float h3 = (ClientConfigs.soulcererBackgroundHue - 2) % 360 / 360F;
+        float lit = ClientConfigs.soulcererBackgroundContrast / 255F;
+        float lit1 = lit * 0.6F;
+
+        guiGraphics.fill(0, 0, this.width, this.height, (Color.HSBtoRGB(h3, 0.93f + Mth.sqrt(1 - lit * lit) * 0.07f, 0.05f * lit) & 0x00FFFFFF) | 0xFF000000);
+
         float offsetScale = 0.15f;
         float noiseScale = 0.25f;
         float noiseOffsetX = (float) - this.scrollX * offsetScale;
         float noiseOffsetY = (float) - this.scrollY * offsetScale;
         float noiseOffsetZ = Mth.sin(time * 0.002f) * 100;
 
+
         renderScreenBlendNoise(guiGraphics, noiseOffsetZ,
-                0xFF252dab, noiseOffsetX, noiseOffsetY, noiseScale, 1.0F,
-                0xFF773bb4, noiseOffsetX * 2.5F, noiseOffsetY * 2.5F, noiseScale * 0.8f, 1.0F);
+                (Color.HSBtoRGB(h1, 0.78f + Mth.sqrt(1 - lit * lit) * 0.22f, 0.45f * lit1 + 0.4f) & 0x00FFFFFF) | 0xFF000000, noiseOffsetX, noiseOffsetY, noiseScale, 1.0F,
+                (Color.HSBtoRGB(h2, 0.67f + Mth.sqrt(1 - lit * lit) * 0.33f, 0.5167f * lit1 + 0.4f) & 0x00FFFFFF) | 0xFF000000, noiseOffsetX * 2.5F, noiseOffsetY * 2.5F, noiseScale * 0.8f, 1.0F);
 
         int centerX = (int) (this.width * 0.5);
         int centerY = (int) (this.height * 0.5);
 
         drawLivingTree(guiGraphics, centerX, centerY, time);
-        renderBackgroundDots(guiGraphics, centerX, centerY, 1000, 1500, 1, 3, (float) this.scrollX, (float) this.scrollY, 0.1F, 1.0F, 0xFFFFFFFF);
+        renderBackgroundDots(guiGraphics, centerX, centerY, 1000, 1500, 1, 3, (float) this.scrollX, (float) this.scrollY, 0.1F, 1.0F, (Color.HSBtoRGB(h2, Mth.sqrt(1 - lit * lit), lit1 + 0.4F) & 0x00FFFFFF) | 0xFF000000);
         drawMagic(guiGraphics, centerX, centerY, time);
         tickScrollAnimation(partialTick);
         renderConnections(guiGraphics, partialTick);
@@ -413,9 +475,16 @@ public class SoulOverviewScreen extends Screen {
         final float magicOffsetX = (float) this.scrollX * magicOffsetScale;
         final float magicOffsetY = (float) this.scrollY * magicOffsetScale;
         final float rotate = time * 0.01f;
-        final int lineColor = 0xFFFFFFFF;
-        final int lightInnerColor = 0xFF68349d;
-        final int lightOuterColor = 0x0068349d;
+
+        float h = ClientConfigs.soulcererBackgroundHue / 360F;
+        float lit = ClientConfigs.soulcererBackgroundContrast / 255F;
+        float lit1 = lit * 0.6F;
+
+        final int lineColor = (Color.HSBtoRGB(h, Mth.sqrt(1 - lit * lit), lit1 + 0.4f) & 0x00FFFFFF) | 0xFF000000;
+        final int lightColor = Color.HSBtoRGB(h, 0.78f + Mth.sqrt(1 - lit * lit) * 0.22f, 0.45f * lit1 + 0.4f);
+
+        final int lightOuterColor = lightColor & 0x00FFFFFF;
+        final int lightInnerColor = lightOuterColor | 0xFF000000;
         final int emptyColor = 0x00000000;
 
         final float rotateFactor1 = Mth.sin(time * 0.01f) * 0.5f + 0.5f;
@@ -489,9 +558,13 @@ public class SoulOverviewScreen extends Screen {
         final float treeOffsetX = (float) this.scrollX * treeOffsetScale;
         final float treeOffsetY = (float) this.scrollY * treeOffsetScale + 20;
 
-        final int treeLineColor = 0xFF8e54c9;
-        final int treeLightInnerColor = 0xAA68349d;
-        final int treeLightOuterColor = 0x0068349d;
+        float treeLineH = ClientConfigs.soulcererBackgroundHue / 360F;
+        float lit = ClientConfigs.soulcererBackgroundContrast / 255F;
+        float lit1 = lit * 0.6F;
+
+        final int treeLineColor = Color.HSBtoRGB(treeLineH, 0.58f + Mth.sqrt(1 - lit * lit) * 0.42f, 0.65f * lit1 + 0.4F) | 0xFF000000;
+        final int treeLightInnerColor = (Color.HSBtoRGB(treeLineH, 0.67f + Mth.sqrt(1 - lit * lit) * 0.33f, 0.367f * lit1 + 0.4F) & 0x00FFFFFF) | 0xAA000000;
+        final int treeLightOuterColor = (Color.HSBtoRGB(treeLineH, 0.67f + Mth.sqrt(1 - lit * lit) * 0.33f, 0.367f * lit1 + 0.4F) & 0x00FFFFFF);
         final float treeScale = 0.7f;
         final int emptyColor = 0x00000000;
         final float pointRadius = 40F * treeScale;
@@ -1048,6 +1121,12 @@ public class SoulOverviewScreen extends Screen {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
+        if (isSliderVisible) {
+            hueSlider.setPosition(5, this.height - 50);
+            hueSlider.render(guiGraphics, mouseX, mouseY, partialTick);
+            contrastSlider.setPosition(5, this.height - 75);
+            contrastSlider.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
     }
 
     private void renderConnections(GuiGraphics guiGraphics, float partialTick) {
@@ -1092,6 +1171,12 @@ public class SoulOverviewScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+
+        if (isSliderVisible && button == 0) {
+            if (hueSlider.isMouseOver(mouseX, mouseY)) return hueSlider.mouseClicked(mouseX, mouseY, button);
+            if (contrastSlider.isMouseOver(mouseX, mouseY)) return contrastSlider.mouseClicked(mouseX, mouseY, button);
+        }
+
         if (super.mouseClicked(mouseX, mouseY, button)) {
             return true;
         }
@@ -1111,6 +1196,10 @@ public class SoulOverviewScreen extends Screen {
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
+        if (isSliderVisible && button == 0) {
+            if (hueSlider.isMouseOver(mouseX, mouseY)) return hueSlider.mouseDragged(mouseX, mouseY, button, dx, dy);
+            if (contrastSlider.isMouseOver(mouseX, mouseY)) return contrastSlider.mouseDragged(mouseX, mouseY, button, dx, dy);
+        }
         if (isDragging && button == 0) {
             scrollX = dragStartScrollX + (mouseX - dragStartMouseX);
             scrollY = dragStartScrollY + (mouseY - dragStartMouseY);
@@ -1123,6 +1212,10 @@ public class SoulOverviewScreen extends Screen {
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (isSliderVisible) {
+            hueSlider.onRelease(mouseX, mouseY);
+            contrastSlider.onRelease(mouseX, mouseY);
+        }
         if (button == 0 && isDragging) {
             isDragging = false;
             return true;

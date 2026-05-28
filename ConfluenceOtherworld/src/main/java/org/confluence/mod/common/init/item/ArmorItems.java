@@ -300,6 +300,27 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
     );
 
+    public static final DeferredItem<BaseArmorItem> BATTLE_COLLAR = register("battle_collar", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/battle_robe_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.07)
+    );
+    public static final DeferredItem<BaseArmorItem> BATTLE_ROBE = register("battle_robe", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/battle_robe_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.07)
+    );
+    public static final DeferredItem<BaseArmorItem> BATTLE_LEGGINGS = register("battle_leggings", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/battle_robe_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> BATTLE_BOOTS = register("battle_boots", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/battle_robe_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
     public static final DeferredItem<BaseArmorItem> PHANTOM_HELMET = register("phantom_helmet", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/phantom_armor")
             .rarity(ModRarity.BLUE)

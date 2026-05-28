@@ -215,6 +215,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.hunters_armor", "猎人盔甲");
         add("itemGroup.confluence.guards_armor", "守卫盔甲");
         add("itemGroup.confluence.spelunker_armor", "探穴者盔甲");
+        add("itemGroup.confluence.battle_robe_armor", "战袍盔甲");
         add("itemGroup.confluence.phantom_armor", "幻翼盔甲");
         add("itemGroup.confluence.hermit_armor", "隐匿者盔甲");
         add("itemGroup.confluence.blue_hermit_armor", "蓝隐匿者盔甲");
@@ -3903,6 +3904,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CLIMBING_CHESTPLATE.get(), "登山胸甲");
         add(ArmorItems.CLIMBING_LEGGINGS.get(), "登山护腿");
         add(ArmorItems.CLIMBING_BOOTS.get(), "登山靴子");
+        add(ArmorItems.BATTLE_COLLAR.get(), "战斗衣领");
+        add(ArmorItems.BATTLE_ROBE.get(), "战袍");
+        add(ArmorItems.BATTLE_LEGGINGS.get(), "战斗护腿");
+        add(ArmorItems.BATTLE_BOOTS.get(), "战斗靴子");
         add(ArmorItems.PHANTOM_HELMET.get(), "幻翼头盔");
         add(ArmorItems.PHANTOM_CHESTPLATE.get(), "幻翼胸甲");
         add(ArmorItems.PHANTOM_LEGGINGS.get(), "幻翼护腿");

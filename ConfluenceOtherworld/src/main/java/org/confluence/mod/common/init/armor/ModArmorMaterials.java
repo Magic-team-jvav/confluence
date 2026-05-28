@@ -166,6 +166,11 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
             "climbing", 2.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> BATTLE_ROBE_ARMOR_MATERIALS = registerArmorMaterial("battle_robe_armor_materials",
+            3, 4, 4, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            "battle_robe", 1.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> GUARDS_ARMOR_MATERIALS = registerArmorMaterial("guards_armor_materials",
             3, 5, 5, 3,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,

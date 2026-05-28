@@ -1397,6 +1397,12 @@ public final class ModTabs {
                         climbing_armor.accept(ArmorItems.CLIMBING_LEGGINGS.get());
                         climbing_armor.accept(ArmorItems.CLIMBING_BOOTS.get());
 
+                        CreativeModeTab.Output battle_robe_armor = GroupItem.belongsTo("battle_robe_armor", output);
+                        battle_robe_armor.accept(ArmorItems.BATTLE_COLLAR.get());
+                        battle_robe_armor.accept(ArmorItems.BATTLE_ROBE.get());
+                        battle_robe_armor.accept(ArmorItems.BATTLE_LEGGINGS.get());
+                        battle_robe_armor.accept(ArmorItems.BATTLE_BOOTS.get());
+
                         CreativeModeTab.Output phantom_armor = GroupItem.belongsTo("phantom_armor", output);
                         phantom_armor.accept(ArmorItems.PHANTOM_HELMET.get());
                         phantom_armor.accept(ArmorItems.PHANTOM_CHESTPLATE.get());

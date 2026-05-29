@@ -122,8 +122,8 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.UNBREAKABLE, 15, 0.5F, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.PURPLE_CLUBBERFISH_EFFECT.get()).hasImage()
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)));
-    public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE, withSpecialSweep(0.8F, EFFECT_SWORD
-            .apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()).hasImage()));
+    public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE, withSpecialSweep(0.8F, PROJ_SWORD
+            .apply(SwordProjectileComponent.LIGHTS_BANE_PROJ).hasImage()));
     public static final DeferredItem<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer", ModTiers.UNBREAKABLE, 14, 1.3F, ModRarity.BLUE, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()).hasImage()));
     public static final DeferredItem<BaseSwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 25, 1.2f, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD

@@ -101,6 +101,11 @@ public record SwordProjectileComponent(
                     Optional.empty(), ForwardGeneration.of(0, 20),
                     Optional.empty());
 
+    public static final Supplier<SwordProjectileComponent> LIGHTS_BANE_PROJ =
+            () -> new SwordProjectileComponent(1.0f, 0.8f, 0.9f, 100, 0f, 20,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.LIGHTS_BANE_PROJECTILE.getId(),
+                    Optional.empty(), ForwardGeneration.of(0, 0),
+                    Optional.empty());
 
     public SoundEvent getSoundEvent() {
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);

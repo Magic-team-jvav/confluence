@@ -60,6 +60,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     public static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
     protected static final EntityDataAccessor<Vector3f> DATA_INIT_SPEED = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
     protected static final EntityDataAccessor<Float> DATA_INIT_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Integer> DATA_LIFETIME = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.INT);
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
@@ -75,6 +76,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 float yaw = (float) Mth.atan2(direction.x, direction.z) * Mth.RAD_TO_DEG;
                 this.setYRot(yaw);
                 yRotO = yaw;
+            } else if (DATA_LIFETIME.equals(data)) {
+                this.lifetime = this.entityData.get(DATA_LIFETIME);
             }
         }
     }
@@ -90,6 +93,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         builder.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
         builder.define(DATA_INIT_GRAVITY, 0.0F);
         builder.define(DATA_DIRECTION, new Vector3f());
+        builder.define(DATA_LIFETIME, lifetime);
     }
 
     @Override
@@ -125,6 +129,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         this.gravity = projComponent.gravity();
         this.lifetime = projComponent.existTicks();
         this.entityData.set(DATA_INIT_GRAVITY, gravity);
+        this.entityData.set(DATA_LIFETIME, lifetime);
     }
 
     LivingEntity target;

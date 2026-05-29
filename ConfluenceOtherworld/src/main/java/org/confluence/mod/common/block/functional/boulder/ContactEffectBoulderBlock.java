@@ -9,12 +9,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.MobEffectInstanceData;
+import org.confluence.mod.common.util.TrapDamageHelper;
 
 import java.util.function.Function;
 
@@ -57,11 +57,23 @@ public class ContactEffectBoulderBlock extends BoulderBlock {
         }
 
         static ContactEffect createHurt(Function<Entity, Float> damageFunction, ResourceKey<DamageType> damageTypeResourceKey) {
-            return (state, level, pos, entity) -> entity.hurt(level.damageSources().source(damageTypeResourceKey), damageFunction.apply(entity));
+            return (state, level, pos, entity) -> {
+                float damage = damageFunction.apply(entity);
+                if (entity instanceof LivingEntity living) {
+                    damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
+                }
+                entity.hurt(level.damageSources().source(damageTypeResourceKey), damage);
+            };
         }
 
         static ContactEffect createHurt(Function<Entity, Float> damageFunction, Function<Level, DamageSource> damageSourceProvider) {
-            return (state, level, pos, entity) -> entity.hurt(damageSourceProvider.apply(level), damageFunction.apply(entity));
+            return (state, level, pos, entity) -> {
+                float damage = damageFunction.apply(entity);
+                if (entity instanceof LivingEntity living) {
+                    damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
+                }
+                entity.hurt(damageSourceProvider.apply(level), damage);
+            };
         }
 
         static ContactEffect createEffect(MobEffectInstanceData... effects) {

@@ -23,6 +23,7 @@ import org.confluence.mod.common.block.functional.SpearTrapBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.util.TrapDamageHelper;
 
 /**
  * 长矛机关的发射物
@@ -84,7 +85,8 @@ public class SpearEntity extends Entity {
         for (Entity entity1 : level().getEntities(this, boundingBox, entity -> entity instanceof LivingEntity)) {
             AABB aabb = entity1.getBoundingBox().inflate(0.3);
             if (aabb.clip(startVec, endVec).isPresent()) {
-                entity1.hurt(ModDamageTypes.of(level(), DamageTypes.STING), LibUtils.switchByDifficulty(level(), blockPosition(), 24, 48, 72));
+                float damage = LibUtils.switchByDifficulty(level(), blockPosition(), 24, 48, 72);
+                entity1.hurt(ModDamageTypes.of(level(), DamageTypes.STING), TrapDamageHelper.applyDeadMansSweaterReduction((LivingEntity) entity1, damage));
             }
         }
     }

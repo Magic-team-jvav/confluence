@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -32,6 +33,7 @@ import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.util.TrapDamageHelper;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.jetbrains.annotations.Nullable;
 
@@ -280,7 +282,11 @@ public class BoulderEntity extends Projectile {
         // TODO 需要重写
         int i = hitHistory.containsKey(uuid1) ? hitHistory.addTo(uuid1, -1) : 0;
         if (i <= 0) {
-            entity.hurt(ModDamageTypes.of(entity.level(), ModDamageTypes.BOULDER, this), 100.0F);
+            float damage = 100.0F;
+            if (entity instanceof LivingEntity living) {
+                damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
+            }
+            entity.hurt(ModDamageTypes.of(entity.level(), ModDamageTypes.BOULDER, this), damage);
             hitHistory.put(uuid1, 5);
         }
     }

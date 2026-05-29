@@ -5,7 +5,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.init.item.VanityArmorItems;
+import org.confluence.mod.common.util.TrapDamageHelper;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
@@ -36,8 +40,16 @@ public class FlameCloudEntity extends Entity {
         } else {
             for (Entity entity : level().getEntities(this, AABB.encapsulatingFullBlocks(blockPosition().offset(-2, -2, -2), blockPosition().offset(2, 2, 2)))) {
                 if (!entity.fireImmune() || !entity.isInWaterRainOrBubble()) {
-                    entity.setRemainingFireTicks(200);
-                    entity.hurt(damageSources().inFire(), LibUtils.switchByDifficulty(level(), blockPosition(), 8F, 16F, 24F));
+                    int fireTicks = 200;
+                    if (entity instanceof LivingEntity living && living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {
+                        fireTicks /= 2;
+                    }
+                    entity.setRemainingFireTicks(Math.max(entity.getRemainingFireTicks(), fireTicks));
+                    float damage = LibUtils.switchByDifficulty(level(), blockPosition(), 8F, 16F, 24F);
+                    if (entity instanceof LivingEntity living) {
+                        damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
+                    }
+                    entity.hurt(damageSources().inFire(), damage);
                 }
             }
         }

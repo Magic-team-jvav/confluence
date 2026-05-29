@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -14,6 +15,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.util.TrapDamageHelper;
 
 public class RollingCactusBoulderEntity extends BoulderEntity {
     public RollingCactusBoulderEntity(EntityType<? extends BoulderEntity> entityType, Level pLevel) {
@@ -71,7 +73,11 @@ public class RollingCactusBoulderEntity extends BoulderEntity {
             } else if (!level().isClientSide) {
                 if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
                     Entity entity = entityHitResult.getEntity();
-                    if (entity.hurt(damageSources().cactus(), 8.0F)) {
+                    float damage = 8.0F;
+                    if (entity instanceof LivingEntity living) {
+                        damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
+                    }
+                    if (entity.hurt(damageSources().cactus(), damage)) {
                         VectorUtils.knockBackA2B(this, entity, 1.0, 0.2);
                     }
                 }

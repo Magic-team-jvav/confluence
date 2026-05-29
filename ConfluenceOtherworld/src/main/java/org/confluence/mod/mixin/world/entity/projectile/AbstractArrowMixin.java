@@ -3,11 +3,17 @@ package org.confluence.mod.mixin.world.entity.projectile;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.network.SetEntityDataPacketS2C;
+import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.mixed.IAbstractArrow;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -91,5 +97,17 @@ public abstract class AbstractArrowMixin implements IAbstractArrow {
         if (confluence$isDisappearingOnGround()) {
             confluence$self().discard();
         }
+    }
+
+    @WrapOperation(method = "onHitEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
+    private boolean reduceDamageIfHasSweater(Entity entity, DamageSource damageSource, float damage, Operation<Boolean> original) {
+        AbstractArrow self = confluence$self();
+        Component name = self.getCustomName();
+        if (name != null && name.equals(DartTrapBlock.NAME)) {
+            if (entity instanceof LivingEntity living && living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {
+                damage /= 2.0F;
+            }
+        }
+        return original.call(entity, damageSource, damage);
     }
 }

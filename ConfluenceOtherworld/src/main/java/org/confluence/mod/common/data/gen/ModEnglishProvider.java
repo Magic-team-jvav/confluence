@@ -254,6 +254,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.hunters_armor", "Hunters Armor");
         add("itemGroup.confluence.guards_armor", "Guards Armor");
         add("itemGroup.confluence.spelunker_armor", "Spelunker Armor");
+        add("itemGroup.confluence.battle_robe_armor", "Battle Robe Armor");
+        add("itemGroup.confluence.splendid_robe_armor", "Splendid Robe Armor");
+        add("itemGroup.confluence.archers_armor", "Archers Armor");
+        add("itemGroup.confluence.phantom_armor", "Phantom Armor");
         add("itemGroup.confluence.hermit_armor", "Hermit Armor");
         add("itemGroup.confluence.blue_hermit_armor", "Blue Hermit Armor");
         add("itemGroup.confluence.scale_mail_armor", "Scale Mail Armor");
@@ -1261,6 +1265,19 @@ public class ModEnglishProvider extends LanguageProvider {
         // Spelunker Set
         add("armor_set_bonus.confluence.spelunker_set.0", "Increases your max number of minions by 1");
         add("armor_set_bonus.confluence.spelunker_set.1", "Increase the duration of spelunker potions by 2 minutes");
+        // Splendid Robe Armor
+        add("armor_set_bonus.confluence.splendid_robe_set.0", "7% increased movement speed");
+        // Archer Set
+        add("armor_set_bonus.confluence.archers_set.0", "Arrow speed increased by 5%");
+        // Soul Dancer Robe
+        add("armor_set_bonus.confluence.souldancer_robe_set.0", "For 10 seconds after collecting souls, gain 8% critical strike chance and 7% movement speed");
+        add("armor_set_bonus.confluence.souldancer_robe_set.1", "For 10 seconds after collecting souls, gain 7% damage reduction");
+        // Hermit Set
+        add("armor_set_bonus.confluence.hermit_set.0", "Increase maximum soul capacity by 20");
+        // Blue Hermit Set
+        add("armor_set_bonus.confluence.blue_hermit_set.0", "Spend 10 souls to reduce the duration of drug resistance by 3 seconds");
+        // Phantom Set
+        add("armor_set_bonus.confluence.phantom_set.0", "Gain +1 souls per pick-up, +2 souls per pick-up during nighttime");
         // Fossil Set
         add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
         // Cold Crystal Set

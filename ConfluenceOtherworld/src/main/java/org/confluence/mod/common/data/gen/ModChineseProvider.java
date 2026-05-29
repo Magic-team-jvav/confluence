@@ -216,6 +216,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.guards_armor", "守卫盔甲");
         add("itemGroup.confluence.spelunker_armor", "探穴者盔甲");
         add("itemGroup.confluence.battle_robe_armor", "战袍盔甲");
+        add("itemGroup.confluence.splendid_robe_armor", "华丽长袍盔甲");
+        add("itemGroup.confluence.archers_armor", "弓箭手盔甲");
         add("itemGroup.confluence.phantom_armor", "幻翼盔甲");
         add("itemGroup.confluence.hermit_armor", "隐匿者盔甲");
         add("itemGroup.confluence.blue_hermit_armor", "蓝隐匿者盔甲");
@@ -1297,6 +1299,19 @@ public class ModChineseProvider extends LanguageProvider {
         // 探穴者
         add("armor_set_bonus.confluence.spelunker_set.0", "仆从数量上限增加1");
         add("armor_set_bonus.confluence.spelunker_set.1", "提升洞穴探险药水时长2分钟");
+        // 华丽长袍盔甲
+        add("armor_set_bonus.confluence.splendid_robe_set.0", "移动速度提高7%");
+        // 弓箭手
+        add("armor_set_bonus.confluence.archers_set.0", "弓箭速度提高5%");
+        // 魂舞长袍
+        add("armor_set_bonus.confluence.souldancer_robe_set.0", "收集灵魂后的10秒内，暴击率提高8%，移动速度提高7%");
+        add("armor_set_bonus.confluence.souldancer_robe_set.1", "收集灵魂后的10秒内，获得7%伤害减免");
+        // 隐匿者
+        add("armor_set_bonus.confluence.hermit_set.0", "灵魂上限增加20");
+        // 蓝隐匿者
+        add("armor_set_bonus.confluence.blue_hermit_set.0", "消耗10灵魂能让耐药性效果降低3秒");
+        // 幻翼
+        add("armor_set_bonus.confluence.phantom_set.0", "灵魂获取增加1，晚上时灵魂获取增加2");
         // 忍者
         add("armor_set_bonus.confluence.ninja_set.0", "移动速度提高20%");
         // 化石
@@ -3908,6 +3923,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.BATTLE_ROBE.get(), "战袍");
         add(ArmorItems.BATTLE_LEGGINGS.get(), "战斗护腿");
         add(ArmorItems.BATTLE_BOOTS.get(), "战斗靴子");
+        add(ArmorItems.SPLENDID_COLLAR.get(), "华丽衣领");
+        add(ArmorItems.SPLENDID_ROBE.get(), "华丽长袍");
+        add(ArmorItems.SPLENDID_LEGGINGS.get(), "华丽护腿");
+        add(ArmorItems.SPLENDID_BOOTS.get(), "华丽靴子");
+        add(ArmorItems.ARCHERS_HELMET.get(), "弓箭手头盔");
+        add(ArmorItems.ARCHERS_CHESTPLATE.get(), "弓箭手胸甲");
+        add(ArmorItems.ARCHERS_LEGGINGS.get(), "弓箭手护腿");
+        add(ArmorItems.ARCHERS_BOOTS.get(), "弓箭手靴子");
         add(ArmorItems.PHANTOM_HELMET.get(), "幻翼头盔");
         add(ArmorItems.PHANTOM_CHESTPLATE.get(), "幻翼胸甲");
         add(ArmorItems.PHANTOM_LEGGINGS.get(), "幻翼护腿");

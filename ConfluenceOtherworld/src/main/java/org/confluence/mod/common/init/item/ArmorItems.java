@@ -303,12 +303,12 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> BATTLE_COLLAR = register("battle_collar", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
-            .criticalChance(0.07)
+            .meleeDamage(0.07)
     );
     public static final DeferredItem<BaseArmorItem> BATTLE_ROBE = register("battle_robe", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
-            .criticalChance(0.07)
+            .meleeDamage(0.07)
     );
     public static final DeferredItem<BaseArmorItem> BATTLE_LEGGINGS = register("battle_leggings", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/battle_robe_armor")
@@ -319,6 +319,53 @@ public class ArmorItems {
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
             .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
+    public static final DeferredItem<BaseArmorItem> SPLENDID_COLLAR = register("splendid_collar", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/splendid_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .meleeDamage(0.07)
+            .magicDamage(0.08)
+    );
+    public static final DeferredItem<BaseArmorItem> SPLENDID_ROBE = register("splendid_robe", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/splendid_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .meleeDamage(0.07)
+            .magicDamage(0.08)
+    );
+    public static final DeferredItem<BaseArmorItem> SPLENDID_LEGGINGS = register("splendid_leggings", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/splendid_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .criticalChance(0.04)
+    );
+    public static final DeferredItem<BaseArmorItem> SPLENDID_BOOTS = register("splendid_boots", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/splendid_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .criticalChance(0.04)
+    );
+
+    public static final DeferredItem<BaseArmorItem> ARCHERS_HELMET = register("archers_helmet", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/archers_armor")
+            .rarity(ModRarity.GREEN)
+    );
+    public static final DeferredItem<BaseArmorItem> ARCHERS_CHESTPLATE = register("archers_chestplate", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/archers_armor")
+            .rarity(ModRarity.GREEN)
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F))
+    );
+    public static final DeferredItem<BaseArmorItem> ARCHERS_LEGGINGS = register("archers_leggings", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/archers_armor")
+            .rarity(ModRarity.GREEN)
+            .criticalChance(0.05)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> ARCHERS_BOOTS = register("archers_boots", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/archers_armor")
+            .rarity(ModRarity.GREEN)
+            .criticalChance(0.05)
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F))
     );
 
     public static final DeferredItem<BaseArmorItem> PHANTOM_HELMET = register("phantom_helmet", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder

@@ -1403,6 +1403,18 @@ public final class ModTabs {
                         battle_robe_armor.accept(ArmorItems.BATTLE_LEGGINGS.get());
                         battle_robe_armor.accept(ArmorItems.BATTLE_BOOTS.get());
 
+                        CreativeModeTab.Output splendid_robe_armor = GroupItem.belongsTo("splendid_robe_armor", output);
+                        splendid_robe_armor.accept(ArmorItems.SPLENDID_COLLAR.get());
+                        splendid_robe_armor.accept(ArmorItems.SPLENDID_ROBE.get());
+                        splendid_robe_armor.accept(ArmorItems.SPLENDID_LEGGINGS.get());
+                        splendid_robe_armor.accept(ArmorItems.SPLENDID_BOOTS.get());
+
+                        CreativeModeTab.Output archers_armor = GroupItem.belongsTo("archers_armor", output);
+                        archers_armor.accept(ArmorItems.ARCHERS_HELMET.get());
+                        archers_armor.accept(ArmorItems.ARCHERS_CHESTPLATE.get());
+                        archers_armor.accept(ArmorItems.ARCHERS_LEGGINGS.get());
+                        archers_armor.accept(ArmorItems.ARCHERS_BOOTS.get());
+
                         CreativeModeTab.Output phantom_armor = GroupItem.belongsTo("phantom_armor", output);
                         phantom_armor.accept(ArmorItems.PHANTOM_HELMET.get());
                         phantom_armor.accept(ArmorItems.PHANTOM_CHESTPLATE.get());

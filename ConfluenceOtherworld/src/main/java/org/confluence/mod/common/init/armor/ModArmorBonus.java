@@ -144,6 +144,9 @@ public final class ModArmorBonus {
             // todo 蜡烛粒子
             key.of(ENHANCE$EFFECT$DURATION, Object2IntMaps.singleton(ModEffects.SPELUNKER, 2400));
         });
+        register("splendid_robe_set", 1, SPLENDID_COLLAR, SPLENDID_ROBE, SPLENDID_LEGGINGS, SPLENDID_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        });
         register("lead_set", 1, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS, armor(1));
         register("silver_set", 1, SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, armor(2));
         register("tungsten_set", 1, TUNGSTEN_HELMET, TUNGSTEN_CHESTPLATE, TUNGSTEN_LEGGINGS, TUNGSTEN_BOOTS, armor(1));

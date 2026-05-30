@@ -32,7 +32,7 @@ public class BaseFlailItem extends TooltipItem {
         super(new Properties()
                 .stacksTo(1)
                 .component(ModDataComponentTypes.FLAIL, flailComponent),
-                rarity);
+                rarity, "");
     }
 
     /**

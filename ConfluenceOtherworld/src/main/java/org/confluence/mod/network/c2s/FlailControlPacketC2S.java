@@ -76,7 +76,7 @@ public final class FlailControlPacketC2S implements IPacketC2S {
                 } else if (existing.getPhase() == BaseFlailEntity.PHASE_THROWN
                         || existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {
                     // THROWN / RETRACT 中按键 → 掉落 STAY
-                    existing.dropToGround();
+                    existing.playerDrop();
                 }
             }
             case RELEASE -> {
@@ -88,7 +88,7 @@ public final class FlailControlPacketC2S implements IPacketC2S {
                     existing.forceRetract();
                 } else if (existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {
                     // RETRACT 中松开 → 回到 STAY 重新掉落
-                    existing.dropToGround();
+                    existing.playerDrop();
                 }
             }
         }

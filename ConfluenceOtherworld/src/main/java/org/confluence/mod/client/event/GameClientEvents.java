@@ -85,6 +85,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
@@ -92,6 +93,7 @@ import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
+import org.confluence.mod.network.c2s.FlailControlPacketC2S;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.network.c2s.SwordProjectilePacketC2S;
@@ -114,6 +116,8 @@ import java.util.Optional;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
 public final class GameClientEvents {
+    private static boolean wasFlailKeyHeld = false;
+
     @SubscribeEvent
     public static void clientTick$Pre(ClientTickEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -172,6 +176,17 @@ public final class GameClientEvents {
             ) {
                 SwordProjectilePacketC2S.sendToServer();
             }
+            //连枷按键检测
+            boolean isFlail = player.getMainHandItem().has(ModDataComponentTypes.FLAIL);
+            boolean keyHeld = minecraft.options.keyAttack.isDown();
+            if (isFlail) {
+                if (keyHeld && !wasFlailKeyHeld) {
+                    FlailControlPacketC2S.sendHold();
+                } else if (!keyHeld && wasFlailKeyHeld) {
+                    FlailControlPacketC2S.sendRelease();
+                }
+            }
+            wasFlailKeyHeld = keyHeld && isFlail;
             HouseSelectHud.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
             ClientBiomeEffectSystem.tick(player);

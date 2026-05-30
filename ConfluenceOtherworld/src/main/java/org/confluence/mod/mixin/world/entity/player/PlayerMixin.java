@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.Bestiary;
-import org.confluence.mod.common.entity.projectile.FlailBall;
+import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IPlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,17 +23,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Player.class)
 public abstract class PlayerMixin implements IPlayer {
     @Unique
-    private FlailBall confluence$flailEntity;
+    private BaseFlailEntity confluence$flailEntity;
     @Unique
     private ItemStack confluence$currentBait = ItemStack.EMPTY;
 
     @Override
-    public void confluence$setFlailBall(FlailBall entity) {
+    @Deprecated
+    public void confluence$setFlailBall(BaseFlailEntity entity) {
         this.confluence$flailEntity = entity;
     }
 
     @Override
-    public FlailBall confluence$getFlailBall() {
+    @Deprecated
+    public BaseFlailEntity confluence$getFlailBall() {
         return confluence$flailEntity;
     }
 

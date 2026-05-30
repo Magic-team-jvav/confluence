@@ -278,6 +278,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.pre_hardmode_broadswords", "困难模式前阔剑");
         add("itemGroup.confluence.hardmode_broadswords", "困难模式后阔剑");
         add("itemGroup.confluence.yoyo", "悠悠球");
+        add("itemGroup.confluence.flail", "连枷");
 
         add("itemGroup.confluence.short_bow", "短弓");
         add("itemGroup.confluence.bow", "弓");
@@ -1705,7 +1706,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.FLAME_CLOUD.get(), "火焰云");
         add(ModEntities.SUPER_SPIKY_BALL_PROJECTILE.get(), "超级尖球射弹");
         add(ModEntities.SPEAR.get(), "长矛");
-        add(ModEntities.FLAIL_BALL.get(), "链球");
+        add(ModEntities.FLAIL_ENTITY.get(), "链球");
         add(ModEntities.STAR_CANNON_BULLET.get(), "星星炮射弹");
         add(ModEntities.BEE_GUN_BULLET.get(), "蜜蜂枪射弹");
         add(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), "基础展示实体");
@@ -3155,6 +3156,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
+
+        add(FlailItems.MACE.get(), "链球");
+        add(FlailItems.BALL_O_HURT.get(), "致伤球");
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");

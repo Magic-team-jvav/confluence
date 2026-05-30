@@ -78,6 +78,8 @@ import org.confluence.mod.client.renderer.entity.fishing.BloodyFishingHookRender
 import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.HotlineFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.hook.*;
+import org.confluence.mod.client.renderer.entity.flail.BaseFlailRenderer;
+import org.confluence.mod.client.renderer.entity.flail.FlailModel;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
@@ -409,7 +411,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LUNAR_HOOK.get(), LunarHookRenderer::new);
         /* todo 静止钩 */
 
-        event.registerEntityRenderer(FLAIL_BALL.get(), FlailRenderer::new);
+        event.registerEntityRenderer(FLAIL_ENTITY.get(), BaseFlailRenderer::new);
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
         event.registerEntityRenderer(VANILLA_MINECART.get(), provider);

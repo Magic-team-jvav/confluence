@@ -1788,6 +1788,7 @@ public final class ModTabs {
                         acceptAll(TEBoomerangItems.ITEMS, output, "boomerang");
                         acceptAll(SpearItems.ITEMS, output, "spear");
                         acceptAll(LanceItems.ITEMS, output, "lance");
+                        acceptAll(FlailItems.ITEMS, output, "flail");
                     })
                     .withTabsBefore(ARMORS.getId())
                     .build());

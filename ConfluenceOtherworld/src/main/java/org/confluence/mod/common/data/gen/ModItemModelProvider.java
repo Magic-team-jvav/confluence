@@ -80,6 +80,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(AxeItems.AXE_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(ToolItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(SwordItems.WAFFLES_IRON, templateNormal24x, "sword/");
+        separateModel(FlailItems.BALL_O_HURT, templateReverse24x, "flail/");
+        separateModel(FlailItems.MACE, templateReverse24x, "flail/");
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 
         getBuilder(SwordItems.NIGHTS_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHTS_EDGE.getId().withPrefix("item/sword/"));

@@ -662,6 +662,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         sharp_weapon_enchantable.addTag(ModTags.Items.TOOLS_CHAINSAW);
         ChainsawItems.ITEMS.getEntries().forEach(item -> tools_chainsaw.add(item.get()));
 
+        IntrinsicTagAppender<Item> flail = tag(ModTags.Items.FLAIL);
+        skip_reset_strength.addTag(ModTags.Items.FLAIL);
+        melee_weapon_tools.addTag(ModTags.Items.FLAIL);
+        tag(ItemTags.MACE_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
+        tag(ItemTags.DURABILITY_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
+        FlailItems.ITEMS.getEntries().forEach(item -> flail.add(item.get()));
+
         IntrinsicTagAppender<Item> spear = tag(ModTags.Items.SPEAR);
         skip_reset_strength.addTag(ModTags.Items.SPEAR);
         melee_weapon_tools.addTag(ModTags.Items.SPEAR);

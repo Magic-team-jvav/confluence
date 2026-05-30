@@ -25,6 +25,7 @@ import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProject
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.sword.*;
+import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.integration.sable.SableHelper;
 
 /// Fast Link:
@@ -170,8 +171,8 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<LunarHookEntity>> LUNAR_HOOK = registerHook("lunar_hook", LunarHookEntity::new);
     /* todo 静止钩 */
 
-    // 链球
-    public static final DeferredHolder<EntityType<?>, EntityType<FlailBall>> FLAIL_BALL = ENTITIES.register("flail_ball", id -> EntityType.Builder.<FlailBall>of((entityType, level) -> new FlailBall(level, null), MobCategory.MISC).sized(1F, 3F)/*.clientTrackingRange(6)*/.noSave().build(id.toString()));
+    // 连枷
+    public static final DeferredHolder<EntityType<?>, EntityType<BaseFlailEntity>> FLAIL_ENTITY = ENTITIES.register("flail", id -> EntityType.Builder.<BaseFlailEntity>of(BaseFlailEntity::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(6).noSave().build(id.toString()));
 
     // 矿车
     public static final DeferredHolder<EntityType<?>, EntityType<BaseMinecartEntity>> VANILLA_MINECART = registerMinecart("vanilla_minecart", BaseMinecartEntity::new);

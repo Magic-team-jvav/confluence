@@ -77,13 +77,12 @@ import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer
 import org.confluence.mod.client.renderer.entity.fishing.BloodyFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.HotlineFishingHookRenderer;
-import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.flail.BaseFlailRenderer;
 import org.confluence.mod.client.renderer.entity.flail.FlailModel;
+import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
-import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
@@ -98,6 +97,10 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
+import org.confluence.mod.common.entity.projectile.spear.GhastlyProjectile;
+import org.confluence.mod.common.entity.projectile.spear.MushroomProjectile;
+import org.confluence.mod.common.entity.projectile.spear.NorthPoleProjectile;
+import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -125,7 +128,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static org.confluence.lib.color.IntegerRGB.VOID_B;
+import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
 import static org.confluence.mod.common.init.ModEntities.*;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)

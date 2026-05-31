@@ -1,15 +1,9 @@
 package org.confluence.mod.common.init;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -37,7 +31,6 @@ import org.confluence.terraentity.init.item.TEYoyosItems;
 import java.util.Collection;
 import java.util.List;
 
-import static org.confluence.mod.common.init.ModStacks.MYSTERIOUS_NOTES;
 
 @SuppressWarnings("unused")
 public final class ModTabs {
@@ -630,8 +623,8 @@ public final class ModTabs {
 
                         CreativeModeTab.Output mural = GroupItem.belongsTo("mural", output);
                         mural.accept(DecorativeBlocks.MURAL_BLOCK.get());
-                        mural.accept(ModStacks.DUNGEON_EBONY_MURAL, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        mural.accept(ModStacks.DUNGEON_CRIMSON_MURAL, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.dungeonEbonyMural(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.dungeonCrimsonMural(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
                         acceptAll(StatueBlocks.BLOCKS, output, "statue");
                     })
@@ -1075,17 +1068,17 @@ public final class ModTabs {
                         loot_gifts.accept(ConsumableItems.SUGAR_TANGERINE.get());
 
                         CreativeModeTab.Output text_books = GroupItem.belongsTo("text_books", output);
-                        text_books.accept(ModStacks.VILLAGE_EXPLORATION, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        text_books.accept(ModStacks.RESEARCH_ON_WHEAT_MUTATION, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        text_books.accept(ModStacks.RESEARCH_ON_CLOUD_BLOCKS_1, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        text_books.accept(ModStacks.RESEARCH_ON_CLOUD_BLOCKS_2, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        text_books.accept(ModStacks.METEOR_DIARY, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        text_books.accept(ModStacks.villageExploration(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        text_books.accept(ModStacks.researchOnWheatMutation(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        text_books.accept(ModStacks.researchOnCloudBlocks1(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        text_books.accept(ModStacks.researchOnCloudBlocks2(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        text_books.accept(ModStacks.meteorDiary(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
                         CreativeModeTab.Output note = GroupItem.belongsTo("note", output);
-                        note.accept(ModStacks.STRUCTURE_NOTE_0_0, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        note.accept(ModStacks.STRUCTURE_NOTE_0_1, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        note.accept(ModStacks.STRUCTURE_NOTE_1, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        for (ItemStack mysteriousNote : MYSTERIOUS_NOTES) note.accept(mysteriousNote, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        note.accept(ModStacks.structureNote0_0(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        note.accept(ModStacks.structureNote0_1(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        note.accept(ModStacks.structureNote1(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        for (ItemStack mysteriousNote : ModStacks.mysteriousNotes()) note.accept(mysteriousNote, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
                     })
                     .withTabsBefore(MATERIALS.getId())

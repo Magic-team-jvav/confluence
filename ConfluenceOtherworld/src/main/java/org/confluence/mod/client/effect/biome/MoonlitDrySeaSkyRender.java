@@ -5,14 +5,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.color.IntegerRGB;
+import org.confluence.mod.client.event.ModClientSetups;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.confluence.lib.color.IntegerRGB.*;
 
 public class MoonlitDrySeaSkyRender {
     private static class BubblePoint {
@@ -124,7 +123,7 @@ public class MoonlitDrySeaSkyRender {
         }
         float time = event.getPartialTick().getGameTimeDeltaPartialTick(false) + gameTime;
 
-        int dreamBubbleColor = threeColor(DREAM_BUBBLE_A, DREAM_BUBBLE_B, DREAM_BUBBLE_C, time, 500);
+        int dreamBubbleColor = threeColor(ModClientSetups.DREAM_BUBBLE_A, ModClientSetups.DREAM_BUBBLE_B, ModClientSetups.DREAM_BUBBLE_C, time, 500);
 
         PoseStack poseStack = new PoseStack();
         poseStack.mulPose(event.getModelViewMatrix());

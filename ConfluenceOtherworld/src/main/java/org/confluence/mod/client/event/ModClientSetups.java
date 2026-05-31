@@ -85,7 +85,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static net.minecraft.client.renderer.RenderStateShard.*;
-import static org.confluence.lib.color.IntegerRGB.*;
 
 @SuppressWarnings("deprecation")
 public final class ModClientSetups {
@@ -294,10 +293,19 @@ public final class ModClientSetups {
         return Color.HSBtoRGB(hsb[0], 0.5F, 1.0F);
     };
 
+    public static final IntegerRGB VOID_A = IntegerRGB.of(0x2c182a);
+    public static final IntegerRGB VOID_B = IntegerRGB.of(0x3b2e6b);
+    public static final IntegerRGB VOID_C = IntegerRGB.of(0x3c6f98);
     static final BlockColor VOID_LEAVES_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, VOID_A, VOID_B, VOID_C, 3);
 
+    public static final IntegerRGB VOID_WEAVE_A = IntegerRGB.of(0x8641f8);
+    public static final IntegerRGB VOID_WEAVE_B = IntegerRGB.of(0x6516e9);
+    public static final IntegerRGB VOID_WEAVE_C = IntegerRGB.of(0x4d57fb);
     static final BlockColor VOID_WEAVE_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, VOID_WEAVE_A, VOID_WEAVE_B, VOID_WEAVE_C, 3);
 
+    public static final IntegerRGB DREAM_BUBBLE_A = IntegerRGB.of(0xff3a6f);
+    public static final IntegerRGB DREAM_BUBBLE_B = IntegerRGB.of(0xffd03a);
+    public static final IntegerRGB DREAM_BUBBLE_C = IntegerRGB.of(0xb7ff3a);
     static final BlockColor DREAM_BUBBLE_COLOR = (state, level, pos, tintIndex) -> threeColor(pos, DREAM_BUBBLE_A, DREAM_BUBBLE_B, DREAM_BUBBLE_C, 2);
 
     private static int threeColor(@Nullable BlockPos pos, IntegerRGB colorA, IntegerRGB colorB, IntegerRGB colorC, double scale) {

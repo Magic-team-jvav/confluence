@@ -1,22 +1,24 @@
-package org.confluence.mod.common.init;
+package org.confluence.mod.common.init.item;
 
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextColor;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Unit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.network.Filterable;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.component.*;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.CustomModelData;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.component.WrittenBookContent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.confluence.mod.common.init.item.ModItems;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -70,99 +72,127 @@ public final class ModStacks {
             """);
 
     // 壁畫
-    public static final ItemStack DUNGEON_EBONY_MURAL = createMural(DUNGEON_EBONY_MURAL_DATA, "mural.dungeon.ebony_mural");
-    public static final ItemStack DUNGEON_CRIMSON_MURAL = createMural(DUNGEON_CRIMSON_MURAL_DATA, "mural.dungeon.crimson_mural");
+    public static ItemStack dungeonEbonyMural() {
+        return createMural(DUNGEON_EBONY_MURAL_DATA, "mural.dungeon.ebony_mural");
+    }
+
+    public static ItemStack dungeonCrimsonMural() {
+        return createMural(DUNGEON_CRIMSON_MURAL_DATA, "mural.dungeon.crimson_mural");
+    }
 
     // 紙條
-    public static final ItemStack STRUCTURE_NOTE_0_0 = createMysteriousNote("item.confluence.mysterious_note.name_structure_0", List.of(
-            HANDWRITING_0,
-            makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-                    "lore.confluence.mysterious_note_structure_0_0"),
-            makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-                    "lore.confluence.mysterious_note_structure_0_1"),
-            EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE,
-            appendComponent(A_BLANK, makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
-                    "1"))
-            ));
-    public static final ItemStack STRUCTURE_NOTE_0_1 = createMysteriousNote("item.confluence.mysterious_note.name_structure_0", List.of(
-            HANDWRITING_2,
-            makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-                    "lore.confluence.mysterious_note_structure_1_0"),
-            EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE,
-            appendComponent(A_BLANK, makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
-                    "2"))
-    ));
-    public static final ItemStack STRUCTURE_NOTE_1 = createMysteriousNote("item.confluence.mysterious_note.name_structure_1", List.of(
-            HANDWRITING_0,
-            makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
-                    "lore.confluence.mysterious_note_structure_2_0"),
-            appendComponent(A_BLANK, makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
-                    "3")),
-            appendComponent(blankCount(23), makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
-                    "4")),
-            appendComponent(blankCount(29), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
-                    "block.minecraft.amethyst_block")),
-            appendComponent(blankCount(29), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
-                    "block.minecraft.chiseled_tuff")),
-            EMPTY_LINE,
-            appendComponent(blankCount(24), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
-                    "block.minecraft.crying_obsidian")),
-            EMPTY_LINE,
-            appendComponent(blankCount(24), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
-                    "block.minecraft.chiseled_tuff")),
-            EMPTY_LINE,
-            EMPTY_LINE
-    ));
-    public static final ItemStack[] MYSTERIOUS_NOTES = new ItemStack[6];
-    static {
-        int count = MYSTERIOUS_NOTES.length;
-        for (int i = 0; i < count; i++) {
-            MYSTERIOUS_NOTES[i] = createMysteriousNote("item.confluence.mysterious_note.name_" + i, List.of(makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
+    public static ItemStack structureNote0_0() {
+        return createMysteriousNote("item.confluence.mysterious_note.name_structure_0", List.of(
+                HANDWRITING_0,
+                makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
+                        "lore.confluence.mysterious_note_structure_0_0"),
+                makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
+                        "lore.confluence.mysterious_note_structure_0_1"),
+                EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE,
+                appendComponent(A_BLANK, makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
+                        "1"))
+        ));
+    }
+
+    public static ItemStack structureNote0_1() {
+        return createMysteriousNote("item.confluence.mysterious_note.name_structure_0", List.of(
+                HANDWRITING_2,
+                makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
+                        "lore.confluence.mysterious_note_structure_1_0"),
+                EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE, EMPTY_LINE,
+                appendComponent(A_BLANK, makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
+                        "2"))
+        ));
+    }
+
+    public static ItemStack structureNote1() {
+        return createMysteriousNote("item.confluence.mysterious_note.name_structure_1", List.of(
+                HANDWRITING_0,
+                makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
+                        "lore.confluence.mysterious_note_structure_2_0"),
+                appendComponent(A_BLANK, makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
+                        "3")),
+                appendComponent(blankCount(23), makeComponent(false, ChatFormatting.WHITE.getColor(), false, false, false, false, false, FONT_PAPER_IMAGE,
+                        "4")),
+                appendComponent(blankCount(29), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
+                        "block.minecraft.amethyst_block")),
+                appendComponent(blankCount(29), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
+                        "block.minecraft.chiseled_tuff")),
+                EMPTY_LINE,
+                appendComponent(blankCount(24), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
+                        "block.minecraft.crying_obsidian")),
+                EMPTY_LINE,
+                appendComponent(blankCount(24), makeComponent(true, WRITE_COLOR, false, false, false, false, false, FONT_UNIFORM,
+                        "block.minecraft.chiseled_tuff")),
+                EMPTY_LINE,
+                EMPTY_LINE
+        ));
+    }
+
+    public static ItemStack[] mysteriousNotes() {
+        ItemStack[] notes = new ItemStack[6];
+        for (int i = 0; i < notes.length; i++) {
+            notes[i] = createMysteriousNote("item.confluence.mysterious_note.name_" + i, List.of(makeComponent(true, ChatFormatting.GRAY.getColor(), false, false, false, false, false,
                     "lore.confluence.mysterious_note_" + i)));
         }
+        return notes;
     }
 
     // 書籍
-    public static final ItemStack VILLAGE_EXPLORATION = createWrittenBook(
-            1,
-            "item.confluence.village_exploration",
-            "author.confluence.the_ancestor_of_explorers",
-            "lore.confluence.village_exploration",
-            "村庄环游起源",
-            List.of("text.confluence.village_exploration", "text.confluence.village_exploration_0")
-    );
-    public static final ItemStack RESEARCH_ON_WHEAT_MUTATION = createWrittenBook(
-            2,
-            "item.confluence.research_on_wheat_mutation",
-            "author.confluence.sheila",
-            "lore.confluence.research_on_wheat_mutation",
-            "关于小麦异变的研究",
-            List.of("text.confluence.research_on_wheat_mutation", "text.confluence.research_on_wheat_mutation_0")
-    );
-    public static final ItemStack RESEARCH_ON_CLOUD_BLOCKS_1 = createWrittenBook(
-            3,
-            "item.confluence.research_on_cloud_blocks_1",
-            "author.confluence.lorissa",
-            "lore.confluence.research_on_cloud_blocks_1",
-            "关于对云块的研究 I",
-            List.of("text.confluence.research_on_cloud_blocks_1")
-    );
-    public static final ItemStack RESEARCH_ON_CLOUD_BLOCKS_2 = createWrittenBook(
-            4,
-            "item.confluence.research_on_cloud_blocks_2",
-            "author.confluence.lorissa",
-            "lore.confluence.research_on_cloud_blocks_2",
-            "关于对云块的研究 II",
-            List.of("text.confluence.research_on_cloud_blocks_2")
-    );
-    public static final ItemStack METEOR_DIARY = createWrittenBook(
-            5,
-            "item.confluence.meteor_diary",
-            "author.confluence.annaleigh",
-            "lore.confluence.meteor_diary",
-            "流星日记",
-            List.of("text.confluence.meteor_diary")
-    );
+    public static ItemStack villageExploration() {
+        return createWrittenBook(
+                1,
+                "item.confluence.village_exploration",
+                "author.confluence.the_ancestor_of_explorers",
+                "lore.confluence.village_exploration",
+                "村庄环游起源",
+                List.of("text.confluence.village_exploration", "text.confluence.village_exploration_0")
+        );
+    }
+
+    public static ItemStack researchOnWheatMutation() {
+        return createWrittenBook(
+                2,
+                "item.confluence.research_on_wheat_mutation",
+                "author.confluence.sheila",
+                "lore.confluence.research_on_wheat_mutation",
+                "关于小麦异变的研究",
+                List.of("text.confluence.research_on_wheat_mutation", "text.confluence.research_on_wheat_mutation_0")
+        );
+    }
+
+    public static ItemStack researchOnCloudBlocks1() {
+        return createWrittenBook(
+                3,
+                "item.confluence.research_on_cloud_blocks_1",
+                "author.confluence.lorissa",
+                "lore.confluence.research_on_cloud_blocks_1",
+                "关于对云块的研究 I",
+                List.of("text.confluence.research_on_cloud_blocks_1")
+        );
+    }
+
+    public static ItemStack researchOnCloudBlocks2() {
+        return createWrittenBook(
+                4,
+                "item.confluence.research_on_cloud_blocks_2",
+                "author.confluence.lorissa",
+                "lore.confluence.research_on_cloud_blocks_2",
+                "关于对云块的研究 II",
+                List.of("text.confluence.research_on_cloud_blocks_2")
+        );
+    }
+
+    public static ItemStack meteorDiary() {
+        return createWrittenBook(
+                5,
+                "item.confluence.meteor_diary",
+                "author.confluence.annaleigh",
+                "lore.confluence.meteor_diary",
+                "流星日记",
+                List.of("text.confluence.meteor_diary")
+        );
+    }
 
     private static ItemStack createMural(CompoundTag data, String translationKey) {
         ItemStack stack = new ItemStack(DecorativeBlocks.MURAL_BLOCK.get());

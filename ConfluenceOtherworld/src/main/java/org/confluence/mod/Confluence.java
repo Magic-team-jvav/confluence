@@ -9,12 +9,12 @@ import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.network.IPacket;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.init.*;
@@ -22,7 +22,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.create.CreateHelper;
-import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
@@ -41,7 +40,7 @@ public final class Confluence {
         CommonConfigs.register(container);
         if (LibUtils.isPhysicalClient()) {
             ClientConfigs.register(container);
-            container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+            container.registerExtensionPoint(IConfigScreenFactory.class, MergedConfigurationScreen::factory);
         }
 
         TEEvents.register(eventBus);

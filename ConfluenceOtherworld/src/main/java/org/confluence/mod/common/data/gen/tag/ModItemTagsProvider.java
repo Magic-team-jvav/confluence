@@ -665,7 +665,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> flail = tag(ModTags.Items.FLAIL);
         skip_reset_strength.addTag(ModTags.Items.FLAIL);
         melee_weapon_tools.addTag(ModTags.Items.FLAIL);
-        tag(ItemTags.MACE_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
         tag(ItemTags.DURABILITY_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
         FlailItems.ITEMS.getEntries().forEach(item -> flail.add(item.get()));
 

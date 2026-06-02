@@ -27,13 +27,16 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 ModEnchantments.SOOTHED_MANA,
                 ModEnchantments.ARCANE_PROTECTION,
                 ModEnchantments.SPELL_DESPERATION,
-                ModEnchantments.MYSTIC_SURGE
+                ModEnchantments.MYSTIC_SURGE,
+                ModEnchantments.FLAIL_WIND_BURST,
+                ModEnchantments.FLAIL_TURBINE
         );
 
         tag(ModTags.Enchantments.MANA_IO_EXCLUSIVE).add(ModEnchantments.MANA_REGENERATION, ModEnchantments.EFFICIENT_MAGIC);
         tag(ModTags.Enchantments.MENDING_EXCLUSIVE).add(ModEnchantments.MANA_MENDING, Enchantments.MENDING);
         tag(ModTags.Enchantments.MANA_AFFECTIVE_EXCLUSIVE).add(ModEnchantments.CELESTIAL_ABSORPTION);
         tag(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE).add(ModEnchantments.SPELL_DESPERATION, ModEnchantments.MYSTIC_SURGE);
+        tag(ModTags.Enchantments.FLAIL_EXCLUSIVE).add(ModEnchantments.FLAIL_WIND_BURST, ModEnchantments.FLAIL_TURBINE);
         tag(EnchantmentTags.TREASURE).add(ModEnchantments.MANA_MENDING, ModEnchantments.CELESTIAL_ABSORPTION);
         tag(EnchantmentTags.ON_RANDOM_LOOT).add(ModEnchantments.MANA_MENDING);
         tag(EnchantmentTags.TRADEABLE).add(ModEnchantments.MANA_MENDING);
@@ -42,8 +45,12 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 ModEnchantments.EFFICIENT_MAGIC,
                 ModEnchantments.ARCANE_PROTECTION,
                 ModEnchantments.SPELL_DESPERATION,
-                ModEnchantments.MYSTIC_SURGE
+                ModEnchantments.MYSTIC_SURGE,
+                ModEnchantments.FLAIL_WIND_BURST,
+                ModEnchantments.FLAIL_TURBINE
         );
         tag(EnchantmentTags.ARMOR_EXCLUSIVE).add(ModEnchantments.ARCANE_PROTECTION);
+
+
     }
 }

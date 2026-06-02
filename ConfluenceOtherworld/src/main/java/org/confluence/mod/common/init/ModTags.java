@@ -345,6 +345,7 @@ public final class ModTags {
 
         public static final TagKey<Item> SPEAR = register("spear"); // neoforge那边为三叉戟
         public static final TagKey<Item> FLAIL = register("flail");
+        public static final TagKey<Item> FLAIL_ENCHANTABLE = register("flail_enchantable");
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
         public static final TagKey<Item> PET = register("pet");
@@ -499,6 +500,7 @@ public final class ModTags {
         public static final TagKey<Enchantment> MENDING_EXCLUSIVE = register("mending_exclusive");
         public static final TagKey<Enchantment> MANA_AFFECTIVE_EXCLUSIVE = register("mana_affective_exclusive");
         public static final TagKey<Enchantment> MAGIC_ATTACK_EXCLUSIVE = register("magic_attack_exclusive");
+        public static final TagKey<Enchantment> FLAIL_EXCLUSIVE = register("flail_exclusive");
 
         private static TagKey<Enchantment> register(String id) {
             return Confluence.asTagKey(Registries.ENCHANTMENT, id);

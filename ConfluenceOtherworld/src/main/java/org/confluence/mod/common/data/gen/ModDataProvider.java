@@ -84,6 +84,7 @@ import org.confluence.mod.common.block.natural.RemainsBlock;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.enchantment.SummonItemEffect;
+import org.confluence.mod.common.enchantment.WindBurstEnchantments;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.ModItems;
@@ -1948,6 +1949,36 @@ public class ModDataProvider {
                             ))
                     .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
                     .withEffect(ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(0.5f)), isMagic)
+            );
+            register(context, ModEnchantments.FLAIL_WIND_BURST, Enchantment.enchantment(
+                            Enchantment.definition(
+                                    item.getOrThrow(ModTags.Items.FLAIL_ENCHANTABLE),
+                                    1,
+                                    3,
+                                    Enchantment.dynamicCost(25, 25),
+                                    Enchantment.dynamicCost(75, 25),
+                                    4,
+                                    EquipmentSlotGroup.MAINHAND
+                            ))
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.FLAIL_EXCLUSIVE))
+                    .withEffect(
+                            ModEnchantments.EffectComponentTypes.WIND_BURST_AT_HIT.get(),
+                            EnchantmentTarget.ATTACKER,
+                            EnchantmentTarget.VICTIM,
+                            new WindBurstEnchantments.WindBurstAtHitEffect()
+                    )
+            );
+            register(context, ModEnchantments.FLAIL_TURBINE, Enchantment.enchantment(
+                            Enchantment.definition(
+                                    item.getOrThrow(ModTags.Items.FLAIL_ENCHANTABLE),
+                                    2,
+                                    2,
+                                    Enchantment.dynamicCost(25, 25),
+                                    Enchantment.dynamicCost(75, 25),
+                                    4,
+                                    EquipmentSlotGroup.MAINHAND
+                            ))
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.FLAIL_EXCLUSIVE))
             );
         }
 

@@ -666,6 +666,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         skip_reset_strength.addTag(ModTags.Items.FLAIL);
         melee_weapon_tools.addTag(ModTags.Items.FLAIL);
         tag(ItemTags.DURABILITY_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
+        tag(ModTags.Items.FLAIL_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
         FlailItems.ITEMS.getEntries().forEach(item -> flail.add(item.get()));
 
         IntrinsicTagAppender<Item> spear = tag(ModTags.Items.SPEAR);

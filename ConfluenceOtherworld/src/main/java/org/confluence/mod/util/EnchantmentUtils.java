@@ -139,6 +139,27 @@ public final class EnchantmentUtils {
         return book;
     }
 
+    /**
+     * 处理连枷的风爆附魔效果（flail_wind_burst）。
+     * <p>手动遍历玩家手持物品，查找并应用 {@link ModEnchantments.EffectComponentTypes#WIND_BURST_AT_HIT} 效果。
+     *
+     * @param player       攻击者（连枷持有者）
+     * @param victim       被击中的实体
+     * @param damageSource 伤害来源
+     */
+    public static void processFlailWindBurst(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
+        runIterationOnHand(player, stack -> {
+            EnchantedItemInUse item = new EnchantedItemInUse(stack, EquipmentSlot.MAINHAND, player);
+            runIterationOnItem(stack, (enchantment, level) -> {
+                for (TargetedConditionalEffect<EnchantmentEntityEffect> effect : enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.WIND_BURST_AT_HIT.get())) {
+                    if (effect.enchanted() == EnchantmentTarget.ATTACKER) {
+                        doPostAttack(effect, player.serverLevel(), level, item, victim, damageSource);
+                    }
+                }
+            });
+        });
+    }
+
     public static void runIterationOnHand(ServerPlayer player, Consumer<ItemStack> consumer) {
         consumer.accept(player.getMainHandItem());
         consumer.accept(player.getOffhandItem());

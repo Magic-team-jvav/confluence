@@ -438,7 +438,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("enchantment.confluence.spell_desperation.desc", "剩余魔力比值越低攻击力越高");
         add("enchantment.confluence.mystic_surge", "秘能激涌");
         add("enchantment.confluence.mystic_surge.desc", "剩余魔力比值越高攻击力越高");
-
+        add("enchantment.confluence.flail_wind_burst", "风暴锤");
+        add("enchantment.confluence.flail_wind_burst.desc", "击中敌人时生成风暴击飞敌人");
+        add("enchantment.confluence.flail_turbine", "涡轮");
+        add("enchantment.confluence.flail_turbine.desc", "越转越强");
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.the_crimson", "猩红之地");

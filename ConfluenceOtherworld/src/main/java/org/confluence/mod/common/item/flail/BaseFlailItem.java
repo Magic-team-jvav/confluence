@@ -69,7 +69,6 @@ public class BaseFlailItem extends TooltipItem {
             switch (existing.getPhase()) {
                 case BaseFlailEntity.PHASE_SPIN -> {
                     existing.launch(player);
-                    player.getCooldowns().addCooldown(this, comp.getCooldown(player));
                 }
                 case BaseFlailEntity.PHASE_THROWN, BaseFlailEntity.PHASE_RETRACT -> existing.playerDrop();
                 case BaseFlailEntity.PHASE_STAY -> existing.forceRetract();

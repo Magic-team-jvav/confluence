@@ -1689,11 +1689,19 @@ public final class ModTabs {
                         mummy_set.accept(VanityArmorItems.MUMMY_SHOES.get());
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
+
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WARRIORS = TABS.register("warriors",
             () -> CreativeModeTab.builder().icon(IconItems.MELEE_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
+                        //附魔书
+                        HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
+                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 1));
+                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 2));
+                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 3));
+                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 1));
+                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 2));
 
                         CreativeModeTab.Output short_swords = GroupItem.belongsTo("short_swords", output);
                         short_swords.accept(SwordItems.COPPER_SHORT_SWORD.get());
@@ -1781,10 +1789,11 @@ public final class ModTabs {
                         acceptAll(TEBoomerangItems.ITEMS, output, "boomerang");
                         acceptAll(SpearItems.ITEMS, output, "spear");
                         acceptAll(LanceItems.ITEMS, output, "lance");
-                        acceptAll(FlailItems.ITEMS, output, "flail");
+                        acceptAll(FlailItems.ITEMS, output, "flail");                    
                     })
                     .withTabsBefore(ARMORS.getId())
                     .build());
+
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SHOOTERS = TABS.register("rangers",
             () -> CreativeModeTab.builder().icon(IconItems.REMOTE_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.rangers"))
@@ -1842,6 +1851,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(WARRIORS.getId())
                     .build());
+
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",
             () -> CreativeModeTab.builder().icon(IconItems.MAGIC_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.mages"))

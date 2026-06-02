@@ -4,12 +4,15 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -19,10 +22,12 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.FlailComponent;
+import org.confluence.mod.common.enchantment.TurbineEnchantments;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.HandPositionUtils;
 import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.NotNull;
@@ -54,11 +59,22 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     // ── 运行时状态 ──
     public float spinAngle = 0.0F;
     private int hitCooldown = 0;
+    /** 风爆附魔独立冷却，防止每 tick 多次触发 */
+    private int windBurstCooldown = 0;
     private int stayDuration = 0;
     private int bounceCount = 0;
     private boolean playerDropped = false;
+    /** SPIN 阶段持续 tick 计数，供 {@link TurbineEnchantments} 等外部附魔效果查询 */
+    private int spinTickCounter = 0;
+    /** 上一帧的阶段，用于检测阶段切换 */
+    private int previousPhase = -1;
     @Nullable
     private FlailComponent cachedComponent;
+
+    /** 获取当前 SPIN 持续 tick 数 */
+    public int getSpinTickCounter() {
+        return spinTickCounter;
+    }
 
     public BaseFlailEntity(EntityType<? extends BaseFlailEntity> entityType, Level level) {
         super(entityType, level);
@@ -153,12 +169,19 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         // 重新读取 phase：super.tick() 中的 onHitBlock 可能已改变阶段
         int phase = getPhase();
 
+        // 涡轮附魔：退出 SPIN 时重置计数
+        if (previousPhase == PHASE_SPIN && phase != PHASE_SPIN) {
+            spinTickCounter = 0;
+        }
+        previousPhase = phase;
+
         if (!(owner instanceof Player player)) return;
 
         FlailComponent component = getComponent();
         if (component == null) return;
 
         if (hitCooldown > 0) hitCooldown--;
+        if (windBurstCooldown > 0) windBurstCooldown--;
 
         switch (phase) {
             case PHASE_SPIN -> tickSpin(player, component);
@@ -182,8 +205,9 @@ public class BaseFlailEntity extends Projectile implements Immunity {
 
     private void tickSpin(Player player, FlailComponent component) {
         setNoGravity(true);
-        // 默认 SPIN：绕玩家肩部，在玩家面朝方向的竖直平面内圆周运动
-        spinAngle += component.getSpinSpeed(player);
+        spinTickCounter++;
+        float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
+        spinAngle += component.getSpinSpeed(player) * (1.0F + turbineBonus);
         Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F);
         float yawRad = (float) Math.toRadians(player.getYRot());
         float cosYaw = (float) Math.cos(yawRad);
@@ -306,19 +330,37 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         };
         if (damageMultiplier <= 0) return;
 
-        AABB checkBox = getBoundingBox().inflate(1.5);
+        AABB checkBox = getBoundingBox().inflate(0.5);
         var entities = level().getEntitiesOfClass(LivingEntity.class, checkBox,
                 e -> e != player && e.isAlive() && TEUtils.projectileCanHurtEntityTest.test(this, e));
 
+        boolean anyHit = false;
+        LivingEntity firstHit = null;
         for (LivingEntity target : entities) {
             float baseDamage = (float) (component.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
-            float finalDamage = baseDamage * damageMultiplier;
+            float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
+            float finalDamage = baseDamage * damageMultiplier * (1.0F + turbineBonus);
             DamageSource source = ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player);
 
             if (target.hurt(source, finalDamage)) {
+                if (!anyHit) firstHit = target;
+                anyHit = true;
                 VectorUtils.knockBackA2B(this, target, 0.3f, 0.15f);
                 component.hitEffect().ifPresent(effect -> effect.applyAll(player, target));
-                hitCooldown = phase == PHASE_THROWN ? 3 : 8;
+                if (level() instanceof ServerLevel serverLevel) {
+                    EnchantmentHelper.doPostAttackEffects(serverLevel, target, source);
+                }
+            }
+        }
+
+        if (anyHit) {
+            float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
+            hitCooldown = phase == PHASE_THROWN ? 3 : (int) Math.max(4, 8 / (1.0F + turbineBonus));
+            if (player instanceof ServerPlayer serverPlayer && windBurstCooldown <= 0 && firstHit != null) {
+                EnchantmentUtils.processFlailWindBurst(serverPlayer, firstHit,
+                        ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player));
+                windBurstCooldown = 60; // 3 秒冷却
+                serverPlayer.getCooldowns().addCooldown(serverPlayer.getMainHandItem().getItem(), 60);
             }
         }
     }
@@ -337,7 +379,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         Vec3 look = player.getViewVector(1.0F);
         setPos(HandPositionUtils.getPalmPosition(player, 1.0F));
 
-        float velocity = component.getVelocity(player);
+        float velocity = component.getVelocity(player) * (1.0F + TurbineEnchantments.getBonus(player, spinTickCounter));
         setDeltaMovement(look.scale(velocity));
     }
 

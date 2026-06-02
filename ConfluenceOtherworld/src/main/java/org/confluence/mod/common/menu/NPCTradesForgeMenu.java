@@ -51,13 +51,11 @@ public class NPCTradesForgeMenu extends TETradesMenu {
 
     @Override
     public void clicked(int slotId, int button, ClickType clickType, Player player) {
-        if (player.isLocalPlayer() && slotId > 0 && slotId <= 36 && Screen.hasControlDown()) { // 快速售卖
+        if (player.isLocalPlayer() && slotId > 0 && slotId <= 36 && Screen.hasControlDown()) { // Ctrl+左键: 快速售卖
             ItemStack stack = getSlot(slotId).getItem();
-
             if (ValueComponent.getValue(stack, 0) > 0) {
                 if (Minecraft.getInstance().screen instanceof WithForgeTradeScreen screen) {
                     @Nullable ITradeHolder holder = IPlayer.of(player).terra_entity$getTradeHolder();
-
                     if (holder != null && screen.shopItem >= 0 && holder.getTradeManager().availableTrades().get(screen.shopItem) instanceof SellTrade sell) {
                         sell.onClick(0, 0, button, 1000 + slotId, getSlot(slotId));
                     }
@@ -65,5 +63,21 @@ public class NPCTradesForgeMenu extends TETradesMenu {
             }
         }
         super.clicked(slotId, button, clickType, player);
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player player, int index) {
+        // Shift+左键: 将背包中有价值的物品移动到/合并到售卖槽 (slot 0)
+        if (index > 0 && index <= 36 && Minecraft.getInstance().screen instanceof WithForgeTradeScreen screen) {
+            Slot slot = getSlot(index);
+            ItemStack stack = slot.getItem();
+            if (!stack.isEmpty() && ValueComponent.getValue(stack, 0) > 0) {
+                @Nullable ITradeHolder holder = IPlayer.of(player).terra_entity$getTradeHolder();
+                if (holder != null && screen.shopItem >= 0 && holder.getTradeManager().availableTrades().get(screen.shopItem) instanceof SellTrade && moveItemStackTo(stack, 0, 1, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+        }
+        return super.quickMoveStack(player, index);
     }
 }

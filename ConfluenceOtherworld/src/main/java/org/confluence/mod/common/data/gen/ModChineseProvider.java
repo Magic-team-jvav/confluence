@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen;
 
-import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
@@ -12,9 +11,6 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
-import org.confluence.mod.integration.create.CreateHelper;
-import org.confluence.mod.integration.create.ponder.PonderHelper;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.init.TEEffects;
 
@@ -4717,10 +4713,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal", "生命水晶");
         add("task.confluence.use_life_crystal.desc", "女仆会主动使用生命水晶增加最大生命值");
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
-
-        PonderHelper.addTranslateKeys(this::add, false);
-        WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), false);
-        CreateHelper.addTranslateKeys((item, s) -> add(Util.makeDescriptionId("item", item.getId()), s), false);
 
         add(BaseTerraRepeaterItem.ATTACK_SPEED_TEXT, "矢速度");
         add(BaseTerraRepeaterItem.KNOCKBACK_TEXT, "击退");

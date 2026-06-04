@@ -11,6 +11,7 @@ import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
+import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
 import org.confluence.mod.common.entity.projectile.*;
@@ -21,12 +22,10 @@ import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
 import org.confluence.mod.common.entity.projectile.range.arrow.DriveAwayArrow;
 import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
+import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
-import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.sword.*;
-import org.confluence.mod.common.entity.flail.BaseFlailEntity;
-import org.confluence.mod.integration.sable.SableHelper;
 
 /// Fast Link:
 ///
@@ -200,7 +199,7 @@ public final class ModEntities {
     }
 
     private static <E extends AbstractHookEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerHook(String name, EntityType.EntityFactory<E> supplier) {
-        int updateInterval = SableHelper.IS_LOADED ? 1 : 20;
+        int updateInterval = 20;
         return ENTITIES.register(name, id -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(updateInterval).build(id.toString()));
     }
 

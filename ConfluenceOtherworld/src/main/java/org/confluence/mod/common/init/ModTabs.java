@@ -15,7 +15,6 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
@@ -789,7 +788,6 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.WATER_CANDLE);
                         misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
                         misc_functional.accept(FunctionalBlocks.ECHO_BLOCK.get());
-                        WaystonesHelper.accept(output);
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
                     .build());

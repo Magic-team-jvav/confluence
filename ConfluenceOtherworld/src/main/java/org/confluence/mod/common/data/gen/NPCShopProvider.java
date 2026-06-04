@@ -14,14 +14,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.util.LibDateUtils;
@@ -36,12 +32,10 @@ import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.integration.terra_entity.npc_trade.DeferredMoneyTradeItem;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
 import org.confluence.mod.integration.terra_entity.npc_trade_lock.*;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -67,8 +61,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-
-import static net.minecraft.world.level.block.Blocks.WHITE_WOOL;
 
 /// 生成单个NPC单个配方
 ///
@@ -839,16 +831,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     }
 
     protected Builder withDefaultPylon() {
-        ITradeLock waystonesLock = withModLoaded(WaystonesHelper.MODID);
-        return new Builder()
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS), waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.SNOW_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY), waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.DESERT_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_DESERT, Tags.Biomes.IS_BADLANDS), waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.CAVERN_PYLON.getId(), 1, ITradeLock.and(PositionLock.ofY(MinMaxBounds.Ints.atMost(OverworldUtils.getSurfaceY())), waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.OCEAN_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_OCEAN), waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.JUNGLE_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_JUNGLE), waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.HALLOW_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(ModTags.Biomes.THE_HALLOW), waystonesLock)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.MUSHROOM_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(ModBiomes.GLOWING_MUSHROOM), waystonesLock)));
+        return new Builder();
     }
 
     protected ITradeLock withModLoaded(String modid) {

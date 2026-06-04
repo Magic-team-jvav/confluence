@@ -26,7 +26,6 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.potion.AbstractPotionItem;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
@@ -1594,7 +1593,5 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 short_sword.add(holder.get());
             }
         }
-
-        WaystonesHelper.itemTag(this::tag);
     }
 }

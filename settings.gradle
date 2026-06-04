@@ -1,14 +1,5 @@
-pluginManagement {
-    repositories {
-        mavenLocal()
-        gradlePluginPortal()
-        maven { url = "https://maven.neoforged.net/releases" }
-        maven { url = "https://maven.firstdark.dev/releases" }
-    }
-}
-
 plugins {
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 
 var projectName = [
@@ -16,7 +7,8 @@ var projectName = [
         "TerraEntity",
         "TerraCurio",
         "TerraGuns",
-        "TerraFurniture"
+        "TerraFurniture",
+        "PortLib"
 ]
 
 include(":ConfluenceOtherworld")

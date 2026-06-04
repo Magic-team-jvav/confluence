@@ -4,7 +4,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
@@ -55,7 +54,6 @@ public final class NetworkEvents {
                 .playToServer(OpenMenuPacketC2S.TYPE, OpenMenuPacketC2S.STREAM_CODEC, OpenMenuPacketC2S::handle)
                 .playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle)
                 .playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle)
-                .playToServer(RecipeTransferPacketC2S.TYPE, RecipeTransferPacketC2S.STREAM_CODEC, RecipeTransferPacketC2S::handle)
                 .playToServer(SpearAttackPacketC2S.TYPE, SpearAttackPacketC2S.STREAM_CODEC, SpearAttackPacketC2S::handle)
                 .playToServer(SwitchEffectEnabledPackedC2S.TYPE, SwitchEffectEnabledPackedC2S.STREAM_CODEC, SwitchEffectEnabledPackedC2S::handle)
                 .playToServer(DyeMixPacketC2S.TYPE, DyeMixPacketC2S.STREAM_CODEC, DyeMixPacketC2S::handle)

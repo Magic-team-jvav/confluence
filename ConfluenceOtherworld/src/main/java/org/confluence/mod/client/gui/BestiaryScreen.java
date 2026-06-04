@@ -18,8 +18,6 @@ import org.confluence.mod.api.event.bestiary.CheckBannerAvailableEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
-import org.confluence.mod.integration.jei.JeiHelper;
-import org.confluence.mod.integration.jei.ModJeiPlugin;
 import org.confluence.mod.network.c2s.GiveBannerPacketC2S;
 import org.jetbrains.annotations.Nullable;
 
@@ -328,12 +326,6 @@ public class BestiaryScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (JeiHelper.IS_LOADED && showingName && showedEntry != null) {
-            LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
-            if (living != null && ModJeiPlugin.handleShowUses(keyCode, scanCode, living.getPickResult())) {
-                return true;
-            }
-        }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 

@@ -22,7 +22,6 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
-import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.*;
@@ -168,8 +167,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
-
-        CreateHelper.acceptModels(reg -> customModels.add(createDir(reg, "materials/")));
 
         genModels(customModels, "item/generated");
 

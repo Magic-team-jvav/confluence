@@ -48,7 +48,10 @@ import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.*;
+import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
+import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
+import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
+import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
@@ -74,9 +77,6 @@ import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
-import org.confluence.mod.integration.ageratum.AgeratumHelper;
-import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
-import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
@@ -372,7 +372,6 @@ public final class PlayerEvents {
         }
 
         if (Confluence.MODID.equals(advancement.id().getNamespace()) && "achievements/new_world".equals(advancement.id().getPath())) {
-            AgeratumHelper.giveIngameWiki(player);
         }
     }
 
@@ -536,11 +535,6 @@ public final class PlayerEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void additionalMana(AdditionalManaEvent event) {
-        ArsNouveauHelper.additionalMana(event);
-        IronSpellHelper.additionalMana(event);
-    }
 
     @SubscribeEvent
     public static void switchItemFunction$Post(SwitchItemFunctionEvent.Post event) {

@@ -108,13 +108,13 @@ public final class ModEvents {
             }
 
             if (!LibUtils.isModLoaded("attributefix")) {
-                if (Attributes.ARMOR.value() instanceof RangedAttribute rangedAttribute) {
+                if (Attributes.ARMOR instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 65536;
                 }
-                if (Attributes.ARMOR_TOUGHNESS.value() instanceof RangedAttribute rangedAttribute) {
+                if (Attributes.ARMOR_TOUGHNESS instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 65536;
                 }
-                if (Attributes.MAX_HEALTH.value() instanceof RangedAttribute rangedAttribute) {
+                if (Attributes.MAX_HEALTH instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 65536;
                 }
                 if (LibAttributes.getAttackDamage().value() instanceof RangedAttribute rangedAttribute) {

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen;
 
-import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
@@ -21,9 +20,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.integration.create.CreateHelper;
-import org.confluence.mod.integration.create.ponder.PonderHelper;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.utils.RecipeDrawerUtils;
@@ -1786,10 +1782,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal", "Use Life Crystal");
         add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
-
-        PonderHelper.addTranslateKeys(this::add, true);
-        WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), true);
-        CreateHelper.addTranslateKeys((item, s) -> add(Util.makeDescriptionId("item", item.getId()), s), true);
     }
 
     private void addDefaultRegistryTranslations(HolderLookup.RegistryLookup<?> dimensions, String dimensionsPath) {

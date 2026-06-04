@@ -2,7 +2,7 @@
     "required": true,
     "minVersion": "0.8",
     "package": "org.confluence.mod.mixin.integration.lithium",
-    "compatibilityLevel": "JAVA_21",
+    "compatibilityLevel": "JAVA_17",
     "refmap": "confluence.refmap.json",
     "plugin": "org.confluence.mod.mixin.integration.lithium.LithiumIntegrationMixinPlugin",
     "mixins": [

@@ -8,7 +8,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.apache.commons.lang3.mutable.MutableObject;
-import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.terra_curio.TCHelper;
 import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,7 +36,6 @@ public abstract class RecipeManagerMixin {
     private void buildRecipes(CallbackInfo ci) {
         MutableObject<Map<ResourceLocation, RecipeHolder<?>>> byName1 = new MutableObject<>(byName);
         MutableObject<Multimap<RecipeType<?>, RecipeHolder<?>>> byType1 = new MutableObject<>(byType);
-        CreateHelper.buildRecipes(byName1, byType1);
         this.byName = byName1.getValue();
         this.byType = byType1.getValue();
     }

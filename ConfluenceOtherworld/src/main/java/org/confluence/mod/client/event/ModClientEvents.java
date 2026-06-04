@@ -28,7 +28,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -92,7 +91,6 @@ import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ShortSwordInHandRenderer;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
-import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
@@ -109,10 +107,6 @@ import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
-import org.confluence.mod.integration.appleskin.AppleskinHelper;
-import org.confluence.mod.integration.create.ponder.PonderHelper;
-import org.confluence.mod.integration.prism_lib.PrismLibHelper;
-import org.confluence.mod.integration.sodium.dynamiclights.SodiumDynamicLightsHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
@@ -120,6 +114,7 @@ import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
 import org.confluence.terra_guns.util.TGUtil;
 import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
@@ -143,10 +138,6 @@ public final class ModClientEvents {
 
             ModClientSetups.registerItemProperties();
             ModClientSetups.setRenderLayers();
-
-            PonderHelper.registerPlugin();
-            AppleskinHelper.addListeners();
-            SodiumDynamicLightsHelper.registerDynamicLight();
 
             ClientBestiary.getInstance().registerCustomFilter();
 
@@ -459,8 +450,6 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(ModBlocks.VOID_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(VoidBlockRenderer::new));
         event.registerBlockEntityRenderer(NatureBlocks.VOID_TREE_ROOT_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(VoidTreeRootBlockRenderer::new));
         event.registerBlockEntityRenderer(ModBlocks.ENEMY_BANNER_ENTITY.get(), EnemyBannerBlockRenderer::new);
-
-        ModClientSetups.registerWaystoneRenderers(event);
     }
 
     @SubscribeEvent
@@ -483,7 +472,7 @@ public final class ModClientEvents {
     }
 
     @SubscribeEvent
-    public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+    public static void registerClientExtensions(PortRegisterClientExtensionsEvent event) {
         event.registerFluidType(ModClientSetups.HONEY_CLIENT_EXTENSIONS, ModFluids.HONEY.type());
         event.registerFluidType(ModClientSetups.VOID_CLIENT_EXTENSIONS, ModFluids.VOID.type());
         event.registerFluidType(ModClientSetups.SHIMMER_CLIENT_EXTENSIONS, ModFluids.SHIMMER.type());
@@ -619,7 +608,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
-        event.register(AltImageComponent.class, component -> PrismLibHelper.shouldDisableAltImageTooltip() ? NoopTooltip.INSTANCE : new AltImageTooltip(component));
+        event.register(AltImageComponent.class, AltImageTooltip::new);
         event.register(RepeaterComponent.class, ClientRepeaterContentsTooltip::new);
     }
 

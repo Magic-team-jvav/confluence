@@ -17,8 +17,6 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
-import org.confluence.mod.integration.mrcrayfish.furniture.MrCrayfishFurnitureHelper;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
@@ -1982,7 +1980,5 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.CAMPFIRES).add(
                 LIFE_CAMPFIRE.get()
         );
-        WaystonesHelper.blockTags(this::tag);
-        MrCrayfishFurnitureHelper.blockTags(this::tag);
     }
 }

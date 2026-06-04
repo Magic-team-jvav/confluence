@@ -27,7 +27,6 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
-import org.confluence.mod.integration.sable.SableHelper;
 
 import java.util.function.IntFunction;
 
@@ -124,7 +123,6 @@ public abstract class AbstractHookEntity extends Projectile {
                 setHookState(HookState.POP);
             }
         }
-        SableHelper.doAbstractHookEntity$tick(this);
     }
 
     @Override
@@ -135,7 +133,7 @@ public abstract class AbstractHookEntity extends Projectile {
     @Override
     protected final void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        if (SableHelper.doAbstractHookEntity$onHitBlock(this, result)) {
+        {
             Vec3 vec3 = result.getLocation().subtract(position());
             setDeltaMovement(vec3);
             Vec3 vec31 = vec3.normalize().scale(0.05F);

@@ -14,7 +14,6 @@ import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -2129,7 +2128,6 @@ public final class ValueSubProvider {
                 .add(LanceItems.HALLOWED_JOUSTING_LANCE.get(), gold5 - silver20 - silver20)
                 .add(LanceItems.SHADOW_JOUSTING_LANCE.get(), gold10);
 
-        WaystonesHelper.appendValue(builder);
     }
 
     public static class Builder extends DataMapProvider.Builder<ValueComponent, Item> {

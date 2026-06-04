@@ -28,7 +28,6 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.block.natural.JungleHiveBlock;
@@ -37,7 +36,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sponsor.*;
-import org.confluence.mod.integration.sodium.iris.IrisHelper;
 import org.confluence.mod.util.DateUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -199,9 +197,6 @@ public final class ModItems {
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
 
-        if (LibUtils.isModLoaded("iris")) {
-            IrisHelper.register(HIDDEN);
-        }
     }
 
     public static Item.@NotNull Properties unbreakable() {

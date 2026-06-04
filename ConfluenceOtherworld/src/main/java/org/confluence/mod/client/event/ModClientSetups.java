@@ -4,7 +4,6 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
@@ -17,7 +16,10 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -44,7 +46,6 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.IItemDecorator;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -70,14 +71,10 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
-import org.confluence.mod.integration.waystones.PylonBlock;
-import org.confluence.mod.integration.waystones.PylonModel;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -418,17 +415,5 @@ public final class ModClientSetups {
             }
         };
         FishingPoleItems.ITEMS.getEntries().forEach(pole -> ItemProperties.register(pole.get(), cast, function));
-    }
-
-    public static void registerWaystoneRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        if (!WaystonesHelper.IS_LOADED) return;
-        event.registerBlockEntityRenderer(WaystonesHelper.PYLON_ENTITY.get(), context -> new GeoBlockRenderer<>(new PylonModel()) {
-            @Override
-            public void defaultRender(PoseStack poseStack, PylonBlock.BEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
-                if (animatable.isBase) {
-                    super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
-                }
-            }
-        });
     }
 }

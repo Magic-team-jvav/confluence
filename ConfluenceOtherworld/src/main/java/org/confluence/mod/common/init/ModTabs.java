@@ -1390,6 +1390,12 @@ public final class ModTabs {
                         climbing_armor.accept(ArmorItems.CLIMBING_LEGGINGS.get());
                         climbing_armor.accept(ArmorItems.CLIMBING_BOOTS.get());
 
+                        CreativeModeTab.Output evocation_robe_armor = GroupItem.belongsTo("evocation_robe_armor", output);
+                        evocation_robe_armor.accept(ArmorItems.EVOCATION_HAT.get());
+                        evocation_robe_armor.accept(ArmorItems.EVOCATION_ROBE.get());
+                        evocation_robe_armor.accept(ArmorItems.EVOCATION_LEGGINGS.get());
+                        evocation_robe_armor.accept(ArmorItems.EVOCATION_BOOTS.get());
+
                         CreativeModeTab.Output battle_robe_armor = GroupItem.belongsTo("battle_robe_armor", output);
                         battle_robe_armor.accept(ArmorItems.BATTLE_COLLAR.get());
                         battle_robe_armor.accept(ArmorItems.BATTLE_ROBE.get());
@@ -1789,7 +1795,7 @@ public final class ModTabs {
                         acceptAll(TEBoomerangItems.ITEMS, output, "boomerang");
                         acceptAll(SpearItems.ITEMS, output, "spear");
                         acceptAll(LanceItems.ITEMS, output, "lance");
-                        acceptAll(FlailItems.ITEMS, output, "flail");                    
+                        acceptAll(FlailItems.ITEMS, output, "flail");
                     })
                     .withTabsBefore(ARMORS.getId())
                     .build());

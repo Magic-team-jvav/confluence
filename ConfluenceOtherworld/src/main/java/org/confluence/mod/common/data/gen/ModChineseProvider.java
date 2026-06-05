@@ -215,6 +215,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.hunters_armor", "猎人盔甲");
         add("itemGroup.confluence.guards_armor", "守卫盔甲");
         add("itemGroup.confluence.spelunker_armor", "探穴者盔甲");
+        add("itemGroup.confluence.evocation_robe_armor", "唤魔长袍盔甲");
         add("itemGroup.confluence.battle_robe_armor", "战袍盔甲");
         add("itemGroup.confluence.splendid_robe_armor", "华丽长袍盔甲");
         add("itemGroup.confluence.archers_armor", "弓箭手盔甲");
@@ -3926,6 +3927,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CLIMBING_CHESTPLATE.get(), "登山胸甲");
         add(ArmorItems.CLIMBING_LEGGINGS.get(), "登山护腿");
         add(ArmorItems.CLIMBING_BOOTS.get(), "登山靴子");
+        add(ArmorItems.EVOCATION_HAT.get(), "唤魔帽");
+        add(ArmorItems.EVOCATION_ROBE.get(), "唤魔长袍");
+        add(ArmorItems.EVOCATION_LEGGINGS.get(), "唤魔护腿");
+        add(ArmorItems.EVOCATION_BOOTS.get(), "唤魔靴子");
         add(ArmorItems.BATTLE_COLLAR.get(), "战斗衣领");
         add(ArmorItems.BATTLE_ROBE.get(), "战袍");
         add(ArmorItems.BATTLE_LEGGINGS.get(), "战斗护腿");

@@ -3,9 +3,9 @@
     "textures": {
         "particle": "block/mud",
         "bottom": "block/mud",
-        "top": "block/grass_block_top",
+        "top": "confluence:block/jungle_grass_block_top",
         "side": "block/mud",
-        "overlay": "block/grass_block_side_overlay"
+        "overlay": "confluence:block/jungle_grass_block_side_overlay"
     },
     "elements": [
         {   "from": [ 0, 0, 0 ],

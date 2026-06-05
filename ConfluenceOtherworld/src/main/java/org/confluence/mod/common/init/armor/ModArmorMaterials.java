@@ -168,8 +168,13 @@ public final class ModArmorMaterials {
     );
     public static final Holder<ArmorMaterial> BATTLE_ROBE_ARMOR_MATERIALS = registerArmorMaterial("battle_robe_armor_materials",
             3, 4, 4, 3,
-            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER,  MaterialItems.SILK,
             "battle_robe", 1.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> EVOCATION_ROBE_ARMOR_MATERIALS = registerArmorMaterial("evocation_robe_armor_materials",
+            2, 4, 4, 2,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.SILK,
+            "evocation_robe", 1.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> ARCHERS_ARMOR_MATERIALS = registerArmorMaterial("archers_armor_materials",
             3, 5, 5, 3,
@@ -178,7 +183,7 @@ public final class ModArmorMaterials {
     );
     public static final Holder<ArmorMaterial> SPLENDID_ROBE_ARMOR_MATERIALS = registerArmorMaterial("splendid_robe_armor_materials",
             4, 5, 5, 4,
-            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER,  MaterialItems.SILK,
             "splendid_robe", 2.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> GUARDS_ARMOR_MATERIALS = registerArmorMaterial("guards_armor_materials",

@@ -300,6 +300,25 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
     );
 
+    public static final DeferredItem<BaseArmorItem> EVOCATION_HAT = register("evocation_hat", ModArmorMaterials.EVOCATION_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/evocation_robe_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> EVOCATION_ROBE = register("evocation_robe", ModArmorMaterials.EVOCATION_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/evocation_robe_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> EVOCATION_LEGGINGS = register("evocation_leggings", ModArmorMaterials.EVOCATION_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/evocation_robe_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> EVOCATION_BOOTS = register("evocation_boots", ModArmorMaterials.EVOCATION_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/evocation_robe_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
     public static final DeferredItem<BaseArmorItem> BATTLE_COLLAR = register("battle_collar", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)

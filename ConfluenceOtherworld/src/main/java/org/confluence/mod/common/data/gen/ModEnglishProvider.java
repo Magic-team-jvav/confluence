@@ -254,6 +254,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.hunters_armor", "Hunters Armor");
         add("itemGroup.confluence.guards_armor", "Guards Armor");
         add("itemGroup.confluence.spelunker_armor", "Spelunker Armor");
+        add("itemGroup.confluence.evocation_robe_armor", "Evocation Robe Armor");
         add("itemGroup.confluence.battle_robe_armor", "Battle Robe Armor");
         add("itemGroup.confluence.splendid_robe_armor", "Splendid Robe Armor");
         add("itemGroup.confluence.archers_armor", "Archers Armor");

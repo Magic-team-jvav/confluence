@@ -122,9 +122,9 @@ public class TheEndBiomeHolder {
 
                 // 以下參數都是數字越大密度越大越稀碎，數字越小密度越小，單一群係也約廣闊
 
-                double biomeScale = 0.5;
+                double biomeScale = 0.4;
                 // 決定了我們的群係組的分佈密度，也就是紫頌和月光群係大類的密度，倒懸是跟著紫頌一起的不用管它
-                double treeScale = 0.45;
+                double treeScale = 0.35;
                 // 決定了紫頌森林和紫頌平原的分佈密度
                 double humidityScale = 0.2;
                 // 決定了月光系列四種群係的密度

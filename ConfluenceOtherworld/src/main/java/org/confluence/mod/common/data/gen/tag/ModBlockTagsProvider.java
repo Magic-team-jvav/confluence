@@ -323,6 +323,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SUN_PLATE.STAIRS.get(),
                 SUN_PLATE.WALL.get(),
 
+                FALLEN_STAR_BLOCK.get(),
+
                 SKYWARE_DOOR.get(),
                 SKYWARE_GLASS_DOOR.get(),
 
@@ -367,6 +369,23 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 POLISHED_MARBLE.get(),
                 MARBLE_CHESSBOARD_BRICKS.get(),
                 MARBLE_ETERNAL_CHESSBOARD_BRICKS.get(),
+
+                LIHZAHRD_DOOR.get(),
+                LIHZAHRD_BRICKS.FULL.get(),
+                LIHZAHRD_BRICKS.STAIRS.get(),
+                LIHZAHRD_BRICKS.SLAB.get(),
+                LIHZAHRD_BRICKS.WALL.get(),
+                EXPOSED_LIHZAHRD_BRICKS.FULL.get(),
+                EXPOSED_LIHZAHRD_BRICKS.STAIRS.get(),
+                EXPOSED_LIHZAHRD_BRICKS.SLAB.get(),
+                EXPOSED_LIHZAHRD_BRICKS.WALL.get(),
+                SUPER_DART_TRAP.get(),
+                FLAME_TRAP.get(),
+                SPIKY_BALL_TRAP.get(),
+                SPEAR_TRAP.get(),
+                POLISHED_LIHZAHRD.get(),
+                LIHZAHRD_COLUMN.get(),
+                LIHZAHRD_TILES.get(),
 
                 CRYSTAL_BLOCK.get(),
                 BLUE_BRICKS.FULL.get(),
@@ -1110,7 +1129,24 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.NEEDS_6_LEVEL).addTags(ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_7_LEVEL).addTags(ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_8_LEVEL).addTags(ModTags.Blocks.NEEDS_9_LEVEL);
-        tag(ModTags.Blocks.NEEDS_9_LEVEL).add(LIHZAHRD_DOOR.get(), LIHZAHRD_BRICKS.FULL.get(), SUPER_DART_TRAP.get());
+        tag(ModTags.Blocks.NEEDS_9_LEVEL).add(
+                LIHZAHRD_DOOR.get(),
+                LIHZAHRD_BRICKS.FULL.get(),
+                LIHZAHRD_BRICKS.STAIRS.get(),
+                LIHZAHRD_BRICKS.SLAB.get(),
+                LIHZAHRD_BRICKS.WALL.get(),
+                EXPOSED_LIHZAHRD_BRICKS.FULL.get(),
+                EXPOSED_LIHZAHRD_BRICKS.STAIRS.get(),
+                EXPOSED_LIHZAHRD_BRICKS.SLAB.get(),
+                EXPOSED_LIHZAHRD_BRICKS.WALL.get(),
+                SUPER_DART_TRAP.get(),
+                FLAME_TRAP.get(),
+                SPIKY_BALL_TRAP.get(),
+                SPEAR_TRAP.get(),
+                POLISHED_LIHZAHRD.get(),
+                LIHZAHRD_COLUMN.get(),
+                LIHZAHRD_TILES.get()
+        );
 
         tag(ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE);
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(
@@ -1290,7 +1326,22 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         POLISHED_MARBLE.get(),
                         MARBLE_CHESSBOARD_BRICKS.get(),
                         MARBLE_ETERNAL_CHESSBOARD_BRICKS.get(),
+                        LIHZAHRD_DOOR.get(),
                         LIHZAHRD_BRICKS.FULL.get(),
+                        LIHZAHRD_BRICKS.STAIRS.get(),
+                        LIHZAHRD_BRICKS.SLAB.get(),
+                        LIHZAHRD_BRICKS.WALL.get(),
+                        EXPOSED_LIHZAHRD_BRICKS.FULL.get(),
+                        EXPOSED_LIHZAHRD_BRICKS.STAIRS.get(),
+                        EXPOSED_LIHZAHRD_BRICKS.SLAB.get(),
+                        EXPOSED_LIHZAHRD_BRICKS.WALL.get(),
+                        SUPER_DART_TRAP.get(),
+                        FLAME_TRAP.get(),
+                        SPIKY_BALL_TRAP.get(),
+                        SPEAR_TRAP.get(),
+                        POLISHED_LIHZAHRD.get(),
+                        LIHZAHRD_COLUMN.get(),
+                        LIHZAHRD_TILES.get(),
                         BLUE_BRICKS.FULL.get(),
                         GREEN_BRICKS.FULL.get(),
                         PINK_BRICKS.FULL.get(),

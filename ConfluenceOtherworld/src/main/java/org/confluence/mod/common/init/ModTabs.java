@@ -243,6 +243,7 @@ public final class ModTabs {
                         skyland.accept(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get());
                         skyland.accept(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get());
                         skyland.accept(DecorativeBlocks.STAR_CLOUD_BLOCK.get());
+                        skyland.accept(DecorativeBlocks.FALLEN_STAR_BLOCK.get());
 
                         CreativeModeTab.Output crops = GroupItem.belongsTo("crops", output);
                         crops.accept(NatureBlocks.STELLAR_BLOSSOM);
@@ -458,6 +459,11 @@ public final class ModTabs {
                         granite_bricks.accept(DecorativeBlocks.GRANITE_COLUMN.get());
                         granite_bricks.accept(DecorativeBlocks.POLISHED_GRANITE.get());
 
+                        CreativeModeTab.Output lihzahrd_bricks = GroupItem.belongsTo("lihzahrd_bricks", output);
+                        lihzahrd_bricks.accept(DecorativeBlocks.LIHZAHRD_COLUMN.get());
+                        lihzahrd_bricks.accept(DecorativeBlocks.POLISHED_LIHZAHRD.get());
+                        lihzahrd_bricks.accept(DecorativeBlocks.LIHZAHRD_TILES.get());
+
                         CreativeModeTab.Output copper_bricks = GroupItem.belongsTo("granite_bricks", output);
                         copper_bricks.accept(DecorativeBlocks.CHISELED_COPPER_BRICKS.get());
                         copper_bricks.accept(DecorativeBlocks.COPPER_TILES.get());
@@ -494,6 +500,8 @@ public final class ModTabs {
                         marble_bricks.accept(DecorativeBlocks.GILDED_MARBLE.get());
                         marble_bricks.accept(DecorativeBlocks.POLISHED_MARBLE.get());
 
+
+
                         CreativeModeTab.Output glass = GroupItem.belongsTo("glass", output);
                         glass.accept(DecorativeBlocks.PURE_GLASS.get());
                         glass.accept(DecorativeBlocks.WHITE_PURE_GLASS.get());
@@ -516,7 +524,6 @@ public final class ModTabs {
 
                         CreativeModeTab.Output special_building = GroupItem.belongsTo("special_building", output);
                         special_building.accept(DecorativeBlocks.LOST_PAPER_BLOCK.get());
-                        special_building.accept(DecorativeBlocks.HELLSTONE_BRICKS.FULL.get());
                         special_building.accept(DecorativeBlocks.MURAL_BLOCK.get());
                         special_building.accept(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get());
                         special_building.accept(DecorativeBlocks.CRISPY_HONEY_BLOCK.get());
@@ -539,6 +546,7 @@ public final class ModTabs {
                         special_building.accept(DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get());
                         special_building.accept(DecorativeBlocks.MALACHITE_PAPER_PANE.get());
                         special_building.accept(DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP.get());
+                        special_building.accept(DecorativeBlocks.FALLEN_STAR_BLOCK.get());
 
                         CreativeModeTab.Output chains = GroupItem.belongsTo("chains", output);
                         chains.accept(DecorativeBlocks.RUBY_CHAIN.get());

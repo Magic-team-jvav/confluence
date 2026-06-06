@@ -607,6 +607,10 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(JUNGLE_ROSE.get());
         dropSelf(VOID_VIOLET.get());
 
+        dropSelf(LIHZAHRD_COLUMN.get());
+        dropSelf(LIHZAHRD_TILES.get());
+        dropSelf(POLISHED_LIHZAHRD.get());
+
         dropSelf(WHITE_PUMPKIN.get());
         dropSelf(CARVED_WHITE_PUMPKIN.get());
         dropSelf(JOHNNY_O_LANTERN.get());
@@ -681,6 +685,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(DUNGEON_DOOR.get(), this::createDoorTable);
         add(TRADITIONAL_DYNASTY_DOOR.get(), this::createDoorTable);
         add(CHRISTMAS_PINE_DOOR.get(), this::createDoorTable);
+        add(LIHZAHRD_DOOR.get(), this::createDoorTable);
         dropSelf(CHRISTMAS_PINE_TRAPDOOR.get());
 
         // 发光蘑菇

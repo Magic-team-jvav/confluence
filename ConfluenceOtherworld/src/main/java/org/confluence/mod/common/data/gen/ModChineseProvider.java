@@ -135,6 +135,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.pink_bricks", "粉色地牢砖");
         add("itemGroup.confluence.hellstone_bricks", "狱石砖");
         add("itemGroup.confluence.lihzahrd_bricks", "丛林蜥蜴砖");
+        add("itemGroup.confluence.exposed_lihzahrd_bricks", "风化丛林蜥蜴砖");
         add("itemGroup.confluence.glowing_mushroom", "发光蘑菇");
 
         add("itemGroup.confluence.glass", "玻璃");
@@ -2669,11 +2670,19 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.MOON_PLATE.FULL.get(), "月盘块");
         add(DecorativeBlocks.MOON_PLATE.STAIRS.get(), "月盘楼梯");
         add(DecorativeBlocks.MOON_PLATE.SLAB.get(), "月盘台阶");
+        add(DecorativeBlocks.FALLEN_STAR_BLOCK.get(), "坠落之星块");
         add(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(), "木石板条块");
         add(DecorativeBlocks.LIHZAHRD_BRICKS.FULL.get(), "丛林蜥蜴砖");
         add(DecorativeBlocks.LIHZAHRD_BRICKS.STAIRS.get(), "丛林蜥蜴砖楼梯");
         add(DecorativeBlocks.LIHZAHRD_BRICKS.SLAB.get(), "丛林蜥蜴砖台阶");
         add(DecorativeBlocks.LIHZAHRD_BRICKS.WALL.get(), "丛林蜥蜴砖墙");
+        add(DecorativeBlocks.EXPOSED_LIHZAHRD_BRICKS.FULL.get(), "风化丛林蜥蜴砖");
+        add(DecorativeBlocks.EXPOSED_LIHZAHRD_BRICKS.STAIRS.get(), "风化丛林蜥蜴砖楼梯");
+        add(DecorativeBlocks.EXPOSED_LIHZAHRD_BRICKS.SLAB.get(), "风化丛林蜥蜴砖台阶");
+        add(DecorativeBlocks.EXPOSED_LIHZAHRD_BRICKS.WALL.get(), "风化丛林蜥蜴砖墙");
+        add(DecorativeBlocks.LIHZAHRD_COLUMN.get(), "丛林蜥蜴砖柱");
+        add(DecorativeBlocks.POLISHED_LIHZAHRD.get(), "磨制丛林蜥蜴砖");
+        add(DecorativeBlocks.LIHZAHRD_TILES.get(), "丛林蜥蜴砖瓦");
         add(DecorativeBlocks.RUBY_CHAIN.get(), "红玉锁链");
         add(DecorativeBlocks.AMBER_CHAIN.get(), "琥珀锁链");
         add(DecorativeBlocks.TOPAZ_CHAIN.get(), "黄玉锁链");
@@ -3224,7 +3233,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ShovelItems.PLATINUM_SHOVEL.get(), "铂金锹");
         add(ShovelItems.SHADOW_SHOVEL.get(), "暗影锹");
         add(ShovelItems.MINER.get(), "采掘者");
-        add(ShovelItems.GRAVE_DIGGERS_SHOVEL.get(), "掘墓者");
+        add(ShovelItems.GRAVE_DIGGERS_SHOVEL.get(), "掘墓者铲");
 
 
         add(PickaxeItems.COPPER_PICKAXE.get(), "铜镐");

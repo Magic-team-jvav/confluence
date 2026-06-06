@@ -291,9 +291,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "crimsand_from_hardened_crimsand", addItem(NatureBlocks.HARDENED_CRIMSAND_BLOCK, NatureBlocks.CRIMSAND));
         item(recipeOutput, "pearlsand_from_pearlsandstone", addItem(NatureBlocks.PEARLSANDSTONE, NatureBlocks.PEARLSAND));
         item(recipeOutput, "pearlsand_from_hardened_pearlsand", addItem(NatureBlocks.HARDENED_PEARLSAND_BLOCK, NatureBlocks.PEARLSAND));
-        item(recipeOutput, "ice_from_snow_block", addItem(Blocks.SNOW_BLOCK, Blocks.ICE));
-        item(recipeOutput, "blue_ice_from_snow_block", addItem(Blocks.SNOW_BLOCK, Blocks.BLUE_ICE));
-        item(recipeOutput, "packed_ice_from_snow_block", addItem(Blocks.SNOW_BLOCK, Blocks.PACKED_ICE));
+        item(recipeOutput, "aetherium_block_from_snow_block", addItem(Blocks.SNOW_BLOCK, NatureBlocks.AETHERIUM_BLOCK));
         item(recipeOutput, "jungle_hive_from_honey_block", addItem(Blocks.HONEY_BLOCK, NatureBlocks.JUNGLE_HIVE_BLOCK));
         item(recipeOutput, "jungle_hive_from_crispy_honey_block", addItem(DecorativeBlocks.CRISPY_HONEY_BLOCK,NatureBlocks.JUNGLE_HIVE_BLOCK));
         item(recipeOutput, Blocks.PUMPKIN, Blocks.CACTUS);

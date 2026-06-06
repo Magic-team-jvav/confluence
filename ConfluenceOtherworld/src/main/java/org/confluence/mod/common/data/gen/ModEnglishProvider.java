@@ -174,6 +174,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.blue_bricks", "Blue Dungeon Bricks");
         add("itemGroup.confluence.green_bricks", "Green Dungeon Bricks");
         add("itemGroup.confluence.pink_bricks", "Pink Dungeon Bricks");
+        add("itemGroup.confluence.hellstone_bricks", "Hellstone Bricks");
+        add("itemGroup.confluence.lihzahrd_bricks", "Lihzahrd Bricks");
+        add("itemGroup.confluence.exposed_lihzahrd_bricks", "Exposed Lihzahrd Bricks");
+        add("itemGroup.confluence.glowing_mushroom", "Glowing Mushroom");
 
         add("itemGroup.confluence.glass", "Glass");
         add("itemGroup.confluence.special_building", "Special Building");

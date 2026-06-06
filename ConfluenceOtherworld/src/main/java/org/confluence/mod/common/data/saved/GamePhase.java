@@ -2,7 +2,6 @@ package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
@@ -10,6 +9,7 @@ import net.neoforged.fml.common.asm.enumextension.ExtensionInfo;
 import net.neoforged.fml.common.asm.enumextension.IExtensibleEnum;
 import net.neoforged.fml.common.asm.enumextension.NetworkedEnum;
 import org.jetbrains.annotations.NotNull;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 
 import java.util.Locale;
 import java.util.function.IntFunction;
@@ -34,7 +34,7 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
 
     public static final Codec<GamePhase> CODEC = StringRepresentable.fromValues(GamePhase::values);
     public static final IntFunction<GamePhase> BY_ORDER = ByIdMap.sparse(GamePhase::getOrder, values(), AFTER_SKELETRON);
-    public static final StreamCodec<ByteBuf, GamePhase> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ORDER, GamePhase::getOrder);
+    public static final StreamCodec<ByteBuf, GamePhase> STREAM_CODEC = PortByteBufCodecs.idMapper(BY_ORDER, GamePhase::getOrder);
     private final int order;
 
     GamePhase(int order) {

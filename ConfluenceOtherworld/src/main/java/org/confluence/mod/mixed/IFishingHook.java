@@ -1,5 +1,6 @@
 package org.confluence.mod.mixed;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -81,7 +82,7 @@ public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
     }
 
     static ResourceKey<LootTable> redirectLootTable(FishingHook self, ResourceKey<LootTable> original) {
-        FluidState fluidState = self.getInBlockState().getFluidState();
+        FluidState fluidState = PortEntityExtension.getInBlockState(self).getFluidState();
         if (fluidState.is(FluidTags.LAVA)) return ModLootTables.FISHING_LAVA;
         if (fluidState.is(Tags.Fluids.HONEY)) return ModLootTables.FISHING_HONEY;
         if (self.getType() == EntityType.FISHING_BOBBER) return original;

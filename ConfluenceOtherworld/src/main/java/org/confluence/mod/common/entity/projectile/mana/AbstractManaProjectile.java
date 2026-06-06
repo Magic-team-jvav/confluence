@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -163,7 +164,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
 
     /// server side only
     protected void doFluidCheck(Predicate<FluidState> predicate) {
-        if (!level().isClientSide && predicate.test(getInBlockState().getFluidState())) {
+        if (!level().isClientSide && predicate.test(PortEntityExtension.getInBlockState(this).getFluidState())) {
             discard();
         }
     }

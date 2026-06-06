@@ -1,5 +1,6 @@
 package org.confluence.mod.client.event;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
@@ -323,7 +324,7 @@ public final class GameClientEvents {
         boolean cannotMove = player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || ScryingOrb.spectatingPlayer != null;
         ILocalPlayer.of(player).confluence$setCanMove(!cannotMove);
         if (!player.hasInfiniteMaterials()) {
-            if (cannotMove || player.hasEffect(ModEffects.SHIMMER) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {
+            if (cannotMove || player.hasEffect(ModEffects.SHIMMER) || PortEntityExtension.getInBlockState(player).is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {
                 input.jumping = false;
                 input.forwardImpulse = 0.0F;
                 input.leftImpulse = 0.0F;

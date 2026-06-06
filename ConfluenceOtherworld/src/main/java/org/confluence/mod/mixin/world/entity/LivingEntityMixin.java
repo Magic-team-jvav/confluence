@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.world.entity;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
@@ -127,7 +128,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
 
     @ModifyExpressionValue(method = "handleOnClimbable", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSuppressingSlidingDownLadder()Z"))
     private boolean checkRope(boolean original) {
-        if (getInBlockState().is(ModTags.Blocks.ROPE)) {
+        if (PortEntityExtension.getInBlockState(this).is(ModTags.Blocks.ROPE)) {
             return !original;
         }
         return original;

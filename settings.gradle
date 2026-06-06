@@ -1,3 +1,18 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        maven {
+            name = 'ConfluenceReleases'
+            url = 'https://maven.confluence.ink/releases'
+        }
+        maven {
+            name = 'ConfluenceSnapshots'
+            url = 'https://maven.confluence.ink/snapshots'
+        }
+    }
+}
+
 plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }

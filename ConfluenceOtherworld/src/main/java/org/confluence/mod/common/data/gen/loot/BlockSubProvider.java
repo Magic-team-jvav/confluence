@@ -603,6 +603,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         dropSelf(AETHERIUM_BLOCK.get());
         dropSelf(DARK_AETHERIUM_BLOCK.get());
+        dropSelf(FALLEN_STAR_BLOCK.get());
 
         dropSelf(JUNGLE_ROSE.get());
         dropSelf(VOID_VIOLET.get());

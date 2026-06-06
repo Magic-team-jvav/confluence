@@ -13,6 +13,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
     @Override
     public void english() {
         // configuration
+        add("confluence.configuration.customTitle", "Custom Title");
+
         add("confluence.configuration.Compatibility", "Compatibility Mechanism");
         add("confluence.configuration.Compatibility.button", "Settings for compatibility with other mods");
         add("confluence.configuration.ArsNouveau", "Ars Nouveau");
@@ -28,18 +30,22 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.ftbChunksWormholePotion", "Enable wormhole potion functionality");
         add("confluence.configuration.waystonesPylonNonCost", "Enable pylons to not consume experience");
 
-        add("confluence.configuration.instantlyHardmodeConversion", "Instant Hard Mode Conversion");
-        add("confluence.configuration.instantlyHardmodeConversion.tooltip", "When enabled, the transition to Hard Mode will be accelerated and occur with a complete freeze. Please assess your computer's performance before enabling this configuration.");
+        add("confluence.configuration.wrappedCrimsonHeart", "Wrapped Crimson Heart");
+        add("confluence.configuration.wrappedCrimsonHeart.tooltip", "When enabled, newly generated Crimson Caverns will contain Wrapped Crimson Hearts.");
         add("confluence.configuration.wrappedCrimson_heart", "Exposed Crimson Heart");
         add("confluence.configuration.wrappedCrimson_heart.tooltip", "When enabled, newly generated Crimson Caverns will spawn exposed Crimson Hearts");
+        add("confluence.configuration.instantlyHardmodeConversion", "Instant Hard Mode Conversion");
+        add("confluence.configuration.instantlyHardmodeConversion.tooltip", "When enabled, the transition to Hard Mode will be accelerated and occur with a complete freeze. Please assess your computer's performance before enabling this configuration.");
         add("confluence.configuration.sellPriceDisplay", "Sell Price Display");
         add("confluence.configuration.sellPriceDisplay.tooltip", "Toggles the timing to see the price of the item when it is sold to NPCs");
         add("confluence.configuration.sellPriceDisplay.never", "Not displayed at any time");
         add("confluence.configuration.sellPriceDisplay.everywhere", "Displayed at all times");
         add("confluence.configuration.sellPriceDisplay.trade_screen", "Only displayed in the trading screen");
+
         add("confluence.configuration.Recipe", "Crafting Recipe System");
         add("confluence.configuration.Recipe.button", "Crafting Recipe System");
         add("confluence.configuration.Recipe.tooltip", "Settings related to crafting recipes");
+
         add("confluence.configuration.Spawning", "Spawning Mechanism");
         add("confluence.configuration.Spawning.button", "Spawning Mechanism");
         add("confluence.configuration.Spawning.tooltip", "Settings related to entity spawning");
@@ -61,11 +67,14 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.doFallingStarSpawning.tooltip", "When enabled, falling stars will spawn at night");
         add("confluence.configuration.fallingStarInterval", "Falling Star Spawn Interval");
         add("confluence.configuration.fallingStarInterval.tooltip", "Defines the interval between falling star spawns at night");
+
         add("confluence.configuration.WorldGeneration", "World Generation Mechanism");
         add("confluence.configuration.WorldGeneration.button", "World Generation Mechanism");
         add("confluence.configuration.WorldGeneration.tooltip", "Settings related to world generation");
         add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe");
         add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.(This configuration change requires a game restart!)");
+        add("confluence.configuration.brewingStandRecipe", "Terra Potion Brewing Stand Recipes");
+        add("confluence.configuration.brewingStandRecipe.tooltip", "When enabled, the Brewing Stand can craft Terra Potions. (Restart the game after changing this setting!)");
         add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning");
         add("confluence.configuration.alertPlayerDungeon.tooltip", "When enabled, there will be three roars as warnings before the dungeon guardian appears.");
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
@@ -74,6 +83,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.enemyDropsMoney.tooltip", "When enabled, enemies will drop coins upon death.");
         add("confluence.configuration.playerDropsMoney", "Player Drops Money");
         add("confluence.configuration.playerDropsMoney.tooltip", "When enabled, players will drop coins upon death.");
+
         add("confluence.configuration.Paints", "Paint Function Settings");
         add("confluence.configuration.Paints.tooltip", "Some compatibility issues may be caused by the paint function, so you need to adjust the relevant options here.");
         add("confluence.configuration.Paints.button", "About Paint");
@@ -84,12 +94,15 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.bannedModForPaints", "Mod Paints Blacklist");
         add("confluence.configuration.bannedModForPaints.button", "Enter Mod ID to use the blacklist");
         add("confluence.configuration.bannedModForPaints.tooltip", "If the paints from this mod cause rendering issues with blocks from other mods, enter the MOD ID to prevent that mod's blocks from using the paint color");
+
         add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab", "Decide whether wip items should be displayed in the creative mode tab.");
         add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab.tooltip", "Enable to force allow wip items to be displayed in the creative mode tab.");
         add("confluence.configuration.fletchingMenu", "Fletching Table Menu");
         add("confluence.configuration.fletchingMenu.tooltip", "When enabled, the fletching table will be modified by Conflux");
         add("confluence.configuration.shimmer_decompose", "Shimmer Decompose");
         add("confluence.configuration.shimmer_decompose.tooltip", "When enabled, Shimmer liquid can decompose items into raw materials");
+        add("confluence.configuration.shimmerDecompose", "Shimmer Decomposition");
+        add("confluence.configuration.shimmerDecompose.tooltip", "When enabled, Shimmer can decompose items into raw materials.");
         add("confluence.configuration.returnPotionGlassBottle", "Return Glass Bottles for Potions");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "Decides whether to return the glass bottle after using a potion");
         add("confluence.configuration.rightClickRideMinecart", "Right click to ride a minecart");
@@ -103,49 +116,83 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.defaultRespawnTimeMax", "Default Maximum Respawn Time");
         add("confluence.configuration.defaultRespawnTimeMax.tooltip", "Set the default maximum respawn time");
         add("confluence.configuration.bossRespawnTimeMin", "Minimum Respawn Time (Boss Battle)");
+        add("confluence.configuration.bossRespawnTimeMin.tooltip", "Minimum respawn time for when dying in a boss battle");
         add("confluence.configuration.bossRespawnTimeMax", "Maximum Respawn Time (Boss Battle)");
         add("confluence.configuration.bossRespawnTimeMax.tooltip", "Maximum respawn time for when dying in a boss battle");
-        add("confluence.configuration.bossRespawnTimeMin.tooltip", "Minimum respawn time for when dying in a boss battle");
-        add("confluence.configuration.brewingStandRecipe", "Terra Potion Brewing Stand Recipes");
-        add("confluence.configuration.brewingStandRecipe.tooltip", "When enabled, the Brewing Stand can craft Terra Potions. (Restart the game after changing this setting!)");
         add("confluence.configuration.showWindParticles", "Wind Particles Ratio");
+        add("confluence.configuration.showWindParticles.tooltip", "Adjust the value to decide how many wind particles are visible.");
+
         add("confluence.configuration.HUD", "HUD");
+        add("confluence.configuration.HUD.tooltip", "About HUD Display");
+        add("confluence.configuration.HUD.button", "About HUD Display");
         add("confluence.configuration.GUI", "GUI");
-        add("confluence.configuration.Mana", "Mana");
-        add("confluence.configuration.Soul", "Soul");
-        add("confluence.configuration.Armor", "Armor");
+        add("confluence.configuration.GUI.tooltip", "About GUI Display");
+        add("confluence.configuration.GUI.button", "About GUI Display");
+        add("confluence.configuration.leftEffectIcon", "Left Potion Effect Icon");
+        add("confluence.configuration.leftEffectIcon.tooltip", "When enabled, potion effect icons are displayed on the left side of the screen.");
+        add("confluence.configuration.extraInventoryButtonOffsetX", "Extra Inventory Button Offset X");
+        add("confluence.configuration.extraInventoryButtonOffsetY", "Extra Inventory Button Offset Y");
+
         add("confluence.configuration.Health", "Health");
-        add("confluence.configuration.Food", "Food Saturation");
+        add("confluence.configuration.Health.button", "Health");
+        add("confluence.configuration.Health.tooltip", "About Health Display");
         add("confluence.configuration.terraStyleHealth", "Terra Style Health");
-        add("confluence.configuration.terraStyleArmor", "Terra Style Armor");
-        add("confluence.configuration.terraStyleFood", "Terra Style Food Saturation");
+        add("confluence.configuration.terraStyleHealth.tooltip", "When enabled, health is displayed in Terra style.");
         add("confluence.configuration.healthStyle", "Health Style");
+        add("confluence.configuration.healthStyle.tooltip", "Health Display");
         add("confluence.configuration.healthOffsetX", "Health Offset X");
         add("confluence.configuration.healthOffsetY", "Health Offset Y");
+        add("confluence.configuration.healthStyle.legacy", "Health Style: Elegant");
+        add("confluence.configuration.healthStyle.overlay", "Health Style: Overlay");
+
+        add("confluence.configuration.Mana", "Mana");
+        add("confluence.configuration.Mana.button", "Mana");
+        add("confluence.configuration.Mana.tooltip", "About Mana Display");
         add("confluence.configuration.manaStyle", "Mana Style");
+        add("confluence.configuration.manaStyle.tooltip", "Mana Style");
         add("confluence.configuration.manaOffsetX", "Mana Offset X");
         add("confluence.configuration.manaOffsetY", "Mana Offset Y");
+        add("confluence.configuration.manaStyle.legacy", "Mana Style: Elegant");
+        add("confluence.configuration.manaStyle.overlay", "Mana Style: Overlay");
+
+        add("confluence.configuration.Soul", "Soul");
+        add("confluence.configuration.Soul.button", "Soul");
+        add("confluence.configuration.Soul.tooltip", "About Soul Display");
         add("confluence.configuration.soulStyle", "Soul Style");
+        add("confluence.configuration.soulStyle.tooltip", "Soul Style");
         add("confluence.configuration.soulOffsetX", "Soul Offset X");
         add("confluence.configuration.soulOffsetY", "Soul Offset Y");
+        add("confluence.configuration.soulStyle.legacy", "Soul Style: Elegant");
+        add("confluence.configuration.soulStyle.overlay", "Soul Style: Overlay");
+        add("confluence.configuration.soulQuickSkillStyle", "Soul Quick Skill Style");
+        add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_BIG", "Big Roulette Wheel");
+        add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_SMALL", "Small Roulette Wheel");
+        add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_L", "Horizontal Cards (Left)");
+        add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_R", "Horizontal Cards (Right)");
+        add("confluence.screen.soul_overview.center", "Soul Overview Screen: Center");
+
+        add("confluence.configuration.Armor", "Armor");
+        add("confluence.configuration.Armor.button", "Armor");
+        add("confluence.configuration.Armor.tooltip", "About Armor Display");
+        add("confluence.configuration.terraStyleArmor", "Terra Style Armor");
+        add("confluence.configuration.terraStyleArmor.tooltip", "When enabled, armor is displayed in Terra style.");
         add("confluence.configuration.armorStyle", "Armor Style");
-        add("confluence.configuration.foodStyle", "Food Saturation Style");
         add("confluence.configuration.armorStyle.legacy_horizontal", "Armor Style: Elegant - Horizontal");
         add("confluence.configuration.armorStyle.legacy_diagonal", "Armor Style: Elegant - Diagonal");
         add("confluence.configuration.armorStyle.legacy_vertical", "Armor Style: Elegant - Vertical");
         add("confluence.configuration.armorStyle.overlay", "Armor Style: Overlay");
-        add("confluence.configuration.manaStyle.legacy", "Mana Style: Elegant");
-        add("confluence.configuration.manaStyle.overlay", "Mana Style: Overlay");
-        add("confluence.configuration.soulStyle.legacy", "Soul Style: Elegant");
-        add("confluence.configuration.soulStyle.overlay", "Soul Style: Overlay");
-        add("confluence.configuration.healthStyle.legacy", "Health Style: Elegant");
-        add("confluence.configuration.healthStyle.overlay", "Health Style: Overlay");
+
+        add("confluence.configuration.Food", "Food Saturation");
+        add("confluence.configuration.Food.button", "Food Saturation");
+        add("confluence.configuration.Food.tooltip", "About Food Display");
+        add("confluence.configuration.terraStyleFood", "Terra Style Food Saturation");
+        add("confluence.configuration.foodStyle", "Food Saturation Style");
         add("confluence.configuration.foodStyle.legacy", "Food Saturation Style: Elegant");
         add("confluence.configuration.foodStyle.overlay", "Food Saturation Style: Overlay");
-        add("confluence.configuration.leftEffectIcon", "Left Potion Effect Icon");
-        add("confluence.configuration.extraInventoryButtonOffsetX", "Extra Inventory Button Offset X");
-        add("confluence.configuration.extraInventoryButtonOffsetY", "Extra Inventory Button Offset Y");
+
         add("confluence.configuration.Entity", "Entity Effects");
+        add("confluence.configuration.Entity.button", "Entity-related Visual Effects");
+        add("confluence.configuration.Entity.tooltip", "Entity-related Visual Effects");
         add("confluence.configuration.bloodyEffect", "Blood Effect");
         add("confluence.configuration.bloodyEffect.tooltip", "Blood particle splashing");
         add("confluence.configuration.goreEffect", "Gore Effect");
@@ -158,6 +205,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.healIndicator", "Heal Indicator");
         add("confluence.configuration.damageIndicator.tooltip", "Enable to display damage numbers");
         add("confluence.configuration.healIndicator.tooltip", "Enable to display heal numbers");
+
         add("confluence.configuration.Gameplay", "Gameplay Mechanics");
         add("confluence.configuration.Gameplay.button", "Define Gameplay Mechanics");
         add("confluence.configuration.Gameplay.tooltip", "Some gameplay mechanics can be defined by you");
@@ -170,12 +218,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.altarTips.tooltip", "You can turn off the tips by yourself after learning");
         add("confluence.configuration.ammoSlotsBlacklist", "Ammo Slot Automatically Picks-up Blacklist");
         add("confluence.configuration.ammoSlotsBlacklist.tooltip", "Items with IDs or tags in the blacklist will not automatically enter the ammo slot");
-        add("confluence.configuration.shimmerDecompose", "Shimmer Decomposition");
-        add("confluence.configuration.shimmerDecompose.tooltip", "When enabled, Shimmer can decompose items into raw materials.");
         add("confluence.configuration.starPhase", "Stellar Phase");
         add("confluence.configuration.starPhase.tooltip", "Currently has no function. Not recommended to enable.");
-        add("confluence.configuration.wrappedCrimsonHeart", "Wrapped Crimson Heart");
-        add("confluence.configuration.wrappedCrimsonHeart.tooltip", "When enabled, newly generated Crimson Caverns will contain Wrapped Crimson Hearts.");
         add("confluence.configuration.terraStyleExplosion", "Terra Style Explosion");
         add("confluence.configuration.terraStyleExplosion.tooltip", "When enabled, the bombs in confluence will simulate the blast radius of a Terra explosion.");
         add("confluence.configuration.terraStyleFireDamage", "Terra Style Fire Damage");
@@ -184,8 +228,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "When enabled, NPCs can no longer be attacked by players (including vanilla villagers).");
         add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes", "Allows Vanilla Entities To Perform Stage Attributes");
         add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes.tooltip", "When enabled, the attributes of the vanilla entities will be modified in Hard mode or other stages.");
+
         add("confluence.configuration.GameEvent", "Game Events");
         add("confluence.configuration.GameEvent.tooltip", "Settings for game events");
+
         add("confluence.configuration.SlimeRain", "Slime Rain");
         add("confluence.configuration.slimeRainEventMaxEnemiesBase", "Maximum Enemies (Base Value)");
         add("confluence.configuration.slimeRainEventPerPlayer", "Maximum Enemies Increase Per Player");
@@ -195,6 +241,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.slimeRainEventRequiredPlayerMaxHealth", "Required Player Max Health to Trigger Event");
         add("confluence.configuration.slimeRainEventRequiredPlayerArmor", "Required Player Armor to Trigger Event");
         add("confluence.configuration.slimeRainEventFrequency", "Event Trigger Chance (Denominator)");
+
         add("confluence.configuration.BloodMoon", "Blood Moon");
         add("confluence.configuration.bloodMoonEventMaxEnemiesBase", "Maximum Enemies (Base Value)");
         add("confluence.configuration.bloodMoonEventMaxEnemiesPerPlayer", "Maximum Enemies Increase Per Player");
@@ -202,6 +249,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.bloodMoonEventRequiredPlayerMaxHealth", "Required Player Max Health to Trigger Event");
         add("confluence.configuration.bloodMoonEventRequiredPlayerArmor", "Required Player Armor to Trigger Event");
         add("confluence.configuration.bloodMoonEventInvertChance", "Event Trigger Chance (Denominator)");
+
         add("confluence.configuration.GoblinArmy", "Goblin Army");
         add("confluence.configuration.goblinArmyEventMaxEnemiesBase", "Maximum Enemies (Base Value)");
         add("confluence.configuration.goblinArmyEventMaxEnemiesPerPlayer", "Maximum Enemies Increase Per Player");
@@ -214,6 +262,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goblinArmyEventHardmodeDefeatedInvertChance", "Hardmode Post-Defeat Event Trigger Chance (Denominator)");
         add("confluence.configuration.goblinArmyEventRequiredKillCountBase", "Required Kills (Base Value)");
         add("confluence.configuration.goblinArmyEventRequiredKillCountPerPlayer", "Required Kills Increase Per Player");
+
         add("confluence.configuration.MeteorShower", "Meteor Shower");
         add("confluence.configuration.meteorShowerEventFallingStarSpawnSpeedMultiplier", "Falling Star Spawn Speed Multiplier");
         add("confluence.configuration.meteorShowerEventFrequency", "Event Trigger Chance (Denominator)");
@@ -221,6 +270,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.meteorShowerEventMaxEnchantedNightcrawlersBase", "Maximum Enchanted Nightcrawlers (Base Value)");
         add("confluence.configuration.meteorShowerEventMaxEnchantedNightcrawlersPerPlayer", "Enchanted Nightcrawlers Increase Per Player");
         add("confluence.configuration.meteorShowerEventSpawnEnchantedNightcrawlersIntervalFactor", "Enchanted Nightcrawler Spawn Interval");
+
         add("confluence.configuration.Boss", "Boss");
         add("confluence.configuration.Boss.button", "Spawn Boss");
         add("confluence.configuration.Boss.tooltip", "When enabled, bosses will spawn naturally");
@@ -230,47 +280,38 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.dragonChargePlayer.tooltip", "When enabled, the Ender Dragon will dive to attack players");
         add("confluence.configuration.stopAskForSoftcore", "Stop Ask for Softcore");
         add("confluence.configuration.stopAskForSoftcore.tooltip", "When enabled, the server will not ask for the Softcore.");
+
         add("confluence.configuration.LightningBolt", "Lightning Bolt");
         add("confluence.configuration.LightningBolt.tooltip", "Adjust Lightning Bolt");
         add("confluence.configuration.terraStyleLightningBolt", "Terraria-Style Lightning Bolt");
         add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "Lightning Bolt Frequency Multiplier");
-        // Separator
-        add("confluence.configuration.Mana.button", "Mana");
-        add("confluence.configuration.Soul.button", "Soul");
-        add("confluence.configuration.Armor.button", "Armor");
-        add("confluence.configuration.Health.button", "Health");
-        add("confluence.configuration.Food.button", "Food Saturation");
-        add("confluence.configuration.manaStyle.tooltip", "Mana Style");
-        add("confluence.configuration.soulStyle.tooltip", "Soul Style");
-        add("confluence.configuration.Mana.tooltip", "About Mana Display");
-        add("confluence.configuration.Soul.tooltip", "About Soul Display");
-        add("confluence.configuration.Food.tooltip", "About Food Display");
+
         add("confluence.configuration.section.confluence.client.toml", "Client Display Settings (Client)");
         add("confluence.configuration.section.confluence.common.toml", "Gameplay Settings (Server)");
-        add("confluence.configuration.leftEffectIcon.tooltip", "When enabled, potion effect icons are displayed on the left side of the screen.");
-        add("confluence.configuration.Entity.button", "Entity-related Visual Effects");
-        add("confluence.configuration.HUD.tooltip", "About HUD Display");
-        add("confluence.configuration.HUD.button", "About HUD Display");
-        add("confluence.configuration.GUI.tooltip", "About GUI Display");
-        add("confluence.configuration.GUI.button", "About GUI Display");
-        add("confluence.configuration.showWindParticles.tooltip", "Adjust the value to decide how many wind particles are visible.");
-        add("confluence.configuration.terraStyleHealth.tooltip", "When enabled, health is displayed in Terra style.");
-        add("confluence.configuration.healthStyle.tooltip", "Health Display");
-        add("confluence.configuration.Health.tooltip", "About Health Display");
-        add("confluence.configuration.terraStyleArmor.tooltip", "When enabled, armor is displayed in Terra style.");
-        add("confluence.configuration.Armor.tooltip", "About Armor Display");
         add("confluence.configuration.title", "Configuration Screen");
         add("confluence.configuration.section.confluence.client.toml.title", "Client-side Configuration");
-        add("confluence.configuration.Entity.tooltip", "Entity-related Visual Effects");
         add("confluence.configuration.section.confluence.common.toml.title", "Common Configuration");
-        add("confluence.configuration.minEctoMistEffectRadius", "Min Ecto Mist Effect Radius");
-        add("confluence.configuration.minEctoMistEffectRadius.tooltip", "Disables ecto mist effect when set to 0.");
-        add("confluence.configuration.customTitle", "Custom Title");
+
+        add("confluence.configuration.minEctoMistEffectRadius", "Minimum Ecto Mist Effect Radius");
+        add("confluence.configuration.minEctoMistEffectRadius.tooltip", "Set to 0 to disable the ecto mist effect.");
+        add("confluence.configuration.Biome.button", "Biome-related Visual Effects");
+        add("confluence.configuration.Biome", "Biome");
+        add("confluence.configuration.The Hallow", "The Hallow");
+        add("confluence.configuration.rainbowCount", "Rainbow Count");
+        add("confluence.configuration.rainbowGradient", "Rainbow Gradient");
+
+        add("title.confluence.merged_configuration", "Confluence Merged Configuration Overview");
+        add("modid.name.confluence", "Confluence");
+        add("modid.name.terra_curio", "Terra Curios");
+        add("modid.name.terra_entity", "Terra Entities");
+        add("modid.name.the_trackers", "Trackers");
+        add("modid.name.thr_dim_particle", "3D Particles");
     }
 
     @Override
     public void chinese() {
-// 设置
+        add("confluence.configuration.customTitle", "自定义标题");
+
         add("confluence.configuration.Compatibility", "兼容性机制");
         add("confluence.configuration.Compatibility.button", "关于与其他模组的兼容性设置");
         add("confluence.configuration.ArsNouveau", "新生魔艺");
@@ -295,9 +336,11 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.sellPriceDisplay.never", "任何时候都不显示");
         add("confluence.configuration.sellPriceDisplay.everywhere", "任何时候都显示");
         add("confluence.configuration.sellPriceDisplay.trade_screen", "仅在交易界面显示");
+
         add("confluence.configuration.Recipe", "合成配方机制");
         add("confluence.configuration.Recipe.button", "合成配方机制");
         add("confluence.configuration.Recipe.tooltip", "一些合成配方相关设置");
+
         add("confluence.configuration.Spawning", "生成机制");
         add("confluence.configuration.Spawning.button", "生成机制");
         add("confluence.configuration.Spawning.tooltip", "一些生成相关设置");
@@ -319,6 +362,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.doFallingStarSpawning.tooltip", "启用时，坠落之星将会在晚上生成");
         add("confluence.configuration.fallingStarInterval", "坠星生成间隔");
         add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
+
         add("confluence.configuration.WorldGeneration", "世界生成机制");
         add("confluence.configuration.WorldGeneration.button", "世界生成机制");
         add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
@@ -332,6 +376,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.enemyDropsMoney.tooltip", "启用时，敌怪死亡后会掉落钱币");
         add("confluence.configuration.playerDropsMoney", "玩家掉落钱币");
         add("confluence.configuration.playerDropsMoney.tooltip", "启用时，玩家死亡后会掉落钱币");
+
         add("confluence.configuration.Paints", "油漆功能设置");
         add("confluence.configuration.Paints.tooltip", "部分兼容问题可能由油漆功能引发，因此你需要在此调整相关选项");
         add("confluence.configuration.Paints.button", "关于油漆");
@@ -342,6 +387,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.bannedModForPaints", "模组油漆使用黑名单");
         add("confluence.configuration.bannedModForPaints.button", "填入模组MODID以使用黑名单");
         add("confluence.configuration.bannedModForPaints.tooltip", "如果本模组的油漆为其他模组的部分方块带来渲染问题，填入MODID以禁止该模组的方块使用油漆染色");
+
         add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab", "决定未完成物品是否显示于创造模式标签页");
         add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab.tooltip", "开启后强制允许未完成物品显示于创造模式标签页");
         add("confluence.configuration.fletchingMenu", "制箭台菜单");
@@ -361,47 +407,82 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.defaultRespawnTimeMax", "默认最大重生时间");
         add("confluence.configuration.defaultRespawnTimeMax.tooltip", "设置默认最大重生时间");
         add("confluence.configuration.bossRespawnTimeMin", "最小重生时间（boss战时）");
+        add("confluence.configuration.bossRespawnTimeMin.tooltip", "最小重生时间（boss战时死亡的重生时间）");
         add("confluence.configuration.bossRespawnTimeMax", "最大重生时间（boss战时）");
         add("confluence.configuration.bossRespawnTimeMax.tooltip", "最大重生时间（boss战时死亡的重生时间）");
-        add("confluence.configuration.bossRespawnTimeMin.tooltip", "最小重生时间（boss战时死亡的重生时间）");
         add("confluence.configuration.showWindParticles", "风粒子比率");
+        add("confluence.configuration.showWindParticles.tooltip", "通过调整数值，来决定你能看见风粒子的数量");
+
         add("confluence.configuration.HUD", "HUD");
+        add("confluence.configuration.HUD.tooltip", "关于HUD显示");
+        add("confluence.configuration.HUD.button", "关于HUD显示");
         add("confluence.configuration.GUI", "GUI");
-        add("confluence.configuration.Mana", "魔力值");
-        add("confluence.configuration.Soul", "灵魂值");
-        add("confluence.configuration.Armor", "护甲值");
+        add("confluence.configuration.GUI.tooltip", "关于GUI显示");
+        add("confluence.configuration.GUI.button", "关于GUI显示");
+        add("confluence.configuration.leftEffectIcon", "左侧药水效果标识");
+        add("confluence.configuration.leftEffectIcon.tooltip", "开启后，药水效果图标显示屏幕左侧");
+        add("confluence.configuration.extraInventoryButtonOffsetX", "额外物品栏按钮X轴偏移");
+        add("confluence.configuration.extraInventoryButtonOffsetY", "额外物品栏按钮Y轴偏移");
+
         add("confluence.configuration.Health", "生命值");
-        add("confluence.configuration.Food", "饥饿值");
+        add("confluence.configuration.Health.button", "生命值");
+        add("confluence.configuration.Health.tooltip", "关于生命值显示");
         add("confluence.configuration.terraStyleHealth", "泰拉样式生命值");
-        add("confluence.configuration.terraStyleArmor", "泰拉样式护甲值");
-        add("confluence.configuration.terraStyleFood", "泰拉样式饥饿值");
+        add("confluence.configuration.terraStyleHealth.tooltip", "开启后，生命值显示为泰拉样式");
         add("confluence.configuration.healthStyle", "生命值样式");
+        add("confluence.configuration.healthStyle.tooltip", "生命值显示");
         add("confluence.configuration.healthOffsetX", "生命值X轴偏移");
         add("confluence.configuration.healthOffsetY", "生命值Y轴偏移");
+        add("confluence.configuration.healthStyle.legacy", "生命值样式:精致");
+        add("confluence.configuration.healthStyle.overlay", "生命值样式:叠加");
+
+        add("confluence.configuration.Mana", "魔力值");
+        add("confluence.configuration.Mana.button", "魔力值");
+        add("confluence.configuration.Mana.tooltip", "关于魔力值显示");
         add("confluence.configuration.manaStyle", "魔力值样式");
+        add("confluence.configuration.manaStyle.tooltip", "魔力值样式");
         add("confluence.configuration.manaOffsetX", "魔力值X轴偏移");
         add("confluence.configuration.manaOffsetY", "魔力值Y轴偏移");
+        add("confluence.configuration.manaStyle.legacy", "魔力值样式:精致");
+        add("confluence.configuration.manaStyle.overlay", "魔力值样式:叠加");
+
+        add("confluence.configuration.Soul", "灵魂值");
+        add("confluence.configuration.Soul.button", "灵魂");
+        add("confluence.configuration.Soul.tooltip", "关于灵魂显示");
         add("confluence.configuration.soulStyle", "灵魂值样式");
         add("confluence.configuration.soulOffsetX", "灵魂值X轴偏移");
         add("confluence.configuration.soulOffsetY", "灵魂值Y轴偏移");
+        add("confluence.configuration.soulStyle.legacy", "灵魂值样式:叠加");
+        add("confluence.configuration.soulStyle.overlay", "灵魂值样式:叠加");
+        add("confluence.configuration.soulQuickSkillStyle", "灵魂快捷技能栏样式");
+        add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_BIG", "大转盘");
+        add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_SMALL", "小转盘");
+        add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_L", "横向卡片（左）");
+        add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_R", "横向卡片（右）");
+        add("confluence.screen.soul_overview.center", "灵魂技能总览界面.居中");
+
+        add("confluence.configuration.Armor", "护甲值");
+        add("confluence.configuration.Armor.button", "护甲值");
+        add("confluence.configuration.Armor.tooltip", "关于护甲值显示");
+        add("confluence.configuration.terraStyleArmor", "泰拉样式护甲值");
+        add("confluence.configuration.terraStyleArmor.tooltip", "开启后，护甲值显示为泰拉样式");
         add("confluence.configuration.armorStyle", "护甲值样式");
-        add("confluence.configuration.foodStyle", "饥饿值样式");
         add("confluence.configuration.armorStyle.legacy_horizontal", "护甲值样式:精致-水平");
         add("confluence.configuration.armorStyle.legacy_diagonal", "护甲值样式:精致-对角");
         add("confluence.configuration.armorStyle.legacy_vertical", "护甲值样式:精致-垂直");
         add("confluence.configuration.armorStyle.overlay", "护甲值样式:叠加");
-        add("confluence.configuration.manaStyle.legacy", "魔力值样式:精致");
-        add("confluence.configuration.manaStyle.overlay", "魔力值样式:叠加");
-        add("confluence.configuration.soulStyle.legacy", "灵魂值样式:叠加");
-        add("confluence.configuration.soulStyle.overlay", "灵魂值样式:叠加");
-        add("confluence.configuration.healthStyle.legacy", "生命值样式:精致");
-        add("confluence.configuration.healthStyle.overlay", "生命值样式:叠加");
+
+        add("confluence.configuration.Food", "饥饿值");
+        add("confluence.configuration.Food.button", "饥饿值");
+        add("confluence.configuration.Food.tooltip", "关于饥饿值显示");
+        add("confluence.configuration.terraStyleFood", "泰拉样式饥饿值");
+        add("confluence.configuration.foodStyle", "饥饿值样式");
         add("confluence.configuration.foodStyle.legacy", "饥饿值样式:精致");
         add("confluence.configuration.foodStyle.overlay", "饥饿值样式:叠加");
-        add("confluence.configuration.leftEffectIcon", "左侧药水效果标识");
-        add("confluence.configuration.extraInventoryButtonOffsetX", "额外物品栏按钮X轴偏移");
-        add("confluence.configuration.extraInventoryButtonOffsetY", "额外物品栏按钮Y轴偏移");
+
         add("confluence.configuration.Entity", "生物效果");
+        add("confluence.configuration.Entity.button", "与生物有关的视觉效果");
+        add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
         add("confluence.configuration.bloodyEffect", "血效果");
         add("confluence.configuration.bloodyEffect.tooltip", "血的粒子飞溅");
         add("confluence.configuration.goreEffect", "肢解效果");
@@ -414,6 +495,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.healIndicator", "治疗数值显示");
         add("confluence.configuration.damageIndicator.tooltip", "启用以观察伤害数值");
         add("confluence.configuration.healIndicator.tooltip", "启用以观察治疗数值");
+
         add("confluence.configuration.Gameplay", "游戏机制");
         add("confluence.configuration.Gameplay.button", "游戏机制定义");
         add("confluence.configuration.Gameplay.tooltip", "一些游戏机制可以由你决定");
@@ -436,8 +518,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "开启后，NPC将不再能被玩家攻击（包括原版村民）");
         add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes", "允许原版生物应用阶段属性");
         add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes.tooltip", "开启后，原版生物将在困难模式或其它阶段修改属性");
+
         add("confluence.configuration.GameEvent", "游戏事件");
         add("confluence.configuration.GameEvent.tooltip", "对游戏事件的设置");
+
         add("confluence.configuration.SlimeRain", "史莱姆雨");
         add("confluence.configuration.slimeRainEventMaxEnemiesBase", "最大敌人数量");
         add("confluence.configuration.slimeRainEventPerPlayer", "每位玩家提升最大敌人数量");
@@ -447,6 +531,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.slimeRainEventRequiredPlayerMaxHealth", "事件触发所需玩家最大生命值");
         add("confluence.configuration.slimeRainEventRequiredPlayerArmor", "事件触发所需玩家护甲值");
         add("confluence.configuration.slimeRainEventFrequency", "事件触发概率（分母）");
+
         add("confluence.configuration.BloodMoon", "血月");
         add("confluence.configuration.bloodMoonEventMaxEnemiesBase", "最大敌人数量");
         add("confluence.configuration.bloodMoonEventMaxEnemiesPerPlayer", "每位玩家提升最大敌人数量");
@@ -454,6 +539,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.bloodMoonEventRequiredPlayerMaxHealth", "事件触发所需玩家最大生命值");
         add("confluence.configuration.bloodMoonEventRequiredPlayerArmor", "事件触发所需玩家护甲值");
         add("confluence.configuration.bloodMoonEventInvertChance", "事件触发概率（分母）");
+
         add("confluence.configuration.GoblinArmy", "哥布林军队");
         add("confluence.configuration.goblinArmyEventMaxEnemiesBase", "最大敌人数量");
         add("confluence.configuration.goblinArmyEventMaxEnemiesPerPlayer", "每位玩家提升最大敌人数量");
@@ -466,6 +552,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goblinArmyEventHardmodeDefeatedInvertChance", "困难模式下被击败后被击败后事件触发概率（分母）");
         add("confluence.configuration.goblinArmyEventRequiredKillCountBase", "所需击杀数量基础");
         add("confluence.configuration.goblinArmyEventRequiredKillCountPerPlayer", "每位玩家提升所需击杀数量基础");
+
         add("confluence.configuration.MeteorShower", "流星雨");
         add("confluence.configuration.meteorShowerEventFallingStarSpawnSpeedMultiplier", "坠落之星频率提升倍率");
         add("confluence.configuration.meteorShowerEventFrequency", "事件触发概率（分母）");
@@ -473,6 +560,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.meteorShowerEventMaxEnchantedNightcrawlersBase", "生成附魔夜行者最大数量");
         add("confluence.configuration.meteorShowerEventMaxEnchantedNightcrawlersPerPlayer", "每位玩家提升生成附魔夜行者最大数量");
         add("confluence.configuration.meteorShowerEventSpawnEnchantedNightcrawlersIntervalFactor", "生成附魔夜行者间隔");
+
         add("confluence.configuration.Boss", "Boss");
         add("confluence.configuration.Boss.button", "BOSS生成");
         add("confluence.configuration.Boss.tooltip", "启用时，BOSS将会生成");
@@ -482,44 +570,32 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.dragonChargePlayer.tooltip", "开启后，末影龙将会俯冲攻击玩家");
         add("confluence.configuration.stopAskForSoftcore", "停止请求软核模式");
         add("confluence.configuration.stopAskForSoftcore.tooltip", "开启后，服务器将不会请求软核模式");
+
         add("confluence.configuration.LightningBolt", "闪电束");
         add("confluence.configuration.LightningBolt.tooltip", "调整闪电束");
         add("confluence.configuration.terraStyleLightningBolt", "泰拉闪电束");
         add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "闪电束频率提升倍率");
 
-
-
-        // 分割
-        add("confluence.configuration.Mana.button", "魔力值");
-        add("confluence.configuration.Soul.button", "灵魂值");
-        add("confluence.configuration.Armor.button", "护甲值");
-        add("confluence.configuration.Health.button", "生命值");
-        add("confluence.configuration.Food.button", "饥饿值");
-        add("confluence.configuration.manaStyle.tooltip", "魔力值样式");
-        add("confluence.configuration.Mana.tooltip", "关于魔力值显示");
-        add("confluence.configuration.Food.tooltip", "关于饥饿值显示");
-        add("confluence.configuration.Soul.tooltip", "关于灵魂值显示");
         add("confluence.configuration.section.confluence.client.toml", "个人显示设定（客户端）");
         add("confluence.configuration.section.confluence.common.toml", "游戏机制设定（服务端）");
-        add("confluence.configuration.leftEffectIcon.tooltip", "开启后，药水效果图标显示屏幕左侧");
-        add("confluence.configuration.Entity.button", "与生物有关的视觉效果");
-        add("confluence.configuration.HUD.tooltip", "关于HUD显示");
-        add("confluence.configuration.HUD.button", "关于HUD显示");
-        add("confluence.configuration.GUI.tooltip", "关于GUI显示");
-        add("confluence.configuration.GUI.button", "关于GUI显示");
-        add("confluence.configuration.showWindParticles.tooltip", "通过调整数值，来决定你能看见风粒子的数量");
-        add("confluence.configuration.terraStyleHealth.tooltip", "开启后，生命值显示为泰拉样式");
-        add("confluence.configuration.healthStyle.tooltip", "生命值显示");
-        add("confluence.configuration.Health.tooltip", "关于生命值显示");
-        add("confluence.configuration.terraStyleArmor.tooltip", "开启后，护甲值显示为泰拉样式");
-        add("confluence.configuration.Armor.tooltip", "关于护甲值显示");
         add("confluence.configuration.title", "配置界面");
         add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
-        add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
         add("confluence.configuration.section.confluence.common.toml.title", "通用配置");
-        add("confluence.configuration.minEctoMistEffectRadius", "最小迷雾效果距离");
-        add("confluence.configuration.minEctoMistEffectRadius.tooltip", "设置为0时，关闭迷雾效果");
-        add("confluence.configuration.customTitle", "自定义标题");
+
+        add("confluence.configuration.minEctoMistEffectRadius", "最小灵雾雾气效果距离");
+        add("confluence.configuration.minEctoMistEffectRadius.tooltip", "设置为0时，关闭灵雾雾气效果");
+        add("confluence.configuration.Biome.button", "与生物群系有关的视觉效果");
+        add("confluence.configuration.Biome", "生物群系");
+        add("confluence.configuration.The Hallow", "神圣之地");
+        add("confluence.configuration.rainbowCount", "彩虹数量");
+        add("confluence.configuration.rainbowGradient", "彩虹光环");
+
+        add("title.confluence.merged_configuration", "汇流来世合并配置总览");
+        add("modid.name.confluence", "汇流来世");
+        add("modid.name.terra_curio", "泰拉饰品");
+        add("modid.name.terra_entity", "泰拉生物");
+        add("modid.name.the_trackers", "全追踪");
+        add("modid.name.thr_dim_particle", "三维粒子");
     }
 
     @Override

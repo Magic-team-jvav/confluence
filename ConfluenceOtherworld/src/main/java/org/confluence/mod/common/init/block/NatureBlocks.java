@@ -280,7 +280,7 @@ public class NatureBlocks {
 
     // 末地 - 月光主题
     public static final DeferredBlock<Block> MOONLIT_GRASS_BLOCK = registerWithItem("moonlit_grass_block", () -> new EndGrassBlock(() -> Blocks.END_STONE));
-    public static final LogBlockSet MOONGLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("moonglow_willow", true, MOONGLOW_WILLOW).build();
+    public static final LogBlockSet MOONGLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("moonglow_willow", true, MOONGLOW_WILLOW).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.MOONGLOW_WILLOW_GROWER, properties, ModTags.Blocks.END_PLANT_CAN_SURVIVE, MOONLIT_GRASS_BLOCK, END_DIRT)).build();
     public static final DeferredBlock<Block> DEAD_LUNAR_CORAL_BLOCK = registerWithItem("dead_lunar_coral_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEAD_BRAIN_CORAL_BLOCK)));
     public static final DeferredBlock<BaseCoralPlantBlock> DEAD_LUNAR_CORAL = registerWithItem("dead_lunar_coral",
             () -> new BaseCoralPlantBlock(

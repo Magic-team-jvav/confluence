@@ -271,11 +271,11 @@ public class SoulOverviewScreen extends Screen {
         int hue = ClientConfigs.soulcererBackgroundHue;
         double hueP = hue / 360.0;
 
-        hueSlider = new AbstractSliderButton(5, this.height - 50, 100, 20, Component.literal(hue == 270 ? "默認" : (String.valueOf(hue))), hueP) {
+        hueSlider = new AbstractSliderButton(5, this.height - 50, 100, 20, Component.literal(hue == 270 ? "默认" : (String.valueOf(hue))), hueP) {
             @Override
             protected void updateMessage() {
                 int newHue = (int) (this.value * 360);
-                this.setMessage(Component.literal(newHue == 270 ? "默認" : (String.valueOf(newHue))));
+                this.setMessage(Component.literal(newHue == 270 ? "默认" : (String.valueOf(newHue))));
             }
 
             @Override
@@ -289,11 +289,11 @@ public class SoulOverviewScreen extends Screen {
         int contrast = ClientConfigs.soulcererBackgroundContrast;
         double contrastP = contrast / 255.0;
 
-        contrastSlider = new AbstractSliderButton(5, this.height - 75, 100, 20, Component.literal(contrast == 255 ? "默認" : (String.valueOf(contrast))), contrastP) {
+        contrastSlider = new AbstractSliderButton(5, this.height - 75, 100, 20, Component.literal(contrast == 255 ? "默认" : (String.valueOf(contrast))), contrastP) {
             @Override
             protected void updateMessage() {
                 int newContrast = (int) (this.value * 255);
-                this.setMessage(Component.literal(newContrast == 255 ? "默認" : (String.valueOf(newContrast))));
+                this.setMessage(Component.literal(newContrast == 255 ? "默认" : (String.valueOf(newContrast))));
             }
 
             @Override

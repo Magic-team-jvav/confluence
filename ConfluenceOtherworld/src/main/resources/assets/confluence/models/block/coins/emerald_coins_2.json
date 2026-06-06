@@ -6,6 +6,6 @@
     "model": "confluence:models/obj/coins/emerald_coins_2.obj",
     "mtl_override": "confluence:models/obj/coins/emerald_coins_2.mtl",
     "textures": {
-        "particle": "minecraft:item/emerald_coin"
+        "particle": "confluence:block/emerald_coins"
     }
 }

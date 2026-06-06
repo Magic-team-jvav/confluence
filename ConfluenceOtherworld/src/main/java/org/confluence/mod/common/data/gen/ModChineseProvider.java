@@ -2224,6 +2224,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.FENCE_GATE.get(), "月辉柳木栅栏门");
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.PRESSURE_PLATE.get(), "月辉柳木压力板");
         add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.LEAVES.get(), "月辉柳树叶");
+        add(NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.SAPLING.get(), "月辉柳树苗");
         add(NatureBlocks.MOONLIT_GRASS_BLOCK.get(), "月华草方块");
         add(NatureBlocks.DEAD_LUNAR_CORAL_BLOCK.get(), "失活的望月珊瑚块");
         add(NatureBlocks.DEAD_LUNAR_CORAL.get(), "失活的望月珊瑚");

@@ -83,7 +83,6 @@ public final class FlailControlPacketC2S implements IPacketC2S {
                 if (existing == null) return;
                 if (existing.getPhase() == BaseFlailEntity.PHASE_SPIN) {
                     existing.launch(player);
-                    player.getCooldowns().addCooldown(stack.getItem(), component.getCooldown(player));
                 } else if (existing.getPhase() == BaseFlailEntity.PHASE_STAY) {
                     existing.forceRetract();
                 } else if (existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {

@@ -1249,8 +1249,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 VanityArmorItems.THE_DOCTORS_PANTS.get(),
                 VanityArmorItems.THE_DOCTORS_SHOES.get(),
                 NatureBlocks.LOOSE_HONEY_BLOCK.asItem(),
-                NatureBlocks.BLUE_MOSS.asItem(),
-                NatureBlocks.PURPLE_MOSS.asItem(),
                 NatureBlocks.KRYPTON_MOSS.asItem(),
                 NatureBlocks.ARGON_MOSS.asItem(),
                 NatureBlocks.NEON_MOSS.asItem(),

@@ -53,7 +53,6 @@ public record FlailComponent(
         float maxDistance,
         float retractSpeed,
         float gravity,
-        int cooldown,
         float bounceFactor,
         int maxBounces,
         ResourceLocation soundEvent,
@@ -71,7 +70,6 @@ public record FlailComponent(
             Codec.FLOAT.fieldOf("maxDistance").forGetter(FlailComponent::maxDistance),
             Codec.FLOAT.fieldOf("retractSpeed").forGetter(FlailComponent::retractSpeed),
             Codec.FLOAT.fieldOf("gravity").forGetter(FlailComponent::gravity),
-            Codec.INT.fieldOf("cooldown").forGetter(FlailComponent::cooldown),
             Codec.FLOAT.optionalFieldOf("bounceFactor", 0.3F).forGetter(FlailComponent::bounceFactor),
             Codec.INT.optionalFieldOf("maxBounces", 3).forGetter(FlailComponent::maxBounces),
             ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(FlailComponent::soundEvent),
@@ -91,7 +89,6 @@ public record FlailComponent(
                     8.0f,
                     1.0f,
                     0.2f,
-                    20,
                     0.3f,
                     3,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
@@ -107,11 +104,10 @@ public record FlailComponent(
                     18.0f,
                     1.2f,
                     0.12f,
-                    0.12f,
-                    6.0f,
+                    0.32f,
+                    8.0f,
                     0.18f,
                     0.05f,
-                    20,
                     0.3f,
                     3,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
@@ -148,7 +144,6 @@ public record FlailComponent(
                     maxDistance == other.maxDistance &&
                     retractSpeed == other.retractSpeed &&
                     gravity == other.gravity &&
-                    cooldown == other.cooldown &&
                     bounceFactor == other.bounceFactor &&
                     maxBounces == other.maxBounces &&
                     soundEvent.equals(other.soundEvent) &&
@@ -168,7 +163,6 @@ public record FlailComponent(
         result = 31 * result + Float.hashCode(maxDistance);
         result = 31 * result + Float.hashCode(retractSpeed);
         result = 31 * result + Float.hashCode(gravity);
-        result = 31 * result + cooldown;
         result = 31 * result + Float.hashCode(bounceFactor);
         result = 31 * result + maxBounces;
         result = 31 * result + soundEvent.hashCode();
@@ -184,13 +178,6 @@ public record FlailComponent(
         AttributeInstance instance = living.getAttribute(LibAttributes.getRangedVelocity());
         if (instance != null) return velocity * (float) instance.getValue();
         return velocity;
-    }
-
-    /** 获取修正后的冷却时间（受攻击速度属性影响） */
-    public int getCooldown(LivingEntity living) {
-        AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
-        if (instance != null) return Math.max(cooldown - (int) (instance.getValue() / 3.0), 0);
-        return cooldown;
     }
 
     /** 获取修正后的挥舞速度（受近战速度属性影响） */

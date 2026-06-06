@@ -22,7 +22,7 @@ public final class TurbineEnchantments {
     /** 最大叠层数 */
     public static final int MAX_STACKS = 4;
     /** 每层伤害/速度加成比例 */
-    public static final float BONUS_PER_STACK = 0.1F;
+    public static final float BONUS_PER_STACK = 0.025F;
 
     /**
      * 获取玩家手持物品上的涡轮附魔等级。

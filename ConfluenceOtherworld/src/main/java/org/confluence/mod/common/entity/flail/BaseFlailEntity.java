@@ -33,6 +33,10 @@ import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
  * <h1>连枷弹射物基类</h1>
@@ -43,7 +47,7 @@ import org.joml.Vector3f;
  * STAY：受重力停留地面，造成 50% 伤害<br>
  * RETRACT：飞回玩家并消失
  */
-public class BaseFlailEntity extends Projectile implements Immunity {
+public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatable {
     // ── 状态常数 ─
     public static final int PHASE_SPIN = 0;
     public static final int PHASE_THROWN = 1;
@@ -70,6 +74,9 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     private int previousPhase = -1;
     @Nullable
     private FlailComponent cachedComponent;
+    private final AnimatableInstanceCache animatableCache = GeckoLibUtil.createInstanceCache(this);
+    /** 链条末段渲染插值用，由 {@link org.confluence.mod.client.renderer.entity.flail.BaseFlailRenderer} 更新 */
+    public float lastDelta = 0.0F;
 
     /** 获取当前 SPIN 持续 tick 数 */
     public int getSpinTickCounter() {
@@ -439,5 +446,20 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     @Override
     public int confluence$getImmunityDuration(DamageSource damageSource) {
         return 7;
+    }
+
+    // ── GeoAnimatable ──
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return animatableCache;
+    }
+
+    @Override
+    public double getTick(Object animatable) {
+        return tickCount;
     }
 }

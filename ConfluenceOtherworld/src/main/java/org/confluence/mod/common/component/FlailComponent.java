@@ -40,9 +40,10 @@ import java.util.function.Supplier;
  * @param bounceFactor 反弹能量衰减系数，范围 0.3~0.9
  * @param maxBounces   最大反弹次数，耗尽后落地
  * @param soundEvent   音效 ResourceLocation
- * @param projType     弹射物实体类ResourceLocation
- * @param chainTexture 链条纹理 ResourceLocation
- * @param hitEffect    击中特效（可选）
+ * @param projType      弹射物实体类ResourceLocation
+ * @param chainTexture  弹球纹理 ResourceLocation
+ * @param modelLocation 弹球 Geo 模型路径（可选，为空时使用默认 flail.geo.json）
+ * @param hitEffect     击中特效（可选）
  */
 public record FlailComponent(
         float damageFactor,
@@ -58,6 +59,7 @@ public record FlailComponent(
         ResourceLocation soundEvent,
         ResourceLocation projType,
         ResourceLocation chainTexture,
+        Optional<ResourceLocation> modelLocation,
         Optional<EffectStrategyComponent> hitEffect
 ) implements DataComponentType<FlailComponent> {
 
@@ -75,6 +77,7 @@ public record FlailComponent(
             ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(FlailComponent::soundEvent),
             ResourceLocation.CODEC.fieldOf("projType").forGetter(FlailComponent::projType),
             ResourceLocation.CODEC.fieldOf("chainTexture").forGetter(FlailComponent::chainTexture),
+            ResourceLocation.CODEC.optionalFieldOf("modelLocation").forGetter(FlailComponent::modelLocation),
             EffectStrategyComponent.CODEC.optionalFieldOf("hitEffect").forGetter(FlailComponent::hitEffect)
     ).apply(instance, FlailComponent::new));
 
@@ -93,7 +96,8 @@ public record FlailComponent(
                     3,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/ball_o_hurt_chain.png"),
+                    Confluence.asResource("textures/entity/flail/ball_o_hurt.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/ball_o_hurt.geo.json")),
                     Optional.empty()
             );
 
@@ -112,7 +116,8 @@ public record FlailComponent(
                     3,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/mace_chain.png"),
+                    Confluence.asResource("textures/entity/flail/mace.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/mace.geo.json")),
                     Optional.empty()
             );
 

@@ -86,6 +86,10 @@ public class NatureBlocks {
     public static final DeferredBlock<LifeCrystalBlock> LIFE_CRYSTAL_BLOCK = registerWithItem("life_crystal_block", () -> new LifeCrystalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_RED).lightLevel(state -> 7)), LifeCrystalBlock.BItem::new);
     public static final Supplier<BlockEntityType<LifeCrystalBlock.BEntity>> LIFE_CRYSTAL_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("life_crystal_block_entity", () -> BlockEntityType.Builder.of(LifeCrystalBlock.BEntity::new, LIFE_CRYSTAL_BLOCK.get()).build(DSL.remainderType()));
 
+    // 小堆环境
+    public static final DeferredBlock<SmallPilesBlock> SMALL_STONE_PILES = registerWithItem("small_stone_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.STONE)));
+
+
     public static final DeferredBlock<Block> GRANITE = registerWithItem("granite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
     public static final DeferredBlock<TaperedTwoPartBlock> GRANITE_TAPERED_BLOCK = registerWithItem("granite_tapered_block", TaperedTwoPartBlock::new);
     public static final DeferredBlock<Block> MARBLE = registerWithItem("marble", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));

@@ -442,6 +442,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HEAVY_WORK_BENCH.get(),
                 CRYSTAL_BALL.get(),
                 DART_TRAP.get(),
+                GEYSER_BLOCK.get(),
                 STONE_DART_TRAP.get(),
                 DEEPSLATE_DART_TRAP.get(),
                 SHIMMER_TRAP.get(),
@@ -584,6 +585,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SANDSTONE_CHEST.get(),
 
                 GOLDEN_MELON.get(),
+
+                SMALL_STONE_PILES.get(),
 
                 KING_SLIME_RELIC.get(),
                 EYE_OF_CTHULHU_RELIC.get(),
@@ -936,6 +939,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HARDENED_RED_SAND_BLOCK.get(),
                 EXTRACTINATOR.get(),
                 DART_TRAP.get(),
+                GEYSER_BLOCK.get(),
                 STONE_DART_TRAP.get(),
                 DEEPSLATE_DART_TRAP.get(),
                 SHIMMER_TRAP.get(),
@@ -1030,6 +1034,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 VOID_GRASS_BLOCK.get(),
                 INVERSE_GRASS_BLOCK.get(),
                 MOONLIT_GRASS_BLOCK.get(),
+                SMALL_STONE_PILES.get(),
                 END_DIRT.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(

@@ -2271,6 +2271,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CRIMSON_HEART.get(), "猩红心脏");
         add(NatureBlocks.GELATIN_CRYSTAL.get(), "明胶水晶");
 
+        add(NatureBlocks.SMALL_STONE_PILES.get(), "小石堆");
+
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.LOG.get(), "阴森原木");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.WOOD.get(), "阴森木");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.PLANKS.get(), "阴森木板");

@@ -87,6 +87,7 @@ public final class ModTabs {
                         natural_environment.accept(NatureBlocks.GRANITE_TAPERED_BLOCK);
                         natural_environment.accept(NatureBlocks.MARBLE);
                         natural_environment.accept(NatureBlocks.MARBLE_TAPERED_BLOCK);
+                        natural_environment.accept(NatureBlocks.SMALL_STONE_PILES);
 
                         CreativeModeTab.Output corruption = GroupItem.belongsTo("corruption", output);
                         corruption.accept(NatureBlocks.CORRUPT_GRASS_BLOCK);

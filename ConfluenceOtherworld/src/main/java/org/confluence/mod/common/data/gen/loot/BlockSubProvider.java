@@ -561,6 +561,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(GREEN_BRICKS.FULL.get());
         dropSelf(PINK_BRICKS.FULL.get());
         dropSelf(SPIKE.get());
+        dropSelf(GEYSER_BLOCK.get());
         dropSelf(ENCHANTED_BLUE_BRICKS.get());
         dropSelf(ENCHANTED_GREEN_BRICKS.get());
         dropSelf(ENCHANTED_PINK_BRICKS.get());
@@ -836,6 +837,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(15)))
+        );
+        add(SMALL_STONE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Blocks.COBBLESTONE))
+                        .add(EmptyLootItem.emptyItem()))
         );
         addGrassLoot(ASH_GRASS.get(), ASH_GRASS.asItem());
         addGrassLoot(DESERT_GRASS.get(), DESERT_GRASS.asItem());

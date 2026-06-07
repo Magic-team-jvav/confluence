@@ -486,7 +486,7 @@ public final class GameClientEvents {
                 }
                 tooltip.add(Component.translatable(key, component).withStyle(ChatFormatting.GRAY));
             } else if (effect.equals(ModEffects.DANGER_SENSE) || effect.equals(ModEffects.SPELUNKER)) {
-                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(ModKeyBindings.SHOW_DETAIL_SPECULAR.get())));
+                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(ModKeyBindings.SHOW_DETAIL_SPECULAR)));
             } else if (effect.equals(TCEffects.GRAVITATION)) {
                 tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(TCKeyBindings.FLIP_GRAVITATION.get())));
             } else {

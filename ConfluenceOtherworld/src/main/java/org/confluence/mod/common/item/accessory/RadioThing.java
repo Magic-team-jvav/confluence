@@ -20,6 +20,7 @@ public class RadioThing extends BaseCurioItem {
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
+        super.onUnequip(slotContext, newStack, stack);
         if (slotContext.entity() instanceof ServerPlayer serverPlayer) {
             VisibilityPacketS2C.sendTheConstantPostEffect(serverPlayer);
         }

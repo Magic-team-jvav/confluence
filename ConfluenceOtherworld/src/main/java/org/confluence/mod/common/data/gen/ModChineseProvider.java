@@ -128,6 +128,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.disc_block", "飞盘");
         add("itemGroup.confluence.moon_plate", "月盘");
         add("itemGroup.confluence.obsidian_bricks", "黑曜石砖");
+        add("itemGroup.confluence.crying_obsidian_bricks", "哭泣黑曜石砖");
         add("itemGroup.confluence.granite_bricks", "花岗岩砖");
         add("itemGroup.confluence.marble_bricks", "大理石砖");
         add("itemGroup.confluence.blue_bricks", "蓝色地牢砖");
@@ -2670,6 +2671,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.DISC_BLOCK.FULL.get(), "飞盘块");
         add(DecorativeBlocks.DISC_BLOCK.STAIRS.get(), "飞盘楼梯");
         add(DecorativeBlocks.DISC_BLOCK.SLAB.get(), "飞盘台阶");
+        add(DecorativeBlocks.DISC_BLOCK.WALL.get(), "飞盘墙");
         add(DecorativeBlocks.MOON_PLATE.FULL.get(), "月盘块");
         add(DecorativeBlocks.MOON_PLATE.STAIRS.get(), "月盘楼梯");
         add(DecorativeBlocks.MOON_PLATE.SLAB.get(), "月盘台阶");

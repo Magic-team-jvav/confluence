@@ -169,6 +169,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.disc_block", "Disc Block");
         add("itemGroup.confluence.moon_plate", "Moon Plate");
         add("itemGroup.confluence.obsidian_bricks", "Obsidian Bricks");
+        add("itemGroup.confluence.crying_obsidian_bricks", "Crying Obsidian Bricks");
         add("itemGroup.confluence.granite_bricks", "Granite Bricks");
         add("itemGroup.confluence.marble_bricks", "Marble Bricks");
         add("itemGroup.confluence.blue_bricks", "Blue Dungeon Bricks");

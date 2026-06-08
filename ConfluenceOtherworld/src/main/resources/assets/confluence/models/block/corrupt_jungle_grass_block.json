@@ -3,6 +3,6 @@
   "textures": {
     "bottom": "minecraft:block/mud",
     "side": "confluence:block/corrupt_jungle_grass_block",
-    "top": "confluence:block/corrupt_grass_block_top"
+    "top": "confluence:block/corrupt_jungle_grass_block_top"
   }
 }

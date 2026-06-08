@@ -16,13 +16,14 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
+import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
+public class ThrowableDropSelfProjectile extends DamageSettableProjectile implements IPortProjectileExtension {
     protected static final EntityDataAccessor<Integer> DATA_FLY_TICKS = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.ITEM_STACK);
     protected int penetrate;
@@ -30,8 +31,10 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
     protected final Set<UUID> hitSet = new HashSet<>();
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder.define(DATA_FLY_TICKS, 5).define(DATA_ITEM_STACK, ItemStack.EMPTY));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(DATA_FLY_TICKS, 5);
+        entityData.define(DATA_ITEM_STACK, ItemStack.EMPTY);
     }
 
     public ThrowableDropSelfProjectile(EntityType<? extends ThrowableDropSelfProjectile> entityType, Level level) {
@@ -101,7 +104,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
     }
 
     @Override
-    protected void applyGravity() {
+    public void applyGravity() {
         if (shouldApplyGravity()) {
             super.applyGravity();
         }

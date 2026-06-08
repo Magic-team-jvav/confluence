@@ -39,6 +39,9 @@ import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -79,6 +82,22 @@ public class BaseSwordItem extends SwordItem {
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, ModifierBuilder modifier) {
         super(tier, modifier.buildProperties(tier, rarity, rawDamage, rawSpeed));
         this.modifier = modifier;
+    }
+
+    public static PortItemAttributeModifiers createAttributes(Tier tier, int attackDamage, float attackSpeed) {
+        return createAttributes(tier, (float) attackDamage, attackSpeed);
+    }
+
+    public static PortItemAttributeModifiers createAttributes(Tier tier, float atackDamage, float attackSpeed) {
+        return PortItemAttributeModifiers.builder().add(
+                Attributes.ATTACK_DAMAGE,
+                new PortAttributeModifier(BASE_ATTACK_DAMAGE_ID, (double) (atackDamage + tier.getAttackDamageBonus()), PortAttributeModifier.PortOperation.ADD_VALUE),
+                PortEquipmentSlotGroup.MAINHAND
+        ).add(
+                Attributes.ATTACK_SPEED,
+                new PortAttributeModifier(BASE_ATTACK_SPEED_ID, (double) attackSpeed, PortAttributeModifier.PortOperation.ADD_VALUE),
+                PortEquipmentSlotGroup.MAINHAND
+        ).build();
     }
 
     @Override

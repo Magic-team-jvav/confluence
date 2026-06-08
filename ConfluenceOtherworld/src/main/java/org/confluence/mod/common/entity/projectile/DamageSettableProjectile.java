@@ -28,8 +28,8 @@ public abstract class DamageSettableProjectile extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_DEFAULT_VELOCITY, 0.0F);
+    protected void defineSynchedData() {
+        entityData.define(DATA_DEFAULT_VELOCITY, 0.0F);
     }
 
     public void setDamage(float damage) {

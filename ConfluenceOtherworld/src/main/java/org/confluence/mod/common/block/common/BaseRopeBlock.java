@@ -3,6 +3,10 @@ package org.confluence.mod.common.block.common;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -32,16 +37,69 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
+    public enum RopeConnection implements StringRepresentable {
+        NONE("none"),
+        ROPE("rope"),
+        FENCE("fence"),
+        WALL("wall");
+
+        private final String name;
+
+        RopeConnection(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getSerializedName() {
+            return this.name;
+        }
+    }
+
+    private static final TagKey<Block> FENCES = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "fences"));
+    private static final TagKey<Block> WALLS = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "walls"));
+
     public static final MapCodec<BaseRopeBlock> CODEC = simpleCodec(BaseRopeBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
+    public static final EnumProperty<RopeConnection> NORTH = EnumProperty.create("north", RopeConnection.class);
+    public static final EnumProperty<RopeConnection> EAST = EnumProperty.create("east", RopeConnection.class);
+    public static final EnumProperty<RopeConnection> SOUTH = EnumProperty.create("south", RopeConnection.class);
+    public static final EnumProperty<RopeConnection> WEST = EnumProperty.create("west", RopeConnection.class);
+
+    public static final VoxelShape NORTH_SHAPE = Block.box(7.5, 3, 0, 8.5, 10, 8.5);
+    public static final VoxelShape SOUTH_SHAPE = Block.box(7.5, 3, 7.5, 8.5, 10, 16);
+    public static final VoxelShape WEST_SHAPE = Block.box(0, 3, 7.5, 8.5, 10, 8.5);
+    public static final VoxelShape EAST_SHAPE = Block.box(7.5, 3, 7.5, 16, 10, 8.5);
+
+    private VoxelShape SHAPE = null;
+    private BlockState cachedState = null;
+
+    @SuppressWarnings("unchecked")
+    private static final EnumProperty<RopeConnection>[] DIRECTION_TO_PROPERTY = new EnumProperty[]{
+            null,
+            null,
+            NORTH,
+            SOUTH,
+            WEST,
+            EAST,
+    };
+
+    private static final VoxelShape[] DIRECTION_TO_SHAPE = new VoxelShape[]{
+            null,
+            null,
+            NORTH_SHAPE,
+            SOUTH_SHAPE,
+            WEST_SHAPE,
+            EAST_SHAPE,
+    };
 
     public BaseRopeBlock(Properties properties) {
         super(0.25F, properties);
         registerDefaultState(stateDefinition.any()
-                .setValue(NORTH, false)
-                .setValue(EAST, false)
-                .setValue(SOUTH, false)
-                .setValue(WEST, false)
+                .setValue(NORTH, RopeConnection.NONE)
+                .setValue(EAST, RopeConnection.NONE)
+                .setValue(SOUTH, RopeConnection.NONE)
+                .setValue(WEST, RopeConnection.NONE)
                 .setValue(UP, false)
                 .setValue(DOWN, false)
                 .setValue(WATERLOGGED, false));
@@ -67,7 +125,8 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return state.setValue(PROPERTY_BY_DIRECTION.get(facing), shouldConnect(level, facingState, facingPos, facing));
+        if (facing.getAxis() == Direction.Axis.Y) return state.setValue(PROPERTY_BY_DIRECTION.get(facing), shouldConnect(level, facingState, facingPos, facing));
+        return state.setValue(DIRECTION_TO_PROPERTY[facing.ordinal()], whatConnect(level, facingState, facingPos, facing));
     }
 
     @Override
@@ -83,7 +142,8 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
             BlockPos neighborPos = pos.relative(direction);
             BlockState neighborState = level.getBlockState(neighborPos);
             if (shouldConnect(level, neighborState, neighborPos, direction)) {
-                state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), true);
+                if (direction.getAxis() == Direction.Axis.Y) state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), true);
+                else state = state.setValue(DIRECTION_TO_PROPERTY[direction.ordinal()], whatConnect(level, neighborState, neighborPos, direction));
             }
         }
         return state;
@@ -91,6 +151,14 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
 
     private static boolean shouldConnect(LevelAccessor level, BlockState facingState, BlockPos facingPos, Direction facing) {
         return facingState.is(ModTags.Blocks.ROPE) || (!facingState.isAir() && facingState.isFaceSturdy(level, facingPos, facing.getOpposite())) || ((facing == Direction.DOWN) && level.getBlockState(facingPos).is(FunctionalBlocks.STAR_IN_A_BOTTLE));
+    }
+
+    private static RopeConnection whatConnect(LevelAccessor level, BlockState facingState, BlockPos facingPos, Direction facing) {
+        RopeConnection r = RopeConnection.NONE;
+        if (facingState.is(ModTags.Blocks.ROPE) || (!facingState.isAir() && facingState.isFaceSturdy(level, facingPos, facing.getOpposite()))) r = RopeConnection.ROPE;
+        if (facingState.is(FENCES)) r = RopeConnection.FENCE;
+        if (facingState.is(WALLS)) r = RopeConnection.WALL;
+        return r;
     }
 
     @Override
@@ -122,10 +190,27 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
                 if (level.getBlockState(blockPos).is(ModTags.Blocks.ROPE) || level.getBlockState(blockPos.below()).is(ModTags.Blocks.ROPE)) {
                     return Shapes.empty(); // 玩家在绳子里不阻挡
                 }
-                return super.getShape(state, level, pos, context);
+                if (this.cachedState != state) {
+                    updateAABBShape(state);
+                    this.cachedState = state;
+                }
+                else if (this.SHAPE == null) updateAABBShape(state);
+                return this.SHAPE;
             }
         }
         return Shapes.empty();
+    }
+
+    private void updateAABBShape(BlockState blockState){
+        int up = (blockState.getValue(UP)) ? 16 : 10;
+        int down = (blockState.getValue(DOWN)) ? 0 : 6;
+        VoxelShape r = Block.box(6, down, 6, 10, up, 10);
+        for (int i = 2; i < 6; i++) {
+            if (blockState.getValue(DIRECTION_TO_PROPERTY[i]) != RopeConnection.NONE) {
+                r = Shapes.or(r, DIRECTION_TO_SHAPE[i]);
+            }
+        }
+        this.SHAPE = r;
     }
 
     public static class BItem extends BlockItem {

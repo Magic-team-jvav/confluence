@@ -26,8 +26,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 /**
  * <h1>连枷渲染器</h1>
- * 使用 Geo 模型渲染弹球；链条使用 {@link BlockRenderDispatcher} 以方块形式逐段渲染，
- * 对齐 {@link org.confluence.mod.client.renderer.entity.hook.AbstractHookRenderer}。
+ * 使用 Geo 模型渲染弹球；链条使用 {@link BlockRenderDispatcher#renderSingleBlock} 逐段渲染。
  */
 public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
     private static final ResourceLocation DEFAULT_TEXTURE = Confluence.asResource("textures/entity/flail/flail.png");
@@ -40,7 +39,6 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         this.dispatcher = context.getBlockRenderDispatcher();
     }
 
-    /** 根据 FlailComponent 解析模型路径：优先 item 专用模型，否则默认 */
     private static ResourceLocation resolveModel(@Nullable FlailComponent comp) {
         if (comp != null && comp.modelLocation().isPresent()) {
             return comp.modelLocation().get();
@@ -48,9 +46,7 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         return DEFAULT_MODEL;
     }
 
-    /**
-     * 获取链条使用的方块状态，子类可覆写以自定义链条外观
-     */
+    /** 子类可覆写以自定义链条方块外观 */
     protected BlockState getChain(BaseFlailEntity entity) {
         return Blocks.CHAIN.defaultBlockState();
     }
@@ -62,8 +58,8 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
             return true;
         }
         Entity owner = entity.getOwner();
-        if (owner != null) {
-            Vec3 handPos = HandPositionUtils.getPalmPosition((Player) owner, 1.0F);
+        if (owner instanceof Player player) {
+            Vec3 handPos = HandPositionUtils.getPalmPosition(player, 1.0F);
             Vec3 ballPos = entity.getBoundingBox().getCenter();
             return frustum.isVisible(new AABB(ballPos.x, ballPos.y, ballPos.z, handPos.x, handPos.y, handPos.z));
         }
@@ -91,8 +87,7 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         poseStack.translate(0, 0.25F, 0);
 
         int phase = entity.getPhase();
-        if (phase == BaseFlailEntity.PHASE_SPIN) {
-            // 自转：实体层提供的纯线段方向（玩家面朝水平方向），不含公转偏移
+        if (phase == BaseFlailEntity.PHASE_SPIN || phase == BaseFlailEntity.PHASE_THROWN) {
             poseStack.mulPose(new Quaternionf().rotateAxis(entity.spinAngle, entity.getSpinAxis()));
         } else {
             Vec3 motion = entity.getDeltaMovement();
@@ -105,7 +100,6 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
             }
         }
 
-        // 动态更新模型+贴图并渲染
         FlailGeoModel model = (FlailGeoModel) getGeoModel();
         model.model = resolveModel(component);
         model.texture = getTextureLocation(entity);
@@ -113,53 +107,72 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         poseStack.popPose();
 
         // ── 渲染链条 ──
-        renderChain(entity, owner, poseStack, bufferSource, packedLight, partialTick);
+        renderChain(entity, owner, poseStack, bufferSource, packedLight, partialTick, phase);
     }
 
+    /**
+     * 自适应非均匀分段链条渲染
+     * <p>
+     * 数学恒等式：distance = (fullSegments) × 1.0 + M × (remainder / M)
+     */
     private void renderChain(BaseFlailEntity entity, Player owner, PoseStack poseStack,
-                             MultiBufferSource bufferSource, int packedLight, float partialTick) {
-        int skyLight = LightTexture.pack(10, LightTexture.sky(packedLight));
-        Vec3 handPos = HandPositionUtils.getPalmPosition(owner, 1.0F);
-        Vec3 ballPos = getCenter(entity, partialTick);
-        Vec3 diff = handPos.subtract(ballPos);
+                             MultiBufferSource bufferSource, int packedLight, float partialTick, int phase) {
+        Vec3 ballPos = entity.getBoundingBox().getCenter();
+
+        // 链条起点：根据阶段使用不同偏移
+        Vec3 chainOffset = phase == BaseFlailEntity.PHASE_SPIN ? new Vec3(0.25, 0.25, -0.2) : new Vec3(0.0, 0.25, -0.2);
+        Vec3 chainStart = HandPositionUtils.getPalmPosition(owner, partialTick, chainOffset);
+
+        Vec3 diff = ballPos.subtract(chainStart);
         double distance = diff.length();
         if (distance < 0.2) return;
 
         Vec3 dir = diff.normalize();
         BlockState chain = getChain(entity);
+        int skyLight = LightTexture.pack(10, LightTexture.sky(packedLight));
 
         poseStack.pushPose();
-        // EntityRenderer 已平移到实体插值位置（Projectile 位置即几何中心）
 
-        // 旋转使 Y 轴对齐链条方向
+        // 平移到链条起点
+        Vec3 offset = chainStart.subtract(entity.position());
+        poseStack.translate(offset.x, offset.y, offset.z);
+
+        // 对齐局部 +Y 轴到链条方向（hand → ball）
         poseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI - (float) Math.atan2(dir.z, dir.x)));
-        poseStack.mulPose(Axis.XP.rotation((float) Math.acos(dir.y)));
-        poseStack.translate(-0.5, 0.0, -0.75);
+        poseStack.mulPose(Axis.XP.rotation((float) Math.acos(Mth.clamp(dir.y, -1.0, 1.0))));
+        poseStack.translate(-0.5, 0.0, -0.5);
 
-        int floor = (int) distance;
-        for (int i = 0; i < floor; i++) {
-            dispatcher.renderSingleBlock(chain, poseStack, bufferSource, skyLight, OverlayTexture.NO_OVERLAY);
-            poseStack.translate(0.0, 1.0, 0.0);
+        float segLength = 1.0f;
+        int fullSegments = (int) distance;
+        float remainder = (float) (distance - fullSegments);
+
+        // 阈值处理：余量太小时向整数段借位，避免末端过于细碎
+        if (remainder < 0.1F && fullSegments > 0) {
+            fullSegments--;
+            remainder += segLength;
         }
 
-        // 末段平滑缩放
-        float delta = (float) (distance - floor);
-        if (entity.lastDelta - delta > 0.5F || entity.lastDelta == 0.0) entity.lastDelta = delta;
-        delta = Mth.lerp(partialTick, entity.lastDelta, delta);
-        poseStack.scale(1.0F, delta, 1.0F);
-        entity.lastDelta = delta;
-        dispatcher.renderSingleBlock(chain, poseStack, bufferSource, skyLight, OverlayTexture.NO_OVERLAY);
-        //好像没有可替代的方法
+        // ========== 手部末端密集填充（密度大，每段独立 pushPose/popPose 隔离） ==========
+        int microSegments = Math.max(2, (int) (remainder / 0.25f));
+        float microLength = remainder / microSegments;
+
+        for (int i = 0; i < microSegments; i++) {
+            poseStack.pushPose();
+            poseStack.translate(0.0, i * microLength, 0.0);
+            poseStack.scale(1.0F, microLength / segLength, 1.0F);
+            dispatcher.renderSingleBlock(chain, poseStack, bufferSource, skyLight, OverlayTexture.NO_OVERLAY);
+            poseStack.popPose();
+        }
+        // 跨越微段区域，进入主体段起点
+        poseStack.translate(0.0, remainder, 0.0);
+
+        // ========== 中间主体段（密度小，累积平移无需 pushPose） ==========
+        for (int i = 0; i < fullSegments; i++) {
+            dispatcher.renderSingleBlock(chain, poseStack, bufferSource, skyLight, OverlayTexture.NO_OVERLAY);
+            poseStack.translate(0.0, segLength, 0.0);
+        }
 
         poseStack.popPose();
-    }
-
-    /** 实体位置插值 */
-    private static Vec3 getCenter(Entity entity, float partialTick) {
-        double x = Mth.lerp(partialTick, entity.xOld, entity.getX());
-        double y = Mth.lerp(partialTick, entity.yOld, entity.getY());
-        double z = Mth.lerp(partialTick, entity.zOld, entity.getZ());
-        return new Vec3(x, y, z);
     }
 
     // ── 内部 GeoModel（贴图可动态更新） ──

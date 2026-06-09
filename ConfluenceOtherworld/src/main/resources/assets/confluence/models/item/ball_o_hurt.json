@@ -1,0 +1,29 @@
+{
+    "loader": "neoforge:separate_transforms",
+    "base": {
+        "parent": "builtin/entity",
+        "textures": {
+            "particle": "confluence:item/flail/ball_o_hurt_item"
+        }
+    },
+    "perspectives": {
+        "fixed": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/flail/ball_o_hurt_item"
+            }
+        },
+        "ground": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/flail/ball_o_hurt_item"
+            }
+        },
+        "gui": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/flail/ball_o_hurt_item"
+            }
+        }
+    }
+}

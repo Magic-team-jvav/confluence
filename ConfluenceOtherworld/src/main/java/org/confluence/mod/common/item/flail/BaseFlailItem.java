@@ -8,14 +8,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.mod.client.renderer.item.BaseFlailItemRenderer;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.function.Consumer;
 
 /**
  * <h1>连枷物品基类</h1>
@@ -26,13 +34,15 @@ import org.jetbrains.annotations.Nullable;
  * 用法：直接 new BaseFlailItem(flailComponent, rarity) 即可，
  * 不需要 {@code ModifierBuilder} 或 {@code FlailPrefabs}。
  */
-public class BaseFlailItem extends TooltipItem {
+public class BaseFlailItem extends TooltipItem implements GeoItem {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BaseFlailItem(@NotNull FlailComponent flailComponent, @NotNull ModRarity rarity) {
         super(new Properties()
                 .stacksTo(1)
                 .component(ModDataComponentTypes.FLAIL, flailComponent),
                 rarity, "");
+        SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
     /**
@@ -64,7 +74,6 @@ public class BaseFlailItem extends TooltipItem {
             level.addFreshEntity(flail);
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     comp.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
-            player.swing(hand, true);
         } else {
             switch (existing.getPhase()) {
                 case BaseFlailEntity.PHASE_SPIN -> {
@@ -91,5 +100,30 @@ public class BaseFlailItem extends TooltipItem {
     @Override
     public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return false;
+    }
+
+    // ── GeoItem 实现 ──
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+
+    @Override
+    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        consumer.accept(new GeoRenderProvider() {
+            private BaseFlailItemRenderer renderer;
+
+            @Override
+            public net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+                if (renderer == null) {
+                    renderer = new BaseFlailItemRenderer();
+                }
+                return renderer;
+            }
+        });
     }
 }

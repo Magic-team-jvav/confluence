@@ -75,8 +75,6 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     @Nullable
     private FlailComponent cachedComponent;
     private final AnimatableInstanceCache animatableCache = GeckoLibUtil.createInstanceCache(this);
-    /** 链条末段渲染插值用，由 {@link org.confluence.mod.client.renderer.entity.flail.BaseFlailRenderer} 更新 */
-    public float lastDelta = 0.0F;
 
     /** 获取当前 SPIN 持续 tick 数 */
     public int getSpinTickCounter() {
@@ -95,12 +93,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         setOwner(owner);
         this.cachedComponent = component;
         Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
-        setPos(palm);
+        // 几何中心对齐手掌
+        setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
         setPhase(PHASE_SPIN);
-        // 持续播放挖掘动画
-        if (level().isClientSide()) {
-            owner.swing(InteractionHand.MAIN_HAND);
-        }
     }
 
     // ── 数据同步 ──
@@ -215,8 +210,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         spinTickCounter++;
         float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
         spinAngle += component.getSpinSpeed(player) * (1.0F + turbineBonus);
-        Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F);
-        float yawRad = (float) Math.toRadians(player.getYRot());
+        Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F, new Vec3(0.25, 0.25, -0.2));
+        // 与 getPalmPosition 保持一致，使用身体朝向而非头部朝向
+        float yawRad = (float) Math.toRadians(player.yBodyRot);
         float cosYaw = (float) Math.cos(yawRad);
         float sinYaw = (float) Math.sin(yawRad);
         double r = component.spinRadius();
@@ -226,12 +222,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         double x = pivot.x - localZ * sinYaw;
         double y = pivot.y + localY;
         double z = pivot.z + localZ * cosYaw;
-        setPos(x, y, z);
-
-        // 客户端持续播放挥动动画
-        if (level().isClientSide()) {
-            player.swing(InteractionHand.MAIN_HAND);
-        }
+        // setPos 设置脚底，减去半高使几何中心对齐轨迹
+        setPos(x, y - getBbHeight() * 0.5, z);
     }
 
     /**
@@ -384,10 +376,18 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         playerDropped = false;
 
         Vec3 look = player.getViewVector(1.0F);
-        setPos(HandPositionUtils.getPalmPosition(player, 1.0F));
+        Vec3 palm = HandPositionUtils.getPalmPosition(player, 1.0F);
+        // 几何中心对齐手掌，与 tickSpin 和渲染器 ballPos 一致
+        setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
+
+        // 修正投掷方向：使几何中心在 maxDistance 处命中视角射线
+        // C0 + dir × maxDist = eye + look × maxDist  ⇒  dir = normalize((eye - C0) + look × maxDist)
+        Vec3 eye = player.getEyePosition(1.0F);
+        Vec3 targetDir = look.scale(component.maxDistance()).add(eye.subtract(palm));
+        Vec3 launchDir = targetDir.normalize();
 
         float velocity = component.getVelocity(player) * (1.0F + TurbineEnchantments.getBonus(player, spinTickCounter));
-        setDeltaMovement(look.scale(velocity));
+        setDeltaMovement(launchDir.scale(velocity));
     }
 
     /**

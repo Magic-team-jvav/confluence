@@ -14,7 +14,8 @@ import org.confluence.mod.util.DateUtils;
 
 import java.util.Calendar;
 
-public record DateLootItemCondition(boolean isLunar, DateStamp fromInclusive, DateStamp toInclusive) implements LootItemCondition {
+public record DateLootItemCondition(boolean isLunar, DateStamp fromInclusive,
+                                    DateStamp toInclusive) implements LootItemCondition {
     public static final DateLootItemCondition HALLOWEENS = new DateLootItemCondition(false, new DateStamp(Calendar.OCTOBER, 10), new DateStamp(Calendar.NOVEMBER, 1));
     public static final DateLootItemCondition CHRISTMAS = new DateLootItemCondition(false, new DateStamp(Calendar.DECEMBER, 15), new DateStamp(Calendar.DECEMBER, 31));
     public static final MapCodec<DateLootItemCondition> CODEC = Codec.mapEither(Codec.STRING.xmap(string -> {
@@ -64,7 +65,9 @@ public record DateLootItemCondition(boolean isLunar, DateStamp fromInclusive, Da
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        return o instanceof DateLootItemCondition(boolean isLunar1, DateStamp fromInclusive1, DateStamp toInclusive1) &&
+        return o instanceof DateLootItemCondition(
+                boolean isLunar1, DateStamp fromInclusive1, DateStamp toInclusive1
+        ) &&
                 isLunar1 == isLunar && fromInclusive1.equals(fromInclusive) && toInclusive1.equals(toInclusive);
     }
 

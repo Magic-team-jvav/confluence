@@ -56,14 +56,15 @@ public class OasisStructure extends Structure {
             WorldgenRandom random = context.random();
             BlockPos centerPos = startChunk.getMiddleBlockPosition(lowestY);
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
-            Vector3d start = new Vector3d(centerPos.getX() + random.nextInt(-2, 3), centerPos.getY() -20, centerPos.getZ() + random.nextInt(-2, 3));
+            Vector3d start = new Vector3d(centerPos.getX() + random.nextInt(-2, 3), centerPos.getY() - 20, centerPos.getZ() + random.nextInt(-2, 3));
             Vector3d end = new Vector3d(centerPos.getX(), centerPos.getY() + 1, centerPos.getZ());
             List<Vector3d> listPos = frustumSetPos(start, end, 60.5, 40.5, 0.2F, random);
             Map<BlockPos, ResourceLocation> feature = new HashMap<>();
             BlockPos checkPos;
             for (Vector3d vector3d : listPos) {
                 checkPos = LibVectorUtils.fromVector3d(vector3d).offset(0, 4, 0);
-                if ((checkPos.getY() > centerPos.getY()) && (0.05F > random.nextFloat()) && (new Vector3d(centerPos.getX(), 0, centerPos.getZ()).distance(new Vector3d(checkPos.getX(), 0, checkPos.getZ())) > 32)) feature.put(checkPos, Confluence.asResource("palm_tree"));
+                if ((checkPos.getY() > centerPos.getY()) && (0.05F > random.nextFloat()) && (new Vector3d(centerPos.getX(), 0, centerPos.getZ()).distance(new Vector3d(checkPos.getX(), 0, checkPos.getZ())) > 32))
+                    feature.put(checkPos, Confluence.asResource("palm_tree"));
             }
 
             lineSet(listPos, 3.5, 3.5, 2, true, blockMap);

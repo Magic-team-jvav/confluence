@@ -52,7 +52,7 @@ public class CursedFlameItem extends BlockItem {
                         updateBlockEntityComponents(level, blockpos, itemstack);
                         blockstate1.getBlock().setPlacedBy(level, blockpos, blockstate1, player, itemstack);
                         if (player instanceof ServerPlayer) {
-                            CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer)player, blockpos, itemstack);
+                            CriteriaTriggers.PLACED_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
                         }
                     }
                     SoundType soundtype = blockstate1.getSoundType(level, blockpos, context.getPlayer());

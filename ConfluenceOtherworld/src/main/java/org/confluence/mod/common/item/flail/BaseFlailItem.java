@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.component.FlailComponent;
@@ -30,8 +29,8 @@ public class BaseFlailItem extends TooltipItem {
 
     public BaseFlailItem(@NotNull FlailComponent flailComponent, @NotNull ModRarity rarity) {
         super(new Properties()
-                .stacksTo(1)
-                .component(ModDataComponentTypes.FLAIL, flailComponent),
+                        .stacksTo(1)
+                        .component(ModDataComponentTypes.FLAIL, flailComponent),
                 rarity, "");
     }
 
@@ -59,7 +58,8 @@ public class BaseFlailItem extends TooltipItem {
             var entityType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.get(comp.projType());
             if (entityType == null) return InteractionResultHolder.fail(stack);
             var entity = entityType.create(level);
-            if (!(entity instanceof BaseFlailEntity flail)) return InteractionResultHolder.fail(stack);
+            if (!(entity instanceof BaseFlailEntity flail))
+                return InteractionResultHolder.fail(stack);
             flail.init(player, stack, comp);
             level.addFreshEntity(flail);
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -71,7 +71,8 @@ public class BaseFlailItem extends TooltipItem {
                     existing.launch(player);
                     player.getCooldowns().addCooldown(this, comp.getCooldown(player));
                 }
-                case BaseFlailEntity.PHASE_THROWN, BaseFlailEntity.PHASE_RETRACT -> existing.playerDrop();
+                case BaseFlailEntity.PHASE_THROWN, BaseFlailEntity.PHASE_RETRACT ->
+                        existing.playerDrop();
                 case BaseFlailEntity.PHASE_STAY -> existing.forceRetract();
                 default -> {}
             }
@@ -88,7 +89,9 @@ public class BaseFlailItem extends TooltipItem {
         ).stream().findFirst().orElse(null);
     }
 
-    /** 持有连枷时始终禁用挖掘*/
+    /**
+     * 持有连枷时始终禁用挖掘
+     */
     @Override
     public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return false;

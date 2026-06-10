@@ -19,6 +19,7 @@ public class BlockPostFeature extends Feature<BlockPostFeature.Config> {
     public BlockPostFeature(Codec<Config> pCodec) {
         super(pCodec);
     }
+
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     @Override

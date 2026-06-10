@@ -96,8 +96,7 @@ public class LunarCoralFanBlock extends CoralFanBlock {
                 if (humidity < 3) {
                     level.setBlock(pos, state.setValue(HUMIDITY, humidity + 1).setValue(WATERLOGGED, waterLogged), 2);
                     level.scheduleTick(pos, this, 60 + level.getRandom().nextInt(40));
-                }
-                else level.setBlock(pos, this.deadBlock.defaultBlockState(), 2);
+                } else level.setBlock(pos, this.deadBlock.defaultBlockState(), 2);
             } else if (this.scanForDry(level, pos)) {
                 int humidity = state.getValue(HUMIDITY);
                 if (humidity > 0) {
@@ -114,8 +113,10 @@ public class LunarCoralFanBlock extends CoralFanBlock {
             boolean waterLogged = state.getValue(WATERLOGGED);
             int humidity = state.getValue(HUMIDITY);
             if (isWaterBottle(stack)) {
-                if (humidity < 3) level.setBlock(pos, state.setValue(HUMIDITY, humidity + 1).setValue(WATERLOGGED, waterLogged), 2);
-                else level.setBlock(pos, this.deadBlock.defaultBlockState().setValue(WATERLOGGED, waterLogged), 2);
+                if (humidity < 3)
+                    level.setBlock(pos, state.setValue(HUMIDITY, humidity + 1).setValue(WATERLOGGED, waterLogged), 2);
+                else
+                    level.setBlock(pos, this.deadBlock.defaultBlockState().setValue(WATERLOGGED, waterLogged), 2);
                 ItemStack bottle = (stack.is(Items.POTION)) ? new ItemStack(Items.GLASS_BOTTLE) : PotionItems.BOTTLE.toStack();
                 player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, bottle));
                 level.playSound(null, pos, SoundEvents.MUD_STEP, SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -159,6 +160,7 @@ public class LunarCoralFanBlock extends CoralFanBlock {
 
     @Override
     protected void tryScheduleDieTick(BlockState state, LevelAccessor level, BlockPos pos) {
-        if ((this.deadBlock != null) && (scanForWater(state, level, pos) || this.scanForDry(level, pos))) level.scheduleTick(pos, this, 60 + level.getRandom().nextInt(40));
+        if ((this.deadBlock != null) && (scanForWater(state, level, pos) || this.scanForDry(level, pos)))
+            level.scheduleTick(pos, this, 60 + level.getRandom().nextInt(40));
     }
 }

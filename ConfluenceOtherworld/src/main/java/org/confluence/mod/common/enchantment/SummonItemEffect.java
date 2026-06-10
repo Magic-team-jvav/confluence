@@ -14,7 +14,8 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 
-public record SummonItemEffect(Holder<Item> item, LevelBasedValue count) implements EnchantmentEntityEffect {
+public record SummonItemEffect(Holder<Item> item,
+                               LevelBasedValue count) implements EnchantmentEntityEffect {
     public static final MapCodec<SummonItemEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(SummonItemEffect::item),
             LevelBasedValue.CODEC.fieldOf("count").orElseGet(() -> LevelBasedValue.constant(1)).forGetter(SummonItemEffect::count)

@@ -2,26 +2,26 @@ package org.confluence.mod.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
-import net.neoforged.neoforge.client.settings.KeyConflictContext;
-import net.neoforged.neoforge.common.util.Lazy;
+import net.minecraftforge.client.settings.KeyConflictContext;
+import net.minecraftforge.common.util.Lazy;
 import org.confluence.mod.Confluence;
 import org.lwjgl.glfw.GLFW;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.client.PortRegisterKeyMappingsEvent;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Confluence.MODID, value = Dist.CLIENT)
 public final class ModKeyBindings {
     public static final String KEY_BINDINGS_CATEGORY = "key.confluence.gameplay";
     private static List<Lazy<KeyMapping>> keyMappings = new LinkedList<>();
 
-    @SubscribeEvent
-    public static void keyBinding(RegisterKeyMappingsEvent event) {
+    public static void init() {
+        PortEventHandler.addListener(ModKeyBindings::keyBinding);
+    }
+
+    private static void keyBinding(PortRegisterKeyMappingsEvent event) {
         for (Lazy<KeyMapping> lazy : keyMappings) {
             event.register(lazy.get());
         }
@@ -64,7 +64,6 @@ public final class ModKeyBindings {
     ));
 
     //endregion
-
     public static final Lazy<KeyMapping> HOOK = register(() -> new KeyMapping(
             "key.confluence.hook",
             KeyConflictContext.IN_GAME,
@@ -102,6 +101,23 @@ public final class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             InputConstants.UNKNOWN.getValue(),
+            KEY_BINDINGS_CATEGORY
+    ));
+
+    // 枪械按键
+    public static final Lazy<KeyMapping> GUN_SHOOT = register(() -> new KeyMapping(
+            "key.confluence.gun.shoot",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.MOUSE,
+            GLFW.GLFW_MOUSE_BUTTON_LEFT,
+            KEY_BINDINGS_CATEGORY
+    ));
+
+    public static final Lazy<KeyMapping> GUN_AIM = register(() -> new KeyMapping(
+            "key.confluence.gun.aim",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.MOUSE,
+            GLFW.GLFW_MOUSE_BUTTON_RIGHT,
             KEY_BINDINGS_CATEGORY
     ));
 

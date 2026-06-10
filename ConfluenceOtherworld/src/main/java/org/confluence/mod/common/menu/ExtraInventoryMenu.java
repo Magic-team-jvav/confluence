@@ -208,7 +208,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
 
     public static class CoinsSlot extends Slot {
         public CoinsSlot(ExtraInventory extraInventory, int i, int x, int y) {
-            super(extraInventory, i, x,y);
+            super(extraInventory, i, x, y);
         }
 
         @Override

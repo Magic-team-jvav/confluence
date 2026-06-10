@@ -3,6 +3,7 @@ package org.confluence.mod.common.block.natural;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -11,7 +12,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CocoaBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+
 /**
  * 现在龙果的生长速度等属性暂时与可可果相同，若需修改，overrider randomTick方法
  */
@@ -31,9 +32,10 @@ public class DragonsBreathPepperBlock extends CocoaBlock {
     public static final MapCodec<CocoaBlock> CODEC = (MapCodec<CocoaBlock>) (MapCodec<?>) simpleCodec(DragonsBreathPepperBlock::new);
 
     private static final Map<Direction, VoxelShape[]> SHAPES = new EnumMap<>(Direction.class);
+
     /**
-    * 定义长方体的对角点，使用map对应关系，从上到下不断变大。
-    */
+     * 定义长方体的对角点，使用map对应关系，从上到下不断变大。
+     */
     static {
         SHAPES.put(Direction.NORTH, new VoxelShape[]{
                 Block.box(6.0, 6.0, 5.0, 10.0, 12.0, 10.0),
@@ -94,7 +96,7 @@ public class DragonsBreathPepperBlock extends CocoaBlock {
     protected List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder params) {
         int age = state.getValue(AGE);
         int maturity = age;
-        int count = age == 2 ? 1 : 1;//掉一个即可，不改是因为懒了，反正效果一样
+        int count = 1;//掉一个即可，不改是因为懒了，反正效果一样
         List<ItemStack> drops = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             drops.add(createMaturityStack(maturity));

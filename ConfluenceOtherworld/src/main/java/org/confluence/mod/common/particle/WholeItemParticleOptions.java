@@ -13,7 +13,8 @@ import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModParticleTypes;
 
 @ScheduledForMove(since = "1.2.0", inVersion = "2.0.0")
-public record WholeItemParticleOptions(ItemStack item, float gravity, int life) implements ParticleOptions {
+public record WholeItemParticleOptions(ItemStack item, float gravity,
+                                       int life) implements ParticleOptions {
     public static final MapCodec<WholeItemParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ItemStack.SINGLE_ITEM_CODEC.fieldOf("item").forGetter(WholeItemParticleOptions::item),
             Codec.FLOAT.fieldOf("gravity").forGetter(WholeItemParticleOptions::gravity),

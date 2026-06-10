@@ -4,7 +4,10 @@ import com.google.common.collect.Multimap;
 import com.mojang.serialization.Lifecycle;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.Util;
-import net.minecraft.core.*;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -24,7 +27,8 @@ import org.confluence.mod.common.data.gen.loot.modifiers.AddChestLootDirectDrops
 import org.confluence.mod.common.data.gen.loot.modifiers.AddEntityLootDirectDropsSubProvider;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -67,8 +71,8 @@ public class EMILootDirectDropsProvider implements DataProvider {
             LootTable lootTable = entry.getValue();
             ResourceKey<LootTable> key = entry.getKey();
             lootTable.validate(
-                validationcontext.setParams(lootTable.getParamSet())
-                    .enterElement("{" + key.location() + "}", key)
+                    validationcontext.setParams(lootTable.getParamSet())
+                            .enterElement("{" + key.location() + "}", key)
             );
         });
     }
@@ -114,5 +118,6 @@ public class EMILootDirectDropsProvider implements DataProvider {
         return "EMILoot Direct Drops";
     }
 
-    public record SubProviderEntry(Function<HolderLookup.Provider, LootTableSubProvider> provider, LootContextParamSet paramSet) {}
+    public record SubProviderEntry(Function<HolderLookup.Provider, LootTableSubProvider> provider,
+                                   LootContextParamSet paramSet) {}
 }

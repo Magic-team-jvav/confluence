@@ -79,17 +79,17 @@ public class ObsidianPillarStructure extends Structure {
                     double star2 = Math.pow(Math.pow(checkX * Mth.cos(r45) - checkY * Mth.sin(r45), 2), 0.3333) + Math.pow(Math.pow(checkX * Mth.sin(r45) + checkY * Mth.cos(r45), 2), 0.3333);
                     if (
                             ((radiusP2 > 2200) && (radiusP2 < 2500)) ||
-                            ((radiusP2 > 1800) && (radiusP2 < 2000)) ||
-                            ((radiusP2 > 400) && (radiusP2 < 500)) ||
-                            ((star < 5.4706) && (star > 4.7817) && ((radiusP2 < 2000) || (radiusP2 > 2200))) ||
-                            ((star2 < 10.6998) && (star2 > 8.5498) && (radiusP2 > 400))
+                                    ((radiusP2 > 1800) && (radiusP2 < 2000)) ||
+                                    ((radiusP2 > 400) && (radiusP2 < 500)) ||
+                                    ((star < 5.4706) && (star > 4.7817) && ((radiusP2 < 2000) || (radiusP2 > 2200))) ||
+                                    ((star2 < 10.6998) && (star2 > 8.5498) && (radiusP2 > 400))
                     ) blockMap.put(centerPos.offset(xRoll, yRoll, zRoll), 3);
                 }
             }
 
             for (float i = 0; i < height; i += 0.3F) {
                 double smallRadius = radiusD * 0.5 * ((double) i / height);
-                if (random.nextFloat() < ( i / height)) {
+                if (random.nextFloat() < (i / height)) {
                     float rotate = i * Mth.PI * 0.1F;
                     BlockPos pos = centerPos.offset((int) (Mth.sin(rotate) * smallRadius), (int) i - height, (int) (Mth.cos(rotate) * smallRadius));
                     blockMap.put(pos, 3);
@@ -101,9 +101,9 @@ public class ObsidianPillarStructure extends Structure {
             float stepRotate = 2 * Mth.PI / pillarCount;
             List<BlockPos> centerStone = LibGeometryUtils.getBlocksInConvexHull(
                     LibGeometryUtils.ellipsoidPos(
-                            random.nextInt(10,16),
-                            random.nextInt(30,46),
-                            random.nextInt(10,16),
+                            random.nextInt(10, 16),
+                            random.nextInt(30, 46),
+                            random.nextInt(10, 16),
                             centerPos,
                             0.002F,
                             random
@@ -111,7 +111,9 @@ public class ObsidianPillarStructure extends Structure {
             );
             double scale = 2.0;
             centerStone.forEach(p -> {
-                if (Mth.sin(15 * (float) normalNoise.getValue(p.getX() * scale, p.getY() * scale, p.getZ() * scale)) > -0.3F) blockMap.put(p, 2); else blockMap.put(p, 3);
+                if (Mth.sin(15 * (float) normalNoise.getValue(p.getX() * scale, p.getY() * scale, p.getZ() * scale)) > -0.3F)
+                    blockMap.put(p, 2);
+                else blockMap.put(p, 3);
             });
             for (int i = 0; i < pillarCount; i++) {
                 float rotate = baseRotate + stepRotate * i;
@@ -150,7 +152,8 @@ public class ObsidianPillarStructure extends Structure {
                             if (
                                     ((radiusP2 > radius3P2) && (radiusP2 < radius4P2)) ||
                                             ((radiusP2 > radius1P2) && (radiusP2 < radius2P2))
-                            ) blockMap.put(LibVectorUtils.fromVector3d(midPoint).offset(xRoll, yRoll, zRoll), 3);
+                            )
+                                blockMap.put(LibVectorUtils.fromVector3d(midPoint).offset(xRoll, yRoll, zRoll), 3);
                         }
                     }
                 }

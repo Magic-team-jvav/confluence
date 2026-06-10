@@ -5,21 +5,21 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class LayeredBlock extends RotatedPillarBlock {
-	public LayeredBlock(Properties p_55926_) {
-		super(p_55926_);
-	}
+    public LayeredBlock(Properties p_55926_) {
+        super(p_55926_);
+    }
 
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-		BlockState stateForPlacement = super.getStateForPlacement(pContext);
-		BlockState placedOn = pContext.getLevel()
-			.getBlockState(pContext.getClickedPos()
-				.relative(pContext.getClickedFace()
-					.getOpposite()));
-		if (placedOn.getBlock() == this && (pContext.getPlayer() == null || !pContext.getPlayer()
-			.isShiftKeyDown()))
-			stateForPlacement = stateForPlacement.setValue(AXIS, placedOn.getValue(AXIS));
-		return stateForPlacement;
-	}
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+        BlockState stateForPlacement = super.getStateForPlacement(pContext);
+        BlockState placedOn = pContext.getLevel()
+                .getBlockState(pContext.getClickedPos()
+                        .relative(pContext.getClickedFace()
+                                .getOpposite()));
+        if (placedOn.getBlock() == this && (pContext.getPlayer() == null || !pContext.getPlayer()
+                .isShiftKeyDown()))
+            stateForPlacement = stateForPlacement.setValue(AXIS, placedOn.getValue(AXIS));
+        return stateForPlacement;
+    }
 
 }

@@ -2,22 +2,16 @@ package org.confluence.mod.common.item.gun;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.api.event.GunEvent;
+import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_guns.api.event.GunEvent;
-import org.confluence.terra_guns.common.entity.bullet.BaseBulletEntity;
-import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terra_guns.common.item.gun.BaseGun;
-
-import java.util.List;
-
+import org.mesdag.portlib.event.PortEventHandler;
 
 public class ManaGunItem extends BaseGun {
-    private final int manaCost;
     private final float damage;
     private final float knockback;
     private final float critical;
@@ -26,8 +20,20 @@ public class ManaGunItem extends BaseGun {
     private final float inaccuracy;
 
     public ManaGunItem(Properties properties, int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity, int manaCost) {
-        super(properties, cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity);
-        this.manaCost=manaCost;
+        super(new Builder(cooldown, damage, velocity)
+                .knockback(knockback)
+                .critical(critical)
+                .penetrate(penetrate)
+                .inaccuracy(inaccuracy)
+                .rarity(rarity)
+                .manaCost(manaCost)
+                .bulletFactory((player, bullet) -> new BaseBulletEntity(player, bullet) {
+                    @Override
+                    public DamageSource getDamageSource() {
+                        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+                    }
+                })
+                .properties(properties));
         this.damage = damage;
         this.critical = critical;
         this.knockback = knockback;
@@ -36,53 +42,27 @@ public class ManaGunItem extends BaseGun {
         this.inaccuracy = inaccuracy;
     }
 
-    public int getManaCost() {
-        return manaCost;
-    }
-
     @Override
     public void shoot(ServerPlayer player, ItemStack bullet, ItemStack gunStack) {
-        if (PlayerUtils.extractMana(player, gunStack, () -> manaCost)) {
+        if (PlayerUtils.extractMana(player, gunStack, this::getManaCost)) {
             GunEvent.AmmoDataEvent ammoDataEvent = new GunEvent.AmmoDataEvent(player, this, gunStack, damage, critical, knockback, velocity, penetrate, inaccuracy);
-            NeoForge.EVENT_BUS.post(ammoDataEvent);
+            PortEventHandler.postEvent(ammoDataEvent);
 
-            prepareBulletEntity(baseBulletEntities, player, TGItems.EMPTY_BULLET.toStack(), gunStack, ammoDataEvent.getDamage(), ammoDataEvent.getKnockback(), ammoDataEvent.getVelocity(), ammoDataEvent.getPenetrate(), ammoDataEvent.getInaccuracy());
+            prepareBulletEntity(baseBulletEntities, player, GunItems.EMPTY_BULLET.get().getDefaultInstance(), gunStack, ammoDataEvent.getDamage(), ammoDataEvent.getKnockback(), ammoDataEvent.getVelocity(), ammoDataEvent.getPenetrate(), ammoDataEvent.getInaccuracy());
             baseBulletEntities.forEach(player.serverLevel()::addFreshEntity);
             baseBulletEntities.clear();
         }
     }
 
-    @Override
-    protected BaseBulletEntity createBulletEntity(List<Projectile> baseBulletEntities, ServerPlayer player, ItemStack bullet, ItemStack gun, float damage, float knockback, float velocity, int penetrate, float inaccuracy) {
-        return new BaseBulletEntity(player, bullet) {
-            @Override
-            public DamageSource getDamageSource() {
-                return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
-            }
-        };
-    }
+    public float getDamage() {return damage;}
 
-    public float getDamage() {
-        return damage;
-    }
+    public float getInaccuracy() {return inaccuracy;}
 
-    public float getInaccuracy() {
-        return inaccuracy;
-    }
+    public float getVelocity() {return velocity;}
 
-    public float getVelocity() {
-        return velocity;
-    }
+    public int getPenetrate() {return penetrate;}
 
-    public int getPenetrate() {
-        return penetrate;
-    }
+    public float getKnockback() {return knockback;}
 
-    public float getKnockback() {
-        return knockback;
-    }
-
-    public float getCritical() {
-        return critical;
-    }
+    public float getCritical() {return critical;}
 }

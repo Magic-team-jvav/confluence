@@ -7,7 +7,8 @@ import net.minecraft.util.Tuple;
 import org.confluence.terra_curio.api.primitive.CombineRule;
 import org.confluence.terra_curio.api.primitive.PrimitiveValue;
 
-public record PickupRangeAbilityValue(Tuple<Float, Integer> value) implements PrimitiveValue<Tuple<Float, Integer>> {
+public record PickupRangeAbilityValue(
+        Tuple<Float, Integer> value) implements PrimitiveValue<Tuple<Float, Integer>> {
     public static final Codec<PickupRangeAbilityValue> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ExtraCodecs.POSITIVE_FLOAT.fieldOf("range").forGetter(v -> v.value.getA()),
             ExtraCodecs.NON_NEGATIVE_INT.fieldOf("combine_id").forGetter(v -> v.value.getB())

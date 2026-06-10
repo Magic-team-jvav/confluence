@@ -103,7 +103,9 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
         return false;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider leavesBlockBottom, BlockStateProvider leavesBlockTop, BlockStateProvider leaveBlockDouble) implements FeatureConfiguration {
+    public record Config(BlockStateProvider trunk, BlockStateProvider leavesBlockBottom,
+                         BlockStateProvider leavesBlockTop,
+                         BlockStateProvider leaveBlockDouble) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("leaves_block_bottom").forGetter(Config::leavesBlockBottom),

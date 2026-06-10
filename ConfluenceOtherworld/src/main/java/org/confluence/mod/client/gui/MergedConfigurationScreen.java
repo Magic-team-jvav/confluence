@@ -14,7 +14,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_furniture.TerraFurniture;
-import org.confluence.terra_guns.TerraGuns;
+import org.confluence.mod.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.mesdag.particlestorm.ParticleStorm;
 import org.mesdag.thr_dim_particle.TDP;

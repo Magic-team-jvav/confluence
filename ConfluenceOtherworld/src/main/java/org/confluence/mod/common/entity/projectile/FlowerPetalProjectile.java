@@ -21,6 +21,7 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 // 山铜套装奖励
 public class FlowerPetalProjectile extends Projectile {
     private ParticleEmitter emitter;
+
     public FlowerPetalProjectile(EntityType<FlowerPetalProjectile> entityType, Level level) {
         super(entityType, level);
     }

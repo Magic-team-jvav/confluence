@@ -86,7 +86,9 @@ public class ColumnPatchFeature extends Feature<ColumnPatchFeature.Config> {
         return false;
     }
 
-    public record Config(int stepHeight, int radius, int maxDepth, int maxSearchHeight, float successRatio, BlockStateProvider blockStateProvider) implements FeatureConfiguration {
+    public record Config(int stepHeight, int radius, int maxDepth, int maxSearchHeight,
+                         float successRatio,
+                         BlockStateProvider blockStateProvider) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.INT.validate(i -> i >= 0 ? DataResult.success(i) : DataResult.error(() -> "Value must be non-negative: " + i)).lenientOptionalFieldOf("step_height", 3).forGetter(Config::stepHeight),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("radius", 4).forGetter(Config::radius),

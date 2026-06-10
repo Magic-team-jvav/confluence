@@ -49,8 +49,8 @@ public class VanityArmorItems {
     public static final RegistryObject<BaseVanityArmorItem> ARCHAEOLOGISTS_JACKET = registerVanityArmor("archaeologists_jacket", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
     public static final RegistryObject<BaseVanityArmorItem> ARCHAEOLOGISTS_PANTS = registerVanityArmor("archaeologists_pants", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
     public static final RegistryObject<BaseVanityArmorItem> ARCHAEOLOGISTS_SHOES = registerVanityArmor("archaeologists_shoes", ArmorItem.Type.BOOTS, ModRarity.WHITE);
-    public static final RegistryObject<BaseVanityArmorItem> CLOTHIERS_HAT = registerVanityArmor("clothiers_hat","vanity_armor/clothiers_set", ArmorItem.Type.HELMET, ModRarity.WHITE);
-    public static final RegistryObject<BaseVanityArmorItem> CLOTHIERS_JACKET = registerVanityArmor("clothiers_jacket","vanity_armor/clothiers_set",  ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
+    public static final RegistryObject<BaseVanityArmorItem> CLOTHIERS_HAT = registerVanityArmor("clothiers_hat", "vanity_armor/clothiers_set", ArmorItem.Type.HELMET, ModRarity.WHITE);
+    public static final RegistryObject<BaseVanityArmorItem> CLOTHIERS_JACKET = registerVanityArmor("clothiers_jacket", "vanity_armor/clothiers_set", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
     public static final RegistryObject<BaseVanityArmorItem> CLOTHIERS_PANTS = registerVanityArmor("clothiers_pants", "vanity_armor/clothiers_set", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
     public static final RegistryObject<BaseVanityArmorItem> CLOTHIERS_SHOES = registerVanityArmor("clothiers_shoes", "vanity_armor/clothiers_set", ArmorItem.Type.BOOTS, ModRarity.WHITE);
     public static final RegistryObject<BaseVanityArmorItem> ROBOT_HAT = registerVanityArmor("robot_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);

@@ -16,7 +16,7 @@ public class EMILootDataTableExclusions {
     }
 
     public static Codec<EMILootDataTableExclusions> CODEC;
-    public List <String> excludedPaths;
+    public List<String> excludedPaths;
 
     static {
         CODEC = RecordCodecBuilder.create((tableExclusionsInstance) -> tableExclusionsInstance.group(

@@ -42,19 +42,19 @@ public class Moonglow extends BaseHerbBlock {
         int brightness;
         if (r < 34) {
             boolean large = r < 6;
-            Vector4f curve = new Vector4f(0, random.nextFloat()*2-0.5f, random.nextFloat()*2-0.5f, random.nextFloat()*2-0.5f);
+            Vector4f curve = new Vector4f(0, random.nextFloat() * 2 - 0.5f, random.nextFloat() * 2 - 0.5f, random.nextFloat() * 2 - 0.5f);
             Vec3 pos = blockPos.getCenter().add(state.getOffset(level, blockPos)).offsetRandom(random, 0.3f);
             CrossDustParticleOptions particle;
             if (large) {
                 particle = new CrossDustParticleOptions(true,
-                    0x7f8DBDFF, 0x7f4760E4, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.03f + 0.03f).toVector3f(),
-                    curve, level.random.nextFloat() * 0.4f + 0.6f, random.nextInt(60, 80), level.random.nextInt(-20, 20),
-                    curve, true, true, false, false);
-            }else{
+                        0x7f8DBDFF, 0x7f4760E4, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.03f + 0.03f).toVector3f(),
+                        curve, level.random.nextFloat() * 0.4f + 0.6f, random.nextInt(60, 80), level.random.nextInt(-20, 20),
+                        curve, true, true, false, false);
+            } else {
                 particle = new CrossDustParticleOptions(false,
-                    0x7f6BB3FF, 0x7f4886E3, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.03f + 0.03f).toVector3f(),
-                    curve, level.random.nextFloat() * 0.4f + 0.3f, random.nextInt(60,80), level.random.nextInt(-20, 20),
-                    curve, true, true, false, false);
+                        0x7f6BB3FF, 0x7f4886E3, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.03f + 0.03f).toVector3f(),
+                        curve, level.random.nextFloat() * 0.4f + 0.3f, random.nextInt(60, 80), level.random.nextInt(-20, 20),
+                        curve, true, true, false, false);
             }
             level.addParticle(particle, pos.x, pos.y, pos.z, 0, 0, 0);
         }

@@ -98,7 +98,7 @@ public class BrokenStoneFeature extends Feature<BrokenStoneFeature.Config> {
 
         if (config.residue != null) {
             BlockState residue = config.residue.getState(random, basePos);
-            if ( random.nextFloat() < residueProbability) {
+            if (random.nextFloat() < residueProbability) {
                 if (residueBoolean) spiral(height, random, radius, basePos, level, residue);
                 else discrete(height, random, basePos, level, residue);
             }
@@ -113,7 +113,7 @@ public class BrokenStoneFeature extends Feature<BrokenStoneFeature.Config> {
     private static void spiral(int height, RandomSource random, int radius, BlockPos basePos, WorldGenLevel level, BlockState residue) {
         for (float i = 0; i < height; i += 0.5F) {
             double smallRadius = radius * 0.5 * ((double) i / height);
-            if (random.nextFloat() < ( i / height)) {
+            if (random.nextFloat() < (i / height)) {
                 float rotate = i * Mth.PI * 0.2F;
                 BlockPos pos = basePos.offset((int) (Mth.sin(rotate) * smallRadius), (int) i, (int) (Mth.cos(rotate) * smallRadius));
                 if (level.getBlockState(pos).canBeReplaced()) level.setBlock(pos, residue, 3);
@@ -123,8 +123,8 @@ public class BrokenStoneFeature extends Feature<BrokenStoneFeature.Config> {
 
     private static void discrete(int height, RandomSource random, BlockPos basePos, WorldGenLevel level, BlockState residue) {
         for (float i = 0; i < height; i += 0.5F) {
-            if (random.nextFloat() < ( i / height)) {
-                BlockPos pos = basePos.offset(random.nextInt(-1, 2), (int) i,random.nextInt(-1, 2));
+            if (random.nextFloat() < (i / height)) {
+                BlockPos pos = basePos.offset(random.nextInt(-1, 2), (int) i, random.nextInt(-1, 2));
                 if (level.getBlockState(pos).canBeReplaced()) level.setBlock(pos, residue, 3);
             }
         }

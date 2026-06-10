@@ -352,7 +352,6 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
 
 
-
                 // MC原版敌对怪物
                 .add(EntityType.ZOMBIE.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()

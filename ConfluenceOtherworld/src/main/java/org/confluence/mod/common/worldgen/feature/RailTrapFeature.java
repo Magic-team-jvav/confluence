@@ -60,7 +60,8 @@ public class RailTrapFeature extends Feature<RailTrapFeature.Config> {
                 level.setBlock(trap, trapBlockState, 3);
                 trapEntity = ModFeatures.getNetworkEntity(level, trap);
                 signalEntity = ModFeatures.getNetworkEntity(level, centerPos.offset(0, -1, 0));
-                if (trapEntity != null && signalEntity != null) trapEntity.connectTo(0xFF00FF, centerPos.offset(0, -1, 0), signalEntity);
+                if (trapEntity != null && signalEntity != null)
+                    trapEntity.connectTo(0xFF00FF, centerPos.offset(0, -1, 0), signalEntity);
             }
             return true;
         }

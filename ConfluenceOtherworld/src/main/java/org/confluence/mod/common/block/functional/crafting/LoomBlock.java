@@ -50,6 +50,7 @@ public class LoomBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock i
         int index = state.getValue(FACING).get2DDataValue();
         return state.getValue(PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
     }
+
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;

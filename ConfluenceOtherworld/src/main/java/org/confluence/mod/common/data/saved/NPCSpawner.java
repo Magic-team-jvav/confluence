@@ -59,7 +59,6 @@ import org.confluence.mod.mixin.integration.terraentity.AnglerNPCMixin;
 import org.confluence.mod.mixin.integration.terraentity.MechanicNPCMixin;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
@@ -502,7 +501,7 @@ public enum NPCSpawner implements IGlobalData {
 
     private boolean trySpawnArmsDealer(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.ARMS_DEALER.get())) {
-            Predicate<ItemStack> predicate = stack -> stack.is(TGTags.BULLET) || stack.is(TGTags.GUN);
+            Predicate<ItemStack> predicate = stack -> stack.is(ModTags.BULLET) || stack.is(ModTags.GUN);
             if (player.getInventory().hasAnyMatching(predicate) || ExtraInventory.of(player).hasAnyMatching(predicate)) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.ARMS_DEALER.get());
             }

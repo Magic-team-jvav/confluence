@@ -19,7 +19,7 @@ public class FlameTrapBlock extends AbstractDispenserMechanicalBlock {
         double y = pPos.getY() + 0.5 + 2.5 * direction.getStepY();
         double z = pPos.getZ() + 0.5 + 2.5 * direction.getStepZ();
         FlameCloudEntity entity = new FlameCloudEntity(pLevel, x, y, z);
-       return pLevel.addFreshEntity(entity);
+        return pLevel.addFreshEntity(entity);
     }
 
     @Override

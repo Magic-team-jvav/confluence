@@ -48,7 +48,8 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         for (int v = 1; v <= config.maxSearchDown && LibFeatureUtils.isPosAir(level, mutablePos); ++v) {
             mutablePos.move(0, -1, 0);
         }
-        if (level.isStateAtPosition(mutablePos, BlockBehaviour.BlockStateBase::liquid)) return false;
+        if (level.isStateAtPosition(mutablePos, BlockBehaviour.BlockStateBase::liquid))
+            return false;
 
         BlockPos chestPos = mutablePos.above();
         Block deathChest;
@@ -169,7 +170,8 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         return succeed;
     }
 
-    public record Config(int maxDartDistance, BlockState boulder, int boulderAmount, int maxBoulderHeight, int tntAmount, int maxSearchDown,
+    public record Config(int maxDartDistance, BlockState boulder, int boulderAmount,
+                         int maxBoulderHeight, int tntAmount, int maxSearchDown,
                          ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_dart_distance", 24).forGetter(Config::maxDartDistance),

@@ -102,7 +102,8 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
         }
     }
 
-    public record Config(BlockStateProvider fallingBlock, int radius, int height, int minDistanceTo, int maxDistanceTo) implements FeatureConfiguration {
+    public record Config(BlockStateProvider fallingBlock, int radius, int height, int minDistanceTo,
+                         int maxDistanceTo) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.lenientOptionalFieldOf("falling_block", BlockStateProvider.simple(Blocks.SAND)).forGetter(Config::fallingBlock),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("radius", 4).forGetter(Config::radius),

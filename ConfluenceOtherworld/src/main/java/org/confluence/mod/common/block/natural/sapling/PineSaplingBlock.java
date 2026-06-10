@@ -19,7 +19,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class PineSaplingBlock extends SaplingBlock {
     public PineSaplingBlock(TreeGrower treeGrower, BlockBehaviour.Properties properties) {
-    super(treeGrower, properties);
+        super(treeGrower, properties);
     }
 
     @Override

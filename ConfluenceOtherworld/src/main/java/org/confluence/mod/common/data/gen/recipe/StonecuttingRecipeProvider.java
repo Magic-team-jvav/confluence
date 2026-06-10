@@ -108,9 +108,9 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, "_from_polished_marble", DecorativeBlocks.MARBLE_CHESSBOARD_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_MARBLE));
         stonecutting(recipeOutput, "_from_polished_marble", DecorativeBlocks.MARBLE_ETERNAL_CHESSBOARD_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_MARBLE));
 
-        stonecutting(recipeOutput, "_from_obsidian_bricks",DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS.FULL));
-        stonecutting(recipeOutput, "_from_obsidian_bricks",DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS.FULL));
-        stonecutting(recipeOutput, "_from_obsidian_bricks",DecorativeBlocks.SMOOTH_OBSIDIAN.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS.FULL));
+        stonecutting(recipeOutput, "_from_obsidian_bricks", DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS.FULL));
+        stonecutting(recipeOutput, "_from_obsidian_bricks", DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS.FULL));
+        stonecutting(recipeOutput, "_from_obsidian_bricks", DecorativeBlocks.SMOOTH_OBSIDIAN.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS.FULL));
 
         for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
             if (!blockSet.stonecutting) continue;

@@ -10,11 +10,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.item.common.BaseHammerItem;
-import org.confluence.mod.common.item.common.BaseShovelItem;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.item.common.BaseHammerItem;
+import org.confluence.mod.common.item.common.BaseShovelItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;

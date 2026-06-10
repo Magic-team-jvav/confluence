@@ -155,5 +155,7 @@ public class BaseMinecartEntity extends Minecart {
         compound.putString("DropItem", dropItem.toString());
     }
 
-    public record Abilities<E extends BaseMinecartEntity>(Supplier<EntityType<E>> entityType, ResourceLocation dropItem, float maxSpeed, double acceleration, double dragAir) {}
+    public record Abilities<E extends BaseMinecartEntity>(Supplier<EntityType<E>> entityType,
+                                                          ResourceLocation dropItem, float maxSpeed,
+                                                          double acceleration, double dragAir) {}
 }

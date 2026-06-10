@@ -7,8 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.common.data.LanguageProvider;
 import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -21,8 +20,6 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.confluence.terraentity.init.TEEffects;
-import org.confluence.terraentity.utils.RecipeDrawerUtils;
 
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
@@ -685,6 +682,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("key.confluence.healing", "Quick Use Health Potion");
         add("key.confluence.mana", "Quick Use Mana Potion");
         add("key.confluence.extra_inventory", "Quick Open Extra Slot");
+        add("key.confluence.shoot", "Shoot");
+        add("key.confluence.aim", "Aim");
 
         add("death.attack.dungeon_altar", "Steve was one step away from uncovering the secret by right-clicking tuff with the meteor compass.");
 

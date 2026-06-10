@@ -54,7 +54,8 @@ public class Boulder3x3Entity extends BoulderEntity {
             BlockPos blockPos = blockPosition().relative(facing, 2);
             for (BlockPos pos : BlockPos.betweenClosed(blockPos.relative(facing.getClockWise()), blockPos.above(2).relative(facing.getCounterClockWise()))) {
                 BlockState blockState = level().getBlockState(pos);
-                if (blockState.getCollisionShape(level(), pos, CollisionContext.of(this)).isEmpty()) continue;
+                if (blockState.getCollisionShape(level(), pos, CollisionContext.of(this)).isEmpty())
+                    continue;
                 if (!ModTiers.isCorrectToolForDrops(power, simulated, blockState)) {
                     return;
                 }

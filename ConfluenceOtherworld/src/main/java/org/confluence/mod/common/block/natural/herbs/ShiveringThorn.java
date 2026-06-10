@@ -58,8 +58,8 @@ public class ShiveringThorn extends BaseHerbBlock {
             Vector4f curve = new Vector4f(0, 0.33f, 0.66f, 1);
             Vec3 pos = blockPos.getCenter().add(state.getOffset(level, blockPos)).offsetRandom(random, 0.5f);
             CrossDustParticleOptions particle = new CrossDustParticleOptions(false,
-                0xffffffff, 0xb0A9FFFF, new Vector3f(), curve, 1,
-                15, r < 17 ? 20 : -20, curve, true, true, false, true);
+                    0xffffffff, 0xb0A9FFFF, new Vector3f(), curve, 1,
+                    15, r < 17 ? 20 : -20, curve, true, true, false, true);
             level.addParticle(particle, pos.x, pos.y, pos.z, 0, 0, 0);
         }
         if (r < 10) {

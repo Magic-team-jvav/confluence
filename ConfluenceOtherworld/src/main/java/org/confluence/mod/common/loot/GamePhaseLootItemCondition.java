@@ -12,7 +12,8 @@ import org.confluence.mod.common.init.ModLootTables;
 
 import java.util.Objects;
 
-public record GamePhaseLootItemCondition(GamePhase from, boolean fromInclusive, GamePhase to, boolean toInclusive) implements LootItemCondition {
+public record GamePhaseLootItemCondition(GamePhase from, boolean fromInclusive, GamePhase to,
+                                         boolean toInclusive) implements LootItemCondition {
     public static final MapCodec<GamePhaseLootItemCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             GamePhase.CODEC.fieldOf("from").forGetter(GamePhaseLootItemCondition::from),
             Codec.BOOL.lenientOptionalFieldOf("from_inclusive", true).forGetter(GamePhaseLootItemCondition::fromInclusive),
@@ -36,7 +37,9 @@ public record GamePhaseLootItemCondition(GamePhase from, boolean fromInclusive, 
 
     @Override
     public boolean equals(Object o) {
-        return o == this || ((o instanceof GamePhaseLootItemCondition(GamePhase from1, boolean fromInclusive1, GamePhase to1, boolean toInclusive1)) &&
+        return o == this || ((o instanceof GamePhaseLootItemCondition(
+                GamePhase from1, boolean fromInclusive1, GamePhase to1, boolean toInclusive1
+        )) &&
                 from == from1 && fromInclusive == fromInclusive1 && to == to1 && toInclusive == toInclusive1);
     }
 

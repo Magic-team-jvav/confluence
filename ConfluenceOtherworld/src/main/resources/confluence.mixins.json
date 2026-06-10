@@ -143,6 +143,7 @@
         "client.renderer.entity.LivingEntityRendererMixin",
         "client.renderer.entity.layers.HumanoidArmorLayerMixin",
         "client.renderer.entity.layers.ItemInHandLayerMixin",
+        "client.gun.ItemInHandRendererMixin",
         "client.renderer.texture.SpriteLoaderMixin",
         "client.resources.model.BlockStateModelLoaderMixin",
         "client.resources.model.ModelBakeryMixin",

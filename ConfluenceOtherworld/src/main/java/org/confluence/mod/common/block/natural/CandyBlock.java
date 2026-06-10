@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import org.confluence.lib.util.LibUtils; // 引入你的工具类
+import org.confluence.lib.util.LibUtils;
 
 import java.util.Map;
 

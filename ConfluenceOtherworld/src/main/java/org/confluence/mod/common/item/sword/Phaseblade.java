@@ -93,7 +93,7 @@ public class Phaseblade extends BaseSwordItem implements GeoItem {
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        PortItemAttributeModifiers modifiers = PortItemStackExtension.getDataOrDefault(stack, TEDataComponentTypes.BOOMERANG_READY, SingleBooleanComponent.TRUE).value() ? turnOffModifiers : turnOffModifiers;
+        PortItemAttributeModifiers modifiers = turnOffModifiers;
         return modifiers.getAttributeModifiers(slot);
     }
 

@@ -19,9 +19,13 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GhastlyglaiveItem extends AbstractSpearItem {
-    /** 索敌范围（格） */
+    /**
+     * 索敌范围（格）
+     */
     private static final double SEARCH_RANGE = 20.0;
-    /** 生成圆半径（格），x²+z²=25 */
+    /**
+     * 生成圆半径（格），x²+z²=25
+     */
     private static final double SPAWN_RADIUS = 5.0;
 
     public GhastlyglaiveItem() {
@@ -91,7 +95,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
      * @param component 弹射物配置组件
      * @return 已生成的弹射物实例
      */
-    private GhastlyProjectile spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos,Vec3 direction, SpearProjectileComponent component) {
+    private GhastlyProjectile spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction, SpearProjectileComponent component) {
         GhastlyProjectile projectile = new GhastlyProjectile(
                 ModEntities.GHASTLY_PROJECTILE.get(), level);
         projectile.setOwner(owner);

@@ -14,13 +14,9 @@ import net.minecraft.tags.*;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.util.valueproviders.*;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentTarget;
-import net.minecraft.world.item.enchantment.LevelBasedValue;
-import net.minecraft.world.item.enchantment.effects.AddValue;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -77,6 +73,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.holdersets.AndHolderSet;
 import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
 import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.natural.PalmLeaves;
@@ -104,7 +101,10 @@ import java.util.stream.Stream;
 
 public class ModDataProvider {
     public static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
+            .add(Registries.DAMAGE_TYPE, context -> {
+                ModDamageTypes.bootstrap(context);
+                LibDamageTypes.bootstrap(context);
+            })
             .add(Registries.BIOME, Biomes::boostrap)
             .add(Registries.PROCESSOR_LIST, ProcessorListz::bootstrap)
             .add(Registries.TEMPLATE_POOL, TemplatePools::bootstrap)
@@ -165,7 +165,7 @@ public class ModDataProvider {
     }
 
     public static class WorldPresetz {
-        private static void bootstrap(BootstrapContext<WorldPreset> context) {
+        private static void bootstrap(BootstapContext<WorldPreset> context) {
             HolderGetter<DimensionType> dimensionType = context.lookup(Registries.DIMENSION_TYPE);
             HolderGetter<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterList = context.lookup(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST);
             HolderGetter<NoiseGeneratorSettings> noiseGeneratorSettings = context.lookup(Registries.NOISE_SETTINGS);
@@ -331,7 +331,7 @@ public class ModDataProvider {
             return Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, path);
         }
 
-        private static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+        private static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
             TagMatchTest stoneOreReplaceables = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
             TagMatchTest deepslateOreReplaceables = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
 
@@ -707,39 +707,39 @@ public class ModDataProvider {
             )), 32, 1));
         }
 
-        private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC config) {
+        private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC config) {
             context.register(key, new ConfiguredFeature<>(feature, config));
         }
 
-        private static void ore(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, OreConfiguration.TargetBlockState... targets) {
+        private static void ore(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, OreConfiguration.TargetBlockState... targets) {
             register(context, key, Feature.ORE, new OreConfiguration(Arrays.stream(targets).toList(), size));
         }
 
-        private static void ore(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, float discardChanceOnAirExposure, OreConfiguration.TargetBlockState... targets) {
+        private static void ore(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, float discardChanceOnAirExposure, OreConfiguration.TargetBlockState... targets) {
             register(context, key, Feature.ORE, new OreConfiguration(Arrays.stream(targets).toList(), size, discardChanceOnAirExposure));
         }
 
-        private static void scatteredOre(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, OreConfiguration.TargetBlockState... targets) {
+        private static void scatteredOre(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, OreConfiguration.TargetBlockState... targets) {
             register(context, key, Feature.SCATTERED_ORE, new OreConfiguration(Arrays.stream(targets).toList(), size));
         }
 
-        private static void gemTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block branchesBlock) {
+        private static void gemTree(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block branchesBlock) {
             register(context, key, ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.STONY_LOG.get()), BlockStateProvider.simple(branchesBlock), 6, 2));
         }
 
-        private static void droopingVineTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block leaves, Block drooping_leave, int height) {
+        private static void droopingVineTree(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block leaves, Block drooping_leave, int height) {
             register(context, key, ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(trunk), BlockStateProvider.simple(leaves), BlockStateProvider.simple(drooping_leave), height));
         }
 
-        private static void herb(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int tries, Block herbBlock) {
+        private static void herb(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int tries, Block herbBlock) {
             register(context, key, Feature.RANDOM_PATCH, new RandomPatchConfiguration(tries, 7, 3, direct(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(herbBlock)), BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(Blocks.AIR)))));
         }
 
-        private static void simple(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block block) {
+        private static void simple(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block block) {
             simple(context, key, block.defaultBlockState());
         }
 
-        private static void simple(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, BlockState blockState) {
+        private static void simple(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, BlockState blockState) {
             register(context, key, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(blockState)));
         }
 
@@ -945,7 +945,7 @@ public class ModDataProvider {
                 VerticalAnchor.absolute(10)
         );
 
-        private static void bootstrap(BootstrapContext<PlacedFeature> context) {
+        private static void bootstrap(BootstapContext<PlacedFeature> context) {
             HolderGetter<ConfiguredFeature<?, ?>> configured = context.lookup(Registries.CONFIGURED_FEATURE);
             register(context, AMBER_ORE, configured.getOrThrow(ConfiguredFeatures.AMBER_ORE), inSquare, heightRangeTriangle(-52, 10), biome);
             register(context, AMETHYST_ORE, configured.getOrThrow(ConfiguredFeatures.AMETHYST_ORE), inSquare, heightRangeTriangle(-52, 10), biome);
@@ -1120,23 +1120,23 @@ public class ModDataProvider {
 
         }
 
-        private static void register(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, PlacementModifier... modifiers) {
+        private static void register(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, PlacementModifier... modifiers) {
             context.register(key, new PlacedFeature(feature, Arrays.stream(modifiers).toList()));
         }
 
-        private static void gemTree(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, Block saplingBlock) {
+        private static void gemTree(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, Block saplingBlock) {
             register(context, key, feature, RarityFilter.onAverageOnceEvery(10), biome, inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1, BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(saplingBlock.defaultBlockState(), Vec3i.ZERO)));
         }
 
-        private static void evilAltar(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, boolean corruption, int count) {
+        private static void evilAltar(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, boolean corruption, int count) {
             register(context, key, feature, SecretFlagPlacement.of(corruption ? IWorldOptions.THE_CORRUPTION : IWorldOptions.THE_CRIMSON), biome, CountPlacement.of(count), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -20));
         }
 
-        private static void chest(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, CountPlacement count, int minInclusive, int maxInclusive) {
+        private static void chest(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, CountPlacement count, int minInclusive, int maxInclusive) {
             register(context, key, feature, biome, count, inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, minInclusive, maxInclusive));
         }
 
-        private static void pot(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature) {
+        private static void pot(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature) {
             register(context, key, feature, biome, CountPlacement.of(26), inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -2));
         }
 
@@ -1157,7 +1157,7 @@ public class ModDataProvider {
             return Confluence.asResourceKey(Registries.CONFIGURED_CARVER, path);
         }
 
-        private static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {
+        private static void bootstrap(BootstapContext<ConfiguredWorldCarver<?>> context) {
             HolderGetter<Block> block = context.lookup(Registries.BLOCK);
             VerticalAnchor aboveBottom8 = VerticalAnchor.aboveBottom(8);
             VerticalAnchor absolute80 = VerticalAnchor.absolute(80);
@@ -1217,7 +1217,7 @@ public class ModDataProvider {
     }
 
     private static class BiomeModifierz {
-        private static void bootstrap(BootstrapContext<BiomeModifier> context) {
+        private static void bootstrap(BootstapContext<BiomeModifier> context) {
             HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
             HolderSet<Biome> desert = biome.getOrThrow(Tags.Biomes.IS_DESERT);
             HolderSet<Biome> snowyIcy = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_SNOWY), biome.getOrThrow(Tags.Biomes.IS_ICY));
@@ -1484,17 +1484,17 @@ public class ModDataProvider {
             ));
         }
 
-        private static void addFeatures(BootstrapContext<BiomeModifier> context, String path, HolderSet<Biome> biomes, HolderSet<PlacedFeature> features, GenerationStep.Decoration step) {
+        private static void addFeatures(BootstapContext<BiomeModifier> context, String path, HolderSet<Biome> biomes, HolderSet<PlacedFeature> features, GenerationStep.Decoration step) {
             context.register(Confluence.asResourceKey(NeoForgeRegistries.Keys.BIOME_MODIFIERS, path), new BiomeModifiers.AddFeaturesBiomeModifier(biomes, features, step));
         }
 
-        private static void addCarvers(BootstrapContext<BiomeModifier> context, String path, HolderSet<Biome> biomes, HolderSet<ConfiguredWorldCarver<?>> carvers, GenerationStep.Carving step) {
+        private static void addCarvers(BootstapContext<BiomeModifier> context, String path, HolderSet<Biome> biomes, HolderSet<ConfiguredWorldCarver<?>> carvers, GenerationStep.Carving step) {
             context.register(Confluence.asResourceKey(NeoForgeRegistries.Keys.BIOME_MODIFIERS, path), new BiomeModifiers.AddCarversBiomeModifier(biomes, carvers, step));
         }
 
         private static ResourceKey<BiomeModifier> createModifierKey(String name) {return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Confluence.asResource("mob_spawner/" + name));}
 
-        private static Holder.Reference<BiomeModifier> register(BootstrapContext<BiomeModifier> context, ResourceKey<BiomeModifier> key, BiomeModifier value) {
+        private static Holder.Reference<BiomeModifier> register(BootstapContext<BiomeModifier> context, ResourceKey<BiomeModifier> key, BiomeModifier value) {
             return context.register(key, value, Lifecycle.stable());
         }
 
@@ -1504,7 +1504,7 @@ public class ModDataProvider {
     }
 
     private static class Biomes {
-        private static void boostrap(BootstrapContext<Biome> context) {
+        private static void boostrap(BootstapContext<Biome> context) {
             HolderGetter<ConfiguredWorldCarver<?>> worldCarvers = context.lookup(Registries.CONFIGURED_CARVER);
             HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
 
@@ -1828,7 +1828,7 @@ public class ModDataProvider {
     }
 
     private static class Enchantments {
-        private static void bootstrap(BootstrapContext<Enchantment> context) {
+        private static void bootstrap(BootstapContext<Enchantment> context) {
             HolderGetter<Item> item = context.lookup(Registries.ITEM);
             HolderGetter<Enchantment> enchantment = context.lookup(Registries.ENCHANTMENT);
             AllOfCondition.Builder isMagic = LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity())
@@ -1951,7 +1951,7 @@ public class ModDataProvider {
             );
         }
 
-        private static void register(BootstrapContext<Enchantment> context, ResourceKey<Enchantment> key, Enchantment.Builder builder) {
+        private static void register(BootstapContext<Enchantment> context, ResourceKey<Enchantment> key, Enchantment.Builder builder) {
             context.register(key, builder.build(key.location()));
         }
     }
@@ -1964,7 +1964,7 @@ public class ModDataProvider {
             return Confluence.asResourceKey(Registries.PROCESSOR_LIST, path);
         }
 
-        private static void bootstrap(BootstrapContext<StructureProcessorList> context) {
+        private static void bootstrap(BootstapContext<StructureProcessorList> context) {
             BlockMatchTest stoneMatchTest = new BlockMatchTest(Blocks.STONE);
             BlockState stone = Blocks.STONE.defaultBlockState();
             BlockMatchTest deepslateMatchTest = new BlockMatchTest(Blocks.DEEPSLATE);
@@ -2003,7 +2003,7 @@ public class ModDataProvider {
             return Confluence.asResourceKey(Registries.TEMPLATE_POOL, path);
         }
 
-        private static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
+        private static void bootstrap(BootstapContext<StructureTemplatePool> context) {
             HolderGetter<StructureTemplatePool> templatePool = context.lookup(Registries.TEMPLATE_POOL);
             HolderGetter<StructureProcessorList> processorList = context.lookup(Registries.PROCESSOR_LIST);
             Holder<StructureTemplatePool> emptyTemplatePool = templatePool.getOrThrow(Pools.EMPTY);
@@ -2019,13 +2019,13 @@ public class ModDataProvider {
             register(context, EBONY_STONE_THORN$EBONY_STONE_THORN, "confluence:ebony_stone_thorn/ebony_stone_thorn", emptyTemplatePool, emptyProcessorList);
         }
 
-        private static void register(BootstrapContext<StructureTemplatePool> context, ResourceKey<StructureTemplatePool> key, String location, Holder<StructureTemplatePool> fallback, Holder<StructureProcessorList> processors) {
+        private static void register(BootstapContext<StructureTemplatePool> context, ResourceKey<StructureTemplatePool> key, String location, Holder<StructureTemplatePool> fallback, Holder<StructureProcessorList> processors) {
             context.register(key, new StructureTemplatePool(fallback, Collections.singletonList(new Pair<>(SinglePoolElement.single(location, processors).apply(StructureTemplatePool.Projection.RIGID), 1))));
         }
     }
 
     public static class Structures {
-        private static void boostrap(BootstrapContext<Structure> context) {
+        private static void boostrap(BootstapContext<Structure> context) {
             HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
             HolderLookup.RegistryLookup<Biome> biomeLookup = registryLookup(Registries.BIOME, biome);
             HolderGetter<StructureTemplatePool> templatePool = context.lookup(Registries.TEMPLATE_POOL);
@@ -2132,7 +2132,7 @@ public class ModDataProvider {
         private static final ResourceKey<StructureSet> AIR = Confluence.asResourceKey(Registries.STRUCTURE_SET, "air");
         private static final ResourceKey<StructureSet> SHIMMER_LAKE = Confluence.asResourceKey(Registries.STRUCTURE_SET, "shimmer_lake");
 
-        private static void bootstrap(BootstrapContext<StructureSet> context) {
+        private static void bootstrap(BootstapContext<StructureSet> context) {
             HolderGetter<Structure> structure = context.lookup(Registries.STRUCTURE);
             HolderGetter<StructureSet> structureSet = context.lookup(Registries.STRUCTURE_SET);
             HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
@@ -2207,7 +2207,7 @@ public class ModDataProvider {
             )));
         }
 
-        private static void register(BootstrapContext<StructureSet> context, String path, StructureSet set) {
+        private static void register(BootstapContext<StructureSet> context, String path, StructureSet set) {
             context.register(Confluence.asResourceKey(Registries.STRUCTURE_SET, path), set);
         }
     }

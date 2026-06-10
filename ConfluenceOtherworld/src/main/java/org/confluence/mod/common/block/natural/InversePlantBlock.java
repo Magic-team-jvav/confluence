@@ -11,7 +11,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
 
-public class InversePlantBlock extends BasePlantBlock{
+public class InversePlantBlock extends BasePlantBlock {
 
     protected static final VoxelShape SHAPE = box(2, 3, 2, 14, 16, 14);
 

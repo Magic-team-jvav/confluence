@@ -42,7 +42,8 @@ public class SpongeItem extends TooltipItem {
         }
         BlockPos blockPos = hitResult.getBlockPos();
         if (!level.mayInteract(player, blockPos)) return InteractionResultHolder.fail(itemStack);
-        if (tryAbsorbLiquid(level, blockPos)) return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);
+        if (tryAbsorbLiquid(level, blockPos))
+            return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);
         return InteractionResultHolder.fail(itemStack);
     }
 

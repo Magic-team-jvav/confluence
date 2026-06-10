@@ -63,7 +63,9 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     protected final int attackInterval;
     protected final List<Keyframe<MathValue>> keyframes;
     private TooltipComponent component;
-    /** 本次挥击已命中的实体 ID，挥击开始时清空 */
+    /**
+     * 本次挥击已命中的实体 ID，挥击开始时清空
+     */
     private final Set<Integer> struckEntities = new HashSet<>();
 
     /// @param attackDuration 攻击持续时间，值越大攻击时间越长
@@ -143,7 +145,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
 
                 List<Entity> victims = level.getEntities(owner, new AABB(startVec, endVec),
-                        target -> canHitEntity(target, owner)).stream()
+                                target -> canHitEntity(target, owner)).stream()
                         .filter(v -> !struckEntities.contains(v.getId()))
                         .sorted(Comparator.comparingDouble(a -> a.distanceToSqr(owner)))
                         .toList();

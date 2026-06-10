@@ -38,7 +38,8 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
     }
 
     public CloudRodItem setMaxCloud(int maxCloud) {
-        if (maxCloud < 1) throw new IllegalArgumentException("maxCount must be greater than 1, currently is '" + maxCloud + "'");
+        if (maxCloud < 1)
+            throw new IllegalArgumentException("maxCount must be greater than 1, currently is '" + maxCloud + "'");
         this.maxCloud = maxCloud;
         return this;
     }

@@ -43,7 +43,8 @@ public class BoulderTrapFeature extends Feature<BoulderTrapFeature.Config> {
                     if (b && b1) {
                         INetworkEntity boulder = ModFeatures.getNetworkEntity(level, boulderPos);
                         INetworkEntity plate = ModFeatures.getNetworkEntity(level, platePos);
-                        if (boulder != null && plate != null) boulder.connectTo(0xFF0000, platePos, plate);
+                        if (boulder != null && plate != null)
+                            boulder.connectTo(0xFF0000, platePos, plate);
                         return true;
                     }
                 }

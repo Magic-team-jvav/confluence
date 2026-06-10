@@ -28,6 +28,7 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -36,7 +37,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_furniture.common.init.TFTags;
-import org.confluence.terra_guns.common.init.TGItems;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -214,8 +214,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
-        skyMill(recipeOutput, DecorativeBlocks.STAR_CLOUD_BLOCK.toStack(10), Ingredient.of(MaterialItems.FALLING_STAR), AmountIngredient.of(10,NatureBlocks.CLOUD_BLOCK));
-        skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE.FULL),Ingredient.of(ModTags.Items.LEAD_AND_IRON));
+        skyMill(recipeOutput, DecorativeBlocks.STAR_CLOUD_BLOCK.toStack(10), Ingredient.of(MaterialItems.FALLING_STAR), AmountIngredient.of(10, NatureBlocks.CLOUD_BLOCK));
+        skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE.FULL), Ingredient.of(ModTags.Items.LEAD_AND_IRON));
         skyMill(recipeOutput, DecorativeBlocks.DISC_BLOCK.FULL.toStack(4), Ingredient.of(DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(recipeOutput, DecorativeBlocks.SKYWARE_DOOR.toStack(), AmountIngredient.of(2, DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(recipeOutput, DecorativeBlocks.SKYWARE_GLASS_DOOR.toStack(), AmountIngredient.of(2, DecorativeBlocks.SUN_PLATE.FULL), Ingredient.of(DecorativeBlocks.PURE_GLASS));
@@ -443,21 +443,21 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.BATTLE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
         alchemyTable(recipeOutput, PotionItems.CALMING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.DAMSEL_FISH), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.SATIETY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.RED_PLEATFISH), Ingredient.of(FoodItems.BROWN_STALKSPINE));
-        alchemyTable(recipeOutput, PotionItems.MANA_POTION.toStack(), Ingredient.of(MaterialItems.GLOWING_MUSHROOM),  AmountIngredient.of(2, PotionItems.LESSER_MANA_POTION));
-        alchemyTable(recipeOutput, PotionItems.SUPER_MANA_POTION.toStack(15),  AmountIngredient.of(15,PotionItems.GREATER_MANA_POTION),  AmountIngredient.of(3,MaterialItems.CRYSTAL_SHARDS), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.UNICORN_HORN));
-        alchemyTable(recipeOutput, PotionItems.GREATER_HEALING_POTION.toStack(3),  AmountIngredient.of(3,PotionItems.BOTTLED_WATER),  AmountIngredient.of(3,MaterialItems.PIXIE_DUST), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
+        alchemyTable(recipeOutput, PotionItems.MANA_POTION.toStack(), Ingredient.of(MaterialItems.GLOWING_MUSHROOM), AmountIngredient.of(2, PotionItems.LESSER_MANA_POTION));
+        alchemyTable(recipeOutput, PotionItems.SUPER_MANA_POTION.toStack(15), AmountIngredient.of(15, PotionItems.GREATER_MANA_POTION), AmountIngredient.of(3, MaterialItems.CRYSTAL_SHARDS), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.UNICORN_HORN));
+        alchemyTable(recipeOutput, PotionItems.GREATER_HEALING_POTION.toStack(3), AmountIngredient.of(3, PotionItems.BOTTLED_WATER), AmountIngredient.of(3, MaterialItems.PIXIE_DUST), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
-        crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(9999, TGItems.MUSKET_BULLET));
-        crystalBlock(recipeOutput, ManaWeaponItems.CURSED_FLAMES.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.CURSED_FLAME),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
-        crystalBlock(recipeOutput, ManaWeaponItems.CRYSTAL_STORM.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.CRYSTAL_SHARDS),AmountIngredient.of(15, MaterialItems.SOUL_OF_LIGHT));
-        crystalBlock(recipeOutput, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.ICHOR),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
+        crystalBlock(recipeOutput, GunItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(9999, GunItems.MUSKET_BULLET));
+        crystalBlock(recipeOutput, ManaWeaponItems.CURSED_FLAMES.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.CURSED_FLAME), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
+        crystalBlock(recipeOutput, ManaWeaponItems.CRYSTAL_STORM.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.CRYSTAL_SHARDS), AmountIngredient.of(15, MaterialItems.SOUL_OF_LIGHT));
+        crystalBlock(recipeOutput, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.ICHOR), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(recipeOutput, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));
         crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), emptyDropper);
         crystalBlock(recipeOutput, FunctionalBlocks.WATER_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES));
-        crystalBlock(recipeOutput, FunctionalBlocks.RAINBOW_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER),AmountIngredient.of(50, MaterialItems.FALLING_STAR));
+        crystalBlock(recipeOutput, FunctionalBlocks.RAINBOW_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), AmountIngredient.of(50, MaterialItems.FALLING_STAR));
 
 
         hardmodeForge(recipeOutput, MaterialItems.ADAMANTITE_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_ADAMANTITE));

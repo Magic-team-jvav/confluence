@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 public class BeeArrow extends BaseArrowEntity {
 
     ITrackType trackType;
+
     public BeeArrow(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         trackType = new BasisTrack(30, 0.2f);
@@ -32,12 +33,12 @@ public class BeeArrow extends BaseArrowEntity {
     }
 
     @Override
-    public void tick(){
+    public void tick() {
         super.tick();
 
-        if(!this.inGround && getOwner() != null) {
+        if (!this.inGround && getOwner() != null) {
             LivingEntity target = TEUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, 20, 30, this::canHitEntity);
-            if(target != null) {
+            if (target != null) {
                 Vec3 motion = getDeltaMovement();
                 Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(position());
                 double angle = TEUtils.angleBetween(motion, dir);
@@ -55,13 +56,13 @@ public class BeeArrow extends BaseArrowEntity {
             if (motion.y != vec3.y) motion = new Vec3(vec3.x, -vec3.y, vec3.z);
             if (motion.z != vec3.z) motion = new Vec3(vec3.x, vec3.y, -vec3.z);
             setDeltaMovement(motion);
-        }else{
+        } else {
             setPos(pos);
         }
     }
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) &&TEUtils.projectileCanHurtEntityTest.test(this, target);
+        return super.canHitEntity(target) && TEUtils.projectileCanHurtEntityTest.test(this, target);
     }
 }

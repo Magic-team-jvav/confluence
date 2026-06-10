@@ -16,7 +16,7 @@ public class InfernoEffect extends MolangParticleMobEffect {  //狱火 点燃周
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
         for (Entity entity : livingEntity.level().getEntities(livingEntity, new AABB(livingEntity.blockPosition()).inflate(5.0))) {
-            if(entity instanceof Enemy && entity instanceof LivingEntity)
+            if (entity instanceof Enemy && entity instanceof LivingEntity)
                 entity.igniteForTicks((amplifier + 1) * 100);
         }
         return true;

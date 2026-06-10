@@ -410,7 +410,7 @@ public class NatureBlocks {
     ));
     public static final RegistryObject<BalloonStemBlock> BALLOON_STEM = registerWithoutItem("balloon_stem", () -> new BalloonStemBlock(
             (ResourceKey<Block>) (ResourceKey) BALLOON_MELON.getKey(),
-            (ResourceKey<Block>)(ResourceKey) ATTACHED_BALLOON_STEM.getKey(),
+            (ResourceKey<Block>) (ResourceKey) ATTACHED_BALLOON_STEM.getKey(),
             Objects.requireNonNull(FoodItems.BALLOON_SEED.getKey())
     ));
 

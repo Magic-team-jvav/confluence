@@ -203,7 +203,7 @@ public final class SoulSkillClientHolder {
 
     public boolean isSkillEquipped(ResourceLocation skillId) {
         for (SoulSkillStack equipped : equippedSkills) {
-            if (equipped == null || !equipped.getSoulSkill().getId().equals(skillId)) {
+            if (equipped == null || !equipped.getSoulSkill().id().equals(skillId)) {
                 continue;
             }
             return true;
@@ -222,9 +222,9 @@ public final class SoulSkillClientHolder {
     }
 
     public boolean isSkillEquipped(SoulSkill skill) {
-        ResourceLocation id = skill.getId();
+        ResourceLocation id = skill.id();
         for (SoulSkillStack equipped : equippedSkills) {
-            if (equipped != null && equipped.getSoulSkill().getId().equals(id)) {
+            if (equipped != null && equipped.getSoulSkill().id().equals(id)) {
                 return true;
             }
         }
@@ -234,7 +234,7 @@ public final class SoulSkillClientHolder {
     // ---- 解锁技能 ----
 
     public void addUnlockedSkill(SoulSkill skill) {
-        unlockedSkills.put(skill.getId(), skill);
+        unlockedSkills.put(skill.id(), skill);
     }
 
     public void removeUnlockedSkill(ResourceLocation skillId) {

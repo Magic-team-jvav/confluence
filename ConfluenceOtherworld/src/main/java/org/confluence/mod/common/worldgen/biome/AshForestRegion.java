@@ -27,13 +27,13 @@ public class AshForestRegion extends Region {
         // Overlap Vanilla's parameters with our own for our COLD_BLUE biome.
         // The parameters for this biome are chosen arbitrarily.
         new ParameterPointListBuilder()
-            .temperature(Temperature.span(Temperature.NEUTRAL, Temperature.HOT))
-            .humidity(Humidity.span(Humidity.ARID, Humidity.HUMID))
-            .continentalness(Continentalness.INLAND)
-            .erosion(Erosion.EROSION_3, Erosion.EROSION_5)
-            .depth(Depth.SURFACE, Depth.FLOOR)
-            .weirdness(Weirdness.MID_SLICE_NORMAL_ASCENDING, Weirdness.FULL_RANGE)
-            .build().forEach(point -> builder.add(point, ModBiomes.ASH_FOREST));
+                .temperature(Temperature.span(Temperature.NEUTRAL, Temperature.HOT))
+                .humidity(Humidity.span(Humidity.ARID, Humidity.HUMID))
+                .continentalness(Continentalness.INLAND)
+                .erosion(Erosion.EROSION_3, Erosion.EROSION_5)
+                .depth(Depth.SURFACE, Depth.FLOOR)
+                .weirdness(Weirdness.MID_SLICE_NORMAL_ASCENDING, Weirdness.FULL_RANGE)
+                .build().forEach(point -> builder.add(point, ModBiomes.ASH_FOREST));
         // Add our points to the mapper
         builder.build().forEach(mapper);
     }

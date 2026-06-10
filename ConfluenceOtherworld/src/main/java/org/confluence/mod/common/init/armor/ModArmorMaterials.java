@@ -317,7 +317,7 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> HALLOWED_MASK_MATERIAL = registerSingletonMaterial("hallowed_mask_material", ArmorItem.Type.HELMET, 7, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_mask", 2.0F, 0);
     public static final Holder<ArmorMaterial> HALLOWED_HEADGEAR_MATERIAL = registerSingletonMaterial("hallowed_headgear_material", ArmorItem.Type.HELMET, 3, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_headgear", 2.0F, 0);
     public static final Holder<ArmorMaterial> HALLOWED_HOOD_MATERIAL = registerSingletonMaterial("hallowed_hood_material", ArmorItem.Type.HELMET, 1, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_hood", 2.0F, 0);
-    public static final Holder<ArmorMaterial> HALLOWED_ARMOR_MATERIALS = registerArmorMaterial("hallowed_armor_materials", 4, 8, 7, 7, 19,  SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed", 2.0F, 0);
+    public static final Holder<ArmorMaterial> HALLOWED_ARMOR_MATERIALS = registerArmorMaterial("hallowed_armor_materials", 4, 8, 7, 7, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed", 2.0F, 0);
 
     public static Holder<ArmorMaterial> registerArmorMaterial(String name, int helmetArmor, int chestplateArmor, int leggingsArmor, int bootsArmor, int enchantmentValue, Holder<SoundEvent> equipSound, ItemLike fixItem, String layersName, float toughness, float knockbackResistance) {
         return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(

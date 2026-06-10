@@ -113,7 +113,9 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         return cachedComponent;
     }
 
-    /** 线段 a 的纯世界方向：玩家面朝水平方向，不含公转偏移 */
+    /**
+     * 线段 a 的纯世界方向：玩家面朝水平方向，不含公转偏移
+     */
     @NotNull
     public Vector3f getSpinAxis() {
         Entity owner = getOwner();

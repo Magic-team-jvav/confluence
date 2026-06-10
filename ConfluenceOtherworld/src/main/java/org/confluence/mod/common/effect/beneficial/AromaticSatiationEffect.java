@@ -27,7 +27,7 @@ public class AromaticSatiationEffect extends MobEffect {
                 foodData.setFoodLevel(newFood);
                 if (newFood < 20) return true;
             } else {
-                float nextSaturation = Mth.clamp(currentSaturation + (float)totalRecovery, 0.0F, 20.0F);
+                float nextSaturation = Mth.clamp(currentSaturation + (float) totalRecovery, 0.0F, 20.0F);
                 foodData.setSaturation(nextSaturation);
             }
         }

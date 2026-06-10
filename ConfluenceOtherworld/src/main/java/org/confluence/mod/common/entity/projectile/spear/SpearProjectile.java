@@ -150,7 +150,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         // 始终使用发射时设定的 direction 作为朝向，避免因 deltaMovement 变化导致模型抖动
         if (direction.lengthSqr() > 0.01) {
             float yaw = (float) Mth.atan2(direction.x, direction.z) * Mth.RAD_TO_DEG;
-            float horizontalDist = Mth.sqrt((float)(direction.x * direction.x + direction.z * direction.z));
+            float horizontalDist = Mth.sqrt((float) (direction.x * direction.x + direction.z * direction.z));
             float pitch = (float) Mth.atan2(-direction.y, horizontalDist) * Mth.RAD_TO_DEG;
             this.setYRot(yaw);
             this.yRotO = yaw;
@@ -306,20 +306,28 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
      */
     // ===== 渲染元数据（子类覆写以实现一类一物品） =====
 
-    /** 弹射物模型纹理，默认 null（无模型） */
+    /**
+     * 弹射物模型纹理，默认 null（无模型）
+     */
     @Nullable
-    public net.minecraft.resources.ResourceLocation getProjTexture() { return null; }
+    public net.minecraft.resources.ResourceLocation getProjTexture() {return null;}
 
-    /** 弹射物模型层，默认 null */
+    /**
+     * 弹射物模型层，默认 null
+     */
     @Nullable
-    public net.minecraft.client.model.geom.ModelLayerLocation getModelLayer() { return null; }
+    public net.minecraft.client.model.geom.ModelLayerLocation getModelLayer() {return null;}
 
-    /** 飞行轴自旋角度，默认 0 */
+    /**
+     * 飞行轴自旋角度，默认 0
+     */
     public float getSpinRotation(float partialTick) {
         return Mth.lerp(partialTick, rotate.old, rotate.neo);
     }
 
-    /** 自旋轴，默认绕 Z 轴。子类可覆写此方法以使用不同的旋转轴 */
+    /**
+     * 自旋轴，默认绕 Z 轴。子类可覆写此方法以使用不同的旋转轴
+     */
     public com.mojang.math.Axis getSpinAxis() {
         return com.mojang.math.Axis.ZP;
     }
@@ -339,7 +347,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     public void shootFromRotation(Entity shooter, float x, float y, float z,
-                                   float velocity, float inaccuracy) {
+                                  float velocity, float inaccuracy) {
         float f = -Mth.sin(y * 0.017453292F) * Mth.cos(x * 0.017453292F);
         float f1 = -Mth.sin((x + z) * 0.017453292F);
         float f2 = Mth.cos(y * 0.017453292F) * Mth.cos(x * 0.017453292F);

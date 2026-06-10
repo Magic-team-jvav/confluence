@@ -22,13 +22,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.init.item.SpearItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.BrainOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
@@ -54,8 +54,8 @@ public class CrimsonHeartBlock extends Block {
             int count = data.getEvilBrokenCount() % 3;
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
-                LibEntityUtils.createItemEntity(TGItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(GunItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(GunItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 LibEntityUtils.createItemEntity(LightPetItems.CRIMSON_HEART.toStack(), center.x, center.y, center.z, level, 0);

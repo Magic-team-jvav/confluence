@@ -19,6 +19,7 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -26,7 +27,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
@@ -57,7 +57,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
                         .add(LootItem.lootTableItem(SpearItems.SPEAR))
                         .add(LootItem.lootTableItem(TEBoomerangItems.WOOD_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.BLOWGUN))
+                        .add(LootItem.lootTableItem(GunItems.BLOWGUN))
                         .add(LootItem.lootTableItem(TCItems.AGLET))
                         .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
                         .add(LootItem.lootTableItem(ManaWeaponItems.WAND_OF_SPARKING))
@@ -71,7 +71,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
                         .add(LootItem.lootTableItem(TEBoomerangItems.WOOD_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.BLOWGUN))
+                        .add(LootItem.lootTableItem(GunItems.BLOWGUN))
                         .add(LootItem.lootTableItem(TCItems.AGLET))
                         .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
                         .add(LootItem.lootTableItem(ManaWeaponItems.WAND_OF_SPARKING))
@@ -124,7 +124,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES).setWeight(15))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE).setWeight(15))
                         .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG).setWeight(15))
-                        .add(LootItem.lootTableItem(TGItems.SNOWBALL_CANNON).setWeight(15))
+                        .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON).setWeight(15))
                         .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(5))
                 )
                 .withPool(LootPool.lootPool()
@@ -140,7 +140,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES).setWeight(15))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE).setWeight(15))
                         .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG).setWeight(15))
-                        .add(LootItem.lootTableItem(TGItems.SNOWBALL_CANNON).setWeight(15))
+                        .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON).setWeight(15))
                         .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(5))
                 )
                 .withPool(LootPool.lootPool()
@@ -222,7 +222,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.ANKLET_OF_THE_WIND).setWeight(21))
                         .add(LootItem.lootTableItem(TCItems.FERAL_CLAWS).setWeight(21))
                         .add(LootItem.lootTableItem(ToolItems.STAFF_OF_REGROWTH).setWeight(21))
-                        .add(LootItem.lootTableItem(TGItems.BOOMSTICK).setWeight(21))
+                        .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(21))
                         .add(LootItem.lootTableItem(FishingPoleItems.FIBERGLASS_FISHING_POLE).setWeight(7))
                 )
                 .withPool(LootPool.lootPool()
@@ -237,7 +237,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.ANKLET_OF_THE_WIND).setWeight(21))
                         .add(LootItem.lootTableItem(TCItems.FERAL_CLAWS).setWeight(21))
                         .add(LootItem.lootTableItem(ToolItems.STAFF_OF_REGROWTH).setWeight(21))
-                        .add(LootItem.lootTableItem(TGItems.BOOMSTICK).setWeight(21))
+                        .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(21))
                         .add(LootItem.lootTableItem(FishingPoleItems.FIBERGLASS_FISHING_POLE).setWeight(7))
                 )
                 .withPool(LootPool.lootPool()
@@ -247,7 +247,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/cave_chests"),initialWorldCaveCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/cave_chests"), initialWorldCaveCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BAND_OF_REGENERATION).setWeight(9))
                         .add(LootItem.lootTableItem(TCItems.MAGIC_MIRROR).setWeight(9))
@@ -336,12 +336,12 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(Items.ARROW)).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TGItems.MUSKET_BULLET)).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
+                        .add(LootItem.lootTableItem(GunItems.MUSKET_BULLET)).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8))))
                         .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8))))
-                         .add(EmptyLootItem.emptyItem().setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(1))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8))))
@@ -391,7 +391,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(SwordItems.MURAMASA))
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
                         .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE))
-                        .add(LootItem.lootTableItem(TGItems.HAND_GUN))
+                        .add(LootItem.lootTableItem(GunItems.HAND_GUN))
                         .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
                         .add(LootItem.lootTableItem(TCItems.RAM_RUNE))
                 )
@@ -440,10 +440,10 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
         // 下界
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/nether_tower_barrel"),LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/nether_tower_barrel"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.OBSIDIAN)).apply(SetItemCountFunction.setCount(UniformGenerator.between(8, 10)))
-        )
+                )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
                         .add(EmptyLootItem.emptyItem().setWeight(29))
@@ -463,7 +463,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/shadow_chests"),LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/shadow_chests"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FIRE))
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLAMELASH))
@@ -484,7 +484,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(ArrowItems.HELLFIRE_ARROW)).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 74)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TGItems.MUSKET_BULLET)).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 74)))
+                        .add(LootItem.lootTableItem(GunItems.MUSKET_BULLET)).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 74)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.TORCH)
@@ -522,7 +522,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.TORCH)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(15, 29)))
-                               )
+                        )
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(PotionItems.INFERNO_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(2))
@@ -537,56 +537,55 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
         // 空岛村
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/sky_village_chests"),LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 9))))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.WEAVING_CLOUD_COTTON).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 9))))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.FALLING_STAR).apply(SetItemCountFunction.setCount(UniformGenerator.between(12, 24))))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.CLOUD_BREAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 8))))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BOOK).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.FEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(13, 15))))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 7))))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(NatureBlocks.CLOUD_BLOCK).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 45))))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ToolItems.METEOR_COMPASS))
-                        .add(EmptyLootItem.emptyItem())
-                )
-                .withPool(LootPool.lootPool()
-                        .add(manaEnchantedBookBuilder)
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
-                )
-                //星钢剑
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.STAR_STEEL_SWORD))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
-                )
-                //稻草人弓
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BowItems.SCAREBOW.get()).setWeight(15))
-                        .add(EmptyLootItem.emptyItem().setWeight(85))
-                )
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/sky_village_chests"), LootTable.lootTable()
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 9))))
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(MaterialItems.WEAVING_CLOUD_COTTON).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 9))))
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(MaterialItems.FALLING_STAR).apply(SetItemCountFunction.setCount(UniformGenerator.between(12, 24))))
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(FoodItems.CLOUD_BREAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 8))))
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(Items.BOOK).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(Items.FEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(13, 15))))
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(Items.APPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(Items.EMERALD).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 7))))
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(NatureBlocks.CLOUD_BLOCK).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 45))))
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(ToolItems.METEOR_COMPASS))
+                                .add(EmptyLootItem.emptyItem())
+                        )
+                        .withPool(LootPool.lootPool()
+                                .add(manaEnchantedBookBuilder)
+                                .add(EmptyLootItem.emptyItem().setWeight(2))
+                        )
+                        //星钢剑
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(SwordItems.STAR_STEEL_SWORD))
+                                .add(EmptyLootItem.emptyItem().setWeight(3))
+                        )
+                        //稻草人弓
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(BowItems.SCAREBOW.get()).setWeight(15))
+                                .add(EmptyLootItem.emptyItem().setWeight(85))
+                        )
                 //先暂时使用空岛村箱子
         );
     }
-
 
 
     // 困难模式前箱子地下通用
@@ -663,6 +662,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem())
                 );
     }
+
     // 困难模式前箱子地表通用
     private LootTable.Builder initialWorldSurfaceCommon() {
         HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);

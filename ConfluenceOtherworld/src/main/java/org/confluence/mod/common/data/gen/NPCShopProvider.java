@@ -27,6 +27,7 @@ import org.confluence.mod.common.data.saved.DateStamp;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
+import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -40,7 +41,6 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.api.npc.trade.ITrade;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
@@ -208,22 +208,22 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(withDefaultPylon()
-                .add(TGItems.MUSKET_BULLET)
-                .add(TGItems.MUSKET_BULLET, 100)
+                .add(GunItems.MUSKET_BULLET)
+                .add(GunItems.MUSKET_BULLET, 100)
                 .add(new MoneyTradeItem.Builder()
-                        .setResult(TGItems.SILVER_BULLET.toStack())
+                        .setResult(GunItems.SILVER_BULLET.toStack())
                         .setProperties(hardmode)
                         .build())
                 .add(new MoneyTradeItem.Builder()
-                        .setResult(TGItems.SILVER_BULLET.toStack(100))
+                        .setResult(GunItems.SILVER_BULLET.toStack(100))
                         .setProperties(hardmode)
                         .build())
                 .add(new MoneyTradeItem.Builder()
-                        .setResult(TGItems.TUNGSTEN_BULLET.toStack())
+                        .setResult(GunItems.TUNGSTEN_BULLET.toStack())
                         .setProperties(hardmode)
                         .build())
                 .add(new MoneyTradeItem.Builder()
-                        .setResult(TGItems.TUNGSTEN_BULLET.toStack(100))
+                        .setResult(GunItems.TUNGSTEN_BULLET.toStack(100))
                         .setProperties(hardmode)
                         .build())
                 .add(new MoneyTradeItem.Builder()
@@ -235,7 +235,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .setProperties(hardmode)
                         .build())
                 .add(new MoneyTradeItem.Builder()
-                        .setResult(TGItems.SHOTGUN.toStack())
+                        .setResult(GunItems.SHOTGUN.toStack())
                         .setProperties(hardmode)
                         .build())
                 .add(new MoneyTradeItem.Builder()
@@ -251,8 +251,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 // 护士衣服 万圣节
                 // 护士短裙 万圣节
                 // 护士高跟鞋 万圣节
-                .add(TGItems.FLINTLOCK_PISTOL)
-                .add(TGItems.MINISHARK)
+                .add(GunItems.FLINTLOCK_PISTOL)
+                .add(GunItems.MINISHARK)
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -539,7 +539,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         shop(TENpcEntities.WITCH_DOCTOR.getId()).addRecipe(withDefaultPylon()
-                .add(TGItems.BLOWGUN)
+                .add(GunItems.BLOWGUN)
                 .add(new MoneyTradeItem.Builder()
                         .setResult(FunctionalBlocks.CAULDRON.toStack())
                         .setProperties(halloweens)

@@ -91,7 +91,8 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         VoxelShape shape = switch (state.getValue(PART)) {
             case BASE -> BASE_SHAPE;
-            case TIP_MERGE, TIP_SINGLE -> state.getValue(TIP_DIRECTION) == Direction.DOWN ? TIP_SHAPE_DOWN : TIP_SHAPE_UP;
+            case TIP_MERGE, TIP_SINGLE ->
+                    state.getValue(TIP_DIRECTION) == Direction.DOWN ? TIP_SHAPE_DOWN : TIP_SHAPE_UP;
         };
         Vec3 offset = state.getOffset(level, pos);
         return shape.move(offset.x, 0.0, offset.z);

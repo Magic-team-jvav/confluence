@@ -11,8 +11,6 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.SpikyBallProjectile;
 import org.confluence.terraentity.init.TESounds;
 
-import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
-
 public class SpikyBallItem extends Item {
     public SpikyBallItem() {
         super(new Properties().stacksTo(MAX_STACK_SIZE));

@@ -8,12 +8,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.init.item.VanityArmorItems;
-import org.confluence.mod.common.util.TrapDamageHelper;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.item.VanityArmorItems;
+import org.confluence.mod.common.util.TrapDamageHelper;
 
 public class FlameCloudEntity extends Entity {
     public FlameCloudEntity(EntityType<FlameCloudEntity> entityType, Level level) {

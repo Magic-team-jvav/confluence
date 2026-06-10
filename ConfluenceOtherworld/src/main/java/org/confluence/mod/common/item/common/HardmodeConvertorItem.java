@@ -17,7 +17,8 @@ public class HardmodeConvertorItem extends TooltipItem {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        if (!(context.getLevel() instanceof ServerLevel serverLevel)) return InteractionResult.SUCCESS;
+        if (!(context.getLevel() instanceof ServerLevel serverLevel))
+            return InteractionResult.SUCCESS;
         MinecraftServer server = serverLevel.getServer();
         if (HardmodeConvertor.INSTANCE.isStarted()) {
             server.getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.hardmode_conversion.pass"), false);

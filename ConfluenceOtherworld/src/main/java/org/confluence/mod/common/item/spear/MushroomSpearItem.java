@@ -19,13 +19,21 @@ import software.bernie.geckolib.animation.keyframe.Keyframe;
 import software.bernie.geckolib.loading.math.MathValue;
 
 public class MushroomSpearItem extends AbstractSpearItem {
-    /** 刺击前摇结束时刻（tick），矛从蓄力转为前刺的时间点 */
+    /**
+     * 刺击前摇结束时刻（tick），矛从蓄力转为前刺的时间点
+     */
     private final int windUpEndTick;
-    /** 刺击结束时刻（tick），前刺达到最远点的时间点 */
+    /**
+     * 刺击结束时刻（tick），前刺达到最远点的时间点
+     */
     private final int strikeEndTick;
-    /** 收矛时孢子生成的最小间距（格），使收矛阶段密度与刺出阶段一致 */
+    /**
+     * 收矛时孢子生成的最小间距（格），使收矛阶段密度与刺出阶段一致
+     */
     private static final double RETRACT_SPAWN_SPACING = 0.7;
-    /** 上一次生成孢子时矛尖的 z 偏移，用于收矛间距控制 */
+    /**
+     * 上一次生成孢子时矛尖的 z 偏移，用于收矛间距控制
+     */
     private double lastSpawnTipZ;
 
     public MushroomSpearItem() {
@@ -118,7 +126,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
     }
 
     private void spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos,
-                                  SpearProjectileComponent component, Vec3 direction) {
+                                 SpearProjectileComponent component, Vec3 direction) {
         MushroomProjectile projectile = new MushroomProjectile(
                 ModEntities.MUSHROOM_PROJECTILE.get(), level);
         projectile.setOwner(owner);

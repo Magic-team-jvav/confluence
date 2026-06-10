@@ -30,6 +30,7 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
     public MoonglowWillowTreeFeature(Codec<Config> pCodec) {
         super(pCodec);
     }
+
     private static final TagKey<Block> END_PLANT_CAN_SURVIVE = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "end_plant_can_survive"));
 
     @Override
@@ -88,12 +89,14 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
                     for (int j = 0; j < 6; j++) {
                         Direction direction = Direction.from3DDataValue(j);
                         BlockPos leavesPos1 = leavesPos.relative(direction);
-                        if (level.getBlockState(leavesPos1).canBeReplaced()) leavesSet.add(leavesPos1.asLong());
+                        if (level.getBlockState(leavesPos1).canBeReplaced())
+                            leavesSet.add(leavesPos1.asLong());
                         if (random.nextFloat() > 0.5) continue;
                         int vineLength = random.nextInt(1, 8) * (1 - (Mth.abs(xMax) - Mth.abs(x)) / Mth.abs(xMax));
                         for (int k = 1; k <= vineLength; k++) {
                             BlockPos vinePos = leavesPos1.below(k);
-                            if (level.getBlockState(vinePos).canBeReplaced()) vineSet.add(vinePos.asLong());
+                            if (level.getBlockState(vinePos).canBeReplaced())
+                                vineSet.add(vinePos.asLong());
                         }
                     }
                 }
@@ -111,12 +114,14 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
                     for (int j = 0; j < 6; j++) {
                         Direction direction = Direction.from3DDataValue(j);
                         BlockPos leavesPos1 = leavesPos.relative(direction);
-                        if (level.getBlockState(leavesPos1).canBeReplaced()) leavesSet.add(leavesPos1.asLong());
+                        if (level.getBlockState(leavesPos1).canBeReplaced())
+                            leavesSet.add(leavesPos1.asLong());
                         if (random.nextFloat() > 0.5) continue;
                         int vineLength = random.nextInt(1, 8) * (1 - (Mth.abs(zMax) - Mth.abs(z)) / Mth.abs(zMax));
                         for (int k = 1; k <= vineLength; k++) {
                             BlockPos vinePos = leavesPos1.below(k);
-                            if (level.getBlockState(vinePos).canBeReplaced()) vineSet.add(vinePos.asLong());
+                            if (level.getBlockState(vinePos).canBeReplaced())
+                                vineSet.add(vinePos.asLong());
                         }
                     }
                 }

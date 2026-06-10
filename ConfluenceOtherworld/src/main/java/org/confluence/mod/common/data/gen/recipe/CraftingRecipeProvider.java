@@ -10,7 +10,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
@@ -220,8 +223,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         )), DecorativeBlocks.GOLDEN_MELON.toStack());
         shapeless(output, new ItemStack(Items.GLISTERING_MELON_SLICE, 9), Ingredient.of(DecorativeBlocks.GOLDEN_MELON));
         shapeless(output, new ItemStack(FoodItems.COLDBLOOD_PUMPKIN_PIE.get()), Ingredient.of(Items.EGG), Ingredient.of(Items.SUGAR), Ingredient.of(NatureBlocks.WHITE_PUMPKIN));
-        shapeless(output, new ItemStack(FoodItems.WHITE_PUMPKIN_SEED.get(),4), Ingredient.of(NatureBlocks.WHITE_PUMPKIN));
-        shapeless(output, new ItemStack(DecorativeBlocks.JOHNNY_O_LANTERN.get(),4), Ingredient.of(NatureBlocks.WHITE_PUMPKIN), Ingredient.of(Items.TORCH));
+        shapeless(output, new ItemStack(FoodItems.WHITE_PUMPKIN_SEED.get(), 4), Ingredient.of(NatureBlocks.WHITE_PUMPKIN));
+        shapeless(output, new ItemStack(DecorativeBlocks.JOHNNY_O_LANTERN.get(), 4), Ingredient.of(NatureBlocks.WHITE_PUMPKIN), Ingredient.of(Items.TORCH));
         // 各种片
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Blocks.SAND)
@@ -616,11 +619,11 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, NatureBlocks.AMETHYST_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_AMETHYST));
 
         // 基础石砖
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS.FULL,4);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE), DecorativeBlocks.CRIMSTONE_BRICKS.FULL,4);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE), DecorativeBlocks.PEARLSTONE_BRICKS.FULL,4);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.MARBLE), DecorativeBlocks.POLISHED_MARBLE,4);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.GRANITE), DecorativeBlocks.POLISHED_GRANITE,4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS.FULL, 4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE), DecorativeBlocks.CRIMSTONE_BRICKS.FULL, 4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE), DecorativeBlocks.PEARLSTONE_BRICKS.FULL, 4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.MARBLE), DecorativeBlocks.POLISHED_MARBLE, 4);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.GRANITE), DecorativeBlocks.POLISHED_GRANITE, 4);
         // 锁链
         registerChainsRecipes(output, Ingredient.of(ModTags.Items.GEMS_AMBER), DecorativeBlocks.AMBER_CHAIN);
         registerChainsRecipes(output, Ingredient.of(Tags.Items.GEMS_DIAMOND), DecorativeBlocks.DIAMOND_CHAIN);
@@ -974,7 +977,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 new ItemStack(Items.TRIPWIRE_HOOK, 2)
         );
         shapeless(output, new ItemStack(Items.FLINT_AND_STEEL), Ingredient.of(ModTags.Items.LEAD_AND_IRON), Ingredient.of(Items.FLINT));
-        shapeless(output, new ItemStack(NatureBlocks.FEY_LOG_BLOCKS.LOG,8), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS),Ingredient.of(MaterialItems.LIFE_MUSHROOM));
+        shapeless(output, new ItemStack(NatureBlocks.FEY_LOG_BLOCKS.LOG, 8), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(MaterialItems.LIFE_MUSHROOM));
 
         // 石头及深板岩压力板
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));
@@ -1193,6 +1196,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
         registerShortBowRecipes(output, material, Ingredient.of(Items.STRING), shortBow);
     }
+
     private void registerShortBowRecipes(RecipeOutput output, Ingredient material0, Ingredient material1, ItemLike shortBow) {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', material0,
@@ -1225,18 +1229,21 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '/', Ingredient.of(Items.STICK)
         ), HOE_PATTERN), hoe.asItem().getDefaultInstance());
     }
+
     private void registerHammerRecipe(RecipeOutput output, Ingredient material, ItemLike hammer) {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', material,
                 '/', Ingredient.of(Items.STICK)
         ), HAMMER_PATTERN), hammer.asItem().getDefaultInstance());
     }
+
     private void registerBroadswordRecipe(RecipeOutput output, Ingredient material, ItemLike broadsword) {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', material,
                 '/', Ingredient.of(Items.STICK)
         ), BROADSWORD_PATTERN), broadsword.asItem().getDefaultInstance());
     }
+
     private void registerShortSwordRecipe(RecipeOutput output, Ingredient material, ItemLike shortsword) {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', material,
@@ -1250,7 +1257,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), SHEAR_PATTERN), shears.asItem().getDefaultInstance());
     }
 
-        private void registerBricksRecipes(RecipeOutput output, Ingredient material, ItemLike bricks, int count) {
+    private void registerBricksRecipes(RecipeOutput output, Ingredient material, ItemLike bricks, int count) {
         shaped(output, ShapedRecipePattern.of(Map.of('#', material), BRICKS_PATTERN), bricks.asItem().getDefaultInstance());
     }
 

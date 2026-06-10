@@ -47,8 +47,8 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
                 new Keyframe(9, -0.4),
                 new Keyframe(12, 0.3)
         ), List.of(
-                new Keyframe(0, -2, 1,1),
-                new Keyframe(3, 1, 1,1),
+                new Keyframe(0, -2, 1, 1),
+                new Keyframe(3, 1, 1, 1),
                 new Keyframe(6, 1, -1, 1),
                 new Keyframe(9, -2, -1, 1),
                 new Keyframe(12, -2)
@@ -56,11 +56,11 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
 
 
         this.rotAnimation = Vec3KeyframeAnimation.builder()
-                .addKeyframe(new Keyframe(0, 0, 0,1,0,1), new Vec3(0,135,120))
-                .addKeyframe(new Keyframe(3, 0, 0,1,0,1), new Vec3(0,45,120))
-                .addKeyframe(new Keyframe(6, 0, 0,1,0,1), new Vec3(0,-45,120))
-                .addKeyframe(new Keyframe(9, 0, 0,1,0,1), new Vec3(0,-135,120))
-                .addKeyframe(new Keyframe(12, 0, 0,1,0,1), new Vec3(0,-225,120))
+                .addKeyframe(new Keyframe(0, 0, 0, 1, 0, 1), new Vec3(0, 135, 120))
+                .addKeyframe(new Keyframe(3, 0, 0, 1, 0, 1), new Vec3(0, 45, 120))
+                .addKeyframe(new Keyframe(6, 0, 0, 1, 0, 1), new Vec3(0, -45, 120))
+                .addKeyframe(new Keyframe(9, 0, 0, 1, 0, 1), new Vec3(0, -135, 120))
+                .addKeyframe(new Keyframe(12, 0, 0, 1, 0, 1), new Vec3(0, -225, 120))
                 .build();
 
         this.trail = new TerraSwordTrail(3F, 0.3f, 0x121212);
@@ -102,17 +102,17 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
                 Vector4f curve = new Vector4f(0, 1f, 1f, 1);
                 boolean dark = level.random.nextBoolean();
                 CrossDustParticleOptions lightParticle = new CrossDustParticleOptions(false,
-                    dark ? 0xff570EFD : 0xffE4E0FF, dark ? 0xff411EA3 : 0xffC55BFF, facing.toVector3f(), curve,
-                    level.random.nextFloat() * 0.15f + 0.15f, 10, 60, curve,
-                    true, true, true, false);
+                        dark ? 0xff570EFD : 0xffE4E0FF, dark ? 0xff411EA3 : 0xffC55BFF, facing.toVector3f(), curve,
+                        level.random.nextFloat() * 0.15f + 0.15f, 10, 60, curve,
+                        true, true, true, false);
                 level.addParticle(lightParticle, pos.x, pos.y, pos.z, 0, 0, 0);
             }
 
             Vector4f curve = new Vector4f(0, 0.7f, 0.9f, 1);
             CrossDustParticleOptions darkParticle = new CrossDustParticleOptions(level.random.nextBoolean(),
-                0x66DD99FF, 0x7f714E82, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.005f + 0.01f).toVector3f(),
-                curve, level.random.nextFloat() * 0.6f + 0.4f, 30, level.random.nextInt(-40, 40),
-                curve, true, true, false, false);
+                    0x66DD99FF, 0x7f714E82, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.005f + 0.01f).toVector3f(),
+                    curve, level.random.nextFloat() * 0.6f + 0.4f, 30, level.random.nextInt(-40, 40),
+                    curve, true, true, false, false);
             level.addParticle(darkParticle, pos.x, pos.y, pos.z, 0, 0, 0);
         }
         this.setDeltaMovement(Vec3.ZERO);
@@ -120,7 +120,8 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
 
 
     }
-    public void onAddedToLevel(){
+
+    public void onAddedToLevel() {
         super.onAddedToLevel();
 
     }
@@ -135,8 +136,10 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
     public OBB buildOBB() {
         return IOBBProjectile.super.buildOBB().inflate(0.5);
     }
+
     /**
      * 获取本地坐标
+     *
      * @param time tickCount
      */
     public Vec3 getModelPosition(int time) {
@@ -147,15 +150,15 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
         return posAnimation.cal(time);
     }
 
-    public float updateXRot(int time){
+    public float updateXRot(int time) {
         return (float) rotAnimation.cal(time).x();
     }
 
-    public float updateYRot(int time){
+    public float updateYRot(int time) {
         return (float) rotAnimation.cal(time).y();
     }
 
-    public float updateZRot(float time){
-        return (float) rotAnimation.cal(time ).z();
+    public float updateZRot(float time) {
+        return (float) rotAnimation.cal(time).z();
     }
 }

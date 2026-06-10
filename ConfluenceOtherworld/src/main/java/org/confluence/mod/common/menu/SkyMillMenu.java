@@ -125,7 +125,8 @@ public class SkyMillMenu extends AbstractContainerMenu {
     @Override
     public void slotsChanged(Container container) {
         this.recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.SKY_MILL_TYPE.get(), input, player.level());
-        if (selectedRecipeIndex.get() >= recipes.size()) selectedRecipeIndex.set(recipes.size() - 1);
+        if (selectedRecipeIndex.get() >= recipes.size())
+            selectedRecipeIndex.set(recipes.size() - 1);
         access.execute((level, pos) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 ItemStack itemStack = ItemStack.EMPTY;

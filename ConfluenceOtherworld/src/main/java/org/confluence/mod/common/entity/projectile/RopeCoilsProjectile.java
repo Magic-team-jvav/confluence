@@ -66,12 +66,13 @@ public class RopeCoilsProjectile extends ThrowableItemProjectile {
         boolean willUp;
         boolean isPlaced = false;
         if (level.isEmptyBlock(pos) || level.getBlockState(pos).canBeReplaced()) {
-            int up = 0; int down = 0;
-            for (int i = 0; i < SIZE; i++){
+            int up = 0;
+            int down = 0;
+            for (int i = 0; i < SIZE; i++) {
                 if (level.isEmptyBlock(pos.above(i))) up++;
                 else break;
             }
-            for (int i = 0; i < SIZE; i++){
+            for (int i = 0; i < SIZE; i++) {
                 if (level.isEmptyBlock(pos.below(i))) down++;
                 else break;
             }
@@ -86,20 +87,20 @@ public class RopeCoilsProjectile extends ThrowableItemProjectile {
         super.onHitBlock(result);
     }
 
-    public static boolean place(Block rope, boolean willUp, BlockState state, Level level, BlockPos pos){
+    public static boolean place(Block rope, boolean willUp, BlockState state, Level level, BlockPos pos) {
         return place(rope, willUp, state, level, pos, 0);
     }
 
-    public static void createRope(Block rope, int offset, int i, BlockPos pos, Level level){
+    public static void createRope(Block rope, int offset, int i, BlockPos pos, Level level) {
         LibEntityUtils.createItemEntity(rope.asItem(), SIZE + offset - i, Vec3.atLowerCornerOf(pos), level, 0);
     }
 
-    public static boolean place(Block rope, boolean willUp, BlockState state, Level level, BlockPos pos, int offset){
+    public static boolean place(Block rope, boolean willUp, BlockState state, Level level, BlockPos pos, int offset) {
         boolean isPlaced = false;
-        if (willUp){
-            for (int i = offset; i < SIZE + offset; i++){
-                if (state.canSurvive(level, pos.above(i)) && level.isEmptyBlock(pos.above(i))){
-                    if (level.setBlockAndUpdate(pos.above(i), state)){
+        if (willUp) {
+            for (int i = offset; i < SIZE + offset; i++) {
+                if (state.canSurvive(level, pos.above(i)) && level.isEmptyBlock(pos.above(i))) {
+                    if (level.setBlockAndUpdate(pos.above(i), state)) {
                         isPlaced = true;
                     } else {
                         if (i == offset) break;
@@ -113,9 +114,9 @@ public class RopeCoilsProjectile extends ThrowableItemProjectile {
                 }
             }
         } else {
-            for (int i = offset; i < SIZE + offset; i++){
-                if (state.canSurvive(level, pos.below(i)) && level.isEmptyBlock(pos.below(i))){
-                    if (level.setBlockAndUpdate(pos.below(i), state)){
+            for (int i = offset; i < SIZE + offset; i++) {
+                if (state.canSurvive(level, pos.below(i)) && level.isEmptyBlock(pos.below(i))) {
+                    if (level.setBlockAndUpdate(pos.below(i), state)) {
                         isPlaced = true;
                     } else {
                         if (i == offset) break;
@@ -138,19 +139,20 @@ public class RopeCoilsProjectile extends ThrowableItemProjectile {
     public void tick() {
         super.tick();
         BlockPos tempPos = BlockPos.containing(this.position());
-        if (!tempPos.equals(pos)){
+        if (!tempPos.equals(pos)) {
             pos = tempPos;
             Level level = level();
             Block block = level.getBlockState(pos).getBlock();
-            if (block instanceof BaseRopeBlock){
+            if (block instanceof BaseRopeBlock) {
                 boolean willUp;
                 boolean isPlaced;
-                int up = 0; int down = 0;
-                for (int i = 1; i < SIZE + 1; i++){
+                int up = 0;
+                int down = 0;
+                for (int i = 1; i < SIZE + 1; i++) {
                     if (level.getBlockState(pos.above(i)).isAir()) up++;
                     else break;
                 }
-                for (int i = 1; i < SIZE + 1; i++){
+                for (int i = 1; i < SIZE + 1; i++) {
                     if (level.getBlockState(pos.below(i)).isAir()) down++;
                     else break;
                 }

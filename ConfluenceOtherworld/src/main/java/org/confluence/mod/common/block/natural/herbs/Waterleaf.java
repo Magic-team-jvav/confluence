@@ -33,9 +33,9 @@ public class Waterleaf extends BaseHerbBlock {
         boolean large = level.random.nextBoolean();
         Vector4f curve = new Vector4f(0, 0.33f, 0.66f, 1);
         CrossDustParticleOptions sparkParticle = new CrossDustParticleOptions(large, 0xb0B0C3ED,
-            0xa06C9AF7, new Vector3f((level.random.nextFloat() - 0.5f) / 40, 0.02f, (level.random.nextFloat() - 0.5f) / 40),
-            curve, 0.7f, 15, 5, curve,
-            true, true, false, true);
+                0xa06C9AF7, new Vector3f((level.random.nextFloat() - 0.5f) / 40, 0.02f, (level.random.nextFloat() - 0.5f) / 40),
+                curve, 0.7f, 15, 5, curve,
+                true, true, false, true);
         level.addParticle(sparkParticle, pos.x, pos.y, pos.z, 0, 0.3f, 0);
     }
 

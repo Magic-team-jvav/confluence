@@ -1,0 +1,54 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.boomstick",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Fire",
+					"pivot": [0, 5, -19],
+					"cubes": [
+						{"origin": [-5, 0, -20], "size": [10, 10, 2], "uv": [0, 16]}
+					]
+				},
+				{
+					"name": "Root",
+					"pivot": [0, 2.08579, -3.58579],
+					"cubes": [
+						{"origin": [-1, -1.25, -10], "size": [1, 4.5, 8], "uv": [24, 27]},
+						{"origin": [-1.5, 2, -6], "size": [3, 4.5, 2], "uv": [14, 28]},
+						{"origin": [-1.5, 2, -7], "size": [3, 1.5, 1], "uv": [32, 14]},
+						{"origin": [-1, 2, -4], "size": [2, 3.47487, 1.52513], "inflate": 0.0008, "uv": [32, 10]},
+						{"origin": [-1.0045, -1.18742, -2.03289], "size": [2, 3.75, 2.75], "inflate": 0.008, "pivot": [-0.002, 2.17288, -0.9379], "rotation": [30, 0, 0], "uv": [32, 0]},
+						{"origin": [-0.9995, 1.90228, -2.0032], "size": [2, 3.5, 2.75], "pivot": [-0.002, 2.17288, -0.9379], "rotation": [52.5, 0, 0], "uv": [32, 5]},
+						{"origin": [-0.75, 5.08579, -1.08579], "size": [1.5, 1.82842, 0.25], "inflate": -0.005, "pivot": [0, 3.08579, 0.41421], "rotation": [45, 0, 0], "uv": [14, 34]}
+					]
+				},
+				{
+					"name": "Barrel",
+					"parent": "Root",
+					"pivot": [0, 3, -7],
+					"cubes": [
+						{"origin": [-1.5, 3.5, -19], "size": [3, 3, 13], "uv": [0, 0]},
+						{"origin": [-0.75, 2, -17], "size": [1.5, 1.5, 10], "uv": [24, 16]}
+					]
+				},
+				{
+					"name": "Ammo",
+					"parent": "Barrel",
+					"pivot": [0, 5, -9.5],
+					"cubes": [
+						{"origin": [-1, 4, -12], "size": [2, 2, 5], "inflate": 0.0005, "uv": [0, 28]}
+					]
+				}
+			]
+		}
+	]
+}

@@ -62,9 +62,9 @@ public class PlantPatchFeature extends Feature<PlantPatchFeature.Config> {
 
         for (int attempt = 0; attempt < tries; attempt++) {
             mutablePos.setWithOffset(origin,
-                random.nextInt(radius * 2 + 1) - radius,
-                random.nextInt(radius * 2 + 1) - radius,
-                random.nextInt(radius * 2 + 1) - radius
+                    random.nextInt(radius * 2 + 1) - radius,
+                    random.nextInt(radius * 2 + 1) - radius,
+                    random.nextInt(radius * 2 + 1) - radius
             );
             if (allowedBiomeKeys != null) {
                 Holder<Biome> currentBiome = level.getBiome(mutablePos);
@@ -73,7 +73,8 @@ public class PlantPatchFeature extends Feature<PlantPatchFeature.Config> {
                     continue;
                 }
             }
-            if (!level.isEmptyBlock(mutablePos) || !level.getBlockState(mutablePos.below()).isSolid()) continue;
+            if (!level.isEmptyBlock(mutablePos) || !level.getBlockState(mutablePos.below()).isSolid())
+                continue;
             boolean inProtectedArea = false;
             Iterator<BlockPos> iterator = protectCenters.iterator();
             while (iterator.hasNext()) {
@@ -115,20 +116,20 @@ public class PlantPatchFeature extends Feature<PlantPatchFeature.Config> {
     }
 
     public record Config(
-        BlockStateProvider plant,           // 要生成的植物
-        Block protectBlock,                 // 需要保护区域的植物方块
-        int protectRadius,                  // 保护半径
-        int radius,                         // 生成半径
-        int tries,                          // 尝试次数
-        List<Holder<Biome>> biomes          // 可生成的生物群系（空列表表示所有）
+            BlockStateProvider plant,           // 要生成的植物
+            Block protectBlock,                 // 需要保护区域的植物方块
+            int protectRadius,                  // 保护半径
+            int radius,                         // 生成半径
+            int tries,                          // 尝试次数
+            List<Holder<Biome>> biomes          // 可生成的生物群系（空列表表示所有）
     ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            BlockStateProvider.CODEC.fieldOf("plant").forGetter(Config::plant),
-            BuiltInRegistries.BLOCK.byNameCodec().fieldOf("protect_block").forGetter(Config::protectBlock),
-            Codec.INT.fieldOf("protect_radius").orElse(1).forGetter(Config::protectRadius),
-            Codec.INT.fieldOf("radius").orElse(7).forGetter(Config::radius),
-            Codec.INT.fieldOf("tries").orElse(64).forGetter(Config::tries),
-            Biome.CODEC.listOf().fieldOf("biomes").orElse(List.of()).forGetter(Config::biomes)
+                BlockStateProvider.CODEC.fieldOf("plant").forGetter(Config::plant),
+                BuiltInRegistries.BLOCK.byNameCodec().fieldOf("protect_block").forGetter(Config::protectBlock),
+                Codec.INT.fieldOf("protect_radius").orElse(1).forGetter(Config::protectRadius),
+                Codec.INT.fieldOf("radius").orElse(7).forGetter(Config::radius),
+                Codec.INT.fieldOf("tries").orElse(64).forGetter(Config::tries),
+                Biome.CODEC.listOf().fieldOf("biomes").orElse(List.of()).forGetter(Config::biomes)
         ).apply(instance, Config::new));
     }
 }

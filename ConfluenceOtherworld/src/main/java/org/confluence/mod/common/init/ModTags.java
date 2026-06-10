@@ -438,6 +438,14 @@ public final class ModTags {
         public static final TagKey<Item> REPEATER_ENCHANTABLE = register("enchantable/repeater");
         public static final TagKey<Item> REPEATER_CROSSBOW_ENCHANTABLE = common("enchantable/repeater_crossbow");
 
+        // 枪械标签
+        public static final TagKey<Item> GUN = register("gun");
+        public static final TagKey<Item> MANUAL_GUN = register("manual_gun");
+        public static final TagKey<Item> AUTOMATIC_GUN = register("automatic_gun");
+        public static final TagKey<Item> SEED_AMMO = register("seed_ammo");
+        public static final TagKey<Item> SNOW_AMMO = register("snow_ammo");
+        public static final TagKey<Item> BULLET = register("bullet");
+
         private static TagKey<Item> common(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
         }

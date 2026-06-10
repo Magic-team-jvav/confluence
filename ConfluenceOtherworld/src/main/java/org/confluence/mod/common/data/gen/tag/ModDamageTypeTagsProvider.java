@@ -7,6 +7,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -36,6 +37,7 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
                 DamageTypes.STING
         );
         tag(Tags.DamageTypes.IS_MAGIC).add(ModDamageTypes.MAGICAL_PROJECTILE);
+        tag(DamageTypeTags.IS_PROJECTILE).add(LibDamageTypes.BULLET_DAMAGE);
         tag(DamageTypeTags.BYPASSES_ARMOR).add(TETags.DamageTypes.PASS_ARMOR);
     }
 }

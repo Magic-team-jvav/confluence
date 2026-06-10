@@ -30,8 +30,8 @@ public record StillGeneration(Vec3 offset) implements IGeneration {
         if (projectile == null) return;
         projectile.setOwner(owner);
         // todo 计算yaw
-        Vec3 pos = owner.position().add(0,1,0);
-        if(owner instanceof Player player){
+        Vec3 pos = owner.position().add(0, 1, 0);
+        if (owner instanceof Player player) {
             pos = pos.add(LibEntityUtils.getPlayerHandPos(player));
         }
         projectile.setPos(pos);

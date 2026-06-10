@@ -13,12 +13,12 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
-import org.confluence.terra_guns.common.init.TGItems;
 
 import java.util.List;
 import java.util.Map;
@@ -63,10 +63,10 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "HHH",
                 "ppp"
         )));
-        hardmodeAnvil(recipeOutput, TGItems.CHLOROPHYTE_BULLET.toStack(60), AmountIngredient.of(60, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
-        hardmodeAnvil(recipeOutput, TGItems.CRYSTAL_BULLET.toStack(100), AmountIngredient.of(100, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
-        hardmodeAnvil(recipeOutput, TGItems.ICHOR_BULLET.toStack(150), AmountIngredient.of(150, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.ICHOR));
-        hardmodeAnvil(recipeOutput, TGItems.CURSED_BULLET.toStack(150), AmountIngredient.of(150, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CURSED_FLAME));
+        hardmodeAnvil(recipeOutput, GunItems.CHLOROPHYTE_BULLET.toStack(60), AmountIngredient.of(60, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
+        hardmodeAnvil(recipeOutput, GunItems.CRYSTAL_BULLET.toStack(100), AmountIngredient.of(100, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
+        hardmodeAnvil(recipeOutput, GunItems.ICHOR_BULLET.toStack(150), AmountIngredient.of(150, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.ICHOR));
+        hardmodeAnvil(recipeOutput, GunItems.CURSED_BULLET.toStack(150), AmountIngredient.of(150, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CURSED_FLAME));
         // 秘银套
         hardmodeAnvil(recipeOutput, ArmorItems.MYTHRIL_HAT.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
@@ -646,7 +646,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         // 裂天剑
         hardmodeAnvil(recipeOutput, ManaWeaponItems.SKY_FRACTURE.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(MaterialItems.LIGHT_SHARD),
-                'b', AmountIngredient.of(8,MaterialItems.SOUL_OF_LIGHT),
+                'b', AmountIngredient.of(8, MaterialItems.SOUL_OF_LIGHT),
                 'c', Ingredient.of(ManaWeaponItems.MAGIC_MISSILE)
         ), List.of(
                 " b ",
@@ -655,11 +655,11 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
         // 彩虹魔杖
         hardmodeAnvil(recipeOutput, ManaWeaponItems.RAINBOW_ROD.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(10,MaterialItems.PIXIE_DUST),
-                'd', AmountIngredient.of(15,MaterialItems.SOUL_OF_SIGHT),
-                'c', AmountIngredient.of(10,MaterialItems.CRYSTAL_SHARDS),
-                'b', AmountIngredient.of(4,MaterialItems.SOUL_OF_LIGHT),
-                'e', AmountIngredient.of(2,MaterialItems.UNICORN_HORN)
+                'a', AmountIngredient.of(10, MaterialItems.PIXIE_DUST),
+                'd', AmountIngredient.of(15, MaterialItems.SOUL_OF_SIGHT),
+                'c', AmountIngredient.of(10, MaterialItems.CRYSTAL_SHARDS),
+                'b', AmountIngredient.of(4, MaterialItems.SOUL_OF_LIGHT),
+                'e', AmountIngredient.of(2, MaterialItems.UNICORN_HORN)
         ), List.of(
                 " a ",
                 "bdb",

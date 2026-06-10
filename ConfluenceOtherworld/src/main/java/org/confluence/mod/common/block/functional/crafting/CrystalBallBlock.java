@@ -21,6 +21,7 @@ public class CrystalBallBlock extends Block {
     public CrystalBallBlock(Properties properties) {
         super(properties);
     }
+
     private static final VoxelShape SHAPE = Shapes.or(
             box(2, 0, 2, 14, 4, 14),
             box(1, 1.5, 1, 3, 3.5, 3),

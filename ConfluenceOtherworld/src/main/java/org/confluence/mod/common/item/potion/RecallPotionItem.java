@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.potion;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.portal.DimensionTransition;
@@ -26,7 +27,7 @@ public class RecallPotionItem extends AbstractPotionItem {
                 serverPlayer.removeVehicle();
             }
             serverPlayer.getCooldowns().addCooldown(this, 5);
-            serverPlayer.changeDimension(serverPlayer.findRespawnPositionAndUseSpawnBlock(true, DimensionTransition.DO_NOTHING));
+            serverPlayer.changeDimension(Player.findRespawnPositionAndUseSpawnBlock(true, DimensionTransition.DO_NOTHING));
         }
         living.playSound(TCSoundEvents.TRANSMISSION.get());
     }

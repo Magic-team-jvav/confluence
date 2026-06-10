@@ -90,7 +90,8 @@ public interface INetworkEntity {
     }
 
     default void connectTo(int color, BlockPos relatedPos, INetworkEntity related) {
-        if (relatedPos.equals(getSelf().getBlockPos()) || !relatedPos.equals(related.getSelf().getBlockPos())) return;
+        if (relatedPos.equals(getSelf().getBlockPos()) || !relatedPos.equals(related.getSelf().getBlockPos()))
+            return;
         Set<BlockPos> posSet = getConnectedPoses().computeIfAbsent(color, i -> new HashSet<>());
         if (!posSet.contains(relatedPos)) {
             posSet.add(relatedPos);
@@ -104,7 +105,8 @@ public interface INetworkEntity {
     }
 
     default void disconnectWith(int color, BlockPos relatedPos, INetworkEntity related) {
-        if (relatedPos.equals(getSelf().getBlockPos()) || !relatedPos.equals(related.getSelf().getBlockPos())) return;
+        if (relatedPos.equals(getSelf().getBlockPos()) || !relatedPos.equals(related.getSelf().getBlockPos()))
+            return;
         Set<BlockPos> posSet = getConnectedPoses().get(color);
         if (posSet != null) {
             posSet.remove(relatedPos);

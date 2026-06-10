@@ -34,6 +34,7 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
     public VoidTreeFeature(Codec<Config> pCodec) {
         super(pCodec);
     }
+
     private static final TagKey<Block> VOID_TREE_ROOT_CAN_CONNECT = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "void_tree_root_can_connect"));
     private static final TagKey<Block> END_PLANT_CAN_SURVIVE = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("confluence", "end_plant_can_survive"));
 
@@ -71,14 +72,15 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
         for (int i = 0; i < 4; i++) {
             Direction direction = Direction.from2DDataValue(i);
             LongOpenHashSet rootDebugSet = new LongOpenHashSet();
-            int length = random.nextInt(1,4);
+            int length = random.nextInt(1, 4);
             int height = random.nextInt(2);
             BlockPos rootPos = basePos.offset(0, height, 0);
             BlockPos rootMiddlePos = basePos.offset(0, height, 0).relative(direction, length);
             boolean end = false;
             for (int j = 0; j <= length; j++) {
                 BlockPos debugPos = rootPos.relative(direction, j);
-                if (level.getBlockState(debugPos).canBeReplaced()) rootDebugSet.add(debugPos.asLong());
+                if (level.getBlockState(debugPos).canBeReplaced())
+                    rootDebugSet.add(debugPos.asLong());
                 else {
                     rootSet.addAll(rootDebugSet);
                     end = true;

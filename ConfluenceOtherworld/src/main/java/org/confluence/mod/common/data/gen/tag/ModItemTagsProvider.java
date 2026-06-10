@@ -29,7 +29,6 @@ import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.block.TEFigureBlocks;
@@ -108,10 +107,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.SLUSH).add(NatureBlocks.SLUSH.get().asItem());
         tag(ModTags.Items.SILT_BLOCK).add(NatureBlocks.SILT_BLOCK.get().asItem());
         tag(ModTags.Items.MARINE_GRAVEL).add(NatureBlocks.MARINE_GRAVEL.get().asItem());
-        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.get().asItem(),ModBlocks.POO.get().asItem());
+        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.get().asItem(), ModBlocks.POO.get().asItem());
         tag(ModTags.Items.EXTRACT_SAND).add(Items.OBSIDIAN);
-        tag(ModTags.Items.EXTRACT_HONEY_BLOCK).add(Items.BEE_NEST,NatureBlocks.JUNGLE_HIVE_BLOCK.get().asItem());
-        tag(ModTags.Items.EXTRACT_MOSS).add(NatureBlocks.HELIUM_MOSS.get().asItem(),NatureBlocks.NEON_MOSS.get().asItem(),NatureBlocks.ARGON_MOSS.get().asItem(),NatureBlocks.XENON_MOSS.get().asItem(),NatureBlocks.KRYPTON_MOSS.get().asItem(),NatureBlocks.LAVA_MOSS.get().asItem());
+        tag(ModTags.Items.EXTRACT_HONEY_BLOCK).add(Items.BEE_NEST, NatureBlocks.JUNGLE_HIVE_BLOCK.get().asItem());
+        tag(ModTags.Items.EXTRACT_MOSS).add(NatureBlocks.HELIUM_MOSS.get().asItem(), NatureBlocks.NEON_MOSS.get().asItem(), NatureBlocks.ARGON_MOSS.get().asItem(), NatureBlocks.XENON_MOSS.get().asItem(), NatureBlocks.KRYPTON_MOSS.get().asItem(), NatureBlocks.LAVA_MOSS.get().asItem());
         tag(ModTags.Items.JUNK).add(Blocks.LILY_PAD.get().asItem(), Items.LEATHER_BOOTS, Blocks.SEAGRASS.get().asItem());
         tag(ModTags.Items.CORALS).add(Blocks.TUBE_CORAL.get().asItem(), Blocks.TUBE_CORAL_FAN.get().asItem(), Blocks.TUBE_CORAL_BLOCK.get().asItem(), Blocks.BRAIN_CORAL.get().asItem(), Blocks.BRAIN_CORAL_FAN.get().asItem(), Blocks.BRAIN_CORAL_BLOCK.get().asItem(),
                 Blocks.BUBBLE_CORAL.get().asItem(), Blocks.BUBBLE_CORAL_FAN.get().asItem(), Blocks.BUBBLE_CORAL_BLOCK.get().asItem(), Blocks.FIRE_CORAL.get().asItem(), Blocks.FIRE_CORAL_FAN.get().asItem(), Blocks.FIRE_CORAL_BLOCK.get().asItem(), Blocks.HORN_CORAL.get().asItem(), Blocks.HORN_CORAL_FAN.get().asItem(), Blocks.HORN_CORAL_BLOCK.get().asItem(),
@@ -508,7 +507,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES)
                 .add(Items.MACE);
         tag(ModTags.Items.PREFIX_RANGED_ONLY)
-                .addTags(Tags.Items.RANGED_WEAPON_TOOLS, TGTags.GUN)
+                .addTags(Tags.Items.RANGED_WEAPON_TOOLS, ModTags.GUN)
                 .add(Items.TRIDENT);
         tag(ModTags.Items.PREFIX_MAGIC_ONLY)
                 .addTags(ModTags.Items.MANA_WEAPON, ModTags.Items.SUMMONER_WEAPON);
@@ -529,7 +528,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> arrows = tag(ItemTags.ARROWS);
         ArrowItems.ITEMS.getEntries().forEach(item -> arrows.add(item.get()));
 
-        IntrinsicTagAppender<Item> gun = tag(TGTags.GUN);
+        IntrinsicTagAppender<Item> gun = tag(ModTags.GUN);
         GunItems.ITEMS.getEntries().forEach(item -> gun.add(item.get()));
 
         IntrinsicTagAppender<Item> mana_weapon = tag(ModTags.Items.MANA_WEAPON);
@@ -930,7 +929,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.AMMO)
                 .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get())
                 .addTag(ItemTags.ARROWS)
-                .addOptionalTag(TGTags.AMMO);
+                .addOptionalTag(ModTags.AMMO);
 
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
@@ -1454,12 +1453,29 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
-        tag(TGTags.AUTOMATIC_GUN).add(
+        tag(ModTags.AUTOMATIC_GUN).add(
                 ManaWeaponItems.BEE_GUN.get(),
                 ManaWeaponItems.SPACE_GUN.get(),
                 GunItems.STAR_CANNON.get()
         );
-        tag(TGTags.AMMO).add(
+        tag(ModTags.Items.MANUAL_GUN).add(
+                GunItems.HAND_GUN.get(),
+                GunItems.PHOENIX_BLASTER.get(),
+                GunItems.SHOTGUN.get(),
+                GunItems.FLINTLOCK_PISTOL.get(),
+                GunItems.BOOMSTICK.get(),
+                GunItems.THE_UNDERTAKER.get(),
+                GunItems.MUSKET.get()
+        );
+        IntrinsicTagAppender<Item> bullet = tag(ModTags.Items.BULLET);
+        GunItems.ITEMS.getEntries().forEach(item -> {
+            if (item.get() instanceof org.confluence.mod.common.item.BaseBullet)
+                bullet.add(item.get());
+        });
+        tag(ModTags.Items.SNOW_AMMO).add(Items.SNOWBALL);
+        tag(ModTags.Items.SEED_AMMO).addTag(Tags.Items.SEEDS);
+        tag(ModTags.Items.AMMO).addTags(ModTags.Items.SEED_AMMO, ModTags.Items.SNOW_AMMO, ModTags.Items.BULLET);
+        tag(ModTags.AMMO).add(
                 MaterialItems.FALLING_STAR.get()
         );
         IntrinsicTagAppender<Item> death = tag(ModTags.Items.DEATH);

@@ -4,7 +4,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 
-public class FlaskOfFireEffect extends FlaskEffect{
+public class FlaskOfFireEffect extends FlaskEffect {
     public FlaskOfFireEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xBBAA00);
     }

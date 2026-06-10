@@ -46,7 +46,7 @@ public interface INetworkBlock {
     /**
      * 执行机械方块的可执行代码,并执行联系的方块
      *
-     * @param pos  方块自己的坐标
+     * @param pos   方块自己的坐标
      * @param color 由什么颜色的连线执行
      */
     default void execute(BlockState state, ServerLevel level, BlockPos pos, int color, boolean hasSignal) {

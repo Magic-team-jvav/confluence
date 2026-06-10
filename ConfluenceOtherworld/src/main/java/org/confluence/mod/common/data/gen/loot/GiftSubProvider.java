@@ -19,6 +19,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -29,7 +30,6 @@ import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.*;
 
 import java.util.Calendar;
@@ -102,7 +102,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.MURAMASA))
                         .add(LootItem.lootTableItem(TCItems.COBALT_SHIELD))
-                        .add(LootItem.lootTableItem(TGItems.HAND_GUN))
+                        .add(LootItem.lootTableItem(GunItems.HAND_GUN))
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
                         .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE))
                         .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
@@ -140,7 +140,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/corrupt_crate"), environmentCrateCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AccessoryItems.BAND_OF_STARPOWER))
-                        .add(LootItem.lootTableItem(TGItems.MUSKET))
+                        .add(LootItem.lootTableItem(GunItems.MUSKET))
                         .add(LootItem.lootTableItem(ManaWeaponItems.VILETHRON))
                 )
         );
@@ -151,7 +151,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE))
                         .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.SNOWBALL_CANNON))
+                        .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/jungle_crate"), environmentCrateCommon()
@@ -161,7 +161,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.FERAL_CLAWS).setWeight(19))
                         .add(LootItem.lootTableItem(FishingPoleItems.FIBERGLASS_FISHING_POLE).setWeight(19))
                         .add(LootItem.lootTableItem(ToolItems.STAFF_OF_REGROWTH).setWeight(19))
-                        .add(LootItem.lootTableItem(TGItems.BOOMSTICK).setWeight(19))
+                        .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BAMBOO).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50))))
@@ -200,7 +200,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/crimson_crate"), environmentCrateCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
-                        .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))
+                        .add(LootItem.lootTableItem(GunItems.THE_UNDERTAKER))
                         .add(LootItem.lootTableItem(SpearItems.THE_ROTTED_FORK))
                         .add(LootItem.lootTableItem(ManaWeaponItems.CRIMSON_ROD))
                 )
@@ -385,7 +385,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(3))
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/stockade_crate"),environmentCrateHardModeCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/stockade_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS.FULL).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
                         .add(EmptyLootItem.emptyItem())
@@ -427,7 +427,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/defiled_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AccessoryItems.BAND_OF_STARPOWER))
-                        .add(LootItem.lootTableItem(TGItems.MUSKET))
+                        .add(LootItem.lootTableItem(GunItems.MUSKET))
                         .add(LootItem.lootTableItem(ManaWeaponItems.VILETHRON))
                 )
                 .withPool(LootPool.lootPool()
@@ -442,7 +442,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE))
                         .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.SNOWBALL_CANNON))
+                        .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/bramble_crate"), environmentCrateHardModeCommon()
@@ -452,7 +452,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.FERAL_CLAWS).setWeight(19))
                         .add(LootItem.lootTableItem(FishingPoleItems.FIBERGLASS_FISHING_POLE).setWeight(19))
                         .add(LootItem.lootTableItem(ToolItems.STAFF_OF_REGROWTH).setWeight(19))
-                        .add(LootItem.lootTableItem(TGItems.BOOMSTICK).setWeight(19))
+                        .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BAMBOO).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50))))
@@ -491,7 +491,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hematic_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
-                        .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))
+                        .add(LootItem.lootTableItem(GunItems.THE_UNDERTAKER))
                         .add(LootItem.lootTableItem(SpearItems.THE_ROTTED_FORK))
                         .add(LootItem.lootTableItem(ManaWeaponItems.CRIMSON_ROD))
                 )
@@ -1068,19 +1068,19 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WHEEL_PIECE)))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/the_twins/master"), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_SIGHT)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 40)))
-                ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HALLOWED_INGOT)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
-                ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
-                        .apply(SetItemCountFunction.setCount(new ConstantValue(42)))
-                ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
-                ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WHEEL_PIECE)))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_SIGHT)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 40)))
+                        ))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HALLOWED_INGOT)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
+                        ))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                                .apply(SetItemCountFunction.setCount(new ConstantValue(42)))
+                        ))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                        ))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WHEEL_PIECE)))
                 //.withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.THE_TWINS_RELIC)))
         );
         // 机械骷髅王
@@ -1114,19 +1114,19 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WAGON_PIECE)))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron_prime/master"), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_FRIGHT)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 40)))
-                ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HALLOWED_INGOT)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
-                ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
-                        .apply(SetItemCountFunction.setCount(new ConstantValue(42)))
-                ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
-                ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WAGON_PIECE)))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_FRIGHT)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 40)))
+                        ))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HALLOWED_INGOT)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
+                        ))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                                .apply(SetItemCountFunction.setCount(new ConstantValue(42)))
+                        ))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
+                        ))
+                        .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.MECHANICAL_WAGON_PIECE)))
                 //.withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.SKELETRON_PRIME_RELIC)))
         );
 
@@ -1221,7 +1221,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(16, 26)))
                 ))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BEENADE).setWeight(3)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 30))))
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 30))))
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
@@ -1606,8 +1606,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.BREAKER_BLADE))
-                        .add(LootItem.lootTableItem(TEWhipItems.FIRECRACKER))
+                                .add(LootItem.lootTableItem(SwordItems.BREAKER_BLADE))
+                                .add(LootItem.lootTableItem(TEWhipItems.FIRECRACKER))
                         // todo 另外三个
                 );
     }
@@ -1707,6 +1707,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
                 );
     }
+
     // 困难模式前匣子通用
     private static LootTable.Builder environmentCrateCommon() {
         return LootTable.lootTable()
@@ -1791,6 +1792,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 );
     }
+
     // 困难模式岩浆匣子通用
     private static LootTable.Builder environmentLavaCrateHardModeCommon() {
         return LootTable.lootTable()
@@ -1826,6 +1828,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 );
     }
+
     // 困难模式匣子通用
     private static LootTable.Builder environmentCrateHardModeCommon() {
         return LootTable.lootTable()

@@ -28,10 +28,14 @@ public class LunarHookItem extends BaseHookItem implements IHookFastThrow {
                     }
                 }
             });
-            if (nebula.get()) return new LunarHookEntity(item, player, level, LunarHookEntity.Variant.NEBULA);
-            if (solar.get()) return new LunarHookEntity(item, player, level, LunarHookEntity.Variant.SOLAR);
-            if (stardust.get()) return new LunarHookEntity(item, player, level, LunarHookEntity.Variant.STARDUST);
-            if (vortex.get()) return new LunarHookEntity(item, player, level, LunarHookEntity.Variant.VORTEX);
+            if (nebula.get())
+                return new LunarHookEntity(item, player, level, LunarHookEntity.Variant.NEBULA);
+            if (solar.get())
+                return new LunarHookEntity(item, player, level, LunarHookEntity.Variant.SOLAR);
+            if (stardust.get())
+                return new LunarHookEntity(item, player, level, LunarHookEntity.Variant.STARDUST);
+            if (vortex.get())
+                return new LunarHookEntity(item, player, level, LunarHookEntity.Variant.VORTEX);
             return new LunarHookEntity(item, player, level, LunarHookEntity.Variant.NEBULA);
         });
     }

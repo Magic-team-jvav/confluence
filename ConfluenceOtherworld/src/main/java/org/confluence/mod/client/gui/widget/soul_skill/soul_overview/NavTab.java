@@ -2,8 +2,6 @@ package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.narration.NarratedElementType;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;
@@ -35,7 +33,7 @@ public class NavTab extends OverviewNavButton {
     protected Target navTarget() {
         SoulSkill first = ModSoulSkills.getFirstInCategory(category);
         if (first == null) return null;
-        OverviewNode node = screen.nodeById.get(first.getId());
+        OverviewNode node = screen.nodeById.get(first.id());
         if (node == null) return null;
         return new Target(-node.getOrigX() - node.getWidth() / 2f, -node.getOrigY() - node.getHeight() / 2f);
     }

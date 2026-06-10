@@ -73,10 +73,14 @@ public class MushroomTreeFeature extends Feature<MushroomTreeFeature.Config> {
                     }
                 }
             }
-            if (level.getBlockState(baseBlockPos.offset(1, height, 0)).canBeReplaced()) level.setBlock(baseBlockPos.offset(1, height, 0), indusiumBlockState.trySetValue(HORIZONTAL_FACING, Direction.EAST), 3);
-            if (level.getBlockState(baseBlockPos.offset(-1, height, 0)).canBeReplaced()) level.setBlock(baseBlockPos.offset(-1, height, 0), indusiumBlockState.trySetValue(HORIZONTAL_FACING, Direction.WEST), 3);
-            if (level.getBlockState(baseBlockPos.offset(0, height, 1)).canBeReplaced()) level.setBlock(baseBlockPos.offset(0, height, 1), indusiumBlockState.trySetValue(HORIZONTAL_FACING, Direction.SOUTH), 3);
-            if (level.getBlockState(baseBlockPos.offset(0, height, -1)).canBeReplaced()) level.setBlock(baseBlockPos.offset(0, height, -1), indusiumBlockState.trySetValue(HORIZONTAL_FACING, Direction.NORTH), 3);
+            if (level.getBlockState(baseBlockPos.offset(1, height, 0)).canBeReplaced())
+                level.setBlock(baseBlockPos.offset(1, height, 0), indusiumBlockState.trySetValue(HORIZONTAL_FACING, Direction.EAST), 3);
+            if (level.getBlockState(baseBlockPos.offset(-1, height, 0)).canBeReplaced())
+                level.setBlock(baseBlockPos.offset(-1, height, 0), indusiumBlockState.trySetValue(HORIZONTAL_FACING, Direction.WEST), 3);
+            if (level.getBlockState(baseBlockPos.offset(0, height, 1)).canBeReplaced())
+                level.setBlock(baseBlockPos.offset(0, height, 1), indusiumBlockState.trySetValue(HORIZONTAL_FACING, Direction.SOUTH), 3);
+            if (level.getBlockState(baseBlockPos.offset(0, height, -1)).canBeReplaced())
+                level.setBlock(baseBlockPos.offset(0, height, -1), indusiumBlockState.trySetValue(HORIZONTAL_FACING, Direction.NORTH), 3);
             return true;
         }
         return false;

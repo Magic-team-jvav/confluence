@@ -51,7 +51,8 @@ public class VoidCrystalItem extends Item {
         BlockState state = level.getBlockState(pos);
 
         if (player != null && player.isShiftKeyDown()) {
-            if (handleClear(stack, level, player)) return InteractionResult.sidedSuccess(level.isClientSide);
+            if (handleClear(stack, level, player))
+                return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
         if (!(state.getBlock() instanceof VoidTreeRootBlock)) return InteractionResult.PASS;
@@ -156,7 +157,8 @@ public class VoidCrystalItem extends Item {
         BlockState s1 = level.getBlockState(pos1);
         BlockState s2 = level.getBlockState(pos2);
 
-        if (!(s1.getBlock() instanceof VoidTreeRootBlock root) || !(s2.getBlock() instanceof VoidTreeRootBlock)) return false;
+        if (!(s1.getBlock() instanceof VoidTreeRootBlock root) || !(s2.getBlock() instanceof VoidTreeRootBlock))
+            return false;
 
         level.setBlock(pos1, s1.setValue(VoidTreeRootBlock.CONNECTION_PROPERTIES.get(face1), VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL), 3);
         level.setBlock(pos2, s2.setValue(VoidTreeRootBlock.CONNECTION_PROPERTIES.get(face2), VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL), 3);

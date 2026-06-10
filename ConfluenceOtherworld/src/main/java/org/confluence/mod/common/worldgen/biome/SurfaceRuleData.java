@@ -13,6 +13,7 @@ public class SurfaceRuleData {
     private static SurfaceRules.RuleSource state(Block block) {
         return SurfaceRules.state(block.defaultBlockState());
     }
+
     private static final SurfaceRules.ConditionSource isAtOrAboveWaterLevel = SurfaceRules.waterBlockCheck(-1, 0);
     private static final SurfaceRules.ConditionSource isHole = SurfaceRules.not(SurfaceRules.abovePreliminarySurface());
 

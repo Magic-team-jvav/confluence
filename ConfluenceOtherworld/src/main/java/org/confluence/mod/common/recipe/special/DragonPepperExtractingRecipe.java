@@ -7,7 +7,10 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.lib.util.LibUtils;
@@ -38,7 +41,8 @@ public class DragonPepperExtractingRecipe extends ShapelessRecipe {
         if (super.matches(input, level)) {
             for (int i = 0; i < input.ingredientCount(); i++) {
                 ItemStack itemStack = input.getItem(i);
-                if (itemStack.isEmpty() || !itemStack.is(FoodItems.END_DRAGON_PEPPER.get())) continue;
+                if (itemStack.isEmpty() || !itemStack.is(FoodItems.END_DRAGON_PEPPER.get()))
+                    continue;
                 return LibUtils.getItemStackNbtIfPresent(itemStack) != null;
             }
         }

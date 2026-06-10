@@ -21,14 +21,23 @@ import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
  * 速度呈反比例函数衰减：v(t) = v0 / (1 + k * t)，接近0时弹射物消失。
  */
 public class SporeCloudProjectile extends SpearProjectile {
-    /** 记录每个实体上次受伤的 tick 时间 */
+    /**
+     * 记录每个实体上次受伤的 tick 时间
+     */
     private final Object2IntMap<Entity> lastHitTicks = new Object2IntOpenHashMap<>();
-    /** 速度衰减系数 */
+    /**
+     * 速度衰减系数
+     */
     public float decayK = 0.12f;
-    /** 最小速度阈值 */
+    /**
+     * 最小速度阈值
+     */
     public float minSpeed = 0.01f;
-    /** 伤害间隔 tick */
+    /**
+     * 伤害间隔 tick
+     */
     public int damageInterval = 10;
+
     public SporeCloudProjectile(EntityType<? extends SporeCloudProjectile> entityType, Level level) {
         super(entityType, level);
         this.collisionProperties = new CollisionProperties(1, 1, 0.65F);

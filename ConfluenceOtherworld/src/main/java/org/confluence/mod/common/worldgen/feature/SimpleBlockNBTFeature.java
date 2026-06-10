@@ -29,13 +29,15 @@ public class SimpleBlockNBTFeature extends Feature<SimpleBlockNBTFeature.Config>
         if (blockState.canSurvive(level, blockPos)) {
             level.setBlock(blockPos, blockState, 3);
             BlockEntity blockEntity = LibFeatureUtils.getBlockEntity(level, blockPos);
-            if (blockEntity != null) blockEntity.loadWithComponents(config.nbt, level.registryAccess());
+            if (blockEntity != null)
+                blockEntity.loadWithComponents(config.nbt, level.registryAccess());
             return true;
         }
         return false;
     }
 
-    public record Config(BlockStateProvider toPlace, CompoundTag nbt) implements FeatureConfiguration {
+    public record Config(BlockStateProvider toPlace,
+                         CompoundTag nbt) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("to_place").forGetter(Config::toPlace),
                 CompoundTag.CODEC.fieldOf("nbt").forGetter(Config::nbt)

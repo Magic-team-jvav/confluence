@@ -42,6 +42,24 @@ public final class ModSoundEvents {
     public static final RegistryObject<SoundEvent> REPEATER_ITEM_AERIAL_SHOOTING = register("repeater_item_aerial_shooting");
     public static final RegistryObject<SoundEvent> CRYSTAL_VILE_SHARD_SHOOT = register("crystal_vile_shard_shoot"); // 魔晶碎块
 
+    // 枪械音效
+    public static final RegistryObject<SoundEvent> GUN_AUTO = register("gun_auto");
+    public static final RegistryObject<SoundEvent> GUN_FISH = register("gun_fish");
+    public static final RegistryObject<SoundEvent> GUN_SPACE = register("gun_space");
+    public static final RegistryObject<SoundEvent> GUN_FLAMETHROWER = register("gun_flamethrower");
+    public static final RegistryObject<SoundEvent> GUN_GENERIC = register("gun_generic");
+    public static final RegistryObject<SoundEvent> GUN_HIGHPOWER = register("gun_highpower");
+    public static final RegistryObject<SoundEvent> GUN_NAIL = register("gun_nail");
+    public static final RegistryObject<SoundEvent> GUN_TOXIC = register("gun_toxic");
+    public static final RegistryObject<SoundEvent> PISTOL_DART = register("pistol_dart");
+    public static final RegistryObject<SoundEvent> RIFLE_BURST = register("rifle_burst");
+    public static final RegistryObject<SoundEvent> RIFLE_DART = register("rifle_dart");
+    public static final RegistryObject<SoundEvent> SHOTGUN_ALIEN = register("shotgun_alien");
+    public static final RegistryObject<SoundEvent> SHOTGUN_ALIEN_PROJ = register("shotgun_alien_proj");
+    public static final RegistryObject<SoundEvent> SHOTGUN_MULTI = register("shotgun_multi");
+    public static final RegistryObject<SoundEvent> SHOTGUN_TACTICAL = register("shotgun_tactical");
+    public static final RegistryObject<SoundEvent> BLOWPIPE_SHOT = register("blowgun_shot");
+
     private static RegistryObject<SoundEvent> register(String name) {
         return EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(Confluence.asResource(name)));
     }

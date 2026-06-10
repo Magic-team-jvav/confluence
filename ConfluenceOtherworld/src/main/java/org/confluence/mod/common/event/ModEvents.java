@@ -1,9 +1,6 @@
 package org.confluence.mod.common.event;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.packs.PackLocationInfo;
-import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
@@ -11,7 +8,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.Item;
@@ -21,36 +17,19 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
-import net.neoforged.fml.ModLoader;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.event.AddPackFindersEvent;
-import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
-import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
-import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
-import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
-import net.neoforged.neoforge.network.event.RegisterConfigurationTasksEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforgespi.locating.IModFile;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.forgespi.locating.IModFile;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
-import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
@@ -70,6 +49,8 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.gun.GunSounds;
+import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.terra_entity.TEEvents;
@@ -84,19 +65,22 @@ import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValu
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
-import org.confluence.terraentity.init.entity.TEAnimals;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.confluence.terraentity.mixed.IZombie;
+import org.mesdag.portlib.event.entity.PortEntityAttributeCreationEvent;
+import org.mesdag.portlib.event.lifecycle.PortFMLCommonSetupEvent;
+import org.mesdag.portlib.event.lifecycle.PortFMLLoadCompleteEvent;
+import org.mesdag.portlib.event.other.PortAddPackFindersEvent;
+import org.mesdag.portlib.event.other.PortBlockEntityTypeAddBlocksEvent;
+import org.mesdag.portlib.event.other.PortModifyDefaultComponentsEvent;
 
 import java.util.Optional;
 import java.util.function.Function;
 
 import static org.confluence.mod.Confluence.MODID;
 
-@EventBusSubscriber(modid = MODID)
+@Mod.EventBusSubscriber(modid = MODID)
 public final class ModEvents {
     @SubscribeEvent
-    public static void commonSetup(FMLCommonSetupEvent event) {
+    public static void commonSetup(PortFMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ModGunProperties.init();
             Confluence.registerGameRules();
@@ -121,6 +105,10 @@ public final class ModEvents {
                     rangedAttribute.maxValue = 65536;
                 }
             }
+
+            // 枪械初始化
+            GunSounds.init();
+            GunTrailColors.init();
         });
     }
 
@@ -140,7 +128,7 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
-    public static void loadComplete(FMLLoadCompleteEvent event) {
+    public static void loadComplete(PortFMLLoadCompleteEvent event) {
         event.enqueueWork(() -> {
             LogBlockSet.wrapStrip();
             LogBlockSet.setFlammable();
@@ -171,7 +159,7 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
-    public static void addPackFinders(AddPackFindersEvent event) {
+    public static void addPackFinders(PortAddPackFindersEvent event) {
         if (event.getPackType() == PackType.CLIENT_RESOURCES) {
             IModFile modFile = ModList.get().getModFileById(MODID).getFile();
             event.addRepositorySource(consumer -> {
@@ -201,7 +189,7 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
-    public static void entityAttributeCreation(EntityAttributeCreationEvent event) {
+    public static void entityAttributeCreation(PortEntityAttributeCreationEvent event) {
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
         event.put(ModEntities.RAINBOW_SHEEP.get(), RainbowSheep.createAttributes().build());
         event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
@@ -255,7 +243,7 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
-    public static void blockEntityTypeAddBlocks(BlockEntityTypeAddBlocksEvent event) {
+    public static void blockEntityTypeAddBlocks(PortBlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.BRUSHABLE_BLOCK, OreBlocks.OPAL_ORE.get());
         event.modify(BlockEntityType.SIGN, LogBlockSet.getSignBlocks());
         event.modify(BlockEntityType.HANGING_SIGN, LogBlockSet.getHangingSignBlocks());
@@ -264,7 +252,7 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
-    public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
+    public static void modifyDefaultComponents(PortModifyDefaultComponentsEvent event) {
         TEItemComponentModify.modifyDefaultComponents(event);
         event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, LibUtils.MAX_STACK_SIZE));
     }

@@ -1496,7 +1496,6 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.terra_entity.moon_lord.desc", "月亮领主是降临世间所有恐怖的幕后主使，已从月球监狱中释放。它近乎神明，力量无穷无尽。");
 
 
-
         add("bestiary.entity.minecraft.allay.desc", "悦灵是纯洁善良，爱好音乐的灵魂。");
         add("bestiary.entity.minecraft.armadillo.desc", "犰狳是一种能蜷缩成球来保护自己的小型生物。");
         add("bestiary.entity.minecraft.bat.desc", "蝙蝠是栖息在洞穴中的小型飞行生物，会在夜间活动。");

@@ -66,8 +66,8 @@ public class DrySeaCarver extends WorldCarver<CarverConfiguration> {
             int[] layerCount = {stableRandom.nextInt(4, 6), stableRandom.nextInt(6, 9), stableRandom.nextInt(4, 6), stableRandom.nextInt(4, 6), stableRandom.nextInt(7, 10), stableRandom.nextInt(7, 10)};
 
             List<Vector3d> groupDown = new ArrayList<>();
-            List<Vector3d> groupMid  = new ArrayList<>();
-            List<Vector3d> groupUp= new ArrayList<>();
+            List<Vector3d> groupMid = new ArrayList<>();
+            List<Vector3d> groupUp = new ArrayList<>();
 
             for (int i = 0; i < 6; i++) {
                 int xOff = (i <= 3) ? 0 : xOffset;

@@ -41,6 +41,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
+import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -52,7 +53,6 @@ import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -333,7 +333,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             if (level.random.nextBoolean()) {
                 item = ArrowItems.UNHOLY_ARROW.get();
             } else {
-                item = level.random.nextBoolean() ? TGItems.SILVER_BULLET.get() : TGItems.TUNGSTEN_BULLET.get();
+                item = level.random.nextBoolean() ? GunItems.SILVER_BULLET.get() : GunItems.TUNGSTEN_BULLET.get();
             }
         } else {
             item = Items.ARROW;

@@ -21,7 +21,8 @@ public class ShimmerTransmutationTrigger extends SimpleCriterionTrigger<ShimmerT
         return TriggerInstance.CODEC;
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player, Optional<EntityPredicate> entity) implements SimpleInstance {
+    public record TriggerInstance(Optional<ContextAwarePredicate> player,
+                                  Optional<EntityPredicate> entity) implements SimpleInstance {
         public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
                 EntityPredicate.CODEC.optionalFieldOf("entity").forGetter(TriggerInstance::entity)

@@ -54,6 +54,7 @@ public class GardenShearsItem extends ShearsItem {
                 .collect(Collectors.toCollection(Sets::newIdentityHashSet))
                 .contains(itemAbility);
     }
+
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
@@ -65,7 +66,7 @@ public class GardenShearsItem extends ShearsItem {
         } else {
             ItemStack itemstack = context.getItemInHand();
             if (player instanceof ServerPlayer) {
-                CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer)player, blockpos, itemstack);
+                CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
             }
 
             level.setBlock(blockpos, optional.get(), 11);

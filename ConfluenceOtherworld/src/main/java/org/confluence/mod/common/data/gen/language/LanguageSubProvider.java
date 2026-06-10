@@ -1,7 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
 public interface LanguageSubProvider {
-   default void addTranslations(boolean isEn) {
+    default void addTranslations(boolean isEn) {
         if (isEn) {
             english();
         } else {

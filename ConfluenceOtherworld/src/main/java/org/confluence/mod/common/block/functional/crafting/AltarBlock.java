@@ -382,11 +382,12 @@ public class AltarBlock extends BaseEntityBlock {
                         pos.getY() + 0.75F,
                         pos.getZ() + 0.5F,
                         20, 0.0F, 0.0F, 0.0F, 0.02F);
-                case CRIMSON -> level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.defaultBlockState()),
-                        pos.getX() + 0.5F,
-                        pos.getY() + 0.75F,
-                        pos.getZ() + 0.5F,
-                        500, 0F, 0.0625F, 0F, 0.25F);
+                case CRIMSON ->
+                        level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.REDSTONE_BLOCK.defaultBlockState()),
+                                pos.getX() + 0.5F,
+                                pos.getY() + 0.75F,
+                                pos.getZ() + 0.5F,
+                                500, 0F, 0.0625F, 0F, 0.25F);
             }
         }
 

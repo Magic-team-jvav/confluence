@@ -2,7 +2,10 @@ package org.confluence.mod.common.entity.projectile.spear;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -19,11 +22,15 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MushroomProjectile extends SpearProjectile {
 
-    /** 模型层定义 */
+    /**
+     * 模型层定义
+     */
     public static final ModelLayerLocation LAYER_LOCATION =
             new ModelLayerLocation(Confluence.asResource("mushroom_projectile"), "main");
 
-    /** 蘑菇弹射物网格：扁盘形菌盖 + 细短菌柄 */
+    /**
+     * 蘑菇弹射物网格：扁盘形菌盖 + 细短菌柄
+     */
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -67,12 +74,16 @@ public class MushroomProjectile extends SpearProjectile {
         }
     }
 
-    /** 可穿墙 — 不销毁 */
+    /**
+     * 可穿墙 — 不销毁
+     */
     @Override
     protected void onHitBlock(BlockHitResult result) {
     }
 
-    /** 无视所有伤害 */
+    /**
+     * 无视所有伤害
+     */
     @Override
     public boolean hurt(DamageSource source, float amount) {
         return false;

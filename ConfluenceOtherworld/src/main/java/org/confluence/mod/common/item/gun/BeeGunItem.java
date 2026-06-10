@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.gun;
 
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -14,6 +13,7 @@ import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
+import org.mesdag.portlib.wrapper.advancements.PortAdvancementHolder;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -49,9 +49,9 @@ public class BeeGunItem extends ManaGunItem {
                     player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.BEE_LEGGINGS.get()) ||
                     player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.BEE_BOOTS.get())) {
                 ServerPlayer serverPlayer = (ServerPlayer) player;
-                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(AchievementUtils.asAchievement("not_the_bees"));
+                PortAdvancementHolder advancement = PortAdvancementHolder.wrap(serverPlayer.server.getAdvancements().getAdvancement(AchievementUtils.asAchievement("not_the_bees")));
                 if (advancement != null) {
-                    serverPlayer.getAdvancements().award(advancement, "never");
+                    serverPlayer.getAdvancements().award(advancement.value(), "never");
                 }
                 data.putBoolean("confluence:not_the_bees", true);
             }

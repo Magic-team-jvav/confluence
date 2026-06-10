@@ -27,13 +27,13 @@ public class AshWastelandRegion extends Region {
         // Overlap Vanilla's parameters with our own for our COLD_BLUE biome.
         // The parameters for this biome are chosen arbitrarily.
         new ParameterPointListBuilder()
-            .temperature(Temperature.span(Temperature.NEUTRAL, Temperature.HOT))
-            .humidity(Humidity.span(Humidity.ARID, Humidity.HUMID))
-            .continentalness(Continentalness.INLAND)
-            .erosion(Erosion.EROSION_2, Erosion.EROSION_6)
-            .depth(Depth.SURFACE, Depth.FLOOR)
-            .weirdness(Weirdness.PEAK_NORMAL, Weirdness.FULL_RANGE)
-            .build().forEach(point -> builder.add(point, ModBiomes.ASH_WASTELAND));
+                .temperature(Temperature.span(Temperature.NEUTRAL, Temperature.HOT))
+                .humidity(Humidity.span(Humidity.ARID, Humidity.HUMID))
+                .continentalness(Continentalness.INLAND)
+                .erosion(Erosion.EROSION_2, Erosion.EROSION_6)
+                .depth(Depth.SURFACE, Depth.FLOOR)
+                .weirdness(Weirdness.PEAK_NORMAL, Weirdness.FULL_RANGE)
+                .build().forEach(point -> builder.add(point, ModBiomes.ASH_WASTELAND));
         // Add our points to the mapper
         builder.build().forEach(mapper);
     }

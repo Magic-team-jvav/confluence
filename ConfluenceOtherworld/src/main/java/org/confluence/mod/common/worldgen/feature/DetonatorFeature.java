@@ -59,7 +59,8 @@ public class DetonatorFeature extends Feature<DetonatorFeature.Config> {
         return false;
     }
 
-    public record Config(Holder<ConfiguredFeature<?, ?>> oreFeature, int maxSearchDown, int tryTimes) implements FeatureConfiguration {
+    public record Config(Holder<ConfiguredFeature<?, ?>> oreFeature, int maxSearchDown,
+                         int tryTimes) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ConfiguredFeature.CODEC.fieldOf("ore_feature").forGetter(Config::oreFeature),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_search_down", 32).forGetter(Config::maxSearchDown),

@@ -233,7 +233,6 @@ public class ArmorItems {
             .criticalChance(0.05));
 
 
-
     public static final RegistryObject<BaseArmorItem> HUNERS_HELMET = register("hunters_helmet", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
@@ -390,7 +389,7 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> HERMIT_HELMET = register("hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
-           );
+    );
     public static final RegistryObject<BaseArmorItem> HERMIT_CHESTPLATE = register("hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
@@ -398,11 +397,11 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> HERMIT_LEGGINGS = register("hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
-           );
+    );
     public static final RegistryObject<BaseArmorItem> HERMIT_BOOTS = register("hermit_boots", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
-           );
+    );
 
     public static final RegistryObject<BaseArmorItem> BLUE_HERMIT_HELMET = register("blue_hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/blue_hermit_armor")

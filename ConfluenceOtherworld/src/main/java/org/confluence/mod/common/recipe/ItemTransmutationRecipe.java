@@ -9,7 +9,10 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.recipe.SimpleRecipeSerializer;
 import org.confluence.mod.common.data.saved.GamePhase;
@@ -19,7 +22,8 @@ import org.confluence.mod.common.init.item.ToolItems;
 
 import java.util.List;
 
-public record ItemTransmutationRecipe(Ingredient source, List<ItemStack> target, int shrink, GamePhase gamePhase) implements Recipe<SingleRecipeInput> {
+public record ItemTransmutationRecipe(Ingredient source, List<ItemStack> target, int shrink,
+                                      GamePhase gamePhase) implements Recipe<SingleRecipeInput> {
     public boolean isValid() {
         return shrink > 0 && !target.isEmpty();
     }

@@ -36,15 +36,18 @@ import static org.confluence.lib.common.item.TooltipItem.getTooltipsFromString;
 
 public class MagicConch extends CustomRarityItem implements ApplySelectionPacketC2S.ISelectable<BlockPos> {
     public List<Component> tooltips = new ArrayList<>();
+
     public MagicConch(Properties properties, ModRarity rarity) {
         super(properties, rarity);
         tooltips = getTooltipsFromString("magic_conch", 1, ChatFormatting.GRAY);
     }
+
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.addAll(tooltips);
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
+
     @Override
     public InteractionResult useOn(UseOnContext context) {
         if (context.getPlayer() instanceof ServerPlayer serverPlayer && context.getHand() == InteractionHand.MAIN_HAND && checkAvailable(context)) {

@@ -121,7 +121,7 @@ public class SoulSkillBox extends AbstractWidget {
             return;
         }
         // TODO 需要添加CD渲染
-        guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, SKILL_SIZE, SKILL_SIZE);
+        guiGraphics.blitSprite(skillStack.getSoulSkill().icon(), x, y, SKILL_SIZE, SKILL_SIZE);
     }
 
     public static void renderBoxGray(GuiGraphics guiGraphics, int x, int y) {

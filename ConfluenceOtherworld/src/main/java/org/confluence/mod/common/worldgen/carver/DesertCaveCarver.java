@@ -62,7 +62,8 @@ public class DesertCaveCarver extends WorldCarver<CarverConfiguration> {
 
             @Override
             public BlockState computeSubstance(DensityFunction.FunctionContext context, double substance) {
-                if (chunk.getBlockState(pos.set(context.blockX(), context.blockY(), context.blockX())).isAir()) return null;
+                if (chunk.getBlockState(pos.set(context.blockX(), context.blockY(), context.blockX())).isAir())
+                    return null;
                 return context.getBlender().blendDensity(context, substance) < substance * 0.3 ? null : stone;
             }
 

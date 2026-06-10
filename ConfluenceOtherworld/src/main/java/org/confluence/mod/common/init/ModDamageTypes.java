@@ -1,7 +1,7 @@
 package org.confluence.mod.common.init;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.*;
 import net.minecraft.world.entity.Entity;
@@ -38,7 +38,7 @@ public final class ModDamageTypes {
         return level.damageSources().source(key, direct, causing);
     }
 
-    public static void bootstrap(BootstrapContext<DamageType> context) {
+    public static void bootstrap(BootstapContext<DamageType> context) {
         TETags.DamageTypes.createDamageTypes(context);
         damageType(context, ACID_VENOM, DamageScaling.ALWAYS, 10);
         damageType(context, BOULDER, DamageScaling.ALWAYS, 5);
@@ -50,15 +50,15 @@ public final class ModDamageTypes {
         damageType(context, SPEAR_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
     }
 
-    private static void damageType(BootstrapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion, DamageEffects effects, DeathMessageType deathMessageType) {
+    private static void damageType(BootstapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion, DamageEffects effects, DeathMessageType deathMessageType) {
         context.register(key, new DamageType(key.location().getPath(), scaling, exhaustion, effects, deathMessageType));
     }
 
-    private static void damageType(BootstrapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion, DamageEffects effects) {
+    private static void damageType(BootstapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion, DamageEffects effects) {
         damageType(context, key, scaling, exhaustion, effects, DeathMessageType.DEFAULT);
     }
 
-    private static void damageType(BootstrapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion) {
+    private static void damageType(BootstapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion) {
         damageType(context, key, scaling, exhaustion, DamageEffects.HURT, DeathMessageType.DEFAULT);
     }
 }

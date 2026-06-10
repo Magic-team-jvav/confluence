@@ -64,8 +64,10 @@ public class BaseTallPlantBlock extends DoublePlantBlock {
 
     @Override
     public BlockState updateShape(BlockState originState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        if (facing == originState.getValue(HALF).getDirectionToOther()) return (facingState.is(originState.getBlock()) && (facingState.getValue(HALF) != originState.getValue(HALF))) ? originState : Blocks.AIR.defaultBlockState();
-        if ((originState.getValue(HALF) == DoubleBlockHalf.LOWER) && !canSurvive(originState, level, currentPos)) return Blocks.AIR.defaultBlockState();
+        if (facing == originState.getValue(HALF).getDirectionToOther())
+            return (facingState.is(originState.getBlock()) && (facingState.getValue(HALF) != originState.getValue(HALF))) ? originState : Blocks.AIR.defaultBlockState();
+        if ((originState.getValue(HALF) == DoubleBlockHalf.LOWER) && !canSurvive(originState, level, currentPos))
+            return Blocks.AIR.defaultBlockState();
         return originState;
     }
 

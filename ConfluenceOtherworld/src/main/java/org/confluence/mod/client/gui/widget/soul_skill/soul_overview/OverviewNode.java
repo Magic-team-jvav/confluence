@@ -2,9 +2,6 @@ package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.narration.NarratedElementType;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
@@ -47,7 +44,7 @@ public class OverviewNode extends SoulSkillBox {
         return new Vec2(getOrigX() + (float) getWidth() / 2, getOrigY() + (float) getHeight() / 2);
     }
 
-    public ResourceLocation skillId() {return getSkill().getId();}
+    public ResourceLocation skillId() {return getSkill().id();}
 
     public SoulSkill getSkill() {return soulSkillStack.getSoulSkill();}
 
@@ -148,7 +145,7 @@ public class OverviewNode extends SoulSkillBox {
 
         public Builder connections(SoulSkill... soulSkill) {
             return connections(Arrays.stream(soulSkill)
-                    .map(SoulSkill::getId)
+                    .map(SoulSkill::id)
                     .toArray(ResourceLocation[]::new));
         }
 
@@ -183,7 +180,7 @@ public class OverviewNode extends SoulSkillBox {
         }
 
         public static Builder of(SoulSkill soulSkill) {
-            return of(soulSkill.getId(), soulSkill);
+            return of(soulSkill.id(), soulSkill);
         }
 
         public static Builder of(ResourceLocation nodeId, Supplier<SoulSkill> supplier) {

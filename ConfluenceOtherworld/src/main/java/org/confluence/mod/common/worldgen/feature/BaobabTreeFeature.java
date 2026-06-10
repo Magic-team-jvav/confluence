@@ -118,7 +118,7 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
                 xOffset = -1 * (int) Mth.cos(i * Mth.PI / 2);
                 zOffset = -1 * (int) Mth.sin(i * Mth.PI / 2);
                 placeXZ = placeRootOrBranch.trySetValue(BlockStateProperties.AXIS, (Mth.abs(xOffset) == 1) ? Direction.Axis.X : Direction.Axis.Z);
-                end = (Mth.abs(xOffset) == 1) ? ((xOffset == 1 ) ? xMin : xMax) : ((zOffset == 1) ? zMin : zMax);
+                end = (Mth.abs(xOffset) == 1) ? ((xOffset == 1) ? xMin : xMax) : ((zOffset == 1) ? zMin : zMax);
                 rootPosEnd = baseBlockPos.offset(branchLength * (int) Mth.cos(i * Mth.PI / 2) + random.nextInt(2), 0, branchLength * (int) Mth.sin(i * Mth.PI / 2) + random.nextInt(2));
                 rootPosPlace = rootPosEnd.offset(0, (rootOrBranch ? 0 : height - 1), 0);
                 rootHeight = 0;
@@ -133,7 +133,7 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
                     rootPosList.add(rootPosPlace.offset(0, j, 0));
                     rootPlace = level.getBlockState(rootPosPlace.offset(0, j, 0)).canBeReplaced() && rootPlace;
                 }
-                transitionPos = rootPosList.getLast().offset(xOffset,  - (rootOrBranch ? 0 : rootHeight - 1), zOffset);
+                transitionPos = rootPosList.getLast().offset(xOffset, -(rootOrBranch ? 0 : rootHeight - 1), zOffset);
                 transitionLength = Mth.abs(end - (Mth.abs(xOffset) == 1 ? transitionPos.getX() : transitionPos.getZ()));
                 if (transitionLength == 0) {
                     if (rootPlace) {
@@ -145,7 +145,7 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
                         }
                     }
                 } else {
-                    for (int j = 0; j < transitionLength; j ++) {
+                    for (int j = 0; j < transitionLength; j++) {
                         rootPlace = level.getBlockState(transitionPos.offset(xOffset * j, 0, zOffset * j)).canBeReplaced() && rootPlace;
                     }
                     if (rootPlace) {
@@ -155,7 +155,7 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
                                 leavesPosList.add(rootPosList.get(j));
                             }
                         }
-                        for (int j = 0; j < transitionLength; j ++) {
+                        for (int j = 0; j < transitionLength; j++) {
                             level.setBlock(transitionPos.offset(xOffset * j, 0, zOffset * j), placeXZ, 3);
                         }
                     }
@@ -170,7 +170,9 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
         return false;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider branch, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider inner, int height) implements FeatureConfiguration {
+    public record Config(BlockStateProvider trunk, BlockStateProvider branch,
+                         BlockStateProvider root, BlockStateProvider leaves,
+                         BlockStateProvider inner, int height) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("branch_block").forGetter(Config::branch),

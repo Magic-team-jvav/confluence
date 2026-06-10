@@ -47,11 +47,11 @@ public class SoulSkillStack {
         return soulSkill.getComponent(this);
     }
 
-    public List<FormattedCharSequence> getSkillTooltipLines(){
+    public List<FormattedCharSequence> getSkillTooltipLines() {
         return getSkillDescriptionLines().stream().map(Component::getVisualOrderText).toList();
     }
 
-    public List<Component> getSkillDescriptionLines(){
+    public List<Component> getSkillDescriptionLines() {
         List<Component> list = new ArrayList<>();
         list.add(getNameComponent());
         Component component = getNarrationComponent();
@@ -92,7 +92,7 @@ public class SoulSkillStack {
         this.maxCd = maxCd;
     }
 
-    public SoulSkillStack copy(){
+    public SoulSkillStack copy() {
         SoulSkillStack soulSkillStack = new SoulSkillStack(soulSkill);
         soulSkillStack.setCd(cd);
         soulSkillStack.setMaxCd(maxCd);

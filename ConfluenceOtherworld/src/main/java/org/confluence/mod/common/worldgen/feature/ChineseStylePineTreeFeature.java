@@ -129,7 +129,8 @@ public class ChineseStylePineTreeFeature extends Feature<ChineseStylePineTreeFea
     }
 
     public record Config(BlockStateProvider trunk, BlockStateProvider vine,
-                         BlockStateProvider leaves, int height, int heightMore) implements FeatureConfiguration {
+                         BlockStateProvider leaves, int height,
+                         int heightMore) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("vine_block").forGetter(Config::vine),

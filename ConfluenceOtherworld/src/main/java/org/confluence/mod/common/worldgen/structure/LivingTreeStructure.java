@@ -105,10 +105,14 @@ public class LivingTreeStructure extends Structure {
             ), builder);
             StructureTemplateManager manager = context.structureTemplateManager();
             switch (rotation) {
-                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(5, 0, 1), true, true, rotation));
-                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(-1, 0, 5), true, true, rotation));
-                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(-5, 0, -1), true, true, rotation));
-                default -> builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(1, 0, -5), true, true, rotation));
+                case CLOCKWISE_90 ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(5, 0, 1), true, true, rotation));
+                case CLOCKWISE_180 ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(-1, 0, 5), true, true, rotation));
+                case COUNTERCLOCKWISE_90 ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(-5, 0, -1), true, true, rotation));
+                default ->
+                        builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(1, 0, -5), true, true, rotation));
             }
         });
     }

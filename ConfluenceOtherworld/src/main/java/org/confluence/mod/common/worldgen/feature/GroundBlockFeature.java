@@ -37,7 +37,8 @@ public class GroundBlockFeature extends Feature<GroundBlockFeature.Config> {
             if ((baseBlockPos.getY() - i) == 1) break;
         }
         if (!level.getBlockState(baseBlockPos).canBeReplaced()) placed = false;
-        if (level.getBlockState(baseBlockPos.offset(0, yPlace - 1, 0)).is(blockState.getBlock())) placed = false;
+        if (level.getBlockState(baseBlockPos.offset(0, yPlace - 1, 0)).is(blockState.getBlock()))
+            placed = false;
 
         if (placed) {
             level.setBlock(baseBlockPos.offset(0, yPlace, 0), blockState, 3);

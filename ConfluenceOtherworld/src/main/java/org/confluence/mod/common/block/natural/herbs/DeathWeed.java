@@ -53,15 +53,15 @@ public class DeathWeed extends BaseHerbBlock {
             CrossDustParticleOptions particle;
             if (dark) {
                 particle = new CrossDustParticleOptions(r < 12,
-                    0x66DD99FF, 0x7f714E82, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.04f + 0.01f).toVector3f(),
-                    curve, level.random.nextFloat() * 0.6f + 0.6f, random.nextInt(20, 40), level.random.nextInt(-20, 20),
-                    curve, true, true, false, level.random.nextBoolean());
-            }else{
+                        0x66DD99FF, 0x7f714E82, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.04f + 0.01f).toVector3f(),
+                        curve, level.random.nextFloat() * 0.6f + 0.6f, random.nextInt(20, 40), level.random.nextInt(-20, 20),
+                        curve, true, true, false, level.random.nextBoolean());
+            } else {
                 curve = new Vector4f(0, 1, 1, 1);
                 particle = new CrossDustParticleOptions(false,
-                    0xffAF9FFF, 0xff9821FF, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.01f + 0.01f).toVector3f(),
-                    curve, level.random.nextFloat() * 0.6f + 0.3f, random.nextInt(20,40), level.random.nextInt(-20, 20),
-                    curve, true, true, false, false);
+                        0xffAF9FFF, 0xff9821FF, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.01f + 0.01f).toVector3f(),
+                        curve, level.random.nextFloat() * 0.6f + 0.3f, random.nextInt(20, 40), level.random.nextInt(-20, 20),
+                        curve, true, true, false, false);
             }
             level.addParticle(particle, pos.x, pos.y, pos.z, 0, 0, 0);
         }

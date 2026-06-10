@@ -49,7 +49,8 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
                     if (b && b1) {
                         INetworkEntity dart = ModFeatures.getNetworkEntity(level, copy);
                         INetworkEntity plate = ModFeatures.getNetworkEntity(level, platePos);
-                        if (dart != null && plate != null) dart.connectTo(0x00FF00, platePos, plate);
+                        if (dart != null && plate != null)
+                            dart.connectTo(0x00FF00, platePos, plate);
                         return true;
                     }
                 }

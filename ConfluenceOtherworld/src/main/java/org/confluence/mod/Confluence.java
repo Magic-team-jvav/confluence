@@ -10,9 +10,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.ModKeyBindings;
+import org.confluence.mod.client.event.gun.GunClientEvents;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.event.gun.GunEvents;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
@@ -34,8 +38,11 @@ public final class Confluence {
         IEventBus eventBus = context.getModEventBus();
         StartupConfigs.register();
         CommonConfigs.register(context);
+        GunEvents.init();
         if (LibUtils.isPhysicalClient()) {
             ClientConfigs.register(context);
+            ModKeyBindings.init();
+            GunClientEvents.init();
 //            container.registerExtensionPoint(IConfigScreenFactory.class, MergedConfigurationScreen::factory);
         }
 

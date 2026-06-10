@@ -76,7 +76,8 @@ public class DroopingVineTreeFeature extends Feature<DroopingVineTreeFeature.Con
         return false;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider leaves, BlockStateProvider drooping_leaves,
+    public record Config(BlockStateProvider trunk, BlockStateProvider leaves,
+                         BlockStateProvider drooping_leaves,
                          int height) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),

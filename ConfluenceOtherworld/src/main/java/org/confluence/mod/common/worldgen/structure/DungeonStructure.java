@@ -34,7 +34,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
-import org.confluence.lib.util.*;
+import org.confluence.lib.util.BooleanStorage4;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;

@@ -43,7 +43,7 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
 
         shaped(recipeOutput, FunctionalBlocks.LOOM.toStack(), ShapedRecipePattern.of(Map.of(
                 'c', Ingredient.of(ItemTags.WOODEN_SLABS),
-                'b', AmountIngredient.of(2,ItemTags.PLANKS)
+                'b', AmountIngredient.of(2, ItemTags.PLANKS)
         ), List.of(
                 "  bb",
                 "  bb",
@@ -64,9 +64,12 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
 
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
             ItemLike[] logs = Streams.of(blockSet.LOG, blockSet.STRIPPED_LOG, blockSet.WOOD, blockSet.STRIPPED_WOOD).filter(DeferredHolder::isBound).toArray(ItemLike[]::new);
-            if (logs.length > 0) shapeless(recipeOutput, blockSet.PLANKS.toStack(9), Ingredient.of(logs));
-            if (blockSet.SLAB.isBound()) shapeless(recipeOutput, blockSet.SLAB.toStack(4), Ingredient.of(blockSet.PLANKS));
-            if (blockSet.STAIRS.isBound()) shapeless(recipeOutput, blockSet.STAIRS.toStack(2), Ingredient.of(blockSet.PLANKS));
+            if (logs.length > 0)
+                shapeless(recipeOutput, blockSet.PLANKS.toStack(9), Ingredient.of(logs));
+            if (blockSet.SLAB.isBound())
+                shapeless(recipeOutput, blockSet.SLAB.toStack(4), Ingredient.of(blockSet.PLANKS));
+            if (blockSet.STAIRS.isBound())
+                shapeless(recipeOutput, blockSet.STAIRS.toStack(2), Ingredient.of(blockSet.PLANKS));
         }
 
         shapeless(recipeOutput, new ItemStack(Items.OAK_SLAB, 4), Ingredient.of(Items.OAK_PLANKS));

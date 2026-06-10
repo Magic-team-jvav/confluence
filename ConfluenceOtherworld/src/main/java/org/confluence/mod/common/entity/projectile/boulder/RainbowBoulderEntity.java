@@ -200,7 +200,7 @@ public class RainbowBoulderEntity extends BoulderEntity {
             Vec3 motion = LibMathUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
             setDeltaMovement(motion);
         }
-        if (targetPos != null){
+        if (targetPos != null) {
             if (targetPos.equals(blockHitResult.getBlockPos())) {
                 IntegerRGB rgb = IntegerRGB.of(getGlowingColor());
                 DebugBlocksHelper.Singleton().addDebugBlock(targetPos, new DebugBlocksHelper.DebugInfo(rgb.red(), rgb.green(), rgb.blue(), 200));

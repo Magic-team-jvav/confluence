@@ -4,7 +4,10 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,19 +25,29 @@ import org.jetbrains.annotations.Nullable;
  * 可无限穿透、穿墙，每 4 tick 对同一实体最多造成一次伤害。
  */
 public class GhastlyProjectile extends SpearProjectile {
-    /** 对同一实体的伤害冷却间隔（tick） */
+    /**
+     * 对同一实体的伤害冷却间隔（tick）
+     */
     private static final int DAMAGE_INTERVAL = 4;
 
-    /** 记录每个实体上次受伤的 tick 时间，用于伤害冷却 */
+    /**
+     * 记录每个实体上次受伤的 tick 时间，用于伤害冷却
+     */
     private final Object2IntMap<Entity> lastHitTicks = new Object2IntOpenHashMap<>();
-    /** 是否已穿过目标，穿过不再索敌折返 */
+    /**
+     * 是否已穿过目标，穿过不再索敌折返
+     */
     private boolean hasPassedTarget = false;
 
-    /** 模型层定义 */
+    /**
+     * 模型层定义
+     */
     public static final ModelLayerLocation LAYER_LOCATION =
             new ModelLayerLocation(Confluence.asResource("ghastly_projectile"), "main");
 
-    /** 恶魂弹射物网格：半透明幽灵状方块体 */
+    /**
+     * 恶魂弹射物网格：半透明幽灵状方块体
+     */
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -55,7 +68,9 @@ public class GhastlyProjectile extends SpearProjectile {
      * 可覆盖基类 {@code onAddedToLevel} 中自动索敌的结果。
      */
 
-    /** 设置锁定目标 */
+    /**
+     * 设置锁定目标
+     */
     public void setLockedTarget(LivingEntity target) {
         this.target = target;
     }
@@ -88,13 +103,17 @@ public class GhastlyProjectile extends SpearProjectile {
 
     // ===== 穿透与穿墙 =====
 
-    /** 无限穿透 — 不减少穿透次数，不销毁 */
+    /**
+     * 无限穿透 — 不减少穿透次数，不销毁
+     */
     @Override
     protected void applyPenetration() {
         // 空实现：无限穿透
     }
 
-    /** 穿墙 — 撞墙时不销毁 */
+    /**
+     * 穿墙 — 撞墙时不销毁
+     */
     @Override
     protected void onHitBlock(BlockHitResult result) {
         // 空实现：穿墙
@@ -102,7 +121,9 @@ public class GhastlyProjectile extends SpearProjectile {
 
     // ===== 伤害与碰撞 =====
 
-    /** 始终可命中存活、可拾取的非主人实体 */
+    /**
+     * 始终可命中存活、可拾取的非主人实体
+     */
     @Override
     protected boolean canHitEntity(Entity target) {
         return target.isAlive()
@@ -135,7 +156,9 @@ public class GhastlyProjectile extends SpearProjectile {
         }
     }
 
-    /** 免疫所有外部伤害 */
+    /**
+     * 免疫所有外部伤害
+     */
     @Override
     public boolean hurt(DamageSource source, float amount) {
         return false;

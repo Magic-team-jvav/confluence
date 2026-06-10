@@ -15,8 +15,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CaveVines;
 import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -33,7 +31,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
@@ -48,7 +45,6 @@ import org.confluence.mod.common.init.item.*;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static net.minecraft.world.level.block.Blocks.WHITE_WOOL;
 import static net.minecraft.world.level.storage.loot.functions.SetItemCountFunction.setCount;
 import static net.minecraft.world.level.storage.loot.predicates.ExplosionCondition.survivesExplosion;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
@@ -62,6 +58,7 @@ import static org.confluence.mod.common.init.item.MaterialItems.*;
 @SuppressWarnings("all")
 public final class BlockSubProvider extends BlockLootSubProvider {
     public static final LootItemCondition.Builder HAS_SHEARS;
+
     public BlockSubProvider(HolderLookup.Provider provider) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
     }
@@ -120,7 +117,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(OPAL_BLOCK.get());
         dropSelf(GELSTONE_BLOCK.get());
         dropSelf(COLD_CRYSTAL_BLOCK.get());
-        this.add(NatureBlocks.CRYSTAL_SHARDS.get(), p_344211_ -> this.createSilkTouchDispatchTable(p_344211_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344211_, LootItem.lootTableItem(NatureBlocks.CRYSTAL_SHARDS.get().asItem()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F))).apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))))));
+        this.add(NatureBlocks.CRYSTAL_SHARDS.get(), p_344211_ -> this.createSilkTouchDispatchTable(p_344211_, (LootPoolEntryContainer.Builder<?>) this.applyExplosionDecay(p_344211_, LootItem.lootTableItem(NatureBlocks.CRYSTAL_SHARDS.get().asItem()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F))).apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))))));
         dropSelf(EXTRACTINATOR.get());
         dropSelf(SKY_MILL.get());
         dropSelf(COOKING_POT.get());
@@ -613,13 +610,12 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         this.add(WHITE_PUMPKIN_STEM.get(), p_252178_ -> this.createStemDrops(p_252178_, FoodItems.WHITE_PUMPKIN_SEED.get()));
         this.add(ATTACHED_WHITE_PUMPKIN_STEM.get(), p_250849_ -> this.createAttachedStemDrops(p_250849_, FoodItems.WHITE_PUMPKIN_SEED.get()));
 
-        this.add(ICE_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(FoodItems.ICE_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));
-        this.add(GOLDEN_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(Items.GLISTERING_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));
-
+        this.add(ICE_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>) this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(FoodItems.ICE_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));
+        this.add(GOLDEN_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>) this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(Items.GLISTERING_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));
 
 
         dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
-        dropOther(LIFE_FRUIT.get(),ConsumableItems.LIFE_FRUIT.get());
+        dropOther(LIFE_FRUIT.get(), ConsumableItems.LIFE_FRUIT.get());
 
         dropWhenSilkTouch(PURE_GLASS.get());
         dropWhenSilkTouch(WHITE_PURE_GLASS.get());
@@ -712,8 +708,6 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(END_DIRT.get());
 
         dropSelf(VOID_TREE_ROOT_BLOCK.get());
-
-
 
 
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {

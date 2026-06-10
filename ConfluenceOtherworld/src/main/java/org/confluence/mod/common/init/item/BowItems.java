@@ -31,11 +31,11 @@ public class BowItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Confluence.MODID);
 
     // 短弓
-    public static final RegistryObject<ShortBowItem> WOODEN_SHORT_BOW = ITEMS.register("wooden_short_bow",() -> new ShortBowItem( 4.0F, 384));
-    public static final RegistryObject<ShortBowItem> EBONWOOD_SHORT_BOW = ITEMS.register("ebonwood_short_bow",() -> new ShortBowItem( 4.3F, 404));
-    public static final RegistryObject<ShortBowItem> SHADEWOOD_SHORT_BOW = ITEMS.register("shadewood_short_bow",() -> new ShortBowItem( 4.4F, 424));
-    public static final RegistryObject<ShortBowItem> ASH_WOOD_SHORT_BOW = ITEMS.register("ash_wood_short_bow",() -> new ShortBowItem( 4.5F, 444));
-    public static final RegistryObject<ShortBowItem> PEARLWOOD_SHORT_BOW = ITEMS.register("pearlwood_short_bow",() -> new ShortBowItem( 5.0F, 1000));
+    public static final RegistryObject<ShortBowItem> WOODEN_SHORT_BOW = ITEMS.register("wooden_short_bow", () -> new ShortBowItem(4.0F, 384));
+    public static final RegistryObject<ShortBowItem> EBONWOOD_SHORT_BOW = ITEMS.register("ebonwood_short_bow", () -> new ShortBowItem(4.3F, 404));
+    public static final RegistryObject<ShortBowItem> SHADEWOOD_SHORT_BOW = ITEMS.register("shadewood_short_bow", () -> new ShortBowItem(4.4F, 424));
+    public static final RegistryObject<ShortBowItem> ASH_WOOD_SHORT_BOW = ITEMS.register("ash_wood_short_bow", () -> new ShortBowItem(4.5F, 444));
+    public static final RegistryObject<ShortBowItem> PEARLWOOD_SHORT_BOW = ITEMS.register("pearlwood_short_bow", () -> new ShortBowItem(5.0F, 1000));
     public static final RegistryObject<ShortBowItem> COPPER_SHORT_BOW = ITEMS.register("copper_short_bow", () -> new ShortBowItem(4.5F, 640));
     public static final RegistryObject<ShortBowItem> TIN_SHORT_BOW = ITEMS.register("tin_short_bow", () -> new ShortBowItem(4.5F, 768));
     public static final RegistryObject<ShortBowItem> IRON_SHORT_BOW = ITEMS.register("iron_short_bow", () -> new ShortBowItem(5.0F, 896));
@@ -61,7 +61,9 @@ public class BowItems {
     public static final RegistryObject<BaseTerraBowItem> PLATINUM_BOW = register("platinum_bow", 4.5F, 1536);
 
     // DIY蓄力弓
-    /**如果需要速射，加上tag {@link org.confluence.mod.common.init.ModTags.Items#FAST_BOW}*/
+    /**
+     * 如果需要速射，加上tag {@link org.confluence.mod.common.init.ModTags.Items#FAST_BOW}
+     */
 
     public static final RegistryObject<BaseTerraBowItem> FOSSIL_BOW = register("fossil_bow", 4.6F, m -> m
             .setRarity(ModRarity.BLUE)
@@ -106,8 +108,8 @@ public class BowItems {
 
 
     public static final RegistryObject<BaseTerraBowItem> DEVELOPER_BOW = register("developer_bow", 9999F,
-            m->m.setRarity(ModRarity.MASTER).addModifyArrowBuilder(
-                    modifier->modifier.setCauseFire(200)
+            m -> m.setRarity(ModRarity.MASTER).addModifyArrowBuilder(
+                    modifier -> modifier.setCauseFire(200)
                             .setDamage(9999)
                             .setSpeedFactor(2)
                             .setPenetration(9999)

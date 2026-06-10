@@ -3,7 +3,7 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.minecraftforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.language.*;
 import org.confluence.mod.common.init.ModEffects;
@@ -12,7 +12,6 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.confluence.terraentity.init.TEEffects;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -677,6 +676,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("key.confluence.extra_inventory", "快捷打开额外栏");
         add("key.confluence.hook", "使用钩爪");
         add("key.confluence.specular_detail", "视觉药水细节观测");
+        add("key.confluence.shoot", "射击");
+        add("key.confluence.aim", "瞄准");
 
         add("death.attack.dungeon_altar", "Steve差一步就用陨石指南针右击凝灰岩揭开秘密");
 
@@ -798,6 +799,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.cause_fire", "点燃");
         add("tooltip.item.confluence.can_penetrate", "穿透");
 
+        add("tooltip.terra_guns.damage", "远程伤害：%s");
+        add("tooltip.terra_guns.critical", "暴击率：%s%%");
+        add("tooltip.terra_guns.knockback", "击退力：%s");
         add("tooltip.confluence.attack_damage", "伤害：%s");
         add("tooltip.confluence.mana_cost", "魔力消耗：%s");
         add("tooltip.confluence.velocity", "射弹速度：%s");
@@ -1705,6 +1709,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.FLAIL_ENTITY.get(), "链球");
         add(ModEntities.STAR_CANNON_BULLET.get(), "星星炮射弹");
         add(ModEntities.BEE_GUN_BULLET.get(), "蜜蜂枪射弹");
+        add(ModEntities.BASE_BULLET_ENTITY.get(), "子弹");
         add(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), "基础展示实体");
         add(ModEntities.SMOKE_BOMB_ENTITY.get(), "烟雾弹");
         add(ModEntities.BEENADE.get(), "蜜蜂手雷");
@@ -2468,8 +2473,8 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add(DecorativeBlocks.SNOW_BRICKS.FULL.get(), "雪砖");
-        add(DecorativeBlocks.SNOW_BRICKS.STAIRS.get(),"雪砖楼梯");
-        add(DecorativeBlocks.SNOW_BRICKS.SLAB.get(),"雪砖台阶");
+        add(DecorativeBlocks.SNOW_BRICKS.STAIRS.get(), "雪砖楼梯");
+        add(DecorativeBlocks.SNOW_BRICKS.SLAB.get(), "雪砖台阶");
         add(DecorativeBlocks.SNOW_BRICKS.WALL.get(), "雪砖墙");
 
         add(DecorativeBlocks.BLUE_ICE_BRICKS.FULL.get(), "蓝冰砖");
@@ -2598,7 +2603,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.RAINBOW_BRICKS.STAIRS.get(), "彩虹砖楼梯");
         add(DecorativeBlocks.RAINBOW_BRICKS.SLAB.get(), "彩虹砖台阶");
         add(DecorativeBlocks.RAINBOW_BRICKS.WALL.get(), "彩虹砖墙");
-
 
 
         add(DecorativeBlocks.ASPHALT_BLOCK.get(), "沥青块");
@@ -3808,6 +3812,37 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
         add(GunItems.STAR_CANNON.get(), "星星炮");
 
+        // 枪
+        add(GunItems.HAND_GUN.get(), "手枪");
+        add(GunItems.SHOTGUN.get(), "霰弹枪");
+        add(GunItems.FLINTLOCK_PISTOL.get(), "燧发枪");
+        add(GunItems.BOOMSTICK.get(), "三发猎枪");
+        add(GunItems.THE_UNDERTAKER.get(), "夺命枪");
+        add(GunItems.MUSKET.get(), "火枪");
+        add(GunItems.MINISHARK.get(), "迷你鲨");
+        add(GunItems.BLOWGUN.get(), "吹管");
+        add(GunItems.TACTICAL_SHOTGUN.get(), "战术霰弹枪");
+        add(GunItems.SNOWBALL_CANNON.get(), "雪球炮");
+        add(GunItems.PHOENIX_BLASTER.get(), "凤凰爆破枪");
+
+        // 子弹
+        add(GunItems.MUSKET_BULLET.get(), "火枪子弹");
+        add(GunItems.METEOR_SHOT.get(), "流星弹");
+        add(GunItems.SILVER_BULLET.get(), "银子弹");
+        add(GunItems.CRYSTAL_BULLET.get(), "水晶子弹");
+        add(GunItems.CURSED_BULLET.get(), "诅咒弹");
+        add(GunItems.CHLOROPHYTE_BULLET.get(), "叶绿弹");
+        add(GunItems.HIGH_VELOCITY_BULLET.get(), "高速子弹");
+        add(GunItems.ICHOR_BULLET.get(), "灵液弹");
+        add(GunItems.VENOM_BULLET.get(), "毒液弹");
+        add(GunItems.PARTY_BULLET.get(), "派对弹");
+        add(GunItems.NANO_BULLET.get(), "纳米弹");
+        add(GunItems.EXPLODING_BULLET.get(), "爆破弹");
+        add(GunItems.GOLDEN_BULLET.get(), "金子弹");
+        add(GunItems.ENDLESS_MUSKET_POUCH.get(), "无尽火枪袋");
+        add(GunItems.LUMINITE_BULLET.get(), "夜明弹");
+        add(GunItems.TUNGSTEN_BULLET.get(), "钨子弹");
+
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");
         add(BowItems.EBONWOOD_SHORT_BOW.get(), "乌木短弓");
@@ -4521,7 +4556,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.HALLOWED_CROWN.get(), "神圣王冠");
         add(VanityArmorItems.WIZARDS_HAT.get(), "巫师的帽子");
         add(VanityArmorItems.PEDDLERS_HAT.get(), "商贩帽");
-       // add(VanityArmorItems.BUCKET_HAT.get(), "水桶帽");
+        // add(VanityArmorItems.BUCKET_HAT.get(), "水桶帽");
         add(VanityArmorItems.DYE.get(), "染料");
         add(VanityArmorItems.RED_DYE.get(), "红染料");
         add(VanityArmorItems.BRIGHT_RED_DYE.get(), "淡红染料");

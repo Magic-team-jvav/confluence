@@ -89,7 +89,7 @@ public class DispenserRegistration {
 
         DispenserBlock.registerBehavior(PotionItems.BOTTLE.asItem(), new OptionalDispenseItemBehavior() {
             @Override
-            protected ItemStack execute(BlockSource source, ItemStack stack) {
+            private ItemStack execute(BlockSource source, ItemStack stack) {
                 Level level = source.level();
                 BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
                 if (level.getFluidState(pos).is(FluidTags.WATER)) {

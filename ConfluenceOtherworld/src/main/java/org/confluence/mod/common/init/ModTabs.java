@@ -13,6 +13,7 @@ import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
+import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.util.EnchantmentUtils;
@@ -20,7 +21,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_furniture.common.init.TFRegistries;
-import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
@@ -278,7 +278,6 @@ public final class ModTabs {
                         special_plants.accept(NatureBlocks.CORRODED_WORM_ROOTS_BLOCK);
                         special_plants.accept(NatureBlocks.CORRUPTED_OVARIES_BLOCK);
                         special_plants.accept(NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK);
-
 
 
                         CreativeModeTab.Output sanctificationOres = GroupItem.belongsTo("sanctification_ores", output);
@@ -1076,7 +1075,8 @@ public final class ModTabs {
                         note.accept(ModStacks.structureNote0_0(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                         note.accept(ModStacks.structureNote0_1(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                         note.accept(ModStacks.structureNote1(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        for (ItemStack mysteriousNote : ModStacks.mysteriousNotes()) note.accept(mysteriousNote, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        for (ItemStack mysteriousNote : ModStacks.mysteriousNotes())
+                            note.accept(mysteriousNote, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
                     })
                     .withTabsBefore(MATERIALS.getId())
@@ -1598,7 +1598,7 @@ public final class ModTabs {
                         output.accept(VanityArmorItems.HALLOWED_CROWN.get());
                         output.accept(VanityArmorItems.WIZARDS_HAT.get());
                         output.accept(VanityArmorItems.PEDDLERS_HAT.get());
-                       // output.accept(VanityArmorItems.BUCKET_HAT.get());
+                        // output.accept(VanityArmorItems.BUCKET_HAT.get());
                         output.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(TCItems.DIVING_HELMET);
@@ -1832,11 +1832,11 @@ public final class ModTabs {
                         acceptAll(ArrowItems.ITEMS, output, "arrow");
 
                         CreativeModeTab.Output gun = GroupItem.belongsTo("gun", output);
-                        acceptAll(TGItems.GUNS, gun);
+                        acceptAll(GunItems.GUNS, gun);
                         acceptAll(GunItems.ITEMS, gun);
                         gun.accept(ManaWeaponItems.BEE_GUN);
                         gun.accept(ManaWeaponItems.SPACE_GUN);
-                        acceptAll(TGItems.BULLETS, output, "bullet");
+                        acceptAll(GunItems.BULLETS, output, "bullet");
                     })
                     .withTabsBefore(WARRIORS.getId())
                     .build());

@@ -5,7 +5,7 @@ import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_furniture.TerraFurniture;
-import org.confluence.terra_guns.TerraGuns;
+import org.confluence.mod.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;

@@ -55,8 +55,7 @@ public class LunarCoralBlock extends CoralBlock {
             if (humidity < 3) {
                 level.setBlock(pos, state.setValue(HUMIDITY, humidity + 1), 2);
                 level.scheduleTick(pos, this, 60 + level.getRandom().nextInt(40));
-            }
-            else level.setBlock(pos, this.deadBlock.defaultBlockState(), 2);
+            } else level.setBlock(pos, this.deadBlock.defaultBlockState(), 2);
         } else if (this.scanForDry(level, pos)) {
             int humidity = state.getValue(HUMIDITY);
             if (humidity > 0) {

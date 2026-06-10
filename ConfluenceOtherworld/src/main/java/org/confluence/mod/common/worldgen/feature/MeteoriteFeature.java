@@ -82,7 +82,8 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
         }
     }
 
-    public record Config(int radius, float sparse, float lava, float fire) implements FeatureConfiguration {
+    public record Config(int radius, float sparse, float lava,
+                         float fire) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ExtraCodecs.intRange(1, 7).lenientOptionalFieldOf("radius", 7).forGetter(Config::radius),
                 Codec.floatRange(0.0F, 1.0F).lenientOptionalFieldOf("sparse", 0.4F).forGetter(Config::sparse),

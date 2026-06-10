@@ -488,7 +488,6 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "闪电束频率提升倍率");
 
 
-
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Soul.button", "灵魂值");

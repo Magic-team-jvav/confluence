@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Generates loot modifiers that add loot tables to existing loot tables.
  */
-public class ModLootModifiersProvider  extends GlobalLootModifierProvider {
+public class ModLootModifiersProvider extends GlobalLootModifierProvider {
     public ModLootModifiersProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, Confluence.MODID);
     }
@@ -34,7 +34,7 @@ public class ModLootModifiersProvider  extends GlobalLootModifierProvider {
             EntityType<?> entityType = entry.entityType();
             this.add(
                     entityType.getDefaultLootTable().location().getPath(),
-                    new AddTableLootModifier(new LootTableIdCondition[] {
+                    new AddTableLootModifier(new LootTableIdCondition[]{
                             (LootTableIdCondition) LootTableIdCondition.builder(entityType.getDefaultLootTable().location()).build()
                     }, ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(provider.getPath(entityType))))
             );
@@ -47,7 +47,7 @@ public class ModLootModifiersProvider  extends GlobalLootModifierProvider {
             ResourceLocation location = block.getLootTable().location();
             this.add(
                     location.getPath(),
-                    new AddTableLootModifier(new LootTableIdCondition[] {
+                    new AddTableLootModifier(new LootTableIdCondition[]{
                             (LootTableIdCondition) LootTableIdCondition.builder(location).build()
                     }, ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(blockProvider.getPath(location))))
             );
@@ -60,7 +60,7 @@ public class ModLootModifiersProvider  extends GlobalLootModifierProvider {
             ResourceLocation location = lootTable.location();
             this.add(
                     location.getPath(),
-                    new AddTableLootModifier(new LootTableIdCondition[] {
+                    new AddTableLootModifier(new LootTableIdCondition[]{
                             (LootTableIdCondition) LootTableIdCondition.builder(location).build()
                     }, ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(chestProvider.getPath(lootTable))))
             );

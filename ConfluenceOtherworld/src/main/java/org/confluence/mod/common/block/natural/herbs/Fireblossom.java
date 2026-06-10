@@ -43,9 +43,9 @@ public class Fireblossom extends BaseHerbBlock {
         boolean light = level.random.nextBoolean();
         Vector4f curve = new Vector4f(0, 0.33f, 0.66f, 1);
         CrossDustParticleOptions sparkParticle = new CrossDustParticleOptions(false, light ? 0xffFFFF4F : 0xb0FFCF4E,
-            0xb0FF944F, new Vector3f((level.random.nextFloat() - 0.5f) / 20, 0.2f, (level.random.nextFloat() - 0.5f) / 20),
-            curve, 1, 8, 20, curve,
-            true, true, true, false);
+                0xb0FF944F, new Vector3f((level.random.nextFloat() - 0.5f) / 20, 0.2f, (level.random.nextFloat() - 0.5f) / 20),
+                curve, 1, 8, 20, curve,
+                true, true, true, false);
         level.addParticle(sparkParticle, pos.x, pos.y, pos.z, 0, 0.3f, 0);
     }
 }

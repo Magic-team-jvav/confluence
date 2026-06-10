@@ -20,4 +20,8 @@ public final class ModDataComponentTypes {
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.builder("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.builder("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<FlailComponent>> FLAIL = TYPES.builder("flail", builder -> builder.persistent(FlailComponent.CODEC).networkSynchronized(FlailComponent.STREAM_CODEC));
+
+    // 枪械数据组件
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<GunPropertyComponent>> GUN_PROPERTY = TYPES.builder("gun_property", GunPropertyComponent::fastBuilder);
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<BulletPropertyComponent>> BULLET_PROPERTY = TYPES.builder("bullet_property", BulletPropertyComponent::fastBuilder);
 }

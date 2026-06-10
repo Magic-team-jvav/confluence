@@ -9,16 +9,16 @@ import org.confluence.lib.util.ScheduledForMove;
 
 @ScheduledForMove(since = "1.2.0", inVersion = "2.0.0", module = "entity")
 public class EmptyEntity extends Entity {
-	public EmptyEntity(EntityType<?> entityType, Level level) {
-		super(entityType, level);
-	}
+    public EmptyEntity(EntityType<?> entityType, Level level) {
+        super(entityType, level);
+    }
 
-	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
 
-	@Override
-	protected void readAdditionalSaveData(CompoundTag compound) {}
+    @Override
+    protected void readAdditionalSaveData(CompoundTag compound) {}
 
-	@Override
-	protected void addAdditionalSaveData(CompoundTag compound) {}
+    @Override
+    protected void addAdditionalSaveData(CompoundTag compound) {}
 }

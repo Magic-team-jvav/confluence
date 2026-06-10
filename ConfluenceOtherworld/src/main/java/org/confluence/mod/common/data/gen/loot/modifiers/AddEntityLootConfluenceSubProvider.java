@@ -239,7 +239,7 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
         generate();
-        EntityLootSubProviderAccessor accessor = (EntityLootSubProviderAccessor) (Object) this;
+        EntityLootSubProviderAccessor accessor = (EntityLootSubProviderAccessor) this;
         Set<ResourceKey<LootTable>> set = new HashSet<>();
         getKnownEntityTypes().map(EntityType::builtInRegistryHolder).forEach(holder -> {
             EntityType<?> entityType = holder.value();

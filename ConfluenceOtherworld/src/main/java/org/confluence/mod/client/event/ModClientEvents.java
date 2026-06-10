@@ -21,15 +21,12 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.*;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.LibStartupConfig;
 import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
@@ -81,6 +78,7 @@ import org.confluence.mod.client.renderer.entity.flail.FlailModel;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
+import org.confluence.mod.client.renderer.entity.bullet.BulletRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
@@ -111,11 +109,19 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
 import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
-import org.confluence.terra_guns.util.TGUtil;
+import org.confluence.mod.common.init.item.GunItems;
+import org.confluence.mod.common.item.gun.BaseGun;
+import org.confluence.mod.client.renderer.item.gun.SimpleGeoItemRenderer;
 import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.mesdag.portlib.event.client.PortEntityRenderersEvent;
+import org.mesdag.portlib.event.client.PortRegisterGuiLayersEvent;
+import org.mesdag.portlib.event.client.PortRegisterMenuScreensEvent;
+import org.mesdag.portlib.event.client.PortRegisterParticleProvidersEvent;
 import org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent;
+import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
+import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.HashSet;
@@ -126,10 +132,10 @@ import java.util.Set;
 import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
 import static org.confluence.mod.common.init.ModEntities.*;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
 public final class ModClientEvents {
     @SubscribeEvent
-    public static void clientSetup(FMLClientSetupEvent event) {
+    public static void clientSetup(PortFMLClientSetupEventPort event) {
         event.enqueueWork(() -> {
             StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
             ModClientSetups.registerBowProperties();
@@ -161,7 +167,7 @@ public final class ModClientEvents {
     }
 
     @SubscribeEvent
-    public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+    public static void registerMenuScreens(PortRegisterMenuScreensEvent event) {
         // block
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
         event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
@@ -185,7 +191,7 @@ public final class ModClientEvents {
     }
 
     @SubscribeEvent
-    public static void registerGuiLayers(RegisterGuiLayersEvent event) {
+    public static void registerGuiLayers(PortRegisterGuiLayersEvent event) {
         ResourceLocation repeaterHud = Confluence.asResource("repeater_hud");
         event.registerAbove(VanillaGuiLayers.CROSSHAIR, repeaterHud, new RepeaterHud());
         ResourceLocation healthHud = Confluence.asResource("health_hud");
@@ -212,7 +218,7 @@ public final class ModClientEvents {
     }
 
     @SubscribeEvent
-    public static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+    public static void registerEntityLayers(PortRegisterLayerDefinitions event) {
         event.registerLayerDefinition(BaseBombEntityModel.LAYER_LOCATION, BaseBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(BouncyBombEntityModel.LAYER_LOCATION, BouncyBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(ScarabBombEntityModel.LAYER_LOCATION, ScarabBombEntityModel::createBodyLayer);
@@ -421,6 +427,8 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(STAR_CANNON_BULLET.get(), StarCannonBulletRenderer::new);
         event.registerEntityRenderer(BEE_GUN_BULLET.get(), BeeProjectileRenderer::new);
+        event.registerEntityRenderer(BASE_BULLET_ENTITY.get(), BulletRenderer::new);
+        event.registerEntityRenderer(GRAVITY_BULLET_ENTITY.get(), ThrownItemRenderer::new);
 
         event.registerEntityRenderer(RAINBOW_SHEEP.get(), RainbowSheepRenderer::new);
         event.registerEntityRenderer(INVERSE_ENDERMAN.get(), EndermanRenderer::new);
@@ -509,14 +517,21 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_BRIGHT);
         event.registerItem(ModClientSetups.GLINT_RAINBOW_EXTENSIONS, TreasureBagItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(new EnemyBannerItemRenderer(), ModItems.ENEMY_BANNER);
-        TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
-        TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
-        GunItems.ITEMS.getEntries().forEach(holder -> TGUtil.registerOtherGunModel(event, Confluence.MODID, holder));
+        registerGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
+        registerGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
+        GunItems.ITEMS.getEntries().forEach(holder -> registerGunModel(event, Confluence.MODID, holder));
         event.registerMobEffect(ModClientSetups.TRANSLUCENT_EFFECT_ICON, ModEffects.LUCK_EFFECT.get());
     }
 
+    private static void registerGunModel(PortRegisterClientExtensionsEvent event, String modid, RegistryObject<? extends Item> gunSupplier) {
+        if (gunSupplier.getId() != null) {
+            ResourceLocation loc = ResourceLocation.fromNamespaceAndPath(modid, "gun/" + gunSupplier.getId().getPath());
+            event.registerItem(new SimpleGeoItemRenderer<BaseGun>(new DefaultedItemGeoModel<>(loc)), gunSupplier.get());
+        }
+    }
+
     @SubscribeEvent
-    public static void registerParticles(RegisterParticleProvidersEvent event) {
+    public static void registerParticles(PortRegisterParticleProvidersEvent event) {
         event.registerSpecial(ModParticleTypes.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(ModParticleTypes.WHOLE_ITEM.get(), new WholeItemParticle.Provider());
         event.registerSpriteSet(ModParticleTypes.LEAVES.get(), BiomeColorParticle.Provider::new);

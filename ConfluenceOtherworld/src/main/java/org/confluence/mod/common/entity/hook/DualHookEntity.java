@@ -52,7 +52,8 @@ public class DualHookEntity extends AbstractHookEntity implements VariantHolder<
         if (LibUtils.getItemStackNbtNoCopy(itemStack).get("hooks") instanceof ListTag list) {
             list.forEach(tag -> {
                 AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(tag, level());
-                if (hookEntity != null && hookEntity != this) hookEntity.setHookState(HookState.POP);
+                if (hookEntity != null && hookEntity != this)
+                    hookEntity.setHookState(HookState.POP);
             });
         }
     }
@@ -64,7 +65,7 @@ public class DualHookEntity extends AbstractHookEntity implements VariantHolder<
         private static final IntFunction<Variant> BY_ID = ByIdMap.continuous(Variant::getId, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
         final int id;
         private final String name;
-        
+
         Variant(int id, String name) {
             this.id = id;
             this.name = name;

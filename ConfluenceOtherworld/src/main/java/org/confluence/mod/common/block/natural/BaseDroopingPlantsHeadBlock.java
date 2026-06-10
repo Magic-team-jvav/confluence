@@ -54,12 +54,12 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
 
     private BaseDroopingPlantsHeadBlock(int side, int maxAge, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlocksSupplier, int lightLevel) {
         super(Properties.of()
-                .noCollission()
-                .instabreak()
-                .sound(SoundType.GRASS)
-                .pushReaction(PushReaction.DESTROY)
-                .randomTicks()
-                .lightLevel((state) -> lightLevel)
+                        .noCollission()
+                        .instabreak()
+                        .sound(SoundType.GRASS)
+                        .pushReaction(PushReaction.DESTROY)
+                        .randomTicks()
+                        .lightLevel((state) -> lightLevel)
                 , growthDirection, createShape(side, growthDirection), true, 0.1);
         this.side = side;
         this.maxAgeValue = Math.min(maxAge, 25);

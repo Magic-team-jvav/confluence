@@ -1,5 +1,6 @@
 package org.confluence.mod.common.attachment;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -87,7 +88,7 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
     }
 
     public static PlayerPiggyBankContainer of(Player player) {
-        PlayerPiggyBankContainer data = player.getData(ModAttachmentTypes.PIGGY_BANK);
+        PlayerPiggyBankContainer data = PortEntityExtension.getAttach(player, ModAttachmentTypes.PIGGY_BANK);
         data.setOwner(player);
         return data;
     }

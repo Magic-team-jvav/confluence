@@ -8,16 +8,16 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.UnknownNullability;
+import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 
 import java.util.Hashtable;
 import java.util.Map;
 
-public class ChunkBrushData implements INBTSerializable<CompoundTag> {
+public class ChunkBrushData implements IPortNBTSerializable<CompoundTag> {
     private final Map<ChunkPos, BrushData> dataMap = new Hashtable<>();
 
     public Map<ChunkPos, BrushData> getDataMap() {

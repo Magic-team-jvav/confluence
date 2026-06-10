@@ -3,7 +3,9 @@ package org.confluence.mod.api;
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModCustomRegistries;
 import org.confluence.mod.common.track.TrackTypeProvider;
+import org.confluence.mod.common.track.variant.SimpleTrack;
 
 /// # 跟踪方式
 public interface ITrackType {
@@ -21,6 +23,6 @@ public interface ITrackType {
     /// @return 编解码器
     TrackTypeProvider getCodec();
 
-    Codec<ITrackType> TYPED_CODEC = TERegistries.TRACK_TYPE_PROVIDERS.byNameCodec().dispatch(ITrackType::getCodec, TrackTypeProvider::codec);
+    Codec<ITrackType> TYPED_CODEC = ModCustomRegistries.TRACK_TYPE_PROVIDERS.byNameCodec().dispatch(ITrackType::getCodec, p -> p.codec().codec());
     Codec<ITrackType> CODEC = PortCodecExtension.lazyInitialized(() -> PortCodecExtension.withAlternative(TYPED_CODEC, SimpleTrack.CODEC.codec()));
 }

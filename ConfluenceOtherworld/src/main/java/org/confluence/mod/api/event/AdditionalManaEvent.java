@@ -1,11 +1,12 @@
 package org.confluence.mod.api.event;
 
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.ICancellableEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.Cancelable;
 import org.confluence.mod.common.attachment.ManaStorage;
 
-public class AdditionalManaEvent extends PlayerEvent implements ICancellableEvent {
+@Cancelable
+public class AdditionalManaEvent extends PlayerEvent {
     private final ManaStorage manaStorage;
     private int neoValue;
     private final int original;

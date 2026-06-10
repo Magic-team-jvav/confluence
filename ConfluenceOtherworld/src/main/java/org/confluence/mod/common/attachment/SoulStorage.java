@@ -2,10 +2,10 @@ package org.confluence.mod.common.attachment;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.UnknownNullability;
+import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 
-public class SoulStorage implements INBTSerializable<CompoundTag> {
+public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
     private int soulsCount;
     private int additionalSoul;
     private float currentSoul;

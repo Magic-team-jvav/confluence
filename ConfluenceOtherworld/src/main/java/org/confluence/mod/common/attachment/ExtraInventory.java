@@ -1,5 +1,8 @@
 package org.confluence.mod.common.attachment;
 
+import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -7,8 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -16,9 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.INBTSerializable;
-import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.hook.BaseHookItem;
@@ -26,20 +24,21 @@ import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terraentity.integration.curios.CuriosHelper;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.IPortNBTSerializable;
+import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
-import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
-public class ExtraInventory implements Container, INBTSerializable<CompoundTag> {
+public class ExtraInventory implements Container, IPortNBTSerializable<CompoundTag> {
     public static final int SIZE_VANITY_ARMOR = 4;
     public static final int SIZE_COINS = 4;
     public static final int SIZE_AMMO = 4;
@@ -67,9 +66,9 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     public static final int VANITY_LEGS_INDEX = 2;
     public static final int VANITY_FEET_INDEX = 3;
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventory> STREAM_CODEC = new StreamCodec<>() {
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, ExtraInventory> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
-        public ExtraInventory decode(RegistryFriendlyByteBuf buffer) {
+        public ExtraInventory decode(PortRegistryFriendlyByteBuf buffer) {
             ExtraInventory extraInventory = new ExtraInventory(false);
             int accessoryDye = buffer.readVarInt();
             int size = SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye;
@@ -77,7 +76,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             extraInventory.accessoryDye = NonNullList.withSize(accessoryDye, ItemStack.EMPTY);
             extraInventory.previousStacks = NonNullList.withSize(size, ItemStack.EMPTY);
             extraInventory.dirty = false;
-            List<ItemStack> list = ItemStack.OPTIONAL_LIST_STREAM_CODEC.decode(buffer);
+            List<ItemStack> list = PortItemStackExtension.optionalListStreamCodec().decode(buffer);
             for (int i = 0; i < size; i++) {
                 extraInventory.setItem(i, list.get(i));
             }
@@ -85,13 +84,13 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         }
 
         @Override
-        public void encode(RegistryFriendlyByteBuf buffer, ExtraInventory extraInventory) {
+        public void encode(PortRegistryFriendlyByteBuf buffer, ExtraInventory extraInventory) {
             buffer.writeVarInt(extraInventory.getSizeAccessoryDye());
             List<ItemStack> list = new ArrayList<>();
             for (int i = 0; i < extraInventory.getContainerSize(); i++) {
                 list.add(i, extraInventory.getItem(i));
             }
-            ItemStack.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, list);
+            PortItemStackExtension.optionalListStreamCodec().encode(buffer, list);
         }
     };
 
@@ -228,7 +227,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
                     hookItem.onUnequip(player, itemStack, previous);
                 }
                 if (i - VANITY_ARMOR_START == VANITY_HEAD_INDEX) {
-                    VisibilityPacketS2C.sendSunglasses(player, TriState.DEFAULT, itemStack.is(VanityArmorItems.SUNGLASSES) ? TriState.TRUE : TriState.FALSE);
+                    VisibilityPacketS2C.sendSunglasses(player, PortTriState.DEFAULT, itemStack.is(VanityArmorItems.SUNGLASSES.get()) ? PortTriState.TRUE : PortTriState.FALSE);
                 }
                 previousStacks.set(i, itemStack.copy());
             }
@@ -256,17 +255,10 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     // 需要晚于Curios Api
     public void initialize(ServerPlayer player) {
         if (initialized) return;
-        Optional<ICuriosItemHandler> inventory = CuriosApi.getCuriosInventory(player);
-        updateAccessorySize(player, inventory.map(handler -> {
+        updateAccessorySize(player, CuriosApi.getCuriosInventory(player).resolve().map(handler -> {
             ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
             return accessory == null ? 0 : accessory.getSlots();
         }).orElse(0));
-        inventory.ifPresent(handler -> {
-            BiConsumer<Integer, ICurioStacksHandler> function = (i, t) -> equipment.set(i, new CurioStackWithDye(0, t, equipment.get(i)));
-            handler.getStacksHandler(CuriosHelper.PET_KEY).ifPresent(t -> function.accept(PET_INDEX, t));
-            handler.getStacksHandler(CuriosHelper.LIGHT_PET_KEY).ifPresent(t -> function.accept(LIGHT_PET_INDEX, t));
-            handler.getStacksHandler(CuriosHelper.MOUNT_KEY).ifPresent(t -> function.accept(MOUNT_INDEX, t));
-        });
         this.initialized = true;
     }
 
@@ -292,7 +284,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
 
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
+        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
         CompoundTag tag = new CompoundTag();
         ListTag t = new ListTag();
         for (IStackWithDye stack : vanityArmor) t.add(stack.encode(ops));
@@ -315,13 +307,13 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     }
 
     private static Tag encode(ItemStack stack, DynamicOps<Tag> ops) {
-        return ItemStack.OPTIONAL_CODEC.encodeStart(ops, stack).result().orElseGet(CompoundTag::new);
+        return PortItemStackExtension.optionalCodec().encodeStart(ops, stack).result().orElseGet(CompoundTag::new);
     }
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         if (nbt.getBoolean("confluence:fixed")) {
-            RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
+            RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
             ListTag t = nbt.getList("VanityArmor", Tag.TAG_COMPOUND);
             for (int i = 0; i < vanityArmor.size(); i++) {
                 vanityArmor.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
@@ -335,31 +327,6 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             this.trash = decode(nbt.getCompound("Trash"), ops);
             t = nbt.getList("AccessoryDye", Tag.TAG_COMPOUND);
             encodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), ops);
-        } else { // todo 1.3.0时删除
-            int size = nbt.contains("Size", Tag.TAG_INT) ? nbt.getInt("Size") : getContainerSize();
-            this.accessoryDye = NonNullList.withSize(size - 25, ItemStack.EMPTY);
-            ListTag tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
-            for (int i = 0; i < tagList.size(); i++) {
-                CompoundTag itemTags = tagList.getCompound(i);
-                int slot = itemTags.getInt("Slot");
-                if (slot < 0 || slot >= size) continue;
-                ItemStack.parse(provider, itemTags).ifPresent(stack -> {
-                    if (slot < 4) setVanityArmor(slot, stack, false);
-                    else if (slot < 8) setCoins(slot - 4, stack);
-                    else if (slot < 12) setAmmo(slot - 8, stack);
-                    else if (slot == 12) setEquipment(PET_INDEX, stack, false);
-                    else if (slot == 13) setEquipment(LIGHT_PET_INDEX, stack, false);
-                    else if (slot == 14) setEquipment(MINECART_INDEX, stack, false);
-                    else if (slot == 15) setEquipment(HOOK_INDEX, stack, false);
-                    else if (slot == 16) setTrash(stack);
-                    else if (slot < 21) setVanityArmor(slot - 17, stack, true);
-                    else if (slot == 21) setEquipment(PET_INDEX, stack, true);
-                    else if (slot == 22) setEquipment(LIGHT_PET_INDEX, stack, true);
-                    else if (slot == 23) setEquipment(MINECART_INDEX, stack, true);
-                    else if (slot == 24) setEquipment(HOOK_INDEX, stack, true);
-                    else if (slot < 25 + accessoryDye.size()) setAccessoryDye(slot - 25, stack);
-                });
-            }
         }
     }
 
@@ -370,7 +337,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     }
 
     private static ItemStack decode(CompoundTag tag, DynamicOps<Tag> ops) {
-        return ItemStack.OPTIONAL_CODEC.parse(ops, tag).result().orElse(ItemStack.EMPTY);
+        return PortItemStackExtension.optionalCodec().parse(ops, tag).result().orElse(ItemStack.EMPTY);
     }
 
     public void copyFrom(ExtraInventory other) {
@@ -494,7 +461,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
 
     public static ItemStack getProjectile(ItemStack projectile, ItemStack weapon, LivingEntity living) {
         if (projectile.isEmpty() && weapon.getItem() instanceof ProjectileWeaponItem weaponItem && living instanceof Player player) {
-            Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
+            Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles();
             ExtraInventory extraInventory = of(player);
             for (int i = 0; i < SIZE_AMMO; i++) {
                 ItemStack ammo = extraInventory.getAmmo(i);
@@ -507,7 +474,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     }
 
     public static ExtraInventory of(LivingEntity living) {
-        ExtraInventory extraInventory = living.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        ExtraInventory extraInventory = PortEntityExtension.getAttach(living, ModAttachmentTypes.EXTRA_INVENTORY);
         extraInventory.living = living;
         return extraInventory;
     }
@@ -582,7 +549,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             ItemStack from = getStack();
             handler.getStacks().setStackInSlot(slot, stack);
             if (living != null) {
-                NeoForge.EVENT_BUS.post(new CurioChangeEvent(living, handler.getIdentifier(), slot, from, stack));
+                PortEventHandler.postEvent(new CurioChangeEvent(living, handler.getIdentifier(), slot, from, stack));
             }
             return this;
         }

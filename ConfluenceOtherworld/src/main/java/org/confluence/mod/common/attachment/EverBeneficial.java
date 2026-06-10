@@ -1,13 +1,14 @@
 package org.confluence.mod.common.attachment;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.UnknownNullability;
+import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 
-public class EverBeneficial implements INBTSerializable<CompoundTag> {
+public class EverBeneficial implements IPortNBTSerializable<CompoundTag> {
     private int lifeCrystals;
     private int lifeFruits;
 
@@ -169,6 +170,6 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
     }
 
     public static EverBeneficial of(LivingEntity living) {
-        return living.getData(ModAttachmentTypes.EVER_BENEFICIAL);
+        return PortEntityExtension.getAttach(living, ModAttachmentTypes.EVER_BENEFICIAL);
     }
 }

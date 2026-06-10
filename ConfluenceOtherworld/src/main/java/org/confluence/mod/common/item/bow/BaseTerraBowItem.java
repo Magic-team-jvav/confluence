@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.bow;
 
-import net.minecraft.core.Holder;
+import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -12,7 +13,6 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
@@ -22,17 +22,16 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terraentity.attachment.WeaponStorage;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
+import org.mesdag.portlib.wrapper.common.extensions.IPortBowItemExtension;
 
 import java.util.List;
 
 /// 泰拉弓箭基类
 ///
 /// @author Coffee
-public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem> {
+public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem>, IPortBowItemExtension {
     private final float baseDamage;
     private final BaseArrowEntity.Builder arrowModifier;
     private final BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder;
@@ -60,12 +59,12 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
     }
 
     @Override
-    public boolean supportsEnchantment(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return ModUtils.supportsEnchantment(stack, enchantment);
     }
 
     @Override
-    public @NotNull AbstractArrow customArrow(@NotNull AbstractArrow arrow, @NotNull ItemStack projectileStack, @NotNull ItemStack weaponStack) {
+    public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
         int multiShoot = modifyArrowBuilder.multiShoot;
         if (modifyArrowBuilder.canMultiShoot.test(projectileStack)) {
             // 可以分裂但不满足条件没有分裂的箭伤害合成一支箭
@@ -79,9 +78,9 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
     }
 
     @Override
-    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
-        super.releaseUsing(stack, level, entity, timeLeft);
-        if (!stack.is(ModTags.Items.FAST_BOW) || !(entity instanceof Player player)) {
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
+        releaseUsing1211(stack, level, living, timeLeft);
+        if (!stack.is(ModTags.Items.FAST_BOW) || !(living instanceof Player player)) {
             return;
         }
         player.getCooldowns().addCooldown(this, 5);
@@ -92,8 +91,8 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
     }
 
     @Override
-    protected void shoot(@NotNull ServerLevel level, @NotNull LivingEntity shooter, @NotNull InteractionHand hand, @NotNull ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
-        float processProjectileSpread = EnchantmentHelper.processProjectileSpread(level, weapon, shooter, 0.0F);
+    public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
+        float processProjectileSpread = 1/* todo EnchantmentHelper.processProjectileSpread(level, weapon, shooter, 0.0F)*/;
         float angleIncrement = projectileItems.size() == 1 ? 0.0F : 2.0F * processProjectileSpread / (float) (projectileItems.size() - 1);
         float initialAngleOffset = (float) ((projectileItems.size() - 1) % 2) * angleIncrement / 2.0F;
         float signFactor = 1.0F;
@@ -110,26 +109,24 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
             for (int projectileIndex = 0; projectileIndex < multiShootCount; projectileIndex++) {
 //                float angleIncrement = multiShootCount * 5 - projectileIndex * 10f;
                 Projectile projectile = createProjectile(level, shooter, weapon, itemstack, isCrit);
-                shootProjectile(shooter, projectile, itemstackIndex, velocity* 2.0F, inaccuracy + modifyArrowBuilder.inaccuracy, angleY, target);
+                shootProjectile(shooter, projectile, itemstackIndex, velocity * 2.0F, inaccuracy + modifyArrowBuilder.inaccuracy, angleY, target);
                 var multiShootOffset = modifyArrowBuilder.multiShootOffset;
-                if (multiShootOffset != null) {// 多重射击初始位置偏移
+                if (multiShootOffset != null) { // 多重射击初始位置偏移
                     transformAndApplyOffsetToProjectile(projectile, multiShootOffset.apply(projectileIndex, multiShootCount));
                 }
                 processArrowBaseEffects(shooter, hand, weapon, projectile, projectileIndex, multiShootCount);
                 level.addFreshEntity(projectile);
             }
 
-            weapon.hurtAndBreak(getDurabilityUse(itemstack), shooter, LivingEntity.getSlotForHand(hand));
+            PortItemStackExtension.hurtAndBreak(weapon, getDurabilityUse(itemstack), shooter, PortLivingEntityExtension.getSlotForHand(hand));
             if (weapon.isEmpty()) {
                 break;
             }
         }
     }
 
-    /**
-     * 箭矢基础处理 - 设置多重射击箭不可拾取、应用短弓属性、调用特殊效果处理
-     */
-    public static void processArrowBaseEffects(@NotNull LivingEntity shooter, @NotNull InteractionHand hand, @NotNull ItemStack weapon, Projectile projectile, int projectileIndex, int multiShootCount) {
+    /// 箭矢基础处理 - 设置多重射击箭不可拾取、应用短弓属性、调用特殊效果处理
+    public static void processArrowBaseEffects(LivingEntity shooter, InteractionHand hand, ItemStack weapon, Projectile projectile, int projectileIndex, int multiShootCount) {
         if (!(projectile instanceof AbstractArrow abstractArrow)) {
             return;
         }
@@ -141,10 +138,8 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
         processArrowSpecialEffects(shooter, abstractArrow, multiShootCount);
     }
 
-    /**
-     * 箭矢特殊效果处理 - 设置多重射击箭自动丢弃时间、处理满蓄力状态
-     */
-    public static void processArrowSpecialEffects(@NotNull LivingEntity shooter, AbstractArrow abstractArrow, int multiShootCount) {
+    /// 箭矢特殊效果处理 - 设置多重射击箭自动丢弃时间、处理满蓄力状态
+    public static void processArrowSpecialEffects(LivingEntity shooter, AbstractArrow abstractArrow, int multiShootCount) {
         if (!(abstractArrow instanceof BaseArrowEntity terraArrow)) {
             return;
         }
@@ -160,9 +155,7 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
         }
     }
 
-    /**
-     * 将偏移向量转换到发射物的局部坐标系并应用位置偏移
-     */
+    /// 将偏移向量转换到发射物的局部坐标系并应用位置偏移
     public static void transformAndApplyOffsetToProjectile(Projectile projectile, Vec3 offset) {
         Vec3 initDirection = projectile.getDeltaMovement();
         float yaw = (float) (-Math.atan2(initDirection.z, initDirection.x));
@@ -174,11 +167,11 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
     }
 
     @Override
-    public void onUseTick(@NotNull Level level, @NotNull LivingEntity entity, @NotNull ItemStack stack, int remainingUseDuration) {
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
         if (arrowModifier.fullPullHitEffects == null) {
             return;
         }
-        float f = getUseDuration(stack, entity) - remainingUseDuration;
+        float f = getUseDuration(stack) - remainingUseDuration;
         if (f < 16) {
             WeaponStorage.of(entity).bowFullPull = false;
             return;
@@ -192,7 +185,7 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         // 伤害
         BaseTerraArrowItem.addDamageHoverText(tooltipComponents, modifyArrowBuilder, baseDamage);
         // 命中效果
@@ -204,12 +197,12 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
     }
 
     @Override
-    public boolean isEnchantable(@NotNull ItemStack stack) {
+    public boolean isEnchantable(ItemStack stack) {
         return true;
     }
 
     @Override
-    public boolean shouldCauseReequipAnimation(@NotNull ItemStack oldStack, @NotNull ItemStack newStack, boolean slotChanged) {
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return false;
     }
 

@@ -6,19 +6,16 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.terraentity.api.entity.IGeneration;
-import org.confluence.terraentity.registries.generation.GenerationProvider;
-import org.confluence.terraentity.registries.generation.GenerationProviderTypes;
+import org.confluence.mod.api.IGeneration;
+import org.confluence.mod.common.generation.GenerationProvider;
+import org.confluence.mod.common.init.ModGenerationProviderTypes;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-/**
- * <h1>直线弹幕</h1>
- */
+/// # 直线弹幕
 public record ForwardGeneration(float offsetY, float inaccuracy) implements IGeneration {
-
-    public static MapCodec<ForwardGeneration> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
+    public static final MapCodec<ForwardGeneration> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
             Codec.FLOAT.fieldOf("offsetY").forGetter(ForwardGeneration::offsetY),
             Codec.FLOAT.fieldOf("inaccuracy").forGetter(ForwardGeneration::inaccuracy)
     ).apply(instance, ForwardGeneration::new));
@@ -40,8 +37,6 @@ public record ForwardGeneration(float offsetY, float inaccuracy) implements IGen
 
     @Override
     public GenerationProvider getCodec() {
-        return GenerationProviderTypes.FORWARD_GENERATION.get();
+        return ModGenerationProviderTypes.FORWARD_GENERATION.get();
     }
-
-
 }

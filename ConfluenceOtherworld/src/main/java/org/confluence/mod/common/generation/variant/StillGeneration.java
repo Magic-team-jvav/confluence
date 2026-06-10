@@ -7,17 +7,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.terraentity.api.entity.IGeneration;
-import org.confluence.terraentity.registries.generation.GenerationProvider;
-import org.confluence.terraentity.registries.generation.GenerationProviderTypes;
-import org.confluence.terraentity.utils.TEUtils;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.api.IGeneration;
+import org.confluence.mod.common.generation.GenerationProvider;
+import org.confluence.mod.common.init.ModGenerationProviderTypes;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
 public record StillGeneration(Vec3 offset) implements IGeneration {
-
-    public static MapCodec<StillGeneration> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
+    public static final MapCodec<StillGeneration> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
             Vec3.CODEC.fieldOf("offset").forGetter(StillGeneration::offset)
     ).apply(instance, StillGeneration::new));
 
@@ -33,7 +32,7 @@ public record StillGeneration(Vec3 offset) implements IGeneration {
         // todo 计算yaw
         Vec3 pos = owner.position().add(0,1,0);
         if(owner instanceof Player player){
-            pos = pos.add(TEUtils.getPlayerHandPos(player));
+            pos = pos.add(LibEntityUtils.getPlayerHandPos(player));
         }
         projectile.setPos(pos);
         owner.level().addFreshEntity(projectile);
@@ -41,8 +40,6 @@ public record StillGeneration(Vec3 offset) implements IGeneration {
 
     @Override
     public GenerationProvider getCodec() {
-        return GenerationProviderTypes.FORWARD_GENERATION.get();
+        return ModGenerationProviderTypes.STILL.get();
     }
-
-
 }

@@ -1,24 +1,23 @@
 package org.confluence.mod.common.init;
 
-import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.*;
-
-import java.util.function.Supplier;
+import org.mesdag.portlib.attachment.PortAttachmentType;
+import org.mesdag.portlib.registries.PortAttachmentRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
+import org.mesdag.portlib.registries.PortRegistryEntry;
 
 public final class ModAttachmentTypes {
-    public static final DeferredRegister<AttachmentType<?>> TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, Confluence.MODID);
+    public static final PortAttachmentRegistration TYPES = PortRegisterHandler.attachment(Confluence.MODID);
 
-    public static final Supplier<AttachmentType<ManaStorage>> MANA_STORAGE = TYPES.register("mana", () -> AttachmentType.serializable(ManaStorage::new).copyOnDeath().build());
-//    public static final Supplier<AttachmentType<SoulStorage>> SOUL_STORAGE = TYPES.register("soul", () -> AttachmentType.serializable(SoulStorage::new).copyOnDeath().build());
-    public static final Supplier<AttachmentType<EverBeneficial>> EVER_BENEFICIAL = TYPES.register("ever_beneficial", () -> AttachmentType.serializable(EverBeneficial::new).copyOnDeath().build());
-    public static final Supplier<AttachmentType<ExtraInventory>> EXTRA_INVENTORY = TYPES.register("extra_inventory", () -> AttachmentType.serializable(() -> new ExtraInventory(true)).copyOnDeath().build());
-    public static final Supplier<AttachmentType<PlayerPiggyBankContainer>> PIGGY_BANK = TYPES.register("piggy_bank", () -> AttachmentType.serializable(PlayerPiggyBankContainer::new).copyOnDeath().build());
-    public static final Supplier<AttachmentType<PlayerSafeContainer>> SAFE = TYPES.register("safe", () -> AttachmentType.serializable(PlayerSafeContainer::new).copyOnDeath().build());
-    public static final Supplier<AttachmentType<PlayerSpecialData>> SPECIAL_DATA = TYPES.register("special_data", () -> AttachmentType.serializable(PlayerSpecialData::new).copyOnDeath().build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ManaStorage>> MANA_STORAGE = TYPES.register("mana", () -> PortAttachmentType.serializable(ManaStorage::new).copyOnDeath().build());
+    //    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<SoulStorage>> SOUL_STORAGE = TYPES.register("soul", () -> PortAttachmentType.serializable(SoulStorage::new).copyOnDeath().build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<EverBeneficial>> EVER_BENEFICIAL = TYPES.register("ever_beneficial", () -> PortAttachmentType.serializable(EverBeneficial::new).copyOnDeath().build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ExtraInventory>> EXTRA_INVENTORY = TYPES.register("extra_inventory", () -> PortAttachmentType.serializable(() -> new ExtraInventory(true)).copyOnDeath().build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<PlayerPiggyBankContainer>> PIGGY_BANK = TYPES.register("piggy_bank", () -> PortAttachmentType.serializable(PlayerPiggyBankContainer::new).copyOnDeath().build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<PlayerSafeContainer>> SAFE = TYPES.register("safe", () -> PortAttachmentType.serializable(PlayerSafeContainer::new).copyOnDeath().build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<PlayerSpecialData>> SPECIAL_DATA = TYPES.register("special_data", () -> PortAttachmentType.serializable(PlayerSpecialData::new).copyOnDeath().build());
 
-    public static final Supplier<AttachmentType<ChunkBrushData>> CHUNK_BRUSH_DATA = TYPES.register("chunk_brush_data", () -> AttachmentType.serializable(ChunkBrushData::new).build());
-    public static final Supplier<AttachmentType<ChunkDropletsData>> CHUNK_DROPLETS_DATA = TYPES.register("chunk_droplets_data", () -> AttachmentType.serializable(ChunkDropletsData::new).build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ChunkBrushData>> CHUNK_BRUSH_DATA = TYPES.register("chunk_brush_data", () -> PortAttachmentType.serializable(ChunkBrushData::new).build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ChunkDropletsData>> CHUNK_DROPLETS_DATA = TYPES.register("chunk_droplets_data", () -> PortAttachmentType.serializable(ChunkDropletsData::new).build());
 }

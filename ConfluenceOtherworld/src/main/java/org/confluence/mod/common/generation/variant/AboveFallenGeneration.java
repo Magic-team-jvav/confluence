@@ -13,6 +13,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.AimUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.IGeneration;
+import org.confluence.mod.common.generation.GenerationProvider;
+import org.confluence.mod.common.init.ModGenerationProviderTypes;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -47,7 +49,7 @@ public record AboveFallenGeneration(
         var projectile = proj.get();
         if (projectile == null) return;
         Vec3 eye = owner.getEyePosition();
-        LivingEntity target = LibEntityUtils.getAABBAngleTarget(eye, eye.add(owner.getForward().normalize().scale(range)), owner.level(), owner, range, maxAngle, e -> TEUtils.projectileCanHurtEntityTest.test(projectile, e));
+        LivingEntity target = LibEntityUtils.getAABBAngleTarget(eye, eye.add(owner.getForward().normalize().scale(range)), owner.level(), owner, range, maxAngle, e -> LibEntityUtils.canHitEntity(e, projectile.getOwner()));
         float actualInaccuracy;
         Vec3 firePos, projVel;
         Vec3 fireLocOffset = new Vec3(
@@ -86,7 +88,6 @@ public record AboveFallenGeneration(
 
     @Override
     public GenerationProvider getCodec() {
-        return GenerationProviderTypes.ABOVE_FALLEN.get();
+        return ModGenerationProviderTypes.ABOVE_FALLEN.get();
     }
-
 }

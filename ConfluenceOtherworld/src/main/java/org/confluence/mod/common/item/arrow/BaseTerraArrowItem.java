@@ -1,9 +1,8 @@
 package org.confluence.mod.common.item.arrow;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
+import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.EntityType;
@@ -22,20 +21,14 @@ import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.init.TEDataComponentTypes;
-import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class BaseTerraArrowItem extends ArrowItem {
     public static final String ARROW_TRANSFORM_TEXT = "tooltip.item.confluence.arrow_transform";
     public static final String BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT = "tooltip.item.confluence.bow_full_pull_on_hit_effects";
@@ -51,7 +44,7 @@ public class BaseTerraArrowItem extends ArrowItem {
     }
 
     public BaseTerraArrowItem(ModRarity rarity, @Nullable BaseArrowEntity.Factory modifier) {
-        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        super(PortItemExtension.Properties.component(new Properties(), ConfluenceMagicLib.MOD_RARITY, rarity));
         this.modifier = modifier;
         if (modifier != null) {
             attributes = modifier.attr.get();

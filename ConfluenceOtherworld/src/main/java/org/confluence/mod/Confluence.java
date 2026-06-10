@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
+import org.mesdag.portlib.network.PortNetworkHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +28,7 @@ public final class Confluence {
     public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
+    public static final PortNetworkHandler NETWORK_HANDLER = new PortNetworkHandler(MODID, "1");
 
     public Confluence(FMLJavaModLoadingContext context) {
         IEventBus eventBus = context.getModEventBus();
@@ -46,7 +48,9 @@ public final class Confluence {
         ModEnchantments.register(eventBus);
         ModAdvancements.register(eventBus);
 
+        ModCustomRegistries.init();
         ModTrackTypeProviderTypes.init();
+        ModGenerationProviderTypes.init();
         TFReferences.init();
         ModFluids.initialize();
         ModPrefix.initialize();
@@ -94,9 +98,5 @@ public final class Confluence {
 
     public static <T> TagKey<T> asTagKey(ResourceKey<Registry<T>> registryKey, String path) {
         return TagKey.create(registryKey, asResource(path));
-    }
-
-    public static <P extends IPacket> CustomPacketPayload.Type<P> createType(String id) {
-        return new CustomPacketPayload.Type<>(asResource(id));
     }
 }

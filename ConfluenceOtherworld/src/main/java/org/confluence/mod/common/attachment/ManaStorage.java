@@ -1,12 +1,11 @@
 package org.confluence.mod.common.attachment;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -16,8 +15,10 @@ import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.ApiStatus;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 
-public class ManaStorage implements INBTSerializable<CompoundTag> {
+public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
     private int stars;
     private int additionalMana;
     private float currentMana;
@@ -143,8 +144,8 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     public void flushAbility(ServerPlayer player) {
         this.fastManaRegeneration = TCUtils.hasType(player, AccessoryItems.FAST$MANA$GENERATION);
         int value = TCUtils.getValue(player, AccessoryItems.ADDITIONAL$MANA);
-        if (player.hasEffect(ModEffects.CLAIRVOYANCE)) value += 20;
-        AdditionalManaEvent event = NeoForge.EVENT_BUS.post(new AdditionalManaEvent(player, this, value, additionalMana));
+        if (player.hasEffect(ModEffects.CLAIRVOYANCE.get())) value += 20;
+        AdditionalManaEvent event = PortEventHandler.postEventWithReturn(new AdditionalManaEvent(player, this, value, additionalMana));
         if (!event.isCanceled() && event.getNeoValue() != additionalMana) {
             this.additionalMana = event.getNeoValue();
             freshMaxMana();
@@ -167,6 +168,6 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     }
 
     public static ManaStorage of(LivingEntity living) {
-        return living.getData(ModAttachmentTypes.MANA_STORAGE);
+        return PortEntityExtension.getAttach(living, ModAttachmentTypes.MANA_STORAGE);
     }
 }

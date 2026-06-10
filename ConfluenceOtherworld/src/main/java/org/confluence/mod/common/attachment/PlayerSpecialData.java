@@ -1,5 +1,9 @@
 package org.confluence.mod.common.attachment;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
+import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.common.collect.Iterables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -20,9 +24,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -36,9 +39,8 @@ import org.confluence.mod.network.s2c.SyncEnemyBannerEntriesPacketS2C;
 import org.confluence.terra_curio.common.attachment.PrimitiveValueHolder;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.api.npc.trade.ITradeHolder;
-import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.jetbrains.annotations.NotNull;
+import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.*;
 
@@ -165,10 +167,10 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
             }
         }
         if (enemyBannerEntries.isEmpty()) {
-            player.removeEffect(ModEffects.ENEMY_BANNER);
+            player.removeEffect(ModEffects.ENEMY_BANNER.get());
         }
         if (entries != null) {
-            PacketDistributor.sendToPlayer(player, new SyncEnemyBannerEntriesPacketS2C(entries));
+            Confluence.NETWORK_HANDLER.sendToPlayer(player, new SyncEnemyBannerEntriesPacketS2C(entries));
         }
     }
 
@@ -245,7 +247,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
             }
         }
 
-        NeoForge.EVENT_BUS.post(new AfterFlushArmorSetBonusEvent(player, this));
+        PortEventHandler.postEvent(new AfterFlushArmorSetBonusEvent(player, this));
     }
 
     private void flushArmor(ItemStack stack) {
@@ -256,28 +258,28 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
+        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
         CompoundTag tag = super.serializeNBT(provider);
 
-        ArmorSetBonusKey.CODEC.encodeStart(ops, armorSetBonusKey).ifSuccess(nbt -> tag.put("ArmorBonusKey", nbt));
-        ItemStack.OPTIONAL_CODEC.encodeStart(ops, currentQuestedFish).ifSuccess(nbt -> tag.put("CurrentQuestedFish", nbt));
+        PortDataResultExtension.ifSuccess(ArmorSetBonusKey.CODEC.encodeStart(ops, armorSetBonusKey), nbt -> tag.put("ArmorBonusKey", nbt));
+        PortDataResultExtension.ifSuccess(PortItemStackExtension.optionalCodec().encodeStart(ops, currentQuestedFish), nbt -> tag.put("CurrentQuestedFish", nbt));
         ITradeLock.TYPED_CODEC.encodeStart(ops, currentQuestedFishCondition).ifSuccess(nbt -> tag.put("CurrentQuestedFishCondition", nbt));
         tag.putBoolean("CouldHurtCritters", couldHurtCritters);
 //        tag.putBoolean("FallenSoulCoreActive", fallenSoulCoreActive);
-        Team.CODEC.encodeStart(ops, team).ifSuccess(nbt -> tag.put("Team", nbt));
+        PortDataResultExtension.ifSuccess(Team.CODEC.encodeStart(ops, team), nbt -> tag.put("Team", nbt));
         tag.putBoolean("PVP", pvp);
         return tag;
     }
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
+        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
         super.deserializeNBT(provider, nbt);
 
         if (nbt.contains("ArmorBonusKey")) {
             this.armorSetBonusKey = ArmorSetBonusKey.CODEC.parse(ops, nbt.get("ArmorBonusKey")).result().orElse(ArmorSetBonusKey.NONE);
         }
-        this.currentQuestedFish = ItemStack.OPTIONAL_CODEC.parse(ops, nbt.get("CurrentQuestedFish")).result().orElse(ItemStack.EMPTY);
+        this.currentQuestedFish = PortItemStackExtension.optionalCodec().parse(ops, nbt.get("CurrentQuestedFish")).result().orElse(ItemStack.EMPTY);
         this.currentQuestedFishCondition = ITradeLock.TYPED_CODEC.parse(ops, nbt.get("CurrentQuestedFishCondition")).result().orElse(ITradeLock.alwaysTrue());
         this.couldHurtCritters = nbt.getBoolean("CouldHurtCritters");
 //        this.fallenSoulCoreActive = nbt.getBoolean("FallenSoulCoreActive");
@@ -286,7 +288,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
     }
 
     public static PlayerSpecialData of(Player player) {
-        return player.getData(ModAttachmentTypes.SPECIAL_DATA);
+        return PortEntityExtension.getAttach(player, ModAttachmentTypes.SPECIAL_DATA);
     }
 
     public static void resetSomeData(Player player) {
@@ -309,7 +311,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
                 }
             }
         }
-        if (player.getActiveEffectsMap().get(ModEffects.ENEMY_BANNER) == null) {
+        if (player.getActiveEffectsMap().get(ModEffects.ENEMY_BANNER.get()) == null) {
             data.clearEnemyBannerEntries();
         } else if (player instanceof ServerPlayer serverPlayer) {
             data.syncEnemyBannerEntries(serverPlayer);

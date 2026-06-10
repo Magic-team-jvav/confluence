@@ -1,7 +1,7 @@
 package org.confluence.mod.common.item.crossbow;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -18,7 +18,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -33,14 +32,11 @@ import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.lib.util.EnchantmentUtils;
@@ -57,20 +53,17 @@ import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.mod.network.s2c.RepeaterShootingPayloadS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.RepeaterContentsComponentHandler;
-import org.confluence.terraentity.api.item.ILeftClickStateItem;
-import org.confluence.terraentity.attachment.WeaponStorage;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.mesdag.portlib.wrapper.common.extensions.IPortCrossbowItemExtension;
+import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem>, ILeftClickStateItem {
+public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem>, ILeftClickStateItem, IPortCrossbowItemExtension {
     public static final List<Component> TOOLTIP = TooltipItem.getTooltipsFromString("repeater", 2, ChatFormatting.GRAY);
 
     public static final String ATTACK_SPEED_TEXT = "attribute.name.repeater.attack_speed";
@@ -84,7 +77,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     public static final String REPEATER_CONTINUOUS_SHOOTING = "repeater.continuous_shooting";
     public static final String REPEATER_SHOOTING = "repeater.shooting";
 
-    private static final ResourceLocation ID = Confluence.asResource(EquipmentSlotGroup.MAINHAND.getSerializedName());
+    private static final ResourceLocation ID = Confluence.asResource(PortEquipmentSlotGroup.MAINHAND.getSerializedName());
     private static final ChargingSounds DEFAULT_SOUNDS = new ChargingSounds(
             Optional.of(SoundEvents.CROSSBOW_LOADING_START),
             Optional.of(SoundEvents.CROSSBOW_LOADING_MIDDLE),
@@ -173,13 +166,11 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         this.modifyArrowBuilder = modifyArrowBuilder;
     }
 
-    /**
-     * 构造连弩
-     *
-     * @param baseDamage            基础伤害
-     * @param bowModifyArrowBuilder 箭矢修改构建器
-     * @param repeaterBuilder       连弩构建器
-     */
+    /// 构造连弩
+    ///
+    /// @param baseDamage            基础伤害
+    /// @param bowModifyArrowBuilder 箭矢修改构建器
+    /// @param repeaterBuilder       连弩构建器
     public BaseTerraRepeaterItem(float baseDamage, BaseTerraArrowItem.ModifyArrowBuilder bowModifyArrowBuilder, Builder repeaterBuilder) {
         this(new Properties(), baseDamage, bowModifyArrowBuilder, repeaterBuilder);
     }
@@ -280,7 +271,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     public static boolean isCharged(ItemStack crossbowStack) {
-        RepeaterContents contents = crossbowStack.get(ModDataComponentTypes.REPEATER_CONTENTS);
+        RepeaterContents contents = PortItemStackExtension.getData(crossbowStack, ModDataComponentTypes.REPEATER_CONTENTS);
         return contents != null && !contents.isEmpty();
     }
 
@@ -366,7 +357,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     @Override
-    protected void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
+    public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
         float processProjectileSpread = EnchantmentHelper.processProjectileSpread(level, weapon, shooter, 0.0F);
         int projectileItemsCount = projectileItems.size();
 

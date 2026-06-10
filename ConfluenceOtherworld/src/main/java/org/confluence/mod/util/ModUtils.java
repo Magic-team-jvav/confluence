@@ -1,12 +1,12 @@
 package org.confluence.mod.util;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -19,7 +19,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -34,7 +33,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -49,8 +47,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
@@ -78,11 +74,6 @@ import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_guns.TerraGuns;
-import org.confluence.terraentity.TerraEntity;
-import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -92,7 +83,7 @@ import java.util.Set;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
 public final class ModUtils {
-    public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
+    public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraGuns.MODID);
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {
@@ -121,8 +112,8 @@ public final class ModUtils {
         return key != null && CONFLUENCE_NAMESPACES.contains(key.getNamespace());
     }
 
-    public static boolean isWaterBottle(ItemStack itemStack) {
-        return itemStack.is(PotionItems.BOTTLED_WATER) || itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
+    public static boolean isWaterBottle(ItemStack stack) {
+        return stack.is(PotionItems.BOTTLED_WATER.get()) || stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss, boolean onSurface) {
@@ -264,10 +255,10 @@ public final class ModUtils {
     }
 
     /// 不可破坏物品无法附魔耐久与经验修补
-    public static boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
-        boolean supportedItem = stack.is(enchantment.value().definition().supportedItems());
-        if (stack.has(DataComponents.UNBREAKABLE)) {
-            return supportedItem && !enchantment.is(Enchantments.UNBREAKING) && !enchantment.is(Enchantments.MENDING);
+    public static boolean supportsEnchantment(ItemStack stack, Enchantment enchantment) {
+        boolean supportedItem = enchantment.category.canEnchant(stack.getItem());
+        if (PortItemStackExtension.getUnbreakable(stack)) {
+            return supportedItem && enchantment != Enchantments.UNBREAKING && enchantment != Enchantments.MENDING;
         }
         return supportedItem;
     }

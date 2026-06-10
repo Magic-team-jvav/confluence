@@ -17,7 +17,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -51,6 +50,7 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.TEEffects;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +66,7 @@ public final class ModArmorBonus {
             LibAttributes.getCriticalChance(),
             Confluence.asResource("wizard_hat_set_bonus"),
             0.1,
-            AttributeModifier.Operation.ADD_VALUE
+            PortAttributeModifier.PortOperation.ADD_VALUE
     )), 1);
     public static final ArmorSetBonusData MAGIC_HAT_SET_BONUS = new ArmorSetBonusData(PrimitiveValueComponent.of(AccessoryItems.ADDITIONAL$MANA, 60), 1);
     // endregion
@@ -100,12 +100,12 @@ public final class ModArmorBonus {
     @SuppressWarnings("all")
     public static void registerArmorSetBonus() {
         register("mining_set", 1, MINING_HELMET, MINING_CHESTPLATE, MINING_LEGGINGS, MINING_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BLOCK_BREAK_SPEED, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BLOCK_BREAK_SPEED, key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
         });
         register("plank_set", 1, PLANK_HELMET, PLANK_CHESTPLATE, PLANK_LEGGINGS, PLANK_BOOTS, armor(1));
         register("ash_set", 1, ASH_HELMET, ASH_CHESTPLATE, ASH_LEGGINGS, ASH_BOOTS, key -> {
             key.of(TCItems.LAVA$HURT$REDUCE, 0.5F);
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BURNING_TIME, key.id, -0.35, AttributeModifier.Operation.ADD_VALUE));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BURNING_TIME, key.id, -0.35, PortAttributeModifier.PortOperation.ADD_VALUE));
         });
         register("snow_set", 1, SNOW_CAPS, SNOW_SUITS, INSULATED_PANTS, INSULATED_SHOES, key -> {
             key.unit(TCItems.FROZEN$IMMUNE);
@@ -115,8 +115,8 @@ public final class ModArmorBonus {
         });
         register("angler_set", 1, ANGLER_HAT, ANGLER_VEST, ANGLER_PANTS, Items.AIR, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
-                    .add(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, key.id, -0.23, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, key.id, -0.30, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, key.id, -0.23, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, key.id, -0.30, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
         register("cactus_set", 1, CACTUS_HELMET, CACTUS_CHESTPLATE, CACTUS_LEGGINGS, CACTUS_BOOTS, key -> {
@@ -126,26 +126,26 @@ public final class ModArmorBonus {
         register("tin_set", 1, TIN_HELMET, TIN_CHESTPLATE, TIN_LEGGINGS, TIN_BOOTS, armor(2));
         register("pumpkin_set", 1, PUMPKIN_HELMET, PUMPKIN_CHESTPLATE, PUMPKIN_LEGGINGS, PUMPKIN_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
-                    .add(LibAttributes.getAttackDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(LibAttributes.getRangedDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(LibAttributes.getMagicDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(LibAttributes.getSummonDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getAttackDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getRangedDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getMagicDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getSummonDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
         register("ninja_set", 1, NINJA_HELMET, NINJA_CHESTPLATE, NINJA_LEGGINGS, NINJA_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
             // todo 移动时身后有拖影效果
         });
         register("guards_set", 1, GUARDS_HELMET, GUARDS_CHESTPLATE, GUARDS_LEGGINGS, GUARDS_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.1F);
         });
         register("spelunker_set", 2, SPELUNKER_HELMET, SPELUNKER_CHESTPLATE, SPELUNKER_LEGGINGS, SPELUNKER_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, PortAttributeModifier.PortOperation.ADD_VALUE));
             // todo 蜡烛粒子
             key.of(ENHANCE$EFFECT$DURATION, Object2IntMaps.singleton(ModEffects.SPELUNKER, 2400));
         });
         register("splendid_robe_set", 1, SPLENDID_COLLAR, SPLENDID_ROBE, SPLENDID_LEGGINGS, SPLENDID_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
         });
         register("lead_set", 1, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS, armor(1));
         register("silver_set", 1, SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, armor(2));
@@ -158,22 +158,22 @@ public final class ModArmorBonus {
         COLD_CRYSTAL_SET = register("cold_crystal_set", 1, COLD_CRYSTAL_HELMET, COLD_CRYSTAL_CHESTPLATE, COLD_CRYSTAL_LEGGINGS, COLD_CRYSTAL_BOOTS, key -> {});
         HEIM_SET = register("heim_set", 1, HEIM_HELMET, HEIM_CHESTPLATE, HEIM_LEGGINGS, HEIM_BOOTS, key -> {});
         register("spore_root_set", 1, SPORE_ROOT_HELMET, SPORE_ROOT_CHESTPLATE, SPORE_ROOT_LEGGINGS, SPORE_ROOT_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, PortAttributeModifier.PortOperation.ADD_VALUE));
         });
         register("bee_set", 1, BEE_HELMET, BEE_CHESTPLATE, BEE_LEGGINGS, BEE_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getSummonDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getSummonDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
         });
         register("obsidian_set", 2, OBSIDIAN_HELMET, OBSIDIAN_CHESTPLATE, OBSIDIAN_LEGGINGS, OBSIDIAN_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
-                    .add(ConfluenceMagicLib.WHIP_RANGE, key.id, 0.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(Attributes.ATTACK_SPEED, key.id, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(LibAttributes.getSummonDamage(), key.id, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(ConfluenceMagicLib.WHIP_RANGE, key.id, 0.3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(Attributes.ATTACK_SPEED, key.id, 0.15, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getSummonDamage(), key.id, 0.15, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
         register("gladiator_set", 1, GLADIATOR_HELMET, GLADIATOR_CHESTPLATE, GLADIATOR_LEGGINGS, GLADIATOR_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
-                    .add(Attributes.KNOCKBACK_RESISTANCE, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
-                    .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
+                    .add(Attributes.KNOCKBACK_RESISTANCE, key.id, 1, PortAttributeModifier.PortOperation.ADD_VALUE)
+                    .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, key.id, 1, PortAttributeModifier.PortOperation.ADD_VALUE)
                     .build());
         });
         register("meteor_set", 1, METEOR_HELMET, METEOR_CHESTPLATE, METEOR_LEGGINGS, METEOR_BOOTS, key -> {
@@ -185,11 +185,11 @@ public final class ModArmorBonus {
             // todo 移动时草粒飞舞
         });
         register("necro_set", 1, NECRO_HELMET, NECRO_CHESTPLATE, NECRO_LEGGINGS, NECRO_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getCriticalChance(), key.id, 0.1, AttributeModifier.Operation.ADD_VALUE));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getCriticalChance(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_VALUE));
             // todo 移动时身后有拖影，受伤时发出骨头碎裂的声音
         });
         register("shadow_set", 1, SHADOW_HELMET, SHADOW_CHESTPLATE, SHADOW_LEGGINGS, SHADOW_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.15, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
             // todo 加速度增加 75%；移动时身后有拖影，并有火箭靴那样的火焰，但是紫色的。
         });
         register("crimson_set", 1, CRIMSON_HELMET, CRIMSON_CHESTPLATE, CRIMSON_LEGGINGS, CRIMSON_BOOTS, key -> {
@@ -197,16 +197,16 @@ public final class ModArmorBonus {
             // todo 在移动时与再生生命时会发出红色微粒
         });
         register("molten_set", 2, MOLTEN_HELMET, MOLTEN_CHESTPLATE, MOLTEN_LEGGINGS, MOLTEN_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getAttackDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getAttackDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
             key.unit(TCItems.FIRE$IMMUNE);
             // todo 移动时有火焰微粒
         });
         register("pearlwood_set", 1, PEARL_HELMET, PEARL_CHESTPLATE, PEARL_LEGGINGS, PEARL_BOOTS, armor(1));
         register("spider_set", 1, SPIDER_HELMET, SPIDER_CHESTPLATE, SPIDER_LEGGINGS, SPIDER_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getSummonDamage(), key.id, 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getSummonDamage(), key.id, 0.12, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
         });
         register("cobalt_helmet_set", 1, COBALT_HELMET, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ATTACK_SPEED, key.id, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ATTACK_SPEED, key.id, 0.15, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
             // todo 移动时产生残影效果
         });
         register("cobalt_mask_set", 1, COBALT_MASK, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
@@ -227,7 +227,7 @@ public final class ModArmorBonus {
             key.of(AccessoryItems.MANA$USE$REDUCE, 0.17F);
         });
         register("mythril_helmet_set", 1, MYTHRIL_HELMET, MYTHRIL_CHESTPLATE, MYTHRIL_LEGGINGS, MYTHRIL_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getCriticalChance(), key.id, 0.1, AttributeModifier.Operation.ADD_VALUE));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getCriticalChance(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_VALUE));
         });
         register("mythril_hat_set", 1, MYTHRIL_HAT, MYTHRIL_CHESTPLATE, MYTHRIL_LEGGINGS, MYTHRIL_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
@@ -244,8 +244,8 @@ public final class ModArmorBonus {
         });
         register("adamantite_helmet_set", 1, ADAMANTITE_HELMET, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
-                    .add(Attributes.ATTACK_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(Attributes.MOVEMENT_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(Attributes.ATTACK_SPEED, key.id, 0.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(Attributes.MOVEMENT_SPEED, key.id, 0.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                     .build());
             // todo 玩家身周发出微弱的脉动光环。
         });
@@ -269,17 +269,17 @@ public final class ModArmorBonus {
             key.unit(LAVA$IMMUNE);
             key.of(DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA, 50);
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
-                    .add(LibAttributes.getAttackDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(LibAttributes.getRangedDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(LibAttributes.getMagicDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(LibAttributes.getSummonDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(Attributes.MOVEMENT_SPEED, key.id, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getAttackDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getRangedDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getMagicDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getSummonDamage(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                    .add(Attributes.MOVEMENT_SPEED, key.id, 0.05, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
         register("tiki_set", 2, TIKI_MASK, TIKI_SHIRT, TIKI_LEGGINGS, TIKI_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
-                    .add(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
-                    .add(ConfluenceMagicLib.WHIP_RANGE, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, PortAttributeModifier.PortOperation.ADD_VALUE)
+                    .add(ConfluenceMagicLib.WHIP_RANGE, key.id, 0.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
         register("hunters", 1, HUNERS_HELMET, HUNERS_CHESTPLATE, HUNERS_LEGGINGS, HUNERS_BOOTS, key -> {
@@ -293,7 +293,7 @@ public final class ModArmorBonus {
     }
 
     private static Consumer<ArmorSetBonusKey> armor(double value) {
-        return key -> key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ARMOR, key.id, value, AttributeModifier.Operation.ADD_VALUE));
+        return key -> key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ARMOR, key.id, value, PortAttributeModifier.PortOperation.ADD_VALUE));
     }
 
     private static ArmorSetBonusKey register(

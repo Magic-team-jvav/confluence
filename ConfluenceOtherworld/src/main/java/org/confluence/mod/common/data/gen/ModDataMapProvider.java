@@ -2,17 +2,15 @@ package org.confluence.mod.common.data.gen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
-import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import org.confluence.mod.common.data.gen.data_map.*;
 import org.confluence.mod.common.init.ModDataMaps;
-import org.confluence.mod.mixin.neoforge.common.data.DataMapProviderAccessor;
+import org.mesdag.portlib.datamap.PortDataMapProvider;
+import org.mesdag.portlib.datamap.PortDataMapType;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class ModDataMapProvider extends DataMapProvider {
+public class ModDataMapProvider extends PortDataMapProvider {
     public ModDataMapProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
         super(packOutput, lookupProvider);
     }
@@ -33,12 +31,12 @@ public class ModDataMapProvider extends DataMapProvider {
     }
 
     @SuppressWarnings("unchecked")
-    protected <T, R, B extends DataMapProvider.Builder<T, R>> Appender<B> builder(DataMapType<R, T> type, Supplier<B> supplier) {
-        return () -> (B) ((DataMapProviderAccessor) this).getBuilders().computeIfAbsent(type, dataMapType -> supplier.get());
+    protected <T, R, B extends PortDataMapProvider.Builder<T, R>> Appender<B> builder(PortDataMapType<R, T> type, Supplier<B> supplier) {
+        return () -> (B) builders.computeIfAbsent(type, dataMapType -> supplier.get());
     }
 
     @FunctionalInterface
-    public interface Appender<T extends DataMapProvider.Builder<?, ?>> {
+    public interface Appender<T extends PortDataMapProvider.Builder<?, ?>> {
         T create();
     }
 }

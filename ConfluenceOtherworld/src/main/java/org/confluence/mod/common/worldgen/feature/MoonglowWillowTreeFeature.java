@@ -18,8 +18,9 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.FeatureUtils;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibFeatureUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
@@ -54,10 +55,10 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
         Vector3d baseVct = new Vector3d(basePos.getX(), basePos.getY(), basePos.getZ());
         Vector3d endVct = new Vector3d(endPos.getX(), endPos.getY(), endPos.getZ());
         List<Vector3d> trunkList = new ArrayList<>(List.of(baseVct, endVct));
-        VectorUtils.lightningPathList(trunkList, 0.5, 0.2F, random);
+        LibGeometryUtils.lightningPathList(trunkList, 0.5, 0.2F, random);
 
         for (Vector3d pos : trunkList) {
-            BlockPos bPos = VectorUtils.fromVector3d(pos);
+            BlockPos bPos = LibVectorUtils.fromVector3d(pos);
             if (!level.getBlockState(bPos).canBeReplaced()) return false;
             trunkSet.add(bPos.asLong());
         }
@@ -125,7 +126,7 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
         vineSet.forEach(p -> level.setBlock(BlockPos.of(p), vineBlock, 3));
         leavesSet.forEach(p -> level.setBlock(BlockPos.of(p), leavesBlock, 3));
         trunkSet.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock, 3));
-        FeatureUtils.updateLeavesOptimized(level, trunkSet, leavesSet, true, false);
+        LibFeatureUtils.updateLeavesOptimized(level, trunkSet, leavesSet, true, false);
         for (Long debugLong : vineSet) {
             BlockPos debugPos = BlockPos.of(debugLong);
             BlockState debugState = level.getBlockState(debugPos.above());

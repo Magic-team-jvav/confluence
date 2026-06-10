@@ -35,6 +35,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -128,7 +129,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
         BlockPos blockPos = hit.getBlockPos();
-        Entity entity = LibUtils.getOwner(projectile.getOwner());
+        Entity entity = LibEntityUtils.getOwner(projectile.getOwner());
         if (level.destroyBlock(blockPos, true, entity)) {
             if (entity instanceof Player player) {
                 player.awardStat(Stats.BLOCK_MINED.get(this));
@@ -179,7 +180,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     SectionPos sectionPos = SectionPos.of(new ChunkPos(i), level.getMinSection());
                     StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
                     if (structureStart != null && structureStart.isValid() && structureStart.getBoundingBox().isInside(blockPos)) { // getBoundingBox已优化过缓存
-                        LibUtils.createItemEntity(ToolItems.GOLDEN_DUNGEON_KEY.toStack(), center, level, 0);
+                        LibEntityUtils.createItemEntity(ToolItems.GOLDEN_DUNGEON_KEY.toStack(), center, level, 0);
                         return true;
                     }
                 }
@@ -254,7 +255,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 };
             }
             if (item != null) {
-                LibUtils.createItemEntity(item.getDefaultInstance(), center, level, 0);
+                LibEntityUtils.createItemEntity(item.getDefaultInstance(), center, level, 0);
                 return true;
             }
         }
@@ -263,7 +264,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropWormhole(ServerLevel level, Vec3 center) {
         if (level.players().size() > 1 && level.random.nextFloat() < 0.0333F) {
-            LibUtils.createItemEntity(WORMHOLE_POTION.toStack(), center, level, 0);
+            LibEntityUtils.createItemEntity(WORMHOLE_POTION.toStack(), center, level, 0);
             return true;
         }
         return false;
@@ -280,7 +281,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     if (level.random.nextBoolean()) amount++;
                     if (level.random.nextBoolean()) amount++;
                 }
-                LibUtils.createItemEntity(DateUtils.getHeartItem(), amount, center, level, 0);
+                LibEntityUtils.createItemEntity(DateUtils.getHeartItem(), amount, center, level, 0);
             } else if (player.getInventory().hasAnyMatching(itemStack -> itemStack.getCount() < 20 && itemStack.is(ModTags.Items.TORCH))) {
                 return dropTorch(level, blockPos, center);
             } else {
@@ -316,7 +317,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         item = Items.TORCH;
 //            }
 //        }
-        LibUtils.createItemEntity(item, amount, center, level, 0);
+        LibEntityUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 
@@ -337,7 +338,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else {
             item = Items.ARROW;
         }
-        LibUtils.createItemEntity(item, amount, center, level, 0);
+        LibEntityUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 
@@ -352,7 +353,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         if (LibUtils.isAtLeastExpert(level, blockPos) && level.random.nextFloat() < 0.3333F) {
             amount++;
         }
-        LibUtils.createItemEntity(item, amount, center, level, 0);
+        LibEntityUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 
@@ -365,7 +366,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else {
             return dropRope(level, blockPos, center);
         }
-        LibUtils.createItemEntity(item, level.random.nextInt(1, LibUtils.isAtLeastExpert(level, blockPos) ? 5 : 8), center, level, 0);
+        LibEntityUtils.createItemEntity(item, level.random.nextInt(1, LibUtils.isAtLeastExpert(level, blockPos) ? 5 : 8), center, level, 0);
         return true;
     }
 
@@ -373,7 +374,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         if (level.dimension() == Level.NETHER || KillBoard.INSTANCE.getGamePhase().isHardmode()) {
             return dropMoney(level, blockPos, center);
         } else {
-            LibUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), level.random.nextInt(5, 11), center, level, 0);
+            LibEntityUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), level.random.nextInt(5, 11), center, level, 0);
             return true;
         }
     }

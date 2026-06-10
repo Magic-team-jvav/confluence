@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.ModEntities;
 
 public class BouncyBoulderEntity extends BoulderEntity {
@@ -27,7 +27,7 @@ public class BouncyBoulderEntity extends BoulderEntity {
     @Override
     protected void onHitBlock(BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
-        Vec3 motion = VectorUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
+        Vec3 motion = LibMathUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
         if (Math.abs(motion.y) < 0.01) motion = new Vec3(motion.x, 0.0, motion.z);
         setDeltaMovement(motion.scale(frictionFactor));
     }

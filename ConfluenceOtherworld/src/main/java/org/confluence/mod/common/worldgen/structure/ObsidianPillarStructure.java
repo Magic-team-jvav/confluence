@@ -15,7 +15,8 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -24,8 +25,8 @@ import org.joml.Vector3d;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.frustumSet;
-import static org.confluence.lib.util.StructureUtils.getHeight;
+import static org.confluence.lib.util.LibStructureUtils.frustumSet;
+import static org.confluence.lib.util.LibStructureUtils.getHeight;
 
 public class ObsidianPillarStructure extends Structure {
     public static final MapCodec<ObsidianPillarStructure> CODEC = simpleCodec(ObsidianPillarStructure::new);
@@ -98,8 +99,8 @@ public class ObsidianPillarStructure extends Structure {
             int pillarCount = random.nextInt(3, 6);
             float baseRotate = 2 * Mth.PI * random.nextFloat();
             float stepRotate = 2 * Mth.PI / pillarCount;
-            List<BlockPos> centerStone = VectorUtils.getBlocksInConvexHull(
-                    VectorUtils.ellipsoidPos(
+            List<BlockPos> centerStone = LibGeometryUtils.getBlocksInConvexHull(
+                    LibGeometryUtils.ellipsoidPos(
                             random.nextInt(10,16),
                             random.nextInt(30,46),
                             random.nextInt(10,16),
@@ -149,7 +150,7 @@ public class ObsidianPillarStructure extends Structure {
                             if (
                                     ((radiusP2 > radius3P2) && (radiusP2 < radius4P2)) ||
                                             ((radiusP2 > radius1P2) && (radiusP2 < radius2P2))
-                            ) blockMap.put(VectorUtils.fromVector3d(midPoint).offset(xRoll, yRoll, zRoll), 3);
+                            ) blockMap.put(LibVectorUtils.fromVector3d(midPoint).offset(xRoll, yRoll, zRoll), 3);
                         }
                     }
                 }

@@ -13,7 +13,7 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.frustumSet;
-import static org.confluence.lib.util.VectorUtils.frustumSetPos;
+import static org.confluence.lib.util.LibGeometryUtils.frustumSetPos;
+import static org.confluence.lib.util.LibStructureUtils.frustumSet;
 
 public class IceThornStructure extends Structure {
     public static final MapCodec<IceThornStructure> CODEC = simpleCodec(IceThornStructure::new);
@@ -59,8 +59,8 @@ public class IceThornStructure extends Structure {
             int count = random.nextInt(4, 7);
             int step = 80 / count;
             int countThorn;
-            Vector3d mainStart = VectorUtils.toVector3d(centerPos);
-            Vector3d mainEnd = VectorUtils.toVector3d(centerPos).add(0, random.nextInt(120, 150), 0);
+            Vector3d mainStart = LibVectorUtils.toVector3d(centerPos);
+            Vector3d mainEnd = LibVectorUtils.toVector3d(centerPos).add(0, random.nextInt(120, 150), 0);
             Vector3d otherEnd;
             List<Vector3d> otherEnds = new ArrayList<>();
             List<Vector3d> thorns;

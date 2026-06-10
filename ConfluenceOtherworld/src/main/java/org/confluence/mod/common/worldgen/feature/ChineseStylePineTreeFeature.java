@@ -13,14 +13,15 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.confluence.mod.common.block.natural.BaseDroopingPlantsHeadBlock;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.confluence.lib.util.FeatureUtils.updateLeavesOptimized;
+import static org.confluence.lib.util.LibFeatureUtils.updateLeavesOptimized;
 
 public class ChineseStylePineTreeFeature extends Feature<ChineseStylePineTreeFeature.Config> {
     public ChineseStylePineTreeFeature(Codec<Config> pCodec) {
@@ -50,23 +51,23 @@ public class ChineseStylePineTreeFeature extends Feature<ChineseStylePineTreeFea
         int zOff = random.nextInt(offset / 2, offset + 1) * (random.nextBoolean() ? 1 : -1);
         BlockPos leavesPos;
 
-        trunkPath.add(VectorUtils.toVector3d(basePos));
-        trunkPath.add(VectorUtils.toVector3d(basePos.offset(xOff / 4, height / 2, zOff / 4)));
-        trunkPath.add(VectorUtils.toVector3d(basePos.offset(xOff / 4 * 3, height / 2, zOff / 4 * 3)));
-        trunkPath.add(VectorUtils.toVector3d(basePos.offset(xOff, height / 2 - 1, zOff)));
-        trunkPath.add(VectorUtils.toVector3d(basePos.offset(xOff / 2 * 3, height / 2, zOff / 2 * 3)));
-        List<List<Vector3d>> segments = VectorUtils.lightningPathList(trunkPath, 1, 0.2F, random, random.nextInt(2, 5), 0.8F);
+        trunkPath.add(LibVectorUtils.toVector3d(basePos));
+        trunkPath.add(LibVectorUtils.toVector3d(basePos.offset(xOff / 4, height / 2, zOff / 4)));
+        trunkPath.add(LibVectorUtils.toVector3d(basePos.offset(xOff / 4 * 3, height / 2, zOff / 4 * 3)));
+        trunkPath.add(LibVectorUtils.toVector3d(basePos.offset(xOff, height / 2 - 1, zOff)));
+        trunkPath.add(LibVectorUtils.toVector3d(basePos.offset(xOff / 2 * 3, height / 2, zOff / 2 * 3)));
+        List<List<Vector3d>> segments = LibGeometryUtils.lightningPathList(trunkPath, 1, 0.2F, random, random.nextInt(2, 5), 0.8F);
 
         trunkPath.clear();
-        trunkPath.add(VectorUtils.toVector3d(basePos.offset(xOff / 8, height / 4, zOff / 8)));
-        trunkPath.add(VectorUtils.toVector3d(basePos.offset(-xOff / 3, height / 4, -zOff / 3)));
-        trunkPath.add(VectorUtils.toVector3d(basePos.offset(-xOff / 2, height / 4 * 3, -zOff / 2)));
-        segments.addAll(VectorUtils.lightningPathList(trunkPath, 1, 0.2F, random, random.nextInt(2, 5), 0.8F));
+        trunkPath.add(LibVectorUtils.toVector3d(basePos.offset(xOff / 8, height / 4, zOff / 8)));
+        trunkPath.add(LibVectorUtils.toVector3d(basePos.offset(-xOff / 3, height / 4, -zOff / 3)));
+        trunkPath.add(LibVectorUtils.toVector3d(basePos.offset(-xOff / 2, height / 4 * 3, -zOff / 2)));
+        segments.addAll(LibGeometryUtils.lightningPathList(trunkPath, 1, 0.2F, random, random.nextInt(2, 5), 0.8F));
 
         trunkPath.clear();
-        trunkPath.add(VectorUtils.toVector3d(basePos.offset(xOff / 4 * 3, height / 2, zOff / 4 * 3)));
-        trunkPath.add(VectorUtils.toVector3d(basePos.offset(xOff, height, zOff)));
-        VectorUtils.lightningPathList(trunkPath, 1, 0.2F, random);
+        trunkPath.add(LibVectorUtils.toVector3d(basePos.offset(xOff / 4 * 3, height / 2, zOff / 4 * 3)));
+        trunkPath.add(LibVectorUtils.toVector3d(basePos.offset(xOff, height, zOff)));
+        LibGeometryUtils.lightningPathList(trunkPath, 1, 0.2F, random);
         segments.add(trunkPath);
 
         for (List<Vector3d> segment : segments) {

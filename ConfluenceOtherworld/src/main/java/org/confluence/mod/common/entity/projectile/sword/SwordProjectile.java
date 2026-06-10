@@ -17,8 +17,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terraentity.api.entity.IAttackableProjectile;
@@ -232,7 +232,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             }
 
             LivingEntity hurter;
-            if (LibUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
+            if (LibEntityUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
                 hurter = living;
             } else {
                 return false;
@@ -245,7 +245,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
             if (target.hurt(damageSource, damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
-                VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
+                LibMathUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
 
                 if (--hitCount <= 0 && !level().isClientSide) {
                     discard();

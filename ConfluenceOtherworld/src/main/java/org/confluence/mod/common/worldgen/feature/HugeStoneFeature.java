@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
@@ -41,8 +41,8 @@ public class HugeStoneFeature extends Feature<HugeStoneFeature.Config> {
 
         int radius = config.radius + random.nextInt(config.radiusMore + 1);
         float noiseScale = config.noiseScale;
-        List<Vector3d> posList = VectorUtils.ballPos(radius, basePos, 0.006F, worldgenRandom);
-        List<BlockPos> placePos = VectorUtils.getBlocksInConvexHull(posList);
+        List<Vector3d> posList = LibGeometryUtils.ballPos(radius, basePos, 0.006F, worldgenRandom);
+        List<BlockPos> placePos = LibGeometryUtils.getBlocksInConvexHull(posList);
         if (placePos.isEmpty()) return false;
 
         placePos.forEach(p -> {

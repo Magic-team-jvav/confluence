@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.init.ModTrackTypeProviderTypes;
@@ -19,11 +19,10 @@ public record BasisTrack(double trackAngle, double power) implements ITrackType 
             Codec.DOUBLE.fieldOf("power").forGetter(BasisTrack::power)
     ).apply(instance, BasisTrack::new));
 
-
     @Override
     public Vec3 calDeltaMovement(Vec3 currentDir, Vec3 targetDir, double trackAngle) {
         if (trackAngle < trackAngle) {
-            return VectorUtils.interpolateBasis(currentDir, targetDir, d -> d * power, d -> 0);
+            return LibMathUtils.interpolateBasis(currentDir, targetDir, d -> d * power, d -> 0);
         }
         return currentDir;
     }
@@ -37,5 +36,4 @@ public record BasisTrack(double trackAngle, double power) implements ITrackType 
     public TrackTypeProvider getCodec() {
         return ModTrackTypeProviderTypes.BASIS_TRACK_TYPE.get();
     }
-
 }

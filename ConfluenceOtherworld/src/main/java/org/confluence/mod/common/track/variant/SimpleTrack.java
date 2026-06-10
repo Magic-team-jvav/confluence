@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.init.ModTrackTypeProviderTypes;
@@ -35,10 +36,8 @@ public record SimpleTrack(
     @Override
     public Vec3 calDeltaMovement(Vec3 currentDir, Vec3 targetDir, double trackAngle) {
         if (trackAngle < this.trackAngle) {
-            if (maxSpeed.isPresent()) {
-                return TEUtils.interpolateSimple(currentDir, targetDir, currDirScaleFactor, homingPower, maxSpeed.get(), minSpeed, currentDir);
-            }
-            return TEUtils.interpolateSimple(currentDir, targetDir, currDirScaleFactor, homingPower, currentDir.length(), minSpeed, currentDir);
+            return maxSpeed.map(speed -> LibMathUtils.interpolateSimple(currentDir, targetDir, currDirScaleFactor, homingPower, speed, minSpeed, currentDir))
+                    .orElseGet(() -> LibMathUtils.interpolateSimple(currentDir, targetDir, currDirScaleFactor, homingPower, currentDir.length(), minSpeed, currentDir));
         }
         return currentDir;
     }

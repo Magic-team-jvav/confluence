@@ -16,17 +16,17 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.joml.Vector3d;
 
 import java.util.*;
 
-import static org.confluence.lib.util.StructureUtils.ellipsoid;
-import static org.confluence.lib.util.StructureUtils.getHeight;
-import static org.confluence.lib.util.VectorUtils.ellipsoidPos;
-import static org.confluence.lib.util.VectorUtils.frustumSetPos;
+import static org.confluence.lib.util.LibGeometryUtils.ellipsoidPos;
+import static org.confluence.lib.util.LibGeometryUtils.frustumSetPos;
+import static org.confluence.lib.util.LibStructureUtils.ellipsoid;
+import static org.confluence.lib.util.LibStructureUtils.getHeight;
 
 public class MarbleCaveStructure extends Structure {
     public static final MapCodec<MarbleCaveStructure> CODEC = simpleCodec(MarbleCaveStructure::new);
@@ -58,19 +58,19 @@ public class MarbleCaveStructure extends Structure {
             List<Vector3d> listPos1 = new ArrayList<>();
             List<Vector3d> listPos2 = new ArrayList<>();
             for (Vector3d vector3d : listPos) {
-                listPos1.addAll(ellipsoidPos(13.5, 13.5, 13.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
+                listPos1.addAll(ellipsoidPos(13.5, 13.5, 13.5, LibVectorUtils.fromVector3d(vector3d), 0.002F, random));
             }
 
             for (Vector3d vector3d : listPos1) {
-                checkPos = VectorUtils.fromVector3d(vector3d);
+                checkPos = LibVectorUtils.fromVector3d(vector3d);
                 listPos2.addAll(ellipsoidPos(11.5, 11.5, 11.5, checkPos, 0.002F, random));
             }
             for (Vector3d vector3d : listPos2) {
-                checkPos = VectorUtils.fromVector3d(vector3d);
+                checkPos = LibVectorUtils.fromVector3d(vector3d);
                 ellipsoid(9.5, 9.5, 9.5, checkPos, 1, true, blockMap);
             }
             for (Vector3d vector3d : listPos2) {
-                checkPos = VectorUtils.fromVector3d(vector3d);
+                checkPos = LibVectorUtils.fromVector3d(vector3d);
                 ellipsoid(random.nextInt(4, 9) + 0.5, random.nextInt(4, 9) + 0.5, random.nextInt(4, 9) + 0.5, checkPos, 0, true, blockMap);
                 if (0.1F > random.nextFloat()) featureMap.put(checkPos, MARBLE_CAVE_POT.location());
             }

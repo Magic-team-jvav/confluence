@@ -27,8 +27,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
@@ -266,7 +266,7 @@ public class BoulderEntity extends Projectile {
 
     protected void verticalHitRebound(BlockHitResult blockHitResult, Direction direction) {
         if (fallDistance > 5) {
-            Vec3 motion = VectorUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
+            Vec3 motion = LibMathUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
             if (Math.abs(motion.y) < 0.03) motion = new Vec3(motion.x, 0.0, motion.z);
             setDeltaMovement(motion.scale(frictionFactor));
             super.onHitBlock(blockHitResult);

@@ -17,8 +17,9 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.lib.util.StructureUtils;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibStructureUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModStructures;
@@ -31,8 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.getHeight;
-import static org.confluence.lib.util.StructureUtils.lineSet;
+import static org.confluence.lib.util.LibStructureUtils.getHeight;
+import static org.confluence.lib.util.LibStructureUtils.lineSet;
 
 public class CrimsonCaveStructure extends Structure {
     public static final MapCodec<CrimsonCaveStructure> CODEC = simpleCodec(CrimsonCaveStructure::new);
@@ -86,13 +87,13 @@ public class CrimsonCaveStructure extends Structure {
             Vector3d posPoint;
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 
-            StructureUtils.ball(radius, 2, centerPos, blockMap, 0.05F, random, 1, 0);
-            StructureUtils.ball(radiusEnd, 4, endPos, blockMap, 0.01F, random, 1, 0);
+            LibStructureUtils.ball(radius, 2, centerPos, blockMap, 0.05F, random, 1, 0);
+            LibStructureUtils.ball(radiusEnd, 4, endPos, blockMap, 0.01F, random, 1, 0);
             for (int i = 0; i < layer0; i++) {
                 posPoint = new Vector3d((i == 0) ? xStart : (xStart + i * xDis + random.nextInt(-20, 21)), yStart + i * yDis, (i == 0) ? zStart : (zStart + i * zDis + random.nextInt(-20, 21)));
                 VctList.add(posPoint);
             }
-            VectorUtils.lightningPathList(VctList, 1, 0.2F, random);
+            LibGeometryUtils.lightningPathList(VctList, 1, 0.2F, random);
             lineSet(VctList, 4, 8, 1, false, blockMap);
             lineSet(VctList, 2, 6, 0, true, blockMap);
 
@@ -110,13 +111,13 @@ public class CrimsonCaveStructure extends Structure {
                 VctList.clear();
                 VctList.add(new Vector3d(endPos.getX() + (3.0D + 1.5D * random.nextDouble()) * radiusEnd * Mth.cos(fingerRotate + i * fingerRotateStep), endPos.getY() + (random.nextDouble() - 0.5D) * 4 * radiusEnd, endPos.getZ() + (3.0D + 1.5D * random.nextDouble()) * radiusEnd * Mth.sin(fingerRotate + i * fingerRotateStep)));
                 VctList.add(new Vector3d(endPos.getX(), endPos.getY(), endPos.getZ()));
-                VectorUtils.lightningPathList(VctList, 1, 0.2F, random);
+                LibGeometryUtils.lightningPathList(VctList, 1, 0.2F, random);
                 lineSet(VctList, 4, 8, 1, false, blockMap);
                 lineSet(VctList, 2, 6, 0, true, blockMap);
-                pos = VectorUtils.fromVector3d(VctList.getFirst());
+                pos = LibVectorUtils.fromVector3d(VctList.getFirst());
                 if (wrappedCrimsonHeart) {
-                    StructureUtils.ball(4, pos, 1, true, blockMap);
-                    StructureUtils.ball(2, pos, 0, true, blockMap);
+                    LibStructureUtils.ball(4, pos, 1, true, blockMap);
+                    LibStructureUtils.ball(2, pos, 0, true, blockMap);
                 }
                 blockMap.put(pos, 2);
             }

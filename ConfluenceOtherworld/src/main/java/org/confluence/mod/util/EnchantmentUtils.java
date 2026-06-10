@@ -10,12 +10,13 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.*;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEnchantments;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static net.minecraft.world.item.enchantment.Enchantment.*;
 import static net.minecraft.world.item.enchantment.EnchantmentHelper.runIterationOnItem;
 
 public final class EnchantmentUtils {
@@ -55,7 +55,7 @@ public final class EnchantmentUtils {
     }
 
     public static FloatSupplier processEfficientMagic(FloatSupplier sup, ServerPlayer player) {
-        if (LibUtils.anyHandHasItem(player, stack -> EnchantmentHelper.has(stack, ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get()))) {
+        if (LibEntityUtils.anyHandHasItem(player, stack -> EnchantmentHelper.has(stack, ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get()))) {
             ManaStorage manaStorage = ManaStorage.of(player);
             return () -> sup.getAsFloat() * Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
         }

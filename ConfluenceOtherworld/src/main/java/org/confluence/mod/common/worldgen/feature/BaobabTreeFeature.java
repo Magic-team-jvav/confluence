@@ -19,7 +19,7 @@ import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.confluence.lib.util.FeatureUtils;
+import org.confluence.lib.util.LibFeatureUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,8 +43,8 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
         BoundingBox boxDown = new BoundingBox(x - size1, y, z - size1, x + size1, y, z + size1);
         BoundingBox boxUp = new BoundingBox(x - 1, y + 1, z - 1, x + 1, y + 1, z + 1);
         BoundingBox box = new BoundingBox(x - size, y, z - size, x + size, y + 1, z + size);
-        FeatureUtils.leaves(boxDown, leaves, true, random, level, Blocks.AIR.defaultBlockState(), false);
-        FeatureUtils.leaves(boxUp, leaves, true, random, level, Blocks.AIR.defaultBlockState(), false);
+        LibFeatureUtils.leaves(boxDown, leaves, true, random, level, Blocks.AIR.defaultBlockState(), false);
+        LibFeatureUtils.leaves(boxUp, leaves, true, random, level, Blocks.AIR.defaultBlockState(), false);
         TreeFeature.updateLeaves(level, box, rootSet, trunkSet, leavesSet);
     }
 

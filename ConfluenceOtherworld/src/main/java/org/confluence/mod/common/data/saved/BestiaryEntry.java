@@ -12,8 +12,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Npc;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibStreamCodecUtils;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
@@ -116,7 +116,7 @@ public class BestiaryEntry {
             } else {
                 this.unlockedProgress = Mth.clamp(killedByCount / v, 0, 1);
             }
-        } else if (living instanceof Npc || LibUtils.isAnimal(living) || type.is(Tags.EntityTypes.BOSSES)) {
+        } else if (living instanceof Npc || LibEntityUtils.isAnimal(living) || type.is(Tags.EntityTypes.BOSSES)) {
             this.unlockedProgress = 1;
         } else {
             this.unlockedProgress = Mth.clamp(killedByCount / 50.0F, 0, 1);

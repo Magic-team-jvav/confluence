@@ -13,7 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 
@@ -103,7 +103,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
-            VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibMathUtils.knockBackA2B(this, entity, 0.5, 0.2);
         }
     }
 

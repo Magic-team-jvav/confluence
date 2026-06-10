@@ -4,8 +4,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -17,7 +17,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -259,7 +259,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         // 手动施加重力并使用 move() 进行碰撞位移
         Vec3 motion = getDeltaMovement().add(0, -component.gravity(), 0);
         setDeltaMovement(motion);
-        
+
         // 速度过低 → 收回（仅服务端判断，玩家主动丢出时不收回）
         if (!level().isClientSide() && !playerDropped && getDeltaMovement().lengthSqr() < 0.1) {
             setPhase(PHASE_RETRACT);
@@ -316,7 +316,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
             DamageSource source = ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player);
 
             if (target.hurt(source, finalDamage)) {
-                VectorUtils.knockBackA2B(this, target, 0.3f, 0.15f);
+                LibMathUtils.knockBackA2B(this, target, 0.3f, 0.15f);
                 component.hitEffect().ifPresent(effect -> effect.applyAll(player, target));
                 hitCooldown = phase == PHASE_THROWN ? 3 : 8;
             }

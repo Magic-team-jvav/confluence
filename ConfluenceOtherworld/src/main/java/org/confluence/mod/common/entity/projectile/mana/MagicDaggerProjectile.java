@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
@@ -41,7 +41,7 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
             hitSet.add(entity.getUUID());
             this.damage -= deltaDamage;
-            VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibMathUtils.knockBackA2B(this, entity, 0.5, 0.2);
             if (penetrate >= 2) {
                 discard();
             } else {

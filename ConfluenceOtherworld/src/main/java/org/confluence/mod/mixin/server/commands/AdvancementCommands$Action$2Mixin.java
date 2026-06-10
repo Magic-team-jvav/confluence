@@ -2,7 +2,7 @@ package org.confluence.mod.mixin.server.commands;
 
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.server.level.ServerPlayer;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.AchievementUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +16,7 @@ public abstract class AdvancementCommands$Action$2Mixin {
     private void revokeAll(ServerPlayer player, AdvancementHolder advancementHolder, CallbackInfoReturnable<Boolean> cir) {
         if (Confluence.MODID.equals(advancementHolder.id().getNamespace())) {
             String key = Confluence.asPlainId(advancementHolder.id().getPath().substring(AchievementUtils.PREFIX.length()));
-            LibUtils.getOrCreatePersistedData(player).remove(key);
+            LibEntityUtils.getOrCreatePersistedData(player).remove(key);
         }
     }
 }

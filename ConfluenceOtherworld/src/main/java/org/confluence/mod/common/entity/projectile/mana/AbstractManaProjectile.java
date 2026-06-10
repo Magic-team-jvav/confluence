@@ -15,7 +15,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.joml.Matrix4f;
@@ -68,7 +68,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
         if (target.hurt(getDamageSource(), getCalculatedDamage())) {
             if (knockbackStrength > 0 || knockbackMotionY > 0) {
-                VectorUtils.knockBackA2B(this, target, knockbackStrength, knockbackMotionY);
+                LibMathUtils.knockBackA2B(this, target, knockbackStrength, knockbackMotionY);
             }
             return true;
         }

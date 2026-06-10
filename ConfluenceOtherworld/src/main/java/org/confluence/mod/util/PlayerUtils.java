@@ -25,6 +25,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
@@ -393,7 +394,7 @@ public final class PlayerUtils {
         ModUtils.dropMoney(drops, player.getX(), player.getY(), player.getZ(), player.level());
 
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
-            LibUtils.getOrCreatePersistedData(player).putLong("confluence:drops_money", drops);
+            LibEntityUtils.getOrCreatePersistedData(player).putLong("confluence:drops_money", drops);
         }
     }
 

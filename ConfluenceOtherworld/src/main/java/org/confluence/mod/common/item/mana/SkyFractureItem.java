@@ -17,8 +17,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.mana.SkyFractureProjectile;
 
 public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
@@ -51,7 +51,7 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
                         player, from, to, aabb, entity -> !entity.isSpectator() && entity.isPickable(), squared
                 );
                 if (entityHitResult != null && entityHitResult.getLocation().distanceToSqr(from) < sqr && entityHitResult.getEntity() instanceof LivingEntity living) {
-                    float[] rot = VectorUtils.dirToRot(new Vec3(living.getX() - player.getX(), living.getEyeY() - player.getEyeY(), living.getZ() - player.getZ()), true);
+                    float[] rot = LibMathUtils.dirToRot(new Vec3(living.getX() - player.getX(), living.getEyeY() - player.getEyeY(), living.getZ() - player.getZ()), true);
                     tag.putFloat("XRot", rot[1]);
                     tag.putFloat("YRot", rot[0]);
                 } else {

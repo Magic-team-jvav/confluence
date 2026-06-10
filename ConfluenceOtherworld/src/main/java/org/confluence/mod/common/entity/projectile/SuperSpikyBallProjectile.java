@@ -14,8 +14,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.util.TrapDamageHelper;
@@ -57,7 +58,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
                     damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
                 }
                 if (entity.hurt(ModDamageTypes.of(level(), DamageTypes.STING), damage)) {
-                    VectorUtils.knockBackA2B(this, entity, 0.2, 0.04);
+                    LibMathUtils.knockBackA2B(this, entity, 0.2, 0.04);
                 }
             }
         }
@@ -72,7 +73,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibUtils.canHitEntity(target, getOwner());
+        return LibEntityUtils.canHitEntity(target, getOwner());
     }
 
     @Override

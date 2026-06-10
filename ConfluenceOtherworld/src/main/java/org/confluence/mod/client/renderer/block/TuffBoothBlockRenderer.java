@@ -29,7 +29,7 @@ import org.joml.Vector3d;
 
 import javax.annotation.Nullable;
 
-import static org.confluence.lib.util.RenderUtils.drawCube;
+import static org.confluence.lib.util.LibRenderUtils.drawCube;
 
 public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBlock.TuffBoothBlockEntity> {
     private static final Minecraft MC = Minecraft.getInstance();

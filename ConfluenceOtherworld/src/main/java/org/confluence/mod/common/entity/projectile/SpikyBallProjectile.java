@@ -13,8 +13,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 
@@ -56,7 +56,7 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
                 if (entity.hurt(damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), 3.2F)) {
-                    VectorUtils.knockBackA2B(this, entity, 0.1, 0.02);
+                    LibMathUtils.knockBackA2B(this, entity, 0.1, 0.02);
                 }
                 if (passThrough.add(entity) && passThrough.size() >= 7) {
                     discard();
@@ -74,7 +74,7 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibUtils.canHitEntity(target, getOwner());
+        return LibEntityUtils.canHitEntity(target, getOwner());
     }
 
     @Override

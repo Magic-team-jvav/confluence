@@ -4,15 +4,15 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.confluence.lib.util.StructureUtils.*;
-import static org.confluence.lib.util.VectorUtils.ellipsoidPos;
-import static org.confluence.lib.util.VectorUtils.lightningPathList;
+import static org.confluence.lib.util.LibGeometryUtils.ellipsoidPos;
+import static org.confluence.lib.util.LibGeometryUtils.lightningPathList;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class BaseStructures {
     public static BlockPos livingTree(
@@ -73,7 +73,7 @@ public class BaseStructures {
 
         locationList.add(locationStart);
         locationList.add(locationEnd);
-        List<Vector3d> leavesTop = ellipsoidPos(trunkLeafGenerationRadiusXZ, trunkLeafGenerationRadiusY, trunkLeafGenerationRadiusXZ, VectorUtils.fromVector3d(locationEnd), leafPosDensity, random);
+        List<Vector3d> leavesTop = ellipsoidPos(trunkLeafGenerationRadiusXZ, trunkLeafGenerationRadiusY, trunkLeafGenerationRadiusXZ, LibVectorUtils.fromVector3d(locationEnd), leafPosDensity, random);
         lineSetEllipsoid(leavesTop, leafBlobGenerationRadiusXZ, leafBlobGenerationRadiusY, leafBlobGenerationRadiusXZ, leafBlocks, true, blockMap, leafDensity, random);
         lightningPathList(locationList, 1, 0.125F, random);
 
@@ -140,7 +140,7 @@ public class BaseStructures {
             ball(4.9, centerPos, 0, true, blockMap);
             lineSet(locationList, largeTreeRootStartRadius * 2.0D / 5.0D, largeTreeRootEndRadius - 0.1D, 0, true, blockMap);
         }
-        return VectorUtils.fromVector3d(locationList.get(locationList.size() / 2 + random.nextInt(-locationList.size() / 4, locationList.size() / 4 + 1)));
+        return LibVectorUtils.fromVector3d(locationList.get(locationList.size() / 2 + random.nextInt(-locationList.size() / 4, locationList.size() / 4 + 1)));
     }
 
     private static void stick(
@@ -197,11 +197,11 @@ public class BaseStructures {
             lineSet(stickList, startRadius + random.nextInt(startRadiusRandomAddition), endRadius, blocks, true, blockMap);
             if (branch) {
                 leavesTop.clear();
-                leavesTop = ellipsoidPos(branchLeafGenerationRadiusXZ, branchLeafGenerationRadiusY, branchLeafGenerationRadiusXZ, VectorUtils.fromVector3d(stickEnd), leafPosDensity, random);
+                leavesTop = ellipsoidPos(branchLeafGenerationRadiusXZ, branchLeafGenerationRadiusY, branchLeafGenerationRadiusXZ, LibVectorUtils.fromVector3d(stickEnd), leafPosDensity, random);
                 lineSetEllipsoid(leavesTop, leafBlobGenerationRadiusXZ, leafBlobGenerationRadiusY, leafBlobGenerationRadiusXZ, leafBlocks, false, blockMap, leafDensity, random);
             } else {
                 rootEnd = stickList.getLast();
-                ball(endRadius, VectorUtils.fromVector3d(rootEnd), endBlocks, true, blockMap);
+                ball(endRadius, LibVectorUtils.fromVector3d(rootEnd), endBlocks, true, blockMap);
             }
         }
     }

@@ -18,7 +18,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
@@ -46,8 +46,8 @@ public class BrokenStoneFeature extends Feature<BrokenStoneFeature.Config> {
         int radius = config.radius + random.nextInt(config.radiusMore + 1);
         float residueProbability = config.residueProbability;
         ResidueType residueType = config.residueType;
-        List<Vector3d> posList = VectorUtils.ballPos(radius, basePos, 0.006F, worldgenRandom);
-        List<BlockPos> movePos = VectorUtils.getBlocksInConvexHull(posList);
+        List<Vector3d> posList = LibGeometryUtils.ballPos(radius, basePos, 0.006F, worldgenRandom);
+        List<BlockPos> movePos = LibGeometryUtils.getBlocksInConvexHull(posList);
         List<BlockPos> placePos = new ArrayList<>();
 
         if (movePos.isEmpty()) return false;
@@ -84,7 +84,7 @@ public class BrokenStoneFeature extends Feature<BrokenStoneFeature.Config> {
                 if (random.nextFloat() < 0.05F) {
                     double smallRadius = radius * ((double) i / height);
                     int intSmallRadius = (int) smallRadius;
-                    placePos.addAll(VectorUtils.getBlocksInConvexHull(VectorUtils.ballPos(smallRadius, basePos.offset(random.nextInt(-intSmallRadius, intSmallRadius + 1), i, random.nextInt(-intSmallRadius, intSmallRadius + 1)), 0.06F, worldgenRandom)));
+                    placePos.addAll(LibGeometryUtils.getBlocksInConvexHull(LibGeometryUtils.ballPos(smallRadius, basePos.offset(random.nextInt(-intSmallRadius, intSmallRadius + 1), i, random.nextInt(-intSmallRadius, intSmallRadius + 1)), 0.06F, worldgenRandom)));
                 }
             }
         }

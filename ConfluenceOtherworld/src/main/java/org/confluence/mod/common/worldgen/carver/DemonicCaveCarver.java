@@ -20,7 +20,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.joml.Vector3d;
@@ -62,7 +63,7 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
         };
 
         List<Vector3d> positions = Lists.newArrayList(new Vector3d(x1, y1, z1), new Vector3d(x2, y2, z2));
-        VectorUtils.lightningPathList(positions, 2.5, 0.125F, random);
+        LibGeometryUtils.lightningPathList(positions, 2.5, 0.125F, random);
         int size = positions.size();
         for (int i = 0; i < size; i++) {
             Vector3d position = positions.get(i);
@@ -75,7 +76,7 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
                     position.add(0, -14 * yScale - 4, 0);
                     b = carveEllipsoid(context, config, chunk, biomeAccessor, noWater, position.x, position.y, position.z, 2, 2, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ > 1.0);
                     if (b) {
-                        chunk.setBlockState(VectorUtils.fromVector3d(position).above(), NatureBlocks.SHADOW_ORB.get().defaultBlockState(), false);
+                        chunk.setBlockState(LibVectorUtils.fromVector3d(position).above(), NatureBlocks.SHADOW_ORB.get().defaultBlockState(), false);
                     }
                 }
             }

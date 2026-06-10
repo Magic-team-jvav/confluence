@@ -16,7 +16,7 @@ import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
@@ -74,7 +74,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
         blockHitCallBack(pResult);
-        Vec3 motion = VectorUtils.relativeScale(getDeltaMovement(), pResult.getDirection().getAxis(), -bounceFactor);
+        Vec3 motion = LibMathUtils.relativeScale(getDeltaMovement(), pResult.getDirection().getAxis(), -bounceFactor);
         if (Math.abs(motion.y) < 0.03) motion = new Vec3(motion.x, 0.0, motion.z);
         setDeltaMovement(motion.scale(frictionFactor));
     }

@@ -19,15 +19,16 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static org.confluence.lib.util.FeatureUtils.ball;
-import static org.confluence.lib.util.FeatureUtils.ellipsoid;
+import static org.confluence.lib.util.LibFeatureUtils.ball;
+import static org.confluence.lib.util.LibFeatureUtils.ellipsoid;
 
 public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Config> {
     public HugeMushroomTreeFeature(Codec<Config> pCodec) {
@@ -71,9 +72,9 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
         }
         if (placed) {
             List<Vector3d> trunkList = new ArrayList<>();
-            trunkList.add(VectorUtils.toVector3d(baseBlockPos.offset(0, 1, 0)));
-            trunkList.add(VectorUtils.toVector3d(headPos));
-            VectorUtils.lightningPathList(trunkList, 1, 0.3F, random);
+            trunkList.add(LibVectorUtils.toVector3d(baseBlockPos.offset(0, 1, 0)));
+            trunkList.add(LibVectorUtils.toVector3d(headPos));
+            LibGeometryUtils.lightningPathList(trunkList, 1, 0.3F, random);
             double radius = 2.5;
             double step = 1.0 / trunkList.size();
 
@@ -91,14 +92,14 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
             long seed = random.nextLong();
             RandomSource worldgenRandom = new WorldgenRandom(RandomSource.create(seed));
 
-            List<Vector3d> pileusList = VectorUtils.ellipsoidPos(
+            List<Vector3d> pileusList = LibGeometryUtils.ellipsoidPos(
                     random.nextDouble() * 5 + 7,
                     1,
                     random.nextDouble() * 5 + 7,
                     headPos,
                     0.8F,
                     worldgenRandom);
-            pileusList.addAll(VectorUtils.ellipsoidPos(
+            pileusList.addAll(LibGeometryUtils.ellipsoidPos(
                     random.nextDouble() * 2 + 3,
                     1,
                     random.nextDouble() * 2 + 3,

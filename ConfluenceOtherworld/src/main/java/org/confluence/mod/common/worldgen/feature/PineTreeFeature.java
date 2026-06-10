@@ -17,7 +17,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.mod.common.block.natural.BaseDroopingPlantsHeadBlock;
 
-import static org.confluence.lib.util.FeatureUtils.updateLeavesOptimized;
+import static org.confluence.lib.util.LibFeatureUtils.updateLeavesOptimized;
 
 public class PineTreeFeature extends Feature<PineTreeFeature.Config> {
     public PineTreeFeature(Codec<Config> pCodec) {

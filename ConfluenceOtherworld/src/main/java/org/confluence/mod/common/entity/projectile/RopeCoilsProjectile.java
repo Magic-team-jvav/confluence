@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.block.common.BaseRopeBlock;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -80,7 +80,7 @@ public class RopeCoilsProjectile extends ThrowableItemProjectile {
             isPlaced = place(rope, willUp, state, level, pos);
         }
         if (!isPlaced) {
-            LibUtils.createItemEntity(ropeCoil.getDefaultInstance(), pos.getCenter(), level, 0);
+            LibEntityUtils.createItemEntity(ropeCoil.getDefaultInstance(), pos.getCenter(), level, 0);
         }
         this.discard();
         super.onHitBlock(result);
@@ -91,7 +91,7 @@ public class RopeCoilsProjectile extends ThrowableItemProjectile {
     }
 
     public static void createRope(Block rope, int offset, int i, BlockPos pos, Level level){
-        LibUtils.createItemEntity(rope.asItem(), SIZE + offset - i, Vec3.atLowerCornerOf(pos), level, 0);
+        LibEntityUtils.createItemEntity(rope.asItem(), SIZE + offset - i, Vec3.atLowerCornerOf(pos), level, 0);
     }
 
     public static boolean place(Block rope, boolean willUp, BlockState state, Level level, BlockPos pos, int offset){
@@ -158,7 +158,7 @@ public class RopeCoilsProjectile extends ThrowableItemProjectile {
                 BlockState state = rope.defaultBlockState();
                 isPlaced = place(rope, willUp, state, level, pos, 1);
                 if (!isPlaced) {
-                    LibUtils.createItemEntity(ropeCoil, 1, Vec3.atLowerCornerOf(pos), level, 0);
+                    LibEntityUtils.createItemEntity(ropeCoil, 1, Vec3.atLowerCornerOf(pos), level, 0);
                 }
                 this.discard();
             }
@@ -172,7 +172,7 @@ public class RopeCoilsProjectile extends ThrowableItemProjectile {
             return;
         }
         BlockPos pos = result.getEntity().getOnPos();
-        LibUtils.createItemEntity(ropeCoil, 1, Vec3.atLowerCornerOf(pos), level, 0);
+        LibEntityUtils.createItemEntity(ropeCoil, 1, Vec3.atLowerCornerOf(pos), level, 0);
         this.remove(RemovalReason.DISCARDED);
         super.onHitEntity(result);
     }

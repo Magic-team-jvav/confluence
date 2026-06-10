@@ -53,6 +53,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -101,10 +102,10 @@ public final class ModUtils {
         int j = ((i - silver_count) / UPGRADES_COUNT);
         int golden_count = j % UPGRADES_COUNT;
         int k = (j - golden_count) / UPGRADES_COUNT;
-        LibUtils.createItemEntity(ModItems.COPPER_COIN.get(), copper_count, x, y, z, level, 0);
-        LibUtils.createItemEntity(ModItems.SILVER_COIN.get(), silver_count, x, y, z, level, 0);
-        LibUtils.createItemEntity(ModItems.GOLD_COIN.get(), golden_count, x, y, z, level, 0);
-        LibUtils.createItemEntity(ModItems.PLATINUM_COIN.get(), k, x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.COPPER_COIN.get(), copper_count, x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.SILVER_COIN.get(), silver_count, x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.GOLD_COIN.get(), golden_count, x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.PLATINUM_COIN.get(), k, x, y, z, level, 0);
     }
 
     public static void dropMoney(long amount, double x, double y, double z, Level level) {

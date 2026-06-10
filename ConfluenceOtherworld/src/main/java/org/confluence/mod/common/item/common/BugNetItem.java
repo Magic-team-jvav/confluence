@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.BugNetEntityToItem;
 import org.confluence.mod.common.init.item.ModItems;
@@ -87,7 +88,7 @@ public class BugNetItem extends TooltipItem {
                 player, from, to, aabb, entity -> !entity.isSpectator() && entity.isPickable(), squared
         );
         if (entityHitResult != null && entityHitResult.getLocation().distanceToSqr(from) < sqr) l:{
-            if (!(LibUtils.tryFindBeImpacted(entityHitResult.getEntity()) instanceof LivingEntity interactionTarget)) {
+            if (!(LibEntityUtils.tryFindBeImpacted(entityHitResult.getEntity()) instanceof LivingEntity interactionTarget)) {
                 break l;
             }
             if (player.isLocalPlayer()) {

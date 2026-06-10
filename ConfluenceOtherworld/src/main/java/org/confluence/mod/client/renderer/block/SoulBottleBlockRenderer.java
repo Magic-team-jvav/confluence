@@ -16,7 +16,7 @@ import org.joml.Vector3i;
 
 import java.util.Map;
 
-import static org.confluence.lib.util.RenderUtils.drawCube;
+import static org.confluence.lib.util.LibRenderUtils.drawCube;
 
 public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInABottleBlock.BEntity> {
 

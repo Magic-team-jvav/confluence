@@ -14,7 +14,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
@@ -63,7 +63,7 @@ public class SkullProjectile extends AbstractManaProjectile {
                         .min(Comparator.comparingDouble(living -> living.distanceToSqr(this))).ifPresent(this::setTarget);
             }
         } else if (!target.isRemoved()) {
-            Vec3 vec3 = getDeltaMovement().add(VectorUtils.getVectorA2B(this, target).scale(0.4375));
+            Vec3 vec3 = getDeltaMovement().add(LibMathUtils.getVectorA2B(this, target).scale(0.4375));
             if (vec3.lengthSqr() > 0.4375 * 0.4375) {
                 setDeltaMovement(vec3.normalize().scale(0.4375));
             }

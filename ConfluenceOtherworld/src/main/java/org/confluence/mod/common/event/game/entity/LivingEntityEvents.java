@@ -34,6 +34,7 @@ import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -111,7 +112,7 @@ public final class LivingEntityEvents {
         if (victim.level() instanceof ServerLevel level) {
             GameEventSystem.INSTANCE.countKilled(victim);
             TombstoneBoulderEntity.createTombstoneEntity(victim);
-            Entity attacker = LibUtils.getOwner(damageSource);
+            Entity attacker = LibEntityUtils.getOwner(damageSource);
 
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
@@ -134,7 +135,7 @@ public final class LivingEntityEvents {
             for (ServerPlayer player : level.players()) {
                 if (player.position().distanceToSqr(victim.position()) > 32 * 32) continue;
                 if (ManaStorage.of(player).canReceive() && player.getRandom().nextFloat() < 0.083F) {
-                    LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), victim.position(), level, 0);
+                    LibEntityUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), victim.position(), level, 0);
                     break;
                 }
             }
@@ -225,7 +226,7 @@ public final class LivingEntityEvents {
         }
         amount = ArcheryEffect.apply(victim, damageSource, amount);
         // 芦苇呼吸管对溺水伤害减半
-        if (damageSource.is(DamageTypes.DROWN) && LibUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
+        if (damageSource.is(DamageTypes.DROWN) && LibEntityUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
             amount *= 0.5F;
         }
         amount = SwordItems.processEffect(damageSource, attacker, victim, amount);
@@ -387,7 +388,7 @@ public final class LivingEntityEvents {
 
         if (b && living.hasEffect(ModEffects.SHIMMER)) {
             event.setCanBreathe(true);
-        } else if (LibUtils.anyHandHasItem(living, itemStack -> !itemStack.isEmpty() && itemStack.is(SwordItems.BREATHING_REED))) {
+        } else if (LibEntityUtils.anyHandHasItem(living, itemStack -> !itemStack.isEmpty() && itemStack.is(SwordItems.BREATHING_REED))) {
             if (living.canDrownInFluidType(living.level().getFluidState(living.blockPosition().offset(0, 2, 0)).getFluidType())) {
                 event.setConsumeAirAmount(living.getRandom().nextInt(2) > 0 ? 0 : 1);
             } else {
@@ -408,16 +409,16 @@ public final class LivingEntityEvents {
             DifficultyInstance difficulty = event.getDifficulty();
             if (biome.is(Tags.Biomes.IS_ICY) || biome.is(Tags.Biomes.IS_SNOWY)) {
                 boolean pink = mob.getRandom().nextFloat() < 0.01F;
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
                 mob.setCustomName(Component.translatable("entity.confluence.frozen_zombie"));
                 mob.addTag("frozen_zombie");
                 event.setCanceled(true);
             } else if (ModUtils.isRainingAt(level, blockPos)) {
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
                 mob.setCustomName(Component.translatable("entity.confluence.raincoat_zombie"));
                 mob.addTag("raincoat_zombie");
                 event.setCanceled(true);
@@ -425,11 +426,11 @@ public final class LivingEntityEvents {
         } else if (type == EntityType.SKELETON) {
             DifficultyInstance difficulty = event.getDifficulty();
             if (!level.canSeeSky(BlockPos.containing(event.getX(), event.getY(), event.getZ())) && mob.getRandom().nextFloat() < 0.01F) {
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, ArmorItems.MINING_LEGGINGS.get(), 1.0F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, ArmorItems.MINING_LEGGINGS.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
                 mob.setCustomName(Component.translatable("entity.confluence.undead_miner"));
                 mob.addTag("undead_miner");
                 event.setCanceled(true);

@@ -9,7 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
@@ -52,7 +52,7 @@ public class CoinPortalEntity extends Entity {
         setDeltaMovement(getDeltaMovement().scale(0.96));
         move(MoverType.SELF, getDeltaMovement());
         if (!level().isClientSide && age >= 20 && age % 10 == 0) {
-            LibUtils.createItemEntity(ModItems.GOLD_COIN.get().getDefaultInstance(), getX(), getY(), getZ(), level(), 0);
+            LibEntityUtils.createItemEntity(ModItems.GOLD_COIN.get().getDefaultInstance(), getX(), getY(), getZ(), level(), 0);
             if (--this.amount <= 0) {
                 discard();
                 return;

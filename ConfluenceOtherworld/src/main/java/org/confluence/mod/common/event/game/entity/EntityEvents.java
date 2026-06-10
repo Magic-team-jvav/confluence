@@ -15,7 +15,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -87,7 +87,7 @@ public final class EntityEvents {
         if (attacker instanceof Player player &&
                 !PlayerSpecialData.of(player).isCouldHurtCritters() &&
                 !victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
-                (LibUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
+                (LibEntityUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
         ) {
             event.setInvulnerable(true);
             return;
@@ -98,7 +98,7 @@ public final class EntityEvents {
         }
         if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
                 victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER) &&
-                LibUtils.getOwner(damageSource) instanceof Player player &&
+                LibEntityUtils.getOwner(damageSource) instanceof Player player &&
                 !player.isCreative()
         ) {
             event.setInvulnerable(true);

@@ -19,7 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.FloatRGB;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.particlestorm.data.molang.MolangExp;
@@ -119,7 +119,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         if (target.hurt(getDamageSource(), damage)) {
             float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
             if ((attackKnockback > 0.0F && knockbackStrength > 0) || knockbackMotionY > 0) {
-                VectorUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
+                LibMathUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
             }
             afterHurtTarget(target);
             return true;

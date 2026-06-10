@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
@@ -54,20 +54,20 @@ public class CrimsonHeartBlock extends Block {
             int count = data.getEvilBrokenCount() % 3;
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
-                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(TGItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(LightPetItems.CRIMSON_HEART.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(LightPetItems.CRIMSON_HEART.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(TCItems.PANIC_NECKLACE.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(TCItems.PANIC_NECKLACE.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(ManaWeaponItems.CRIMSON_ROD.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(ManaWeaponItems.CRIMSON_ROD.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(SpearItems.THE_ROTTED_FORK.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(SpearItems.THE_ROTTED_FORK.toStack(), center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

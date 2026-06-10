@@ -18,12 +18,14 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.confluence.mod.common.block.natural.LunarCoralBlock;
 import org.confluence.mod.common.block.natural.LunarCoralFanBlock;
 import org.confluence.mod.common.block.natural.LunarCoralPlantBlock;
 import org.joml.Vector2i;
 import org.joml.Vector3d;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -160,7 +162,7 @@ public class LunarCoralFeature extends Feature<LunarCoralFeature.Config> {
         if (bubble) {
             int bubbleCount = random.nextInt(5, 11);
             for (int i = 0; i < bubbleCount; i++) {
-                ball(random.nextDouble() * 2, bubbleBlock, VectorUtils.toVector3d(basePos.offset((int) (i * (random.nextDouble() - 0.5) * 3), 10 + i * 15 + random.nextInt(-5, 6), (int) (i * (random.nextDouble() - 0.5) * 3))), level);
+                ball(random.nextDouble() * 2, bubbleBlock, LibVectorUtils.toVector3d(basePos.offset((int) (i * (random.nextDouble() - 0.5) * 3), 10 + i * 15 + random.nextInt(-5, 6), (int) (i * (random.nextDouble() - 0.5) * 3))), level);
             }
         }
 
@@ -189,7 +191,7 @@ public class LunarCoralFeature extends Feature<LunarCoralFeature.Config> {
         pos.add(0.5, 0.5, 0.5);
         int radiusInt = (int) radius + 2;
         double radius_2 = radius * radius;
-        BlockPos basePos = VectorUtils.fromVector3d(pos);
+        BlockPos basePos = LibMathUtils.fromVector3d(pos);
 
         Map<BlockPos, Boolean> layerMap = new HashMap<>();
         for (int x = -radiusInt; x < radiusInt; x++) {

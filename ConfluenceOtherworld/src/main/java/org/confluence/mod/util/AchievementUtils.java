@@ -29,7 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.loading.FMLPaths;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementProgress;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -172,7 +172,7 @@ public final class AchievementUtils {
     }
 
     public static boolean achievedAchievement(ServerPlayer player, String path) {
-        if (LibUtils.getOrCreatePersistedData(player).getBoolean(Confluence.asPlainId(path))) {
+        if (LibEntityUtils.getOrCreatePersistedData(player).getBoolean(Confluence.asPlainId(path))) {
             return true;
         }
         AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
@@ -180,7 +180,7 @@ public final class AchievementUtils {
     }
 
     public static void awardAchievement(ServerPlayer player, String path) {
-        CompoundTag data = LibUtils.getOrCreatePersistedData(player);
+        CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
         String key = Confluence.asPlainId(path);
         if (!data.getBoolean(key)) {
             AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
@@ -193,17 +193,17 @@ public final class AchievementUtils {
 
     public static void youCanDoIt(ServerPlayer player, ServerLevel level, long gameTime) {
         if (gameTime % 1200 == 0L) { // 每分钟检查一次
-            byte firstNight = LibUtils.getOrCreatePersistedData(player).getByte("confluence:you_can_do_it");
+            byte firstNight = LibEntityUtils.getOrCreatePersistedData(player).getByte("confluence:you_can_do_it");
             if (firstNight == -1) return;
             int dayTime = LibDateUtils.getDayTime(level);
             if (LibDateUtils.isNight(dayTime)) {
-                LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
+                LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
             } else if (firstNight == 1 && LibDateUtils.isDay(dayTime)) {
                 AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
                 if (advancement != null) {
                     player.getAdvancements().award(advancement, "never");
                 }
-                LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) -1);
+                LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) -1);
             }
         }
     }
@@ -250,7 +250,7 @@ public final class AchievementUtils {
     }
 
     public static void theFrequentFlyer(ServerPlayer player, long cost) {
-        CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+        CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(player);
         short before = tag.getShort("confluence:the_frequent_flyer");
         if (before > 10000) return;
         long total = before + cost;

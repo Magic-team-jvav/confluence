@@ -17,15 +17,17 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.confluence.mod.common.block.natural.DragonsBreathPepperBlock;
 import org.confluence.mod.common.block.natural.VoidTreeRootBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.joml.Vector3d;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.confluence.lib.util.FeatureUtils.updateLeavesOptimized;
+import static org.confluence.lib.util.LibFeatureUtils.updateLeavesOptimized;
 import static org.confluence.mod.common.block.natural.VoidTreeRootBlock.CONNECTION_PROPERTIES;
 
 public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
@@ -58,12 +60,12 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
         trunk.add(middlePos);
         trunk.add(endPos);
 
-        List<List<Vector3d>> trunks = VectorUtils.lightningPathList(trunk, 0.3, 0.3F, random, 3, 0.5F);
+        List<List<Vector3d>> trunks = LibGeometryUtils.lightningPathList(trunk, 0.3, 0.3F, random, 3, 0.5F);
 
         trunk.clear();
         trunk.add(startPos);
         trunk.add(middlePos);
-        VectorUtils.lightningPathList(trunk, 0.3, 0.3F, random);
+        LibGeometryUtils.lightningPathList(trunk, 0.3, 0.3F, random);
         trunks.add(trunk);
 
         for (int i = 0; i < 4; i++) {
@@ -96,7 +98,7 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
 
         for (List<Vector3d> trunkList : trunks) {
             for (Vector3d trunkPos : trunkList) {
-                BlockPos posPlace = VectorUtils.fromVector3d(trunkPos);
+                BlockPos posPlace = LibVectorUtils.fromVector3d(trunkPos);
                 if (!level.getBlockState(posPlace).canBeReplaced()) return false;
                 if (trunkPos == trunkList.getLast()) {
                     int mainSide = random.nextInt(3, 8);

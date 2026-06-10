@@ -10,7 +10,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +49,7 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
             this.target = getNearestEnemy();
         }
         if (target != null) {
-            setDeltaMovement(getDeltaMovement().scale(0.96).add(VectorUtils.getVectorA2B(this, target).scale(0.05)));
+            setDeltaMovement(getDeltaMovement().scale(0.96).add(LibMathUtils.getVectorA2B(this, target).scale(0.05)));
         }
     }
 

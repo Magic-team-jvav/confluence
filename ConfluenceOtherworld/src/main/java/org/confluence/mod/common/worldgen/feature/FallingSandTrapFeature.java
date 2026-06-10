@@ -15,7 +15,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.FeatureUtils;
+import org.confluence.lib.util.LibFeatureUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -33,12 +33,12 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
         Config config = context.config();
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
-        if (!FeatureUtils.isPosAir(level, origin)) return false;
+        if (!LibFeatureUtils.isPosAir(level, origin)) return false;
         Optional<Column> optionalColumn = Column.scan(level, origin, config.maxDistanceTo, BlockBehaviour.BlockStateBase::isAir, ModFeatures.IS_BASE_STONE);
         if (optionalColumn.isPresent() && optionalColumn.get() instanceof Column.Range range && range.height() >= config.minDistanceTo) {
             int halfHeight = range.height() / 2;
             BlockPos supportPos = origin.atY(range.floor());
-            if (!FeatureUtils.isPosSturdy(level, supportPos, Direction.UP)) return false;
+            if (!LibFeatureUtils.isPosSturdy(level, supportPos, Direction.UP)) return false;
 
             int radius = config.radius;
             int ceiling = range.ceiling();
@@ -79,7 +79,7 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
 
             BlockState sand = Blocks.SAND.defaultBlockState();
             for (BlockPos pos : BlockPos.betweenClosed(origin.atY(0).offset(-radius, ceiling + 1, -radius), origin.atY(0).offset(radius, ceiling + config.height, radius))) {
-                FeatureUtils.safeSetBlock(level, pos, sand, ModFeatures.IS_REPLACEABLE);
+                LibFeatureUtils.safeSetBlock(level, pos, sand, ModFeatures.IS_REPLACEABLE);
             }
 
             boolean isDeepslate = level.isStateAtPosition(supportPos, blockState -> blockState.is(Blocks.DEEPSLATE));

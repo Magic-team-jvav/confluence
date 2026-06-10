@@ -46,7 +46,7 @@ import org.confluence.lib.api.event.PlayerNaturalHealEvent;
 import org.confluence.lib.api.event.SwitchItemFunctionEvent;
 import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
@@ -378,7 +378,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!LibUtils.isSingleplayerOwner(player) &&
+        if (!LibEntityUtils.isSingleplayerOwner(player) &&
                 AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
         ) {
             AchievementsDataSyncPacketS2C.sendToPlayer(player);

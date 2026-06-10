@@ -8,8 +8,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.util.DateUtils;
@@ -27,12 +27,12 @@ public class StarSteelSword extends BaseSwordItem {
     }
 
     public static void onManaStarPickup(Player player) {
-        LibUtils.getOrCreatePersistedData(player).putLong("confluence:mana_pickup_timestamp", player.level().getGameTime());
+        LibEntityUtils.getOrCreatePersistedData(player).putLong("confluence:mana_pickup_timestamp", player.level().getGameTime());
     }
 
     public static void processCriticalDamage(ServerPlayer player, boolean critical, FloatConsumer multiplier) {
         if (player.getMainHandItem().is(SwordItems.STAR_STEEL_SWORD)) {
-            CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+            CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(player);
             tag.putBoolean("confluence:last_attack_crit", critical);
             if (critical) {
                 long lastPickup = tag.getLong("confluence:mana_pickup_timestamp");
@@ -46,7 +46,7 @@ public class StarSteelSword extends BaseSwordItem {
     /// 尝试掉落魔力星（暴击时不掉落）
     public static void tryDropManaStar(LivingEntity victim, ServerPlayer attacker) {
         if (attacker.getMainHandItem().is(SwordItems.STAR_STEEL_SWORD)) {
-            CompoundTag tag = LibUtils.getOrCreatePersistedData(attacker);
+            CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(attacker);
             boolean lastAttackCrit = tag.getBoolean("confluence:last_attack_crit");
             tag.remove("confluence:last_attack_crit");
             if (lastAttackCrit) return;

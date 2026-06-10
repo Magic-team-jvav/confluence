@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
@@ -66,7 +66,7 @@ public class BaseMinecartEntity extends Minecart {
                     for (Entity entity : list) {
                         double distance = movement.horizontalDistance();
                         entity.hurt(damageSources().flyIntoWall(), (float) distance * 5.0F);
-                        VectorUtils.knockBackA2B(this, entity, distance * 0.5, 0.2);
+                        LibMathUtils.knockBackA2B(this, entity, distance * 0.5, 0.2);
                         if (!entity.isAlive()) killed = true;
                     }
                     if (killed && driver instanceof ServerPlayer serverPlayer) {

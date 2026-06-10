@@ -11,7 +11,7 @@ import net.minecraft.world.item.CrossbowItem;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.lib.color.GlobalColors;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.Bestiary;
@@ -126,7 +126,7 @@ public final class TEGameEvents {
     @SubscribeEvent
     public static void afterNpcTrade(NPCEvent.NPCTradeEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player && event.getHolder() instanceof AnglerNPC) {
-            CompoundTag data = LibUtils.getOrCreatePersistedData(player);
+            CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
             int times = data.getInt("confluence:angler_task_times") + 1;
             String path;
             if (times >= 200) {

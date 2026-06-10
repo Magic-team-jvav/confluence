@@ -17,7 +17,7 @@ import org.joml.Vector3d;
 
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class PyramidStructure extends Structure {
     public static final MapCodec<PyramidStructure> CODEC = simpleCodec(PyramidStructure::new);

@@ -11,7 +11,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
 import software.bernie.geckolib.animation.EasingType;
@@ -33,6 +33,6 @@ public class StreamstrikeHalberdItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        VectorUtils.knockBackA2B(owner, victim, 0.25, 0.2);
+        LibMathUtils.knockBackA2B(owner, victim, 0.25, 0.2);
     }
 }

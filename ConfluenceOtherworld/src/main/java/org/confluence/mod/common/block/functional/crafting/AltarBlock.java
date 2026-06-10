@@ -49,7 +49,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.common.CommonConfigs;
@@ -193,7 +193,7 @@ public class AltarBlock extends BaseEntityBlock {
                     crafted = true;
                     AltarRecipe recipe = recipes.getFirst().value();
                     ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
-                    LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
+                    LibEntityUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 }
                 if (crafted) {
                     entity.playAnimation(serverLevel, pos);
@@ -204,7 +204,7 @@ public class AltarBlock extends BaseEntityBlock {
                 if (recipes.isEmpty()) return;
                 AltarRecipe recipe = recipes.getFirst().value();
                 ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
-                LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
+                LibEntityUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 entity.playAnimation(serverLevel, pos);
                 entity.markUpdated();
             }

@@ -14,7 +14,8 @@ import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.joml.Vector3d;
 
 import java.util.ArrayList;
@@ -87,9 +88,9 @@ public class DrySeaCarver extends WorldCarver<CarverConfiguration> {
                 }
             }
 
-            posList.addAll(VectorUtils.getBlocksInConvexHull(groupDown));
-            posList.addAll(VectorUtils.getBlocksInConvexHull(groupMid));
-            posList.addAll(VectorUtils.getBlocksInConvexHull(groupUp));
+            posList.addAll(LibGeometryUtils.getBlocksInConvexHull(groupDown));
+            posList.addAll(LibGeometryUtils.getBlocksInConvexHull(groupMid));
+            posList.addAll(LibGeometryUtils.getBlocksInConvexHull(groupUp));
 
             for (BlockPos pos : posList) {
                 newYMap.merge(BlockPos.asLong(pos.getX(), 0, pos.getZ()), pos.getY(), Math::max);
@@ -124,7 +125,7 @@ public class DrySeaCarver extends WorldCarver<CarverConfiguration> {
         for (int i = 0; i < count; i++) {
             float rotate = startRotate + stepRotate * i + stepRotate / 3 * random.nextFloat();
             float trueRadius = minRadius + 2 * random.nextFloat();
-            r.add(VectorUtils.toVector3d(basePos.offset((int) (trueRadius * Mth.sin(rotate)), random.nextInt(-1, 2), (int) (trueRadius * Mth.cos(rotate)))));
+            r.add(LibVectorUtils.toVector3d(basePos.offset((int) (trueRadius * Mth.sin(rotate)), random.nextInt(-1, 2), (int) (trueRadius * Mth.cos(rotate)))));
         }
         return r;
     }

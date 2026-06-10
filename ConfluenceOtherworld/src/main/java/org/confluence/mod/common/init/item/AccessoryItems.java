@@ -18,7 +18,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
@@ -213,7 +213,7 @@ public class AccessoryItems {
             }
             ItemStack itemStack = item.getDefaultInstance();
             itemStack.setCount(randomSource.nextInt(1, 3));
-            LibUtils.createItemEntity(itemStack, target.getX(), target.getY(), target.getZ(), player.level(), 0);
+            LibEntityUtils.createItemEntity(itemStack, target.getX(), target.getY(), target.getZ(), player.level(), 0);
         }
     }
 
@@ -222,7 +222,7 @@ public class AccessoryItems {
                 !damageSource.is(DamageTypes.DROWN) &&
                 !damageSource.is(TCTags.HARMFUL_EFFECT)
         ) {
-            CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+            CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(player);
             long last = tag.getLong("confluence:last_hurt_get_mana_time");
             long cur = player.level().getGameTime();
             if (cur - last >= 10) {

@@ -28,7 +28,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import java.util.*;
 
 import static net.minecraft.world.level.block.PoweredRailBlock.SHAPE;
-import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class MineTunnelsStructure extends Structure {
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_SUPPORT = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_support");

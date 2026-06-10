@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.FeatureUtils;
+import org.confluence.lib.util.LibFeatureUtils;
 
 import java.util.function.Consumer;
 
@@ -28,7 +28,7 @@ public class SimpleBlockNBTFeature extends Feature<SimpleBlockNBTFeature.Config>
         BlockState blockState = config.toPlace().getState(pContext.random(), blockPos);
         if (blockState.canSurvive(level, blockPos)) {
             level.setBlock(blockPos, blockState, 3);
-            BlockEntity blockEntity = FeatureUtils.getBlockEntity(level, blockPos);
+            BlockEntity blockEntity = LibFeatureUtils.getBlockEntity(level, blockPos);
             if (blockEntity != null) blockEntity.loadWithComponents(config.nbt, level.registryAccess());
             return true;
         }

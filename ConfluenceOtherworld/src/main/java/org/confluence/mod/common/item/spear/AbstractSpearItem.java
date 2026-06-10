@@ -32,6 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -151,7 +152,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
                         continue;
                     struckEntities.add(victim.getId());
                     owner.setLastHurtMob(victim);
-                    victim = LibUtils.tryFindBeImpacted(victim);
+                    victim = LibEntityUtils.tryFindBeImpacted(victim);
                     onHitEntity(stack, owner.serverLevel(), owner, victim);
                     break;
                 }
@@ -179,7 +180,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     }
 
     protected boolean canHitEntity(Entity target, LivingEntity owner) {
-        return LibUtils.canHitEntity(target, owner);
+        return LibEntityUtils.canHitEntity(target, owner);
     }
 
     protected double getDistance(long tickCount, LivingEntity owner) {

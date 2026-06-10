@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibVectorUtils;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.joml.Vector3d;
@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.ellipsoid;
-import static org.confluence.lib.util.StructureUtils.getHeight;
-import static org.confluence.lib.util.VectorUtils.ellipsoidPos;
-import static org.confluence.lib.util.VectorUtils.frustumSetPos;
+import static org.confluence.lib.util.LibGeometryUtils.ellipsoidPos;
+import static org.confluence.lib.util.LibGeometryUtils.frustumSetPos;
+import static org.confluence.lib.util.LibStructureUtils.ellipsoid;
+import static org.confluence.lib.util.LibStructureUtils.getHeight;
 
 public class GraniteCaveStructure extends Structure {
     public static final MapCodec<GraniteCaveStructure> CODEC = simpleCodec(GraniteCaveStructure::new);
@@ -56,29 +56,29 @@ public class GraniteCaveStructure extends Structure {
             List<Vector3d> listPos2 = new ArrayList<>();
             List<Vector3d> listPos3 = new ArrayList<>();
             for (Vector3d vector3d : listPos) {
-                listPos1.addAll(ellipsoidPos(13.5, 9.5, 13.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
+                listPos1.addAll(ellipsoidPos(13.5, 9.5, 13.5, LibVectorUtils.fromVector3d(vector3d), 0.002F, random));
             }
 
             for (Vector3d vector3d : listPos1) {
-                checkPos = VectorUtils.fromVector3d(vector3d);
+                checkPos = LibVectorUtils.fromVector3d(vector3d);
                 listPos2.addAll(ellipsoidPos(11.5, 6.5, 11.5, checkPos, 0.002F, random));
             }
             for (Vector3d vector3d : listPos2) {
-                checkPos = VectorUtils.fromVector3d(vector3d);
+                checkPos = LibVectorUtils.fromVector3d(vector3d);
                 ellipsoid(9.5, 4.5, 9.5, checkPos, blockstate, true, blockMap);
             }
             for (Vector3d vector3d : listPos2) {
-                checkPos = VectorUtils.fromVector3d(vector3d);
+                checkPos = LibVectorUtils.fromVector3d(vector3d);
                 ellipsoid(random.nextInt(4, 9) + 0.5, 2.5, random.nextInt(4, 9) + 0.5, checkPos, 0, true, blockMap);
             }
 
             for (Vector3d vector3d : listPos2) {
                 if (0.001F > random.nextFloat()) {
-                    listPos3.addAll(ellipsoidPos(random.nextInt(8, 13) + 0.5, 1.5, random.nextInt(8, 13) + 0.5, VectorUtils.fromVector3d(vector3d), 0.05F, random));
+                    listPos3.addAll(ellipsoidPos(random.nextInt(8, 13) + 0.5, 1.5, random.nextInt(8, 13) + 0.5, LibVectorUtils.fromVector3d(vector3d), 0.05F, random));
                 }
             }
             for (Vector3d vector3d : listPos3) {
-                checkPos = VectorUtils.fromVector3d(vector3d);
+                checkPos = LibVectorUtils.fromVector3d(vector3d);
                 ellipsoid(random.nextInt(4, 9) + 0.5, 0.1, random.nextInt(4, 9) + 0.5, checkPos, blockstate, true, blockMap);
             }
 

@@ -3,11 +3,7 @@ package org.confluence.mod.common.component;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,32 +13,26 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terraentity.api.entity.IGeneration;
-import org.confluence.terraentity.api.entity.ITrackType;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-/**
- * <h1>长矛弹射物组件</h1>
- *
- * @param damageFactor 伤害系数
- * @param baseSpeed    基础速度
- * @param acceleration 加速度（每tick乘数）
- * @param existTicks   存在时间
- * @param gravity      重力加速度
- * @param cooldown     冷却时间
- * @param soundEvent   发射音效
- * @param projType     弹射物实体类型ID
- * @param trackType    追踪类型
- * @param generation   生成位置策略
- * @param pierceCount  穿透次数
- * @param hitEffect    击中特效
- */
+/// # 长矛弹射物组件
+///
+/// @param damageFactor 伤害系数
+/// @param baseSpeed    基础速度
+/// @param acceleration 加速度（每tick乘数）
+/// @param existTicks   存在时间
+/// @param gravity      重力加速度
+/// @param cooldown     冷却时间
+/// @param soundEvent   发射音效
+/// @param projType     弹射物实体类型ID
+/// @param trackType    追踪类型
+/// @param generation   生成位置策略
+/// @param pierceCount  穿透次数
+/// @param hitEffect    击中特效
 public record SpearProjectileComponent(
         float damageFactor,
         float baseSpeed,

@@ -1,7 +1,10 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.dispenser.*;
+import net.minecraft.core.dispenser.BoatDispenseItemBehavior;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.DispensibleContainerItem;
@@ -10,7 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.item.common.SpongeItem;
 
 import java.util.stream.Stream;
@@ -71,17 +74,17 @@ public class DispenserRegistration {
         ).forEach(item -> DispenserBlock.registerBehavior(item.asItem(), spongeAbsorbLiquid));
 
         BoatItems.BOAT_ITEMS.getEntries().stream()
-                .map(DeferredHolder::get)
+                .map(RegistryObject::get)
                 .forEach(boatItem ->
                         DispenserBlock.registerBehavior(boatItem, new BoatDispenseItemBehavior(((BoatItem) boatItem).type))
                 );
         BoatItems.CHEST_BOAT_ITEMS.getEntries().stream()
-                .map(DeferredHolder::get)
+                .map(RegistryObject::get)
                 .forEach(chestBoatItem ->
                         DispenserBlock.registerBehavior(chestBoatItem, new BoatDispenseItemBehavior(((BoatItem) chestBoatItem).type, true))
                 );
         ArrowItems.ITEMS.getEntries().stream()
-                .map(DeferredHolder::get)
+                .map(RegistryObject::get)
                 .forEach(DispenserBlock::registerProjectileBehavior);
 
         DispenserBlock.registerBehavior(PotionItems.BOTTLE.asItem(), new OptionalDispenseItemBehavior() {

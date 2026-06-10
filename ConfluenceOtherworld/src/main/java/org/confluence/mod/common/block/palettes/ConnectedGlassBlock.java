@@ -3,11 +3,11 @@ package org.confluence.mod.common.block.palettes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import org.mesdag.portlib.wrapper.world.level.block.PortTransparentBlock;
 
-public class ConnectedGlassBlock extends TransparentBlock {
+public class ConnectedGlassBlock extends PortTransparentBlock {
     public ConnectedGlassBlock(Properties properties) {
         super(properties);
     }

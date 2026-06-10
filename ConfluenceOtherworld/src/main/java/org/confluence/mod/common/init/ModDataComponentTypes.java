@@ -1,29 +1,23 @@
 package org.confluence.mod.common.init;
 
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.Registries;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.component.FlailComponent;
-import org.confluence.mod.common.component.LootComponent;
-import org.confluence.mod.common.component.RepeaterContents;
-import org.confluence.mod.common.component.SpearProjectileComponent;
-import org.confluence.mod.common.component.SwordProjectileComponent;
-import org.confluence.mod.common.component.ValueComponent;
+import org.confluence.mod.common.component.*;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
-
-import java.util.function.Supplier;
+import org.mesdag.portlib.component.PortDataComponentType;
+import org.mesdag.portlib.registries.PortDataComponentRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
+import org.mesdag.portlib.registries.PortRegistryEntry;
 
 public final class ModDataComponentTypes {
-    public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Confluence.MODID);
+    public static final PortDataComponentRegistration TYPES = PortRegisterHandler.dataComponent(Confluence.MODID);
 
-    public static final Supplier<DataComponentType<LootComponent>> LOOT = TYPES.registerComponentType("loot", builder -> builder.persistent(LootComponent.CODEC).networkSynchronized(LootComponent.STREAM_CODEC));
-    public static final Supplier<DataComponentType<PrefixComponent>> PREFIX = TYPES.registerComponentType("prefix", builder -> builder.persistent(PrefixComponent.CODEC)); // 不能使用同步
-    public static final Supplier<DataComponentType<ValueComponent>> VALUE = TYPES.registerComponentType("value", builder -> builder.persistent(ValueComponent.CODEC).networkSynchronized(ValueComponent.STREAM_CODEC));
-    public static final Supplier<DataComponentType<SwordProjectileComponent>> SWORD_PROJECTILE = TYPES.registerComponentType("sword_projectile", builder -> builder.persistent(SwordProjectileComponent.CODEC).networkSynchronized(SwordProjectileComponent.STREAM_CODEC));
-    public static final Supplier<DataComponentType<SpearProjectileComponent>> SPEAR_PROJECTILE = TYPES.registerComponentType("spear_projectile", builder -> builder.persistent(SpearProjectileComponent.CODEC).networkSynchronized(SpearProjectileComponent.STREAM_CODEC));
-    public static final Supplier<DataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.registerComponentType("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
-    public static final Supplier<DataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.registerComponentType("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
-    public static final Supplier<DataComponentType<FlailComponent>> FLAIL = TYPES.registerComponentType("flail", builder -> builder.persistent(FlailComponent.CODEC).networkSynchronized(FlailComponent.STREAM_CODEC));
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<LootComponent>> LOOT = TYPES.builder("loot", builder -> builder.persistent(LootComponent.CODEC).networkSynchronized(LootComponent.STREAM_CODEC));
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<PrefixComponent>> PREFIX = TYPES.builder("prefix", builder -> builder.persistent(PrefixComponent.CODEC)); // 不能使用同步
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<ValueComponent>> VALUE = TYPES.builder("value", builder -> builder.persistent(ValueComponent.CODEC).networkSynchronized(ValueComponent.STREAM_CODEC));
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<SwordProjectileComponent>> SWORD_PROJECTILE = TYPES.builder("sword_projectile", builder -> builder.persistent(SwordProjectileComponent.CODEC).networkSynchronized(SwordProjectileComponent.STREAM_CODEC));
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<SpearProjectileComponent>> SPEAR_PROJECTILE = TYPES.builder("spear_projectile", builder -> builder.persistent(SpearProjectileComponent.CODEC).networkSynchronized(SpearProjectileComponent.STREAM_CODEC));
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.builder("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.builder("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<FlailComponent>> FLAIL = TYPES.builder("flail", builder -> builder.persistent(FlailComponent.CODEC).networkSynchronized(FlailComponent.STREAM_CODEC));
 }

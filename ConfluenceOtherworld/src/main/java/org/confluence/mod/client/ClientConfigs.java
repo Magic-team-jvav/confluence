@@ -7,13 +7,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
-import net.neoforged.neoforge.common.ModConfigSpec.Builder;
-import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
-import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
-import net.neoforged.neoforge.common.TranslatableEnum;
+import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
+import net.minecraftforge.common.ForgeConfigSpec.Builder;
+import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
@@ -23,6 +22,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 
 import java.util.Locale;
 
@@ -146,7 +146,7 @@ public final class ClientConfigs {
         healIndicator = HEAL_INDICATOR.get();
     }
 
-    public static void register(ModContainer container) {
+    public static void register(FMLJavaModLoadingContext context) {
         Builder builder = new Builder();
 
         SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);
@@ -231,10 +231,10 @@ public final class ClientConfigs {
             builder.pop();
         }
 
-        container.registerConfig(ModConfig.Type.CLIENT, builder.build());
+        context.registerConfig(ModConfig.Type.CLIENT, builder.build());
     }
 
-    public enum GoreEffect implements TranslatableEnum {
+    public enum GoreEffect implements PortTranslatableEnum {
         OFF {
             @Override
             public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
@@ -290,7 +290,7 @@ public final class ClientConfigs {
         public abstract boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item);
     }
 
-    public enum SellPriceDisplay implements TranslatableEnum {
+    public enum SellPriceDisplay implements PortTranslatableEnum {
         NEVER {
             @Override
             public boolean test() {

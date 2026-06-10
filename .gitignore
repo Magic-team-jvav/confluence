@@ -33,3 +33,6 @@ run-data/
 
 generated/
 build/
+
+# submodules to ignore
+/TerraEntity/

@@ -10,13 +10,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.registries.RegistryObject;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.common.StatueBlock;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -1461,16 +1462,16 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " ## ",
                 "####"
         ));
-        ItemLike[] statueItems = {
+        List<RegistryObject<StatueBlock>> statueItems = List.of(
                 StatueBlocks.A_STATUE, StatueBlocks.B_STATUE, StatueBlocks.C_STATUE, StatueBlocks.D_STATUE, StatueBlocks.E_STATUE, StatueBlocks.F_STATUE, StatueBlocks.G_STATUE, StatueBlocks.H_STATUE, StatueBlocks.I_STATUE, StatueBlocks.J_STATUE, StatueBlocks.K_STATUE, StatueBlocks.L_STATUE, StatueBlocks.M_STATUE, StatueBlocks.N_STATUE, StatueBlocks.O_STATUE, StatueBlocks.P_STATUE, StatueBlocks.Q_STATUE, StatueBlocks.R_STATUE, StatueBlocks.S_STATUE, StatueBlocks.T_STATUE, StatueBlocks.U_STATUE, StatueBlocks.V_STATUE, StatueBlocks.W_STATUE, StatueBlocks.X_STATUE, StatueBlocks.Y_STATUE, StatueBlocks.Z_STATUE,
                 StatueBlocks.N0_STATUE, StatueBlocks.N1_STATUE, StatueBlocks.N2_STATUE, StatueBlocks.N3_STATUE, StatueBlocks.N4_STATUE, StatueBlocks.N5_STATUE, StatueBlocks.N6_STATUE, StatueBlocks.N7_STATUE, StatueBlocks.N8_STATUE, StatueBlocks.N9_STATUE,
                 StatueBlocks.PERIOD_STATUE,
                 StatueBlocks.EXCLAMATION_MARK_STATUE,
                 StatueBlocks.QUESTION_MARK_STATUE
-        };
+        );
         // 雕像
-        for (ItemLike statueItem : statueItems) {
-            shaped(recipeOutput, baseStatuePattern, statueItem.asItem().getDefaultInstance());
+        for (RegistryObject<StatueBlock> object : statueItems) {
+            shaped(recipeOutput, baseStatuePattern, object.get().asItem().getDefaultInstance());
         }
     }
 

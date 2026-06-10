@@ -1,20 +1,20 @@
 package org.confluence.mod.common.block.common;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.mesdag.portlib.wrapper.common.PortTags;
+import org.mesdag.portlib.wrapper.world.level.block.PortTransparentBlock;
 
-public class SoulGlassBlock extends TransparentBlock {
-    public SoulGlassBlock(Properties p_309186_) {
-        super(p_309186_);
+public class SoulGlassBlock extends PortTransparentBlock {
+    public SoulGlassBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class SoulGlassBlock extends TransparentBlock {
         if (context instanceof EntityCollisionContext entityContext) {
             Entity entity = entityContext.getEntity();
             if (entity instanceof LivingEntity living) {
-                if (living.getType().is(EntityTypeTags.UNDEAD)) {
+                if (living.getType().is(PortTags.EntityTypes.UNDEAD)) {
                     return Shapes.block();
                 }
             }

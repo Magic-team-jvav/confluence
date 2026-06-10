@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.food;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
@@ -80,24 +79,24 @@ public class ModFoodPropertiesBuilder {
         return new FoodProperties(nutrition, saturation, canAlwaysEat, eatSeconds, usingConvertsTo, effects.build());
     }
 
-    public record EffectData(Holder<MobEffect> effect, int duration, int level, float probability) {
+    public record EffectData(MobEffect effect, int duration, int level, float probability) {
         public int amplifier() {
             return level;
         }
 
-        public static EffectData of(Holder<MobEffect> effect, int duration) {
+        public static EffectData of(MobEffect effect, int duration) {
             return new EffectData(effect, duration, 0, 1.0f);
         }
 
-        public static EffectData of(Holder<MobEffect> effect, int duration, float probability) {
+        public static EffectData of(MobEffect effect, int duration, float probability) {
             return new EffectData(effect, duration, 0, probability);
         }
 
-        public static EffectData of(Holder<MobEffect> effect, int duration, int level) {
+        public static EffectData of(MobEffect effect, int duration, int level) {
             return new EffectData(effect, duration, level, 1.0f);
         }
 
-        public static EffectData of(Holder<MobEffect> effect, int duration, int level, float probability) {
+        public static EffectData of(MobEffect effect, int duration, int level, float probability) {
             return new EffectData(effect, duration, level, probability);
         }
     }

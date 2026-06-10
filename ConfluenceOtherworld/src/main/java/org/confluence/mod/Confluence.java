@@ -1,20 +1,16 @@
 package org.confluence.mod;
 
 import net.minecraft.core.Registry;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.GameRules;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.network.IPacket;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.init.*;
@@ -32,12 +28,13 @@ public final class Confluence {
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
-    public Confluence(IEventBus eventBus, ModContainer container) {
-        StartupConfigs.register(container);
-        CommonConfigs.register(container);
+    public Confluence(FMLJavaModLoadingContext context) {
+        IEventBus eventBus = context.getModEventBus();
+        StartupConfigs.register();
+        CommonConfigs.register(context);
         if (LibUtils.isPhysicalClient()) {
-            ClientConfigs.register(container);
-            container.registerExtensionPoint(IConfigScreenFactory.class, MergedConfigurationScreen::factory);
+            ClientConfigs.register(context);
+//            container.registerExtensionPoint(IConfigScreenFactory.class, MergedConfigurationScreen::factory);
         }
 
         TEEvents.register(eventBus);
@@ -49,6 +46,7 @@ public final class Confluence {
         ModEnchantments.register(eventBus);
         ModAdvancements.register(eventBus);
 
+        ModTrackTypeProviderTypes.init();
         TFReferences.init();
         ModFluids.initialize();
         ModPrefix.initialize();

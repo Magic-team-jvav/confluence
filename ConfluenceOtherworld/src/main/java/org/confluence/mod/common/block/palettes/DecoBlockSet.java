@@ -3,10 +3,10 @@ package org.confluence.mod.common.block.palettes;
 import it.unimi.dsi.fastutil.objects.ObjectIntImmutablePair;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.world.item.Item;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.jetbrains.annotations.Nullable;
@@ -32,10 +32,10 @@ public class DecoBlockSet {
     public final List<ObjectIntPair<Supplier<? extends ItemLike>>> materials;
     public final boolean stonecutting;
 
-    public final DeferredBlock<Block> FULL;
-    public final DeferredBlock<StairBlock> STAIRS;
-    public final DeferredBlock<SlabBlock> SLAB;
-    public final DeferredBlock<WallBlock> WALL;
+    public final RegistryObject<Block> FULL;
+    public final RegistryObject<StairBlock> STAIRS;
+    public final RegistryObject<SlabBlock> SLAB;
+    public final RegistryObject<WallBlock> WALL;
 
     DecoBlockSet(Builder builder) {
         this.id = builder.id;

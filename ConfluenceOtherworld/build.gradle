@@ -9,7 +9,6 @@ plugins {
 
 var projectName = [
         "Confluence-Magic-Lib",
-        "TerraEntity",
         "TerraCurio",
         "TerraGuns",
         "TerraFurniture",

@@ -2,7 +2,6 @@ package org.confluence.mod.common.attachment;
 
 import com.google.common.collect.Iterables;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -216,7 +215,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         }
         AttributeMap attributes = player.getAttributes();
 
-        for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : getValue(TCItems.ATTRIBUTES).asMap().entrySet()) {
+        for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : getValue(TCItems.ATTRIBUTES).asMap().entrySet()) {
             AttributeInstance attributeinstance = attributes.getInstance(entry.getKey());
             if (attributeinstance == null) continue;
             for (AttributeModifier modifier : entry.getValue()) {
@@ -237,7 +236,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         flushArmor(legs);
         flushArmor(feet);
 
-        for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : getValue(TCItems.ATTRIBUTES).asMap().entrySet()) {
+        for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : getValue(TCItems.ATTRIBUTES).asMap().entrySet()) {
             AttributeInstance attributeinstance = attributes.getInstance(entry.getKey());
             if (attributeinstance == null) continue;
             for (AttributeModifier modifier : entry.getValue()) {

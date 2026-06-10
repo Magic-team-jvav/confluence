@@ -1,13 +1,12 @@
 package org.confluence.mod.common.item.armor;
 
+import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import com.google.common.base.Suppliers;
-import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -15,7 +14,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.level.Level;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
@@ -24,13 +23,12 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terra_curio.api.primitive.PrimitiveValue;
 import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,13 +40,12 @@ public class BaseArmorItem extends ArmorItem {
     private @Nullable String requiresModLoaded;
     private boolean golden;
 
-    public BaseArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public BaseArmorItem(ArmorMaterial material, Type type, Properties properties) {
         super(material, type, properties);
     }
 
-    @ParametersAreNonnullByDefault
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if (tooltips != null) {
             tooltipComponents.addAll(tooltips);
         }
@@ -78,7 +75,7 @@ public class BaseArmorItem extends ArmorItem {
         private Map<ValueType<?, ? extends PrimitiveValue<?>>, PrimitiveValue<?>> types = null;
         private boolean multiHead = false;
         private String requiresModLoaded = null;
-        private ImmutableList.Builder<ItemAttributeModifiers.Entry> vanillaAttributes = null;
+        private ImmutableMultimap.Builder<Attribute, AttributeModifier> vanillaAttributes = null;
         private boolean golden;
 
         private transient ResourceLocation id;
@@ -142,26 +139,30 @@ public class BaseArmorItem extends ArmorItem {
             return this;
         }
 
-        public Builder attribute(Holder<Attribute> attribute, double value, AttributeModifier.Operation operation) {
-            if (vanillaAttributes == null) this.vanillaAttributes = ImmutableList.builder();
-            vanillaAttributes.add(new ItemAttributeModifiers.Entry(attribute, new AttributeModifier(asId(), value, operation), EquipmentSlotGroup.bySlot(type.getSlot())));
+        public Builder attribute(Attribute attribute, double value, PortAttributeModifier.PortOperation operation) {
+            if (vanillaAttributes == null) this.vanillaAttributes = ImmutableMultimap.builder();
+            vanillaAttributes.put(attribute, new AttributeModifier(PortAttributeModifier.rl2uuid(asId()), asId().getPath(), value, operation.unwrap()));
             return this;
         }
 
+        public Builder attribute(Holder<Attribute> attribute, double value, PortAttributeModifier.PortOperation operation) {
+            return attribute(attribute.value(), value, operation);
+        }
+
         public Builder meleeDamage(double value) {
-            return attribute(LibAttributes.getAttackDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getAttackDamage(), value, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder rangedDamage(double value) {
-            return attribute(LibAttributes.getRangedDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getRangedDamage(), value, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder magicDamage(double value) {
-            return attribute(LibAttributes.getMagicDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getMagicDamage(), value, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder summonDamage(double value) {
-            return attribute(LibAttributes.getSummonDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getSummonDamage(), value, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder fourClassesDamage(double value) {
@@ -169,7 +170,7 @@ public class BaseArmorItem extends ArmorItem {
         }
 
         public Builder criticalChance(double value) {
-            return attribute(LibAttributes.getCriticalChance(), value, AttributeModifier.Operation.ADD_VALUE);
+            return attribute(LibAttributes.getCriticalChance(), value, PortAttributeModifier.PortOperation.ADD_VALUE);
         }
 
         public Builder setGolden() {
@@ -182,10 +183,10 @@ public class BaseArmorItem extends ArmorItem {
             if (durability > 0) {
                 properties.durability(durability);
             } else {
-                properties.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE);
+                PortItemExtension.Properties.unbreakable(properties);
             }
             if (types != null) {
-                properties.component(ModDataComponentTypes.ARMOR_BONUS, new PrimitiveValueComponent(types));
+                PortItemExtension.Properties.component(properties, ModDataComponentTypes.ARMOR_BONUS, new PrimitiveValueComponent(types));
             }
             BaseArmorItem item;
             if (geoName != null) {

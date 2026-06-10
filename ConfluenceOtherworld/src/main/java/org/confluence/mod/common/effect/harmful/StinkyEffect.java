@@ -7,24 +7,23 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.mod.common.init.ModEffects;
 import org.mesdag.particlestorm.api.MolangParticleMobEffect;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 public class StinkyEffect extends MolangParticleMobEffect {
     public StinkyEffect(ResourceLocation id) {
         super(MobEffectCategory.HARMFUL, 0x99FF00, id);
-        addAttributeModifier(Attributes.LUCK, id, -0.25, AttributeModifier.Operation.ADD_VALUE);
+        getAttributeModifiers().put(Attributes.LUCK, new AttributeModifier(PortAttributeModifier.rl2uuid(id), id.getPath(), -0.25, AttributeModifier.Operation.ADDITION));
     }
 
     @Override
-    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return true;
-    }
-
-    @Override
-    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+    public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity.isInWater()) {
-            entity.removeEffect(ModEffects.STINKY);
-            return false;
+            entity.removeEffect(ModEffects.STINKY.get());
         }
+    }
+
+    @Override
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         return true;
     }
 }

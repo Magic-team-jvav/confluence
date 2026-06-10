@@ -1,10 +1,12 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import net.neoforged.neoforge.common.extensions.IAbstractMinecartExtension;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.minecart.*;
@@ -18,35 +20,35 @@ import static org.confluence.mod.common.entity.minecart.BaseMinecartEntity.*;
 
 @SuppressWarnings("unchecked")
 public class MinecartItems {
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Confluence.MODID);
 
-    public static final DeferredItem<BaseMinecartItem> MECHANICAL_CART = ITEMS.registerItem("mechanical_cart", properties -> new BaseMinecartItem(properties.fireResistant(), ModRarity.EXPERT, Types.MECHANICAL, MechanicalCartEntity::new));
-    public static final DeferredItem<BaseMinecartItem> DESERT_MINECART = registerGeneric("desert_minecart", Types.DESERT, Variant.DESERT);
-    public static final DeferredItem<BaseMinecartItem> MINECARP = ITEMS.registerItem("minecarp", properties -> new BaseMinecartItem(properties, ModRarity.BLUE, Types.MINECARP, MinecarpEntity::new));
-    public static final DeferredItem<BaseMinecartItem> BEE_MINECART = registerGeneric("bee_minecart", Types.BEE, Variant.BEE);
-    public static final DeferredItem<BaseMinecartItem> LADYBUG_MINECART = registerGeneric("ladybug_minecart", Types.LADYBUG, Variant.LADYBUG);
-    public static final DeferredItem<BaseMinecartItem> PIGRON_MINECART = registerGeneric("pigron_minecart", Types.PIGRON, Variant.PIGRON);
-    public static final DeferredItem<BaseMinecartItem> SUNFLOWER_MINECART = registerGeneric("sunflower_minecart", Types.SUNFLOWER, Variant.SUNFLOWER);
-    public static final DeferredItem<BaseMinecartItem> DEMONIC_HELLCART = ITEMS.registerItem("demonic_hellcart", properties -> new BaseMinecartItem(properties, ModRarity.BLUE, Types.DEMONIC, DemonicHellcartEntity::new));
-    public static final DeferredItem<BaseMinecartItem> SHROOM_MINECART = registerGeneric("shroom_minecart", Types.SHROOM, Variant.SHROOM);
-    public static final DeferredItem<BaseMinecartItem> AMETHYST_MINECART = registerGeneric("amethyst_minecart", Types.AMETHYST, Variant.AMETHYST);
-    public static final DeferredItem<BaseMinecartItem> TOPAZ_MINECART = registerGeneric("topaz_minecart", Types.TOPAZ, Variant.TOPAZ);
-    public static final DeferredItem<BaseMinecartItem> SAPPHIRE_MINECART = registerGeneric("sapphire_minecart", Types.SAPPHIRE, Variant.SAPPHIRE);
-    public static final DeferredItem<BaseMinecartItem> JADE_MINECART = registerGeneric("jade_minecart", Types.JADE, Variant.JADE);
-    public static final DeferredItem<BaseMinecartItem> RUBY_MINECART = registerGeneric("ruby_minecart", Types.RUBY, Variant.RUBY);
-    public static final DeferredItem<BaseMinecartItem> DIAMOND_MINECART = registerGeneric("diamond_minecart", Types.DIAMOND, Variant.DIAMOND);
-    public static final DeferredItem<BaseMinecartItem> AMBER_MINECART = registerGeneric("amber_minecart", Types.AMBER, Variant.AMBER);
-    public static final DeferredItem<BaseMinecartItem> BEETLE_MINECART = registerGeneric("beetle_minecart", Types.BEETLE, Variant.BEETLE);
-    public static final DeferredItem<BaseMinecartItem> MEOWMERE_MINECART = ITEMS.registerItem("meowmere", properties -> new BaseMinecartItem(properties, ModRarity.RED, Types.MEOWMERE, MeowmereMinecartEntity::new));
-    public static final DeferredItem<BaseMinecartItem> PARTY_WAGON = registerGeneric("party_wagon", Types.PARTY, Variant.PARTY);
-    public static final DeferredItem<BaseMinecartItem> THE_DUTCHMAN = registerGeneric("the_dutchman", Types.DUTCHMAN, Variant.DUTCHMAN);
-    public static final DeferredItem<BaseMinecartItem> STEAMPUNK_MINECART = registerGeneric("steampunk_minecart", Types.STEAMPUNK, Variant.STEAMPUNK);
-    public static final DeferredItem<BaseMinecartItem> COFFIN_MINECART = registerGeneric("coffin_minecart", Types.COFFIN, Variant.COFFIN);
-    public static final DeferredItem<BaseMinecartItem> DIGGING_MOLECART = ITEMS.registerItem("digging_molecart", properties -> new BaseMinecartItem(properties, ModRarity.BLUE, Types.MOLECART, DiggingMolecartEntity::new));
-    public static final DeferredItem<BaseMinecartItem> FART_KART = ITEMS.registerItem("fart_kart", properties -> new BaseMinecartItem(properties, ModRarity.GREEN, Types.FART, (level, x, y, z, abilities) -> new GenericMinecartEntity(level, x, y, z, abilities, Variant.FART)));
-    public static final DeferredItem<BaseMinecartItem> TERRA_FART_KART = ITEMS.registerItem("terra_fart_kart", properties -> new BaseMinecartItem(properties, ModRarity.YELLOW, Types.TERRA_FART, (level, x, y, z, abilities) -> new GenericMinecartEntity(level, x, y, z, abilities, Variant.TERRA_FART)));
+    public static final RegistryObject<BaseMinecartItem> MECHANICAL_CART = ITEMS.registerItem("mechanical_cart", properties -> new BaseMinecartItem(properties.fireResistant(), ModRarity.EXPERT, Types.MECHANICAL, MechanicalCartEntity::new));
+    public static final RegistryObject<BaseMinecartItem> DESERT_MINECART = registerGeneric("desert_minecart", Types.DESERT, Variant.DESERT);
+    public static final RegistryObject<BaseMinecartItem> MINECARP = ITEMS.registerItem("minecarp", properties -> new BaseMinecartItem(properties, ModRarity.BLUE, Types.MINECARP, MinecarpEntity::new));
+    public static final RegistryObject<BaseMinecartItem> BEE_MINECART = registerGeneric("bee_minecart", Types.BEE, Variant.BEE);
+    public static final RegistryObject<BaseMinecartItem> LADYBUG_MINECART = registerGeneric("ladybug_minecart", Types.LADYBUG, Variant.LADYBUG);
+    public static final RegistryObject<BaseMinecartItem> PIGRON_MINECART = registerGeneric("pigron_minecart", Types.PIGRON, Variant.PIGRON);
+    public static final RegistryObject<BaseMinecartItem> SUNFLOWER_MINECART = registerGeneric("sunflower_minecart", Types.SUNFLOWER, Variant.SUNFLOWER);
+    public static final RegistryObject<BaseMinecartItem> DEMONIC_HELLCART = ITEMS.registerItem("demonic_hellcart", properties -> new BaseMinecartItem(properties, ModRarity.BLUE, Types.DEMONIC, DemonicHellcartEntity::new));
+    public static final RegistryObject<BaseMinecartItem> SHROOM_MINECART = registerGeneric("shroom_minecart", Types.SHROOM, Variant.SHROOM);
+    public static final RegistryObject<BaseMinecartItem> AMETHYST_MINECART = registerGeneric("amethyst_minecart", Types.AMETHYST, Variant.AMETHYST);
+    public static final RegistryObject<BaseMinecartItem> TOPAZ_MINECART = registerGeneric("topaz_minecart", Types.TOPAZ, Variant.TOPAZ);
+    public static final RegistryObject<BaseMinecartItem> SAPPHIRE_MINECART = registerGeneric("sapphire_minecart", Types.SAPPHIRE, Variant.SAPPHIRE);
+    public static final RegistryObject<BaseMinecartItem> JADE_MINECART = registerGeneric("jade_minecart", Types.JADE, Variant.JADE);
+    public static final RegistryObject<BaseMinecartItem> RUBY_MINECART = registerGeneric("ruby_minecart", Types.RUBY, Variant.RUBY);
+    public static final RegistryObject<BaseMinecartItem> DIAMOND_MINECART = registerGeneric("diamond_minecart", Types.DIAMOND, Variant.DIAMOND);
+    public static final RegistryObject<BaseMinecartItem> AMBER_MINECART = registerGeneric("amber_minecart", Types.AMBER, Variant.AMBER);
+    public static final RegistryObject<BaseMinecartItem> BEETLE_MINECART = registerGeneric("beetle_minecart", Types.BEETLE, Variant.BEETLE);
+    public static final RegistryObject<BaseMinecartItem> MEOWMERE_MINECART = ITEMS.registerItem("meowmere", properties -> new BaseMinecartItem(properties, ModRarity.RED, Types.MEOWMERE, MeowmereMinecartEntity::new));
+    public static final RegistryObject<BaseMinecartItem> PARTY_WAGON = registerGeneric("party_wagon", Types.PARTY, Variant.PARTY);
+    public static final RegistryObject<BaseMinecartItem> THE_DUTCHMAN = registerGeneric("the_dutchman", Types.DUTCHMAN, Variant.DUTCHMAN);
+    public static final RegistryObject<BaseMinecartItem> STEAMPUNK_MINECART = registerGeneric("steampunk_minecart", Types.STEAMPUNK, Variant.STEAMPUNK);
+    public static final RegistryObject<BaseMinecartItem> COFFIN_MINECART = registerGeneric("coffin_minecart", Types.COFFIN, Variant.COFFIN);
+    public static final RegistryObject<BaseMinecartItem> DIGGING_MOLECART = ITEMS.registerItem("digging_molecart", properties -> new BaseMinecartItem(properties, ModRarity.BLUE, Types.MOLECART, DiggingMolecartEntity::new));
+    public static final RegistryObject<BaseMinecartItem> FART_KART = ITEMS.registerItem("fart_kart", properties -> new BaseMinecartItem(properties, ModRarity.GREEN, Types.FART, (level, x, y, z, abilities) -> new GenericMinecartEntity(level, x, y, z, abilities, Variant.FART)));
+    public static final RegistryObject<BaseMinecartItem> TERRA_FART_KART = ITEMS.registerItem("terra_fart_kart", properties -> new BaseMinecartItem(properties, ModRarity.YELLOW, Types.TERRA_FART, (level, x, y, z, abilities) -> new GenericMinecartEntity(level, x, y, z, abilities, Variant.TERRA_FART)));
 
-    private static DeferredItem<BaseMinecartItem> registerGeneric(String name, Abilities<GenericMinecartEntity> abilities, Variant variant) {
+    private static RegistryObject<BaseMinecartItem> registerGeneric(String name, Abilities<GenericMinecartEntity> abilities, Variant variant) {
         return ITEMS.registerItem(name, properties -> new BaseMinecartItem(properties, ModRarity.BLUE, abilities, (level, x, y, z, abilities1) -> new GenericMinecartEntity(level, x, y, z, abilities1, variant)));
     }
 

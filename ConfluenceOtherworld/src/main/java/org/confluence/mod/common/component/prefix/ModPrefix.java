@@ -1,9 +1,9 @@
 package org.confluence.mod.common.component.prefix;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableListMultimap;
 import net.minecraft.Util;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -14,12 +14,13 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
-import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE;
+import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL;
+import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.PortOperation.ADD_VALUE;
 
 @SuppressWarnings("unused")
 public interface ModPrefix {
@@ -31,8 +32,9 @@ public interface ModPrefix {
         return createComponent(prefixType);
     }
 
-    default AttributeModifier createModifier(double value, AttributeModifier.Operation operation) {
-        return new AttributeModifier(LibUtils.withUniqueSuffix(getModifierId()), value, operation);
+    default AttributeModifier createModifier(double value, PortAttributeModifier.PortOperation operation) {
+        ResourceLocation id = LibUtils.withUniqueSuffix(getModifierId());
+        return new AttributeModifier(PortAttributeModifier.rl2uuid(id), id.getPath(), value, operation.unwrap());
     }
 
     String name();
@@ -77,19 +79,23 @@ public interface ModPrefix {
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
-            ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
+            ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (armor != 0) builder.put(Attributes.ARMOR, createModifier(armor, ADD_VALUE));
-            if (criticalChance != 0.0F)
-                builder.put(LibAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
-            if (attackDamage != 0.0F) builder
-                    .put(LibAttributes.getAttackDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(LibAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(LibAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(LibAttributes.getSummonDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0.0F)
+            if (criticalChance != 0.0F) {
+                builder.put(LibAttributes.getCriticalChance().value(), createModifier(criticalChance, ADD_VALUE));
+            }
+            if (attackDamage != 0.0F) {
+                builder.put(LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                        .put(LibAttributes.getRangedDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                        .put(LibAttributes.getMagicDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                        .put(LibAttributes.getSummonDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+            }
+            if (attackSpeed != 0.0F) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (movementSpeed != 0.0F)
+            }
+            if (movementSpeed != 0.0F) {
                 builder.put(Attributes.MOVEMENT_SPEED, createModifier(movementSpeed, ADD_MULTIPLIED_TOTAL));
+            }
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, additionalMana, tier, value);
         }
 
@@ -140,20 +146,22 @@ public interface ModPrefix {
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
-            ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
+            ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
                 if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
-                    builder.put(LibAttributes.getAttackDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                    builder.put(LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
                 } else if (prefixType == PrefixType.RANGED) {
-                    builder.put(LibAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                    builder.put(LibAttributes.getRangedDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
                 } else if (prefixType == PrefixType.MAGIC) {
-                    builder.put(LibAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                    builder.put(LibAttributes.getMagicDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
                 }
             }
-            if (criticalChance != 0.0F)
-                builder.put(LibAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
-            if (knockBack != 0.0F)
+            if (criticalChance != 0.0F) {
+                builder.put(LibAttributes.getCriticalChance().value(), createModifier(criticalChance, ADD_VALUE));
+            }
+            if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
+            }
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
         }
 
@@ -201,21 +209,21 @@ public interface ModPrefix {
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
-            ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
+            ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
                 if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
-                    builder.put(LibAttributes.getAttackDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                    builder.put(LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
                 } else if (prefixType == PrefixType.RANGED) {
-                    builder.put(LibAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                    builder.put(LibAttributes.getRangedDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
                 } else if (prefixType == PrefixType.MAGIC) {
-                    builder.put(LibAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                    builder.put(LibAttributes.getMagicDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
                 }
             }
             if (attackSpeed != 0) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
             }
             if (criticalChance != 0.0F) {
-                builder.put(LibAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+                builder.put(LibAttributes.getCriticalChance().value(), createModifier(criticalChance, ADD_VALUE));
             }
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
@@ -275,18 +283,18 @@ public interface ModPrefix {
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
-            ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
+            ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
-                builder.put(LibAttributes.getAttackDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                builder.put(LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
             }
             if (attackSpeed != 0) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
             }
             if (criticalChance != 0.0F) {
-                builder.put(LibAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+                builder.put(LibAttributes.getCriticalChance().value(), createModifier(criticalChance, ADD_VALUE));
             }
             if (size != 0.0F) {
-                builder.put(Attributes.ENTITY_INTERACTION_RANGE, createModifier(size, ADD_MULTIPLIED_TOTAL));
+                builder.put(PortAttributesExtension.entityInteractionRange().value(), createModifier(size, ADD_MULTIPLIED_TOTAL));
             }
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
@@ -341,18 +349,18 @@ public interface ModPrefix {
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
-            ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
+            ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
-                builder.put(LibAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                builder.put(LibAttributes.getRangedDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
             }
             if (attackSpeed != 0) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
             }
             if (criticalChance != 0.0F) {
-                builder.put(LibAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+                builder.put(LibAttributes.getCriticalChance().value(), createModifier(criticalChance, ADD_VALUE));
             }
             if (value != 0.0F) {
-                builder.put(LibAttributes.getRangedVelocity(), createModifier(velocity, ADD_MULTIPLIED_TOTAL));
+                builder.put(LibAttributes.getRangedVelocity().value(), createModifier(velocity, ADD_MULTIPLIED_TOTAL));
             }
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
@@ -407,16 +415,16 @@ public interface ModPrefix {
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
-            ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
+            ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
-                builder.put(LibAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                builder.put(LibAttributes.getSummonDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                builder.put(LibAttributes.getMagicDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                builder.put(LibAttributes.getSummonDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
             }
             if (attackSpeed != 0) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
             }
             if (criticalChance != 0.0F) {
-                builder.put(LibAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+                builder.put(LibAttributes.getCriticalChance().value(), createModifier(criticalChance, ADD_VALUE));
             }
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));

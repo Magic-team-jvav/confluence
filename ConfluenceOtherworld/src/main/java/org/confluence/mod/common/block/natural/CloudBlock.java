@@ -4,15 +4,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.mesdag.portlib.wrapper.world.level.block.PortTransparentBlock;
 
-public class CloudBlock extends TransparentBlock {
+public class CloudBlock extends PortTransparentBlock {
     public CloudBlock(Properties properties) {
         super(properties);
     }
 
-    protected float getShadeBrightness(BlockState p_308911_, BlockGetter p_308952_, BlockPos p_308918_) {
+    public float getShadeBrightness(BlockState p_308911_, BlockGetter p_308952_, BlockPos p_308918_) {
         return 0.2F;
     }
 

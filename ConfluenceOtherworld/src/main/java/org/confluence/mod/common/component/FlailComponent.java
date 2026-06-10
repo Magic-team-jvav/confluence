@@ -1,49 +1,44 @@
 package org.confluence.mod.common.component;
 
+import PortLib.extensions.net.minecraft.resources.ResourceLocation.PortResourceLocationExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-/**
- * <h1>连枷弹射物组</h1>
- * 存储连枷的所有数据驱动参数，通过 Codec 持久化到物品 DataComponent
- *
- * @param damageFactor 伤害系数基于玩家基础攻击力的倍率
- * @param spinRadius   挥舞半径SPIN 阶段绕肩部画圆的半径
- * @param spinSpeed    挥舞角速度每 tick 增加的角度，弧度
- * @param throwSpeed   投掷速度THROWN 阶段的初始速度
- * @param maxDistance  最大抛出距离超过此距离自RETRACT
- * @param retractSpeed 收回速度
- * @param gravity      重力加速度
- * @param cooldown     冷却时间 tick
- * @param bounceFactor 反弹能量衰减系数，范围 0.3~0.9
- * @param maxBounces   最大反弹次数，耗尽后落地
- * @param soundEvent   音效 ResourceLocation
- * @param projType     弹射物实体类ResourceLocation
- * @param chainTexture 链条纹理 ResourceLocation
- * @param hitEffect    击中特效（可选）
- */
+/// # 连枷弹射物组
+/// 存储连枷的所有数据驱动参数，通过 Codec 持久化到物品 DataComponent
+///
+/// @param damageFactor 伤害系数基于玩家基础攻击力的倍率
+/// @param spinRadius   挥舞半径SPIN 阶段绕肩部画圆的半径
+/// @param spinSpeed    挥舞角速度每 tick 增加的角度，弧度
+/// @param throwSpeed   投掷速度THROWN 阶段的初始速度
+/// @param maxDistance  最大抛出距离超过此距离自RETRACT
+/// @param retractSpeed 收回速度
+/// @param gravity      重力加速度
+/// @param cooldown     冷却时间 tick
+/// @param bounceFactor 反弹能量衰减系数，范围 0.3~0.9
+/// @param maxBounces   最大反弹次数，耗尽后落地
+/// @param soundEvent   音效 ResourceLocation
+/// @param projType     弹射物实体类ResourceLocation
+/// @param chainTexture 链条纹理 ResourceLocation
+/// @param hitEffect    击中特效（可选）
 public record FlailComponent(
         float damageFactor,
         float spinRadius,
@@ -59,7 +54,7 @@ public record FlailComponent(
         ResourceLocation projType,
         ResourceLocation chainTexture,
         Optional<EffectStrategyComponent> hitEffect
-) implements DataComponentType<FlailComponent> {
+) {
 
     public static final Codec<FlailComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("damageFactor").forGetter(FlailComponent::damageFactor),
@@ -77,8 +72,25 @@ public record FlailComponent(
             ResourceLocation.CODEC.fieldOf("chainTexture").forGetter(FlailComponent::chainTexture),
             EffectStrategyComponent.CODEC.optionalFieldOf("hitEffect").forGetter(FlailComponent::hitEffect)
     ).apply(instance, FlailComponent::new));
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, FlailComponent> STREAM_CODEC = LibStreamCodecUtils.composite(
+            PortByteBufCodecs.FLOAT, FlailComponent::damageFactor,
+            PortByteBufCodecs.FLOAT, FlailComponent::spinRadius,
+            PortByteBufCodecs.FLOAT, FlailComponent::spinSpeed,
+            PortByteBufCodecs.FLOAT, FlailComponent::throwSpeed,
+            PortByteBufCodecs.FLOAT, FlailComponent::maxDistance,
+            PortByteBufCodecs.FLOAT, FlailComponent::retractSpeed,
+            PortByteBufCodecs.FLOAT, FlailComponent::gravity,
+            PortByteBufCodecs.VAR_INT, FlailComponent::cooldown,
+            PortByteBufCodecs.FLOAT, FlailComponent::bounceFactor,
+            PortByteBufCodecs.VAR_INT, FlailComponent::maxBounces,
+            PortResourceLocationExtension.streamCodec(), FlailComponent::soundEvent,
+            PortResourceLocationExtension.streamCodec(), FlailComponent::projType,
+            PortResourceLocationExtension.streamCodec(), FlailComponent::chainTexture,
+            PortByteBufCodecs.optional(EffectStrategyComponent.STREAM_CODEC), FlailComponent::hitEffect,
+            FlailComponent::new
+    );
 
-    /** 致伤球 Ball O' Hurt 预制数据 */
+    /// 致伤球 Ball O' Hurt 预制数据
     public static final Supplier<FlailComponent> BALL_O_HURT =
             () -> new FlailComponent(
                     26.0f,
@@ -97,7 +109,7 @@ public record FlailComponent(
                     Optional.empty()
             );
 
-    /** 链球 MACE 预制参数*/
+    /// 链球 MACE 预制参数
     public static final Supplier<FlailComponent> MACE =
             () -> new FlailComponent(
                     18.0f,
@@ -118,18 +130,6 @@ public record FlailComponent(
 
     public SoundEvent getSoundEvent() {
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);
-    }
-
-    public static final StreamCodec<ByteBuf, FlailComponent> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
-
-    @Override
-    public @Nullable Codec<FlailComponent> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, FlailComponent> streamCodec() {
-        return STREAM_CODEC;
     }
 
     @Override
@@ -173,22 +173,22 @@ public record FlailComponent(
         return result;
     }
 
-    /** 获取修正后的投掷速度（受远程速度属性影响） */
+    /// 获取修正后的投掷速度（受远程速度属性影响）
     public float getVelocity(LivingEntity living) {
         float velocity = throwSpeed;
-        AttributeInstance instance = living.getAttribute(LibAttributes.getRangedVelocity());
+        AttributeInstance instance = living.getAttribute(LibAttributes.getRangedVelocity().value());
         if (instance != null) return velocity * (float) instance.getValue();
         return velocity;
     }
 
-    /** 获取修正后的冷却时间（受攻击速度属性影响） */
+    /// 获取修正后的冷却时间（受攻击速度属性影响）
     public int getCooldown(LivingEntity living) {
         AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
         if (instance != null) return Math.max(cooldown - (int) (instance.getValue() / 3.0), 0);
         return cooldown;
     }
 
-    /** 获取修正后的挥舞速度（受近战速度属性影响） */
+    /// 获取修正后的挥舞速度（受近战速度属性影响）
     public float getSpinSpeed(LivingEntity living) {
         AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
         if (instance != null) return spinSpeed * (float) instance.getValue() / 4.0f;

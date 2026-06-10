@@ -10,10 +10,6 @@
 	path = TerraFurniture
 	url = https://github.com/MakerTechno/TerraFurniture
 	branch = neoforge-dev/1.21.1
-[submodule "TerraEntity"]
-	path = TerraEntity
-	url = https://github.com/Magic-team-jvav/TerraEntity
-	branch = neoforge-dev/1.21.1
 [submodule "Confluence-Magic-Lib"]
 	path = Confluence-Magic-Lib
 	url = https://github.com/westernat/Confluence-Magic-Lib

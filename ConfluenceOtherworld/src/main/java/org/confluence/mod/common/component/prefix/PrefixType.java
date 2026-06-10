@@ -2,16 +2,16 @@ package org.confluence.mod.common.component.prefix;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +42,7 @@ public enum PrefixType implements StringRepresentable {
     };
 
     public static final Codec<PrefixType> CODEC = StringRepresentable.fromEnum(PrefixType::values);
-    public static final StreamCodec<ByteBuf, PrefixType> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.INT, PrefixType::ordinal, PrefixType::byId);
+    public static final PortStreamCodec<ByteBuf, PrefixType> STREAM_CODEC = PortStreamCodec.composite(PortByteBufCodecs.VAR_INT, PrefixType::ordinal, PrefixType::byId);
     private static PrefixType[] VALUES;
     public final String[] groups;
     private ModPrefix[] available;
@@ -83,9 +83,11 @@ public enum PrefixType implements StringRepresentable {
     public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack itemStack) {
         return switch (this) { // todo 没有击退的远程和魔法武器
             case UNIVERSAL -> random.nextBoolean() ? Universal.GODLY : Universal.DEMONIC;
-            case MELEE -> itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) ? Melee.LEGENDARY : Melee.LIGHT;
+            case MELEE ->
+                    itemStack.is(PortTags.Items.MELEE_WEAPON_TOOLS) ? Melee.LEGENDARY : Melee.LIGHT;
             case RANGED -> Ranged.UNREAL;
-            case MAGIC -> itemStack.is(ModTags.Items.MANA_WEAPON) ? Magic.MYTHICAL : Universal.RUTHLESS;
+            case MAGIC ->
+                    itemStack.is(ModTags.Items.MANA_WEAPON) ? Magic.MYTHICAL : Universal.RUTHLESS;
             case ACCESSORY -> switch (random.nextInt(6)) {
                 case 0 -> Accessory.WARDING;
                 case 1 -> Accessory.ARCANE;

@@ -5,12 +5,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.common.ModConfigSpec.*;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.ForgeConfigSpec.*;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.DragonChargePlayerConfigPacketS2C;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.HashSet;
 import java.util.List;
@@ -102,7 +102,7 @@ public final class CommonConfigs {
     public static IntValue METEOR_SHOWER_EVENT_SPAWN_ENCHANTED_NIGHTCRAWLERS_INTERVAL_FACTOR;
 
     public static Set<ResourceKey<Item>> ammoSlotsItemBlackList = Set.of(Confluence.asResourceKey(Registries.ITEM, "falling_star"));
-    public static Set<TagKey<Item>> ammoSlotsTagBlackList = Set.of(Tags.Items.SEEDS);
+    public static Set<TagKey<Item>> ammoSlotsTagBlackList = Set.of(PortTags.Items.SEEDS);
 
     private static boolean isSingleplayerOwner = true;
     private static boolean dragonChargePlayer = true;
@@ -140,7 +140,7 @@ public final class CommonConfigs {
         return dragonChargePlayer;
     }
 
-    public static void register(ModContainer container) {
+    public static void register(FMLJavaModLoadingContext context) {
         Builder builder = new Builder();
         {
             builder.push("Gameplay");
@@ -151,7 +151,7 @@ public final class CommonConfigs {
             ANNOUNCEMENT_BOX_DISTANCE = builder.defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
             ALERT_PLAYER_IN_DUNGEON = builder.define("alertPlayerDungeon", false);
             STAR_PHASE = builder.define("starPhase", false);
-            AMMO_SLOTS_BLACKLIST = builder.defineListAllowEmpty("ammoSlotsBlacklist", () -> List.of("confluence:falling_star", "#c:seeds"), () -> "[#]namespace:path", o -> {
+            AMMO_SLOTS_BLACKLIST = builder.defineListAllowEmpty("ammoSlotsBlacklist", () -> List.of("confluence:falling_star", "#c:seeds"), o -> {
                 if (o instanceof String s) {
                     if (s.startsWith("#")) {
                         return ResourceLocation.tryParse(s.substring(1)) != null;
@@ -297,6 +297,6 @@ public final class CommonConfigs {
             }
             builder.pop();
         }
-        container.registerConfig(ModConfig.Type.COMMON, builder.build());
+        context.registerConfig(ModConfig.Type.COMMON, builder.build());
     }
 }

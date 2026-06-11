@@ -60,6 +60,18 @@
             },
             {
                 "west": "fence"
+            },
+            {
+                "north": "wall"
+            },
+            {
+                "south": "wall"
+            },
+            {
+                "east": "wall"
+            },
+            {
+                "west": "wall"
             }
         ]
       }

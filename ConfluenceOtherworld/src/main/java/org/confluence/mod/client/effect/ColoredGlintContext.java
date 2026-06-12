@@ -32,7 +32,7 @@ public final class ColoredGlintContext {
                 .setDepthTestState(EQUAL_DEPTH_TEST)
                 .setTransparencyState(GLINT_TRANSPARENCY)
                 .setTexturingState(GLINT_TEXTURING)
-                .setColorLogicState(new ColorLogicStateShard("set_color",
+                .colorLogicState(new ColorLogicStateShard("set_color",
                         () -> RenderSystem.setShaderColor(glintColor[0], glintColor[1], glintColor[2], 1.0F),
                         () -> RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F)
                 ))

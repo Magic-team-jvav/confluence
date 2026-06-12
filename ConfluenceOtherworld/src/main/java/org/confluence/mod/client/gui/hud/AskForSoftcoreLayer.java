@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.hud;
+﻿package org.confluence.mod.client.gui.hud;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
@@ -11,7 +11,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.network.AskForSoftcorePacket;
 
 public class AskForSoftcoreLayer implements LayeredDraw.Layer {
@@ -70,7 +69,7 @@ public class AskForSoftcoreLayer implements LayeredDraw.Layer {
             if (mouseX >= tx1 - 1 && mouseX <= tx1 + tw1 + 1 && mouseY >= ty - 1 && mouseY <= ty + lh + 1) {
                 guiGraphics.renderTooltip(font, sureTip, mouseX, mouseY);
                 if (altDown && clicked) {
-                    PacketDistributor.sendToServer(new AskForSoftcorePacket(true));
+                    Confluence.NETWORK_HANDLER.sendToServer(new AskForSoftcorePacket(true));
                     setAskForSoftcoreLayer(false);
                     return;
                 }
@@ -83,7 +82,7 @@ public class AskForSoftcoreLayer implements LayeredDraw.Layer {
             if (mouseX >= tx2 - 1 && mouseX <= tx2 + tw2 + 1 && mouseY >= ty - 1 && mouseY <= ty + lh + 1) {
                 guiGraphics.renderTooltip(font, neverTip, mouseX, mouseY);
                 if (altDown && clicked) {
-                    PacketDistributor.sendToServer(new AskForSoftcorePacket(false));
+                    Confluence.NETWORK_HANDLER.sendToServer(new AskForSoftcorePacket(false));
                     setAskForSoftcoreLayer(false);
                     return;
                 }

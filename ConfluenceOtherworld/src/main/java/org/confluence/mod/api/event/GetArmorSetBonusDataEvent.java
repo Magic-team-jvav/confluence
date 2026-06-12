@@ -1,7 +1,7 @@
-package org.confluence.mod.api.event;
+﻿package org.confluence.mod.api.event;
 
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.confluence.mod.common.init.armor.ArmorSetBonusData;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.jetbrains.annotations.Nullable;

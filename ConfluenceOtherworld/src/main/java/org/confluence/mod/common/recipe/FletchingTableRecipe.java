@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
@@ -92,10 +92,10 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
         }
 
         @Override
-        protected StreamCodec<RegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
+        protected StreamCodec<PortRegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
             return new StreamCodec<>() {
                 @Override
-                public FletchingTableRecipe decode(RegistryFriendlyByteBuf buffer) {
+                public FletchingTableRecipe decode(PortRegistryFriendlyByteBuf buffer) {
                     ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
                     Ingredient tail = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
                     Ingredient body = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
@@ -104,7 +104,7 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
                 }
 
                 @Override
-                public void encode(RegistryFriendlyByteBuf buffer, FletchingTableRecipe recipe) {
+                public void encode(PortRegistryFriendlyByteBuf buffer, FletchingTableRecipe recipe) {
                     ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
                     Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tail);
                     Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.body);

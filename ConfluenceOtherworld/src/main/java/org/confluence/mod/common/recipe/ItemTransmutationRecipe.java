@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
@@ -100,7 +100,7 @@ public record ItemTransmutationRecipe(Ingredient source, List<ItemStack> target,
         }
 
         @Override
-        protected StreamCodec<RegistryFriendlyByteBuf, ItemTransmutationRecipe> getStreamCodec() {
+        protected StreamCodec<PortRegistryFriendlyByteBuf, ItemTransmutationRecipe> getStreamCodec() {
             return StreamCodec.composite(
                     Ingredient.CONTENTS_STREAM_CODEC, ItemTransmutationRecipe::source,
                     ItemStack.LIST_STREAM_CODEC, ItemTransmutationRecipe::target,

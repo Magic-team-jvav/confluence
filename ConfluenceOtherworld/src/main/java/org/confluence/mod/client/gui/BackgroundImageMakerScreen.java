@@ -17,8 +17,8 @@ public class BackgroundImageMakerScreen extends Screen {
     private static final int Y = 1;
     private static final int[] closeUVWH = {253, 0, 3, 3};
 
-    private int imageWidth = 176;
-    private int imageHeight = 166;
+    private final int imageWidth = 176;
+    private final int imageHeight = 166;
     private int topPos;
     private int leftPos;
 

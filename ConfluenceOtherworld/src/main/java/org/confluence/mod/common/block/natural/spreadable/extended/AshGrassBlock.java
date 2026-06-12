@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable.extended;
+﻿package org.confluence.mod.common.block.natural.spreadable.extended;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -7,8 +7,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.block.natural.spreadable.SpreadingGrassBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +28,7 @@ public class AshGrassBlock extends SpreadingGrassBlock {
 
     @Override
     public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
-        if (itemAbility == ItemAbilities.SHOVEL_FLATTEN) {
+        if (itemAbility == net.minecraftforge.common.ItemAbilities.SHOVEL_FLATTEN) {
             return NatureBlocks.ASH_PATH.get().defaultBlockState();
         }
         return null;

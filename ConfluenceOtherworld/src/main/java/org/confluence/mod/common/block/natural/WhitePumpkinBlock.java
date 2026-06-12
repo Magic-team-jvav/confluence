@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural;
+﻿package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.PumpkinBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.common.ItemAbilities;
 import org.confluence.mod.common.init.item.FoodItems;
 
 import static org.confluence.mod.common.init.block.DecorativeBlocks.CARVED_WHITE_PUMPKIN;
@@ -30,7 +29,7 @@ public class WhitePumpkinBlock extends PumpkinBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!stack.canPerformAction(ItemAbilities.SHEARS_CARVE)) {
+        if (!stack.canPerformAction(net.minecraftforge.common.ItemAbilities.SHEARS_CARVE)) {
             return super.useItemOn(stack, state, level, pos, player, hand, hit);
         }
         if (level.isClientSide) {

@@ -1,11 +1,10 @@
-package org.confluence.mod.util;
+﻿package org.confluence.mod.util;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.component.DataComponentType;
+import org.mesdag.portlib.component.PortDataComponentType;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.MutableDataComponentHolder;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.jetbrains.annotations.NotNull;
@@ -181,7 +180,7 @@ public class RepeaterContentsComponentHandler implements IItemHandlerModifiable 
         int maxInsertLimit = existing.isEmpty() ? Math.min(contents.getMaxItemCapacity() - contents.getItemsTotalCount(), toInsert.getCount()) : Math.min(this.getSlotLimit(slot), toInsert.getMaxStackSize());
 
         if (!existing.isEmpty()) {
-            if (!ItemStack.isSameItemSameComponents(toInsert, existing)) {
+            if (!PortItemStackExtension.isSameItemSameComponents(toInsert, existing)) {
                 return toInsert;
             }
 

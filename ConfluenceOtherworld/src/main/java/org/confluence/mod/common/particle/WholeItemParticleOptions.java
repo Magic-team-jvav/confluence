@@ -5,9 +5,9 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModParticleTypes;
@@ -20,10 +20,10 @@ public record WholeItemParticleOptions(ItemStack item, float gravity,
             Codec.FLOAT.fieldOf("gravity").forGetter(WholeItemParticleOptions::gravity),
             Codec.INT.fieldOf("life").forGetter(WholeItemParticleOptions::life)
     ).apply(instance, WholeItemParticleOptions::new));
-    public static final StreamCodec<RegistryFriendlyByteBuf, WholeItemParticleOptions> STREAM_CODEC = StreamCodec.composite(
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, WholeItemParticleOptions> STREAM_CODEC = PortStreamCodec.composite(
             ItemStack.STREAM_CODEC, WholeItemParticleOptions::item,
-            ByteBufCodecs.FLOAT, WholeItemParticleOptions::gravity,
-            ByteBufCodecs.INT, WholeItemParticleOptions::life,
+            PortByteBufCodecs.FLOAT, WholeItemParticleOptions::gravity,
+            PortByteBufCodecs.INT, WholeItemParticleOptions::life,
             WholeItemParticleOptions::new
     );
 

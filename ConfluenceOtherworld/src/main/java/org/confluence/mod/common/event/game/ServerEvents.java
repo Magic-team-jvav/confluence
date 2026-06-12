@@ -1,13 +1,13 @@
 package org.confluence.mod.common.event.game;
 
 import net.minecraft.server.MinecraftServer;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
-import net.neoforged.neoforge.event.server.ServerStartedEvent;
-import net.neoforged.neoforge.event.server.ServerStoppedEvent;
-import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
@@ -16,7 +16,7 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
 import org.confluence.mod.util.OverworldUtils;
 
-@EventBusSubscriber(modid = Confluence.MODID)
+@Mod.EventBusSubscriber(modid = Confluence.MODID)
 public final class ServerEvents {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void serverAboutToStart(ServerAboutToStartEvent event) {

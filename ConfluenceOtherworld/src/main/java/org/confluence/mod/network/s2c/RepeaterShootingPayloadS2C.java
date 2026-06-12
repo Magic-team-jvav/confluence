@@ -1,23 +1,22 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.RepeaterHud;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public enum RepeaterShootingPayloadS2C implements IPacketS2C {
+public enum RepeaterShootingPayloadS2C implements IPortPacket.S2C {
     INSTANCE;
-    public static final CustomPacketPayload.Type<RepeaterShootingPayloadS2C> TYPE = new CustomPacketPayload.Type<>(Confluence.asResource("repeater_shooting_payload"));
-    public static final StreamCodec<ByteBuf, RepeaterShootingPayloadS2C> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final ResourceLocation ID = Confluence.asResource("repeater_shooting_payload");
+    public static final PortStreamCodec<ByteBuf, RepeaterShootingPayloadS2C> STREAM_CODEC = PortStreamCodec.unit(INSTANCE);
 
     @Override
-    public Type<RepeaterShootingPayloadS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -26,6 +25,6 @@ public enum RepeaterShootingPayloadS2C implements IPacketS2C {
     }
 
     public static void sendToClient(ServerPlayer serverPlayer) {
-        PacketDistributor.sendToPlayer(serverPlayer, INSTANCE);
+        Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, INSTANCE);
     }
 }

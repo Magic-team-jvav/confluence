@@ -1,7 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import java.util.Objects;
-
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;

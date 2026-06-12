@@ -1,25 +1,27 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record SoulPacketS2C(int maxSoul, float currentSoul, boolean fallenSoulCoreActive) implements IPacketS2C {
-    public static final Type<SoulPacketS2C> TYPE = Confluence.createType("soul");
-    public static final StreamCodec<ByteBuf, SoulPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, SoulPacketS2C::maxSoul,
-            ByteBufCodecs.FLOAT, SoulPacketS2C::currentSoul,
-            ByteBufCodecs.BOOL, SoulPacketS2C::fallenSoulCoreActive,
+public record SoulPacketS2C(int maxSoul, float currentSoul,
+                            boolean fallenSoulCoreActive) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("soul");
+    public static final PortStreamCodec<ByteBuf, SoulPacketS2C> STREAM_CODEC = PortStreamCodec.composite(
+            PortByteBufCodecs.VAR_INT, SoulPacketS2C::maxSoul,
+            PortByteBufCodecs.FLOAT, SoulPacketS2C::currentSoul,
+            PortByteBufCodecs.BOOL, SoulPacketS2C::fallenSoulCoreActive,
             SoulPacketS2C::new
     );
 
     @Override
-    public Type<SoulPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override

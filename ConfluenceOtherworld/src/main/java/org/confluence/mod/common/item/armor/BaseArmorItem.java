@@ -28,6 +28,7 @@ import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -199,7 +200,7 @@ public class BaseArmorItem extends ArmorItem {
                 item = new BaseArmorItem(material, type, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
             }
             if (vanillaAttributes != null) {
-                Supplier<ItemAttributeModifiers> supplier = item.defaultModifiers;
+                Supplier<PortItemAttributeModifiers> supplier = item.defaultModifiers;
                 item.defaultModifiers = Suppliers.memoize(() -> {
                     vanillaAttributes.addAll(supplier.get().modifiers());
                     return new ItemAttributeModifiers(vanillaAttributes.build(), true);

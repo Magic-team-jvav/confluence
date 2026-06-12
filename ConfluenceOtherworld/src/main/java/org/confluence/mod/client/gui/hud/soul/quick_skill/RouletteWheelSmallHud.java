@@ -192,7 +192,6 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     public void close() {
         active = false;
         if (!isType()) {
-            return;
         }
     }
 

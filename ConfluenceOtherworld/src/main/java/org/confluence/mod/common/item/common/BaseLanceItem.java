@@ -1,5 +1,6 @@
-package org.confluence.mod.common.item.common;
+﻿package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.item.enchantment.PortEnchantmentHelper;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -16,11 +17,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibEntityUtils;
@@ -30,16 +30,14 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.terraentity.api.item.ILeftClickStateItem;
-import org.confluence.terraentity.attachment.WeaponStorage;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -48,7 +46,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
+import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
 
 /**
  * 通用骑枪类。需要注意的是baseAttackDamage*0.1才是基础伤害，原算法是有问题的，后面可能会改动。
@@ -126,9 +124,9 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
 
                 if (!victim.getType().is(Tags.EntityTypes.BOSSES)) {
                     double kb = impactSpeed * baseKnockback * 4 / 105;
-                    LibMathUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
+                    LibEntityUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
                 }
-                EnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
+                PortEnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
             }
         }
     }
@@ -145,7 +143,7 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, PortItem.PortTooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if (tooltips == null) {
             ImmutableList.Builder<Component> builder = ImmutableList.builder();
             builder.add(Component.translatable("tooltip." + getDescriptionId() + ".0").withStyle(ChatFormatting.GRAY));

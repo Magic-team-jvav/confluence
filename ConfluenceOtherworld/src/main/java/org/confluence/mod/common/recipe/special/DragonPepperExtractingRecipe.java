@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -80,7 +80,7 @@ public class DragonPepperExtractingRecipe extends ShapelessRecipe {
 
     public static class Serializer implements RecipeSerializer<DragonPepperExtractingRecipe> {
         public static final MapCodec<DragonPepperExtractingRecipe> CODEC = MapCodec.unit(DragonPepperExtractingRecipe::getInstance);
-        public static final StreamCodec<RegistryFriendlyByteBuf, DragonPepperExtractingRecipe> STREAM_CODEC = LibStreamCodecUtils.unit(DragonPepperExtractingRecipe::getInstance);
+        public static final StreamCodec<PortRegistryFriendlyByteBuf, DragonPepperExtractingRecipe> STREAM_CODEC = LibStreamCodecUtils.unit(DragonPepperExtractingRecipe::getInstance);
 
         @Override
         public MapCodec<DragonPepperExtractingRecipe> codec() {
@@ -88,7 +88,7 @@ public class DragonPepperExtractingRecipe extends ShapelessRecipe {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, DragonPepperExtractingRecipe> streamCodec() {
+        public StreamCodec<PortRegistryFriendlyByteBuf, DragonPepperExtractingRecipe> streamCodec() {
             return STREAM_CODEC;
         }
     }

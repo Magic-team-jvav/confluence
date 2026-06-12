@@ -1,4 +1,4 @@
-package org.confluence.mod.util;
+﻿package org.confluence.mod.util;
 
 import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -20,8 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.util.LibDateUtils;
@@ -87,7 +85,7 @@ public final class PlayerUtils {
     public static final CustomPickupRangeEvent.RangeType HEART_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("heart"));
 
     public static void syncMana2Client(ServerPlayer player, ManaStorage manaStorage) {
-        PacketDistributor.sendToPlayer(player, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
     }
 
     public static void syncMana2Client(ServerPlayer player) {
@@ -96,7 +94,7 @@ public final class PlayerUtils {
 
 //    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
 //        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
-//        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
+//        Confluence.NETWORK_HANDLER.sendToPlayer(new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
 //    }
 //
 //    public static void syncSoul2Client(ServerPlayer player) {
@@ -440,7 +438,7 @@ public final class PlayerUtils {
         if (!player.isAutoSpinAttack()) {
             ItemStack stack = player.getMainHandItem();
             if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
-            return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
+            return stack.canPerformAction(net.minecraftforge.common.ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
         }
         return false;
     }
@@ -484,6 +482,6 @@ public final class PlayerUtils {
         if (overworld == null) return;
         if (overworld.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) return;
         if (ConfluenceData.get(overworld).isStopAskForSoftcore()) return;
-        PacketDistributor.sendToPlayer(player, new AskForSoftcorePacket(true));
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, new AskForSoftcorePacket(true));
     }
 }

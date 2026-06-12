@@ -1,5 +1,6 @@
-package org.confluence.mod.common.block.functional.crafting;
+﻿package org.confluence.mod.common.block.functional.crafting;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -201,7 +202,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
                             ItemStack oldResult = blockEntity.items.get(RESULT_SLOT);
                             if (oldResult.isEmpty()) {
                                 blockEntity.items.set(RESULT_SLOT, neoResult.copy());
-                            } else if (ItemStack.isSameItemSameComponents(oldResult, neoResult)) {
+                            } else if (PortItemStackExtension.isSameItemSameComponents(oldResult, neoResult)) {
                                 oldResult.grow(neoResult.getCount());
                             }
                         } else {
@@ -228,7 +229,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
                 ItemStack oldResult = inventory.get(CookingPotMenu.RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     return true;
-                } else if (!ItemStack.isSameItemSameComponents(oldResult, neoResult)) {
+                } else if (!PortItemStackExtension.isSameItemSameComponents(oldResult, neoResult)) {
                     return false;
                 } else {
                     return oldResult.getCount() + neoResult.getCount() <= maxStackSize && oldResult.getCount() + neoResult.getCount() <= oldResult.getMaxStackSize() || oldResult.getCount() + neoResult.getCount() <= neoResult.getMaxStackSize();

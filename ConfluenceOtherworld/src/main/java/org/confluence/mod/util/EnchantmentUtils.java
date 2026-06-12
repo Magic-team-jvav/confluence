@@ -1,5 +1,6 @@
-package org.confluence.mod.util;
+﻿package org.confluence.mod.util;
 
+import PortLib.extensions.net.minecraft.world.item.enchantment.PortEnchantmentHelper;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,21 +12,18 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
-import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEnchantments;
+import org.confluence.mod.common.item.sword.SweetSword;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import static net.minecraft.world.item.enchantment.EnchantmentHelper.runIterationOnItem;
 
 public final class EnchantmentUtils {
     public static final EquipmentSlot[] HUMANOID_ARMOR = new EquipmentSlot[]{
@@ -45,17 +43,17 @@ public final class EnchantmentUtils {
     public static float processManaRegeneration(ServerPlayer player) {
         MutableFloat value = new MutableFloat(1);
         for (EquipmentSlot slot : HUMANOID_ARMOR_AND_MAIN_HAND) {
-            runIterationOnItem(player.getItemBySlot(slot), (enchantment, level) -> {
+            PortEnchantmentHelper.runIterationOnItem(player.getItemBySlot(slot), (enchantment, level) -> {
                 List<ConditionalEffect<EnchantmentValueEffect>> effects = enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.MANA_REGENERATION.get());
                 LootContext context = entityContext(player.serverLevel(), level, player, player.position());
-                applyEffects(effects, context, effect -> value.setValue(effect.process(level, player.getRandom(), value.floatValue())));
+                SweetSword.applyEffects(effects, context, effect -> value.setValue(effect.process(level, player.getRandom(), value.floatValue())));
             });
         }
         return value.floatValue();
     }
 
     public static FloatSupplier processEfficientMagic(FloatSupplier sup, ServerPlayer player) {
-        if (LibEntityUtils.anyHandHasItem(player, stack -> EnchantmentHelper.has(stack, ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get()))) {
+        if (LibEntityUtils.anyHandHasItem(player, stack -> false)) {
             ManaStorage manaStorage = ManaStorage.of(player);
             return () -> sup.getAsFloat() * Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
         }
@@ -63,11 +61,11 @@ public final class EnchantmentUtils {
     }
 
     public static void repairPlayerItems(ServerPlayer player, float consumedManaAmount) {
-        Optional<EnchantedItemInUse> optional = EnchantmentHelper.getRandomItemWith(ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player, ItemStack::isDamaged);
+        Optional<EnchantedItemInUse> optional = Optional.empty();
         if (optional.isEmpty()) return;
         ItemStack stack = optional.get().itemStack();
         MutableFloat threshold = new MutableFloat(10);
-        runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyItemFilteredCount(
+        PortEnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyItemFilteredCount(
                 ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player.serverLevel(), level, stack, threshold
         ));
         int delta = (int) (consumedManaAmount - Math.max(0, threshold.floatValue()));
@@ -79,7 +77,7 @@ public final class EnchantmentUtils {
     public static void dropsStar(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
         runIterationOnHand(player, stack -> {
             EnchantedItemInUse item = new EnchantedItemInUse(stack, EquipmentSlot.MAINHAND, player);
-            runIterationOnItem(stack, (enchantment, level) -> {
+            PortEnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> {
                 for (TargetedConditionalEffect<EnchantmentEntityEffect> effect : enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.ATTACK_DROPS_MANA.get())) {
                     if (effect.enchanted() == EnchantmentTarget.ATTACKER) {
                         doPostAttack(effect, player.serverLevel(), level, item, victim, damageSource);
@@ -91,7 +89,7 @@ public final class EnchantmentUtils {
 
     public static int processManaSicknessDuration(ServerPlayer player, int duration) {
         MutableFloat ratio = new MutableFloat(1);
-        runIterationOnHand(player, stack -> runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyEntityFilteredValue(
+        runIterationOnHand(player, stack -> PortEnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyEntityFilteredValue(
                 ModEnchantments.EffectComponentTypes.MANA_SICKNESS_DURATION_REDUCE.get(), player.serverLevel(), level, stack, player, ratio
         )));
         return (int) (duration * Math.max(0, ratio.floatValue()));
@@ -102,7 +100,7 @@ public final class EnchantmentUtils {
         MutableFloat ratio = new MutableFloat();
         for (EquipmentSlot slot : HUMANOID_ARMOR) {
             ItemStack itemStack = player.getItemBySlot(slot);
-            runIterationOnItem(itemStack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
+            PortEnchantmentHelper.runIterationOnItem(itemStack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
                     ModEnchantments.EffectComponentTypes.MANA_PROTECTION.get(), player.serverLevel(), level, itemStack, player, damageSource, ratio
             ));
         }
@@ -118,11 +116,11 @@ public final class EnchantmentUtils {
 
     public static float processMagicAttack(ServerPlayer player, DamageSource damageSource, float amount) {
         MutableFloat lm = new MutableFloat();
-        runIterationOnHand(player, stack -> runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
+        runIterationOnHand(player, stack -> PortEnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
                 ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(), player.serverLevel(), level, stack, player, damageSource, lm
         )));
         MutableFloat mm = new MutableFloat();
-        runIterationOnHand(player, stack -> runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
+        runIterationOnHand(player, stack -> PortEnchantmentHelper.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
                 ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), player.serverLevel(), level, stack, player, damageSource, mm
         )));
         if (lm.floatValue() > 0 || mm.floatValue() > 0) {

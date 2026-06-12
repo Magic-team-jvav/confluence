@@ -19,7 +19,7 @@ public class ParadoxInteractiveMedal extends BaseCurioItem {
     public ParadoxInteractiveMedal() {
         super(builder("paradox_interactive_medal").rarity(ModRarity.MASTER)
                 .attribute(LibAttributes.getAttackDamage(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                .attribute(Attributes.ENTITY_INTERACTION_RANGE, 3, AttributeModifier.Operation.ADD_VALUE)
+                .attribute(PortAttributesExtension.entityInteractionRange(), 3, AttributeModifier.Operation.ADD_VALUE)
                 .attribute(ConfluenceMagicLib.MINION_CAPACITY, 2, AttributeModifier.Operation.ADD_VALUE)
                 .attribute(Attributes.MAX_HEALTH, 10, AttributeModifier.Operation.ADD_VALUE)
                 .attribute(Attributes.ARMOR, 6, AttributeModifier.Operation.ADD_VALUE));

@@ -1,23 +1,23 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.util.PlayerUtils;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record FishingPowerInfoPacketS2C(float value) implements IPacketS2C {
-    public static final Type<FishingPowerInfoPacketS2C> TYPE = Confluence.createType("fishing_power_info");
-    public static final StreamCodec<ByteBuf, FishingPowerInfoPacketS2C> STREAM_CODEC = ByteBufCodecs.FLOAT.map(FishingPowerInfoPacketS2C::new, FishingPowerInfoPacketS2C::value);
+public record FishingPowerInfoPacketS2C(float value) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("fishing_power_info");
+    public static final PortStreamCodec<ByteBuf, FishingPowerInfoPacketS2C> STREAM_CODEC = PortByteBufCodecs.FLOAT.map(FishingPowerInfoPacketS2C::new, FishingPowerInfoPacketS2C::value);
 
     @Override
-    public Type<FishingPowerInfoPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -26,6 +26,6 @@ public record FishingPowerInfoPacketS2C(float value) implements IPacketS2C {
     }
 
     public static void sendToClient(ServerPlayer player) {
-        PacketDistributor.sendToPlayer(player, new FishingPowerInfoPacketS2C(PlayerUtils.getFishingPower(player)));
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, new FishingPowerInfoPacketS2C(PlayerUtils.getFishingPower(player)));
     }
 }

@@ -1,18 +1,18 @@
-package org.confluence.mod.mixed;
+﻿package org.confluence.mod.mixed;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.mod.network.c2s.SwitchEffectEnabledPackedC2S;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.ApiStatus;
+import org.mesdag.portlib.wrapper.common.util.PortTriState;
 
 public interface IAbstractContainerScreen {
     @ApiStatus.OverrideOnly
-    default TriState confluence$onMouseClicked(double mouseX, double mouseY, int button) {
-        return TriState.DEFAULT;
+    default PortTriState confluence$onMouseClicked(double mouseX, double mouseY, int button) {
+        return PortTriState.DEFAULT;
     }
 
     static IAbstractContainerScreen of(AbstractContainerScreen<?> screen) {
@@ -32,9 +32,9 @@ public interface IAbstractContainerScreen {
             call.run();
         } else {
             RenderSystem.enableBlend();
-            guiGraphics.setColor(1, 1, 1, 0.5F);
+            guiGraphics.color(1, 1, 1, 0.5F);
             call.run();
-            guiGraphics.setColor(1, 1, 1, 1);
+            guiGraphics.color(1, 1, 1, 1);
             RenderSystem.disableBlend();
         }
     }

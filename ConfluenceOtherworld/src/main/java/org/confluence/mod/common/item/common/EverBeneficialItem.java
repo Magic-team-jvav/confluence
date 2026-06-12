@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.common;
+﻿package org.confluence.mod.common.item.common;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
@@ -13,7 +13,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
@@ -55,7 +54,7 @@ public class EverBeneficialItem extends TooltipItem {
     });
     public static final Beneficial AMBROSIA = new Beneficial(Confluence.asResource("ambrosia"), EverBeneficial::setAmbrosiaUsed, (id, player, everBeneficial, isRespawn) -> {
         int value = TCUtils.getValue(player, TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR);
-        PacketDistributor.sendToPlayer(player, new RightClickSubtractorPacketS2C((byte) Math.min(value + 1, 4)));
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, new RightClickSubtractorPacketS2C((byte) Math.min(value + 1, 4)));
         AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.BLOCK_BREAK_SPEED);
         if (attributeInstance == null) return;
         attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
@@ -87,8 +86,7 @@ public class EverBeneficialItem extends TooltipItem {
 //
 //                    // 关键：同步到客户端
 //                    if (player instanceof ServerPlayer serverPlayer) {
-//                        PacketDistributor.sendToPlayer(serverPlayer,
-//                                new SoulPacketS2C(
+//                        Confluence.NETWORK_HANDLER.sendToPlayer(//                                new SoulPacketS2C(
 //                                        soulStorage.getMaxSoul(),
 //                                        soulStorage.getCurrentSoul(),
 //                                        active

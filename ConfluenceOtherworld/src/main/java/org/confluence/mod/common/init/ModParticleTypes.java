@@ -1,13 +1,13 @@
-package org.confluence.mod.common.init;
+﻿package org.confluence.mod.common.init;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
+import net.minecraftforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.particle.WholeItemParticleOptions;
@@ -32,7 +32,7 @@ public final class ModParticleTypes {
     public static final Supplier<SimpleParticleType> SPORE_CLOUD = register("spore_cloud", true);
 
     // 原版用了Function获取codec，现在自己的用不到，要用了再改
-    private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String id, boolean overrideLimiter, MapCodec<T> mapCodec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+    private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String id, boolean overrideLimiter, MapCodec<T> mapCodec, PortStreamCodec<? super PortRegistryFriendlyByteBuf, T> streamCodec) {
         return TYPES.register(id, () -> new ParticleType<>(overrideLimiter) {
             @Override
             public MapCodec<T> codec() {
@@ -40,7 +40,7 @@ public final class ModParticleTypes {
             }
 
             @Override
-            public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {
+            public PortStreamCodec<? super PortRegistryFriendlyByteBuf, T> streamCodec() {
                 return streamCodec;
             }
         });
@@ -50,7 +50,7 @@ public final class ModParticleTypes {
         return TYPES.register(id, () -> new SimpleParticleType(overrideLimiter));
     }
 
-    private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String name, boolean overrideLimitter, final Function<ParticleType<T>, MapCodec<T>> codecGetter, final Function<ParticleType<T>, StreamCodec<? super RegistryFriendlyByteBuf, T>> streamCodecGetter) {
+    private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String name, boolean overrideLimitter, final Function<ParticleType<T>, MapCodec<T>> codecGetter, final Function<ParticleType<T>, PortStreamCodec<? super PortRegistryFriendlyByteBuf, T>> streamCodecGetter) {
         return TYPES.register(name, () -> new ParticleType<T>(overrideLimitter) {
             @Override
             public MapCodec<T> codec() {
@@ -58,7 +58,7 @@ public final class ModParticleTypes {
             }
 
             @Override
-            public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {
+            public PortStreamCodec<? super PortRegistryFriendlyByteBuf, T> streamCodec() {
                 return streamCodecGetter.apply(this);
             }
         });

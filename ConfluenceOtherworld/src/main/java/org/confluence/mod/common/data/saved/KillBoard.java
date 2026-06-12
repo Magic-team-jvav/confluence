@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+﻿package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
@@ -8,14 +8,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.common.gameevent.GameEvent;
@@ -25,7 +21,7 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.KillBoardSyncPacketS2C;
-import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 
 import java.util.Set;
 
@@ -33,7 +29,7 @@ public enum KillBoard implements IGlobalData {
     INSTANCE;
     public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = ExtraCodecs.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec());
     public static final Codec<Object2BooleanMap<ResourceKey<? extends GameEvent>>> DEFEATED_EVENTS_CODEC = ExtraCodecs.object2BooleanMap(GameEvent.KEY_CODEC);
-    public static final StreamCodec<RegistryFriendlyByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ByteBufCodecs.registry(Registries.ENTITY_TYPE));
+    public static final StreamCodec<PortRegistryFriendlyByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ByteBufCodecs.registry(Registries.ENTITY_TYPE));
     public static final StreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<? extends GameEvent>>> DEFEATED_EVENTS_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(GameEvent.KEY_STREAM_CODEC);
 
     private Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
@@ -92,9 +88,9 @@ public enum KillBoard implements IGlobalData {
             LanternNightGameEvent.INSTANCE.schedule();
         }
         if (entityType == TEBossEntities.SKELETRON.get()) {
-            setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
+            setGamePhase(net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
         } else if (entityType == TEBossEntities.WALL_OF_FLESH.get() || entityType == TEBossEntities.HILL_OF_FLESH.get()) {
-            setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
+            setGamePhase(net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
         } else {
             KillBoardSyncPacketS2C.sendToAll();
         }
@@ -132,13 +128,13 @@ public enum KillBoard implements IGlobalData {
         }
     }
 
-    public void networkEncode(RegistryFriendlyByteBuf buffer) {
+    public void networkEncode(org.mesdag.portlib.network.PortRegistryFriendlyByteBuf buffer) {
         DEFEATED_BOSSES_STREAM_CODEC.encode(buffer, defeatedBosses);
         DEFEATED_EVENTS_STREAM_CODEC.encode(buffer, defeatedEvents);
         GamePhase.STREAM_CODEC.encode(buffer, gamePhase);
     }
 
-    public void networkDecode(RegistryFriendlyByteBuf buffer) {
+    public void networkDecode(PortRegistryFriendlyByteBuf buffer) {
         this.defeatedBosses = DEFEATED_BOSSES_STREAM_CODEC.decode(buffer);
         this.defeatedEvents = DEFEATED_EVENTS_STREAM_CODEC.decode(buffer);
         this.gamePhase = GamePhase.STREAM_CODEC.decode(buffer);

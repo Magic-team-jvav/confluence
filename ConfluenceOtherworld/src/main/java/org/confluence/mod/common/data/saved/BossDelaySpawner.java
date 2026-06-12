@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+﻿package org.confluence.mod.common.data.saved;
 
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -8,7 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;

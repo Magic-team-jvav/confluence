@@ -245,7 +245,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
             if (target.hurt(damageSource, damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
-                LibMathUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
+                LibEntityUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
 
                 if (--hitCount <= 0 && !level().isClientSide) {
                     discard();

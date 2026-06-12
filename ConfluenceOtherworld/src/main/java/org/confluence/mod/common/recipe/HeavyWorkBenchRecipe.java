@@ -3,7 +3,7 @@ package org.confluence.mod.common.recipe;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -62,7 +62,7 @@ public class HeavyWorkBenchRecipe extends EnvironmentEitherAmountRecipe4x {
         }
 
         @Override
-        protected StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> getStreamCodec() {
+        protected StreamCodec<PortRegistryFriendlyByteBuf, HeavyWorkBenchRecipe> getStreamCodec() {
             return environmentEitherSerializerStreamCodec(HeavyWorkBenchRecipe::new);
         }
     }

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.herbs;
+﻿package org.confluence.mod.common.block.natural.herbs;
 
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.CommonHooks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -84,9 +83,9 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
         if (!level.isAreaLoaded(pos, 1)) return;
         int i = getAge(state);
         if (i < getMaxAge()) {
-            if (CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / 0.7F) + 1) == 0)) {
+            if (net.minecraftforge.common.CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / 0.7F) + 1) == 0)) {
                 level.setBlockAndUpdate(pos, getStateForAge(i + 1));
-                CommonHooks.fireCropGrowPost(level, pos, state);
+                net.minecraftforge.common.CommonHooks.fireCropGrowPost(level, pos, state);
             }
         }
     }

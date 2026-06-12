@@ -8,6 +8,7 @@ public class SecretFlagLockRecipeDrawer extends TradeLockRecipeDrawer {
     /**
      * Should be hidden from player?
      * No.
+     *
      * @see org.confluence.mod.mixed.IWorldOptions
      */
     @Override

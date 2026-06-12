@@ -13,7 +13,7 @@ public class ConfluenceArmDealerNPCAi extends ArmDealerNPCAi {
     protected NPCRangeAttackBrain<? super AbstractTerraNPC> getRangeAttackBrain() {
         return super.getRangeAttackBrain();
 //        return new NPCRangeAttackBrain<>(10, npc.getAttackRange()){
-            // todo 发射子弹
+        // todo 发射子弹
 
 //            protected void doAttack(ServerLevel level, Mob owner, LivingEntity target){
 //                Arrow arrow = new Arrow(owner.level(), owner, Items.ARROW.getDefaultInstance(), Items.ARROW.getDefaultInstance());

@@ -4,9 +4,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import net.neoforged.bus.api.IEventBus;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModBoatTypes;
 

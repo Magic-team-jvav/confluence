@@ -1,9 +1,9 @@
-package org.confluence.mod.mixin.neoforge.common.loot;
+﻿package org.confluence.mod.mixin.neoforge.common.loot;
 
 import com.google.gson.JsonElement;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.loot.LootModifierManager;
+import net.minecraftforge.common.loot.LootModifierManager;
 import org.confluence.terra_curio.TerraCurio;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

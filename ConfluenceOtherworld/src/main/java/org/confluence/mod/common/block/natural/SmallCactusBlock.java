@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural;
+﻿package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -76,7 +76,7 @@ public class SmallCactusBlock extends Block {
         }
         RegistryAccess registryAccess = player.level().registryAccess();
         Holder<Enchantment> silkTouchHolder = registryAccess.registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.SILK_TOUCH);
-        int silkTouchLevel = EnchantmentHelper.getTagEnchantmentLevel(silkTouchHolder, tool);
+        int silkTouchLevel = EnchantmentHelper.getItemEnchantmentLevel(silkTouchHolder, tool);
         if (silkTouchLevel > 0) {
             return Collections.singletonList(new ItemStack(this));
         }

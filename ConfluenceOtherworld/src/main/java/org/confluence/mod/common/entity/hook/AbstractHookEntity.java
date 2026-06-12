@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.hook;
+﻿package org.confluence.mod.common.entity.hook;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -23,7 +23,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.fluids.FluidType;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
@@ -209,6 +209,11 @@ public abstract class AbstractHookEntity extends Projectile {
 
         public Impl(EntityType<? extends AbstractHookEntity> entityType, BaseHookItem item, Player player, Level level) {
             super(entityType, item, player, level);
+        }
+
+        @Override
+        protected void defineSynchedData() {
+
         }
     }
 }

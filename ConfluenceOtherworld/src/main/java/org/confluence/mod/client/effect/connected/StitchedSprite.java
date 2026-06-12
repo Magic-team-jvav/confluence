@@ -11,44 +11,44 @@ import java.util.List;
 import java.util.Map;
 
 public class StitchedSprite {
-	private static final Map<ResourceLocation, List<StitchedSprite>> ALL = new HashMap<>();
+    private static final Map<ResourceLocation, List<StitchedSprite>> ALL = new HashMap<>();
 
-	protected final ResourceLocation atlasLocation;
-	protected final ResourceLocation location;
-	protected TextureAtlasSprite sprite;
+    protected final ResourceLocation atlasLocation;
+    protected final ResourceLocation location;
+    protected TextureAtlasSprite sprite;
 
-	public StitchedSprite(ResourceLocation atlas, ResourceLocation location) {
-		this.atlasLocation = atlas;
-		this.location = location;
-		ALL.computeIfAbsent(atlas, $ -> new ArrayList<>()).add(this);
-	}
+    public StitchedSprite(ResourceLocation atlas, ResourceLocation location) {
+        this.atlasLocation = atlas;
+        this.location = location;
+        ALL.computeIfAbsent(atlas, $ -> new ArrayList<>()).add(this);
+    }
 
-	public StitchedSprite(ResourceLocation location) {
-		this(ModClientSetups.VANILLA_BLOCK_ATLAS, location);
-	}
+    public StitchedSprite(ResourceLocation location) {
+        this(ModClientSetups.VANILLA_BLOCK_ATLAS, location);
+    }
 
-	public static void onTextureStitchPost(TextureAtlas atlas) {
-		List<StitchedSprite> sprites = ALL.get(atlas.location());
-		if (sprites != null) {
-			for (StitchedSprite sprite : sprites) {
-				sprite.loadSprite(atlas);
-			}
-		}
-	}
+    public static void onTextureStitchPost(TextureAtlas atlas) {
+        List<StitchedSprite> sprites = ALL.get(atlas.location());
+        if (sprites != null) {
+            for (StitchedSprite sprite : sprites) {
+                sprite.loadSprite(atlas);
+            }
+        }
+    }
 
-	protected void loadSprite(TextureAtlas atlas) {
-		this.sprite = atlas.getSprite(location);
-	}
+    protected void loadSprite(TextureAtlas atlas) {
+        this.sprite = atlas.getSprite(location);
+    }
 
-	public ResourceLocation getAtlasLocation() {
-		return atlasLocation;
-	}
+    public ResourceLocation getAtlasLocation() {
+        return atlasLocation;
+    }
 
-	public ResourceLocation getLocation() {
-		return location;
-	}
+    public ResourceLocation getLocation() {
+        return location;
+    }
 
-	public TextureAtlasSprite get() {
-		return sprite;
-	}
+    public TextureAtlasSprite get() {
+        return sprite;
+    }
 }

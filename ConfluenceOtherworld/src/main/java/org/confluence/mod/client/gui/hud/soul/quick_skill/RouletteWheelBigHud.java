@@ -19,7 +19,6 @@ import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -436,14 +435,14 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         final VertexConsumer vertexConsumer = guiGraphics.bufferSource().getBuffer(RenderType.gui());
         final Matrix4f pose = poseStack.last().pose();
 
-        vertexConsumer.addVertex(pose, p1.x, p1.y, 0)
-                .setColor(color.red, color.green, color.blue, color.alpha);
-        vertexConsumer.addVertex(pose, p2.x, p2.y, 0)
-                .setColor(color.red, color.green, color.blue, color.alpha);
-        vertexConsumer.addVertex(pose, p3.x, p3.y, 0)
-                .setColor(color.red, color.green, color.blue, color.alpha);
-        vertexConsumer.addVertex(pose, p4.x, p4.y, 0)
-                .setColor(color.red, color.green, color.blue, color.alpha);
+        vertexConsumer.vertex(pose, p1.x, p1.y, 0)
+                .color(color.red, color.green, color.blue, color.alpha);
+        vertexConsumer.vertex(pose, p2.x, p2.y, 0)
+                .color(color.red, color.green, color.blue, color.alpha);
+        vertexConsumer.vertex(pose, p3.x, p3.y, 0)
+                .color(color.red, color.green, color.blue, color.alpha);
+        vertexConsumer.vertex(pose, p4.x, p4.y, 0)
+                .color(color.red, color.green, color.blue, color.alpha);
     }
 
     private @NotNull Vec2 getMousePos() {

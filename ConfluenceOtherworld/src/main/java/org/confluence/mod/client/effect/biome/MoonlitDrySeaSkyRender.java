@@ -1,12 +1,12 @@
-package org.confluence.mod.client.effect.biome;
+﻿package org.confluence.mod.client.effect.biome;
 
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.joml.Matrix4f;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -88,10 +88,22 @@ public class MoonlitDrySeaSkyRender {
             p.z += p.vz * deltaTime;
 
             float margin = 5.0F;
-            if (p.x < -side + margin) { p.vx += repelStrength * 0.5F * deltaTime; if(p.x < -side) p.x = -side; }
-            if (p.x > side - margin)  { p.vx -= repelStrength * 0.5F * deltaTime; if(p.x > side) p.x = side; }
-            if (p.z < -side + margin) { p.vz += repelStrength * 0.5F * deltaTime; if(p.z < -side) p.z = -side; }
-            if (p.z > side - margin)  { p.vz -= repelStrength * 0.5F * deltaTime; if(p.z > side) p.z = side; }
+            if (p.x < -side + margin) {
+                p.vx += repelStrength * 0.5F * deltaTime;
+                if (p.x < -side) p.x = -side;
+            }
+            if (p.x > side - margin) {
+                p.vx -= repelStrength * 0.5F * deltaTime;
+                if (p.x > side) p.x = side;
+            }
+            if (p.z < -side + margin) {
+                p.vz += repelStrength * 0.5F * deltaTime;
+                if (p.z < -side) p.z = -side;
+            }
+            if (p.z > side - margin) {
+                p.vz -= repelStrength * 0.5F * deltaTime;
+                if (p.z > side) p.z = side;
+            }
         }
     }
 
@@ -114,7 +126,7 @@ public class MoonlitDrySeaSkyRender {
         }
     }
 
-    public static void render(LocalPlayer player, RenderLevelStageEvent event, float alphaMul) {
+    public static void render(LocalPlayer player, PortRenderLevelStageEvent event, float alphaMul) {
         if (alphaMul < 0.01F) return;
 
         long gameTime = 0;
@@ -129,10 +141,10 @@ public class MoonlitDrySeaSkyRender {
         poseStack.mulPose(event.getModelViewMatrix());
         Matrix4f matrix4f = poseStack.last().pose();
 
-        int alpha = (int)(alphaMul * 255 * 0.5);
+        int alpha = (int) (alphaMul * 255 * 0.5);
         int r = (dreamBubbleColor >> 16) & 0xFF;
-        int g = (dreamBubbleColor >> 8)  & 0xFF;
-        int b =  dreamBubbleColor        & 0xFF;
+        int g = (dreamBubbleColor >> 8) & 0xFF;
+        int b = dreamBubbleColor & 0xFF;
 
         float playerY = (float) player.getY();
         float fixedWorldY = 250;
@@ -199,7 +211,10 @@ public class MoonlitDrySeaSkyRender {
                 for (int m = 0; m < cellCount; m++) {
                     if (m == i || m == j || m == k) continue;
                     float distM = (cx - seedX[m]) * (cx - seedX[m]) + (cz - seedZ[m]) * (cz - seedZ[m]);
-                    if (distM < distI - 0.001f) { isValid = false; break; }
+                    if (distM < distI - 0.001f) {
+                        isValid = false;
+                        break;
+                    }
                 }
                 if (isValid) {
                     cellCorners.get(i).add(new float[]{cx, cz});
@@ -241,25 +256,25 @@ public class MoonlitDrySeaSkyRender {
                 float nx = (-dz / len) * lineWidth;
                 float nz = (dx / len) * lineWidth;
 
-                builder.addVertex(matrix4f, x1 + nx, renderY, z1 + nz)
-                        .setColor(r, g, b, calculateAlpha(x1 + nx, z1 + nz, alpha, side2_3));
-                builder.addVertex(matrix4f, x1 - nx, renderY, z1 - nz)
-                        .setColor(r, g, b, calculateAlpha(x1 - nx, z1 - nz, alpha, side2_3));
-                builder.addVertex(matrix4f, x2 - nx, renderY, z2 - nz)
-                        .setColor(r, g, b, calculateAlpha(x2 - nx, z2 - nz, alpha, side2_3));
-                builder.addVertex(matrix4f, x2 + nx, renderY, z2 + nz)
-                        .setColor(r, g, b, calculateAlpha(x2 + nx, z2 + nz, alpha, side2_3));
+                builder.vertex(matrix4f, x1 + nx, renderY, z1 + nz)
+                        .color(r, g, b, calculateAlpha(x1 + nx, z1 + nz, alpha, side2_3));
+                builder.vertex(matrix4f, x1 - nx, renderY, z1 - nz)
+                        .color(r, g, b, calculateAlpha(x1 - nx, z1 - nz, alpha, side2_3));
+                builder.vertex(matrix4f, x2 - nx, renderY, z2 - nz)
+                        .color(r, g, b, calculateAlpha(x2 - nx, z2 - nz, alpha, side2_3));
+                builder.vertex(matrix4f, x2 + nx, renderY, z2 + nz)
+                        .color(r, g, b, calculateAlpha(x2 + nx, z2 + nz, alpha, side2_3));
 
                 float topY = renderY + wallHeight;
 
-                builder.addVertex(matrix4f, x1, renderY, z1)
-                        .setColor(r, g, b, calculateAlpha(x1, z1, alpha, side2_3));
-                builder.addVertex(matrix4f, x2, renderY, z2)
-                        .setColor(r, g, b, calculateAlpha(x2, z2, alpha, side2_3));
-                builder.addVertex(matrix4f, x2, topY, z2)
-                        .setColor(r, g, b, 0);
-                builder.addVertex(matrix4f, x1, topY, z1)
-                        .setColor(r, g, b, 0);
+                builder.vertex(matrix4f, x1, renderY, z1)
+                        .color(r, g, b, calculateAlpha(x1, z1, alpha, side2_3));
+                builder.vertex(matrix4f, x2, renderY, z2)
+                        .color(r, g, b, calculateAlpha(x2, z2, alpha, side2_3));
+                builder.vertex(matrix4f, x2, topY, z2)
+                        .color(r, g, b, 0);
+                builder.vertex(matrix4f, x1, topY, z1)
+                        .color(r, g, b, 0);
             }
         }
 

@@ -94,13 +94,13 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.BEntit
                 float minV = icon.vOffset() / (float) icon.textureHeight();
                 float maxV = (icon.vOffset() + (float) icon.vHeight()) / (float) icon.textureHeight();
 
-                int br = (int)(255 * brightness);
+                int br = (int) (255 * brightness);
                 int iconColor = (0xFF << 24) | (br << 16) | (br << 8) | br;
 
-                builder.addVertex(matrix4f, x1, y1, 0).setUv(minU, minV).setColor(iconColor).setLight(packedLight);
-                builder.addVertex(matrix4f, x1, y2, 0).setUv(minU, maxV).setColor(iconColor).setLight(packedLight);
-                builder.addVertex(matrix4f, x2, y2, 0).setUv(maxU, maxV).setColor(iconColor).setLight(packedLight);
-                builder.addVertex(matrix4f, x2, y1, 0).setUv(maxU, minV).setColor(iconColor).setLight(packedLight);
+                builder.vertex(matrix4f, x1, y1, 0).uv(minU, minV).color(iconColor).uv2(packedLight);
+                builder.vertex(matrix4f, x1, y2, 0).uv(minU, maxV).color(iconColor).uv2(packedLight);
+                builder.vertex(matrix4f, x2, y2, 0).uv(maxU, maxV).color(iconColor).uv2(packedLight);
+                builder.vertex(matrix4f, x2, y1, 0).uv(maxU, minV).color(iconColor).uv2(packedLight);
                 BufferUploader.drawWithShader(builder.buildOrThrow());
                 RenderSystem.disableDepthTest();
                 lightTexture.turnOffLightLayer();

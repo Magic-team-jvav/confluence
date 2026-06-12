@@ -27,7 +27,7 @@ public interface Immunity {
         ItemStack weaponItemStack = damageSource.getWeaponItem();
         if (weaponItemStack != null) {
             if (weaponItemStack.isEmpty()) {
-                return directEntity instanceof Player ? (Immunity) (Object) weaponItemStack : null;
+                return directEntity instanceof Player ? (Immunity) weaponItemStack : null;
             }
 
             Item weaponItem = weaponItemStack.getItem();
@@ -37,10 +37,10 @@ public interface Immunity {
             } else if (weaponItem instanceof Immunity im) { // 非汇流但是实现了Immunity
                 return switch (im.confluence$getImmunityType()) {
                     case STATIC -> im;
-                    case LOCAL -> (Immunity) (Object) weaponItemStack;
+                    case LOCAL -> (Immunity) weaponItemStack;
                 };
             } else if (fromConfluence) { // 其他所有汇流武器
-                return (Immunity) (Object) weaponItemStack;
+                return (Immunity) weaponItemStack;
             }
         }
         if (directEntity instanceof Projectile proj && directEntity instanceof Immunity im && ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, directEntity.getType())) { // 汇流射弹

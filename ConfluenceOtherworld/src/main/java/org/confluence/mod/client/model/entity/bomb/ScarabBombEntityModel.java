@@ -27,6 +27,7 @@ public class ScarabBombEntityModel extends EntityModel<ScarabBombEntity> {
                 .texOffs(0, 0).addBox(0.0F, 5.6F, -0.5F, 0.0F, 2.0F, 1.0F, CubeDeformation.NONE), PartPose.ZERO);
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     @Override
     public void setupAnim(ScarabBombEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 

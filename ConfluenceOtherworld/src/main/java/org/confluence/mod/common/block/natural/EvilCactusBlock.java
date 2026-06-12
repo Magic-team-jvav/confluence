@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural;
+﻿package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -7,7 +7,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.CactusBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.mod.common.init.ModTags;
 
 public class EvilCactusBlock extends CactusBlock {
@@ -27,7 +26,7 @@ public class EvilCactusBlock extends CactusBlock {
         }
 
         BlockState blockstate1 = level.getBlockState(pos.below());
-        TriState soilDecision = blockstate1.canSustainPlant(level, pos.below(), Direction.UP, state);
+        PortTriState soilDecision = blockstate1.canSustainPlant(level, pos.below(), Direction.UP, state);
         if (!soilDecision.isDefault()) {
             return soilDecision.isTrue();
         } else {

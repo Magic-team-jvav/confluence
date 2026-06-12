@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable.conversion_table;
+﻿package org.confluence.mod.common.block.natural.spreadable.conversion_table;
 
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.block.natural.CattailBlock;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;

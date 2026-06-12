@@ -1,9 +1,8 @@
-package org.confluence.mod.common.worldgen.secret_seed;
+﻿package org.confluence.mod.common.worldgen.secret_seed;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -44,7 +43,7 @@ public abstract class SecretSeed {
         if (LibUtils.isLogicalClient()) {
             return match(ClientPacketHandler.getSecretFlag());
         }
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        MinecraftServer server = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
         return server != null && match(server);
     }
 

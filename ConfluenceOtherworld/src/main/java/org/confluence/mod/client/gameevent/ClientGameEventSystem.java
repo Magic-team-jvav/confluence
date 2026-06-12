@@ -7,8 +7,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.fml.ModLoader;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.fml.ModLoader;
 import org.confluence.mod.api.event.gameevent.GameEventAfterRenderSkyRegisterEvent;
 import org.confluence.mod.api.event.gameevent.GameEventSyncCallbackRegisterEvent;
 import org.confluence.mod.common.data.saved.SpecificMoonVariant;
@@ -16,6 +15,7 @@ import org.confluence.mod.common.gameevent.*;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.*;
 
@@ -88,7 +88,7 @@ public final class ClientGameEventSystem {
         return RUNNING_EVENTS.contains(key);
     }
 
-    public static void afterRenderSky(RenderLevelStageEvent event, LocalPlayer player) {
+    public static void afterRenderSky(PortRenderLevelStageEvent event, LocalPlayer player) {
         if (afterRenderSky.isEmpty()) return;
         for (AfterRenderSky renderSky : afterRenderSky.values()) {
             renderSky.render(player, event);

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity;
+﻿package org.confluence.mod.common.entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,9 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.common.Tags;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -95,7 +93,7 @@ public class AccumulatingEnergyEntity extends Entity {
                 );
                 if (inWaterOrBubble) {
                     EmitterCreationPacketS2C packet = new EmitterCreationPacketS2C(Confluence.asResource("in_water_lightning_bolt"), position().toVector3f(), MolangExp.EMPTY, -1);
-                    PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level(), chunkPosition(), packet);
+                    Confluence.NETWORK_HANDLER.sendToPlayersTrackingChunk((ServerLevel) level(), chunkPosition(), packet);
                 }
                 List<Entity> entities = level().getEntities(this, boundingBox, entity -> entity.isAlive() && inWaterOrBubble == entity.isInWaterOrBubble());
                 for (Entity entity : entities) {
@@ -108,7 +106,8 @@ public class AccumulatingEnergyEntity extends Entity {
                     } else {
                         lightningBolt.setDamage(LibUtils.switchByDifficulty(level(), entity.blockPosition(), 100, 200, 300));
                     }
-                    if (EventHooks.onEntityStruckByLightning(entity, lightningBolt)) continue;
+                    if (net.minecraftforge.event.ForgeEventFactory.onEntityStruckByLightning(entity, lightningBolt))
+                        continue;
                     entity.thunderHit((ServerLevel) level(), lightningBolt);
                 }
 

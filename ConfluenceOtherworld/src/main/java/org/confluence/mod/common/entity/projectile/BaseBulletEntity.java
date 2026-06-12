@@ -99,7 +99,7 @@ public class BaseBulletEntity extends Projectile {
         return BuiltInRegistries.ITEM.getKey(this.getBullet()).getPath();
     }
 
-    public void setColorID(String colorID) {
+    public void colorID(String colorID) {
         this.entityData.set(COLOR_ID, colorID);
     }
 
@@ -158,7 +158,7 @@ public class BaseBulletEntity extends Projectile {
         super.readAdditionalSaveData(compound);
 
         if (compound.contains("ColorID", CompoundTag.TAG_STRING)) {
-            this.setColorID(compound.getString("ColorID"));
+            this.colorID(compound.getString("ColorID"));
         }
         if (compound.contains("Item", 10)) {
             ItemStack itemStack = ItemStack.of(compound.getCompound("Item"));

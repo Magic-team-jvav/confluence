@@ -9,20 +9,20 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 
 public class LunarHookRenderer extends AbstractHookRenderer<LunarHookEntity> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
-        Confluence.asResource("textures/entity/hook/amethyst_hook.png"),
-        Confluence.asResource("textures/entity/hook/amber_hook.png"),
-        Confluence.asResource("textures/entity/hook/sapphire_hook.png"),
-        Confluence.asResource("textures/entity/hook/jade_hook.png")
+            Confluence.asResource("textures/entity/hook/amethyst_hook.png"),
+            Confluence.asResource("textures/entity/hook/amber_hook.png"),
+            Confluence.asResource("textures/entity/hook/sapphire_hook.png"),
+            Confluence.asResource("textures/entity/hook/jade_hook.png")
     };
     private final BlockState[] CHAINS;
 
     public LunarHookRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
         this.CHAINS = new BlockState[]{
-            DecorativeBlocks.AMETHYST_CHAIN.get().defaultBlockState(),
-            DecorativeBlocks.AMBER_CHAIN.get().defaultBlockState(),
-            DecorativeBlocks.SAPPHIRE_CHAIN.get().defaultBlockState(),
-            DecorativeBlocks.JADE_CHAIN.get().defaultBlockState()
+                DecorativeBlocks.AMETHYST_CHAIN.get().defaultBlockState(),
+                DecorativeBlocks.AMBER_CHAIN.get().defaultBlockState(),
+                DecorativeBlocks.SAPPHIRE_CHAIN.get().defaultBlockState(),
+                DecorativeBlocks.JADE_CHAIN.get().defaultBlockState()
         };
     }
 

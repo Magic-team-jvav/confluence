@@ -1,7 +1,6 @@
-package org.confluence.mod.mixin.integration.curios;
+﻿package org.confluence.mod.mixin.integration.curios;
 
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

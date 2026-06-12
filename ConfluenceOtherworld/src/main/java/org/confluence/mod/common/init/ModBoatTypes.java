@@ -5,10 +5,10 @@ import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.fml.common.asm.enumextension.EnumProxy;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.BoatItems;
+import org.mesdag.thr_dim_particle.client.EnumProxy;
 
 import java.util.function.Supplier;
 

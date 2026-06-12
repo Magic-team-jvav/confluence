@@ -1,5 +1,6 @@
-package org.confluence.mod.common.block.functional.crafting;
+﻿package org.confluence.mod.common.block.functional.crafting;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -326,7 +327,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         @Override
         public void setItem(int index, ItemStack stack) {
             ItemStack itemstack = getItem(index);
-            boolean flag = stack.isEmpty() || !ItemStack.isSameItemSameComponents(itemstack, stack);
+            boolean flag = stack.isEmpty() || !PortItemStackExtension.isSameItemSameComponents(itemstack, stack);
             getItems().set(index, stack);
             stack.limitSize(getMaxStackSize(stack));
             if (index < 4 && flag) {
@@ -364,7 +365,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
                 ItemStack oldResult = getItems().get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     return true;
-                } else if (!ItemStack.isSameItemSameComponents(oldResult, neoResult)) {
+                } else if (!PortItemStackExtension.isSameItemSameComponents(oldResult, neoResult)) {
                     return false;
                 } else {
                     return oldResult.getCount() + neoResult.getCount() <= LibUtils.MAX_STACK_SIZE && oldResult.getCount() + neoResult.getCount() <= oldResult.getMaxStackSize() || oldResult.getCount() + neoResult.getCount() <= neoResult.getMaxStackSize();
@@ -378,7 +379,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
                 ItemStack oldResult = getItems().get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     getItems().set(RESULT_SLOT, neoResult.copy());
-                } else if (ItemStack.isSameItemSameComponents(oldResult, neoResult)) {
+                } else if (PortItemStackExtension.isSameItemSameComponents(oldResult, neoResult)) {
                     oldResult.grow(neoResult.getCount());
                 }
 
@@ -415,7 +416,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
                 ItemStack oldResult = getItems().get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     getItems().set(RESULT_SLOT, neoResult.copy());
-                } else if (ItemStack.isSameItemSameComponents(oldResult, neoResult)) {
+                } else if (PortItemStackExtension.isSameItemSameComponents(oldResult, neoResult)) {
                     oldResult.grow(neoResult.getCount());
                 }
                 return true;

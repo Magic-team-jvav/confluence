@@ -1,4 +1,4 @@
-package org.confluence.mod.client.handler;
+﻿package org.confluence.mod.client.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
@@ -10,7 +10,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -83,7 +82,7 @@ public final class HookThrowingHandler {
         }
         if (shouldSync) {
             PlayerJumpHandler.reset(true);
-            PacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) player.getDeltaMovement().y));
+            Confluence.NETWORK_HANDLER.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) player.getDeltaMovement().y));
         }
     }
 }

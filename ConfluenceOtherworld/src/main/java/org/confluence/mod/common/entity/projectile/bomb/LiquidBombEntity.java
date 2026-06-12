@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile.bomb;
+﻿package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.util.TerraStyleExplosion;
 

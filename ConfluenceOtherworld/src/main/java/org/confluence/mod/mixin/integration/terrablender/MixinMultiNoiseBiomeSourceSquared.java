@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.integration.terrablender;
+﻿package org.confluence.mod.mixin.integration.terrablender;
 
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.mojang.datafixers.util.Pair;
@@ -12,8 +12,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.levelgen.WorldOptions;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
@@ -56,7 +55,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBi
     @Override
     public Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair() {
         if (confluence$biomePair == null) {
-            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+            MinecraftServer server = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
             if (server == null) return null;
             WorldOptions worldOptions = server.getWorldData().worldGenOptions();
             long flag = IWorldOptions.of(worldOptions).confluence$getSecretFlag();

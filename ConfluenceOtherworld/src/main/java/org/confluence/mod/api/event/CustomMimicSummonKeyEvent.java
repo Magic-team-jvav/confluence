@@ -1,10 +1,10 @@
-package org.confluence.mod.api.event;
+﻿package org.confluence.mod.api.event;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import org.confluence.terraentity.entity.monster.WoodenMimic;
 
 public class CustomMimicSummonKeyEvent extends PlayerEvent {

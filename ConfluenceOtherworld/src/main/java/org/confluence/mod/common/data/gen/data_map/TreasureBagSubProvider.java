@@ -1,7 +1,6 @@
-package org.confluence.mod.common.data.gen.data_map;
+﻿package org.confluence.mod.common.data.gen.data_map;
 
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.common.data.DataMapProvider;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.TreasureBagDrop;
 import org.confluence.mod.common.init.item.TreasureBagItems;

@@ -1,14 +1,14 @@
-package org.confluence.mod.api.event.bestiary;
+﻿package org.confluence.mod.api.event.bestiary;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.bus.api.Event;
-import net.neoforged.fml.ModLoader;
-import net.neoforged.fml.event.IModBusEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.ModLoader;
+import net.minecraftforge.fml.event.IModBusEvent;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.client.renderer.entity.bestiary.GeoWormBestiaryEntryRenderer;
 import org.confluence.terraentity.entity.monster.BaseWorm;
 import org.confluence.terraentity.entity.monster.BaseWormPart;
@@ -33,13 +33,15 @@ public class RegisterCustomBestiaryEntryRendererEvent extends Event implements I
         RENDERERS.put(key, (EntityRenderer<LivingEntity>) renderer);
     }
 
-    public void registerBaseWorm(DeferredHolder<EntityType<?>, EntityType<BaseWorm<BaseWormPart>>> holder) {
+    public void registerBaseWorm(RegistryObject, EntityType<BaseWorm<BaseWormPart>>>holder) {
         register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer<>(context, holder.getId()));
     }
-     public void registeSurefaceWorm(DeferredHolder<EntityType<?>, EntityType<SurefaceWorm<BaseWormPart>>> holder) {
+
+    public void registeSurefaceWorm(RegistryObject, EntityType<SurefaceWorm<BaseWormPart>>>holder) {
         register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer<>(context, holder.getId()));
     }
-    public void registerBoneSerpent(DeferredHolder<EntityType<?>, EntityType<BoneSerpent<BaseWormPart>>> holder) {
+
+    public void registerBoneSerpent(RegistryObject, EntityType<BoneSerpent<BaseWormPart>>>holder) {
         register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer<>(context, holder.getId()));
     }
 
@@ -50,7 +52,8 @@ public class RegisterCustomBestiaryEntryRendererEvent extends Event implements I
 
     public static EntityRenderer<LivingEntity> getRenderer(String key) {
         EntityRenderer<LivingEntity> renderer = RENDERERS.get(key);
-        if (renderer == null) throw new NullPointerException("No renderer registered for key: " + key);
+        if (renderer == null)
+            throw new NullPointerException("No renderer registered for key: " + key);
         return renderer;
     }
 

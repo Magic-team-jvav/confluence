@@ -17,13 +17,17 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class StarFuryProjectileRenderer extends EntityRenderer<SwordProjectile> {
-    protected  ResourceLocation TEXTURE_LOCATION= Confluence.asResource("textures/entity/star_fury_projectile.png");
+    protected ResourceLocation TEXTURE_LOCATION = Confluence.asResource("textures/entity/star_fury_projectile.png");
+
     @Override
     public ResourceLocation getTextureLocation(SwordProjectile swordProjectile) {
-        return  TEXTURE_LOCATION;
+        return TEXTURE_LOCATION;
     }
+
     private int frame = 0;
-    private float getScale(){return 2;}
+
+    private float getScale() {return 2;}
+
     @Override
     protected int getBlockLightLevel(SwordProjectile entity, BlockPos pos) {
         return 10;
@@ -62,7 +66,7 @@ public class StarFuryProjectileRenderer extends EntityRenderer<SwordProjectile> 
         vertex(vertexconsumer, matrix4f, pose, packedLight, 1.0F, 1, 1, 0);
         vertex(vertexconsumer, matrix4f, pose, packedLight, 0.0F, 1, 0, 0);
 
-        poseStack.translate(0,0.5,0);
+        poseStack.translate(0, 0.5, 0);
         poseStack.mulPose(Axis.XP.rotationDegrees(-90F));
 
         poseStack.popPose();
@@ -70,11 +74,11 @@ public class StarFuryProjectileRenderer extends EntityRenderer<SwordProjectile> 
     }
 
     protected static void vertex(VertexConsumer pConsumer, Matrix4f pPose, PoseStack.Pose pNormal, int pLightmapUV, float pX, float pY, int pU, int pV) {
-        pConsumer.addVertex(pPose, pX - 0.5F, pY-0.5F, 0.0F)
-                .setColor(255, 150, 150, 255)
-                .setUv((float)pU, (float)pV)
+        pConsumer.vertex(pPose, pX - 0.5F, pY - 0.5F, 0.0F)
+                .color(255, 150, 150, 255)
+                .uv((float) pU, (float) pV)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(pLightmapUV)
-                .setNormal(pNormal,0.0F, 1.0F, 0.0F);
+                .uv2(pLightmapUV)
+                .setNormal(pNormal, 0.0F, 1.0F, 0.0F);
     }
 }

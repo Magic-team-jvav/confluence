@@ -1,6 +1,7 @@
 package org.confluence.mod.client.renderer.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +10,6 @@ import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.common.entity.projectile.boulder.LifecrystalBoulderEntity;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import com.mojang.math.Axis;
 
 public class LifecrystalBoulderRenderer extends GeoEntityRenderer<LifecrystalBoulderEntity> {
     public LifecrystalBoulderRenderer(EntityRendererProvider.Context pContext) {

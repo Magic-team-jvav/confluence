@@ -15,7 +15,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public record MoneyTradeItem(ItemStack result, @Nullable TradeProperties properties) implements ITradeItem, IMoneyTrade {
+public record MoneyTradeItem(ItemStack result,
+                             @Nullable TradeProperties properties) implements ITradeItem, IMoneyTrade {
     public static final MapCodec<MoneyTradeItem> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ItemStack.CODEC.fieldOf("result").forGetter(MoneyTradeItem::result),
             TradeProperties.CODEC.optionalFieldOf("properties").forGetter(i -> Optional.ofNullable(i.properties))

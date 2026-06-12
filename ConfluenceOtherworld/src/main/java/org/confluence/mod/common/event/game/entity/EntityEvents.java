@@ -9,14 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
-import net.neoforged.neoforge.event.entity.EntityMountEvent;
+import net.minecraftforge.common.Tags;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -29,11 +23,17 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.entity.PortEntityInvulnerabilityCheckEvent;
+import org.mesdag.portlib.event.entity.PortEntityMountEvent;
 
-@EventBusSubscriber(modid = Confluence.MODID)
 public final class EntityEvents {
-    @SubscribeEvent
-    public static void mount(EntityMountEvent event) {
+    public static void init() {
+        PortEventHandler.addListener(EntityEvents::mount);
+        PortEventHandler.addListener(EntityEvents::invulnerabilityCheck);
+    }
+
+    private static void mount(PortEntityMountEvent event) {
         Entity beingMounted = event.getEntityBeingMounted();
         if (beingMounted.isRemoved() || !(event.getEntityMounting() instanceof ServerPlayer player)) {
             return;
@@ -42,7 +42,7 @@ public final class EntityEvents {
             AchievementUtils.awardAchievement(player, "the_cavalry");
         }
         if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() && event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
-            MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
+            MinecartAbilityEvent.DismountOnMinecart e = PortEventHandler.postEventWithReturn(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;
             ExtraInventory extraInventory = ExtraInventory.of(player);
@@ -58,8 +58,7 @@ public final class EntityEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void invulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
+    private static void invulnerabilityCheck(PortEntityInvulnerabilityCheckEvent event) {
         if (event.isInvulnerable() || !(event.getEntity() instanceof LivingEntity victim)) return;
         if (ILivingEntity.of(victim).confluence$getExtraInvulnerableTicks() > 0) return;
 
@@ -70,17 +69,17 @@ public final class EntityEvents {
         @Nullable Entity attacker = damageSource.getEntity();
 
         if (damageSource.is(ModDamageTypes.BOULDER) && victim.getType().is(Tags.EntityTypes.BOSSES)) {
-            event.setInvulnerable(true); // boss 免疫巨石
+            event.setInvulnerable(true);
             return;
         }
         if ((attacker == null || !attacker.getType().is(Tags.EntityTypes.BOSSES)) && victim.hasEffect(ModEffects.SHIMMER)) {
-            event.setInvulnerable(true); // 微光状态时免疫非Boss和环境伤害
+            event.setInvulnerable(true);
             return;
         }
         if (damageSource.is(DamageTypeTags.IS_FIRE)) {
             if (victim.hasEffect(ModEffects.OBSIDIAN_SKIN) || (victim instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
                 victim.clearFire();
-                event.setInvulnerable(true); // 免疫熔岩/着火
+                event.setInvulnerable(true);
                 return;
             }
         }

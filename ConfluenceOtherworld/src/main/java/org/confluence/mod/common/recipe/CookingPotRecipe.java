@@ -11,7 +11,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.TagKey;
@@ -103,10 +103,10 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
         }
 
         @Override
-        protected StreamCodec<RegistryFriendlyByteBuf, CookingPotRecipe> getStreamCodec() {
+        protected StreamCodec<PortRegistryFriendlyByteBuf, CookingPotRecipe> getStreamCodec() {
             return new StreamCodec<>() {
                 @Override
-                public CookingPotRecipe decode(RegistryFriendlyByteBuf buffer) {
+                public CookingPotRecipe decode(PortRegistryFriendlyByteBuf buffer) {
                     int size = buffer.readVarInt();
                     NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
                     nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
@@ -117,7 +117,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
                 }
 
                 @Override
-                public void encode(RegistryFriendlyByteBuf buffer, CookingPotRecipe recipe) {
+                public void encode(PortRegistryFriendlyByteBuf buffer, CookingPotRecipe recipe) {
                     buffer.writeVarInt(recipe.ingredients.size());
                     for (Ingredient ingredient : recipe.ingredients) {
                         Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
@@ -162,7 +162,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
                 StatePropertiesPredicate.CODEC.optionalFieldOf("state").forGetter(HeatSourcePredicate::properties),
                 NbtPredicate.CODEC.optionalFieldOf("nbt").forGetter(HeatSourcePredicate::nbt)
         ).apply(instance, HeatSourcePredicate::new));
-        public static final StreamCodec<RegistryFriendlyByteBuf, HeatSourcePredicate> STREAM_CODEC = StreamCodec.composite(
+        public static final StreamCodec<PortRegistryFriendlyByteBuf, HeatSourcePredicate> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.optional(ByteBufCodecs.either(LibStreamCodecUtils.tagKey(Registries.BLOCK), ByteBufCodecs.holderSet(Registries.BLOCK))), HeatSourcePredicate::blocks,
                 ByteBufCodecs.optional(StatePropertiesPredicate.STREAM_CODEC), HeatSourcePredicate::properties,
                 ByteBufCodecs.optional(NbtPredicate.STREAM_CODEC), HeatSourcePredicate::nbt,

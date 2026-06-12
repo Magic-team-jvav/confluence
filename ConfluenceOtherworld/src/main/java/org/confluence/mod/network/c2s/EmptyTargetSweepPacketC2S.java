@@ -1,34 +1,35 @@
-package org.confluence.mod.network.c2s;
+﻿package org.confluence.mod.network.c2s;
 
-import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
+import PortLib.extensions.net.minecraft.world.item.enchantment.PortEnchantmentHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixin.server.level.ServerPlayerAccessor;
 import org.confluence.mod.util.PlayerUtils;
+import org.mesdag.portlib.PortLib;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public enum EmptyTargetSweepPacketC2S implements IPacketC2S {
+public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
     INSTANCE;
-    public static final Type<EmptyTargetSweepPacketC2S> TYPE = Confluence.createType("empty_target_sweep");
-    public static final StreamCodec<ByteBuf, EmptyTargetSweepPacketC2S> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, EmptyTargetSweepPacketC2S> STREAM_CODEC = PortStreamCodec.unit(INSTANCE);
+    public static final ResourceLocation ID = Confluence.asResource("empty_target_sweep");
 
     @Override
-    public Type<EmptyTargetSweepPacketC2S> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -36,13 +37,13 @@ public enum EmptyTargetSweepPacketC2S implements IPacketC2S {
         if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             float damage = (float) player.getAttributeValue(LibAttributes.getAttackDamage());
             if (player.getAttackStrengthScale(0.5F) < 1.0F - Mth.EPSILON) return;
-            float baseDamage = 1.0F + (float) player.getAttributeValue(Attributes.SWEEPING_DAMAGE_RATIO) * damage;
-            PlayerAboutToEmptyTargetSweepEvent event = NeoForge.EVENT_BUS.post(new PlayerAboutToEmptyTargetSweepEvent(player, baseDamage));
+            float baseDamage = 1.0F + (float) player.getAttributeValue(PortLib.SWEEPING_DAMAGE_RATIO) * damage;
+            PlayerAboutToEmptyTargetSweepEvent event = PortEventHandler.postEventWithReturn(new PlayerAboutToEmptyTargetSweepEvent(player, baseDamage));
             if (event.isCanceled()) return;
             float attackDamage = event.getAttackDamage();
             DamageSource source = player.damageSources().playerAttack(player);
             for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, BaseSwordItem.getSpecialSweepArea(player))) {
-                double entityReachSq = Mth.square(player.entityInteractionRange());
+                double entityReachSq = Mth.square(PortPlayerExtension.entityInteractionRange(player));
                 if (target != player &&
                         !player.isAlliedTo(target) &&
                         (!(target instanceof ArmorStand) || !((ArmorStand) target).isMarker()) &&
@@ -51,7 +52,7 @@ public enum EmptyTargetSweepPacketC2S implements IPacketC2S {
                     target.knockback(0.4F, Mth.sin(player.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(player.getYRot() * Mth.DEG_TO_RAD));
                     float amount = ((ServerPlayerAccessor) player).callGetEnchantedDamage(target, attackDamage, source);
                     target.hurt(source, amount);
-                    EnchantmentHelper.doPostAttackEffects(player.serverLevel(), target, source);
+                    PortEnchantmentHelper.doPostAttackEffects(player.serverLevel(), target, source);
                 }
             }
 
@@ -62,6 +63,6 @@ public enum EmptyTargetSweepPacketC2S implements IPacketC2S {
     }
 
     public static void send2Server() {
-        PacketDistributor.sendToServer(INSTANCE);
+        Confluence.NETWORK_HANDLER.sendToServer(INSTANCE);
     }
 }

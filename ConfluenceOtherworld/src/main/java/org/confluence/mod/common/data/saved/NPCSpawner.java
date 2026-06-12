@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+﻿package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -36,7 +36,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.data.saved.IGlobalData;

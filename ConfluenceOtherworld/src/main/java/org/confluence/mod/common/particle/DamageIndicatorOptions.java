@@ -1,4 +1,4 @@
-package org.confluence.mod.common.particle;
+﻿package org.confluence.mod.common.particle;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -7,11 +7,10 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentSerialization;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -21,6 +20,7 @@ import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
+import org.mesdag.portlib.network.chat.PortComponentSerialization;
 
 import java.util.Objects;
 
@@ -37,14 +37,14 @@ public record DamageIndicatorOptions(
     }
 
     public static final MapCodec<DamageIndicatorOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ComponentSerialization.CODEC.fieldOf("text").forGetter(DamageIndicatorOptions::text),
+            PortComponentSerialization.CODEC.fieldOf("text").forGetter(DamageIndicatorOptions::text),
             Codec.BOOL.fieldOf("big").forGetter(DamageIndicatorOptions::big),
             Type.CODEC.fieldOf("type").forGetter(DamageIndicatorOptions::type)
     ).apply(instance, DamageIndicatorOptions::new));
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, DamageIndicatorOptions> STREAM_CODEC = StreamCodec.composite(
-            ComponentSerialization.STREAM_CODEC, DamageIndicatorOptions::text,
-            ByteBufCodecs.BOOL, DamageIndicatorOptions::big,
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, DamageIndicatorOptions> STREAM_CODEC = PortStreamCodec.composite(
+            PortComponentSerialization.STREAM_CODEC, DamageIndicatorOptions::text,
+            PortByteBufCodecs.BOOL, DamageIndicatorOptions::big,
             Type.STREAM_CODEC, DamageIndicatorOptions::type,
             DamageIndicatorOptions::new
     );
@@ -94,7 +94,7 @@ public record DamageIndicatorOptions(
 
         public static final Codec<Type> CODEC = Codec.BYTE.xmap(Type::byId, t -> (byte) t.ordinal());
 
-        public static final StreamCodec<ByteBuf, Type> STREAM_CODEC = ByteBufCodecs.BYTE.map(Type::byId, t -> (byte) t.ordinal());
+        public static final PortStreamCodec<ByteBuf, Type> STREAM_CODEC = PortByteBufCodecs.BYTE.map(Type::byId, t -> (byte) t.ordinal());
 
         public static Type byId(byte i) {
             return i == 0 ? DAMAGE : i == 1 ? HEAL : OTHER;

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.gameevent;
+﻿package org.confluence.mod.common.gameevent;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.Util;
@@ -18,7 +18,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.fml.ModLoader;
+import net.minecraftforge.fml.ModLoader;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;

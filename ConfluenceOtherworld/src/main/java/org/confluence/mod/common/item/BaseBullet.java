@@ -57,7 +57,7 @@ public class BaseBullet extends Item {
             super(properties, 0, 0, 0, 0, ModRarity.WHITE, 0, false);
         }
 
-        void setColorID(String colorID) {
+        void colorID(String colorID) {
             this.colorID = colorID;
         }
     }

@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
@@ -84,10 +84,10 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         }
 
         @Override
-        protected StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> getStreamCodec() {
+        protected StreamCodec<PortRegistryFriendlyByteBuf, AlchemyTableRecipe> getStreamCodec() {
             return new StreamCodec<>() {
                 @Override
-                public AlchemyTableRecipe decode(RegistryFriendlyByteBuf buffer) {
+                public AlchemyTableRecipe decode(PortRegistryFriendlyByteBuf buffer) {
                     int size = buffer.readVarInt();
                     NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
                     nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
@@ -97,7 +97,7 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
                 }
 
                 @Override
-                public void encode(RegistryFriendlyByteBuf buffer, AlchemyTableRecipe recipe) {
+                public void encode(PortRegistryFriendlyByteBuf buffer, AlchemyTableRecipe recipe) {
                     buffer.writeVarInt(recipe.ingredients.size());
                     for (Ingredient ingredient : recipe.ingredients) {
                         Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);

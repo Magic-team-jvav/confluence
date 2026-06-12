@@ -1,32 +1,31 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Hashtable;
 import java.util.Map;
 
-public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implements IPacketS2C {
-    public static final Type<BrushingColorPacketS2C> TYPE = Confluence.createType("brushing_color");
-    public static final StreamCodec<RegistryFriendlyByteBuf, BrushingColorPacketS2C> STREAM_CODEC = new StreamCodec<>() {
+public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("brushing_color");
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, BrushingColorPacketS2C> STREAM_CODEC = new StreamCode<>() {
         @Override
-        public BrushingColorPacketS2C decode(RegistryFriendlyByteBuf buffer) {
+        public BrushingColorPacketS2C decode(PortRegistryFriendlyByteBuf buffer) {
             ChunkPos chunkPos = buffer.readChunkPos();
             int size = buffer.readVarInt();
             Map<BlockPos, int[]> map = new Hashtable<>();
@@ -45,7 +44,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
         }
 
         @Override
-        public void encode(RegistryFriendlyByteBuf buffer, BrushingColorPacketS2C value) {
+        public void encode(PortRegistryFriendlyByteBuf buffer, BrushingColorPacketS2C value) {
             buffer.writeChunkPos(value.chunkPos);
             Map<BlockPos, int[]> map = value.data.colors();
             buffer.writeVarInt(map.size());
@@ -69,8 +68,8 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     public static final int[] CLEAR_COLORS = BrushData.createColor(BrushData.CLEAR_COLOR);
 
     @Override
-    public Type<BrushingColorPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -80,12 +79,12 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
 
     public static void sendToClient(ServerPlayer serverPlayer, ChunkPos chunkPos, BrushData data, boolean save) {
         if (save) saveData(serverPlayer.serverLevel(), chunkPos, data);
-        PacketDistributor.sendToPlayer(serverPlayer, new BrushingColorPacketS2C(chunkPos, data));
+        Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new BrushingColorPacketS2C(chunkPos, data));
     }
 
     public static void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, BrushData data, boolean save) {
         if (save) saveData(level, chunkPos, data);
-        PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, data));
+        Confluence.NETWORK_HANDLER.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, data));
     }
 
     public static void sendToPlayersTrackingChunk(ServerLevel level, BlockPos pos, @Nullable Direction facing, int color, boolean save) {
@@ -96,7 +95,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     }
 
     public static void remove(ServerLevel level, BlockPos pos, Direction facing) {
-        if (ServerLifecycleHooks.getCurrentServer() != null) {
+        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
             ChunkPos chunkPos = new ChunkPos(pos);
             BrushData brushData = ChunkBrushData.of(level).getDataMap().get(chunkPos);
             if (brushData == null) return;
@@ -106,17 +105,17 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
                 brushData.remove(pos);
                 facing = null;
             }
-            PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(pos, facing, BrushData.CLEAR_COLOR)));
+            Confluence.NETWORK_HANDLER.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(pos, facing, BrushData.CLEAR_COLOR)));
         }
     }
 
     public static void remove(ServerLevel level, BlockPos pos) {
-        if (ServerLifecycleHooks.getCurrentServer() != null) {
+        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
             ChunkPos chunkPos = new ChunkPos(pos);
             BrushData brushData = ChunkBrushData.of(level).getDataMap().get(chunkPos);
             if (brushData == null) return;
             brushData.remove(pos);
-            PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(Map.of(pos, CLEAR_COLORS))));
+            Confluence.NETWORK_HANDLER.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(Map.of(pos, CLEAR_COLORS))));
         }
     }
 

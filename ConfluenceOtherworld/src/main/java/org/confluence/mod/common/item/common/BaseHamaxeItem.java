@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.common;
+﻿package org.confluence.mod.common.item.common;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -23,8 +23,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.component.ToolMode;
@@ -107,7 +105,7 @@ public class BaseHamaxeItem extends DiggerItem {
 
     @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        return ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
+        return net.minecraftforge.common.ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
     }
 
     @Override

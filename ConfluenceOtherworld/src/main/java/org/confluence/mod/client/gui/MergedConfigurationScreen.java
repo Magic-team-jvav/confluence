@@ -1,20 +1,18 @@
-package org.confluence.mod.client.gui;
+﻿package org.confluence.mod.client.gui;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModList;
 import nowebsite.makertechno.the_trackers.TheTrackers;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.TerraGuns;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_furniture.TerraFurniture;
-import org.confluence.mod.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.mesdag.particlestorm.ParticleStorm;
 import org.mesdag.thr_dim_particle.TDP;

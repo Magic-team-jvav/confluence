@@ -1,4 +1,4 @@
-package org.confluence.mod.client.renderer.item;
+﻿package org.confluence.mod.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -11,7 +11,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.common.init.ModTags;
 
 public class ShortSwordInHandRenderer implements IClientItemExtensions {

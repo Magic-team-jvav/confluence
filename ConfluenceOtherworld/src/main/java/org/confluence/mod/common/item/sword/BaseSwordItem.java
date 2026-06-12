@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.sword;
+﻿package org.confluence.mod.common.item.sword;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Holder;
@@ -23,7 +23,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
@@ -348,7 +347,7 @@ public class BaseSwordItem extends SwordItem {
     public static AABB getSpecialSweepArea(Player player) {
         Vec3 start = player.getEyePosition();
         Vec3 up = player.getUpVector(1);
-        Vec3 forward = player.getViewVector(1).scale(player.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE));
+        Vec3 forward = player.getViewVector(1).scale(player.getAttributeValue(PortAttributesExtension.entityInteractionRange()));
         Vec3 end = start.add(forward);
         Vec3 left = forward.cross(up);
         return new AABB(start.add(left), end.add(left.reverse()));

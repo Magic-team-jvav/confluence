@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init.item;
+﻿package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -6,7 +6,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import net.neoforged.neoforge.common.extensions.IAbstractMinecartExtension;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.minecart.*;

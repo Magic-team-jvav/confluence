@@ -1,4 +1,4 @@
-package org.confluence.mod.mixed;
+﻿package org.confluence.mod.mixed;
 
 import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -22,7 +22,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.ModEffects;

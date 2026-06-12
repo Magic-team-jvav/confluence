@@ -1,9 +1,6 @@
-package org.confluence.mod.common.block.common;
+﻿package org.confluence.mod.common.block.common;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.StairBlock;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.minecraftforge.registries.RegistryObject;
 
 public class StoneBlockSet {
     private final Builder builder;
@@ -13,8 +10,8 @@ public class StoneBlockSet {
     }
 
     public static class Builder {
-        private DeferredBlock<Block> bricks;
-        private DeferredBlock<StairBlock> stair;
-        private DeferredBlock<SlabBlock> slab;
+        private RegistryObject bricks;
+        private RegistryObject stair;
+        private RegistryObject slab;
     }
 }

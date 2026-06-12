@@ -10,7 +10,8 @@ import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
-public record PositionLock(MinMaxBounds.Ints x, MinMaxBounds.Ints y, MinMaxBounds.Ints z) implements ITradeLock {
+public record PositionLock(MinMaxBounds.Ints x, MinMaxBounds.Ints y,
+                           MinMaxBounds.Ints z) implements ITradeLock {
     public static final MapCodec<PositionLock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             MinMaxBounds.Ints.CODEC.optionalFieldOf("x", MinMaxBounds.Ints.ANY).forGetter(PositionLock::x),
             MinMaxBounds.Ints.CODEC.optionalFieldOf("y", MinMaxBounds.Ints.ANY).forGetter(PositionLock::y),

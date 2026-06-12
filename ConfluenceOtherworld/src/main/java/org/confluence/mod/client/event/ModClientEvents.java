@@ -1,4 +1,4 @@
-package org.confluence.mod.client.event;
+﻿package org.confluence.mod.client.event;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
@@ -21,9 +21,6 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.RegistryObject;
@@ -69,6 +66,7 @@ import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.*;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
 import org.confluence.mod.client.renderer.entity.bestiary.SlimeZombieRenderer;
+import org.confluence.mod.client.renderer.entity.bullet.BulletRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BloodyFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRenderer;
@@ -78,7 +76,6 @@ import org.confluence.mod.client.renderer.entity.flail.FlailModel;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
-import org.confluence.mod.client.renderer.entity.bullet.BulletRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
@@ -87,6 +84,7 @@ import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
 import org.confluence.mod.client.renderer.item.EnemyBannerItemRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ShortSwordInHandRenderer;
+import org.confluence.mod.client.renderer.item.gun.SimpleGeoItemRenderer;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.common.CommonConfigs;
@@ -102,6 +100,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
@@ -109,15 +108,8 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
 import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
-import org.confluence.mod.common.init.item.GunItems;
-import org.confluence.mod.common.item.gun.BaseGun;
-import org.confluence.mod.client.renderer.item.gun.SimpleGeoItemRenderer;
-import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.mesdag.portlib.event.client.PortEntityRenderersEvent;
-import org.mesdag.portlib.event.client.PortRegisterGuiLayersEvent;
-import org.mesdag.portlib.event.client.PortRegisterMenuScreensEvent;
-import org.mesdag.portlib.event.client.PortRegisterParticleProvidersEvent;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.client.*;
 import org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
@@ -132,9 +124,29 @@ import java.util.Set;
 import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
 import static org.confluence.mod.common.init.ModEntities.*;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
 public final class ModClientEvents {
-    @SubscribeEvent
+    public static void init() {
+        PortEventHandler.addListener(ModClientEvents::clientSetup);
+        PortEventHandler.addListener(ModClientEvents::modConfig$Loading);
+        PortEventHandler.addListener(ModClientEvents::modConfig$Reloading);
+        PortEventHandler.addListener(ModClientEvents::registerMenuScreens);
+        PortEventHandler.addListener(ModClientEvents::registerGuiLayers);
+        PortEventHandler.addListener(ModClientEvents::registerEntityLayers);
+        PortEventHandler.addListener(ModClientEvents::registerEntityRenderers);
+        PortEventHandler.addListener(ModClientEvents::registerBlockColors);
+        PortEventHandler.addListener(ModClientEvents::registerItemColors);
+        PortEventHandler.addListener(ModClientEvents::registerClientExtensions);
+        PortEventHandler.addListener(ModClientEvents::registerParticles);
+        PortEventHandler.addListener(ModClientEvents::textureAtlasStitched);
+        PortEventHandler.addListener(ModClientEvents::registerMaterialAtlasesEvent);
+        PortEventHandler.addListener(ModClientEvents::model$ModifyBakingResult);
+        PortEventHandler.addListener(ModClientEvents::registerRecipeBookCategories);
+        PortEventHandler.addListener(ModClientEvents::registerRenderBuffers);
+        PortEventHandler.addListener(ModClientEvents::registerClientTooltipComponentFactories);
+        PortEventHandler.addListener(ModClientEvents::registerClientReloadListeners);
+        PortEventHandler.addListener(ModClientEvents::registerItemDecorations);
+    }
+
     public static void clientSetup(PortFMLClientSetupEventPort event) {
         event.enqueueWork(() -> {
             StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
@@ -151,14 +163,12 @@ public final class ModClientEvents {
         });
     }
 
-    @SubscribeEvent
     public static void modConfig$Loading(ModConfigEvent.Loading event) {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
             ClientConfigs.onLoad();
         }
     }
 
-    @SubscribeEvent
     public static void modConfig$Reloading(ModConfigEvent.Reloading event) {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
             ClientConfigs.onLoad();
@@ -166,7 +176,6 @@ public final class ModClientEvents {
         }
     }
 
-    @SubscribeEvent
     public static void registerMenuScreens(PortRegisterMenuScreensEvent event) {
         // block
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
@@ -190,7 +199,6 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
     }
 
-    @SubscribeEvent
     public static void registerGuiLayers(PortRegisterGuiLayersEvent event) {
         ResourceLocation repeaterHud = Confluence.asResource("repeater_hud");
         event.registerAbove(VanillaGuiLayers.CROSSHAIR, repeaterHud, new RepeaterHud());
@@ -217,7 +225,6 @@ public final class ModClientEvents {
         SoulSkillClientHolder.INSTANCE.init();
     }
 
-    @SubscribeEvent
     public static void registerEntityLayers(PortRegisterLayerDefinitions event) {
         event.registerLayerDefinition(BaseBombEntityModel.LAYER_LOCATION, BaseBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(BouncyBombEntityModel.LAYER_LOCATION, BouncyBombEntityModel::createBodyLayer);
@@ -287,8 +294,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(RainbowSheepFurModel.LAYER_LOCATION, RainbowSheepFurModel::createFurLayer);
     }
 
-    @SubscribeEvent
-    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+    public static void registerEntityRenderers(PortEntityRenderersEvent.PortRegisterRenderers event) {
         event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new); // 牢枕专用
         event.registerEntityRenderer(BOMB_ENTITY.get(), BaseBombEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
@@ -460,8 +466,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(ModBlocks.ENEMY_BANNER_ENTITY.get(), EnemyBannerBlockRenderer::new);
     }
 
-    @SubscribeEvent
-    public static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
+    public static void registerBlockColors(PortRegisterColorHandlersEvent.PortBlock event) {
         event.register(ModClientSetups.HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get());
         event.register(ModClientSetups.VOID_LEAVES_COLOR, NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get());
         event.register(ModClientSetups.VOID_WEAVE_COLOR, NatureBlocks.VOID_WEAVE.get());
@@ -470,8 +475,7 @@ public final class ModClientEvents {
         event.register((state, level, pos, tintIndex) -> level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
     }
 
-    @SubscribeEvent
-    public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+    public static void registerItemColors(PortRegisterColorHandlersEvent.PortItem event) {
         event.register((pStack, pTintIndex) -> VOID_B.get(), NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get());
         event.register((pStack, pTintIndex) -> ColoredItem.getRGBA(pStack), MaterialItems.GEL.get());
         event.register((pStack, pTintIndex) -> GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
@@ -479,7 +483,6 @@ public final class ModClientEvents {
         event.register((stack, tintIndex) -> tintIndex == 1 ? BaseDyeItem.getARGB(stack) : 0xFFFFFFFF, VanityArmorItems.COLORED_DYE_ITEMS.toArray(new Item[0]));
     }
 
-    @SubscribeEvent
     public static void registerClientExtensions(PortRegisterClientExtensionsEvent event) {
         event.registerFluidType(ModClientSetups.HONEY_CLIENT_EXTENSIONS, ModFluids.HONEY.type());
         event.registerFluidType(ModClientSetups.VOID_CLIENT_EXTENSIONS, ModFluids.VOID.type());
@@ -530,7 +533,6 @@ public final class ModClientEvents {
         }
     }
 
-    @SubscribeEvent
     public static void registerParticles(PortRegisterParticleProvidersEvent event) {
         event.registerSpecial(ModParticleTypes.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(ModParticleTypes.WHOLE_ITEM.get(), new WholeItemParticle.Provider());
@@ -545,8 +547,7 @@ public final class ModClientEvents {
         event.registerSpriteSet(ModParticleTypes.ECTO_MIST.get(), EctoMistParticle.Provider::new);
     }
 
-    @SubscribeEvent
-    public static void textureAtlasStitched(TextureAtlasStitchedEvent event) {
+    public static void textureAtlasStitched(PortTextureAtlasStitchedEvent event) {
         TextureAtlas atlas = event.getAtlas();
         StitchedSprite.onTextureStitchPost(atlas);
 
@@ -564,13 +565,11 @@ public final class ModClientEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void registerMaterialAtlasesEvent(RegisterMaterialAtlasesEvent event) {
+    public static void registerMaterialAtlasesEvent(PortRegisterMaterialAtlasesEvent event) {
         event.register(ModClientSetups.ENTITY_BLOOD_ATLAS, Confluence.asResource("entity_blood"));
     }
 
-    @SubscribeEvent
-    public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
+    public static void model$ModifyBakingResult(PortModelEvent.ModifyBakingResult event) {
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
 
         ModClientSetups.asCustomModel(modelRegistry,
@@ -609,31 +608,26 @@ public final class ModClientEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void registerRecipeBookCategories(RegisterRecipeBookCategoriesEvent event) {
+    public static void registerRecipeBookCategories(PortRegisterRecipeBookCategoriesEvent event) {
         ModRecipes.TYPES.getEntries().forEach(holder -> event.registerRecipeCategoryFinder(holder.get(), recipeHolder -> RecipeBookCategories.UNKNOWN));
     }
 
-    @SubscribeEvent
-    public static void registerRenderBuffers(RegisterRenderBuffersEvent event) {
+    public static void registerRenderBuffers(PortRegisterRenderBuffersEvent event) {
         for (ColoredGlintContext context : ColoredGlintContext.COLORED_GLINT_CONTEXTS) {
             event.registerRenderBuffer(context.renderType());
         }
     }
 
-    @SubscribeEvent
-    public static void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
+    public static void registerClientTooltipComponentFactories(PortRegisterClientTooltipComponentFactoriesEvent event) {
         event.register(AltImageComponent.class, AltImageTooltip::new);
         event.register(RepeaterComponent.class, ClientRepeaterContentsTooltip::new);
     }
 
-    @SubscribeEvent
-    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+    public static void registerClientReloadListeners(PortRegisterClientReloadListenersEvent event) {
         event.registerReloadListener(ClientBestiary.getInstance());
         event.registerReloadListener(LucyTheAxeDialogCategory.Loader.getInstance());
     }
 
-    @SubscribeEvent
     public static void registerCustomBestiaryEntryModel(RegisterCustomBestiaryEntryRendererEvent event) {
         EntityRendererProvider.Context context = event.getContext();
         event.registeSurefaceWorm(TEMonsterEntities.DEVOURER);
@@ -645,8 +639,7 @@ public final class ModClientEvents {
         event.register("entity.minecraft.zombie.slime", new SlimeZombieRenderer(context));
     }
 
-    @SubscribeEvent
-    public static void registerItemDecorations(RegisterItemDecorationsEvent event) {
+    public static void registerItemDecorations(PortRegisterItemDecorationsEvent event) {
         for (DeferredHolder<Item, ? extends Item> entry : FishingPoleItems.ITEMS.getEntries()) {
             event.register(entry.get(), ModClientSetups.FISHING_POLE_DECORATOR);
         }

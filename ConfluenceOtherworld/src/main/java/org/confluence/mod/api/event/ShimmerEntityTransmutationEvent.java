@@ -1,10 +1,10 @@
-package org.confluence.mod.api.event;
+﻿package org.confluence.mod.api.event;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.bus.api.Event;
-import net.neoforged.bus.api.ICancellableEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.ICancellableEvent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.jetbrains.annotations.Nullable;
 
@@ -98,5 +98,7 @@ public abstract class ShimmerEntityTransmutationEvent extends Event {
                 GamePhase.BEFORE_SKELETRON
         ));
     }
-    public record EntityTransmutation(Predicate<Entity> source, EntityType<?> target, GamePhase gamePhase) {}
+
+    public record EntityTransmutation(Predicate<Entity> source, EntityType<?> target,
+                                      GamePhase gamePhase) {}
 }

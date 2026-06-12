@@ -1,25 +1,25 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IClientLivingEntity;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record DeathMotionPacketS2C(int entityId, float x, float y, float z) implements IPacketS2C {
-    public static final Type<DeathMotionPacketS2C> TYPE = Confluence.createType("death_motion");
-    public static final StreamCodec<ByteBuf, DeathMotionPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, DeathMotionPacketS2C::entityId,
-            ByteBufCodecs.FLOAT, DeathMotionPacketS2C::x,
-            ByteBufCodecs.FLOAT, DeathMotionPacketS2C::y,
-            ByteBufCodecs.FLOAT, DeathMotionPacketS2C::z,
+public record DeathMotionPacketS2C(int entityId, float x, float y,
+                                   float z) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("death_motion");
+    public static final PortStreamCodec<ByteBuf, DeathMotionPacketS2C> STREAM_CODEC = PortStreamCodec.composite(
+            PortByteBufCodecs.VAR_INT, DeathMotionPacketS2C::entityId,
+            PortByteBufCodecs.FLOAT, DeathMotionPacketS2C::x,
+            PortByteBufCodecs.FLOAT, DeathMotionPacketS2C::y,
+            PortByteBufCodecs.FLOAT, DeathMotionPacketS2C::z,
             DeathMotionPacketS2C::new
     );
 
@@ -28,8 +28,8 @@ public record DeathMotionPacketS2C(int entityId, float x, float y, float z) impl
     }
 
     @Override
-    public Type<DeathMotionPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -43,18 +43,18 @@ public record DeathMotionPacketS2C(int entityId, float x, float y, float z) impl
     }
 
     public static void sendToAll(LivingEntity living) {
-        if (ServerLifecycleHooks.getCurrentServer() != null) {
+        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
             // 死前服务端把死亡时的速度发给客户端
             Vec3 motion = living.getDeltaMovement();
             if (motion.length() == 0) {
                 Vec3 pos = living.position();
                 motion = new Vec3(pos.x - living.xo, pos.y - living.yo, pos.z - living.zo);
             }
-            PacketDistributor.sendToAllPlayers(new DeathMotionPacketS2C(living.getId(), motion));
+            Confluence.NETWORK_HANDLER.sendToAllPlayers(new DeathMotionPacketS2C(living.getId(), motion));
         }
     }
 
     public static void sendToClient(ServerPlayer serverPlayer, int entityId, Vec3 motion) {
-        PacketDistributor.sendToPlayer(serverPlayer, new DeathMotionPacketS2C(entityId, motion));
+        Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new DeathMotionPacketS2C(entityId, motion));
     }
 }

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural;
+﻿package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.neoforged.neoforge.common.CommonHooks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.Optional;
@@ -57,7 +56,7 @@ public class BalloonStemBlock extends StemBlock {
 
         if (level.getRawBrightness(pos, 0) >= 9) {
             float f = CropBlock.getGrowthSpeed(state, level, pos);
-            if (CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / f) + 1) == 0)) {
+            if (net.minecraftforge.common.CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / f) + 1) == 0)) {
                 int i = state.getValue(AGE);
                 if (i < 7) {
                     level.setBlock(pos, state.setValue(AGE, i + 1), 2);
@@ -73,7 +72,7 @@ public class BalloonStemBlock extends StemBlock {
                         }
                     }
                 }
-                CommonHooks.fireCropGrowPost(level, pos, state);
+                net.minecraftforge.common.CommonHooks.fireCropGrowPost(level, pos, state);
             }
         }
     }

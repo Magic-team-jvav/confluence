@@ -1,7 +1,7 @@
-package org.confluence.mod.api.event;
+﻿package org.confluence.mod.api.event;
 
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 public class GetCustomDiggingPowerEvent extends Event {
     private final ItemStack itemStack;

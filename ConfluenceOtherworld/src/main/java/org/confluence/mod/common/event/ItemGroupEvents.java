@@ -1,7 +1,6 @@
 package org.confluence.mod.common.event;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import org.mesdag.portlib.event.PortEventHandler;
 import org.confluence.lib.api.event.CustomGroupItemIconEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTabs;
@@ -9,10 +8,12 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 
-@EventBusSubscriber(modid = Confluence.MODID)
 public final class ItemGroupEvents {
-    @SubscribeEvent
-    public static void customGroupItemIcon(CustomGroupItemIconEvent event) {
+    public static void init() {
+        PortEventHandler.addListener(ItemGroupEvents::customGroupItemIcon);
+    }
+
+    private static void customGroupItemIcon(CustomGroupItemIconEvent event) {
         event.register(ModTabs.NATURAL_BLOCKS.getKey(), helper -> {
             helper.register(Confluence.asResource("ebony"), NatureBlocks.EBONY_LOG_BLOCKS.LOG.get().asItem().getDefaultInstance());
             helper.register(Confluence.asResource("pearl"), NatureBlocks.PEARL_LOG_BLOCKS.LOG.get().asItem().getDefaultInstance());

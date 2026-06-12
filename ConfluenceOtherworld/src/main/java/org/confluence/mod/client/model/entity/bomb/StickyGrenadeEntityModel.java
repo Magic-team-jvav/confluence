@@ -28,6 +28,7 @@ public class StickyGrenadeEntityModel extends EntityModel<StickyGrenadeEntity> {
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     @Override
     public void setupAnim(StickyGrenadeEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 

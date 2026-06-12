@@ -28,6 +28,7 @@ public class BeenadeEntityModel extends EntityModel<BeenadeEntity> {
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     @Override
     public void setupAnim(BeenadeEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 

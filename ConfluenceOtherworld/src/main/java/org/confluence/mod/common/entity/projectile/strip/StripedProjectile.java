@@ -103,7 +103,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
-            LibMathUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibEntityUtils.knockBackA2B(this, entity, 0.5, 0.2);
         }
     }
 

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable.extended;
+﻿package org.confluence.mod.common.block.natural.spreadable.extended;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -9,8 +9,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.block.natural.spreadable.SpreadingGrassBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -67,7 +65,7 @@ public class MushroomGrassBlock extends SpreadingGrassBlock implements Bonemeala
 
     @Override
     public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
-        if (itemAbility == ItemAbilities.SHOVEL_FLATTEN) {
+        if (itemAbility == net.minecraftforge.common.ItemAbilities.SHOVEL_FLATTEN) {
             return NatureBlocks.MUSHROOM_PATH.get().defaultBlockState();
         }
         return null;

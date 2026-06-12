@@ -12,13 +12,9 @@ import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.common.BasicItemListing;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.village.VillagerTradesEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import org.apache.commons.lang3.IntegerRange;
+import net.minecraftforge.common.BasicItemListing;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
 import org.confluence.mod.common.entity.npc.RandomItemListing;
 import org.confluence.mod.common.entity.npc.SkyVillagerItemListing;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -26,6 +22,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.mesdag.portlib.event.village.PortVillagerTradesEvent;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -33,9 +30,9 @@ import java.util.function.Supplier;
 import static org.confluence.mod.Confluence.MODID;
 
 public final class ModVillagers {
-    public static final DeferredRegister<PoiType> POIS = DeferredRegister.create(BuiltInRegistries.POINT_OF_INTEREST_TYPE, MODID);
-    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(BuiltInRegistries.VILLAGER_PROFESSION, MODID);
-    public static final DeferredRegister<VillagerType> TYPES = DeferredRegister.create(BuiltInRegistries.VILLAGER_TYPE, MODID);
+    public static final DeferredRegister<PoiType> POIS = DeferredRegister.create(BuiltInRegistries.POINT_OF_INTEREST_TYPE.key(), MODID);
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(BuiltInRegistries.VILLAGER_PROFESSION.key(), MODID);
+    public static final DeferredRegister<VillagerType> TYPES = DeferredRegister.create(BuiltInRegistries.VILLAGER_TYPE.key(), MODID);
 
     // 村民的兴趣点
     public static final DeferredHolder<PoiType, PoiType> SKY_POI = POIS.register("sky", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SKY_MILL.get().getStateDefinition().getPossibleStates()), 1, 1));
@@ -54,7 +51,7 @@ public final class ModVillagers {
     // 村民的群系
     public static final Supplier<VillagerType> SKY_TYPE = TYPES.register("sky", () -> new VillagerType("confluence_sky")); // 天域村民
 
-    public static void villagerTrades(VillagerTradesEvent event) {
+    public static void villagerTrades(PortVillagerTradesEvent event) {
         VillagerProfession type = event.getType();
         Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
         List<VillagerTrades.ItemListing> tier1 = trades.get(1);

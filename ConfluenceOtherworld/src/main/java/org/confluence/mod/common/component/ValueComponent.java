@@ -4,10 +4,10 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModDataMaps;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public record ValueComponent(int value) implements DataComponentType<ValueComponent> {
     public static final Codec<ValueComponent> CODEC = Codec.INT.xmap(ValueComponent::new, ValueComponent::value);
-    public static final StreamCodec<ByteBuf, ValueComponent> STREAM_CODEC = ByteBufCodecs.INT.map(ValueComponent::new, ValueComponent::value);
+    public static final PortStreamCodec<ByteBuf, ValueComponent> STREAM_CODEC = PortByteBufCodecs.INT.map(ValueComponent::new, ValueComponent::value);
 
     @Override
     public @Nullable Codec<ValueComponent> codec() {
@@ -27,7 +27,7 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
     }
 
     @Override
-    public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, ValueComponent> streamCodec() {
+    public @NotNull StreamCodec<? super PortRegistryFriendlyByteBuf, ValueComponent> streamCodec() {
         return STREAM_CODEC;
     }
 

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.common;
+﻿package org.confluence.mod.common.item.common;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -11,8 +11,6 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModTags;
@@ -39,7 +37,7 @@ public class BasePickaxeAxeItem extends DiggerItem {
 
     @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        return ItemAbilities.DEFAULT_PICKAXE_ACTIONS.contains(itemAbility) || ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
+        return net.minecraftforge.common.ItemAbilities.DEFAULT_PICKAXE_ACTIONS.contains(itemAbility) || net.minecraftforge.common.ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility);
     }
 
     @Override

@@ -18,7 +18,7 @@ public class AmmoDataContext {
         return gunComponent.damage() + bulletComponent.damage();
     }
 
-    public float getCritical(){
+    public float getCritical() {
         return gunComponent.critical();
     }
 

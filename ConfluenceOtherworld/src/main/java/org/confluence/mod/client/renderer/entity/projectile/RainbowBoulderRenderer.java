@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibMathUtils;
+import org.confluence.mod.client.renderer.type.ModRenderTypes;
 import org.confluence.mod.common.entity.projectile.boulder.RainbowBoulderEntity;
-import org.confluence.mod.client.init.gun.GunRenderTypes;
 import org.joml.Matrix4f;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class RainbowBoulderRenderer extends BoulderRenderer<RainbowBoulderEntity
 
         poseStack.pushPose();
         Matrix4f matrix4f = poseStack.last().pose();
-        VertexConsumer buffer = bufferSource.getBuffer(GunRenderTypes.TRAIL_RENDER_TYPE);
+        VertexConsumer buffer = bufferSource.getBuffer(ModRenderTypes.TRAIL_RENDER_TYPE);
 
         Minecraft mc = Minecraft.getInstance();
         Vec3 camDir = new Vec3(mc.gameRenderer.getMainCamera().getLookVector());
@@ -70,10 +70,10 @@ public class RainbowBoulderRenderer extends BoulderRenderer<RainbowBoulderEntity
             int colorRight1 = getRainbowColor(p1.y, minY, maxY, alpha);
             int colorLeft1 = getRainbowColor(p1.y, minY, maxY, alpha);
 
-            addVertex(buffer, matrix4f, left0, colorLeft0);
-            addVertex(buffer, matrix4f, right0, colorRight0);
-            addVertex(buffer, matrix4f, right1, colorRight1);
-            addVertex(buffer, matrix4f, left1, colorLeft1);
+            vertex(buffer, matrix4f, left0, colorLeft0);
+            vertex(buffer, matrix4f, right0, colorRight0);
+            vertex(buffer, matrix4f, right1, colorRight1);
+            vertex(buffer, matrix4f, left1, colorLeft1);
         }
 
         RenderSystem.defaultBlendFunc();
@@ -88,7 +88,7 @@ public class RainbowBoulderRenderer extends BoulderRenderer<RainbowBoulderEntity
         return LibMathUtils.hsvToArgb(hue, 1.0f, 1.0f, alpha);
     }
 
-    private static void addVertex(VertexConsumer buffer, Matrix4f matrix, Vec3 pos, int argb) {
+    private static void vertex(VertexConsumer buffer, Matrix4f matrix, Vec3 pos, int argb) {
         buffer.vertex(matrix, (float) pos.x, (float) pos.y, (float) pos.z).color(argb);
     }
 }

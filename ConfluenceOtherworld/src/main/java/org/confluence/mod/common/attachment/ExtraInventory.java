@@ -28,7 +28,7 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 import org.mesdag.portlib.wrapper.IPortNBTSerializable;
-import org.mesdag.portlib.wrapper.common.util.PortTriState;
+import org.mesdag.portlib.wrapper.common.util.PortPortTriState;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
@@ -227,7 +227,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
                     hookItem.onUnequip(player, itemStack, previous);
                 }
                 if (i - VANITY_ARMOR_START == VANITY_HEAD_INDEX) {
-                    VisibilityPacketS2C.sendSunglasses(player, PortTriState.DEFAULT, itemStack.is(VanityArmorItems.SUNGLASSES.get()) ? PortTriState.TRUE : PortTriState.FALSE);
+                    VisibilityPacketS2C.sendSunglasses(player, PortPortTriState.DEFAULT, itemStack.is(VanityArmorItems.SUNGLASSES.get()) ? PortPortTriState.TRUE : PortPortTriState.FALSE);
                 }
                 previousStacks.set(i, itemStack.copy());
             }

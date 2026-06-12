@@ -9,11 +9,11 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,13 +22,19 @@ import java.util.List;
 public class TheHallowSkyRender {
     private static class Rainbow {
         float x, y, z;
-        float radius; float width;
-        int count; boolean reverse;
+        float radius;
+        float width;
+        int count;
+        boolean reverse;
 
         Rainbow(float x, float y, float z, float radius, float width, int count, boolean reverse) {
-            this.x = x; this.y = y; this.z = z;
-            this.radius = radius; this.width = width;
-            this.count = count; this.reverse = reverse;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.radius = radius;
+            this.width = width;
+            this.count = count;
+            this.reverse = reverse;
         }
     }
 
@@ -75,7 +81,7 @@ public class TheHallowSkyRender {
         }
     }
 
-    public static void render(LocalPlayer player, RenderLevelStageEvent event, float alphaMul) {
+    public static void render(LocalPlayer player, PortRenderLevelStageEvent event, float alphaMul) {
         if (alphaMul < 0.01F) return;
 
         boolean change = ClientConfigs.rainbowGradient;
@@ -93,7 +99,8 @@ public class TheHallowSkyRender {
         float midDis = 200F;
         float disRange = 100F;
 
-        if (deltaMovement.x != 0 || deltaMovement.z != 0) rainbowUpdate(rainbowCount, new Vector3f(playerX, playerY, playerZ), deltaMovement, midDis + disRange);
+        if (deltaMovement.x != 0 || deltaMovement.z != 0)
+            rainbowUpdate(rainbowCount, new Vector3f(playerX, playerY, playerZ), deltaMovement, midDis + disRange);
 
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder builder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
@@ -102,7 +109,7 @@ public class TheHallowSkyRender {
         int step = 48;
         float stepRotate = Mth.PI * 2 / (float) step;
 
-        for (Rainbow rainbow : RAINBOWS){
+        for (Rainbow rainbow : RAINBOWS) {
             int count = rainbow.count;
             boolean reverse = rainbow.reverse;
             float radius = rainbow.radius;
@@ -145,8 +152,8 @@ public class TheHallowSkyRender {
                                 float offsetX, float offsetY, float offsetZ,
                                 int color1, int color2, int alpha1, int alpha2) {
         int r1 = (color1 >> 16) & 0xFF, r2 = (color2 >> 16) & 0xFF;
-        int g1 = (color1 >> 8)  & 0xFF, g2 = (color2 >> 8)  & 0xFF;
-        int b1 =  color1        & 0xFF, b2 =  color2        & 0xFF;
+        int g1 = (color1 >> 8) & 0xFF, g2 = (color2 >> 8) & 0xFF;
+        int b1 = color1 & 0xFF, b2 = color2 & 0xFF;
         Vector2f outerPoint = null;
         Vector2f innerPoint = null;
 
@@ -168,10 +175,10 @@ public class TheHallowSkyRender {
             float w3 = Mth.sin(sRotate) * innerRadius, y3 = Mth.cos(sRotate) * innerRadius;
             float w4 = Mth.sin(sRotate) * outerRadius, y4 = Mth.cos(sRotate) * outerRadius;
 
-            builder.addVertex(matrix4f, w1 * mX + offsetX, y1 + offsetY, w1 * mZ + offsetZ).setColor(r1, g1, b1, alpha1);
-            builder.addVertex(matrix4f, w2 * mX + offsetX, y2 + offsetY, w2 * mZ + offsetZ).setColor(r2, g2, b2, alpha2);
-            builder.addVertex(matrix4f, w3 * mX + offsetX, y3 + offsetY, w3 * mZ + offsetZ).setColor(r2, g2, b2, alpha2);
-            builder.addVertex(matrix4f, w4 * mX + offsetX, y4 + offsetY, w4 * mZ + offsetZ).setColor(r1, g1, b1, alpha1);
+            builder.vertex(matrix4f, w1 * mX + offsetX, y1 + offsetY, w1 * mZ + offsetZ).color(r1, g1, b1, alpha1);
+            builder.vertex(matrix4f, w2 * mX + offsetX, y2 + offsetY, w2 * mZ + offsetZ).color(r2, g2, b2, alpha2);
+            builder.vertex(matrix4f, w3 * mX + offsetX, y3 + offsetY, w3 * mZ + offsetZ).color(r2, g2, b2, alpha2);
+            builder.vertex(matrix4f, w4 * mX + offsetX, y4 + offsetY, w4 * mZ + offsetZ).color(r1, g1, b1, alpha1);
 
             outerPoint = new Vector2f(w4, y4);
             innerPoint = new Vector2f(w3, y3);

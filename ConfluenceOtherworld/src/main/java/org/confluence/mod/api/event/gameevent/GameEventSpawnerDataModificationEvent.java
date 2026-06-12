@@ -1,4 +1,4 @@
-package org.confluence.mod.api.event.gameevent;
+﻿package org.confluence.mod.api.event.gameevent;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.neoforged.bus.api.Event;
+import net.minecraftforge.eventbus.api.Event;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.jetbrains.annotations.ApiStatus;
 

@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.client.multiplayer;
+﻿package org.confluence.mod.mixin.client.multiplayer;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.fluids.FluidType;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.WeatherHandler;

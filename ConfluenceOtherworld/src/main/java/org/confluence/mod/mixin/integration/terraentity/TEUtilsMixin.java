@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(TEUtils.class)
 public class TEUtilsMixin {
-    @Inject(method = "isFTWWorld",at = @At("HEAD"),cancellable = true)
+    @Inject(method = "isFTWWorld", at = @At("HEAD"), cancellable = true)
     private static void isFTWWorld(ServerLevel level, CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(ModSecretSeeds.FOR_THE_WORTHY.match(level));
     }

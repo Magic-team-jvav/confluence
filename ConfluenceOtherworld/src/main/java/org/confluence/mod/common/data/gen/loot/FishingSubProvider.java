@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.loot;
+﻿package org.confluence.mod.common.data.gen.loot;
 
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.FishingHookPredicate;
@@ -27,8 +27,7 @@ import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
+import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;

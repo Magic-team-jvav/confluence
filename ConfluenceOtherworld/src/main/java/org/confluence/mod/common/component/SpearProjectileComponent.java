@@ -135,7 +135,7 @@ public record SpearProjectileComponent(
     }
 
     @Override
-    public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, SpearProjectileComponent> streamCodec() {
+    public @NotNull StreamCodec<? super PortRegistryFriendlyByteBuf, SpearProjectileComponent> streamCodec() {
         return STREAM_CODEC;
     }
 

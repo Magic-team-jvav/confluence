@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural;
+﻿package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -11,12 +11,11 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.neoforged.neoforge.common.CommonHooks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.Set;
 
-import static net.neoforged.neoforge.common.CommonHooks.fireCropGrowPost;
+import static net.neoforged.neoforge.common.net.minecraftforge.common.CommonHooks.fireCropGrowPost;
 
 public abstract class BaseCropBlock extends CropBlock {
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 7);
@@ -69,7 +68,7 @@ public abstract class BaseCropBlock extends CropBlock {
                 if (belowState.is(NatureBlocks.RAIN_CLOUD_BLOCK.get())) {
                     f *= 3.0F;
                 }
-                if (CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / f) + 1) == 0)) {
+                if (net.minecraftforge.common.CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / f) + 1) == 0)) {
                     level.setBlock(pos, getStateForAge(i + 1), 2);
                     fireCropGrowPost(level, pos, state);
                 }

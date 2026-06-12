@@ -9,7 +9,8 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(PinWheel.BEntity.class)
 public abstract class TFPinWheelMixin {
-    @Shadow private float rotate;
+    @Shadow
+    private float rotate;
 
     /**
      * @author MakerTechno
@@ -17,7 +18,7 @@ public abstract class TFPinWheelMixin {
      */
     @Overwrite
     public float getStepNext() {
-        if (rotate <= -Mth.PI*24) rotate = 0;
+        if (rotate <= -Mth.PI * 24) rotate = 0;
         else rotate -= WeatherHandler.WIND_SPEED.length() * 0.09f;
         return rotate;
     }

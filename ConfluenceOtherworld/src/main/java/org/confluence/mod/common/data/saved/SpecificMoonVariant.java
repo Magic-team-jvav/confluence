@@ -1,10 +1,8 @@
-package org.confluence.mod.common.data.saved;
+﻿package org.confluence.mod.common.data.saved;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.common.asm.enumextension.ExtensionInfo;
-import net.neoforged.fml.common.asm.enumextension.IExtensibleEnum;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.gameevent.*;
 

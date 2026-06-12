@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.hud;
+﻿package org.confluence.mod.client.gui.hud;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -7,7 +7,6 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
@@ -22,7 +21,8 @@ public class TerraStyleFoodHud implements LayeredDraw.Layer {
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!ClientConfigs.terraStyleFood) return;
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft)) return;
+        if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft))
+            return;
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 

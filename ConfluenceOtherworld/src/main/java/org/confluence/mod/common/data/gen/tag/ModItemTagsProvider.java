@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.tag;
+﻿package org.confluence.mod.common.data.gen.tag;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -12,13 +12,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
@@ -1450,7 +1448,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HoeShovelItems.HALLOWED_HOE_SHOVEL.get(),
                 HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get()
         );
-        Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
+        Consumer<RegistryObject> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         tag(ModTags.AUTOMATIC_GUN).add(
@@ -1518,7 +1516,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.SPEAR_TRAP.get().asItem(),
                 HookItems.STATIC_HOOK.get()
         );
-        for (DeferredBlock<DeathChestBlock> deathChest : ChestBlocks.DEATH_CHESTS) {
+        for (RegistryObject deathChest : ChestBlocks.DEATH_CHESTS) {
             death.add(deathChest.get().asItem());
         }
 
@@ -1564,7 +1562,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
 
         IntrinsicTagAppender<Item> autoAttackBlacklist = tag(ModTags.Items.AUTO_ATTACK_BLACKLIST);
-        for (DeferredHolder<Item, ? extends Item> entry : LanceItems.ITEMS.getEntries()) {
+        for (RegistryObject entry : LanceItems.ITEMS.getEntries()) {
             autoAttackBlacklist.add(entry.get());
         }
 
@@ -1604,7 +1602,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE
         );
         IntrinsicTagAppender<Item> short_sword = tag(ModTags.Items.SHORT_SWORD);
-        for (DeferredHolder<Item, ? extends Item> holder : SwordItems.ITEMS.getEntries()) {
+        for (RegistryObject holder : SwordItems.ITEMS.getEntries()) {
             if (SwordItems.isShortSword(holder)) {
                 short_sword.add(holder.get());
             }

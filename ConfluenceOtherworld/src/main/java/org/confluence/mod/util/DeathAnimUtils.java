@@ -1,4 +1,4 @@
-package org.confluence.mod.util;
+﻿package org.confluence.mod.util;
 
 import com.ibm.icu.impl.Pair;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,7 +19,6 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.ClientHooks;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.client.DummyMultiBufferSource;
 import org.confluence.mod.Confluence;
@@ -32,16 +31,12 @@ import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.mixed.IModelPart;
 import org.confluence.mod.mixin.client.model.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererMixin;
-import org.confluence.terraentity.client.boss.renderer.WallOfFleshRenderer;
-import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
-import org.confluence.terraentity.entity.util.DeathAnimOptions;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.cache.object.*;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.lang.reflect.Field;

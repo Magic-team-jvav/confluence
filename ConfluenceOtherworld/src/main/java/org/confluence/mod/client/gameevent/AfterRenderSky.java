@@ -1,9 +1,9 @@
 package org.confluence.mod.client.gameevent;
 
 import net.minecraft.client.player.LocalPlayer;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 @FunctionalInterface
 public interface AfterRenderSky {
-    void render(LocalPlayer player, RenderLevelStageEvent event);
+    void render(LocalPlayer player, PortRenderLevelStageEvent event);
 }

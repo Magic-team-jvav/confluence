@@ -45,18 +45,18 @@ public class FallingStarRenderer extends ItemEntityRenderer {
     }
 
     private static void vertex1(VertexConsumer vertexConsumer, Matrix4f matrix4f) {
-        vertexConsumer.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(255, 255, 255, 128);
+        vertexConsumer.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color(255, 255, 255, 128);
     }
 
     private static void vertex2(VertexConsumer vertexConsumer, Matrix4f matrix4f) {
-        vertexConsumer.addVertex(matrix4f, -LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).setColor(255, 255, 0, 0);
+        vertexConsumer.vertex(matrix4f, -LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).color(255, 255, 0, 0);
     }
 
     private static void vertex3(VertexConsumer vertexConsumer, Matrix4f matrix4f) {
-        vertexConsumer.addVertex(matrix4f, LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).setColor(255, 255, 0, 0);
+        vertexConsumer.vertex(matrix4f, LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).color(255, 255, 0, 0);
     }
 
     private static void vertex4(VertexConsumer vertexConsumer, Matrix4f matrix4f) {
-        vertexConsumer.addVertex(matrix4f, 0.0F, length, width).setColor(255, 255, 0, 0);
+        vertexConsumer.vertex(matrix4f, 0.0F, length, width).color(255, 255, 0, 0);
     }
 }

@@ -18,7 +18,7 @@ public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (!isInit){
+        if (!isInit) {
             update();
         }
         super.render(guiGraphics, deltaTracker);

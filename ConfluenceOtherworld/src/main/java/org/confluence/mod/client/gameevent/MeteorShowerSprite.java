@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.Iterator;
 import java.util.Queue;
@@ -48,14 +48,14 @@ final class MeteorShowerSprite {
         poseStack.mulPose(quaternionf);
         RenderSystem.setShaderColor(1, 1, 1, alpha * a);
         Matrix4f matrix4f = poseStack.last().pose();
-        builder.addVertex(matrix4f, -radius, 100, -radius).setUv(0.0F, v1);
-        builder.addVertex(matrix4f, radius, 100, -radius).setUv(1.0F, v1);
-        builder.addVertex(matrix4f, radius, 100, radius).setUv(1.0F, v0);
-        builder.addVertex(matrix4f, -radius, 100, radius).setUv(0.0F, v0);
+        builder.vertex(matrix4f, -radius, 100, -radius).uv(0.0F, v1);
+        builder.vertex(matrix4f, radius, 100, -radius).uv(1.0F, v1);
+        builder.vertex(matrix4f, radius, 100, radius).uv(1.0F, v0);
+        builder.vertex(matrix4f, -radius, 100, radius).uv(0.0F, v0);
         poseStack.popPose();
     }
 
-    static void renderMeteorShower(LocalPlayer player, RenderLevelStageEvent event) {
+    static void renderMeteorShower(LocalPlayer player, PortRenderLevelStageEvent event) {
         if (player.level().dimension() != OverworldUtils.dimension()) return;
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();

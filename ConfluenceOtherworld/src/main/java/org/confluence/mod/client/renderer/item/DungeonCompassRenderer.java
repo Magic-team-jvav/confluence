@@ -116,7 +116,7 @@ public class DungeonCompassRenderer {
                     Vector3f position = vertex.position();
                     Vector4f vector4f = poseState.transform(new Vector4f(position.x(), position.y(), position.z(), 1.0f));
 
-                    buffer.addVertex(vector4f.x(), vector4f.y(), vector4f.z(), -1, vertex.texU(),
+                    buffer.vertex(vector4f.x(), vector4f.y(), vector4f.z(), -1, vertex.texU(),
                             vertex.texV(), OverlayTexture.NO_OVERLAY, 0xF000F0, normal.x(), normal.y(), normal.z());
                 }
             }

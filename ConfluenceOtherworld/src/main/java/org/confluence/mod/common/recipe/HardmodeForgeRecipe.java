@@ -2,7 +2,7 @@ package org.confluence.mod.common.recipe;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -44,7 +44,7 @@ public class HardmodeForgeRecipe extends EnhancedForgeRecipe {
         }
 
         @Override
-        protected StreamCodec<RegistryFriendlyByteBuf, HardmodeForgeRecipe> getStreamCodec() {
+        protected StreamCodec<PortRegistryFriendlyByteBuf, HardmodeForgeRecipe> getStreamCodec() {
             return EnhancedForgeRecipe.streamCodec(HardmodeForgeRecipe::new);
         }
     }

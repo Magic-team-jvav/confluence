@@ -1,35 +1,35 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import com.mojang.datafixers.util.Either;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public record BestiarySyncPacketS2C(Either<Map<String, BestiaryEntry>, String> either) implements IPacketS2C {
-    public static final Type<BestiarySyncPacketS2C> TYPE = Confluence.createType("bestiary_sync");
-    public static final StreamCodec<RegistryFriendlyByteBuf, BestiarySyncPacketS2C> STREAM_CODEC = ByteBufCodecs.either(
-            LibStreamCodecUtils.map(HashMap::new, ByteBufCodecs.STRING_UTF8, BestiaryEntry.STREAM_CODEC),
-            ByteBufCodecs.STRING_UTF8
+public record BestiarySyncPacketS2C(
+        Either<Map<String, BestiaryEntry>, String> either) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("bestiary_sync");
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, BestiarySyncPacketS2C> STREAM_CODEC = PortByteBufCodecs.either(
+            LibStreamCodecUtils.map(HashMap::new, PortByteBufCodecs.STRING_UTF8, BestiaryEntry.STREAM_CODEC),
+            PortByteBufCodecs.STRING_UTF8
     ).map(BestiarySyncPacketS2C::new, BestiarySyncPacketS2C::either);
 
     @Override
-    public Type<BestiarySyncPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -38,18 +38,18 @@ public record BestiarySyncPacketS2C(Either<Map<String, BestiaryEntry>, String> e
     }
 
     public static void syncEntries(ServerPlayer player) {
-        PacketDistributor.sendToPlayer(player, new BestiarySyncPacketS2C(Either.left(Bestiary.INSTANCE.getEntries())));
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, new BestiarySyncPacketS2C(Either.left(Bestiary.INSTANCE.getEntries())));
     }
 
     public static void syncEntry(LivingEntity living) {
-        if (ServerLifecycleHooks.getCurrentServer() != null) {
-            PacketDistributor.sendToAllPlayers(new BestiarySyncPacketS2C(Either.right(RegisterBestiaryKeyEvent.getKey(living))));
+        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
+            Confluence.NETWORK_HANDLER.sendToAllPlayers(new BestiarySyncPacketS2C(Either.right(RegisterBestiaryKeyEvent.getKey(living))));
         }
     }
 
     public static void syncEntry(LivingEntity living, BestiaryEntry entry) {
-        if (ServerLifecycleHooks.getCurrentServer() != null) {
-            PacketDistributor.sendToAllPlayers(new BestiarySyncPacketS2C(Either.left(Map.of(RegisterBestiaryKeyEvent.getKey(living), entry))));
+        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
+            Confluence.NETWORK_HANDLER.sendToAllPlayers(new BestiarySyncPacketS2C(Either.left(Map.of(RegisterBestiaryKeyEvent.getKey(living), entry))));
         }
     }
 }

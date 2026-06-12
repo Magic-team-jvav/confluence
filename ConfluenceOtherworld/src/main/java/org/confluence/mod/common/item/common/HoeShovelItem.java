@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.common;
+﻿package org.confluence.mod.common.item.common;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -19,8 +19,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.component.ToolMode;
@@ -78,9 +76,9 @@ public class HoeShovelItem extends DiggerItem {
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
         ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE.get());
         if (toolMode == null || toolMode.mode() == 0) {
-            return ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(itemAbility);
+            return net.minecraftforge.common.ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(itemAbility);
         } else {
-            return ItemAbilities.DEFAULT_HOE_ACTIONS.contains(itemAbility);
+            return net.minecraftforge.common.ItemAbilities.DEFAULT_HOE_ACTIONS.contains(itemAbility);
         }
     }
 

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+﻿package org.confluence.mod.common.data.saved;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
@@ -8,9 +8,9 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.fml.ModLoader;
+import net.minecraftforge.fml.ModLoader;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibStreamCodecUtils;
@@ -46,12 +46,12 @@ public enum GlobalCloakData implements IGlobalData {
         );
     });
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, Map<BlockState, BooleanObjectPair<BlockState>>> BLOCK_MAP_STREAM_CODEC = ByteBufCodecs.map(
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Map<BlockState, BooleanObjectPair<BlockState>>> BLOCK_MAP_STREAM_CODEC = PortByteBufCodecs.map(
             HashMap::new, LibStreamCodecUtils.BLOCK_STATE, LibStreamCodecUtils.booleanObjectPair(LibStreamCodecUtils.BLOCK_STATE)
     );
-    public static final StreamCodec<RegistryFriendlyByteBuf, Map<Item, BooleanObjectPair<Item>>> ITEM_MAP_STREAM_CODEC = LibStreamCodecUtils.lazyInitialized(() -> {
-        StreamCodec<RegistryFriendlyByteBuf, Item> streamCodec = ByteBufCodecs.registry(Registries.ITEM);
-        return ByteBufCodecs.map(HashMap::new, streamCodec, LibStreamCodecUtils.booleanObjectPair(streamCodec));
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Map<Item, BooleanObjectPair<Item>>> ITEM_MAP_STREAM_CODEC = LibStreamCodecUtils.lazyInitialized(() -> {
+        PortStreamCodec<PortRegistryFriendlyByteBuf, Item> streamCodec = PortByteBufCodecs.registry(Registries.ITEM);
+        return PortByteBufCodecs.map(HashMap::new, streamCodec, LibStreamCodecUtils.booleanObjectPair(streamCodec));
     });
     public static final int VERSION = 1;
 
@@ -180,12 +180,12 @@ public enum GlobalCloakData implements IGlobalData {
         return "confluence:global_cloak_data";
     }
 
-    public void networkEncode(RegistryFriendlyByteBuf buffer) {
+    public void networkEncode(PortRegistryFriendlyByteBuf buffer) {
         BLOCK_MAP_STREAM_CODEC.encode(buffer, blockMap);
         ITEM_MAP_STREAM_CODEC.encode(buffer, itemMap);
     }
 
-    public void networkDecode(RegistryFriendlyByteBuf buffer) {
+    public void networkDecode(PortRegistryFriendlyByteBuf buffer) {
         this.blockMap = BLOCK_MAP_STREAM_CODEC.decode(buffer);
         this.itemMap = ITEM_MAP_STREAM_CODEC.decode(buffer);
     }

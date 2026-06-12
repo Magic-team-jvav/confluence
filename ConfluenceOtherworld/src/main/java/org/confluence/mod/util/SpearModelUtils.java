@@ -2,9 +2,9 @@ package org.confluence.mod.util;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import software.bernie.geckolib.cache.GeckoLibCache;
@@ -18,11 +18,14 @@ import software.bernie.geckolib.cache.object.GeoBone;
 public final class SpearModelUtils {
     private SpearModelUtils() {}
 
-    /** 骨骼树中代表持矛根骨的名称 */
+    /**
+     * 骨骼树中代表持矛根骨的名称
+     */
     public static final String ROOT_BONE_NAME = "root_item";
 
     /**
      * 从烘焙模型计算矛尖在模型空间中的 3D 偏移（方块）。
+     *
      * @param item 持矛物品
      * @return 模型空间偏移 [X, Y, Z]（方块），失败时返回 zero
      */
@@ -43,17 +46,19 @@ public final class SpearModelUtils {
         }
     }
 
-    /** 缓存的模型偏移，以物品引用为 key */
+    /**
+     * 缓存的模型偏移，以物品引用为 key
+     */
     private static final java.util.Map<Item, Vec3> offsetCache = new java.util.HashMap<>();
 
     /**
      * 一站式获取矛尖世界坐标。
      * 自动处理 GeckoLib 模型读取、缓存、回退、Player 检查。
      *
-     * @param item          持矛物品
-     * @param owner         持矛者
-     * @param fallback      服务端回退偏移
-     * @param keyframeExt   关键帧延伸距离
+     * @param item        持矛物品
+     * @param owner       持矛者
+     * @param fallback    服务端回退偏移
+     * @param keyframeExt 关键帧延伸距离
      */
     public static Vec3 getWorldTipPos(Item item, LivingEntity owner, Vec3 fallback, double keyframeExt) {
         Vec3 offset = offsetCache.computeIfAbsent(item, k -> {
@@ -70,6 +75,7 @@ public final class SpearModelUtils {
 
     /**
      * 将模型空间偏移变换到世界空间（基于玩家朝向）。
+     *
      * @param owner       持矛玩家
      * @param modelOffset 模型空间偏移 [X,Y,Z]
      * @param keyframeExt 关键帧延伸距离

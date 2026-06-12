@@ -101,9 +101,9 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 float f = (clickTime / 60.0f);
                 f = f * (1 - f) * 4f;
                 f = Math.min(1, f);
-                pGuiGraphics.setColor(1, 1, 1, f);
+                pGuiGraphics.color(1, 1, 1, f);
                 pGuiGraphics.drawString(font, component, leftPos + 12, topPos + 40, -1);
-                pGuiGraphics.setColor(1, 1, 1, 1);
+                pGuiGraphics.color(1, 1, 1, 1);
                 pGuiGraphics.pose().popPose();
             }
         }

@@ -16,6 +16,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -143,7 +145,7 @@ public final class ModItems {
 
     public static final RegistryObject<AbstractEnemyBannerBlock.BItem> ENEMY_BANNER = ITEMS.register("enemy_banner", AbstractEnemyBannerBlock.BItem::new);
 
-    public static final RegistryObject<DeferredSpawnEggItem> RAINBOW_SHEEP_SPAWN_EGG = ITEMS.register("rainbow_sheep_spawn_egg", () -> new DeferredSpawnEggItem(ModEntities.RAINBOW_SHEEP, 0xFFFFFF, 0xFFFFFF, new Item.Properties()));
+    public static final RegistryObject<ForgeSpawnEggItem> RAINBOW_SHEEP_SPAWN_EGG = ITEMS.register("rainbow_sheep_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.RAINBOW_SHEEP, 0xFFFFFF, 0xFFFFFF, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

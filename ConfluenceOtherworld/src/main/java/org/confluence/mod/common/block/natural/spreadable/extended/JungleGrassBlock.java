@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable.extended;
+﻿package org.confluence.mod.common.block.natural.spreadable.extended;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -15,8 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.block.natural.LifeFruitBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.block.natural.spreadable.SpreadingGrassBlock;
@@ -110,7 +108,7 @@ public class JungleGrassBlock extends SpreadingGrassBlock implements Bonemealabl
 
     @Override
     public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
-        if (itemAbility == ItemAbilities.SHOVEL_FLATTEN) {
+        if (itemAbility == net.minecraftforge.common.ItemAbilities.SHOVEL_FLATTEN) {
             return NatureBlocks.JUNGLE_PATH.get().defaultBlockState();
         }
         return null;

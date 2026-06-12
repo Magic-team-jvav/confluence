@@ -1,4 +1,4 @@
-package org.confluence.mod.util;
+﻿package org.confluence.mod.util;
 
 import com.google.common.collect.Streams;
 import com.google.gson.Gson;
@@ -13,7 +13,7 @@ import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.advancements.CriterionProgress;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerLevel;
@@ -26,7 +26,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
@@ -42,6 +42,7 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.task.ReplyAchievementsPacketC2S;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -57,7 +58,7 @@ import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_AR
 public final class AchievementUtils {
     public static final String PREFIX = "achievements/";
     public static final Path CONFLUENCE_ACHIEVEMENTS_DIR = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("achievements");
-    public static final StreamCodec<FriendlyByteBuf, PlayerAdvancements.Data> DATA_STREAM_CODEC = new StreamCodec<>() {
+    public static final PortStreamCodec<FriendlyByteBuf, PlayerAdvancements.Data> DATA_STREAM_CODEC = new PortStreamCodec<>() {
         @Override
         public PlayerAdvancements.Data decode(FriendlyByteBuf buffer) {
             int size = buffer.readVarInt();

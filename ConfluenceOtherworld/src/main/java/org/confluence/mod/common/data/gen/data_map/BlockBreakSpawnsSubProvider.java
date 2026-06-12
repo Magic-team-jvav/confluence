@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.data_map;
+﻿package org.confluence.mod.common.data.gen.data_map;
 
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.HolderLookup;
@@ -11,9 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
+import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.init.ModDataMaps;

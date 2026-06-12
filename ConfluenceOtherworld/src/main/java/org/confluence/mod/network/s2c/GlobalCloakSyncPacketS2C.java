@@ -1,35 +1,35 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public enum GlobalCloakSyncPacketS2C implements IPacketS2C {
+public enum GlobalCloakSyncPacketS2C implements IPortPacket.S2C {
     INSTANCE;
-    public static final Type<GlobalCloakSyncPacketS2C> TYPE = Confluence.createType("global_cloak_sync");
-    public static final StreamCodec<RegistryFriendlyByteBuf, GlobalCloakSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
+
+    public static final ResourceLocation ID = Confluence.asResource("global_cloak_sync");
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, GlobalCloakSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
-        public GlobalCloakSyncPacketS2C decode(RegistryFriendlyByteBuf buffer) {
+        public GlobalCloakSyncPacketS2C decode(PortRegistryFriendlyByteBuf buffer) {
             GlobalCloakData.INSTANCE.networkDecode(buffer);
             return INSTANCE;
         }
 
         @Override
-        public void encode(RegistryFriendlyByteBuf buffer, GlobalCloakSyncPacketS2C value) {
+        public void encode(PortRegistryFriendlyByteBuf buffer, GlobalCloakSyncPacketS2C value) {
             GlobalCloakData.INSTANCE.networkEncode(buffer);
         }
     };
 
     @Override
-    public Type<GlobalCloakSyncPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -38,12 +38,12 @@ public enum GlobalCloakSyncPacketS2C implements IPacketS2C {
     }
 
     public static void sendToAll() {
-        if (ServerLifecycleHooks.getCurrentServer() != null) {
-            PacketDistributor.sendToAllPlayers(INSTANCE);
+        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
+            Confluence.NETWORK_HANDLER.sendToAllPlayers(INSTANCE);
         }
     }
 
     public static void sendToClient(ServerPlayer serverPlayer) {
-        PacketDistributor.sendToPlayer(serverPlayer, INSTANCE);
+        Confluence.NETWORK_HANDLER.sendToPlayer(INSTANCE);
     }
 }

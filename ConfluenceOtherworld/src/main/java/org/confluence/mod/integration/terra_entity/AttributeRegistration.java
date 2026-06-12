@@ -1,10 +1,10 @@
-package org.confluence.mod.integration.terra_entity;
+﻿package org.confluence.mod.integration.terra_entity;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 
 class AttributeRegistration {
     private final EntityAttributeModificationEvent event;

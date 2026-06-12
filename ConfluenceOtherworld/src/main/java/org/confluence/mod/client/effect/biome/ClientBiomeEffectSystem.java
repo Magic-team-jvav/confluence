@@ -13,8 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.neoforged.fml.ModLoader;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.fml.ModLoader;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.BiomeSkyEffectRegisterEvent;
@@ -22,8 +21,8 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
-import java.awt.*;
 import java.util.Map;
 
 public final class ClientBiomeEffectSystem {
@@ -61,7 +60,7 @@ public final class ClientBiomeEffectSystem {
     public static void tick(LocalPlayer player) {
         ResourceKey<Level> dimension = player.level().dimension();
         if (dimension != OverworldUtils.dimension()
-        && dimension != Level.END) {
+                && dimension != Level.END) {
             current = null;
             target = null;
             blend = 0;
@@ -135,7 +134,7 @@ public final class ClientBiomeEffectSystem {
 
     // ---- rendering ----
 
-    public static void renderSky(LocalPlayer player, RenderLevelStageEvent event) {
+    public static void renderSky(LocalPlayer player, PortRenderLevelStageEvent event) {
         if (current == null && target == null) return;
 
         boolean blendEnabled = LibRenderUtils.isBlendEnabled();
@@ -184,13 +183,13 @@ public final class ClientBiomeEffectSystem {
         }
     }
 
-    private static void renderEffects(LocalPlayer player, RenderLevelStageEvent event, BiomeSkyEffect type, float alphaMul) {
+    private static void renderEffects(LocalPlayer player, PortRenderLevelStageEvent event, BiomeSkyEffect type, float alphaMul) {
         if (type.renderer() == null) return;
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         type.renderer().render(player, event, alphaMul);
     }
 
-    private static void renderEffectsCrossFade(LocalPlayer player, RenderLevelStageEvent event, float fromAlpha, float toAlpha) {
+    private static void renderEffectsCrossFade(LocalPlayer player, PortRenderLevelStageEvent event, float fromAlpha, float toAlpha) {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         assert current != null && target != null;
         if (current.renderer() != null) current.renderer().render(player, event, fromAlpha);
@@ -204,7 +203,7 @@ public final class ClientBiomeEffectSystem {
     /// \[0,0]=TOP \[1,0]=BOTTOM \[2,0]=BACK
     ///
     /// \[0,1]=LEFT \[1,1]=FRONT \[2,1]=RIGHT
-    static void renderCubemap(RenderLevelStageEvent event, ResourceLocation texture, float alphaMul) {
+    static void renderCubemap(PortRenderLevelStageEvent event, ResourceLocation texture, float alphaMul) {
         if (alphaMul < 0.01F) return;
 
         Minecraft minecraft = Minecraft.getInstance();
@@ -248,7 +247,7 @@ public final class ClientBiomeEffectSystem {
         }
     }
 
-    private static void renderCubemapFade(RenderLevelStageEvent event, BiomeSkyEffect cur, BiomeSkyEffect tgt, float blend) {
+    private static void renderCubemapFade(PortRenderLevelStageEvent event, BiomeSkyEffect cur, BiomeSkyEffect tgt, float blend) {
         renderCubemap(event, cur.skyTexture(), 1 - blend);
         renderCubemap(event, tgt.skyTexture(), blend);
     }
@@ -260,9 +259,9 @@ public final class ClientBiomeEffectSystem {
                                 float x2, float y2, float z2, float x3, float y3, float z3,
                                 int u0c, int v0c, int u1c, int v1c,
                                 int u2c, int v2c, int u3c, int v3c, int alpha) {
-        builder.addVertex(matrix4f, x0, y0, z0).setUv(u0c / 3.0F, v0c / 2.0F).setColor(255, 255, 255, alpha);
-        builder.addVertex(matrix4f, x1, y1, z1).setUv(u1c / 3.0F, v1c / 2.0F).setColor(255, 255, 255, alpha);
-        builder.addVertex(matrix4f, x2, y2, z2).setUv(u2c / 3.0F, v2c / 2.0F).setColor(255, 255, 255, alpha);
-        builder.addVertex(matrix4f, x3, y3, z3).setUv(u3c / 3.0F, v3c / 2.0F).setColor(255, 255, 255, alpha);
+        builder.vertex(matrix4f, x0, y0, z0).uv(u0c / 3.0F, v0c / 2.0F).color(255, 255, 255, alpha);
+        builder.vertex(matrix4f, x1, y1, z1).uv(u1c / 3.0F, v1c / 2.0F).color(255, 255, 255, alpha);
+        builder.vertex(matrix4f, x2, y2, z2).uv(u2c / 3.0F, v2c / 2.0F).color(255, 255, 255, alpha);
+        builder.vertex(matrix4f, x3, y3, z3).uv(u3c / 3.0F, v3c / 2.0F).color(255, 255, 255, alpha);
     }
 }

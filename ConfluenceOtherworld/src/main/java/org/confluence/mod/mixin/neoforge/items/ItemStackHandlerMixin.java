@@ -1,6 +1,6 @@
-package org.confluence.mod.mixin.neoforge.items;
+﻿package org.confluence.mod.mixin.neoforge.items;
 
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.confluence.lib.util.LibUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

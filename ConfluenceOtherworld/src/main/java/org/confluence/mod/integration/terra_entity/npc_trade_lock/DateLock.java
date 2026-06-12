@@ -15,7 +15,8 @@ import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
 import java.util.Calendar;
 
-public record DateLock(boolean isLunar, DateStamp fromInclusive, DateStamp toInclusive) implements ITradeLock {
+public record DateLock(boolean isLunar, DateStamp fromInclusive,
+                       DateStamp toInclusive) implements ITradeLock {
     public static final DateLock HALLOWEENS = new DateLock(false, new DateStamp(Calendar.OCTOBER, 10), new DateStamp(Calendar.NOVEMBER, 1));
     public static final DateLock CHRISTMAS = new DateLock(false, new DateStamp(Calendar.DECEMBER, 15), new DateStamp(Calendar.DECEMBER, 31));
     public static final MapCodec<DateLock> CODEC = Codec.mapEither(Codec.STRING.xmap(string -> {
@@ -65,7 +66,9 @@ public record DateLock(boolean isLunar, DateStamp fromInclusive, DateStamp toInc
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        return o instanceof DateLock(boolean isLunar1, DateStamp fromInclusive1, DateStamp toInclusive1) &&
+        return o instanceof DateLock(
+                boolean isLunar1, DateStamp fromInclusive1, DateStamp toInclusive1
+        ) &&
                 isLunar1 == isLunar && fromInclusive1.equals(fromInclusive) && toInclusive1.equals(toInclusive);
     }
 

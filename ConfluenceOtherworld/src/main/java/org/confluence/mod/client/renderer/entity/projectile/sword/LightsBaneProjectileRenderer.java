@@ -11,7 +11,7 @@ import org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.joml.Vector3f;
 
-public class LightsBaneProjectileRenderer extends ForwardProjRenderer<LightBaneProjectile, SwordProjectile,  EnchantedSwordProjectileModel> {
+public class LightsBaneProjectileRenderer extends ForwardProjRenderer<LightBaneProjectile, SwordProjectile, EnchantedSwordProjectileModel> {
 
     public LightsBaneProjectileRenderer(EntityRendererProvider.Context context) {
         super(context, new EnchantedSwordProjectileModel(context.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)),

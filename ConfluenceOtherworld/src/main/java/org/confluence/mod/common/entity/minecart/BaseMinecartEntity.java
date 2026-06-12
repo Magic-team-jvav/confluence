@@ -66,7 +66,7 @@ public class BaseMinecartEntity extends Minecart {
                     for (Entity entity : list) {
                         double distance = movement.horizontalDistance();
                         entity.hurt(damageSources().flyIntoWall(), (float) distance * 5.0F);
-                        LibMathUtils.knockBackA2B(this, entity, distance * 0.5, 0.2);
+                        LibEntityUtils.knockBackA2B(this, entity, distance * 0.5, 0.2);
                         if (!entity.isAlive()) killed = true;
                     }
                     if (killed && driver instanceof ServerPlayer serverPlayer) {

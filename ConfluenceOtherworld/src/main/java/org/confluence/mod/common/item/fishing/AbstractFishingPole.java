@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.fishing;
+﻿package org.confluence.mod.common.item.fishing;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -21,12 +21,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.neoforge.event.EventHooks;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
@@ -42,13 +40,14 @@ import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.function.Consumer;
 
 public abstract class AbstractFishingPole extends FishingRodItem {
     public static final String BAIT_KEY = "Bait";
     public static final String HAS_BAIT_KEY = "HasBait";
-    protected ItemAttributeModifiers modifiers;
+    protected PortItemAttributeModifiers modifiers;
 
     public AbstractFishingPole(Properties properties) {
         super(properties.stacksTo(1));
@@ -72,7 +71,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
                 ItemStack original = stack.copy();
                 stack.hurtAndBreak(i, player, LivingEntity.getSlotForHand(hand));
                 if (stack.isEmpty()) {
-                    EventHooks.onPlayerDestroyItem(player, original, hand);
+                    net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(player, original, hand);
                 }
             }
             level.playSound(null, player.getX(), player.getY(), player.getZ(), getRetrieveSound(), SoundSource.NEUTRAL, 1.0F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -80,8 +79,8 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         } else {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), getThrowSound(), SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             if (level instanceof ServerLevel serverLevel) {
-                int luckBonus = EnchantmentHelper.getFishingLuckBonus(serverLevel, stack, player);
-                int speedBonus = (int) (EnchantmentHelper.getFishingTimeReduction(serverLevel, stack, player) * 20.0F);
+                int luckBonus = EnchantmentHelper.getFishingLuckBonus(stack);
+                int speedBonus = (int) (EnchantmentHelper.getFishingSpeedBonus(stack) * 20.0F);
                 FishingHook hook;
                 FishingBobber curio = CuriosUtils.findCurio(player, FishingBobber.class);
                 if (curio == null) {
@@ -137,8 +136,8 @@ public abstract class AbstractFishingPole extends FishingRodItem {
 
     public abstract FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus);
 
-    protected void addAttributeModifiers(Consumer<ItemAttributeModifiers.Builder> consumer) {
-        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+    protected void addAttributeModifiers(Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
+        PortItemAttributeModifiers.PortBuilder builder = PortItemAttributeModifiers.builder();
         consumer.accept(builder);
         this.modifiers = builder.build();
     }
@@ -149,7 +148,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
     }
 
     @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+    public PortItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
         return modifiers == null ? super.getDefaultAttributeModifiers(stack) : modifiers;
     }
 

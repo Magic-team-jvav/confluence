@@ -1,5 +1,6 @@
-package org.confluence.mod.common.entity.projectile.range.arrow;
+﻿package org.confluence.mod.common.entity.projectile.range.arrow;
 
+import PortLib.extensions.net.minecraft.world.item.enchantment.PortEnchantmentHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,13 +21,11 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.EnchantmentUtils;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
@@ -192,7 +191,7 @@ public class BaseArrowEntity extends AbstractArrow {
         if (this.getWeaponItem() != null) {
             Level var9 = this.level();
             if (var9 instanceof ServerLevel) {
-                int value = EnchantmentUtils.getEnchantmentLevel(Enchantments.POWER, this.getWeaponItem());
+                int value = PortEnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, this.getWeaponItem());
                 d0 *= (value * 0.1f + 1.0f);
             }
         }
@@ -233,7 +232,7 @@ public class BaseArrowEntity extends AbstractArrow {
 
             //箭药水效果
             if (!this.level().isClientSide && entity1 instanceof LivingEntity) {
-                EnchantmentHelper.doPostAttackEffects((ServerLevel) level(), entity, damagesource);
+                PortEnchantmentHelper.doPostAttackEffects((ServerLevel) level(), entity, damagesource);
             }
 
             //命中自己

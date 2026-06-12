@@ -29,7 +29,7 @@ public class StormSpearItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        LibMathUtils.knockBackA2B(owner, victim, knockBackScale, knockBackMotionY);
+        LibEntityUtils.knockBackA2B(owner, victim, knockBackScale, knockBackMotionY);
     }
 
     @Override

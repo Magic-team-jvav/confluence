@@ -35,10 +35,10 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
     private double ROTATE01 = RANDOM.nextDouble() * Math.TAU;
     private double ROTATE10 = RANDOM.nextDouble() * Math.TAU;
     private double ROTATE11 = RANDOM.nextDouble() * Math.TAU;
-    private double ROTATE1OFFSET = RANDOM.nextDouble() * 0.05 + 0.075;
-    private double[] SIZE = new double[]{RANDOM.nextDouble(), RANDOM.nextDouble()};
-    private double[] SIZE_OFFSET = new double[]{RANDOM.nextDouble() * 0.05 + 0.075, RANDOM.nextDouble() * 0.05 + 0.075};
-    private boolean[] SIZE_UP = new boolean[]{true, true};
+    private final double ROTATE1OFFSET = RANDOM.nextDouble() * 0.05 + 0.075;
+    private final double[] SIZE = new double[]{RANDOM.nextDouble(), RANDOM.nextDouble()};
+    private final double[] SIZE_OFFSET = new double[]{RANDOM.nextDouble() * 0.05 + 0.075, RANDOM.nextDouble() * 0.05 + 0.075};
+    private final boolean[] SIZE_UP = new boolean[]{true, true};
     private long TIME_BEFORE = 0;
 
     @Override

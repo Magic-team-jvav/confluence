@@ -1,4 +1,4 @@
-package org.confluence.mod.common.menu;
+﻿package org.confluence.mod.common.menu;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;

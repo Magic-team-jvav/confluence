@@ -31,6 +31,7 @@ public class WetBombEntityModel extends EntityModel<LiquidBombEntity> {
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     @Override
     public void setupAnim(@NotNull LiquidBombEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 

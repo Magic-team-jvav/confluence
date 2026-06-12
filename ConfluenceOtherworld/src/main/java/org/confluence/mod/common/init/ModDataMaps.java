@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init;
+﻿package org.confluence.mod.common.init;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
@@ -10,10 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.loading.LoadingModList;
-import net.neoforged.neoforge.registries.datamaps.*;
+import net.minecraftforge.fml.loading.LoadingModList;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.map.*;
@@ -22,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-@EventBusSubscriber(modid = Confluence.MODID)
 public final class ModDataMaps {
     private static List<DataMapType<?, ?>> types = new LinkedList<>();
     private static final boolean jei = LoadingModList.get().getModFileById("jei") != null;
@@ -68,7 +64,6 @@ public final class ModDataMaps {
         return register(path, resourceKey, codec, removerCodec, null, synced);
     }
 
-    @SubscribeEvent
     public static void registerDataMapTypes(RegisterDataMapTypesEvent event) {
         for (DataMapType<?, ?> type : types) {
             event.register(type);

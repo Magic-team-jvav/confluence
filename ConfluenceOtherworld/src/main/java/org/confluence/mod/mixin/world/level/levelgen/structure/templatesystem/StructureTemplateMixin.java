@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.world.level.levelgen.structure.templatesystem;
+﻿package org.confluence.mod.mixin.world.level.levelgen.structure.templatesystem;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
@@ -19,7 +19,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.data.saved.BrushData;
@@ -50,7 +49,7 @@ public abstract class StructureTemplateMixin {
             if (brushData != null) {
                 int[] colors = brushData.get(blockpos3);
                 if (colors != null) {
-                    IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo).confluence$setColors(colors);
+                    IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo).confluence$colors(colors);
                 }
             }
 
@@ -76,7 +75,7 @@ public abstract class StructureTemplateMixin {
 
         ParticleOptions particle = info.confluence$getDroplets();
         if (particle != null) {
-            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+            MinecraftServer server = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
                 ParticleTypes.CODEC.encodeStart(server.registryAccess().createSerializationContext(NbtOps.INSTANCE), particle).ifSuccess(result -> compoundtag.put("confluence:droplets", result));
             }
@@ -89,11 +88,11 @@ public abstract class StructureTemplateMixin {
             IStructureTemplate$StructureBlockInfo info = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo);
 
             int[] colors = compoundtag.getIntArray("confluence:colors");
-            info.confluence$setColors(colors);
+            info.confluence$colors(colors);
 
             Tag tag = compoundtag.get("confluence:droplets");
             if (tag != null) {
-                MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+                MinecraftServer server = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
                 if (server != null) {
                     ParticleTypes.CODEC.parse(server.registryAccess().createSerializationContext(NbtOps.INSTANCE), tag).ifSuccess(info::confluence$setDroplets);
                 }
@@ -106,7 +105,7 @@ public abstract class StructureTemplateMixin {
         IStructureTemplate$StructureBlockInfo from = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo);
         IStructureTemplate$StructureBlockInfo to = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo1);
 
-        to.confluence$setColors(from.confluence$getColors());
+        to.confluence$colors(from.confluence$getColors());
         to.confluence$setDroplets(from.confluence$getDroplets());
     }
 
@@ -115,7 +114,7 @@ public abstract class StructureTemplateMixin {
         IStructureTemplate$StructureBlockInfo from = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo);
         IStructureTemplate$StructureBlockInfo to = IStructureTemplate$StructureBlockInfo.of(objectarraylist.getLast());
 
-        to.confluence$setColors(from.confluence$getColors());
+        to.confluence$colors(from.confluence$getColors());
         to.confluence$setDroplets(from.confluence$getDroplets());
     }
 
@@ -183,7 +182,7 @@ public abstract class StructureTemplateMixin {
         private @Nullable ParticleOptions confluence$droplets;
 
         @Override
-        public void confluence$setColors(int[] colors) {
+        public void confluence$colors(int[] colors) {
             this.confluence$colors = colors;
         }
 

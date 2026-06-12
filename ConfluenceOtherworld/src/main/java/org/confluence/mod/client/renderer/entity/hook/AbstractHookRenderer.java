@@ -71,7 +71,8 @@ public abstract class AbstractHookRenderer<T extends AbstractHookEntity> extends
                 poseStack.translate(0.0, 1.0, 0.0);
             }
             float delta = distance - floor;
-            if (entity.lastDelta - delta > 0.5F || entity.lastDelta == 0.0) entity.lastDelta = delta;
+            if (entity.lastDelta - delta > 0.5F || entity.lastDelta == 0.0)
+                entity.lastDelta = delta;
             delta = Mth.lerp(partialTick, entity.lastDelta, delta);
             poseStack.scale(1.0F, delta, 1.0F);
             entity.lastDelta = delta;

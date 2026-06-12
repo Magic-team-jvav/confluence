@@ -4,11 +4,11 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.client.effect.connected.behaviour.ConnectedTextureBehaviour;
 
 public interface CTType {
-	ResourceLocation getId();
+    ResourceLocation getId();
 
-	int getSheetSize();
+    int getSheetSize();
 
-	ConnectedTextureBehaviour.ContextRequirement getContextRequirement();
+    ConnectedTextureBehaviour.ContextRequirement getContextRequirement();
 
-	int getTextureIndex(ConnectedTextureBehaviour.CTContext context);
+    int getTextureIndex(ConnectedTextureBehaviour.CTContext context);
 }

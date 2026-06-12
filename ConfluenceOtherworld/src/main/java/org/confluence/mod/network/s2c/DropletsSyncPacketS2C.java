@@ -1,28 +1,29 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.DropletsHandler;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public record DropletsSyncPacketS2C(Map<ChunkPos, Map<BlockPos, ParticleOptions>> data) implements IPacketS2C {
-    public static final Type<DropletsSyncPacketS2C> TYPE = Confluence.createType("droplets_sync");
-    public static final StreamCodec<RegistryFriendlyByteBuf, DropletsSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
+public record DropletsSyncPacketS2C(
+        Map<ChunkPos, Map<BlockPos, ParticleOptions>> data) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("droplets_sync");
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, DropletsSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
-        public DropletsSyncPacketS2C decode(RegistryFriendlyByteBuf buffer) {
+        public DropletsSyncPacketS2C decode(PortRegistryFriendlyByteBuf buffer) {
             int amount = buffer.readVarInt();
             Map<ChunkPos, Map<BlockPos, ParticleOptions>> mapMap = new HashMap<>();
             for (int i = 0; i < amount; i++) {
@@ -40,7 +41,7 @@ public record DropletsSyncPacketS2C(Map<ChunkPos, Map<BlockPos, ParticleOptions>
         }
 
         @Override
-        public void encode(RegistryFriendlyByteBuf buffer, DropletsSyncPacketS2C value) {
+        public void encode(PortRegistryFriendlyByteBuf buffer, DropletsSyncPacketS2C value) {
             buffer.writeVarInt(value.data.size());
             for (Map.Entry<ChunkPos, Map<BlockPos, ParticleOptions>> entry : value.data.entrySet()) {
                 buffer.writeChunkPos(entry.getKey());
@@ -54,8 +55,8 @@ public record DropletsSyncPacketS2C(Map<ChunkPos, Map<BlockPos, ParticleOptions>
     };
 
     @Override
-    public Type<DropletsSyncPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -64,10 +65,10 @@ public record DropletsSyncPacketS2C(Map<ChunkPos, Map<BlockPos, ParticleOptions>
     }
 
     public static void sendToClient(ServerPlayer player, Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap) {
-        PacketDistributor.sendToPlayer(player, new DropletsSyncPacketS2C(dataMap));
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, new DropletsSyncPacketS2C(dataMap));
     }
 
     public static void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap) {
-        PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new DropletsSyncPacketS2C(dataMap));
+        Confluence.NETWORK_HANDLER.sendToPlayersTrackingChunk(level, chunkPos, new DropletsSyncPacketS2C(dataMap));
     }
 }

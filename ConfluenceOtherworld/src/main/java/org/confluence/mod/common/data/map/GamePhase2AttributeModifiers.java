@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.map;
+﻿package org.confluence.mod.common.data.map;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
@@ -18,8 +18,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.registries.datamaps.DataMapValueMerger;
-import net.neoforged.neoforge.registries.datamaps.DataMapValueRemover;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.GamePhase;

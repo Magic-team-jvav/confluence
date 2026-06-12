@@ -1,7 +1,7 @@
-package org.confluence.mod.api.event;
+﻿package org.confluence.mod.api.event;
 
 import net.minecraft.world.effect.MobEffectInstance;
-import net.neoforged.bus.api.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 public class EffectSwitchableCheckEvent extends Event {
     protected final MobEffectInstance effectInstance;

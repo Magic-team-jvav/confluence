@@ -1,4 +1,4 @@
-package org.confluence.mod.common.worldgen.feature;
+﻿package org.confluence.mod.common.worldgen.feature;
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.lib.util.LibFeatureUtils;
 import org.confluence.mod.common.init.block.OreBlocks;
 

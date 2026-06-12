@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init;
+﻿package org.confluence.mod.common.init;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
@@ -33,9 +33,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.server.command.EnumArgument;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.server.command.EnumArgument;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
@@ -346,7 +345,7 @@ public final class ModCommands {
             BrushData brushData = new BrushData(entry.getValue());
             ChunkPos chunkPos = entry.getKey();
             dataMap.computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>())).merge(brushData);
-            PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, brushData));
+            Confluence.NETWORK_HANDLER.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, brushData));
         }
         return 1;
     }

@@ -1,69 +1,80 @@
-package org.confluence.mod.network;
+﻿package org.confluence.mod.network;
 
-import net.minecraft.network.FriendlyByteBuf;
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacket;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.Team;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record TeamPacket(int playerId, Team team, boolean pvp) implements IPacket {
+public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortPacket {
     public static final byte TEAM_MASK = 0b0001_1111;
     public static final byte PVP_MASK = 0b0100_0000;
-    public static final Type<TeamPacket> TYPE = Confluence.createType("team");
-    public static final StreamCodec<FriendlyByteBuf, TeamPacket> STREAM_CODEC = new StreamCodec<>() {
+    public static final ResourceLocation ID = Confluence.asResource("team");
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, TeamPacket> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
-        public TeamPacket decode(FriendlyByteBuf buffer) {
+        public TeamPacket decode(PortRegistryFriendlyByteBuf buffer) {
             byte b = buffer.readByte();
             return new TeamPacket(buffer.readVarInt(), Team.TEAMS[b & TEAM_MASK], (b & PVP_MASK) != 0);
         }
 
         @Override
-        public void encode(FriendlyByteBuf buffer, TeamPacket value) {
+        public void encode(PortRegistryFriendlyByteBuf buffer, TeamPacket value) {
             buffer.writeByte((byte) (value.team.ordinal() | (value.pvp ? PVP_MASK : 0)));
             buffer.writeVarInt(value.playerId);
         }
     };
 
     @Override
-    public Type<TeamPacket> type() {
-        return TYPE;
+    public void handle(Context context) {
+        if (context.player() instanceof ServerPlayer serverPlayer) {
+            c2s(serverPlayer);
+        } else if (context.player() != null) {
+            s2c(context.player());
+        }
     }
 
     @Override
+    public ResourceLocation identifier() {
+        return ID;
+    }
+
     public void c2s(ServerPlayer player) {
         if (player.level().getEntity(playerId) instanceof Player target) {
             PlayerSpecialData data = PlayerSpecialData.of(target);
             PlayerList playerList = player.server.getPlayerList();
             int textColor = team.getColor().getTextColor();
             if (data.getTeam() != team) {
+                Component msg;
                 if (team == Team.WHITE) {
-                    playerList.broadcastSystemMessage(Component.translatable(
+                    msg = PortMutableComponentExtension.withColor(Component.translatable(
                             "message.confluence.leave_team", target.getName()
-                    ).withColor(textColor), false);
+                    ), textColor);
                 } else {
-                    playerList.broadcastSystemMessage(Component.translatable(
+                    msg = PortMutableComponentExtension.withColor(Component.translatable(
                             "message.confluence.join_team", target.getName(), team.getLowerCaseName()
-                    ).withColor(textColor), false);
+                    ), textColor);
                 }
+                playerList.broadcastSystemMessage(msg, false);
                 data.setTeam(team);
             }
             if (data.isPvP() != pvp) {
-                playerList.broadcastSystemMessage(Component.translatable(
+                Component msg = PortMutableComponentExtension.withColor(Component.translatable(
                         pvp ? "message.confluence.enable_pvp" : "message.confluence.disable_pvp", target.getName()
-                ).withColor(textColor), false);
+                ), textColor);
+                playerList.broadcastSystemMessage(msg, false);
                 data.setPvP(pvp);
             }
         }
-        PacketDistributor.sendToPlayersTrackingEntity(player, this);
+        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntity(player, this);
     }
 
-    @Override
     public void s2c(Player player) {
         if (player.level().getEntity(playerId) instanceof Player target) {
             PlayerSpecialData data = PlayerSpecialData.of(target);
@@ -74,17 +85,17 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPacke
 
     /// local设置时调用，然后由server广播到remote
     public static void sendToServer(Player player) {
-        PacketDistributor.sendToServer(makePacket(player));
+        Confluence.NETWORK_HANDLER.sendToServer(makePacket(player));
     }
 
     /// 自动同步
     public static void sendToClient(ServerPlayer sendTo, ServerPlayer target) {
-        PacketDistributor.sendToPlayer(sendTo, makePacket(target));
+        Confluence.NETWORK_HANDLER.sendToPlayer(sendTo, makePacket(target));
     }
 
     /// server设置时调用
     public static void broadcast(ServerPlayer player) {
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(player, makePacket(player));
+        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntityAndSelf(player, makePacket(player));
     }
 
     private static TeamPacket makePacket(Player player) {

@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui;
+﻿package org.confluence.mod.client.gui;
 
 import com.google.common.collect.Iterables;
 import com.google.gson.JsonIOException;
@@ -30,7 +30,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.WorldOptions;
-import net.neoforged.fml.loading.FMLPaths;
+import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.confluence.lib.util.LibUtils;

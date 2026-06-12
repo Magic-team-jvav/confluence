@@ -1,9 +1,8 @@
-package org.confluence.mod.common.data.gen.data_map;
+﻿package org.confluence.mod.common.data.gen.data_map;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.DataMapProvider;
+import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModTags;

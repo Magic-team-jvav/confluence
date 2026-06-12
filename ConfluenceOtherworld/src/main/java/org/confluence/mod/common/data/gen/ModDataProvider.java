@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen;
+﻿package org.confluence.mod.common.data.gen;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Lifecycle;
@@ -66,13 +66,9 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.world.BiomeModifier;
-import net.neoforged.neoforge.common.world.BiomeModifiers;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import net.neoforged.neoforge.registries.holdersets.AndHolderSet;
-import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
-import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.BiomeModifiers;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;

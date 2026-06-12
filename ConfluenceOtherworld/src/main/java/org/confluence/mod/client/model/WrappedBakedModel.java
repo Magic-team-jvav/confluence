@@ -1,4 +1,4 @@
-package org.confluence.mod.client.model;
+﻿package org.confluence.mod.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
@@ -14,9 +14,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.common.util.TriState;
+import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -66,7 +64,7 @@ public class WrappedBakedModel implements BakedModel {
     }
 
     @Override
-    public TriState useAmbientOcclusion(BlockState state, ModelData data, RenderType renderType) {
+    public PortTriState useAmbientOcclusion(BlockState state, ModelData data, RenderType renderType) {
         return wrapped.useAmbientOcclusion(state, data, renderType);
     }
 

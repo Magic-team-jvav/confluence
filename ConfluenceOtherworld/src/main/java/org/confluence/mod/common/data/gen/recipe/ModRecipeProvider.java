@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.recipe;
+﻿package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
@@ -21,9 +21,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.crafting.ICustomIngredient;
-import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.ICustomIngredient;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;

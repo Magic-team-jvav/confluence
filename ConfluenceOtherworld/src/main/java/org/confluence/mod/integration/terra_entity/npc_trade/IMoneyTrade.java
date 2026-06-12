@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.terra_entity.npc_trade;
+﻿package org.confluence.mod.integration.terra_entity.npc_trade;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.Minecraft;
@@ -9,8 +9,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.util.Coins;

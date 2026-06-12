@@ -1,13 +1,8 @@
-package org.confluence.mod.common.event;
+﻿package org.confluence.mod.common.event;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.lib.api.event.NameFixRegisterEvent;
-import org.confluence.mod.Confluence;
 
-@EventBusSubscriber(modid = Confluence.MODID)
 public final class RenameEvents {
-    @SubscribeEvent
     public static void blockWithItemNameFixRegister(NameFixRegisterEvent.BlockWithItem event) {
         event
                 // 1.1.2 -> 1.1.3
@@ -101,7 +96,6 @@ public final class RenameEvents {
                 .register("confluence:crimson_cattails_body", "confluence:crimson_cattail_block");
     }
 
-    @SubscribeEvent
     public static void blockNameFixRegister(NameFixRegisterEvent.Block event) {
         event
                 // 1.1.2 -> 1.1.3
@@ -112,7 +106,6 @@ public final class RenameEvents {
                 .register("confluence:emerald_coin_pile", "confluence:emerald_coin");
     }
 
-    @SubscribeEvent
     public static void itemNameFixRegister(NameFixRegisterEvent.Item event) {
         event
                 // 1.1.2 -> 1.1.3
@@ -164,7 +157,6 @@ public final class RenameEvents {
         ;
     }
 
-    @SubscribeEvent
     public static void biomeNameFixRegister(NameFixRegisterEvent.Biome event) {
         event
                 // 1.1.2 -> 1.1.3

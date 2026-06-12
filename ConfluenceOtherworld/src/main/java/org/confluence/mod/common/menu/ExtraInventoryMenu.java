@@ -1,5 +1,6 @@
-package org.confluence.mod.common.menu;
+﻿package org.confluence.mod.common.menu;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -9,8 +10,6 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.confluence.lib.common.menu.ToggleSlot;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModMenuTypes;
@@ -55,7 +54,8 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                     @Override
                     public boolean mayPickup(Player player) {
                         ItemStack itemstack = getItem();
-                        return (itemstack.isEmpty() || player.isCreative() || !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(player);
+                        if (!itemstack.isEmpty()) {player.isCreative();}
+                        return super.mayPickup(player);
                     }
                 });
             } else if (i < COINS_START) { // 4, 5, 6 ,7
@@ -189,7 +189,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                     setCarried(itemStack);
                     slot.onTake(player, itemStack);
                 }
-            } else if (ItemStack.isSameItemSameComponents(carried, slotItem)) {
+            } else if (PortItemStackExtension.isSameItemSameComponents(carried, slotItem)) {
                 slotItem.grow(Math.min(slot.getMaxStackSize(slotItem) - slotItem.getCount(), carried.getCount()));
                 setCarried(ItemStack.EMPTY);
             } else {

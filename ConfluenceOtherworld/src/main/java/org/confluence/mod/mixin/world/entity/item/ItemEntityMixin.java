@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.world.entity.item;
+﻿package org.confluence.mod.mixin.world.entity.item;
 
 import net.minecraft.Util;
 import net.minecraft.core.RegistryAccess;
@@ -9,10 +9,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.common.MinecraftForge;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModAdvancements;
@@ -61,7 +63,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
 
         if (confluence$item_coolDown == 0 && IEntity.of(self).confluence$isInShimmer()) {
             ShimmerItemTransmutationEvent.Pre pre = new ShimmerItemTransmutationEvent.Pre(self);
-            if (NeoForge.EVENT_BUS.post(pre).isCanceled()) {
+            if (MinecraftForge.EVENT_BUS.post(pre).isCanceled()) {
                 if (!self.isRemoved()) {
                     self.getItem().shrink(pre.getShrink());
                     confluence$setup(self, pre.getCoolDown(), pre.getSpeedY());
@@ -72,7 +74,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
             } else {
                 ShimmerItemTransmutationEvent.Post post = new ShimmerItemTransmutationEvent.Post(self);
                 confluence$initTargets(post);
-                NeoForge.EVENT_BUS.post(post);
+                MinecraftForge.EVENT_BUS.post(post);
                 List<ItemStack> targets = post.getTargets();
                 self.getItem().shrink(post.getShrink());
                 if (targets == null) {

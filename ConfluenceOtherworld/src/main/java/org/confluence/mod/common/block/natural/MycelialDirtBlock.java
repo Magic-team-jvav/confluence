@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural;
+﻿package org.confluence.mod.common.block.natural;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -13,8 +13,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,7 +51,7 @@ public class MycelialDirtBlock extends Block implements BonemealableBlock {
     @Override
     public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
         Level level = context.getLevel();
-        if (itemAbility == ItemAbilities.HOE_TILL) {
+        if (itemAbility == net.minecraftforge.common.ItemAbilities.HOE_TILL) {
             if (!simulate) {
                 Block.popResource(level, context.getClickedPos(), NatureBlocks.HANGING_MYCELIUM.toStack());
                 level.playSound(context.getPlayer(), context.getClickedPos(), SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);

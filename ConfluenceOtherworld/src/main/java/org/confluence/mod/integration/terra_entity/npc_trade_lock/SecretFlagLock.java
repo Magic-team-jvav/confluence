@@ -8,7 +8,8 @@ import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
-public record SecretFlagLock(long secretFlag, boolean flipMatch) implements ITradeLock, SecretFlagMatcher {
+public record SecretFlagLock(long secretFlag,
+                             boolean flipMatch) implements ITradeLock, SecretFlagMatcher {
     public static final MapCodec<SecretFlagLock> CODEC = SecretFlagMatcher.createMapCodec(SecretFlagLock::new);
 
     public SecretFlagLock(long secretFlag) {

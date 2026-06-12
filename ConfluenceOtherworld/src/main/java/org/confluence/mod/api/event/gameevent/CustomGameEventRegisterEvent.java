@@ -1,8 +1,8 @@
-package org.confluence.mod.api.event.gameevent;
+﻿package org.confluence.mod.api.event.gameevent;
 
 import net.minecraft.resources.ResourceKey;
-import net.neoforged.bus.api.Event;
-import net.neoforged.fml.event.IModBusEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.event.IModBusEvent;
 import org.confluence.mod.common.gameevent.GameEvent;
 
 import java.util.Map;

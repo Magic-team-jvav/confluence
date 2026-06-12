@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.crossbow;
+﻿package org.confluence.mod.common.item.crossbow;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;
@@ -33,7 +33,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -181,7 +180,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
 
     ///  获取装填速度
     public int getReloadSpeed(LivingEntity shooter, ItemStack stack) {
-        float f = EnchantmentHelper.modifyCrossbowChargingTime(stack, shooter, baseReloadSpeed / 20f);
+        float f = baseReloadSpeed / 20f;
         return Mth.floor(f * 20.0F);
     }
 
@@ -206,7 +205,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         int processProjectileCount;
         if (shooter.level() instanceof ServerLevel serverLevel) {
             ItemStack itemStack = shooter.getItemInHand(hand);
-            int count = EnchantmentHelper.processProjectileCount(serverLevel, itemStack, shooter, 1);
+            int count = 1;
             int level = EnchantmentUtils.getEnchantmentLevel(Enchantments.MULTISHOT, itemStack);
             processProjectileCount = count - level;
         } else {
@@ -301,7 +300,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     }
 
     protected ChargingSounds getChargingSounds(ItemStack stack) {
-        return EnchantmentHelper.pickHighestLevel(stack, EnchantmentEffectComponents.CROSSBOW_CHARGING_SOUNDS).orElse(DEFAULT_SOUNDS);
+        return DEFAULT_SOUNDS;
     }
 
     public @Nullable RepeaterContentsComponentHandler getHandler(ItemStack stack) {
@@ -358,7 +357,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
 
     @Override
     public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
-        float processProjectileSpread = EnchantmentHelper.processProjectileSpread(level, weapon, shooter, 0.0F);
+        float processProjectileSpread = 0.0F;
         int projectileItemsCount = projectileItems.size();
 
         float angleIncrement = projectileItemsCount == 1 ? 0.0F : 2.0F * processProjectileSpread / (float) (projectileItemsCount - 1);

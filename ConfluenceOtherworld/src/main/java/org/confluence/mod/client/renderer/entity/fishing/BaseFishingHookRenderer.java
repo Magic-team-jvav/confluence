@@ -138,6 +138,6 @@ public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRe
         f3 /= f6;
         f4 /= f6;
         f5 /= f6;
-        consumer.addVertex(pose, f, f1, f2).setColor(color).setNormal(pose, f3, f4, f5);
+        consumer.vertex(pose, f, f1, f2).color(color).setNormal(pose, f3, f4, f5);
     }
 }

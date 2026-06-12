@@ -56,7 +56,7 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
                 if (entity.hurt(damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), 3.2F)) {
-                    LibMathUtils.knockBackA2B(this, entity, 0.1, 0.02);
+                    LibEntityUtils.knockBackA2B(this, entity, 0.1, 0.02);
                 }
                 if (passThrough.add(entity) && passThrough.size() >= 7) {
                     discard();

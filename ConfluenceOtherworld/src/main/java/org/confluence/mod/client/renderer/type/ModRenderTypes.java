@@ -1,11 +1,13 @@
-package org.confluence.mod.client.init.gun;
+package org.confluence.mod.client.renderer.type;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 
-public class GunRenderTypes extends RenderStateShard {
+public class ModRenderTypes extends RenderStateShard {
+    public static
+
     public static RenderType TRAIL_RENDER_TYPE = RenderType.create(
             "trail_render_type",
             DefaultVertexFormat.POSITION_COLOR,
@@ -22,7 +24,7 @@ public class GunRenderTypes extends RenderStateShard {
                     .createCompositeState(false)
     );
 
-    private GunRenderTypes() {
+    private ModRenderTypes() {
         super(null, null, null);
     }
 }

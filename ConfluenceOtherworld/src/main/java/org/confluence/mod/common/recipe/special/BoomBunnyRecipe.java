@@ -7,7 +7,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -100,7 +100,7 @@ public class BoomBunnyRecipe extends ShapelessRecipe {
 
     public static class Serializer implements RecipeSerializer<BoomBunnyRecipe> {
         public static final MapCodec<BoomBunnyRecipe> CODEC = MapCodec.unit(BoomBunnyRecipe::getInstance);
-        public static final StreamCodec<RegistryFriendlyByteBuf, BoomBunnyRecipe> STREAM_CODEC = LibStreamCodecUtils.unit(BoomBunnyRecipe::getInstance);
+        public static final StreamCodec<PortRegistryFriendlyByteBuf, BoomBunnyRecipe> STREAM_CODEC = LibStreamCodecUtils.unit(BoomBunnyRecipe::getInstance);
 
         @Override
         public MapCodec<BoomBunnyRecipe> codec() {
@@ -108,7 +108,7 @@ public class BoomBunnyRecipe extends ShapelessRecipe {
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, BoomBunnyRecipe> streamCodec() {
+        public StreamCodec<PortRegistryFriendlyByteBuf, BoomBunnyRecipe> streamCodec() {
             return STREAM_CODEC;
         }
     }

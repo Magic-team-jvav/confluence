@@ -39,7 +39,7 @@ public class DateLockRecipeDrawer extends TradeLockRecipeDrawer {
     private String getDateString(DateLock lock) {
         var from = lock.fromInclusive();
         var to = lock.toInclusive();
-        var lunar = lock.isLunar() ? " ("+ I18n.get("confluence.trade_lock.drawer.date.lunar") + ") " : "";
+        var lunar = lock.isLunar() ? " (" + I18n.get("confluence.trade_lock.drawer.date.lunar") + ") " : "";
         return String.format("%s%02d/%02d - %02d/%02d", lunar, from.month() + 1, from.day(), to.month() + 1, to.day());
     }
 }

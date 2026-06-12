@@ -1,5 +1,8 @@
-package org.confluence.mod.common.block.functional.crafting;
+﻿package org.confluence.mod.common.block.functional.crafting;
 
+import PortLib.extensions.java.util.List.PortListExtension;
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -23,14 +26,12 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -61,16 +62,17 @@ import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.PortItemInteractionResult;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeHolder;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -141,11 +143,12 @@ public class AltarBlock extends BaseEntityBlock {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             if (data.increaseRevealStep()) {
-                serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable(
+                Component msg = PortMutableComponentExtension.withColor(Component.translatable(
                         "event.confluence.reveal_step" + data.getRevealStep()
-                ).withColor(GlobalColors.MESSAGE.get()), false);
+                ), GlobalColors.MESSAGE.get()));
+                serverLevel.getServer().getPlayerList().broadcastSystemMessage(msg, false);
             }
-            if (tool.is(HammerItems.PWNHAMMER)) {
+            if (tool.is(HammerItems.PWNHAMMER.get())) {
                 AchievementUtils.awardAchievement(serverPlayer, "begone_evil");
             }
             RandomSource random = player.getRandom();
@@ -169,7 +172,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected PortItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof BEntity entity) {
             if (player.isCrouching()) {
                 player.addItem(entity.takeItem(-1));
@@ -180,18 +183,18 @@ public class AltarBlock extends BaseEntityBlock {
                 }
             }
         }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return PortItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     public static void onLeftClick(BlockState state, Level level, BlockPos pos, Player player) {
         if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof AltarBlock && level.getBlockEntity(pos) instanceof BEntity entity) {
             RecipeManager recipeManager = serverLevel.getServer().getRecipeManager();
             if (player.isCrouching()) {
-                List<RecipeHolder<AltarRecipe>> recipes;
+                List<PortRecipeHolder<AltarRecipe>> recipes;
                 boolean crafted = false;
                 while (!(recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level)).isEmpty()) {
                     crafted = true;
-                    AltarRecipe recipe = recipes.getFirst().value();
+                    AltarRecipe recipe = PortListExtension.getFirst(recipes).value();
                     ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
                     LibEntityUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 }
@@ -200,9 +203,9 @@ public class AltarBlock extends BaseEntityBlock {
                     entity.markUpdated();
                 }
             } else {
-                List<RecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level);
+                List<PortRecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level);
                 if (recipes.isEmpty()) return;
-                AltarRecipe recipe = recipes.getFirst().value();
+                AltarRecipe recipe = PortListExtension.getFirst(recipes).value();
                 ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
                 LibEntityUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 entity.playAnimation(serverLevel, pos);
@@ -247,7 +250,7 @@ public class AltarBlock extends BaseEntityBlock {
                 if (firstEmptySlot == -1 && stack.isEmpty()) {
                     firstEmptySlot = i;
                 }
-                if (ItemStack.isSameItemSameComponents(stack, toAdd)) {
+                if (PortItemStackExtension.isSameItemSameComponents(stack, toAdd)) {
                     ItemStack result = itemHandler.insertItem(i, toAdd, false);
                     setChanged();
                     markUpdated();
@@ -363,7 +366,7 @@ public class AltarBlock extends BaseEntityBlock {
 
         @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-            controllers.add(new AnimationController<>(this, "controller", state ->
+            controllers.add(new AnimationController<GeoAnimatable>(this, "controller", state ->
                     state.setAndContinue(RawAnimation.begin().thenLoop("default")))
                     .triggerableAnim("crafting", RawAnimation.begin().thenPlay("crafting"))
             );

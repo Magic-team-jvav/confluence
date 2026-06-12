@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+﻿package org.confluence.mod.common.data.saved;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
@@ -128,7 +128,7 @@ public enum HardmodeConvertor implements IGlobalData {
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), LibUtils.isDev());
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);
-                NeoForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
+                MinecraftForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
             }
             this.started = false;
         } else {

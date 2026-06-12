@@ -79,12 +79,9 @@ public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
             return true;
         }
 
-        if (lastTrade instanceof SellTrade && !slot.getItem().isEmpty()) {
-            // 上一个是出售，但是槽内有物品
-            return false;
-        }
+        // 上一个是出售，但是槽内有物品
+        return !(lastTrade instanceof SellTrade) || slot.getItem().isEmpty();
         // 槽内没有物品
-        return true;
     }
 
     @Override

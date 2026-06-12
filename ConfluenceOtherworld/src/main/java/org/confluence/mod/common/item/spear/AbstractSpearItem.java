@@ -1,5 +1,7 @@
-package org.confluence.mod.common.item.spear;
+﻿package org.confluence.mod.common.item.spear;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
+import PortLib.extensions.net.minecraft.world.item.enchantment.PortEnchantmentHelper;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -14,7 +16,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -22,9 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -39,15 +38,18 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
-import software.bernie.geckolib.animation.keyframe.AnimationPoint;
-import software.bernie.geckolib.animation.keyframe.Keyframe;
-import software.bernie.geckolib.loading.math.MathValue;
-import software.bernie.geckolib.loading.math.value.Constant;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.EasingType;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.keyframe.AnimationPoint;
+import software.bernie.geckolib.core.keyframe.Keyframe;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -172,7 +174,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     protected void onHitEntity(ItemStack stack, ServerLevel level, LivingEntity owner, Entity victim) {
         DamageSource damageSource = getDamageSource(level, owner);
         onHitEntity(damageSource, owner, victim);
-        EnchantmentHelper.doPostAttackEffects(level, victim, damageSource);
+        PortEnchantmentHelper.doPostAttackEffects(level, victim, damageSource);
     }
 
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {}
@@ -199,12 +201,12 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
         }
         if (currentFrame == null) currentFrame = keyframes.getLast();
         AnimationPoint point = new AnimationPoint(currentFrame, startTick, currentFrame.length(), currentFrame.startValue().get(), currentFrame.endValue().get());
-        return point.keyFrame().easingType().apply(point) * owner.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) / -16;
+        return point.keyFrame().easingType().apply(point) * owner.getAttributeValue(PortAttributesExtension.entityInteractionRange()) / -16;
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "spear", state -> PlayState.STOP)
+        controllers.add(new AnimationController<GeoAnimatable>(this, "spear", state -> PlayState.STOP)
                 .triggerableAnim("use", RawAnimation.begin().thenPlay("use")));
     }
 
@@ -228,9 +230,9 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
         });
     }
 
-    public static ItemAttributeModifiers attributes(float extraRange, float extraDamage) {
-        return ItemAttributeModifiers.builder()
-                .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extraRange, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+    public static PortItemAttributeModifiers attributes(float extraRange, float extraDamage) {
+        return PortItemAttributeModifiers.builder()
+                .add(PortAttributesExtension.entityInteractionRange(), new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extraRange, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(LibAttributes.getAttackDamage(), new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, extraDamage, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
     }

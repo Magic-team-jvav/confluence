@@ -1,14 +1,12 @@
-package org.confluence.mod.common.data.gen.data_map;
+﻿package org.confluence.mod.common.data.gen.data_map;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import org.confluence.mod.common.block.common.RelicBlock;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.init.GunItems;
@@ -2069,7 +2067,7 @@ public final class ValueSubProvider {
                 .add(NatureBlocks.BALLOON_MELON, silver5 + silver2)
         ;
         // 圣物
-        for (DeferredBlock<RelicBlock> block : DecorativeBlocks.RELIC_BLOCKS) {
+        for (RegistryObject block : DecorativeBlocks.RELIC_BLOCKS) {
             builder.add(block, gold1);
         }
         // 箱子

@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.util.OverworldUtils;
@@ -17,6 +16,7 @@ import org.joml.Matrix4f;
 import org.mesdag.particlestorm.data.molang.compiler.value.Variable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -75,14 +75,14 @@ final class LanternNightSprite {
         poseStack.mulPose(Axis.YP.rotation(Mth.lerp(partialTick, yawO, yaw)).rotateX(-Mth.HALF_PI));
         poseStack.translate(0, 0, Mth.lerp(partialTick, yo, y));
         Matrix4f matrix4f = poseStack.last().pose();
-        builder.addVertex(matrix4f, -radius, dist, -radius).setUv(0, 1).setColor(255, 255, 255, (int) (alpha * a * 255));
-        builder.addVertex(matrix4f, radius, dist, -radius).setUv(1, 1).setColor(255, 255, 255, (int) (alpha * a * 255));
-        builder.addVertex(matrix4f, radius, dist, radius).setUv(1, 0).setColor(255, 255, 255, (int) (alpha * a * 255));
-        builder.addVertex(matrix4f, -radius, dist, radius).setUv(0, 0).setColor(255, 255, 255, (int) (alpha * a * 255));
+        builder.vertex(matrix4f, -radius, dist, -radius).uv(0, 1).color(255, 255, 255, (int) (alpha * a * 255));
+        builder.vertex(matrix4f, radius, dist, -radius).uv(1, 1).color(255, 255, 255, (int) (alpha * a * 255));
+        builder.vertex(matrix4f, radius, dist, radius).uv(1, 0).color(255, 255, 255, (int) (alpha * a * 255));
+        builder.vertex(matrix4f, -radius, dist, radius).uv(0, 0).color(255, 255, 255, (int) (alpha * a * 255));
         poseStack.popPose();
     }
 
-    static void renderLanternNight(LocalPlayer player, RenderLevelStageEvent event) {
+    static void renderLanternNight(LocalPlayer player, PortRenderLevelStageEvent event) {
         if (player.level().dimension() != OverworldUtils.dimension()) return;
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         float rainLevel = player.level().getRainLevel(partialTick);

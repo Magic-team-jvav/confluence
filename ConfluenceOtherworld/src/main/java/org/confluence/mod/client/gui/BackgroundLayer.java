@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui;
+﻿package org.confluence.mod.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -16,8 +16,6 @@ import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
-import net.neoforged.neoforge.client.ClientHooks;
-import net.neoforged.neoforge.client.DimensionSpecialEffectsManager;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
@@ -59,10 +57,10 @@ public enum BackgroundLayer {
                 float g = color[1];
                 float b = color[2];
                 float a = color[3];
-                builder.addVertex(matrix4f, minX, minY, 0).setColor(r, g, b, 0);
-                builder.addVertex(matrix4f, minX, maxY, 0).setColor(r, g, b, a);
-                builder.addVertex(matrix4f, maxX, maxY, 0).setColor(r, g, b, a);
-                builder.addVertex(matrix4f, maxX, minY, 0).setColor(r, g, b, 0);
+                builder.vertex(matrix4f, minX, minY, 0).color(r, g, b, 0);
+                builder.vertex(matrix4f, minX, maxY, 0).color(r, g, b, a);
+                builder.vertex(matrix4f, maxX, maxY, 0).color(r, g, b, a);
+                builder.vertex(matrix4f, maxX, minY, 0).color(r, g, b, 0);
                 BufferUploader.drawWithShader(builder.buildOrThrow());
                 poseStack.popPose();
                 RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -104,13 +102,13 @@ public enum BackgroundLayer {
                 float size = random.nextFloat() * 0.5F + 0.5F;
                 Quaternionf rotation = Axis.ZP.rotation(random.nextFloat() * Mth.TWO_PI);
                 temp.set(-size, -size, 0).rotate(rotation).add(x, y, 0);
-                builder.addVertex(matrix4f, temp.x, temp.y, 0);
+                builder.vertex(matrix4f, temp.x, temp.y, 0);
                 temp.set(-size, size, 0).rotate(rotation).add(x, y, 0);
-                builder.addVertex(matrix4f, temp.x, temp.y, 0);
+                builder.vertex(matrix4f, temp.x, temp.y, 0);
                 temp.set(size, size, 0).rotate(rotation).add(x, y, 0);
-                builder.addVertex(matrix4f, temp.x, temp.y, 0);
+                builder.vertex(matrix4f, temp.x, temp.y, 0);
                 temp.set(size, -size, 0).rotate(rotation).add(x, y, 0);
-                builder.addVertex(matrix4f, temp.x, temp.y, 0);
+                builder.vertex(matrix4f, temp.x, temp.y, 0);
             }
             BufferUploader.drawWithShader(builder.buildOrThrow());
             RenderSystem.setShaderColor(1, 1, 1, 1);

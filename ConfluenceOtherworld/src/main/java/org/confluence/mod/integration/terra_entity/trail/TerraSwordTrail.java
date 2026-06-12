@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.terra_entity.trail;
+﻿package org.confluence.mod.integration.terra_entity.trail;
 
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
 import org.confluence.terraentity.api.entity.trail.ITrail;
@@ -35,13 +35,13 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
 
     @Override
     public void generateTrail(NightEdgeProjectile holder, int ticks) {
-        if(trailsQueue.size() >= 100){
+        if (trailsQueue.size() >= 100) {
             trailsQueue.poll();
         }
 
-        if(holder.lifetime - ticks <= 0){
+        if (holder.lifetime - ticks <= 0) {
             trailsQueue.poll();
-        }else {
+        } else {
 
             if (ticks > 1 && holder.getOwner() != null) {
                 trailsQueue.add(new PositionPoseProperties(holder.position().subtract(holder.getOwner().position()),
@@ -52,13 +52,13 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
 
 
     public void generateTrail(NightEdgeProjectile holder, int ticks, Vec3 entityPos, float partialTicks) {
-        if(trailsQueue.size() >= 100){
+        if (trailsQueue.size() >= 100) {
             trailsQueue.poll();
         }
 
-        if(holder.lifetime - ticks <= 4){
+        if (holder.lifetime - ticks <= 4) {
             trailsQueue.poll();
-        }else {
+        } else {
 
             float lerpRotx = Mth.lerp(partialTicks, holder.xRotO, holder.getXRot());
             float lerpRoty = Mth.lerp(partialTicks, holder.yRotO, holder.getYRot());
@@ -83,7 +83,7 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
     }
 
     @OnlyIn(Dist.CLIENT)
-    protected void actualRender(NightEdgeProjectile holder, Queue<PositionPoseProperties> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, RenderType renderType){
+    protected void actualRender(NightEdgeProjectile holder, Queue<PositionPoseProperties> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, RenderType renderType) {
         Iterator<PositionPoseProperties> trails = trailsQueue.iterator();
 
         int size = trailsQueue.size();
@@ -128,7 +128,7 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
             float progress = i / (float) size;
             float width = properties.widthScale() * progress;
             int alpha = (int) (200 * progress);
-            if(!trails.hasNext()){
+            if (!trails.hasNext()) {
                 alpha = 20;
             }
             int lerpRed = (int) Mth.lerp(progress, red, redFrom);
@@ -140,25 +140,25 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
             float rotx = p.xrot;
             float roty = -p.yrot;
 
-            Vector3f d = new Vector3f(0,0,1);
+            Vector3f d = new Vector3f(0, 0, 1);
             new Quaternionf().rotateY(roty).rotateX(rotx).transform(d);
 
             Vec3 side = new Vec3(d.normalize());
 
-            Vec3 left0 ;
+            Vec3 left0;
             Vec3 left00;
-            Vec3 right0 ;
+            Vec3 right0;
             Vec3 right00;
             Vec3 left11 = pos1.add(side.scale(+width * properties.fadeWidthFactor()));
             Vec3 right11 = pos1.add(side.scale(-width * properties.fadeWidthFactor()));
-            Vec3 left1 = pos1.add(side.scale(+width*5));
-            Vec3 right1 = pos1.add(side.scale(-width*5));
-            if(o0 != null) {
+            Vec3 left1 = pos1.add(side.scale(+width * 5));
+            Vec3 right1 = pos1.add(side.scale(-width * 5));
+            if (o0 != null) {
                 left0 = o0;
                 right0 = o1;
                 left00 = o2;
                 right00 = o3;
-            }else {
+            } else {
                 left0 = pos0.add(side.scale(+width));
                 right0 = pos0.add(side.scale(-width));
                 left00 = pos0.add(side.scale(+width));
@@ -166,44 +166,44 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
             }
 
 
-            ITrail.addVertex(buffer, matrix4f, left0, lastColor)
-                    .setUv(0, _progress)
-                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
-            ITrail.addVertex(buffer, matrix4f, right0, lastColor)
-                    .setUv(1, _progress)
-                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
-            ITrail.addVertex(buffer, matrix4f, right1, argb)
-                    .setUv(1, progress)
-                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
-            ITrail.addVertex(buffer, matrix4f, left1, argb)
-                    .setUv(0, progress)
-                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+            ITrail.vertex(buffer, matrix4f, left0, lastColor)
+                    .uv(0, _progress)
+                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+            ITrail.vertex(buffer, matrix4f, right0, lastColor)
+                    .uv(1, _progress)
+                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+            ITrail.vertex(buffer, matrix4f, right1, argb)
+                    .uv(1, progress)
+                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+            ITrail.vertex(buffer, matrix4f, left1, argb)
+                    .uv(0, progress)
+                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
 
-//            ITrail.addVertex(buffer, matrix4f, left00, lastColor & 0x00FFFFFF)
-//                    .setUv(_progress, _progress)
-//                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
-//            ITrail.addVertex(buffer, matrix4f, left0, lastColor)
-//                    .setUv(progress, _progress)
-//                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
-//            ITrail.addVertex(buffer, matrix4f, left1, argb)
-//                    .setUv(progress, progress)
-//                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
-//            ITrail.addVertex(buffer, matrix4f, left11, argb& 0x00FFFFFF)
-//                    .setUv(_progress, progress)
-//                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+//            ITrail.vertex(buffer, matrix4f, left00, lastColor & 0x00FFFFFF)
+//                    .uv(_progress, _progress)
+//                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+//            ITrail.vertex(buffer, matrix4f, left0, lastColor)
+//                    .uv(progress, _progress)
+//                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+//            ITrail.vertex(buffer, matrix4f, left1, argb)
+//                    .uv(progress, progress)
+//                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+//            ITrail.vertex(buffer, matrix4f, left11, argb& 0x00FFFFFF)
+//                    .uv(_progress, progress)
+//                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
 //
-//            ITrail.addVertex(buffer, matrix4f, right0, lastColor)
-//                    .setUv(_progress,_progress)
-//                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
-//            ITrail.addVertex(buffer, matrix4f, right00, lastColor& 0x00FFFFFF)
-//                    .setUv(progress, _progress)
-//                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
-//            ITrail.addVertex(buffer, matrix4f, right11, argb& 0x00FFFFFF)
-//                    .setUv(progress, progress)
-//                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
-//            ITrail.addVertex(buffer, matrix4f, right1, argb)
-//                    .setUv(_progress, progress)
-//                    .setNormal(poseStack.last(), 0, 1, 0).setUv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+//            ITrail.vertex(buffer, matrix4f, right0, lastColor)
+//                    .uv(_progress,_progress)
+//                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+//            ITrail.vertex(buffer, matrix4f, right00, lastColor& 0x00FFFFFF)
+//                    .uv(progress, _progress)
+//                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+//            ITrail.vertex(buffer, matrix4f, right11, argb& 0x00FFFFFF)
+//                    .uv(progress, progress)
+//                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
+//            ITrail.vertex(buffer, matrix4f, right1, argb)
+//                    .uv(_progress, progress)
+//                    .setNormal(poseStack.last(), 0, 1, 0).uv2(packedLight & 65535, packedLight >> 16 & 65535).setOverlay(OverlayTexture.NO_OVERLAY);
 
 
             o0 = left1;

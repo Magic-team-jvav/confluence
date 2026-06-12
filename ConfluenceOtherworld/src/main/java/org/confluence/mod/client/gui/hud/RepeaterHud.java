@@ -104,7 +104,7 @@ public class RepeaterHud implements LayeredDraw.Layer {
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
-            guiGraphics.setColor(1, 1, 1, (I - i) / I1);
+            guiGraphics.color(1, 1, 1, (I - i) / I1);
             pose.translate(x - x * scale, y - y * scale, 0);
             pose.scale(scale, scale, 1);
             guiGraphics.renderItem(stack, x, y);
@@ -113,7 +113,7 @@ public class RepeaterHud implements LayeredDraw.Layer {
             RenderSystem.disableBlend();
             RenderSystem.depthMask(true);
             RenderSystem.enableDepthTest();
-            guiGraphics.setColor(1, 1, 1, 1);
+            guiGraphics.color(1, 1, 1, 1);
             pose.popPose();
         }
         pose.popPose();

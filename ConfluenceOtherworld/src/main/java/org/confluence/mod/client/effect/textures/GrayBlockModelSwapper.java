@@ -9,8 +9,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.client.model.data.ModelProperty;
+import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.data.ModelProperty;
 import org.confluence.mod.client.effect.connected.BakedModelWrapperWithData;
 import org.confluence.mod.client.effect.connected.BakedQuadHelper;
 import org.confluence.mod.common.data.saved.BrushData;
@@ -42,7 +42,8 @@ public class GrayBlockModelSwapper extends BakedModelWrapperWithData {
         int[] colors = extraData.get(COLOR_PROPERTY);
         if (colors == null) return quads;
         int color = colors[(side == null ? Direction.WEST : side).get3DDataValue()];
-        if (color == BrushData.EMPTY_COLOR || color == BrushData.ILLUMINANT_COLOR || color == BrushData.ECHO_COLOR) return quads;
+        if (color == BrushData.EMPTY_COLOR || color == BrushData.ILLUMINANT_COLOR || color == BrushData.ECHO_COLOR)
+            return quads;
         quads = new ArrayList<>(quads);
 
         for (int i = 0; i < quads.size(); i++) {

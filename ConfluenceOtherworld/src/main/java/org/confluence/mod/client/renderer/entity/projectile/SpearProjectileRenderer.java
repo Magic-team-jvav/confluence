@@ -10,8 +10,8 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.util.Mth;
+import net.minecraft.world.inventory.InventoryMenu;
 import org.confluence.mod.common.entity.projectile.spear.SpearProjectile;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +24,7 @@ public class SpearProjectileRenderer extends EntityRenderer<SpearProjectile> {
     private final EntityModel<SpearProjectile> model;
 
     public SpearProjectileRenderer(EntityRendererProvider.Context context,
-                                    @Nullable ModelLayerLocation layer) {
+                                   @Nullable ModelLayerLocation layer) {
         super(context);
         this.model = layer != null ? new ProxyModel(context.bakeLayer(layer)) : null;
     }
@@ -43,7 +43,7 @@ public class SpearProjectileRenderer extends EntityRenderer<SpearProjectile> {
         poseStack.pushPose();
         poseStack.translate(0, 0.375F, 0);
         poseStack.scale(2, 2, 2);
-        float yaw = Mth.lerp(partialTick, entity.yRotO, entity.getYRot()); 
+        float yaw = Mth.lerp(partialTick, entity.yRotO, entity.getYRot());
         float pitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
         poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
         poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
@@ -55,14 +55,14 @@ public class SpearProjectileRenderer extends EntityRenderer<SpearProjectile> {
     private static class ProxyModel extends EntityModel<SpearProjectile> {
         private final ModelPart root;
 
-        ProxyModel(ModelPart root) { this.root = root; }
+        ProxyModel(ModelPart root) {this.root = root;}
 
         @Override
         public void setupAnim(SpearProjectile e, float a, float b, float c, float d, float f) {}
 
         @Override
         public void renderToBuffer(PoseStack ps, com.mojang.blaze3d.vertex.VertexConsumer vc,
-                                    int light, int overlay, int color) {
+                                   int light, int overlay, int color) {
             root.render(ps, vc, light, overlay, color);
         }
     }

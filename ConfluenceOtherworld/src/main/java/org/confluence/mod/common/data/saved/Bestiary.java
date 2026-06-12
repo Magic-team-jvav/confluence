@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+﻿package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.Hash;
@@ -18,8 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.minecraftforge.common.MinecraftForge;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
@@ -118,7 +117,7 @@ public enum Bestiary implements IGlobalData {
         }
 
         if (getUnlockedCount() >= 540) {
-            MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+            MinecraftServer server = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                     AchievementUtils.awardAchievement(player, "book_worm");
@@ -142,6 +141,6 @@ public enum Bestiary implements IGlobalData {
 
     public static boolean canBeSeenAsBestiaryEntry(LivingEntity living) {
         return isAvailableType(living.getType(), living.level()) &&
-                (living.getType().is(ModTags.EntityTypes.BESTIARY_WHITELIST) || !NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled());
+                (living.getType().is(ModTags.EntityTypes.BESTIARY_WHITELIST) || !MinecraftForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled());
     }
 }

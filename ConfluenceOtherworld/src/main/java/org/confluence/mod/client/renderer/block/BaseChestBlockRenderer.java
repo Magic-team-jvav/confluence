@@ -1,4 +1,4 @@
-package org.confluence.mod.client.renderer.block;
+﻿package org.confluence.mod.client.renderer.block;
 
 import net.minecraft.Util;
 import net.minecraft.client.renderer.Sheets;
@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.block.ChestBlocks;
@@ -29,7 +29,7 @@ public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.BEntity
                     Sheets.CHEST_LOCATION_RIGHT
             };
             private final Hashtable<Block, Material[]> unlockedCache = Util.make(new Hashtable<>(), map -> {
-                for (DeferredBlock<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
+                for (RegistryObject normalChest : ChestBlocks.NORMAL_CHESTS) {
                     String chestName = "unlocked_" + normalChest.getId().getPath().replace("_chest", "");
                     ResourceLocation location = Confluence.asResource("entity/chest/" + chestName);
                     map.put(normalChest.get(), new Material[]{
@@ -40,7 +40,7 @@ public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.BEntity
                 }
             });
             private final Hashtable<Block, Material[]> lockedCache = Util.make(new Hashtable<>(), map -> {
-                for (DeferredBlock<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
+                for (RegistryObject normalChest : ChestBlocks.NORMAL_CHESTS) {
                     String chestName = "locked_" + normalChest.getId().getPath().replace("_chest", "");
                     ResourceLocation locked = Confluence.asResource("entity/chest/" + chestName);
                     map.put(normalChest.get(), new Material[]{

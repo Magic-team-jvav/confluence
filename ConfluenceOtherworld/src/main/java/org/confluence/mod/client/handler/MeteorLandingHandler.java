@@ -11,13 +11,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 public final class MeteorLandingHandler {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
@@ -85,7 +85,7 @@ public final class MeteorLandingHandler {
         yaw = Mth.HALF_PI * ratio - (float) Math.atan2(vec.z, vec.x);
     }
 
-    public static void render(RenderLevelStageEvent event) {
+    public static void render(PortRenderLevelStageEvent event) {
         if (location == null || vector == null) return;
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
@@ -103,10 +103,10 @@ public final class MeteorLandingHandler {
         RenderSystem.setShaderTexture(0, TEXTURE);
         Matrix4f matrix4f = poseStack.last().pose().rotate(LibRenderUtils.ANGLE_45);
         BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        bufferBuilder.addVertex(matrix4f, -RADIUS, 100, -RADIUS).setUv(0.0F, v1).setColor(1.0F, 1.0F, 1.0F, alpha);
-        bufferBuilder.addVertex(matrix4f, RADIUS, 100, -RADIUS).setUv(1.0F, v1).setColor(1.0F, 1.0F, 1.0F, alpha);
-        bufferBuilder.addVertex(matrix4f, RADIUS, 100, RADIUS).setUv(1.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
-        bufferBuilder.addVertex(matrix4f, -RADIUS, 100, RADIUS).setUv(0.0F, v0).setColor(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.vertex(matrix4f, -RADIUS, 100, -RADIUS).uv(0.0F, v1).color(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.vertex(matrix4f, RADIUS, 100, -RADIUS).uv(1.0F, v1).color(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.vertex(matrix4f, RADIUS, 100, RADIUS).uv(1.0F, v0).color(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.vertex(matrix4f, -RADIUS, 100, RADIUS).uv(0.0F, v0).color(1.0F, 1.0F, 1.0F, alpha);
         BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
         RenderSystem.disableBlend();
         poseStack.popPose();

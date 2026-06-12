@@ -1,15 +1,12 @@
-package org.confluence.mod.network.c2s;
+﻿package org.confluence.mod.network.c2s;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
@@ -18,6 +15,9 @@ import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.house.House;
 import org.confluence.terraentity.entity.npc.house.HouseManager;
 import org.confluence.terraentity.entity.npc.house.IHouseDetector;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Comparator;
 import java.util.function.Consumer;
@@ -25,17 +25,17 @@ import java.util.function.Consumer;
 /// 区别于下方的网络包
 ///
 /// @see org.confluence.terraentity.network.c2s.ServerBoundHousePacket
-public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPacketC2S {
-    public static final Type<HouseSelectPacketC2S> TYPE = Confluence.createType("house_select");
-    public static final StreamCodec<ByteBuf, HouseSelectPacketC2S> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, HouseSelectPacketC2S::selected,
+public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortPacket.C2S {
+    public static final ResourceLocation ID = Confluence.asResource("house_select");
+    public static final PortStreamCodec<ByteBuf, HouseSelectPacketC2S> STREAM_CODEC = PortStreamCodec.composite(
+            PortByteBufCodecs.VAR_INT, HouseSelectPacketC2S::selected,
             BlockPos.STREAM_CODEC, HouseSelectPacketC2S::pos,
             HouseSelectPacketC2S::new
     );
 
     @Override
-    public Type<HouseSelectPacketC2S> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -91,6 +91,6 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPacke
     }
 
     public static void sendToServer(int selected, BlockPos pos) {
-        PacketDistributor.sendToServer(new HouseSelectPacketC2S(selected, pos));
+        Confluence.NETWORK_HANDLER.sendToServer(new HouseSelectPacketC2S(selected, pos));
     }
 }

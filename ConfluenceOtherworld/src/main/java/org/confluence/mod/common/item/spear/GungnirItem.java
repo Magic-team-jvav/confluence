@@ -20,6 +20,6 @@ public class GungnirItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        LibMathUtils.knockBackA2B(owner, victim, 0.32, 0.2);
+        LibEntityUtils.knockBackA2B(owner, victim, 0.32, 0.2);
     }
 }

@@ -1,4 +1,4 @@
-package org.confluence.mod.util;
+﻿package org.confluence.mod.util;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.datafixers.util.Pair;
@@ -26,7 +26,7 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.ModSecretSeeds;

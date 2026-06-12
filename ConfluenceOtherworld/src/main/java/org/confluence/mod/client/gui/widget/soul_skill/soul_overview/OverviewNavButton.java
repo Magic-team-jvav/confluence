@@ -77,7 +77,7 @@ public abstract class OverviewNavButton extends AbstractWidget {
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput out){}
+    protected void updateWidgetNarration(NarrationElementOutput out) {}
 
     @NotNull
     protected abstract MutableComponent getComponent();

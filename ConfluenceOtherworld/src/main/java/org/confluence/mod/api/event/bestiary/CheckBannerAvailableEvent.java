@@ -1,6 +1,6 @@
-package org.confluence.mod.api.event.bestiary;
+﻿package org.confluence.mod.api.event.bestiary;
 
-import net.neoforged.bus.api.Event;
+import net.minecraftforge.eventbus.api.Event;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.common.init.ModTags;
 

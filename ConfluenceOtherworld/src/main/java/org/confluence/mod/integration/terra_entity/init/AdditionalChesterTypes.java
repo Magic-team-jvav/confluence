@@ -1,16 +1,14 @@
-package org.confluence.mod.integration.terra_entity.init;
+﻿package org.confluence.mod.integration.terra_entity.init;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSafeContainer;
 import org.confluence.mod.common.menu.PiggyBankMenu;
-import org.confluence.terraentity.registries.TERegistries;
-import org.confluence.terraentity.registries.chester.ChesterType;
 
 import java.util.function.Supplier;
 

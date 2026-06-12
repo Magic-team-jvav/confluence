@@ -1,11 +1,11 @@
-package org.confluence.mod.mixed;
+﻿package org.confluence.mod.mixed;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.WorldOptions;
-import net.neoforged.fml.ModLoader;
+import net.minecraftforge.fml.ModLoader;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomWorldIconRegisterEvent;
 import org.confluence.mod.common.init.ModSecretSeeds;

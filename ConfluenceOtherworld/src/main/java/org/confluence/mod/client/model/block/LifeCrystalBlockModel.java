@@ -10,6 +10,7 @@ public class LifeCrystalBlockModel<T extends GeoBlockEntity> extends GeoModel<T>
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/life_crystal_block.png");
     public static final ResourceLocation ENTITY_MODEL = Confluence.asResource("geo/block/life_crystal_entity.geo.json");
     public static final ResourceLocation ENTITY_TEXTURE = Confluence.asResource("textures/entity/life_crystal_entity.png");
+
     @Override
     public ResourceLocation getModelResource(T animatable) {
         return MODEL;

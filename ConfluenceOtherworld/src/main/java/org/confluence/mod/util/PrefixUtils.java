@@ -380,7 +380,7 @@ public final class PrefixUtils {
                 break;
         }
 
-        float num14 = (float) (1.0 * (double) num2 * (2.0 - (double) num4) * (2.0 - (double) num7) * (double) num5 * (double) num3 * (double) num6 * (1.0 + (double) num8 * 0.0199999995529652));
+        float num14 = (float) ((double) num2 * (2.0 - (double) num4) * (2.0 - (double) num7) * (double) num5 * (double) num3 * (double) num6 * (1.0 + (double) num8 * 0.0199999995529652));
         if (num1 == 62 || num1 == 69 || num1 == 73 || num1 == 77) num14 *= 1.05f;
         if (num1 == 63 || num1 == 70 || num1 == 74 || num1 == 78 || num1 == 67) num14 *= 1.1f;
         if (num1 == 64 || num1 == 71 || num1 == 75 || num1 == 79 || num1 == 66) num14 *= 1.15f;

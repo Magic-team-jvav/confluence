@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.recipe;
+﻿package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -11,8 +11,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraftforge.common.Tags;
 import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
@@ -32,7 +31,7 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
-        shaped(recipeOutput, FunctionalBlocks.KEG.toStack(), ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, FunctionalBlocks.KEG.get().getDefaultInstance(), ShapedRecipePattern.of(Map.of(
                 'A', Ingredient.of(Tags.Items.BARRELS_WOODEN),
                 'B', Ingredient.of(Tags.Items.FENCES_WOODEN),
                 'C', Ingredient.of(Tags.Items.INGOTS_COPPER)
@@ -41,7 +40,7 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
                 "B "
         )));
 
-        shaped(recipeOutput, FunctionalBlocks.LOOM.toStack(), ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, FunctionalBlocks.LOOM.get().getDefaultInstance(), ShapedRecipePattern.of(Map.of(
                 'c', Ingredient.of(ItemTags.WOODEN_SLABS),
                 'b', AmountIngredient.of(2, ItemTags.PLANKS)
         ), List.of(

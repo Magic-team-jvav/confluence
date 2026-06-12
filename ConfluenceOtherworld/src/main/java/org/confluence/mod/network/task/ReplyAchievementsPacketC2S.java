@@ -1,12 +1,11 @@
-package org.confluence.mod.network.task;
+﻿package org.confluence.mod.network.task;
 
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.server.PlayerAdvancements;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.lib.network.IPacket;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.AchievementUtils;
@@ -20,7 +19,7 @@ public record ReplyAchievementsPacketC2S(
         PlayerAdvancements.Data data
 ) implements IPacket {
     public static final Type<ReplyAchievementsPacketC2S> TYPE = Confluence.createType("sync_achievements");
-    public static final StreamCodec<FriendlyByteBuf, ReplyAchievementsPacketC2S> STREAM_CODEC = StreamCodec.composite(
+    public static final PortStreamCodec<FriendlyByteBuf, ReplyAchievementsPacketC2S> STREAM_CODEC = PortStreamCodec.composite(
             UUIDUtil.STREAM_CODEC, ReplyAchievementsPacketC2S::uuid,
             AchievementUtils.DATA_STREAM_CODEC, ReplyAchievementsPacketC2S::data,
             ReplyAchievementsPacketC2S::new

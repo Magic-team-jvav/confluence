@@ -11,11 +11,11 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.StarPhase;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public final class StarPhaseHandler {
     });
     public static boolean enabled = false;
 
-    public static void render(RenderLevelStageEvent event) {
+    public static void render(PortRenderLevelStageEvent event) {
         if (!enabled) return;
 
         Minecraft minecraft = Minecraft.getInstance();
@@ -108,10 +108,10 @@ public final class StarPhaseHandler {
             Matrix4f matrix4f = poseStack.last().pose();
             RenderSystem.setShaderTexture(0, TEXTURES[i]);
             BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferBuilder.addVertex(matrix4f, -trueSize, trueDis, -trueSize).setUv(0.0F, 1.0F);
-            bufferBuilder.addVertex(matrix4f, trueSize, trueDis, -trueSize).setUv(1.0F, 1.0F);
-            bufferBuilder.addVertex(matrix4f, trueSize, trueDis, trueSize).setUv(1.0F, 0.0F);
-            bufferBuilder.addVertex(matrix4f, -trueSize, trueDis, trueSize).setUv(0.0F, 0.0F);
+            bufferBuilder.vertex(matrix4f, -trueSize, trueDis, -trueSize).uv(0.0F, 1.0F);
+            bufferBuilder.vertex(matrix4f, trueSize, trueDis, -trueSize).uv(1.0F, 1.0F);
+            bufferBuilder.vertex(matrix4f, trueSize, trueDis, trueSize).uv(1.0F, 0.0F);
+            bufferBuilder.vertex(matrix4f, -trueSize, trueDis, trueSize).uv(0.0F, 0.0F);
             BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
             poseStack.popPose();
         }

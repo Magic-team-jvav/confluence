@@ -4,18 +4,14 @@ import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ViewportEvent;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.util.DynamicBiomeUtils;
-import software.bernie.geckolib.animation.EasingType;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.client.PortViewportEvent;
+import software.bernie.geckolib.core.animation.EasingType;
 
-@EventBusSubscriber(modid = Confluence.MODID, value = Dist.CLIENT)
 public class EctoMistHelper {
     public static int effectiveTombstones = 0;
     private static float ectoMistStep = 1.0F;
@@ -23,6 +19,11 @@ public class EctoMistHelper {
     private static float originalFarFog = 0.0F;
     private static float lastStart = 4;
     private static boolean turnOn = true;
+
+    public static void init() {
+        PortEventHandler.addListener(EctoMistHelper::fogColor);
+        PortEventHandler.addListener(EctoMistHelper::renderFog);
+    }
 
     public static void tick(Minecraft minecraft, LocalPlayer player) {
         if (ClientConfigs.minEctoMistEffectRadius <= 0) {
@@ -54,8 +55,7 @@ public class EctoMistHelper {
         return effectiveTombstones >= 7;
     }
 
-    @SubscribeEvent
-    public static void fogColor(ViewportEvent.ComputeFogColor event) {
+    public static void fogColor(PortViewportEvent.PortComputeFogColor event) {
         if (isGraveyard()) {
             if (ectoMistStep > 0.0F) {
                 ectoMistStep -= 0.5F / Minecraft.getInstance().getFps();
@@ -75,8 +75,7 @@ public class EctoMistHelper {
         }
     }
 
-    @SubscribeEvent
-    public static void renderFog(ViewportEvent.RenderFog event) {
+    public static void renderFog(PortViewportEvent.PortRenderFog event) {
         if (isGraveyard()) {
             float exp = (float) EasingType.exp(ectoMistStep);
             lastStart = Math.max(ClientConfigs.minEctoMistEffectRadius, 28.0F / (effectiveTombstones - 6));

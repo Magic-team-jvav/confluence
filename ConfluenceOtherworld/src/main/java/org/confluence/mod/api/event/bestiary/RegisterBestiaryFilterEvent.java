@@ -1,8 +1,8 @@
-package org.confluence.mod.api.event.bestiary;
+﻿package org.confluence.mod.api.event.bestiary;
 
 import com.mojang.datafixers.util.Function6;
-import net.neoforged.bus.api.Event;
-import net.neoforged.fml.event.IModBusEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.event.IModBusEvent;
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
 
 public class RegisterBestiaryFilterEvent extends Event implements IModBusEvent {

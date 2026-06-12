@@ -5,7 +5,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.jetbrains.annotations.Nullable;
 
 public interface IStructureTemplate$StructureBlockInfo {
-    void confluence$setColors(int[] colors);
+    void confluence$colors(int[] colors);
 
     int @Nullable [] confluence$getColors();
 

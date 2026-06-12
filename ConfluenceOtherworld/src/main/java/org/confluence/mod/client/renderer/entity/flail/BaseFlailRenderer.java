@@ -29,10 +29,14 @@ public class BaseFlailRenderer extends EntityRenderer<BaseFlailEntity> {
     private static final ResourceLocation DEFAULT_TEXTURE = Confluence.asResource("textures/entity/flail.png");
     private static final ResourceLocation DEFAULT_CHAIN = Confluence.asResource("textures/entity/flail_chain.png");
 
-    /** 链条模型位置（待美术提供） */
+    /**
+     * 链条模型位置（待美术提供）
+     */
     @Nullable
     private ResourceLocation chainModelLocation;
-    /** 链条贴图位置（待美术提供） */
+    /**
+     * 链条贴图位置（待美术提供）
+     */
     @Nullable
     private ResourceLocation chainTextureLocation;
 
@@ -43,12 +47,13 @@ public class BaseFlailRenderer extends EntityRenderer<BaseFlailEntity> {
         this.model = new FlailModel(context.bakeLayer(FlailModel.LAYER_LOCATION));
     }
 
-    public void setChainModel(@Nullable ResourceLocation modelLocation) { this.chainModelLocation = modelLocation; }
-    public void setChainTexture(@Nullable ResourceLocation textureLocation) { this.chainTextureLocation = textureLocation; }
+    public void setChainModel(@Nullable ResourceLocation modelLocation) {this.chainModelLocation = modelLocation;}
+
+    public void setChainTexture(@Nullable ResourceLocation textureLocation) {this.chainTextureLocation = textureLocation;}
 
     @Override
     public boolean shouldRender(BaseFlailEntity entity, net.minecraft.client.renderer.culling.Frustum frustum,
-                                 double camX, double camY, double camZ) {
+                                double camX, double camY, double camZ) {
         return entity.getOwner() != null;
     }
 
@@ -137,9 +142,9 @@ public class BaseFlailRenderer extends EntityRenderer<BaseFlailEntity> {
             PoseStack.Pose pose = poseStack.last();
             Matrix4f matrix = pose.pose();
             vertex(consumer, matrix, pose, packedLight, -halfS, -halfS, 0, 0, 0);
-            vertex(consumer, matrix, pose, packedLight,  halfS, -halfS, 0, 0, 1);
-            vertex(consumer, matrix, pose, packedLight,  halfS,  halfS, 0, 1, 1);
-            vertex(consumer, matrix, pose, packedLight, -halfS,  halfS, 0, 1, 0);
+            vertex(consumer, matrix, pose, packedLight, halfS, -halfS, 0, 0, 1);
+            vertex(consumer, matrix, pose, packedLight, halfS, halfS, 0, 1, 1);
+            vertex(consumer, matrix, pose, packedLight, -halfS, halfS, 0, 1, 0);
 
             poseStack.popPose();
         }
@@ -149,11 +154,11 @@ public class BaseFlailRenderer extends EntityRenderer<BaseFlailEntity> {
 
     private static void vertex(VertexConsumer consumer, Matrix4f matrix, PoseStack.Pose normal,
                                int packedLight, float x, float y, float z, float u, float v) {
-        consumer.addVertex(matrix, x, y, z)
-                .setColor(255, 255, 255, 255)
-                .setUv(u, v)
+        consumer.vertex(matrix, x, y, z)
+                .color(255, 255, 255, 255)
+                .uv(u, v)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(packedLight)
+                .uv2(packedLight)
                 .setNormal(normal, 0, 1, 0);
     }
 }

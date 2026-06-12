@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen;
+﻿package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
@@ -10,7 +10,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.extensions.IHolderExtension;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;

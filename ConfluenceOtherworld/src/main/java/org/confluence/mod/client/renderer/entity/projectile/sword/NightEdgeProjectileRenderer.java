@@ -20,7 +20,7 @@ public class NightEdgeProjectileRenderer extends EntityRenderer<NightEdgeProject
     @Override
     public void render(NightEdgeProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
 
-        if(entity.getOwner() == null || entity.tickCount <= 1){
+        if (entity.getOwner() == null || entity.tickCount <= 1) {
             return;
         }
 
@@ -36,18 +36,18 @@ public class NightEdgeProjectileRenderer extends EntityRenderer<NightEdgeProject
         poseStack.mulPose(Axis.XP.rotationDegrees(-15));
         poseStack.mulPose(Axis.YP.rotationDegrees(-y));
 
-        entity.trail.renderTrail(entity, entityPos , poseStack, bufferSource, packedLight);
+        entity.trail.renderTrail(entity, entityPos, poseStack, bufferSource, packedLight);
         poseStack.popPose();
 
         poseStack.pushPose();
 
         poseStack.translate(-entityPos.x, -entityPos.y, -entityPos.z);
         poseStack.mulPose(Axis.YP.rotationDegrees(y));
-        poseStack.scale(1,1,-1);
+        poseStack.scale(1, 1, -1);
         poseStack.mulPose(Axis.YP.rotationDegrees(-y));
         poseStack.translate(entityPos.x, entityPos.y, entityPos.z);
 
-        poseStack.translate(0, 0.1,0 );
+        poseStack.translate(0, 0.1, 0);
         poseStack.scale(0.8f, 0.8f, 0.8f);
 
         poseStack.mulPose(Axis.YP.rotationDegrees(y + 180));

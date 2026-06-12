@@ -1,17 +1,17 @@
-package org.confluence.mod.common.data.saved;
+﻿package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Npc;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.common.init.ModDataMaps;
@@ -30,14 +30,14 @@ public class BestiaryEntry {
             Codec.INT.fieldOf("drops").forGetter(entry -> entry.drops),
             Codec.FLOAT.lenientOptionalFieldOf("unlocked_progress", 1F).forGetter(entry -> entry.unlockedProgress)
     ).apply(instance, BestiaryEntry::new));
-    public static final StreamCodec<RegistryFriendlyByteBuf, BestiaryEntry> STREAM_CODEC = LibStreamCodecUtils.composite(
-            ByteBufCodecs.registry(Registries.ENTITY_TYPE), entry -> entry.type,
-            ByteBufCodecs.VAR_INT, entry -> entry.killedByCount,
-            ByteBufCodecs.FLOAT, entry -> entry.maxHealth,
-            ByteBufCodecs.FLOAT, entry -> entry.knockbackResistance,
-            ByteBufCodecs.FLOAT, entry -> entry.attackDamage,
-            ByteBufCodecs.FLOAT, entry -> entry.armor,
-            ByteBufCodecs.VAR_INT, entry -> entry.drops,
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, BestiaryEntry> STREAM_CODEC = LibStreamCodecUtils.composite(
+            PortByteBufCodecs.registry(Registries.ENTITY_TYPE), entry -> entry.type,
+            PortByteBufCodecs.VAR_INT, entry -> entry.killedByCount,
+            PortByteBufCodecs.FLOAT, entry -> entry.maxHealth,
+            PortByteBufCodecs.FLOAT, entry -> entry.knockbackResistance,
+            PortByteBufCodecs.FLOAT, entry -> entry.attackDamage,
+            PortByteBufCodecs.FLOAT, entry -> entry.armor,
+            PortByteBufCodecs.VAR_INT, entry -> entry.drops,
             BestiaryEntry::new
     );
 

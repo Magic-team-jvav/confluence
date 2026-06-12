@@ -1,22 +1,22 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record PiggyBankTotalMoneyPacket(long totalMoney) implements IPacketS2C {
-    public static final Type<PiggyBankTotalMoneyPacket> TYPE = Confluence.createType("piggy_bank_total_money");
-    public static final StreamCodec<ByteBuf, PiggyBankTotalMoneyPacket> STREAM_CODEC = ByteBufCodecs.VAR_LONG.map(PiggyBankTotalMoneyPacket::new, PiggyBankTotalMoneyPacket::totalMoney);
+public record PiggyBankTotalMoneyPacket(long totalMoney) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("piggy_bank_total_money");
+    public static final PortStreamCodec<ByteBuf, PiggyBankTotalMoneyPacket> STREAM_CODEC = PortByteBufCodecs.VAR_LONG.map(PiggyBankTotalMoneyPacket::new, PiggyBankTotalMoneyPacket::totalMoney);
 
     @Override
-    public Type<PiggyBankTotalMoneyPacket> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -26,6 +26,6 @@ public record PiggyBankTotalMoneyPacket(long totalMoney) implements IPacketS2C {
 
     public static void sendToClient(ServerPlayer player, PlayerPiggyBankContainer container, boolean update) {
         if (update) container.setChanged();
-        PacketDistributor.sendToPlayer(player, new PiggyBankTotalMoneyPacket(container.getTotalMoney()));
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, new PiggyBankTotalMoneyPacket(container.getTotalMoney()));
     }
 }

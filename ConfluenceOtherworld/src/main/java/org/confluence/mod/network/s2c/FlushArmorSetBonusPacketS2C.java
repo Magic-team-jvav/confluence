@@ -1,22 +1,22 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record FlushArmorSetBonusPacketS2C(int playerId) implements IPacketS2C {
-    public static final Type<FlushArmorSetBonusPacketS2C> TYPE = Confluence.createType("flush_armor_set_bonus");
-    public static final StreamCodec<ByteBuf, FlushArmorSetBonusPacketS2C> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(FlushArmorSetBonusPacketS2C::new, FlushArmorSetBonusPacketS2C::playerId);
+public record FlushArmorSetBonusPacketS2C(int playerId) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("flush_armor_set_bonus");
+    public static final PortStreamCodec<ByteBuf, FlushArmorSetBonusPacketS2C> STREAM_CODEC = PortByteBufCodecs.VAR_INT.map(FlushArmorSetBonusPacketS2C::new, FlushArmorSetBonusPacketS2C::playerId);
 
     @Override
-    public Type<FlushArmorSetBonusPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -25,10 +25,10 @@ public record FlushArmorSetBonusPacketS2C(int playerId) implements IPacketS2C {
     }
 
     public static void sendToPlayersTrackingTarget(ServerPlayer target) {
-        PacketDistributor.sendToPlayersTrackingEntityAndSelf(target, new FlushArmorSetBonusPacketS2C(target.getId()));
+        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntityAndSelf(target, new FlushArmorSetBonusPacketS2C(target.getId()));
     }
 
     public static void sendToClient(ServerPlayer sendTo, ServerPlayer target) {
-        PacketDistributor.sendToPlayer(sendTo, new FlushArmorSetBonusPacketS2C(target.getId()));
+        Confluence.NETWORK_HANDLER.sendToPlayer(sendTo, new FlushArmorSetBonusPacketS2C(target.getId()));
     }
 }

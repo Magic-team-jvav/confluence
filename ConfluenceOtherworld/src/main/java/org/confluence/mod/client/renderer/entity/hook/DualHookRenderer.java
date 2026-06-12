@@ -9,8 +9,8 @@ import org.confluence.mod.common.entity.hook.DualHookEntity;
 
 public class DualHookRenderer extends AbstractHookRenderer<DualHookEntity> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
-        Confluence.asResource("textures/entity/hook/ruby_hook.png"),
-        Confluence.asResource("textures/entity/hook/sapphire_hook.png")
+            Confluence.asResource("textures/entity/hook/ruby_hook.png"),
+            Confluence.asResource("textures/entity/hook/sapphire_hook.png")
     };
     private static final BlockState CHAIN = Blocks.CHAIN.defaultBlockState();
 

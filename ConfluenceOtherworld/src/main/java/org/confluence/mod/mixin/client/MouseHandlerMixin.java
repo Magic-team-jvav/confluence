@@ -25,9 +25,6 @@ public abstract class MouseHandlerMixin {
 
     @WrapWithCondition(method = "onPress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MouseHandler;grabMouse()V"))
     private boolean cancelGrab(MouseHandler instance) {
-        if (HouseSelectHud.inSelectHUD || AskForSoftcoreLayer.isAskForSoftcoreLayer()) {
-            return false;
-        }
-        return true;
+        return !HouseSelectHud.inSelectHUD && !AskForSoftcoreLayer.isAskForSoftcoreLayer();
     }
 }

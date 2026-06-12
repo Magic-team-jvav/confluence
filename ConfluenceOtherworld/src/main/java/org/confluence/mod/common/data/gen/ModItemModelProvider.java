@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen;
+﻿package org.confluence.mod.common.data.gen;
 
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -9,14 +9,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.*;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
@@ -95,7 +94,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         ResourceLocation handheldRod = ResourceLocation.withDefaultNamespace("item/handheld_rod");
         ResourceLocation pulling = ResourceLocation.withDefaultNamespace("pulling");
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");
-        for (DeferredHolder<Item, ? extends Item> item : BowItems.ITEMS.getEntries()) {
+        for (RegistryObject item : BowItems.ITEMS.getEntries()) {
             String path = item.getId().getPath();
             try {
                 ResourceLocation texture = Confluence.asResource("item/bow/" + path);
@@ -121,7 +120,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             }
             skip.add(item.get());
         }
-        for (DeferredHolder<Item, ? extends Item> item : CrossbowItems.ITEMS.getEntries()) {
+        for (RegistryObject item : CrossbowItems.ITEMS.getEntries()) {
             String path = item.getId().getPath();
             Item item1 = item.get();
             try {
@@ -188,7 +187,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         genModels(handheld, "item/handheld");
 
         // 方块物品
-        for (DeferredHolder<Item, ? extends Item> item : ModItems.BLOCK_ITEMS.getEntries()) {
+        for (RegistryObject item : ModItems.BLOCK_ITEMS.getEntries()) {
             Item item1 = item.get();
             String path = item.getId().getPath();
             try {
@@ -220,7 +219,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             }
         }
 
-        for (DeferredHolder<Item, ? extends Item> item : PaintItems.ITEMS.getEntries()) {
+        for (RegistryObject item : PaintItems.ITEMS.getEntries()) {
             if (item.get() instanceof PaintItem) {
                 String path = item.getId().getPath();
                 if (path.startsWith("deep_")) {
@@ -242,7 +241,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     /**
      * 手持高清但是物品栏16x
      */
-    private void separateModel(DeferredItem<?> deferredItem, ModelFile parentModel, String parentPath) {
+    private void separateModel(RegistryObject deferredItem, ModelFile parentModel, String parentPath) {
         String path = deferredItem.getId().getPath();
         getBuilder(path).guiLight(BlockModel.GuiLight.FRONT).customLoader((builder, helper) -> {
             ResourceLocation none = Confluence.asResource("");
@@ -267,7 +266,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     private void genModels(List<Map<DeferredRegister.Items, String[]>> list, String parent) {
         for (Map<DeferredRegister.Items, String[]> map : list) {
             for (Map.Entry<DeferredRegister.Items, String[]> entry : map.entrySet()) {
-                for (DeferredHolder<Item, ? extends Item> item : entry.getKey().getEntries()) {
+                for (RegistryObject item : entry.getKey().getEntries()) {
                     if (skip.contains(item.get())) continue;
                     String path = item.getId().getPath();
                     boolean exist = false;

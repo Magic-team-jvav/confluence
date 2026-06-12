@@ -107,7 +107,8 @@ repositories {
         name = 'GeckoLib'
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
         content {
-            includeGroup("software.bernie.geckolib")
+            includeGroupByRegex("software\\.bernie.*")
+            includeGroup("com.eliotlash.mclib")
         }
     }
     maven {
@@ -181,6 +182,7 @@ dependencies {
     projectName.forEach { name -> modImplementation jarJar(project(":" + name)) }
 
     modImplementation jarJar("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
+    modImplementation jarJar("com.eliotlash.mclib:mclib:20")
     modImplementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}-forge")
     modImplementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}-forge")
 //    modImplementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")

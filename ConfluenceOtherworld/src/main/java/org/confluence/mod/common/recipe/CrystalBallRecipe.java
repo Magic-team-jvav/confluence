@@ -2,7 +2,7 @@ package org.confluence.mod.common.recipe;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -51,7 +51,7 @@ public class CrystalBallRecipe extends EnvironmentAmountRecipe {
         }
 
         @Override
-        protected StreamCodec<RegistryFriendlyByteBuf, CrystalBallRecipe> getStreamCodec() {
+        protected StreamCodec<PortRegistryFriendlyByteBuf, CrystalBallRecipe> getStreamCodec() {
             return environmentShapelessSerializerSteamCodec(CrystalBallRecipe::new);
         }
     }

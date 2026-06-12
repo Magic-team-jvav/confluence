@@ -1,12 +1,12 @@
-package org.confluence.mod.common.effect.harmful;
+﻿package org.confluence.mod.common.effect.harmful;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.neoforged.neoforge.common.EffectCure;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.EffectCure;
+import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 

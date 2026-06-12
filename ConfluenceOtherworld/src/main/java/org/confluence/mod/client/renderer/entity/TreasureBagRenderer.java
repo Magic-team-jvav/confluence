@@ -64,18 +64,18 @@ public class TreasureBagRenderer extends ItemEntityRenderer {
     }
 
     private static void vertex1(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {
-        vertexConsumer.addVertex(matrix4f, 0.0F, 0.0F, 0.0F).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 255);
+        vertexConsumer.vertex(matrix4f, 0.0F, 0.0F, 0.0F).color(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 255);
     }
 
     private static void vertex2(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {
-        vertexConsumer.addVertex(matrix4f, -LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
+        vertexConsumer.vertex(matrix4f, -LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).color(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
     }
 
     private static void vertex3(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {
-        vertexConsumer.addVertex(matrix4f, LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
+        vertexConsumer.vertex(matrix4f, LibMathUtils.HALF_SQRT_3 * width, length, -0.5F * width).color(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
     }
 
     private static void vertex4(VertexConsumer vertexConsumer, Matrix4f matrix4f, RandomSource randomSource) {
-        vertexConsumer.addVertex(matrix4f, 0.0F, length, width).setColor(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
+        vertexConsumer.vertex(matrix4f, 0.0F, length, width).color(randomSource.nextInt(255), randomSource.nextInt(255), randomSource.nextInt(255), 0);
     }
 }

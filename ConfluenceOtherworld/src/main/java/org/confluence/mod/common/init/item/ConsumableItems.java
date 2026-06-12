@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init.item;
+﻿package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -6,9 +6,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibDateUtils;

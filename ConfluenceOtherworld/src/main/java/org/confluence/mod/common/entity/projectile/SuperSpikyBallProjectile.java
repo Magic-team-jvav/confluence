@@ -58,7 +58,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
                     damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
                 }
                 if (entity.hurt(ModDamageTypes.of(level(), DamageTypes.STING), damage)) {
-                    LibMathUtils.knockBackA2B(this, entity, 0.2, 0.04);
+                    LibEntityUtils.knockBackA2B(this, entity, 0.2, 0.04);
                 }
             }
         }

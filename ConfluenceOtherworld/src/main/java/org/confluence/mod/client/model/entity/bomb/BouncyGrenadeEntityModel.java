@@ -28,6 +28,7 @@ public class BouncyGrenadeEntityModel extends EntityModel<BouncyGrenadeEntity> {
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     @Override
     public void setupAnim(BouncyGrenadeEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 

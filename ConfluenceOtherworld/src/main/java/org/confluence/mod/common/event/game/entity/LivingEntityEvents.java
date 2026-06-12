@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.game.entity;
+﻿package org.confluence.mod.common.event.game.entity;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
@@ -23,12 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
-import net.neoforged.bus.api.EventPriority;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.util.TriState;
-import net.neoforged.neoforge.event.entity.living.*;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
@@ -37,7 +33,6 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
@@ -82,19 +77,10 @@ import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.api.entity.IMinion;
-import org.confluence.terraentity.entity.animal.SimpleVariantAnimal;
-import org.confluence.terraentity.entity.boss.Skeletron;
-import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.entity.summon.AbstractSummonMob;
-import org.confluence.terraentity.init.TETags;
-import org.confluence.terraentity.init.entity.TEAnimals;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.confluence.terraentity.init.entity.TENpcEntities;
-import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.entity.living.*;
+import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.Collection;
@@ -102,10 +88,28 @@ import java.util.List;
 
 import static org.confluence.mod.util.PlayerUtils.receiveMana;
 
-@EventBusSubscriber(modid = Confluence.MODID)
 public final class LivingEntityEvents {
-    @SubscribeEvent
-    public static void livingDeath(LivingDeathEvent event) {
+
+    public static void init() {
+        PortEventHandler.addListener(LivingEntityEvents::livingDeath);
+        PortEventHandler.addListener(LivingEntityEvents::livingHeal);
+        PortEventHandler.addListener(LivingEntityEvents::livingIncomingDamage);
+        PortEventHandler.addListener(LivingEntityEvents::processCriticalDamage);
+        PortEventHandler.addListener(LivingEntityEvents::livingEquipmentChange);
+        PortEventHandler.addListener(LivingEntityEvents::livingDrops);
+        PortEventHandler.addListener(LivingEntityEvents::livingGetProjectile);
+        PortEventHandler.addListener(LivingEntityEvents::livingBreathe);
+        PortEventHandler.addListener(LivingEntityEvents::finalizeSpawn);
+        PortEventHandler.addListener(LivingEntityEvents::livingEntityUseItemFinish);
+        PortEventHandler.addListener(LivingEntityEvents::effectParticleModification);
+        PortEventHandler.addListener(LivingEntityEvents::spawnClusterSize);
+        PortEventHandler.addListener(LivingEntityEvents::afterAccessoryAbilitiesFlushed);
+        PortEventHandler.addListener(LivingEntityEvents::curioChange);
+        PortEventHandler.addListener(LivingEntityEvents::toBeBestiaryEntry);
+        PortEventHandler.addListener(LivingEntityEvents::armorPenetration);
+    }
+
+    public static void livingDeath(PortLivingDeathEvent event) {
         LivingEntity victim = event.getEntity();
         DamageSource damageSource = event.getSource();
 
@@ -163,8 +167,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void livingHeal(LivingHealEvent event) {
+    public static void livingHeal(PortLivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
         float amount = event.getAmount();
@@ -175,10 +178,10 @@ public final class LivingEntityEvents {
         if (EverBeneficial.of(living).isVitalCrystalUsed()) {
             amount *= 1.2F;
         }
-        if (living.hasEffect(ModEffects.COZY_FIRE)) {
+        if (living.hasEffect(ModEffects.COZY_FIRE.get())) {
             amount *= 1.1F;
         }
-        if (living.hasEffect(ModEffects.HEART_LANTERN)) {
+        if (living.hasEffect(ModEffects.HEART_LANTERN.get())) {
             amount *= 1.2F;
         }
         event.setAmount(amount);
@@ -186,8 +189,7 @@ public final class LivingEntityEvents {
         DamageIndicatorOptions.sendHealParticle(amount, level, living);
     }
 
-    @SubscribeEvent
-    public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
+    public static void livingIncomingDamage(PortLivingIncomingDamageEvent event) {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
 
@@ -199,7 +201,6 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOW)
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
@@ -233,7 +234,6 @@ public final class LivingEntityEvents {
         event.setNewDamage(amount);
     }
 
-    @SubscribeEvent
     public static void livingDamage$Post(LivingDamageEvent.Post event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
@@ -260,26 +260,23 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOW)
     public static void processCriticalDamage(ProcessCriticalDamageEvent event) {
         if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
             StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
         }
     }
 
-    @SubscribeEvent
-    public static void mobEffect$Applicable(MobEffectEvent.Applicable event) {
-        if (event.getResult() == MobEffectEvent.Applicable.Result.DEFAULT && !(event.getEntity() instanceof Player)) {
-            Holder<MobEffect> effect = event.getEffectInstance().getEffect();
+    public static void mobEffect$Applicable(PortMobEffectEvent.PortApplicable event) {
+        if (event.getResult() == PortMobEffectEvent.PortApplicable.Result.DEFAULT && !(event.getEntity() instanceof Player)) {
+            MobEffect effect = event.getEffectInstance().getEffect();
             if (LivingInvulnerableEffects.isInvulnerableTo(event.getEntity(), effect)) {
-                event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+                event.setResult(PortMobEffectEvent.PortApplicable.PortResult.DO_NOT_APPLY);
             }
         }
         SweetSword.applyEffects(event);
     }
 
-    @SubscribeEvent
-    public static void mobEffect$Added(MobEffectEvent.Added event) {
+    public static void mobEffect$Added(PortMobEffectEvent.PortAdded event) {
         MobEffectInstance instance = event.getEffectInstance();
         if (event.getEffectSource() != null) {
             ModEffects.onLoveEffectAdd(instance, event.getEntity(), event.getEffectSource());
@@ -293,26 +290,23 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void mobEffect$Remove(MobEffectEvent.Remove event) {
+    public static void mobEffect$Remove(PortMobEffectEvent.PortRemove event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
         if (effectInstance == null) return;
         ModEffects.onLuckEffectRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.amplifier);
     }
 
-    @SubscribeEvent
-    public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
+    public static void livingEquipmentChange(PortLivingEquipmentChangeEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         AchievementUtils.matchingAttire_fashionStatement(event.getSlot().getType(), player);
         if (event.getSlot().getType() == EquipmentSlot.Type.HAND) {
             VisibilityPacketS2C.sendSignal(player, event.getTo().is(ModTags.Items.SHOW_SIGNAL));
         } else if (event.getSlot() == EquipmentSlot.HEAD) {
-            VisibilityPacketS2C.sendSunglasses(player, event.getTo().is(VanityArmorItems.SUNGLASSES) ? TriState.TRUE : TriState.FALSE, TriState.DEFAULT);
+            VisibilityPacketS2C.sendSunglasses(player, event.getTo().is(VanityArmorItems.SUNGLASSES) ? PortTriState.TRUE : PortTriState.FALSE, PortTriState.DEFAULT);
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOW)
-    public static void livingDrops(LivingDropsEvent event) {
+    public static void livingDrops(PortLivingDropsEvent event) {
         LivingEntity living = event.getEntity();
         ServerLevel level = (ServerLevel) living.level();
         if (!level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) return;
@@ -366,8 +360,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void livingGetProjectile(LivingGetProjectileEvent event) {
+    public static void livingGetProjectile(PortLivingGetProjectileEvent event) {
         LivingEntity living = event.getEntity();
         event.setProjectileItemStack(ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living));
 
@@ -377,16 +370,15 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void livingBreathe(LivingBreatheEvent event) {
+    public static void livingBreathe(PortLivingBreatheEvent event) {
         LivingEntity living = event.getEntity();
         boolean b = !living.getActiveEffectsMap().isEmpty();
-        if (b && living.hasEffect(ModEffects.CHOKING)) {
+        if (b && living.hasEffect(ModEffects.CHOKING.get())) {
             living.setAirSupply(living.getAirSupply() - 5);
         }
         if (event.canBreathe()) return;
 
-        if (b && living.hasEffect(ModEffects.SHIMMER)) {
+        if (b && living.hasEffect(ModEffects.SHIMMER.get())) {
             event.setCanBreathe(true);
         } else if (LibEntityUtils.anyHandHasItem(living, itemStack -> !itemStack.isEmpty() && itemStack.is(SwordItems.BREATHING_REED))) {
             if (living.canDrownInFluidType(living.level().getFluidState(living.blockPosition().offset(0, 2, 0)).getFluidType())) {
@@ -398,8 +390,7 @@ public final class LivingEntityEvents {
         ModArmorBonus.onBreath(event);
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public static void finalizeSpawn(FinalizeSpawnEvent event) {
+    public static void finalizeSpawn(PortFinalizeSpawnEvent event) {
         ServerLevel level = event.getLevel().getLevel();
         Mob mob = event.getEntity();
         EntityType<?> type = mob.getType();
@@ -458,10 +449,9 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void livingEntityUseItem$Start(LivingEntityUseItemEvent.Start event) {
+    public static void livingEntityUseItem$Start(PortLivingEntityUseItemEvent.PortStart event) {
         LivingEntity living = event.getEntity();
-        if (!living.level().isClientSide && living.hasEffect(ModEffects.CHOKING)) {
+        if (!living.level().isClientSide && living.hasEffect(ModEffects.CHOKING.get())) {
             ItemStack itemStack = event.getItem();
             if (itemStack.getFoodProperties(living) != null) {
                 event.setCanceled(true);
@@ -470,16 +460,15 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void livingEntityUseItemFinish(LivingEntityUseItemEvent.Finish event) {
+    public static void livingEntityUseItemFinish(PortLivingEntityUseItemEvent.PortFinish event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         ItemStack itemStack = event.getItem();
         RandomSource random = player.getRandom();
         if (itemStack.is(FoodItems.GREEN_DUMPLING.get()) && random.nextInt(6) == 0) {
-            player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
+            player.addEffect(new MobEffectInstance(ModEffects.CHOKING.get(), 2400));
         }
-        if (player.hasEffect(ModEffects.CHOKING) && ModUtils.isWaterBottle(itemStack)) {
-            player.removeEffect(ModEffects.CHOKING);
+        if (player.hasEffect(ModEffects.CHOKING.get()) && ModUtils.isWaterBottle(itemStack)) {
+            player.removeEffect(ModEffects.CHOKING.get());
             ItemStack resultItem = itemStack.finishUsingItem(player.level(), player);
             event.setResultStack(resultItem);
         }
@@ -488,10 +477,9 @@ public final class LivingEntityEvents {
             player.getFoodData().setFoodLevel(20);
             player.getFoodData().setSaturation(20.0f);
             receiveMana(player, () -> 1000);
-            List<Holder<MobEffect>> negativeEffects = player.getActiveEffects().stream()
+            List<MobEffect> negativeEffects = player.getActiveEffects().stream()
                     .map(MobEffectInstance::getEffect)
-                    .filter(effect -> !effect.value().isBeneficial())
-                    .toList();
+                    .filter(effect -> !effect.isBeneficial()).toList();
             for (int i = negativeEffects.size() - 1; i >= 0; i--) {
                 player.removeEffect(negativeEffects.get(i));
             }
@@ -499,26 +487,24 @@ public final class LivingEntityEvents {
 
     }
 
-    @SubscribeEvent
-    public static void mobSpawn$PositionCheck(MobSpawnEvent.PositionCheck event) {
+    public static void mobSpawn$PositionCheck(PortMobSpawnEvent.PortPositionCheck event) {
         if (event.getSpawnType() != MobSpawnType.NATURAL) return;
         Mob mob = event.getEntity();
-        if (event.getResult() != MobSpawnEvent.PositionCheck.Result.FAIL && (
+        if (event.getResult() != PortMobSpawnEvent.PortPositionCheck.PortResult.FAIL.unwrap() && (
                 DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) ||
                         GameEventSystem.shouldDenyNatureSpawn()
         )) {
-            event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
+            event.setResult(PortMobSpawnEvent.PortPositionCheck.PortResult.FAIL.unwrap());
         }
         if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
             if (iSection != null && iSection.confluence$isGraveyard()) {
-                event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
+                event.setResult(PortMobSpawnEvent.PortPositionCheck.PortResult.SUCCEED.unwrap());
             }
         }
     }
 
-    @SubscribeEvent
-    public static void mobSpawn$SpawnPlacementCheck(MobSpawnEvent.SpawnPlacementCheck event) {
+    public static void mobSpawn$SpawnPlacementCheck(PortMobSpawnEvent.PortSpawnPlacementCheck event) {
         if (event.getSpawnType() == MobSpawnType.NATURAL && !event.getPlacementCheckResult()) {
             EntityType<?> entityType = event.getEntityType();
 //            if (entityType == TEMonsterEntities.GHOST.get()) {
@@ -530,21 +516,19 @@ public final class LivingEntityEvents {
             if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
                 ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
                 if (iSection != null && iSection.confluence$isGraveyard()) {
-                    event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED);
+                    event.setResult(PortMobSpawnEvent.PortSpawnPlacementCheck.PortResult.SUCCEED.unwrap());
                 }
             }
         }
     }
 
-    @SubscribeEvent
-    public static void effectParticleModification(EffectParticleModificationEvent event) {
+    public static void effectParticleModification(PortEffectParticleModificationEvent event) {
         if (event.isVisible() && !IMobEffectInstance.of(event.getEffect()).confluence$isEnabled()) {
             event.setVisible(false);
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOW)
-    public static void spawnClusterSize(SpawnClusterSizeEvent event) {
+    public static void spawnClusterSize(PortSpawnClusterSizeEvent event) {
         if (BloodMoonGameEvent.INSTANCE.started()) {
             Mob mob = event.getEntity();
             if (mob instanceof Enemy && mob.position().y > OverworldUtils.getSurfaceY()) {
@@ -553,14 +537,12 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             PlayerUtils.flushPrimitiveValueData(player);
         }
     }
 
-    @SubscribeEvent
     public static void curioChange(CurioChangeEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             if (PrefixUtils.canInit(event.getTo())) {
@@ -569,7 +551,6 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
     public static void toBeBestiaryEntry(ToBeBestiaryEntryEvent event) {
         LivingEntity living = event.getEntity();
         if (living instanceof AbstractSummonMob) {
@@ -584,7 +565,6 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
     public static void armorPenetration(ArmorPenetrationEvent event) {
         DamageSource damageSource = event.getDamageSource();
 
@@ -595,7 +575,7 @@ public final class LivingEntityEvents {
 
         if (damageSource.getEntity() instanceof LivingEntity living &&
                 damageSource.is(LibTags.DamageTypes.AS_MELEE_ATTACK) &&
-                living.hasEffect(ModEffects.SHARPENED)
+                living.hasEffect(ModEffects.SHARPENED.get())
         ) {
             event.setPenetration(event.getPenetration() + 12);
         }

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.map;
+﻿package org.confluence.mod.common.data.map;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.*;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.common.MinecraftForge;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModTags;
@@ -38,7 +38,7 @@ public record DiggingPower(int power) {
         } else {
             power = diggingPower.power;
         }
-        return NeoForge.EVENT_BUS.post(new GetCustomDiggingPowerEvent(stack, power)).getPower();
+        return MinecraftForge.EVENT_BUS.post(new GetCustomDiggingPowerEvent(stack, power)).getPower();
     }
 
     public static void addTooltip(ItemStack stack, Holder<Item> holder, List<Component> toolTip) {

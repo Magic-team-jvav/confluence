@@ -1,13 +1,12 @@
-package org.confluence.mod.network.c2s;
+﻿package org.confluence.mod.network.c2s;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.Util;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.SimpleMenuProvider;
@@ -20,14 +19,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.*;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
 
-public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPacketC2S {
+public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPacket.C2S {
     public static final byte EXTRA_INVENTORY = 0;
     public static final byte MAID_TRADE_MENU = 1;
     public static final byte NPC_REFORGE_MENU = 2;
@@ -40,10 +41,10 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPacket
         map.put(DYE_VAT_MENU, new Tuple<>((containerId, playerInventory, player) -> new DyeVatMenu(containerId, playerInventory, getAccess(player)), Component.translatable("container.confluence.dye_vat")));
         map.put(DYE_MIX_MENU, new Tuple<>((containerId, playerInventory, player) -> new DyeMixMenu(containerId, playerInventory, getAccess(player)), Component.translatable("container.confluence.dye_mix")));
     });
-    public static final Type<OpenMenuPacketC2S> TYPE = Confluence.createType("open_menu");
-    public static final StreamCodec<RegistryFriendlyByteBuf, OpenMenuPacketC2S> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.BYTE, OpenMenuPacketC2S::menuId,
-            ItemStack.OPTIONAL_STREAM_CODEC, OpenMenuPacketC2S::stack,
+    public static final ResourceLocation ID = Confluence.asResource("open_menu");
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenMenuPacketC2S> STREAM_CODEC = PortStreamCodec.composite(
+            PortByteBufCodecs.BYTE, OpenMenuPacketC2S::menuId,
+            PortItemStackExtension.optionalStreamCodec(), OpenMenuPacketC2S::stack,
             OpenMenuPacketC2S::new
     );
 
@@ -61,8 +62,8 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPacket
     }
 
     @Override
-    public Type<OpenMenuPacketC2S> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -77,11 +78,11 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPacket
                 player.containerMenu.setCarried(itemStack);
                 payloads = new CustomPacketPayload[]{new SPacketGrabbedItem(itemStack)};
             }
-            PacketDistributor.sendToPlayer(player, AvailableHouseSelectPacketS2C.collectPacket(player), payloads);
+            Confluence.NETWORK_HANDLER.sendToPlayer(AvailableHouseSelectPacketS2C.collectPacket(player), payloads);
         }
     }
 
     public static void sendToServer(byte menuId, ItemStack stack) {
-        PacketDistributor.sendToServer(new OpenMenuPacketC2S(menuId, stack));
+        Confluence.NETWORK_HANDLER.sendToServer(new OpenMenuPacketC2S(menuId, stack));
     }
 }

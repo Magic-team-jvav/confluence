@@ -11,7 +11,10 @@ import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.common.soulskill.SoulSkill;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
@@ -39,7 +42,9 @@ public class OverviewNode extends SoulSkillBox {
         isTooltip = true;
     }
 
-    /** 屏幕中心相对坐标系中的中心点，不含 scroll 偏移 */
+    /**
+     * 屏幕中心相对坐标系中的中心点，不含 scroll 偏移
+     */
     public Vec2 getCenterPos() {
         return new Vec2(getOrigX() + (float) getWidth() / 2, getOrigY() + (float) getHeight() / 2);
     }

@@ -1,8 +1,8 @@
-package org.confluence.mod.integration.terra_entity.init;
+﻿package org.confluence.mod.integration.terra_entity.init;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
@@ -15,7 +15,6 @@ import org.confluence.terraentity.registries.hit_effect.variant.PrefabEffect;
 import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
@@ -37,7 +36,7 @@ public final class ModEffectStrategies {
      * @param name   id
      * @param effect 效果回调
      */
-    public static DeferredHolder<EffectStrategy, EffectStrategy> createEffect(String name, BiConsumer<LivingEntity, LivingEntity> effect) {
+    public static RegistryObject createEffect(String name, BiConsumer<LivingEntity, LivingEntity> effect) {
         return EFFECT_STRATEGY.register(name, () -> new EffectStrategy(name, effect));
     }
 
@@ -47,64 +46,64 @@ public final class ModEffectStrategies {
      * @param name   id
      * @param effect 效果类型
      */
-    public static DeferredHolder<EffectStrategy, EffectStrategy> createEffect(String name, IEffectStrategy effect) {
+    public static RegistryObject createEffect(String name, IEffectStrategy effect) {
         return EFFECT_STRATEGY.register(name, () -> new EffectStrategy(effect));
     }
 
     /**
      * 未定义效果
      */
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> UNDEFINED = createEffect("undefined",
+    private static final RegistryObject UNDEFINED = createEffect("undefined",
             UNDEFINED_EFFECT);
 
     /**
      * 蝙蝠棍
      */
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> BAT_FANG_EFFECT = createEffect("bat",
+    private static final RegistryObject BAT_FANG_EFFECT = createEffect("bat",
             (owner, entity) -> owner.heal(1));
 
 //    /**着火*/
-//    private static final DeferredHolder<EffectStrategy, EffectStrategy> SET_FIRE_EFFECT = createEffect("set_fire_5_sec",
+//    private static final RegistryObject SET_FIRE_EFFECT = createEffect("set_fire_5_sec",
 //            SET_FIRE.apply(5 * 20, 1f));
 
     /**
      * 魔光剑
      */
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> LIGHTS_BANE_EFFECT = createEffect("lights_bane",
+    private static final RegistryObject LIGHTS_BANE_EFFECT = createEffect("lights_bane",
             ON_HIT_PROJECTILE.apply((level) -> ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f)));
 
     /**
      * 养蜂人
      */
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> BEE_KEEPER_EFFECT = createEffect("bee_keeper",
+    private static final RegistryObject BEE_KEEPER_EFFECT = createEffect("bee_keeper",
             ON_HIT_PROJECTILE_COUNT.apply((level) -> ModEntities.BEE_PROJECTILE.get().create(level).addAttackDamage(2), 3));
 
     /**
      * 稻草人
      * 参数：baseSpeed=0.3, baseTime=16.0(tick), baseRangeRandomMin=0.8, baseRangeRandomMax=1.2, baseOffsetMax=1.5, baseCubeRange=0（单体驱离）
      */
-    private static final DeferredHolder<EffectStrategy, EffectStrategy> SINGLE_DRIVE_AWAY = createEffect("single_drive_away",
-        (owner, target) -> {
-            if (target instanceof LivingEntity livingTarget) {
-                livingTarget.addEffect(new net.minecraft.world.effect.MobEffectInstance(
-                org.confluence.terraentity.init.TEEffects.SCARED.getDelegate(), 16 , 0 ));
-            }
-        });
+    private static final RegistryObject SINGLE_DRIVE_AWAY = createEffect("single_drive_away",
+            (owner, target) -> {
+                if (target instanceof LivingEntity livingTarget) {
+                    livingTarget.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                            org.confluence.terraentity.init.TEEffects.SCARED.getDelegate(), 16, 0));
+                }
+            });
 
     // 北斗飞镖
-//    private static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp",
+//    private static final RegistryObject FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp",
 //            TimePossibilityAmplifierEffect.of("frozen_burn_10_sec_4_amp", TEEffects.FROST_BURN, 200,3,3,1f));
 //
-//    private static final DeferredHolder<EffectStrategy, EffectStrategy> HELL_FIRE_10_SEC_4_AMP = createEffect("hell_fire_10_sec_4_amp",
+//    private static final RegistryObject HELL_FIRE_10_SEC_4_AMP = createEffect("hell_fire_10_sec_4_amp",
 //            TimePossibilityAmplifierEffect.of("hell_fire_10_sec_4_amp", ModEffects.HELLFIRE,  200,3,3,1f));
 //
-//    private static final DeferredHolder<EffectStrategy, EffectStrategy> WITHER_10_SEC_4_AMP = createEffect("wither_10_sec_4_amp",
+//    private static final RegistryObject WITHER_10_SEC_4_AMP = createEffect("wither_10_sec_4_amp",
 //            TimePossibilityAmplifierEffect.of("wither_10_sec_4_amp", MobEffects.WITHER, 200,3,3,1f));
 //
-//    private static final DeferredHolder<EffectStrategy, EffectStrategy> POISON_10_SEC_4_AMP = createEffect("poison_10_sec_4_amp",
+//    private static final RegistryObject POISON_10_SEC_4_AMP = createEffect("poison_10_sec_4_amp",
 //            TimePossibilityAmplifierEffect.of("poison_10_sec_4_amp", MobEffects.POISON, 200,3,3,1f));
 //
-//    private static final DeferredHolder<EffectStrategy, EffectStrategy> INSTANT_HARM_1_SEC_7_AMP = createEffect("instant_harm_1_sec_7_amp",
+//    private static final RegistryObject INSTANT_HARM_1_SEC_7_AMP = createEffect("instant_harm_1_sec_7_amp",
 //            TimePossibilityAmplifierEffect.of("instant_harm_1_sec_7_amp", MobEffects.HARM, 1,6,6,1f));
 
 

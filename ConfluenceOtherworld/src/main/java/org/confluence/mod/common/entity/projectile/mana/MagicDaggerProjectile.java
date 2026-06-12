@@ -41,7 +41,7 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
             hitSet.add(entity.getUUID());
             this.damage -= deltaDamage;
-            LibMathUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibEntityUtils.knockBackA2B(this, entity, 0.5, 0.2);
             if (penetrate >= 2) {
                 discard();
             } else {

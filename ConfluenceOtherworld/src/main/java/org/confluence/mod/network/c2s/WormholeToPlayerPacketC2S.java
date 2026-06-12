@@ -1,32 +1,33 @@
-package org.confluence.mod.network.c2s;
+﻿package org.confluence.mod.network.c2s;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.lib.network.IPacketC2S;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.item.PotionItems;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.UUID;
 
-public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements IPacketC2S {
-    public static final Type<WormholeToPlayerPacketC2S> TYPE = Confluence.createType("wormhole_to_player");
-    public static final StreamCodec<FriendlyByteBuf, WormholeToPlayerPacketC2S> STREAM_CODEC = StreamCodec.composite(
+public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements IPortPacket.C2S {
+    public static final ResourceLocation ID = Confluence.asResource("wormhole_to_player");
+    public static final PortStreamCodec<FriendlyByteBuf, WormholeToPlayerPacketC2S> STREAM_CODEC = PortPortStreamCodec.composite(
             LibStreamCodecUtils.UUID, WormholeToPlayerPacketC2S::playerId,
             ByMod.STREAM_CODEC, WormholeToPlayerPacketC2S::byMod,
             WormholeToPlayerPacketC2S::new
     );
 
     @Override
-    public Type<WormholeToPlayerPacketC2S> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -73,7 +74,7 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements I
         };
 
         public static final ByMod[] VALUES = values();
-        public static final StreamCodec<ByteBuf, ByMod> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(i -> VALUES[i], Enum::ordinal);
+        public static final PortStreamCodec<ByteBuf, ByMod> STREAM_CODEC = PortByteBufCodecs.VAR_INT.map(i -> VALUES[i], Enum::ordinal);
 
         public abstract boolean enabled();
     }

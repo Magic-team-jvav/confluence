@@ -98,7 +98,7 @@ public class BaseGun extends Item implements GeoItem {
         IntStream.range(0, times).forEach(i -> {
             BaseBulletEntity baseBulletEntity = createBulletEntity(baseBulletEntities, player, bullet, gun, damage, knockback, velocity, penetrate, inaccuracy);
 
-            baseBulletEntity.setColorID(((BaseGun) gun.getItem()).getColorID());
+            baseBulletEntity.colorID(((BaseGun) gun.getItem()).getColorID());
             baseBulletEntity.damage = damage;
             baseBulletEntity.knockback = knockback;
             baseBulletEntity.penetrate = penetrate;

@@ -1,13 +1,13 @@
-package org.confluence.mod.common.data.gen.tag;
+﻿package org.confluence.mod.common.data.gen.tag;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terraentity.init.TETags;
@@ -99,7 +99,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         tag(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)
                 .addOptionalTag(TETags.EntityTypes.SLIME);
         IntrinsicTagAppender<EntityType<?>> npcInvulnerableToPlayer = tag(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER);
-        for (DeferredHolder<EntityType<?>, ? extends EntityType<?>> npc : TENpcEntities.ENTITIES.getEntries()) {
+        for (RegistryObject, ? extends EntityType<?>>TENpcEntities.ENTITIES.getEntries()){
             npcInvulnerableToPlayer.add(npc.get());
         }
     }

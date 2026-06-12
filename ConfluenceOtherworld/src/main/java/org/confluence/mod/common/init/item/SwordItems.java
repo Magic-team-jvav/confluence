@@ -78,20 +78,20 @@ public class SwordItems {
     public static final RegistryObject<BaseSwordItem> GOLDEN_BROADSWORD = register("golden_broadsword", ModTiers.GOLD, 7, 1.6F, NORMAL_SWORD.get());
     public static final RegistryObject<BaseSwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", ModTiers.PLATINUM, 8, 1.6F, NORMAL_SWORD.get());
     public static final RegistryObject<BaseSwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 15, 3, BOARD_SWORD.apply(0.8F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 1.5F, AttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 1.5F, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.2f, AttributeModifier.Operation.ADD_VALUE).hasImage());
     public static final RegistryObject<BaseSwordItem> COBALT_SWORD = register("cobalt_sword", ModTiers.UNBREAKABLE, 25, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
     public static final RegistryObject<BaseSwordItem> PALLADIUM_SWORD = register("palladium_sword", ModTiers.UNBREAKABLE, 29, 2.6F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
     public static final RegistryObject<BaseSwordItem> MYTHRIL_SWORD = register("mythril_sword", ModTiers.UNBREAKABLE, 30, 2.6F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
     public static final RegistryObject<BaseSwordItem> ORICHALCUM_SWORD = register("orichalcum_sword", ModTiers.UNBREAKABLE, 34, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
     public static final RegistryObject<BaseSwordItem> ADAMANTITE_SWORD = register("adamantite_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
     public static final RegistryObject<BaseSwordItem> TITANIUM_SWORD = register("titanium_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
 
     // tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
     public static final RegistryObject<BaseSwordItem> FAKE_SWORD = register("fake_sword", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, NORMAL_SWORD.get());
@@ -112,27 +112,27 @@ public class SwordItems {
 
     // 改横扫大小的宽剑(由 ENTITY_INTERACTION_RANGE 属性控制)
     public static final RegistryObject<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 7, 7, ModRarity.ORANGE, BOARD_SWORD.apply(0.0F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, -1.4F, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), -1.4F, AttributeModifier.Operation.ADD_VALUE));
 
     public static final RegistryObject<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F).hasImage()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 9, AttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 9, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.8F, AttributeModifier.Operation.ADD_VALUE));
 
     // 效果剑
     public static final RegistryObject<BaseSwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.UNBREAKABLE, 15, 0.5F, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.PURPLE_CLUBBERFISH_EFFECT.get()).hasImage()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)));
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 2, AttributeModifier.Operation.ADD_VALUE)));
     public static final RegistryObject<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.LIGHTS_BANE_PROJ).hasImage()));
     public static final RegistryObject<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer", ModTiers.UNBREAKABLE, 14, 1.3F, ModRarity.BLUE, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()).hasImage()));
     public static final RegistryObject<BaseSwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 25, 1.2f, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get()).hasImage()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4f, AttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 4f, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)));
     public static final RegistryObject<BaseSwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE, 21, 0.6F, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()).hasImage()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)));
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 2, AttributeModifier.Operation.ADD_VALUE)));
     public static final RegistryObject<BaseSwordItem> TENTACLE_MACE = register("tentacle_mace", ModTiers.UNBREAKABLE, 13, 2.0F, ModRarity.GREEN, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get())));
     public static final RegistryObject<BaseSwordItem> BEE_KEEPER = register("bee_keeper", ModTiers.UNBREAKABLE, 18, 1.6F, ModRarity.GREEN, withSpecialSweep(0.8F, EFFECT_SWORD
@@ -147,10 +147,10 @@ public class SwordItems {
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4))));
     public static final RegistryObject<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.GRASS_PROJ).hasImage()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)));
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 2, AttributeModifier.Operation.ADD_VALUE)));
     public static final RegistryObject<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.NIGHT_PROJ).hasImage()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)));
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 4, AttributeModifier.Operation.ADD_VALUE)));
     public static final RegistryObject<BaseSwordItem> WAFFLES_IRON = register("waffles_iron", ModTiers.UNBREAKABLE, 27, 2.5F, ModRarity.PINK, PROJ_SWORD
             .apply(SwordProjectileComponent.ICE_PROJ).hasImage());
 
@@ -164,9 +164,9 @@ public class SwordItems {
 
     // 特殊剑
     public static final RegistryObject<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER, BOARD_SWORD.apply(1.0F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, -1, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), -1, AttributeModifier.Operation.ADD_VALUE));
     public static final RegistryObject<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER, BOARD_SWORD.apply(1.0F)
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 7, AttributeModifier.Operation.ADD_VALUE).hasImage()
+            .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 7, AttributeModifier.Operation.ADD_VALUE).hasImage()
             .modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
                     1, 0.3f, 1, 50, 0f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
                     Optional.of(new SimpleTrack(Mth.HALF_PI, 0.8f, 0.2f, Optional.empty(), 0.1)),

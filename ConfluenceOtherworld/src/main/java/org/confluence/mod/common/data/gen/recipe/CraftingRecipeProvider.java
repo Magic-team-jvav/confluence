@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.recipe;
+﻿package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -16,8 +16,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.minecraftforge.common.Tags;
 import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
@@ -136,7 +135,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "III",
                 " i ",
                 "iii"
-        )), FunctionalBlocks.LEAD_ANVIL.toStack());
+        )), FunctionalBlocks.LEAD_ANVIL.get().getDefaultInstance());
         // 房屋探测器
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'B', Ingredient.of(ItemTags.PLANKS),
@@ -145,7 +144,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " B ",
                 "B/B",
                 "/ /"
-        )), TEItems.HOUSE_DETECTOR.toStack());
+        )), TEItems.HOUSE_DETECTOR.get().getDefaultInstance());
         // 蛛网
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '/', Ingredient.of(Items.STRING)
@@ -173,7 +172,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "RIR",
                 "I#I",
                 "RIR"
-        )), FunctionalBlocks.ANNOUNCEMENT_BOX_ITEM.toStack());
+        )), FunctionalBlocks.ANNOUNCEMENT_BOX_ITEM.get().getDefaultInstance());
         // 蜂蜜瓶
         shapeless(output, "", "_from_glass_bottle",
                 new ItemStack(Items.HONEY_BOTTLE, 3),
@@ -211,7 +210,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "III",
                 "III",
                 "III"
-        )), DecorativeBlocks.ICE_MELON.toStack());
+        )), DecorativeBlocks.ICE_MELON.get().getDefaultInstance());
         shapeless(output, new ItemStack(FoodItems.ICE_MELON_SLICE.get(), 9), Ingredient.of(DecorativeBlocks.ICE_MELON));
         // 金西瓜片 金西瓜互换
         shaped(output, ShapedRecipePattern.of(Map.of(
@@ -220,7 +219,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "III",
                 "III",
                 "III"
-        )), DecorativeBlocks.GOLDEN_MELON.toStack());
+        )), DecorativeBlocks.GOLDEN_MELON.get().getDefaultInstance());
         shapeless(output, new ItemStack(Items.GLISTERING_MELON_SLICE, 9), Ingredient.of(DecorativeBlocks.GOLDEN_MELON));
         shapeless(output, new ItemStack(FoodItems.COLDBLOOD_PUMPKIN_PIE.get()), Ingredient.of(Items.EGG), Ingredient.of(Items.SUGAR), Ingredient.of(NatureBlocks.WHITE_PUMPKIN));
         shapeless(output, new ItemStack(FoodItems.WHITE_PUMPKIN_SEED.get(), 4), Ingredient.of(NatureBlocks.WHITE_PUMPKIN));
@@ -249,15 +248,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         // 砂岩箱
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Blocks.SANDSTONE)
-        ), CHEST_PATTERN), ChestBlocks.SANDSTONE_CHEST.toStack());
+        ), CHEST_PATTERN), ChestBlocks.SANDSTONE_CHEST.get().getDefaultInstance());
         // 大理石箱
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(NatureBlocks.MARBLE)
-        ), CHEST_PATTERN), ChestBlocks.MARBLE_CHEST.toStack());
+        ), CHEST_PATTERN), ChestBlocks.MARBLE_CHEST.get().getDefaultInstance());
         // 花岗岩箱
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(NatureBlocks.GRANITE)
-        ), CHEST_PATTERN), ChestBlocks.GRANITE_CHEST.toStack());
+        ), CHEST_PATTERN), ChestBlocks.GRANITE_CHEST.get().getDefaultInstance());
 
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
             registerWoodRecipes(output, blockSet);
@@ -270,7 +269,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "| |",
                 "###",
                 "###"
-        )), NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.HANGING_SIGN.toStack());
+        )), NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.HANGING_SIGN.get().getDefaultInstance());
 
         // 木椅
         shaped(output, ShapedRecipePattern.of(Map.of(
@@ -279,7 +278,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "#  ",
                 "#  ",
                 "## "
-        )), TFBlocks.OAK_SET.CHAIR.toStack());
+        )), TFBlocks.OAK_SET.CHAIR.get().getDefaultInstance());
 
         // 桌
         registeTableRecipes(output, Ingredient.of(Items.OAK_PLANKS), TFBlocks.OAK_SET.TABLE, 1);
@@ -375,7 +374,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.CACTUS),
                 '/', Ingredient.of(Items.STICK)
-        ), PICKAXE_PATTERN), PickaxeItems.CACTUS_PICKAXE.toStack());
+        ), PICKAXE_PATTERN), PickaxeItems.CACTUS_PICKAXE.get().getDefaultInstance());
         registerBroadswordRecipe(output, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS), SwordItems.EBONWOOD_SWORD);
         registerBroadswordRecipe(output, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS), SwordItems.SHADEWOOD_SWORD);
         registerBroadswordRecipe(output, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS), SwordItems.ASH_WOOD_SWORD);
@@ -388,19 +387,19 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "/ S",
                 " /S",
                 "  /"
-        )), FishingPoleItems.WOOD_FISHING_POLE.toStack());
+        )), FishingPoleItems.WOOD_FISHING_POLE.get().getDefaultInstance());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(Items.STRING),
                 '/', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
-        ), FISHING_POLE_PATTERN), FishingPoleItems.REINFORCED_FISHING_POLE.toStack());
+        ), FISHING_POLE_PATTERN), FishingPoleItems.REINFORCED_FISHING_POLE.get().getDefaultInstance());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(Items.STRING),
                 '/', Ingredient.of(ModTags.Items.INGOTS_DEMONITE)
-        ), FISHING_POLE_PATTERN), FishingPoleItems.FISHER_OF_SOULS.toStack());
+        ), FISHING_POLE_PATTERN), FishingPoleItems.FISHER_OF_SOULS.get().getDefaultInstance());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(Items.STRING),
                 '/', Ingredient.of(ModTags.Items.INGOTS_CRIMTANE)
-        ), FISHING_POLE_PATTERN), FishingPoleItems.FLESHCATCHER.toStack());
+        ), FISHING_POLE_PATTERN), FishingPoleItems.FLESHCATCHER.get().getDefaultInstance());
         // 木悠悠球
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(ItemTags.LOGS),
@@ -409,7 +408,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " SS",
                 "/SS",
                 "/  "
-        )), TEYoyosItems.WOODEN_YOYO.toStack());
+        )), TEYoyosItems.WOODEN_YOYO.get().getDefaultInstance());
         // 园艺剪
         registerShearsRecipe(output, Ingredient.of(ModTags.Items.INGOTS_COBALT), GardenShearsItems.COBALT_GARDEN_SHEARS);
         registerShearsRecipe(output, Ingredient.of(ModTags.Items.INGOTS_PALLADIUM), GardenShearsItems.PALLADIUM_GARDEN_SHEARS);
@@ -431,41 +430,41 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " S ",
                 "S/S",
                 " S "
-        )), DecorativeBlocks.WHITE_PAPER_PANE.toStack());
+        )), DecorativeBlocks.WHITE_PAPER_PANE.get().getDefaultInstance());
         shapeless(output,
-                DecorativeBlocks.WHITE_PAPER_PANE_LAMP.toStack(),
+                DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get().getDefaultInstance(),
                 Ingredient.of(DecorativeBlocks.WHITE_PAPER_PANE),
                 Ingredient.of(Items.TORCH)
         );
         shapeless(output,
-                DecorativeBlocks.MALACHITE_PAPER_PANE.toStack(),
+                DecorativeBlocks.MALACHITE_PAPER_PANE.get().getDefaultInstance(),
                 Ingredient.of(DecorativeBlocks.WHITE_PAPER_PANE),
                 Ingredient.of(Items.CYAN_DYE)
         );
         shapeless(output,
-                DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP.toStack(),
+                DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP.get().getDefaultInstance(),
                 Ingredient.of(DecorativeBlocks.MALACHITE_PAPER_PANE),
                 Ingredient.of(Items.TORCH)
         );
         shapeless(output,
-                DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR.toStack(),
+                DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR.get().getDefaultInstance(),
                 Ingredient.of(NatureBlocks.DYNASTY_LOG_BLOCKS.DOOR),
                 Ingredient.of(Items.RED_DYE),
                 Ingredient.of(Items.BLACK_DYE)
         );
         // 松针手工绳套
         shapeless(output,
-                ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET.toStack(),
+                ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET.get().getDefaultInstance(),
                 Ingredient.of(NatureBlocks.PINE_DROOPING_VINE),
                 Ingredient.of(NatureBlocks.PINE_DROOPING_VINE)
         );
         shapeless(output,
-                DecorativeBlocks.CHRISTMAS_PINE_TRAPDOOR.toStack(),
+                DecorativeBlocks.CHRISTMAS_PINE_TRAPDOOR.get().getDefaultInstance(),
                 Ingredient.of(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET),
                 Ingredient.of(NatureBlocks.PINE_LOG_BLOCKS.TRAPDOOR)
         );
         shapeless(output,
-                DecorativeBlocks.CHRISTMAS_PINE_DOOR.toStack(),
+                DecorativeBlocks.CHRISTMAS_PINE_DOOR.get().getDefaultInstance(),
                 Ingredient.of(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET),
                 Ingredient.of(NatureBlocks.PINE_LOG_BLOCKS.DOOR)
         );
@@ -476,7 +475,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 " S ",
                 "S/S"
-        )), FunctionalBlocks.LIFE_CAMPFIRE.toStack());
+        )), FunctionalBlocks.LIFE_CAMPFIRE.get().getDefaultInstance());
         // 香蒲造纸
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '/', Ingredient.of(ModItems.CATTAIL, ModItems.JUNGLE_CATTAIL, ModItems.GLOWING_MUSHROOM_CATTAIL, ModItems.EBONY_CATTAIL, ModItems.CRIMSON_CATTAIL, ModItems.HALLOW_CATTAIL)
@@ -536,22 +535,22 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(MaterialItems.RAW_TUNGSTEN)
         );
 
-        shapeless(output, ToolItems.VINE_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE));
-        shapeless(output, ToolItems.WEB_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE));
-        shapeless(output, ToolItems.SILK_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE));
-        shapeless(output, ToolItems.ROPE_COIL.toStack(), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE));
+        shapeless(output, ToolItems.VINE_ROPE_COIL.get().getDefaultInstance(), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE));
+        shapeless(output, ToolItems.WEB_ROPE_COIL.get().getDefaultInstance(), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE));
+        shapeless(output, ToolItems.SILK_ROPE_COIL.get().getDefaultInstance(), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE));
+        shapeless(output, ToolItems.ROPE_COIL.get().getDefaultInstance(), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE));
 
-        shapeless(output, ArmorItems.GOLDEN_HELMET.toStack(), Ingredient.of(Items.GOLDEN_HELMET), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
-        shapeless(output, ArmorItems.GOLDEN_CHESTPLATE.toStack(), Ingredient.of(Items.GOLDEN_CHESTPLATE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
-        shapeless(output, ArmorItems.GOLDEN_LEGGINGS.toStack(), Ingredient.of(Items.GOLDEN_LEGGINGS), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
-        shapeless(output, ArmorItems.GOLDEN_BOOTS.toStack(), Ingredient.of(Items.GOLDEN_BOOTS), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
-        shapeless(output, SwordItems.GOLDEN_BROADSWORD.toStack(), Ingredient.of(Items.GOLDEN_SWORD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
-        shapeless(output, AxeItems.GOLDEN_AXE.toStack(), Ingredient.of(Items.GOLDEN_AXE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
-        shapeless(output, PickaxeItems.GOLDEN_PICKAXE.toStack(), Ingredient.of(Items.GOLDEN_PICKAXE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
-        shapeless(output, HoeItems.GOLDEN_HOE.toStack(), Ingredient.of(Items.GOLDEN_HOE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
-        shapeless(output, ShovelItems.GOLDEN_SHOVEL.toStack(), Ingredient.of(Items.GOLDEN_SHOVEL), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, ArmorItems.GOLDEN_HELMET.get().getDefaultInstance(), Ingredient.of(Items.GOLDEN_HELMET), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, ArmorItems.GOLDEN_CHESTPLATE.get().getDefaultInstance(), Ingredient.of(Items.GOLDEN_CHESTPLATE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, ArmorItems.GOLDEN_LEGGINGS.get().getDefaultInstance(), Ingredient.of(Items.GOLDEN_LEGGINGS), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, ArmorItems.GOLDEN_BOOTS.get().getDefaultInstance(), Ingredient.of(Items.GOLDEN_BOOTS), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, SwordItems.GOLDEN_BROADSWORD.get().getDefaultInstance(), Ingredient.of(Items.GOLDEN_SWORD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, AxeItems.GOLDEN_AXE.get().getDefaultInstance(), Ingredient.of(Items.GOLDEN_AXE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, PickaxeItems.GOLDEN_PICKAXE.get().getDefaultInstance(), Ingredient.of(Items.GOLDEN_PICKAXE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, HoeItems.GOLDEN_HOE.get().getDefaultInstance(), Ingredient.of(Items.GOLDEN_HOE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, ShovelItems.GOLDEN_SHOVEL.get().getDefaultInstance(), Ingredient.of(Items.GOLDEN_SHOVEL), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
 
-        shapeless(output, VanityArmorItems.GUY_FAWKES_MASK_SET.toStack(), Ingredient.of(VanityArmorItems.GUY_FAWKES_HAT), Ingredient.of(VanityArmorItems.GUY_FAWKES_MASK));
+        shapeless(output, VanityArmorItems.GUY_FAWKES_MASK_SET.get().getDefaultInstance(), Ingredient.of(VanityArmorItems.GUY_FAWKES_HAT), Ingredient.of(VanityArmorItems.GUY_FAWKES_MASK));
 
 
         shapeless(output, new ItemStack(Items.STRING, 2), Ingredient.of(ItemTags.WOOL));
@@ -559,64 +558,64 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, "", "_from_gel", new ItemStack(Items.TORCH, 3), Ingredient.of(MaterialItems.GEL), Ingredient.of(Items.STICK));
         shapeless(output, "", "_from_slime_ball", new ItemStack(Items.TORCH, 3), Ingredient.of(Items.SLIME_BALL), Ingredient.of(Items.STICK));
 
-        shapeless(output, ConsumableItems.MANA_CRYSTAL.toStack(), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR));
-        shapeless(output, MaterialItems.FALLING_STAR.toStack(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));
-        shapeless(output, FoodItems.CLOUD_DOUGH.toStack(), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
+        shapeless(output, ConsumableItems.MANA_CRYSTAL.get().getDefaultInstance(), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, MaterialItems.FALLING_STAR.get().getDefaultInstance(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));
+        shapeless(output, FoodItems.CLOUD_DOUGH.get().getDefaultInstance(), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
         shapeless(output, DecorativeBlocks.FLINX_FUR_BLOCK.toStack(20), Ingredient.of(MaterialItems.FLINX_FUR));
         shapeless(output, new ItemStack(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.PLANKS, 4), Ingredient.of(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK));
 
         //生鱼片
         shapeless(output, "", "_from_partial_mouth_fish",
-                FoodItems.SASHIMI.toStack(),
+                FoodItems.SASHIMI.get().getDefaultInstance(),
                 Ingredient.of(FoodItems.PARTIAL_MOUTH_FISH),
                 Ingredient.of(FoodItems.PARTIAL_MOUTH_FISH)
         );
         shapeless(output, "", "_from_red_snapper",
-                FoodItems.SASHIMI.toStack(),
+                FoodItems.SASHIMI.get().getDefaultInstance(),
                 Ingredient.of(FoodItems.RED_SNAPPER),
                 Ingredient.of(FoodItems.RED_SNAPPER)
         );
         shapeless(output,
-                FoodItems.SASHIMI.toStack(),
+                FoodItems.SASHIMI.get().getDefaultInstance(),
                 Ingredient.of(FoodItems.SALMON),
                 Ingredient.of(FoodItems.SALMON)
         );
         shapeless(output, "", "_from_salmon",
-                FoodItems.SASHIMI.toStack(),
+                FoodItems.SASHIMI.get().getDefaultInstance(),
                 Ingredient.of(Items.SALMON),
                 Ingredient.of(Items.SALMON)
         );
         shapeless(output, "", "_from_tuna",
-                FoodItems.SASHIMI.toStack(),
+                FoodItems.SASHIMI.get().getDefaultInstance(),
                 Ingredient.of(FoodItems.TUNA),
                 Ingredient.of(FoodItems.TUNA)
         );
         // 机关箱用陷阱箱合成方式
-        shapeless(output, ChestBlocks.DEATH_GOLDEN_CHEST.toStack(), Ingredient.of(ChestBlocks.GOLDEN_CHEST), Ingredient.of(Items.TRIPWIRE_HOOK));
-        shapeless(output, ChestBlocks.DEATH_WOODEN_CHEST.toStack(), Ingredient.of(Items.TRAPPED_CHEST), Ingredient.of(Items.TRIPWIRE_HOOK));
+        shapeless(output, ChestBlocks.DEATH_GOLDEN_CHEST.get().getDefaultInstance(), Ingredient.of(ChestBlocks.GOLDEN_CHEST), Ingredient.of(Items.TRIPWIRE_HOOK));
+        shapeless(output, ChestBlocks.DEATH_WOODEN_CHEST.get().getDefaultInstance(), Ingredient.of(Items.TRAPPED_CHEST), Ingredient.of(Items.TRIPWIRE_HOOK));
 
         shapeless(output, ConsumableItems.VILE_POWDER.toStack(5), Ingredient.of(NatureBlocks.VILE_MUSHROOM));
         shapeless(output, ConsumableItems.VICIOUS_POWDER.toStack(5), Ingredient.of(NatureBlocks.VICIOUS_MUSHROOM));
         shapeless(output, DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.toStack(4), Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(ItemTags.PLANKS));
-        shapeless(output, ConsumableItems.BOUNCY_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.PINK_GEL));
-        shapeless(output, ConsumableItems.BOUNCY_DYNAMITE.toStack(), Ingredient.of(ConsumableItems.DYNAMITE), Ingredient.of(MaterialItems.PINK_GEL));
-        shapeless(output, ConsumableItems.BOUNCY_GRENADE.toStack(), Ingredient.of(ConsumableItems.GRENADE), Ingredient.of(MaterialItems.PINK_GEL));
-        shapeless(output, ConsumableItems.STICKY_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.GEL));
-        shapeless(output, ConsumableItems.STICKY_DIRT_BOMB.toStack(), Ingredient.of(ConsumableItems.DIRT_BOMB), Ingredient.of(MaterialItems.GEL));
-        shapeless(output, ConsumableItems.STICKY_DYNAMITE.toStack(), Ingredient.of(ConsumableItems.DYNAMITE), Ingredient.of(MaterialItems.GEL));
-        shapeless(output, ConsumableItems.STICKY_GRENADE.toStack(), Ingredient.of(ConsumableItems.GRENADE), Ingredient.of(MaterialItems.GEL));
-        shapeless(output, ConsumableItems.SCARAB_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.STURDY_FOSSIL));
-        shapeless(output, TEBoomerangItems.TRIMARANG.toStack(), Ingredient.of(TEBoomerangItems.ENCHANTED_BOOMERANG), Ingredient.of(TEBoomerangItems.ICE_BOOMERANG), Ingredient.of(TEBoomerangItems.SHROOMERANG));
-        shapeless(output, TEBoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(TEBoomerangItems.WOOD_BOOMERANG), Ingredient.of(MaterialItems.FALLING_STAR));
-        shapeless(output, BaitItems.ENCHANTED_NIGHTCRAWLER.toStack(), Ingredient.of(BaitItems.WORM), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, ConsumableItems.BOUNCY_BOMB.get().getDefaultInstance(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, ConsumableItems.BOUNCY_DYNAMITE.get().getDefaultInstance(), Ingredient.of(ConsumableItems.DYNAMITE), Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, ConsumableItems.BOUNCY_GRENADE.get().getDefaultInstance(), Ingredient.of(ConsumableItems.GRENADE), Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, ConsumableItems.STICKY_BOMB.get().getDefaultInstance(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.GEL));
+        shapeless(output, ConsumableItems.STICKY_DIRT_BOMB.get().getDefaultInstance(), Ingredient.of(ConsumableItems.DIRT_BOMB), Ingredient.of(MaterialItems.GEL));
+        shapeless(output, ConsumableItems.STICKY_DYNAMITE.get().getDefaultInstance(), Ingredient.of(ConsumableItems.DYNAMITE), Ingredient.of(MaterialItems.GEL));
+        shapeless(output, ConsumableItems.STICKY_GRENADE.get().getDefaultInstance(), Ingredient.of(ConsumableItems.GRENADE), Ingredient.of(MaterialItems.GEL));
+        shapeless(output, ConsumableItems.SCARAB_BOMB.get().getDefaultInstance(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.STURDY_FOSSIL));
+        shapeless(output, TEBoomerangItems.TRIMARANG.get().getDefaultInstance(), Ingredient.of(TEBoomerangItems.ENCHANTED_BOOMERANG), Ingredient.of(TEBoomerangItems.ICE_BOOMERANG), Ingredient.of(TEBoomerangItems.SHROOMERANG));
+        shapeless(output, TEBoomerangItems.ENCHANTED_BOOMERANG.get().getDefaultInstance(), Ingredient.of(TEBoomerangItems.WOOD_BOOMERANG), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, BaitItems.ENCHANTED_NIGHTCRAWLER.get().getDefaultInstance(), Ingredient.of(BaitItems.WORM), Ingredient.of(MaterialItems.FALLING_STAR));
         // 宝石树苗
-        shapeless(output, NatureBlocks.RUBY_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_RUBY));
-        shapeless(output, NatureBlocks.AMBER_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_AMBER));
-        shapeless(output, NatureBlocks.TOPAZ_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_TOPAZ));
-        shapeless(output, NatureBlocks.JADE_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_JADE));
-        shapeless(output, NatureBlocks.SAPPHIRE_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_SAPPHIRE));
-        shapeless(output, NatureBlocks.DIAMOND_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(Tags.Items.GEMS_DIAMOND));
-        shapeless(output, NatureBlocks.AMETHYST_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_AMETHYST));
+        shapeless(output, NatureBlocks.RUBY_SAPLING.get().getDefaultInstance(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_RUBY));
+        shapeless(output, NatureBlocks.AMBER_SAPLING.get().getDefaultInstance(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_AMBER));
+        shapeless(output, NatureBlocks.TOPAZ_SAPLING.get().getDefaultInstance(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_TOPAZ));
+        shapeless(output, NatureBlocks.JADE_SAPLING.get().getDefaultInstance(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_JADE));
+        shapeless(output, NatureBlocks.SAPPHIRE_SAPLING.get().getDefaultInstance(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_SAPPHIRE));
+        shapeless(output, NatureBlocks.DIAMOND_SAPLING.get().getDefaultInstance(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(Tags.Items.GEMS_DIAMOND));
+        shapeless(output, NatureBlocks.AMETHYST_SAPLING.get().getDefaultInstance(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_AMETHYST));
 
         // 基础石砖
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS.FULL, 4);
@@ -727,7 +726,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         " ##",
                         "/  "
                 )),
-                ManaWeaponItems.WAND_OF_FROSTING.toStack()
+                ManaWeaponItems.WAND_OF_FROSTING.get().getDefaultInstance()
         );
         // 重型工作台
         shaped(output,
@@ -739,7 +738,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         "a",
                         "#"
                 )),
-                FunctionalBlocks.HEAVY_WORK_BENCH.toStack()
+                FunctionalBlocks.HEAVY_WORK_BENCH.get().getDefaultInstance()
         );
         // 风向标
         shaped(output, "", "_from_lead_and_iron",
@@ -750,7 +749,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         " # ",
                         " # "
                 )),
-                FunctionalBlocks.WEATHER_VANE.toStack()
+                FunctionalBlocks.WEATHER_VANE.get().getDefaultInstance()
         );
         // 凝灰岩展台
         shaped(output, "", "",
@@ -775,7 +774,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         "a#a",
                         " b "
                 )),
-                FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.toStack()
+                FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().getDefaultInstance()
         );
         // 魔镜
         shaped(output,
@@ -788,7 +787,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         "GDG",
                         "gGg"
                 )),
-                TCItems.MAGIC_MIRROR.toStack()
+                TCItems.MAGIC_MIRROR.get().getDefaultInstance()
         );
         // 金冠
         shaped(output,
@@ -799,7 +798,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         "gGg",
                         "ggg"
                 )),
-                VanityArmorItems.GOLD_CROWN.toStack()
+                VanityArmorItems.GOLD_CROWN.get().getDefaultInstance()
         );
         // 铂金冠
         shaped(output,
@@ -810,7 +809,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         "gGg",
                         "ggg"
                 )),
-                VanityArmorItems.PLATINUM_CROWN.toStack()
+                VanityArmorItems.PLATINUM_CROWN.get().getDefaultInstance()
         );
         // 铅铁共用相关
         shaped(output, "", "_from_nuggets_lead",
@@ -821,7 +820,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         "SSS",
                         "SSS"
                 )),
-                MaterialItems.LEAD_INGOT.toStack()
+                MaterialItems.LEAD_INGOT.get().getDefaultInstance()
         );
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
@@ -983,40 +982,40 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE)), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE));
 
-        shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
-        shapeless(output, ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.toStack(), Ingredient.of(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP), Ingredient.of(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION));
+        shapeless(output, ToolItems.NPC_INVITATION.get().getDefaultInstance(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
+        shapeless(output, ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get().getDefaultInstance(), Ingredient.of(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP), Ingredient.of(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION));
 
-        shapeless(output, FunctionalBlocks.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2, ModTags.Items.GOLD_AND_PLATINUM), Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, FunctionalBlocks.PEACE_CANDLE.get().getDefaultInstance(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2, ModTags.Items.GOLD_AND_PLATINUM), Ingredient.of(MaterialItems.PINK_GEL));
 
-        shapeless(output, FunctionalBlocks.HEART_LANTERN.toStack(), Ingredient.of(Items.CHAIN), Ingredient.of(ConsumableItems.LIFE_CRYSTAL));
-        shapeless(output, FunctionalBlocks.STAR_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.FALLING_STAR));
-        shapeless(output, FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_LIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_SIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_MIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_FRIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_BRIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_NIGHT));
-        shapeless(output, FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_VOIGHT));
+        shapeless(output, FunctionalBlocks.HEART_LANTERN.get().getDefaultInstance(), Ingredient.of(Items.CHAIN), Ingredient.of(ConsumableItems.LIFE_CRYSTAL));
+        shapeless(output, FunctionalBlocks.STAR_IN_A_BOTTLE.get().getDefaultInstance(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.get().getDefaultInstance(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE.get().getDefaultInstance(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_LIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE.get().getDefaultInstance(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_SIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE.get().getDefaultInstance(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_MIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.get().getDefaultInstance(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_FRIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get().getDefaultInstance(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_BRIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE.get().getDefaultInstance(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_NIGHT));
+        shapeless(output, FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.get().getDefaultInstance(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.SOUL_OF_VOIGHT));
 
-        shapeless(output, VanityArmorItems.SUNGLASSES.toStack(), Ingredient.of(MaterialItems.BLACK_LENS), Ingredient.of(MaterialItems.BLACK_LENS));
+        shapeless(output, VanityArmorItems.SUNGLASSES.get().getDefaultInstance(), Ingredient.of(MaterialItems.BLACK_LENS), Ingredient.of(MaterialItems.BLACK_LENS));
 
-        shapeless(output, ConsumableItems.DRY_BOMB.toStack(), Ingredient.of(ConsumableItems.WET_BOMB, ConsumableItems.HONEY_BOMB, ConsumableItems.LAVA_BOMB));
-        shapeless(output, ConsumableItems.WET_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.WATER_BUCKET));
-        shapeless(output, ConsumableItems.HONEY_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(ToolItems.HONEY_BUCKET));
-        shapeless(output, ConsumableItems.LAVA_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.LAVA_BUCKET));
+        shapeless(output, ConsumableItems.DRY_BOMB.get().getDefaultInstance(), Ingredient.of(ConsumableItems.WET_BOMB, ConsumableItems.HONEY_BOMB, ConsumableItems.LAVA_BOMB));
+        shapeless(output, ConsumableItems.WET_BOMB.get().getDefaultInstance(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.WATER_BUCKET));
+        shapeless(output, ConsumableItems.HONEY_BOMB.get().getDefaultInstance(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(ToolItems.HONEY_BUCKET));
+        shapeless(output, ConsumableItems.LAVA_BOMB.get().getDefaultInstance(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.LAVA_BUCKET));
 
-//        shapeless(output, ConsumableItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH), Ingredient.of(MaterialItems.FALLING_STAR));
+//        shapeless(output, ConsumableItems.FALLEN_SOUL_CORE.get().getDefaultInstance(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH), Ingredient.of(MaterialItems.FALLING_STAR));
 
         shapeless(output, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(ModBlocks.POO));
 
-        // 暗影蜡烛 shapeless(output, ToolItems.SHADOW_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3,ModTags.Items.EVIL_INGOT));
+        // 暗影蜡烛 shapeless(output, ToolItems.SHADOW_CANDLE.get().getDefaultInstance(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3,ModTags.Items.EVIL_INGOT));
         // 钱币
         shapeless(output, ModItems.COPPER_COIN.toStack(100), Ingredient.of(ModItems.SILVER_COIN));
         shapeless(output, ModItems.SILVER_COIN.toStack(100), Ingredient.of(ModItems.GOLD_COIN));
         shapeless(output, ModItems.GOLD_COIN.toStack(100), Ingredient.of(ModItems.PLATINUM_COIN));
 
-        shapeless(output, MaterialItems.RAW_ASPHALT.toStack(), AmountIngredient.of(2, ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(MaterialItems.GEL));
+        shapeless(output, MaterialItems.RAW_ASPHALT.get().getDefaultInstance(), AmountIngredient.of(2, ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(MaterialItems.GEL));
 
         output.accept(Confluence.asResource("boom_bunny"), BoomBunnyRecipe.getInstance(), null);
         output.accept(Confluence.asResource("dragon_pepper_extracting"), DragonPepperExtractingRecipe.getInstance(), null);
@@ -1058,7 +1057,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
     private void registerWoodRecipes(RecipeOutput output, LogBlockSet blockSet) {
         ItemLike[] logs = Streams.of(blockSet.LOG, blockSet.STRIPPED_LOG, blockSet.WOOD, blockSet.STRIPPED_WOOD).filter(DeferredHolder::isBound).toArray(ItemLike[]::new);
         if (logs.length > 0) shapeless(output, blockSet.PLANKS.toStack(4), Ingredient.of(logs));
-        shapeless(output, blockSet.BUTTON.toStack(), Ingredient.of(blockSet.PLANKS));
+        shapeless(output, blockSet.BUTTON.get().getDefaultInstance(), Ingredient.of(blockSet.PLANKS));
         if (blockSet.LOG.isBound() && blockSet.WOOD.isBound())
             shaped(output, ShapedRecipePattern.of(Map.of(
                     '#', Ingredient.of(blockSet.LOG)
@@ -1098,7 +1097,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "/#/",
                 "/#/"
-        )), blockSet.FENCE_GATE.toStack());
+        )), blockSet.FENCE_GATE.get().getDefaultInstance());
         if (blockSet.DOOR.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(blockSet.PLANKS)
         ), List.of(
@@ -1116,7 +1115,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '#', Ingredient.of(blockSet.PLANKS)
         ), List.of(
                 "##"
-        )), blockSet.PRESSURE_PLATE.toStack());
+        )), blockSet.PRESSURE_PLATE.get().getDefaultInstance());
         if (blockSet.SIGN_ITEM.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(blockSet.PLANKS),
                 '/', Ingredient.of(Items.STICK)
@@ -1130,7 +1129,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "#",
                 "#"
-        )), blockSet.CHISELED_PLANKS.toStack());
+        )), blockSet.CHISELED_PLANKS.get().getDefaultInstance());
         if (blockSet.HANGING_SIGN.isBound() && blockSet.STRIPPED_LOG.isBound())
             shaped(output, ShapedRecipePattern.of(Map.of(
                     '|', Ingredient.of(Blocks.CHAIN),

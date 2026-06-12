@@ -1,9 +1,9 @@
-package org.confluence.mod.client.model.block;
+﻿package org.confluence.mod.client.model.block;
 
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.RelicBlock;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class RelicBlockModel extends GeoModel<RelicBlock.BEntity> {
     public static final Map<Block, ResourceLocation[]> CACHE = Util.make(new IdentityHashMap<>(), map -> {
-        for (DeferredBlock<RelicBlock> block : DecorativeBlocks.RELIC_BLOCKS) {
+        for (RegistryObject block : DecorativeBlocks.RELIC_BLOCKS) {
             String path = block.getId().getPath();
             map.put(block.get(), new ResourceLocation[]{
                     Confluence.asResource("geo/block/" + path + ".geo.json"),

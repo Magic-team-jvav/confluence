@@ -32,7 +32,7 @@ public abstract class RecipeManagerMixin {
         TEHelper.processRecipes(recipes);
     }
 
-    @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V",at= @At(value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;Ljava/lang/Object;)V"))
+    @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;Ljava/lang/Object;)V"))
     private void buildRecipes(CallbackInfo ci) {
         MutableObject<Map<ResourceLocation, RecipeHolder<?>>> byName1 = new MutableObject<>(byName);
         MutableObject<Multimap<RecipeType<?>, RecipeHolder<?>>> byType1 = new MutableObject<>(byType);

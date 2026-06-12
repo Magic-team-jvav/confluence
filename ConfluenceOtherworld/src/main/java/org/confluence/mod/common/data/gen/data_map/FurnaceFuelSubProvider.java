@@ -1,8 +1,6 @@
-package org.confluence.mod.common.data.gen.data_map;
+﻿package org.confluence.mod.common.data.gen.data_map;
 
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.MaterialItems;

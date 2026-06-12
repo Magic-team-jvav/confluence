@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity;
+﻿package org.confluence.mod.common.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,8 +29,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.neoforged.neoforge.common.IShearable;
-import net.neoforged.neoforge.event.EventHooks;
+import net.minecraftforge.common.IShearable;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -261,14 +260,14 @@ public class RainbowSheep extends Animal implements IShearable {
             if (eatAnimationTick == adjustedTickDelay(4)) {
                 BlockPos pos = mob.blockPosition();
                 if (level.getBlockState(pos).is(NatureBlocks.HALLOW_GRASS)) {
-                    if (EventHooks.canEntityGrief(level, mob)) {
+                    if (net.minecraftforge.event.ForgeEventFactory.canEntityGrief(level, mob)) {
                         level.destroyBlock(pos, false);
                     }
                     mob.ate();
                 } else {
                     BlockPos below = pos.below();
                     if (this.level.getBlockState(below).is(NatureBlocks.HALLOW_GRASS_BLOCK)) {
-                        if (EventHooks.canEntityGrief(level, mob)) {
+                        if (net.minecraftforge.event.ForgeEventFactory.canEntityGrief(level, mob)) {
                             int id = Block.getId(NatureBlocks.HALLOW_GRASS_BLOCK.get().defaultBlockState());
                             level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, below, id);
                             level.setBlock(below, Blocks.DIRT.defaultBlockState(), 2);

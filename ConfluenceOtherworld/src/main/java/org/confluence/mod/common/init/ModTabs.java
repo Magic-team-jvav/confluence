@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init;
+﻿package org.confluence.mod.common.init;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -6,8 +6,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
@@ -35,7 +35,7 @@ import java.util.List;
 public final class ModTabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Confluence.MODID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> NATURAL_BLOCKS = TABS.register("natural_blocks",
+    public static final RegistryObject NATURAL_BLOCKS = TABS.register("natural_blocks",
             () -> CreativeModeTab.builder().icon(IconItems.NATURE_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.natural_blocks"))
                     .displayItems((parameters, output) -> {
@@ -442,7 +442,7 @@ public final class ModTabs {
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                     .build()
     );
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> BUILDING_BLOCKS = TABS.register("building_blocks",
+    public static final RegistryObject BUILDING_BLOCKS = TABS.register("building_blocks",
             () -> CreativeModeTab.builder().icon(IconItems.BLOCKS_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.building_blocks"))
                     .displayItems((parameters, output) -> {
@@ -630,7 +630,7 @@ public final class ModTabs {
                     .build()
     );
     /* 家具 */
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MECHANICAL = TABS.register("mechanical",
+    public static final RegistryObject MECHANICAL = TABS.register("mechanical",
             () -> CreativeModeTab.builder().icon(IconItems.MECHANICAL_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.mechanical"))
                     .displayItems((parameters, output) -> {
@@ -790,7 +790,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
                     .build());
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
+    public static final RegistryObject MATERIALS = TABS.register("materials",
             () -> CreativeModeTab.builder().icon(IconItems.MATERIAL_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.materials"))
                     .displayItems((parameters, output) -> {
@@ -951,7 +951,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MECHANICAL.getId())
                     .build());
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MISC = TABS.register("misc",
+    public static final RegistryObject MISC = TABS.register("misc",
             () -> CreativeModeTab.builder().icon(IconItems.PRECIOUS_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.misc"))
                     .displayItems((parameters, output) -> {
@@ -1081,7 +1081,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MATERIALS.getId())
                     .build());
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD_AND_POTIONS = TABS.register("food_and_potions",
+    public static final RegistryObject FOOD_AND_POTIONS = TABS.register("food_and_potions",
             () -> CreativeModeTab.builder().icon(IconItems.POTION_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.food_and_potions"))
                     .displayItems((parameters, output) -> {
@@ -1092,7 +1092,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MISC.getId())
                     .build());
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TOOLS = TABS.register("tools",
+    public static final RegistryObject TOOLS = TABS.register("tools",
             () -> CreativeModeTab.builder().icon(IconItems.TOOLS_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.tools"))
                     .displayItems((parameters, output) -> {
@@ -1199,7 +1199,7 @@ public final class ModTabs {
                     .withTabsBefore(FOOD_AND_POTIONS.getId())
                     .build());
     /* 饰品 */
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ARMORS = TABS.register("armors",
+    public static final RegistryObject ARMORS = TABS.register("armors",
             () -> CreativeModeTab.builder().icon(IconItems.ARMOR_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.armors"))
                     .displayItems((parameters, output) -> {
@@ -1687,7 +1687,7 @@ public final class ModTabs {
                         mummy_set.accept(VanityArmorItems.MUMMY_SHOES.get());
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WARRIORS = TABS.register("warriors",
+    public static final RegistryObject WARRIORS = TABS.register("warriors",
             () -> CreativeModeTab.builder().icon(IconItems.MELEE_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
@@ -1783,7 +1783,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(ARMORS.getId())
                     .build());
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SHOOTERS = TABS.register("rangers",
+    public static final RegistryObject SHOOTERS = TABS.register("rangers",
             () -> CreativeModeTab.builder().icon(IconItems.REMOTE_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.rangers"))
                     .displayItems((parameters, output) -> {
@@ -1840,7 +1840,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(WARRIORS.getId())
                     .build());
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",
+    public static final RegistryObject MAGES = TABS.register("mages",
             () -> CreativeModeTab.builder().icon(IconItems.MAGIC_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.mages"))
                     .displayItems((parameters, output) -> {
@@ -1859,7 +1859,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(SHOOTERS.getId())
                     .build());
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SUMMONERS = TABS.register("summoners",
+    public static final RegistryObject SUMMONERS = TABS.register("summoners",
             () -> CreativeModeTab.builder().icon(IconItems.SUMMON_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.summoners"))
                     .displayItems((parameters, output) -> {
@@ -1873,7 +1873,7 @@ public final class ModTabs {
                     .withTabsBefore(MAGES.getId())
                     .build());
     /* 生物 */
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DEVELOPER = TABS.register("developer",
+    public static final RegistryObject DEVELOPER = TABS.register("developer",
             () -> CreativeModeTab.builder().icon(IconItems.DEVELOPER_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.developer"))
                     .displayItems((parameters, output) -> {
@@ -1925,7 +1925,7 @@ public final class ModTabs {
         output.accept(GroupItem.of(Confluence.asResource(group), values));
     }
 
-    private static <T extends ItemLike> void acceptAll(Collection<? extends DeferredHolder<T, ? extends T>> holders, CreativeModeTab.Output output) {
+    private static <T extends ItemLike> void acceptAll(Collection<? extends RegistryObject> holders, CreativeModeTab.Output output) {
         holders.forEach(holder -> output.accept(holder.get()));
     }
 }

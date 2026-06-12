@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data;
+﻿package org.confluence.mod.common.data;
 
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.StringReader;
@@ -11,8 +11,8 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
-import net.minecraft.network.FriendlyByteBuf;
-import net.neoforged.neoforge.server.command.CommandUtils;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import net.minecraftforge.server.command.CommandUtils;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 
 import java.util.Collection;
@@ -52,12 +52,12 @@ public record PrefixArgument(String group) implements ArgumentType<ModPrefix> {
 
     public static class Info implements ArgumentTypeInfo<PrefixArgument, Info.Template> {
         @Override
-        public void serializeToNetwork(Template template, FriendlyByteBuf buffer) {
+        public void serializeToNetwork(Template template, PortRegistryFriendlyByteBuf buffer) {
             buffer.writeUtf(template.group);
         }
 
         @Override
-        public Template deserializeFromNetwork(FriendlyByteBuf buffer) {
+        public Template deserializeFromNetwork(PortRegistryFriendlyByteBuf buffer) {
             return new Template(buffer.readUtf());
         }
 

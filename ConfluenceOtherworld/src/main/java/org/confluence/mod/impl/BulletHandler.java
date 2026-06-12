@@ -7,8 +7,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.confluence.mod.api.event.GunEvent;
-import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.BaseBullet;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.mesdag.portlib.event.PortEventHandler;
@@ -29,7 +29,7 @@ public class BulletHandler {
 
         for (ItemStack item : inventoryExtraEvent.getAmmoList()) {
             if (item == null || item.is(Items.AIR)) continue;
-            if (item.is(ModTags.AMMO) && isCompatible(player, item, gun)) {
+            if (item.is(ModTags.Items.AMMO) && isCompatible(player, item, gun)) {
                 ammo = item;
                 break;
             }
@@ -40,8 +40,10 @@ public class BulletHandler {
     /// 判断某个子弹是否与枪兼容
     public static boolean isCompatible(Player player, ItemStack ammo, ItemStack gun) {
         boolean selected = ammo.getItem() instanceof BaseBullet;
-        if (PortItemStackExtension.is(gun, GunItems.BLOWGUN)) selected = ammo.is(ModTags.SEED_AMMO);
-        if (PortItemStackExtension.is(gun, GunItems.SNOWBALL_CANNON)) selected = ammo.is(ModTags.SNOW_AMMO);
+        if (PortItemStackExtension.is(gun, GunItems.BLOWGUN))
+            selected = ammo.is(ModTags.Items.SEED_AMMO);
+        if (PortItemStackExtension.is(gun, GunItems.SNOWBALL_CANNON))
+            selected = ammo.is(ModTags.Items.SNOW_AMMO);
 
         GunEvent.AmmoSelectionEvent ammoSelectionEvent = new GunEvent.AmmoSelectionEvent(player, (BaseGun) gun.getItem(), ammo, selected);
         PortEventHandler.postEvent(ammoSelectionEvent);

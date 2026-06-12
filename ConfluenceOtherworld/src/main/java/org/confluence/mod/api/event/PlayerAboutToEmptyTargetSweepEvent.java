@@ -1,12 +1,13 @@
-package org.confluence.mod.api.event;
+﻿package org.confluence.mod.api.event;
 
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.ICancellableEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.ICancellableEvent;
 
 public class PlayerAboutToEmptyTargetSweepEvent extends PlayerEvent implements ICancellableEvent {
     private final float baseAttackDamage;
     private float attackDamage;
+
     public PlayerAboutToEmptyTargetSweepEvent(Player player, float baseAttackDamage) {
         super(player);
         this.baseAttackDamage = baseAttackDamage;

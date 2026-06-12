@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.world.entity;
+﻿package org.confluence.mod.mixin.world.entity;
 
 import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.fluids.FluidType;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.natural.ThinIceBlock;
 import org.confluence.mod.common.effect.flask.FlaskEffect;

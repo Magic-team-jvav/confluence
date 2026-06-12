@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.world.entity;
+﻿package org.confluence.mod.mixin.world.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -13,9 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.entity.PartEntity;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidType;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.data.saved.GamePhase;
@@ -120,7 +119,7 @@ public abstract class EntityMixin implements IEntity {
         if (confluence$isInShimmer) {
             if (confluence$entity_coolDown == 0 && !self.level().isClientSide && !(self instanceof ItemEntity)) {
                 ShimmerEntityTransmutationEvent.Pre pre = new ShimmerEntityTransmutationEvent.Pre(self);
-                if (NeoForge.EVENT_BUS.post(pre).isCanceled()) {
+                if (MinecraftForge.EVENT_BUS.post(pre).isCanceled()) {
                     confluence$setup(self, pre.getCoolDown(), pre.getSpeedY());
                 } else if (confluence$entity_transforming < pre.getTransformTime()) {
                     this.confluence$entity_transforming++;
@@ -128,7 +127,7 @@ public abstract class EntityMixin implements IEntity {
                 } else {
                     ShimmerEntityTransmutationEvent.Post post = new ShimmerEntityTransmutationEvent.Post(self);
                     confluence$initTarget(post);
-                    NeoForge.EVENT_BUS.post(post);
+                    MinecraftForge.EVENT_BUS.post(post);
                     Entity target = post.getTarget();
                     if (target != null) {
                         discard();

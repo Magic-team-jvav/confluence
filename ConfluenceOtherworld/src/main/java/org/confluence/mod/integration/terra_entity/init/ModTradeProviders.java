@@ -1,7 +1,7 @@
-package org.confluence.mod.integration.terra_entity.init;
+﻿package org.confluence.mod.integration.terra_entity.init;
 
 import com.mojang.serialization.MapCodec;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.npc_trade.*;
 import org.confluence.terraentity.api.npc.trade.ITrade;
@@ -21,6 +21,6 @@ public class ModTradeProviders {
     public static final Supplier<TradeProvider> SELL_TRADE = register("sell_trade", SellTrade.CODEC);
 
     private static Supplier<TradeProvider> register(String name, MapCodec<? extends ITrade> codec) {
-        return TYPES.register(name, ()->new TradeProvider(codec));
+        return TYPES.register(name, () -> new TradeProvider(codec));
     }
 }

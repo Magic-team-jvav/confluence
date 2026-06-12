@@ -25,7 +25,8 @@ import java.util.Optional;
 /**
  * 护士回血直接回满
  */
-public record MoneyTradeHealthFull(@Nullable TradeProperties properties) implements IMoneyTrade, ITradeHealth {
+public record MoneyTradeHealthFull(
+        @Nullable TradeProperties properties) implements IMoneyTrade, ITradeHealth {
     public static final MapCodec<MoneyTradeHealthFull> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             TradeProperties.CODEC.optionalFieldOf("properties").forGetter(i -> Optional.ofNullable(i.properties))
     ).apply(instance, (properties) -> new MoneyTradeHealthFull(properties.orElse(null))));

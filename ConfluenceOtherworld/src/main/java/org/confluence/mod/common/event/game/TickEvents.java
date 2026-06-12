@@ -1,17 +1,10 @@
-package org.confluence.mod.common.event.game;
+﻿package org.confluence.mod.common.event.game;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.EntityTickEvent;
-import net.neoforged.neoforge.event.tick.LevelTickEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
-import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.TaskScheduler;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
@@ -30,11 +23,22 @@ import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.tick.PortEntityTickEvent;
+import org.mesdag.portlib.event.tick.PortLevelTickEvent;
+import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
+import org.mesdag.portlib.event.tick.PortServerTickEvent;
 
-@EventBusSubscriber(modid = Confluence.MODID)
 public final class TickEvents {
-    @SubscribeEvent
-    public static void levelTick$Post(LevelTickEvent.Post event) {
+
+    public static void init() {
+        PortEventHandler.addListener(TickEvents::levelTick$Post);
+        PortEventHandler.addListener(TickEvents::playerTick$Post);
+        PortEventHandler.addListener(TickEvents::entityTick$Post);
+        PortEventHandler.addListener(TickEvents::serverTick$Post);
+    }
+
+    public static void levelTick$Post(PortLevelTickEvent.PortPost event) {
         if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
             return;
         }
@@ -61,8 +65,7 @@ public final class TickEvents {
         HardmodeConvertor.INSTANCE.scheduleRefill(level);
     }
 
-    @SubscribeEvent
-    public static void playerTick$Post(PlayerTickEvent.Post event) {
+    public static void playerTick$Post(PortPlayerTickEvent.PortPost event) {
         Player entity = event.getEntity();
         long gameTime = entity.level().getGameTime();
         if (entity instanceof ServerPlayer player) {
@@ -89,13 +92,11 @@ public final class TickEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void entityTick$Post(EntityTickEvent.Post event) {
+    public static void entityTick$Post(PortEntityTickEvent.PortPost event) {
         Immunity.tick(event.getEntity());
     }
 
-    @SubscribeEvent
-    public static void serverTick$Post(ServerTickEvent.Post event) {
+    public static void serverTick$Post(PortServerTickEvent.PortPost event) {
         PathService.INSTANCE.pathFindingTick();
     }
 }

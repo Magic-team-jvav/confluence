@@ -2,33 +2,41 @@ package org.confluence.mod.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
-import org.confluence.lib.network.IPacket;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.AskForSoftcoreLayer;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record AskForSoftcorePacket(boolean accept) implements IPacket {
-    public static final Type<AskForSoftcorePacket> TYPE = Confluence.createType("ask_for_softcore");
-    public static final StreamCodec<ByteBuf, AskForSoftcorePacket> STREAM_CODEC = ByteBufCodecs.BOOL
+public record AskForSoftcorePacket(boolean accept) implements IPortPacket {
+    public static final ResourceLocation ID = Confluence.asResource("ask_for_softcore");
+    public static final PortStreamCodec<ByteBuf, AskForSoftcorePacket> STREAM_CODEC = PortByteBufCodecs.BOOL
             .map(AskForSoftcorePacket::new, AskForSoftcorePacket::accept);
 
     @Override
-    public Type<AskForSoftcorePacket> type() {
-        return TYPE;
+    public void handle(Context context) {
+        if (context.player() instanceof ServerPlayer serverPlayer) {
+            c2s(serverPlayer);
+        } else if (context.player() != null) {
+            s2c(context.player());
+        }
     }
 
     @Override
+    public ResourceLocation identifier() {
+        return ID;
+    }
+
     public void s2c(Player player) {
         AskForSoftcoreLayer.setAskForSoftcoreLayer(true);
     }
 
-    @Override
     public void c2s(ServerPlayer player) {
         ServerLevel overworld = player.server.overworld();
         if (accept) {
@@ -39,4 +47,5 @@ public record AskForSoftcorePacket(boolean accept) implements IPacket {
             player.sendSystemMessage(Component.translatable("confluence.difficulty_notice.never.done"));
         }
     }
+
 }

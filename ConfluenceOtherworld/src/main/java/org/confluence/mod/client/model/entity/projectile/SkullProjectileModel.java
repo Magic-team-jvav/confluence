@@ -27,6 +27,7 @@ public class SkullProjectileModel extends EntityModel<SkullProjectile> {
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     @Override
     public void setupAnim(@NotNull SkullProjectile entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 

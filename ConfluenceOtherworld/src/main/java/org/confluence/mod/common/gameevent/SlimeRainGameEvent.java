@@ -1,4 +1,4 @@
-package org.confluence.mod.common.gameevent;
+﻿package org.confluence.mod.common.gameevent;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.Util;
@@ -18,7 +18,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
@@ -68,7 +68,7 @@ public enum SlimeRainGameEvent implements GameEvent {
         }
         this.forceStart = false;
         this.haveKingSlime = false;
-        this.spawnerData = NeoForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
+        this.spawnerData = MinecraftForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 200, 1, 1),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 300, 1, 1),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.PURPLE_SLIME.get(), 100, 1, 1),

@@ -1,11 +1,10 @@
-package org.confluence.mod.client.gui.hud;
+﻿package org.confluence.mod.client.gui.hud;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
-import net.neoforged.neoforge.common.TranslatableEnum;
 
 import java.util.Locale;
 

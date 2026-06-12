@@ -1,7 +1,6 @@
-package org.confluence.mod.mixin.neoforge.client.model;
+﻿package org.confluence.mod.mixin.neoforge.client.model;
 
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.client.model.RegistryAwareItemModelShaper;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

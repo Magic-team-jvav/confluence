@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui;
+﻿package org.confluence.mod.client.gui;
 
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.common.MinecraftForge;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.CheckBannerAvailableEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
@@ -315,7 +315,7 @@ public class BestiaryScreen extends Screen {
         }
 
         if (showedEntry != null && banner.isHovered(mouseX, mouseY) &&
-                NeoForge.EVENT_BUS.post(new CheckBannerAvailableEvent(showedEntry)).isAvailable()
+                MinecraftForge.EVENT_BUS.post(new CheckBannerAvailableEvent(showedEntry)).isAvailable()
         ) {
             GiveBannerPacketC2S.sendToServer(showedEntry);
             return true;
@@ -420,7 +420,7 @@ public class BestiaryScreen extends Screen {
         // 正在显示条目
         if (showedEntry != null) {
             // 旗帜按钮
-            if (NeoForge.EVENT_BUS.post(new CheckBannerAvailableEvent(showedEntry)).isAvailable()) {
+            if (MinecraftForge.EVENT_BUS.post(new CheckBannerAvailableEvent(showedEntry)).isAvailable()) {
                 banner.renderSelfOrHovered(guiGraphics, mouseX, mouseY);
             }
 

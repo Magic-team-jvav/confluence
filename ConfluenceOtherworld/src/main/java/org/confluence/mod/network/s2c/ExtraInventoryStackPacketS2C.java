@@ -1,29 +1,30 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack) implements IPacketS2C {
-    public static final Type<ExtraInventoryStackPacketS2C> TYPE = Confluence.createType("extra_inventory_stack");
-    public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventoryStackPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_LONG, ExtraInventoryStackPacketS2C::packedData,
-            ItemStack.OPTIONAL_STREAM_CODEC, ExtraInventoryStackPacketS2C::itemStack,
+public record ExtraInventoryStackPacketS2C(long packedData,
+                                           ItemStack itemStack) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("extra_inventory_stack");
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, ExtraInventoryStackPacketS2C> STREAM_CODEC = PortStreamCodec.composite(
+            PortByteBufCodecs.VAR_LONG, ExtraInventoryStackPacketS2C::packedData,
+            PortItemStackExtension.optionalStreamCodec(), ExtraInventoryStackPacketS2C::itemStack,
             ExtraInventoryStackPacketS2C::new
     );
 
     @Override
-    public Type<ExtraInventoryStackPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -50,9 +51,9 @@ public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack)
     }
 
     public static void sendToPlayersTrackingEntityAndSelf(ServerPlayer serverPlayer, ServerPlayer player, int sizeAccessoryDye, int slot, ItemStack itemStack) {
-        if (ServerLifecycleHooks.getCurrentServer() != null) {
+        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
             long packedData = BlockPos.asLong(player.getId(), sizeAccessoryDye, slot);
-            PacketDistributor.sendToPlayersTrackingEntityAndSelf(serverPlayer, new ExtraInventoryStackPacketS2C(packedData, itemStack));
+            Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntityAndSelf(serverPlayer, new ExtraInventoryStackPacketS2C(packedData, itemStack));
         }
     }
 }

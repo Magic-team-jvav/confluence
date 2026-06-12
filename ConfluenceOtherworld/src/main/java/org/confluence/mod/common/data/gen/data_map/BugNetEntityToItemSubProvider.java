@@ -1,12 +1,10 @@
-package org.confluence.mod.common.data.gen.data_map;
+﻿package org.confluence.mod.common.data.gen.data_map;
 
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.common.extensions.IHolderExtension;
-import net.neoforged.neoforge.registries.DeferredItem;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BugNetEntityToItem;
 import org.confluence.mod.common.init.ModAdvancements;
@@ -69,8 +67,8 @@ public final class BugNetEntityToItemSubProvider {
         ;
     }
 
-    private static Tuple<EntityPredicate, ItemStack> intVariant(int variant, DeferredItem<?> item) {
-        return new Tuple<>(EntityPredicate.Builder.entity().subPredicate(ModAdvancements.EntitySubPredicatez.INT_VARIANT.createPredicate(variant)).build(), item.toStack());
+    private static Tuple<EntityPredicate, ItemStack> intVariant(int variant, RegistryObject item) {
+        return new Tuple<>(EntityPredicate.Builder.entity().subPredicate(ModAdvancements.EntitySubPredicatez.INT_VARIANT.createPredicate(variant)).build(), item.get().getDefaultInstance());
     }
 
     public static class Builder extends DataMapProvider.Builder<BugNetEntityToItem, EntityType<?>> {
@@ -78,8 +76,8 @@ public final class BugNetEntityToItemSubProvider {
             super(ModDataMaps.BUG_NET_ENTITY_TO_ITEM);
         }
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, DeferredItem<?> item) {
-            super.add(Objects.requireNonNull(holder.getKey()), new BugNetEntityToItem(Collections.singletonList(new Tuple<>(BugNetEntityToItem.EMPTY_PREDICATE, item.toStack()))), false);
+        public Builder add(IHolderExtension<EntityType<?>> holder, RegistryObject item) {
+            super.add(Objects.requireNonNull(holder.getKey()), new BugNetEntityToItem(Collections.singletonList(new Tuple<>(BugNetEntityToItem.EMPTY_PREDICATE, item.get().getDefaultInstance()))), false);
             return this;
         }
 

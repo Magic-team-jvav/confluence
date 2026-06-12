@@ -45,12 +45,15 @@ public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRo
 
         long seed = (x * X_MIX) ^ (y * Y_MIX) ^ (z * Z_MIX);
 
-        for (int i = 0; i < 6; i ++){
+        for (int i = 0; i < 6; i++) {
             Direction direction = Direction.from3DDataValue(i);
             EnumProperty<VoidTreeRootBlock.ConnectType> prop = VoidTreeRootBlock.CONNECTION_PROPERTIES.get(direction);
-            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL) portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 60, 1.5F, 0.005F, seed);
-            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL) portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 120, 1.5F, 0.0075F, seed);
-            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL) portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 0, 2.0F, 0.01F, seed);
+            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL)
+                portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 60, 1.5F, 0.005F, seed);
+            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL)
+                portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 120, 1.5F, 0.0075F, seed);
+            if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL)
+                portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 0, 2.0F, 0.01F, seed);
         }
     }
 
@@ -89,29 +92,29 @@ public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRo
             int r = 255, g = 255, b = 255;
             int light = 255;
             PoseStack.Pose pose = poseStack.last();
-            quadBuffer.addVertex(pose, 0.5F - hSize, 1.0F + offset, 0.5F - hSize)
-                    .setColor(r, g, b, alpha)
-                    .setUv(0.0F, V)
+            quadBuffer.vertex(pose, 0.5F - hSize, 1.0F + offset, 0.5F - hSize)
+                    .color(r, g, b, alpha)
+                    .uv(0.0F, V)
                     .setOverlay(packedOverlay)
-                    .setLight(light)
+                    .uv2(light)
                     .setNormal(0.0F, 1.0F, 0.0F);
-            quadBuffer.addVertex(pose, 0.5F - hSize, 1.0F + offset, 0.5F + hSize)
-                    .setColor(r, g, b, alpha)
-                    .setUv(0.0F, V + 0.1F)
+            quadBuffer.vertex(pose, 0.5F - hSize, 1.0F + offset, 0.5F + hSize)
+                    .color(r, g, b, alpha)
+                    .uv(0.0F, V + 0.1F)
                     .setOverlay(packedOverlay)
-                    .setLight(light)
+                    .uv2(light)
                     .setNormal(0.0F, 1.0F, 0.0F);
-            quadBuffer.addVertex(pose,0.5F + hSize, 1.0F + offset, 0.5F + hSize)
-                    .setColor(r, g, b, alpha)
-                    .setUv(1.0F, V + 0.1F)
+            quadBuffer.vertex(pose, 0.5F + hSize, 1.0F + offset, 0.5F + hSize)
+                    .color(r, g, b, alpha)
+                    .uv(1.0F, V + 0.1F)
                     .setOverlay(packedOverlay)
-                    .setLight(light)
+                    .uv2(light)
                     .setNormal(0.0F, 1.0F, 0.0F);
-            quadBuffer.addVertex(pose,0.5F + hSize, 1.0F + offset, 0.5F - hSize)
-                    .setColor(r, g, b, alpha)
-                    .setUv(1.0F, V)
+            quadBuffer.vertex(pose, 0.5F + hSize, 1.0F + offset, 0.5F - hSize)
+                    .color(r, g, b, alpha)
+                    .uv(1.0F, V)
                     .setOverlay(packedOverlay)
-                    .setLight(light)
+                    .uv2(light)
                     .setNormal(0.0F, 1.0F, 0.0F);
         }
         poseStack.popPose();

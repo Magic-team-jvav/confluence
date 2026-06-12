@@ -9,35 +9,38 @@ import software.bernie.geckolib.cache.object.GeoCube;
 
 @Mixin(value = GeoCube.class, remap = false)
 public abstract class GeoCubeMixin implements IGeoCube, SelfGetter<GeoCube> {
-    @Unique GeoCube confluence$copy;
-    @Unique float[] confluence$minCoords;
-    @Unique float[] confluence$maxCoords;
+    @Unique
+    GeoCube confluence$copy;
+    @Unique
+    float[] confluence$minCoords;
+    @Unique
+    float[] confluence$maxCoords;
 
     @Override
-    public GeoCube confluence$getCopy(){
-        if(confluence$copy == null){
+    public GeoCube confluence$getCopy() {
+        if (confluence$copy == null) {
             confluence$copy = DeathAnimUtils.duplicateGeoCube(confluence$self());
         }
         return confluence$copy;
     }
 
     @Override
-    public void confluence$setMinCoords(float[] minCoords){
+    public void confluence$setMinCoords(float[] minCoords) {
         confluence$minCoords = minCoords;
     }
 
     @Override
-    public void confluence$setMaxCoords(float[] maxCoords){
+    public void confluence$setMaxCoords(float[] maxCoords) {
         confluence$maxCoords = maxCoords;
     }
 
     @Override
-    public float[] confluence$getMinCoords(){
+    public float[] confluence$getMinCoords() {
         return confluence$minCoords;
     }
 
     @Override
-    public float[] confluence$getMaxCoords(){
+    public float[] confluence$getMaxCoords() {
         return confluence$maxCoords;
     }
 }

@@ -24,7 +24,7 @@ public class ShurikenProjectileModel extends EntityModel<ThrowableDropSelfProjec
         PartDefinition partdefinition = meshdefinition.getRoot();
 
         partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 11).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 1.0F, 5.0F, CubeDeformation.NONE)
-            .texOffs(0, 0).addBox(-6.5F, 0.5F, -5.5F, 12.0F, 0.0F, 11.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+                .texOffs(0, 0).addBox(-6.5F, 0.5F, -5.5F, 12.0F, 0.0F, 11.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 48, 48);
     }

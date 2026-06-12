@@ -9,50 +9,50 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 
 public class CasingConnectivity {
-	private Map<Block, Entry> entries;
+    private final Map<Block, Entry> entries;
 
-	public CasingConnectivity() {
-		entries = new IdentityHashMap<>();
-	}
+    public CasingConnectivity() {
+        entries = new IdentityHashMap<>();
+    }
 
-	public Entry get(BlockState blockState) {
-		return entries.get(blockState.getBlock());
-	}
+    public Entry get(BlockState blockState) {
+        return entries.get(blockState.getBlock());
+    }
 
-	public void makeCasing(Block block, CTSpriteShiftEntry casing) {
-		new Entry(block, casing, (s, f) -> true).register();
-	}
+    public void makeCasing(Block block, CTSpriteShiftEntry casing) {
+        new Entry(block, casing, (s, f) -> true).register();
+    }
 
-	public void make(Block block, CTSpriteShiftEntry casing) {
-		new Entry(block, casing, (s, f) -> true).register();
-	}
+    public void make(Block block, CTSpriteShiftEntry casing) {
+        new Entry(block, casing, (s, f) -> true).register();
+    }
 
-	public void make(Block block, CTSpriteShiftEntry casing, BiPredicate<BlockState, Direction> predicate) {
-		new Entry(block, casing, predicate).register();
-	}
+    public void make(Block block, CTSpriteShiftEntry casing, BiPredicate<BlockState, Direction> predicate) {
+        new Entry(block, casing, predicate).register();
+    }
 
-	public class Entry {
-		private Block block;
-		private CTSpriteShiftEntry casing;
-		private BiPredicate<BlockState, Direction> predicate;
+    public class Entry {
+        private final Block block;
+        private final CTSpriteShiftEntry casing;
+        private final BiPredicate<BlockState, Direction> predicate;
 
-		private Entry(Block block, CTSpriteShiftEntry casing, BiPredicate<BlockState, Direction> predicate) {
-			this.block = block;
-			this.casing = casing;
-			this.predicate = predicate;
-		}
+        private Entry(Block block, CTSpriteShiftEntry casing, BiPredicate<BlockState, Direction> predicate) {
+            this.block = block;
+            this.casing = casing;
+            this.predicate = predicate;
+        }
 
-		public CTSpriteShiftEntry getCasing() {
-			return casing;
-		}
+        public CTSpriteShiftEntry getCasing() {
+            return casing;
+        }
 
-		public boolean isSideValid(BlockState state, Direction face) {
-			return predicate.test(state, face);
-		}
+        public boolean isSideValid(BlockState state, Direction face) {
+            return predicate.test(state, face);
+        }
 
-		public void register() {
-			entries.put(block, this);
-		}
+        public void register() {
+            entries.put(block, this);
+        }
 
-	}
+    }
 }

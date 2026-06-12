@@ -1,8 +1,6 @@
 package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.narration.NarratedElementType;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;

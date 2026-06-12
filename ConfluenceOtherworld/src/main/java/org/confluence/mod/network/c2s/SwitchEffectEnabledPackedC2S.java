@@ -1,29 +1,30 @@
-package org.confluence.mod.network.c2s;
+﻿package org.confluence.mod.network.c2s;
 
 import net.minecraft.core.Holder;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.util.ModUtils;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record SwitchEffectEnabledPackedC2S(Holder<MobEffect> effect, boolean enabled) implements IPacketC2S {
-    public static final Type<SwitchEffectEnabledPackedC2S> TYPE = Confluence.createType("switch_effect_enabled");
-    public static final StreamCodec<RegistryFriendlyByteBuf, SwitchEffectEnabledPackedC2S> STREAM_CODEC = StreamCodec.composite(
+public record SwitchEffectEnabledPackedC2S(Holder<MobEffect> effect,
+                                           boolean enabled) implements IPortPacket.C2S {
+    public static final ResourceLocation ID = Confluence.asResource("switch_effect_enabled");
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, SwitchEffectEnabledPackedC2S> STREAM_CODEC = PortStreamCodec.composite(
             MobEffect.STREAM_CODEC, SwitchEffectEnabledPackedC2S::effect,
-            ByteBufCodecs.BOOL, SwitchEffectEnabledPackedC2S::enabled,
+            PortByteBufCodecs.BOOL, SwitchEffectEnabledPackedC2S::enabled,
             SwitchEffectEnabledPackedC2S::new
     );
 
     @Override
-    public Type<SwitchEffectEnabledPackedC2S> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -31,17 +32,17 @@ public record SwitchEffectEnabledPackedC2S(Holder<MobEffect> effect, boolean ena
         MobEffectInstance instance = player.getActiveEffectsMap().get(effect);
         if (instance != null && ModUtils.isSwitchableEffect(instance)) {
             IMobEffectInstance.of(instance).confluence$setEnabled(enabled);
-            MobEffect mobEffect = instance.getEffect().value();
+            MobEffect mobEffect = instance.getEffect();
             if (enabled) {
-                mobEffect.addAttributeModifiers(player.getAttributes(), instance.getAmplifier());
+                mobEffect.addAttributeModifiers(player, player.getAttributes(), instance.getAmplifier());
             } else {
-                mobEffect.removeAttributeModifiers(player.getAttributes());
+                mobEffect.removeAttributeModifiers(player, player.getAttributes(), instance.getAmplifier());
             }
             player.effectsDirty = true;
         }
     }
 
     public static void sendToServer(Holder<MobEffect> effect, boolean enabled) {
-        PacketDistributor.sendToServer(new SwitchEffectEnabledPackedC2S(effect, enabled));
+        Confluence.NETWORK_HANDLER.sendToServer(new SwitchEffectEnabledPackedC2S(effect, enabled));
     }
 }

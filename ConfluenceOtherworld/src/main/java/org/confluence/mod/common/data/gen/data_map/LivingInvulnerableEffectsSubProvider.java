@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.data_map;
+﻿package org.confluence.mod.common.data.gen.data_map;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -8,9 +8,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.common.extensions.IHolderExtension;
-import net.neoforged.neoforge.registries.holdersets.AnyHolderSet;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.init.ModDataMaps;

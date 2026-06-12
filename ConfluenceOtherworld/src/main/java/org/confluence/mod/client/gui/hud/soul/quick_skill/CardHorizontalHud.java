@@ -198,9 +198,9 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
             poseStack.translate(-v, -v, 0);
 
             RenderSystem.enableBlend();
-            guiGraphics.setColor(1f, 1f, 1f, a);
+            guiGraphics.color(1f, 1f, 1f, a);
             renderCard(guiGraphics, stackArr[idx], sel, sidx, s);
-            guiGraphics.setColor(1f, 1f, 1f, 1f);
+            guiGraphics.color(1f, 1f, 1f, 1f);
             RenderSystem.disableBlend();
             poseStack.popPose();
         }
@@ -235,7 +235,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     @Override
     public void close() {
         active = false;
-        if (!isType()) return;
+        if (!isType()) {}
     }
 
     @Override

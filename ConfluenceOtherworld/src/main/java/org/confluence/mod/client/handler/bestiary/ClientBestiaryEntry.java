@@ -1,4 +1,4 @@
-package org.confluence.mod.client.handler.bestiary;
+﻿package org.confluence.mod.client.handler.bestiary;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -6,7 +6,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
@@ -20,6 +19,7 @@ import org.confluence.mod.common.entity.BestiaryEntryDisplay;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixin.world.entity.EntityAccessor;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.chat.PortComponentSerialization;
 
 import java.util.Arrays;
 import java.util.List;
@@ -94,7 +94,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
             Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(entry -> entry.order),
             ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 1).forGetter(entry -> entry.rarity),
             ResourceLocation.CODEC.lenientOptionalFieldOf("background", SURFACE).forGetter(entry -> entry.background),
-            ComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(entry -> entry.description),
+            PortComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(entry -> entry.description),
             LibCodecUtils.homogenousList(FilterEntry.CODEC, false).lenientOptionalFieldOf("filters", List.of()).forGetter(entry -> entry.filters),
             TagParser.LENIENT_CODEC.lenientOptionalFieldOf("entity_nbt").forGetter(entry -> entry.entityNbt)
     ).apply(instance, ClientBestiaryEntry::new));

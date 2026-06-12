@@ -1,4 +1,4 @@
-package org.confluence.mod.client.handler.bestiary;
+﻿package org.confluence.mod.client.handler.bestiary;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -20,9 +20,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.Level;
-import net.neoforged.fml.ModLoader;
-import net.neoforged.neoforge.common.TranslatableEnum;
-import net.neoforged.neoforge.resource.ContextAwareReloadListener;
+import net.minecraftforge.fml.ModLoader;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryFilterEvent;
 import org.confluence.mod.common.data.saved.Bestiary;

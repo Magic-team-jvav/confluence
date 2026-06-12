@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.terra_entity;
+﻿package org.confluence.mod.integration.terra_entity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -8,8 +8,6 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
@@ -30,9 +28,7 @@ import org.confluence.terraentity.init.TEAttachments;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
-@EventBusSubscriber(modid = Confluence.MODID)
 public final class TEGameEvents {
-    @SubscribeEvent
     public static void onTravelMerchantGenerator(NPCEvent.TravelingMerchantGenerateTradeEvent event) {
         if (event.getNPC().getType() == TENpcEntities.TRAVELING_MERCHANT.get()) {
             int addition = NPCSpawner.INSTANCE.isPeddlersSatchelUsed() ? 1 : 0;
@@ -42,7 +38,6 @@ public final class TEGameEvents {
         }
     }
 
-    @SubscribeEvent
     public static void onInitNpcTrade(NPCEvent.InitNPCTradeEvent event) {
         if (event.getNPC().getType() == TENpcEntities.FEMALE_ANGLER.get()) { // 渔女直接使用渔夫的任务表
             event.setRedirection(Confluence.asResource(TENpcEntities.ANGLER.getId().getPath()));
@@ -51,7 +46,6 @@ public final class TEGameEvents {
         }
     }
 
-    @SubscribeEvent
     public static void onInteractNpc(NPCEvent.InteractNPCEvent event) {
         event.setRedirection((npc, player) -> {
             if (npc.getTradeManager() != null) {
@@ -87,7 +81,6 @@ public final class TEGameEvents {
         });
     }
 
-    @SubscribeEvent
     public static void onCollectBrains(NPCEvent.NPCBrainCollectionEvent event) {
         event.register(TENpcEntities.DEMOLITIONIST.get(), (collector) -> {
             AbstractTerraNPC npc = collector.getNPC();
@@ -116,14 +109,12 @@ public final class TEGameEvents {
         });
     }
 
-    @SubscribeEvent
     public static void summon$Pre(SummonEvent.Pre<?> event) {
         if (event.getEntity() instanceof ServerPlayer player && player.getData(TEAttachments.SUMMONER_STORAGE).getIds().size() >= 8) {
             AchievementUtils.awardAchievement(player, "you_and_what_army");
         }
     }
 
-    @SubscribeEvent
     public static void afterNpcTrade(NPCEvent.NPCTradeEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player && event.getHolder() instanceof AnglerNPC) {
             CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
@@ -145,7 +136,6 @@ public final class TEGameEvents {
         }
     }
 
-    @SubscribeEvent
     public static void yoyosThrowing(YoyosThrowingEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             AchievementUtils.awardAchievement(player, "throwing_lines");

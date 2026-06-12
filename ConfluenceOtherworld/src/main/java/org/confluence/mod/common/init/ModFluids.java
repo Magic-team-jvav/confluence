@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init;
+﻿package org.confluence.mod.common.init;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -10,9 +10,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
-import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.common.SoundActions;
-import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
+import net.minecraftforge.common.SoundActions;
+import net.minecraftforge.fluids.FluidInteractionRegistry;
 import org.confluence.lib.common.fluid.FluidTriple;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.DecorativeBlocks;

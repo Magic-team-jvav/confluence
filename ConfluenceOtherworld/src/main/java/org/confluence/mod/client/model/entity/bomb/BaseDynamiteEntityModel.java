@@ -29,6 +29,7 @@ public class BaseDynamiteEntityModel extends EntityModel<BaseDynamiteEntity> {
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     @Override
     public void setupAnim(BaseDynamiteEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 

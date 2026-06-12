@@ -1,4 +1,4 @@
-package org.confluence.mod.common.effect.flask;
+﻿package org.confluence.mod.common.effect.flask;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
@@ -8,8 +8,8 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.common.EffectCure;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.EffectCure;
+import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.init.ModEffects;
 
 import java.util.Map;

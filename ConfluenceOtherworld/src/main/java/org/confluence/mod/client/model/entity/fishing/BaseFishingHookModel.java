@@ -31,7 +31,7 @@ public class BaseFishingHookModel extends EntityModel<BaseFishingHook> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.ZERO);
+                .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE), PartPose.ZERO);
         bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 2).addBox(0.0F, -1.5F, -2.0F, 0.0F, 3.0F, 4.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.75F, 3.5F, -2.5F, 0.1745F, -0.3054F, 0.2182F));
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
@@ -40,8 +40,8 @@ public class BaseFishingHookModel extends EntityModel<BaseFishingHook> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 7).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(0, 10).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(0, 0).addBox(-2.5F, 2.0F, -2.5F, 5.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.ZERO);
+                .texOffs(0, 10).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(0, 0).addBox(-2.5F, 2.0F, -2.5F, 5.0F, 2.0F, 5.0F, CubeDeformation.NONE), PartPose.ZERO);
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
@@ -49,8 +49,8 @@ public class BaseFishingHookModel extends EntityModel<BaseFishingHook> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(12, 0).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(0, 11).addBox(-1.5F, 1.5F, -1.5F, 3.0F, 2.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
+                .texOffs(12, 0).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(0, 11).addBox(-1.5F, 1.5F, -1.5F, 3.0F, 2.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
         bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -2.5F, -3.5F, 0.0F, 4.0F, 7.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 4.5F, 0.0F, 0.0F, -2.3562F, 0.0F));
         bb_main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -2.5F, -3.5F, 0.0F, 4.0F, 7.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 4.5F, 0.0F, 0.0F, -0.7854F, 0.0F));
         return LayerDefinition.create(meshdefinition, 32, 32);
@@ -60,8 +60,8 @@ public class BaseFishingHookModel extends EntityModel<BaseFishingHook> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(14, 2).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(12, 0).addBox(-1.5F, 1.5F, -1.5F, 3.0F, 2.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
+                .texOffs(14, 2).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(12, 0).addBox(-1.5F, 1.5F, -1.5F, 3.0F, 2.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
         bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -4.5F, -3.5F, 0.0F, 7.0F, 7.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 4.5F, 0.0F, 0.0F, 3.1416F, 0.0F));
         bb_main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 7).addBox(0.0F, -4.5F, -3.5F, 0.0F, 7.0F, 7.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 4.5F, 0.0F, 0.0F, -2.3562F, 0.0F));
         bb_main.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 7).addBox(0.0F, -4.5F, -3.5F, 0.0F, 7.0F, 7.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 4.5F, 0.0F, 0.0F, -0.7854F, 0.0F));
@@ -72,9 +72,9 @@ public class BaseFishingHookModel extends EntityModel<BaseFishingHook> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(14, 10).addBox(-1.0F, 0.0F, -1.5F, 2.0F, 3.0F, 2.0F, CubeDeformation.NONE)
-            .texOffs(0, 14).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(0, 0).addBox(-2.5F, 0.5F, -2.5F, 5.0F, 6.0F, 4.0F, new CubeDeformation(-0.75F))
-            .texOffs(0, 10).addBox(-3.5F, 0.5F, -0.5F, 7.0F, 7.0F, 0.0F, CubeDeformation.NONE), PartPose.ZERO);
+                .texOffs(0, 14).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(0, 0).addBox(-2.5F, 0.5F, -2.5F, 5.0F, 6.0F, 4.0F, new CubeDeformation(-0.75F))
+                .texOffs(0, 10).addBox(-3.5F, 0.5F, -0.5F, 7.0F, 7.0F, 0.0F, CubeDeformation.NONE), PartPose.ZERO);
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
@@ -82,8 +82,8 @@ public class BaseFishingHookModel extends EntityModel<BaseFishingHook> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(4, 10).addBox(-1.5F, 1.0F, -1.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
+                .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(4, 10).addBox(-1.5F, 1.0F, -1.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
 
@@ -91,8 +91,8 @@ public class BaseFishingHookModel extends EntityModel<BaseFishingHook> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(4, 10).addBox(-1.5F, 1.0F, -1.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
+                .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(4, 10).addBox(-1.5F, 1.0F, -1.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
 
@@ -100,8 +100,8 @@ public class BaseFishingHookModel extends EntityModel<BaseFishingHook> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(10, 7).addBox(0.0F, 3.0F, -1.5F, 0.0F, 6.0F, 3.0F, CubeDeformation.NONE), PartPose.ZERO);
+                .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(10, 7).addBox(0.0F, 3.0F, -1.5F, 0.0F, 6.0F, 3.0F, CubeDeformation.NONE), PartPose.ZERO);
         bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(10, 7).addBox(0.0F, 0.0F, -1.5F, 0.0F, 6.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 3.0F, 0.0F, 2.5862F, 0.5582F, 1.8269F));
         bb_main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(10, 7).addBox(0.0F, 0.0F, -1.5F, 0.0F, 6.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 3.0F, 0.0F, -0.6557F, 0.1399F, 0.7692F));
         return LayerDefinition.create(meshdefinition, 16, 16);
@@ -111,8 +111,8 @@ public class BaseFishingHookModel extends EntityModel<BaseFishingHook> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-1.5F, 0.0F, -1.5F, 3.0F, 3.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
-            .texOffs(4, 10).addBox(-1.5F, 1.0F, -1.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
+                .texOffs(0, 6).addBox(0.0F, -4.0F, -1.0F, 0.0F, 4.0F, 3.0F, CubeDeformation.NONE)
+                .texOffs(4, 10).addBox(-1.5F, 1.0F, -1.5F, 3.0F, 3.0F, 3.0F, new CubeDeformation(0.25F)), PartPose.ZERO);
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
 

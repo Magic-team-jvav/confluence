@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.resources;
+﻿package org.confluence.mod.mixin.resources;
 
 import com.google.gson.JsonElement;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
@@ -16,8 +16,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import net.neoforged.neoforge.registries.RegistryBuilder;
 import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
 import org.confluence.terraentity.TerraEntity;
 import org.spongepowered.asm.mixin.Final;

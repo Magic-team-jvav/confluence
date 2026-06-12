@@ -27,7 +27,7 @@ public class LightBaneParticle extends TextureSheetParticle {
     public void tick() {
         super.tick();
         setSpriteFromAge(this.sprites);
-        float xx = (float)this.age / (float)this.lifetime;
+        float xx = (float) this.age / (float) this.lifetime;
         this.quadSize = xx * (1F - xx) * 4;
     }
 

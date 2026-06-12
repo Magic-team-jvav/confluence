@@ -150,10 +150,10 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
 
         VertexConsumer bg = buffer.getBuffer(RenderType.debugQuads());
         PoseStack.Pose last = poseStack.last();
-        bg.addVertex(last, -xOff + 1, -1, -0.1F).setColor(0, 0, 0, 0.25F);
-        bg.addVertex(last, xOff - 1, -1, -0.1F).setColor(0, 0, 0, 0.25F);
-        bg.addVertex(last, xOff - 1, 9, -0.1F).setColor(0, 0, 0, 0.25F);
-        bg.addVertex(last, -xOff + 1, 9, -0.1F).setColor(0, 0, 0, 0.25F);
+        bg.vertex(last, -xOff + 1, -1, -0.1F).color(0, 0, 0, 0.25F);
+        bg.vertex(last, xOff - 1, -1, -0.1F).color(0, 0, 0, 0.25F);
+        bg.vertex(last, xOff - 1, 9, -0.1F).color(0, 0, 0, 0.25F);
+        bg.vertex(last, -xOff + 1, 9, -0.1F).color(0, 0, 0, 0.25F);
 
         MC.font.drawInBatch(finalName, xOff, 0, color, false, last.pose(), buffer, Font.DisplayMode.NORMAL, 0, 15728880);
         poseStack.popPose();
@@ -161,35 +161,35 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
 
     public static void renderLineBox(PoseStack poseStack, VertexConsumer consumer, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float r, float g, float b, float a, float r2, float g2, float b2, boolean withoutUp) {
         PoseStack.Pose pose = poseStack.last();
-        float x1 = (float)minX, y1 = (float)minY, z1 = (float)minZ;
-        float x2 = (float)maxX, y2 = (float)maxY, z2 = (float)maxZ;
+        float x1 = (float) minX, y1 = (float) minY, z1 = (float) minZ;
+        float x2 = (float) maxX, y2 = (float) maxY, z2 = (float) maxZ;
 
         if (withoutUp) {
-            consumer.addVertex(pose, x1, y1, z1).setColor(r, g2, b2, a).setNormal(pose, 1, 0, 0);
-            consumer.addVertex(pose, x2, y1, z1).setColor(r, g2, b2, a).setNormal(pose, 1, 0, 0);
-            consumer.addVertex(pose, x1, y1, z1).setColor(r2, g2, b, a).setNormal(pose, 0, 0, 1);
-            consumer.addVertex(pose, x1, y1, z2).setColor(r2, g2, b, a).setNormal(pose, 0, 0, 1);
-            consumer.addVertex(pose, x2, y1, z2).setColor(r, g, b, a).setNormal(pose, 0, 0, -1);
-            consumer.addVertex(pose, x2, y1, z1).setColor(r, g, b, a).setNormal(pose, 0, 0, -1);
-            consumer.addVertex(pose, x1, y1, z2).setColor(r, g, b, a).setNormal(pose, 1, 0, 0);
-            consumer.addVertex(pose, x2, y1, z2).setColor(r, g, b, a).setNormal(pose, 1, 0, 0);
+            consumer.vertex(pose, x1, y1, z1).color(r, g2, b2, a).setNormal(pose, 1, 0, 0);
+            consumer.vertex(pose, x2, y1, z1).color(r, g2, b2, a).setNormal(pose, 1, 0, 0);
+            consumer.vertex(pose, x1, y1, z1).color(r2, g2, b, a).setNormal(pose, 0, 0, 1);
+            consumer.vertex(pose, x1, y1, z2).color(r2, g2, b, a).setNormal(pose, 0, 0, 1);
+            consumer.vertex(pose, x2, y1, z2).color(r, g, b, a).setNormal(pose, 0, 0, -1);
+            consumer.vertex(pose, x2, y1, z1).color(r, g, b, a).setNormal(pose, 0, 0, -1);
+            consumer.vertex(pose, x1, y1, z2).color(r, g, b, a).setNormal(pose, 1, 0, 0);
+            consumer.vertex(pose, x2, y1, z2).color(r, g, b, a).setNormal(pose, 1, 0, 0);
         } else {
-            consumer.addVertex(pose, x2, y2, z1).setColor(r, g, b, a).setNormal(pose, -1, 0, 0);
-            consumer.addVertex(pose, x1, y2, z1).setColor(r, g, b, a).setNormal(pose, -1, 0, 0);
-            consumer.addVertex(pose, x1, y2, z1).setColor(r, g, b, a).setNormal(pose, 0, 0, 1);
-            consumer.addVertex(pose, x1, y2, z2).setColor(r, g, b, a).setNormal(pose, 0, 0, 1);
-            consumer.addVertex(pose, x1, y2, z2).setColor(r, g, b, a).setNormal(pose, 1, 0, 0);
-            consumer.addVertex(pose, x2, y2, z2).setColor(r, g, b, a).setNormal(pose, 1, 0, 0);
-            consumer.addVertex(pose, x2, y2, z1).setColor(r, g, b, a).setNormal(pose, 0, 0, 1);
-            consumer.addVertex(pose, x2, y2, z2).setColor(r, g, b, a).setNormal(pose, 0, 0, 1);
+            consumer.vertex(pose, x2, y2, z1).color(r, g, b, a).setNormal(pose, -1, 0, 0);
+            consumer.vertex(pose, x1, y2, z1).color(r, g, b, a).setNormal(pose, -1, 0, 0);
+            consumer.vertex(pose, x1, y2, z1).color(r, g, b, a).setNormal(pose, 0, 0, 1);
+            consumer.vertex(pose, x1, y2, z2).color(r, g, b, a).setNormal(pose, 0, 0, 1);
+            consumer.vertex(pose, x1, y2, z2).color(r, g, b, a).setNormal(pose, 1, 0, 0);
+            consumer.vertex(pose, x2, y2, z2).color(r, g, b, a).setNormal(pose, 1, 0, 0);
+            consumer.vertex(pose, x2, y2, z1).color(r, g, b, a).setNormal(pose, 0, 0, 1);
+            consumer.vertex(pose, x2, y2, z2).color(r, g, b, a).setNormal(pose, 0, 0, 1);
         }
-        consumer.addVertex(pose, x2, y1, z2).setColor(r, g, b, a).setNormal(pose, 0, 1, 0);
-        consumer.addVertex(pose, x2, y2, z2).setColor(r, g, b, a).setNormal(pose, 0, 1, 0);
-        consumer.addVertex(pose, x1, y2, z2).setColor(r, g, b, a).setNormal(pose, 0, -1, 0);
-        consumer.addVertex(pose, x1, y1, z2).setColor(r, g, b, a).setNormal(pose, 0, -1, 0);
-        consumer.addVertex(pose, x1, y1, z1).setColor(r2, g, b2, a).setNormal(pose, 0, 1, 0);
-        consumer.addVertex(pose, x1, y2, z1).setColor(r2, g, b2, a).setNormal(pose, 0, 1, 0);
-        consumer.addVertex(pose, x2, y1, z1).setColor(r, g, b, a).setNormal(pose, 0, 1, 0);
-        consumer.addVertex(pose, x2, y2, z1).setColor(r, g, b, a).setNormal(pose, 0, 1, 0);
+        consumer.vertex(pose, x2, y1, z2).color(r, g, b, a).setNormal(pose, 0, 1, 0);
+        consumer.vertex(pose, x2, y2, z2).color(r, g, b, a).setNormal(pose, 0, 1, 0);
+        consumer.vertex(pose, x1, y2, z2).color(r, g, b, a).setNormal(pose, 0, -1, 0);
+        consumer.vertex(pose, x1, y1, z2).color(r, g, b, a).setNormal(pose, 0, -1, 0);
+        consumer.vertex(pose, x1, y1, z1).color(r2, g, b2, a).setNormal(pose, 0, 1, 0);
+        consumer.vertex(pose, x1, y2, z1).color(r2, g, b2, a).setNormal(pose, 0, 1, 0);
+        consumer.vertex(pose, x2, y1, z1).color(r, g, b, a).setNormal(pose, 0, 1, 0);
+        consumer.vertex(pose, x2, y2, z1).color(r, g, b, a).setNormal(pose, 0, 1, 0);
     }
 }

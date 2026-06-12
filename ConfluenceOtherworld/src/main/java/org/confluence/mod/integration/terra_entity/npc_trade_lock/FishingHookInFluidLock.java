@@ -19,7 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public record FishingHookInFluidLock(List<TagKey<Fluid>> tags, boolean requiresFishingHook) implements ITradeLock {
+public record FishingHookInFluidLock(List<TagKey<Fluid>> tags,
+                                     boolean requiresFishingHook) implements ITradeLock {
     public static final MapCodec<FishingHookInFluidLock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             TagKey.codec(Registries.FLUID).listOf().lenientOptionalFieldOf("tags", List.of()).forGetter(FishingHookInFluidLock::tags),
             Codec.BOOL.lenientOptionalFieldOf("requires_fishing_hook", true).forGetter(FishingHookInFluidLock::requiresFishingHook)
@@ -40,7 +41,9 @@ public record FishingHookInFluidLock(List<TagKey<Fluid>> tags, boolean requiresF
 
     @Override
     public boolean equals(Object o) {
-        return o == this || (o instanceof FishingHookInFluidLock(List<TagKey<Fluid>> tags1, boolean requiresFishingHook1) && requiresFishingHook == requiresFishingHook1 && tags.equals(tags1));
+        return o == this || (o instanceof FishingHookInFluidLock(
+                List<TagKey<Fluid>> tags1, boolean requiresFishingHook1
+        ) && requiresFishingHook == requiresFishingHook1 && tags.equals(tags1));
     }
 
     @Override

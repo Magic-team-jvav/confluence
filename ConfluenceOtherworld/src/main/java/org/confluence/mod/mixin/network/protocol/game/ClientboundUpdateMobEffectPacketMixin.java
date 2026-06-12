@@ -1,7 +1,7 @@
 package org.confluence.mod.mixin.network.protocol.game;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.world.effect.MobEffectInstance;
 import org.confluence.mod.mixed.IClientboundUpdateMobEffectPacket;
@@ -27,13 +27,13 @@ public abstract class ClientboundUpdateMobEffectPacketMixin implements IClientbo
         this.confluence$enabled = IMobEffectInstance.of(effect).confluence$isEnabled();
     }
 
-    @Inject(method = "<init>(Lnet/minecraft/network/RegistryFriendlyByteBuf;)V", at = @At("TAIL"))
-    private void init(RegistryFriendlyByteBuf buffer, CallbackInfo ci) {
+    @Inject(method = "<init>(Lnet/minecraft/network/PortRegistryFriendlyByteBuf;)V", at = @At("TAIL"))
+    private void init(PortRegistryFriendlyByteBuf buffer, CallbackInfo ci) {
         this.confluence$enabled = buffer.readBoolean();
     }
 
     @Inject(method = "write", at = @At("TAIL"))
-    private void encode(RegistryFriendlyByteBuf buffer, CallbackInfo ci) {
+    private void encode(PortRegistryFriendlyByteBuf buffer, CallbackInfo ci) {
         buffer.writeBoolean(confluence$enabled);
     }
 }

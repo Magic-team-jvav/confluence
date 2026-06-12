@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.loot;
+﻿package org.confluence.mod.common.data.gen.loot;
 
 import com.google.common.collect.Streams;
 import net.minecraft.advancements.critereon.*;
@@ -24,8 +24,7 @@ import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.mod.Confluence;

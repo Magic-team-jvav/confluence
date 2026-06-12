@@ -78,7 +78,7 @@ public class RollingCactusBoulderEntity extends BoulderEntity {
                         damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
                     }
                     if (entity.hurt(damageSources().cactus(), damage)) {
-                        LibMathUtils.knockBackA2B(this, entity, 1.0, 0.2);
+                        LibEntityUtils.knockBackA2B(this, entity, 1.0, 0.2);
                     }
                 }
             }

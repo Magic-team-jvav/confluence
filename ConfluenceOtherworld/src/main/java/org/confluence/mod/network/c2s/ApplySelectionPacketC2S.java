@@ -1,28 +1,24 @@
-package org.confluence.mod.network.c2s;
+﻿package org.confluence.mod.network.c2s;
+
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.SelectionsScreen;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /**
  * @see SelectionsScreen
  * @see org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C
  */
-public record ApplySelectionPacketC2S(byte selected) implements IPacketC2S {
-    public static final Type<ApplySelectionPacketC2S> TYPE = Confluence.createType("apply_selection_c2s");
-    public static final StreamCodec<ByteBuf, ApplySelectionPacketC2S> STREAM_CODEC = ByteBufCodecs.BYTE.map(ApplySelectionPacketC2S::new, ApplySelectionPacketC2S::selected);
-
-    @Override
-    public Type<ApplySelectionPacketC2S> type() {
-        return TYPE;
-    }
+public record ApplySelectionPacketC2S(byte selected) implements IPortPacket.C2S {
+    public static final ResourceLocation ID = Confluence.asResource("apply_selection_c2s");
+    public static final PortStreamCodec<ByteBuf, ApplySelectionPacketC2S> STREAM_CODEC = PortByteBufCodecs.BYTE.map(ApplySelectionPacketC2S::new, ApplySelectionPacketC2S::selected);
 
     @Override
     public void work(ServerPlayer player) {
@@ -33,7 +29,12 @@ public record ApplySelectionPacketC2S(byte selected) implements IPacketC2S {
     }
 
     public static void sendToServer(byte selected) {
-        PacketDistributor.sendToServer(new ApplySelectionPacketC2S(selected));
+        Confluence.NETWORK_HANDLER.sendToServer(new ApplySelectionPacketC2S(selected));
+    }
+
+    @Override
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     public interface ISelectable<T> {

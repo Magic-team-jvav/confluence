@@ -318,7 +318,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
             DamageSource source = ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player);
 
             if (target.hurt(source, finalDamage)) {
-                LibMathUtils.knockBackA2B(this, target, 0.3f, 0.15f);
+                LibEntityUtils.knockBackA2B(this, target, 0.3f, 0.15f);
                 component.hitEffect().ifPresent(effect -> effect.applyAll(player, target));
                 hitCooldown = phase == PHASE_THROWN ? 3 : 8;
             }

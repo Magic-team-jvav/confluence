@@ -3,7 +3,7 @@ package org.confluence.mod.common.recipe;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -48,7 +48,7 @@ public class HardmodeAnvilRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
         }
 
         @Override
-        protected StreamCodec<RegistryFriendlyByteBuf, HardmodeAnvilRecipe> getStreamCodec() {
+        protected StreamCodec<PortRegistryFriendlyByteBuf, HardmodeAnvilRecipe> getStreamCodec() {
             return eitherSerializerStreamCodec(HardmodeAnvilRecipe::new);
         }
     }

@@ -9,10 +9,10 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.Queue;
 
@@ -59,15 +59,15 @@ final class SlimeRainSprite {
         RenderSystem.setShaderColor(1, 1, 1, alpha * a);
         Matrix4f matrix4f = poseStack.last().pose();
         BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        builder.addVertex(matrix4f, -radius, dist, -radius).setUv(0.0F, v1);
-        builder.addVertex(matrix4f, radius, dist, -radius).setUv(1.0F, v1);
-        builder.addVertex(matrix4f, radius, dist, radius).setUv(1.0F, v0);
-        builder.addVertex(matrix4f, -radius, dist, radius).setUv(0.0F, v0);
+        builder.vertex(matrix4f, -radius, dist, -radius).uv(0.0F, v1);
+        builder.vertex(matrix4f, radius, dist, -radius).uv(1.0F, v1);
+        builder.vertex(matrix4f, radius, dist, radius).uv(1.0F, v0);
+        builder.vertex(matrix4f, -radius, dist, radius).uv(0.0F, v0);
         BufferUploader.drawWithShader(builder.buildOrThrow());
         poseStack.popPose();
     }
 
-    static void renderSlimeRain(LocalPlayer player, RenderLevelStageEvent event) {
+    static void renderSlimeRain(LocalPlayer player, PortRenderLevelStageEvent event) {
         if (player.level().dimension() != OverworldUtils.dimension()) return;
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         float rainLevel = player.level().getRainLevel(partialTick);

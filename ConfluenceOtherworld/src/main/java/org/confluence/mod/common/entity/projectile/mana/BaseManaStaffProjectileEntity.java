@@ -119,7 +119,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         if (target.hurt(getDamageSource(), damage)) {
             float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
             if ((attackKnockback > 0.0F && knockbackStrength > 0) || knockbackMotionY > 0) {
-                LibMathUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
+                LibEntityUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
             }
             afterHurtTarget(target);
             return true;

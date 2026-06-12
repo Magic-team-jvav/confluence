@@ -1,12 +1,11 @@
-package org.confluence.mod.network.task;
+﻿package org.confluence.mod.network.task;
 
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.server.PlayerAdvancements;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.lib.network.IPacket;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
@@ -21,7 +20,7 @@ import java.util.UUID;
 /// 但是客户端还是原先的profile
 public record RequestAchievementsPacketS2C(boolean onlineMode) implements IPacket {
     public static final Type<RequestAchievementsPacketS2C> TYPE = Confluence.createType("request_achievements");
-    public static final StreamCodec<ByteBuf, RequestAchievementsPacketS2C> STREAM_CODEC = ByteBufCodecs.BOOL
+    public static final PortStreamCodec<ByteBuf, RequestAchievementsPacketS2C> STREAM_CODEC = PortByteBufCodecs.BOOL
             .map(RequestAchievementsPacketS2C::new, RequestAchievementsPacketS2C::onlineMode);
 
     @Override

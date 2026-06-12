@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -7,10 +8,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.armor.ModArmorMaterials;
 import org.confluence.mod.common.item.armor.BaseArmorItem;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.function.Consumer;
 
@@ -35,15 +36,15 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> MINING_CHESTPLATE = register("mining_chestplate", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            .attribute(PortAttributesExtension.blockBreakSpeed(), 0.1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
     public static final RegistryObject<BaseArmorItem> MINING_LEGGINGS = register("mining_leggings", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            .attribute(PortAttributesExtension.blockBreakSpeed(), 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
     public static final RegistryObject<BaseArmorItem> MINING_BOOTS = register("mining_boots", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+            .attribute(PortAttributesExtension.blockBreakSpeed(), 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
 
     public static final RegistryObject<BaseArmorItem> PLANK_HELMET = register("plank_helmet", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/plank_armor")
@@ -216,8 +217,8 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> THIEF_HELMET = register("thief_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)
-            .attribute(Attributes.ATTACK_SPEED, 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.06, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
+            .attribute(Attributes.MOVEMENT_SPEED, 0.03, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> THIEF_CHESTPLATE = register("thief_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)
@@ -225,8 +226,8 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> THIEF_LEGGINGS = register("thief_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)
-            .attribute(Attributes.ATTACK_SPEED, 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.06, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
+            .attribute(Attributes.MOVEMENT_SPEED, 0.03, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> THIEF_BOOTS = register("thief_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)
@@ -261,11 +262,11 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> SCALE_MAIL_LEGGINGS = register("scale_mail_leggings", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/scale_mail_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.ATTACK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> SCALE_MAIL_BOOTS = register("scale_mail_boots", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/scale_mail_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.03, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
     public static final RegistryObject<BaseArmorItem> REINFORCED_MAIL_HELMET = register("reinforced_mail_helmet", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/reinforced_mail_armor")
@@ -314,12 +315,12 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> BATTLE_LEGGINGS = register("battle_leggings", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
     );
     public static final RegistryObject<BaseArmorItem> BATTLE_BOOTS = register("battle_boots", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
     );
 
     public static final RegistryObject<BaseArmorItem> SPLENDID_COLLAR = register("splendid_collar", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
@@ -337,13 +338,13 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> SPLENDID_LEGGINGS = register("splendid_leggings", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
-            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .criticalChance(0.04)
     );
     public static final RegistryObject<BaseArmorItem> SPLENDID_BOOTS = register("splendid_boots", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
-            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .criticalChance(0.04)
     );
 
@@ -360,7 +361,7 @@ public class ArmorItems {
             .geo("armor/archers_armor")
             .rarity(ModRarity.GREEN)
             .criticalChance(0.05)
-            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
     );
     public static final RegistryObject<BaseArmorItem> ARCHERS_BOOTS = register("archers_boots", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/archers_armor")
@@ -449,7 +450,7 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> SPELUNKER_LEGGINGS = register("spelunker_leggings", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/spelunker_armor")
             .rarity(ModRarity.GREEN)
-            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> SPELUNKER_BOOTS = register("spelunker_boots", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/spelunker_armor")
             .rarity(ModRarity.GREEN)
@@ -546,7 +547,7 @@ public class ArmorItems {
             .geo("armor/spore_root_armor")
             .rarity(ModRarity.BLUE)
             .summonDamage(0.02)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
     public static final RegistryObject<BaseArmorItem> SPORE_ROOT_CHESTPLATE = register("spore_root_chestplate", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/spore_root_armor")
             .rarity(ModRarity.BLUE)
@@ -598,17 +599,17 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> HEIM_BOOTS = register("heim_boots", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/heim_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(NeoForgeMod.SWIM_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(PortAttributesExtension.swimSpeed(), 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> BEE_HELMET = register("bee_helmet", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.04)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
     public static final RegistryObject<BaseArmorItem> BEE_CHESTPLATE = register("bee_chestplate", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.04)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
     public static final RegistryObject<BaseArmorItem> BEE_LEGGINGS = register("bee_leggings", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
@@ -625,7 +626,7 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> OBSIDIAN_CHESTPLATE = register("obsidian_chestplate", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/obsidian_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
     public static final RegistryObject<BaseArmorItem> OBSIDIAN_LEGGINGS = register("obsidian_leggings", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/obsidian_armor")
             .rarity(ModRarity.BLUE)
@@ -758,11 +759,11 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> MOLTEN_LEGGINGS = register("molten_leggings", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/molten_armor")
             .rarity(ModRarity.ORANGE)
-            .attribute(Attributes.ATTACK_SPEED, 0.035, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.035, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> MOLTEN_BOOTS = register("molten_boots", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/molten_armor")
             .rarity(ModRarity.ORANGE)
-            .attribute(Attributes.ATTACK_SPEED, 0.035, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.035, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
     public static final RegistryObject<BaseArmorItem> PEARL_HELMET = register("pearl_helmet", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/pearl_armor")
@@ -780,17 +781,17 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> SPIDER_HELMET = register("spider_helmet", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.05));
     public static final RegistryObject<BaseArmorItem> SPIDER_CHESTPLATE = register("spider_chestplate", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.05));
     public static final RegistryObject<BaseArmorItem> SPIDER_LEGGINGS = register("spider_leggings", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
     public static final RegistryObject<BaseArmorItem> SPIDER_BOOTS = register("spider_boots", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
@@ -811,7 +812,7 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> COBALT_HELMET = register("cobalt_helmet", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .meleeDamage(0.15));
     public static final RegistryObject<BaseArmorItem> COBALT_CHESTPLATE = register("cobalt_chestplate", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/cobalt_armor", true)
@@ -820,7 +821,7 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> COBALT_LEGGINGS = register("cobalt_leggings", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> COBALT_BOOTS = register("cobalt_boots", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
@@ -830,7 +831,7 @@ public class ArmorItems {
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
             .meleeDamage(0.12)
-            .attribute(Attributes.ATTACK_SPEED, 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.12, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> PALLADIUM_HEADGEAR = register("palladium_headgear", ModArmorMaterials.PALLADIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
@@ -896,13 +897,13 @@ public class ArmorItems {
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .meleeDamage(0.11)
-            .attribute(Attributes.ATTACK_SPEED, 0.11, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.11, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> ORICHALCUM_HELMET = register("orichalcum_helmet", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.15)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.08, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.08, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> ORICHALCUM_CHESTPLATE = register("orichalcum_chestplate", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
@@ -914,7 +915,7 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> ORICHALCUM_BOOTS = register("orichalcum_boots", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.11, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.11, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
     public static final RegistryObject<BaseArmorItem> ADAMANTITE_HEADGEAR = register("adamantite_headgear", ModArmorMaterials.ADAMANTITE_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/adamantite_armor", true)
@@ -944,7 +945,7 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> ADAMANTITE_BOOTS = register("adamantite_boots", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
     public static final RegistryObject<BaseArmorItem> TITANIUM_HEADGEAR = register("titanium_headgear", ModArmorMaterials.TITANIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/titanium_armor", true)
@@ -958,7 +959,7 @@ public class ArmorItems {
             .rarity(ModRarity.LIGHT_RED)
             .meleeDamage(0.09)
             .criticalChance(0.09)
-            .attribute(Attributes.ATTACK_SPEED, 0.09, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.09, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> TITANIUM_HELMET = register("titanium_helmet", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
@@ -977,7 +978,7 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> TITANIUM_BOOTS = register("titanium_boots", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.06, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
     public static final RegistryObject<BaseArmorItem> CRYSTAL_ASSASSIN_HELMET = register("crystal_assassin_helmet", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/crystal_assassin_armor")
@@ -1017,21 +1018,21 @@ public class ArmorItems {
     public static final RegistryObject<BaseArmorItem> TIKI_MASK = register("tiki_mask", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.10));
     public static final RegistryObject<BaseArmorItem> TIKI_SHIRT = register("tiki_shirt", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.10));
     public static final RegistryObject<BaseArmorItem> TIKI_LEGGINGS = register("tiki_leggings", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
-            .attribute(ConfluenceMagicLib.WHIP_RANGE, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(ConfluenceMagicLib.WHIP_RANGE, 0.1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final RegistryObject<BaseArmorItem> TIKI_BOOTS = register("tiki_boots", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.10));
 
     public static final RegistryObject<BaseArmorItem> WIZARD_HAT = register("wizard_hat", ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
@@ -1119,7 +1120,7 @@ public class ArmorItems {
             .geo("armor/flinx_fur_coat_armor")
             .rarity(ModRarity.GREEN)
             .summonDamage(0.05)
-            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
+            .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
 
     private static RegistryObject<BaseArmorItem> register(String name, Holder<ArmorMaterial> material, ArmorItem.Type type, Consumer<BaseArmorItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

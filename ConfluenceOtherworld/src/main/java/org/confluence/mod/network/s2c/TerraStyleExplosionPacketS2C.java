@@ -1,31 +1,32 @@
-package org.confluence.mod.network.s2c;
+﻿package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.SectionPos;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.TerraStyleExplosion;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record TerraStyleExplosionPacketS2C(double x, double y, double z, float radius) implements IPacketS2C {
-    public static final Type<TerraStyleExplosionPacketS2C> TYPE = Confluence.createType("terra_style_explosion");
-    public static final StreamCodec<ByteBuf, TerraStyleExplosionPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.DOUBLE, TerraStyleExplosionPacketS2C::x,
-            ByteBufCodecs.DOUBLE, TerraStyleExplosionPacketS2C::y,
-            ByteBufCodecs.DOUBLE, TerraStyleExplosionPacketS2C::z,
-            ByteBufCodecs.FLOAT, TerraStyleExplosionPacketS2C::radius,
+public record TerraStyleExplosionPacketS2C(double x, double y, double z,
+                                           float radius) implements IPortPacket.S2C {
+    public static final ResourceLocation ID = Confluence.asResource("terra_style_explosion");
+    public static final PortStreamCodec<ByteBuf, TerraStyleExplosionPacketS2C> STREAM_CODEC = PortStreamCodec.composite(
+            PortByteBufCodecs.DOUBLE, TerraStyleExplosionPacketS2C::x,
+            PortByteBufCodecs.DOUBLE, TerraStyleExplosionPacketS2C::y,
+            PortByteBufCodecs.DOUBLE, TerraStyleExplosionPacketS2C::z,
+            PortByteBufCodecs.FLOAT, TerraStyleExplosionPacketS2C::radius,
             TerraStyleExplosionPacketS2C::new
     );
 
     @Override
-    public Type<TerraStyleExplosionPacketS2C> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -38,7 +39,7 @@ public record TerraStyleExplosionPacketS2C(double x, double y, double z, float r
         TerraStyleExplosionPacketS2C packet = new TerraStyleExplosionPacketS2C(x, y, z, radius);
         for (ServerPlayer player : level.players()) {
             if (player.getChunkTrackingView().contains(chunkPos)) {
-                PacketDistributor.sendToPlayer(player, packet);
+                Confluence.NETWORK_HANDLER.sendToPlayer(packet);
             }
         }
     }

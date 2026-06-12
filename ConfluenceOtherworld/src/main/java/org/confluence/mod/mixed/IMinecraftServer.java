@@ -1,7 +1,6 @@
-package org.confluence.mod.mixed;
+﻿package org.confluence.mod.mixed;
 
 import net.minecraft.server.MinecraftServer;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
@@ -42,7 +41,7 @@ public interface IMinecraftServer {
         if (LibUtils.isLogicalClient()) {
             return matchesSecretFlag(ClientPacketHandler.getSecretFlag(), flag);
         }
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        MinecraftServer server = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
         return server != null && matchesSecretFlag(server, flag);
     }
 

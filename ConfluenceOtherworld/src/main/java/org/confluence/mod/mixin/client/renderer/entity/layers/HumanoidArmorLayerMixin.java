@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.client.renderer.entity.layers;
+﻿package org.confluence.mod.mixin.client.renderer.entity.layers;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Mixin;

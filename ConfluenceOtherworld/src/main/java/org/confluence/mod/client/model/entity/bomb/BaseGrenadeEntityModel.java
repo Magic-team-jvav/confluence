@@ -28,6 +28,7 @@ public class BaseGrenadeEntityModel extends EntityModel<BaseGrenadeEntity> {
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
+
     @Override
     public void setupAnim(BaseGrenadeEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 

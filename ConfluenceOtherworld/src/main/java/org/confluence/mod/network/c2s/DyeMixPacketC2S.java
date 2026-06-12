@@ -1,23 +1,19 @@
-package org.confluence.mod.network.c2s;
+﻿package org.confluence.mod.network.c2s;
 
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record DyeMixPacketC2S(ItemStack stack) implements IPacketC2S {
-    public static final Type<DyeMixPacketC2S> TYPE = Confluence.createType("dye_mix");
-    public static final StreamCodec<RegistryFriendlyByteBuf, DyeMixPacketC2S> STREAM_CODEC = ItemStack.OPTIONAL_STREAM_CODEC.map(DyeMixPacketC2S::new, DyeMixPacketC2S::stack);
-
-    @Override
-    public Type<DyeMixPacketC2S> type() {
-        return TYPE;
-    }
+public record DyeMixPacketC2S(ItemStack stack) implements IPortPacket.C2S {
+    public static final ResourceLocation ID = Confluence.asResource("dye_mix");
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, DyeMixPacketC2S> STREAM_CODEC = PortItemStackExtension.optionalStreamCodec().map(DyeMixPacketC2S::new, DyeMixPacketC2S::stack);
 
     @Override
     public void work(ServerPlayer player) {
@@ -32,13 +28,18 @@ public record DyeMixPacketC2S(ItemStack stack) implements IPacketC2S {
             ItemStack carried = menu.getCarried();
             if (carried.isEmpty()) {
                 menu.setCarried(stack);
-            } else if (ItemStack.isSameItemSameComponents(carried, stack) && carried.getCount() < carried.getMaxStackSize()) {
+            } else if (PortItemStackExtension.isSameItemSameComponents(carried, stack) && carried.getCount() < carried.getMaxStackSize()) {
                 carried.grow(1);
             }
         }
     }
 
+    @Override
+    public ResourceLocation identifier() {
+        return Confluence.asResource("dye_mix");
+    }
+
     public static void sendToServer(ItemStack stack) {
-        PacketDistributor.sendToServer(new DyeMixPacketC2S(stack));
+        Confluence.NETWORK_HANDLER.sendToServer(new DyeMixPacketC2S(stack));
     }
 }

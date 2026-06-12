@@ -1,4 +1,4 @@
-package org.confluence.mod.common.worldgen.secret_seed;
+﻿package org.confluence.mod.common.worldgen.secret_seed;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.init.ModTags;
 
 import java.util.ArrayList;

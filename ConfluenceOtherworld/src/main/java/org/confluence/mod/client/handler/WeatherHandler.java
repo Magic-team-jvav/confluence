@@ -1,4 +1,4 @@
-package org.confluence.mod.client.handler;
+﻿package org.confluence.mod.client.handler;
 
 import com.mojang.datafixers.util.Function3;
 import net.minecraft.client.Minecraft;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.fluids.FluidType;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
@@ -60,7 +60,8 @@ public final class WeatherHandler {
 
         BlockPos relative = blockPos.above();
         BlockState aboveState = level.getBlockState(relative);
-        if (!aboveState.isAir() && aboveState.getFluidState().isEmpty() && aboveState.isSuffocating(level, relative)) return;
+        if (!aboveState.isAir() && aboveState.getFluidState().isEmpty() && aboveState.isSuffocating(level, relative))
+            return;
 
         Vec3 vec3 = Vec3.atCenterOf(blockPos);
         double x = vec3.x + Mth.nextDouble(random, -0.5, 0.5);
@@ -169,7 +170,8 @@ public final class WeatherHandler {
         return WIND_SPEED.y;
     }
 
-    public record Context(Facing facing, ParticleOptions options, Function3<Level, BlockPos, BlockState, Vec3> step) {
+    public record Context(Facing facing, ParticleOptions options,
+                          Function3<Level, BlockPos, BlockState, Vec3> step) {
         private static final Vec3 DOT_57 = new Vec3(0.57, 0.57, 0.57);
         public static final Function3<Level, BlockPos, BlockState, Vec3> FULL = (level, blockPos, blockState) -> DOT_57;
         public static final Function3<Level, BlockPos, BlockState, Vec3> SUIT_YP = (level, blockPos, blockState) -> {
@@ -203,7 +205,8 @@ public final class WeatherHandler {
                 Direction opposite = windDirection.getOpposite();
                 BlockPos relative = blockPos.relative(opposite);
                 BlockState relativeState = level.getBlockState(relative);
-                if (!relativeState.isAir() && relativeState.isSuffocating(level, relative)) return false;
+                if (!relativeState.isAir() && relativeState.isSuffocating(level, relative))
+                    return false;
                 relative = blockPos.relative(windDirection);
                 relativeState = level.getBlockState(relative);
                 return relativeState.isAir() || !Block.isFaceFull(relativeState.getCollisionShape(level, relative), opposite);

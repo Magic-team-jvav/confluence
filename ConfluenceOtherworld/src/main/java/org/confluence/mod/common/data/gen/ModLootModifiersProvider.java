@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen;
+﻿package org.confluence.mod.common.data.gen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -7,9 +7,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
-import net.neoforged.neoforge.common.loot.AddTableLootModifier;
-import net.neoforged.neoforge.common.loot.LootTableIdCondition;
+import net.minecraftforge.common.data.GlobalLootModifierProvider;
+import net.minecraftforge.common.loot.AddTableLootModifier;
+import net.minecraftforge.common.loot.LootTableIdCondition;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.loot.modifiers.AddBlockLootConfluenceSubProvider;
 import org.confluence.mod.common.data.gen.loot.modifiers.AddChestLootConfluenceSubProvider;

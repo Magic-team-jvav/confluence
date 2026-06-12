@@ -1,4 +1,4 @@
-package org.confluence.mod.util;
+﻿package org.confluence.mod.util;
 
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
-import net.neoforged.neoforge.common.Tags;
+import net.minecraftforge.common.Tags;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.lib.util.consumer.shorts.ShortConsumer2;
@@ -51,7 +51,7 @@ public final class DynamicBiomeUtils {
             .put(block -> block.is(ModTags.Blocks.GLOWING_MUSHROOM_BLOCKS), (count, counter) -> counter.glowing_mushroom += count)
             .put(block -> block.is(Blocks.SUNFLOWER), (count, counter) -> counter.sunflower += count)
             .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (count, counter) -> counter.tomb += count)
-            .put(block -> block.is(OreBlocks.CHLOROPHYTE_ORE), (count, counter) -> counter.chlorophyte += count)
+            .put(block -> block.is(OreBlocks.CHLOROPHYTE_ORE.get()), (count, counter) -> counter.chlorophyte += count)
             .put(block -> block.getFluidState().is(Tags.Fluids.WATER), (count, counter) -> counter.water += count)
             .build();
 

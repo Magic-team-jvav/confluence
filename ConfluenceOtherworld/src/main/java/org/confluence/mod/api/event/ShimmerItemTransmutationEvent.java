@@ -1,9 +1,8 @@
-package org.confluence.mod.api.event;
+﻿package org.confluence.mod.api.event;
 
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.ICancellableEvent;
-import net.neoforged.neoforge.event.entity.item.ItemEvent;
+import net.minecraftforge.eventbus.api.ICancellableEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

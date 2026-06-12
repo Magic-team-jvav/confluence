@@ -1,12 +1,12 @@
-package org.confluence.mod.api.event.bestiary;
+﻿package org.confluence.mod.api.event.bestiary;
 
 import com.google.common.collect.Maps;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.VariantHolder;
-import net.neoforged.bus.api.Event;
-import net.neoforged.fml.event.IModBusEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.fml.event.IModBusEvent;
 import org.confluence.terraentity.api.entity.IVariant;
 
 import java.util.Map;

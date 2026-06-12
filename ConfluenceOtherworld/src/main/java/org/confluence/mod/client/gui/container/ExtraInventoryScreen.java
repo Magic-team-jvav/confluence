@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.container;
+﻿package org.confluence.mod.client.gui.container;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -20,7 +20,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
@@ -361,7 +360,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         InventoryScreen inventory = new InventoryScreen(player);
         minecraft.setScreen(inventory);
         player.containerMenu.setCarried(stack);
-        PacketDistributor.sendToServer(new CPacketOpenVanilla(stack));
+        Confluence.NETWORK_HANDLER.sendToServer(new CPacketOpenVanilla(stack));
     }
 
     @Override

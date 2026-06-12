@@ -5,8 +5,8 @@ import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.fml.common.asm.enumextension.EnumProxy;
-import net.neoforged.neoforge.client.IArmPoseTransformer;
+import net.minecraftforge.client.IArmPoseTransformer;
+import org.mesdag.thr_dim_particle.client.EnumProxy;
 
 public final class ModArmPoses {
     public static final EnumProxy<ArmPose> BREATHING_REED = register(false, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {

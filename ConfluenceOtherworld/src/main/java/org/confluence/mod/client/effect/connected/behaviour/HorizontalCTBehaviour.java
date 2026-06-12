@@ -7,20 +7,20 @@ import org.confluence.mod.client.effect.connected.CTSpriteShiftEntry;
 import org.jetbrains.annotations.Nullable;
 
 public class HorizontalCTBehaviour extends ConnectedTextureBehaviour.Base {
-	protected CTSpriteShiftEntry topShift;
-	protected CTSpriteShiftEntry layerShift;
+    protected CTSpriteShiftEntry topShift;
+    protected CTSpriteShiftEntry layerShift;
 
-	public HorizontalCTBehaviour(CTSpriteShiftEntry layerShift) {
-		this(layerShift, null);
-	}
+    public HorizontalCTBehaviour(CTSpriteShiftEntry layerShift) {
+        this(layerShift, null);
+    }
 
-	public HorizontalCTBehaviour(CTSpriteShiftEntry layerShift, CTSpriteShiftEntry topShift) {
-		this.layerShift = layerShift;
-		this.topShift = topShift;
-	}
+    public HorizontalCTBehaviour(CTSpriteShiftEntry layerShift, CTSpriteShiftEntry topShift) {
+        this.layerShift = layerShift;
+        this.topShift = topShift;
+    }
 
-	@Override
-	public CTSpriteShiftEntry getShift(BlockState state, Direction direction, @Nullable TextureAtlasSprite sprite) {
-		return direction.getAxis().isHorizontal() ? layerShift : topShift;
-	}
+    @Override
+    public CTSpriteShiftEntry getShift(BlockState state, Direction direction, @Nullable TextureAtlasSprite sprite) {
+        return direction.getAxis().isHorizontal() ? layerShift : topShift;
+    }
 }

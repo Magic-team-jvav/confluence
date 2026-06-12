@@ -5,9 +5,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffects;
@@ -111,7 +111,7 @@ public record SwordProjectileComponent(
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);
     }
 
-    public static final StreamCodec<ByteBuf, SwordProjectileComponent> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
+    public static final PortStreamCodec<ByteBuf, SwordProjectileComponent> STREAM_CODEC = PortByteBufCodecs.fromCodec(CODEC);
 
     @Override
     public @Nullable Codec<SwordProjectileComponent> codec() {
@@ -119,7 +119,7 @@ public record SwordProjectileComponent(
     }
 
     @Override
-    public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, SwordProjectileComponent> streamCodec() {
+    public @NotNull StreamCodec<? super PortRegistryFriendlyByteBuf, SwordProjectileComponent> streamCodec() {
         return STREAM_CODEC;
     }
 

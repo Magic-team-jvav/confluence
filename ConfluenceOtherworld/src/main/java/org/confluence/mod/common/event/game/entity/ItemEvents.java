@@ -1,10 +1,9 @@
-package org.confluence.mod.common.event.game.entity;
+﻿package org.confluence.mod.common.event.game.entity;
 
 import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -12,14 +11,9 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
-import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
-import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.minecraftforge.event.ItemAttributeModifierEvent;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
@@ -42,14 +36,28 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.entity.item.PortItemTossEvent;
+import org.mesdag.portlib.event.other.PortItemStackedOnOtherEvent;
+import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 
 import java.util.Collection;
 import java.util.Map;
 
-@EventBusSubscriber(modid = Confluence.MODID)
 public final class ItemEvents {
-    @SubscribeEvent(receiveCanceled = true)
-    public static void itemStackedOnOther(ItemStackedOnOtherEvent event) {
+    public static void init() {
+        PortEventHandler.addListener(ItemEvents::itemStackedOnOther);
+        PortEventHandler.addListener(ItemEvents::toss);
+        PortEventHandler.addListener(ItemEvents::gunFire);
+        PortEventHandler.addListener(ItemEvents::gun$ShrinkBullet);
+        PortEventHandler.addListener(ItemEvents::gun$AmmoData);
+        PortEventHandler.addListener(ItemEvents::gun$AmmoSelection);
+        PortEventHandler.addListener(ItemEvents::gun$InventoryExtra);
+        PortEventHandler.addListener(ItemEvents::shimmerItemTransmutation$Pre);
+        PortEventHandler.addListener(ItemEvents::shimmerItemTransmutation$Post);
+    }
+
+    public static void itemStackedOnOther(PortItemStackedOnOtherEvent event) {
         ItemStack carried = event.getCarriedItem();
         ItemStack stackedOn = event.getStackedOnItem();
         Player player = event.getPlayer();
@@ -58,7 +66,6 @@ public final class ItemEvents {
         }
     }
 
-    @SubscribeEvent
     public static void attributeModifier(ItemAttributeModifierEvent event) {
         ItemStack itemStack = event.getItemStack();
         PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
@@ -70,13 +77,12 @@ public final class ItemEvents {
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
             Holder<Attribute> attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {
-                event.addModifier(attribute, modifier, EquipmentSlotGroup.MAINHAND);
+                event.addModifier(attribute, modifier, PortEquipmentSlotGroup.MAINHAND);
             }
         }
     }
 
-    @SubscribeEvent
-    public static void toss(ItemTossEvent event) {
+    public static void toss(PortItemTossEvent event) {
         ItemEntity itemEntity = event.getEntity();
         ItemStack itemStack = itemEntity.getItem();
         if (itemStack.is(ModTags.Items.TREASURE_BAG)) {
@@ -93,14 +99,12 @@ public final class ItemEvents {
         }
     }
 
-    @SubscribeEvent
     public static void gunFire(GunEvent.GunFireEvent event) {
         if (event.getGun() instanceof ManaGunItem) {
             event.setFire(true);
         }
     }
 
-    @SubscribeEvent
     public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
         if (event.getGun() instanceof ManaGunItem) {
             event.setCanceled(true);
@@ -109,7 +113,6 @@ public final class ItemEvents {
         }
     }
 
-    @SubscribeEvent
     public static void gun$AmmoData(GunEvent.AmmoDataEvent event) {
         Player player = event.getPlayer();
         float velocityModify = (float) player.getAttributeValue(LibAttributes.getRangedVelocity());
@@ -128,19 +131,16 @@ public final class ItemEvents {
         event.setKnockback(event.getKnockback() * knockbackModify);
     }
 
-    @SubscribeEvent
     public static void gun$AmmoSelection(GunEvent.AmmoSelectionEvent event) {
         if (GunItems.STAR_CANNON.toStack().is(event.getGun())) {
             event.setSelected(event.getAmmo().is(MaterialItems.FALLING_STAR.get()));
         }
     }
 
-    @SubscribeEvent
     public static void gun$InventoryExtra(GunEvent.InventoryExtraEvent event) {
         event.addAmmoFirst(ExtraInventory.of(event.getPlayer()).getAllAmmo());
     }
 
-    @SubscribeEvent
     public static void shimmerItemTransmutation$Pre(ShimmerItemTransmutationEvent.Pre event) {
         ItemEntity source = event.getSource();
         if (source.getItem().is(ConsumableItems.SLIME_CROWN) && SlimeRainGameEvent.INSTANCE.forceStart()) {
@@ -150,7 +150,6 @@ public final class ItemEvents {
         }
     }
 
-    @SubscribeEvent
     public static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
         if (event.getTargets() == null) return;
         MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();

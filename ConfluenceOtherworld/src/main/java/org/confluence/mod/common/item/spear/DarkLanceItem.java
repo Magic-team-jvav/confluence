@@ -25,6 +25,6 @@ public class DarkLanceItem extends AbstractSpearItem {
         if (victim instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME, 300));
         }
-        LibMathUtils.knockBackA2B(owner, victim, 0.25, 0.1);
+        LibEntityUtils.knockBackA2B(owner, victim, 0.25, 0.1);
     }
 }

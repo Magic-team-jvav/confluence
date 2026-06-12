@@ -1,23 +1,23 @@
-package org.confluence.mod.network.c2s;
+﻿package org.confluence.mod.network.c2s;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public enum SpearAttackPacketC2S implements IPacketC2S {
+public enum SpearAttackPacketC2S implements IPortPacket.C2S {
     INSTANCE;
-    public static final Type<SpearAttackPacketC2S> TYPE = Confluence.createType("spear_attack");
-    public static final StreamCodec<ByteBuf, SpearAttackPacketC2S> STREAM_CODEC = StreamCodec.unit(INSTANCE);
+    public static final ResourceLocation ID = Confluence.asResource("spear_attack");
+    public static final PortStreamCodec<ByteBuf, SpearAttackPacketC2S> STREAM_CODEC = PortPortStreamCodec.unit(INSTANCE);
 
     @Override
-    public Type<SpearAttackPacketC2S> type() {
-        return TYPE;
+    public ResourceLocation identifier() {
+        return ID;
     }
 
     @Override
@@ -29,6 +29,6 @@ public enum SpearAttackPacketC2S implements IPacketC2S {
     }
 
     public static void sendToServer() {
-        PacketDistributor.sendToServer(INSTANCE);
+        Confluence.NETWORK_HANDLER.sendToServer(INSTANCE);
     }
 }

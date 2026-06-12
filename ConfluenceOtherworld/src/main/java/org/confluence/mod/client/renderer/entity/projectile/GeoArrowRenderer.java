@@ -22,10 +22,10 @@ public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {
 
 
     @Override
-    protected void adjustPose(PoseStack poseStack, HellBatArrowEntity animatable, BakedGeoModel model, float partialTick){
+    protected void adjustPose(PoseStack poseStack, HellBatArrowEntity animatable, BakedGeoModel model, float partialTick) {
         poseStack.translate(0, 0F, 0.0F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick,animatable.yRotO, animatable.getYRot()) - 90.0F));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick,animatable.xRotO, animatable.getXRot())));
+        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, animatable.yRotO, animatable.getYRot()) - 90.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, animatable.xRotO, animatable.getXRot())));
         poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
         poseStack.mulPose(Axis.XP.rotationDegrees(60F));
         poseStack.translate(0F, -0.5, -0.3F);

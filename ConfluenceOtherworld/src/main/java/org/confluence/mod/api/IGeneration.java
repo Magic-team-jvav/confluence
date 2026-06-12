@@ -16,6 +16,7 @@ public interface IGeneration {
     void genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float velocity, Supplier<? extends @Nullable Projectile> proj);
 
     /// 获取编解码器
+    ///
     /// @return 编解码器
     GenerationProvider getCodec();
 

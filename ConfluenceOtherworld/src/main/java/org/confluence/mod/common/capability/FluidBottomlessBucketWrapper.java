@@ -1,10 +1,10 @@
-package org.confluence.mod.common.capability;
+﻿package org.confluence.mod.common.capability;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import org.confluence.mod.common.item.common.BottomlessBucketItem;
 
 import javax.annotation.ParametersAreNonnullByDefault;

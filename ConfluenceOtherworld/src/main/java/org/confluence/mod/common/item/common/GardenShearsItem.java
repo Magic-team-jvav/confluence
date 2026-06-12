@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.common;
+﻿package org.confluence.mod.common.item.common;
 
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -19,8 +19,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.item.ModItems;
@@ -44,13 +42,13 @@ public class GardenShearsItem extends ShearsItem {
 
     @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        return Stream.of(ItemAbilities.SHEARS_DIG,
-                        ItemAbilities.SHEARS_HARVEST,
-                        ItemAbilities.SHEARS_REMOVE_ARMOR,
-                        ItemAbilities.SHEARS_CARVE,
-                        ItemAbilities.SHEARS_DISARM,
-                        ItemAbilities.SHEARS_TRIM,
-                        ItemAbilities.AXE_STRIP)
+        return Stream.of(net.minecraftforge.common.ItemAbilities.SHEARS_DIG,
+                        net.minecraftforge.common.ItemAbilities.SHEARS_HARVEST,
+                        net.minecraftforge.common.ItemAbilities.SHEARS_REMOVE_ARMOR,
+                        net.minecraftforge.common.ItemAbilities.SHEARS_CARVE,
+                        net.minecraftforge.common.ItemAbilities.SHEARS_DISARM,
+                        net.minecraftforge.common.ItemAbilities.SHEARS_TRIM,
+                        net.minecraftforge.common.ItemAbilities.AXE_STRIP)
                 .collect(Collectors.toCollection(Sets::newIdentityHashSet))
                 .contains(itemAbility);
     }
@@ -77,7 +75,7 @@ public class GardenShearsItem extends ShearsItem {
     }
 
     private Optional<BlockState> evaluateNewBlockState(Level level, BlockPos pos, @Nullable Player player, BlockState state, UseOnContext useOnContext) {
-        Optional<BlockState> optional = Optional.ofNullable(state.getToolModifiedState(useOnContext, ItemAbilities.AXE_STRIP, false));
+        Optional<BlockState> optional = Optional.ofNullable(state.getToolModifiedState(useOnContext, net.minecraftforge.common.ItemAbilities.AXE_STRIP, false));
         if (optional.isPresent()) {
             level.playSound(player, pos, SoundEvents.BEEHIVE_SHEAR, SoundSource.BLOCKS, 1.0F, 0.5F);
             return optional;

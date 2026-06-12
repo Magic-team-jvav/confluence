@@ -5,7 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -52,10 +52,10 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<RecipeInp
         ).apply(instance, factory));
     }
 
-    public static <R extends EnhancedForgeRecipe> StreamCodec<RegistryFriendlyByteBuf, R> streamCodec(Factory<R> factory) {
+    public static <R extends EnhancedForgeRecipe> StreamCodec<PortRegistryFriendlyByteBuf, R> streamCodec(Factory<R> factory) {
         return new StreamCodec<>() {
             @Override
-            public R decode(RegistryFriendlyByteBuf buffer) {
+            public R decode(PortRegistryFriendlyByteBuf buffer) {
                 int size = buffer.readVarInt();
                 NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
                 nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
@@ -64,7 +64,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<RecipeInp
             }
 
             @Override
-            public void encode(RegistryFriendlyByteBuf buffer, R recipe) {
+            public void encode(PortRegistryFriendlyByteBuf buffer, R recipe) {
                 buffer.writeVarInt(recipe.ingredients.size());
                 for (Ingredient ingredient : recipe.ingredients) {
                     Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);

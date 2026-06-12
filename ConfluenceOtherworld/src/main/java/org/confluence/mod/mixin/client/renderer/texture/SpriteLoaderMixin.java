@@ -28,7 +28,8 @@ public abstract class SpriteLoaderMixin {
 
     @ModifyVariable(method = "stitch", at = @At("HEAD"), argsOnly = true)
     private List<SpriteContents> generateGraySprites(List<SpriteContents> contents) {
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return contents;
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture())
+            return contents;
 
         if (ModClientSetups.VANILLA_BLOCK_ATLAS.equals(location)) {
             ClientUtils.clearCache();
@@ -37,7 +38,8 @@ public abstract class SpriteLoaderMixin {
             for (SpriteContents content : contents) {
                 neoContents.add(content);
                 ResourceLocation name = content.name();
-                if (!name.getPath().startsWith("block/") || bannedModForPaints.contains(name.getNamespace())) continue;
+                if (!name.getPath().startsWith("block/") || bannedModForPaints.contains(name.getNamespace()))
+                    continue;
                 ClientUtils.ORIGINAL.add(name);
                 FrameSize frameSize = new FrameSize(content.width(), content.height());
 

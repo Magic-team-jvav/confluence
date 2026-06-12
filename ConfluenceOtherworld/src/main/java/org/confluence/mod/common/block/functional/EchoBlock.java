@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.functional;
+﻿package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +11,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.fml.loading.FMLEnvironment;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.confluence.lib.common.block.ILibSimulatorBlock;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.util.LibEntityUtils;

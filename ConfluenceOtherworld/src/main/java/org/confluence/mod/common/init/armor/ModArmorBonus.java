@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init.armor;
+﻿package org.confluence.mod.common.init.armor;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
@@ -25,10 +25,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.fml.ModLoader;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.fml.ModLoader;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
@@ -50,6 +49,7 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.TEEffects;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.entity.living.PortLivingBreatheEvent;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.HashMap;
@@ -364,7 +364,7 @@ public final class ModArmorBonus {
 
     public static @Nullable ArmorSetBonusData getArmorSetBonusData(Player player, ArmorSetBonusKey key) {
         if (key == ArmorSetBonusKey.NONE) return null;
-        return NeoForge.EVENT_BUS.post(new GetArmorSetBonusDataEvent(player, key, VALUE_MAP.get(key))).getNeoData();
+        return MinecraftForge.EVENT_BUS.post(new GetArmorSetBonusDataEvent(player, key, VALUE_MAP.get(key))).getNeoData();
     }
 
     public static Object2ObjectMap<ArmorSetBonusKey, ArmorSetBonusData> getValueMap() {
@@ -463,7 +463,7 @@ public final class ModArmorBonus {
         }
     }
 
-    public static void onBreath(LivingBreatheEvent event) {
+    public static void onBreath(PortLivingBreatheEvent event) {
         if (event.canBreathe() || !(event.getEntity() instanceof Player player)) {
             return;
         }

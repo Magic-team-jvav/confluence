@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.terra_entity.npc_trade;
+﻿package org.confluence.mod.integration.terra_entity.npc_trade;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Decoder;
@@ -15,9 +15,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -185,7 +184,7 @@ public class SellTrade implements ITrade {
     @Override
     public void onClick(double mouseX, double mouseY, int button, int index, Slot slot) {
         if (slot.hasItem() || index > 1000) {
-            PacketDistributor.sendToServer(new SellTradePacketC2S(index));
+            Confluence.NETWORK_HANDLER.sendToServer(new SellTradePacketC2S(index));
         }
     }
 

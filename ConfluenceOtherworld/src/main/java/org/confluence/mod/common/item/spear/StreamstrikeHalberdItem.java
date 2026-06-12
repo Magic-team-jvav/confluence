@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.spear;
+﻿package org.confluence.mod.common.item.spear;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -8,7 +8,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.neoforged.neoforge.common.NeoForgeMod;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibMathUtils;
@@ -19,7 +18,7 @@ import software.bernie.geckolib.animation.EasingType;
 public class StreamstrikeHalberdItem extends AbstractSpearItem {
     public StreamstrikeHalberdItem() {
         super(new Properties().attributes(ItemAttributeModifiers.builder()
-                .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, 6, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(PortAttributesExtension.entityInteractionRange(), new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, 6, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(LibAttributes.getAttackDamage(), new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 7.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .add(NeoForgeMod.SWIM_SPEED, new AttributeModifier(Confluence.asResource("base_swim_speed"), 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
                 .build()), ModRarity.BLUE, 15, 5, createKeyframes(
@@ -33,6 +32,6 @@ public class StreamstrikeHalberdItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        LibMathUtils.knockBackA2B(owner, victim, 0.25, 0.2);
+        LibEntityUtils.knockBackA2B(owner, victim, 0.25, 0.2);
     }
 }

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile;
+﻿package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -71,7 +71,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
             hitSet.add(entity.getUUID());
             this.damage -= deltaDamage;
-            LibMathUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibEntityUtils.knockBackA2B(this, entity, 0.5, 0.2);
             if (penetrate >= 3) {
                 if (random.nextBoolean()) {
                     LibEntityUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);

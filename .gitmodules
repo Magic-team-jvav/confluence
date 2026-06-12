@@ -2,10 +2,6 @@
 	path = TerraCurio
 	url = https://github.com/westernat/TerraCurio
 	branch = forge-dev/1.20.1
-[submodule "TerraGuns"]
-	path = TerraGuns
-	url = https://github.com/XiaoHuNao/TerraGuns
-	branch = forge-dev/1.20.1
 [submodule "TerraFurniture"]
 	path = TerraFurniture
 	url = https://github.com/MakerTechno/TerraFurniture

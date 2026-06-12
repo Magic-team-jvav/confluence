@@ -1,9 +1,9 @@
 package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.network.FriendlyByteBuf;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.DyeColor;
 import org.confluence.lib.util.LibStreamCodecUtils;
@@ -28,7 +28,7 @@ public enum Team implements StringRepresentable {
 
     public static final Team[] TEAMS = values();
     public static final Codec<Team> CODEC = StringRepresentable.fromEnum(() -> TEAMS);
-    public static final StreamCodec<FriendlyByteBuf, Team> STREAM_CODEC = LibStreamCodecUtils.fromEnum(TEAMS);
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Team> STREAM_CODEC = LibStreamCodecUtils.fromEnum(TEAMS);
 
     private final DyeColor color;
     private final Component titleCaseName;

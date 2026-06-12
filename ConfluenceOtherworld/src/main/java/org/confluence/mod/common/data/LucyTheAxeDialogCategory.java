@@ -6,8 +6,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.util.ExtraCodecs;
@@ -21,9 +21,9 @@ public record LucyTheAxeDialogCategory(int entries, boolean cycle) {
             ExtraCodecs.POSITIVE_INT.fieldOf("entries").forGetter(LucyTheAxeDialogCategory::entries),
             Codec.BOOL.lenientOptionalFieldOf("cycle", false).forGetter(LucyTheAxeDialogCategory::cycle)
     ).apply(instance, LucyTheAxeDialogCategory::new));
-    public static final StreamCodec<ByteBuf, LucyTheAxeDialogCategory> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_INT, LucyTheAxeDialogCategory::entries,
-            ByteBufCodecs.BOOL, LucyTheAxeDialogCategory::cycle,
+    public static final PortStreamCodec<ByteBuf, LucyTheAxeDialogCategory> STREAM_CODEC = PortStreamCodec.composite(
+            PortByteBufCodecs.VAR_INT, LucyTheAxeDialogCategory::entries,
+            PortByteBufCodecs.BOOL, LucyTheAxeDialogCategory::cycle,
             LucyTheAxeDialogCategory::new
     );
     public static final ResourceLocation CUTTING_DOWN_A_TREE = Confluence.asResource("cutting_down_a_tree");

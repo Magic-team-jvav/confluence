@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.codec.StreamCodec;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -15,7 +15,7 @@ import org.confluence.mod.Confluence;
 public interface GameEvent {
     ResourceKey<Registry<GameEvent>> REGISTRY_KEY = ResourceKey.createRegistryKey(Confluence.asResource("game_event"));
     Codec<ResourceKey<? extends GameEvent>> KEY_CODEC = (Codec<ResourceKey<? extends GameEvent>>) (Codec) ResourceKey.codec(REGISTRY_KEY);
-    StreamCodec<ByteBuf, ResourceKey<? extends GameEvent>> KEY_STREAM_CODEC = (StreamCodec<ByteBuf, ResourceKey<? extends GameEvent>>) (StreamCodec) ResourceKey.streamCodec(REGISTRY_KEY);
+    PortStreamCodec<ByteBuf, ResourceKey<? extends GameEvent>> KEY_STREAM_CODEC = (PortStreamCodec<ByteBuf, ResourceKey<? extends GameEvent>>) (PortStreamCodec) ResourceKey.streamCodec(REGISTRY_KEY);
 
     static <E extends GameEvent> ResourceKey<E> createKey(ResourceLocation key) {
         return (ResourceKey<E>) ResourceKey.create(REGISTRY_KEY, key);

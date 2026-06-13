@@ -1,7 +1,6 @@
 package org.confluence.mod.common.worldgen.feature;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -69,8 +68,6 @@ public class RailTrapFeature extends Feature<RailTrapFeature.Config> {
     }
 
     public record Config(BlockStateProvider trap) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                BlockStateProvider.CODEC.fieldOf("trap").forGetter(Config::trap)
-        ).apply(instance, Config::new));
+        public static final Codec<Config> CODEC = BlockStateProvider.CODEC.xmap(Config::new, Config::trap);
     }
 }

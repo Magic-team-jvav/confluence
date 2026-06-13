@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -37,7 +37,7 @@ public class MineTunnelsStructure extends Structure {
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_STONE_BRICKS = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_stone_bricks");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_TUFF_BRICKS = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_tuff_bricks");
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_SPRUCE_LOG = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_spruce_log");
-    public static final MapCodec<MineTunnelsStructure> CODEC = simpleCodec(MineTunnelsStructure::new);
+    public static final Codec<MineTunnelsStructure> CODEC = simpleCodec(MineTunnelsStructure::new);
     public static final Direction[] facing = new Direction[]{
             Direction.EAST,
             Direction.WEST,
@@ -96,7 +96,7 @@ public class MineTunnelsStructure extends Structure {
             tunnels(maxY, minY, 0, length, 7, 6, 20, tunnelsMap, translationMap, switchMap, random, underPos.offset(0, 0, -3));
             for (Object2IntMap.Entry<BlockPos> tunnel : tunnelsMap.object2IntEntrySet()) {
                 tunnelPos = tunnel.getKey();
-                ball(2.9D + 2.0D * random.nextDouble(), tunnelPos, 0, true, blockMap);
+                ball(2.9F + 2.0F * random.nextFloat(), tunnelPos, 0, true, blockMap);
             }
             for (Object2IntMap.Entry<BlockPos> tunnel : tunnelsMap.object2IntEntrySet()) {
                 tunnelPos = tunnel.getKey();
@@ -156,9 +156,9 @@ public class MineTunnelsStructure extends Structure {
                         featureMap.put(translationPos, RAIL_DART.location());
                         break;
                     default:
-                        ellipsoid(4.9, 10.9, 4.9, translationPos.offset(0, -6, 0), 0, true, blockMap);
-                        ball(7.9, translationPos.offset(0, -12, 0), 0, 22, true, blockMap, translationPos.getY() - 12);
-                        ball(6.4, translationPos.offset(0, -12, 0), 0, 23, true, blockMap, translationPos.getY() - 12);
+                        ellipsoid(4.9F, 10.9F, 4.9F, translationPos.offset(0, -6, 0), 0, true, blockMap);
+                        ball(7.9F, translationPos.offset(0, -12, 0), 0, 22, true, blockMap, translationPos.getY() - 12);
+                        ball(6.4F, translationPos.offset(0, -12, 0), 0, 23, true, blockMap, translationPos.getY() - 12);
                 }
             }
             if (setGate) {
@@ -225,11 +225,11 @@ public class MineTunnelsStructure extends Structure {
                     /* 9  */  Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.SOUTH_WEST),
                     /* 10 */  Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.SOUTH_EAST),
                     /* 11 */  Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.NORTH_WEST),
-                    /* 12 */  Blocks.CHISELED_TUFF_BRICKS.defaultBlockState(),
+                    /* 12 */  Blocks./*CHISELED_TUFF_BRICKS*/STONE.defaultBlockState(),
                     /* 13 */  Blocks.LEVER.defaultBlockState().setValue(FaceAttachedHorizontalDirectionalBlock.FACE, AttachFace.FLOOR),
                     /* 14 */  Blocks.SPRUCE_LOG.defaultBlockState(),
                     /* 15 */  Blocks.STONE_BRICKS.defaultBlockState(),
-                    /* 16 */  Blocks.TUFF_BRICKS.defaultBlockState(),
+                    /* 16 */  Blocks./*TUFF_BRICKS*/STONE.defaultBlockState(),
                     /* 17 */  Blocks.LANTERN.defaultBlockState(),
                     /* 18 */  Blocks.SPRUCE_TRAPDOOR.defaultBlockState().setValue(TrapDoorBlock.HALF, Half.TOP),
                     /* 19 */  Blocks.CHAIN.defaultBlockState(),

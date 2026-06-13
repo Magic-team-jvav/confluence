@@ -21,10 +21,10 @@ import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import org.confluence.lib.util.LibGeometryUtils;
-import org.confluence.lib.util.LibVectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.function.Function;
@@ -64,11 +64,11 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
             }
         };
 
-        List<Vector3d> positions = Lists.newArrayList(new Vector3d(x1, y1, z1), new Vector3d(x2, y2, z2));
-        LibGeometryUtils.lightningPathList(positions, 2.5, 0.125F, random);
+        List<Vector3f> positions = Lists.newArrayList(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2));
+        LibGeometryUtils.lightningPathList(positions, 2.5F, 0.125F, random);
         int size = positions.size();
         for (int i = 0; i < size; i++) {
-            Vector3d position = positions.get(i);
+            Vector3f position = positions.get(i);
             float delta = Math.abs(i - size * 0.5F) / size;
             for (int j = -4; j < 13; j++) {
                 int maxRadius = random.nextInt(9) + 4;
@@ -78,7 +78,7 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
                     position.add(0, -14 * yScale - 4, 0);
                     b = carveEllipsoid(context, config, chunk, biomeAccessor, noWater, position.x, position.y, position.z, 2, 2, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ > 1.0);
                     if (b) {
-                        chunk.setBlockState(LibVectorUtils.fromVector3d(position).above(), NatureBlocks.SHADOW_ORB.get().defaultBlockState(), false);
+                        chunk.setBlockState(LibMathUtils.fromVector3f(position).above(), NatureBlocks.SHADOW_ORB.get().defaultBlockState(), false);
                     }
                 }
             }

@@ -2,9 +2,10 @@
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.ICancellableEvent;
+import net.minecraftforge.eventbus.api.Cancelable;
 
-public class PlayerAboutToEmptyTargetSweepEvent extends PlayerEvent implements ICancellableEvent {
+@Cancelable
+public class PlayerAboutToEmptyTargetSweepEvent extends PlayerEvent {
     private final float baseAttackDamage;
     private float attackDamage;
 

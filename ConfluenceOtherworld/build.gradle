@@ -179,16 +179,24 @@ repositories {
 }
 
 dependencies {
-    projectName.forEach { name -> modImplementation jarJar(project(":" + name)) }
+    projectName.forEach { name ->
+        modImplementation(project(":" + name))
+        jarJar(project(":" + name))
+    }
 
-    modImplementation jarJar("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
-    modImplementation jarJar("com.eliotlash.mclib:mclib:20")
-    modImplementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}-forge")
-    modImplementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}-forge")
+    modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
+    modCompileOnly("com.eliotlash.mclib:mclib:20")
+
+    modImplementation("org.mesdag:ParticleStorm:${particle_storm_version}-forge")
+    jarJar("org.mesdag:ParticleStorm:${particle_storm_version}-forge")
+
+    modImplementation("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}-forge")
+    jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}-forge")
+
 //    modImplementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 
-    modImplementation "top.theillusivec4.curios:curios-forge:${curios_version}"
-    modImplementation jarJar('com.github.glitchfiend:TerraBlender-forge:' + minecraft_version + '-' + terrablender_version)
+    modImplementation("top.theillusivec4.curios:curios-forge:${curios_version}")
+    modImplementation('com.github.glitchfiend:TerraBlender-forge:' + minecraft_version + '-' + terrablender_version)
 
 //    implementation jarJar(files('libs/LanguageFixer.jar'))
 

@@ -1,7 +1,9 @@
 ﻿package org.confluence.mod.common.event.game.entity;
 
+import PortLib.extensions.net.minecraft.advancements.Advancement.PortAdvancementExtension;
 import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
-import net.minecraft.advancements.Advancement;
+import PortLib.extensions.net.minecraft.util.ParticleUtils.PortParticleUtilsExtension;
+import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,7 +14,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ParticleUtils;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,7 +43,6 @@ import org.confluence.lib.api.event.SwitchItemFunctionEvent;
 import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
@@ -83,6 +83,7 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.player.*;
 import org.mesdag.portlib.wrapper.advancements.PortAdvancementHolder;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
@@ -93,7 +94,6 @@ import java.util.Objects;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
 
 public final class PlayerEvents {
-
     public static void init() {
         PortEventHandler.addListener(PlayerEvents::loggedIn);
         PortEventHandler.addListener(PlayerEvents::loggedOut);
@@ -114,7 +114,7 @@ public final class PlayerEvents {
         PortEventHandler.addListener(PlayerEvents::afterFlushArmorSetBonus);
         PortEventHandler.addListener(PlayerEvents::rightClickRailBlock);
         PortEventHandler.addListener(PlayerEvents::dismountOnMinecart);
-        PortEventHandler.addListener(PlayerEvents::getArmorSetBonus);
+        PortEventHandler.addListener(PortEventPriority.HIGHEST, PlayerEvents::getArmorSetBonus);
         PortEventHandler.addListener(PlayerEvents::customPickupRange);
     }
 
@@ -193,7 +193,7 @@ public final class PlayerEvents {
             if (level.isClientSide) break rightClickRideMinecart;
             ExtraInventory extraInventory = ExtraInventory.of(player);
             ItemStack minecartItemStack = extraInventory.getMinecart(false);
-            RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
+            RightClickRailBlock e = PortEventHandler.postEventWithReturn(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
             if (e.isCanceled()) break rightClickRideMinecart;
             AbstractMinecart minecart = e.getMinecart();
             if (minecart == null) break rightClickRideMinecart;
@@ -247,7 +247,7 @@ public final class PlayerEvents {
             if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
                 Item gel = MaterialItems.GEL.get();
                 if (!itemStack.is(gel)) break autoStackGelsColor;
-                int defaultMaxStackSize = gel.getDefaultMaxStackSize();
+                int defaultMaxStackSize = PortItemExtension.getDefaultMaxStackSize(gel);
                 for (ItemStack stack : player.getInventory().items) {
                     if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
                         ColoredItem.setRGBA(itemStack, ColoredItem.getRGBA(stack));
@@ -375,11 +375,9 @@ public final class PlayerEvents {
     public static void advancementEarn(PortAdvancementEvent.PortAdvancementEarnEvent event) {
         PortAdvancementHolder advancement = event.getAdvancement();
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(true) && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
-            player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
-        }
-
-        if (Confluence.MODID.equals(advancement.id().getNamespace()) && "achievements/new_world".equals(advancement.id().getPath())) {
+        DisplayInfo display = advancement.value().getDisplay();
+        if (display != null && !display.shouldAnnounceChat() && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
+            player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), PortAdvancementExtension.name(advancement)), false);
         }
     }
 
@@ -450,7 +448,7 @@ public final class PlayerEvents {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
                 }
             } else {
-                NeoForge.EVENT_BUS.post(new CustomMimicSummonKeyEvent(player, key, menu, blockEntity));
+                PortEventHandler.postEvent(new CustomMimicSummonKeyEvent(player, key, menu, blockEntity));
             }
         }
     }
@@ -477,7 +475,7 @@ public final class PlayerEvents {
 
     /// 阻止自然回血的药水效果，已改为使用EffectCure，并提取到Lib了
     ///
-    /// @see LibGameEvents#playerNaturalHeal
+    /// [LibGameEvents#playerNaturalHeal]
     public static void naturalHeal(PlayerNaturalHealEvent event) {
         if (PlayerUtils.skipHealIfOnFire(event.getEntity())) {
             event.setCanceled(true);
@@ -521,7 +519,7 @@ public final class PlayerEvents {
             if (!level.isClientSide) {
                 level.setBlockAndUpdate(pos, result);
                 level.levelEvent(1505, pos, 15);
-                ParticleUtils.spawnParticles(level, pos, 45, 3.0, 1.0, false, ParticleTypes.HAPPY_VILLAGER);
+                PortParticleUtilsExtension.spawnParticles(level, pos, 45, 3.0, 1.0, false, ParticleTypes.HAPPY_VILLAGER);
             }
             event.setSuccessful(true);
         }

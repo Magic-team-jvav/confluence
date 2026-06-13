@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.feature;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
@@ -18,11 +19,12 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.lib.util.LibGeometryUtils;
-import org.confluence.lib.util.LibVectorUtils;
+import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.natural.DragonsBreathPepperBlock;
 import org.confluence.mod.common.block.natural.VoidTreeRootBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,19 +56,19 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
         LongOpenHashSet leavesSet = new LongOpenHashSet();
         LongOpenHashSet rootSet = new LongOpenHashSet();
 
-        Vector3d startPos = new Vector3d(basePos.getX(), basePos.getY(), basePos.getZ());
-        Vector3d middlePos = new Vector3d(basePos.getX() + random.nextInt(-2, 3), basePos.getY() + 5, basePos.getZ() + random.nextInt(-2, 3));
-        Vector3d endPos = new Vector3d(basePos.getX() + random.nextInt(-3, 4), basePos.getY() + 10 + random.nextInt(7), basePos.getZ() + random.nextInt(-3, 4));
-        List<Vector3d> trunk = new ArrayList<>();
+        Vector3f startPos = new Vector3f(basePos.getX(), basePos.getY(), basePos.getZ());
+        Vector3f middlePos = new Vector3f(basePos.getX() + random.nextInt(-2, 3), basePos.getY() + 5, basePos.getZ() + random.nextInt(-2, 3));
+        Vector3f endPos = new Vector3f(basePos.getX() + random.nextInt(-3, 4), basePos.getY() + 10 + random.nextInt(7), basePos.getZ() + random.nextInt(-3, 4));
+        List<Vector3f> trunk = new ArrayList<>();
         trunk.add(middlePos);
         trunk.add(endPos);
 
-        List<List<Vector3d>> trunks = LibGeometryUtils.lightningPathList(trunk, 0.3, 0.3F, random, 3, 0.5F);
+        List<List<Vector3f>> trunks = LibGeometryUtils.lightningPathList(trunk, 0.3F, 0.3F, random, 3, 0.5F);
 
         trunk.clear();
         trunk.add(startPos);
         trunk.add(middlePos);
-        LibGeometryUtils.lightningPathList(trunk, 0.3, 0.3F, random);
+        LibGeometryUtils.lightningPathList(trunk, 0.3F, 0.3F, random);
         trunks.add(trunk);
 
         for (int i = 0; i < 4; i++) {
@@ -98,11 +100,11 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
             }
         }
 
-        for (List<Vector3d> trunkList : trunks) {
-            for (Vector3d trunkPos : trunkList) {
-                BlockPos posPlace = LibVectorUtils.fromVector3d(trunkPos);
+        for (List<Vector3f> trunkList : trunks) {
+            for (Vector3f trunkPos : trunkList) {
+                BlockPos posPlace = LibMathUtils.fromVector3f(trunkPos);
                 if (!level.getBlockState(posPlace).canBeReplaced()) return false;
-                if (trunkPos == trunkList.getLast()) {
+                if (trunkPos == PortListExtension.getLast(trunkList)) {
                     int mainSide = random.nextInt(3, 8);
                     int side;
                     for (int y = -1; y < 3; y++) {
@@ -137,10 +139,9 @@ public class VoidTreeFeature extends Feature<VoidTreeFeature.Config> {
         rootSet.forEach(p -> {
             BlockState rootPlace = rootBlock;
             BlockPos placePos = BlockPos.of(p);
-            for (int i = 0; i < 6; i++) {
-                Direction direction = Direction.from3DDataValue(i);
-                BlockState ns = level.getBlockState(placePos.relative(direction));
-                rootPlace = rootPlace.setValue(CONNECTION_PROPERTIES.get(direction), (ns.is(rootBlock.getBlock()) || ns.is(VOID_TREE_ROOT_CAN_CONNECT)) ? VoidTreeRootBlock.ConnectType.CONNECT : VoidTreeRootBlock.ConnectType.DIS_CONNECT);
+            for (Direction dir : LibUtils.DIRECTIONS) {
+                BlockState ns = level.getBlockState(placePos.relative(dir));
+                rootPlace = rootPlace.setValue(CONNECTION_PROPERTIES.get(dir), (ns.is(rootBlock.getBlock()) || ns.is(VOID_TREE_ROOT_CAN_CONNECT)) ? VoidTreeRootBlock.ConnectType.CONNECT : VoidTreeRootBlock.ConnectType.DIS_CONNECT);
             }
             level.setBlock(placePos, rootPlace, 3);
         });

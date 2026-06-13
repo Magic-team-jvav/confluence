@@ -14,7 +14,7 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.confluence.lib.util.LibGeometryUtils;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class HugeStoneFeature extends Feature<HugeStoneFeature.Config> {
 
         int radius = config.radius + random.nextInt(config.radiusMore + 1);
         float noiseScale = config.noiseScale;
-        List<Vector3d> posList = LibGeometryUtils.ballPos(radius, basePos, 0.006F, worldgenRandom);
+        List<Vector3f> posList = LibGeometryUtils.ballPos(radius, basePos, 0.006F, worldgenRandom);
         List<BlockPos> placePos = LibGeometryUtils.getBlocksInConvexHull(posList);
         if (placePos.isEmpty()) return false;
 
@@ -55,11 +55,12 @@ public class HugeStoneFeature extends Feature<HugeStoneFeature.Config> {
         return true;
     }
 
-    public record Config(int radius,
-                         int radiusMore,
-                         BlockStateProvider stone,
-                         @Nullable BlockStateProvider stoneTexture,
-                         float noiseScale
+    public record Config(
+            int radius,
+            int radiusMore,
+            BlockStateProvider stone,
+            @Nullable BlockStateProvider stoneTexture,
+            float noiseScale
     ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.INT.fieldOf("radius").forGetter(Config::radius),

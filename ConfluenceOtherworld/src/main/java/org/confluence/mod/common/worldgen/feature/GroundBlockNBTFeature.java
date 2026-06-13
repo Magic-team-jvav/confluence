@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -28,12 +29,11 @@ public class GroundBlockNBTFeature extends Feature<GroundBlockNBTFeature.Config>
         WorldGenLevel level = pContext.level();
         BlockPos baseBlockPos = pContext.origin();
         BlockState blockState = config.block().getState(random, baseBlockPos);
-        int max_down = config.max_down;
         int yPlace = 0;
 
         boolean placed = false;
 
-        for (int i = 0; i < max_down; i++) {
+        for (int i = 0; i < config.maxDown; i++) {
             if (!level.getBlockState(baseBlockPos.offset(0, -i - 1, 0)).canBeReplaced()) {
                 placed = true;
                 yPlace = -i;
@@ -42,24 +42,28 @@ public class GroundBlockNBTFeature extends Feature<GroundBlockNBTFeature.Config>
             if ((baseBlockPos.getY() - i) == 1) break;
         }
         if (!level.getBlockState(baseBlockPos).canBeReplaced()) placed = false;
-        if (level.getBlockState(baseBlockPos.offset(0, yPlace - 1, 0)).is(blockState.getBlock()))
+        if (level.getBlockState(baseBlockPos.offset(0, yPlace - 1, 0)).is(blockState.getBlock())) {
             placed = false;
-
+        }
         if (placed) {
             level.setBlock(baseBlockPos.offset(0, yPlace, 0), blockState, 3);
             BlockEntity blockEntity = LibFeatureUtils.getBlockEntity(level, baseBlockPos.offset(0, yPlace, 0));
-            if (blockEntity != null)
-                blockEntity.loadWithComponents(config.nbt, level.registryAccess());
+            if (blockEntity != null) {
+                blockEntity.load(config.nbt);
+            }
             return true;
         }
         return false;
     }
 
-    public record Config(BlockStateProvider block, int max_down,
-                         CompoundTag nbt) implements FeatureConfiguration {
+    public record Config(
+            BlockStateProvider block,
+            int maxDown,
+            CompoundTag nbt
+    ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("block").forGetter(Config::block),
-                Codec.INT.fieldOf("max_down").forGetter(GroundBlockNBTFeature.Config::max_down),
+                ExtraCodecs.POSITIVE_INT.fieldOf("max_down").forGetter(GroundBlockNBTFeature.Config::maxDown),
                 CompoundTag.CODEC.fieldOf("nbt").forGetter(GroundBlockNBTFeature.Config::nbt)
         ).apply(instance, Config::new));
 

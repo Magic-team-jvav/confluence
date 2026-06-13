@@ -19,16 +19,31 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.item.ModItems;
+import org.mesdag.portlib.wrapper.common.PortItemAbilities;
+import org.mesdag.portlib.wrapper.common.PortItemAbility;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GardenShearsItem extends ShearsItem {
+    private static final Set<ToolAction> ACTIONS = Stream.of(
+            PortItemAbilities.SHEARS_DIG,
+            PortItemAbilities.SHEARS_HARVEST,
+            PortItemAbilities.SHEARS_REMOVE_ARMOR,
+            PortItemAbilities.SHEARS_CARVE,
+            PortItemAbilities.SHEARS_DISARM,
+            PortItemAbilities.SHEARS_TRIM,
+            PortItemAbilities.AXE_STRIP
+    ).map(PortItemAbility::unwrap).collect(Collectors.toCollection(Sets::newIdentityHashSet));
+
     public GardenShearsItem(Properties properties, ModRarity rarity) {
         super(properties
                 .component(DataComponents.MAX_STACK_SIZE, 1)
@@ -41,16 +56,8 @@ public class GardenShearsItem extends ShearsItem {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        return Stream.of(net.minecraftforge.common.ItemAbilities.SHEARS_DIG,
-                        net.minecraftforge.common.ItemAbilities.SHEARS_HARVEST,
-                        net.minecraftforge.common.ItemAbilities.SHEARS_REMOVE_ARMOR,
-                        net.minecraftforge.common.ItemAbilities.SHEARS_CARVE,
-                        net.minecraftforge.common.ItemAbilities.SHEARS_DISARM,
-                        net.minecraftforge.common.ItemAbilities.SHEARS_TRIM,
-                        net.minecraftforge.common.ItemAbilities.AXE_STRIP)
-                .collect(Collectors.toCollection(Sets::newIdentityHashSet))
-                .contains(itemAbility);
+    public boolean canPerformAction(ItemStack stack, ToolAction itemAbility) {
+        return ACTIONS.contains(itemAbility);
     }
 
     @Override
@@ -75,7 +82,7 @@ public class GardenShearsItem extends ShearsItem {
     }
 
     private Optional<BlockState> evaluateNewBlockState(Level level, BlockPos pos, @Nullable Player player, BlockState state, UseOnContext useOnContext) {
-        Optional<BlockState> optional = Optional.ofNullable(state.getToolModifiedState(useOnContext, net.minecraftforge.common.ItemAbilities.AXE_STRIP, false));
+        Optional<BlockState> optional = Optional.ofNullable(state.getToolModifiedState(useOnContext, ToolActions.AXE_STRIP, false));
         if (optional.isPresent()) {
             level.playSound(player, pos, SoundEvents.BEEHIVE_SHEAR, SoundSource.BLOCKS, 1.0F, 0.5F);
             return optional;

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.feature;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -57,7 +58,7 @@ public class BoulderTrapFeature extends Feature<BoulderTrapFeature.Config> {
     public record Config(BlockState boulder, int maxBoulderHeight) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockState.CODEC.fieldOf("boulder").orElseGet(() -> FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState()).forGetter(Config::boulder),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_boulder_height", 64).forGetter(Config::maxBoulderHeight)
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "max_boulder_height", 64).forGetter(Config::maxBoulderHeight)
         ).apply(instance, Config::new));
     }
 }

@@ -36,7 +36,7 @@ public class JungleCaveCarver extends CaveWorldCarver {
             MutableBoolean reachedSurface
     ) {
         BlockState blockstate = chunk.getBlockState(pos);
-        if (reachedSurface.isFalse() && (blockstate.is(Blocks.MUD) || blockstate.is(NatureBlocks.JUNGLE_GRASS_BLOCK))) {
+        if (reachedSurface.isFalse() && (blockstate.is(Blocks.MUD) || blockstate.is(NatureBlocks.JUNGLE_GRASS_BLOCK.get()))) {
             reachedSurface.setTrue();
         }
 

@@ -90,8 +90,12 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
         return placed > 0;
     }
 
-    public record Config(BlockStateProvider cattail, int radius, float chance,
-                         int maxCheck) implements FeatureConfiguration {
+    public record Config(
+            BlockStateProvider cattail,
+            int radius,
+            float chance,
+            int maxCheck
+    ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("cattail").forGetter(Config::cattail),
                 ExtraCodecs.NON_NEGATIVE_INT.fieldOf("radius").forGetter(Config::radius),

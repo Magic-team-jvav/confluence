@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
+import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.DensityFunction;
@@ -27,7 +28,7 @@ public class DrunkWorld extends SecretSeed {
 
     public static void modifyDepth(ServerLevel level) {
         if (ModSecretSeeds.DRUNK_WORLD.match(level)) {
-            DensityFunction function = level.registryAccess().holderOrThrow(NoiseRouterData.DEPTH).value();
+            DensityFunction function = PortHolderLookupExtension.Provider.holderOrThrow(level.registryAccess(), NoiseRouterData.DEPTH).value();
             if (function instanceof IDensityFunctions$Ap2 ap2 && ap2.confluence$getType() == DensityFunctions.TwoArgumentSimpleFunction.Type.ADD) {
                 DensityFunction copy = DensityFunctions.add(ap2.confluence$getArg(true), ap2.confluence$getArg(false));
                 DensityFunction limit = new AboveYAddConstantDensityFunction(copy, OverworldUtils.getSeaLevel(), 0.2);

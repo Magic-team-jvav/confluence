@@ -12,7 +12,6 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.levelgen.WorldOptions;
-import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
@@ -20,6 +19,7 @@ import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
+import org.mesdag.portlib.wrapper.common.PortTags;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -45,7 +45,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBi
         OverworldUtils.replaceBiome(confluence$self(), x, y, z, cir, () -> {
             if (confluence$jungle == null) {
                 this.confluence$jungle = new ArrayList<>();
-                Set<Holder<Biome>> set = confluence$self().possibleBiomes().stream().filter(holder -> holder.is(Tags.Biomes.IS_JUNGLE)).collect(Collectors.toSet());
+                Set<Holder<Biome>> set = confluence$self().possibleBiomes().stream().filter(holder -> holder.is(PortTags.Biomes.IS_JUNGLE)).collect(Collectors.toSet());
                 confluence$jungle.addAll(set);
             }
             return confluence$jungle;

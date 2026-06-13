@@ -3,8 +3,8 @@
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.ICancellableEvent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +43,8 @@ public abstract class ShimmerEntityTransmutationEvent extends Event {
         return speedY;
     }
 
-    public static class Pre extends ShimmerEntityTransmutationEvent implements ICancellableEvent {
+    @Cancelable
+    public static class Pre extends ShimmerEntityTransmutationEvent {
         private int transformTime = 20;
 
         public Pre(Entity source) {

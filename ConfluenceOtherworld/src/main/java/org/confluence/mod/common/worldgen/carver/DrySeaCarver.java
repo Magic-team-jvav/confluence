@@ -15,8 +15,8 @@ import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import org.confluence.lib.util.LibGeometryUtils;
-import org.confluence.lib.util.LibVectorUtils;
-import org.joml.Vector3d;
+import org.confluence.lib.util.LibMathUtils;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,15 +65,15 @@ public class DrySeaCarver extends WorldCarver<CarverConfiguration> {
 
             int[] layerCount = {stableRandom.nextInt(4, 6), stableRandom.nextInt(6, 9), stableRandom.nextInt(4, 6), stableRandom.nextInt(4, 6), stableRandom.nextInt(7, 10), stableRandom.nextInt(7, 10)};
 
-            List<Vector3d> groupDown = new ArrayList<>();
-            List<Vector3d> groupMid = new ArrayList<>();
-            List<Vector3d> groupUp = new ArrayList<>();
+            List<Vector3f> groupDown = new ArrayList<>();
+            List<Vector3f> groupMid = new ArrayList<>();
+            List<Vector3f> groupUp = new ArrayList<>();
 
             for (int i = 0; i < 6; i++) {
                 int xOff = (i <= 3) ? 0 : xOffset;
                 int zOff = (i <= 3) ? 0 : zOffset;
 
-                List<Vector3d> targetGroup = randomRound(layerRadii[i], layerCount[i], stableRandom, basePos.offset(xOff, layerYOffsets[i], zOff));
+                List<Vector3f> targetGroup = randomRound(layerRadii[i], layerCount[i], stableRandom, basePos.offset(xOff, layerYOffsets[i], zOff));
 
                 if (i < 2) {
                     groupDown.addAll(targetGroup);
@@ -118,14 +118,14 @@ public class DrySeaCarver extends WorldCarver<CarverConfiguration> {
         return random.nextFloat() < config.probability;
     }
 
-    private static List<Vector3d> randomRound(int minRadius, int count, RandomSource random, BlockPos basePos) {
+    private static List<Vector3f> randomRound(int minRadius, int count, RandomSource random, BlockPos basePos) {
         float startRotate = 2 * Mth.PI * random.nextFloat();
         float stepRotate = 2 * Mth.PI / count;
-        List<Vector3d> r = new ArrayList<>();
+        List<Vector3f> r = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             float rotate = startRotate + stepRotate * i + stepRotate / 3 * random.nextFloat();
             float trueRadius = minRadius + 2 * random.nextFloat();
-            r.add(LibVectorUtils.toVector3d(basePos.offset((int) (trueRadius * Mth.sin(rotate)), random.nextInt(-1, 2), (int) (trueRadius * Mth.cos(rotate)))));
+            r.add(LibMathUtils.toVector3f(basePos.offset((int) (trueRadius * Mth.sin(rotate)), random.nextInt(-1, 2), (int) (trueRadius * Mth.cos(rotate)))));
         }
         return r;
     }

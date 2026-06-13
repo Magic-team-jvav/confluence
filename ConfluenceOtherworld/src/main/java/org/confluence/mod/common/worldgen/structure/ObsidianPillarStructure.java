@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -16,11 +16,11 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.util.LibGeometryUtils;
-import org.confluence.lib.util.LibVectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +29,7 @@ import static org.confluence.lib.util.LibStructureUtils.frustumSet;
 import static org.confluence.lib.util.LibStructureUtils.getHeight;
 
 public class ObsidianPillarStructure extends Structure {
-    public static final MapCodec<ObsidianPillarStructure> CODEC = simpleCodec(ObsidianPillarStructure::new);
+    public static final Codec<ObsidianPillarStructure> CODEC = simpleCodec(ObsidianPillarStructure::new);
 
     protected ObsidianPillarStructure(StructureSettings settings) {
         super(settings);
@@ -51,18 +51,18 @@ public class ObsidianPillarStructure extends Structure {
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
 
             int height = (mainY - lowestY);
-            double radiusD = 20;
+            float radiusD = 20;
 
             float xMove = random.nextFloat() * 0.3F;
             float zMove = random.nextFloat() * 0.3F;
             int size = 70;
             int sizePillar = 30;
             float firstRotate = 2 * Mth.PI * random.nextFloat();
-            double rotateX = Mth.cos(firstRotate);
-            double rotateZ = Mth.sin(firstRotate);
-            Vector3d debugX = new Vector3d(rotateX, rotateX * xMove + rotateZ * zMove, rotateZ).normalize(1);
-            Vector3d debugZ = new Vector3d(xMove, -1, zMove).normalize(1);
-            Vector3d debugY = debugZ.cross(debugX).normalize(1);
+            float rotateX = Mth.cos(firstRotate);
+            float rotateZ = Mth.sin(firstRotate);
+            Vector3f debugX = new Vector3f(rotateX, rotateX * xMove + rotateZ * zMove, rotateZ).normalize(1);
+            Vector3f debugZ = new Vector3f(xMove, -1, zMove).normalize(1);
+            Vector3f debugY = debugZ.cross(debugX).normalize(1);
             float r45 = Mth.PI / 4;
 
             for (int xRoll = -size; xRoll < (size + 1); xRoll++) {
@@ -72,11 +72,11 @@ public class ObsidianPillarStructure extends Structure {
                     int yRoll = (int) (xRoll * xMove + zRoll * zMove + 0.5);
                     int yP2 = yRoll * yRoll;
                     int radiusP2 = xP2 + yP2 + zP2;
-                    Vector3d posNow = new Vector3d(xRoll, yRoll, zRoll);
-                    double checkX = posNow.dot(debugX);
-                    double checkY = posNow.dot(debugY);
-                    double star = Math.pow(checkX * checkX, 0.2) + Math.pow(checkY * checkY, 0.2);
-                    double star2 = Math.pow(Math.pow(checkX * Mth.cos(r45) - checkY * Mth.sin(r45), 2), 0.3333) + Math.pow(Math.pow(checkX * Mth.sin(r45) + checkY * Mth.cos(r45), 2), 0.3333);
+                    Vector3f posNow = new Vector3f(xRoll, yRoll, zRoll);
+                    float checkX = posNow.dot(debugX);
+                    float checkY = posNow.dot(debugY);
+                    float star = (float) (Math.pow(checkX * checkX, 0.2) + Math.pow(checkY * checkY, 0.2));
+                    float star2 = (float) (Math.pow(Math.pow(checkX * Mth.cos(r45) - checkY * Mth.sin(r45), 2), 0.3333) + Math.pow(Math.pow(checkX * Mth.sin(r45) + checkY * Mth.cos(r45), 2), 0.3333));
                     if (
                             ((radiusP2 > 2200) && (radiusP2 < 2500)) ||
                                     ((radiusP2 > 1800) && (radiusP2 < 2000)) ||
@@ -88,7 +88,7 @@ public class ObsidianPillarStructure extends Structure {
             }
 
             for (float i = 0; i < height; i += 0.3F) {
-                double smallRadius = radiusD * 0.5 * ((double) i / height);
+                float smallRadius = radiusD * 0.5F * (i / height);
                 if (random.nextFloat() < (i / height)) {
                     float rotate = i * Mth.PI * 0.1F;
                     BlockPos pos = centerPos.offset((int) (Mth.sin(rotate) * smallRadius), (int) i - height, (int) (Mth.cos(rotate) * smallRadius));
@@ -109,7 +109,7 @@ public class ObsidianPillarStructure extends Structure {
                             random
                     )
             );
-            double scale = 2.0;
+            float scale = 2.0F;
             centerStone.forEach(p -> {
                 if (Mth.sin(15 * (float) normalNoise.getValue(p.getX() * scale, p.getY() * scale, p.getZ() * scale)) > -0.3F)
                     blockMap.put(p, 2);
@@ -119,29 +119,29 @@ public class ObsidianPillarStructure extends Structure {
                 float rotate = baseRotate + stepRotate * i;
                 int radius = random.nextInt(30, 60);
                 int pillarRadius = random.nextInt(2, 5);
-                Vector3d pillarPos = new Vector3d(
+                Vector3f pillarPos = new Vector3f(
                         centerPos.getX() + radius * Mth.sin(rotate) + random.nextInt(-15, 16),
                         centerPos.getY() + random.nextInt(-45, 16),
                         centerPos.getZ() + radius * Mth.cos(rotate) + random.nextInt(-5, 6)
                 );
-                Vector3d pillarEnd = new Vector3d(0, 0, 0).add(pillarPos).add(
+                Vector3f pillarEnd = new Vector3f(0, 0, 0).add(pillarPos).add(
                         random.nextInt(-5, 6),
                         -random.nextInt(10, 50),
                         random.nextInt(-5, 6)
                 );
                 if (random.nextBoolean()) {
-                    Vector3d midPoint = new Vector3d(
-                            (pillarPos.x + pillarEnd.x) / 2.0,
-                            (pillarPos.y + pillarEnd.y) / 2.0,
-                            (pillarPos.z + pillarEnd.z) / 2.0
+                    Vector3f midPoint = new Vector3f(
+                            (pillarPos.x + pillarEnd.x) * 0.5F,
+                            (pillarPos.y + pillarEnd.y) * 0.5F,
+                            (pillarPos.z + pillarEnd.z) * 0.5F
                     );
                     float xMove1 = random.nextFloat() * 0.3F;
                     float zMove1 = random.nextFloat() * 0.3F;
                     float radiusPillar = random.nextInt(5, 18);
-                    double radius1P2 = Math.pow(radiusPillar, 2);
-                    double radius2P2 = Math.pow(radiusPillar + 1.3877, 2);
-                    double radius3P2 = Math.pow(radiusPillar + 2.6794, 2);
-                    double radius4P2 = Math.pow(radiusPillar + 5.0401, 2);
+                    float radius1P2 = Mth.square(radiusPillar);
+                    float radius2P2 = Mth.square(radiusPillar + 1.3877F);
+                    float radius3P2 = Mth.square(radiusPillar + 2.6794F);
+                    float radius4P2 = Mth.square(radiusPillar + 5.0401F);
                     for (int xRoll = -sizePillar; xRoll < (sizePillar + 1); xRoll++) {
                         int xP2 = xRoll * xRoll;
                         for (int zRoll = -sizePillar; zRoll < (sizePillar + 1); zRoll++) {
@@ -153,11 +153,11 @@ public class ObsidianPillarStructure extends Structure {
                                     ((radiusP2 > radius3P2) && (radiusP2 < radius4P2)) ||
                                             ((radiusP2 > radius1P2) && (radiusP2 < radius2P2))
                             )
-                                blockMap.put(LibVectorUtils.fromVector3d(midPoint).offset(xRoll, yRoll, zRoll), 3);
+                                blockMap.put(LibMathUtils.fromVector3f(midPoint).offset(xRoll, yRoll, zRoll), 3);
                         }
                     }
                 }
-                frustumSet(pillarEnd, pillarPos, pillarRadius + .5, pillarRadius + .5, 2, blockMap);
+                frustumSet(pillarEnd, pillarPos, pillarRadius + 0.5F, pillarRadius + 0.5F, 2, blockMap);
             }
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(

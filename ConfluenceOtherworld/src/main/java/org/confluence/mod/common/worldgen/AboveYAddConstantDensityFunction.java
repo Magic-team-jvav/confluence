@@ -1,7 +1,6 @@
 package org.confluence.mod.common.worldgen;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.ChunkPos;
@@ -10,7 +9,7 @@ import net.minecraft.world.level.levelgen.DensityFunction;
 import java.util.Objects;
 
 public class AboveYAddConstantDensityFunction implements DensityFunction {
-    public static final MapCodec<AboveYAddConstantDensityFunction> DATA_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<AboveYAddConstantDensityFunction> DATA_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             DensityFunction.HOLDER_HELPER_CODEC.fieldOf("input").forGetter(AboveYAddConstantDensityFunction::input),
             Codec.INT.fieldOf("y").forGetter(AboveYAddConstantDensityFunction::y),
             Codec.DOUBLE.fieldOf("constant").forGetter(AboveYAddConstantDensityFunction::constant)

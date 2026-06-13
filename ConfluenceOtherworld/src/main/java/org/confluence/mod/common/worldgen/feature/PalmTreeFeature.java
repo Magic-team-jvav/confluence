@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import java.util.List;
 
 public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
-
     public static final int[] LEAVES_LIST_X = new int[]{0, 3, 1, -3, -1, 0, 0, 0, 0, 1, 1, -1, -1, 0, 0, 0, 0, 1, -1, 2, -2, 0, 0, 4, -4, 0, 0, 2, -2, 2, 2, -2, -2};
     public static final int[] LEAVES_LIST_Y = new int[]{1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, -1, -1, -1, -1, 0, 0, 0, 0};
     public static final int[] LEAVES_LIST_Z = new int[]{0, 0, 0, 0, 0, 3, 1, -3, -1, 1, -1, 1, -1, 1, -1, 2, -2, 0, 0, 0, 0, 4, -4, 0, 0, 2, -2, 0, 0, 2, -2, 2, -2};
@@ -103,9 +102,11 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
         return false;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider leavesBlockBottom,
-                         BlockStateProvider leavesBlockTop,
-                         BlockStateProvider leaveBlockDouble) implements FeatureConfiguration {
+    public record Config(
+            BlockStateProvider trunk, BlockStateProvider leavesBlockBottom,
+            BlockStateProvider leavesBlockTop,
+            BlockStateProvider leaveBlockDouble
+    ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("leaves_block_bottom").forGetter(Config::leavesBlockBottom),

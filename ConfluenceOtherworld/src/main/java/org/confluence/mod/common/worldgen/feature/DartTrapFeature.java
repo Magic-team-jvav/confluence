@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.feature;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -61,8 +62,8 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
 
     public record Config(int maxDartDistance, int maxSearchDown) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_dart_distance", 24).forGetter(Config::maxDartDistance),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_search_down", 32).forGetter(Config::maxSearchDown)
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "max_dart_distance", 24).forGetter(Config::maxDartDistance),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "max_search_down", 32).forGetter(Config::maxSearchDown)
         ).apply(instance, Config::new));
     }
 }

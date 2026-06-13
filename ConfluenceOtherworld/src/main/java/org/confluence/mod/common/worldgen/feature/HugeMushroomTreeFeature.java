@@ -20,8 +20,8 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.lib.util.LibGeometryUtils;
-import org.confluence.lib.util.LibVectorUtils;
-import org.joml.Vector3d;
+import org.confluence.lib.util.LibMathUtils;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,17 +71,17 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
             }
         }
         if (placed) {
-            List<Vector3d> trunkList = new ArrayList<>();
-            trunkList.add(LibVectorUtils.toVector3d(baseBlockPos.offset(0, 1, 0)));
-            trunkList.add(LibVectorUtils.toVector3d(headPos));
+            List<Vector3f> trunkList = new ArrayList<>();
+            trunkList.add(LibMathUtils.toVector3f(baseBlockPos.offset(0, 1, 0)));
+            trunkList.add(LibMathUtils.toVector3f(headPos));
             LibGeometryUtils.lightningPathList(trunkList, 1, 0.3F, random);
-            double radius = 2.5;
-            double step = 1.0 / trunkList.size();
+            float radius = 2.5F;
+            float step = 1.0F / trunkList.size();
 
-            Vector3d indusiumVct = trunkList.get((int) (trunkList.size() * 0.5));
+            Vector3f indusiumVct = trunkList.get((int) (trunkList.size() * 0.5));
             BlockPos indusiumPos = BlockPos.containing(indusiumVct.x, indusiumVct.y, indusiumVct.z);
             ellipsoid(5.5, 1, 5.5, indusiumPos, indusiumBlockState, true, level);
-            for (Vector3d truckVct : trunkList) {
+            for (Vector3f truckVct : trunkList) {
                 BlockPos trunkPos = BlockPos.containing(truckVct.x, truckVct.y, truckVct.z);
                 ball(radius, trunkPos, stemBlockState, true, level);
                 radius -= step;
@@ -92,23 +92,23 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
             long seed = random.nextLong();
             RandomSource worldgenRandom = new WorldgenRandom(RandomSource.create(seed));
 
-            List<Vector3d> pileusList = LibGeometryUtils.ellipsoidPos(
-                    random.nextDouble() * 5 + 7,
+            List<Vector3f> pileusList = LibGeometryUtils.ellipsoidPos(
+                    random.nextFloat() * 5 + 7,
                     1,
-                    random.nextDouble() * 5 + 7,
+                    random.nextFloat() * 5 + 7,
                     headPos,
                     0.8F,
                     worldgenRandom);
             pileusList.addAll(LibGeometryUtils.ellipsoidPos(
-                    random.nextDouble() * 2 + 3,
+                    random.nextFloat() * 2 + 3,
                     1,
-                    random.nextDouble() * 2 + 3,
+                    random.nextFloat() * 2 + 3,
                     headPos.offset(0, 4, 0),
                     0.8F,
                     worldgenRandom)
             );
-            for (Vector3d pileusVct : pileusList) {
-                double pileusRadius = random.nextDouble() * 2.5 + 1;
+            for (Vector3f pileusVct : pileusList) {
+                float pileusRadius = random.nextFloat() * 2.5F + 1;
                 BlockPos pileusPos = BlockPos.containing(pileusVct.x, pileusVct.y, pileusVct.z);
                 ball(pileusRadius, pileusPos, pileusBlockState, true, level);
                 pileusCheck((int) pileusRadius + 1, pileusPos, pileusBlockState, level);
@@ -120,8 +120,8 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
                 int x2 = x * x;
                 for (int z = -10; z < 11; z++) {
                     int z2 = z * z;
-                    double dis = Mth.sqrt(x2 + z2);
-                    if (random.nextDouble() > (dis - 5) / 5) {
+                    float dis = Mth.sqrt(x2 + z2);
+                    if (random.nextFloat() > (dis - 5) / 5) {
                         int offset = 0;
                         for (int i = 0; i < 10; i++) {
                             if (level.getBlockState(baseBlockPos.offset(x, offset, z)).is(DIRT_TAG) && level.getBlockState(baseBlockPos.offset(x, offset + 1, z)).canBeReplaced()) {

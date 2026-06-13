@@ -8,6 +8,8 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 
 public final class ModAttachmentTypes {
+    public static void init() {}
+
     public static final PortAttachmentRegistration TYPES = PortRegisterHandler.attachment(Confluence.MODID);
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ManaStorage>> MANA_STORAGE = TYPES.register("mana", () -> PortAttachmentType.serializable(ManaStorage::new).copyOnDeath().build());

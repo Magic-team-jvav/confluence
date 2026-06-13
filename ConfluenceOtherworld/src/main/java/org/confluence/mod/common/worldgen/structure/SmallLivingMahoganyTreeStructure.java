@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -22,7 +22,7 @@ import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
 import static org.confluence.lib.util.LibStructureUtils.getHeight;
 
 public class SmallLivingMahoganyTreeStructure extends Structure {
-    public static final MapCodec<SmallLivingMahoganyTreeStructure> CODEC = simpleCodec(SmallLivingMahoganyTreeStructure::new);
+    public static final Codec<SmallLivingMahoganyTreeStructure> CODEC = simpleCodec(SmallLivingMahoganyTreeStructure::new);
 
     protected SmallLivingMahoganyTreeStructure(StructureSettings settings) {
         super(settings);
@@ -48,8 +48,8 @@ public class SmallLivingMahoganyTreeStructure extends Structure {
                     random,
                     random.nextInt(21, 25),
                     1,
-                    1.4D,
-                    0.8D,
+                    1.4F,
+                    0.8F,
                     1,
                     7,
                     2,

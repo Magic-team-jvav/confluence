@@ -2,7 +2,8 @@
 
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.eventbus.api.ICancellableEvent;
+import net.minecraftforge.event.entity.item.ItemEvent;
+import net.minecraftforge.eventbus.api.Cancelable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -53,8 +54,9 @@ public abstract class ShimmerItemTransmutationEvent extends ItemEvent {
 
     /// This event fired when an ItemEntity toss in shimmer.
     ///
-    /// This event is [ICancellableEvent]
-    public static class Pre extends ShimmerItemTransmutationEvent implements ICancellableEvent {
+    /// This event is [Cancelable]
+    @Cancelable
+    public static class Pre extends ShimmerItemTransmutationEvent {
         private int transformTime = 20;
 
         public Pre(ItemEntity source) {

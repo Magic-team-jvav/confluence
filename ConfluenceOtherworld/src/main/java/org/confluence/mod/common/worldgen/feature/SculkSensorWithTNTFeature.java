@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.feature;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.WorldGenLevel;
@@ -37,8 +37,7 @@ public class SculkSensorWithTNTFeature extends Feature<SculkSensorWithTNTFeature
     }
 
     public record Config(int maxSearchDown) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_search_down", 64).forGetter(Config::maxSearchDown)
-        ).apply(instance, Config::new));
+        public static final Codec<Config> CODEC = PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "max_search_down", 64)
+                .codec().xmap(Config::new, Config::maxSearchDown);
     }
 }

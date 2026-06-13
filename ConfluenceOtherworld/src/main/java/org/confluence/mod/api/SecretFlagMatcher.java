@@ -1,14 +1,15 @@
 package org.confluence.mod.api;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.JavaOps;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.mixed.IMinecraftServer;
+import org.mesdag.portlib.wrapper.serialization.PortJavaOps;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -23,10 +24,10 @@ public interface SecretFlagMatcher {
         return IMinecraftServer.matchesSecretFlag(secretFlag()) != flipMatch();
     }
 
-    static <M extends SecretFlagMatcher> MapCodec<M> createMapCodec(BiFunction<Long, Boolean, M> factory) {
-        return RecordCodecBuilder.mapCodec(instance -> instance.group(
+    static <M extends SecretFlagMatcher> Codec<M> createCodec(BiFunction<Long, Boolean, M> factory) {
+        return RecordCodecBuilder.create(instance -> instance.group(
                 Codec.either(Codec.LONG, Codec.STRING).fieldOf("flag").forGetter(matcher -> Either.left(matcher.secretFlag())),
-                Codec.BOOL.lenientOptionalFieldOf("flip", false).forGetter(SecretFlagMatcher::flipMatch)
+                PortCodecExtension.lenientOptionalFieldOf(Codec.BOOL, "flip", false).forGetter(SecretFlagMatcher::flipMatch)
         ).apply(instance, (n, b) -> factory.apply(n.map(Function.identity(), str -> {
             long ret = 0;
             if (str.startsWith("&")) {
@@ -34,7 +35,7 @@ public interface SecretFlagMatcher {
                     ret = Long.parseLong(str.substring(1), 2);
                 } catch (NumberFormatException ignored) {}
             } else {
-                ret = ModSecretSeeds.CODEC.parse(JavaOps.INSTANCE, str).mapOrElse(SecretSeed::getFlag, err -> {
+                ret = PortDataResultExtension.mapOrElse(ModSecretSeeds.CODEC.parse(PortJavaOps.INSTANCE, str), SecretSeed::getFlag, err -> {
                     try {
                         return Long.parseLong(str);
                     } catch (NumberFormatException ignored) {

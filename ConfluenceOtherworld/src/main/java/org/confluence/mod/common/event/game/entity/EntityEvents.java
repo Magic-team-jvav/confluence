@@ -72,12 +72,12 @@ public final class EntityEvents {
             event.setInvulnerable(true);
             return;
         }
-        if ((attacker == null || !attacker.getType().is(Tags.EntityTypes.BOSSES)) && victim.hasEffect(ModEffects.SHIMMER)) {
+        if ((attacker == null || !attacker.getType().is(Tags.EntityTypes.BOSSES)) && victim.hasEffect(ModEffects.SHIMMER.get())) {
             event.setInvulnerable(true);
             return;
         }
         if (damageSource.is(DamageTypeTags.IS_FIRE)) {
-            if (victim.hasEffect(ModEffects.OBSIDIAN_SKIN) || (victim instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
+            if (victim.hasEffect(ModEffects.OBSIDIAN_SKIN.get()) || (victim instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
                 victim.clearFire();
                 event.setInvulnerable(true);
                 return;

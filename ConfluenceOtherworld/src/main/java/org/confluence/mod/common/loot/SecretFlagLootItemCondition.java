@@ -7,9 +7,11 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import org.confluence.mod.api.SecretFlagMatcher;
 import org.confluence.mod.common.init.ModLootTables;
 
-public record SecretFlagLootItemCondition(long secretFlag,
-                                          boolean flipMatch) implements LootItemCondition, SecretFlagMatcher {
-    public static final MapCodec<SecretFlagLootItemCondition> CODEC = SecretFlagMatcher.createMapCodec(SecretFlagLootItemCondition::new);
+public record SecretFlagLootItemCondition(
+        long secretFlag,
+        boolean flipMatch
+) implements LootItemCondition, SecretFlagMatcher {
+    public static final MapCodec<SecretFlagLootItemCondition> CODEC = SecretFlagMatcher.createCodec(SecretFlagLootItemCondition::new);
 
     @Override
     public LootItemConditionType getType() {

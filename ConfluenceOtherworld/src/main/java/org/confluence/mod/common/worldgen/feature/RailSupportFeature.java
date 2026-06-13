@@ -1,7 +1,6 @@
 package org.confluence.mod.common.worldgen.feature;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -87,8 +86,6 @@ public class RailSupportFeature extends Feature<RailSupportFeature.Config> {
     }
 
     public record Config(BlockStateProvider check) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                BlockStateProvider.CODEC.fieldOf("check").forGetter(Config::check)
-        ).apply(instance, Config::new));
+        public static final Codec<Config> CODEC = BlockStateProvider.CODEC.xmap(Config::new, Config::check);
     }
 }

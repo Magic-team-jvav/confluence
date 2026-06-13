@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.feature;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.mesdag.particlestorm.data.curve.SplineCurve;
 
@@ -75,20 +77,22 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
     }
 
     private static void setBlock(WorldGenLevel level, BlockPos pos, BlockState state, RandomSource random, float lava, float fire) {
-        boolean b = state.is(OreBlocks.METEORITE_ORE);
+        boolean b = state.is(OreBlocks.METEORITE_ORE.get());
         level.setBlock(pos, b && random.nextFloat() < lava ? Blocks.LAVA.defaultBlockState() : state, Block.UPDATE_ALL);
         if (b && level.getBlockState(pos.above()).canBeReplaced() && random.nextFloat() < fire) {
             level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 
-    public record Config(int radius, float sparse, float lava,
-                         float fire) implements FeatureConfiguration {
+    public record Config(
+            int radius, float sparse, float lava,
+            float fire
+    ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.intRange(1, 7).lenientOptionalFieldOf("radius", 7).forGetter(Config::radius),
-                Codec.floatRange(0.0F, 1.0F).lenientOptionalFieldOf("sparse", 0.4F).forGetter(Config::sparse),
-                Codec.floatRange(0.0F, 1.0F).lenientOptionalFieldOf("lava", 0.1F).forGetter(Config::lava),
-                Codec.floatRange(0.0F, 1.0F).lenientOptionalFieldOf("fire", 0.15F).forGetter(Config::fire)
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.intRange(1, 7), "radius", 7).forGetter(Config::radius),
+                PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.FLOAT_0_1, "sparse", 0.4F).forGetter(Config::sparse),
+                PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.FLOAT_0_1, "lava", 0.1F).forGetter(Config::lava),
+                PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.FLOAT_0_1, "fire", 0.15F).forGetter(Config::fire)
         ).apply(instance, Config::new));
     }
 }

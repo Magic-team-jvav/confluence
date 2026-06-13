@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
@@ -27,7 +27,7 @@ import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
 import static org.confluence.lib.util.LibStructureUtils.getHeight;
 
 public class LivingTreeStructure extends Structure {
-    public static final MapCodec<LivingTreeStructure> CODEC = simpleCodec(LivingTreeStructure::new);
+    public static final Codec<LivingTreeStructure> CODEC = simpleCodec(LivingTreeStructure::new);
 
     protected LivingTreeStructure(StructureSettings settings) {
         super(settings);
@@ -54,8 +54,8 @@ public class LivingTreeStructure extends Structure {
                     random,
                     random.nextInt(55, 65),
                     4,
-                    5.9D,
-                    1.0D,
+                    5.9F,
+                    1.0F,
                     1,
                     20,
                     15,
@@ -78,8 +78,8 @@ public class LivingTreeStructure extends Structure {
                     true,
                     random.nextInt(65, 95),
                     4,
-                    4.9D,
-                    1.0D,
+                    4.9F,
+                    1.0F,
                     1,
                     true,
                     20,

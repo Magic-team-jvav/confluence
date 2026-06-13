@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -28,7 +28,7 @@ import static org.confluence.lib.util.LibStructureUtils.getHeight;
 import static org.confluence.lib.util.LibStructureUtils.rectangular;
 
 public class LivingMahoganyTreeStructure extends Structure {
-    public static final MapCodec<LivingMahoganyTreeStructure> CODEC = simpleCodec(LivingMahoganyTreeStructure::new);
+    public static final Codec<LivingMahoganyTreeStructure> CODEC = simpleCodec(LivingMahoganyTreeStructure::new);
     public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING_IVY_CHESTS = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "living_ivy_chests");
 
     protected LivingMahoganyTreeStructure(StructureSettings settings) {
@@ -55,8 +55,8 @@ public class LivingMahoganyTreeStructure extends Structure {
                     random,
                     random.nextInt(36, 42),
                     1,
-                    2.5D,
-                    0.8D,
+                    2.5F,
+                    0.8F,
                     1,
                     14,
                     2,

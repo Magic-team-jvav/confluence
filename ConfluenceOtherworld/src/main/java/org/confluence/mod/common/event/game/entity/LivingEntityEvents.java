@@ -23,8 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
@@ -79,8 +77,11 @@ import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.living.*;
+import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
+import org.mesdag.portlib.wrapper.world.effect.MobEffectHolder;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.Collection;
@@ -89,27 +90,34 @@ import java.util.List;
 import static org.confluence.mod.util.PlayerUtils.receiveMana;
 
 public final class LivingEntityEvents {
-
     public static void init() {
-        PortEventHandler.addListener(LivingEntityEvents::livingDeath);
-        PortEventHandler.addListener(LivingEntityEvents::livingHeal);
-        PortEventHandler.addListener(LivingEntityEvents::livingIncomingDamage);
-        PortEventHandler.addListener(LivingEntityEvents::processCriticalDamage);
-        PortEventHandler.addListener(LivingEntityEvents::livingEquipmentChange);
-        PortEventHandler.addListener(LivingEntityEvents::livingDrops);
-        PortEventHandler.addListener(LivingEntityEvents::livingGetProjectile);
-        PortEventHandler.addListener(LivingEntityEvents::livingBreathe);
-        PortEventHandler.addListener(LivingEntityEvents::finalizeSpawn);
-        PortEventHandler.addListener(LivingEntityEvents::livingEntityUseItemFinish);
+        PortEventHandler.addListener(LivingEntityEvents::death);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
+        PortEventHandler.addListener(LivingEntityEvents::incomingDamage);
+        PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::damage$Pre);
+        PortEventHandler.addListener(LivingEntityEvents::damage$Post);
+        PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::processCriticalDamage);
+        PortEventHandler.addListener(LivingEntityEvents::mobEffect$Applicable);
+        PortEventHandler.addListener(LivingEntityEvents::mobEffect$Added);
+        PortEventHandler.addListener(LivingEntityEvents::mobEffect$Remove);
+        PortEventHandler.addListener(LivingEntityEvents::equipmentChange);
+        PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::drops);
+        PortEventHandler.addListener(LivingEntityEvents::getProjectile);
+        PortEventHandler.addListener(LivingEntityEvents::breathe);
+        PortEventHandler.addListener(PortEventPriority.HIGHEST, LivingEntityEvents::finalizeSpawn);
+        PortEventHandler.addListener(LivingEntityEvents::useItem$Start);
+        PortEventHandler.addListener(LivingEntityEvents::useItem$Finish);
+        PortEventHandler.addListener(LivingEntityEvents::mobSpawn$PositionCheck);
+        PortEventHandler.addListener(LivingEntityEvents::mobSpawn$SpawnPlacementCheck);
         PortEventHandler.addListener(LivingEntityEvents::effectParticleModification);
-        PortEventHandler.addListener(LivingEntityEvents::spawnClusterSize);
+        PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::spawnClusterSize);
         PortEventHandler.addListener(LivingEntityEvents::afterAccessoryAbilitiesFlushed);
         PortEventHandler.addListener(LivingEntityEvents::curioChange);
         PortEventHandler.addListener(LivingEntityEvents::toBeBestiaryEntry);
         PortEventHandler.addListener(LivingEntityEvents::armorPenetration);
     }
 
-    public static void livingDeath(PortLivingDeathEvent event) {
+    private static void death(PortLivingDeathEvent event) {
         LivingEntity victim = event.getEntity();
         DamageSource damageSource = event.getSource();
 
@@ -167,7 +175,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void livingHeal(PortLivingHealEvent event) {
+    private static void heal(PortLivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
         float amount = event.getAmount();
@@ -189,7 +197,7 @@ public final class LivingEntityEvents {
         DamageIndicatorOptions.sendHealParticle(amount, level, living);
     }
 
-    public static void livingIncomingDamage(PortLivingIncomingDamageEvent event) {
+    private static void incomingDamage(PortLivingIncomingDamageEvent event) {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
 
@@ -201,7 +209,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
+    private static void damage$Pre(PortLivingDamageEvent.PortPre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();
@@ -234,7 +242,7 @@ public final class LivingEntityEvents {
         event.setNewDamage(amount);
     }
 
-    public static void livingDamage$Post(LivingDamageEvent.Post event) {
+    private static void damage$Post(PortLivingDamageEvent.PortPost event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();
@@ -260,23 +268,23 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void processCriticalDamage(ProcessCriticalDamageEvent event) {
+    private static void processCriticalDamage(ProcessCriticalDamageEvent event) {
         if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
             StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
         }
     }
 
-    public static void mobEffect$Applicable(PortMobEffectEvent.PortApplicable event) {
+    private static void mobEffect$Applicable(PortMobEffectEvent.PortApplicable event) {
         if (event.getResult() == PortMobEffectEvent.PortApplicable.Result.DEFAULT && !(event.getEntity() instanceof Player)) {
-            MobEffect effect = event.getEffectInstance().getEffect();
+            Holder<MobEffect> effect = MobEffectHolder.wrap(event.getEffectInstance().getEffect());
             if (LivingInvulnerableEffects.isInvulnerableTo(event.getEntity(), effect)) {
-                event.setResult(PortMobEffectEvent.PortApplicable.PortResult.DO_NOT_APPLY);
+                event.setPortResult(PortMobEffectEvent.PortApplicable.PortResult.DO_NOT_APPLY);
             }
         }
         SweetSword.applyEffects(event);
     }
 
-    public static void mobEffect$Added(PortMobEffectEvent.PortAdded event) {
+    private static void mobEffect$Added(PortMobEffectEvent.PortAdded event) {
         MobEffectInstance instance = event.getEffectInstance();
         if (event.getEffectSource() != null) {
             ModEffects.onLoveEffectAdd(instance, event.getEntity(), event.getEffectSource());
@@ -290,23 +298,24 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void mobEffect$Remove(PortMobEffectEvent.PortRemove event) {
+    private static void mobEffect$Remove(PortMobEffectEvent.PortRemove event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
         if (effectInstance == null) return;
         ModEffects.onLuckEffectRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.amplifier);
     }
 
-    public static void livingEquipmentChange(PortLivingEquipmentChangeEvent event) {
+    private static void equipmentChange(PortLivingEquipmentChangeEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         AchievementUtils.matchingAttire_fashionStatement(event.getSlot().getType(), player);
         if (event.getSlot().getType() == EquipmentSlot.Type.HAND) {
             VisibilityPacketS2C.sendSignal(player, event.getTo().is(ModTags.Items.SHOW_SIGNAL));
         } else if (event.getSlot() == EquipmentSlot.HEAD) {
-            VisibilityPacketS2C.sendSunglasses(player, event.getTo().is(VanityArmorItems.SUNGLASSES) ? PortTriState.TRUE : PortTriState.FALSE, PortTriState.DEFAULT);
+            VisibilityPacketS2C.sendSunglasses(player, event.getTo().is(VanityArmorItems.SUNGLASSES.get())
+                    ? PortTriState.TRUE : PortTriState.FALSE, PortTriState.DEFAULT);
         }
     }
 
-    public static void livingDrops(PortLivingDropsEvent event) {
+    private static void drops(PortLivingDropsEvent event) {
         LivingEntity living = event.getEntity();
         ServerLevel level = (ServerLevel) living.level();
         if (!level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) return;
@@ -343,9 +352,9 @@ public final class LivingEntityEvents {
             Holder<Biome> biome = level.getBiome(living.blockPosition());
             ItemStack soul = ItemStack.EMPTY;
             if (biome.is(ModTags.Biomes.THE_HALLOW)) {
-                soul = MaterialItems.SOUL_OF_LIGHT.toStack();
+                soul = MaterialItems.SOUL_OF_LIGHT.get().getDefaultInstance();
             } else if (biome.is(ModTags.Biomes.THE_CORRUPTION) || biome.is(ModTags.Biomes.THE_CRIMSON)) {
-                soul = MaterialItems.SOUL_OF_NIGHT.toStack();
+                soul = MaterialItems.SOUL_OF_NIGHT.get().getDefaultInstance();
             }
             if (soul != ItemStack.EMPTY) {
                 drops.add(new ItemEntity(level, x, y, z, soul, 0, 0.02, 0));
@@ -360,7 +369,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void livingGetProjectile(PortLivingGetProjectileEvent event) {
+    private static void getProjectile(PortLivingGetProjectileEvent event) {
         LivingEntity living = event.getEntity();
         event.setProjectileItemStack(ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living));
 
@@ -370,7 +379,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void livingBreathe(PortLivingBreatheEvent event) {
+    private static void breathe(PortLivingBreatheEvent event) {
         LivingEntity living = event.getEntity();
         boolean b = !living.getActiveEffectsMap().isEmpty();
         if (b && living.hasEffect(ModEffects.CHOKING.get())) {
@@ -380,7 +389,7 @@ public final class LivingEntityEvents {
 
         if (b && living.hasEffect(ModEffects.SHIMMER.get())) {
             event.setCanBreathe(true);
-        } else if (LibEntityUtils.anyHandHasItem(living, itemStack -> !itemStack.isEmpty() && itemStack.is(SwordItems.BREATHING_REED))) {
+        } else if (LibEntityUtils.anyHandHasItem(living, itemStack -> !itemStack.isEmpty() && itemStack.is(SwordItems.BREATHING_REED.get()))) {
             if (living.canDrownInFluidType(living.level().getFluidState(living.blockPosition().offset(0, 2, 0)).getFluidType())) {
                 event.setConsumeAirAmount(living.getRandom().nextInt(2) > 0 ? 0 : 1);
             } else {
@@ -390,7 +399,7 @@ public final class LivingEntityEvents {
         ModArmorBonus.onBreath(event);
     }
 
-    public static void finalizeSpawn(PortFinalizeSpawnEvent event) {
+    private static void finalizeSpawn(PortFinalizeSpawnEvent event) {
         ServerLevel level = event.getLevel().getLevel();
         Mob mob = event.getEntity();
         EntityType<?> type = mob.getType();
@@ -398,7 +407,7 @@ public final class LivingEntityEvents {
             BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
             Holder<Biome> biome = level.getBiome(blockPos);
             DifficultyInstance difficulty = event.getDifficulty();
-            if (biome.is(Tags.Biomes.IS_ICY) || biome.is(Tags.Biomes.IS_SNOWY)) {
+            if (biome.is(PortTags.Biomes.IS_ICY) || biome.is(PortTags.Biomes.IS_SNOWY)) {
                 boolean pink = mob.getRandom().nextFloat() < 0.01F;
                 LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
                 LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
@@ -449,7 +458,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void livingEntityUseItem$Start(PortLivingEntityUseItemEvent.PortStart event) {
+    private static void useItem$Start(PortLivingEntityUseItemEvent.PortStart event) {
         LivingEntity living = event.getEntity();
         if (!living.level().isClientSide && living.hasEffect(ModEffects.CHOKING.get())) {
             ItemStack itemStack = event.getItem();
@@ -460,7 +469,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void livingEntityUseItemFinish(PortLivingEntityUseItemEvent.PortFinish event) {
+    private static void useItem$Finish(PortLivingEntityUseItemEvent.PortFinish event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         ItemStack itemStack = event.getItem();
         RandomSource random = player.getRandom();
@@ -487,7 +496,7 @@ public final class LivingEntityEvents {
 
     }
 
-    public static void mobSpawn$PositionCheck(PortMobSpawnEvent.PortPositionCheck event) {
+    private static void mobSpawn$PositionCheck(PortMobSpawnEvent.PortPositionCheck event) {
         if (event.getSpawnType() != MobSpawnType.NATURAL) return;
         Mob mob = event.getEntity();
         if (event.getResult() != PortMobSpawnEvent.PortPositionCheck.PortResult.FAIL.unwrap() && (
@@ -504,7 +513,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void mobSpawn$SpawnPlacementCheck(PortMobSpawnEvent.PortSpawnPlacementCheck event) {
+    private static void mobSpawn$SpawnPlacementCheck(PortMobSpawnEvent.PortSpawnPlacementCheck event) {
         if (event.getSpawnType() == MobSpawnType.NATURAL && !event.getPlacementCheckResult()) {
             EntityType<?> entityType = event.getEntityType();
 //            if (entityType == TEMonsterEntities.GHOST.get()) {
@@ -522,13 +531,13 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void effectParticleModification(PortEffectParticleModificationEvent event) {
+    private static void effectParticleModification(PortEffectParticleModificationEvent event) {
         if (event.isVisible() && !IMobEffectInstance.of(event.getEffect()).confluence$isEnabled()) {
             event.setVisible(false);
         }
     }
 
-    public static void spawnClusterSize(PortSpawnClusterSizeEvent event) {
+    private static void spawnClusterSize(PortSpawnClusterSizeEvent event) {
         if (BloodMoonGameEvent.INSTANCE.started()) {
             Mob mob = event.getEntity();
             if (mob instanceof Enemy && mob.position().y > OverworldUtils.getSurfaceY()) {
@@ -537,13 +546,13 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
+    private static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             PlayerUtils.flushPrimitiveValueData(player);
         }
     }
 
-    public static void curioChange(CurioChangeEvent event) {
+    private static void curioChange(CurioChangeEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             if (PrefixUtils.canInit(event.getTo())) {
                 PrefixUtils.initPrefix(player.getRandom(), event.getTo());
@@ -551,7 +560,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void toBeBestiaryEntry(ToBeBestiaryEntryEvent event) {
+    private static void toBeBestiaryEntry(ToBeBestiaryEntryEvent event) {
         LivingEntity living = event.getEntity();
         if (living instanceof AbstractSummonMob) {
             event.setCanceled(true);
@@ -565,7 +574,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    public static void armorPenetration(ArmorPenetrationEvent event) {
+    private static void armorPenetration(ArmorPenetrationEvent event) {
         DamageSource damageSource = event.getDamageSource();
 
         @Nullable Entity direct = damageSource.getDirectEntity();

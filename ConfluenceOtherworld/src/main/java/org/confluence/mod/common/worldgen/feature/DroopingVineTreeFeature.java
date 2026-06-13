@@ -57,16 +57,16 @@ public class DroopingVineTreeFeature extends Feature<DroopingVineTreeFeature.Con
 
         boolean placed = true;
 
-        for (int i = 0; i < trunkPosList.size(); i++) {
-            if (!(level.getBlockState(trunkPosList.get(i)).isAir() || level.getBlockState(trunkPosList.get(i)).is(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "leaves"))))) {
+        for (BlockPos blockPos : trunkPosList) {
+            if (!(level.getBlockState(blockPos).isAir() || level.getBlockState(blockPos).is(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "leaves"))))) {
                 placed = false;
             }
         }
 
         if (placed) {
-            for (int i = 0; i < trunkPosList.size(); i++) {
-                level.setBlock(trunkPosList.get(i), trunkBlockState, 3);
-                rootPos.add(trunkPosList.get(i));
+            for (BlockPos pos : trunkPosList) {
+                level.setBlock(pos, trunkBlockState, 3);
+                rootPos.add(pos);
             }
             setLeaves(new BoundingBox(baseBlockPos.getX() - 2, baseBlockPos.getY() + height, baseBlockPos.getZ() - 2, baseBlockPos.getX() + 2, baseBlockPos.getY() + height + 1, baseBlockPos.getZ() + 2), leavesBlockState, true, random, level, droopingLeavesBlockState);
             setLeaves(new BoundingBox(baseBlockPos.getX() - 1, baseBlockPos.getY() + height + 2, baseBlockPos.getZ() - 1, baseBlockPos.getX() + 1, baseBlockPos.getY() + height + 3, baseBlockPos.getZ() + 1), leavesBlockState, false, random, level);
@@ -76,9 +76,12 @@ public class DroopingVineTreeFeature extends Feature<DroopingVineTreeFeature.Con
         return false;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider leaves,
-                         BlockStateProvider drooping_leaves,
-                         int height) implements FeatureConfiguration {
+    public record Config(
+            BlockStateProvider trunk,
+            BlockStateProvider leaves,
+            BlockStateProvider drooping_leaves,
+            int height
+    ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("leaves_block").forGetter(Config::leaves),

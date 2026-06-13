@@ -10,6 +10,8 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 
 public final class ModDataComponentTypes {
+    public static void init() {}
+
     public static final PortDataComponentRegistration TYPES = PortRegisterHandler.dataComponent(Confluence.MODID);
 
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<LootComponent>> LOOT = TYPES.builder("loot", builder -> builder.persistent(LootComponent.CODEC).networkSynchronized(LootComponent.STREAM_CODEC));

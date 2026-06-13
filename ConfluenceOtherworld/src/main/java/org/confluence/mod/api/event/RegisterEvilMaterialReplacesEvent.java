@@ -1,5 +1,6 @@
 ﻿package org.confluence.mod.api.event;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.minecraft.world.item.Item;
@@ -38,7 +39,7 @@ public class RegisterEvilMaterialReplacesEvent extends Event implements IModBusE
         for (ItemStack stack : original) {
             Item target = getPossible(stack.getItem(), corrupt, crimson);
             if (target != null && all.contains(target)) {
-                targets.add(stack.transmuteCopy(target));
+                targets.add(PortItemStackExtension.transmuteCopy(stack, target));
             } else {
                 targets.add(stack);
             }

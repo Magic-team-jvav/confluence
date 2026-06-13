@@ -36,22 +36,26 @@ import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.level.*;
+import org.mesdag.portlib.wrapper.common.PortItemAbilities;
 
 public final class LevelEvents {
-
     public static void init() {
+        PortEventHandler.addListener(LevelEvents::explosion$Detonate);
+        PortEventHandler.addListener(LevelEvents::block$ToolModification);
         PortEventHandler.addListener(LevelEvents::blockDrops);
+        PortEventHandler.addListener(LevelEvents::chunkWatch$Watch);
+        PortEventHandler.addListener(LevelEvents::block$Break);
         PortEventHandler.addListener(LevelEvents::farmlandTrample);
         PortEventHandler.addListener(LevelEvents::modifyCustomSpawners);
     }
 
-    public static void explosion$Detonate(PortExplosionEvent.PortDetonate event) {
+    private static void explosion$Detonate(PortExplosionEvent.PortDetonate event) {
         BaseBombEntity.itemInvulnerableToExplosion(event.getExplosion().getDirectSourceEntity(), event.getAffectedEntities());
         NoTraps.entityInvulnerableToExplosion(event.getLevel(), event.getAffectedEntities());
     }
 
-    public static void block$ToolModification(PortBlockEvent.PortBlockToolModificationEvent event) {
-        if (event.getItemAbility() == ItemAbilities.AXE_STRIP) {
+    private static void block$ToolModification(PortBlockEvent.PortBlockToolModificationEvent event) {
+        if (PortItemAbilities.AXE_STRIP == event.getItemAbility()) {
             BlockState originalState = event.getState();
             Block block = LogBlockSet.WRAPPED_STRIP_TABLE.get(originalState.getBlock());
             if (block != null) {
@@ -60,7 +64,7 @@ public final class LevelEvents {
         }
     }
 
-    public static void blockDrops(PortBlockDropsEvent event) {
+    private static void blockDrops(PortBlockDropsEvent event) {
         ItemStack tool = event.getTool();
         Entity breaker = event.getBreaker();
         BlockState state = event.getState();
@@ -76,7 +80,7 @@ public final class LevelEvents {
         }
     }
 
-    public static void chunkWatch$Watch(PortChunkWatchEvent.PortWatch event) {
+    private static void chunkWatch$Watch(PortChunkWatchEvent.PortWatch event) {
         BrushData data = ChunkBrushData.of(event.getLevel()).getDataMap().get(event.getPos());
         if (data != null && !data.colors().isEmpty()) {
             data.ensureValid(event.getLevel());
@@ -84,7 +88,7 @@ public final class LevelEvents {
         }
     }
 
-    public static void block$Break(PortBlockEvent.PortBreakEvent event) {
+    private static void block$Break(PortBlockEvent.PortBreakEvent event) {
         Player player = event.getPlayer();
         BlockState state = event.getState();
         if (!PlayerSpecialData.of(player).isCouldDamageEnvironment() && state.is(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION)) {
@@ -105,13 +109,13 @@ public final class LevelEvents {
         }
     }
 
-    public static void farmlandTrample(PortBlockEvent.PortFarmlandTrampleEvent event) {
+    private static void farmlandTrample(PortBlockEvent.PortFarmlandTrampleEvent event) {
         if (event.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldDamageEnvironment()) {
             event.setCanceled(true);
         }
     }
 
-    public static void modifyCustomSpawners(PortModifyCustomSpawnersEvent event) {
+    private static void modifyCustomSpawners(PortModifyCustomSpawnersEvent event) {
         if (event.getLevel().dimension() == OverworldUtils.dimension()) {
             event.addCustomSpawner(BloodMoonGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(GoblinArmyGameEvent.INSTANCE.spawner);

@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.VoidTreeRootBlock;
 
@@ -45,15 +46,14 @@ public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRo
 
         long seed = (x * X_MIX) ^ (y * Y_MIX) ^ (z * Z_MIX);
 
-        for (int i = 0; i < 6; i++) {
-            Direction direction = Direction.from3DDataValue(i);
-            EnumProperty<VoidTreeRootBlock.ConnectType> prop = VoidTreeRootBlock.CONNECTION_PROPERTIES.get(direction);
+        for (Direction dir : LibUtils.DIRECTIONS) {
+            EnumProperty<VoidTreeRootBlock.ConnectType> prop = VoidTreeRootBlock.CONNECTION_PROPERTIES.get(dir);
             if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL)
-                portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 60, 1.5F, 0.005F, seed);
+                portal(poseStack, gameTime, dir, partialTick, bufferSource, packedOverlay, random, 60, 1.5F, 0.005F, seed);
             if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL)
-                portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 120, 1.5F, 0.0075F, seed);
+                portal(poseStack, gameTime, dir, partialTick, bufferSource, packedOverlay, random, 120, 1.5F, 0.0075F, seed);
             if (state.getValue(prop) == VoidTreeRootBlock.ConnectType.CONNECT_BY_PORTAL)
-                portal(poseStack, gameTime, direction, partialTick, bufferSource, packedOverlay, random, 0, 2.0F, 0.01F, seed);
+                portal(poseStack, gameTime, dir, partialTick, bufferSource, packedOverlay, random, 0, 2.0F, 0.01F, seed);
         }
     }
 

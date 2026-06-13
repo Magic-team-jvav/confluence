@@ -2,8 +2,8 @@
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
@@ -78,8 +78,6 @@ public class GemstoneCaveFeature extends Feature<GemstoneCaveFeature.Config> {
     }
 
     public record Config(int radius) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                Codec.INT.fieldOf("radius").forGetter(GemstoneCaveFeature.Config::radius)
-        ).apply(instance, Config::new));
+        public static final Codec<Config> CODEC = ExtraCodecs.POSITIVE_INT.xmap(Config::new, Config::radius);
     }
 }

@@ -24,7 +24,7 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
-import org.mesdag.portlib.wrapper.common.util.PortPortTriState;
+import org.mesdag.portlib.wrapper.common.util.PortTriState;
 
 import java.util.function.Predicate;
 
@@ -74,10 +74,10 @@ public record VisibilityPacketS2C(byte mask) implements IPortPacket.S2C {
         Confluence.NETWORK_HANDLER.sendToPlayer(player, new VisibilityPacketS2C(SIGNAL, visible));
     }
 
-    public static void sendSunglasses(ServerPlayer player, PortPortTriState normal, PortPortTriState extra) {
-        boolean visible = (normal.isDefault() && player.getItemBySlot(EquipmentSlot.HEAD).is(VanityArmorItems.SUNGLASSES)) || normal.isTrue();
+    public static void sendSunglasses(ServerPlayer player, PortTriState normal, PortTriState extra) {
+        boolean visible = (normal.isDefault() && player.getItemBySlot(EquipmentSlot.HEAD).is(VanityArmorItems.SUNGLASSES.get())) || normal.isTrue();
         if (!visible) {
-            visible = (extra.isDefault() && ExtraInventory.of(player).getVanityArmor(ExtraInventory.VANITY_HEAD_INDEX, false).is(VanityArmorItems.SUNGLASSES)) || extra.isTrue();
+            visible = (extra.isDefault() && ExtraInventory.of(player).getVanityArmor(ExtraInventory.VANITY_HEAD_INDEX, false).is(VanityArmorItems.SUNGLASSES.get())) || extra.isTrue();
         }
         if (visible &&
                 player.getY() > OverworldUtils.getSurfaceY() &&

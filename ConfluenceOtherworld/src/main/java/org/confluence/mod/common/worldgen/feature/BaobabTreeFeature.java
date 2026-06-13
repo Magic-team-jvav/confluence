@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.feature;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -133,7 +134,7 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
                     rootPosList.add(rootPosPlace.offset(0, j, 0));
                     rootPlace = level.getBlockState(rootPosPlace.offset(0, j, 0)).canBeReplaced() && rootPlace;
                 }
-                transitionPos = rootPosList.getLast().offset(xOffset, -(rootOrBranch ? 0 : rootHeight - 1), zOffset);
+                transitionPos = PortListExtension.getLast(rootPosList).offset(xOffset, -(rootOrBranch ? 0 : rootHeight - 1), zOffset);
                 transitionLength = Mth.abs(end - (Mth.abs(xOffset) == 1 ? transitionPos.getX() : transitionPos.getZ()));
                 if (transitionLength == 0) {
                     if (rootPlace) {

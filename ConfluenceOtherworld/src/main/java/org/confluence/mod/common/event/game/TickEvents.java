@@ -30,7 +30,6 @@ import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
 import org.mesdag.portlib.event.tick.PortServerTickEvent;
 
 public final class TickEvents {
-
     public static void init() {
         PortEventHandler.addListener(TickEvents::levelTick$Post);
         PortEventHandler.addListener(TickEvents::playerTick$Post);

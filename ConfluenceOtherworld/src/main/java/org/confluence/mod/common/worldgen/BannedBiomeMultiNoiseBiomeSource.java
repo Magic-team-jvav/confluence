@@ -1,5 +1,6 @@
 ﻿package org.confluence.mod.common.worldgen;
 
+import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -8,6 +9,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
+import net.minecraft.world.level.storage.ServerLevelData;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -35,11 +38,12 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
             } else if (targetBiome.equals(ModBiomes.THE_CRIMSON)) {
                 IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.THE_CRIMSON);
             }
-            this.target = server.registryAccess().holderOrThrow(targetBiome);
-            this.protection = server.registryAccess().holderOrThrow(Biomes.PLAINS);
+            this.target = PortHolderLookupExtension.Provider.holderOrThrow(server.registryAccess(), targetBiome);
+            this.protection = PortHolderLookupExtension.Provider.holderOrThrow(server.registryAccess(), Biomes.PLAINS);
         }
         if (biome.is(bannedBiome)) {
-            BlockPos spawnPos = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer().getWorldData().overworldData().getSpawnPos();
+            ServerLevelData data = ServerLifecycleHooks.getCurrentServer().getWorldData().overworldData();
+            BlockPos spawnPos = new BlockPos(data.getXSpawn(), data.getYSpawn(), data.getZSpawn());
             if (Math.abs((spawnPos.getX() >> 2) - x) <= 50 || Math.abs((spawnPos.getZ() >> 2) - z) <= 50) {
                 return protection;
             }

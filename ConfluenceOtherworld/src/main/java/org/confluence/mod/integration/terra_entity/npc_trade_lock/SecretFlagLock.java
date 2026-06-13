@@ -10,7 +10,7 @@ import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
 public record SecretFlagLock(long secretFlag,
                              boolean flipMatch) implements ITradeLock, SecretFlagMatcher {
-    public static final MapCodec<SecretFlagLock> CODEC = SecretFlagMatcher.createMapCodec(SecretFlagLock::new);
+    public static final MapCodec<SecretFlagLock> CODEC = SecretFlagMatcher.createCodec(SecretFlagLock::new);
 
     public SecretFlagLock(long secretFlag) {
         this(secretFlag, false);

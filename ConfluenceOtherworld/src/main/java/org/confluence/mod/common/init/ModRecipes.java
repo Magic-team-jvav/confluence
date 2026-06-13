@@ -450,7 +450,7 @@ public final class ModRecipes {
             consumer.accept(new IBrewingRecipe() {
                 @Override
                 public boolean isInput(ItemStack input) {
-                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.BOTTLED_WATER);
+                    return input.is(PotionItems.CHAOS_POTION.get()) || input.is(PotionItems.BOTTLED_WATER.get());
                 }
 
                 @Override

@@ -3,6 +3,7 @@ package org.confluence.mod.common.worldgen.feature;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +24,7 @@ public class GroundBlockFeature extends Feature<GroundBlockFeature.Config> {
         WorldGenLevel level = pContext.level();
         BlockPos baseBlockPos = pContext.origin();
         BlockState blockState = config.block().getState(random, baseBlockPos);
-        int max_down = config.max_down;
+        int max_down = config.maxDown;
         int yPlace = 0;
 
         boolean placed = false;
@@ -49,11 +50,11 @@ public class GroundBlockFeature extends Feature<GroundBlockFeature.Config> {
 
     public record Config(
             BlockStateProvider block,
-            int max_down
+            int maxDown
     ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("block").forGetter(Config::block),
-                Codec.INT.fieldOf("max_down").forGetter(GroundBlockFeature.Config::max_down)
+                ExtraCodecs.POSITIVE_INT.fieldOf("max_down").forGetter(GroundBlockFeature.Config::maxDown)
         ).apply(instance, Config::new));
     }
 }

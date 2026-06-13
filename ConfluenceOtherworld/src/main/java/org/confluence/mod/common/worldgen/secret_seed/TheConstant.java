@@ -37,7 +37,7 @@ public class TheConstant extends SecretSeed {
 
     public static void applyDarkness(ServerPlayer player, ServerLevel level, long gameTime) {
         if (player.gameMode.getGameModeForPlayer().isSurvival() && gameTime % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(player.server)) {
-            if (player.hasEffect(ModEffects.SHINE) || player.hasEffect(MobEffects.GLOWING)) return;
+            if (player.hasEffect(ModEffects.SHINE.get()) || player.hasEffect(MobEffects.GLOWING)) return;
             if (TCUtils.getValue(player, TCItems.LUMINANCE) > 0) return;
             if (LibEntityUtils.anyHandHasItem(player, ModTags.Items.PROVIDE_LIGHT)) return;
             CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);

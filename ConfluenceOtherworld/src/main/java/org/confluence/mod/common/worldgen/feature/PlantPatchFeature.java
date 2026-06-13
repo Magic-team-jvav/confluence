@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import java.util.*;
 
 public class PlantPatchFeature extends Feature<PlantPatchFeature.Config> {
-
     public PlantPatchFeature(Codec<Config> pCodec) {
         super(pCodec);
     }

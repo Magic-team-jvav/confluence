@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -32,7 +33,7 @@ public class TooEasy extends SecretSeed {
         if (ModSecretSeeds.TOO_EASY.match(server) && !KillBoard.INSTANCE.getGamePhase().isHardmode()) {
             if (getScheduler(false) != null) return;
             getScheduler(true).schedule(() -> {
-                Component component = Component.translatable("message.confluence.too_easy.ready").withColor(GlobalColors.MESSAGE.get());
+                Component component = PortMutableComponentExtension.withColor(Component.translatable("message.confluence.too_easy.ready"), GlobalColors.MESSAGE.get());
                 server.getPlayerList().broadcastSystemMessage(component, false);
             }, 500);
             getScheduler(true).schedule(() -> KillBoard.INSTANCE.setGamePhase(server, GamePhase.WALL_OF_FLESH), 600);

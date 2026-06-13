@@ -1,7 +1,7 @@
 package org.confluence.mod.common.worldgen.structure;
 
 import com.google.common.collect.Lists;
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
@@ -26,7 +26,7 @@ import java.util.Optional;
 import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class QueenBeeHiveStructure extends Structure {
-    public static final MapCodec<QueenBeeHiveStructure> CODEC = simpleCodec(QueenBeeHiveStructure::new);
+    public static final Codec<QueenBeeHiveStructure> CODEC = simpleCodec(QueenBeeHiveStructure::new);
 
     protected QueenBeeHiveStructure(StructureSettings settings) {
         super(settings);

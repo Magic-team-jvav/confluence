@@ -31,9 +31,7 @@ public class RegisterArmorSetBonusEvent extends Event implements IModBusEvent {
 
     @FunctionalInterface
     public interface Registration {
-        /**
-         * @see ModArmorBonus#register(ResourceLocation, int, ItemLike, ItemLike, ItemLike, ItemLike, Consumer)
-         */
+        /// [ModArmorBonus#register(ResourceLocation, int, ItemLike, ItemLike, ItemLike, ItemLike, Consumer)]
         void register(
                 ResourceLocation id,
                 int tooltipCount,

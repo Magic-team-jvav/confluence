@@ -7,17 +7,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.init.ModTags;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotTheBees extends SecretSeed {
     private static final List<TagKey<Biome>> skip = Util.make(new ArrayList<>(), list -> {
-        list.add(Tags.Biomes.IS_DESERT);
-        list.add(Tags.Biomes.IS_AQUATIC);
-        list.add(Tags.Biomes.IS_UNDERGROUND);
+        list.add(PortTags.Biomes.IS_DESERT);
+        list.add(PortTags.Biomes.IS_AQUATIC);
+        list.add(PortTags.Biomes.IS_UNDERGROUND);
         list.add(ModTags.Biomes.IS_CONFLUENCE);
     });
 

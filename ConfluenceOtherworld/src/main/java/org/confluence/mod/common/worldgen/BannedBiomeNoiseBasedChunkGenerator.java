@@ -1,6 +1,6 @@
 package org.confluence.mod.common.worldgen;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 
 public class BannedBiomeNoiseBasedChunkGenerator extends NoiseBasedChunkGenerator {
-    public static final MapCodec<BannedBiomeNoiseBasedChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<BannedBiomeNoiseBasedChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             MultiNoiseBiomeSource.CODEC.fieldOf("biome_source").forGetter(BannedBiomeNoiseBasedChunkGenerator::getBiomeSource),
             NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(BannedBiomeNoiseBasedChunkGenerator::generatorSettings),
             ResourceKey.codec(Registries.BIOME).fieldOf("banned_biome").forGetter(generator -> generator.bannedBiome),
@@ -32,7 +32,7 @@ public class BannedBiomeNoiseBasedChunkGenerator extends NoiseBasedChunkGenerato
     }
 
     @Override
-    protected MapCodec<BannedBiomeNoiseBasedChunkGenerator> codec() {
+    protected Codec<BannedBiomeNoiseBasedChunkGenerator> codec() {
         return CODEC;
     }
 }

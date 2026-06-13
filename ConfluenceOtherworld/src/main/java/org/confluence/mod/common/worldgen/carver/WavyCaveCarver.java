@@ -15,9 +15,9 @@ import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import org.confluence.lib.util.LibGeometryUtils;
-import org.confluence.lib.util.LibVectorUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.List;
 import java.util.function.Function;
@@ -39,12 +39,12 @@ public class WavyCaveCarver extends WorldCarver<CarverConfiguration> {
         deltaPos = end.subtract(middle);
         BlockPos b = start.offset(deltaPos.getX() / 2, deltaPos.getY() / 2 + random.nextInt(32, 48), deltaPos.getZ() / 2);
 
-        List<Vector3d> positions = Lists.newArrayList(Stream.of(start, a, middle, b, end).map(LibVectorUtils::toVector3d).toList());
-        LibGeometryUtils.lightningPathList(positions, 2.5, 0.125F, random);
+        List<Vector3f> positions = Lists.newArrayList(Stream.of(start, a, middle, b, end).map(LibMathUtils::toVector3f).toList());
+        LibGeometryUtils.lightningPathList(positions, 2.5F, 0.125F, random);
         float yScale = config.yScale.sample(random);
         int size = positions.size();
         for (int i = 0; i < size; i++) {
-            Vector3d position = positions.get(i);
+            Vector3f position = positions.get(i);
             float delta = Math.abs(i - size * 0.5F) / size;
             int radius = 8 - Mth.lerpInt(delta, 4, 8);
             carveEllipsoid(context, config, chunk, biomeAccessor, aquifer, position.x, position.y, position.z, radius, yScale, carvingMask, (context1, relativeX, relativeY, relativeZ, y) -> false);

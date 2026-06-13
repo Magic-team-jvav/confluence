@@ -1,5 +1,6 @@
 package org.confluence.mod;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ import org.confluence.mod.common.event.ModEvents;
 import org.confluence.mod.common.event.NetworkEvents;
 import org.confluence.mod.common.event.game.GameEvents;
 import org.confluence.mod.common.event.game.LevelEvents;
+import org.confluence.mod.common.event.game.ServerEvents;
 import org.confluence.mod.common.event.game.TickEvents;
 import org.confluence.mod.common.event.game.entity.EntityEvents;
 import org.confluence.mod.common.event.game.entity.ItemEvents;
@@ -31,7 +33,6 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.terra_entity.TEEvents;
-import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.mesdag.portlib.network.PortNetworkHandler;
 import org.slf4j.Logger;
@@ -58,6 +59,7 @@ public final class Confluence {
         LevelEvents.init();
         TickEvents.init();
         ItemGroupEvents.init();
+        ServerEvents.init();
         if (LibUtils.isPhysicalClient()) {
             ClientConfigs.register(context);
             ModKeyBindings.init();
@@ -85,9 +87,9 @@ public final class Confluence {
 
         ModTabs.TABS.register(eventBus);
         ModEntities.ENTITIES.register(eventBus);
-        ModDataComponentTypes.TYPES.register(eventBus);
+        ModDataComponentTypes.init();
         ModSoundEvents.EVENTS.register(eventBus);
-        ModAttachmentTypes.TYPES.register(eventBus);
+        ModAttachmentTypes.init();
         ModEffects.EFFECTS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.TYPES.register(eventBus);
@@ -95,7 +97,6 @@ public final class Confluence {
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);
         ModLootTables.ItemConditions.TYPES.register(eventBus);
-        ModTradeLockProviderTypes.TYPES.register(eventBus);
         ModCommands.ARGUMENT_TYPE_INFOS.register(eventBus);
         ModDensityFunctionTypes.TYPES.register(eventBus);
 
@@ -104,7 +105,12 @@ public final class Confluence {
 
     public static void registerGameRules() {
         if (SPREADABLE_CHANCE == null) {
-            SPREADABLE_CHANCE = GameRules.register("confluenceSpreadableChance", GameRules.Category.UPDATES, GameRules.IntegerValue.create(10, 0, 100, (server, value) -> {}));
+            SPREADABLE_CHANCE = GameRules.register(new GameRules.Type<>(
+                    () -> IntegerArgumentType.integer(0, 100),
+                    type -> new GameRules.IntegerValue(type, 10),
+                    (server, value) -> {},
+                    GameRules.GameRuleTypeVisitor::visitInteger
+            ));
         }
     }
 

@@ -1,6 +1,5 @@
 ﻿package org.confluence.mod.common.event.game.entity;
 
-import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.event.GunEvent;
@@ -37,7 +35,9 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.item.PortItemTossEvent;
+import org.mesdag.portlib.event.other.PortItemAttributeModifierEvent;
 import org.mesdag.portlib.event.other.PortItemStackedOnOtherEvent;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 
@@ -46,7 +46,8 @@ import java.util.Map;
 
 public final class ItemEvents {
     public static void init() {
-        PortEventHandler.addListener(ItemEvents::itemStackedOnOther);
+        PortEventHandler.addListener(PortEventPriority.NORMAL, true, ItemEvents::itemStackedOnOther);
+        PortEventHandler.addListener(ItemEvents::attributeModifier);
         PortEventHandler.addListener(ItemEvents::toss);
         PortEventHandler.addListener(ItemEvents::gunFire);
         PortEventHandler.addListener(ItemEvents::gun$ShrinkBullet);
@@ -57,7 +58,7 @@ public final class ItemEvents {
         PortEventHandler.addListener(ItemEvents::shimmerItemTransmutation$Post);
     }
 
-    public static void itemStackedOnOther(PortItemStackedOnOtherEvent event) {
+    private static void itemStackedOnOther(PortItemStackedOnOtherEvent event) {
         ItemStack carried = event.getCarriedItem();
         ItemStack stackedOn = event.getStackedOnItem();
         Player player = event.getPlayer();
@@ -66,7 +67,7 @@ public final class ItemEvents {
         }
     }
 
-    public static void attributeModifier(ItemAttributeModifierEvent event) {
+    private static void attributeModifier(PortItemAttributeModifierEvent event) {
         ItemStack itemStack = event.getItemStack();
         PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
         if (prefix == null ||
@@ -74,21 +75,21 @@ public final class ItemEvents {
                 prefix.type() == PrefixType.ACCESSORY || // 通过curios的事件添加
                 prefix.modifiers().isEmpty()
         ) return;
-        for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
-            Holder<Attribute> attribute = entry.getKey();
+        for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
+            Attribute attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {
                 event.addModifier(attribute, modifier, PortEquipmentSlotGroup.MAINHAND);
             }
         }
     }
 
-    public static void toss(PortItemTossEvent event) {
+    private static void toss(PortItemTossEvent event) {
         ItemEntity itemEntity = event.getEntity();
         ItemStack itemStack = itemEntity.getItem();
         if (itemStack.is(ModTags.Items.TREASURE_BAG)) {
             TreasureBagItemEntity.convert(itemEntity);
             event.setCanceled(true);
-        } else if (itemStack.is(AccessoryItems.GUIDE_VOODOO_DOLL)) {
+        } else if (itemStack.is(AccessoryItems.GUIDE_VOODOO_DOLL.get())) {
             GuideVooDooDollItem.setForward(event.getPlayer(), itemStack);
         } else if (itemStack.is(ModTags.Items.COINS)) {
             itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
@@ -99,13 +100,13 @@ public final class ItemEvents {
         }
     }
 
-    public static void gunFire(GunEvent.GunFireEvent event) {
+    private static void gunFire(GunEvent.GunFireEvent event) {
         if (event.getGun() instanceof ManaGunItem) {
             event.setFire(true);
         }
     }
 
-    public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
+    private static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
         if (event.getGun() instanceof ManaGunItem) {
             event.setCanceled(true);
         } else if (!event.isInfinity() && PlayerUtils.shouldSkipConsumeAmmo(event.getPlayer())) {
@@ -113,7 +114,7 @@ public final class ItemEvents {
         }
     }
 
-    public static void gun$AmmoData(GunEvent.AmmoDataEvent event) {
+    private static void gun$AmmoData(GunEvent.AmmoDataEvent event) {
         Player player = event.getPlayer();
         float velocityModify = (float) player.getAttributeValue(LibAttributes.getRangedVelocity());
         float knockbackModify = (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
@@ -131,26 +132,26 @@ public final class ItemEvents {
         event.setKnockback(event.getKnockback() * knockbackModify);
     }
 
-    public static void gun$AmmoSelection(GunEvent.AmmoSelectionEvent event) {
-        if (GunItems.STAR_CANNON.toStack().is(event.getGun())) {
+    private static void gun$AmmoSelection(GunEvent.AmmoSelectionEvent event) {
+        if (GunItems.STAR_CANNON.get() == event.getGun()) {
             event.setSelected(event.getAmmo().is(MaterialItems.FALLING_STAR.get()));
         }
     }
 
-    public static void gun$InventoryExtra(GunEvent.InventoryExtraEvent event) {
+    private static void gun$InventoryExtra(GunEvent.InventoryExtraEvent event) {
         event.addAmmoFirst(ExtraInventory.of(event.getPlayer()).getAllAmmo());
     }
 
-    public static void shimmerItemTransmutation$Pre(ShimmerItemTransmutationEvent.Pre event) {
+    private static void shimmerItemTransmutation$Pre(ShimmerItemTransmutationEvent.Pre event) {
         ItemEntity source = event.getSource();
-        if (source.getItem().is(ConsumableItems.SLIME_CROWN) && SlimeRainGameEvent.INSTANCE.forceStart()) {
+        if (source.getItem().is(ConsumableItems.SLIME_CROWN.get()) && SlimeRainGameEvent.INSTANCE.forceStart()) {
             source.level().playSound(null, source.getX(), source.getY(), source.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
             source.discard();
             event.setCanceled(true);
         }
     }
 
-    public static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
+    private static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
         if (event.getTargets() == null) return;
         MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
         if (currentServer == null) return;

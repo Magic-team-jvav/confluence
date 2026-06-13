@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.ICancellableEvent;
+import net.minecraftforge.eventbus.api.Cancelable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +25,8 @@ public abstract class MinecartAbilityEvent extends PlayerEvent {
         return minecart;
     }
 
-    public static class RightClickRailBlock extends MinecartAbilityEvent implements ICancellableEvent {
+    @Cancelable
+    public static class RightClickRailBlock extends MinecartAbilityEvent {
         private final ItemStack minecartItem;
         private final BlockState blockState;
         private final BaseRailBlock railBlock;
@@ -60,7 +61,8 @@ public abstract class MinecartAbilityEvent extends PlayerEvent {
         }
     }
 
-    public static class DismountOnMinecart extends MinecartAbilityEvent implements ICancellableEvent {
+    @Cancelable
+    public static class DismountOnMinecart extends MinecartAbilityEvent {
         private @Nullable ItemStack minecartItem;
 
         public DismountOnMinecart(Player player, AbstractMinecart minecart) {

@@ -32,7 +32,7 @@ public class MushroomTreeFeature extends Feature<MushroomTreeFeature.Config> {
         BlockState stemBlockState = config.stem().getState(random, baseBlockPos);
         BlockState pileusBlockState = config.pileus().getState(random, baseBlockPos);
         BlockState indusiumBlockState = config.indusium().getState(random, baseBlockPos);
-        int height = config.height + random.nextInt(config.height_more + 1) - 1;
+        int height = config.height + random.nextInt(config.heightMore + 1) - 1;
         int width = random.nextInt(1, 3);
         boolean check0 = rectangularCheck(baseBlockPos, baseBlockPos.offset(0, height, 0), level);
         boolean check1 = rectangularCheck(baseBlockPos.offset(width, height + 1, width), baseBlockPos.offset(-width, height + 2, -width), level);
@@ -91,7 +91,7 @@ public class MushroomTreeFeature extends Feature<MushroomTreeFeature.Config> {
             BlockStateProvider pileus,
             BlockStateProvider indusium,
             int height,
-            int height_more
+            int heightMore
     ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("stem_block").forGetter(Config::stem),

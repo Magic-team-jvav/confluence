@@ -92,8 +92,12 @@ public class BranchTreeFeature extends Feature<BranchTreeFeature.Config> {
         return false;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider branch, int height,
-                         int branchHeight) implements FeatureConfiguration {
+    public record Config(
+            BlockStateProvider trunk,
+            BlockStateProvider branch,
+            int height,
+            int branchHeight
+    ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("branch_block").forGetter(Config::branch),

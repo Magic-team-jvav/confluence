@@ -1,16 +1,16 @@
 package org.confluence.mod.common.worldgen.feature;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Column;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.storage.loot.LootTable;
 import org.confluence.lib.util.LibFeatureUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.common.BaseChestBlock;
@@ -60,7 +59,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         }
         BlockState chestState = StructurePiece.reorient(level, chestPos, deathChest.defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true));
         if (LibFeatureUtils.safeSetBlock(level, chestPos, chestState, ModFeatures.IS_REPLACEABLE)) {
-            RandomizableContainer.setBlockEntityLootTable(level, random, chestPos, config.lootTable);
+            RandomizableContainerBlockEntity.setLootTable(level, random, chestPos, config.lootTable);
             INetworkEntity chest = ModFeatures.getNetworkEntity(level, chestPos);
             if (chest != null && chest.getSelf() instanceof BaseChestBlock.BEntity) {
                 boolean b = placeDartTraps(config, level, chestPos, chest);
@@ -170,17 +169,23 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         return succeed;
     }
 
-    public record Config(int maxDartDistance, BlockState boulder, int boulderAmount,
-                         int maxBoulderHeight, int tntAmount, int maxSearchDown,
-                         ResourceKey<LootTable> lootTable) implements FeatureConfiguration {
+    public record Config(
+            int maxDartDistance,
+            BlockState boulder,
+            int boulderAmount,
+            int maxBoulderHeight,
+            int tntAmount,
+            int maxSearchDown,
+            ResourceLocation lootTable
+    ) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_dart_distance", 24).forGetter(Config::maxDartDistance),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "max_dart_distance", 24).forGetter(Config::maxDartDistance),
                 BlockState.CODEC.fieldOf("boulder").orElseGet(() -> FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState()).forGetter(Config::boulder),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("boulder_amount", 5).forGetter(Config::boulderAmount),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_boulder_height", 64).forGetter(Config::maxBoulderHeight),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("tnt_amount", 3).forGetter(Config::tntAmount),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_search_down", 32).forGetter(Config::maxSearchDown),
-                ResourceKey.codec(Registries.LOOT_TABLE).lenientOptionalFieldOf("loot_table", ModLootTables.CAVE_CHESTS).forGetter(Config::lootTable)
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "boulder_amount", 5).forGetter(Config::boulderAmount),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "max_boulder_height", 64).forGetter(Config::maxBoulderHeight),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "tnt_amount", 3).forGetter(Config::tntAmount),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "max_search_down", 32).forGetter(Config::maxSearchDown),
+                PortCodecExtension.lenientOptionalFieldOf(ResourceLocation.CODEC, "loot_table", ModLootTables.CAVE_CHESTS).forGetter(Config::lootTable)
         ).apply(instance, Config::new));
     }
 }

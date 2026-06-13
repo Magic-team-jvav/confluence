@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.feature;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -105,11 +106,11 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
     public record Config(BlockStateProvider fallingBlock, int radius, int height, int minDistanceTo,
                          int maxDistanceTo) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                BlockStateProvider.CODEC.lenientOptionalFieldOf("falling_block", BlockStateProvider.simple(Blocks.SAND)).forGetter(Config::fallingBlock),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("radius", 4).forGetter(Config::radius),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("height", 4).forGetter(Config::height),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("min_distance_to", 4).forGetter(Config::minDistanceTo),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_distance_to", 16).forGetter(Config::maxDistanceTo)
+                PortCodecExtension.lenientOptionalFieldOf(BlockStateProvider.CODEC, "falling_block", BlockStateProvider.simple(Blocks.SAND)).forGetter(Config::fallingBlock),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "radius", 4).forGetter(Config::radius),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "height", 4).forGetter(Config::height),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "min_distance_to", 4).forGetter(Config::minDistanceTo),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "max_distance_to", 16).forGetter(Config::maxDistanceTo)
         ).apply(instance, Config::new));
     }
 }

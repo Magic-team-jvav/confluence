@@ -27,11 +27,9 @@ public final class ModKeyBindings {
         keyMappings = null;
     }
 
-    //region 魔法系列
+    // region 魔法系列
 
-    /**
-     * 灵魂总览
-     */
+    /// 灵魂总览
     public static final Lazy<KeyMapping> SOUL_OVERVIEW = register(() -> new KeyMapping(
             "key.confluence.soul.overview",
             KeyConflictContext.IN_GAME,
@@ -40,9 +38,7 @@ public final class ModKeyBindings {
             KEY_BINDINGS_CATEGORY
     ));
 
-    /**
-     * 灵魂快捷技能切换
-     */
+    /// 灵魂快捷技能切换
     public static final Lazy<KeyMapping> MAGIC_QUICK_SKILL_SWITCHING = register(() -> new KeyMapping(
             "key.confluence.soul.quick_skill_switching",
             KeyConflictContext.IN_GAME,
@@ -51,9 +47,7 @@ public final class ModKeyBindings {
             KEY_BINDINGS_CATEGORY
     ));
 
-    /**
-     * 魔法技能释放
-     */
+    /// 魔法技能释放
     public static final Lazy<KeyMapping> MAGIC_SKILL_RELEASE = register(() -> new KeyMapping(
             "key.confluence.magic.skill_release",
             KeyConflictContext.IN_GAME,
@@ -62,7 +56,7 @@ public final class ModKeyBindings {
             KEY_BINDINGS_CATEGORY
     ));
 
-    //endregion
+    // endregion
     public static final Lazy<KeyMapping> HOOK = register(() -> new KeyMapping(
             "key.confluence.hook",
             KeyConflictContext.IN_GAME,

@@ -89,6 +89,6 @@ public class RainbowBoulderRenderer extends BoulderRenderer<RainbowBoulderEntity
     }
 
     private static void vertex(VertexConsumer buffer, Matrix4f matrix, Vec3 pos, int argb) {
-        buffer.vertex(matrix, (float) pos.x, (float) pos.y, (float) pos.z).color(argb);
+        buffer.vertex(matrix, (float) pos.x, (float) pos.y, (float) pos.z).color(argb).endVertex();
     }
 }

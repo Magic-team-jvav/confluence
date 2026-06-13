@@ -17,6 +17,7 @@ import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 public final class MeteorLandingHandler {
@@ -93,7 +94,7 @@ public final class MeteorLandingHandler {
         if (distance < event.getLevelRenderer().getLastViewDistance()) return;
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         poseStack.pushPose();
-        poseStack.mulPose(event.getModelViewMatrix());
+        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
         poseStack.mulPose(Axis.YP
                 .rotation(Mth.lerp(partialTick, yawO, yaw))
                 .rotateX(Mth.lerp(partialTick, pitchO, pitch)));
@@ -102,12 +103,13 @@ public final class MeteorLandingHandler {
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         Matrix4f matrix4f = poseStack.last().pose().rotate(LibRenderUtils.ANGLE_45);
-        BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         bufferBuilder.vertex(matrix4f, -RADIUS, 100, -RADIUS).uv(0.0F, v1).color(1.0F, 1.0F, 1.0F, alpha);
         bufferBuilder.vertex(matrix4f, RADIUS, 100, -RADIUS).uv(1.0F, v1).color(1.0F, 1.0F, 1.0F, alpha);
         bufferBuilder.vertex(matrix4f, RADIUS, 100, RADIUS).uv(1.0F, v0).color(1.0F, 1.0F, 1.0F, alpha);
         bufferBuilder.vertex(matrix4f, -RADIUS, 100, RADIUS).uv(0.0F, v0).color(1.0F, 1.0F, 1.0F, alpha);
-        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+        BufferUploader.drawWithShader(bufferBuilder.end());
         RenderSystem.disableBlend();
         poseStack.popPose();
     }

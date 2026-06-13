@@ -1,5 +1,6 @@
 package org.confluence.mod.client.gui.container;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -97,9 +98,10 @@ public class SoulOverviewScreen extends Screen {
         float b = (color & 0xFF) / 255.0f;
 
         if (cachedDots != null && !cachedDots.isEmpty()) {
-            float r1 = cachedDots.getFirst().r;
-            float g1 = cachedDots.getFirst().g;
-            float b1 = cachedDots.getFirst().b;
+            CachedDot first = PortListExtension.getFirst(cachedDots);
+            float r1 = first.r;
+            float g1 = first.g;
+            float b1 = first.b;
             if (r == r1 && g == g1 && b == b1) return;
         }
         cachedDots = new ArrayList<>(count);
@@ -361,8 +363,8 @@ public class SoulOverviewScreen extends Screen {
     }
 
     private void clampScroll() {
-        scrollX = Math.clamp(scrollX, minScrollX, maxScrollX);
-        scrollY = Math.clamp(scrollY, minScrollY, maxScrollY);
+        scrollX = Mth.clamp(scrollX, minScrollX, maxScrollX);
+        scrollY = Mth.clamp(scrollY, minScrollY, maxScrollY);
     }
 
     private void positionAllNodes() {
@@ -425,7 +427,6 @@ public class SoulOverviewScreen extends Screen {
 
     // ============ 渲染 ============
 
-    @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 
         Minecraft mc = Minecraft.getInstance();
@@ -701,13 +702,13 @@ public class SoulOverviewScreen extends Screen {
         float rx2 = x2 + offsetRightX, ry2 = y2 + offsetRightY;
         float lx2 = x2 + offsetLeftX, ly2 = y2 + offsetLeftY;
 
-        PoseStack.Pose pose = guiGraphics.pose().last();
         VertexConsumer buffer = guiGraphics.bufferSource().getBuffer(RenderType.gui());
 
-        buffer.vertex(pose.pose(), lx2, ly2, 0).color(leftColor);
-        buffer.vertex(pose.pose(), rx2, ry2, 0).color(rightColor);
-        buffer.vertex(pose.pose(), rx1, ry1, 0).color(rightColor);
-        buffer.vertex(pose.pose(), lx1, ly1, 0).color(leftColor);
+        Matrix4f pose = guiGraphics.pose().last().pose();
+        buffer.vertex(pose, lx2, ly2, 0).color(leftColor).endVertex();
+        buffer.vertex(pose, rx2, ry2, 0).color(rightColor).endVertex();
+        buffer.vertex(pose, rx1, ry1, 0).color(rightColor).endVertex();
+        buffer.vertex(pose, lx1, ly1, 0).color(leftColor).endVertex();
 
         guiGraphics.bufferSource().endBatch(RenderType.gui());
     }
@@ -1086,7 +1087,7 @@ public class SoulOverviewScreen extends Screen {
     private int calculateScreenBlendColor(double noiseX1, double noiseY1, int color1, float maxAlpha1,
                                           double noiseX2, double noiseY2, int color2, float maxAlpha2, float zOffset) {
         double noiseVal1 = backgroundNoise.getValue(noiseX1, noiseY1, zOffset);
-        float brightness1 = Math.clamp((float) (noiseVal1 * 0.5 + 0.5), 0.0f, 1.0f);
+        float brightness1 = Mth.clamp((float) (noiseVal1 * 0.5 + 0.5), 0.0f, 1.0f);
 
         float r1 = ((color1 >> 16) & 0xFF) / 255.0f * brightness1;
         float g1 = ((color1 >> 8) & 0xFF) / 255.0f * brightness1;
@@ -1094,7 +1095,7 @@ public class SoulOverviewScreen extends Screen {
         float a1 = ((color1 >> 24) & 0xFF) / 255.0f * brightness1 * maxAlpha1;
 
         double noiseVal2 = backgroundNoise.getValue(noiseX2, noiseY2, zOffset);
-        float brightness2 = Math.clamp((float) (noiseVal2 * 0.5 + 0.5), 0.0f, 1.0f);
+        float brightness2 = Mth.clamp((float) (noiseVal2 * 0.5 + 0.5), 0.0f, 1.0f);
 
         float r2 = ((color2 >> 16) & 0xFF) / 255.0f * brightness2;
         float g2 = ((color2 >> 8) & 0xFF) / 255.0f * brightness2;
@@ -1106,16 +1107,17 @@ public class SoulOverviewScreen extends Screen {
         float finalB = 1.0f - (1.0f - b1) * (1.0f - b2);
         float finalA = Math.max(a1, a2);
 
-        int outR = Math.clamp((int) (finalR * 255), 0, 255);
-        int outG = Math.clamp((int) (finalG * 255), 0, 255);
-        int outB = Math.clamp((int) (finalB * 255), 0, 255);
-        int outA = Math.clamp((int) (finalA * 255), 0, 255);
+        int outR = Mth.clamp((int) (finalR * 255), 0, 255);
+        int outG = Mth.clamp((int) (finalG * 255), 0, 255);
+        int outB = Mth.clamp((int) (finalB * 255), 0, 255);
+        int outA = Mth.clamp((int) (finalA * 255), 0, 255);
 
         return (outA << 24) | (outR << 16) | (outG << 8) | outB;
     }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         if (isSliderVisible) {
             hueSlider.setPosition(5, this.height - 50);

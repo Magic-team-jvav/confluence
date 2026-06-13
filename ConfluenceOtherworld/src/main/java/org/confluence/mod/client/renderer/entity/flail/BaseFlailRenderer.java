@@ -94,7 +94,7 @@ public class BaseFlailRenderer extends EntityRenderer<BaseFlailEntity> {
 
         model.renderToBuffer(poseStack,
                 bufferSource.getBuffer(model.renderType(getTextureLocation(entity))),
-                packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
+                packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
 
         // ── 渲染链条 ──
@@ -141,10 +141,10 @@ public class BaseFlailRenderer extends EntityRenderer<BaseFlailEntity> {
 
             PoseStack.Pose pose = poseStack.last();
             Matrix4f matrix = pose.pose();
-            vertex(consumer, matrix, pose, packedLight, -halfS, -halfS, 0, 0, 0);
-            vertex(consumer, matrix, pose, packedLight, halfS, -halfS, 0, 0, 1);
-            vertex(consumer, matrix, pose, packedLight, halfS, halfS, 0, 1, 1);
-            vertex(consumer, matrix, pose, packedLight, -halfS, halfS, 0, 1, 0);
+            vertex(consumer, matrix, pose, packedLight, -halfS, -halfS, 0, 0);
+            vertex(consumer, matrix, pose, packedLight, halfS, -halfS, 0, 1);
+            vertex(consumer, matrix, pose, packedLight, halfS, halfS, 1, 1);
+            vertex(consumer, matrix, pose, packedLight, -halfS, halfS, 1, 0);
 
             poseStack.popPose();
         }
@@ -153,12 +153,13 @@ public class BaseFlailRenderer extends EntityRenderer<BaseFlailEntity> {
     }
 
     private static void vertex(VertexConsumer consumer, Matrix4f matrix, PoseStack.Pose normal,
-                               int packedLight, float x, float y, float z, float u, float v) {
-        consumer.vertex(matrix, x, y, z)
+                               int packedLight, float x, float y, float u, float v) {
+        consumer.vertex(matrix, x, y, 0)
                 .color(255, 255, 255, 255)
                 .uv(u, v)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(packedLight)
-                .setNormal(normal, 0, 1, 0);
+                .normal(normal.normal(), 0, 1, 0)
+                .endVertex();
     }
 }

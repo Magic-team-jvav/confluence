@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.VoidTreeRootBlock;
+import org.joml.Matrix4f;
 
 public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRootBlock.BEntity> {
     private static final Minecraft MC = Minecraft.getInstance();
@@ -91,31 +92,31 @@ public class VoidTreeRootBlockRenderer implements BlockEntityRenderer<VoidTreeRo
             int alpha = 255;
             int r = 255, g = 255, b = 255;
             int light = 255;
-            PoseStack.Pose pose = poseStack.last();
+            Matrix4f pose = poseStack.last().pose();
             quadBuffer.vertex(pose, 0.5F - hSize, 1.0F + offset, 0.5F - hSize)
                     .color(r, g, b, alpha)
                     .uv(0.0F, V)
-                    .setOverlay(packedOverlay)
+                    .overlayCoords(packedOverlay)
                     .uv2(light)
-                    .setNormal(0.0F, 1.0F, 0.0F);
+                    .normal(0.0F, 1.0F, 0.0F);
             quadBuffer.vertex(pose, 0.5F - hSize, 1.0F + offset, 0.5F + hSize)
                     .color(r, g, b, alpha)
                     .uv(0.0F, V + 0.1F)
-                    .setOverlay(packedOverlay)
+                    .overlayCoords(packedOverlay)
                     .uv2(light)
-                    .setNormal(0.0F, 1.0F, 0.0F);
+                    .normal(0.0F, 1.0F, 0.0F);
             quadBuffer.vertex(pose, 0.5F + hSize, 1.0F + offset, 0.5F + hSize)
                     .color(r, g, b, alpha)
                     .uv(1.0F, V + 0.1F)
-                    .setOverlay(packedOverlay)
+                    .overlayCoords(packedOverlay)
                     .uv2(light)
-                    .setNormal(0.0F, 1.0F, 0.0F);
+                    .normal(0.0F, 1.0F, 0.0F);
             quadBuffer.vertex(pose, 0.5F + hSize, 1.0F + offset, 0.5F - hSize)
                     .color(r, g, b, alpha)
                     .uv(1.0F, V)
-                    .setOverlay(packedOverlay)
+                    .overlayCoords(packedOverlay)
                     .uv2(light)
-                    .setNormal(0.0F, 1.0F, 0.0F);
+                    .normal(0.0F, 1.0F, 0.0F);
         }
         poseStack.popPose();
     }

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class RelicBlockModel extends GeoModel<RelicBlock.BEntity> {
     public static final Map<Block, ResourceLocation[]> CACHE = Util.make(new IdentityHashMap<>(), map -> {
-        for (RegistryObject block : DecorativeBlocks.RELIC_BLOCKS) {
+        for (RegistryObject<RelicBlock> block : DecorativeBlocks.RELIC_BLOCKS) {
             String path = block.getId().getPath();
             map.put(block.get(), new ResourceLocation[]{
                     Confluence.asResource("geo/block/" + path + ".geo.json"),

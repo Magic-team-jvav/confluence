@@ -15,18 +15,20 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.LoomMenu;
+import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class LoomBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock implements EntityBlock {
@@ -42,7 +44,7 @@ public class LoomBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock i
     private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{RIGHT_SHAPE_SOUTH, RIGHT_SHAPE_WEST, RIGHT_SHAPE_NORTH, RIGHT_SHAPE_EAST};
 
     public LoomBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.LOOM));
+        super(BlockBehaviour.Properties.copy(Blocks.LOOM));
     }
 
     @Override
@@ -94,6 +96,11 @@ public class LoomBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock i
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
             return cache;
+        }
+
+        @Override
+        public AABB getRenderBoundingBox() {
+            return ClientUtils.getRenderBoundingBox3x(getBlockPos());
         }
     }
 }

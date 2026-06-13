@@ -48,6 +48,11 @@ public class BackgroundImageMakerScreen extends Screen {
     }
 
     @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        renderMenuBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    }
+
     protected void renderMenuBackground(GuiGraphics guiGraphics) {
         guiGraphics.fill(leftPos, topPos, leftPos + imageWidth, topPos + imageHeight, 0xFFEEEEEE);
 

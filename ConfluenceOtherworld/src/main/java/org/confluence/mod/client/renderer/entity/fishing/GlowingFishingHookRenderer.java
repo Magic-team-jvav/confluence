@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.mod.Confluence;
@@ -67,9 +68,14 @@ public class GlowingFishingHookRenderer extends EntityRenderer<CurioFishingHook>
     public void render(CurioFishingHook pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         int id = pEntity.getVariant().getId();
         GlowingFishingHookModel model = getModel(pEntity);
-        model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(TEXTURES[id])), pPackedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(TEXTURES[id])), pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         if (id != 0) {
-            model.renderToBuffer(pPoseStack, pBuffer.getBuffer(GLOWS[id]), 0xF000F0, OverlayTexture.NO_OVERLAY, id == 3 ? ExpertColorAnimation.INSTANCE.getColor() : -1);
+            int color = id == 3 ? ExpertColorAnimation.INSTANCE.getColor() : -1;
+            float red = FastColor.ARGB32.red(color) / 255F;
+            float green = FastColor.ARGB32.green(color) / 255F;
+            float blue = FastColor.ARGB32.blue(color) / 255F;
+            float alpha = FastColor.ARGB32.alpha(color) / 255F;
+            model.renderToBuffer(pPoseStack, pBuffer.getBuffer(GLOWS[id]), 0xF000F0, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
         }
         renderString(entityRenderDispatcher, pEntity, pPartialTick, pPoseStack, pBuffer, IntegerRGB.BLACK.get());
     }

@@ -5,7 +5,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +13,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -27,57 +26,53 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
 import org.confluence.mod.common.recipe.special.DragonPepperExtractingRecipe;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortShapedRecipePattern;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public final class ModRecipes {
-    public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Confluence.MODID);
-    public static final DeferredRegister<RecipeType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, Confluence.MODID);
+    public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Confluence.MODID);
+    public static final DeferredRegister<RecipeType<?>> TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Confluence.MODID);
 
-    public static final Supplier<RecipeType<AltarRecipe>> ALTAR_TYPE = registerType("altar");
-    public static final Supplier<RecipeSerializer<?>> ALTAR_SERIALIZER = SERIALIZERS.register("altar", AltarRecipe.Serializer::new);
-    public static final Supplier<RecipeType<SkyMillRecipe>> SKY_MILL_TYPE = registerType("sky_mill");
-    public static final Supplier<RecipeSerializer<?>> SKY_MILL_SERIALIZER = SERIALIZERS.register("sky_mill", SkyMillRecipe.Serializer::new);
-    public static final Supplier<RecipeType<HeavyWorkBenchRecipe>> HEAVY_WORK_BENCH_TYPE = registerType("heavy_work_bench");
-    public static final Supplier<RecipeSerializer<?>> HEAVY_WORK_BENCH_SERIALIZER = SERIALIZERS.register("heavy_work_bench", HeavyWorkBenchRecipe.Serializer::new);
-    public static final Supplier<RecipeType<HellforgeRecipe>> HELLFORGE_TYPE = registerType("hellforge");
-    public static final Supplier<RecipeSerializer<?>> HELLFORGE_SERIALIZER = SERIALIZERS.register("hellforge", HellforgeRecipe.Serializer::new);
-    public static final Supplier<RecipeType<FletchingTableRecipe>> FLETCHING_TABLE_TYPE = registerType("fletching_table");
-    public static final Supplier<RecipeSerializer<?>> FLETCHING_TABLE_SERIALIZER = SERIALIZERS.register("fletching_table", FletchingTableRecipe.Serializer::new);
-    public static final Supplier<RecipeType<AlchemyTableRecipe>> ALCHEMY_TABLE_TYPE = registerType("alchemy_table");
-    public static final Supplier<RecipeSerializer<?>> ALCHEMY_TABLE_SERIALIZER = SERIALIZERS.register("alchemy_table", AlchemyTableRecipe.Serializer::new);
-    public static final Supplier<RecipeType<CookingPotRecipe>> COOKING_POT_TYPE = registerType("cooking_pot");
-    public static final Supplier<RecipeSerializer<?>> COOKING_POT_SERIALIZER = SERIALIZERS.register("cooking_pot", CookingPotRecipe.Serializer::new);
-    public static final Supplier<RecipeType<SawmillRecipe>> SAWMILL_TYPE = registerType("sawmill");
-    public static final Supplier<RecipeSerializer<?>> SAWMILL_SERIALIZER = SERIALIZERS.register("sawmill", SawmillRecipe.Serializer::new);
-    public static final Supplier<RecipeType<SolidifierRecipe>> SOLIDIFIER_TYPE = registerType("solidifier");
-    public static final Supplier<RecipeSerializer<?>> SOLIDIFIER_SERIALIZER = SERIALIZERS.register("solidifier", SolidifierRecipe.Serializer::new);
-    public static final Supplier<RecipeType<CrystalBallRecipe>> CRYSTAL_BALL_TYPE = registerType("crystal_ball");
-    public static final Supplier<RecipeSerializer<?>> CRYSTAL_BALL_SERIALIZER = SERIALIZERS.register("crystal_ball", CrystalBallRecipe.Serializer::new);
-    public static final Supplier<RecipeType<HardmodeAnvilRecipe>> HARDMODE_ANVIL_TYPE = registerType("hardmode_anvil");
-    public static final Supplier<RecipeSerializer<?>> HARDMODE_ANVIL_SERIALIZER = SERIALIZERS.register("hardmode_anvil", HardmodeAnvilRecipe.Serializer::new);
-    public static final RegistryObject,RecipeType<ItemTransmutationRecipe>>ITEM_TRANSMUTATION_TYPE =
+    public static final RegistryObject<RecipeType<AltarRecipe>> ALTAR_TYPE = registerType("altar");
+    public static final RegistryObject<RecipeSerializer<?>> ALTAR_SERIALIZER = SERIALIZERS.register("altar", AltarRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<SkyMillRecipe>> SKY_MILL_TYPE = registerType("sky_mill");
+    public static final RegistryObject<RecipeSerializer<?>> SKY_MILL_SERIALIZER = SERIALIZERS.register("sky_mill", SkyMillRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<HeavyWorkBenchRecipe>> HEAVY_WORK_BENCH_TYPE = registerType("heavy_work_bench");
+    public static final RegistryObject<RecipeSerializer<?>> HEAVY_WORK_BENCH_SERIALIZER = SERIALIZERS.register("heavy_work_bench", HeavyWorkBenchRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<HellforgeRecipe>> HELLFORGE_TYPE = registerType("hellforge");
+    public static final RegistryObject<RecipeSerializer<?>> HELLFORGE_SERIALIZER = SERIALIZERS.register("hellforge", HellforgeRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<FletchingTableRecipe>> FLETCHING_TABLE_TYPE = registerType("fletching_table");
+    public static final RegistryObject<RecipeSerializer<?>> FLETCHING_TABLE_SERIALIZER = SERIALIZERS.register("fletching_table", FletchingTableRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<AlchemyTableRecipe>> ALCHEMY_TABLE_TYPE = registerType("alchemy_table");
+    public static final RegistryObject<RecipeSerializer<?>> ALCHEMY_TABLE_SERIALIZER = SERIALIZERS.register("alchemy_table", AlchemyTableRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<CookingPotRecipe>> COOKING_POT_TYPE = registerType("cooking_pot");
+    public static final RegistryObject<RecipeSerializer<?>> COOKING_POT_SERIALIZER = SERIALIZERS.register("cooking_pot", CookingPotRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<SawmillRecipe>> SAWMILL_TYPE = registerType("sawmill");
+    public static final RegistryObject<RecipeSerializer<?>> SAWMILL_SERIALIZER = SERIALIZERS.register("sawmill", SawmillRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<SolidifierRecipe>> SOLIDIFIER_TYPE = registerType("solidifier");
+    public static final RegistryObject<RecipeSerializer<?>> SOLIDIFIER_SERIALIZER = SERIALIZERS.register("solidifier", SolidifierRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<CrystalBallRecipe>> CRYSTAL_BALL_TYPE = registerType("crystal_ball");
+    public static final RegistryObject<RecipeSerializer<?>> CRYSTAL_BALL_SERIALIZER = SERIALIZERS.register("crystal_ball", CrystalBallRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<HardmodeAnvilRecipe>> HARDMODE_ANVIL_TYPE = registerType("hardmode_anvil");
+    public static final RegistryObject<RecipeSerializer<?>> HARDMODE_ANVIL_SERIALIZER = SERIALIZERS.register("hardmode_anvil", HardmodeAnvilRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<ItemTransmutationRecipe>> ITEM_TRANSMUTATION_TYPE = registerType("item_transmutation");
 
-    registerType("item_transmutation");
+    public static final RegistryObject<RecipeSerializer<?>> ITEM_TRANSMUTATION_SERIALIZER = SERIALIZERS.register("item_transmutation", ItemTransmutationRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<HardmodeForgeRecipe>> HARDMODE_FORGE_TYPE = registerType("hardmode_forge");
+    public static final RegistryObject<RecipeSerializer<?>> HARDMODE_FORGE_SERIALIZER = SERIALIZERS.register("hardmode_forge", HardmodeForgeRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<LoomRecipe>> LOOM_TYPE = registerType("loom");
+    public static final RegistryObject<RecipeSerializer<?>> LOOM_SERIALIZER = SERIALIZERS.register("loom", LoomRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<DyeVatRecipe>> DYE_VAT_TYPE = registerType("dye_vat");
+    public static final RegistryObject<RecipeSerializer<?>> DYE_VAT_SERIALIZER = SERIALIZERS.register("dye_vat", DyeVatRecipe.Serializer::new);
 
-    public static final Supplier<RecipeSerializer<?>> ITEM_TRANSMUTATION_SERIALIZER = SERIALIZERS.register("item_transmutation", ItemTransmutationRecipe.Serializer::new);
-    public static final Supplier<RecipeType<HardmodeForgeRecipe>> HARDMODE_FORGE_TYPE = registerType("hardmode_forge");
-    public static final Supplier<RecipeSerializer<?>> HARDMODE_FORGE_SERIALIZER = SERIALIZERS.register("hardmode_forge", HardmodeForgeRecipe.Serializer::new);
-    public static final Supplier<RecipeType<LoomRecipe>> LOOM_TYPE = registerType("loom");
-    public static final Supplier<RecipeSerializer<?>> LOOM_SERIALIZER = SERIALIZERS.register("loom", LoomRecipe.Serializer::new);
-    public static final Supplier<RecipeType<DyeVatRecipe>> DYE_VAT_TYPE = registerType("dye_vat");
-    public static final Supplier<RecipeSerializer<?>> DYE_VAT_SERIALIZER = SERIALIZERS.register("dye_vat", DyeVatRecipe.Serializer::new);
+    public static final RegistryObject<BoomBunnyRecipe.Serializer> BOOM_BUNNY_SERIALIZER = SERIALIZERS.register("boom_bunny", BoomBunnyRecipe.Serializer::new);
 
-    public static final RegistryObject,BoomBunnyRecipe.Serializer>BOOM_BUNNY_SERIALIZER =SERIALIZERS.register("boom_bunny",BoomBunnyRecipe.Serializer::new);
+    public static final RegistryObject<DragonPepperExtractingRecipe.Serializer> DRAGON_PEPPER_EXTRACTING_SERIALIZER = SERIALIZERS.register("dragon_pepper_extracting", DragonPepperExtractingRecipe.Serializer::new);
 
-    public static final RegistryObject,DragonPepperExtractingRecipe.Serializer>DRAGON_PEPPER_EXTRACTING_SERIALIZER =SERIALIZERS.register("dragon_pepper_extracting",DragonPepperExtractingRecipe.Serializer::new);
-
-    private static <R extends Recipe<?>>RegistryObject,RecipeType<R>>
-
-    registerType(String id) {
+    private static <R extends Recipe<?>> RegistryObject<RecipeType<R>> registerType(String id) {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {
             @Override
             public String toString() {
@@ -87,7 +82,7 @@ public final class ModRecipes {
     }
 
     public static void register(IEventBus bus) {
-        ShapedRecipePattern.setCraftingSize(4, 4);
+        PortShapedRecipePattern.setCraftingSize(4, 4);
         SERIALIZERS.register(bus);
         TYPES.register(bus);
     }
@@ -109,7 +104,7 @@ public final class ModRecipes {
             registerMaterial(Items.COBWEB);
             registerMaterial(FoodItems.ARMORED_CAVE_FISH.get());
             registerMaterial(Items.FEATHER);
-            registerMaterial(DecorativeBlocks.CRISPY_HONEY_BLOCK.asItem());
+            registerMaterial(DecorativeBlocks.CRISPY_HONEY_BLOCK.get().asItem());
             registerMaterial(Items.FIRE_CORAL);
             registerMaterial(BaitItems.LADYBUG.get());
             registerMaterial(FoodItems.FLASHFIN_KOI.get());
@@ -134,7 +129,7 @@ public final class ModRecipes {
             registerMaterial(FoodItems.CHAOS_FISH.get());
             registerMaterial(FoodItems.MIRROR_FISH.get());
             registerMaterial(FoodItems.EBONY_KOI.get());
-            registerMaterial(NatureBlocks.GLOWING_MUSHROOM.asItem());
+            registerMaterial(NatureBlocks.GLOWING_MUSHROOM.get().asItem());
             registerMaterial(FoodItems.STINKY_FISH.get());
             registerMaterial(MaterialItems.AMBER.get());
             registerMaterial(FoodItems.MOTTLED_OILFISH.get());
@@ -147,14 +142,14 @@ public final class ModRecipes {
             registerMaterial(MaterialItems.BLOOD_CLOT_POWDER.get());
             registerMaterial(MaterialItems.ROTTEN_BONE.get());
             registerMaterial(FoodItems.DAMSEL_FISH.get());
-            registerMaterial(NatureBlocks.AETHERIUM_BLOCK.asItem());
-            registerMaterial(FoodItems.RED_PLEATFISH.asItem());
+            registerMaterial(NatureBlocks.AETHERIUM_BLOCK.get().asItem());
+            registerMaterial(FoodItems.RED_PLEATFISH.get().asItem());
             registerMaterial(PotionItems.LESSER_HEALING_POTION.get());
             registerMaterial(PotionItems.LESSER_MANA_POTION.get());
             registerMaterial(MaterialItems.PIXIE_DUST.get());
             registerMaterial(MaterialItems.CRYSTAL_SHARDS.get());
             registerMaterial(PotionItems.GREATER_MANA_POTION.get());
-            registerMaterial(FoodItems.BROWN_STALKSPINE.asItem());
+            registerMaterial(FoodItems.BROWN_STALKSPINE.get().asItem());
 
 
             // 箭术
@@ -186,7 +181,7 @@ public final class ModRecipes {
             }, PotionItems.FEATHERFALL_POTION.get().getDefaultInstance());
             // 钓鱼
             registerMix(new Item[]{
-                    DecorativeBlocks.CRISPY_HONEY_BLOCK.asItem(),
+                    DecorativeBlocks.CRISPY_HONEY_BLOCK.get().asItem(),
                     MaterialItems.WATERLEAF.get(),
             }, PotionItems.FISHING_POTION.get().getDefaultInstance());
             // 脚蹼
@@ -304,7 +299,7 @@ public final class ModRecipes {
             // 光环
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
-                    NatureBlocks.GLOWING_MUSHROOM.asItem()
+                    NatureBlocks.GLOWING_MUSHROOM.get().asItem()
             }, PotionItems.SHINE_POTION.get().getDefaultInstance());
             // 洞探
             registerMix(new Item[]{
@@ -493,12 +488,12 @@ public final class ModRecipes {
             consumer.accept(new IBrewingRecipe() {
                 @Override
                 public boolean isInput(ItemStack input) {
-                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.BOTTLE);
+                    return input.is(PotionItems.CHAOS_POTION.get()) || input.is(PotionItems.BOTTLE.get());
                 }
 
                 @Override
                 public boolean isIngredient(ItemStack ingredient) {
-                    return ingredient.is(MaterialItems.GEL) || ingredient.is(MaterialItems.LIFE_MUSHROOM);
+                    return ingredient.is(MaterialItems.GEL.get()) || ingredient.is(MaterialItems.LIFE_MUSHROOM.get());
                 }
 
                 @Override
@@ -507,9 +502,9 @@ public final class ModRecipes {
                     int[] materials = getMaterials(input);
                     if (materials.length >= 2) return ItemStack.EMPTY;
                     int material;
-                    if (ingredient.is(MaterialItems.GEL)) {
+                    if (ingredient.is(MaterialItems.GEL.get())) {
                         material = gel;
-                    } else if (ingredient.is(MaterialItems.LIFE_MUSHROOM)) {
+                    } else if (ingredient.is(MaterialItems.LIFE_MUSHROOM.get())) {
                         material = life_mushroom;
                     } else {
                         return ItemStack.EMPTY;
@@ -532,12 +527,12 @@ public final class ModRecipes {
             consumer.accept(new IBrewingRecipe() {
                 @Override
                 public boolean isInput(ItemStack input) {
-                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.LESSER_HEALING_POTION);
+                    return input.is(PotionItems.CHAOS_POTION.get()) || input.is(PotionItems.LESSER_HEALING_POTION.get());
                 }
 
                 @Override
                 public boolean isIngredient(ItemStack ingredient) {
-                    return ingredient.is(PotionItems.LESSER_HEALING_POTION) || ingredient.is(MaterialItems.GLOWING_MUSHROOM);
+                    return ingredient.is(PotionItems.LESSER_HEALING_POTION.get()) || ingredient.is(MaterialItems.GLOWING_MUSHROOM.get());
                 }
 
                 @Override
@@ -546,9 +541,9 @@ public final class ModRecipes {
                     int[] materials = getMaterials(input);
                     if (materials.length >= 3) return ItemStack.EMPTY;
                     int material;
-                    if (ingredient.is(PotionItems.LESSER_HEALING_POTION)) {
+                    if (ingredient.is(PotionItems.LESSER_HEALING_POTION.get())) {
                         material = lesser_healing_potion;
-                    } else if (ingredient.is(MaterialItems.GLOWING_MUSHROOM)) {
+                    } else if (ingredient.is(MaterialItems.GLOWING_MUSHROOM.get())) {
                         material = glowing_mushroom;
                     } else {
                         return ItemStack.EMPTY;
@@ -575,12 +570,12 @@ public final class ModRecipes {
             consumer.accept(new IBrewingRecipe() {
                 @Override
                 public boolean isInput(ItemStack input) {
-                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.LESSER_MANA_POTION);
+                    return input.is(PotionItems.CHAOS_POTION.get()) || input.is(PotionItems.LESSER_MANA_POTION.get());
                 }
 
                 @Override
                 public boolean isIngredient(ItemStack ingredient) {
-                    return ingredient.is(PotionItems.LESSER_MANA_POTION) || ingredient.is(MaterialItems.GLOWING_MUSHROOM);
+                    return ingredient.is(PotionItems.LESSER_MANA_POTION.get()) || ingredient.is(MaterialItems.GLOWING_MUSHROOM.get());
                 }
 
                 @Override
@@ -589,9 +584,9 @@ public final class ModRecipes {
                     int[] materials = getMaterials(input);
                     if (materials.length >= 3) return ItemStack.EMPTY;
                     int material;
-                    if (ingredient.is(PotionItems.LESSER_MANA_POTION)) {
+                    if (ingredient.is(PotionItems.LESSER_MANA_POTION.get())) {
                         material = lesser_mana_potion;
-                    } else if (ingredient.is(MaterialItems.GLOWING_MUSHROOM)) {
+                    } else if (ingredient.is(MaterialItems.GLOWING_MUSHROOM.get())) {
                         material = glowing_mushroom;
                     } else {
                         return ItemStack.EMPTY;

@@ -20,6 +20,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.common.entity.fishing.AbstractFishingHook;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
+import org.mesdag.portlib.wrapper.common.PortItemAbilities;
 
 public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRenderer<E> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
@@ -70,7 +71,7 @@ public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRe
     public void render(E entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         int id = entity.getVariant().getId();
         BaseFishingHookModel model = MODELS[id];
-        model.renderToBuffer(poseStack, buffer.getBuffer(model.renderType(TEXTURES[id])), packedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, buffer.getBuffer(model.renderType(TEXTURES[id])), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         renderString(entityRenderDispatcher, entity, partialTicks, poseStack, buffer, COLORS[id].get());
     }
 
@@ -101,7 +102,7 @@ public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRe
     private static Vec3 getPlayerHandPos(EntityRenderDispatcher entityRenderDispatcher, Player player, float p_340872_, float partialTick) {
         int i = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
         ItemStack itemstack = player.getMainHandItem();
-        if (!itemstack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.FISHING_ROD_CAST)) {
+        if (!itemstack.canPerformAction(PortItemAbilities.FISHING_ROD_CAST.unwrap())) {
             i = -i;
         }
 
@@ -138,6 +139,6 @@ public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRe
         f3 /= f6;
         f4 /= f6;
         f5 /= f6;
-        consumer.vertex(pose, f, f1, f2).color(color).setNormal(pose, f3, f4, f5);
+        consumer.vertex(pose.pose(), f, f1, f2).color(color).normal(pose.normal(), f3, f4, f5).endVertex();
     }
 }

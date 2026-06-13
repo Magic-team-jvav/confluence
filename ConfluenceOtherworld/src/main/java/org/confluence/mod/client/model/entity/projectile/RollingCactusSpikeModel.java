@@ -32,7 +32,7 @@ public class RollingCactusSpikeModel extends EntityModel<RollingCactusBoulderEnt
     public void setupAnim(RollingCactusBoulderEntity.SpikeProjectile entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-        bb_main.render(poseStack, buffer, packedLight, packedOverlay, color);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        bb_main.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

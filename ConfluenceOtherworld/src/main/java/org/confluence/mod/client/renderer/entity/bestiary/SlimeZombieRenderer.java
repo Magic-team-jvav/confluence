@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.Zombie;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 public class SlimeZombieRenderer extends ZombieRenderer {
     private Slime slime;

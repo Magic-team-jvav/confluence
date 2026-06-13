@@ -17,7 +17,7 @@ public class BiomeColorParticle extends TextureSheetParticle {
         this.gravity = 0.02F;
         this.friction = 1.0F;
         Vec3 color = Vec3.fromRGB24(level.getBiome(new BlockPos.MutableBlockPos(x, y, z)).value().getFoliageColor());
-        color((float) color.x, (float) color.y, (float) color.z);
+        setColor((float) color.x, (float) color.y, (float) color.z);
         setSpriteFromAge(sprites);
     }
 

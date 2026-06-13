@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
@@ -46,7 +47,7 @@ public final class HookThrowingHandler {
             }
             if (hookEntity.getHookState() == AbstractHookEntity.HookState.HOOKED) {
                 Input input = player.input;
-                if (input.jumping || player.vehicle != null) {
+                if (input.jumping || player.getVehicle() != null) {
                     HookThrowingPacketC2S.pop(id);
                     PlayerJumpHandler.multiJump(player, 1.25F);
                     return;

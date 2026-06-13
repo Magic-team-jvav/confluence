@@ -10,7 +10,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -81,7 +80,7 @@ public class AchievementScreen extends Screen {
     private Iterable<Map.Entry<ResourceLocation, AchievementOffset>> rendered;
     private int lines;
     private int skip;
-    private PlayerAdvancements.Data data;
+    private Map<ResourceLocation, AdvancementProgress> data;
     private boolean completedGoingOldSchool;
     private boolean[] categoriesDisabled;
 
@@ -124,11 +123,16 @@ public class AchievementScreen extends Screen {
         this.rendered = achievements.entrySet();
         this.lines = achievements.size();
         this.data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
-        this.completedGoingOldSchool = data.map().containsKey(AchievementUtils.GOING_OLDSCHOOL);
+        this.completedGoingOldSchool = data.containsKey(AchievementUtils.GOING_OLDSCHOOL);
         this.categoriesDisabled = new boolean[4];
     }
 
     @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    }
+
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         BackgroundLayer.renderLayers(guiGraphics, partialTick);
         guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight, TEXTURE_WIDTH, TEXTURE_HEIGHT);
@@ -161,7 +165,7 @@ public class AchievementScreen extends Screen {
             assert entry != null;
             ResourceLocation key = entry.getKey();
             guiGraphics.blit(BACKGROUND, x, y, ENTRY_U, ENTRY_V, ENTRY_W, ENTRY_H, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-            AdvancementProgress progress = data.map().get(key);
+            AdvancementProgress progress = data.get(key);
             int frameX = x + ENTRY_FRAME_X;
             int frameY = y + ENTRY_FRAME_Y;
             if (progress != null && progress.isDone()) {
@@ -229,23 +233,23 @@ public class AchievementScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        int delta = Mth.sign(-scrollY); // 1是向下翻页，-1是向上翻页
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+        int invertDelta = Mth.sign(-delta); // 1是向下翻页，-1是向上翻页
         if (hovered != -1) {
             int[] descLinesAndSkip = descLinesAndSkips[hovered];
             this.hovered = -1;
             int max = descLinesAndSkip[0] - LIMIT_DESC_LINES;
             if (max > 0) {
-                int clamp = Mth.clamp(descLinesAndSkip[1] + delta, 0, max);
+                int clamp = Mth.clamp(descLinesAndSkip[1] + invertDelta, 0, max);
                 if (clamp != descLinesAndSkip[1]) {
                     descLinesAndSkip[1] = clamp;
                     return true;
                 }
             }
         }
-        int clamp = Mth.clamp(skip + delta, 0, lines - LIMIT_ENTRY_SIZE);
+        int clamp = Mth.clamp(skip + invertDelta, 0, lines - LIMIT_ENTRY_SIZE);
         if (clamp != skip) {
-            if (delta == 1) {
+            if (invertDelta == 1) {
                 int[] temp = descLinesAndSkips[0];
                 temp[0] = 0;
                 temp[1] = 0;
@@ -265,7 +269,7 @@ public class AchievementScreen extends Screen {
             this.skip = clamp;
             return true;
         }
-        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+        return super.mouseScrolled(mouseX, mouseY, invertDelta);
     }
 
     @Override

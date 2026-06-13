@@ -1,5 +1,8 @@
 ﻿package org.confluence.mod.util;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
+import PortLib.extensions.net.minecraft.advancements.AdvancementProgress.PortAdvancementProgressExtension;
+import PortLib.extensions.net.minecraft.util.datafix.DataFixTypes.PortDataFixTypesExtension;
 import com.google.common.collect.Streams;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -8,14 +11,12 @@ import com.google.gson.stream.JsonReader;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.FileUtil;
-import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.advancements.CriterionProgress;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
@@ -42,6 +43,7 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.task.ReplyAchievementsPacketC2S;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.diff.mixin.CriterionProgressAccessor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.io.IOException;
@@ -58,9 +60,9 @@ import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_AR
 public final class AchievementUtils {
     public static final String PREFIX = "achievements/";
     public static final Path CONFLUENCE_ACHIEVEMENTS_DIR = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("achievements");
-    public static final PortStreamCodec<FriendlyByteBuf, PlayerAdvancements.Data> DATA_STREAM_CODEC = new PortStreamCodec<>() {
+    public static final PortStreamCodec<FriendlyByteBuf, Map<ResourceLocation, AdvancementProgress>> DATA_STREAM_CODEC = new PortStreamCodec<>() {
         @Override
-        public PlayerAdvancements.Data decode(FriendlyByteBuf buffer) {
+        public Map<ResourceLocation, AdvancementProgress> decode(FriendlyByteBuf buffer) {
             int size = buffer.readVarInt();
             Map<ResourceLocation, AdvancementProgress> advancement = new LinkedHashMap<>();
             for (int i = 0; i < size; i++) {
@@ -71,27 +73,29 @@ public final class AchievementUtils {
                     String criteria = buffer.readUtf();
                     String time = buffer.readUtf();
                     try {
-                        Instant instant = Instant.from(AdvancementProgress.OBTAINED_TIME_FORMAT.parse(time));
-                        criterion.put(criteria, new CriterionProgress(instant));
+                        Instant instant = Instant.from(PortAdvancementProgressExtension.obtainedTimeFormat().parse(time));
+                        CriterionProgress progress = new CriterionProgress();
+                        ((CriterionProgressAccessor) progress).setObtained(Date.from(instant));
+                        criterion.put(criteria, progress);
                     } catch (Exception ignored) {}
                 }
                 advancement.put(id, new AchievementProgress(criterion, buffer.readBoolean()));
             }
-            return new PlayerAdvancements.Data(advancement);
+            return advancement;
         }
 
         @Override
-        public void encode(FriendlyByteBuf buffer, PlayerAdvancements.Data value) {
-            buffer.writeVarInt(value.map().size());
+        public void encode(FriendlyByteBuf buffer, Map<ResourceLocation, AdvancementProgress> value) {
+            buffer.writeVarInt(value.size());
             value.forEach((id, progress) -> {
                 buffer.writeUtf(asPath(id));
                 List<String[]> criteria = new ArrayList<>(progress.criteria.size());
                 for (Map.Entry<String, CriterionProgress> entry : progress.criteria.entrySet()) {
-                    Instant instant = entry.getValue().getObtained();
-                    if (instant == null) continue;
+                    Date date = entry.getValue().getObtained();
+                    if (date == null) continue;
                     criteria.add(new String[]{
                             entry.getKey(),
-                            instant.atZone(ZoneId.systemDefault()).format(AdvancementProgress.OBTAINED_TIME_FORMAT)
+                            date.toInstant().atZone(ZoneId.systemDefault()).format(PortAdvancementProgressExtension.obtainedTimeFormat())
                     });
                 }
                 buffer.writeVarInt(criteria.size());
@@ -104,30 +108,29 @@ public final class AchievementUtils {
         }
     };
     public static final ResourceLocation GOING_OLDSCHOOL = asAchievement("going_oldschool");
-    private static @Nullable PlayerAdvancements.Data data;
+    private static @Nullable Map<ResourceLocation, AdvancementProgress> data;
 
-    public static Codec<PlayerAdvancements.Data> getCodecClientOnly() {
-        Codec<PlayerAdvancements.Data> dataCodec = Codec.unboundedMap(ResourceLocation.CODEC, AchievementProgress.CODEC)
-                .xmap(PlayerAdvancements.Data::new, PlayerAdvancements.Data::map);
-        return DataFixTypes.ADVANCEMENTS.wrapCodec(dataCodec, LibClientUtils.getDataFixer(), 1343);
+    public static Codec<Map<ResourceLocation, AdvancementProgress>> getCodecClientOnly() {
+        Codec<Map<ResourceLocation, AdvancementProgress>> dataCodec = Codec.unboundedMap(ResourceLocation.CODEC, AchievementProgress.CODEC);
+        return PortDataFixTypesExtension.wrapCodec(DataFixTypes.ADVANCEMENTS, dataCodec, LibClientUtils.getDataFixer(), 1343);
     }
 
     public static void setData(ServerPlayer player) {
-        Map<UUID, PlayerAdvancements.Data> map = player.connection.getConnection().channel().attr(ReplyAchievementsPacketC2S.ACHIEVEMENTS).get();
+        Map<UUID, Map<ResourceLocation, AdvancementProgress>> map = player.connection.connection.channel().attr(ReplyAchievementsPacketC2S.ACHIEVEMENTS).get();
         if (map == null) return;
         UUID id = player.getGameProfile().getId();
-        PlayerAdvancements.Data data = map.get(id);
+        Map<ResourceLocation, AdvancementProgress> data = map.get(id);
         if (data == null) return;
         IPlayerAdvancements.of(player.getAdvancements()).confluence$load(player.server.getAdvancements(), data);
     }
 
-    public static void handleData(PlayerAdvancements.Data data, boolean override) {
+    public static void handleData(Map<ResourceLocation, AdvancementProgress> data, boolean override) {
         if (override || AchievementUtils.data == null) {
             AchievementUtils.data = data;
         } else {
-            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(AchievementUtils.data.map());
-            map.putAll(data.map());
-            AchievementUtils.data = new PlayerAdvancements.Data(map);
+            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(AchievementUtils.data);
+            map.putAll(data);
+            AchievementUtils.data = map;
         }
     }
 
@@ -138,30 +141,30 @@ public final class AchievementUtils {
         data = null;
     }
 
-    public static void saveData(PlayerAdvancements.Data data, Path savePath, Gson gson, Codec<PlayerAdvancements.Data> codec) {
+    public static void saveData(Map<ResourceLocation, AdvancementProgress> data, Path savePath, Gson gson, Codec<Map<ResourceLocation, AdvancementProgress>> codec) {
         try {
             FileUtil.createDirectoriesSafe(savePath.getParent());
             try (Writer writer = Files.newBufferedWriter(savePath, StandardCharsets.UTF_8)) {
-                gson.toJson(codec.encodeStart(JsonOps.INSTANCE, data).getOrThrow(), gson.newJsonWriter(writer));
+                gson.toJson(PortDataResultExtension.getOrThrow(codec.encodeStart(JsonOps.INSTANCE, data)), gson.newJsonWriter(writer));
             }
         } catch (JsonIOException | IOException ioexception) {
             Confluence.LOGGER.error("Couldn't save confluence achievements to {}", savePath, ioexception);
         }
     }
 
-    public static PlayerAdvancements.Data loadData(UUID uuid) {
+    public static Map<ResourceLocation, AdvancementProgress> loadData(UUID uuid) {
         Path path = CONFLUENCE_ACHIEVEMENTS_DIR.resolve(uuid + ".json");
         if (Files.isRegularFile(path)) {
             try (JsonReader reader = new JsonReader(Files.newBufferedReader(path, StandardCharsets.UTF_8))) {
                 reader.setLenient(false);
-                return getCodecClientOnly().parse(JsonOps.INSTANCE, com.google.gson.internal.Streams.parse(reader)).getOrThrow(JsonParseException::new);
+                return PortDataResultExtension.getOrThrow(getCodecClientOnly().parse(JsonOps.INSTANCE, com.google.gson.internal.Streams.parse(reader)), JsonParseException::new);
             } catch (JsonIOException | IOException ioexception) {
                 Confluence.LOGGER.error("Couldn't access confluence achievements in {}", path, ioexception);
             } catch (JsonParseException jsonParseException) {
                 Confluence.LOGGER.error("Couldn't parse confluence achievements in {}", path, jsonParseException);
             }
         }
-        return new PlayerAdvancements.Data(Map.of());
+        return Map.of();
     }
 
     public static ResourceLocation asAchievement(String path) {
@@ -176,7 +179,7 @@ public final class AchievementUtils {
         if (LibEntityUtils.getOrCreatePersistedData(player).getBoolean(Confluence.asPlainId(path))) {
             return true;
         }
-        AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
+        Advancement advancement = player.server.getAdvancements().getAdvancement(asAchievement(path));
         return advancement != null && player.getAdvancements().getOrStartProgress(advancement).isDone();
     }
 
@@ -184,7 +187,7 @@ public final class AchievementUtils {
         CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
         String key = Confluence.asPlainId(path);
         if (!data.getBoolean(key)) {
-            AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
+            Advancement advancement = player.server.getAdvancements().getAdvancement(asAchievement(path));
             if (advancement != null) {
                 player.getAdvancements().award(advancement, "never");
             }
@@ -200,7 +203,7 @@ public final class AchievementUtils {
             if (LibDateUtils.isNight(dayTime)) {
                 LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
             } else if (firstNight == 1 && LibDateUtils.isDay(dayTime)) {
-                AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
+                Advancement advancement = player.server.getAdvancements().getAdvancement(asAchievement("you_can_do_it"));
                 if (advancement != null) {
                     player.getAdvancements().award(advancement, "never");
                 }
@@ -215,7 +218,7 @@ public final class AchievementUtils {
         int crouch = stats.getValue(Stats.CUSTOM.get(Stats.CROUCH_ONE_CM));
         int walk = stats.getValue(Stats.CUSTOM.get(Stats.WALK_ONE_CM));
         if (sprint + crouch + walk > 46112_00) {
-            AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("marathon_medalist"));
+            Advancement advancement = player.server.getAdvancements().getAdvancement(asAchievement("marathon_medalist"));
             if (advancement != null) {
                 player.getAdvancements().award(advancement, "never");
             }
@@ -235,7 +238,7 @@ public final class AchievementUtils {
     }
 
     public static void matchingAttire_fashionStatement(EquipmentSlot.Type type, ServerPlayer player) {
-        if (type != EquipmentSlot.Type.HUMANOID_ARMOR) return;
+        if (type != EquipmentSlot.Type.ARMOR) return;
         if (Streams.stream(player.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
             awardAchievement(player, "matching_attire");
             ExtraInventory extraInventory = ExtraInventory.of(player);
@@ -256,7 +259,7 @@ public final class AchievementUtils {
         if (before > 10000) return;
         long total = before + cost;
         if (total >= 10000) {
-            AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("the_frequent_flyer"));
+            Advancement advancement = player.server.getAdvancements().getAdvancement(asAchievement("the_frequent_flyer"));
             if (advancement != null) {
                 player.getAdvancements().award(advancement, "never");
             }

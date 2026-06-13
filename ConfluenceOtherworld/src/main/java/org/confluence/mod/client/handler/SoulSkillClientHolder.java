@@ -1,7 +1,9 @@
 package org.confluence.mod.client.handler;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.gui.hud.soul.CurrentSelectedSkillHud;
@@ -17,9 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-/**
- * 客户端类，服务端请勿调用
- */
+/// 客户端类，服务端请勿调用
 public final class SoulSkillClientHolder {
     public static final SoulSkillClientHolder INSTANCE = new SoulSkillClientHolder();
     public static final RouletteWheelBigHud ROULETTE_WHEEL_BIG_HUD_INSTANCE = new RouletteWheelBigHud();
@@ -67,7 +67,7 @@ public final class SoulSkillClientHolder {
             }
         } else if (disparity < 0) {
             for (int i = 0; i > disparity; i--) {
-                equippedSkills.removeLast();
+                PortListExtension.removeLast(equippedSkills);
             }
         }
 
@@ -163,7 +163,7 @@ public final class SoulSkillClientHolder {
     }
 
     public void setCurrentIndex(int currentIndex) {
-        this.currentIndex = Math.clamp(currentIndex, 0, Math.max(0, getEquippedSkillMaxNumber() - 1));
+        this.currentIndex = Mth.clamp(currentIndex, 0, Math.max(0, getEquippedSkillMaxNumber() - 1));
         allUpdate();
     }
 

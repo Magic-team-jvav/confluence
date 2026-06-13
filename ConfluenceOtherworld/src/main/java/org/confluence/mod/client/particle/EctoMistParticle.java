@@ -1,6 +1,7 @@
 package org.confluence.mod.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -8,8 +9,10 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 public class EctoMistParticle extends SimpleTextureSheetParticle {
     private final float nu1;
@@ -51,22 +54,32 @@ public class EctoMistParticle extends SimpleTextureSheetParticle {
     }
 
     @Override
-    protected void renderRotatedQuad(VertexConsumer buffer, Quaternionf quaternion, float x, float y, float z, float partialTicks) {
-        float f = getQuadSize(partialTicks);
-        float f1 = getU0();
-        float f2 = getU1();
-        float f3 = getV0();
-        float f4 = getV1();
-        int i = getLightColor(partialTicks);
-        renderVertex(buffer, quaternion, x, y, z, size, -1.0F, f, f2, f4, i);
-        renderVertex(buffer, quaternion, x, y, z, size, 1.0F, f, f2, f3, i);
-        renderVertex(buffer, quaternion, x, y, z, -size, 1.0F, f, f1, f3, i);
-        renderVertex(buffer, quaternion, x, y, z, -size, -1.0F, f, f1, f4, i);
-    }
+    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
+        Vec3 vec3 = renderInfo.getPosition();
+        float f = (float)(Mth.lerp(partialTicks, xo, x) - vec3.x());
+        float f1 = (float)(Mth.lerp(partialTicks, yo, y) - vec3.y());
+        float f2 = (float)(Mth.lerp(partialTicks, zo, z) - vec3.z());
+        Quaternionf quaternionf = new Quaternionf().rotationY(ry);
 
-    @Override
-    public FacingCameraMode getFacingCameraMode() {
-        return (quaternion, camera, partialTick) -> quaternion.rotationY(ry);
+        Vector3f[] avector3f = new Vector3f[]{new Vector3f(-size, -1.0F, 0.0F), new Vector3f(-size, 1.0F, 0.0F), new Vector3f(size, 1.0F, 0.0F), new Vector3f(size, -1.0F, 0.0F)};
+        float f3 = getQuadSize(partialTicks);
+
+        for(int i = 0; i < 4; ++i) {
+            Vector3f vector3f = avector3f[i];
+            vector3f.rotate(quaternionf);
+            vector3f.mul(f3);
+            vector3f.add(f, f1, f2);
+        }
+
+        float f6 = getU0();
+        float f7 = getU1();
+        float f4 = getV0();
+        float f5 = getV1();
+        int j = getLightColor(partialTicks);
+        buffer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).uv(f7, f5).color(rCol, gCol, bCol, alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(f7, f4).color(rCol, gCol, bCol, alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(f6, f4).color(rCol, gCol, bCol, alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f6, f5).color(rCol, gCol, bCol, alpha).uv2(j).endVertex();
     }
 
     public static class Provider implements ParticleProvider<SimpleParticleType> {

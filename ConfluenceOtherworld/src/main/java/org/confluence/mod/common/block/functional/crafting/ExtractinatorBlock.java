@@ -1,10 +1,11 @@
 package org.confluence.mod.common.block.functional.crafting;
 
+import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -13,27 +14,29 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.renderer.block.ExtractinatorBlockRenderer;
-import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
+import org.confluence.mod.client.renderer.item.gun.SimpleGeoItemRenderer;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.mixin.client.accessor.MinecraftAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -72,16 +75,16 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (level instanceof ServerLevel serverLevel) {
             ItemStack itemStack = player.getItemInHand(hand);
-            ExtractinatorData data = itemStack.getItemHolder().getData(ModDataMaps.EXTRACTINATOR);
-            if (data == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            ExtractinatorData data = PortHolderExtension.getData(itemStack.getItemHolder(), ModDataMaps.EXTRACTINATOR);
+            if (data == null) return InteractionResult.PASS;
             ExtractinatorData.extract(level, pos, player, hand, serverLevel, itemStack, data);
         } else if (LibUtils.isPhysicalClient()) {
             ((MinecraftAccessor) Minecraft.getInstance()).setRightClickDelay(1);
         }
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     public static class BEntity extends BlockEntity implements GeoBlockEntity {
@@ -95,14 +98,18 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
 
         @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-            controllers.add(new AnimationController<>(this, "controller", state ->
-                    state.setAndContinue(RawAnimation.begin().thenLoop("default")))
-            );
+            RawAnimation aDefault = RawAnimation.begin().thenLoop("default");
+            controllers.add(new AnimationController<>(this, "controller", state -> state.setAndContinue(aDefault)));
         }
 
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
             return CACHE;
+        }
+
+        @Override
+        public AABB getRenderBoundingBox() {
+            return ClientUtils.getRenderBoundingBox3x(getBlockPos());
         }
     }
 
@@ -114,7 +121,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
         }
 
         @Override
-        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        public void initializeClient(Consumer<IClientItemExtensions> consumer) {
             consumer.accept(new SimpleGeoItemRenderer<>(ExtractinatorBlockRenderer.MODEL, ExtractinatorBlockRenderer.TEXTURE, ExtractinatorBlockRenderer.ANIMATION));
         }
 

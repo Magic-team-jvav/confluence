@@ -83,7 +83,8 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.BEntit
                 RenderSystem.enableDepthTest();
                 RenderSystem.setShader(GameRenderer::getParticleShader);
                 RenderSystem.setShaderTexture(0, icon.atlasLocation());
-                BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+                BufferBuilder builder = Tesselator.getInstance().getBuilder();
+                builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
                 Matrix4f matrix4f = poseStack.last().pose();
                 int x1 = icon.x();
                 int x2 = x1 + icon.uWidth();
@@ -97,11 +98,11 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.BEntit
                 int br = (int) (255 * brightness);
                 int iconColor = (0xFF << 24) | (br << 16) | (br << 8) | br;
 
-                builder.vertex(matrix4f, x1, y1, 0).uv(minU, minV).color(iconColor).uv2(packedLight);
-                builder.vertex(matrix4f, x1, y2, 0).uv(minU, maxV).color(iconColor).uv2(packedLight);
-                builder.vertex(matrix4f, x2, y2, 0).uv(maxU, maxV).color(iconColor).uv2(packedLight);
-                builder.vertex(matrix4f, x2, y1, 0).uv(maxU, minV).color(iconColor).uv2(packedLight);
-                BufferUploader.drawWithShader(builder.buildOrThrow());
+                builder.vertex(matrix4f, x1, y1, 0).uv(minU, minV).color(iconColor).uv2(packedLight).endVertex();
+                builder.vertex(matrix4f, x1, y2, 0).uv(minU, maxV).color(iconColor).uv2(packedLight).endVertex();
+                builder.vertex(matrix4f, x2, y2, 0).uv(maxU, maxV).color(iconColor).uv2(packedLight).endVertex();
+                builder.vertex(matrix4f, x2, y1, 0).uv(maxU, minV).color(iconColor).uv2(packedLight).endVertex();
+                BufferUploader.drawWithShader(builder.end());
                 RenderSystem.disableDepthTest();
                 lightTexture.turnOffLightLayer();
             });

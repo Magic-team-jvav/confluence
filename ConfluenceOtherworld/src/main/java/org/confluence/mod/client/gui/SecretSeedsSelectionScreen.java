@@ -1,5 +1,6 @@
 ﻿package org.confluence.mod.client.gui;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.google.common.collect.Iterables;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
@@ -19,7 +20,6 @@ import net.minecraft.FileUtil;
 import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -39,6 +39,8 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.ModUtils;
+import org.mesdag.portlib.client.gui.components.PortSprite;
+import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -49,7 +51,10 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class SecretSeedsSelectionScreen extends Screen {
-    public static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("seed_icon"), Confluence.asResource("seed_icon_highlighted"));
+    public static final PortWidgetSprites SPRITES = new PortWidgetSprites(
+            new PortSprite(Confluence.asResource("seed_icon"), 20, 20),
+            new PortSprite(Confluence.asResource("seed_icon_highlighted"), 20, 20)
+    );
     private static final ResourceLocation FIRST = Confluence.asResource("textures/gui/secret_seeds_selection/first.png");
     private static final SecretSeed[] SPECIAL_SEEDS = ModSecretSeeds.VALUES.stream().filter(Predicate.not(SecretSeed::isHided)).toArray(SecretSeed[]::new);
     private static final Path UNLOCKED_SECRET_SEEDS_PATH = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("unlocked_secret_seeds.json");
@@ -138,7 +143,7 @@ public class SecretSeedsSelectionScreen extends Screen {
         if (Files.isRegularFile(UNLOCKED_SECRET_SEEDS_PATH)) {
             try (JsonReader reader = new JsonReader(Files.newBufferedReader(UNLOCKED_SECRET_SEEDS_PATH, StandardCharsets.UTF_8))) {
                 reader.setLenient(false);
-                Set<SecretSeed> set = UNLOCKED_SECRET_SEEDS_CODEC.parse(JsonOps.INSTANCE, Streams.parse(reader)).getOrThrow(JsonParseException::new);
+                Set<SecretSeed> set = PortDataResultExtension.getOrThrow(UNLOCKED_SECRET_SEEDS_CODEC.parse(JsonOps.INSTANCE, Streams.parse(reader)), JsonParseException::new);
                 Object2BooleanLinkedOpenHashMap<SecretSeed> map = new Object2BooleanLinkedOpenHashMap<>();
                 set.stream().sorted(Comparator.comparingLong(SecretSeed::getFlag)).forEachOrdered(seed -> map.put(seed, seed.match(flag)));
                 this.unlockedSecretSeeds = map;
@@ -151,6 +156,11 @@ public class SecretSeedsSelectionScreen extends Screen {
     }
 
     @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+    }
+
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         BackgroundLayer.renderLayers(guiGraphics, partialTick);
 
@@ -310,7 +320,7 @@ public class SecretSeedsSelectionScreen extends Screen {
                 try {
                     FileUtil.createDirectoriesSafe(UNLOCKED_SECRET_SEEDS_PATH.getParent());
                     try (Writer writer = Files.newBufferedWriter(UNLOCKED_SECRET_SEEDS_PATH, StandardCharsets.UTF_8)) {
-                        ModUtils.GSON.toJson(UNLOCKED_SECRET_SEEDS_CODEC.encodeStart(JsonOps.INSTANCE, unlockedSecretSeeds.keySet()).getOrThrow(), ModUtils.GSON.newJsonWriter(writer));
+                        ModUtils.GSON.toJson(PortDataResultExtension.getOrThrow(UNLOCKED_SECRET_SEEDS_CODEC.encodeStart(JsonOps.INSTANCE, unlockedSecretSeeds.keySet())), ModUtils.GSON.newJsonWriter(writer));
                     }
                 } catch (JsonIOException | IOException ioexception) {
                     Confluence.LOGGER.error("Couldn't save unlocked secret seeds to {}", UNLOCKED_SECRET_SEEDS_PATH, ioexception);
@@ -393,14 +403,14 @@ public class SecretSeedsSelectionScreen extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
         if (hovered != null) {
             if (lines > maxDescLines()) {
-                this.skip = Mth.clamp(skip + Mth.sign(-scrollY), 0, lines - maxDescLines());
+                this.skip = Mth.clamp(skip + Mth.sign(-delta), 0, lines - maxDescLines());
             }
             return true;
         }
-        return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+        return super.mouseScrolled(mouseX, mouseY, delta);
     }
 
     @Override
@@ -451,6 +461,11 @@ public class SecretSeedsSelectionScreen extends Screen {
         }
 
         @Override
+        public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+            renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+            super.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
+
         public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
             guiGraphics.blit(SECOND, leftPos, topPos, 0, 0, imageWidth, imageHeight, 310, 310);
 
@@ -531,14 +546,14 @@ public class SecretSeedsSelectionScreen extends Screen {
         }
 
         @Override
-        public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+        public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
             if (hovered != null) {
                 if (this.lines > maxDescLines()) {
-                    this.skip = Mth.clamp(this.skip + Mth.sign(-scrollY), 0, this.lines - maxDescLines());
+                    this.skip = Mth.clamp(this.skip + Mth.sign(-delta), 0, this.lines - maxDescLines());
                 }
                 return true;
             }
-            return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+            return super.mouseScrolled(mouseX, mouseY, delta);
         }
 
         @Override

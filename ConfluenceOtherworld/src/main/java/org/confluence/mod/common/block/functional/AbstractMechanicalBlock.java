@@ -3,7 +3,6 @@ package org.confluence.mod.common.block.functional;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
@@ -12,10 +11,12 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -65,15 +66,15 @@ public abstract class AbstractMechanicalBlock extends Block implements EntityBlo
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
+        public void load(CompoundTag tag) {
+            super.load(tag);
             deserializePoses(tag, "connectedPoses", connectedPoses);
             deserializePoses(tag, "relativePoses", relativePoses);
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
             serializePoses(tag, "connectedPoses", connectedPoses);
             serializePoses(tag, "relativePoses", relativePoses);
         }
@@ -84,12 +85,12 @@ public abstract class AbstractMechanicalBlock extends Block implements EntityBlo
         }
 
         @Override
-        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public CompoundTag getUpdateTag() {
             return serializePoses(new CompoundTag(), "connectedPoses", connectedPoses);
         }
 
         @Override
-        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        public void handleUpdateTag(CompoundTag tag) {
             deserializePoses(tag, "connectedPoses", connectedPoses);
         }
 
@@ -117,6 +118,11 @@ public abstract class AbstractMechanicalBlock extends Block implements EntityBlo
         @Override
         public Int2ObjectMap<Set<BlockPos>> getRelativePoses() {
             return relativePoses;
+        }
+
+        @Override
+        public AABB getRenderBoundingBox() {
+            return ClientUtils.getRenderBoundingBox3x(getBlockPos());
         }
     }
 }

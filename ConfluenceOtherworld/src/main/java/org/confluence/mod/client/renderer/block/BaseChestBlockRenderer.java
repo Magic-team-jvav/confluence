@@ -29,7 +29,7 @@ public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.BEntity
                     Sheets.CHEST_LOCATION_RIGHT
             };
             private final Hashtable<Block, Material[]> unlockedCache = Util.make(new Hashtable<>(), map -> {
-                for (RegistryObject normalChest : ChestBlocks.NORMAL_CHESTS) {
+                for (RegistryObject<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
                     String chestName = "unlocked_" + normalChest.getId().getPath().replace("_chest", "");
                     ResourceLocation location = Confluence.asResource("entity/chest/" + chestName);
                     map.put(normalChest.get(), new Material[]{
@@ -40,7 +40,7 @@ public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.BEntity
                 }
             });
             private final Hashtable<Block, Material[]> lockedCache = Util.make(new Hashtable<>(), map -> {
-                for (RegistryObject normalChest : ChestBlocks.NORMAL_CHESTS) {
+                for (RegistryObject<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
                     String chestName = "locked_" + normalChest.getId().getPath().replace("_chest", "");
                     ResourceLocation locked = Confluence.asResource("entity/chest/" + chestName);
                     map.put(normalChest.get(), new Material[]{

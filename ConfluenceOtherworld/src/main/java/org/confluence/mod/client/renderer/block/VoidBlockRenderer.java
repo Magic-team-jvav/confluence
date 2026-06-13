@@ -20,6 +20,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.VoidBlock;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 public class VoidBlockRenderer implements BlockEntityRenderer<VoidBlock.VoidBlockEntity> {
     private static final Minecraft MC = Minecraft.getInstance();
@@ -81,57 +83,66 @@ public class VoidBlockRenderer implements BlockEntityRenderer<VoidBlock.VoidBloc
                 float uvWest = 0.0F;
                 float uvEast = 1.0F;
 
-                PoseStack.Pose pose = poseStack.last();
+                Matrix4f pose = poseStack.last().pose();
+                Matrix3f normal = poseStack.last().normal();
                 if (shouldUseNWSEDiagonal) {
                     quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                             .color(r, g, b, alpha)
                             .uv(uvWest, uvNorth)
-                            .setOverlay(packedOverlay)
+                            .overlayCoords(packedOverlay)
                             .uv2(light)
-                            .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                            .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                             .color(r, g, b, alpha)
                             .uv(uvWest, uvSouth)
-                            .setOverlay(packedOverlay)
+                            .overlayCoords(packedOverlay)
                             .uv2(light)
-                            .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                            .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                             .color(r, g, b, alpha)
                             .uv(uvEast, uvSouth)
-                            .setOverlay(packedOverlay)
+                            .overlayCoords(packedOverlay)
                             .uv2(light)
-                            .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                            .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                             .color(r, g, b, alpha)
                             .uv(uvEast, uvNorth)
-                            .setOverlay(packedOverlay)
+                            .overlayCoords(packedOverlay)
                             .uv2(light)
-                            .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                            .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                 } else {
                     quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                             .color(r, g, b, alpha)
                             .uv(uvEast, uvNorth)
-                            .setOverlay(packedOverlay)
+                            .overlayCoords(packedOverlay)
                             .uv2(light)
-                            .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                            .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                             .color(r, g, b, alpha)
                             .uv(uvWest, uvNorth)
-                            .setOverlay(packedOverlay)
+                            .overlayCoords(packedOverlay)
                             .uv2(light)
-                            .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                            .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                             .color(r, g, b, alpha)
                             .uv(uvWest, uvSouth)
-                            .setOverlay(packedOverlay)
+                            .overlayCoords(packedOverlay)
                             .uv2(light)
-                            .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                            .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                             .color(r, g, b, alpha)
                             .uv(uvEast, uvSouth)
-                            .setOverlay(packedOverlay)
+                            .overlayCoords(packedOverlay)
                             .uv2(light)
-                            .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                            .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                 }
             }
             poseStack.popPose();
@@ -148,59 +159,67 @@ public class VoidBlockRenderer implements BlockEntityRenderer<VoidBlock.VoidBloc
                 float uvWest = 0.0F;
                 float uvEast = 1.0F;
 
-                PoseStack.Pose pose = poseStack.last();
-
+                Matrix4f pose = poseStack.last().pose();
+                Matrix3f normal = poseStack.last().normal();
                 if (northSide) {
                     if (shouldUseNWSEDiagonal) {
                         quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     } else {
                         quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     }
                 }
                 if (southSide) {
@@ -208,52 +227,60 @@ public class VoidBlockRenderer implements BlockEntityRenderer<VoidBlock.VoidBloc
                         quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     } else {
                         quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     }
                 }
                 if (eastSide) {
@@ -261,52 +288,60 @@ public class VoidBlockRenderer implements BlockEntityRenderer<VoidBlock.VoidBloc
                         quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     } else {
                         quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     }
                 }
                 if (westSide) {
@@ -314,52 +349,60 @@ public class VoidBlockRenderer implements BlockEntityRenderer<VoidBlock.VoidBloc
                         quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     } else {
                         quadBuffer.vertex(pose, 1.0F, heights[3], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[0], 0.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvEast, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 0.0F, heights[1], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvNorth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                         quadBuffer.vertex(pose, 1.0F, heights[2], 1.0F)
                                 .color(r, g, b, alpha)
                                 .uv(uvWest, uvSouth)
-                                .setOverlay(packedOverlay)
+                                .overlayCoords(packedOverlay)
                                 .uv2(light)
-                                .setNormal(pose, 0.0F, 1.0F, 0.0F);
+                                .normal(normal, 0.0F, 1.0F, 0.0F)
+                            .endVertex();
                     }
                 }
             }

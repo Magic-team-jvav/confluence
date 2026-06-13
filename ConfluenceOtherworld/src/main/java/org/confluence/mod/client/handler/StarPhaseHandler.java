@@ -15,6 +15,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.StarPhase;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.mesdag.portlib.client.PortDeltaTicker;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayList;
@@ -48,11 +50,11 @@ public final class StarPhaseHandler {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null || level.dimension() != OverworldUtils.dimension()) return;
-        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
         PoseStack poseStack = new PoseStack();
-        poseStack.mulPose(event.getModelViewMatrix());
+        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
 
-        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+        float partialTick = PortDeltaTicker.INSTANCE.getGameTimeDeltaPartialTick(false);
         float gameTime = (level.getGameTime() % 24000L) + partialTick;
         float dayTime = level.getTimeOfDay(partialTick);
         float rDay = dayTime * Mth.TWO_PI + Mth.HALF_PI; // (dayTime * 360 + 90) * Mth.DEG_TO_RAD
@@ -107,12 +109,12 @@ public final class StarPhaseHandler {
 
             Matrix4f matrix4f = poseStack.last().pose();
             RenderSystem.setShaderTexture(0, TEXTURES[i]);
-            BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferBuilder.vertex(matrix4f, -trueSize, trueDis, -trueSize).uv(0.0F, 1.0F);
-            bufferBuilder.vertex(matrix4f, trueSize, trueDis, -trueSize).uv(1.0F, 1.0F);
-            bufferBuilder.vertex(matrix4f, trueSize, trueDis, trueSize).uv(1.0F, 0.0F);
-            bufferBuilder.vertex(matrix4f, -trueSize, trueDis, trueSize).uv(0.0F, 0.0F);
-            BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+            builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+            builder.vertex(matrix4f, -trueSize, trueDis, -trueSize).uv(0.0F, 1.0F);
+            builder.vertex(matrix4f, trueSize, trueDis, -trueSize).uv(1.0F, 1.0F);
+            builder.vertex(matrix4f, trueSize, trueDis, trueSize).uv(1.0F, 0.0F);
+            builder.vertex(matrix4f, -trueSize, trueDis, trueSize).uv(0.0F, 0.0F);
+            BufferUploader.drawWithShader(builder.end());
             poseStack.popPose();
         }
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

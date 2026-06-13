@@ -1,10 +1,11 @@
 ﻿package org.confluence.mod.client.handler.bestiary;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.net.minecraft.nbt.TagParser.PortTagParserExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
@@ -19,6 +20,7 @@ import org.confluence.mod.common.entity.BestiaryEntryDisplay;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixin.world.entity.EntityAccessor;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.network.chat.PortComponentSerialization;
 
 import java.util.Arrays;
@@ -91,17 +93,17 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public static final Component UNKNOWN = Component.literal("???");
     public static final Codec<ClientBestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(entry -> entry.type),
-            Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(entry -> entry.order),
-            ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 1).forGetter(entry -> entry.rarity),
-            ResourceLocation.CODEC.lenientOptionalFieldOf("background", SURFACE).forGetter(entry -> entry.background),
-            PortComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(entry -> entry.description),
-            LibCodecUtils.homogenousList(FilterEntry.CODEC, false).lenientOptionalFieldOf("filters", List.of()).forGetter(entry -> entry.filters),
-            TagParser.LENIENT_CODEC.lenientOptionalFieldOf("entity_nbt").forGetter(entry -> entry.entityNbt)
+            PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "order", 1000000).forGetter(entry -> entry.order),
+            PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.intRange(0, 5), "rarity", 1).forGetter(entry -> entry.rarity),
+            PortCodecExtension.lenientOptionalFieldOf(ResourceLocation.CODEC, "background", SURFACE).forGetter(entry -> entry.background.path()),
+            PortCodecExtension.lenientOptionalFieldOf(PortComponentSerialization.CODEC, "description", UNKNOWN).forGetter(entry -> entry.description),
+            PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.homogenousList(FilterEntry.CODEC, false), "filters", List.of()).forGetter(entry -> entry.filters),
+            PortCodecExtension.lenientOptionalFieldOf(PortTagParserExtension.lenientCodec(), "entity_nbt").forGetter(entry -> entry.entityNbt)
     ).apply(instance, ClientBestiaryEntry::new));
 
     public final int order;
     public final int rarity;
-    public final ResourceLocation background;
+    public final PortSprite background;
     public final Component description;
     public final List<FilterEntry> filters;
     public final Optional<CompoundTag> entityNbt;
@@ -112,7 +114,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public ClientBestiaryEntry() {
         this.order = 1000000;
         this.rarity = 1;
-        this.background = SURFACE;
+        this.background = new PortSprite(SURFACE, 48, 48);
         this.description = UNKNOWN;
         this.filters = List.of();
         this.entityNbt = Optional.empty();
@@ -122,7 +124,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         this.type = type;
         this.order = order;
         this.rarity = rarity;
-        this.background = background;
+        this.background = new PortSprite(background, 48, 48);
         this.description = description;
         this.filters = filters;
         this.entityNbt = entityNbt;
@@ -180,7 +182,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
                 type,
                 order,
                 rarity,
-                background,
+                background.path(),
                 description,
                 filters,
                 entityNbt

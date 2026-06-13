@@ -8,11 +8,10 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
-import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.client.handler.InformationHandler;
 
 import java.util.Set;
@@ -34,16 +33,16 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.BEntity> 
     }
 
     @Override
-    public AABB getRenderBoundingBox(E blockEntity) {
-        return ClientUtils.getRenderBoundingBox3x(blockEntity.getBlockPos());
-    }
-
-    @Override
     public void render(E blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         long gameTime = Minecraft.getInstance().level == null ? System.currentTimeMillis() / 50 : Minecraft.getInstance().level.getGameTime();
         Vec3 vec31 = blockEntity.getBlockPos().getCenter();
         for (Int2ObjectMap.Entry<Set<BlockPos>> entry : blockEntity.getConnectedPoses().int2ObjectEntrySet()) {
             int color = entry.getIntKey();
+            float[] colors = new float[]{
+                    FastColor.ARGB32.red(color) / 255F,
+                    FastColor.ARGB32.green(color) / 255F,
+                    FastColor.ARGB32.blue(color) / 255F
+            };
             for (BlockPos pos : entry.getValue()) {
                 poseStack.pushPose();
                 Vec3 subtract = pos.getCenter().subtract(vec31);
@@ -53,7 +52,7 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.BEntity> 
                 poseStack.mulPose(Axis.XP.rotation((float) Math.acos(normalize.y)));
                 poseStack.translate(-0.5F, 0.0F, -0.5F);
                 int height = (int) Math.round(subtract.length());
-                BeaconRenderer.renderBeaconBeam(poseStack, bufferSource, BeaconRenderer.BEAM_LOCATION, partialTick, 1.0F, gameTime, 0, height, color, 0.2F, 0.25F);
+                BeaconRenderer.renderBeaconBeam(poseStack, bufferSource, BeaconRenderer.BEAM_LOCATION, partialTick, 1.0F, gameTime, 0, height, colors, 0.2F, 0.25F);
                 poseStack.popPose();
             }
         }

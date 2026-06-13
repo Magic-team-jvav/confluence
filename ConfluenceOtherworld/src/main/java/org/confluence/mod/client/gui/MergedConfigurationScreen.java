@@ -1,25 +1,27 @@
 ﻿package org.confluence.mod.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
 import nowebsite.makertechno.the_trackers.TheTrackers;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.TerraGuns;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_furniture.TerraFurniture;
-import org.confluence.terraentity.TerraEntity;
 import org.mesdag.particlestorm.ParticleStorm;
+import org.mesdag.portlib.client.gui.PortConfigurationScreen;
 import org.mesdag.thr_dim_particle.TDP;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 public class MergedConfigurationScreen extends Screen {
     private final Screen parent;
@@ -39,18 +41,18 @@ public class MergedConfigurationScreen extends Screen {
             Optional<? extends ModContainer> optionalContainer = ModList.get().getModContainerById(modid);
             if (optionalContainer.isEmpty()) continue;
             ModContainer container = optionalContainer.get();
-            IConfigScreenFactory factory;
+            BiFunction<ModContainer, Screen, Screen> factory;
             if (Confluence.MODID.equals(modid)) {
-                factory = ConfigurationScreen::new;
+                factory = PortConfigurationScreen::new;
             } else {
-                Optional<IConfigScreenFactory> optionalFactory = IConfigScreenFactory.getForMod(container.getModInfo());
+                Optional<BiFunction<Minecraft, Screen, Screen>> optionalFactory = ConfigScreenHandler.getScreenFactoryFor(container.getModInfo());
                 if (optionalFactory.isEmpty()) continue;
-                factory = optionalFactory.get();
+                factory = (mod, parent) -> optionalFactory.get().apply(minecraft, parent);
             }
 
             buttons.add(addRenderableWidget(Button.builder(Component.translatable("modid.name." + modid), button -> {
                 assert minecraft != null;
-                minecraft.setScreen(factory.createScreen(container, this));
+                minecraft.setScreen(factory.apply(container, this));
             }).bounds(
                     (width - Button.DEFAULT_WIDTH) / 2,
                     i++ * Button.DEFAULT_HEIGHT,
@@ -89,9 +91,7 @@ public class MergedConfigurationScreen extends Screen {
                 Confluence.MODID,
                 ConfluenceMagicLib.LIB_ID,
                 TerraCurio.MODID,
-                TerraEntity.MODID,
                 TerraFurniture.MODID,
-                TerraGuns.MODID,
                 TheTrackers.MOD_ID,
                 ParticleStorm.MODID,
                 TDP.MODID

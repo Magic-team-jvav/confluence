@@ -58,7 +58,7 @@ public class GlowingFishingHookModel extends EntityModel<CurioFishingHook> {
     public void setupAnim(@NotNull CurioFishingHook pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {}
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack pPoseStack, @NotNull VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, int color) {
-        bb_main.render(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, color);
+    public void renderToBuffer(@NotNull PoseStack pPoseStack, @NotNull VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, float red, float green, float blue, float alpha) {
+        bb_main.render(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, red, green, blue, alpha);
     }
 }

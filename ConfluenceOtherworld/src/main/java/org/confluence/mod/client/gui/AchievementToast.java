@@ -1,10 +1,10 @@
 package org.confluence.mod.client.gui;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
-import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.advancements.AdvancementType;
+import net.minecraft.advancements.FrameType;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
@@ -21,13 +21,10 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class AchievementToast implements Toast {
     public static final Component DISPLAY = Component.translatable("achievements.toast.complete");
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/achievement/toast.png");
@@ -67,7 +64,7 @@ public class AchievementToast implements Toast {
     private void playSound(ToastComponent toastComponent, long timeSinceLastVisible) {
         if (!playedSound && timeSinceLastVisible > 0L) {
             this.playedSound = true;
-            if (display.type() == AdvancementType.CHALLENGE) {
+            if (display.type() == FrameType.CHALLENGE) {
                 toastComponent.getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(ModSoundEvents.ACHIEVEMENTS.get(), 1.0F, 1.0F));
             }
         }
@@ -77,7 +74,7 @@ public class AchievementToast implements Toast {
         List<FormattedCharSequence> list = font.split(display.description(), 141);
         int size = list.size();
         if (size == 1) {
-            guiGraphics.drawString(font, list.getFirst(), 8, 44, 0, false);
+            guiGraphics.drawString(font, PortListExtension.getFirst(list), 8, 44, 0, false);
         } else if (size < 4) {
             int l = 48 - size * 9 / 2;
             for (FormattedCharSequence formattedcharsequence : list) {
@@ -126,10 +123,10 @@ public class AchievementToast implements Toast {
 
     private void renderTitle(GuiGraphics guiGraphics, long timeSinceLastVisible, Font font) {
         List<FormattedCharSequence> list = font.split(display.title(), 125);
-        int i = display.type() == AdvancementType.CHALLENGE ? 16746751 : 16776960;
+        int i = display.type() == FrameType.CHALLENGE ? 16746751 : 16776960;
         if (list.size() == 1) {
             guiGraphics.drawString(font, DISPLAY, 30, 7, i | -16777216, false);
-            guiGraphics.drawString(font, list.getFirst(), 30, 18, -1, false);
+            guiGraphics.drawString(font, PortListExtension.getFirst(list), 30, 18, -1, false);
         } else {
             if (timeSinceLastVisible < 1500L) {
                 int k = Mth.floor(Mth.clamp((float) (1500L - timeSinceLastVisible) / 300.0F, 0.0F, 1.0F) * 255.0F) << 24 | 67108864;
@@ -165,7 +162,7 @@ public class AchievementToast implements Toast {
         String path = AchievementUtils.asPath(id);
         ACHIEVEMENTS.put(ResourceLocation.fromNamespaceAndPath(namespace, AchievementUtils.PREFIX + path), new AchievementToast(
                 ResourceLocation.fromNamespaceAndPath(namespace, "textures/achievement/" + path + ".png"),
-                new Display(AdvancementType.CHALLENGE,
+                new Display(FrameType.CHALLENGE,
                         Component.translatable("achievements." + namespace + "." + path + ".title"),
                         Component.translatable("achievements." + namespace + "." + path + ".description")
                 )));
@@ -185,5 +182,5 @@ public class AchievementToast implements Toast {
         HIDE_LINK.clear();
     }
 
-    public record Display(AdvancementType type, Component title, Component description) {}
+    public record Display(FrameType type, Component title, Component description) {}
 }

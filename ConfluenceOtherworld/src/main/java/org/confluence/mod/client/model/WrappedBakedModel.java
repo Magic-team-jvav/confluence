@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.data.ModelData;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,8 +65,13 @@ public class WrappedBakedModel implements BakedModel {
     }
 
     @Override
-    public PortTriState useAmbientOcclusion(BlockState state, ModelData data, RenderType renderType) {
-        return wrapped.useAmbientOcclusion(state, data, renderType);
+    public boolean useAmbientOcclusion(BlockState state) {
+        return wrapped.useAmbientOcclusion(state);
+    }
+
+    @Override
+    public boolean useAmbientOcclusion(BlockState state, RenderType renderType) {
+        return wrapped.useAmbientOcclusion(state, renderType);
     }
 
     @Override

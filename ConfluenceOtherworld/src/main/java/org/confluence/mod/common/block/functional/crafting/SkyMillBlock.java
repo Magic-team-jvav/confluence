@@ -1,8 +1,8 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
@@ -17,32 +17,32 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.client.renderer.block.SkyMillBlockRenderer;
-import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
+import org.confluence.mod.client.renderer.item.gun.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.SkyMillMenu;
+import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
 public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBlock {
-    public static final MapCodec<SkyMillBlock> CODEC = simpleCodec(SkyMillBlock::new);
-
     private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 0.8, 0.8125);
 
     public SkyMillBlock(Properties properties) {
@@ -75,23 +75,17 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
-        } else {
-            player.openMenu(state.getMenuProvider(level, pos));
-            return InteractionResult.CONSUME;
         }
+        player.openMenu(state.getMenuProvider(level, pos));
+        return InteractionResult.CONSUME;
     }
 
     @Override
     public @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
         return new SimpleMenuProvider((containerId, inventory, pPlayer) -> new SkyMillMenu(containerId, inventory, new EnvironmentLevelAccess(level, pos)), Component.translatable("container.confluence.sky_mill"));
-    }
-
-    @Override
-    protected MapCodec<SkyMillBlock> codec() {
-        return CODEC;
     }
 
     public static class BEntity extends BlockEntity implements GeoBlockEntity {
@@ -111,6 +105,11 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         public AnimatableInstanceCache getAnimatableInstanceCache() {
             return CACHE;
         }
+
+        @Override
+        public AABB getRenderBoundingBox() {
+            return ClientUtils.getRenderBoundingBox3x(getBlockPos());
+        }
     }
 
     public static class BItem extends TooltipBlockItem implements GeoItem {
@@ -121,7 +120,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         }
 
         @Override
-        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        public void initializeClient(Consumer<IClientItemExtensions> consumer) {
             consumer.accept(new SimpleGeoItemRenderer<>(SkyMillBlockRenderer.MODEL, SkyMillBlockRenderer.TEXTURE, SkyMillBlockRenderer.ANIMATION));
         }
 

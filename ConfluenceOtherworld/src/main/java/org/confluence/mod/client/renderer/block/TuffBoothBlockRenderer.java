@@ -25,7 +25,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.block.functional.TuffBoothBlock;
-import org.joml.Vector3d;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
@@ -41,9 +43,9 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
         if (player == null || boothEntity.getLevel() == null) return;
 
         BlockPos pos = boothEntity.getBlockPos();
-        Vector3d posVct = new Vector3d(pos.getX(), pos.getY(), pos.getZ());
+        Vector3f posVct = new Vector3f(pos.getX(), pos.getY(), pos.getZ());
         VertexConsumer quadBuffer = bufferSource.getBuffer(RenderType.debugQuads());
-        //drawCube(poseStack, 1, 255, 255, 255, 255, posVct, new Vector3d(0, 0, 0), false, 0, 0, quadBuffer);
+        //drawCube(poseStack, 1, 255, 255, 255, 255, posVct, new Vector3f(0, 0, 0), false, 0, 0, quadBuffer);
 
         ItemStack playHand = player.getMainHandItem();
         ItemStack displayStack = boothEntity.getItemHandler().getStackInSlot(0);
@@ -101,26 +103,26 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
     }
 
     private void renderContent(TuffBoothBlock.TuffBoothBlockEntity booth, ItemStack stack, @Nullable Vec3 hit, ItemStack hand, float partial, PoseStack poseStack, MultiBufferSource buffer, int light, int overlay) {
-        long time = 0;
+        int time = 0;
         if (booth.getLevel() != null) {
-            time = booth.getLevel().getGameTime();
+            time = (int) (booth.getLevel().getGameTime() % 24000);
         }
-        double renderTime = time + partial;
-        float ySwing = (float) (Math.sin(renderTime / 60.0 * Math.TAU) * 0.08);
+        float renderTime = time + partial;
+        float ySwing = (float) (Mth.sin(renderTime / 60.0F * Mth.TWO_PI) * 0.08);
 
         poseStack.pushPose();
         poseStack.translate(0.5, 1.25 + ySwing, 0.5);
         if (!stack.isEmpty() && booth.getBlockState().getValue(TuffBoothBlock.SHOW_NAME)) {
             renderLabel(poseStack, buffer, stack);
         }
-        poseStack.mulPose(Axis.YP.rotation((float) ((renderTime % 360) / 60.0F * Mth.TWO_PI)));
+        poseStack.mulPose(Axis.YP.rotation((renderTime % 360) / 60.0F * Mth.TWO_PI));
 
         if (hit != null && !hand.isEmpty() && hit.y > 0.5) {
-            float cubeAlpha = (float) Math.sin((renderTime / 60.0 * Math.TAU) * 1.5);
+            float cubeAlpha = (float) Math.sin((renderTime / 60.0 * Mth.TWO_PI) * 1.5);
             VertexConsumer quadBuffer = buffer.getBuffer(RenderType.debugQuads());
 
-            drawCube(poseStack, 0.52, 255, 255, 255, (int) ((cubeAlpha + 1F) / 8F * 255),
-                    new Vector3d(0, 0, 0), new Vector3d(0, 0.125, 0), true, Math.PI * 0.25F, 0, quadBuffer);
+            drawCube(poseStack, 0.52F, 255, 255, 255, (int) ((cubeAlpha + 1F) / 8F * 255),
+                    new Vector3f(0, 0, 0), new Vector3f(0, 0.125F, 0), true, Mth.PI * 0.25F, 0, quadBuffer);
 
             LevelRenderer.renderLineBox(poseStack, buffer.getBuffer(RenderType.lines()), -0.26, -0.135, -0.26, 0.26, 0.385, 0.26, 1, 1, 1, (cubeAlpha + 1F) / 4F);
         }
@@ -149,47 +151,48 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
         float xOff = -MC.font.width(finalName) / 2.0F;
 
         VertexConsumer bg = buffer.getBuffer(RenderType.debugQuads());
-        PoseStack.Pose last = poseStack.last();
-        bg.vertex(last, -xOff + 1, -1, -0.1F).color(0, 0, 0, 0.25F);
-        bg.vertex(last, xOff - 1, -1, -0.1F).color(0, 0, 0, 0.25F);
-        bg.vertex(last, xOff - 1, 9, -0.1F).color(0, 0, 0, 0.25F);
-        bg.vertex(last, -xOff + 1, 9, -0.1F).color(0, 0, 0, 0.25F);
+        Matrix4f pose = poseStack.last().pose();
+        bg.vertex(pose, -xOff + 1, -1, -0.1F).color(0, 0, 0, 0.25F).endVertex();
+        bg.vertex(pose, xOff - 1, -1, -0.1F).color(0, 0, 0, 0.25F).endVertex();
+        bg.vertex(pose, xOff - 1, 9, -0.1F).color(0, 0, 0, 0.25F).endVertex();
+        bg.vertex(pose, -xOff + 1, 9, -0.1F).color(0, 0, 0, 0.25F).endVertex();
 
-        MC.font.drawInBatch(finalName, xOff, 0, color, false, last.pose(), buffer, Font.DisplayMode.NORMAL, 0, 15728880);
+        MC.font.drawInBatch(finalName, xOff, 0, color, false, pose, buffer, Font.DisplayMode.NORMAL, 0, 15728880);
         poseStack.popPose();
     }
 
     public static void renderLineBox(PoseStack poseStack, VertexConsumer consumer, double minX, double minY, double minZ, double maxX, double maxY, double maxZ, float r, float g, float b, float a, float r2, float g2, float b2, boolean withoutUp) {
-        PoseStack.Pose pose = poseStack.last();
+        Matrix4f pose = poseStack.last().pose();
+        Matrix3f normal = poseStack.last().normal();
         float x1 = (float) minX, y1 = (float) minY, z1 = (float) minZ;
         float x2 = (float) maxX, y2 = (float) maxY, z2 = (float) maxZ;
 
         if (withoutUp) {
-            consumer.vertex(pose, x1, y1, z1).color(r, g2, b2, a).setNormal(pose, 1, 0, 0);
-            consumer.vertex(pose, x2, y1, z1).color(r, g2, b2, a).setNormal(pose, 1, 0, 0);
-            consumer.vertex(pose, x1, y1, z1).color(r2, g2, b, a).setNormal(pose, 0, 0, 1);
-            consumer.vertex(pose, x1, y1, z2).color(r2, g2, b, a).setNormal(pose, 0, 0, 1);
-            consumer.vertex(pose, x2, y1, z2).color(r, g, b, a).setNormal(pose, 0, 0, -1);
-            consumer.vertex(pose, x2, y1, z1).color(r, g, b, a).setNormal(pose, 0, 0, -1);
-            consumer.vertex(pose, x1, y1, z2).color(r, g, b, a).setNormal(pose, 1, 0, 0);
-            consumer.vertex(pose, x2, y1, z2).color(r, g, b, a).setNormal(pose, 1, 0, 0);
+            consumer.vertex(pose, x1, y1, z1).color(r, g2, b2, a).normal(normal, 1, 0, 0).endVertex();
+            consumer.vertex(pose, x2, y1, z1).color(r, g2, b2, a).normal(normal, 1, 0, 0).endVertex();
+            consumer.vertex(pose, x1, y1, z1).color(r2, g2, b, a).normal(normal, 0, 0, 1).endVertex();
+            consumer.vertex(pose, x1, y1, z2).color(r2, g2, b, a).normal(normal, 0, 0, 1).endVertex();
+            consumer.vertex(pose, x2, y1, z2).color(r, g, b, a).normal(normal, 0, 0, -1).endVertex();
+            consumer.vertex(pose, x2, y1, z1).color(r, g, b, a).normal(normal, 0, 0, -1).endVertex();
+            consumer.vertex(pose, x1, y1, z2).color(r, g, b, a).normal(normal, 1, 0, 0).endVertex();
+            consumer.vertex(pose, x2, y1, z2).color(r, g, b, a).normal(normal, 1, 0, 0).endVertex();
         } else {
-            consumer.vertex(pose, x2, y2, z1).color(r, g, b, a).setNormal(pose, -1, 0, 0);
-            consumer.vertex(pose, x1, y2, z1).color(r, g, b, a).setNormal(pose, -1, 0, 0);
-            consumer.vertex(pose, x1, y2, z1).color(r, g, b, a).setNormal(pose, 0, 0, 1);
-            consumer.vertex(pose, x1, y2, z2).color(r, g, b, a).setNormal(pose, 0, 0, 1);
-            consumer.vertex(pose, x1, y2, z2).color(r, g, b, a).setNormal(pose, 1, 0, 0);
-            consumer.vertex(pose, x2, y2, z2).color(r, g, b, a).setNormal(pose, 1, 0, 0);
-            consumer.vertex(pose, x2, y2, z1).color(r, g, b, a).setNormal(pose, 0, 0, 1);
-            consumer.vertex(pose, x2, y2, z2).color(r, g, b, a).setNormal(pose, 0, 0, 1);
+            consumer.vertex(pose, x2, y2, z1).color(r, g, b, a).normal(normal, -1, 0, 0).endVertex();
+            consumer.vertex(pose, x1, y2, z1).color(r, g, b, a).normal(normal, -1, 0, 0).endVertex();
+            consumer.vertex(pose, x1, y2, z1).color(r, g, b, a).normal(normal, 0, 0, 1).endVertex();
+            consumer.vertex(pose, x1, y2, z2).color(r, g, b, a).normal(normal, 0, 0, 1).endVertex();
+            consumer.vertex(pose, x1, y2, z2).color(r, g, b, a).normal(normal, 1, 0, 0).endVertex();
+            consumer.vertex(pose, x2, y2, z2).color(r, g, b, a).normal(normal, 1, 0, 0).endVertex();
+            consumer.vertex(pose, x2, y2, z1).color(r, g, b, a).normal(normal, 0, 0, 1).endVertex();
+            consumer.vertex(pose, x2, y2, z2).color(r, g, b, a).normal(normal, 0, 0, 1).endVertex();
         }
-        consumer.vertex(pose, x2, y1, z2).color(r, g, b, a).setNormal(pose, 0, 1, 0);
-        consumer.vertex(pose, x2, y2, z2).color(r, g, b, a).setNormal(pose, 0, 1, 0);
-        consumer.vertex(pose, x1, y2, z2).color(r, g, b, a).setNormal(pose, 0, -1, 0);
-        consumer.vertex(pose, x1, y1, z2).color(r, g, b, a).setNormal(pose, 0, -1, 0);
-        consumer.vertex(pose, x1, y1, z1).color(r2, g, b2, a).setNormal(pose, 0, 1, 0);
-        consumer.vertex(pose, x1, y2, z1).color(r2, g, b2, a).setNormal(pose, 0, 1, 0);
-        consumer.vertex(pose, x2, y1, z1).color(r, g, b, a).setNormal(pose, 0, 1, 0);
-        consumer.vertex(pose, x2, y2, z1).color(r, g, b, a).setNormal(pose, 0, 1, 0);
+        consumer.vertex(pose, x2, y1, z2).color(r, g, b, a).normal(normal, 0, 1, 0).endVertex();
+        consumer.vertex(pose, x2, y2, z2).color(r, g, b, a).normal(normal, 0, 1, 0).endVertex();
+        consumer.vertex(pose, x1, y2, z2).color(r, g, b, a).normal(normal, 0, -1, 0).endVertex();
+        consumer.vertex(pose, x1, y1, z2).color(r, g, b, a).normal(normal, 0, -1, 0).endVertex();
+        consumer.vertex(pose, x1, y1, z1).color(r2, g, b2, a).normal(normal, 0, 1, 0).endVertex();
+        consumer.vertex(pose, x1, y2, z1).color(r2, g, b2, a).normal(normal, 0, 1, 0).endVertex();
+        consumer.vertex(pose, x2, y1, z1).color(r, g, b, a).normal(normal, 0, 1, 0).endVertex();
+        consumer.vertex(pose, x2, y2, z1).color(r, g, b, a).normal(normal, 0, 1, 0).endVertex();
     }
 }

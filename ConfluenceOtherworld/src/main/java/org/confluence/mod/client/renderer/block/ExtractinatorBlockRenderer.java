@@ -5,10 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.AABB;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.ExtractinatorBlock;
-import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -47,10 +45,5 @@ public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBl
     @Override
     public boolean shouldRenderOffScreen(ExtractinatorBlock.BEntity pBlockEntity) {
         return true;
-    }
-
-    @Override
-    public AABB getRenderBoundingBox(ExtractinatorBlock.BEntity blockEntity) {
-        return ClientUtils.getRenderBoundingBox3x(blockEntity.getBlockPos());
     }
 }

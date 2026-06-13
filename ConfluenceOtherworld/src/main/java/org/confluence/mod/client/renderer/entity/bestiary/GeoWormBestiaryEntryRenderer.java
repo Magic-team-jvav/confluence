@@ -4,9 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.terraentity.client.entity.renderer.mob.GeoWormRenderer;
-import org.confluence.terraentity.entity.monster.BaseWorm;
-import org.confluence.terraentity.entity.monster.BaseWormPart;
 
 public class GeoWormBestiaryEntryRenderer<T extends BaseWorm<S>, S extends BaseWormPart> extends GeoWormRenderer<T, S> {
     public GeoWormBestiaryEntryRenderer(EntityRendererProvider.Context renderManager, ResourceLocation path) {

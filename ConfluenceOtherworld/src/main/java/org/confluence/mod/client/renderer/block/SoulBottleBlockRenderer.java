@@ -6,12 +6,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LanternBlock;
 import org.confluence.mod.common.block.functional.BaseSoulInABottleBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 import org.joml.Vector3i;
 
 import java.util.Map;
@@ -31,13 +32,13 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
             FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE.get(), new Vector3i(0x1e0034, 0xe3bbff, 0x9f1bff)
     );
     private final RandomSource RANDOM = RandomSource.create();
-    private double ROTATE00 = RANDOM.nextDouble() * Math.TAU;
-    private double ROTATE01 = RANDOM.nextDouble() * Math.TAU;
-    private double ROTATE10 = RANDOM.nextDouble() * Math.TAU;
-    private double ROTATE11 = RANDOM.nextDouble() * Math.TAU;
-    private final double ROTATE1OFFSET = RANDOM.nextDouble() * 0.05 + 0.075;
-    private final double[] SIZE = new double[]{RANDOM.nextDouble(), RANDOM.nextDouble()};
-    private final double[] SIZE_OFFSET = new double[]{RANDOM.nextDouble() * 0.05 + 0.075, RANDOM.nextDouble() * 0.05 + 0.075};
+    private float ROTATE00 = RANDOM.nextFloat() * Mth.TWO_PI;
+    private float ROTATE01 = RANDOM.nextFloat() * Mth.TWO_PI;
+    private float ROTATE10 = RANDOM.nextFloat() * Mth.TWO_PI;
+    private float ROTATE11 = RANDOM.nextFloat() * Mth.TWO_PI;
+    private final float ROTATE1OFFSET = RANDOM.nextFloat() * 0.05F + 0.075F;
+    private final float[] SIZE = new float[]{RANDOM.nextFloat(), RANDOM.nextFloat()};
+    private final float[] SIZE_OFFSET = new float[]{RANDOM.nextFloat() * 0.05F + 0.075F, RANDOM.nextFloat() * 0.05F + 0.075F};
     private final boolean[] SIZE_UP = new boolean[]{true, true};
     private long TIME_BEFORE = 0;
 
@@ -58,8 +59,8 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
         }
 
         BlockPos blockPos = blockEntity.getBlockPos();
-        Vector3d offsetPos = new Vector3d(0.5, (blockEntity.getBlockState() == blockEntity.getBlockState().setValue(LanternBlock.HANGING, true)) ? 0.425 : 0.3, 0.5);
-        Vector3d entityMainPos = new Vector3d(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        Vector3f offsetPos = new Vector3f(0.5F, (blockEntity.getBlockState() == blockEntity.getBlockState().setValue(LanternBlock.HANGING, true)) ? 0.425F : 0.3F, 0.5F);
+        Vector3f entityMainPos = new Vector3f(blockPos.getX(), blockPos.getY(), blockPos.getZ());
 
         Vector3i colors = SOUL_COLORS.getOrDefault(
                 blockEntity.getBlockState().getBlock(),
@@ -82,8 +83,8 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
         int b2 = color2 & 0xFF;
 
         for (int i = 0; i < 2; i++) {
-            double sizeGet = SIZE[i];
-            double sizeOffset = SIZE_OFFSET[i];
+            float sizeGet = SIZE[i];
+            float sizeOffset = SIZE_OFFSET[i];
             boolean sizeUp = SIZE_UP[i];
             sizeGet += sizeUp ? sizeOffset : -sizeOffset;
             if (sizeGet > 1) {
@@ -114,17 +115,21 @@ public class SoulBottleBlockRenderer implements BlockEntityRenderer<BaseSoulInAB
                 }
             }
 
-            double pi = 1 - 2 * i;
-            double radius = 0.125;
-            double cubeSize = 0.125;
-            Vector3d offset = new Vector3d((Math.cos(ROTATE10 + RANDOM.nextDouble() * 10) * Math.cos(ROTATE11 + RANDOM.nextDouble() * 10) * radius) * pi, Math.sin(ROTATE10 + RANDOM.nextDouble() * 10) * radius * pi, (-Math.cos(ROTATE10 + RANDOM.nextDouble() * 10) * Math.sin(ROTATE11 + RANDOM.nextDouble() * 10) * radius) * pi).add(offsetPos);
+            float pi = 1 - 2 * i;
+            float radius = 0.125F;
+            float cubeSize = 0.125F;
+            Vector3f offset = new Vector3f(
+                    (Mth.cos(ROTATE10 + RANDOM.nextFloat() * 10) * Mth.cos(ROTATE11 + RANDOM.nextFloat() * 10) * radius) * pi,
+                    Mth.sin(ROTATE10 + RANDOM.nextFloat() * 10) * radius * pi,
+                    (-Mth.cos(ROTATE10 + RANDOM.nextFloat() * 10) * Mth.sin(ROTATE11 + RANDOM.nextFloat() * 10) * radius) * pi
+            ).add(offsetPos);
 
-            double rotate0 = RANDOM.nextDouble() * 10;
-            double rotate1 = RANDOM.nextDouble() * 10;
+            float rotate0 = RANDOM.nextFloat() * 10;
+            float rotate1 = RANDOM.nextFloat() * 10;
             VertexConsumer consumer = bufferSource.getBuffer(RenderType.debugQuads());
             drawCube(poseStack, sizeGet * cubeSize, r0, g0, b0, 255, entityMainPos, offset, true, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1, consumer);
-            drawCube(poseStack, sizeGet * cubeSize + 0.015625, r1, g1, b1, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1, consumer);
-            drawCube(poseStack, sizeGet * cubeSize + 0.078125, r2, g2, b2, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1, consumer);
+            drawCube(poseStack, sizeGet * cubeSize + 0.015625F, r1, g1, b1, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1, consumer);
+            drawCube(poseStack, sizeGet * cubeSize + 0.078125F, r2, g2, b2, 255, entityMainPos, offset, false, ROTATE00 * pi * ROTATE1OFFSET + rotate0, ROTATE01 * pi * ROTATE1OFFSET + rotate1, consumer);
         }
     }
 }

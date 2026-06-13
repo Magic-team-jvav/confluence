@@ -1,4 +1,4 @@
-package org.confluence.mod.impl;
+package org.confluence.mod.util;
 
 import org.confluence.mod.common.component.BulletPropertyComponent;
 import org.confluence.mod.common.component.GunPropertyComponent;

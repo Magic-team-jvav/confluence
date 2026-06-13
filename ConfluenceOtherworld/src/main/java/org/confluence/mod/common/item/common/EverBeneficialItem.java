@@ -1,5 +1,8 @@
 ﻿package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.AttributeInstance.PortAttributeInstanceExtension;
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,54 +27,80 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.network.s2c.RightClickSubtractorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class EverBeneficialItem extends TooltipItem {
-    public static final Post DO_NOTHING = (id, player, everBeneficial, isRespawn) -> {};
-    public static final Beneficial LIFE_CRYSTAL = new Beneficial(Confluence.asResource("life_crystal"), EverBeneficial::increaseCrystals, (id, player, everBeneficial, isRespawn) -> {
+    public static final Post DO_NOTHING = (id, name, player, everBeneficial, isRespawn) -> {};
+    public static final Beneficial LIFE_CRYSTAL = new Beneficial(Confluence.asResource("life_crystal"), EverBeneficial::increaseCrystals, (id, name, player, everBeneficial, isRespawn) -> {
         if (everBeneficial.isLifeCrystalsMaximum() && everBeneficial.isLifeFruitsMaximum() && ManaStorage.of(player).isStarMaximum()) {
             AchievementUtils.awardAchievement(player, "topped_off");
         }
-        AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
-        if (attributeInstance == null) return;
-        attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, everBeneficial.getUsedLifeCrystals() * 4.0, AttributeModifier.Operation.ADD_VALUE));
+        AttributeInstance instance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
+        if (instance == null) return;
+        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+                id, name,
+                everBeneficial.getUsedLifeCrystals() * 4.0,
+                AttributeModifier.Operation.ADDITION
+        ));
         if (!isRespawn) player.heal(4.0F);
     });
-    public static final Beneficial LIFE_FRUITS = new Beneficial(Confluence.asResource("life_fruit"), EverBeneficial::increaseFruits, (id, player, everBeneficial, isRespawn) -> {
-        AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
-        if (attributeInstance == null) return;
-        attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, everBeneficial.getUsedLifeFruits(), AttributeModifier.Operation.ADD_VALUE));
+    public static final Beneficial LIFE_FRUITS = new Beneficial(Confluence.asResource("life_fruit"), EverBeneficial::increaseFruits, (id, name, player, everBeneficial, isRespawn) -> {
+        AttributeInstance instance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
+        if (instance == null) return;
+        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+                id, name,
+                everBeneficial.getUsedLifeFruits(),
+                AttributeModifier.Operation.ADDITION
+        ));
         if (!isRespawn) player.heal(1.0F);
     });
     public static final Beneficial VITAL_CRYSTAL = new Beneficial(Confluence.asResource("vital_crystal"), EverBeneficial::setVitalCrystalUsed, DO_NOTHING);
-    public static final Beneficial AEGIS_APPLE = new Beneficial(Confluence.asResource("aegis_apple"), EverBeneficial::setAegisAppleUsed, (id, player, everBeneficial, isRespawn) -> {
-        AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.ARMOR);
-        if (attributeInstance == null) return;
-        attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, 4.0, AttributeModifier.Operation.ADD_VALUE));
+    public static final Beneficial AEGIS_APPLE = new Beneficial(Confluence.asResource("aegis_apple"), EverBeneficial::setAegisAppleUsed, (id, name, player, everBeneficial, isRespawn) -> {
+        AttributeInstance instance = player.getAttributes().getInstance(Attributes.ARMOR);
+        if (instance == null) return;
+        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+                id, name,
+                4.0,
+                AttributeModifier.Operation.ADDITION
+        ));
     });
-    public static final Beneficial AMBROSIA = new Beneficial(Confluence.asResource("ambrosia"), EverBeneficial::setAmbrosiaUsed, (id, player, everBeneficial, isRespawn) -> {
+    public static final Beneficial AMBROSIA = new Beneficial(Confluence.asResource("ambrosia"), EverBeneficial::setAmbrosiaUsed, (id, name, player, everBeneficial, isRespawn) -> {
         int value = TCUtils.getValue(player, TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR);
         Confluence.NETWORK_HANDLER.sendToPlayer(player, new RightClickSubtractorPacketS2C((byte) Math.min(value + 1, 4)));
-        AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.BLOCK_BREAK_SPEED);
-        if (attributeInstance == null) return;
-        attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        AttributeInstance instance = player.getAttributes().getInstance(PortAttributesExtension.blockBreakSpeed());
+        if (instance == null) return;
+        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+                id, name,
+                0.05,
+                AttributeModifier.Operation.MULTIPLY_TOTAL
+        ));
     });
     public static final Beneficial GUMMY_WORM = new Beneficial(Confluence.asResource("gummy_worm"), EverBeneficial::setGummyWormUsed, DO_NOTHING);
-    public static final Beneficial GALAXY_PEARL = new Beneficial(Confluence.asResource("galaxy_pearl"), EverBeneficial::setGalaxyPearlUsed, (id, player, everBeneficial, isRespawn) -> {
-        AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.LUCK);
-        if (attributeInstance == null) return;
-        attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, 0.03, AttributeModifier.Operation.ADD_VALUE));
+    public static final Beneficial GALAXY_PEARL = new Beneficial(Confluence.asResource("galaxy_pearl"), EverBeneficial::setGalaxyPearlUsed, (id, name, player, everBeneficial, isRespawn) -> {
+        AttributeInstance instance = player.getAttributes().getInstance(Attributes.LUCK);
+        if (instance == null) return;
+        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+                id, name,
+                0.03,
+                AttributeModifier.Operation.ADDITION
+        ));
     });
-    public static final Beneficial MINECART_UPGRADE_KIT = new Beneficial(Confluence.asResource("minecart_upgrade_kit"), EverBeneficial::setMinecartUpgradeKitUsed, (id, player, everBeneficial, isRespawn) -> {
+    public static final Beneficial MINECART_UPGRADE_KIT = new Beneficial(Confluence.asResource("minecart_upgrade_kit"), EverBeneficial::setMinecartUpgradeKitUsed, (id, name, player, everBeneficial, isRespawn) -> {
         player.drop(MinecartItems.MECHANICAL_CART.get().getDefaultInstance(), true);
     });
-    public static final Beneficial ARTISAN_LOAF = new Beneficial(Confluence.asResource("artisan_loaf"), EverBeneficial::setArtisanLoafUsed, (id, player, everBeneficial, isRespawn) -> {
-        AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.BLOCK_INTERACTION_RANGE);
-        if (attributeInstance == null) return;
-        attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, 4, AttributeModifier.Operation.ADD_VALUE));
+    public static final Beneficial ARTISAN_LOAF = new Beneficial(Confluence.asResource("artisan_loaf"), EverBeneficial::setArtisanLoafUsed, (id, name, player, everBeneficial, isRespawn) -> {
+        AttributeInstance instance = player.getAttributes().getInstance(PortAttributesExtension.blockInteractionRange());
+        if (instance == null) return;
+        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+                id, name,
+                4,
+                AttributeModifier.Operation.ADDITION
+        ));
     });
 //    public static final Beneficial FALLEN_SOUL_CORE = new Beneficial(
 //            Confluence.asResource("fallen_soul_core"),
@@ -125,9 +154,9 @@ public class EverBeneficialItem extends TooltipItem {
         if (player instanceof ServerPlayer serverPlayer) {
             EverBeneficial data = EverBeneficial.of(player);
             if (beneficial.pre.test(data)) {
-                beneficial.post.accept(beneficial.id, serverPlayer, data, false);
+                beneficial.post.accept(beneficial.id, beneficial.name, serverPlayer, data, false);
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                if (!player.hasInfiniteMaterials()) {
+                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
                     itemStack.shrink(1);
                 }
             }
@@ -135,16 +164,20 @@ public class EverBeneficialItem extends TooltipItem {
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);
     }
 
-    public record Beneficial(ResourceLocation id, Predicate<EverBeneficial> pre, Post post) {
+    public record Beneficial(UUID id, String name, Predicate<EverBeneficial> pre, Post post) {
+        public Beneficial(ResourceLocation id, Predicate<EverBeneficial> pre, Post post) {
+            this(PortAttributeModifier.rl2uuid(id), id.getPath(), pre, post);
+        }
+
         public void recovery(EverBeneficial everBeneficial, Predicate<EverBeneficial> condition, ServerPlayer player) {
             if (condition.test(everBeneficial)) {
-                post.accept(id, player, everBeneficial, true);
+                post.accept(id, name, player, everBeneficial, true);
             }
         }
     }
 
     @FunctionalInterface
     public interface Post {
-        void accept(ResourceLocation id, ServerPlayer player, EverBeneficial everBeneficial, boolean isRespawn);
+        void accept(UUID id, String name, ServerPlayer player, EverBeneficial everBeneficial, boolean isRespawn);
     }
 }

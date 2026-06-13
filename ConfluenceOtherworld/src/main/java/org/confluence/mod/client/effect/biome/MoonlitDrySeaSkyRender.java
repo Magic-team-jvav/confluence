@@ -6,6 +6,7 @@ import net.minecraft.client.player.LocalPlayer;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayList;
@@ -138,7 +139,7 @@ public class MoonlitDrySeaSkyRender {
         int dreamBubbleColor = threeColor(ModClientSetups.DREAM_BUBBLE_A, ModClientSetups.DREAM_BUBBLE_B, ModClientSetups.DREAM_BUBBLE_C, time, 500);
 
         PoseStack poseStack = new PoseStack();
-        poseStack.mulPose(event.getModelViewMatrix());
+        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
         Matrix4f matrix4f = poseStack.last().pose();
 
         int alpha = (int) (alphaMul * 255 * 0.5);
@@ -180,8 +181,8 @@ public class MoonlitDrySeaSkyRender {
             seedZ[i] = points.get(i).z;
         }
 
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder builder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         Set<Long> edges = new HashSet<>();
         List<int[]> edgeList = new ArrayList<>();
@@ -278,10 +279,7 @@ public class MoonlitDrySeaSkyRender {
             }
         }
 
-        MeshData data = builder.build();
-        if (data != null) {
-            BufferUploader.drawWithShader(data);
-        }
+        BufferUploader.drawWithShader(builder.end());
     }
 
     private static float circumCenterX(float x1, float z1, float x2, float z2, float x3, float z3) {

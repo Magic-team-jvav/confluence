@@ -1,24 +1,27 @@
 ﻿package org.confluence.mod.client.gui.hud;
 
-import net.minecraft.client.DeltaTracker;
+import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
+import org.mesdag.portlib.client.PortDeltaTicker;
+import org.mesdag.portlib.client.PortGuiLayer;
+import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 
 import java.util.Locale;
 
-import static org.confluence.mod.util.ClientUtils.OVERLAY_SIZE;
+import static org.confluence.mod.client.event.ModClientSetups.OVERLAY_SIZE;
 import static org.confluence.mod.util.ClientUtils.draw;
 
-public class TerraStyleFoodHud implements LayeredDraw.Layer {
+public class TerraStyleFoodHud implements PortGuiLayer {
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         if (!ClientConfigs.terraStyleFood) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft))
@@ -31,7 +34,7 @@ public class TerraStyleFoodHud implements LayeredDraw.Layer {
         minecraft.getProfiler().pop();
     }
 
-    public enum Food implements TranslatableEnum {
+    public enum Food implements PortTranslatableEnum {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
@@ -60,10 +63,10 @@ public class TerraStyleFoodHud implements LayeredDraw.Layer {
                 }
                 int white = 0xFFFFFF;
                 int widthFood = guiGraphics.guiWidth() / 2 + 10;
-                int heightFood = guiGraphics.guiHeight() - minecraft.gui.rightHeight;
-                minecraft.gui.rightHeight += 10;
+                int heightFood = guiGraphics.guiHeight() - ((ForgeGui) minecraft.gui).rightHeight;
+                ((ForgeGui) minecraft.gui).rightHeight += 10;
                 for (int i = 0; i < 10; i++) {
-                    guiGraphics.blitSprite(ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, OVERLAY_SIZE, 60, 30, (widthFood + i * 8), heightFood, 9, 9);
+                    PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, OVERLAY_SIZE, 60, 30, (widthFood + i * 8), heightFood, 9, 9);
                 }
                 if (hunger) {
                     draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 20, 30, false, 1, 20);

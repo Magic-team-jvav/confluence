@@ -1,14 +1,13 @@
 package org.confluence.mod.client.gui.hud;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -18,15 +17,17 @@ import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.mixed.IGui;
+import org.mesdag.portlib.client.PortDeltaTicker;
+import org.mesdag.portlib.client.PortGuiLayer;
 
-public class RepeaterHud implements LayeredDraw.Layer {
+public class RepeaterHud implements PortGuiLayer {
     public static final boolean DYNAMICCROSSHAIR = LibUtils.isModLoaded("dynamiccrosshair");
 
     public static void handle() {
         IGui.of(Minecraft.getInstance().gui).confluence$setShooting();
     }
 
-    public static void renderCrosshair(Gui gui, GuiGraphics instance, ResourceLocation sprite, int x, int y, int width, int height, Operation<Void> original, DeltaTracker deltaTracker) {
+    public static void renderCrosshair(Gui gui, GuiGraphics instance, ResourceLocation sprite, int x, int y, int width, int height, Operation<Void> original, PortDeltaTicker deltaTracker) {
         IGui igui = IGui.of(gui);
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null || DYNAMICCROSSHAIR) {
@@ -44,8 +45,8 @@ public class RepeaterHud implements LayeredDraw.Layer {
         float end = 0;
         if (itemStack.getItem() instanceof BaseTerraRepeaterItem repeaterItem) {
             if (player.isUsingItem() && player.getUseItem().equals(itemStack)) {
-                end = Math.clamp(igui.confluence$getOldRepeaterCrosshairAngle() + (float) 360 / repeaterItem.getReloadSpeed(player, itemStack), 0, 720);
-            } else if (!itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY).isEmpty()) {
+                end = Mth.clamp(igui.confluence$getOldRepeaterCrosshairAngle() + (float) 360 / repeaterItem.getReloadSpeed(player, itemStack), 0, 720);
+            } else if (!PortItemStackExtension.getDataOrDefault(itemStack, ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY).isEmpty()) {
                 end = 45;
             }
         }
@@ -67,7 +68,7 @@ public class RepeaterHud implements LayeredDraw.Layer {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player == null) {
@@ -79,7 +80,7 @@ public class RepeaterHud implements LayeredDraw.Layer {
             return;
         }
 
-        RepeaterContents repeaterContents = itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+        RepeaterContents repeaterContents = PortItemStackExtension.getDataOrDefault(itemStack, ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
         if (repeaterContents.isEmpty()) {
             return;
         }
@@ -104,7 +105,7 @@ public class RepeaterHud implements LayeredDraw.Layer {
             RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
-            guiGraphics.color(1, 1, 1, (I - i) / I1);
+            guiGraphics.setColor(1, 1, 1, (I - i) / I1);
             pose.translate(x - x * scale, y - y * scale, 0);
             pose.scale(scale, scale, 1);
             guiGraphics.renderItem(stack, x, y);
@@ -113,7 +114,7 @@ public class RepeaterHud implements LayeredDraw.Layer {
             RenderSystem.disableBlend();
             RenderSystem.depthMask(true);
             RenderSystem.enableDepthTest();
-            guiGraphics.color(1, 1, 1, 1);
+            guiGraphics.setColor(1, 1, 1, 1);
             pose.popPose();
         }
         pose.popPose();

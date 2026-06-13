@@ -1,12 +1,12 @@
 package org.confluence.mod.client.gui.hud.soul;
 
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.HumanoidArm;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.client.PortDeltaTicker;
 
 public class CurrentSelectedSkillHud extends BasicHudLayer {
     private HumanoidArm humanoidArm = HumanoidArm.RIGHT;
@@ -18,12 +18,12 @@ public class CurrentSelectedSkillHud extends BasicHudLayer {
     }
 
     @Override
-    protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    protected void renderDrawLayer(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         box.render(guiGraphics, 0, 0, deltaTracker.getRealtimeDeltaTicks());
     }
 
     @Override
-    public void init(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void init(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         super.init(guiGraphics, deltaTracker);
         HumanoidArm mainArm = getPlayerThrow().getMainArm();
         setLeftPos(getScreenWidth() / 2 + getOffset());

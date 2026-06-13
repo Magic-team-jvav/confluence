@@ -1,6 +1,7 @@
 package org.confluence.mod.client.event;
 
 import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
@@ -9,7 +10,6 @@ import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -27,11 +27,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.stats.Stat;
-import net.minecraft.stats.Stats;
-import net.minecraft.stats.StatsCounter;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
@@ -43,6 +39,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
@@ -60,7 +58,6 @@ import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;
-import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
@@ -85,7 +82,6 @@ import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.impl.BulletHandler;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
@@ -94,7 +90,7 @@ import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.confluence.terra_curio.client.TCKeyBindings;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.client.gui.components.PortImageButton;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.*;
@@ -141,7 +137,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::cancelSwap);
     }
 
-    public static void clientTick$Pre(PortClientTickEvent.PortPre event) {
+    private static void clientTick$Pre(PortClientTickEvent.PortPre event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player == null) return;
@@ -169,7 +165,7 @@ public final class GameClientEvents {
         }
     }
 
-    public static void clientTick$Post(PortClientTickEvent.PortPost event) {
+    private static void clientTick$Post(PortClientTickEvent.PortPost event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
 
@@ -224,12 +220,12 @@ public final class GameClientEvents {
     }
 
 
-    public static void clientPlayerNetwork$LoggingIn(PortClientPlayerNetworkEvent.PortLoggingIn event) {
+    private static void clientPlayerNetwork$LoggingIn(PortClientPlayerNetworkEvent.PortLoggingIn event) {
         WeatherHandler.initialize(event.getPlayer());
     }
 
 
-    public static void clientPlayerNetwork$LoggingOut(PortClientPlayerNetworkEvent.PortLoggingOut event) {
+    private static void clientPlayerNetwork$LoggingOut(PortClientPlayerNetworkEvent.PortLoggingOut event) {
         WeatherHandler.reset();
         MeteorLandingHandler.reset();
         LocalBrushData.reset();
@@ -244,7 +240,7 @@ public final class GameClientEvents {
     }
 
 
-    public static void input$InteractionKeyMappingTriggered(PortInputEvent.PortInteractionKeyMappingTriggered event) {
+    private static void input$InteractionKeyMappingTriggered(PortInputEvent.PortInteractionKeyMappingTriggered event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
@@ -277,32 +273,27 @@ public final class GameClientEvents {
         }
     }
 
-
-    public static void input$MouseScrolling(PortInputEvent.PortMouseScrollingEvent event) {
+    private static void input$MouseScrolling(PortInputEvent.PortMouseScrollingEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
-        double mouseX = event.getMouseX();
-        double mouseY = event.getMouseY();
         double scrollDeltaY = event.getScrollDeltaY();
-        double scrollDeltaX = event.getScrollDeltaX();
         if (SoulSkillClientHolder.INSTANCE.scrolling(scrollDeltaY)) {
             event.setCanceled(true);
         }
     }
 
-
-    public static void renderGuiOverlay$Pre(PortRenderGuiLayerEvent.PortPre event) {
+    private static void renderGuiOverlay$Pre(PortRenderGuiLayerEvent.PortPre event) {
         ResourceLocation name = event.getName();
-        if ((ClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(name)) ||
-                (ClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(name)) ||
-                (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
-                (HouseSelectHud.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
+        if ((ClientConfigs.terraStyleHealth && VanillaGuiOverlay.PLAYER_HEALTH.id().equals(name)) ||
+                (ClientConfigs.terraStyleFood && VanillaGuiOverlay.FOOD_LEVEL.id().equals(name)) ||
+                (ClientConfigs.terraStyleArmor && VanillaGuiOverlay.ARMOR_LEVEL.id().equals(name)) ||
+                (HouseSelectHud.inSelectHUD && VanillaGuiOverlay.CROSSHAIR.id().equals(name))
         ) {
             event.setCanceled(true);
         }
     }
 
-    public static void gatherComponents(PortRenderTooltipEvent.PortGatherComponents event) {
+    private static void gatherComponents(PortRenderTooltipEvent.PortGatherComponents event) {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
@@ -320,8 +311,7 @@ public final class GameClientEvents {
         }
     }
 
-
-    public static void itemToolTip(PortItemTooltipEvent event) {
+    private static void itemToolTip(PortItemTooltipEvent event) {
         List<Component> toolTip = event.getToolTip();
         ItemStack stack = event.getItemStack();
         Holder<Item> holder = stack.getItemHolder();
@@ -334,17 +324,16 @@ public final class GameClientEvents {
         ExtractinatorData.addTooltip(holder, toolTip);
     }
 
-    public static void addAttributeTooltips(PortAddAttributeTooltipsEvent event) {
+    private static void addAttributeTooltips(PortAddAttributeTooltipsEvent event) {
         ModAttributeUtils.addPrefixTooltips(event);
     }
 
-
-    public static void movementInputUpdate(MovementInputUpdateEvent event) {
+    private static void movementInputUpdate(MovementInputUpdateEvent event) {
         Input input = event.getInput();
         LocalPlayer player = (LocalPlayer) event.getEntity();
         boolean cannotMove = player.hasEffect(ModEffects.STONED.get()) || player.hasEffect(ModEffects.FROZEN.get()) || ScryingOrb.spectatingPlayer != null;
         ILocalPlayer.of(player).confluence$setCanMove(!cannotMove);
-        if (!player.hasInfiniteMaterials()) {
+        if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
             if (cannotMove || player.hasEffect(ModEffects.SHIMMER.get()) || PortEntityExtension.getInBlockState(player).is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {
                 input.jumping = false;
                 input.forwardImpulse = 0.0F;
@@ -353,8 +342,7 @@ public final class GameClientEvents {
         }
     }
 
-
-    public static void renderLevelStage(PortRenderLevelStageEvent event) {
+    private static void renderLevelStage(PortRenderLevelStageEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player == null) return;
@@ -372,20 +360,17 @@ public final class GameClientEvents {
         }
     }
 
-
-    public static void screen$Render$Post(PortScreenEvent.PortRender.PortPost event) {
+    private static void screen$Render$Post(PortScreenEvent.PortRender.PortPost event) {
         LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
     }
 
-
-    public static void renderGui$Post(PortRenderGuiEvent.PortPost event) {
+    private static void renderGui$Post(PortRenderGuiEvent.PortPost event) {
         if (Minecraft.getInstance().screen == null) {
             LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
         }
     }
 
-
-    public static void screen$Init$Post(PortScreenEvent.PortInit.PortPost event) {
+    private static void screen$Init$Post(PortScreenEvent.PortInit.PortPost event) {
         Screen screen = event.getScreen();
         boolean isInventoryScreen = screen instanceof InventoryScreen;
         // 额外槽
@@ -399,7 +384,7 @@ public final class GameClientEvents {
                         widget.getMessage().getContents() instanceof TranslatableContents contents &&
                         "menu.online".equals(contents.getKey())
                 ) {
-                    event.addListener(new ImageButton(widget.getX() - 24, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
+                    event.addListener(new PortImageButton(widget.getX() - 24, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
                         Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
                     }) {
                         @Override
@@ -410,19 +395,18 @@ public final class GameClientEvents {
             }
         }
 
-        if (screen instanceof DialogScreen) {
-            LocalPlayer player = Minecraft.getInstance().player;
-            if (player != null) {
-                @Nullable ITradeHolder holder = IPlayer.of(player).terra_entity$getTradeHolder();
-                if (holder instanceof AbstractTerraNPC npc && npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()) {
-                    event.addListener(WithForgeTradeScreen.createReforgeButton(screen.width * 2 / 3, screen.height / 2 + 25));
-                }
-            }
-        }
+//  todo      if (screen instanceof DialogScreen) {
+//            LocalPlayer player = Minecraft.getInstance().player;
+//            if (player != null) {
+//                @Nullable ITradeHolder holder = IPlayer.of(player).terra_entity$getTradeHolder();
+//                if (holder instanceof AbstractTerraNPC npc && npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()) {
+//                    event.addListener(WithForgeTradeScreen.createReforgeButton(screen.width * 2 / 3, screen.height / 2 + 25));
+//                }
+//            }
+//        }
     }
 
-
-    public static void renderLiving$Post(PortRenderLivingEvent.PortPost event) {
+    private static void renderLiving$Post(PortRenderLivingEvent.PortPost<?, ?> event) {
         LivingEntity living = event.getEntity();
         boolean dead = living.isDeadOrDying();
         IClientLivingEntity i = IClientLivingEntity.of(living);
@@ -435,8 +419,7 @@ public final class GameClientEvents {
         i.confluence$deadO(dead);
     }
 
-
-    public static void geoRender$Entity$Post(GeoRenderEvent.Entity.Post event) {
+    private static void geoRender$Entity$Post(GeoRenderEvent.Entity.Post event) {
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
         if (event.getEntity() instanceof LivingEntity living) {
             boolean dead = living.isDeadOrDying();
@@ -449,13 +432,11 @@ public final class GameClientEvents {
         }
     }
 
-
-    public static void renderPlayer$Pre(PortRenderPlayerEvent.PortPre event) {
+    private static void renderPlayer$Pre(PortRenderPlayerEvent.PortPre event) {
         ZombieArmRenderer.getInstance().render(event.getRenderer(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getEntity(), event.getPartialTick());
     }
 
-
-    public static void renderArm(PortRenderArmEvent event) {
+    private static void renderArm(PortRenderArmEvent event) {
         AbstractClientPlayer player = event.getPlayer();
         if (ZombieArmRenderer.getInstance().renderHand(
                 (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player),
@@ -467,35 +448,33 @@ public final class GameClientEvents {
         )) event.setCanceled(true);
     }
 
+//  todo  private static void npc$Dialog(NPCEvent.NPCDialogEvent event) {
+//        LocalPlayer player = Minecraft.getInstance().player;
+//        if (player == null) return;
+//        EntityType<?> type = event.getNPC().getType();
+//        if (!ModClientSetups.guideCheckedJEI && type == TENpcEntities.GUIDE.get()) {
+//            event.setNeoDialog(Component.translatable("dialogs.terra_entity.guide.jei_check"));
+//            ModClientSetups.guideCheckedJEI = true;
+//        } else if (type == TENpcEntities.NURSE.get() && event.getNPC().getRandom().nextInt(25) == 0) {
+//            StatsCounter stats = player.getStats();
+//            for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
+//                int value = stats.getValue(stat);
+//                if (value >= 50) {
+//                    event.setNeoDialog(Component.translatable("dialogs.terra_entity.nurse.player_killed_by", stat.getValue().getDescription(), value));
+//                    break;
+//                }
+//            }
+//        }
+//    }
 
-    public static void npc$Dialog(NPCEvent.NPCDialogEvent event) {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player == null) return;
-        EntityType<?> type = event.getNPC().getType();
-        if (!ModClientSetups.guideCheckedJEI && type == TENpcEntities.GUIDE.get()) {
-            event.setNeoDialog(Component.translatable("dialogs.terra_entity.guide.jei_check"));
-            ModClientSetups.guideCheckedJEI = true;
-        } else if (type == TENpcEntities.NURSE.get() && event.getNPC().getRandom().nextInt(25) == 0) {
-            StatsCounter stats = player.getStats();
-            for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
-                int value = stats.getValue(stat);
-                if (value >= 50) {
-                    event.setNeoDialog(Component.translatable("dialogs.terra_entity.nurse.player_killed_by", stat.getValue().getDescription(), value));
-                    break;
-                }
-            }
-        }
-    }
-
-
-    public static void gatherEffectScreenTooltips(PortGatherEffectScreenTooltipsEvent event) {
-        Holder<MobEffect> effect = event.getEffectInstance().getEffect();
-        Optional<ResourceKey<MobEffect>> optional = effect.unwrapKey();
+    private static void gatherEffectScreenTooltips(PortGatherEffectScreenTooltipsEvent event) {
+        MobEffect effect = event.getEffectInstance().getEffect();
+        ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
         List<Component> tooltip = event.getTooltip();
-        if (optional.isPresent()) l:{
-            String key = Util.makeDescriptionId("tooltip.effect", optional.get().location()) + ".0";
+        if (id != null) l:{
+            String key = Util.makeDescriptionId("tooltip.effect", id) + ".0";
             if (!I18n.exists(key)) break l;
-            if (effect.equals(ModEffects.ENEMY_BANNER)) {
+            if (effect.equals(ModEffects.ENEMY_BANNER.get())) {
                 LocalPlayer player = Minecraft.getInstance().player;
                 if (player == null) break l;
                 Iterator<String> iterator = PlayerSpecialData.of(player).getEnemyBannerEntries().iterator();
@@ -506,9 +485,9 @@ public final class GameClientEvents {
                     component.append(Component.translatable(iterator.next()));
                 }
                 tooltip.add(Component.translatable(key, component).withStyle(ChatFormatting.GRAY));
-            } else if (effect.equals(ModEffects.DANGER_SENSE) || effect.equals(ModEffects.SPELUNKER)) {
-                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(ModKeyBindings.SHOW_DETAIL_SPECULAR)));
-            } else if (effect.equals(TCEffects.GRAVITATION)) {
+            } else if (effect.equals(ModEffects.DANGER_SENSE.get()) || effect.equals(ModEffects.SPELUNKER.get())) {
+                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(ModKeyBindings.SHOW_DETAIL_SPECULAR.get())));
+            } else if (effect.equals(TCEffects.GRAVITATION.get())) {
                 tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(TCKeyBindings.FLIP_GRAVITATION.get())));
             } else {
                 tooltip.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
@@ -519,8 +498,7 @@ public final class GameClientEvents {
         }
     }
 
-
-    public static void renderNameTag(PortRenderNameTagEvent event) {
+    private static void renderNameTag(PortRenderNameTagEvent event) {
         if (!event.canRender().isDefault()) return;
         Entity entity = event.getEntity();
         if (entity.getType() == EntityType.ZOMBIE || entity.getType() == EntityType.SKELETON) {
@@ -534,27 +512,24 @@ public final class GameClientEvents {
         }
     }
 
-
-    public static void playerInteract$LeftClickEmpty(PortPlayerInteractEvent.PortLeftClickEmpty event) {
+    private static void playerInteract$LeftClickEmpty(PortPlayerInteractEvent.PortLeftClickEmpty event) {
         Player player = event.getEntity();
         if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }
     }
 
-
-    public static void playerInteract$LeftClickBlock(PortPlayerInteractEvent.PortLeftClickBlock event) {
+    private static void playerInteract$LeftClickBlock(PortPlayerInteractEvent.PortLeftClickBlock event) {
         Player player = event.getEntity();
         if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }
     }
 
-
-    public static void playerEmptyAutoAttack(PlayerEmptyAutoAttackEvent event) {
+    private static void playerEmptyAutoAttack(PlayerEmptyAutoAttackEvent event) {
         Player player = event.getEntity();
         ItemStack itemStack = event.getItemStack();
-        if (itemStack.is(SwordItems.NIGHTS_EDGE)) {
+        if (itemStack.is(SwordItems.NIGHTS_EDGE.get())) {
             if (!player.getCooldowns().isOnCooldown(itemStack.getItem())) {
                 player.swing(InteractionHand.MAIN_HAND);
                 player.resetAttackStrengthTicker();
@@ -565,8 +540,7 @@ public final class GameClientEvents {
         }
     }
 
-
-    public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
+    private static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
         ClientPacketHandler.setLuminance(event.getEntity(), event.getData());
     }
 

@@ -29,8 +29,6 @@ import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.terraentity.client.buffer.AbstractBufferManager;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
@@ -42,7 +40,6 @@ import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLO
 import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_FRUIT;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
-import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock;
 
 /// 方块探测类，处理矿物探测与危险方块探测
 public class SpelunkerHelper extends AbstractBufferManager {
@@ -65,7 +62,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         private static final Codec<ShowType> CODEC = StringRepresentable.fromEnum(ShowType::values);
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name().toLowerCase(Locale.ROOT);
         }
     }
@@ -100,6 +97,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         }
     }
 
+    @Override
     protected boolean shouldRefresh() {
         return System.currentTimeMillis() - lastRefreshTime > 100;
     }

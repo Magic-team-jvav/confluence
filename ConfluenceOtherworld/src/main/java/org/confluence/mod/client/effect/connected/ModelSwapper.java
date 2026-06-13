@@ -21,15 +21,15 @@ public class ModelSwapper {
         return customBlockModels;
     }
 
-    public void onModelBake(Map<ModelResourceLocation, BakedModel> modelRegistry) {
+    public void onModelBake(Map<ResourceLocation, BakedModel> modelRegistry) {
         customBlockModels.forEach((block, modelFunc) -> swapModels(modelRegistry, getAllBlockStateModelLocations(BuiltInRegistries.BLOCK.getKey(block), block), modelFunc));
     }
 
-    public static <T extends BakedModel> void swapModels(Map<ModelResourceLocation, BakedModel> modelRegistry, List<ModelResourceLocation> locations, Function<BakedModel, T> factory) {
+    public static <T extends BakedModel> void swapModels(Map<ResourceLocation, BakedModel> modelRegistry, List<ModelResourceLocation> locations, Function<BakedModel, T> factory) {
         locations.forEach(location -> swapModels(modelRegistry, location, factory));
     }
 
-    public static <T extends BakedModel> void swapModels(Map<ModelResourceLocation, BakedModel> modelRegistry, ModelResourceLocation location, Function<BakedModel, T> factory) {
+    public static <T extends BakedModel> void swapModels(Map<ResourceLocation, BakedModel> modelRegistry, ModelResourceLocation location, Function<BakedModel, T> factory) {
         modelRegistry.put(location, factory.apply(modelRegistry.get(location)));
     }
 

@@ -36,8 +36,7 @@ public abstract class OverviewNavButton extends AbstractWidget {
     protected abstract Target navTarget();
 
     @Override
-    public void onClick(double mouseX, double mouseY, int button) {
-        super.onClick(mouseX, mouseY, button);
+    public void onClick(double mouseX, double mouseY) {
         Target target = navTarget();
         if (target != null) {
             screen.centerToOrigin();

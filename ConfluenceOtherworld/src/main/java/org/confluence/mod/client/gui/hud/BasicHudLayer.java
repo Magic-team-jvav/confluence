@@ -1,8 +1,8 @@
 package org.confluence.mod.client.gui.hud;
 
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import org.mesdag.portlib.client.PortDeltaTicker;
 
 public abstract class BasicHudLayer extends IHudLayer {
     private int screenWidth;
@@ -24,7 +24,7 @@ public abstract class BasicHudLayer extends IHudLayer {
         this.screenHeight = var1;
     }
 
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         if (getMinecraft().isPaused() || getMinecraft().screen != null || getMinecraft().options.hideGui) {
             return;
         }
@@ -32,9 +32,9 @@ public abstract class BasicHudLayer extends IHudLayer {
         this.renderDrawLayer(guiGraphics, deltaTracker);
     }
 
-    protected abstract void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker);
+    protected abstract void renderDrawLayer(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker);
 
-    public void init(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void init(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         int newScreenWidth = guiGraphics.guiWidth();
         int newScreenHeight = guiGraphics.guiHeight();
         LocalPlayer newPlayer = this.getMinecraft().player;

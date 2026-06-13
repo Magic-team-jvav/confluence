@@ -3,7 +3,6 @@ package org.confluence.mod.client.gui.hud.soul.quick_skill;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +16,7 @@ import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
 import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
+import org.mesdag.portlib.client.PortDeltaTicker;
 
 public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     // 资源与常量定义
@@ -45,7 +45,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         float realtimeDeltaTicks = deltaTracker.getRealtimeDeltaTicks();
         if (active) {
             if (targeTime * 0.5f < 1) {
@@ -69,7 +69,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    protected void renderDrawLayer(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         if (!isType()) {
             return;
         }
@@ -83,7 +83,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
 
         poseStack.pushPose();
         {
-            poseStack.translate(0, (ROULETTE_SIZE / 2f - 31) * Math.clamp(1 - renderTime, 0, 1), 0);
+            poseStack.translate(0, (ROULETTE_SIZE / 2f - 31) * Mth.clamp(1 - renderTime, 0, 1), 0);
             poseStack.translate(centerX, centerY, 0);
 
             // 绘制轮盘背景
@@ -111,7 +111,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
                 // 绘制技能框内技能名称
                 if (textTime > 0) {
                     RenderSystem.enableBlend();
-                    RenderSystem.setShaderColor(1, 1, 1, Math.clamp(textTime / TEXT_FADE_OUT_TIME, 0, 1));
+                    RenderSystem.setShaderColor(1, 1, 1, Mth.clamp(textTime / TEXT_FADE_OUT_TIME, 0, 1));
                     drawSkillStackName(guiGraphics, font, 0, y - 5);
                     guiGraphics.flushIfUnmanaged();
                     RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -201,7 +201,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    public void init(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void init(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         super.init(guiGraphics, deltaTracker);
         HumanoidArm mainArm = getPlayerThrow().getMainArm();
         if (mainArm != this.humanoidArm) {

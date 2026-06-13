@@ -7,12 +7,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.Util;
 import net.minecraft.client.Camera;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -33,11 +31,11 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.GuiSprite;
 import org.confluence.mod.network.c2s.HouseSelectPacketC2S;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
-import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
-import org.confluence.terraentity.entity.npc.house.IHouseDetector;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.client.PortDeltaTicker;
+import org.mesdag.portlib.client.PortGuiLayer;
 
-public class HouseSelectHud implements LayeredDraw.Layer {
+public class HouseSelectHud implements PortGuiLayer {
     private static final GuiSprite crosshair = new GuiSprite(Confluence.asResource("hud/house_select/crosshair"), 15, 15);
     private static final Component tip1 = Component.translatable("message.confluence.house_select.tip1");
     private static final Component tip2 = Component.translatable("message.confluence.house_select.tip2");
@@ -80,7 +78,7 @@ public class HouseSelectHud implements LayeredDraw.Layer {
     private static Component regionText;
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         if (!inSelectHUD) return;
 
         Minecraft minecraft = Minecraft.getInstance();
@@ -216,7 +214,8 @@ public class HouseSelectHud implements LayeredDraw.Layer {
         if (cullEnabled) {
             RenderSystem.disableCull();
         }
-        BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         float x = (float) camera.getPosition().x;
         float z = (float) camera.getPosition().z;
         int a = (int) (Mth.clamp(Math.pow(1.0 - worldBorder.getDistanceToBorder(x, z) / 256, 4.0), 0.0, 1.0) * 51);
@@ -250,10 +249,7 @@ public class HouseSelectHud implements LayeredDraw.Layer {
         builder.vertex(maxDx, depthFar, minDz).color(153, 255, 0, a);
         builder.vertex(minDx, depthFar, minDz).color(153, 255, 0, a);
 
-        MeshData meshdata = builder.build();
-        if (meshdata != null) {
-            BufferUploader.drawWithShader(meshdata);
-        }
+        BufferUploader.drawWithShader(builder.end());
 
         if (cullEnabled) {
             RenderSystem.enableCull();

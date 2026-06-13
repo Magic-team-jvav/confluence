@@ -1,14 +1,14 @@
 package org.confluence.mod.client.gui.hud;
 
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.player.LocalPlayer;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.client.PortDeltaTicker;
+import org.mesdag.portlib.client.PortGuiLayer;
 
-public abstract class IHudLayer implements LayeredDraw.Layer {
+public abstract class IHudLayer implements PortGuiLayer {
     private int leftPos;
     private int topPos;
     protected Minecraft minecraft;
@@ -62,7 +62,7 @@ public abstract class IHudLayer implements LayeredDraw.Layer {
         this.font = var1;
     }
 
-    public void init(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void init(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
     }
 
     public void playerChange(LocalPlayer newPlayer) {

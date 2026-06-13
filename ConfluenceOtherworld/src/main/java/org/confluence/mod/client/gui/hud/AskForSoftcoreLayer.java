@@ -3,17 +3,18 @@
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.network.AskForSoftcorePacket;
+import org.mesdag.portlib.client.PortDeltaTicker;
+import org.mesdag.portlib.client.PortGuiLayer;
 
-public class AskForSoftcoreLayer implements LayeredDraw.Layer {
+public class AskForSoftcoreLayer implements PortGuiLayer {
     private static final Component ask = Component.translatable("confluence.difficulty_notice.ask");
     private static final Component sure = Component.translatable("confluence.difficulty_notice.sure").withStyle(ChatFormatting.GREEN);
     private static final Component sureTip = Component.translatable("confluence.difficulty_notice.sure.tip");
@@ -32,7 +33,7 @@ public class AskForSoftcoreLayer implements LayeredDraw.Layer {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         if (isAskForSoftcoreLayer()) {
             Minecraft minecraft = Minecraft.getInstance();
             Window window = minecraft.getWindow();

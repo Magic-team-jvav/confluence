@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.AlchemyTableMenu;
-import org.jetbrains.annotations.NotNull;
 
 import static org.confluence.mod.common.menu.AlchemyTableMenu.CORD;
 
@@ -19,7 +18,7 @@ public class AlchemyTableScreen extends AbstractContainerScreen<AlchemyTableMenu
     }
 
     @Override
-    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
     }

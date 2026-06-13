@@ -2,14 +2,12 @@ package org.confluence.mod.client.effect;
 
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderType;
 import org.confluence.mod.Confluence;
 
 import java.util.List;
 
-import static net.minecraft.client.renderer.RenderStateShard.*;
+import static net.minecraft.client.renderer.RenderStateShard.TextureStateShard;
 
 public final class ColoredGlintContext {
     public static final List<ColoredGlintContext> COLORED_GLINT_CONTEXTS = Lists.newArrayList();
@@ -23,23 +21,7 @@ public final class ColoredGlintContext {
     }
 
     public static ColoredGlintContext create(String name, float red, float green, float blue) {
-        float[] glintColor = {red, green, blue};
-        ColoredGlintContext context = new ColoredGlintContext(RenderType.create("colored_glint_" + name, DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 1536, RenderType.CompositeState.builder()
-                .setShaderState(RENDERTYPE_GLINT_SHADER)
-                .setTextureState(COLORED_GLINT_TEXTURE_STATE_SHARD)
-                .setWriteMaskState(COLOR_WRITE)
-                .setCullState(NO_CULL)
-                .setDepthTestState(EQUAL_DEPTH_TEST)
-                .setTransparencyState(GLINT_TRANSPARENCY)
-                .setTexturingState(GLINT_TEXTURING)
-                .colorLogicState(new ColorLogicStateShard("set_color",
-                        () -> RenderSystem.setShaderColor(glintColor[0], glintColor[1], glintColor[2], 1.0F),
-                        () -> RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F)
-                ))
-                .createCompositeState(false)
-        ), glintColor);
-        COLORED_GLINT_CONTEXTS.add(context);
-        return context;
+        return RenderStateShardAccessor.create(name, red, green, blue);
     }
 
     public static ColoredGlintContext create(String name, int rgb) {

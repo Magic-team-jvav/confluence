@@ -1,10 +1,9 @@
 package org.confluence.mod.client.event;
 
+import PortLib.extensions.net.minecraft.client.resources.model.ModelResourceLocation.PortModelResourceLocationExtension;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -24,7 +23,6 @@ import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -47,12 +45,14 @@ import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.ColoredGlintContext;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
@@ -71,23 +71,27 @@ import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.mesdag.portlib.client.gui.components.PortSprite;
+import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 
 import java.awt.*;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static net.minecraft.client.renderer.RenderStateShard.*;
-
-@SuppressWarnings("deprecation")
 public final class ModClientSetups {
     public static final ResourceLocation VANILLA_BLOCK_ATLAS = InventoryMenu.BLOCK_ATLAS;
     public static final ResourceLocation ENTITY_BLOOD_ATLAS = Confluence.asResource("textures/atlas/entity_blood.png");
 
-    public static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
+    public static final PortWidgetSprites EXTRA_INVENTORY_BUTTON = new PortWidgetSprites(
+            new PortSprite(Confluence.asResource("widget/extra_inventory_button"), 16, 16),
+            new PortSprite(Confluence.asResource("widget/extra_inventory_button_highlighted"), 16, 16)
+    );
     public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
-    public static final ResourceLocation LEGACY_SPRITE = Confluence.asResource("hud/icon");
-    public static final ResourceLocation OVERLAY_SPRITE = Confluence.asResource("hud/overlay");
+    public static final int LEGACY_SIZE = 128;
+    public static final PortSprite LEGACY_SPRITE = new PortSprite(Confluence.asResource("hud/icon"), LEGACY_SIZE, LEGACY_SIZE);
+    public static final int OVERLAY_SIZE = 128;
+    public static final PortSprite OVERLAY_SPRITE = new PortSprite(Confluence.asResource("hud/overlay"), OVERLAY_SIZE, OVERLAY_SIZE);
     // region sun todo dynamic texture
     public static final ResourceLocation SUNGLASSES_TEXTURE = Confluence.asResource("textures/environment/sunglasses.png");
     public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");
@@ -243,9 +247,9 @@ public final class ModClientSetups {
     static final IClientItemExtensions FULL_LIGHT = new CustomLightItemExtension(15);
 
     /// 对于使用原版json模型，且使用了Extensions来自定义渲染的物品，需使用该方法标记为自定义模型
-    static void asCustomModel(Map<ModelResourceLocation, BakedModel> modelRegistry, DeferredHolder<?, ?>... deferredItems) {
-        for (DeferredHolder<?, ?> holder : deferredItems) {
-            modelRegistry.compute(ModelResourceLocation.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model));
+    static void asCustomModel(Map<ResourceLocation, BakedModel> modelRegistry, RegistryObject<?>... deferredItems) {
+        for (RegistryObject<?> holder : deferredItems) {
+            modelRegistry.compute(PortModelResourceLocationExtension.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model));
         }
     }
 
@@ -318,6 +322,7 @@ public final class ModClientSetups {
 
     static boolean guideCheckedJEI = LibUtils.isModLoaded("jei") || LibUtils.isModLoaded("emi");
 
+    @SuppressWarnings("removal")
     static void setRenderLayers() {
         RenderType translucent = RenderType.translucent();
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.fluid().get(), translucent);
@@ -356,23 +361,15 @@ public final class ModClientSetups {
 
     public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = LibUtils.isModLoaded("ctm") || LibUtils.isModLoaded("fusion") || LibUtils.isModLoaded("continuity");
 
-    public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                    .setTextureState(new TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setWriteMaskState(COLOR_WRITE)
-                    .setCullState(NO_CULL)
-                    .setOverlayState(OVERLAY)
-                    .createCompositeState(false));
+    public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderStateShardAccessor.getEntityTranslucentEmissive();
 
     public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
     public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
 
     public static void registerBowProperties() {
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");
-        ClampedItemPropertyFunction shortBowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / ShortBowItem.MAX_DRAW_DURATION : 0.0F;
-        ClampedItemPropertyFunction bowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / BowItem.MAX_DRAW_DURATION : 0.0F;
+        ClampedItemPropertyFunction shortBowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration() - living.getUseItemRemainingTicks()) / ShortBowItem.MAX_DRAW_DURATION : 0.0F;
+        ClampedItemPropertyFunction bowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration() - living.getUseItemRemainingTicks()) / BowItem.MAX_DRAW_DURATION : 0.0F;
         ResourceLocation pulling = ResourceLocation.withDefaultNamespace("pulling");
         ClampedItemPropertyFunction bowPulling = (itemStack, clientLevel, living, speed) -> living != null && living.isUsingItem() && living.getUseItem() == itemStack ? 1.0F : 0.0F;
 

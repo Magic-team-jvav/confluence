@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.Util;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -21,11 +20,16 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.util.AchievementUtils;
+import org.mesdag.portlib.client.gui.components.PortSprite;
+import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 
 import java.util.*;
 
 public class AchievementScreen extends Screen {
-    public static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("achievement_icon"), Confluence.asResource("achievement_icon_highlighted"));
+    public static final PortWidgetSprites SPRITES = new PortWidgetSprites(
+            new PortSprite(Confluence.asResource("achievement_icon"), 20, 20),
+            new PortSprite(Confluence.asResource("achievement_icon_highlighted"), 20, 20)
+    );
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/achievement.png");
     private static final int ENTRY_X = 4;
     private static final int ENTRY_Y = 22;

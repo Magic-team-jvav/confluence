@@ -6,9 +6,7 @@ import net.minecraft.network.chat.MutableComponent;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 回到原点按钮 — 将视口平滑滚回屏幕中心
- */
+/// 回到原点按钮 — 将视口平滑滚回屏幕中心
 public class CenterButton extends OverviewNavButton {
     private static final int SIZE = 20;
     private static final int BG_COLOR = 0x40FFFFFF;

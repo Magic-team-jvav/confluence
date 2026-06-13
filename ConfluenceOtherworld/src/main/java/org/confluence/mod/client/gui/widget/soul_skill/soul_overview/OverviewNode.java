@@ -1,6 +1,7 @@
 package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -84,8 +85,22 @@ public class OverviewNode extends SoulSkillBox {
     }
 
     @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (active && visible) {
+            if (isValidClickButton(button)) {
+                boolean flag = clicked(mouseX, mouseY);
+                if (flag) {
+                    playDownSound(Minecraft.getInstance().getSoundManager());
+                    onClick(mouseX, mouseY, button);
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
     public void onClick(double mouseX, double mouseY, int button) {
-        super.onClick(mouseX, mouseY, button);
         if (button == 0) {
             boolean alreadySelected = screen.theCurrentlySelectedSkill == getSkill();
             screen.theCurrentlySelectedSkill = alreadySelected ? null : getSkill();

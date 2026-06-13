@@ -5,6 +5,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.soulskill.SoulSkill;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -57,7 +58,7 @@ public final class ModSoulSkills {
 
     private static Supplier<SoulSkill> register(String id, float basicDamage, SkillCategory category) {
         ResourceLocation rl = Confluence.asResource(id);
-        SoulSkill cached = new SoulSkill(rl, rl, basicDamage);
+        SoulSkill cached = new SoulSkill(new PortSprite(rl, 16, 16), rl, basicDamage);
         SKILLS.add(() -> cached);
         CATEGORIES.put(cached.id(), category);
         return () -> cached;

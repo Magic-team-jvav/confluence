@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.registries.RegistryObject;
@@ -195,33 +196,33 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.DYE_MIX.get(), DyeMixScreen::new);
         event.register(ModMenuTypes.PIGGY_BANK.get(), PiggyBankScreen::new);
         // npc
-        event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
+//  todo      event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
     }
 
     public static void registerGuiLayers(PortRegisterGuiLayersEvent event) {
         ResourceLocation repeaterHud = Confluence.asResource("repeater_hud");
-        event.registerAbove(VanillaGuiLayers.CROSSHAIR, repeaterHud, new RepeaterHud());
+        event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), repeaterHud, new RepeaterHud());
         ResourceLocation healthHud = Confluence.asResource("health_hud");
-        event.registerBelow(VanillaGuiLayers.ARMOR_LEVEL, healthHud, new TerraStyleHealthHud());
+        event.registerBelow(VanillaGuiOverlay.ARMOR_LEVEL.id(), healthHud, new TerraStyleHealthHud());
         ResourceLocation armorHud = Confluence.asResource("armor_hud");
         event.registerAbove(healthHud, armorHud, new TerraStyleArmorHud());
         ResourceLocation manaHud = Confluence.asResource("mana_hud");
-        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, manaHud, new TerraStyleManaHud());
+        event.registerAbove(VanillaGuiOverlay.FOOD_LEVEL.id(), manaHud, new TerraStyleManaHud());
 //        ResourceLocation soulHud = Confluence.asResource("soul_hud");
 //        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, soulHud, new TerraStyleSoulHud());
         ResourceLocation foodHud = Confluence.asResource("food_hud");
         event.registerBelow(manaHud, foodHud, new TerraStyleFoodHud());
 
-        event.registerBelow(VanillaGuiLayers.CROSSHAIR, Confluence.asResource("house_select"), new HouseSelectHud());
-        event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
+        event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), Confluence.asResource("house_select"), new HouseSelectHud());
+        event.registerBelow(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id(), Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
         event.registerAboveAll(Confluence.asResource("ask_for_softcore"), new AskForSoftcoreLayer());
 
-        event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_l_hud"), SoulSkillClientHolder.CARD_HORIZONTAL_L_HUD_INSTANCE);
-        event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_r_hud"), SoulSkillClientHolder.CARD_HORIZONTAL_R_HUD_INSTANCE);
-        event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("roulette_wheel_small_hud"), SoulSkillClientHolder.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
-        event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("current_selected_skill_hud"), SoulSkillClientHolder.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
-        event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("roulette_wheel_big_hud"), SoulSkillClientHolder.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
+        event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_l_hud"), SoulSkillClientHolder.CARD_HORIZONTAL_L_HUD_INSTANCE);
+        event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_r_hud"), SoulSkillClientHolder.CARD_HORIZONTAL_R_HUD_INSTANCE);
+        event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("roulette_wheel_small_hud"), SoulSkillClientHolder.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
+        event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("current_selected_skill_hud"), SoulSkillClientHolder.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
+        event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("roulette_wheel_big_hud"), SoulSkillClientHolder.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
         SoulSkillClientHolder.INSTANCE.init();
     }
 
@@ -569,8 +570,8 @@ public final class ModClientEvents {
         event.register(ModClientSetups.ENTITY_BLOOD_ATLAS, Confluence.asResource("entity_blood"));
     }
 
-    public static void model$ModifyBakingResult(PortModelEvent.ModifyBakingResult event) {
-        Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
+    public static void model$ModifyBakingResult(PortModelEvent.PortModifyBakingResult event) {
+        Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
 
         ModClientSetups.asCustomModel(modelRegistry,
                 AccessoryItems.GUIDE_VOODOO_DOLL,
@@ -584,7 +585,7 @@ public final class ModClientEvents {
                 MaterialItems.SOUL_OF_VOIGHT,
                 AxeItems.LUCY_THE_AXE
         );
-        ModClientSetups.asCustomModel(modelRegistry, TreasureBagItems.ITEMS.getEntries().toArray(DeferredHolder[]::new));
+        ModClientSetups.asCustomModel(modelRegistry, TreasureBagItems.ITEMS.getEntries().toArray(RegistryObject[]::new));
 
         ModConnectives.MODEL_SWAPPER.onModelBake(modelRegistry);
 

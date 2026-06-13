@@ -1,10 +1,11 @@
 package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
+import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
@@ -12,21 +13,20 @@ import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.common.soulskill.SoulSkill;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 
-/**
- * 底部快捷栏
- */
+/// 底部快捷栏
 public class HotbarWidget extends AbstractWidget {
     protected static final SoulSkillClientHolder HOLDER = SoulSkillClientHolder.INSTANCE;
 
-    public static final ResourceLocation BOTTOM_BOX_CENTRE = Confluence.asResource("container/soul_overview/hotbar_box_centre");
-    public static final ResourceLocation BOTTOM_BOX_HEAD = Confluence.asResource("container/soul_overview/hotbar_box_head");
-    public static final ResourceLocation BOTTOM_BOX_TAIL = Confluence.asResource("container/soul_overview/hotbar_box_tail");
+    public static final PortSprite BOTTOM_BOX_CENTRE = new PortSprite(Confluence.asResource("container/soul_overview/hotbar_box_centre"), 20, 32);
+    public static final PortSprite BOTTOM_BOX_HEAD = new PortSprite(Confluence.asResource("container/soul_overview/hotbar_box_head"), 16, 32);
+    public static final PortSprite BOTTOM_BOX_TAIL = new PortSprite(Confluence.asResource("container/soul_overview/hotbar_box_tail"), 16, 32);
     private final List<HotbarSlot> slots = new ArrayList<>();
     private final SoulOverviewScreen screen;
 
@@ -49,15 +49,15 @@ public class HotbarWidget extends AbstractWidget {
         if (slots.isEmpty()) {
             return;
         }
-        guiGraphics.blitSprite(BOTTOM_BOX_HEAD, getX(), getY(), 16, 32);
+        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOTTOM_BOX_HEAD, getX(), getY(), 16, 32);
         int x = getX() + 16;
         if (slots.size() > 1) {
             for (int i = 1; i < slots.size(); i++) {
-                guiGraphics.blitSprite(BOTTOM_BOX_CENTRE, x, getY(), 20, 32);
+                PortGuiGraphicsExtension.blitSprite(guiGraphics, BOTTOM_BOX_CENTRE, x, getY(), 20, 32);
                 x += 20;
             }
         }
-        guiGraphics.blitSprite(BOTTOM_BOX_TAIL, x, getY(), 16, 32);
+        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOTTOM_BOX_TAIL, x, getY(), 16, 32);
     }
 
     @Override
@@ -104,18 +104,11 @@ public class HotbarWidget extends AbstractWidget {
     }
 
     @Override
-    public void onClick(double mouseX, double mouseY, int button) {
-        super.onClick(mouseX, mouseY, button);
-    }
-
-    @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         return false;
     }
 
-    /**
-     * 快捷栏中的单个槽位
-     */
+    /// 快捷栏中的单个槽位
     public class HotbarSlot extends AbstractWidget {
         private final int slotIndex;
         @Nullable
@@ -147,12 +140,20 @@ public class HotbarWidget extends AbstractWidget {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
-            return super.mouseClicked(mouseX, mouseY, button);
+            if (active && visible) {
+                if (this.isValidClickButton(button)) {
+                    boolean flag = this.clicked(mouseX, mouseY);
+                    if (flag) {
+                        playDownSound(Minecraft.getInstance().getSoundManager());
+                        onClick(mouseX, mouseY, button);
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
-        @Override
         public void onClick(double mouseX, double mouseY, int button) {
-            super.onClick(mouseX, mouseY, button);
             if (button == 1) {
                 HOLDER.unequipSkill(slotIndex);
                 skillStack = null;

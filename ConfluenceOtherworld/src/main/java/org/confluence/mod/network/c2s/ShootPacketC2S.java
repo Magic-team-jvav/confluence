@@ -11,7 +11,7 @@ import org.confluence.mod.common.component.BulletPropertyComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.gun.BaseGun;
-import org.confluence.mod.impl.BulletHandler;
+import org.confluence.mod.util.BulletHandler;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;

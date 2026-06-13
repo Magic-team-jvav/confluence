@@ -42,14 +42,12 @@ public class SpriteShiftEntry {
         return getTarget(targetIndex).getV(getUnInterpolatedV(getOriginal(), localV));
     }
 
-    /// @removed <code>* 16.0F</code>
     /// @see TextureAtlasSprite#getU(float)
     public static float getUnInterpolatedU(TextureAtlasSprite sprite, float u) {
         float f = sprite.getU1() - sprite.getU0();
         return (u - sprite.getU0()) / f;
     }
 
-    /// @removed <code>* 16.0F</code>
     /// @see TextureAtlasSprite#getV(float)
     public static float getUnInterpolatedV(TextureAtlasSprite sprite, float v) {
         float f = sprite.getV1() - sprite.getV0();

@@ -22,7 +22,7 @@ import org.confluence.mod.common.component.GunPropertyComponent;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.entity.projectile.CustomBulletEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.impl.AmmoDataContext;
+import org.confluence.mod.util.AmmoDataContext;
 import org.confluence.mod.util.ModGeckoLibUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.PortEventHandler;

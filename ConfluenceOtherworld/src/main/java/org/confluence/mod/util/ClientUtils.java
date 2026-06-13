@@ -1,5 +1,7 @@
 package org.confluence.mod.util;
 
+import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -30,6 +32,7 @@ import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,8 +45,6 @@ public final class ClientUtils {
     public static final String NEGATIVE_SUFFIX = ".negative";
     public static final Set<ResourceLocation> ORIGINAL = new HashSet<>();
     private static final Set<ResourceLocation> failed = new HashSet<>();
-    public static final int LEGACY_SIZE = 128;
-    public static final int OVERLAY_SIZE = 128;
     /// 以这个命名的bone就是专门的死亡模型
     public static final String DEATH_BONE_NAME = "_death";
     /// 以这个后缀命名的bone需要爆整个bone
@@ -81,7 +82,7 @@ public final class ClientUtils {
         guiGraphics.drawString(font, text, x, y, color, false);
     }
 
-    public static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, ResourceLocation icon, int color, int colorHigh, int colorLow, int size, int part, int partDis) {
+    public static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, PortSprite icon, int color, int colorHigh, int colorLow, int size, int part, int partDis) {
         float red = ((color >> 16) & 0xFF) / 255.0F;
         float green = ((color >> 8) & 0xFF) / 255.0F;
         float blue = (color & 0xFF) / 255.0F;
@@ -93,15 +94,15 @@ public final class ClientUtils {
         float blueLow = (colorLow & 0xFF) / 255.0F;
         if (part >= 1) {
             RenderSystem.setShaderColor(red, green, blue, 1.0F);
-            guiGraphics.blitSprite(icon, size, size, iconX, iconY, x, y, 9, 9);
+            PortGuiGraphicsExtension.blitSprite(guiGraphics, icon, size, size, iconX, iconY, x, y, 9, 9);
         }
         if (part >= 2) {
             RenderSystem.setShaderColor(redLow, greenLow, blueLow, 1.0F);
-            guiGraphics.blitSprite(icon, size, size, iconX + partDis, iconY, x, y, 9, 9);
+            PortGuiGraphicsExtension.blitSprite(guiGraphics, icon, size, size, iconX + partDis, iconY, x, y, 9, 9);
         }
         if (part >= 3) {
             RenderSystem.setShaderColor(redHigh, greenHigh, blueHigh, 1.0F);
-            guiGraphics.blitSprite(icon, size, size, iconX + partDis * 2, iconY, x, y, 9, 9);
+            PortGuiGraphicsExtension.blitSprite(guiGraphics, icon, size, size, iconX + partDis * 2, iconY, x, y, 9, 9);
         }
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
@@ -132,7 +133,7 @@ public final class ClientUtils {
         return new Vector3i(color, colorHigh, colorLow);
     }
 
-    public static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow, ResourceLocation icon, int size, int uvX, int uvY, boolean left, int part, int partDis) {
+    public static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow, PortSprite icon, int size, int uvX, int uvY, boolean left, int part, int partDis) {
         int countT = count / 2;
         int xT = left ? (x - 8) : (x + 80);
         for (int i = 0; i < countT; i++) {
@@ -144,21 +145,21 @@ public final class ClientUtils {
         }
     }
 
-    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left) {
+    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, PortSprite texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left) {
         colorDraw(guiGraphics, minecraft, random, texture, COLOR, COLOR_HIGH, COLOR_LOW, max, current, x, y, size, uvY, left, true);
     }
 
-    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float current, int x, int y, int size, int uvY, boolean left) {
+    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, PortSprite texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float current, int x, int y, int size, int uvY, boolean left) {
         colorDraw(guiGraphics, minecraft, random, texture, COLOR, COLOR_HIGH, COLOR_LOW, 0.0F, current, x, y, size, uvY, left, false);
     }
 
-    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left, boolean background) {
+    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, PortSprite texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left, boolean background) {
         int backCount = (int) (max / 2);
         int heartCount = (int) (current);
         if (max / 2 > (float) backCount) {backCount++;}
         if (current > (float) heartCount) {heartCount++;}
         for (int i = 0; i < backCount && i < 10 && background; i++) {
-            guiGraphics.blitSprite(texture, size, size, 60, uvY, (x + i * 8) + ((backCount < 10 && !left) ? ((10 - backCount) * 8) : 0), y, 9, 9);
+            PortGuiGraphicsExtension.blitSprite(guiGraphics, texture, size, size, 60, uvY, (x + i * 8) + ((backCount < 10 && !left) ? ((10 - backCount) * 8) : 0), y, 9, 9);
         }
         int lineCount = heartCount / 20;
         int drawCount;
@@ -202,7 +203,8 @@ public final class ClientUtils {
                     return BaseDyeItem.getARGB(vanityArmorDye);
                 } else if (item == VanityArmorItems.TEAM_DYE.get()) {
                     Team team = PlayerSpecialData.of(player).getTeam();
-                    return FastColor.ARGB32.opaque(team.getColor().getTextureDiffuseColor());
+                    float[] rgb = team.getColor().getTextureDiffuseColors();
+                    return FastColor.ARGB32.color(0xFF, (int) (rgb[0] * 0xFF), (int) (rgb[1] * 0xFF), (int) (rgb[2] * 0xFF));
                 }
             }
         }
@@ -263,13 +265,13 @@ public final class ClientUtils {
         copper = price;
         MutableComponent cmp = Component.empty();
         if (platinum > 0)
-            cmp.append(Component.literal(platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
+            cmp.append(PortMutableComponentExtension.withColor(Component.literal(platinum + " ").append(Component.translatable("tooltip.price.platinum")), -4996668));
         if (gold > 0)
-            cmp.append(Component.literal(gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
+            cmp.append(PortMutableComponentExtension.withColor(Component.literal(gold + " ").append(Component.translatable("tooltip.price.gold")), -3891380));
         if (silver > 0)
-            cmp.append(Component.literal(silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
+            cmp.append(PortMutableComponentExtension.withColor(Component.literal(silver + " ").append(Component.translatable("tooltip.price.silver")), -4532777));
         if (copper > 0)
-            cmp.append(Component.literal(copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
+            cmp.append(PortMutableComponentExtension.withColor(Component.literal(copper + " ").append(Component.translatable("tooltip.price.copper")), -3837899));
         return cmp;
     }
 }

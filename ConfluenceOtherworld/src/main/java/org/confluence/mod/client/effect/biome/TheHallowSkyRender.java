@@ -11,6 +11,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.ClientConfigs;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
@@ -88,7 +89,7 @@ public class TheHallowSkyRender {
         int rainbowCount = ClientConfigs.rainbowCount;
 
         PoseStack poseStack = new PoseStack();
-        poseStack.mulPose(event.getModelViewMatrix());
+        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
         Matrix4f matrix4f = poseStack.last().pose();
 
         float playerX = (float) player.getX();
@@ -102,8 +103,8 @@ public class TheHallowSkyRender {
         if (deltaMovement.x != 0 || deltaMovement.z != 0)
             rainbowUpdate(rainbowCount, new Vector3f(playerX, playerY, playerZ), deltaMovement, midDis + disRange);
 
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder builder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 
         int colorCount = COLORS.length;
         int step = 48;
@@ -141,10 +142,7 @@ public class TheHallowSkyRender {
             }
         }
 
-        MeshData data = builder.build();
-        if (data != null) {
-            BufferUploader.drawWithShader(data);
-        }
+        BufferUploader.drawWithShader(builder.end());
     }
 
     public static void drawRoll(int step, float stepRotate, float outerRadius, float innerRadius,

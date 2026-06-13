@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.fml.ModLoader;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.BiomeSkyEffectRegisterEvent;
@@ -21,6 +20,8 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.Map;
@@ -54,7 +55,7 @@ public final class ClientBiomeEffectSystem {
                 null,
                 MoonlitDrySeaSkyRender::render
         ));
-        ModLoader.postEvent(new BiomeSkyEffectRegisterEvent(EFFECTS));
+        PortEventHandler.postEvent(new BiomeSkyEffectRegisterEvent(EFFECTS));
     }
 
     public static void tick(LocalPlayer player) {
@@ -218,14 +219,14 @@ public final class ClientBiomeEffectSystem {
         int a = (int) (baseAlpha * 255);
 
         PoseStack poseStack = new PoseStack();
-        poseStack.mulPose(event.getModelViewMatrix());
+        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
 
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, texture);
 
         float d = 100.0F;
-        Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder builder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         Matrix4f matrix4f = poseStack.last().pose();
 
         // top (+y)    cell [0,0]: (0,0),(1,0),(1,1),(0,1)
@@ -241,10 +242,7 @@ public final class ClientBiomeEffectSystem {
         // right (+x)  cell [2,1]: (2,1),(3,1),(3,2),(2,2)
         addFace(builder, matrix4f, d, -d, d, d, -d, -d, d, d, -d, d, d, d, 2, 1, 3, 1, 3, 2, 2, 2, a);
 
-        MeshData data = builder.build();
-        if (data != null) {
-            BufferUploader.drawWithShader(data);
-        }
+        BufferUploader.drawWithShader(builder.end());
     }
 
     private static void renderCubemapFade(PortRenderLevelStageEvent event, BiomeSkyEffect cur, BiomeSkyEffect tgt, float blend) {

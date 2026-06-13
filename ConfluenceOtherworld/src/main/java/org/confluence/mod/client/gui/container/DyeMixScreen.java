@@ -8,7 +8,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
@@ -19,6 +18,7 @@ import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.menu.DyeMixMenu;
 import org.confluence.mod.network.c2s.DyeMixPacketC2S;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
+import org.mesdag.portlib.wrapper.common.util.PortTriState;
 
 public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/dye_mix.png");
@@ -60,7 +60,7 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
                 return true;
             }
             try {
-                this.rgb = FastColor.ARGB32.opaque(Integer.parseInt(value, 16));
+                this.rgb = Integer.parseInt(value, 16) | 0xFF000000;
                 return true;
             } catch (Exception e) {
                 return false;
@@ -68,9 +68,9 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
         });
         editBox.setResponder(value -> {
             if (isDye.isTrue()) {
-                BaseDyeItem.setRGB(this.stack = VanityArmorItems.DYE.toStack(), rgb);
+                BaseDyeItem.setRGB(this.stack = VanityArmorItems.DYE.get().getDefaultInstance(), rgb);
             } else if (isDye.isFalse()) {
-                PaintItem.setRGB(this.stack = PaintItems.PAINT.toStack(), rgb);
+                PaintItem.setRGB(this.stack = PaintItems.PAINT.get().getDefaultInstance(), rgb);
             } else {
                 this.stack = ItemStack.EMPTY;
             }

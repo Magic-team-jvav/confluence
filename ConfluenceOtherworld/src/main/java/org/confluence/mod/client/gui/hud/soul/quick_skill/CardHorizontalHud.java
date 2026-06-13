@@ -2,7 +2,6 @@ package org.confluence.mod.client.gui.hud.soul.quick_skill;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -12,6 +11,7 @@ import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.client.PortDeltaTicker;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -82,7 +82,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         float delta = deltaTracker.getRealtimeDeltaTicks();
         renderRotation = Mth.lerp(delta, prevRotation, targetRotation);
         prevRotation = renderRotation;
@@ -105,7 +105,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    protected void renderDrawLayer(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         if (!isType()) return;
 
         int currentIdx = soulSkillHolder.getCurrentIndex();
@@ -140,15 +140,15 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
 
             // 弧形坐标
             float t = virtualPos / ADDITIONAL_COUNT;
-            float angle = Math.clamp(t, -1f, 1f) * HALF_ARC_RADIANS;
+            float angle = Mth.clamp(t, -1f, 1f) * HALF_ARC_RADIANS;
             float cosA = (float) Math.cos(angle);
             float arcShift = EXTRA_BULGE * (1f - cosA); // 0=中心, 正值=远离中心向屏幕外偏移
             float yOffset = CARD_SPACING * virtualPos;
 
             // 距中心距离 → 透明度、缩放（超出 arc 范围时完全透明）
             float dist = Math.abs(virtualPos) / ADDITIONAL_COUNT;
-            float alpha = Math.clamp(1f - (1f - EDGE_ALPHA) * dist, 0f, 1f);
-            float scale = 1f + (CENTER_SCALE - 1f) * Math.clamp(1f - dist, 0f, 1f);
+            float alpha = Mth.clamp(1f - (1f - EDGE_ALPHA) * dist, 0f, 1f);
+            float scale = 1f + (CENTER_SCALE - 1f) * Mth.clamp(1f - dist, 0f, 1f);
 
             // X 位置：中心贴边，远离中心的卡片向屏幕外偏移
             float visualEdge = BULGE_DEPTH - arcShift;
@@ -178,7 +178,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         float v2 = CARD_WIDTH * CENTER_SCALE;
-        float clamp = CARD_WIDTH * CENTER_SCALE - Math.clamp(renderTime, 0, 1) * v2;
+        float clamp = CARD_WIDTH * CENTER_SCALE - Mth.clamp(renderTime, 0, 1) * v2;
         poseStack.translate(isRight ? clamp : -clamp, 0, 0);
         for (int idx : renderOrder) {
             float x = xPosArr[idx];
@@ -198,9 +198,9 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
             poseStack.translate(-v, -v, 0);
 
             RenderSystem.enableBlend();
-            guiGraphics.color(1f, 1f, 1f, a);
+            guiGraphics.setColor(1f, 1f, 1f, a);
             renderCard(guiGraphics, stackArr[idx], sel, sidx, s);
-            guiGraphics.color(1f, 1f, 1f, 1f);
+            guiGraphics.setColor(1f, 1f, 1f, 1f);
             RenderSystem.disableBlend();
             poseStack.popPose();
         }

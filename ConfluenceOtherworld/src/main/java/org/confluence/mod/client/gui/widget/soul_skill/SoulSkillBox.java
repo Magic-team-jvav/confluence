@@ -1,5 +1,6 @@
 package org.confluence.mod.client.gui.widget.soul_skill;
 
+import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -7,17 +8,17 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 
 public class SoulSkillBox extends AbstractWidget {
-    public static final ResourceLocation BOX_GRAY = Confluence.asResource("hud/soul_quick_skill_hud/box_gray");
-    public static final ResourceLocation BOX = Confluence.asResource("container/soul_overview/box");
-    public static final ResourceLocation BOX_ACTIVATE = Confluence.asResource("container/soul_overview/box_activate");
-    public static final ResourceLocation BOX_ACTIVATE_FLAME = Confluence.asResource("container/soul_overview/box_activate_flame");
-    public static final ResourceLocation BOX_SELECT = Confluence.asResource("container/soul_overview/box_select");
+    public static final PortSprite BOX_GRAY = new PortSprite(Confluence.asResource("hud/soul_quick_skill_hud/box_gray"), 22, 22);
+    public static final PortSprite BOX = new PortSprite(Confluence.asResource("container/soul_overview/box"), 32, 32);
+    public static final PortSprite BOX_ACTIVATE = new PortSprite(Confluence.asResource("container/soul_overview/box_activate"), 32, 128);
+    public static final PortSprite BOX_ACTIVATE_FLAME = new PortSprite(Confluence.asResource("container/soul_overview/box_activate_flame"), 32, 256);
+    public static final PortSprite BOX_SELECT = new PortSprite(Confluence.asResource("container/soul_overview/box_select"), 32, 32);
     public static final int SKILL_SIZE = 16;
     public static final int BOX_SIZE = 32;
     public static final int BOX_GRAY_SIZE = 22;
@@ -101,19 +102,19 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     public static void renderBox(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(BOX, x, y - 2, BOX_SIZE, BOX_SIZE);
+        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOX, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderBoxActivate(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(BOX_ACTIVATE, x, y - 2, BOX_SIZE, BOX_SIZE);
+        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOX_ACTIVATE, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderBoxSelect(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(BOX_SELECT, x, y - 2, BOX_SIZE, BOX_SIZE);
+        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOX_SELECT, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderBoxActivateFlame(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(BOX_ACTIVATE_FLAME, x, y - 2, BOX_SIZE, BOX_SIZE);
+        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOX_ACTIVATE_FLAME, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderSkillIcon(GuiGraphics guiGraphics, SoulSkillStack skillStack, int x, int y) {
@@ -121,11 +122,11 @@ public class SoulSkillBox extends AbstractWidget {
             return;
         }
         // TODO 需要添加CD渲染
-        guiGraphics.blitSprite(skillStack.getSoulSkill().icon(), x, y, SKILL_SIZE, SKILL_SIZE);
+        PortGuiGraphicsExtension.blitSprite(guiGraphics, skillStack.getSoulSkill().icon(), x, y, SKILL_SIZE, SKILL_SIZE);
     }
 
     public static void renderBoxGray(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(SoulSkillBox.BOX_GRAY, x, y, BOX_GRAY_SIZE, BOX_GRAY_SIZE);
+        PortGuiGraphicsExtension.blitSprite(guiGraphics, SoulSkillBox.BOX_GRAY, x, y, BOX_GRAY_SIZE, BOX_GRAY_SIZE);
     }
 
     public static void drawSkillStackName(GuiGraphics guiGraphics, Font font, int x, int y, SoulSkillStack currentSkillStack, boolean isCenter) {

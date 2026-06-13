@@ -1,28 +1,31 @@
 ﻿package org.confluence.mod.client.gui.hud;
 
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
+import org.mesdag.portlib.client.PortDeltaTicker;
+import org.mesdag.portlib.client.PortGuiLayer;
+import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 
 import java.util.Locale;
 
-import static org.confluence.mod.util.ClientUtils.*;
+import static org.confluence.mod.util.ClientUtils.colorDraw;
+import static org.confluence.mod.util.ClientUtils.drawString;
 
-public class TerraStyleArmorHud implements LayeredDraw.Layer {
+public class TerraStyleArmorHud implements PortGuiLayer {
     private static final int[] ARMOR = new int[]{0x979191, 0xd8c849, 0x8097b8, 0x3b2754, 0xea5d39};
     private static final int[] ARMOR_LOW = new int[]{0x5d4b4b, 0x645241, 0x515277, 0x201735, 0xb50000};
     private static final int[] ARMOR_HIGH = new int[]{0xffffeb, 0xfff9b7, 0xf6d8eb, 0x5b3b6e, 0xffffeb};
 
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+    public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         if (!ClientConfigs.terraStyleArmor) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft))
@@ -35,7 +38,7 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
         minecraft.getProfiler().pop();
     }
 
-    public enum Armor implements TranslatableEnum {
+    public enum Armor implements PortTranslatableEnum {
         LEGACY_HORIZONTAL {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
@@ -63,10 +66,10 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
                     armor = player.getArmorValue();
                 }
                 int widthArmor = guiGraphics.guiWidth() / 2 - 91;
-                int heightArmor = guiGraphics.guiHeight() - minecraft.gui.leftHeight;
-                minecraft.gui.leftHeight += 10;
+                int heightArmor = guiGraphics.guiHeight() - ((ForgeGui) minecraft.gui).leftHeight;
+                ((ForgeGui) minecraft.gui).leftHeight += 10;
                 RandomSource random = RandomSource.create(59160153);
-                colorDraw(guiGraphics, minecraft, random, ModClientSetups.OVERLAY_SPRITE, ARMOR, ARMOR_HIGH, ARMOR_LOW, armor, widthArmor, heightArmor, OVERLAY_SIZE, 20, true);
+                colorDraw(guiGraphics, minecraft, random, ModClientSetups.OVERLAY_SPRITE, ARMOR, ARMOR_HIGH, ARMOR_LOW, armor, widthArmor, heightArmor, ModClientSetups.OVERLAY_SIZE, 20, true);
             }
         };
 
@@ -110,7 +113,7 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
             widthOffset = widthOffset > 0 ? widthOffset : 0;
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(-widthOffset, 0.0F, 0.0F);
-            guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 0, 51, widthArmor, heightArmor, 23, 25);
+            guiGraphics.blit(ModClientSetups.LEGACY_SPRITE.path(), widthArmor, heightArmor, 0, 51, 23, 25, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE);
             guiGraphics.pose().popPose();
             if (armorToughnessNum == 0) {
                 drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - v - widthOffset, heightArmor + 12.5F - v2, colorArmor);

@@ -2,14 +2,13 @@ package org.confluence.mod.common.worldgen.feature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -18,120 +17,178 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.lib.util.FeatureUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
+    // 树木结构常量
+    private static final int HEIGHT_VARIATION = 3;           // 高度随机变化范围
+    private static final int BRANCH_OFFSET_POS = 3;         // 树枝起始偏移（东/南方向）
+    private static final int BRANCH_OFFSET_NEG = -2;        // 树枝起始偏移（西/北方向）
+    private static final int BRANCH_HEIGHT_VARIATION = 3;   // 树枝高度随机变化
+    private static final int BRANCH_LENGTH_MIN = 1;         // 树枝最小长度
+    private static final int BRANCH_LENGTH_MAX = 5;         // 树枝最大长度
+    private static final int BRANCH_HEIGHT_MIN = 1;         // 树枝最小高度
+    private static final int BRANCH_HEIGHT_MAX = 5;         // 树枝最大高度
+    private static final int LEAF_RADIUS_MIN = 2;           // 树叶最小半径
+    private static final int LEAF_RADIUS_MAX = 5;           // 树叶最大半径
+    private static final int ROOT_START_HEIGHT_MIN = 2;     // 树根起始高度最小值
+    private static final int ROOT_START_HEIGHT_MAX = 4;     // 树根起始高度最大值
+    private static final int ROOT_LENGTH_MIN = 0;           // 树根最小长度
+    private static final int ROOT_LENGTH_MAX = 3;           // 树根最大长度
+    private static final int ROOT_MAX_STEP = 10;            // 根系最大检查步数
+
     public BaobabTreeFeature(Codec<Config> pCodec) {
         super(pCodec);
     }
 
-    private static final TagKey<Block> LEAVES = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "leaves"));
-    private static final TagKey<Block> DIRT = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "dirt"));
-
     @Override
     public boolean place(FeaturePlaceContext<Config> pContext) {
-        final RandomSource random = pContext.random();
-        final Config config = pContext.config();
-        final WorldGenLevel level = pContext.level();
-        final BlockPos baseBlockPos = pContext.origin();
-        final BlockState trunkBlockState = config.trunk().getState(random, baseBlockPos);
-        final BlockState branchBlockState = config.branch().getState(random, baseBlockPos);
-        final BlockState rootBlockState = config.root().getState(random, baseBlockPos);
-        final BlockState innerBlockState = config.inner().getState(random, baseBlockPos);
-        final BlockState leavesBlockState = config.leaves().getState(random, baseBlockPos);
-        final int height = config.height + random.nextInt(3);
+        RandomSource random = pContext.random();
+        Config config = pContext.config();
+        WorldGenLevel level = pContext.level();
+        BlockPos baseBlockPos = pContext.origin();
+        BlockState trunkBlockState = config.trunk().getState(random, baseBlockPos);
+        BlockState branchBlockState = config.branch().getState(random, baseBlockPos);
+        BlockState rootBlockState = config.root().getState(random, baseBlockPos);
+        BlockState innerBlockState = config.inner().getState(random, baseBlockPos);
+        BlockState leavesBlockState = config.leaves().getState(random, baseBlockPos);
+        int height = config.height + random.nextInt(HEIGHT_VARIATION);
 
         // 遇到底部不满足4x4泥土范围的生成地点，直接不生成
         for (int kx = -1; kx < 3; kx++) {
             for (int kz = -1; kz < 3; kz++) {
-                if (!level.getBlockState(baseBlockPos.offset(kx, -1, kz)).is(DIRT)) return false;
+                if (!level.getBlockState(baseBlockPos.offset(kx, -1, kz)).is(BlockTags.DIRT))
+                    return false;
             }
         }
 
-        // 准备需要使用的List
-        final List<Long> trunkList = new ArrayList<>();
-        final List<Long> innerList = new ArrayList<>();
-        final List<Long> leavesRootList = new ArrayList<>();
-        final List<Long> leavesList = new ArrayList<>();
-        final List<Long> logXList = new ArrayList<>();
-        final List<Long> logYList = new ArrayList<>();
-        final List<Long> logZList = new ArrayList<>();
-        final List<Long> debugList = new ArrayList<>();
+        // 准备需要使用的Set (fastutil原始类型，避免自动装箱)
+        LongOpenHashSet trunkSet = new LongOpenHashSet();
+        LongOpenHashSet innerSet = new LongOpenHashSet();
+        LongOpenHashSet leavesRootSet = new LongOpenHashSet();
+        LongOpenHashSet leavesSet = new LongOpenHashSet();
+        LongOpenHashSet branchXSet = new LongOpenHashSet();
+        LongOpenHashSet branchYSet = new LongOpenHashSet();
+        LongOpenHashSet branchZSet = new LongOpenHashSet();
+        LongOpenHashSet collisionSet = new LongOpenHashSet();
 
         // 分别写入树干、树干的中部填充的坐标
         for (int y = 0; y <= height; y++) {
             for (int x = -1; x <= 2; x++) {
                 for (int z = -1; z <= 2; z++) {
-                    trunkList.add(baseBlockPos.offset(x, y, z).asLong());
+                    trunkSet.add(baseBlockPos.offset(x, y, z).asLong());
                 }
             }
         }
         for (int y = 1; y < height; y++) {
             for (int x = 0; x <= 1; x++) {
                 for (int z = 0; z <= 1; z++) {
-                    innerList.add(baseBlockPos.offset(x, y, z).asLong());
+                    innerSet.add(baseBlockPos.offset(x, y, z).asLong());
                 }
             }
         }
 
         // 计算树枝的每个方块的坐标
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             Direction t = Direction.from2DDataValue(i);
-            int x = t == Direction.EAST ? 3 : (t == Direction.WEST ? -2 : random.nextInt(0, 2));
-            int z = t == Direction.SOUTH ? 3 : (t == Direction.NORTH ? -2 : random.nextInt(0, 2));
-            branchPlace(random, baseBlockPos.offset(x, height - random.nextInt(0, 3), z), t, logXList, logYList, logZList, leavesRootList);
+            int x = t == Direction.EAST ? BRANCH_OFFSET_POS : (t == Direction.WEST ? BRANCH_OFFSET_NEG : random.nextInt(0, 2));
+            int z = t == Direction.SOUTH ? BRANCH_OFFSET_POS : (t == Direction.NORTH ? BRANCH_OFFSET_NEG : random.nextInt(0, 2));
+            branchPlace(random, baseBlockPos.offset(x, height - random.nextInt(0, BRANCH_HEIGHT_VARIATION), z), t, branchXSet, branchYSet, branchZSet, leavesRootSet);
         }
 
-        // 将树枝和树干都塞进一个统一的列表，便于检查当前位置是否足够放置这棵树，同时便于后续树叶状态更新中输入原木的坐标列表
-        debugList.addAll(trunkList); debugList.addAll(logXList); debugList.addAll(logYList); debugList.addAll(logZList);
+        // 将树枝和树干都塞进一个统一的集合，便于检查当前位置是否足够放置这棵树，同时便于后续树叶状态更新中输入原木的坐标列表
+        collisionSet.addAll(trunkSet);
+        collisionSet.addAll(branchXSet);
+        collisionSet.addAll(branchYSet);
+        collisionSet.addAll(branchZSet);
 
         // 检查当前位置是否有足够空间放置整棵树
-        for (long pos : debugList) {
-            BlockState blockState = level.getBlockState(BlockPos.of(pos));
-            if (!(blockState.canBeReplaced() || blockState.is(LEAVES))) return false;
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        for (long pos : collisionSet) {
+            mutablePos.set(pos);
+            BlockState blockState = level.getBlockState(mutablePos);
+            if (!(blockState.canBeReplaced() || blockState.is(BlockTags.LEAVES))) return false;
         }
 
-        // 放置树枝
-        logXList.forEach(pos -> level.setBlock(BlockPos.of(pos), branchBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.X), 3));
-        logYList.forEach(pos -> level.setBlock(BlockPos.of(pos), branchBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Y), 3));
-        logZList.forEach(pos -> level.setBlock(BlockPos.of(pos), branchBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Z), 3));
+        // 预计算三种轴向的方块状态，避免循环中重复计算
+        BlockState branchX = branchBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.X);
+        BlockState branchY = branchBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Y);
+        BlockState branchZ = branchBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Z);
 
-        // 清空xyz列表用来给Root腾位置，节约List数量
-        logXList.clear(); logYList.clear(); logZList.clear();
+        // 放置树枝
+        for (long pos : branchXSet) {
+            mutablePos.set(pos);
+            level.setBlock(mutablePos, branchX, 3);
+        }
+        for (long pos : branchYSet) {
+            mutablePos.set(pos);
+            level.setBlock(mutablePos, branchY, 3);
+        }
+        for (long pos : branchZSet) {
+            mutablePos.set(pos);
+            level.setBlock(mutablePos, branchZ, 3);
+        }
+
+        // 清空xyz集合用来给Root腾位置
+        branchXSet.clear();
+        branchYSet.clear();
+        branchZSet.clear();
 
         // ↓由于树叶和树根的放置比较弹性，不需要考虑是否会被方块阻挡，所以在判断后放置，避免计算好了放不下来浪费算力
         // 计算树叶的位置
-        leavesRootList.forEach(pos -> {
-            BlockPos blockPos = BlockPos.of(pos);
-            int side = random.nextInt(2, 5);
-            leavesPlace(blockPos, leavesList, side, level);
-            leavesPlace(blockPos.offset(0, 1, 0), leavesList, side - 1, level);
-        });
-
-        // 计算树根的位置
-        for (int i = 0; i < 4; i++){
-            Direction t = Direction.from2DDataValue(i);
-            int x = t == Direction.EAST ? 3 : (t == Direction.WEST ? -2 : random.nextInt(0, 2));
-            int z = t == Direction.SOUTH ? 3 : (t == Direction.NORTH ? -2 : random.nextInt(0, 2));
-            rootPlace(random, baseBlockPos.offset(x, random.nextInt(2, 4), z), t, logXList, logYList, logZList, 10, level);
+        for (long pos : leavesRootSet) {
+            mutablePos.set(pos);
+            int side = random.nextInt(LEAF_RADIUS_MIN, LEAF_RADIUS_MAX);
+            leavesPlace(mutablePos, leavesSet, side, level);
+            leavesPlace(mutablePos.offset(0, 1, 0), leavesSet, side - 1, level);
         }
 
+        // 计算树根的位置
+        for (int i = 0; i < 4; i++) {
+            Direction direction = Direction.from2DDataValue(i);
+            int x = direction == Direction.EAST ? BRANCH_OFFSET_POS : (direction == Direction.WEST ? BRANCH_OFFSET_NEG : random.nextInt(0, 2));
+            int z = direction == Direction.SOUTH ? BRANCH_OFFSET_POS : (direction == Direction.NORTH ? BRANCH_OFFSET_NEG : random.nextInt(0, 2));
+            rootPlace(random, baseBlockPos.offset(x, random.nextInt(ROOT_START_HEIGHT_MIN, ROOT_START_HEIGHT_MAX), z), direction, branchXSet, branchYSet, branchZSet, ROOT_MAX_STEP, level);
+        }
+
+        // 预计算根部方块状态
+        BlockState rootX = rootBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.X);
+        BlockState rootY = rootBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Y);
+        BlockState rootZ = rootBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Z);
+
         // 放置树叶、树干、树根、树干内部的填充物
-        leavesList.forEach(pos -> level.setBlock(BlockPos.of(pos), leavesBlockState, 3));
-        trunkList.forEach(pos -> level.setBlock(BlockPos.of(pos), trunkBlockState, 3));
-        logXList.forEach(pos -> level.setBlock(BlockPos.of(pos), rootBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.X), 3));
-        logYList.forEach(pos -> level.setBlock(BlockPos.of(pos), rootBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Y), 3));
-        logZList.forEach(pos -> level.setBlock(BlockPos.of(pos), rootBlockState.trySetValue(BlockStateProperties.AXIS, Direction.Axis.Z), 3));
-        innerList.forEach(pos -> level.setBlock(BlockPos.of(pos), innerBlockState, 3));
+        for (long pos : leavesSet) {
+            mutablePos.set(pos);
+            level.setBlock(mutablePos, leavesBlockState, 3);
+        }
+        for (long pos : trunkSet) {
+            mutablePos.set(pos);
+            level.setBlock(mutablePos, trunkBlockState, 3);
+        }
+        for (long pos : branchXSet) {
+            mutablePos.set(pos);
+            level.setBlock(mutablePos, rootX, 3);
+        }
+        for (long pos : branchYSet) {
+            mutablePos.set(pos);
+            level.setBlock(mutablePos, rootY, 3);
+        }
+        for (long pos : branchZSet) {
+            mutablePos.set(pos);
+            level.setBlock(mutablePos, rootZ, 3);
+        }
+        for (long pos : innerSet) {
+            mutablePos.set(pos);
+            level.setBlock(mutablePos, innerBlockState, 3);
+        }
 
         // 重新计算树叶的状态并更新
-        FeatureUtils.updateLeavesOptimized(level, debugList, leavesList, true, false);
+        FeatureUtils.updateLeavesOptimized(level, collisionSet, leavesSet, true, false);
 
         return true;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider branch, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider inner, int height) implements FeatureConfiguration {
+    public record Config(BlockStateProvider trunk, BlockStateProvider branch,
+                         BlockStateProvider root, BlockStateProvider leaves,
+                         BlockStateProvider inner, int height) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("branch_block").forGetter(Config::branch),
@@ -144,38 +201,44 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
 
     /// 生成树枝
     ///
-    /// @param random 随机
-    /// @param blockPos 基点坐标
-    /// @param direction 树枝方向
-    /// @param branchX 存放X方向树枝的Set
-    /// @param branchY 存放Y方向树枝的Set
-    /// @param branchZ 存放Z方向树枝的Set
+    /// @param random     随机
+    /// @param blockPos   基点坐标
+    /// @param direction  树枝方向
+    /// @param branchX    存放X方向树枝的Set
+    /// @param branchY    存放Y方向树枝的Set
+    /// @param branchZ    存放Z方向树枝的Set
     /// @param leavesRoot 存放树叶根部的Set
     private void branchPlace(RandomSource random, BlockPos blockPos,
                              Direction direction,
-                             List<Long> branchX, List<Long> branchY, List<Long> branchZ,
-                             List<Long> leavesRoot
+                             LongSet branchX, LongSet branchY, LongSet branchZ,
+                             LongSet leavesRoot
     ) {
-        int length = random.nextInt(1, 5);
-        int height = random.nextInt(1, 5);
-        List<Long> xzSet = new ArrayList<>();
+        int length = random.nextInt(BRANCH_LENGTH_MIN, BRANCH_LENGTH_MAX);
+        int height = random.nextInt(BRANCH_HEIGHT_MIN, BRANCH_HEIGHT_MAX);
+        BlockPos currentPos = blockPos;
+        LongOpenHashSet xzSet = new LongOpenHashSet();
+
+        // 水平延伸
         for (int i = 0; i < length; i++) {
-            xzSet.add(blockPos.asLong());
-            blockPos = blockPos.relative(direction);
+            xzSet.add(currentPos.asLong());
+            currentPos = currentPos.relative(direction);
         }
         if (direction.getAxis() == Direction.Axis.X) branchX.addAll(xzSet);
         else branchZ.addAll(xzSet);
+
+        // 垂直延伸
         for (int i = 0; i < height; i++) {
-            branchY.add(blockPos.asLong());
+            branchY.add(currentPos.asLong());
             if (i == height - 1) {
-                leavesRoot.add(blockPos.asLong());
-                for (int j = 0; j < 4 ;j++) {
-                    Direction t = Direction.from2DDataValue(j);
-                    if (t.getAxis() == Direction.Axis.X) branchX.add(blockPos.relative(t).asLong());
-                    else branchZ.add(blockPos.relative(t).asLong());
+                leavesRoot.add(currentPos.asLong());
+                for (int j = 0; j < 4; j++) {
+                    Direction dir = Direction.from2DDataValue(j);
+                    if (dir.getAxis() == Direction.Axis.X)
+                        branchX.add(currentPos.relative(dir).asLong());
+                    else branchZ.add(currentPos.relative(dir).asLong());
                 }
             }
-            blockPos = blockPos.offset(0, 1, 0);
+            currentPos = currentPos.offset(0, 1, 0);
         }
     }
 
@@ -190,60 +253,75 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
     /// @param rootZ 存放Z方向树根的Set
     /// @param maxStep 最大檢查步數
     private void rootPlace(RandomSource random, BlockPos blockPos,
-                            Direction direction,
-                           List<Long> rootX, List<Long> rootY, List<Long> rootZ,
+                           Direction direction,
+                           LongSet rootX, LongSet rootY, LongSet rootZ,
                            int maxStep, WorldGenLevel level
     ) {
-        boolean place = false; // 此处的place是判断根系有没有落地来决定放不放置的。可能有点反逻辑
-        int length = random.nextInt(0, 3);
-        List<Long> xzSet = new ArrayList<>();
-        List<Long> ySet = new ArrayList<>();
+        int length = random.nextInt(ROOT_LENGTH_MIN, ROOT_LENGTH_MAX);
+        LongOpenHashSet horizontalPositions = new LongOpenHashSet();
+        LongOpenHashSet verticalPositions = new LongOpenHashSet();
 
-        checkPlace: {
-            if (!level.getBlockState(blockPos).canBeReplaced()) {
-                break checkPlace;
-            }
-            for (int i = 0; i < length; i++) {
-                xzSet.add(blockPos.asLong());
-                blockPos = blockPos.relative(direction);
-                if (!level.getBlockState(blockPos).canBeReplaced()) {
-                    place = true;
-                    break checkPlace;
-                }
-            }
-            for (int i = 0; i < maxStep; i++) {
-                ySet.add(blockPos.asLong());
-                blockPos = blockPos.offset(0, -1, 0);
-                if (!level.getBlockState(blockPos).canBeReplaced()) {
-                    place = true;
-                    break checkPlace;
-                }
-            }
-        }
-
-        if (place) {
-            rootY.addAll(ySet);
-            if (direction.getAxis() == Direction.Axis.X) rootX.addAll(xzSet);
-            else rootZ.addAll(xzSet);
+        if (findRootSupport(blockPos, direction, length, maxStep, level, horizontalPositions, verticalPositions)) {
+            rootY.addAll(verticalPositions);
+            if (direction.getAxis() == Direction.Axis.X) rootX.addAll(horizontalPositions);
+            else rootZ.addAll(horizontalPositions);
         }
     }
 
-    private void leavesPlace(BlockPos blockPos, List<Long> leavesList, int side, WorldGenLevel level) {
+    /**
+     * 寻找树根支撑点
+     *
+     * @param startPos            起始位置
+     * @param direction           延伸方向
+     * @param maxLength           水平延伸最大长度
+     * @param maxStep             垂直下降最大步数
+     * @param level               世界
+     * @param horizontalPositions 收集水平方向坐标
+     * @param verticalPositions   收集垂直方向坐标
+     * @return true 如果找到支撑点
+     */
+    private boolean findRootSupport(BlockPos startPos, Direction direction,
+                                    int maxLength, int maxStep, WorldGenLevel level,
+                                    LongOpenHashSet horizontalPositions,
+                                    LongOpenHashSet verticalPositions) {
+        BlockPos currentPos = startPos;
+
+        // 检查起始位置
+        if (!level.getBlockState(currentPos).canBeReplaced()) return false;
+
+        // 水平延伸
+        for (int i = 0; i < maxLength; i++) {
+            horizontalPositions.add(currentPos.asLong());
+            currentPos = currentPos.relative(direction);
+            if (!level.getBlockState(currentPos).canBeReplaced()) return true;
+        }
+
+        // 垂直下降寻找支撑
+        for (int i = 0; i < maxStep; i++) {
+            verticalPositions.add(currentPos.asLong());
+            currentPos = currentPos.offset(0, -1, 0);
+            if (!level.getBlockState(currentPos).canBeReplaced()) return true;
+        }
+
+        return false;
+    }
+
+    private void leavesPlace(BlockPos blockPos, LongSet leavesSet, int side, WorldGenLevel level) {
         for (int x = 1 - side; x <= side - 1; x++) {
             for (int z = -side; z <= side; z++) {
-                BlockPos debugPos = blockPos.offset(x, 0, z);
-                if (level.getBlockState(debugPos).canBeReplaced()) leavesList.add(debugPos.asLong());
+                BlockPos leafPos = blockPos.offset(x, 0, z);
+                if (level.getBlockState(leafPos).canBeReplaced()) leavesSet.add(leafPos.asLong());
             }
         }
         int x = -side;
         for (int z = 1 - side; z <= side - 1; z++) {
-            BlockPos debugPos = blockPos.offset(x, 0, z);
-            if (level.getBlockState(debugPos).canBeReplaced()) leavesList.add(debugPos.asLong());
+            BlockPos leafPos = blockPos.offset(x, 0, z);
+            if (level.getBlockState(leafPos).canBeReplaced()) leavesSet.add(leafPos.asLong());
         }
         x = side;
         for (int z = 1 - side; z <= side - 1; z++) {
-            BlockPos debugPos = blockPos.offset(x, 0, z);
-            if (level.getBlockState(debugPos).canBeReplaced()) leavesList.add(debugPos.asLong());
+            BlockPos leafPos = blockPos.offset(x, 0, z);
+            if (level.getBlockState(leafPos).canBeReplaced()) leavesSet.add(leafPos.asLong());
         }
     }
 }

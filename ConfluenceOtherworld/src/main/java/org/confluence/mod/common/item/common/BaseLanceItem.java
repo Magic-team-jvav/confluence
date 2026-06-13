@@ -1,6 +1,6 @@
 ﻿package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.item.enchantment.PortEnchantmentHelper;
+import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -126,7 +126,7 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
                     double kb = impactSpeed * baseKnockback * 4 / 105;
                     LibEntityUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
                 }
-                PortEnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
+                PortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level, victim, damageSource);
             }
         }
     }

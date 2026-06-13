@@ -1,7 +1,7 @@
 ﻿package org.confluence.mod.common.block.common;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
-import PortLib.extensions.net.minecraft.world.item.enchantment.PortEnchantmentHelper;
+import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -108,7 +108,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
 
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity be, ItemStack tool) {
-        boolean hasSilkTouch = PortEnchantmentHelper.getEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.SILK_TOUCH), player) > 0;
+        boolean hasSilkTouch = PortEnchantmentHelperExtension.getEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.SILK_TOUCH), player) > 0;
         if (hasSilkTouch) {
             ItemStack dropStack = new ItemStack(this);
             BlockEntity headBeToSave = null;

@@ -1,6 +1,6 @@
 ﻿package org.confluence.mod.common.entity.projectile.range.arrow;
 
-import PortLib.extensions.net.minecraft.world.item.enchantment.PortEnchantmentHelper;
+import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -191,7 +191,7 @@ public class BaseArrowEntity extends AbstractArrow {
         if (this.getWeaponItem() != null) {
             Level var9 = this.level();
             if (var9 instanceof ServerLevel) {
-                int value = PortEnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, this.getWeaponItem());
+                int value = PortEnchantmentHelperExtension.getEnchantmentLevel(Enchantments.POWER, this.getWeaponItem());
                 d0 *= (value * 0.1f + 1.0f);
             }
         }
@@ -232,7 +232,7 @@ public class BaseArrowEntity extends AbstractArrow {
 
             //箭药水效果
             if (!this.level().isClientSide && entity1 instanceof LivingEntity) {
-                PortEnchantmentHelper.doPostAttackEffects((ServerLevel) level(), entity, damagesource);
+                PortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), entity, damagesource);
             }
 
             //命中自己

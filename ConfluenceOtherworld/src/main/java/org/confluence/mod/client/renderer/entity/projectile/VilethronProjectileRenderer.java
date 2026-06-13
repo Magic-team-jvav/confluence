@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.VilethronProjectileModel;
@@ -34,8 +33,7 @@ public class VilethronProjectileRenderer extends EntityRenderer<VilethronProject
         float[] rot = entity.getRot();
         poseStack.mulPose(Axis.YP.rotation(rot[0] - Mth.HALF_PI));
         poseStack.mulPose(Axis.ZP.rotation(rot[1]));
-        int color = FastColor.ARGB32.color(entity.getAlpha(), 0xFFFFFF);
-        model.renderToBuffer(poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, color);
+        model.renderToBuffer(poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, entity.getAlpha() / 255F);
         poseStack.popPose();
     }
 }

@@ -7,8 +7,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.confluence.mod.client.model.item.PhasebladeModel;
 import org.confluence.mod.common.item.sword.Phaseblade;
-import org.confluence.terraentity.data.component.SingleBooleanComponent;
-import org.confluence.terraentity.init.TEDataComponentTypes;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;

@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import org.confluence.mod.common.entity.projectile.mana.MagicDaggerProjectile;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 
 public class MagicDaggerRenderer extends GeoNegativeVolumeRenderer<MagicDaggerProjectile> {
     public MagicDaggerRenderer(EntityRendererProvider.Context context) {

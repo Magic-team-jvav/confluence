@@ -85,7 +85,7 @@ public abstract class AbstractHookRenderer<T extends AbstractHookEntity> extends
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(entity.getXRot()));
-        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity))), skyLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(getTextureLocation(entity))), skyLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
     }
 

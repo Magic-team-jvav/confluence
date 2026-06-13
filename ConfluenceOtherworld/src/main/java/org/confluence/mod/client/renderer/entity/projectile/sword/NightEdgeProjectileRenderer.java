@@ -5,14 +5,13 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
-import org.jetbrains.annotations.NotNull;
 
 public class NightEdgeProjectileRenderer extends EntityRenderer<NightEdgeProjectile> {
-
     public NightEdgeProjectileRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
     }
@@ -60,7 +59,7 @@ public class NightEdgeProjectileRenderer extends EntityRenderer<NightEdgeProject
     }
 
     @Override
-    public ResourceLocation getTextureLocation(@NotNull NightEdgeProjectile trailSwordProj) {
-        return null;
+    public ResourceLocation getTextureLocation(NightEdgeProjectile trailSwordProj) {
+        return TextureAtlas.LOCATION_BLOCKS;
     }
 }

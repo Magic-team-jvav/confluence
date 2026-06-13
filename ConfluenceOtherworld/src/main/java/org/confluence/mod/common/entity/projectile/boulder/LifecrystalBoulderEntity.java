@@ -11,9 +11,9 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class LifecrystalBoulderEntity extends BoulderEntity implements GeoAnimatable {
@@ -34,7 +34,7 @@ public class LifecrystalBoulderEntity extends BoulderEntity implements GeoAnimat
     }
 
     private void dropLifeCrystal(ServerLevel serverLevel) {
-        ItemStack lifeCrystal = ConsumableItems.LIFE_CRYSTAL.toStack();
+        ItemStack lifeCrystal = ConsumableItems.LIFE_CRYSTAL.get().getDefaultInstance();
         BlockPos blockPos = blockPosition();
         BlockState blockState = serverLevel.getBlockState(blockPos);
 

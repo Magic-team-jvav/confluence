@@ -14,22 +14,24 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.confluence.lib.client.DummyVertexConsumer;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.mixin.client.model.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererAccessor;
 import org.joml.Vector3f;
-import software.bernie.geckolib.animatable.GeoAnimatable;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.cache.object.*;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.object.Color;
 import software.bernie.geckolib.renderer.GeoArmorRenderer;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.util.Color;
 
 import java.util.List;
 
@@ -83,7 +85,7 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 poseStack.pushPose();
 
                 BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
-                geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0);
+                geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0, 0, 0, 0);
                 // GeoGeo的奇妙Y轴旋转
                 poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
                 poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
@@ -108,16 +110,17 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 poseStack.translate(0, -centerY, 0);
 
                 ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
-                RenderType renderType = geoRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
+                RenderType renderType = geoRenderer.getRenderType(animatable, textureLocation, bufferSource, partialTick);
+                Color color = geoRenderer.getRenderColor(animatable, partialTick, packedLight);
                 geoRenderer.renderCube(poseStack, geoCube,
                         bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
                         packedLight,
                         OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)),
-                        geoRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
+                        color.getRedFloat(), color.getGreenFloat(), color.getBlueFloat(), color.getAlphaFloat());
                 poseStack.popPose();
             } else if (cube instanceof GeoBone geoBone) {
                 BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
-                geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0);
+                geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0, 0, 0, 0);
                 // GeoGeo的奇妙Y轴旋转
 //                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
 //                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
@@ -125,12 +128,13 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
 //                poseStack.translate(0, 0.01f, 0);
                 applyRandomRotation(entity, poseStack, partialTick);
                 ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
-                RenderType renderType = geoRenderer.getRenderType(dying, textureLocation, bufferSource, partialTick);
+                RenderType renderType = geoRenderer.getRenderType(animatable, textureLocation, bufferSource, partialTick);
+                Color color = geoRenderer.getRenderColor(animatable, partialTick, packedLight);
                 geoRenderer.renderRecursively(poseStack, dying, geoBone, renderType, bufferSource,
                         bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
                         false, partialTick, packedLight,
                         OverlayTexture.pack(OverlayTexture.u(0), OverlayTexture.v(false)),
-                        geoRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
+                        color.getRedFloat(), color.getGreenFloat(), color.getBlueFloat(), color.getAlphaFloat());
             }
         } else if (renderer instanceof LivingEntityRenderer livingRenderer && dying instanceof LivingEntity living) { // 原版生物
             if (cube instanceof ModelPart.Cube partCube && minecraft.player != null) {
@@ -176,10 +180,15 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 poseStack.scale(-1.0F, -1.0F, 1.0F);
                 ra.callScale(living, poseStack, 1);
 
-                partCube.compile(poseStack.last(), bufferSource.getBuffer(renderType), packedLight, 655360, translucent ? 654311423 : -1);
+                int color = translucent ? 654311423 : -1;
+                float red = FastColor.ARGB32.red(color) / 255F;
+                float green = FastColor.ARGB32.green(color) / 255F;
+                float blue = FastColor.ARGB32.blue(color) / 255F;
+                float alpha = FastColor.ARGB32.alpha(color) / 255F;
+                partCube.compile(poseStack.last(), bufferSource.getBuffer(renderType), packedLight, 655360, red, green, blue, alpha);
                 poseStack.popPose();
             } else if (cube instanceof ItemStack itemStack && itemStack.getItem() instanceof Equipable equipable && livingRenderer.getModel() instanceof HumanoidModel baseModel) {
-                HumanoidModel<?> humanoidModel = GeoRenderProvider.of(itemStack.getItem()).getGeoArmorRenderer(living, itemStack, null, baseModel);
+                HumanoidModel<?> humanoidModel = IClientItemExtensions.of(itemStack.getItem()).getHumanoidArmorModel(living, itemStack, null, baseModel);
                 if (!(humanoidModel instanceof GeoArmorRenderer<?> geoArmorRenderer)) {
                     return;
                 }
@@ -200,8 +209,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 poseStack.scale(-1.0F, -1.0F, 1.0F);
                 poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
                 poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
-                geoArmorRenderer.prepForRender(dying, itemStack, equipable.getEquipmentSlot(), baseModel, bufferSource, partialTick, 0, 0, living.getYHeadRot(), living.getXRot());
-                geoArmorRenderer.renderToBuffer(poseStack, null, packedLight, OverlayTexture.NO_OVERLAY, Color.WHITE.argbInt());
+                geoArmorRenderer.prepForRender(dying, itemStack, equipable.getEquipmentSlot(), baseModel);
+                geoArmorRenderer.renderToBuffer(poseStack, DummyVertexConsumer.INSTANCE, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
                 poseStack.popPose();
                 geoArmorRenderer.doPostRenderCleanup();
             }

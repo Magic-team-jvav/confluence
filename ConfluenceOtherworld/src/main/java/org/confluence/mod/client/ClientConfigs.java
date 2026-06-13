@@ -20,7 +20,6 @@ import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 

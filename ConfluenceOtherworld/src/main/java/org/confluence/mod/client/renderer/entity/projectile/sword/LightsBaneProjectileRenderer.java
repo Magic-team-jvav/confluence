@@ -44,5 +44,4 @@ public class LightsBaneProjectileRenderer extends ForwardProjRenderer<LightBaneP
     public RenderType getRenderType(LightBaneProjectile entity, float partialTicks) {
         return RenderType.energySwirl(getTextureLocation(entity), (float) Math.sin(entity.tickCount * 0.1F), (float) Math.sin(entity.tickCount * 0.2F));
     }
-
 }

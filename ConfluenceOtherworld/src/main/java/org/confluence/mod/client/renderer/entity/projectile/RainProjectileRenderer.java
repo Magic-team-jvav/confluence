@@ -30,6 +30,6 @@ public class RainProjectileRenderer extends EntityRenderer<RainProjectile> {
 
     @Override
     public void render(RainProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
-        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(RenderType.entityTranslucentCull(texture)), packedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(RenderType.entityTranslucentCull(texture)), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
     }
 }

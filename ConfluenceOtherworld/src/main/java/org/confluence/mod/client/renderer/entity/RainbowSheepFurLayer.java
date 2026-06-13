@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
 import org.confluence.mod.client.model.entity.RainbowSheepFurModel;
 import org.confluence.mod.client.model.entity.RainbowSheepModel;
@@ -35,7 +34,7 @@ public class RainbowSheepFurLayer extends RenderLayer<RainbowSheep, RainbowSheep
                 model.setupAnim(livingEntity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
                 VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.outline(SHEEP_FUR_LOCATION));
                 int packedOverlay = LivingEntityRenderer.getOverlayCoords(livingEntity, 0.0F);
-                model.renderToBuffer(poseStack, vertexconsumer, packedLight, packedOverlay, -16777216);
+                model.renderToBuffer(poseStack, vertexconsumer, packedLight, packedOverlay, 0, 0, 0, 1);
             }
         } else {
             coloredCutoutModelCopyLayerRender(
@@ -52,7 +51,9 @@ public class RainbowSheepFurLayer extends RenderLayer<RainbowSheep, RainbowSheep
                     netHeadYaw,
                     headPitch,
                     partialTick,
-                    FastColor.ARGB32.opaque(ExpertColorAnimation.INSTANCE.getColor())
+                    ExpertColorAnimation.INSTANCE.getRed() / 255F,
+                    ExpertColorAnimation.INSTANCE.getGreen() / 255F,
+                    ExpertColorAnimation.INSTANCE.getBlue() / 255F
             );
         }
     }

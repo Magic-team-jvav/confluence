@@ -12,7 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.confluence.mod.client.event.ModClientSetups;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
 import org.confluence.terraentity.api.entity.trail.ITrail;
 import org.confluence.terraentity.entity.util.trail.PositionPoseProperties;
@@ -77,7 +77,7 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
 
     @OnlyIn(Dist.CLIENT)
     public void renderTrail(NightEdgeProjectile holder, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, ModClientSetups.TERRA_SWORD_RENDER_TYPE);
+        this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, RenderStateShardAccessor.ENTITY_TRANSLUCENT_EMISSIVE);
 //        poseStack.scale(1.2f, 1.2f, 1.2f);
 //        this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, glow);
     }

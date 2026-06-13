@@ -30,14 +30,14 @@ public class ZombieArmRenderer {
 
     public void render(PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, Player player, float partialTick) {
         PlayerModel<AbstractClientPlayer> playerModel = null;
-        if (player.getMainHandItem().is(SwordItems.ZOMBIE_ARM)) {
+        if (player.getMainHandItem().is(SwordItems.ZOMBIE_ARM.get())) {
             playerModel = playerRenderer.getModel();
             zombieModel.setAllVisible(false);
             playerModel.rightArm.visible = false;
             playerModel.rightSleeve.visible = false;
             zombieModel.rightArm.visible = true;
         }
-        if (player.getOffhandItem().is(SwordItems.ZOMBIE_ARM)) {
+        if (player.getOffhandItem().is(SwordItems.ZOMBIE_ARM.get())) {
             if (playerModel == null) {
                 playerModel = playerRenderer.getModel();
                 zombieModel.setAllVisible(false);
@@ -61,16 +61,16 @@ public class ZombieArmRenderer {
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         accessor.callScale(player, poseStack, partialTick);
         poseStack.translate(0.0F, -1.501F, 0.0F);
-        zombieModel.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY);
+        zombieModel.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
     }
 
     public boolean renderHand(PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, HumanoidArm humanoidArm) {
         ModelPart rendererArm;
-        if (humanoidArm == HumanoidArm.RIGHT && player.getMainHandItem().is(SwordItems.ZOMBIE_ARM)) {
+        if (humanoidArm == HumanoidArm.RIGHT && player.getMainHandItem().is(SwordItems.ZOMBIE_ARM.get())) {
             rendererArm = zombieModel.rightArm;
             zombieModel.rightArm.visible = true;
-        } else if (humanoidArm == HumanoidArm.LEFT && player.getOffhandItem().is(SwordItems.ZOMBIE_ARM)) {
+        } else if (humanoidArm == HumanoidArm.LEFT && player.getOffhandItem().is(SwordItems.ZOMBIE_ARM.get())) {
             rendererArm = zombieModel.leftArm;
             zombieModel.leftArm.visible = true;
         } else {

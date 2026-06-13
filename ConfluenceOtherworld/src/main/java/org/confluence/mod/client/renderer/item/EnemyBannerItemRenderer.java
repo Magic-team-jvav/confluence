@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.mesdag.portlib.client.PortDeltaTicker;
 
 public class EnemyBannerItemRenderer implements IClientItemExtensions {
     private final AbstractEnemyBannerBlock.BEntity fakeEntity;
@@ -35,7 +36,7 @@ public class EnemyBannerItemRenderer implements IClientItemExtensions {
                     fakeEntity.entryKey = AbstractEnemyBannerBlock.BItem.getEntryKey(stack);
                     BlockEntityRenderer<AbstractEnemyBannerBlock.BEntity> renderer1 = dispatcher.getRenderer(fakeEntity);
                     if (renderer1 != null) {
-                        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
+                        float partialTick = PortDeltaTicker.INSTANCE.getGameTimeDeltaPartialTick(false);
                         renderer1.render(fakeEntity, partialTick, poseStack, buffer, packedLight, packedOverlay);
                     }
                 }

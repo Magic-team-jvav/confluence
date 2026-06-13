@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.client.renderer.type.ModRenderTypes;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +47,7 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
         poseStack.scale(0.1f, 0.1f, 0.1f);
 
         int argb = FastColor.ARGB32.color(255, FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color));
-        VertexConsumer buffer = bufferSource.getBuffer(ModRenderTypes.TRAIL_RENDER_TYPE);
+        VertexConsumer buffer = bufferSource.getBuffer(RenderStateShardAccessor.TRAIL_RENDER_TYPE);
         Matrix4f matrix4f = poseStack.last().pose();
 
         float s = 0.5f;
@@ -69,7 +69,7 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
 
         poseStack.pushPose();
         Matrix4f matrix4f = poseStack.last().pose();
-        VertexConsumer buffer = bufferSource.getBuffer(ModRenderTypes.TRAIL_RENDER_TYPE);
+        VertexConsumer buffer = bufferSource.getBuffer(RenderStateShardAccessor.TRAIL_RENDER_TYPE);
 
         Minecraft mc = Minecraft.getInstance();
         Vec3 camDir = new Vec3(mc.gameRenderer.getMainCamera().getLookVector());

@@ -9,9 +9,9 @@ import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -38,13 +38,13 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
         public RemotePlayer apply(ClientLevel level) {
             if (cache == null) {
                 this.cache = new RemotePlayer(level, new GameProfile(Mth.createInsecureUUID(level.random), "MagicHarp2333")) { // Our Leader
-                    private PlayerSkin playerSkin;
+                    private ResourceLocation playerSkin;
 
                     @Override
-                    public PlayerSkin getSkin() {
+                    public ResourceLocation getSkinTextureLocation() {
                         if (playerSkin == null) {
                             getEntityData().set(DATA_PLAYER_MODE_CUSTOMISATION, (byte) 127); // 显示双层模型
-                            this.playerSkin = new PlayerSkin(Confluence.asResource("textures/magic_harp_2333.png"), null, null, null, PlayerSkin.Model.WIDE, false);
+                            this.playerSkin = Confluence.asResource("textures/magic_harp_2333.png");
                         }
                         return playerSkin;
                     }

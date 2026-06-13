@@ -52,7 +52,6 @@ import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.ColoredGlintContext;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
@@ -360,8 +359,6 @@ public final class ModClientSetups {
     }
 
     public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = LibUtils.isModLoaded("ctm") || LibUtils.isModLoaded("fusion") || LibUtils.isModLoaded("continuity");
-
-    public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderStateShardAccessor.getEntityTranslucentEmissive();
 
     public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
     public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);

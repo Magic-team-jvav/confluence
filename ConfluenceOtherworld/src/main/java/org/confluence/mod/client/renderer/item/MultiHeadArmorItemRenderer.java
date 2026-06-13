@@ -10,8 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.util.RenderUtil;
+import software.bernie.geckolib.util.RenderUtils;
 
 public class MultiHeadArmorItemRenderer<T extends Item & GeoItem> extends NormalArmorItemRenderer<T> {
     private final T[] headItems;
@@ -24,7 +23,7 @@ public class MultiHeadArmorItemRenderer<T extends Item & GeoItem> extends Normal
     }
 
     @Override
-    public @Nullable GeoBone getHeadBone(GeoModel<T> model) {
+    public @Nullable GeoBone getHeadBone() {
         return null;
     }
 
@@ -59,7 +58,7 @@ public class MultiHeadArmorItemRenderer<T extends Item & GeoItem> extends Normal
         for (GeoBone headBone : headBones) {
             if (headBone == null) continue;
             ModelPart headPart = baseModel.head;
-            RenderUtil.matchModelPartRot(headPart, headBone);
+            RenderUtils.matchModelPartRot(headPart, headBone);
             headBone.updatePosition(headPart.x, -headPart.y, headPart.z);
         }
     }

@@ -73,12 +73,13 @@ public class StarFuryProjectileRenderer extends EntityRenderer<SwordProjectile> 
         super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);
     }
 
-    protected static void vertex(VertexConsumer pConsumer, Matrix4f pPose, PoseStack.Pose pNormal, int pLightmapUV, float pX, float pY, int pU, int pV) {
+    protected static void vertex(VertexConsumer pConsumer, Matrix4f pPose, PoseStack.Pose pose, int pLightmapUV, float pX, float pY, int pU, int pV) {
         pConsumer.vertex(pPose, pX - 0.5F, pY - 0.5F, 0.0F)
                 .color(255, 150, 150, 255)
                 .uv((float) pU, (float) pV)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(pLightmapUV)
-                .setNormal(pNormal, 0.0F, 1.0F, 0.0F);
+                .normal(pose.normal(), 0.0F, 1.0F, 0.0F)
+                .endVertex();
     }
 }

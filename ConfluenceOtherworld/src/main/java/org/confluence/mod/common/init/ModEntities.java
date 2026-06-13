@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import org.confluence.lib.common.entitiy.EmptyEntity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;

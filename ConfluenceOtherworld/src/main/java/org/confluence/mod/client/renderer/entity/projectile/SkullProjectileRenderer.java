@@ -35,7 +35,7 @@ public class SkullProjectileRenderer extends EntityRenderer<SkullProjectile> {
         poseStack.mulPose(Axis.YP.rotationDegrees(-(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F)));
         poseStack.mulPose(Axis.ZP.rotationDegrees(-Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
         poseStack.mulPose(LibRenderUtils.ANGLE_N90);
-        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
     }
 }

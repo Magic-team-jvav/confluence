@@ -1,6 +1,7 @@
 package org.confluence.mod.client.renderer.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -15,16 +16,13 @@ import net.minecraft.world.inventory.InventoryMenu;
 import org.confluence.mod.common.entity.projectile.spear.SpearProjectile;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * <h1>通用长矛弹射物渲染器</h1>
- * 读取实体渲染元数据（纹理、模型层、自旋角度），实现一类一物品。
- */
+/// # 通用长矛弹射物渲染器
+/// 读取实体渲染元数据（纹理、模型层、自旋角度），实现一类一物品。
 public class SpearProjectileRenderer extends EntityRenderer<SpearProjectile> {
     @Nullable
     private final EntityModel<SpearProjectile> model;
 
-    public SpearProjectileRenderer(EntityRendererProvider.Context context,
-                                   @Nullable ModelLayerLocation layer) {
+    public SpearProjectileRenderer(EntityRendererProvider.Context context, @Nullable ModelLayerLocation layer) {
         super(context);
         this.model = layer != null ? new ProxyModel(context.bakeLayer(layer)) : null;
     }
@@ -36,8 +34,7 @@ public class SpearProjectileRenderer extends EntityRenderer<SpearProjectile> {
     }
 
     @Override
-    public void render(SpearProjectile entity, float entityYaw, float partialTick,
-                       PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(SpearProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (model == null || entity.getProjTexture() == null) return;
 
         poseStack.pushPose();
@@ -48,7 +45,7 @@ public class SpearProjectileRenderer extends EntityRenderer<SpearProjectile> {
         poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
         poseStack.mulPose(Axis.XP.rotationDegrees(pitch));
         poseStack.mulPose(entity.getSpinAxis().rotation(entity.getSpinRotation(partialTick)));
-        model.renderToBuffer(poseStack, buffer.getBuffer(model.renderType(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, buffer.getBuffer(model.renderType(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
     }
 
@@ -61,9 +58,8 @@ public class SpearProjectileRenderer extends EntityRenderer<SpearProjectile> {
         public void setupAnim(SpearProjectile e, float a, float b, float c, float d, float f) {}
 
         @Override
-        public void renderToBuffer(PoseStack ps, com.mojang.blaze3d.vertex.VertexConsumer vc,
-                                   int light, int overlay, int color) {
-            root.render(ps, vc, light, overlay, color);
+        public void renderToBuffer(PoseStack ps, VertexConsumer vc, int light, int overlay, float red, float green, float blue, float alpha) {
+            root.render(ps, vc, light, overlay, red, green, blue, alpha);
         }
     }
 }

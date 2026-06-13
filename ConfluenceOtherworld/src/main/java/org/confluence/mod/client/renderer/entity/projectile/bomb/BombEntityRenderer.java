@@ -27,7 +27,7 @@ public abstract class BombEntityRenderer<E extends BaseBombEntity> extends Entit
         pPoseStack.mulPose(Axis.YP.rotationDegrees(pEntity.getYRot() - 90.0F));
         pPoseStack.mulPose(Axis.ZP.rotation(-Mth.lerp(pPartialTick, pEntity.rotateO, pEntity.rotate)));
         EntityModel<E> model = getModel(pEntity);
-        model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(pPoseStack, pBuffer.getBuffer(model.renderType(getTextureLocation(pEntity))), pPackedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         pPoseStack.popPose();
     }
 }

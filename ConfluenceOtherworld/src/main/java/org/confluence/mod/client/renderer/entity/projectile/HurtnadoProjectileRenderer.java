@@ -31,7 +31,7 @@ public class HurtnadoProjectileRenderer extends EntityRenderer<HurtnadoProjectil
     public void render(HurtnadoProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotation(Mth.lerp(partialTick, entity.rotateO, entity.rotate)));
-        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(RenderType.entityTranslucent(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(RenderType.entityTranslucent(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
     }
 }

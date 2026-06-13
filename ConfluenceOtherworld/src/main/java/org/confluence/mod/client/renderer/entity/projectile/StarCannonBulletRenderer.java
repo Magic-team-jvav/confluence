@@ -36,11 +36,12 @@ public class StarCannonBulletRenderer extends ThrownItemRenderer<StarCannonBulle
     }
 
     private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int packedLight, float x, float y, float u, float v) {
-        consumer.vertex(pose, x - 0.5F, y - 0.25F, 0F)
+        consumer.vertex(pose.pose(), x - 0.5F, y - 0.25F, 0F)
                 .color(0.2F, 0.2F, 1F, 1F)
                 .uv(u, v)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
                 .uv2(packedLight)
-                .setNormal(pose, 0F, 1F, 0F);
+                .normal(pose.normal(), 0F, 1F, 0F)
+                .endVertex();
     }
 }

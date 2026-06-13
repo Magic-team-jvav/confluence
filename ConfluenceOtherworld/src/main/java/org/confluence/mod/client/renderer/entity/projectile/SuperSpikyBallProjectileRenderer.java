@@ -34,7 +34,7 @@ public class SuperSpikyBallProjectileRenderer extends EntityRenderer<SuperSpikyB
         poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() - 90.0F));
         poseStack.mulPose(Axis.ZP.rotation(-Mth.lerp(partialTick, entity.rotate.old, entity.rotate.neo)));
         poseStack.mulPose(Axis.YP.rotation(-Mth.HALF_PI));
-        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
     }
 }

@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
-import software.bernie.geckolib.util.Color;
+import software.bernie.geckolib.core.object.Color;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class CrystalVileShardProjectileRenderer extends GeoNegativeVolumeRendere
 
     @Override
     public Color getRenderColor(CrystalVileShardProjectile animatable, float partialTick, int packedLight) {
-        return Color.ofARGB(animatable.getAlpha(), 255, 255, 255);
+        return Color.ofRGBA(255, 255, 255, animatable.getAlpha());
     }
 
     @Override

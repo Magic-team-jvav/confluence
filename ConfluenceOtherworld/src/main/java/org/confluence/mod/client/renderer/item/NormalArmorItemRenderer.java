@@ -9,9 +9,9 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.util.ClientUtils;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.core.object.Color;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
-import software.bernie.geckolib.renderer.specialty.DyeableGeoArmorRenderer;
-import software.bernie.geckolib.util.Color;
+import software.bernie.geckolib.renderer.DyeableGeoArmorRenderer;
 
 import static org.confluence.lib.util.LibUtils.getSlotIndex;
 

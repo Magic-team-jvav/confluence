@@ -19,9 +19,6 @@ import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public class AltImageTooltip implements ClientTooltipComponent {
     private static final Vector3f DIFFUSE_LIGHT_0 = new Vector3f(0.2F, 1.0F, -0.7F).normalize();
     private static final Vector3f DIFFUSE_LIGHT_1 = new Vector3f(-0.2F, 1.0F, 0.7F).normalize();
@@ -70,7 +67,7 @@ public class AltImageTooltip implements ClientTooltipComponent {
             CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering item");
             CrashReportCategory crashreportcategory = crashreport.addCategory("Item being rendered");
             crashreportcategory.setDetail("Item Type", () -> String.valueOf(stack.getItem()));
-            crashreportcategory.setDetail("Item Components", () -> String.valueOf(stack.getComponents()));
+            crashreportcategory.setDetail("Item Tag", () -> String.valueOf(stack.getTag()));
             crashreportcategory.setDetail("Item Foil", () -> String.valueOf(stack.hasFoil()));
             throw new ReportedException(crashreport);
         }

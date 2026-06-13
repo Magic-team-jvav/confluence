@@ -63,7 +63,7 @@ public class TitaniumShardsProjectileRenderer extends EntityRenderer<TitaniumSha
             poseStack.translate(x, y, z);
             poseStack.mulPose(Axis.YN.rotation((entity.tickCount + partialTick) * Mth.DEG_TO_RAD + i));
             poseStack.scale(0.8F, -0.8F, 0.8F);
-            model.renderToBuffer(poseStack, bufferSource.getBuffer(RENDER_TYPES[i % 3]), packedLight, OverlayTexture.NO_OVERLAY, color);
+            model.renderToBuffer(poseStack, bufferSource.getBuffer(RENDER_TYPES[i % 3]), packedLight, OverlayTexture.NO_OVERLAY, color, 1, 1, 1, 1);
             poseStack.popPose();
         }
         if (owner != null) {

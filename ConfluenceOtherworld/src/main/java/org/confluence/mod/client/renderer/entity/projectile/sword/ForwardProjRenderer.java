@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.terraentity.client.entity.renderer.BaseEntityRenderer;
 
 public class ForwardProjRenderer<T extends Entity, S extends Entity, M extends EntityModel<S>> extends BaseEntityRenderer<T, S, M> {
     private final ResourceLocation texture;
@@ -51,7 +50,5 @@ public class ForwardProjRenderer<T extends Entity, S extends Entity, M extends E
         if (rotateZ) {
             poseStack.mulPose(Axis.ZN.rotation((entity.tickCount + partialTick) * rotateZSpeed));
         }
-
-
     }
 }

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,13 +37,14 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.util.TrapDamageHelper;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class BoulderEntity extends Projectile {
+public class BoulderEntity extends Projectile implements IPortProjectileExtension {
     public static final float SEARCH_RANGE = 31.5F;
 
     private static final EntityDataAccessor<BlockState> DATA_BLOCK_STATE = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BLOCK_STATE);
@@ -159,14 +161,12 @@ public class BoulderEntity extends Projectile {
             hitResult = hitResult1;
         }
 
-        switch (hitResult) {
-            case BlockHitResult blockHitResult -> {
-                if (blockHitResult.getType() != HitResult.Type.MISS) {
-                    onHitBlock(blockHitResult);
-                }
+        if (hitResult instanceof BlockHitResult blockHitResult) {
+            if (blockHitResult.getType() != HitResult.Type.MISS) {
+                onHitBlock(blockHitResult);
             }
-            case EntityHitResult entityHitResult -> onHitEntity(entityHitResult);
-            default -> {}
+        } else if (hitResult instanceof EntityHitResult entityHitResult) {
+            onHitEntity(entityHitResult);
         }
     }
 
@@ -203,7 +203,7 @@ public class BoulderEntity extends Projectile {
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0.08;
     }
 
@@ -314,13 +314,13 @@ public class BoulderEntity extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_BLOCK_STATE, FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState());
+    protected void defineSynchedData() {
+        entityData.define(DATA_BLOCK_STATE, FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState());
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
-        entityData.set(DATA_BLOCK_STATE, BlockState.CODEC.parse(NbtOps.INSTANCE, tag.get("BlockState")).getOrThrow());
+        entityData.set(DATA_BLOCK_STATE, PortDataResultExtension.getOrThrow(BlockState.CODEC.parse(NbtOps.INSTANCE, tag.get("BlockState"))));
         tickCount = tag.getInt("Age");
         stillTickCount = tag.getInt("StillAge");
 
@@ -334,7 +334,7 @@ public class BoulderEntity extends Projectile {
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.put("BlockState", BlockState.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_BLOCK_STATE)).getOrThrow());
+        tag.put("BlockState", PortDataResultExtension.getOrThrow(BlockState.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_BLOCK_STATE))));
         tag.putInt("Age", tickCount);
         tag.putInt("StillAge", stillTickCount);
         tag.putFloat("Radius", radius);

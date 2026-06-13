@@ -1,5 +1,6 @@
 package org.confluence.mod.client.renderer.item;
 
+import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -7,20 +8,20 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.LucyTheAxeHandler;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 
 import java.util.Queue;
 import java.util.function.Consumer;
 
 public class LucyTheAxeDialogRenderer {
-    private static final ResourceLocation background = Confluence.asResource("dialog_background");
-    private static final ResourceLocation tail = Confluence.asResource("dialog_tail");
+    private static final PortSprite background = new PortSprite(Confluence.asResource("dialog_background"), 48, 24);
+    private static final PortSprite tail = new PortSprite(Confluence.asResource("dialog_tail"), 8, 8);
     private static final Quaternionf quaternion = new Quaternionf();
     private static final Matrix4f matrix = new Matrix4f();
     public static final int COLOR = 0xFFAA0000;
@@ -36,10 +37,10 @@ public class LucyTheAxeDialogRenderer {
         MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
         FormattedCharSequence text = dialog.getVisualOrderText();
 
-        delayed = graphics -> {
+        delayed = guiGraphics -> {
             int y1 = (int) y - 5;
-            graphics.blitSprite(background, (int) x - 4, y1, textW + 8, minecraft.font.lineHeight + 9);
-            graphics.blitSprite(tail, (int) itemX + 8, y1 + 17, 8, 8);
+            PortGuiGraphicsExtension.blitSprite(guiGraphics, background, (int) x - 4, y1, textW + 8, minecraft.font.lineHeight + 9);
+            PortGuiGraphicsExtension.blitSprite(guiGraphics, tail, (int) itemX + 8, y1 + 17, 8, 8);
 
             minecraft.font.renderText(
                     text, x, y, COLOR, false, matrix,

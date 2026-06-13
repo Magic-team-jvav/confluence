@@ -1,5 +1,6 @@
 package org.confluence.mod.client.renderer.item;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -11,12 +12,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 // TODO 请给予更好的类名称
 public final class SpecialItemRenderingUtil {
-    public static void bowArrowRenderer(ItemRenderer itemRenderer, @NotNull LivingEntity entity, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, Player player, ItemStack stack) {
+    public static void bowArrowRenderer(ItemRenderer itemRenderer, LivingEntity entity, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, Player player, ItemStack stack) {
         float charge = player.getTicksUsingItem() / 20.0f;
         if (charge < 0.1f) {
             return;
@@ -28,8 +28,8 @@ public final class SpecialItemRenderingUtil {
         itemRenderer.render(arrowItem, displayContext, leftHand, poseStack, bufferSource, combinedLight, combinedOverlay, bakedmodel);
     }
 
-    public static void repeaterArrowRenderer(ItemRenderer itemRenderer, @NotNull LivingEntity entity, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, Player player, ItemStack stack) {
-        RepeaterContents repeaterContents = stack.getComponents().getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+    public static void repeaterArrowRenderer(ItemRenderer itemRenderer, LivingEntity entity, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, Player player, ItemStack stack) {
+        RepeaterContents repeaterContents = PortItemStackExtension.getDataOrDefault(stack, ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
         if (repeaterContents.isEmpty()) {
             return;
         }

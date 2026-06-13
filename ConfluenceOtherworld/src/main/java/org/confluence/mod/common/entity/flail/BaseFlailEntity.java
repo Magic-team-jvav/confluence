@@ -1,5 +1,7 @@
 package org.confluence.mod.common.entity.flail;
 
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -12,6 +14,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -199,6 +202,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         if (hitCooldown > 0) hitCooldown--;
         if (windBurstCooldown > 0) windBurstCooldown--;
 
+        this.noPhysics = false; // 默认启用碰撞，tickSpin 内部覆写为 true
         switch (phase) {
             case PHASE_SPIN -> tickSpin(player, component);
             case PHASE_THROWN -> tickThrown(player, component);
@@ -220,10 +224,15 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     }
 
     private void tickSpin(Player player, FlailComponent component) {
+        this.noPhysics = true;
         setNoGravity(true);
         spinTickCounter++;
         float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
         spinAngle += component.getSpinSpeed(player) * (1.0F + turbineBonus);
+
+        // 抖动根本原因
+        if (level().isClientSide()) return;
+
         Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F, new Vec3(0.25, 0.25, -0.2));
         // 与 getPalmPosition 保持一致，使用身体朝向而非头部朝向
         float yawRad = (float) Math.toRadians(player.yBodyRot);
@@ -236,8 +245,20 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         double x = pivot.x - localZ * sinYaw;
         double y = pivot.y + localY;
         double z = pivot.z + localZ * cosYaw;
-        // setPos 设置脚底，减去半高使几何中心对齐轨迹
-        setPos(x, y - getBbHeight() * 0.5, z);
+        Vec3 targetPos = new Vec3(x, y - getBbHeight() * 0.5, z);
+        Vec3 toTarget = targetPos.subtract(position());
+        double dist = toTarget.length();
+        double maxOrbitalSpeed = r * component.getSpinSpeed(player) * 1.5;
+        double maxSpeed = maxOrbitalSpeed + 0.5;
+        double k = 0.8;
+        double speed = 0.0;
+        if (dist > 1.0E-7) {
+            Vec3 dir = toTarget.normalize();
+            speed = Math.min(dist * k, maxSpeed);
+            setDeltaMovement(dir.scale(speed));
+            move(MoverType.SELF, getDeltaMovement());
+        }
+        setDeltaMovement(Vec3.ZERO);
     }
 
     /**
@@ -252,6 +273,13 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         return hit.getType() == HitResult.Type.BLOCK ? hit : null;
     }
 
+    /** 使实体面朝指定方向，从 deltaMovement 或 toOwner 向量计算 yaw/pitch */
+    private void faceDirection(Vec3 dir) {
+        double hDist = Math.sqrt(dir.x * dir.x + dir.z * dir.z);
+        setYRot((float) Math.toDegrees(Math.atan2(dir.x, dir.z)));
+        setXRot((float) Math.toDegrees(Math.atan2(-dir.y, hDist)));
+    }
+
     private void tickThrown(Player player, FlailComponent component) {
         Vec3 motion = getDeltaMovement();
 
@@ -260,6 +288,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             setPhase(PHASE_RETRACT);
             return;
         }
+
+        // 面朝飞行方向
+        faceDirection(motion);
 
         BlockHitResult blockHit = clipBlock(motion);
         if (blockHit == null) {
@@ -325,7 +356,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             }
             return;
         }
-
+        // 面朝玩家
+        faceDirection(toOwner);
         Vec3 dir = toOwner.normalize();
         Vec3 motion = dir.scale(component.retractSpeed());
         setDeltaMovement(motion);

@@ -98,15 +98,15 @@ public record FlailComponent(
                     Optional.empty()
             );
 
-    /** 链球 MACE 预制参数*/
+    /** 链球 MACE 预制参数（测试用）*/
     public static final Supplier<FlailComponent> MACE =
             () -> new FlailComponent(
                     18.0f,
                     1.2f,
-                    1.2f,
-                    1.2f,
+                    0.1f,
+                    0.3f,
                     8.0f,
-                    1.0f,
+                    0.3f,
                     0.05f,
                     0.3f,
                     3,

@@ -46,14 +46,16 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         return DEFAULT_MODEL;
     }
 
-    /** 子类可覆写以自定义链条方块外观 */
+    /**
+     * 子类可覆写以自定义链条方块外观
+     */
     protected BlockState getChain(BaseFlailEntity entity) {
         return Blocks.CHAIN.defaultBlockState();
     }
 
     @Override
     public boolean shouldRender(BaseFlailEntity entity, net.minecraft.client.renderer.culling.Frustum frustum,
-                                 double camX, double camY, double camZ) {
+                                double camX, double camY, double camZ) {
         if (super.shouldRender(entity, frustum, camX, camY, camZ)) {
             return true;
         }

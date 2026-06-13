@@ -1,9 +1,13 @@
 package org.confluence.mod.common.item.flail;
 
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -39,8 +43,8 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
 
     public BaseFlailItem(@NotNull FlailComponent flailComponent, @NotNull ModRarity rarity) {
         super(new Properties()
-                .stacksTo(1)
-                .component(ModDataComponentTypes.FLAIL, flailComponent),
+                        .stacksTo(1)
+                        .component(ModDataComponentTypes.FLAIL, flailComponent),
                 rarity, "");
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
@@ -66,10 +70,11 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
 
         if (existing == null) {
             // 创建新连枷并开始 SPIN
-            var entityType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.get(comp.projType());
+            EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(comp.projType());
             if (entityType == null) return InteractionResultHolder.fail(stack);
-            var entity = entityType.create(level);
-            if (!(entity instanceof BaseFlailEntity flail)) return InteractionResultHolder.fail(stack);
+            Entity entity = entityType.create(level);
+            if (!(entity instanceof BaseFlailEntity flail))
+                return InteractionResultHolder.fail(stack);
             flail.init(player, stack, comp);
             level.addFreshEntity(flail);
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -79,7 +84,8 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
                 case BaseFlailEntity.PHASE_SPIN -> {
                     existing.launch(player);
                 }
-                case BaseFlailEntity.PHASE_THROWN, BaseFlailEntity.PHASE_RETRACT -> existing.playerDrop();
+                case BaseFlailEntity.PHASE_THROWN, BaseFlailEntity.PHASE_RETRACT ->
+                        existing.playerDrop();
                 case BaseFlailEntity.PHASE_STAY -> existing.forceRetract();
                 default -> {}
             }
@@ -96,7 +102,9 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         ).stream().findFirst().orElse(null);
     }
 
-    /** 持有连枷时始终禁用挖掘*/
+    /**
+     * 持有连枷时始终禁用挖掘
+     */
     @Override
     public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return false;
@@ -118,7 +126,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
             private BaseFlailItemRenderer renderer;
 
             @Override
-            public net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+            public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (renderer == null) {
                     renderer = new BaseFlailItemRenderer();
                 }

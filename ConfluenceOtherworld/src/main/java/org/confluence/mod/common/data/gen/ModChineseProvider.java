@@ -3175,8 +3175,8 @@ public class ModChineseProvider extends LanguageProvider {
         //快攻
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
 
-        add(FlailItems.MACE.get(), "链球");
-        add(FlailItems.BALL_O_HURT.get(), "致伤球");
+        add(FlailItems.MACE.get(), "链锤");
+        add(FlailItems.BALL_O_HURT.get(), "链球");
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");

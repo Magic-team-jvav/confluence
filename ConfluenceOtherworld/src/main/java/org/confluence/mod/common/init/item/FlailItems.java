@@ -13,11 +13,11 @@ import org.confluence.mod.common.item.flail.BaseFlailItem;
 public class FlailItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    /** 致伤球 */
+    /** 链球 */
     public static final DeferredItem<BaseFlailItem> BALL_O_HURT = ITEMS.register("ball_o_hurt", () ->
             new BaseFlailItem(FlailComponent.BALL_O_HURT.get(), ModRarity.ORANGE));
 
-    /** 链球（MACE） */
+    /** 链锤 */
     public static final DeferredItem<BaseFlailItem> MACE = ITEMS.register("mace", () ->
             new BaseFlailItem(FlailComponent.MACE.get(), ModRarity.WHITE));
 }

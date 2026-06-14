@@ -11,7 +11,7 @@ import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terra_curio.common.init.TCCommonConfigs;
+import org.confluence.terra_curio.common.TCCommonConfigs;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;

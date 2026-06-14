@@ -28,9 +28,7 @@ public record DimensionLock(ResourceKey<Level> dimension) implements ITradeLock 
 
     @Override
     public boolean equals(Object o) {
-        return o == this || (o instanceof DimensionLock(
-                ResourceKey<Level> dimension1
-        ) && dimension == dimension1);
+        return o == this || (o instanceof DimensionLock that && dimension == that.dimension());
     }
 
     @Override

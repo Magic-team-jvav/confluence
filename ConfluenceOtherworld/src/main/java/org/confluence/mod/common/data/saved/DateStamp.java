@@ -24,7 +24,7 @@ public record DateStamp(byte month, byte day) {
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        return o instanceof DateStamp(byte month1, byte day1) && day == day1 && month == month1;
+        return o instanceof DateStamp that && day == that.day && month == that.month;
     }
 
     @Override

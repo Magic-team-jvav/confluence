@@ -13,9 +13,10 @@ import org.confluence.terraentity.api.npc.trade.TradeLockRecipeDrawer;
 public class GameEventLockRecipeDrawer extends TradeLockRecipeDrawer {
     @Override
     public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
-        if (!(lock instanceof GameEventLock(ResourceKey<? extends GameEvent> key))) {
+        if (!(lock instanceof GameEventLock gameEventLock)) {
             return y;
         }
+        ResourceKey<? extends GameEvent> key = gameEventLock.key();
 
         var size = getRecipeSize();
         guiGraphics.blitSprite(Confluence.asResource("shop_lock/moment"), x, y, size, size);

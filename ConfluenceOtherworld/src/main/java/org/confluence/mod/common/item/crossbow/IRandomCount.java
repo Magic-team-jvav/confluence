@@ -25,46 +25,35 @@ public interface IRandomCount {
     }
 
     static String getString(IRandomCount randomCount) {
-        switch (randomCount) {
-            case ArrayRandom random -> {
-                StringBuilder sb = new StringBuilder();
-                for (float number : random.getNumbers()) {
-                    sb.append(number).append(", ");
-                }
-                return sb.toString();
+        if (randomCount instanceof ArrayRandom random) {
+            StringBuilder sb = new StringBuilder();
+            for (float number : random.getNumbers()) {
+                sb.append(number).append(", ");
             }
-            case NonRandom nonRandom -> {
-                return String.valueOf(nonRandom.getCount());
-            }
-            case RangeRandom random -> {
-                return random.getMinCount() + "~" + random.getMaxCount();
-            }
-            case null -> {
-                return "";
-            }
-            default -> {
-                return randomCount.getString();
-            }
+            return sb.toString();
+        } else if (randomCount instanceof NonRandom nonRandom) {
+            return String.valueOf(nonRandom.getCount());
+        } else if (randomCount instanceof RangeRandom random) {
+            return random.getMinCount() + "~" + random.getMaxCount();
+        } else if (randomCount == null) {
+            return "";
+        } else {
+            return randomCount.getString();
         }
     }
 
     static boolean is(IRandomCount randomCount, float i) {
-        switch (randomCount) {
-            case ArrayRandom random -> {
-                if (random.getNumbers().length > 1) {
-                    return false;
-                }
-                return random.getNumbers()[0] == i;
-            }
-            case NonRandom nonRandom -> {
-                return nonRandom.getCount() == i;
-            }
-            case RangeRandom random -> {
-                return random.getMinCount() == i && random.getMaxCount() == i;
-            }
-            case null, default -> {
+        if (randomCount instanceof ArrayRandom random) {
+            if (random.getNumbers().length > 1) {
                 return false;
             }
+            return random.getNumbers()[0] == i;
+        } else if (randomCount instanceof NonRandom nonRandom) {
+            return nonRandom.getCount() == i;
+        } else if (randomCount instanceof RangeRandom random) {
+            return random.getMinCount() == i && random.getMaxCount() == i;
+        } else {
+            return false;
         }
     }
 

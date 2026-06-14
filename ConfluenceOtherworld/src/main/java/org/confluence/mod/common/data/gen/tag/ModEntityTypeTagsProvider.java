@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.tag;
+﻿package org.confluence.mod.common.data.gen.tag;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -99,7 +99,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         tag(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)
                 .addOptionalTag(TETags.EntityTypes.SLIME);
         IntrinsicTagAppender<EntityType<?>> npcInvulnerableToPlayer = tag(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER);
-        for (RegistryObject, ? extends EntityType<?>>TENpcEntities.ENTITIES.getEntries()){
+        for (RegistryObject<? extends EntityType<?>> npc : TENpcEntities.ENTITIES.getEntries()) {
             npcInvulnerableToPlayer.add(npc.get());
         }
     }

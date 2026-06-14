@@ -19,11 +19,12 @@ public class PositionLockRecipeDrawer extends TradeLockRecipeDrawer {
 
     @Override
     public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
-        if (!(lock instanceof PositionLock(
-                MinMaxBounds.Ints x1, MinMaxBounds.Ints y1, MinMaxBounds.Ints z1
-        ))) {
+        if (!(lock instanceof PositionLock positionLock)) {
             return y;
         }
+        MinMaxBounds.Ints x1 = positionLock.x();
+        MinMaxBounds.Ints y1 = positionLock.y();
+        MinMaxBounds.Ints z1 = positionLock.z();
         List<Component> position = new ArrayList<>();
         position.add(Component.translatable("confluence.trade_lock.drawer.position.title").append(Component.literal(":")));
         updateWith("X", x1).ifPresent(position::add);

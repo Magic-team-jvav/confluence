@@ -29,52 +29,41 @@ public final class ModEnchantments {
     public static final class EffectComponentTypes {
         public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, Confluence.MODID);
 
-        public static final RegistryObject,DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>>MANA_REGENERATION =
+        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_REGENERATION =
+                registerCommon("mana_regeneration", LootContextParamSets.ENCHANTED_ENTITY);
 
-        registerCommon("mana_regeneration",LootContextParamSets.ENCHANTED_ENTITY);
+        public static final RegistryObject<DataComponentType<Unit>> EFFICIENT_MAGIC =
+                registerUnit("efficient_magic");
 
-        public static final RegistryObject,DataComponentType<Unit>>EFFICIENT_MAGIC =
+        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_MENDING =
+                registerCommon("mana_mending", LootContextParamSets.ENCHANTED_ITEM);
 
-        registerUnit("efficient_magic");
+        public static final RegistryObject<DataComponentType<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>> ATTACK_DROPS_MANA =
+                registerTargeted("attack_drops_mana", LootContextParamSets.ENCHANTED_DAMAGE);
 
-        public static final RegistryObject,DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>>MANA_MENDING =
+        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_SICKNESS_DURATION_REDUCE =
+                registerCommon("mana_sickness_duration_reduce", LootContextParamSets.ENCHANTED_ENTITY);
 
-        registerCommon("mana_mending",LootContextParamSets.ENCHANTED_ITEM);
+        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_PROTECTION =
+                registerCommon("mana_protection", LootContextParamSets.ENCHANTED_DAMAGE);
 
-        public static final RegistryObject,DataComponentType<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>>ATTACK_DROPS_MANA =
+        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> LESS_MANA_MORE_ATTACK =
+                registerCommon("less_mana_more_attack", LootContextParamSets.ENCHANTED_DAMAGE);
 
-        registerTargeted("attack_drops_mana",LootContextParamSets.ENCHANTED_DAMAGE);
+        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MORE_MANA_MORE_ATTACK =
+                registerCommon("more_mana_more_attack", LootContextParamSets.ENCHANTED_DAMAGE);
 
-        public static final RegistryObject,DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>>MANA_SICKNESS_DURATION_REDUCE =
-
-        registerCommon("mana_sickness_duration_reduce",LootContextParamSets.ENCHANTED_ENTITY);
-
-        public static final RegistryObject,DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>>MANA_PROTECTION =
-
-        registerCommon("mana_protection",LootContextParamSets.ENCHANTED_DAMAGE);
-
-        public static final RegistryObject,DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>>LESS_MANA_MORE_ATTACK =
-
-        registerCommon("less_mana_more_attack",LootContextParamSets.ENCHANTED_DAMAGE);
-
-        public static final RegistryObject,DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>>MORE_MANA_MORE_ATTACK =
-
-        registerCommon("more_mana_more_attack",LootContextParamSets.ENCHANTED_DAMAGE);
-
-        private static RegistryObject,DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>>
-
+        private static RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>>
         registerCommon(String name, LootContextParamSet paramSet) {
             return TYPES.register(name, () -> DataComponentType.<List<ConditionalEffect<EnchantmentValueEffect>>>builder().persistent(ConditionalEffect.codec(EnchantmentValueEffect.CODEC, paramSet).listOf()).build());
         }
 
-        private static RegistryObject,DataComponentType<Unit>>
-
+        private static RegistryObject<DataComponentType<Unit>>
         registerUnit(String name) {
             return TYPES.register(name, () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).build());
         }
 
-        private static RegistryObject,DataComponentType<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>>
-
+        private static RegistryObject<DataComponentType<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>>
         registerTargeted(String name, LootContextParamSet paramSet) {
             return TYPES.register(name, () -> DataComponentType.<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>builder().persistent(TargetedConditionalEffect.codec(EnchantmentEntityEffect.CODEC, paramSet).listOf()).build());
         }

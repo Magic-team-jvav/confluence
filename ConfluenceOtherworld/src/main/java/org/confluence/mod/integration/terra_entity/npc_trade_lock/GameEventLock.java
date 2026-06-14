@@ -28,9 +28,7 @@ public record GameEventLock(ResourceKey<? extends GameEvent> key) implements ITr
 
     @Override
     public boolean equals(Object o) {
-        return o == this || (o instanceof GameEventLock(
-                ResourceKey<? extends GameEvent> key1
-        ) && key == key1);
+        return o == this || (o instanceof GameEventLock that && key == that.key());
     }
 
     @Override

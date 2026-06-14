@@ -81,26 +81,24 @@ public class DeadBodyPartEntity extends Entity {
         }
 
         // 根据cube大小调整碰撞箱大小
-        switch (cube) {
-            case GeoCube geoCube -> {
-                Vec3 size = geoCube.size();
+        if (cube instanceof GeoCube geoCube) {
+            Vec3 size = geoCube.size();
+            float min = (float) Math.max(0.1, Math.min(Math.min(size.x, size.y), size.z) / 16);
+            this.dimensions = EntityDimensions.fixed(min, min);
+        } else if (cube instanceof GeoBone bone) {
+            float finalMin = Float.POSITIVE_INFINITY;
+            for (GeoCube boneCube : bone.getCubes()) {
+                Vec3 size = boneCube.size();
                 float min = (float) Math.max(0.1, Math.min(Math.min(size.x, size.y), size.z) / 16);
-                this.dimensions = EntityDimensions.fixed(min, min);
-            }
-            case GeoBone bone -> {
-                float finalMin = Float.POSITIVE_INFINITY;
-                for (GeoCube boneCube : bone.getCubes()) {
-                    Vec3 size = boneCube.size();
-                    float min = (float) Math.max(0.1, Math.min(Math.min(size.x, size.y), size.z) / 16);
-                    if (min <= 0.1) {
-                        finalMin = 0.1f;
-                        break;
-                    }
-                    finalMin = Math.min(finalMin, min);
+                if (min <= 0.1) {
+                    finalMin = 0.1f;
+                    break;
                 }
-                this.dimensions = EntityDimensions.fixed(finalMin, finalMin);
+                finalMin = Math.min(finalMin, min);
             }
-            case null, default -> this.dimensions = EntityDimensions.fixed(minSide, minSide);
+            this.dimensions = EntityDimensions.fixed(finalMin, finalMin);
+        } else {
+            this.dimensions = EntityDimensions.fixed(minSide, minSide);
         }
 //        still();
 

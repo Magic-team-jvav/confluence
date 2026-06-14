@@ -18,12 +18,11 @@ public class FishingHookInFluidLockRecipeDrawer extends TradeLockRecipeDrawer {
 
     @Override
     public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
-        if (!(lock instanceof FishingHookInFluidLock(
-                List<TagKey<Fluid>> tags,
-                boolean requiresFishingHook
-        ))) {
+        if (!(lock instanceof FishingHookInFluidLock fishingHookLock)) {
             return y;
         }
+        List<TagKey<Fluid>> tags = fishingHookLock.tags();
+        boolean requiresFishingHook = fishingHookLock.requiresFishingHook();
 
         if (requiresFishingHook) {
             var size = getRecipeSize();

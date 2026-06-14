@@ -13,9 +13,10 @@ public class BestiaryUnlockedCountLockRecipeDrawer extends TradeLockRecipeDrawer
 
     @Override
     public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
-        if (!(lock instanceof BestiaryUnlockedCountLock(int count))) {
+        if (!(lock instanceof BestiaryUnlockedCountLock bestiaryLock)) {
             return y;
         }
+        int count = bestiaryLock.count();
         var size = getRecipeSize();
         guiGraphics.blitSprite(SPRITE, x, y, size, size);
         drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY, I18n.get("confluence.trade_lock.drawer.bestiary.title") + ": " + count);

@@ -28,9 +28,7 @@ public record EnvironmentLock(EnvironmentLevelAccess.Matcher environment) implem
 
     @Override
     public boolean equals(Object o) {
-        return o == this || (o instanceof EnvironmentLock(
-                EnvironmentLevelAccess.Matcher environment1
-        ) && Objects.equals(environment, environment1));
+        return o == this || (o instanceof EnvironmentLock that && Objects.equals(environment, that.environment()));
     }
 
     @Override

@@ -35,7 +35,7 @@ public record BestiaryUnlockedCountLock(int count) implements ITradeLock {
 
     @Override
     public boolean equals(Object o) {
-        return this == o || (o instanceof BestiaryUnlockedCountLock(int count1) && count1 == count);
+        return this == o || (o instanceof BestiaryUnlockedCountLock that && that.count() == count);
     }
 
     @Override

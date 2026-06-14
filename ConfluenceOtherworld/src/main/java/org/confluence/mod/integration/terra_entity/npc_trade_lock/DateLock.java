@@ -66,10 +66,8 @@ public record DateLock(boolean isLunar, DateStamp fromInclusive,
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        return o instanceof DateLock(
-                boolean isLunar1, DateStamp fromInclusive1, DateStamp toInclusive1
-        ) &&
-                isLunar1 == isLunar && fromInclusive1.equals(fromInclusive) && toInclusive1.equals(toInclusive);
+        return o instanceof DateLock that &&
+                that.isLunar() == isLunar && that.fromInclusive().equals(fromInclusive) && that.toInclusive().equals(toInclusive);
     }
 
     @Override

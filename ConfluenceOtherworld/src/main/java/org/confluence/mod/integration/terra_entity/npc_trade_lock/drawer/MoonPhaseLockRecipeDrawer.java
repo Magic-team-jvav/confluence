@@ -13,9 +13,10 @@ import java.util.List;
 public class MoonPhaseLockRecipeDrawer extends TradeLockRecipeDrawer {
     @Override
     public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
-        if (!(lock instanceof MoonPhaseLock(List<MoonPhase> moonPhases))) {
+        if (!(lock instanceof MoonPhaseLock moonPhaseLock)) {
             return y;
         }
+        List<MoonPhase> moonPhases = moonPhaseLock.moonPhases();
         var size = getRecipeSize();
         for (var moonPhase : moonPhases) {
             String moonPhaseTexture = getMoonPhaseTexture(moonPhase);

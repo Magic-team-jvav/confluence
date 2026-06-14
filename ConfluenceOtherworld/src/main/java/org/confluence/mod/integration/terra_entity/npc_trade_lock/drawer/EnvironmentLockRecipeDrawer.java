@@ -105,11 +105,12 @@ public class EnvironmentLockRecipeDrawer extends TradeLockRecipeDrawer {
         for (var entry : statePredicate.properties()) {
             var name = entry.name();
             var valueMatcher = entry.valueMatcher();
-            if (valueMatcher instanceof StatePropertiesPredicate.ExactMatcher(String value)) {
+            if (valueMatcher instanceof StatePropertiesPredicate.ExactMatcher exactMatcher) {
+                String value = exactMatcher.value();
                 properties.append(name).append("=").append(value).append(",");
-            } else if (valueMatcher instanceof StatePropertiesPredicate.RangedMatcher(
-                    Optional<String> minValue, Optional<String> maxValue
-            )) {
+            } else if (valueMatcher instanceof StatePropertiesPredicate.RangedMatcher rangedMatcher) {
+                Optional<String> minValue = rangedMatcher.minValue();
+                Optional<String> maxValue = rangedMatcher.maxValue();
                 properties.append(name).append("=").append(minValue).append("..").append(maxValue).append(",");
             }
         }

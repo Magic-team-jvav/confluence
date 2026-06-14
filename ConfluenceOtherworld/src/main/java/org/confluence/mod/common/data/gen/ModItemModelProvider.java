@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen;
+﻿package org.confluence.mod.common.data.gen;
 
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -195,23 +195,22 @@ public class ModItemModelProvider extends ItemModelProvider {
                     withExistingParent(path, "item/generated").texture("layer0", "confluence:item/sign/" + path);
                 } else if (item1 instanceof BlockItem item2) {
                     Block block = item2.getBlock();
-                    switch (block) {
-                        case DoorBlock ignored ->
-                                withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/decoration/door/" + path));
-                        case TrapDoorBlock ignored ->
-                                withExistingParent(path, Confluence.asResource("block/" + path + "_bottom"));
-                        case SaplingBlock ignored ->
-                                withExistingParent(path, "item/generated").texture("layer0", "confluence:block/" + path);
-                        case ButtonBlock ignored ->
-                                withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
-                        case FenceBlock ignored ->
-                                withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
-                        case WallBlock ignored ->
-                                withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
-                        //case LeavesBlock ignored -> withExistingParent(path, "block/leaves").texture("all", Confluence.asResource("block/" + path + "_item"));
-                        case ChainBlock ignored ->
-                                withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/chain/" + path));
-                        default -> withExistingParent(path, Confluence.asResource("block/" + path));
+                    if (block instanceof DoorBlock) {
+                        withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/decoration/door/" + path));
+                    } else if (block instanceof TrapDoorBlock) {
+                        withExistingParent(path, Confluence.asResource("block/" + path + "_bottom"));
+                    } else if (block instanceof SaplingBlock) {
+                        withExistingParent(path, "item/generated").texture("layer0", "confluence:block/" + path);
+                    } else if (block instanceof ButtonBlock) {
+                        withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
+                    } else if (block instanceof FenceBlock) {
+                        withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
+                    } else if (block instanceof WallBlock) {
+                        withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
+                    } else if (block instanceof ChainBlock) {
+                        withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/chain/" + path));
+                    } else {
+                        withExistingParent(path, Confluence.asResource("block/" + path));
                     }
                 }
             } catch (Exception ignored) {

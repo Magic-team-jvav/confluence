@@ -33,7 +33,7 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
 
     @Override
     public boolean equals(Object o) {
-        return o == this || (o instanceof ValueComponent(int value1) && value1 == value);
+        return o == this || (o instanceof ValueComponent that && that.value == value);
     }
 
     @Override

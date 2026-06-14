@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+﻿package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -725,7 +725,7 @@ public enum NPCSpawner implements IGlobalData {
         @Override
         public boolean equals(Object o) {
             if (o == this) return true;
-            return o instanceof Region(int x1, int z1) && x1 == x && z1 == z;
+            return o instanceof Region that && that.x == x && that.z == z;
         }
 
         @Override

@@ -37,10 +37,8 @@ public record GamePhaseLootItemCondition(GamePhase from, boolean fromInclusive, 
 
     @Override
     public boolean equals(Object o) {
-        return o == this || ((o instanceof GamePhaseLootItemCondition(
-                GamePhase from1, boolean fromInclusive1, GamePhase to1, boolean toInclusive1
-        )) &&
-                from == from1 && fromInclusive == fromInclusive1 && to == to1 && toInclusive == toInclusive1);
+        return o == this || ((o instanceof GamePhaseLootItemCondition that) &&
+                from == that.from() && fromInclusive == that.fromInclusive() && to == that.to() && toInclusive == that.toInclusive());
     }
 
     @Override

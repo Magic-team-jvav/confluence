@@ -25,9 +25,8 @@ public record SecretFlagLootItemCondition(
 
     @Override
     public boolean equals(Object o) {
-        return this == o || (o instanceof SecretFlagLootItemCondition(
-                long flag, boolean match
-        ) && secretFlag == flag && flipMatch == match);
+        return this == o || (o instanceof SecretFlagLootItemCondition that &&
+                secretFlag == that.secretFlag && flipMatch == that.flipMatch);
     }
 
     @Override

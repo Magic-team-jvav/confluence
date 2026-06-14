@@ -145,7 +145,7 @@ public class AltarBlock extends BaseEntityBlock {
             if (data.increaseRevealStep()) {
                 Component msg = PortMutableComponentExtension.withColor(Component.translatable(
                         "event.confluence.reveal_step" + data.getRevealStep()
-                ), GlobalColors.MESSAGE.get()));
+                ), GlobalColors.MESSAGE.get());
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(msg, false);
             }
             if (tool.is(HammerItems.PWNHAMMER.get())) {

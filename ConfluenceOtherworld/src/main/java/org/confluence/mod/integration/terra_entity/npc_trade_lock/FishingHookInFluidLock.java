@@ -41,9 +41,8 @@ public record FishingHookInFluidLock(List<TagKey<Fluid>> tags,
 
     @Override
     public boolean equals(Object o) {
-        return o == this || (o instanceof FishingHookInFluidLock(
-                List<TagKey<Fluid>> tags1, boolean requiresFishingHook1
-        ) && requiresFishingHook == requiresFishingHook1 && tags.equals(tags1));
+        return o == this || (o instanceof FishingHookInFluidLock that &&
+                requiresFishingHook == that.requiresFishingHook() && tags.equals(that.tags()));
     }
 
     @Override

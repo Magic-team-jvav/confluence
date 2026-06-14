@@ -16,11 +16,10 @@ public class DimensionLockRecipeDrawer extends TradeLockRecipeDrawer {
 
     @Override
     public int drawRecipe(ITradeLock lock, GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY) {
-        if (!(lock instanceof DimensionLock(
-                ResourceKey<Level> dimension
-        ))) {
+        if (!(lock instanceof DimensionLock dimensionLock)) {
             return y;
         }
+        ResourceKey<Level> dimension = dimensionLock.dimension();
         var size = getRecipeSize();
         guiGraphics.blitSprite(SPRITE, x, y, size, size);
         drawTooltip(guiGraphics, x, y, size, size, mouseX, mouseY,

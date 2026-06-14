@@ -611,12 +611,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 values = customIngredient.getItems().map(Ingredient.ItemValue::new).toArray(Ingredient.Value[]::new);
             }
             for (Ingredient.Value value : values) {
-                if (value instanceof Ingredient.ItemValue(ItemStack itemStack)) {
-                    Item item = itemStack.getItem();
+                if (value instanceof Ingredient.ItemValue itemValue) {
+                    Item item = itemValue.itemStack().getItem();
                     if (itemCounter.contains(item)) continue;
                     itemCounter.add(item);
                     builder.addCriterion(getHasName(item), has(item));
-                } else if (value instanceof Ingredient.TagValue(TagKey<Item> tag)) {
+                } else if (value instanceof Ingredient.TagValue tagValue) {
+                    TagKey<Item> tag = tagValue.tag();
                     if (tagCounter.contains(tag)) continue;
                     tagCounter.add(tag);
                     builder.addCriterion("has_tag_" + tag.location().getPath(), has(tag));
@@ -641,12 +642,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
             values = customIngredient.getItems().map(Ingredient.ItemValue::new).toArray(Ingredient.Value[]::new);
         }
         for (Ingredient.Value value : values) {
-            if (value instanceof Ingredient.ItemValue(ItemStack itemStack)) {
-                Item item = itemStack.getItem();
+            if (value instanceof Ingredient.ItemValue itemValue) {
+                Item item = itemValue.itemStack().getItem();
                 if (itemCounter.contains(item)) continue;
                 itemCounter.add(item);
                 builder.addCriterion(getHasName(item), has(item));
-            } else if (value instanceof Ingredient.TagValue(TagKey<Item> tag)) {
+            } else if (value instanceof Ingredient.TagValue tagValue) {
+                TagKey<Item> tag = tagValue.tag();
                 if (tagCounter.contains(tag)) continue;
                 tagCounter.add(tag);
                 builder.addCriterion("has_tag_" + tag.location().getPath(), has(tag));

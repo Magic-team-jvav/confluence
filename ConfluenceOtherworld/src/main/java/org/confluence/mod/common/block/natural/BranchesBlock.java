@@ -51,12 +51,12 @@ public class BranchesBlock extends PipeBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.updateAllProperties(this.defaultBlockState(), context.getLevel(), context.getClickedPos());
+        return updateAllProperties(this.defaultBlockState(), context.getLevel(), context.getClickedPos());
     }
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        BlockState newState = this.updateAllProperties(this.defaultBlockState(), level, currentPos);
+        BlockState newState = updateAllProperties(this.defaultBlockState(), level, currentPos);
         if (newState.getValue(DISTANCE) == DECAY_DISTANCE && !newState.canSurvive(level, currentPos)) {
             level.scheduleTick(currentPos, this, 1);
         }
@@ -64,24 +64,47 @@ public class BranchesBlock extends PipeBlock {
     }
 
     private BlockState updateAllProperties(BlockState state, LevelAccessor level, BlockPos pos) {
-        BlockState result = state;
-        result = result.trySetValue(BlockStateProperties.UP, canConnect(level.getBlockState(pos.above())));
-        boolean haveDown = canConnect(level.getBlockState(pos.below()));
-        result = result.trySetValue(BlockStateProperties.DOWN, haveDown);
+        // 缓存垂直方向状态，避免重复查询
+        BlockState aboveState = level.getBlockState(pos.above());
+        BlockState belowState = level.getBlockState(pos.below());
+
+        boolean haveDown = canConnect(belowState);
+        BlockState result = state
+                .trySetValue(BlockStateProperties.UP, canConnect(aboveState))
+                .trySetValue(BlockStateProperties.DOWN, haveDown);
+
+        // 处理水平方向连接
         for (Direction direction : LibUtils.HORIZONTAL) {
             BlockPos nextPos = pos.relative(direction);
-            if (canConnect(level.getBlockState(nextPos)) && (!haveDown || !canConnect(level.getBlockState(nextPos.below())))) {
-                result = result.trySetValue(PROPERTY_BY_DIRECTION.get(direction), true);
+            BlockState nextState = level.getBlockState(nextPos);
+            if (canConnect(nextState)) {
+                // 避免在条件不满足时查询 nextPos.below()
+                if (!haveDown || !canConnect(level.getBlockState(nextPos.below()))) {
+                    result = result.trySetValue(PROPERTY_BY_DIRECTION.get(direction), true);
+                }
             }
         }
+
+        // 计算最小距离
+        int minDistance = calculateMinDistance(level, pos);
+        return result.setValue(DISTANCE, Math.min(minDistance + 1, DECAY_DISTANCE));
+    }
+
+    /**
+     * 计算周围方块的最小距离值
+     */
+    private int calculateMinDistance(LevelAccessor level, BlockPos pos) {
         int minDistance = DECAY_DISTANCE;
         for (Direction dir : LibUtils.DIRECTIONS) {
             BlockState neighbor = level.getBlockState(pos.relative(dir));
-            int d = getDistanceAt(neighbor, dir);
-            if (d < minDistance) minDistance = d;
+            int distance = getDistanceAt(neighbor, dir);
+            if (distance < minDistance) {
+                minDistance = distance;
+                // 提前退出：距离为0是最小值，无需继续
+                if (minDistance == 0) break;
+            }
         }
-
-        return result.setValue(DISTANCE, Math.min(minDistance + 1, DECAY_DISTANCE));
+        return minDistance;
     }
 
     private boolean canConnect(BlockState blockState) {
@@ -104,12 +127,22 @@ public class BranchesBlock extends PipeBlock {
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        // 优先检查距离属性
+        if (state.getValue(DISTANCE) < DECAY_DISTANCE) {
+            return true;
+        }
+
+        // 检查下方支撑
         BlockState below = level.getBlockState(pos.below());
-        if (below.is(this) || below.is(supporting)) return true;
-        int currentDist = state.getValue(DISTANCE);
-        if (currentDist < DECAY_DISTANCE) return true;
+        if (below.is(this) || below.is(supporting)) {
+            return true;
+        }
+
+        // 检查水平方向附着点
         for (Direction dir : LibUtils.HORIZONTAL) {
-            if (level.getBlockState(pos.relative(dir)).is(attachable)) return true;
+            if (level.getBlockState(pos.relative(dir)).is(attachable)) {
+                return true;
+            }
         }
         return false;
     }

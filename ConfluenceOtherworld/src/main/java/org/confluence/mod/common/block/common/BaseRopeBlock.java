@@ -3,9 +3,7 @@ package org.confluence.mod.common.block.common;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -54,9 +52,6 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
             return this.name;
         }
     }
-
-    private static final TagKey<Block> FENCES = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "fences"));
-    private static final TagKey<Block> WALLS = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("minecraft", "walls"));
 
     public static final MapCodec<BaseRopeBlock> CODEC = simpleCodec(BaseRopeBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -142,7 +137,8 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
             BlockPos neighborPos = pos.relative(direction);
             BlockState neighborState = level.getBlockState(neighborPos);
             if (shouldConnect(level, neighborState, neighborPos, direction)) {
-                if (direction.getAxis() == Direction.Axis.Y) state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), true);
+                Direction.Axis axis = direction.getAxis();
+                if (axis == Direction.Axis.Y) state = state.setValue(PROPERTY_BY_DIRECTION.get(direction), true);
                 else state = state.setValue(DIRECTION_TO_PROPERTY[direction.ordinal()], whatConnect(level, neighborState, neighborPos, direction));
             }
         }
@@ -150,14 +146,14 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
     }
 
     private static boolean shouldConnect(LevelAccessor level, BlockState facingState, BlockPos facingPos, Direction facing) {
-        return facingState.is(ModTags.Blocks.ROPE) || (!facingState.isAir() && facingState.isFaceSturdy(level, facingPos, facing.getOpposite())) || ((facing == Direction.DOWN) && level.getBlockState(facingPos).is(FunctionalBlocks.STAR_IN_A_BOTTLE));
+        return facingState.is(ModTags.Blocks.ROPE) || facingState.is(BlockTags.FENCES) || facingState.is(BlockTags.WALLS) || (!facingState.isAir() && facingState.isFaceSturdy(level, facingPos, facing.getOpposite())) || ((facing == Direction.DOWN) && level.getBlockState(facingPos).is(FunctionalBlocks.STAR_IN_A_BOTTLE));
     }
 
     private static RopeConnection whatConnect(LevelAccessor level, BlockState facingState, BlockPos facingPos, Direction facing) {
         RopeConnection r = RopeConnection.NONE;
         if (facingState.is(ModTags.Blocks.ROPE) || (!facingState.isAir() && facingState.isFaceSturdy(level, facingPos, facing.getOpposite()))) r = RopeConnection.ROPE;
-        if (facingState.is(FENCES)) r = RopeConnection.FENCE;
-        if (facingState.is(WALLS)) r = RopeConnection.WALL;
+        if (facingState.is(BlockTags.FENCES)) r = RopeConnection.FENCE;
+        if (facingState.is(BlockTags.WALLS)) r = RopeConnection.WALL;
         return r;
     }
 

@@ -5,6 +5,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -177,9 +178,21 @@ public class OreBlocks {
     public static final DeferredBlock<RedStoneOreBlock> CORRUPTION_REDSTONE_ORE = simpleBlockRegister("corruption_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE)));
     public static final DeferredBlock<RedStoneOreBlock> FLESHIFICATION_REDSTONE_ORE = simpleBlockRegister("fleshification_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE)));
 
-    public static final DeferredBlock<LunartearOreBlock> LUNARTEAR_ORE = simpleBlockRegister("lunartear_ore", LunartearOreBlock::new);
-    public static final DeferredBlock<DragonsalOreBlock> DRAGONSAL_ORE = simpleBlockRegister("dragonsal_ore", DragonsalOreBlock::new);
+    public static final DeferredBlock<Block> LUNARTEAR_ORE = simpleBlockRegister("lunartear_ore", () -> new Block(
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .requiresCorrectToolForDrops()
+                    .strength(30.0F, ModBlocks.getObsidianBasedExplosionResistance(100))
+                    .sound(SoundType.STONE)
+    ) {});
 
+    public static final DeferredBlock<Block> DRAGONSAL_ORE = simpleBlockRegister("dragonsal_ore", () -> new Block(
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .requiresCorrectToolForDrops()
+                    .strength(40.0F, ModBlocks.getObsidianBasedExplosionResistance(100))
+                    .sound(SoundType.STONE)
+    ) {});
 
     public static final DeferredBlock<StepRevealingBlock> DEEPSLATE_COBALT_ORE = simpleBlockRegister("deepslate_cobalt_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(15.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
     public static final DeferredBlock<Block> RAW_COBALT_BLOCK = simpleBlockRegister("raw_cobalt_block");

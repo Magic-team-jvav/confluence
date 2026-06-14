@@ -355,6 +355,17 @@ public final class ValueSubProvider {
                 .add(TEBoomerangItems.COMBAT_WRENCH, silver50)
                 .add(TEBoomerangItems.WOOD_BOOMERANG, silver20)
                 .add(SwordItems.BREAKER_BLADE, gold1 + gold2);
+        builder
+                .add(FlailItems.MACE, gold2)
+                .add(FlailItems.FLAMING_MACE, gold2)
+                .add(FlailItems.WIND_ANCHOR, gold1 + gold2)
+                .add(FlailItems.GUARDIAN_FLAIL, gold1)
+                .add(FlailItems.ANCIENT_GUARDIAN_FLAIL, gold1+ silver50)
+                .add(FlailItems.BALL_O_HURT, gold1+ silver50)
+                .add(FlailItems.THE_MEATBALL, silver50)
+                .add(FlailItems.BLUE_MOON, gold1+ silver50+ silver20+ silver5)
+                .add(FlailItems.SUNFURY, gold2+ silver50)
+                .add(FlailItems.DAO_OF_POW, gold2+ silver50+ silver20+ silver10+ silver5);
         builder // 探索
                 .add(ModBlocks.ROPE, 2)
                 .add(ModBlocks.SILK_ROPE, 2)

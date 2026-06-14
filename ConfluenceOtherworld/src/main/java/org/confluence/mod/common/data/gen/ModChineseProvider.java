@@ -3176,7 +3176,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
 
         add(FlailItems.MACE.get(), "链锤");
+        add(FlailItems.FLAMING_MACE.get(), "火焰链锤");
+        add(FlailItems.WIND_ANCHOR.get(), "风锚");
+        add(FlailItems.GUARDIAN_FLAIL.get(), "守卫链球");
+        add(FlailItems.ANCIENT_GUARDIAN_FLAIL.get(), "远古守卫链球");
         add(FlailItems.BALL_O_HURT.get(), "链球");
+        add(FlailItems.THE_MEATBALL.get(), "血肉之球");
+        add(FlailItems.BLUE_MOON.get(), "蓝月");
+        add(FlailItems.SUNFURY.get(), "阳炎之怒");
+        add(FlailItems.DAO_OF_POW.get(), "太极连枷");
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");

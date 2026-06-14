@@ -562,6 +562,9 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, DecorativeBlocks.FLINX_FUR_BLOCK.toStack(20), Ingredient.of(MaterialItems.FLINX_FUR));
         shapeless(output, new ItemStack(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.PLANKS, 4), Ingredient.of(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK));
 
+        shapeless(output, FlailItems.WIND_ANCHOR.toStack(), Ingredient.of(Items.HEAVY_CORE), Ingredient.of(FlailItems.MACE));
+        shapeless(output, FlailItems.FLAMING_MACE.toStack(), Ingredient.of(Items.LAVA_BUCKET), Ingredient.of(FlailItems.MACE));
+
         //生鱼片
         shapeless(output, "", "_from_partial_mouth_fish",
                 FoodItems.SASHIMI.toStack(),

@@ -666,6 +666,16 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 " c ",
                 " e "
         )));
+        // 太极连枷
+        hardmodeAnvil(recipeOutput, FlailItems.DAO_OF_POW.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.LIGHT_SHARD),
+                'b', Ingredient.of(MaterialItems.DARK_SHARD),
+                'c', AmountIngredient.of(7,MaterialItems.SOUL_OF_LIGHT),
+                'd', AmountIngredient.of(7,MaterialItems.SOUL_OF_NIGHT)
+        ), List.of(
+                "ac",
+                "db"
+        )));
     }
 
     protected void hardmodeAnvil(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {

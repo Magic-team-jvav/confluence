@@ -36,7 +36,7 @@ import java.util.function.Supplier;
  * @param maxDistance  最大抛出距离超过此距离自RETRACT
  * @param retractSpeed 收回速度
  * @param gravity      重力加速度
- * @param cooldown     冷却时间 tick
+ * // @param cooldown     冷却时间 tick
  * @param bounceFactor 反弹能量衰减系数，范围 0.3~0.9
  * @param maxBounces   最大反弹次数，耗尽后落地
  * @param soundEvent   音效 ResourceLocation
@@ -61,7 +61,9 @@ public record FlailComponent(
         Optional<ResourceLocation> modelLocation,
         Optional<EffectStrategyComponent> hitEffect
 ) implements DataComponentType<FlailComponent> {
-
+    // todo 收回时也能造成伤害
+    // todo 兼容词缀，具体看泰拉wiki
+    // todo 武器数值的显示
     public static final Codec<FlailComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("damageFactor").forGetter(FlailComponent::damageFactor),
             Codec.FLOAT.fieldOf("spinRadius").forGetter(FlailComponent::spinRadius),
@@ -82,11 +84,11 @@ public record FlailComponent(
     /** 致伤球 Ball O' Hurt 预制数据 */
     public static final Supplier<FlailComponent> BALL_O_HURT =
             () -> new FlailComponent(
-                    26.0f,
+                    17.0f,
                     1.2f,
                     1.5f,
-                    1.5f,
-                    8.0f,
+                    1.3f,
+                    11.0f,
                     1.0f,
                     0.2f,
                     0.3f,
@@ -101,7 +103,7 @@ public record FlailComponent(
     /** 链球 MACE 预制参数（测试用）*/
     public static final Supplier<FlailComponent> MACE =
             () -> new FlailComponent(
-                    18.0f,
+                    11.0f,
                     1.2f,
                     0.1f,
                     0.3f,
@@ -116,6 +118,164 @@ public record FlailComponent(
                     Optional.of(Confluence.asResource("geo/entity/flail/mace.geo.json")),
                     Optional.empty()
             );
+
+    // 火焰链锤
+    public static final Supplier<FlailComponent> FLAMING_MACE =
+            () -> new FlailComponent(
+                    11.0f,
+                    1.2f,
+                    1.2f,
+                    1.2f,
+                    8.0f,
+                    1.0f,
+                    0.05f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/flaming_mace.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/flaming_mace.geo.json")),
+                    Optional.empty()
+            );
+    // todo 1/6的几率施加着火
+
+    // 风锚
+    public static final Supplier<FlailComponent> WIND_ANCHOR =
+            () -> new FlailComponent(
+                    13.0f,
+                    1.2f,
+                    0.9f,
+                    1.0f,
+                    10.0f,
+                    0.9f,
+                    0.05f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/wind_anchor.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/wind_anchor.geo.json")),
+                    Optional.empty()
+            );
+    // todo 掷出击中敌人会产生只持续3秒的HURTNADO_PROJECTILE
+
+    // 守卫链球
+    public static final Supplier<FlailComponent> GUARDIAN_FLAIL =
+            () -> new FlailComponent(
+                    15.0f,
+                    1.3f,
+                    1.3f,
+                    1.3f,
+                    11.0f,
+                    1.2f,
+                    0.04f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/guardian_flail.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/guardian_flail.geo.json")),
+                    Optional.empty()
+            );
+    // todo 链球停留在地面时会对周围的一个敌人发射守卫者激光
+
+    // 守卫链球
+    public static final Supplier<FlailComponent> ANCIENT_GUARDIAN_FLAIL =
+            () -> new FlailComponent(
+                    15.0f,
+                    1.3f,
+                    1.3f,
+                    1.3f,
+                    14.0f,
+                    1.2f,
+                    0.04f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/ancient_guardian_flail.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/ancient_guardian_flail.geo.json")),
+                    Optional.empty()
+            );
+    // todo 链球停留在地面时会对周围的三个敌人发射守卫者激光
+
+
+    // 血肉之球
+    public static final Supplier<FlailComponent> THE_MEATBALL =
+            () -> new FlailComponent(
+                    19.0f,
+                    1.2f,
+                    1.5f,
+                    1.3f,
+                    13.0f,
+                    1.0f,
+                    0.2f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/the_meatball.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/the_meatball.geo.json")),
+                    Optional.empty()
+            );
+    // 蓝月
+    public static final Supplier<FlailComponent> BLUE_MOON =
+            () -> new FlailComponent(
+                    29.0f,
+                    1.2f,
+                    1.5f,
+                    1.3f,
+                    20.0f,
+                    1.0f,
+                    0.2f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/blue_moon.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/blue_moon.geo.json")),
+                    Optional.empty()
+            );
+
+    // 阳炎之怒
+    public static final Supplier<FlailComponent> SUNFURY =
+            () -> new FlailComponent(
+                    34.0f,
+                    1.2f,
+                    1.5f,
+                    1.3f,
+                    23.0f,
+                    1.0f,
+                    0.2f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/sunfury.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/sunfury.geo.json")),
+                    Optional.empty()
+            );
+    // todo 1/4的几率施加着火 ,初始自带11%暴击率
+
+    // 太极连枷
+    public static final Supplier<FlailComponent> DAO_OF_POW =
+            () -> new FlailComponent(
+                    52.0f,
+                    1.2f,
+                    1.5f,
+                    1.3f,
+                    26.0f,
+                    1.0f,
+                    0.2f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/dao_of_pow.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/dao_of_pow.geo.json")),
+                    Optional.empty()
+            );
+    // todo 4/5的几率施加困惑
 
     public SoundEvent getSoundEvent() {
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);

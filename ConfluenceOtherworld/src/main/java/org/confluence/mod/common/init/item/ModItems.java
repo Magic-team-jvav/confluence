@@ -1,12 +1,17 @@
 package org.confluence.mod.common.init.item;
 
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -206,17 +211,34 @@ public final class ModItems {
         };
     }
 
-    public static PortItemAttributeModifiers createAttributes(Tier tier, float attackDamage, float attackSpeed, Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
+//    public static PortItemAttributeModifiers createAttributes(Tier tier, float attackDamage, float attackSpeed, Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
+//        PortItemAttributeModifiers.PortBuilder builder = PortItemAttributeModifiers.builder();
+//        consumer.accept(builder);
+//        return builder.add(
+//                LibAttributes.getAttackDamage(),
+//                new PortAttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.getAttackDamageBonus(), PortAttributeModifier.PortOperation.ADD_VALUE),
+//                PortEquipmentSlotGroup.MAINHAND
+//        ).add(
+//                Attributes.ATTACK_SPEED,
+//                new PortAttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, PortAttributeModifier.PortOperation.ADD_VALUE),
+//                PortEquipmentSlotGroup.MAINHAND
+//        ).build();
+//    }
+
+    public static float getAttackSpeed(float rawSpeed) {
+        return rawSpeed - 4;
+    }
+
+    public static float getAttackDamage(Tier tier, float rawDamage) {
+        return rawDamage - tier.getAttackDamageBonus() - 1;
+    }
+
+    public static Multimap<Attribute, AttributeModifier> mergeModifiers(Multimap<Attribute, AttributeModifier> original, Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
         PortItemAttributeModifiers.PortBuilder builder = PortItemAttributeModifiers.builder();
         consumer.accept(builder);
-        return builder.add(
-                LibAttributes.getAttackDamage(),
-                new PortAttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.getAttackDamageBonus(), PortAttributeModifier.PortOperation.ADD_VALUE),
-                PortEquipmentSlotGroup.MAINHAND
-        ).add(
-                Attributes.ATTACK_SPEED,
-                new PortAttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, PortAttributeModifier.PortOperation.ADD_VALUE),
-                PortEquipmentSlotGroup.MAINHAND
-        ).build();
+        return ImmutableMultimap.<Attribute, AttributeModifier>builder()
+                .putAll(original)
+                .putAll(builder.build().getAttributeModifiers(EquipmentSlot.MAINHAND))
+                .build();
     }
 }

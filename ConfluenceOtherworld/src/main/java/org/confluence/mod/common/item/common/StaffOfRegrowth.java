@@ -1,19 +1,24 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -22,24 +27,47 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.common.Tags;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.diff.Diff;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class StaffOfRegrowth extends CustomRarityItem {
+    protected final Multimap<Attribute, AttributeModifier> defaultModifiers;
     private @Nullable TooltipComponent component;
 
     public StaffOfRegrowth() {
-        super(new Properties().component(DataComponents.ATTRIBUTE_MODIFIERS, ModItems.createAttributes(
-                ModTiers.PLATINUM, 3 - ModTiers.PLATINUM.getAttackDamageBonus() - 1, 1 - 4, builder -> {}
-        )).stacksTo(1), ModRarity.GREEN);
+        super(new PortItem.PortProperties().stacksTo(1), ModRarity.GREEN);
+        this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
+                .put(LibAttributes.getAttackDamage().value(), new AttributeModifier(
+                        PortAttributeModifier.rl2uuid(ModItems.BASE_ATTACK_DAMAGE_ID),
+                        ModItems.BASE_ATTACK_DAMAGE_ID.getPath(),
+                        ModItems.getAttackDamage(ModTiers.PLATINUM, 3),
+                        AttributeModifier.Operation.ADDITION
+                ))
+                .put(Attributes.ATTACK_SPEED, new AttributeModifier(
+                        PortAttributeModifier.rl2uuid(ModItems.BASE_ATTACK_SPEED_ID),
+                        ModItems.BASE_ATTACK_SPEED_ID.getPath(),
+                        ModItems.getAttackSpeed(1),
+                        AttributeModifier.Operation.ADDITION
+                ))
+                .build();
+    }
+
+    @Diff
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        return defaultModifiers;
     }
 
     @Override
@@ -111,14 +139,14 @@ public class StaffOfRegrowth extends CustomRarityItem {
     }
 
     // 再生法杖/再生之斧 时运
-    public static void increaseDrops(Entity breaker, ItemStack tool, Stream<ItemStack> drops) {
-        Holder<Enchantment> enchantment = breaker.level().holderOrThrow(Enchantments.FORTUNE);
-        int l = tool.getTagEnchantments().getLevel(enchantment);
+    public static void increaseDrops(Entity breaker, ItemStack stack, Stream<ItemStack> drops) {
+        int l = stack.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
+        RandomSource random = PortEntityExtension.getRandom(breaker);
         drops.forEach(drop -> {
-            int increase = breaker.getRandom().nextIntBetweenInclusive(0, 2);
+            int increase = random.nextIntBetweenInclusive(0, 2);
             drop.grow(increase);
             for (int i = 0; i < l; i++) {
-                if (breaker.getRandom().nextBoolean()) {
+                if (random.nextBoolean()) {
                     drop.grow(1);
                 }
             }

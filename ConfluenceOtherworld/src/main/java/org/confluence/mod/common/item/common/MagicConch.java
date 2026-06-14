@@ -4,9 +4,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BiomeTags;
@@ -19,7 +19,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.Tags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibUtils;
@@ -27,10 +26,10 @@ import org.confluence.mod.network.c2s.ApplySelectionPacketC2S;
 import org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.confluence.lib.common.item.TooltipItem.getTooltipsFromString;
 
@@ -43,9 +42,9 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.addAll(tooltips);
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
     }
 
     @Override
@@ -58,8 +57,8 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
                 } else if (!tag.contains("pos2")) {
                     tag.put("pos2", NbtUtils.writeBlockPos(clickedPos));
                 } else {
-                    BlockPos pos1 = NbtUtils.readBlockPos(tag, "pos1").orElse(BlockPos.ZERO);
-                    BlockPos pos2 = NbtUtils.readBlockPos(tag, "pos2").orElse(BlockPos.ZERO);
+                    BlockPos pos1 = NbtUtils.readBlockPos(tag.getCompound("pos1"));
+                    BlockPos pos2 = NbtUtils.readBlockPos(tag.getCompound("pos2"));
                     if (pos1.equals(clickedPos)) {
                         tag.remove("pos1");
                     } else if (pos2.equals(clickedPos)) {
@@ -86,39 +85,42 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
         if (pPlayer instanceof ServerPlayer serverPlayer) {
             CompoundTag tag = LibUtils.getItemStackNbtNoCopy(itemStack);
             if (tag.get("pos1") != null || tag.get("pos2") != null) {
-                Optional<BlockPos> pos1 = NbtUtils.readBlockPos(tag, "pos1");
-                Optional<BlockPos> pos2 = NbtUtils.readBlockPos(tag, "pos2");
+                boolean pos1Present = tag.contains("pos1", Tag.TAG_COMPOUND);
+                boolean pos2Present = tag.contains("pos2", Tag.TAG_COMPOUND);
+                BlockPos pos1 = pos1Present ? NbtUtils.readBlockPos(tag.getCompound("pos1")) : null;
+                BlockPos pos2 = pos2Present ? NbtUtils.readBlockPos(tag.getCompound("pos2")) : null;
                 OpenSelectionsScreenPacketS2C.sendToClient(serverPlayer, new Component[]{
                         getMessage(pos1),
                         getMessage(pos2)
                 }, new boolean[]{
-                        pos1.isPresent(),
-                        pos2.isPresent()
+                        pos1Present,
+                        pos2Present
                 });
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, pLevel.isClientSide);
     }
 
-    protected Component getMessage(Optional<BlockPos> pos) {
-        return Component.translatable("selections.confluence.magic_conch", pos.map(Vec3i::toShortString).orElse("unknown"));
+    protected Component getMessage(@Nullable BlockPos pos) {
+        String s = pos == null ? "unknown" : pos.toShortString();
+        return Component.translatable("selections.confluence.magic_conch", s);
     }
 
     protected boolean checkAvailable(UseOnContext pContext) {
         Level level = pContext.getLevel();
         Holder<Biome> biome = level.getBiome(pContext.getClickedPos());
         return pContext.getClickedFace() == Direction.UP && level.dimension() == OverworldUtils.dimension() &&
-                (biome.is(BiomeTags.IS_OCEAN) || biome.is(BiomeTags.IS_BEACH) || biome.is(Tags.Biomes.IS_STONY_SHORES));
+                (biome.is(BiomeTags.IS_OCEAN) || biome.is(BiomeTags.IS_BEACH) || biome.is(PortTags.Biomes.IS_STONY_SHORES));
     }
 
     @Override
     public @Nullable BlockPos getSelected(byte index, ItemStack itemStack) {
         CompoundTag tag = LibUtils.getItemStackNbtNoCopy(itemStack);
-        if (index == 0) {
-            return NbtUtils.readBlockPos(tag, "pos1").orElse(null);
+        if (index == 0 && tag.contains("pos1", Tag.TAG_COMPOUND)) {
+            return NbtUtils.readBlockPos(tag.getCompound("pos1"));
         }
-        if (index == 1) {
-            return NbtUtils.readBlockPos(tag, "pos2").orElse(null);
+        if (index == 1 && tag.contains("pos2", Tag.TAG_COMPOUND)) {
+            return NbtUtils.readBlockPos(tag.getCompound("pos2"));
         }
         return null;
     }

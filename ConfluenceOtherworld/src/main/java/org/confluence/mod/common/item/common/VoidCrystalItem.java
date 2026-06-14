@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -73,7 +74,7 @@ public class VoidCrystalItem extends Item {
     private void markPosition(ItemStack stack, CompoundTag tag, BlockPos pos, Direction face, @Nullable Player player, Level level) {
         tag.putLong("FirstPos", pos.asLong());
         tag.putInt("FirstFace", face.get3DDataValue());
-        stack.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
+        PortItemStackExtension.setData(stack, ConfluenceMagicLib.NBT, new NbtComponent(tag));
 
         if (player != null) {
             player.displayClientMessage(Component.translatable("chat.confluence.crystal_marked").withStyle(ChatFormatting.AQUA), true);
@@ -130,8 +131,11 @@ public class VoidCrystalItem extends Item {
             workingTag.remove("FirstPos");
             workingTag.remove("FirstFace");
         }
-        if (workingTag.isEmpty()) stack.remove(ConfluenceMagicLib.NBT);
-        else stack.set(ConfluenceMagicLib.NBT, new NbtComponent(workingTag));
+        if (workingTag.isEmpty()) {
+            PortItemStackExtension.removeData(stack, ConfluenceMagicLib.NBT);
+        } else {
+            PortItemStackExtension.setData(stack, ConfluenceMagicLib.NBT, new NbtComponent(workingTag));
+        }
     }
 
     private void notifyError(@Nullable Player player, Level level, BlockPos pos, String translationKey) {
@@ -141,7 +145,7 @@ public class VoidCrystalItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
         if (tag != null && tag.contains("FirstPos")) {
             BlockPos pos = BlockPos.of(tag.getLong("FirstPos"));

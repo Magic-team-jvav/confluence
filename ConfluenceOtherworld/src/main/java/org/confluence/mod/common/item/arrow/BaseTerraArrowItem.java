@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.arrow;
 
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
@@ -22,14 +23,16 @@ import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortArrowItemExtension;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
-public class BaseTerraArrowItem extends ArrowItem {
+public class BaseTerraArrowItem extends ArrowItem implements IPortArrowItemExtension {
     public static final String ARROW_TRANSFORM_TEXT = "tooltip.item.confluence.arrow_transform";
     public static final String BOW_FULL_PULL_ON_HIT_EFFECTS_TEXT = "tooltip.item.confluence.bow_full_pull_on_hit_effects";
     public static final String ON_HIT_EFFECTS_TEXT = "tooltip.item.confluence.on_hit_effects";
@@ -67,7 +70,7 @@ public class BaseTerraArrowItem extends ArrowItem {
             //arrow.setEffectsFromItem(stack);
             return arrow;
         }
-        return super.createArrow(level, stack, shooter, weapon);
+        return IPortArrowItemExtension.super.createArrow(level, stack, shooter, weapon);
     }
 
     @Override
@@ -76,11 +79,11 @@ public class BaseTerraArrowItem extends ArrowItem {
             //arrow.setEffectsFromItem(stack); -- 暂时简化代码，需要时再拆回来
             return new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), pos.x(), pos.y(), pos.z(), level, stack.copyWithCount(1), null, this);
         }
-        return super.asProjectile(level, pos, stack, direction);
+        return IPortArrowItemExtension.super.asProjectile(level, pos, stack, direction);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if (attributes == null) {
             return;
         }
@@ -89,7 +92,7 @@ public class BaseTerraArrowItem extends ArrowItem {
 
         if (attributes.onHitEffects != null) {
             IEffectStrategy.appendDescriptions(tooltipComponents, attributes.onHitEffects,
-                    Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF)
+                    PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.on_hit_effects").append(": "), 0xFF00FF)
             );
         }
 
@@ -104,9 +107,7 @@ public class BaseTerraArrowItem extends ArrowItem {
         }
     }
 
-    /**
-     * 伤害
-     */
+    /// 伤害
     public static void addDamageHoverText(List<Component> tooltipComponents, BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder, float baseDamage) {
         tooltipComponents.add(tooltip(ATTACK_DAMAGE_TEXT).append(String.format("%.1f", baseDamage)).withColor(0x00FF00));
         if (modifyArrowBuilder.multiShoot > 1) {
@@ -114,9 +115,7 @@ public class BaseTerraArrowItem extends ArrowItem {
         }
     }
 
-    /**
-     * 命中效果
-     */
+    /// 命中效果
     public static void addHitEffectHoverText(ItemStack weapon, List<Component> tooltipComponents) {
         EffectStrategyComponent hitEffect = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
         if (hitEffect != null) {
@@ -124,9 +123,7 @@ public class BaseTerraArrowItem extends ArrowItem {
         }
     }
 
-    /**
-     * 木箭转化
-     */
+    /// 木箭转化
     public static void addEntityTransformHoverText(List<Component> tooltipComponents, BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder, BaseArrowEntity.Builder arrowModifier) {
         if (modifyArrowBuilder.entityTransform != null) {
             tooltipComponents.add(tooltip(ARROW_TRANSFORM_TEXT).append(modifyArrowBuilder.entityTransform.type().getDescription()).withColor(0xF1b0F4));
@@ -138,9 +135,7 @@ public class BaseTerraArrowItem extends ArrowItem {
         }
     }
 
-    /**
-     * 蓄满命中效果
-     */
+    /// 蓄满命中效果
     public static void addFullPullHitEffectHoverText(ItemStack weapon, List<Component> tooltipComponents) {
         var fullPullHitEffect = weapon.get(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY);
         if (fullPullHitEffect != null) {
@@ -152,12 +147,11 @@ public class BaseTerraArrowItem extends ArrowItem {
         return Component.translatable(text).append(": ");
     }
 
-    /**
-     * <p>弓或箭的属性修饰</p>
-     * <p>若注册在弓里面，则是弓的属性；若注册在箭里面，则是箭的属性。二者可以叠加</p>
-     */
+    /// 弓或箭的属性修饰
+    ///
+    /// 若注册在弓里面，则是弓的属性；若注册在箭里面，则是箭的属性。二者可以叠加
     public static class ModifyArrowBuilder {
-        public List<Function<Properties, Properties>> modifyProperties = new ArrayList<>();
+        public List<UnaryOperator<PortItem.PortProperties>> modifyProperties = new ArrayList<>();
         public List<Consumer<BaseArrowEntity.Builder>> modifyArrowBuilder = new ArrayList<>();
         public int multiShoot = 1;
         public Predicate<ItemStack> canMultiShoot = ammo -> false;
@@ -165,124 +159,96 @@ public class BaseTerraArrowItem extends ArrowItem {
         public BaseTerraArrowItem.EntityTransform entityTransform;
         public float inaccuracy;
 
-        /**
-         * 应用属性修改器
-         */
+        /// 应用属性修改器
         public void applyModifiers(BaseArrowEntity.Builder modifyArrow) {
             modifyArrowBuilder.forEach(m -> m.accept(modifyArrow));
         }
 
-        /**
-         * 设置木箭转换的箭实体类型
-         *
-         * @param transformArrow 实体构造信息
-         */
+        /// 设置木箭转换的箭实体类型
+        ///
+        /// @param transformArrow 实体构造信息
         public ModifyArrowBuilder setEntityTransform(BaseTerraArrowItem.EntityTransform transformArrow) {
             this.entityTransform = transformArrow;
             return this;
         }
 
-        /**
-         * 设置多重射击
-         *
-         * @param multiShoot 数量
-         */
+        /// 设置多重射击
+        ///
+        /// @param multiShoot 数量
         public ModifyArrowBuilder setMultiShoot(int multiShoot) {
             this.multiShoot = multiShoot;
             return this;
         }
 
-        /**
-         * 设置多重射击
-         *
-         * @param multiShoot       数量
-         * @param multiShootOffset 偏移函数，第一个参数为当前射击序号，第二个参数为总射击数量
-         */
+        /// 设置多重射击
+        ///
+        /// @param multiShoot       数量
+        /// @param multiShootOffset 偏移函数，第一个参数为当前射击序号，第二个参数为总射击数量
         public ModifyArrowBuilder setMultiShoot(int multiShoot, MultiShootOffsetFunction multiShootOffset) {
             this.multiShoot = multiShoot;
             this.multiShootOffset = multiShootOffset;
             return this;
         }
 
-        /**
-         * 当满足条件时，允许多重射击
-         */
+        /// 当满足条件时，允许多重射击
         public ModifyArrowBuilder setCanMultiShoot(Predicate<ItemStack> canMultiShoot) {
             this.canMultiShoot = canMultiShoot;
             return this;
         }
 
-        /**
-         * 设置耐久度
-         */
+        /// 设置耐久度
         public ModifyArrowBuilder setDuration(int duration) {
             this.modifyProperties.add(p -> p.durability(duration));
             return this;
         }
 
-        /**
-         * 设置命中效果
-         */
+        /// 设置命中效果
         public ModifyArrowBuilder setOnHitEffect(EffectStrategyComponent component) {
             this.modifyProperties.add(p -> p.component(TEDataComponentTypes.EFFECT_STRATEGY, component));
             this.addModifyArrowBuilder(m -> m.addOnHitEffect(component));
             return this;
         }
 
-        /**
-         * 设置满蓄力命中效果
-         */
+        /// 设置满蓄力命中效果
         public ModifyArrowBuilder setFullPullHitEffect(EffectStrategyComponent component) {
             this.modifyProperties.add(p -> p.component(TEDataComponentTypes.BOW_FULL_CHARGE_EFFECT_STRATEGY, component));
             this.addModifyArrowBuilder(m -> m.addFullPullHitEffect(component));
             return this;
         }
 
-        /**
-         * 设置木箭转换泰拉箭
-         */
+        /// 设置木箭转换泰拉箭
         public ModifyArrowBuilder setArrowTransform(BaseTerraArrowItem arrow) {
             this.modifyArrowBuilder.add(m -> m.setTransformArrow(arrow));
             return this;
         }
 
-        /**
-         * 设置不可破坏
-         */
+        /// 设置不可破坏
         public ModifyArrowBuilder setUnBreakable() {
             this.modifyProperties.add(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
             return this;
         }
 
-        /**
-         * 设置稀有度
-         */
+        /// 设置稀有度
         public ModifyArrowBuilder setRarity(ModRarity rarity) {
             this.modifyProperties.add(p -> p.component(ConfluenceMagicLib.MOD_RARITY, rarity));
             return this;
         }
 
-        /**
-         * 添加属性修改器
-         */
+        /// 添加属性修改器
         public ModifyArrowBuilder addModifyArrowBuilder(Consumer<BaseArrowEntity.Builder> modifyArrowBuilder) {
             this.modifyArrowBuilder.add(modifyArrowBuilder);
             return this;
         }
 
-        /**
-         * 设置额外不准确度
-         */
+        /// 设置额外不准确度
         public ModifyArrowBuilder setInaccuracy(float inaccuracy) {
             this.inaccuracy = inaccuracy;
             return this;
         }
 
-        /**
-         * 构建属性
-         */
-        public Properties buildProperties(Properties properties) {
-            for (Function<Item.Properties, Item.Properties> f : modifyProperties) {
+        /// 构建属性
+        public PortItem.PortProperties buildProperties(PortItem.PortProperties properties) {
+            for (UnaryOperator<PortItem.PortProperties> f : modifyProperties) {
                 f.apply(properties);
             }
             return properties;
@@ -294,12 +260,10 @@ public class BaseTerraArrowItem extends ArrowItem {
         }
     }
 
-    /**
-     * 箭实体类型转换器
-     *
-     * @param type    箭实体类型
-     * @param factory 箭实体构造
-     */
+    /// 箭实体类型转换器
+    ///
+    /// @param type    箭实体类型
+    /// @param factory 箭实体构造
     public record EntityTransform(EntityType<? extends AbstractArrow> type, ArrowFactory factory) {
         public static EntityTransform create(EntityType<? extends AbstractArrow> type, ArrowFactory factory) {
             return new EntityTransform(type, factory);

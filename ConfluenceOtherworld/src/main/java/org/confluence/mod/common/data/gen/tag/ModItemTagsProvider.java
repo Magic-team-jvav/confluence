@@ -701,7 +701,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_BRIGHT.get(),
 
                 MaterialItems.CRYSTAL_SHARDS.get(),
-                MaterialItems.CURSED_FLAME.get(),
+                ModBlocks.CURSED_FLAME.get(),
                 MaterialItems.ICHOR.get(),
                 MaterialItems.PIXIE_DUST.get(),
                 MaterialItems.UNICORN_HORN.get(),

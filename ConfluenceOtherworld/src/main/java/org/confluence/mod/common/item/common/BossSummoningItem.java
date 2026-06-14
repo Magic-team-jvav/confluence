@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import com.google.common.collect.Streams;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.gameevent.LanternNightGameEvent;
-import org.confluence.terraentity.utils.TEUtils;
 
 import java.util.List;
 import java.util.function.Function;
@@ -37,7 +37,7 @@ public class BossSummoningItem extends TooltipItem {
             if (Streams.stream(serverLevel.getAllEntities()).anyMatch(entity -> entity.getType() == mob.getType())) {
                 return InteractionResultHolder.fail(itemStack);
             }
-            if (!player.hasInfiniteMaterials()) {
+            if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
                 itemStack.shrink(1);
             }
             mob.setPos(

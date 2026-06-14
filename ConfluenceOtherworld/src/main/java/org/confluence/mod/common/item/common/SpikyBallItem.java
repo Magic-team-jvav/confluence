@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -9,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.SpikyBallProjectile;
-import org.confluence.terraentity.init.TESounds;
 
 public class SpikyBallItem extends Item {
     public SpikyBallItem() {
@@ -28,7 +28,7 @@ public class SpikyBallItem extends Item {
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
-        if (!player.hasInfiniteMaterials()) {
+        if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
             itemstack.shrink(1);
         }
 

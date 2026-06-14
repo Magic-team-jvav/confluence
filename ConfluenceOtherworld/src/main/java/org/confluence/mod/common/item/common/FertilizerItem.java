@@ -21,18 +21,18 @@ public class FertilizerItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
-        BlockPos clickedPos = context.getClickedPos();
-        BlockState blockstate = level.getBlockState(clickedPos);
-        if (blockstate.getBlock() instanceof BonemealableBlock bonemealableblock && bonemealableblock.isValidBonemealTarget(level, clickedPos, blockstate)) {
+        BlockPos pos = context.getClickedPos();
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof BonemealableBlock block && block.isValidBonemealTarget(level, pos, state, level.isClientSide)) {
             if (level instanceof ServerLevel serverLevel) {
-                blockstate = blockstate.trySetValue(BlockStateProperties.STAGE, 1);
-                for (Property<?> property : blockstate.getProperties()) {
+                state = state.trySetValue(BlockStateProperties.STAGE, 1);
+                for (Property<?> property : state.getProperties()) {
                     if ("age".equals(property.getName()) && property instanceof IntegerProperty integerProperty) {
                         Integer max = Iterables.getLast(integerProperty.getPossibleValues());
-                        blockstate = setValue(blockstate, property, max);
+                        state = setValue(state, property, max);
                     }
                 }
-                bonemealableblock.performBonemeal(serverLevel, level.random, clickedPos, blockstate);
+                block.performBonemeal(serverLevel, level.random, pos, state);
                 context.getItemInHand().shrink(1);
             }
         }

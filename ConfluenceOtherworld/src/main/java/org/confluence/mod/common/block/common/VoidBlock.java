@@ -22,7 +22,7 @@ public class VoidBlock extends LiquidBlock implements net.minecraft.world.level.
 
     public static class VoidBlockEntity extends BlockEntity {
         public VoidBlockEntity(BlockPos pos, BlockState state) {
-            super(ModBlocks.VOID_BLOCK_ENTITY.get(), pos, state);
+            super(ModBlocks.VOID_ENTITY.get(), pos, state);
         }
     }
 }

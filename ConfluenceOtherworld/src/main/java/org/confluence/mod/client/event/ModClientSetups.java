@@ -346,7 +346,7 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.EVER_POWERED_RAIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CURSED_FLAME_BLOCK.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CURSED_FLAME.get(), cutout);
     }
 
     static void registerItemProperties() {

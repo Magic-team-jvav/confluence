@@ -6,17 +6,29 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.diff.IPortFoodProperties;
 
 import java.util.List;
-import java.util.Optional;
 
 public class GelItem extends ColoredItem {
     public GelItem() {
-        super(new Properties().food(new FoodProperties(1, 0.15F, false, 0.5F, Optional.empty(), List.of(new FoodProperties.PossibleEffect(() -> new MobEffectInstance(ModEffects.CHOKING, 1200), 0.01F)))), ModRarity.WHITE);
+        super(new Properties().food(createFoodProperties()), ModRarity.WHITE);
+    }
+
+    private static FoodProperties createFoodProperties() {
+        FoodProperties properties = new FoodProperties.Builder()
+                .nutrition(1)
+                .saturationMod(0.15F)
+                .effect(() -> new MobEffectInstance(ModEffects.CHOKING.get(), 1200), 0.01F)
+                .build();
+        IPortFoodProperties.of(properties).portlib$setEatSeconds(0.5F);
+        return properties;
     }
 
     @Override
@@ -27,7 +39,7 @@ public class GelItem extends ColoredItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("tooltip.item.confluence.gel.0").withStyle(ChatFormatting.GRAY));
     }
 }

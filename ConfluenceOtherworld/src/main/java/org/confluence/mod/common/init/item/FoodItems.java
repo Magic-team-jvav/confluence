@@ -167,7 +167,7 @@ public class FoodItems {
     public static final PortDeferredItem<BaseFoodItem.BItem> BOULDER_BREAD = registerBlockItemFood("boulder_bread",
             builder -> builder.rarity(ModRarity.GREEN)
                     .food(hasEffectProperties(20, 2.5f, EffectData.of(ModEffects.CHOKING.get(), 6000)))
-                    .duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.BOULDER_BREAD_BLOCK); //巨石面包
+                    .duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.BOULDER_BREAD); //巨石面包
     // 水果
     public static final PortDeferredItem<BaseFoodItem> APRICOT = registerNormalFood("apricot", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(6000, 4, 1.5f));
@@ -378,7 +378,7 @@ public class FoodItems {
 
     public static final PortDeferredItem<BaseFoodItem.BItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling",
             builder -> builder.rarity(ModRarity.RED).food(ModFoodProperties.plentySatisfiedProperties(6000, 3, 1.5f)
-            ).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
+            ).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING);
 
     public static final PortDeferredItem<BaseFoodItem> HONEY_GUMMI = registerFood("honey_gummi",
             builder -> builder.rarity(ModRarity.ORANGE).food(hasEffectProperties(12, 6.0f, new ModFoodPropertiesBuilder.EffectData(TCEffects.HONEY.get(), 200, 0, 1.0f)))

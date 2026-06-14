@@ -79,7 +79,7 @@ public class BaseArmorItem extends ArmorItem {
         private Map<ValueType<?, ? extends PrimitiveValue<?>>, PrimitiveValue<?>> types = null;
         private boolean multiHead = false;
         private String requiresModLoaded = null;
-        private ImmutableMultimap.Builder<Attribute, AttributeModifier> vanillaAttributes = null;
+        private ImmutableMultimap.Builder<Attribute, AttributeModifier> attributeModifiers = null;
         private boolean golden;
 
         private transient ResourceLocation id;
@@ -144,8 +144,8 @@ public class BaseArmorItem extends ArmorItem {
         }
 
         public Builder attribute(Attribute attribute, double value, PortAttributeModifier.PortOperation operation) {
-            if (vanillaAttributes == null) this.vanillaAttributes = ImmutableMultimap.builder();
-            vanillaAttributes.put(attribute, new AttributeModifier(PortAttributeModifier.rl2uuid(asId()), asId().getPath(), value, operation.unwrap()));
+            if (attributeModifiers == null) this.attributeModifiers = ImmutableMultimap.builder();
+            attributeModifiers.put(attribute, new AttributeModifier(PortAttributeModifier.rl2uuid(asId()), asId().getPath(), value, operation.unwrap()));
             return this;
         }
 
@@ -202,9 +202,9 @@ public class BaseArmorItem extends ArmorItem {
             } else {
                 item = new BaseArmorItem(material, type, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
             }
-            if (vanillaAttributes != null) {
-                vanillaAttributes.putAll(item.defaultModifiers);
-                item.defaultModifiers = vanillaAttributes.build();
+            if (attributeModifiers != null) {
+                attributeModifiers.putAll(item.defaultModifiers);
+                item.defaultModifiers = attributeModifiers.build();
             }
             if (lineCount > 0) {
                 item.tooltips = TooltipItem.getTooltipsFromString(name, lineCount, ChatFormatting.GRAY);

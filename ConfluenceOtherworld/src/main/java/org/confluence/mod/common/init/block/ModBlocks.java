@@ -70,10 +70,10 @@ public final class ModBlocks {
     // 流体
     public static final PortDeferredBlock<LiquidBlock> HONEY = registerWithoutItem("honey", () -> new LiquidBlock(ModFluids.HONEY.fluid().get(), BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_YELLOW)));
     public static final PortDeferredBlock<VoidBlock> VOID = registerWithoutItem("void", () -> new VoidBlock(ModFluids.VOID.fluid().get(), BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_BLACK)));
+    public static final RegistryObject<BlockEntityType<VoidBlock.VoidBlockEntity>> VOID_ENTITY = BLOCK_ENTITIES.register("void_entity", () -> BlockEntityType.Builder.of(VoidBlock.VoidBlockEntity::new, VOID.get()).build(DSL.remainderType()));
     public static final PortDeferredBlock<LiquidBlock> SHIMMER = registerWithoutItem("shimmer", () -> new EmptyPickupLiquidBlock(ModFluids.SHIMMER.fluid()::get, BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_PINK).lightLevel(blockState -> 10)));
     public static final PortDeferredBlock<AetheriumCauldronBlock> AETHERIUM_CAULDRON = registerWithItem("aetherium_cauldron", () -> new AetheriumCauldronBlock(BlockBehaviour.Properties.copy(Blocks.WATER_CAULDRON)));
     public static final PortDeferredBlock<HoneyCauldronBlock> HONEY_CAULDRON = registerWithItem("honey_cauldron", () -> new HoneyCauldronBlock(BlockBehaviour.Properties.copy(Blocks.WATER_CAULDRON)));
-    public static final RegistryObject<BlockEntityType<VoidBlock.VoidBlockEntity>> VOID_BLOCK_ENTITY = BLOCK_ENTITIES.register("void_block_entity", () -> BlockEntityType.Builder.of(VoidBlock.VoidBlockEntity::new, VOID.get()).build(DSL.remainderType()));
     // 草药
     public static final PortDeferredBlock<BaseHerbBlock> WATERLEAF = registerWithoutItem("waterleaf", Waterleaf::new); // 幌菊
     public static final PortDeferredBlock<Fireblossom> FIREBLOSSOM = registerWithoutItem("fireblossom", Fireblossom::new); // 火焰花
@@ -93,8 +93,8 @@ public final class ModBlocks {
     public static final PortDeferredBlock<BaseRopeBlock> WEB_ROPE = registerWithItem("web_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.BLUE).sound(SoundType.WOOL).noCollission().instabreak()), BaseRopeBlock.BItem::new);
     public static final PortDeferredBlock<BaseRopeBlock> PINE_NEEDLE_HANDMADE_ROPE_SET = registerWithItem("pine_needle_handmade_rope_set", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.BLUE).sound(SoundType.GRASS).noCollission().instabreak()), BaseRopeBlock.BItem::new);
 
-    public static final PortDeferredBlock<Block> FAILED_SKULL_BLOCK = registerWithoutItem("failed_skull_block", () -> new BaseSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
-    public static final PortDeferredBlock<Block> FAILED_SKULL_WALL_BLOCK = registerWithoutItem("failed_skull_wall_block", () -> new BaseSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final PortDeferredBlock<Block> FAILED_SKULL = registerWithoutItem("failed_skull", () -> new BaseSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final PortDeferredBlock<Block> FAILED_SKULL_WALL = registerWithoutItem("failed_skull_wall", () -> new BaseSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
 
     public static final PortDeferredBlock<TombstoneBlock> TOMBSTONE = registerTombstone("tombstone", false);
     public static final PortDeferredBlock<TombstoneBlock> GRAVE_MARKER = registerTombstone("grave_marker", false);
@@ -109,13 +109,13 @@ public final class ModBlocks {
     public static final PortDeferredBlock<TombstoneBlock> GOLDEN_GRAVESTONE = registerTombstone("golden_gravestone", true);
     public static final RegistryObject<BlockEntityType<TombstoneBlock.BEntity>> TOMBSTONE_ENTITY = BLOCK_ENTITIES.register("tombstone_entity", () -> BlockEntityType.Builder.of(TombstoneBlock.BEntity::new, TOMBSTONES.keySet().stream().map(PortDeferredBlock::get).toArray(TombstoneBlock[]::new)).build(DSL.remainderType()));
 
-    public static final PortDeferredBlock<GreenDumplingBlock> GREEN_DUMPLING_BLOCK = registerWithoutItem("green_dumpling_block", GreenDumplingBlock::new);
-    public static final PortDeferredBlock<BoulderBreadBlock> BOULDER_BREAD_BLOCK = registerWithoutItem("boulder_bread_block", BoulderBreadBlock::new);
+    public static final PortDeferredBlock<GreenDumplingBlock> GREEN_DUMPLING = registerWithoutItem("green_dumpling", GreenDumplingBlock::new);
+    public static final PortDeferredBlock<BoulderBreadBlock> BOULDER_BREAD = registerWithoutItem("boulder_bread", BoulderBreadBlock::new);
 
-    public static final PortDeferredBlock<CursedFlameBlock> CURSED_FLAME_BLOCK = registerWithoutItem("cursed_flame_block", () -> new CursedFlameBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().instabreak().lightLevel(l -> 7).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
+    public static final PortDeferredBlock<CursedFlameBlock> CURSED_FLAME = registerWithItem("cursed_flame", () -> new CursedFlameBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().instabreak().lightLevel(l -> 7).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
 
     // test block 要测试直接复制下面这一行改名
-    public static final PortDeferredBlock<Block> TEST_BLOCK = registerWithItem("test_block", () -> new Block(BlockBehaviour.Properties.copy(STONE).mapColor(MapColor.COLOR_BLUE)));
+    public static final PortDeferredBlock<Block> TEST = registerWithItem("test", () -> new Block(BlockBehaviour.Properties.copy(STONE).mapColor(MapColor.COLOR_BLUE)));
     public static final PortDeferredBlock<EnemyBannerBlock> ENEMY_BANNER = BLOCKS.register("enemy_banner", EnemyBannerBlock::new);
     public static final PortDeferredBlock<WallEnemyBannerBlock> WALL_ENEMY_BANNER = BLOCKS.register("wall_enemy_banner", WallEnemyBannerBlock::new);
     public static final RegistryObject<BlockEntityType<AbstractEnemyBannerBlock.BEntity>> ENEMY_BANNER_ENTITY = BLOCK_ENTITIES.register("enemy_banner_entity", () -> BlockEntityType.Builder.of(AbstractEnemyBannerBlock.BEntity::new, ENEMY_BANNER.get(), WALL_ENEMY_BANNER.get()).build(DSL.remainderType()));

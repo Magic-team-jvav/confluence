@@ -8,9 +8,10 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.SimpleTier;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.mesdag.portlib.diff.Diff;
+import org.mesdag.portlib.wrapper.common.PortSimpleTier;
 
 import java.util.function.Supplier;
 
@@ -112,7 +113,7 @@ public final class ModTiers {
         return !blockState.is(ModTags.Blocks.NEEDS_1_LEVEL);
     }
 
-    public static class PoweredTier extends SimpleTier {
+    public static class PoweredTier extends PortSimpleTier {
         private final int power;
 
         /// @param power                   镐力
@@ -131,10 +132,16 @@ public final class ModTiers {
             return power;
         }
 
+        @Diff
+        @Override
+        public int getLevel() {
+            return power;
+        }
+
         @Override
         public String toString() {
             return "PoweredTier[" +
-                    "incorrectBlocksForDrops=" + getIncorrectBlocksForDrops() + ", " +
+                    "incorrectBlocksForDrops=" + getTag() + ", " +
                     "uses=" + getUses() + ", " +
                     "speed=" + getSpeed() + ", " +
                     "attackDamageBonus=" + getAttackDamageBonus() + ", " +

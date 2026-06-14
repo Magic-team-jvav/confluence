@@ -1,14 +1,10 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
@@ -19,6 +15,10 @@ import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
+import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,10 +67,10 @@ public class VanityArmorItems {
     public static final PortDeferredItem<BaseVanityArmorItem> DEAD_MANS_SWEATER = registerVanityArmor(
             "dead_mans_seater",
             "vanity_armor/dead_mans_seater",
-            ModArmorMaterials.VANITY_ARMOR_MATERIALS,
+            ModArmorMaterials.VANITY_ARMOR_MATERIALS.get(),
             ArmorItem.Type.CHESTPLATE,
             ModRarity.GREEN,
-            (id, builder) -> builder.add(Attributes.ARMOR, new AttributeModifier(id, 4.0, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.CHEST)
+            (id, builder) -> builder.add(Attributes.ARMOR, new PortAttributeModifier(id, 4.0, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.CHEST)
     );
     public static final PortDeferredItem<BaseVanityArmorItem> GUY_FAWKES_MASK = registerVanityArmor("guy_fawkes_mask", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final PortDeferredItem<BaseVanityArmorItem> GUY_FAWKES_HAT = registerVanityArmor("guy_fawkes_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
@@ -134,15 +134,15 @@ public class VanityArmorItems {
         return ITEMS.register(name, () -> new BaseVanityArmorItem("vanity_armor/" + name, type, rarity));
     }
 
-    private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String name, String geoName, Holder<ArmorMaterial> material, ArmorItem.Type type, Item.Properties properties, ModRarity rarity) {
+    private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String name, String geoName, ArmorMaterial material, ArmorItem.Type type, PortItem.PortProperties properties, ModRarity rarity) {
         return ITEMS.register(name, () -> new BaseVanityArmorItem(geoName, material, type, properties, rarity));
     }
 
-    private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String name, String geoName, Holder<ArmorMaterial> material, ArmorItem.Type type, ModRarity rarity, BiConsumer<ResourceLocation, ItemAttributeModifiers.Builder> consumer) {
+    private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String name, String geoName, ArmorMaterial material, ArmorItem.Type type, ModRarity rarity, BiConsumer<ResourceLocation, PortItemAttributeModifiers.PortBuilder> consumer) {
         return ITEMS.register(name, id -> {
-            ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+            PortItemAttributeModifiers.PortBuilder builder = PortItemAttributeModifiers.builder();
             consumer.accept(id, builder);
-            return new BaseVanityArmorItem(geoName, material, type, new Item.Properties().attributes(builder.build()), rarity);
+            return new BaseVanityArmorItem(geoName, material, type, new PortItem.PortProperties().attributes(builder.build()), rarity);
         });
     }
 }

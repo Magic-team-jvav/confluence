@@ -1,6 +1,6 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.core.component.DataComponents;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -24,21 +24,21 @@ public class EntityDisplayItem extends CustomRarityItem {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         if (!level.isClientSide) {
-            ItemStack itemStack = context.getItemInHand();
-            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
+            ItemStack stack = context.getItemInHand();
+            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
             if (tag != null) {
                 Entity entity = EntityType.loadEntityRecursive(tag, level, Function.identity());
                 if (entity != null) {
                     entity.setPos(context.getClickLocation());
-                    Component customName = itemStack.get(DataComponents.CUSTOM_NAME);
+                    Component customName = PortItemStackExtension.getCustomName(stack);
                     if (customName != null) {
                         entity.setCustomName(customName);
                     }
                     level.addFreshEntity(entity);
                 }
             }
-            itemStack.shrink(1);
-            if (itemStack.isEmpty() && context.getPlayer() != null) {
+            stack.shrink(1);
+            if (stack.isEmpty() && context.getPlayer() != null) {
                 context.getPlayer().setItemInHand(context.getHand(), ItemStack.EMPTY);
             }
             return InteractionResult.CONSUME_PARTIAL;

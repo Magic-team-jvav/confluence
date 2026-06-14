@@ -11,7 +11,7 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 import static org.confluence.mod.common.init.item.ModItems.attributes;
 import static org.confluence.mod.common.init.item.ModItems.unbreakable;
 
-/// <a href="https://terraria.wiki.gg/zh/wiki/%E9%93%BE%E9%94%AF">链锯</a>
+/// [链锯](https://terraria.wiki.gg/zh/wiki/%E9%93%BE%E9%94%AF)
 public class ChainsawItems {
     public static void init() {}
 

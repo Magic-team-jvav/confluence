@@ -16,6 +16,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
@@ -66,7 +67,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, GunItems.CHLOROPHYTE_BULLET.toStack(60), AmountIngredient.of(60, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
         hardmodeAnvil(recipeOutput, GunItems.CRYSTAL_BULLET.toStack(100), AmountIngredient.of(100, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
         hardmodeAnvil(recipeOutput, GunItems.ICHOR_BULLET.toStack(150), AmountIngredient.of(150, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.ICHOR));
-        hardmodeAnvil(recipeOutput, GunItems.CURSED_BULLET.toStack(150), AmountIngredient.of(150, GunItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CURSED_FLAME));
+        hardmodeAnvil(recipeOutput, GunItems.CURSED_BULLET.toStack(150), AmountIngredient.of(150, GunItems.MUSKET_BULLET), Ingredient.of(ModBlocks.CURSED_FLAME));
         // 秘银套
         hardmodeAnvil(recipeOutput, ArmorItems.MYTHRIL_HAT.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),

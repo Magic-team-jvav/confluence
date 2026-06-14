@@ -448,7 +448,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
         crystalBlock(recipeOutput, GunItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(9999, GunItems.MUSKET_BULLET));
-        crystalBlock(recipeOutput, ManaWeaponItems.CURSED_FLAMES.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.CURSED_FLAME), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
+        crystalBlock(recipeOutput, ManaWeaponItems.CURSED_FLAMES.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, ModBlocks.CURSED_FLAME), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(recipeOutput, ManaWeaponItems.CRYSTAL_STORM.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.CRYSTAL_SHARDS), AmountIngredient.of(15, MaterialItems.SOUL_OF_LIGHT));
         crystalBlock(recipeOutput, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.ICHOR), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(recipeOutput, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));

@@ -2,18 +2,16 @@ package org.confluence.mod.common.item.armor;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.MultiHeadArmorItemRenderer;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +20,7 @@ import java.util.function.Consumer;
 public class MultiHeadGeoArmorItem extends NormalGeoArmorItem {
     private static final Map<String, MultiHeadGeoArmorItem[]> headMap = new HashMap<>();
 
-    public MultiHeadGeoArmorItem(String name, ModRarity rarity, Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public MultiHeadGeoArmorItem(String name, ModRarity rarity, ArmorMaterial material, Type type, Properties properties) {
         super(name, rarity, material, type, properties);
         if (type == Type.HELMET && LibUtils.isPhysicalClient()) {
             MultiHeadGeoArmorItem[] original = headMap.computeIfAbsent(name, k -> new MultiHeadGeoArmorItem[3]);
@@ -43,12 +41,12 @@ public class MultiHeadGeoArmorItem extends NormalGeoArmorItem {
     }
 
     @Override
-    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-        consumer.accept(new GeoRenderProvider() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             private NormalArmorItemRenderer<NormalGeoArmorItem> renderer;
 
             @Override
-            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
+            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                 if (renderer == null) {
                     MultiHeadGeoArmorItem[] items = headMap.get(name);
                     if (items == null || Minecraft.getInstance().getResourceManager().getResource(Confluence.asResource("textures/item/" + name + ".png")).isEmpty()) {

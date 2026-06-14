@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -25,11 +26,11 @@ public class NPCInvitationItem extends TooltipItem {
             for (EntityType<?> entityType : NPCSpawner.INSTANCE.getNpcSpawned()) {
                 NPCSpawner.INSTANCE.setNPCAlive(region, entityType, false);
             }
-            player.sendSystemMessage(Component.translatable(
+            player.sendSystemMessage(PortMutableComponentExtension.withColor(Component.translatable(
                     "event.confluence.npc_invitation",
                     region.x(), region.z(),
                     region.x() + 15, region.z() + 15
-            ).withColor(GlobalColors.TIPS.get()));
+            ), GlobalColors.TIPS.get()));
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);
     }

@@ -13,7 +13,7 @@ import org.confluence.mod.common.init.ModFluids;
 
 public class VoidBucketItem extends BucketItem {
     public VoidBucketItem() {
-        super(ModFluids.VOID.fluid().get(), new Properties().craftRemainder(Items.BUCKET).stacksTo(1));
+        super(ModFluids.VOID.fluid(), new Properties().craftRemainder(Items.BUCKET).stacksTo(1));
     }
 
     @Override

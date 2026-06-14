@@ -1118,7 +1118,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9333))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.CURSED_FLAME))
+                        .add(LootItem.lootTableItem(ModBlocks.CURSED_FLAME))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )

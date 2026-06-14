@@ -5,15 +5,15 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.function.Consumer;
 
@@ -22,21 +22,21 @@ public class FamiliarVanityArmorItem extends BaseVanityArmorItem {
         super(DEFAULT_NAME, type, ModRarity.WHITE);
     }
 
-    public FamiliarVanityArmorItem(Holder<ArmorMaterial> material, Type type) {
+    public FamiliarVanityArmorItem(ArmorMaterial material, Type type) {
         super(DEFAULT_NAME, material, type, ModRarity.WHITE);
     }
 
-    public FamiliarVanityArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public FamiliarVanityArmorItem(ArmorMaterial material, Type type, PortItem.PortProperties properties) {
         super(DEFAULT_NAME, material, type, properties, ModRarity.WHITE);
     }
 
     @Override
-    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-        consumer.accept(new GeoRenderProvider() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             private NormalArmorItemRenderer<BaseVanityArmorItem> renderer;
 
             @Override
-            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
+            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                 if (renderer == null) {
                     this.renderer = new NormalArmorItemRenderer<>(name) {
                         @Override

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -10,8 +11,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
-import org.confluence.terraentity.init.TESounds;
-
 
 public class ThrowableDropSelfItem extends Item {
     final EntityType<? extends ThrowableDropSelfProjectile> entityType;
@@ -34,29 +33,29 @@ public class ThrowableDropSelfItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        if (!pLevel.isClientSide) {
-            pLevel.playSound(null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), TESounds.WAVING.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
-            ThrowableDropSelfProjectile projectile = entityType.create(pLevel);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        if (!level.isClientSide) {
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), TESounds.WAVING.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
+            ThrowableDropSelfProjectile projectile = entityType.create(level);
             if (projectile != null) {
-                projectile.setOwner(pPlayer);
+                projectile.setOwner(player);
                 if (dropSelf) {
                     projectile.setItem(getDefaultInstance());
                 }
                 projectile.setDamage(damage);
-                projectile.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, power, inaccuracy);
+                projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, power, inaccuracy);
                 projectile.setFlyTicks(flyTicks);
-                pLevel.addFreshEntity(projectile);
-                pPlayer.getCooldowns().addCooldown(this, cooldown);
+                level.addFreshEntity(projectile);
+                player.getCooldowns().addCooldown(this, cooldown);
             }
         }
 
-        pPlayer.awardStat(Stats.ITEM_USED.get(this));
-        if (!pPlayer.hasInfiniteMaterials()) {
+        player.awardStat(Stats.ITEM_USED.get(this));
+        if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
             itemstack.shrink(1);
         }
 
-        return InteractionResultHolder.sidedSuccess(itemstack, pLevel.isClientSide);
+        return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide);
     }
 }

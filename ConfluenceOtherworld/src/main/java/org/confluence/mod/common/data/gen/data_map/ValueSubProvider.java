@@ -265,7 +265,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.PINK_PEARL, gold10 + gold5)
                 .add(MaterialItems.JUNGLE_SPORE, 20)
                 .add(MaterialItems.CRYSTAL_SHARDS, silver10 + silver5 + silver1)
-                .add(MaterialItems.CURSED_FLAME, silver10 - silver2)
+                .add(ModBlocks.CURSED_FLAME, silver10 - silver2)
                 .add(MaterialItems.ICHOR, silver10 - silver1)
                 .add(MaterialItems.DARK_SHARD, silver10 - silver1)
                 .add(MaterialItems.LIGHT_SHARD, silver10 - silver1)

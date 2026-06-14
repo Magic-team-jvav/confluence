@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -17,27 +18,27 @@ import org.confluence.terra_curio.common.init.TCEffects;
 
 public class HoneyBucketItem extends BucketItem {
     public HoneyBucketItem() {
-        super(ModFluids.HONEY.fluid().get(), new Properties().craftRemainder(Items.BUCKET).stacksTo(1));
+        super(ModFluids.HONEY.fluid(), new Properties().craftRemainder(Items.BUCKET).stacksTo(1));
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving) {
-        if (!pLevel.isClientSide) {
-            pEntityLiving.addEffect(new MobEffectInstance(TCEffects.HONEY, 900));
-            pEntityLiving.removeEffect(MobEffects.POISON);
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
+        if (!level.isClientSide) {
+            living.addEffect(new MobEffectInstance(TCEffects.HONEY.get(), 900));
+            living.removeEffect(MobEffects.POISON);
         }
-        if (pEntityLiving instanceof ServerPlayer serverplayer) {
-            CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, pStack);
+        if (living instanceof ServerPlayer serverplayer) {
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, stack);
             serverplayer.awardStat(Stats.ITEM_USED.get(this));
         }
-        if (pEntityLiving instanceof Player && !((Player) pEntityLiving).hasInfiniteMaterials()) {
-            pStack.shrink(1);
+        if (living instanceof Player player && !PortPlayerExtension.hasInfiniteMaterials(player)) {
+            stack.shrink(1);
         }
-        return pStack.isEmpty() ? new ItemStack(Items.BUCKET) : pStack;
+        return stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack;
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+    public int getUseDuration(ItemStack stack) {
         return 32;
     }
 

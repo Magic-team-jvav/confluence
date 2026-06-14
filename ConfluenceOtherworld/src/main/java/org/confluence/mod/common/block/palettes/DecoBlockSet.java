@@ -14,10 +14,10 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.registries.PortDeferredBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +32,10 @@ public class DecoBlockSet {
     public final List<ObjectIntPair<Supplier<? extends ItemLike>>> materials;
     public final boolean stonecutting;
 
-    public final RegistryObject<Block> FULL;
-    public final RegistryObject<StairBlock> STAIRS;
-    public final RegistryObject<SlabBlock> SLAB;
-    public final RegistryObject<WallBlock> WALL;
+    public final PortDeferredBlock<Block> FULL;
+    public final PortDeferredBlock<StairBlock> STAIRS;
+    public final PortDeferredBlock<SlabBlock> SLAB;
+    public final PortDeferredBlock<WallBlock> WALL;
 
     DecoBlockSet(Builder builder) {
         this.id = builder.id;

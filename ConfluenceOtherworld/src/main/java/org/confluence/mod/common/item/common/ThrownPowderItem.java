@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -25,7 +26,7 @@ public class ThrownPowderItem extends Item {
             entity.setPos(player.getX(), player.getEyeY() - 0.1F, player.getZ());
             entity.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 0.5F);
             level.addFreshEntity(entity);
-            if (!player.hasInfiniteMaterials()) {
+            if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
                 itemStack.shrink(1);
             }
         }

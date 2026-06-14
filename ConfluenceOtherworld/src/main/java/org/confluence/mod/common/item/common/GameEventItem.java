@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionHand;
@@ -29,7 +30,7 @@ public class GameEventItem extends TooltipItem {
         ItemStack stack = player.getItemInHand(usedHand);
         if (!level.isClientSide) {
             if (Objects.requireNonNull(GameEventSystem.INSTANCE.getEventInstance(key)).forceStart()) {
-                if (!player.hasInfiniteMaterials()) {
+                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
                     stack.shrink(1);
                 }
                 LanternNightGameEvent.INSTANCE.forceEnd();

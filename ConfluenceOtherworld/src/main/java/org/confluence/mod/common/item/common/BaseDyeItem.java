@@ -1,15 +1,14 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.util.FastColor;
+import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 
 public class BaseDyeItem extends CustomRarityItem {
     public BaseDyeItem(Properties properties, ModRarity rarity, int rgb) {
-        super(properties.component(DataComponents.DYED_COLOR, new DyedItemColor(rgb, true)), rarity);
+        super(PortItemExtension.Properties.dyedColor(properties, rgb, true), rarity);
     }
 
     public BaseDyeItem(ModRarity rarity, int rgb) {
@@ -17,15 +16,14 @@ public class BaseDyeItem extends CustomRarityItem {
     }
 
     public static int getRGB(ItemStack stack) {
-        DyedItemColor dyeditemcolor = stack.get(DataComponents.DYED_COLOR);
-        return dyeditemcolor != null ? dyeditemcolor.rgb() : 0xFFFFFF;
+        return PortItemStackExtension.getDyedColor(stack);
     }
 
     public static int getARGB(ItemStack stack) {
-        return FastColor.ARGB32.opaque(getRGB(stack));
+        return getRGB(stack) | 0xFF000000;
     }
 
     public static void setRGB(ItemStack stack, int rgb) {
-        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(rgb, true));
+        PortItemStackExtension.setDyedColor(stack, rgb);
     }
 }

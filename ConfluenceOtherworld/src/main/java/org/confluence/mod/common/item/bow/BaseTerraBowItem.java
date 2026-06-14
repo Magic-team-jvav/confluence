@@ -25,6 +25,7 @@ import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.mesdag.portlib.wrapper.common.extensions.IPortBowItemExtension;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
     private final BaseArrowEntity.Builder arrowModifier;
     private final BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder;
 
-    public BaseTerraBowItem(Properties properties, float baseDamage, BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder) {
+    public BaseTerraBowItem(PortItem.PortProperties properties, float baseDamage, BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder) {
         super(modifyArrowBuilder.buildProperties(properties.stacksTo(1)));
         this.baseDamage = baseDamage;
         this.arrowModifier = new BaseArrowEntity.Builder();
@@ -45,7 +46,7 @@ public class BaseTerraBowItem extends BowItem implements ITerraArrowProjectileWe
     }
 
     public BaseTerraBowItem(float baseDamage, BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder) {
-        this(new Properties(), baseDamage, modifyArrowBuilder);
+        this(new PortItem.PortProperties(), baseDamage, modifyArrowBuilder);
     }
 
     @Override

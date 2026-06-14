@@ -1,5 +1,7 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -19,7 +21,6 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 public class AdvancedCombatTechniquesItem extends TooltipItem {
     public AdvancedCombatTechniquesItem() {
@@ -37,11 +38,11 @@ public class AdvancedCombatTechniquesItem extends TooltipItem {
                     NPCSpawner.applyAdvancedCombatTechniques(npc, id);
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });
-                MutableComponent component = Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.get());
+                MutableComponent component = PortMutableComponentExtension.withColor(Component.translatable("message.confluence.advancement_combat_techniques"), GlobalColors.MESSAGE.get());
                 for (ServerPlayer serverPlayer : serverLevel.getServer().getPlayerList().getPlayers()) {
                     serverPlayer.sendSystemMessage(component);
                 }
-                if (!player.hasInfiniteMaterials()) {
+                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
                     itemStack.shrink(1);
                 }
             }

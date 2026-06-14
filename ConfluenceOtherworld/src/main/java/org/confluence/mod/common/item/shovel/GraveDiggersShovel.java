@@ -16,17 +16,15 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.BaseHammerItem;
 import org.confluence.mod.common.item.common.BaseShovelItem;
 import org.jetbrains.annotations.NotNull;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Supplier;
 
-/**
- * 掘墓者铲子
- * 继承 BaseShovelItem，使用 BaseHammerItem.hammerMineBlock 方法实现 3x3 挖掘
- * 挖掘等级：铁（NEEDS_2_LEVEL）
- * 特点：对柔软方块挖掘特别快
- */
+/// 掘墓者铲子
+/// 继承 BaseShovelItem，使用 BaseHammerItem.hammerMineBlock 方法实现 3x3 挖掘
+/// 挖掘等级：铁（NEEDS_2_LEVEL）
+/// 特点：对柔软方块挖掘特别快
 public class GraveDiggersShovel extends BaseShovelItem {
 
     // 需要 2 次敲击的方块
@@ -90,10 +88,10 @@ public class GraveDiggersShovel extends BaseShovelItem {
             5.0F, // 挖掘速度
             2.0F, // 攻击伤害加成
             14, // 附魔能力
-            (Supplier<Ingredient>) () -> Ingredient.of() // 无修复材料
+            Ingredient::of // 无修复材料
     );
 
-    public GraveDiggersShovel(float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
+    public GraveDiggersShovel(float rawDamage, float rawSpeed, PortItem.PortProperties properties, ModRarity rarity) {
         super(GRAVE_DIGGERS_TIER, rawDamage, rawSpeed, properties, rarity);
     }
 

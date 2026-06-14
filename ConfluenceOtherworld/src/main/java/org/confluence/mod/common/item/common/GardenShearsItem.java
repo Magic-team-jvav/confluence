@@ -1,20 +1,16 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShearsItem;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,6 +22,10 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.item.ModItems;
 import org.mesdag.portlib.wrapper.common.PortItemAbilities;
 import org.mesdag.portlib.wrapper.common.PortItemAbility;
+import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -44,15 +44,15 @@ public class GardenShearsItem extends ShearsItem {
             PortItemAbilities.AXE_STRIP
     ).map(PortItemAbility::unwrap).collect(Collectors.toCollection(Sets::newIdentityHashSet));
 
-    public GardenShearsItem(Properties properties, ModRarity rarity) {
+    public GardenShearsItem(PortItem.PortProperties properties, ModRarity rarity) {
         super(properties
-                .component(DataComponents.MAX_STACK_SIZE, 1)
-                .component(DataComponents.TOOL, ShearsItem.createToolProperties())
+                .stacksTo(1)
+//                .component(DataComponents.TOOL, ShearsItem.createToolProperties())
                 .component(ConfluenceMagicLib.MOD_RARITY, rarity)
-                .attributes(ItemAttributeModifiers.builder().add(
-                        Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(
-                                ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 2.5, AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND).build()));
+                .attributes(PortItemAttributeModifiers.builder().add(
+                        PortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(
+                                ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 2.5, PortAttributeModifier.PortOperation.ADD_VALUE),
+                        PortEquipmentSlotGroup.MAINHAND).build()));
     }
 
     @Override

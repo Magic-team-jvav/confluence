@@ -5,23 +5,26 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpyglassItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 
 public class BinocularsItem extends SpyglassItem {
     public BinocularsItem() {
-        super(new Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED));
+        super(new PortItem.PortProperties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED));
     }
 
-    @Override
-    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        return false;
-    }
+//    @Override
+//    public boolean canPerformAction(ItemStack stack, ToolAction itemAbility) {
+//        return false;
+//    }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("tooltip.item.confluence.binoculars.0").withStyle(ChatFormatting.GRAY));
     }
 }

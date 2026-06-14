@@ -19,7 +19,6 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.List;
 
@@ -75,10 +74,10 @@ public class ModBoneMealItem extends TooltipItem {
                 if (targetState.isAir()) {
                     String blockType = null;
                     if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) &&
-                            (state.is(NatureBlocks.CRIMSON_GRASS_BLOCK) || state.is(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK))) {
+                            (state.is(NatureBlocks.CRIMSON_GRASS_BLOCK.get()) || state.is(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK.get()))) {
                         blockType = "crimson";
                     } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) &&
-                            (state.is(NatureBlocks.CORRUPT_GRASS_BLOCK) || state.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK))) {
+                            (state.is(NatureBlocks.CORRUPT_GRASS_BLOCK.get()) || state.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get()))) {
                         blockType = "corrupt";
                     }
                     if (blockType != null) {

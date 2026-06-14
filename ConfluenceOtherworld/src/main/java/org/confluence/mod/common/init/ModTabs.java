@@ -902,7 +902,7 @@ public final class ModTabs {
                         monster_drops.accept(MaterialItems.CRYSTAL_SHARDS.get());
                         monster_drops.accept(MaterialItems.DARK_SHARD.get());
                         monster_drops.accept(MaterialItems.LIGHT_SHARD.get());
-                        monster_drops.accept(MaterialItems.CURSED_FLAME.get());
+                        monster_drops.accept(ModBlocks.CURSED_FLAME.get());
                         monster_drops.accept(MaterialItems.ICHOR.get());
                         monster_drops.accept(MaterialItems.PIXIE_DUST.get());
                         monster_drops.accept(MaterialItems.UNICORN_HORN.get());
@@ -1890,7 +1890,7 @@ public final class ModTabs {
                         output.accept(TEBoomerangItems.DEVELOPER_BOOMERANG);
                         output.accept(BowItems.DEVELOPER_BOW);
                         output.accept(FishingPoleItems.DEV_FISHING_ROD);
-                        output.accept(ModBlocks.TEST_BLOCK);
+                        output.accept(ModBlocks.TEST);
                         output.accept(ModBlocks.AETHERIUM_CAULDRON);
                         output.accept(ModBlocks.HONEY_CAULDRON);
                     })

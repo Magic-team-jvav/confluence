@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -29,6 +30,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class DungeonCompass extends TooltipItem {
             .aisle("   A   ", " A   A ", "       ", "A     A", "       ", " A   A ", "   A   ")
             .aisle("   T   ", " T   T ", "   O   ", "T O O T", "   O   ", " T   T ", "   T   ")
             .where('A', BlockInWorld.hasState(state -> state.is(Blocks.AMETHYST_BLOCK)))
-            .where('T', BlockInWorld.hasState(state -> state.is(Blocks.CHISELED_TUFF)))
+            .where('T', BlockInWorld.hasState(state -> state.is(/* todo Blocks.CHISELED_TUFF*/Blocks.TUFF)))
             .where('O', BlockInWorld.hasState(state -> state.is(Blocks.CRYING_OBSIDIAN)))
             .build();
 
@@ -61,14 +63,14 @@ public class DungeonCompass extends TooltipItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(CommonComponents.EMPTY);
         tooltipComponents.add(Component.translatable("item.modifiers.head").withStyle(ChatFormatting.GRAY));
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
     }
 
     public static void matches(Player player, InteractionHand hand, Level level, ItemStack itemStack, BlockState blockState, BlockPos blockPos) {
-        if (itemStack.is(ToolItems.METEOR_COMPASS) && blockState.is(Blocks.CHISELED_TUFF)) {
+        if (itemStack.is(ToolItems.METEOR_COMPASS) && blockState.is(/* todo Blocks.CHISELED_TUFF*/Blocks.TUFF)) {
             BlockPattern.BlockPatternMatch matches = PATTERN.matches(level, blockPos.offset(3, 1, 3), Direction.DOWN, Direction.SOUTH);
             if (matches == null) return;
             if (level.isClientSide) {
@@ -80,7 +82,7 @@ public class DungeonCompass extends TooltipItem {
                 }
             } else {
                 ServerLevel serverlevel = (ServerLevel) level;
-                HolderSet<Structure> dungeon = HolderSet.direct(serverlevel.registryAccess().holderOrThrow(ModStructures.Keys.DUNGEON));
+                HolderSet<Structure> dungeon = HolderSet.direct(PortHolderLookupExtension.Provider.holderOrThrow(serverlevel.registryAccess(), ModStructures.Keys.DUNGEON));
                 Pair<BlockPos, Holder<Structure>> pair = serverlevel.getChunkSource().getGenerator().findNearestMapStructure(serverlevel, dungeon, blockPos, 100, false);
                 if (pair == null) {
                     player.displayClientMessage(Component.translatable("message.confluence.dungeon_not_found").withStyle(ChatFormatting.RED), true);

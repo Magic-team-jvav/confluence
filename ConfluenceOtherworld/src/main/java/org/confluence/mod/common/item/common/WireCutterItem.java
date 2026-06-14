@@ -1,12 +1,15 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
@@ -14,14 +17,29 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.PathService;
-
-import java.util.Collections;
+import org.mesdag.portlib.diff.Diff;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 public class WireCutterItem extends TooltipItem {
+    public static final ResourceLocation BASE_ID = Confluence.asResource("wire_cutter");
+
+    protected final Multimap<Attribute, AttributeModifier> defaultModifiers;
+
     public WireCutterItem() {
-        super(new Properties().stacksTo(1).attributes(new ItemAttributeModifiers(Collections.singletonList(new ItemAttributeModifiers.Entry(
-                Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(Confluence.asResource("wire_cutter"), 20, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND
-        )), true)), ModRarity.BLUE, "tooltip.item.confluence.wire_cutter.0");
+        super(new Properties().stacksTo(1), ModRarity.BLUE, "tooltip.item.confluence.wire_cutter.0");
+        this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
+                .put(PortAttributesExtension.blockInteractionRange().value(), new AttributeModifier(
+                        PortAttributeModifier.rl2uuid(BASE_ID),
+                        BASE_ID.getPath(),
+                        20,
+                        AttributeModifier.Operation.ADDITION
+                )).build();
+    }
+
+    @Diff
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        return defaultModifiers;
     }
 
     @Override

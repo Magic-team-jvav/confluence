@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.block.ModBlocks;
 
 public class CursedFlameBlock extends BaseFireBlock {
     public static final MapCodec<CursedFlameBlock> CODEC = simpleCodec(CursedFlameBlock::new);
@@ -34,7 +34,7 @@ public class CursedFlameBlock extends BaseFireBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!stack.is(MaterialItems.CURSED_FLAME.get())) {
+        if (!stack.is(ModBlocks.CURSED_FLAME.asItem())) {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);

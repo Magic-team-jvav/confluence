@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
@@ -20,6 +21,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class LucyTheAxe extends BaseAxeItem {
     public static void onDestroyBlock(ServerPlayer serverPlayer, BlockState state) {
         if (state.is(BlockTags.LOGS)) {
             LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.CUTTING_DOWN_A_TREE);
-        } else if (state.is(NatureBlocks.STONY_LOG)) {
+        } else if (state.is(NatureBlocks.STONY_LOG.get())) {
             LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.CUTTING_DOWN_A_GEM_TREE);
         } else if (state.is(ModTags.Blocks.CACTUS)) {
             LucyTheAxeDialogPacketS2C.checkAndBroadcast(serverPlayer, LucyTheAxeDialogCategory.CUTTING_DOWN_A_CACTUS);
@@ -85,11 +87,11 @@ public class LucyTheAxe extends BaseAxeItem {
 
     @Override
     public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
-        return state.is(NatureBlocks.STONY_LOG) || super.isCorrectToolForDrops(stack, state);
+        return state.is(NatureBlocks.STONY_LOG.get()) || super.isCorrectToolForDrops(stack, state);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("tooltip.item.confluence.lucy_the_axe.0").withStyle(ChatFormatting.GRAY));
     }
 }

@@ -2,13 +2,16 @@ package org.confluence.mod.common.item.common;
 
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
+
+import java.util.function.Supplier;
 
 public class BottomlessBucketItem extends BucketItem {
-    public BottomlessBucketItem(FlowingFluid flowingFluid, ModRarity rarity) {
-        super(flowingFluid, new Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, rarity));
+    public BottomlessBucketItem(Supplier<Fluid> flowingFluid, ModRarity rarity) {
+        super(flowingFluid, new PortItem.PortProperties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 
     @Override

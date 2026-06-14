@@ -1,11 +1,10 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +27,7 @@ import org.confluence.mod.common.data.map.TreasureBagDrop;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.BiFunction;
@@ -50,45 +50,38 @@ public class TreasureBagItem extends CustomRarityItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack itemStack = player.getItemInHand(hand);
+        ItemStack stack = player.getItemInHand(hand);
         if (level instanceof ServerLevel serverLevel) {
             LootParams lootparams = new LootParams.Builder(serverLevel)
                     .withParameter(LootContextParams.ORIGIN, player.position())
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            LootComponent component = itemStack.get(ModDataComponentTypes.LOOT);
-            ResourceKey<LootTable> table = component == null ? null : component.value();
-            if (table == null) {
-                // todo 1.3.0时移除string变量
-                String string = LibUtils.getItemStackNbtNoCopy(itemStack).getString("lootTable");
-                if (string.isEmpty() || player.isCreative()) {
-                    table = ResourceKey.create(Registries.LOOT_TABLE, lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition())));
-                } else {
-                    table = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.parse(string));
-                }
-            }
-            LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(table);
+            LootComponent component = PortItemStackExtension.getData(stack, ModDataComponentTypes.LOOT);
+            ResourceLocation table = component == null
+                    ? lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition()))
+                    : component.value();
+            LootTable loottable = serverLevel.getServer().getLootData().getLootTable(table);
             int count = 1;
-            if (player.isCrouching()) count = itemStack.getCount();
+            if (player.isCrouching()) count = stack.getCount();
             for (int i = 0; i < count; i++) {
                 ObjectArrayList<ItemStack> items = loottable.getRandomItems(lootparams);
-                collectItems(serverLevel, player, itemStack, items);
+                collectItems(serverLevel, player, stack, items);
                 for (ItemStack loot : items) {
                     if (!player.addItem(loot)) player.drop(loot, false, true);
                 }
             }
-            itemStack.shrink(count);
+            stack.shrink(count);
         } else {
             player.playSound(ModSoundEvents.TERRA_OPERATION.get(), 0.5F, 1.0F);
         }
-        return InteractionResultHolder.success(itemStack);
+        return InteractionResultHolder.success(stack);
     }
 
     protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {}
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("tooltip.item.confluence.right_click.common.0").withStyle(ChatFormatting.GRAY));
     }
 

@@ -462,7 +462,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.LOOM_ENTITY.get(), ClientUtils.rendererProvider(LoomBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.SOUL_BOTTLE_ENTITY.get(), ClientUtils.rendererProvider(SoulBottleBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.TUFF_BOOTH_ENTITY.get(), ClientUtils.rendererProvider(TuffBoothBlockRenderer::new));
-        event.registerBlockEntityRenderer(ModBlocks.VOID_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(VoidBlockRenderer::new));
+        event.registerBlockEntityRenderer(ModBlocks.VOID_ENTITY.get(), ClientUtils.rendererProvider(VoidBlockRenderer::new));
         event.registerBlockEntityRenderer(NatureBlocks.VOID_TREE_ROOT_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(VoidTreeRootBlockRenderer::new));
         event.registerBlockEntityRenderer(ModBlocks.ENEMY_BANNER_ENTITY.get(), EnemyBannerBlockRenderer::new);
     }

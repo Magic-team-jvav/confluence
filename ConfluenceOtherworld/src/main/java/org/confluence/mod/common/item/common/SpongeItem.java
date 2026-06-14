@@ -1,14 +1,11 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -18,18 +15,22 @@ import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
+import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
-import java.util.Collections;
 import java.util.function.Predicate;
 
 public class SpongeItem extends TooltipItem {
     private final Predicate<BlockState> fluidPredicate;
 
     public SpongeItem(ModRarity rarity, String name, int blockInteractionRange, Predicate<BlockState> fluidPredicate) {
-        super(new Properties().stacksTo(1).attributes(new ItemAttributeModifiers(Collections.singletonList(
-                new ItemAttributeModifiers.Entry(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(
-                        Confluence.asResource(name), blockInteractionRange, AttributeModifier.Operation.ADD_VALUE
-                ), EquipmentSlotGroup.MAINHAND)), true)), rarity, "tooltip.item.confluence." + name + ".0");
+        super(new PortItem.PortProperties().stacksTo(1).attributes(PortItemAttributeModifiers.builder()
+                .add(PortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(
+                        Confluence.asResource(name), blockInteractionRange, PortAttributeModifier.PortOperation.ADD_VALUE
+                ), PortEquipmentSlotGroup.MAINHAND)
+                .build()), rarity, "tooltip.item.confluence." + name + ".0");
         this.fluidPredicate = fluidPredicate;
     }
 

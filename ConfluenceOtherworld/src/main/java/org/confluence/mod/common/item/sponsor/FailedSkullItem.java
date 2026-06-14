@@ -21,7 +21,7 @@ import java.util.List;
 
 public class FailedSkullItem extends StandingAndWallBlockItem implements Equipable {
     public FailedSkullItem() {
-        super(ModBlocks.FAILED_SKULL_BLOCK.get(), ModBlocks.FAILED_SKULL_WALL_BLOCK.get(), new Properties().fireResistant(), Direction.DOWN);
+        super(ModBlocks.FAILED_SKULL.get(), ModBlocks.FAILED_SKULL_WALL.get(), new Properties().fireResistant(), Direction.DOWN);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -10,7 +10,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,6 +21,8 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -32,15 +33,16 @@ public class BaseHammerItem extends DiggerItem {
     private boolean hasImage;
 
     public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        this(tier, rawDamage, rawSpeed, new Properties(), rarity);
+        this(tier, rawDamage, rawSpeed, new PortItem.PortProperties(), rarity);
     }
 
-    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
-        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity).component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
+    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, ModRarity rarity) {
+        super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 
-    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
-        super(tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity).component(DataComponents.ATTRIBUTE_MODIFIERS, ModItems.createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4, consumer)));
+    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
+        super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        this.defaultModifiers = ModItems.mergeModifiers(defaultModifiers, consumer);
     }
 
     public BaseHammerItem hasImage() {
@@ -57,7 +59,7 @@ public class BaseHammerItem extends DiggerItem {
     }
 
     @Override
-    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return ModUtils.supportsEnchantment(stack, enchantment);
     }
 
@@ -80,7 +82,7 @@ public class BaseHammerItem extends DiggerItem {
             }
             destroyCount += iteForBlocks(level, player, pos, xOff, yOff, zOff, state.getDestroyProgress(player, level, pos) * 1.5F, stack);
             if (state.getDestroyProgress(player, level, pos) != 0.0F) {
-                stack.hurtAndBreak(destroyCount, entity, EquipmentSlot.MAINHAND);
+                PortItemStackExtension.hurtAndBreak(stack, destroyCount, entity, EquipmentSlot.MAINHAND);
             }
         }
     }
@@ -95,21 +97,19 @@ public class BaseHammerItem extends DiggerItem {
                 .count();
     }
 
-    /**
-     * If the target block can hardly be break, skip it.
-     *
-     * @param pos      The current producing block's pos(Target pos).
-     * @param speedOff Related block's destroy speed * 1.5 (satisfied range).
-     * @param stack    The tool
-     * @return TRUE, if the block has been broke, otherwise return FALSE.
-     */
+    /// If the target block can hardly be break, skip it.
+    ///
+    /// @param pos      The current producing block's pos(Target pos).
+    /// @param speedOff Related block's destroy speed * 1.5 (satisfied range).
+    /// @param stack    The tool
+    /// @return TRUE, if the block has been broke, otherwise return FALSE.
     public static boolean applyBlockDestroy(Level level, BlockPos pos, Player player, float speedOff, ItemStack stack) {
         BlockState targetState = level.getBlockState(pos);
         if (targetState.isAir() || targetState.liquid()) return false;
         float targetSpeed = targetState.getDestroySpeed(level, pos);
         boolean flag1 = targetState.canHarvestBlock(level, pos, player);
         boolean flag2 = speedOff > 0 ? targetSpeed >= 0 && speedOff >= targetSpeed : targetSpeed >= speedOff;
-        boolean flag3 = player.hasInfiniteMaterials();
+        boolean flag3 = PortPlayerExtension.hasInfiniteMaterials(player);
         if (flag1 && flag2 || flag3) {
             level.destroyBlock(pos, false, player);
             if (flag1) {

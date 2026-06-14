@@ -1,24 +1,23 @@
 package org.confluence.mod.common.item.armor;
 
+import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
 import org.confluence.mod.util.ModUtils;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -27,13 +26,13 @@ public class NormalGeoArmorItem extends BaseArmorItem implements GeoItem {
     protected final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
     protected final String name;
 
-    public NormalGeoArmorItem(String name, Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public NormalGeoArmorItem(String name, ArmorMaterial material, Type type, Properties properties) {
         super(material, type, properties);
         this.name = name;
     }
 
-    public NormalGeoArmorItem(String name, ModRarity rarity, Holder<ArmorMaterial> material, Type type, Properties properties) {
-        super(material, type, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
+    public NormalGeoArmorItem(String name, ModRarity rarity, ArmorMaterial material, Type type, Properties properties) {
+        super(material, type, PortItemExtension.Properties.component(properties, ConfluenceMagicLib.MOD_RARITY, rarity));
         this.name = name;
     }
 
@@ -43,17 +42,17 @@ public class NormalGeoArmorItem extends BaseArmorItem implements GeoItem {
     }
 
     @Override
-    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return ModUtils.supportsEnchantment(stack, enchantment);
     }
 
     @Override
-    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-        consumer.accept(new GeoRenderProvider() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             private NormalArmorItemRenderer<NormalGeoArmorItem> renderer;
 
             @Override
-            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
+            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity livingEntity, ItemStack itemStack, EquipmentSlot equipmentSlot, HumanoidModel<?> original) {
                 if (renderer == null) {
                     ResourceLocation textureResource = Confluence.asResource("textures/item/" + name + ".png");
                     if (Minecraft.getInstance().getResourceManager().getResource(textureResource).isEmpty()) {

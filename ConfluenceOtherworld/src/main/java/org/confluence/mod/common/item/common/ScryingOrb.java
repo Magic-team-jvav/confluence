@@ -15,9 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/**
- * 占卜球
- */
+/// 占卜球
 // TODO: lore
 public class ScryingOrb extends Item {
     public static Player spectatingPlayer;

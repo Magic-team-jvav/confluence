@@ -3001,7 +3001,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
         add(MaterialItems.PEARLWOOD_STICK.get(), "珍珠木棍");
-        add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
+        add(ModBlocks.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
         add(MaterialItems.UNICORN_HORN.get(), "独角兽角");

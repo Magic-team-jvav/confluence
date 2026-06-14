@@ -20,6 +20,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.Tags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
@@ -48,9 +49,7 @@ import java.util.function.Consumer;
 
 import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
 
-/**
- * 通用骑枪类。需要注意的是baseAttackDamage*0.1才是基础伤害，原算法是有问题的，后面可能会改动。
- */
+/// 通用骑枪类。需要注意的是baseAttackDamage*0.1才是基础伤害，原算法是有问题的，后面可能会改动。
 public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateItem, GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackInterval;
@@ -162,13 +161,13 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
     }
 
     @Override
-    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         if (this != LanceItems.JOUSTING_LANCE.get()) return; // todo 还剩两支骑枪
-        consumer.accept(new GeoRenderProvider() {
+        consumer.accept(new IClientItemExtensions() {
             private GeoItemRenderer<BaseLanceItem> renderer;
 
             @Override
-            public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if (renderer == null) {
                     String path = BuiltInRegistries.ITEM.getKey(BaseLanceItem.this).getPath();
                     ResourceLocation model = Confluence.asResource("geo/item/lance/" + path + ".geo.json");

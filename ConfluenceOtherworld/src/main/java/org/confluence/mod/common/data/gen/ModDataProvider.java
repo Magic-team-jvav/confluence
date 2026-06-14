@@ -327,6 +327,7 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> LUNAR_CORAL = key("lunar_coral");
         private static final ResourceKey<ConfiguredFeature<?, ?>> MOONGLOW_WILLOW_TREE = key("moonglow_willow_tree");
         private static final ResourceKey<ConfiguredFeature<?, ?>> WITHERED_SEA_SILK = key("withered_sea_silk");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> SAND_LAYER = key("sand_layer");
 
         private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
             return Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, path);
@@ -535,6 +536,12 @@ public class ModDataProvider {
                             false
                     )
             );
+            register(context, SAND_LAYER, ModFeatures.LAYER.get(), new LayerFeature.Config(
+                            BlockStateProvider.simple(NatureBlocks.SAND_LAYER_BLOCK.get()),
+                            5,
+                            8
+                    )
+            );
             register(context, ModFeatures.Configured.CHINESE_PINE_TREE, ModFeatures.CHINESE_STYLE_PINE_TREE.get(), new ChineseStylePineTreeFeature.Config(
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
                             BlockStateProvider.simple(NatureBlocks.PINE_DROOPING_VINE.get()),
@@ -589,7 +596,7 @@ public class ModDataProvider {
             register(context, CAVE_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(ChestBlocks.GOLDEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/cave_chests")));
             register(context, UNDERGROUND_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(Blocks.CHEST.defaultBlockState(), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/underground_chests")));
             register(context, FOREST_DROOPING_VINE, ModFeatures.BLOCK_POST.get(), new BlockPostFeature.Config(BlockStateProvider.simple(NatureBlocks.FOREST_DROOPING_VINE.get()), false, 1, 9, Direction.DOWN, false));
-            register(context, ModFeatures.Configured.ASH_TREE, ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.ASH_LOG_BLOCKS.LOG.get()), BlockStateProvider.simple(NatureBlocks.ASH_BRANCHES.get()), 7, 3));
+            register(context, ModFeatures.Configured.ASH_TREE, ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.ASH_LOG_BLOCKS.LOG.get()), BlockStateProvider.simple(NatureBlocks.ASH_BRANCHES.get()), 7, 2));
             register(context, JUNGLE_DROOPING_VINE, ModFeatures.BLOCK_POST.get(), new BlockPostFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_DROOPING_VINE.get()), false, 1, 9, Direction.DOWN, false));
             register(context, UNDERGROUND_JUNGLE_GRASS, Feature.RANDOM_PATCH, new RandomPatchConfiguration(32, 7, 3, direct(
                     Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(Blocks.SHORT_GRASS.defaultBlockState(), 3).add(Blocks.FERN.defaultBlockState(), 1).build())),

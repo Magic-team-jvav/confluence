@@ -3,20 +3,30 @@ package org.confluence.mod.common.worldgen.feature;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import org.confluence.lib.util.LibUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.minecraft.world.level.block.PipeBlock.PROPERTY_BY_DIRECTION;
+
 public class BranchTreeFeature extends Feature<BranchTreeFeature.Config> {
+    // 常量
+    private static final int HEIGHT_VARIATION = 3;          // 高度随机变化范围
+    private static final int BRANCH_HEIGHT_VARIATION = 2;   // 树枝高度随机变化
+    private static final int BRANCH_HEIGHT_MIN = 3;         // 树枝最小高度
+
     public BranchTreeFeature(Codec<Config> pCodec) {
         super(pCodec);
     }
@@ -27,120 +37,96 @@ public class BranchTreeFeature extends Feature<BranchTreeFeature.Config> {
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
         BlockPos basePos = pContext.origin();
-        BlockPos checkPos = basePos.offset(-3, 0, -3);
-        BlockPos checkPosBranch;
         BlockState trunkBlockState = config.trunk().getState(random, basePos);
         BlockState branchBlockState = config.branch().getState(random, basePos);
-        int height = config.height + random.nextInt(3);
-        int branchLength = config.branchHeight;
+        Block branchBlock = branchBlockState.getBlock();
+        Block trunkBlock = trunkBlockState.getBlock();
+        int height = config.height + random.nextInt(HEIGHT_VARIATION);
+        int branchY = height / 2;
+        int branchLayer = config.branchLayer;
+        List<BlockPos> branchRoot = new ArrayList<>();
+        List<BlockPos> branchList = new ArrayList<>();
+        branchRoot.add(basePos.above(branchY));
+        int maxHeight = height;
+        int minBranchHeight = BRANCH_HEIGHT_MIN - 3;
 
-        boolean placed = true;
-        boolean placeBranch = true;
-        List<BlockPos> branchPos = new ArrayList<>();
-
-        for (int i = 0; i < height; i++) {
-            placed = level.getBlockState(basePos.offset(0, i, 0)).isAir() && placed;
+        // 检查生成空间是否充足
+        for (int y = 0; y < height; y++) {
+            BlockState blockState = level.getBlockState(basePos.above(y));
+            if (!(blockState.canBeReplaced() || blockState.is(BlockTags.LEAVES))) return false;
         }
 
-        if (placed) {
-            for (int i = 0; i < height; i++) {
-                level.setBlock(basePos.offset(0, i, 0), trunkBlockState, 3);
-            }
-            branch(2, branchLength, placeBranch, branchPos, basePos.offset(0, height - 4, 0), branchBlockState, random, level);
-            for (int x = 0; x < 7; x++) {
-                for (int z = 0; z < 7; z++) {
-                    for (int y = 0; y < (height + branchLength + 6); y++) {
-                        checkPosBranch = checkPos.offset(x, y, z);
-                        if (level.getBlockState(checkPosBranch).is(branchBlockState.getBlock())) {
-                            if ((level.getBlockState(checkPosBranch.offset(0, -1, 0)).is(branchBlockState.getBlock())) || (level.getBlockState(checkPosBranch.offset(0, -1, 0)).is(trunkBlockState.getBlock()))) {
-                                level.setBlock(checkPosBranch, level.getBlockState(checkPosBranch).trySetValue(PipeBlock.DOWN, Boolean.TRUE), 3);
-                            } else {
-                                if ((level.getBlockState(checkPosBranch.offset(1, 0, 0)).is(branchBlockState.getBlock())) || (level.getBlockState(checkPosBranch.offset(1, 0, 0)).is(trunkBlockState.getBlock()))) {
-                                    level.setBlock(checkPosBranch, level.getBlockState(checkPosBranch).trySetValue(PipeBlock.EAST, Boolean.TRUE), 3);
-                                    if (level.getBlockState(checkPosBranch.offset(1, 0, 0)).is(branchBlockState.getBlock())) {
-                                        level.setBlock(checkPosBranch.offset(1, 0, 0), level.getBlockState(checkPosBranch.offset(1, 0, 0)).trySetValue(PipeBlock.WEST, Boolean.TRUE), 3);
-                                    }
-                                }
-                                if ((level.getBlockState(checkPosBranch.offset(0, 0, 1)).is(branchBlockState.getBlock())) || (level.getBlockState(checkPosBranch.offset(0, 0, 1)).is(trunkBlockState.getBlock()))) {
-                                    level.setBlock(checkPosBranch, level.getBlockState(checkPosBranch).trySetValue(PipeBlock.SOUTH, Boolean.TRUE), 3);
-                                    if (level.getBlockState(checkPosBranch.offset(0, 0, 1)).is(branchBlockState.getBlock())) {
-                                        level.setBlock(checkPosBranch.offset(0, 0, 1), level.getBlockState(checkPosBranch.offset(0, 0, 1)).trySetValue(PipeBlock.NORTH, Boolean.TRUE), 3);
-                                    }
-                                }
-                                if ((level.getBlockState(checkPosBranch.offset(-1, 0, 0)).is(branchBlockState.getBlock())) || (level.getBlockState(checkPosBranch.offset(-1, 0, 0)).is(trunkBlockState.getBlock()))) {
-                                    level.setBlock(checkPosBranch, level.getBlockState(checkPosBranch).trySetValue(PipeBlock.WEST, Boolean.TRUE), 3);
-                                    if (level.getBlockState(checkPosBranch.offset(-1, 0, 0)).is(branchBlockState.getBlock())) {
-                                        level.setBlock(checkPosBranch.offset(-1, 0, 0), level.getBlockState(checkPosBranch.offset(-1, 0, 0)).trySetValue(PipeBlock.EAST, Boolean.TRUE), 3);
-                                    }
-                                }
-                                if ((level.getBlockState(checkPosBranch.offset(0, 0, -1)).is(branchBlockState.getBlock())) || (level.getBlockState(checkPosBranch.offset(0, 0, -1)).is(trunkBlockState.getBlock()))) {
-                                    level.setBlock(checkPosBranch, level.getBlockState(checkPosBranch).trySetValue(PipeBlock.NORTH, Boolean.TRUE), 3);
-                                    if (level.getBlockState(checkPosBranch.offset(0, 0, -1)).is(branchBlockState.getBlock())) {
-                                        level.setBlock(checkPosBranch.offset(0, 0, -1), level.getBlockState(checkPosBranch.offset(0, 0, -1)).trySetValue(PipeBlock.SOUTH, Boolean.TRUE), 3);
-                                    }
-                                }
-                            }
-                            if ((level.getBlockState(checkPosBranch.offset(0, 1, 0)).is(branchBlockState.getBlock())) || (level.getBlockState(checkPosBranch.offset(0, 1, 0)).is(trunkBlockState.getBlock()))) {
-                                level.setBlock(checkPosBranch, level.getBlockState(checkPosBranch).trySetValue(PipeBlock.UP, Boolean.TRUE), 3);
-                            }
+        // 放置树干
+        for (int y = 0; y < height; y++) {
+            level.setBlock(basePos.above(y), trunkBlockState, 3);
+        }
+
+        // 计算并放置所有侧面树枝
+        for (int i = branchLayer; i > 0; i--) {
+            int branchLength = 1 << (i - 1);
+            int branchHeight = 2 * i + minBranchHeight;
+            List<BlockPos> nextBranchRoot = new ArrayList<>();
+            for (BlockPos blockPos : branchRoot) {
+                for (Direction direction : LibUtils.HORIZONTAL) {
+                    BlockPos rootPos = blockPos.above(random.nextInt(BRANCH_HEIGHT_VARIATION));
+                    for (int j = 1; j <= branchLength; j++) {
+                        rootPos = rootPos.relative(direction);
+                        if (level.getBlockState(rootPos).canBeReplaced()) {
+                            level.setBlock(rootPos, branchBlockState, 3);
+                            branchList.add(rootPos);
+                            if (j == branchLength) nextBranchRoot.add(rootPos);
+                        }
+                    }
+                    for (int k = 1; k <= branchHeight; k++) {
+                        rootPos = rootPos.offset(0, 1, 0);
+                        if (level.getBlockState(rootPos).canBeReplaced()) {
+                            level.setBlock(rootPos, branchBlockState, 3);
+                            branchList.add(rootPos);
+                            maxHeight = Math.max(maxHeight, rootPos.getY() - basePos.getY());
                         }
                     }
                 }
             }
-            return true;
+            branchRoot = nextBranchRoot;
         }
-        return false;
+
+        // 为树干顶部补充树枝
+        if (maxHeight > height) {
+            for (int y = height; y <= maxHeight; y++) {
+                BlockPos blockPos = basePos.above(y);
+                level.setBlock(blockPos, branchBlockState, 3);
+                branchList.add(blockPos);
+            }
+        }
+
+        // 更新所有树枝的状态
+        for (BlockPos blockPos : branchList) {
+            BlockState blockState = branchBlockState;
+            blockState = blockState.trySetValue(BlockStateProperties.UP, canConnect(level.getBlockState(blockPos.above()), branchBlock, trunkBlock));
+            boolean haveDown = canConnect(level.getBlockState(blockPos.below()), branchBlock, trunkBlock);
+            blockState = blockState.trySetValue(BlockStateProperties.DOWN, haveDown);
+            for (Direction direction : LibUtils.HORIZONTAL) {
+                BlockPos nextPos = blockPos.relative(direction);
+                if (canConnect(level.getBlockState(nextPos), branchBlock, trunkBlock) && (!haveDown || !canConnect(level.getBlockState(nextPos.below()), branchBlock, trunkBlock))) {
+                    blockState = blockState.trySetValue(PROPERTY_BY_DIRECTION.get(direction), true);
+                }
+            }
+            level.setBlock(blockPos, blockState, 3);
+        }
+
+        return true;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider branch, int height, int branchHeight) implements FeatureConfiguration {
+    private boolean canConnect(BlockState blockState, Block branch, Block trunk) {
+        return blockState.is(branch) || blockState.is(trunk);
+    }
+
+    public record Config(BlockStateProvider trunk, BlockStateProvider branch, int height, int branchLayer) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("branch_block").forGetter(Config::branch),
                 Codec.INT.fieldOf("height").forGetter(Config::height),
-                Codec.INT.fieldOf("branch_height").forGetter(Config::branchHeight)
+                Codec.INT.fieldOf("branch_layer").forGetter(Config::branchLayer)
         ).apply(instance, Config::new));
-    }
-
-    private static void branch(int layer, int branchLength, boolean set, List<BlockPos> branchPos, BlockPos trunkPos, BlockState branchBlockState, RandomSource random, WorldGenLevel level) {
-        int length = (int) Math.pow(2, layer - 1);
-        BlockPos lengthSet;
-        int x;
-        int y;
-        int z;
-        if (layer > 0) {
-            for (int j = 0; j < 4; j++) {
-                branchPos.clear();
-                lengthSet = trunkPos.offset((int) (length * Mth.cos(j * Mth.PI / 2)), random.nextInt(2), (int) (length * Mth.sin(j * Mth.PI / 2)));
-                x = trunkPos.getX() - lengthSet.getX();
-                y = branchLength + layer + random.nextInt(2);
-                z = trunkPos.getZ() - lengthSet.getZ();
-                set = (level.getBlockState(lengthSet).isAir() || level.getBlockState(lengthSet).is(branchBlockState.getBlock()));
-                branchPos.add(lengthSet);
-                if (set) {
-                    for (int xCheck = x; xCheck != 0; xCheck -= (x / Math.abs(x))) {
-                        if (x != xCheck) {
-                            set = (level.getBlockState(lengthSet.offset(xCheck, 0, 0)).isAir() || level.getBlockState(lengthSet.offset(xCheck, 0, 0)).is(branchBlockState.getBlock())) && set;
-                            branchPos.add(lengthSet.offset(xCheck, 0, 0));
-                        }
-                    }
-                    for (int yCheck = y; yCheck != 0; yCheck -= (y / Math.abs(y))) {
-                        set = (level.getBlockState(lengthSet.offset(0, yCheck, 0)).isAir() || level.getBlockState(lengthSet.offset(0, yCheck, 0)).is(branchBlockState.getBlock())) && set;
-                        branchPos.add(lengthSet.offset(0, yCheck, 0));
-                    }
-                    for (int zCheck = z; zCheck != 0; zCheck -= (z / Math.abs(z))) {
-                        if (z != zCheck) {
-                            set = (level.getBlockState(lengthSet.offset(0, 0, zCheck)).isAir() || level.getBlockState(lengthSet.offset(0, 0, zCheck)).is(branchBlockState.getBlock())) && set;
-                            branchPos.add(lengthSet.offset(0, 0, zCheck));
-                        }
-                    }
-                    if (set) {
-                        for (int k = 0; k < branchPos.size(); k++) {
-                            level.setBlock(branchPos.get(k), branchBlockState, 3);
-                        }
-                        branch(layer - 1, branchLength, set, branchPos, lengthSet, branchBlockState, random, level);
-                    }
-                }
-            }
-        }
     }
 }

@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -55,7 +56,7 @@ public class BranchesBlock extends PipeBlock {
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        BlockState newState = this.updateAllProperties(state, level, currentPos);
+        BlockState newState = this.updateAllProperties(this.defaultBlockState(), level, currentPos);
         if (newState.getValue(DISTANCE) == DECAY_DISTANCE && !newState.canSurvive(level, currentPos)) {
             level.scheduleTick(currentPos, this, 1);
         }
@@ -64,16 +65,27 @@ public class BranchesBlock extends PipeBlock {
 
     private BlockState updateAllProperties(BlockState state, LevelAccessor level, BlockPos pos) {
         BlockState result = state;
+        result = result.trySetValue(BlockStateProperties.UP, canConnect(level.getBlockState(pos.above())));
+        boolean haveDown = canConnect(level.getBlockState(pos.below()));
+        result = result.trySetValue(BlockStateProperties.DOWN, haveDown);
+        for (Direction direction : LibUtils.HORIZONTAL) {
+            BlockPos nextPos = pos.relative(direction);
+            if (canConnect(level.getBlockState(nextPos)) && (!haveDown || !canConnect(level.getBlockState(nextPos.below())))) {
+                result = result.trySetValue(PROPERTY_BY_DIRECTION.get(direction), true);
+            }
+        }
         int minDistance = DECAY_DISTANCE;
         for (Direction dir : LibUtils.DIRECTIONS) {
             BlockState neighbor = level.getBlockState(pos.relative(dir));
-            boolean canConnect = neighbor.is(this) || neighbor.is(attachable) || (dir == Direction.DOWN && neighbor.is(supporting));
-            result = result.setValue(PROPERTY_BY_DIRECTION.get(dir), canConnect);
             int d = getDistanceAt(neighbor, dir);
             if (d < minDistance) minDistance = d;
         }
 
         return result.setValue(DISTANCE, Math.min(minDistance + 1, DECAY_DISTANCE));
+    }
+
+    private boolean canConnect(BlockState blockState) {
+        return blockState.is(this) || blockState.is(attachable);
     }
 
     private int getDistanceAt(BlockState neighbor, Direction direction) {

@@ -19,7 +19,7 @@ import org.confluence.lib.util.FeatureUtils;
 
 public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
     // 树木结构常量
-    private static final int HEIGHT_VARIATION = 3;           // 高度随机变化范围
+    private static final int HEIGHT_VARIATION = 3;          // 高度随机变化范围
     private static final int BRANCH_OFFSET_POS = 3;         // 树枝起始偏移（东/南方向）
     private static final int BRANCH_OFFSET_NEG = -2;        // 树枝起始偏移（西/北方向）
     private static final int BRANCH_HEIGHT_VARIATION = 3;   // 树枝高度随机变化
@@ -186,19 +186,6 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
         return true;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider branch,
-                         BlockStateProvider root, BlockStateProvider leaves,
-                         BlockStateProvider inner, int height) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
-                BlockStateProvider.CODEC.fieldOf("branch_block").forGetter(Config::branch),
-                BlockStateProvider.CODEC.fieldOf("root_block").forGetter(Config::root),
-                BlockStateProvider.CODEC.fieldOf("leaves_block").forGetter(Config::leaves),
-                BlockStateProvider.CODEC.fieldOf("inner_block").forGetter(Config::inner),
-                Codec.INT.fieldOf("height").forGetter(BaobabTreeFeature.Config::height)
-        ).apply(instance, Config::new));
-    }
-
     /// 生成树枝
     ///
     /// @param random     随机
@@ -323,5 +310,18 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
             BlockPos leafPos = blockPos.offset(x, 0, z);
             if (level.getBlockState(leafPos).canBeReplaced()) leavesSet.add(leafPos.asLong());
         }
+    }
+
+    public record Config(BlockStateProvider trunk, BlockStateProvider branch,
+                         BlockStateProvider root, BlockStateProvider leaves,
+                         BlockStateProvider inner, int height) implements FeatureConfiguration {
+        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
+                BlockStateProvider.CODEC.fieldOf("branch_block").forGetter(Config::branch),
+                BlockStateProvider.CODEC.fieldOf("root_block").forGetter(Config::root),
+                BlockStateProvider.CODEC.fieldOf("leaves_block").forGetter(Config::leaves),
+                BlockStateProvider.CODEC.fieldOf("inner_block").forGetter(Config::inner),
+                Codec.INT.fieldOf("height").forGetter(BaobabTreeFeature.Config::height)
+        ).apply(instance, Config::new));
     }
 }

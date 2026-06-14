@@ -76,7 +76,6 @@ import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 import java.awt.*;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public final class ModClientSetups {
     public static final ResourceLocation VANILLA_BLOCK_ATLAS = InventoryMenu.BLOCK_ATLAS;
@@ -192,11 +191,11 @@ public final class ModClientSetups {
             return renderer;
         }
     };
-    static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED::getValue);
-    static final IClientItemExtensions SPEAR = simpleArmPose(ModArmPoses.SPEAR::getValue);
-    static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);
-    static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW::getValue);
-    static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
+    static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED);
+    static final IClientItemExtensions SPEAR = simpleArmPose(ModArmPoses.SPEAR);
+    static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA);
+    static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW);
+    static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE);
     static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null && player.getMainHandItem() == itemStack) {
@@ -231,11 +230,11 @@ public final class ModClientSetups {
         return false;
     };
 
-    private static IClientItemExtensions simpleArmPose(Supplier<HumanoidModel.ArmPose> supplier) {
+    private static IClientItemExtensions simpleArmPose(HumanoidModel.ArmPose armPose) {
         return new IClientItemExtensions() {
             @Override
             public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-                return supplier.get();
+                return armPose;
             }
         };
     }

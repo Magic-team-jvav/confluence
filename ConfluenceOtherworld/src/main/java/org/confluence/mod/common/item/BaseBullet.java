@@ -48,7 +48,7 @@ public class BaseBullet extends Item {
         tooltipComponents.add(Component.translatable("tooltip.terra_guns.knockback", component.knockback()).withStyle(ChatFormatting.GRAY));
     }
 
-    public String colorID() {
+    public @Nullable String colorID() {
         return colorID;
     }
 

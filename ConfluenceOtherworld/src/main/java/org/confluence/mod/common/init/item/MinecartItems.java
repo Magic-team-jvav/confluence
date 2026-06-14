@@ -1,9 +1,10 @@
 ﻿package org.confluence.mod.common.init.item;
 
-import com.google.common.base.Supplier;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.extensions.IForgeAbstractMinecart;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.minecart.*;
@@ -56,7 +57,7 @@ public class MinecartItems {
         public static final float DEFAULT_MAX_SPEED = 0.4F;
         public static final double DEFAULT_ACCELERATION = 0.75;
 
-        public static final Abilities<BaseMinecartEntity> VANILLA = register(ModEntities.VANILLA_MINECART, Confluence.asResource("vanilla"), DEFAULT_MAX_SPEED, DEFAULT_ACCELERATION, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
+        public static final Abilities<BaseMinecartEntity> VANILLA = register(ModEntities.VANILLA_MINECART, Confluence.asResource("vanilla"), DEFAULT_MAX_SPEED, DEFAULT_ACCELERATION, IForgeAbstractMinecart.DEFAULT_AIR_DRAG);
         public static final Abilities<BaseMinecartEntity> WOODEN = register(ModEntities.WOODEN_MINECART, ResourceLocation.withDefaultNamespace("air"), 0.308F, 0.16, 0.94);
         public static final Abilities<MechanicalCartEntity> MECHANICAL = register(ModEntities.MECHANICAL_CART, Confluence.asResource("mechanical_cart"), (float) MECHANICAL_CART_MAX_SPEED, MECHANICAL_CART_ACCELERATION, MECHANICAL_CART_DRAG_AIR);
         public static final Abilities<GenericMinecartEntity> DESERT = registerGeneric(Confluence.asResource("desert_minecart"));
@@ -84,16 +85,16 @@ public class MinecartItems {
         public static final Abilities<GenericMinecartEntity> FART = registerGeneric(Confluence.asResource("fart_kart"));
         public static final Abilities<GenericMinecartEntity> TERRA_FART = registerGeneric(Confluence.asResource("terra_fart_kart"));
 
-        private static <E extends BaseMinecartEntity> Abilities<E> register(Supplier<EntityType<E>> entityType, ResourceLocation item, float maxSpeed, double acceleration, double dragAir) {
+        private static <E extends BaseMinecartEntity> Abilities<E> register(RegistryObject<EntityType<E>> entityType, ResourceLocation item, float maxSpeed, double acceleration, double dragAir) {
             return new Abilities<>(entityType, item, maxSpeed, acceleration, dragAir);
         }
 
-        private static <E extends BaseMinecartEntity> Abilities<E> registerGeneric(Supplier<EntityType<E>> entityType, ResourceLocation item) {
-            return new Abilities<>(entityType, item, DEFAULT_MAX_SPEED, DEFAULT_ACCELERATION, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
+        private static <E extends BaseMinecartEntity> Abilities<E> registerGeneric(RegistryObject<EntityType<E>> entityType, ResourceLocation item) {
+            return new Abilities<>(entityType, item, DEFAULT_MAX_SPEED, DEFAULT_ACCELERATION, IForgeAbstractMinecart.DEFAULT_AIR_DRAG);
         }
 
         private static Abilities<GenericMinecartEntity> registerGeneric(ResourceLocation item) {
-            return new Abilities<>(ModEntities.GENERIC_MINECART, item, DEFAULT_MAX_SPEED, DEFAULT_ACCELERATION, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
+            return new Abilities<>(ModEntities.GENERIC_MINECART, item, DEFAULT_MAX_SPEED, DEFAULT_ACCELERATION, IForgeAbstractMinecart.DEFAULT_AIR_DRAG);
         }
     }
 }

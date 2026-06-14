@@ -6,10 +6,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.client.IArmPoseTransformer;
-import org.mesdag.thr_dim_particle.client.EnumProxy;
 
 public final class ModArmPoses {
-    public static final EnumProxy<ArmPose> BREATHING_REED = register(false, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
+    public static final ArmPose BREATHING_REED = register("CONFLUENCE_BREATHING_REED", false, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
         if (living.isUnderWater()) {
             if (arm == HumanoidArm.RIGHT) {
                 model.rightArm.xRot = -Mth.PI * 0.6F;
@@ -20,7 +19,7 @@ public final class ModArmPoses {
             }
         }
     });
-    public static final EnumProxy<ArmPose> SPEAR = register(true, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
+    public static final ArmPose SPEAR = register("CONFLUENCE_SPEAR", true, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
         if (arm == HumanoidArm.RIGHT) {
             if (model.crouching) {
                 model.rightArm.xRot = model.head.xRot;
@@ -37,14 +36,14 @@ public final class ModArmPoses {
             model.body.yRot = 0.4F;
         }
     });
-    public static final EnumProxy<ArmPose> UMBRELLA = register(false, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
+    public static final ArmPose UMBRELLA = register("CONFLUENCE_UMBRELLA", false, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
         if (arm == HumanoidArm.RIGHT) {
             model.rightArm.xRot = -135 * Mth.DEG_TO_RAD;
         } else {
             model.leftArm.xRot = -135 * Mth.DEG_TO_RAD;
         }
     });
-    public static final EnumProxy<ArmPose> DRILL_O_CHAINSAW = register(true, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
+    public static final ArmPose DRILL_O_CHAINSAW = register("CONFLUENCE_DRILL_O_CHAINSAW", true, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
         if (arm == HumanoidArm.RIGHT) {
             model.rightArm.xRot = model.head.xRot - 40 * Mth.DEG_TO_RAD;
             model.rightArm.yRot = model.head.yRot - 25 * Mth.DEG_TO_RAD;
@@ -52,7 +51,7 @@ public final class ModArmPoses {
             model.leftArm.yRot = model.head.yRot + 40 * Mth.DEG_TO_RAD;
         }
     });
-    public static final EnumProxy<ArmPose> LANCE = register(false, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
+    public static final ArmPose LANCE = register("CONFLUENCE_LANCE", false, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
         if (arm == HumanoidArm.RIGHT) {
             model.rightArm.xRot = model.head.xRot - 30 * Mth.DEG_TO_RAD;
         } else {
@@ -60,7 +59,7 @@ public final class ModArmPoses {
         }
     });
 
-    private static EnumProxy<ArmPose> register(boolean twoHanded, IArmPoseTransformer transformer) {
-        return new EnumProxy<>(ArmPose.class, twoHanded, transformer);
+    private static ArmPose register(String name, boolean twoHanded, IArmPoseTransformer transformer) {
+        return ArmPose.create(name, twoHanded, transformer);
     }
 }

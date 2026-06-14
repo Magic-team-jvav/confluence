@@ -2,10 +2,10 @@ package org.confluence.mod.common.init.gun;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.gun.BaseGun;
+import org.mesdag.portlib.registries.PortDeferredItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,11 +28,11 @@ public class GunSounds {
         putSound(GunItems.TACTICAL_SHOTGUN, ModSoundEvents.SHOTGUN_TACTICAL);
     }
 
-    public static void putSound(RegistryObject<? extends BaseGun> item) {
+    public static void putSound(PortDeferredItem<? extends BaseGun> item) {
         putSound(item, ModSoundEvents.GUN_GENERIC);
     }
 
-    public static void putSound(RegistryObject<? extends BaseGun> item, Supplier<SoundEvent> soundEvent) {
+    public static void putSound(PortDeferredItem<? extends BaseGun> item, Supplier<SoundEvent> soundEvent) {
         putSound(item.get(), soundEvent.get());
     }
 

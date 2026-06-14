@@ -2,7 +2,6 @@ package org.confluence.mod.common.block.natural;
 
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -21,12 +20,13 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.registries.PortDeferredBlock;
+import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.ArrayList;
@@ -50,29 +50,29 @@ public class LogBlockSet {
     public final String id;
     public final boolean ignitedByLava;
 
-    public final RegistryObject<Block> PLANKS;
-    public final RegistryObject<RotatedPillarBlock> LOG;
-    public final RegistryObject<RotatedPillarBlock> STRIPPED_LOG;
-    public final RegistryObject<LeavesBlock> LEAVES;
-    public final RegistryObject<RotatedPillarBlock> WOOD;
-    public final RegistryObject<RotatedPillarBlock> STRIPPED_WOOD;
-    public final RegistryObject<ButtonBlock> BUTTON;
-    public final RegistryObject<FenceBlock> FENCE;
-    public final RegistryObject<FenceGateBlock> FENCE_GATE;
-    public final RegistryObject<PressurePlateBlock> PRESSURE_PLATE;
-    public final RegistryObject<SlabBlock> SLAB;
-    public final RegistryObject<StairBlock> STAIRS;
-    public final RegistryObject<StandingSignBlock> SIGN;
-    public final RegistryObject<WallSignBlock> WALL_SIGN;
-    public final RegistryObject<SignItem> SIGN_ITEM;
-    public final RegistryObject<TrapDoorBlock> TRAPDOOR;
-    public final RegistryObject<DoorBlock> DOOR;
-    public final RegistryObject<CeilingHangingSignBlock> HANGING_SIGN;
-    public final RegistryObject<WallHangingSignBlock> WALL_HANGING_SIGN;
-    public final RegistryObject<HangingSignItem> HANGING_SIGN_ITEM;
+    public final PortDeferredBlock<Block> PLANKS;
+    public final PortDeferredBlock<RotatedPillarBlock> LOG;
+    public final PortDeferredBlock<RotatedPillarBlock> STRIPPED_LOG;
+    public final PortDeferredBlock<LeavesBlock> LEAVES;
+    public final PortDeferredBlock<RotatedPillarBlock> WOOD;
+    public final PortDeferredBlock<RotatedPillarBlock> STRIPPED_WOOD;
+    public final PortDeferredBlock<ButtonBlock> BUTTON;
+    public final PortDeferredBlock<FenceBlock> FENCE;
+    public final PortDeferredBlock<FenceGateBlock> FENCE_GATE;
+    public final PortDeferredBlock<PressurePlateBlock> PRESSURE_PLATE;
+    public final PortDeferredBlock<SlabBlock> SLAB;
+    public final PortDeferredBlock<StairBlock> STAIRS;
+    public final PortDeferredBlock<StandingSignBlock> SIGN;
+    public final PortDeferredBlock<WallSignBlock> WALL_SIGN;
+    public final PortDeferredItem<SignItem> SIGN_ITEM;
+    public final PortDeferredBlock<TrapDoorBlock> TRAPDOOR;
+    public final PortDeferredBlock<DoorBlock> DOOR;
+    public final PortDeferredBlock<CeilingHangingSignBlock> HANGING_SIGN;
+    public final PortDeferredBlock<WallHangingSignBlock> WALL_HANGING_SIGN;
+    public final PortDeferredItem<HangingSignItem> HANGING_SIGN_ITEM;
     // 番外个体
-    public final RegistryObject<Block> CHISELED_PLANKS;
-    public final RegistryObject<SaplingBlock> SAPLING;
+    public final PortDeferredBlock<Block> CHISELED_PLANKS;
+    public final PortDeferredBlock<SaplingBlock> SAPLING;
 
     LogBlockSet(Builder builder) {
         if ((builder.log == null && builder.strippedLog != null) || (builder.wood == null && builder.strippedWood != null))
@@ -90,34 +90,34 @@ public class LogBlockSet {
         this.FENCE_GATE = register(builder.fenceGate, id + "_fence_gate", true, () -> ignitedByLava(BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).mapColor(PLANKS.get().defaultMapColor())));
         this.PRESSURE_PLATE = register(builder.pressurePlate, id + "_pressure_plate", true, () -> ignitedByLava(BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY).mapColor(PLANKS.get().defaultMapColor())));
         this.SLAB = register(builder.slab, id + "_slab", true, ignitedByLava(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-        this.STAIRS = builder.stairs == null ? RegistryObject.createOptional(Confluence.asResource(id + "_stairs"), Registries.BLOCK, Confluence.MODID) : registerWithItem(id + "_stairs", () -> builder.stairs.apply(PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(PLANKS.get())));
+        this.STAIRS = builder.stairs == null ? PortDeferredBlock.createBlock(Confluence.asResource(id + "_stairs")) : registerWithItem(id + "_stairs", () -> builder.stairs.apply(PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(PLANKS.get())));
         this.SIGN = register(builder.staindingSign, id + "_sign", false, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F));
         this.WALL_SIGN = register(builder.wallSign, id + "_wall_sign", false, () -> BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).lootFrom(SIGN));
-        this.SIGN_ITEM = builder.signItem == null ? RegistryObject.createOptional(Confluence.asResource(id + "_sign"), Registries.ITEM, Confluence.MODID) : ModItems.BLOCK_ITEMS.register(id + "_sign", () -> builder.signItem.apply(new Item.Properties().stacksTo(16), SIGN.get(), WALL_SIGN.get()));
+        this.SIGN_ITEM = builder.signItem == null ? PortDeferredItem.createItem(Confluence.asResource(id + "_sign")) : ModItems.BLOCK_ITEMS.register(id + "_sign", () -> builder.signItem.apply(new Item.Properties().stacksTo(16), SIGN.get(), WALL_SIGN.get()));
         this.TRAPDOOR = register(builder.trapdoor, id + "_trapdoor", true, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().isValidSpawn(LogBlockSet::never).ignitedByLava());
         this.DOOR = register(builder.door, id + "_door", true, () -> BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().pushReaction(PushReaction.DESTROY).ignitedByLava().mapColor(PLANKS.get().defaultMapColor()));
         this.HANGING_SIGN = register(builder.ceilingHangingSign, id + "_hanging_sign", false, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).ignitedByLava());
         this.WALL_HANGING_SIGN = register(builder.wallHangingSign, id + "_wall_hanging_sign", false, () -> BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).ignitedByLava().lootFrom(HANGING_SIGN));
-        this.HANGING_SIGN_ITEM = builder.hangingSignItem == null ? RegistryObject.createOptional(Confluence.asResource(id + "_hanging_sign"), Registries.ITEM, Confluence.MODID) : ModItems.BLOCK_ITEMS.register(id + "_hanging_sign", () -> builder.hangingSignItem.apply(HANGING_SIGN.get(), WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+        this.HANGING_SIGN_ITEM = builder.hangingSignItem == null ? PortDeferredItem.createItem(Confluence.asResource(id + "_hanging_sign")) : ModItems.BLOCK_ITEMS.register(id + "_hanging_sign", () -> builder.hangingSignItem.apply(HANGING_SIGN.get(), WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
 
         this.CHISELED_PLANKS = register(builder.chiseledPlanks, "chiseled_" + id + "_planks", true, () -> ignitedByLava(BlockBehaviour.Properties.copy(PLANKS.get())));
-        this.SAPLING = builder.sapling == null ? RegistryObject.createOptional(Confluence.asResource(id + "_sapling"), Registries.BLOCK, Confluence.MODID) : registerWithItem(id + "_sapling", () -> builder.sapling.apply(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
+        this.SAPLING = builder.sapling == null ? PortDeferredBlock.createBlock(Confluence.asResource(id + "_sapling")) : registerWithItem(id + "_sapling", () -> builder.sapling.apply(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
     }
 
     public Stream<ItemLike> getAllItems() {
         return Streams.concat(
-                Stream.of(PLANKS, LOG, STRIPPED_LOG, LEAVES, WOOD, STRIPPED_WOOD, BUTTON, FENCE, FENCE_GATE, PRESSURE_PLATE, SLAB, STAIRS, TRAPDOOR, DOOR, SAPLING).filter(RegistryObject::isPresent).map(RegistryObject::get),
-                Stream.of(SIGN_ITEM, HANGING_SIGN_ITEM).filter(RegistryObject::isPresent).map(RegistryObject::get)
+                Stream.of(PLANKS, LOG, STRIPPED_LOG, LEAVES, WOOD, STRIPPED_WOOD, BUTTON, FENCE, FENCE_GATE, PRESSURE_PLATE, SLAB, STAIRS, TRAPDOOR, DOOR, SAPLING).filter(PortDeferredBlock::isBound),
+                Stream.of(SIGN_ITEM, HANGING_SIGN_ITEM).filter(PortDeferredItem::isBound)
         );
     }
 
-    private static <B extends Block> RegistryObject<B> register(@Nullable Function<BlockBehaviour.Properties, ? extends B> function, String name, boolean withItem, BlockBehaviour.Properties properties) {
+    private static <B extends Block> PortDeferredBlock<B> register(@Nullable Function<BlockBehaviour.Properties, ? extends B> function, String name, boolean withItem, BlockBehaviour.Properties properties) {
         return register(function, name, withItem, () -> properties);
     }
 
-    private static <B extends Block> RegistryObject<B> register(@Nullable Function<BlockBehaviour.Properties, ? extends B> function, String name, boolean withItem, Supplier<BlockBehaviour.Properties> properties) {
+    private static <B extends Block> PortDeferredBlock<B> register(@Nullable Function<BlockBehaviour.Properties, ? extends B> function, String name, boolean withItem, Supplier<BlockBehaviour.Properties> properties) {
         if (function == null) {
-            return RegistryObject.createOptional(Confluence.asResource(name), Registries.BLOCK, Confluence.MODID);
+            return PortDeferredBlock.createBlock(Confluence.asResource(name));
         }
         Supplier<B> supplier = () -> function.apply(properties.get());
         return withItem ? registerWithItem(name, supplier) : registerWithoutItem(name, supplier);
@@ -182,103 +182,103 @@ public class LogBlockSet {
                 Block value = blockSet.PLANKS.get();
                 planks.add(value);
             }
-            if (blockSet.LOG.isPresent()) {
+            if (blockSet.LOG.isBound()) {
                 Block value = blockSet.LOG.get();
                 completes.add(value);
                 if (ignitedByLava) burn.add(value);
                 logs.add(value);
             }
-            if (blockSet.STRIPPED_LOG.isPresent()) {
+            if (blockSet.STRIPPED_LOG.isBound()) {
                 Block value = blockSet.STRIPPED_LOG.get();
                 completes.add(value);
                 if (ignitedByLava) burn.add(value);
                 logs.add(value);
                 cStrippedLogs.add(value);
             }
-            if (blockSet.WOOD.isPresent()) {
+            if (blockSet.WOOD.isBound()) {
                 Block value = blockSet.WOOD.get();
                 completes.add(value);
                 if (ignitedByLava) burn.add(value);
                 logs.add(value);
             }
-            if (blockSet.STRIPPED_WOOD.isPresent()) {
+            if (blockSet.STRIPPED_WOOD.isBound()) {
                 Block value = blockSet.STRIPPED_WOOD.get();
                 completes.add(value);
                 if (ignitedByLava) burn.add(value);
                 logs.add(value);
             }
-            if (blockSet.LEAVES.isPresent()) {
+            if (blockSet.LEAVES.isBound()) {
                 Block value = blockSet.LEAVES.get();
                 completes.add(value);
                 leaves.add(value);
             }
-            if (blockSet.BUTTON.isPresent()) {
+            if (blockSet.BUTTON.isBound()) {
                 Block value = blockSet.BUTTON.get();
                 buttons.add(value);
                 woodenButtons.add(value);
             }
-            if (blockSet.FENCE.isPresent()) {
+            if (blockSet.FENCE.isBound()) {
                 Block value = blockSet.FENCE.get();
                 fences.add(value);
                 woodenFences.add(value);
                 cFences.add(value);
                 cFencesWooden.add(value);
             }
-            if (blockSet.FENCE_GATE.isPresent()) {
+            if (blockSet.FENCE_GATE.isBound()) {
                 Block value = blockSet.FENCE_GATE.get();
                 fenceGates.add(value);
                 cFenceGates.add(value);
                 cFenceGatesWooden.add(value);
             }
-            if (blockSet.PRESSURE_PLATE.isPresent()) {
+            if (blockSet.PRESSURE_PLATE.isBound()) {
                 Block value = blockSet.PRESSURE_PLATE.get();
                 woodenPressurePlates.add(value);
             }
-            if (blockSet.SLAB.isPresent()) {
+            if (blockSet.SLAB.isBound()) {
                 Block value = blockSet.SLAB.get();
                 slabs.add(value);
                 woodenSlabs.add(value);
             }
-            if (blockSet.STAIRS.isPresent()) {
+            if (blockSet.STAIRS.isBound()) {
                 Block value = blockSet.STAIRS.get();
                 stairs.add(value);
                 woodenStairs.add(value);
             }
-            if (blockSet.SIGN.isPresent()) {
+            if (blockSet.SIGN.isBound()) {
                 Block value = blockSet.SIGN.get();
                 standingSigns.add(value);
                 signs.add(value);
             }
-            if (blockSet.WALL_SIGN.isPresent()) {
+            if (blockSet.WALL_SIGN.isBound()) {
                 Block value = blockSet.WALL_SIGN.get();
                 wallSigns.add(value);
                 signs.add(value);
             }
-            if (blockSet.TRAPDOOR.isPresent()) {
+            if (blockSet.TRAPDOOR.isBound()) {
                 Block value = blockSet.TRAPDOOR.get();
                 trapdoors.add(value);
                 woodenTrapdoors.add(value);
             }
-            if (blockSet.DOOR.isPresent()) {
+            if (blockSet.DOOR.isBound()) {
                 Block value = blockSet.DOOR.get();
                 doors.add(value);
                 woodenDoors.add(value);
             }
-            if (blockSet.HANGING_SIGN.isPresent()) {
+            if (blockSet.HANGING_SIGN.isBound()) {
                 Block value = blockSet.HANGING_SIGN.get();
                 ceilingHangingSigns.add(value);
                 allHangingSigns.add(value);
             }
-            if (blockSet.WALL_HANGING_SIGN.isPresent()) {
+            if (blockSet.WALL_HANGING_SIGN.isBound()) {
                 Block value = blockSet.WALL_HANGING_SIGN.get();
                 wallHangingSigns.add(value);
                 allHangingSigns.add(value);
             }
-            if (blockSet.CHISELED_PLANKS.isPresent()) {
+            if (blockSet.CHISELED_PLANKS.isBound()) {
                 Block value = blockSet.CHISELED_PLANKS.get();
                 planks.add(value);
             }
-            if (blockSet.SAPLING.isPresent()) {
+            if (blockSet.SAPLING.isBound()) {
                 Block value = blockSet.SAPLING.get();
                 saplings.add(value);
             }
@@ -290,20 +290,20 @@ public class LogBlockSet {
             CreativeModeTab.Output o = GroupItem.belongsTo(blockSet.id, output);
 
             o.accept(blockSet.PLANKS.get());
-            if (blockSet.STRIPPED_LOG.isPresent()) o.accept(blockSet.STRIPPED_LOG.get());
-            if (blockSet.WOOD.isPresent()) o.accept(blockSet.WOOD.get());
-            if (blockSet.STRIPPED_WOOD.isPresent()) o.accept(blockSet.STRIPPED_WOOD.get());
-            if (blockSet.BUTTON.isPresent()) o.accept(blockSet.BUTTON.get());
-            if (blockSet.FENCE.isPresent()) o.accept(blockSet.FENCE.get());
-            if (blockSet.FENCE_GATE.isPresent()) o.accept(blockSet.FENCE_GATE.get());
-            if (blockSet.PRESSURE_PLATE.isPresent()) o.accept(blockSet.PRESSURE_PLATE.get());
-            if (blockSet.SLAB.isPresent()) o.accept(blockSet.SLAB.get());
-            if (blockSet.STAIRS.isPresent()) o.accept(blockSet.STAIRS.get());
-            if (blockSet.SIGN_ITEM.isPresent()) o.accept(blockSet.SIGN_ITEM.get());
-            if (blockSet.TRAPDOOR.isPresent()) o.accept(blockSet.TRAPDOOR.get());
-            if (blockSet.DOOR.isPresent()) o.accept(blockSet.DOOR.get());
-            if (blockSet.HANGING_SIGN_ITEM.isPresent()) o.accept(blockSet.HANGING_SIGN_ITEM.get());
-            if (blockSet.CHISELED_PLANKS.isPresent()) o.accept(blockSet.CHISELED_PLANKS.get());
+            if (blockSet.STRIPPED_LOG.isBound()) o.accept(blockSet.STRIPPED_LOG.get());
+            if (blockSet.WOOD.isBound()) o.accept(blockSet.WOOD.get());
+            if (blockSet.STRIPPED_WOOD.isBound()) o.accept(blockSet.STRIPPED_WOOD.get());
+            if (blockSet.BUTTON.isBound()) o.accept(blockSet.BUTTON.get());
+            if (blockSet.FENCE.isBound()) o.accept(blockSet.FENCE.get());
+            if (blockSet.FENCE_GATE.isBound()) o.accept(blockSet.FENCE_GATE.get());
+            if (blockSet.PRESSURE_PLATE.isBound()) o.accept(blockSet.PRESSURE_PLATE.get());
+            if (blockSet.SLAB.isBound()) o.accept(blockSet.SLAB.get());
+            if (blockSet.STAIRS.isBound()) o.accept(blockSet.STAIRS.get());
+            if (blockSet.SIGN_ITEM.isBound()) o.accept(blockSet.SIGN_ITEM.get());
+            if (blockSet.TRAPDOOR.isBound()) o.accept(blockSet.TRAPDOOR.get());
+            if (blockSet.DOOR.isBound()) o.accept(blockSet.DOOR.get());
+            if (blockSet.HANGING_SIGN_ITEM.isBound()) o.accept(blockSet.HANGING_SIGN_ITEM.get());
+            if (blockSet.CHISELED_PLANKS.isBound()) o.accept(blockSet.CHISELED_PLANKS.get());
         }
     }
 
@@ -311,18 +311,18 @@ public class LogBlockSet {
         for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
             CreativeModeTab.Output o = GroupItem.belongsTo(blockSet.id, output);
 
-            if (blockSet.LOG.isPresent()) o.accept(blockSet.LOG.get());
-            if (blockSet.LEAVES.isPresent()) o.accept(blockSet.LEAVES.get());
-            if (blockSet.SAPLING.isPresent()) o.accept(blockSet.SAPLING.get());
+            if (blockSet.LOG.isBound()) o.accept(blockSet.LOG.get());
+            if (blockSet.LEAVES.isBound()) o.accept(blockSet.LEAVES.get());
+            if (blockSet.SAPLING.isBound()) o.accept(blockSet.SAPLING.get());
         }
     }
 
     public static void wrapStrip() {
         for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
-            if (blockSet.LOG.isPresent() && blockSet.STRIPPED_LOG.isPresent()) {
+            if (blockSet.LOG.isBound() && blockSet.STRIPPED_LOG.isBound()) {
                 WRAPPED_STRIP_TABLE.put(blockSet.LOG.get(), blockSet.STRIPPED_LOG.get());
             }
-            if (blockSet.WOOD.isPresent() && blockSet.STRIPPED_WOOD.isPresent()) {
+            if (blockSet.WOOD.isBound() && blockSet.STRIPPED_WOOD.isBound()) {
                 WRAPPED_STRIP_TABLE.put(blockSet.WOOD.get(), blockSet.STRIPPED_WOOD.get());
             }
         }
@@ -332,8 +332,8 @@ public class LogBlockSet {
         if (SIGN_BLOCKS == null) {
             List<Block> list = new ArrayList<>();
             for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
-                if (blockSet.SIGN.isPresent()) list.add(blockSet.SIGN.get());
-                if (blockSet.WALL_SIGN.isPresent()) list.add(blockSet.WALL_SIGN.get());
+                if (blockSet.SIGN.isBound()) list.add(blockSet.SIGN.get());
+                if (blockSet.WALL_SIGN.isBound()) list.add(blockSet.WALL_SIGN.get());
             }
             SIGN_BLOCKS = list.toArray(new Block[0]);
         }
@@ -344,8 +344,8 @@ public class LogBlockSet {
         if (HANGING_SIGN_BLOCKS == null) {
             List<Block> list = new ArrayList<>();
             for (LogBlockSet blockSet : LOG_BLOCK_SETS) {
-                if (blockSet.HANGING_SIGN.isPresent()) list.add(blockSet.HANGING_SIGN.get());
-                if (blockSet.WALL_HANGING_SIGN.isPresent())
+                if (blockSet.HANGING_SIGN.isBound()) list.add(blockSet.HANGING_SIGN.get());
+                if (blockSet.WALL_HANGING_SIGN.isBound())
                     list.add(blockSet.WALL_HANGING_SIGN.get());
             }
             HANGING_SIGN_BLOCKS = list.toArray(new Block[0]);
@@ -360,55 +360,55 @@ public class LogBlockSet {
             if (ignitedByLava) {
                 fireblock.setFlammable(blockSet.PLANKS.get(), 5, 20);
             }
-            if (blockSet.LOG.isPresent()) {
+            if (blockSet.LOG.isBound()) {
                 Block value = blockSet.LOG.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 5);
                 }
             }
-            if (blockSet.STRIPPED_LOG.isPresent()) {
+            if (blockSet.STRIPPED_LOG.isBound()) {
                 Block value = blockSet.STRIPPED_LOG.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 5);
                 }
             }
-            if (blockSet.WOOD.isPresent()) {
+            if (blockSet.WOOD.isBound()) {
                 Block value = blockSet.WOOD.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 5);
                 }
             }
-            if (blockSet.STRIPPED_WOOD.isPresent()) {
+            if (blockSet.STRIPPED_WOOD.isBound()) {
                 Block value = blockSet.STRIPPED_WOOD.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 5);
                 }
             }
-            if (blockSet.LEAVES.isPresent()) {
+            if (blockSet.LEAVES.isBound()) {
                 Block value = blockSet.LEAVES.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 30, 60);
                 }
             }
-            if (blockSet.FENCE.isPresent()) {
+            if (blockSet.FENCE.isBound()) {
                 Block value = blockSet.FENCE.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 20);
                 }
             }
-            if (blockSet.FENCE_GATE.isPresent()) {
+            if (blockSet.FENCE_GATE.isBound()) {
                 Block value = blockSet.FENCE_GATE.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 20);
                 }
             }
-            if (blockSet.SLAB.isPresent()) {
+            if (blockSet.SLAB.isBound()) {
                 Block value = blockSet.SLAB.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 20);
                 }
             }
-            if (blockSet.STAIRS.isPresent()) {
+            if (blockSet.STAIRS.isBound()) {
                 Block value = blockSet.STAIRS.get();
                 if (ignitedByLava) {
                     fireblock.setFlammable(value, 5, 20);

@@ -227,7 +227,7 @@ public final class ModArmorBonus {
             key.of(AccessoryItems.MANA$USE$REDUCE, 0.17F);
         });
         register("mythril_helmet_set", 1, MYTHRIL_HELMET, MYTHRIL_CHESTPLATE, MYTHRIL_LEGGINGS, MYTHRIL_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getCriticalChance(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_VALUE));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getCriticalChance().value(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_VALUE));
         });
         register("mythril_hat_set", 1, MYTHRIL_HAT, MYTHRIL_CHESTPLATE, MYTHRIL_LEGGINGS, MYTHRIL_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);

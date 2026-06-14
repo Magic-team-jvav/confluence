@@ -21,6 +21,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -28,18 +29,18 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.mixed.IAbstractArrow;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
+import org.mesdag.portlib.wrapper.world.entity.projectile.PortAbstractArrow;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class BaseArrowEntity extends AbstractArrow {
+public class BaseArrowEntity extends PortAbstractArrow {
     protected float minSpeedAttackFactor = 0.5f; // 速度影响伤害的最小系数
     @Nullable Item arrowItem;
     private ParticleEmitter emitter;
@@ -64,7 +65,7 @@ public class BaseArrowEntity extends AbstractArrow {
     private static final EntityDataAccessor<Float> DATA_GRAVITY = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.FLOAT);
     public String texturePath = "";
     private int penetrate = 0;
-    private final List<LivingEntity> havenBeen = new ArrayList<>();//标记不能重复穿透
+    private final List<LivingEntity> havenBeen = new ArrayList<>(); // 标记不能重复穿透
     public @NotNull Builder modify = new Builder();
     private Factory baseArrowFactory;
     public boolean fullPull = false;
@@ -131,7 +132,7 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     @Override
-    public void onAddedToLevel() {
+    public void onAddedToWorld() {
         if ((modify.type & Tag.no_gravity) != 0) this.setNoGravity(true);
         if (baseArrowFactory != null) {
             entityData.set(TEXTURE_PATH, baseArrowFactory.path);
@@ -143,7 +144,7 @@ public class BaseArrowEntity extends AbstractArrow {
         entityData.set(DATA_LUMINANCE, modify.luminance);
         entityData.set(DATA_GRAVITY, modify.gravity);
 
-        super.onAddedToLevel();
+        super.onAddedToWorld();
     }
 
     @Override
@@ -167,7 +168,7 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return modify.gravity;
     }
 
@@ -191,7 +192,7 @@ public class BaseArrowEntity extends AbstractArrow {
         if (this.getWeaponItem() != null) {
             Level var9 = this.level();
             if (var9 instanceof ServerLevel) {
-                int value = PortEnchantmentHelperExtension.getEnchantmentLevel(Enchantments.POWER, this.getWeaponItem());
+                int value = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.POWER_ARROWS, this.getWeaponItem());
                 d0 *= (value * 0.1f + 1.0f);
             }
         }
@@ -256,11 +257,6 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     @Override
-    public double getBaseDamage() {
-        return super.getBaseDamage();
-    }
-
-    @Override
     protected void doPostHurtEffects(LivingEntity living) {
         if (getOwner() instanceof LivingEntity owner) {
             modify.onHitEffects.forEach(effect -> effect.applyAll(owner, living));
@@ -306,13 +302,12 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     @Override
-    public void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder
-                .define(TEXTURE_PATH, "")
-                .define(DATA_PARTICLE_ID, "")
-                .define(DATA_LUMINANCE, 0)
-                .define(DATA_GRAVITY, 0.05F)
-        );
+    public void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(TEXTURE_PATH, "");
+        entityData.define(DATA_PARTICLE_ID, "");
+        entityData.define(DATA_LUMINANCE, 0);
+        entityData.define(DATA_GRAVITY, 0.05F);
     }
 
     @Override

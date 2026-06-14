@@ -86,7 +86,7 @@ public class MergedConfigurationScreen extends Screen {
         minecraft.setScreen(parent);
     }
 
-    public static Screen factory(ModContainer container, Screen parent) {
+    public static Screen factory(Minecraft minecraft, Screen parent) {
         return new MergedConfigurationScreen(parent,
                 Confluence.MODID,
                 ConfluenceMagicLib.LIB_ID,

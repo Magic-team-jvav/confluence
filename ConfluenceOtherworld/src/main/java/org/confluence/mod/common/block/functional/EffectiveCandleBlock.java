@@ -126,8 +126,8 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
 
     private static void awardEffect(LivingEntity living, MobEffectInstanceData[] dat) {
         for (MobEffectInstanceData data : dat) {
-            MobEffectInstance instance = living.getActiveEffectsMap().get(data.effect());
-            if (instance == null || instance.duration < 50) {
+            MobEffectInstance instance = living.getActiveEffectsMap().get(data.effect().get());
+            if (instance == null || instance.getDuration() < 50) {
                 living.addEffect(data.create());
             }
         }

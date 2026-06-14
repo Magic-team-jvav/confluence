@@ -31,10 +31,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.confluence.terraentity.entity.boss.hillofflesh.HillOfFlesh;
-import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
-import org.confluence.terraentity.init.TESounds;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 
@@ -65,7 +61,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     }
 
     @Override
-    public int getUseDuration(ItemStack stack, LivingEntity entity) {
+    public int getUseDuration(ItemStack stack) {
         return 20;
     }
 
@@ -95,8 +91,8 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
         if (isWall(LibUtils.getItemStackNbtIfPresent(stack))) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.wall.0").withStyle(ChatFormatting.DARK_RED));
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.wall.1").withStyle(ChatFormatting.DARK_RED));

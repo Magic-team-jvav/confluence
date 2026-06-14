@@ -3,11 +3,7 @@ package org.confluence.mod.common.component;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffects;
@@ -15,34 +11,30 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.api.IGeneration;
+import org.confluence.mod.api.ITrackType;
+import org.confluence.mod.common.generation.variant.AboveFallenGeneration;
+import org.confluence.mod.common.generation.variant.ForwardGeneration;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terraentity.api.entity.IGeneration;
-import org.confluence.terraentity.api.entity.ITrackType;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.registries.generation.variant.AboveFallenGeneration;
-import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
-import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Optional;
 import java.util.function.Supplier;
 
-/**
- * <h1>弹幕组件</h1>
- *
- * @param damageFactor 伤害系数
- * @param baseSpeed    基础速度
- * @param acceleration 加速度
- * @param existTicks   存在时间
- * @param gravity      重力
- * @param cooldown     冷却时间
- * @param soundEvent   音效
- * @param trackType    追踪类型
- * @param generation   生成器
- * @param hitEffect    击中特效
- */
+/// # 弹幕组件
+///
+/// @param damageFactor 伤害系数
+/// @param baseSpeed    基础速度
+/// @param acceleration 加速度
+/// @param existTicks   存在时间
+/// @param gravity      重力
+/// @param cooldown     冷却时间
+/// @param soundEvent   音效
+/// @param trackType    追踪类型
+/// @param generation   生成器
+/// @param hitEffect    击中特效
 public record SwordProjectileComponent(
         float damageFactor,
         float baseSpeed,
@@ -55,8 +47,7 @@ public record SwordProjectileComponent(
         Optional<ITrackType> trackType,
         IGeneration generation,
         Optional<EffectStrategyComponent> hitEffect
-) implements DataComponentType<SwordProjectileComponent> {
-
+) {
     public static final Codec<SwordProjectileComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("damageFactor").forGetter(SwordProjectileComponent::damageFactor),
             Codec.FLOAT.fieldOf("baseSpeed").forGetter(SwordProjectileComponent::baseSpeed),
@@ -114,16 +105,6 @@ public record SwordProjectileComponent(
     public static final PortStreamCodec<ByteBuf, SwordProjectileComponent> STREAM_CODEC = PortByteBufCodecs.fromCodec(CODEC);
 
     @Override
-    public @Nullable Codec<SwordProjectileComponent> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public @NotNull StreamCodec<? super PortRegistryFriendlyByteBuf, SwordProjectileComponent> streamCodec() {
-        return STREAM_CODEC;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (o == this) return true;
         if (o instanceof SwordProjectileComponent other) {
@@ -159,16 +140,17 @@ public record SwordProjectileComponent(
 
     public float getVelocity(LivingEntity living) {
         float velocity = baseSpeed();
-        AttributeInstance attributeInstance = living.getAttribute(LibAttributes.getRangedVelocity());
-        if (attributeInstance != null) return velocity * (float) attributeInstance.getValue();
+        AttributeInstance instance = living.getAttribute(LibAttributes.getRangedVelocity().value());
+        if (instance != null) return velocity * (float) instance.getValue();
         return velocity;
     }
 
     public int getAttackSpeed(LivingEntity living) {
         int cooldown = cooldown();
-        AttributeInstance attributeInstance = living.getAttribute(Attributes.ATTACK_SPEED);
-        if (attributeInstance != null)
-            return Math.max(cooldown - (int) (attributeInstance.getValue() / 3.0), 0);
+        AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
+        if (instance != null) {
+            return Math.max(cooldown - (int) (instance.getValue() / 3.0), 0);
+        }
         return cooldown;
     }
 }

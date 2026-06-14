@@ -1,8 +1,9 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,10 +17,11 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootTable;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,8 @@ import java.util.List;
 public class CrateBlockItem extends BlockItem {
     private final List<Component> commonTooltips;
 
-    public CrateBlockItem(Block block, ResourceKey<LootTable> lootTable) {
-        super(block, new Properties().fireResistant().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)));
+    public CrateBlockItem(Block block, ResourceLocation lootTable) {
+        super(block, new PortItem.PortProperties().fireResistant().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)));
         this.commonTooltips = createCommonTooltips();
     }
 
@@ -40,16 +42,16 @@ public class CrateBlockItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.addAll(commonTooltips);
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (player instanceof ServerPlayer serverPlayer) {
-            if (!player.isCrouching() && LootComponent.open(serverPlayer, itemStack) && !player.hasInfiniteMaterials()) {
+            if (!player.isCrouching() && LootComponent.open(serverPlayer, itemStack) && !PortPlayerExtension.hasInfiniteMaterials(player)) {
                 itemStack.shrink(1);
             }
         } else {
@@ -64,7 +66,7 @@ public class CrateBlockItem extends BlockItem {
         if (player != null && !player.isCrouching()) {
             ItemStack itemStack = context.getItemInHand();
             if (player instanceof ServerPlayer serverPlayer) {
-                if (LootComponent.open(serverPlayer, itemStack) && !player.hasInfiniteMaterials()) {
+                if (LootComponent.open(serverPlayer, itemStack) && !PortPlayerExtension.hasInfiniteMaterials(player)) {
                     itemStack.shrink(1);
                 }
             } else {

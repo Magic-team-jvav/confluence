@@ -1,18 +1,18 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import com.google.common.base.Supplier;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.fishing.*;
-
-import java.util.function.Supplier;
+import org.mesdag.portlib.registries.PortDeferredItem;
+import org.mesdag.portlib.registries.PortItemRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
 
 public class FishingPoleItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Confluence.MODID);
+    public static void init() {}
 
-    public static final RegistryObject<AbstractFishingPole> WOOD_FISHING_POLE = register("wood_fishing_pole", WoodFishingPole::new),
+    public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
+
+    public static final PortDeferredItem<AbstractFishingPole> WOOD_FISHING_POLE = register("wood_fishing_pole", WoodFishingPole::new),
             REINFORCED_FISHING_POLE = register("reinforced_fishing_pole", ReinforcedFishingPole::new),
             FISHER_OF_SOULS = register("fisher_of_souls", FisherOfSouls::new),
             FLESHCATCHER = register("fleshcatcher", Fleshcatcher::new),
@@ -25,7 +25,7 @@ public class FishingPoleItems {
             GOLDEN_FISHING_ROD = register("golden_fishing_rod", GoldenFishingRod::new),
             DEV_FISHING_ROD = register("dev_fishing_rod", DevFishingRod::new);
 
-    private static RegistryObject<AbstractFishingPole> register(String name, Supplier<AbstractFishingPole> supplier) {
+    private static PortDeferredItem<AbstractFishingPole> register(String name, Supplier<AbstractFishingPole> supplier) {
         return ITEMS.register(name, supplier);
     }
 }

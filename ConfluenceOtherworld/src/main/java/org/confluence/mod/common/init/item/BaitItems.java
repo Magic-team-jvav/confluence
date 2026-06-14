@@ -1,15 +1,13 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.fishing.BaitItem;
-import org.confluence.terraentity.init.entity.TEAnimals;
+import org.mesdag.portlib.registries.PortDeferredItem;
+import org.mesdag.portlib.registries.PortItemRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -17,9 +15,11 @@ import java.util.function.Supplier;
 import static org.confluence.lib.common.component.ModRarity.*;
 
 public class BaitItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Confluence.MODID);
+    public static void init() {}
 
-    public static final RegistryObject<BaitItem> APPRENTICE_BAIT = register("apprentice_bait", BLUE, 0.15F),
+    public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
+
+    public static final PortDeferredItem<BaitItem> APPRENTICE_BAIT = register("apprentice_bait", BLUE, 0.15F),
             JOURNEYMAN_BAIT = register("journeyman_bait", GREEN, 0.3F),
             MASTER_BAIT = register("master_bait", ORANGE, 0.5F),
             BLACK_DRAGONFLY = register("black_dragonfly", BLUE, 0.2F, TEAnimals.DRAGONFLY, entity -> entity.setVariant(0)),
@@ -67,16 +67,16 @@ public class BaitItems {
             YELLOW_DRAGONFLY = register("yellow_dragonfly", BLUE, 0.2F, TEAnimals.DRAGONFLY, entity -> entity.setVariant(6)),
             ZEBRA_SWALLOWTAIL_BUTTERFLY = register("zebra_swallowtail_butterfly", BLUE, 0.15F, TEAnimals.BUTTERFLY, entity -> entity.setVariant(8));
 
-    public static RegistryObject<BaitItem> register(String name, ModRarity rarity, float bonus) {
+    public static PortDeferredItem<BaitItem> register(String name, ModRarity rarity, float bonus) {
         return register(name, rarity, bonus, () -> null, entity -> {});
     }
 
-    public static <T extends Entity> RegistryObject<BaitItem> register(String name, ModRarity rarity, float bonus, Supplier<? extends EntityType<T>> supplier) {
+    public static <T extends Entity> PortDeferredItem<BaitItem> register(String name, ModRarity rarity, float bonus, Supplier<? extends EntityType<T>> supplier) {
         return register(name, rarity, bonus, supplier, entity -> {});
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Entity> RegistryObject<BaitItem> register(String name, ModRarity rarity, float bonus, Supplier<? extends EntityType<T>> supplier, Consumer<T> consumer) {
+    public static <T extends Entity> PortDeferredItem<BaitItem> register(String name, ModRarity rarity, float bonus, Supplier<? extends EntityType<T>> supplier, Consumer<T> consumer) {
         return ITEMS.register(name, () -> new BaitItem(rarity, bonus, supplier, (Consumer<Entity>) consumer));
     }
 }

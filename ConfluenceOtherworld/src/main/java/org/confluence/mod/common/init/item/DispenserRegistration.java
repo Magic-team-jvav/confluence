@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.BoatDispenseItemBehavior;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
@@ -13,8 +14,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.item.common.SpongeItem;
+import org.mesdag.portlib.registries.PortRegistryEntry;
 
 import java.util.stream.Stream;
 
@@ -24,8 +25,8 @@ public class DispenserRegistration {
             @Override
             public ItemStack execute(BlockSource source, ItemStack itemStack) {
                 DispensibleContainerItem dispensiblecontaineritem = (DispensibleContainerItem) itemStack.getItem();
-                BlockPos blockpos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
-                Level level = source.level();
+                BlockPos blockpos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+                Level level = source.getLevel();
                 if (dispensiblecontaineritem.emptyContents(null, level, blockpos, null, itemStack)) {
                     dispensiblecontaineritem.checkExtraContent(null, level, itemStack, blockpos);
                     return this.consumeWithRemainder(source, itemStack, new ItemStack(Items.BUCKET));
@@ -74,17 +75,13 @@ public class DispenserRegistration {
         ).forEach(item -> DispenserBlock.registerBehavior(item.asItem(), spongeAbsorbLiquid));
 
         BoatItems.BOAT_ITEMS.getEntries().stream()
-                .map(RegistryObject::get)
-                .forEach(boatItem ->
-                        DispenserBlock.registerBehavior(boatItem, new BoatDispenseItemBehavior(((BoatItem) boatItem).type))
-                );
+                .map(PortRegistryEntry::get)
+                .forEach(boatItem -> DispenserBlock.registerBehavior(boatItem, new BoatDispenseItemBehavior(((BoatItem) boatItem).type)));
         BoatItems.CHEST_BOAT_ITEMS.getEntries().stream()
-                .map(RegistryObject::get)
-                .forEach(chestBoatItem ->
-                        DispenserBlock.registerBehavior(chestBoatItem, new BoatDispenseItemBehavior(((BoatItem) chestBoatItem).type, true))
-                );
+                .map(PortRegistryEntry::get)
+                .forEach(chestBoatItem -> DispenserBlock.registerBehavior(chestBoatItem, new BoatDispenseItemBehavior(((BoatItem) chestBoatItem).type, true)));
         ArrowItems.ITEMS.getEntries().stream()
-                .map(RegistryObject::get)
+                .map(PortRegistryEntry::get)
                 .forEach(DispenserBlock::registerProjectileBehavior);
 
         DispenserBlock.registerBehavior(PotionItems.BOTTLE.asItem(), new OptionalDispenseItemBehavior() {

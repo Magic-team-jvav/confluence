@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.armor;
 
 import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
-import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -28,13 +27,13 @@ import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
+import org.mesdag.portlib.wrapper.world.item.PortArmorMaterial;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class BaseArmorItem extends ArmorItem {
     private @Nullable List<Component> tooltips;
@@ -60,15 +59,19 @@ public class BaseArmorItem extends ArmorItem {
         return golden;
     }
 
-    public static Builder builder(String name, Holder<ArmorMaterial> material, Type type) {
+    public static Builder builder(String name, ArmorMaterial material, Type type) {
         return new Builder(name, material, type);
+    }
+
+    public static Builder builder(String name, Holder<PortArmorMaterial> material, Type type) {
+        return new Builder(name, material.value(), type);
     }
 
     public static class Builder {
         private final String name;
-        private final Holder<ArmorMaterial> material;
+        private final ArmorMaterial material;
         private final ArmorItem.Type type;
-        private final Properties properties = new Properties();
+        private final PortItem.PortProperties properties = new PortItem.PortProperties();
         private String geoName = null;
         private ModRarity rarity = ModRarity.WHITE;
         private int lineCount = 0;
@@ -81,7 +84,7 @@ public class BaseArmorItem extends ArmorItem {
 
         private transient ResourceLocation id;
 
-        public Builder(String name, Holder<ArmorMaterial> material, Type type) {
+        public Builder(String name, ArmorMaterial material, Type type) {
             this.name = name;
             this.material = material;
             this.type = type;
@@ -94,7 +97,7 @@ public class BaseArmorItem extends ArmorItem {
             return id;
         }
 
-        public Builder properties(Consumer<Properties> consumer) {
+        public Builder properties(Consumer<PortItem.PortProperties> consumer) {
             consumer.accept(properties);
             return this;
         }
@@ -200,11 +203,8 @@ public class BaseArmorItem extends ArmorItem {
                 item = new BaseArmorItem(material, type, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
             }
             if (vanillaAttributes != null) {
-                Supplier<PortItemAttributeModifiers> supplier = item.defaultModifiers;
-                item.defaultModifiers = Suppliers.memoize(() -> {
-                    vanillaAttributes.addAll(supplier.get().modifiers());
-                    return new ItemAttributeModifiers(vanillaAttributes.build(), true);
-                });
+                vanillaAttributes.putAll(item.defaultModifiers);
+                item.defaultModifiers = vanillaAttributes.build();
             }
             if (lineCount > 0) {
                 item.tooltips = TooltipItem.getTooltipsFromString(name, lineCount, ChatFormatting.GRAY);

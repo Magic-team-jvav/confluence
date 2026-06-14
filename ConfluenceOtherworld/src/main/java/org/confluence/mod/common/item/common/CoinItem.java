@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,17 +19,18 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.registries.PortDeferredItem;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 public class CoinItem extends BlockItem {
     public static final int UPGRADES_COUNT = 100;
 
-    public final @Nullable Supplier<CoinItem> upgrade;
+    public final @Nullable PortDeferredItem<CoinItem> upgrade;
 
-    public CoinItem(Block block, ModRarity rarity, @Nullable Supplier<CoinItem> upgrade, int maxStackSize) {
-        super(block, new Properties().fireResistant().stacksTo(maxStackSize).component(ConfluenceMagicLib.MOD_RARITY, rarity));
+    public CoinItem(Block block, ModRarity rarity, @Nullable PortDeferredItem<CoinItem> upgrade, int maxStackSize) {
+        super(block, new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity).fireResistant().stacksTo(maxStackSize));
         this.upgrade = upgrade;
     }
 
@@ -82,9 +84,9 @@ public class CoinItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if (upgrade != null && stack.getCount() >= UPGRADES_COUNT) {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.coin.0").withColor(0xAAAAAA));
+            tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.coin.0"), 0xAAAAAA));
         }
     }
 }

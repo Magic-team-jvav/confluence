@@ -10,15 +10,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -39,7 +36,9 @@ import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.AttributeHolder;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -175,11 +174,10 @@ public class BaseSwordItem extends SwordItem {
         public boolean canPerformSweep = true;
         public boolean specialSweep = false;
 
-        protected Item.Properties properties = new Item.Properties();
+        protected PortItem.PortProperties properties = new PortItem.PortProperties();
         protected IInventoryTick inventoryTick;
-        protected final ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
+        protected final PortItemAttributeModifiers.PortBuilder attributeModifiersBuilder = PortItemAttributeModifiers.builder();
         protected int modifyCount = 0;
-        protected List<Consumer<Item.Properties>> modifier = new ArrayList<>();
         protected List<Consumer<MutableComponent>> tooltipsModifier = new ArrayList<>();
         protected boolean hasImage;
         protected IAttackDamageBonus attackDamageBonus;
@@ -202,16 +200,21 @@ public class BaseSwordItem extends SwordItem {
         }
 
         /// 添加属性修改器
-        public ModifierBuilder addAttributeModifier(Holder<Attribute> attribute, float amount, AttributeModifier.Operation operation) {
-            this.attributeModifiersBuilder.add(attribute, new AttributeModifier(Confluence.asResource("sword.modifier." + modifyCount++), amount, operation), EquipmentSlotGroup.MAINHAND);
+        public ModifierBuilder addAttributeModifier(Holder<Attribute> attribute, float amount, PortAttributeModifier.PortOperation operation) {
+            this.attributeModifiersBuilder.add(attribute, new PortAttributeModifier(Confluence.asResource("sword.modifier." + modifyCount++), amount, operation), PortEquipmentSlotGroup.MAINHAND);
             return this;
+        }
+
+        /// 添加属性修改器
+        public ModifierBuilder addAttributeModifier(Attribute attribute, float amount, PortAttributeModifier.PortOperation operation) {
+            return addAttributeModifier(AttributeHolder.wrap(attribute), amount, operation);
         }
 
         /// 设置弹幕
         ///
         /// @see SwordProjectileComponent
         public ModifierBuilder setProj(Supplier<SwordProjectileComponent> proj) {
-            this.modifier.add(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, proj.get()));
+            properties.component(ModDataComponentTypes.SWORD_PROJECTILE, proj.get());
             return this;
         }
 
@@ -252,17 +255,17 @@ public class BaseSwordItem extends SwordItem {
             return this;
         }
 
-        public ModifierBuilder modifyProperties(Consumer<Item.Properties> modifier) {
-            this.modifier.add(modifier);
+        public ModifierBuilder modifyProperties(Consumer<PortItem.PortProperties> modifier) {
+            modifier.accept(properties);
             return this;
         }
 
         public ModifierBuilder unbreakable() {
-            this.modifier.add(properties -> properties.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
+            properties.unbreakable();
             return this;
         }
 
-        public ModifierBuilder addTooltip(int count) {
+        public ModifierBuilder addTooltips(int count) {
             for (int i = 0; i < count; i++)
                 addTooltip();
             return this;
@@ -273,7 +276,7 @@ public class BaseSwordItem extends SwordItem {
             return this;
         }
 
-        public ModifierBuilder addTooltip(int count, Consumer<MutableComponent> tooltips) {
+        public ModifierBuilder addTooltips(int count, Consumer<MutableComponent> tooltips) {
             for (int i = 0; i < count; i++)
                 addTooltip(tooltips);
             return this;
@@ -285,14 +288,12 @@ public class BaseSwordItem extends SwordItem {
         }
 
         public Item.Properties buildProperties(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
-            if (modifier != null) modifier.forEach(m -> m.accept(properties));
             properties.durability(tier.getUses())
                     .component(ConfluenceMagicLib.MOD_RARITY, rarity)
-                    .component(DataComponents.ATTRIBUTE_MODIFIERS, attributeModifiersBuilder
-                            .add(LibAttributes.getAttackDamage(), new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage - 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                            .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, rawSpeed - 4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                            .build()
-                    );
+                    .attributes(attributeModifiersBuilder
+                            .add(LibAttributes.getAttackDamage(), new PortAttributeModifier(ModItems.BASE_ATTACK_DAMAGE_ID, rawDamage - 1, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
+                            .add(Attributes.ATTACK_SPEED, new PortAttributeModifier(ModItems.BASE_ATTACK_SPEED_ID, rawSpeed - 4, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
+                            .build());
             return properties;
         }
     }

@@ -17,6 +17,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.registries.PortDeferredBlock;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -1874,7 +1875,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CORRUPT_CACTUS.get(),
                 HALLOW_CACTUS.get()
         );
-        tag(ModTags.Blocks.RELIC).add(RELIC_BLOCKS.stream().map(DeferredHolder::get).toArray(Block[]::new));
+        tag(ModTags.Blocks.RELIC).add(RELIC_BLOCKS.stream().map(PortDeferredBlock::value).toArray(Block[]::new));
         { // 没沙子是防止河流里的沙子被误判成沙漠
             tag(ModTags.Blocks.HALLOW_DESERT_BLOCKS).add(
                     PEARLSAND.get(),

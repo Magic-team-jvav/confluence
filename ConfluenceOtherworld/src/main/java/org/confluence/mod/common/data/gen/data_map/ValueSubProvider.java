@@ -6,7 +6,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.RegistryObject;
+import org.confluence.mod.common.block.common.RelicBlock;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.init.GunItems;
@@ -16,6 +16,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terraentity.init.item.*;
+import org.mesdag.portlib.registries.PortDeferredBlock;
 
 public final class ValueSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
@@ -2067,7 +2068,7 @@ public final class ValueSubProvider {
                 .add(NatureBlocks.BALLOON_MELON, silver5 + silver2)
         ;
         // 圣物
-        for (RegistryObject block : DecorativeBlocks.RELIC_BLOCKS) {
+        for (PortDeferredBlock<RelicBlock> block : DecorativeBlocks.RELIC_BLOCKS) {
             builder.add(block, gold1);
         }
         // 箱子

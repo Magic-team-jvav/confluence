@@ -2,15 +2,10 @@ package org.confluence.mod.common.init.item;
 
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
@@ -19,1119 +14,1120 @@ import org.confluence.mod.common.init.armor.ModArmorMaterials;
 import org.confluence.mod.common.item.armor.BaseArmorItem;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.mesdag.portlib.registries.PortDeferredItem;
+import org.mesdag.portlib.registries.PortItemRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.function.Consumer;
 
-
 public class ArmorItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Confluence.MODID);
+    public static void init() {
+        ModArmorMaterials.init();
+    }
 
-    public static final RegistryObject<BaseArmorItem> MINING_HELMET = register("mining_helmet", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
+
+    public static final PortDeferredItem<BaseArmorItem> MINING_HELMET = register("mining_helmet", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
             .armorBonus(PrimitiveValueComponent.of(TCItems.LUMINANCE, 10))
             .requiresModLoaded("sodiumdynamiclights")
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> MINING_CHESTPLATE = register("mining_chestplate", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MINING_CHESTPLATE = register("mining_chestplate", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
             .attribute(PortAttributesExtension.blockBreakSpeed(), 0.1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
-    public static final RegistryObject<BaseArmorItem> MINING_LEGGINGS = register("mining_leggings", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MINING_LEGGINGS = register("mining_leggings", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
             .attribute(PortAttributesExtension.blockBreakSpeed(), 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
-    public static final RegistryObject<BaseArmorItem> MINING_BOOTS = register("mining_boots", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MINING_BOOTS = register("mining_boots", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
             .attribute(PortAttributesExtension.blockBreakSpeed(), 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
 
-    public static final RegistryObject<BaseArmorItem> PLANK_HELMET = register("plank_helmet", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PLANK_HELMET = register("plank_helmet", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/plank_armor")
             .durability(55));
-    public static final RegistryObject<BaseArmorItem> PLANK_CHESTPLATE = register("plank_chestplate", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PLANK_CHESTPLATE = register("plank_chestplate", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/plank_armor")
             .durability(80));
-    public static final RegistryObject<BaseArmorItem> PLANK_LEGGINGS = register("plank_leggings", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PLANK_LEGGINGS = register("plank_leggings", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/plank_armor")
             .durability(75));
-    public static final RegistryObject<BaseArmorItem> PLANK_BOOTS = register("plank_boots", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PLANK_BOOTS = register("plank_boots", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/plank_armor")
             .durability(65));
 
-    public static final RegistryObject<BaseArmorItem> EBONY_HELMET = register("ebony_helmet", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> EBONY_HELMET = register("ebony_helmet", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/ebony_armor")
             .durability(120));
-    public static final RegistryObject<BaseArmorItem> EBONY_CHESTPLATE = register("ebony_chestplate", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> EBONY_CHESTPLATE = register("ebony_chestplate", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/ebony_armor")
             .durability(170));
-    public static final RegistryObject<BaseArmorItem> EBONY_LEGGINGS = register("ebony_leggings", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> EBONY_LEGGINGS = register("ebony_leggings", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/ebony_armor")
             .durability(150));
-    public static final RegistryObject<BaseArmorItem> EBONY_BOOTS = register("ebony_boots", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> EBONY_BOOTS = register("ebony_boots", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/ebony_armor")
             .durability(130));
 
-    public static final RegistryObject<BaseArmorItem> SHADOW_PLANK_HELMET = register("shadow_plank_helmet", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SHADOW_PLANK_HELMET = register("shadow_plank_helmet", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/shadow_plank_armor")
             .durability(120));
-    public static final RegistryObject<BaseArmorItem> SHADOW_PLANK_CHESTPLATE = register("shadow_plank_chestplate", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SHADOW_PLANK_CHESTPLATE = register("shadow_plank_chestplate", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/shadow_plank_armor")
             .durability(170));
-    public static final RegistryObject<BaseArmorItem> SHADOW_PLANK_LEGGINGS = register("shadow_plank_leggings", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SHADOW_PLANK_LEGGINGS = register("shadow_plank_leggings", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/shadow_plank_armor")
             .durability(150));
-    public static final RegistryObject<BaseArmorItem> SHADOW_PLANK_BOOTS = register("shadow_plank_boots", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SHADOW_PLANK_BOOTS = register("shadow_plank_boots", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/shadow_plank_armor")
             .durability(130));
 
-    public static final RegistryObject<BaseArmorItem> ASH_HELMET = register("ash_helmet", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ASH_HELMET = register("ash_helmet", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/ash_armor")
             .durability(220));
-    public static final RegistryObject<BaseArmorItem> ASH_CHESTPLATE = register("ash_chestplate", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ASH_CHESTPLATE = register("ash_chestplate", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/ash_armor")
             .durability(270));
-    public static final RegistryObject<BaseArmorItem> ASH_LEGGINGS = register("ash_leggings", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ASH_LEGGINGS = register("ash_leggings", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/ash_armor")
             .durability(250));
-    public static final RegistryObject<BaseArmorItem> ASH_BOOTS = register("ash_boots", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ASH_BOOTS = register("ash_boots", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/ash_armor")
             .durability(230));
 
-    public static final RegistryObject<BaseArmorItem> RAIN_CAP = register("rain_cap", ModArmorMaterials.RAINCOAT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> RAIN_CAP = register("rain_cap", ModArmorMaterials.RAINCOAT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/raincoat_armor"));
-    public static final RegistryObject<BaseArmorItem> RAINCOAT = register("raincoat", ModArmorMaterials.RAINCOAT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> RAINCOAT = register("raincoat", ModArmorMaterials.RAINCOAT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/raincoat_armor"));
 
-    public static final RegistryObject<BaseArmorItem> SNOW_CAPS = register("snow_caps", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SNOW_CAPS = register("snow_caps", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/snow_armor"));
-    public static final RegistryObject<BaseArmorItem> SNOW_SUITS = register("snow_suits", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SNOW_SUITS = register("snow_suits", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/snow_armor"));
-    public static final RegistryObject<BaseArmorItem> INSULATED_PANTS = register("insulated_pants", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> INSULATED_PANTS = register("insulated_pants", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/snow_armor"));
-    public static final RegistryObject<BaseArmorItem> INSULATED_SHOES = register("insulated_shoes", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> INSULATED_SHOES = register("insulated_shoes", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/snow_armor"));
 
-    public static final RegistryObject<BaseArmorItem> PINK_SNOW_CAPS = register("pink_snow_caps", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PINK_SNOW_CAPS = register("pink_snow_caps", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/snow_pink_armor"));
-    public static final RegistryObject<BaseArmorItem> PINK_SNOW_SUITS = register("pink_snow_suits", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PINK_SNOW_SUITS = register("pink_snow_suits", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/snow_pink_armor"));
-    public static final RegistryObject<BaseArmorItem> PINK_INSULATED_PANTS = register("pink_insulated_pants", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PINK_INSULATED_PANTS = register("pink_insulated_pants", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/snow_pink_armor"));
-    public static final RegistryObject<BaseArmorItem> PINK_INSULATED_SHOES = register("pink_insulated_shoes", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PINK_INSULATED_SHOES = register("pink_insulated_shoes", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/snow_pink_armor"));
 
-    public static final RegistryObject<BaseArmorItem> ANGLER_HAT = register("angler_hat", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ANGLER_HAT = register("angler_hat", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/angler_armor")
             .rarity(ModRarity.BLUE)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.FISHING$POWER, 5.0F))
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> ANGLER_VEST = register("angler_vest", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ANGLER_VEST = register("angler_vest", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/angler_armor")
             .rarity(ModRarity.BLUE)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.FISHING$POWER, 5.0F))
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> ANGLER_PANTS = register("angler_pants", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ANGLER_PANTS = register("angler_pants", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/angler_armor")
             .rarity(ModRarity.BLUE)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.FISHING$POWER, 5.0F))
             .tooltips(1));
 
-    public static final RegistryObject<BaseArmorItem> CACTUS_HELMET = register("cactus_helmet", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CACTUS_HELMET = register("cactus_helmet", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cactus_armor")
             .durability(120));
-    public static final RegistryObject<BaseArmorItem> CACTUS_CHESTPLATE = register("cactus_chestplate", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CACTUS_CHESTPLATE = register("cactus_chestplate", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/cactus_armor")
             .durability(170));
-    public static final RegistryObject<BaseArmorItem> CACTUS_LEGGINGS = register("cactus_leggings", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CACTUS_LEGGINGS = register("cactus_leggings", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/cactus_armor")
             .durability(150));
-    public static final RegistryObject<BaseArmorItem> CACTUS_BOOTS = register("cactus_boots", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CACTUS_BOOTS = register("cactus_boots", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/cactus_armor")
             .durability(130));
 
-    public static final RegistryObject<BaseArmorItem> COPPER_HELMET = register("copper_helmet", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COPPER_HELMET = register("copper_helmet", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/copper_armor")
             .durability(120));
-    public static final RegistryObject<BaseArmorItem> COPPER_CHESTPLATE = register("copper_chestplate", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COPPER_CHESTPLATE = register("copper_chestplate", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/copper_armor")
             .durability(170));
-    public static final RegistryObject<BaseArmorItem> COPPER_LEGGINGS = register("copper_leggings", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COPPER_LEGGINGS = register("copper_leggings", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/copper_armor")
             .durability(150));
-    public static final RegistryObject<BaseArmorItem> COPPER_BOOTS = register("copper_boots", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COPPER_BOOTS = register("copper_boots", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/copper_armor")
             .durability(130));
 
-    public static final RegistryObject<BaseArmorItem> TIN_HELMET = register("tin_helmet", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TIN_HELMET = register("tin_helmet", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/tin_armor")
             .durability(150));
-    public static final RegistryObject<BaseArmorItem> TIN_CHESTPLATE = register("tin_chestplate", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TIN_CHESTPLATE = register("tin_chestplate", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/tin_armor")
             .durability(190));
-    public static final RegistryObject<BaseArmorItem> TIN_LEGGINGS = register("tin_leggings", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TIN_LEGGINGS = register("tin_leggings", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/tin_armor")
             .durability(170));
-    public static final RegistryObject<BaseArmorItem> TIN_BOOTS = register("tin_boots", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TIN_BOOTS = register("tin_boots", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/tin_armor")
             .durability(150));
 
-    public static final RegistryObject<BaseArmorItem> PUMPKIN_HELMET = register("pumpkin_helmet", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PUMPKIN_HELMET = register("pumpkin_helmet", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/pumpkin_armor"));
-    public static final RegistryObject<BaseArmorItem> PUMPKIN_CHESTPLATE = register("pumpkin_chestplate", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PUMPKIN_CHESTPLATE = register("pumpkin_chestplate", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/pumpkin_armor"));
-    public static final RegistryObject<BaseArmorItem> PUMPKIN_LEGGINGS = register("pumpkin_leggings", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PUMPKIN_LEGGINGS = register("pumpkin_leggings", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/pumpkin_armor"));
-    public static final RegistryObject<BaseArmorItem> PUMPKIN_BOOTS = register("pumpkin_boots", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PUMPKIN_BOOTS = register("pumpkin_boots", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/pumpkin_armor"));
 
-    public static final RegistryObject<BaseArmorItem> WHITE_PUMPKIN_HELMET = register("white_pumpkin_helmet", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> WHITE_PUMPKIN_HELMET = register("white_pumpkin_helmet", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/white_pumpkin_armor"));
-    public static final RegistryObject<BaseArmorItem> WHITE_PUMPKIN_CHESTPLATE = register("white_pumpkin_chestplate", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> WHITE_PUMPKIN_CHESTPLATE = register("white_pumpkin_chestplate", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/white_pumpkin_armor")
             .criticalChance(0.05));
-    public static final RegistryObject<BaseArmorItem> WHITE_PUMPKIN_LEGGINGS = register("white_pumpkin_leggings", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> WHITE_PUMPKIN_LEGGINGS = register("white_pumpkin_leggings", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/white_pumpkin_armor")
             .meleeDamage(0.04));
-    public static final RegistryObject<BaseArmorItem> WHITE_PUMPKIN_BOOTS = register("white_pumpkin_boots", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> WHITE_PUMPKIN_BOOTS = register("white_pumpkin_boots", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/white_pumpkin_armor")
             .meleeDamage(0.04));
 
-    public static final RegistryObject<BaseArmorItem> NINJA_HELMET = register("ninja_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> NINJA_HELMET = register("ninja_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/ninja_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.03));
-    public static final RegistryObject<BaseArmorItem> NINJA_CHESTPLATE = register("ninja_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> NINJA_CHESTPLATE = register("ninja_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/ninja_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.03));
-    public static final RegistryObject<BaseArmorItem> NINJA_LEGGINGS = register("ninja_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> NINJA_LEGGINGS = register("ninja_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/ninja_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.015));
-    public static final RegistryObject<BaseArmorItem> NINJA_BOOTS = register("ninja_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> NINJA_BOOTS = register("ninja_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/ninja_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.015));
 
-    public static final RegistryObject<BaseArmorItem> THIEF_HELMET = register("thief_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> THIEF_HELMET = register("thief_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)
             .attribute(Attributes.ATTACK_SPEED, 0.06, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .attribute(Attributes.MOVEMENT_SPEED, 0.03, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> THIEF_CHESTPLATE = register("thief_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> THIEF_CHESTPLATE = register("thief_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)
             .rangedDamage(0.1));
-    public static final RegistryObject<BaseArmorItem> THIEF_LEGGINGS = register("thief_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> THIEF_LEGGINGS = register("thief_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)
             .attribute(Attributes.ATTACK_SPEED, 0.06, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .attribute(Attributes.MOVEMENT_SPEED, 0.03, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> THIEF_BOOTS = register("thief_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> THIEF_BOOTS = register("thief_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)
             .criticalChance(0.05));
 
 
-    public static final RegistryObject<BaseArmorItem> HUNERS_HELMET = register("hunters_helmet", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HUNERS_HELMET = register("hunters_helmet", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
             .rangedDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> HUNERS_CHESTPLATE = register("hunters_chestplate", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HUNERS_CHESTPLATE = register("hunters_chestplate", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
             .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F)));
-    public static final RegistryObject<BaseArmorItem> HUNERS_LEGGINGS = register("hunters_leggings", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HUNERS_LEGGINGS = register("hunters_leggings", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
             .rangedDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> HUNERS_BOOTS = register("hunters_boots", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HUNERS_BOOTS = register("hunters_boots", ModArmorMaterials.HUNERS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/hunters_armor")
             .rarity(ModRarity.BLUE)
             .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F)));
 
-    public static final RegistryObject<BaseArmorItem> SCALE_MAIL_HELMET = register("scale_mail_helmet", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SCALE_MAIL_HELMET = register("scale_mail_helmet", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/scale_mail_armor")
             .rarity(ModRarity.BLUE)
             .meleeDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> SCALE_MAIL_CHESTPLATE = register("scale_mail_chestplate", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SCALE_MAIL_CHESTPLATE = register("scale_mail_chestplate", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/scale_mail_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.05));
-    public static final RegistryObject<BaseArmorItem> SCALE_MAIL_LEGGINGS = register("scale_mail_leggings", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SCALE_MAIL_LEGGINGS = register("scale_mail_leggings", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/scale_mail_armor")
             .rarity(ModRarity.BLUE)
             .attribute(Attributes.ATTACK_SPEED, 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> SCALE_MAIL_BOOTS = register("scale_mail_boots", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SCALE_MAIL_BOOTS = register("scale_mail_boots", ModArmorMaterials.SCALE_MAIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/scale_mail_armor")
             .rarity(ModRarity.BLUE)
             .attribute(Attributes.MOVEMENT_SPEED, 0.03, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
-    public static final RegistryObject<BaseArmorItem> REINFORCED_MAIL_HELMET = register("reinforced_mail_helmet", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> REINFORCED_MAIL_HELMET = register("reinforced_mail_helmet", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/reinforced_mail_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> REINFORCED_MAIL_CHESTPLATE = register("reinforced_mail_chestplate", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> REINFORCED_MAIL_CHESTPLATE = register("reinforced_mail_chestplate", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/reinforced_mail_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> REINFORCED_MAIL_LEGGINGS = register("reinforced_mail_leggings", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> REINFORCED_MAIL_LEGGINGS = register("reinforced_mail_leggings", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/reinforced_mail_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> REINFORCED_MAIL_BOOTS = register("reinforced_mail_boots", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> REINFORCED_MAIL_BOOTS = register("reinforced_mail_boots", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/reinforced_mail_armor")
             .rarity(ModRarity.BLUE)
     );
 
-    public static final RegistryObject<BaseArmorItem> CLIMBING_HELMET = register("climbing_helmet", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CLIMBING_HELMET = register("climbing_helmet", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/climbing_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> CLIMBING_CHESTPLATE = register("climbing_chestplate", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CLIMBING_CHESTPLATE = register("climbing_chestplate", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/climbing_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> CLIMBING_LEGGINGS = register("climbing_leggings", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CLIMBING_LEGGINGS = register("climbing_leggings", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/climbing_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> CLIMBING_BOOTS = register("climbing_boots", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CLIMBING_BOOTS = register("climbing_boots", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/climbing_armor")
             .rarity(ModRarity.BLUE)
     );
 
-    public static final RegistryObject<BaseArmorItem> BATTLE_COLLAR = register("battle_collar", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BATTLE_COLLAR = register("battle_collar", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
             .meleeDamage(0.07)
     );
-    public static final RegistryObject<BaseArmorItem> BATTLE_ROBE = register("battle_robe", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BATTLE_ROBE = register("battle_robe", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
             .meleeDamage(0.07)
     );
-    public static final RegistryObject<BaseArmorItem> BATTLE_LEGGINGS = register("battle_leggings", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BATTLE_LEGGINGS = register("battle_leggings", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
             .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
     );
-    public static final RegistryObject<BaseArmorItem> BATTLE_BOOTS = register("battle_boots", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BATTLE_BOOTS = register("battle_boots", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
             .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
     );
 
-    public static final RegistryObject<BaseArmorItem> SPLENDID_COLLAR = register("splendid_collar", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPLENDID_COLLAR = register("splendid_collar", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
             .meleeDamage(0.07)
             .magicDamage(0.08)
     );
-    public static final RegistryObject<BaseArmorItem> SPLENDID_ROBE = register("splendid_robe", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPLENDID_ROBE = register("splendid_robe", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
             .meleeDamage(0.07)
             .magicDamage(0.08)
     );
-    public static final RegistryObject<BaseArmorItem> SPLENDID_LEGGINGS = register("splendid_leggings", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPLENDID_LEGGINGS = register("splendid_leggings", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
             .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .criticalChance(0.04)
     );
-    public static final RegistryObject<BaseArmorItem> SPLENDID_BOOTS = register("splendid_boots", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPLENDID_BOOTS = register("splendid_boots", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
             .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .criticalChance(0.04)
     );
 
-    public static final RegistryObject<BaseArmorItem> ARCHERS_HELMET = register("archers_helmet", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ARCHERS_HELMET = register("archers_helmet", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/archers_armor")
             .rarity(ModRarity.GREEN)
     );
-    public static final RegistryObject<BaseArmorItem> ARCHERS_CHESTPLATE = register("archers_chestplate", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ARCHERS_CHESTPLATE = register("archers_chestplate", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/archers_armor")
             .rarity(ModRarity.GREEN)
             .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F))
     );
-    public static final RegistryObject<BaseArmorItem> ARCHERS_LEGGINGS = register("archers_leggings", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ARCHERS_LEGGINGS = register("archers_leggings", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/archers_armor")
             .rarity(ModRarity.GREEN)
             .criticalChance(0.05)
             .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
     );
-    public static final RegistryObject<BaseArmorItem> ARCHERS_BOOTS = register("archers_boots", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ARCHERS_BOOTS = register("archers_boots", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/archers_armor")
             .rarity(ModRarity.GREEN)
             .criticalChance(0.05)
             .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE, 0.1F))
     );
 
-    public static final RegistryObject<BaseArmorItem> PHANTOM_HELMET = register("phantom_helmet", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PHANTOM_HELMET = register("phantom_helmet", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/phantom_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> PHANTOM_CHESTPLATE = register("phantom_chestplate", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PHANTOM_CHESTPLATE = register("phantom_chestplate", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/phantom_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.08));
-    public static final RegistryObject<BaseArmorItem> PHANTOM_LEGGINGS = register("phantom_leggings", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PHANTOM_LEGGINGS = register("phantom_leggings", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/phantom_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> PHANTOM_BOOTS = register("phantom_boots", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PHANTOM_BOOTS = register("phantom_boots", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/phantom_armor")
             .rarity(ModRarity.BLUE)
     );
 
-    public static final RegistryObject<BaseArmorItem> HERMIT_HELMET = register("hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HERMIT_HELMET = register("hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> HERMIT_CHESTPLATE = register("hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HERMIT_CHESTPLATE = register("hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.08));
-    public static final RegistryObject<BaseArmorItem> HERMIT_LEGGINGS = register("hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HERMIT_LEGGINGS = register("hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> HERMIT_BOOTS = register("hermit_boots", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HERMIT_BOOTS = register("hermit_boots", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
     );
 
-    public static final RegistryObject<BaseArmorItem> BLUE_HERMIT_HELMET = register("blue_hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BLUE_HERMIT_HELMET = register("blue_hermit_helmet", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
             .fourClassesDamage(0.04));
-    public static final RegistryObject<BaseArmorItem> BLUE_HERMIT_CHESTPLATE = register("blue_hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BLUE_HERMIT_CHESTPLATE = register("blue_hermit_chestplate", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
             .criticalChance(0.03));
-    public static final RegistryObject<BaseArmorItem> BLUE_HERMIT_LEGGINGS = register("blue_hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BLUE_HERMIT_LEGGINGS = register("blue_hermit_leggings", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
             .fourClassesDamage(0.04));
-    public static final RegistryObject<BaseArmorItem> BLUE_HERMIT_BOOTS = register("blue_hermit_boots", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BLUE_HERMIT_BOOTS = register("blue_hermit_boots", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
     );
 
 
-    public static final RegistryObject<BaseArmorItem> GUARDS_HELMET = register("guards_helmet", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GUARDS_HELMET = register("guards_helmet", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/guards_armor")
             .rarity(ModRarity.GREEN)
             .rangedDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> GUARDS_CHESTPLATE = register("guards_chestplate", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GUARDS_CHESTPLATE = register("guards_chestplate", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/guards_armor")
             .rarity(ModRarity.GREEN)
             .rangedDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> GUARDS_LEGGINGS = register("guards_leggings", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GUARDS_LEGGINGS = register("guards_leggings", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/guards_armor")
             .rarity(ModRarity.GREEN)
             .criticalChance(0.04));
-    public static final RegistryObject<BaseArmorItem> GUARDS_BOOTS = register("guards_boots", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GUARDS_BOOTS = register("guards_boots", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/guards_armor")
             .rarity(ModRarity.GREEN)
             .criticalChance(0.04));
 
-    public static final RegistryObject<BaseArmorItem> SPELUNKER_HELMET = register("spelunker_helmet", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPELUNKER_HELMET = register("spelunker_helmet", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/spelunker_armor")
             .rarity(ModRarity.GREEN)
             .meleeDamage(0.07));
-    public static final RegistryObject<BaseArmorItem> SPELUNKER_CHESTPLATE = register("spelunker_chestplate", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPELUNKER_CHESTPLATE = register("spelunker_chestplate", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/spelunker_armor")
             .rarity(ModRarity.GREEN)
             .summonDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> SPELUNKER_LEGGINGS = register("spelunker_leggings", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPELUNKER_LEGGINGS = register("spelunker_leggings", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/spelunker_armor")
             .rarity(ModRarity.GREEN)
             .attribute(Attributes.ATTACK_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> SPELUNKER_BOOTS = register("spelunker_boots", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPELUNKER_BOOTS = register("spelunker_boots", ModArmorMaterials.SPELUNKER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/spelunker_armor")
             .rarity(ModRarity.GREEN)
             .summonDamage(0.07));
 
 
-    public static final RegistryObject<BaseArmorItem> LEAD_HELMET = register("lead_helmet", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> LEAD_HELMET = register("lead_helmet", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/lead_armor")
             .durability(170));
-    public static final RegistryObject<BaseArmorItem> LEAD_CHESTPLATE = register("lead_chestplate", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> LEAD_CHESTPLATE = register("lead_chestplate", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/lead_armor")
             .durability(250));
-    public static final RegistryObject<BaseArmorItem> LEAD_LEGGINGS = register("lead_leggings", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> LEAD_LEGGINGS = register("lead_leggings", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/lead_armor")
             .durability(230));
-    public static final RegistryObject<BaseArmorItem> LEAD_BOOTS = register("lead_boots", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> LEAD_BOOTS = register("lead_boots", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/lead_armor")
             .durability(160));
 
-    public static final RegistryObject<BaseArmorItem> SILVER_HELMET = register("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SILVER_HELMET = register("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/silver_armor")
             .durability(190));
-    public static final RegistryObject<BaseArmorItem> SILVER_CHESTPLATE = register("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SILVER_CHESTPLATE = register("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/silver_armor")
             .durability(270));
-    public static final RegistryObject<BaseArmorItem> SILVER_LEGGINGS = register("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SILVER_LEGGINGS = register("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/silver_armor")
             .durability(250));
-    public static final RegistryObject<BaseArmorItem> SILVER_BOOTS = register("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SILVER_BOOTS = register("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/silver_armor")
             .durability(180));
 
-    public static final RegistryObject<BaseArmorItem> TUNGSTEN_HELMET = register("tungsten_helmet", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TUNGSTEN_HELMET = register("tungsten_helmet", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/tungsten_armor")
             .durability(210));
-    public static final RegistryObject<BaseArmorItem> TUNGSTEN_CHESTPLATE = register("tungsten_chestplate", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TUNGSTEN_CHESTPLATE = register("tungsten_chestplate", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/tungsten_armor")
             .durability(290));
-    public static final RegistryObject<BaseArmorItem> TUNGSTEN_LEGGINGS = register("tungsten_leggings", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TUNGSTEN_LEGGINGS = register("tungsten_leggings", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/tungsten_armor")
             .durability(270));
-    public static final RegistryObject<BaseArmorItem> TUNGSTEN_BOOTS = register("tungsten_boots", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TUNGSTEN_BOOTS = register("tungsten_boots", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/tungsten_armor")
             .durability(200));
 
-    public static final RegistryObject<BaseArmorItem> GOLDEN_HELMET = register("golden_helmet", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GOLDEN_HELMET = register("golden_helmet", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/golden_armor")
             .durability(250)
             .setGolden());
-    public static final RegistryObject<BaseArmorItem> GOLDEN_CHESTPLATE = register("golden_chestplate", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GOLDEN_CHESTPLATE = register("golden_chestplate", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/golden_armor")
             .durability(340)
             .setGolden());
-    public static final RegistryObject<BaseArmorItem> GOLDEN_LEGGINGS = register("golden_leggings", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GOLDEN_LEGGINGS = register("golden_leggings", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/golden_armor")
             .durability(320)
             .setGolden());
-    public static final RegistryObject<BaseArmorItem> GOLDEN_BOOTS = register("golden_boots", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GOLDEN_BOOTS = register("golden_boots", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/golden_armor")
             .durability(260)
             .setGolden());
 
-    public static final RegistryObject<BaseArmorItem> PLATINUM_HELMET = register("platinum_helmet", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PLATINUM_HELMET = register("platinum_helmet", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/platinum_armor")
             .durability(250));
-    public static final RegistryObject<BaseArmorItem> PLATINUM_CHESTPLATE = register("platinum_chestplate", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PLATINUM_CHESTPLATE = register("platinum_chestplate", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/platinum_armor")
             .durability(340));
-    public static final RegistryObject<BaseArmorItem> PLATINUM_LEGGINGS = register("platinum_leggings", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PLATINUM_LEGGINGS = register("platinum_leggings", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/platinum_armor")
             .durability(320));
-    public static final RegistryObject<BaseArmorItem> PLATINUM_BOOTS = register("platinum_boots", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PLATINUM_BOOTS = register("platinum_boots", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/platinum_armor")
             .durability(260));
 
-    public static final RegistryObject<BaseArmorItem> FOSSIL_HELMET = register("fossil_helmet", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> FOSSIL_HELMET = register("fossil_helmet", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/fossil_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.04));
-    public static final RegistryObject<BaseArmorItem> FOSSIL_CHESTPLATE = register("fossil_chestplate", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> FOSSIL_CHESTPLATE = register("fossil_chestplate", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/fossil_armor")
             .rarity(ModRarity.BLUE)
             .rangedDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> FOSSIL_LEGGINGS = register("fossil_leggings", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> FOSSIL_LEGGINGS = register("fossil_leggings", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/fossil_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.02));
-    public static final RegistryObject<BaseArmorItem> FOSSIL_BOOTS = register("fossil_boots", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> FOSSIL_BOOTS = register("fossil_boots", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/fossil_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.02));
 
-    public static final RegistryObject<BaseArmorItem> SPORE_ROOT_HELMET = register("spore_root_helmet", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPORE_ROOT_HELMET = register("spore_root_helmet", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/spore_root_armor")
             .rarity(ModRarity.BLUE)
             .summonDamage(0.02)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
-    public static final RegistryObject<BaseArmorItem> SPORE_ROOT_CHESTPLATE = register("spore_root_chestplate", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPORE_ROOT_CHESTPLATE = register("spore_root_chestplate", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/spore_root_armor")
             .rarity(ModRarity.BLUE)
             .summonDamage(0.03));
-    public static final RegistryObject<BaseArmorItem> SPORE_ROOT_LEGGINGS = register("spore_root_leggings", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPORE_ROOT_LEGGINGS = register("spore_root_leggings", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/spore_root_armor")
             .rarity(ModRarity.BLUE)
             .summonDamage(0.03));
-    public static final RegistryObject<BaseArmorItem> SPORE_ROOT_BOOTS = register("spore_root_boots", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPORE_ROOT_BOOTS = register("spore_root_boots", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/spore_root_armor")
             .rarity(ModRarity.BLUE)
             .summonDamage(0.02));
 
-    public static final RegistryObject<BaseArmorItem> COLD_CRYSTAL_HELMET = register("cold_crystal_helmet", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COLD_CRYSTAL_HELMET = register("cold_crystal_helmet", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cold_crystal_armor")
             .rarity(ModRarity.BLUE)
             .additionalMana(20)
             .criticalChance(0.04)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> COLD_CRYSTAL_CHESTPLATE = register("cold_crystal_chestplate", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COLD_CRYSTAL_CHESTPLATE = register("cold_crystal_chestplate", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/cold_crystal_armor")
             .rarity(ModRarity.BLUE)
             .additionalMana(20)
             .criticalChance(0.04)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> COLD_CRYSTAL_LEGGINGS = register("cold_crystal_leggings", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COLD_CRYSTAL_LEGGINGS = register("cold_crystal_leggings", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/cold_crystal_armor")
             .rarity(ModRarity.BLUE)
             .magicDamage(0.04));
-    public static final RegistryObject<BaseArmorItem> COLD_CRYSTAL_BOOTS = register("cold_crystal_boots", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COLD_CRYSTAL_BOOTS = register("cold_crystal_boots", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/cold_crystal_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.04));
 
-    public static final RegistryObject<BaseArmorItem> HEIM_HELMET = register("heim_helmet", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HEIM_HELMET = register("heim_helmet", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/heim_armor")
             .rarity(ModRarity.BLUE)
             .meleeDamage(0.03)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> HEIM_CHESTPLATE = register("heim_chestplate", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HEIM_CHESTPLATE = register("heim_chestplate", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/heim_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.04));
-    public static final RegistryObject<BaseArmorItem> HEIM_LEGGINGS = register("heim_leggings", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HEIM_LEGGINGS = register("heim_leggings", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/heim_armor")
             .rarity(ModRarity.BLUE)
             .meleeDamage(0.02)
             .criticalChance(0.03));
-    public static final RegistryObject<BaseArmorItem> HEIM_BOOTS = register("heim_boots", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HEIM_BOOTS = register("heim_boots", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/heim_armor")
             .rarity(ModRarity.BLUE)
             .attribute(PortAttributesExtension.swimSpeed(), 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> BEE_HELMET = register("bee_helmet", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BEE_HELMET = register("bee_helmet", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.04)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
-    public static final RegistryObject<BaseArmorItem> BEE_CHESTPLATE = register("bee_chestplate", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BEE_CHESTPLATE = register("bee_chestplate", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.04)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
-    public static final RegistryObject<BaseArmorItem> BEE_LEGGINGS = register("bee_leggings", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BEE_LEGGINGS = register("bee_leggings", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.025));
-    public static final RegistryObject<BaseArmorItem> BEE_BOOTS = register("bee_boots", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> BEE_BOOTS = register("bee_boots", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.025));
 
-    public static final RegistryObject<BaseArmorItem> OBSIDIAN_HELMET = register("obsidian_helmet", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> OBSIDIAN_HELMET = register("obsidian_helmet", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/obsidian_armor")
             .rarity(ModRarity.BLUE)
             .summonDamage(0.08));
-    public static final RegistryObject<BaseArmorItem> OBSIDIAN_CHESTPLATE = register("obsidian_chestplate", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> OBSIDIAN_CHESTPLATE = register("obsidian_chestplate", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/obsidian_armor")
             .rarity(ModRarity.BLUE)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
-    public static final RegistryObject<BaseArmorItem> OBSIDIAN_LEGGINGS = register("obsidian_leggings", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> OBSIDIAN_LEGGINGS = register("obsidian_leggings", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/obsidian_armor")
             .rarity(ModRarity.BLUE)
             .summonDamage(0.04));
-    public static final RegistryObject<BaseArmorItem> OBSIDIAN_BOOTS = register("obsidian_boots", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> OBSIDIAN_BOOTS = register("obsidian_boots", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/obsidian_armor")
             .rarity(ModRarity.BLUE)
             .summonDamage(0.04));
 
-    public static final RegistryObject<BaseArmorItem> GLADIATOR_HELMET = register("gladiator_helmet", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GLADIATOR_HELMET = register("gladiator_helmet", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/gladiator_armor"));
-    public static final RegistryObject<BaseArmorItem> GLADIATOR_CHESTPLATE = register("gladiator_chestplate", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GLADIATOR_CHESTPLATE = register("gladiator_chestplate", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/gladiator_armor"));
-    public static final RegistryObject<BaseArmorItem> GLADIATOR_LEGGINGS = register("gladiator_leggings", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GLADIATOR_LEGGINGS = register("gladiator_leggings", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/gladiator_armor"));
-    public static final RegistryObject<BaseArmorItem> GLADIATOR_BOOTS = register("gladiator_boots", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GLADIATOR_BOOTS = register("gladiator_boots", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/gladiator_armor"));
 
-    public static final RegistryObject<BaseArmorItem> METEOR_HELMET = register("meteor_helmet", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> METEOR_HELMET = register("meteor_helmet", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/meteor_armor")
             .rarity(ModRarity.BLUE)
             .magicDamage(0.09));
-    public static final RegistryObject<BaseArmorItem> METEOR_CHESTPLATE = register("meteor_chestplate", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> METEOR_CHESTPLATE = register("meteor_chestplate", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/meteor_armor")
             .rarity(ModRarity.BLUE)
             .magicDamage(0.09));
-    public static final RegistryObject<BaseArmorItem> METEOR_LEGGINGS = register("meteor_leggings", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> METEOR_LEGGINGS = register("meteor_leggings", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/meteor_armor")
             .rarity(ModRarity.BLUE)
             .magicDamage(0.045));
-    public static final RegistryObject<BaseArmorItem> METEOR_BOOTS = register("meteor_boots", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> METEOR_BOOTS = register("meteor_boots", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/meteor_armor")
             .rarity(ModRarity.BLUE)
             .magicDamage(0.045));
 
-    public static final RegistryObject<BaseArmorItem> JUNGLE_HELMET = register("jungle_helmet", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> JUNGLE_HELMET = register("jungle_helmet", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/jungle_armor")
             .rarity(ModRarity.ORANGE)
             .additionalMana(40)
             .criticalChance(0.06)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> JUNGLE_CHESTPLATE = register("jungle_chestplate", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> JUNGLE_CHESTPLATE = register("jungle_chestplate", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/jungle_armor")
             .rarity(ModRarity.ORANGE)
             .additionalMana(20)
             .magicDamage(0.06)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> JUNGLE_LEGGINGS = register("jungle_leggings", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> JUNGLE_LEGGINGS = register("jungle_leggings", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/jungle_armor")
             .rarity(ModRarity.ORANGE)
             .additionalMana(20)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> JUNGLE_BOOTS = register("jungle_boots", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> JUNGLE_BOOTS = register("jungle_boots", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/jungle_armor")
             .rarity(ModRarity.ORANGE)
             .criticalChance(0.06));
 
-    public static final RegistryObject<BaseArmorItem> NECRO_HELMET = register("necro_helmet", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> NECRO_HELMET = register("necro_helmet", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/necro_armor")
             .rarity(ModRarity.GREEN)
             .rangedDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> NECRO_CHESTPLATE = register("necro_chestplate", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> NECRO_CHESTPLATE = register("necro_chestplate", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/necro_armor")
             .rarity(ModRarity.GREEN)
             .rangedDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> NECRO_LEGGINGS = register("necro_leggings", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> NECRO_LEGGINGS = register("necro_leggings", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/necro_armor")
             .rarity(ModRarity.GREEN)
             .rangedDamage(0.025));
-    public static final RegistryObject<BaseArmorItem> NECRO_BOOTS = register("necro_boots", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> NECRO_BOOTS = register("necro_boots", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/necro_armor")
             .rarity(ModRarity.GREEN)
             .rangedDamage(0.025));
 
-    public static final RegistryObject<BaseArmorItem> SEEKER_HELLMET = register("seeker_helmet", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SEEKER_HELLMET = register("seeker_helmet", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/seeker_armor")
             .rarity(ModRarity.GREEN));
-    public static final RegistryObject<BaseArmorItem> SEEKER_CHESTPLATE = register("seeker_chestplate", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SEEKER_CHESTPLATE = register("seeker_chestplate", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/seeker_armor")
             .rarity(ModRarity.GREEN));
-    public static final RegistryObject<BaseArmorItem> SEEKER_LEGGINGS = register("seeker_leggings", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SEEKER_LEGGINGS = register("seeker_leggings", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/seeker_armor")
             .rarity(ModRarity.GREEN));
-    public static final RegistryObject<BaseArmorItem> SEEKER_BOOTS = register("seeker_boots", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SEEKER_BOOTS = register("seeker_boots", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/seeker_armor")
             .rarity(ModRarity.GREEN));
 
-    public static final RegistryObject<BaseArmorItem> SHADOW_HELMET = register("shadow_helmet", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SHADOW_HELMET = register("shadow_helmet", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/shadow_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.05));
-    public static final RegistryObject<BaseArmorItem> SHADOW_CHESTPLATE = register("shadow_chestplate", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SHADOW_CHESTPLATE = register("shadow_chestplate", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/shadow_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.05));
-    public static final RegistryObject<BaseArmorItem> SHADOW_LEGGINGS = register("shadow_leggings", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SHADOW_LEGGINGS = register("shadow_leggings", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/shadow_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.025));
-    public static final RegistryObject<BaseArmorItem> SHADOW_BOOTS = register("shadow_boots", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SHADOW_BOOTS = register("shadow_boots", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/shadow_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.025));
 
-    public static final RegistryObject<BaseArmorItem> CRIMSON_HELMET = register("crimson_helmet", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CRIMSON_HELMET = register("crimson_helmet", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/crimson_armor")
             .rarity(ModRarity.BLUE)
             .fourClassesDamage(0.03));
-    public static final RegistryObject<BaseArmorItem> CRIMSON_CHESTPLATE = register("crimson_chestplate", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CRIMSON_CHESTPLATE = register("crimson_chestplate", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/crimson_armor")
             .rarity(ModRarity.BLUE)
             .fourClassesDamage(0.03));
-    public static final RegistryObject<BaseArmorItem> CRIMSON_LEGGINGS = register("crimson_leggings", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CRIMSON_LEGGINGS = register("crimson_leggings", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/crimson_armor")
             .rarity(ModRarity.BLUE)
             .fourClassesDamage(0.015));
-    public static final RegistryObject<BaseArmorItem> CRIMSON_BOOTS = register("crimson_boots", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CRIMSON_BOOTS = register("crimson_boots", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/crimson_armor")
             .rarity(ModRarity.BLUE)
             .fourClassesDamage(0.015));
 
-    public static final RegistryObject<BaseArmorItem> MOLTEN_HELMET = register("molten_helmet", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MOLTEN_HELMET = register("molten_helmet", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/molten_armor")
             .rarity(ModRarity.ORANGE)
             .criticalChance(0.07));
-    public static final RegistryObject<BaseArmorItem> MOLTEN_CHESTPLATE = register("molten_chestplate", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MOLTEN_CHESTPLATE = register("molten_chestplate", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/molten_armor")
             .rarity(ModRarity.ORANGE)
             .meleeDamage(0.07));
-    public static final RegistryObject<BaseArmorItem> MOLTEN_LEGGINGS = register("molten_leggings", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MOLTEN_LEGGINGS = register("molten_leggings", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/molten_armor")
             .rarity(ModRarity.ORANGE)
             .attribute(Attributes.ATTACK_SPEED, 0.035, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> MOLTEN_BOOTS = register("molten_boots", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MOLTEN_BOOTS = register("molten_boots", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/molten_armor")
             .rarity(ModRarity.ORANGE)
             .attribute(Attributes.ATTACK_SPEED, 0.035, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
-    public static final RegistryObject<BaseArmorItem> PEARL_HELMET = register("pearl_helmet", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PEARL_HELMET = register("pearl_helmet", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/pearl_armor")
             .durability(120));
-    public static final RegistryObject<BaseArmorItem> PEARL_CHESTPLATE = register("pearl_chestplate", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PEARL_CHESTPLATE = register("pearl_chestplate", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/pearl_armor")
             .durability(170));
-    public static final RegistryObject<BaseArmorItem> PEARL_LEGGINGS = register("pearl_leggings", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PEARL_LEGGINGS = register("pearl_leggings", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/pearl_armor")
             .durability(150));
-    public static final RegistryObject<BaseArmorItem> PEARL_BOOTS = register("pearl_boots", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PEARL_BOOTS = register("pearl_boots", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/pearl_armor")
             .durability(130));
 
-    public static final RegistryObject<BaseArmorItem> SPIDER_HELMET = register("spider_helmet", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPIDER_HELMET = register("spider_helmet", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> SPIDER_CHESTPLATE = register("spider_chestplate", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPIDER_CHESTPLATE = register("spider_chestplate", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> SPIDER_LEGGINGS = register("spider_leggings", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPIDER_LEGGINGS = register("spider_leggings", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
-    public static final RegistryObject<BaseArmorItem> SPIDER_BOOTS = register("spider_boots", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SPIDER_BOOTS = register("spider_boots", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
             .summonDamage(0.06));
 
-    public static final RegistryObject<BaseArmorItem> COBALT_MASK = register("cobalt_mask", ModArmorMaterials.COBALT_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COBALT_MASK = register("cobalt_mask", ModArmorMaterials.COBALT_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .rangedDamage(0.1)
             .criticalChance(0.1));
-    public static final RegistryObject<BaseArmorItem> COBALT_HAT = register("cobalt_hat", ModArmorMaterials.COBALT_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COBALT_HAT = register("cobalt_hat", ModArmorMaterials.COBALT_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .additionalMana(40)
             .magicDamage(0.1)
             .criticalChance(0.09)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> COBALT_HELMET = register("cobalt_helmet", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COBALT_HELMET = register("cobalt_helmet", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .attribute(Attributes.MOVEMENT_SPEED, 0.1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .meleeDamage(0.15));
-    public static final RegistryObject<BaseArmorItem> COBALT_CHESTPLATE = register("cobalt_chestplate", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COBALT_CHESTPLATE = register("cobalt_chestplate", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.05));
-    public static final RegistryObject<BaseArmorItem> COBALT_LEGGINGS = register("cobalt_leggings", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COBALT_LEGGINGS = register("cobalt_leggings", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .attribute(Attributes.MOVEMENT_SPEED, 0.1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> COBALT_BOOTS = register("cobalt_boots", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> COBALT_BOOTS = register("cobalt_boots", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .fourClassesDamage(0.03));
 
-    public static final RegistryObject<BaseArmorItem> PALLADIUM_MASK = register("palladium_mask", ModArmorMaterials.PALLADIUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PALLADIUM_MASK = register("palladium_mask", ModArmorMaterials.PALLADIUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
             .meleeDamage(0.12)
             .attribute(Attributes.ATTACK_SPEED, 0.12, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> PALLADIUM_HEADGEAR = register("palladium_headgear", ModArmorMaterials.PALLADIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PALLADIUM_HEADGEAR = register("palladium_headgear", ModArmorMaterials.PALLADIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
             .magicDamage(0.09)
             .criticalChance(0.09)
             .additionalMana(60)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> PALLADIUM_HELMET = register("palladium_helmet", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PALLADIUM_HELMET = register("palladium_helmet", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
             .rangedDamage(0.09)
             .criticalChance(0.09));
-    public static final RegistryObject<BaseArmorItem> PALLADIUM_CHESTPLATE = register("palladium_chestplate", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PALLADIUM_CHESTPLATE = register("palladium_chestplate", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
             .fourClassesDamage(0.03)
             .criticalChance(0.02));
-    public static final RegistryObject<BaseArmorItem> PALLADIUM_LEGGINGS = register("palladium_leggings", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PALLADIUM_LEGGINGS = register("palladium_leggings", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
             .fourClassesDamage(0.02));
-    public static final RegistryObject<BaseArmorItem> PALLADIUM_BOOTS = register("palladium_boots", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> PALLADIUM_BOOTS = register("palladium_boots", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
             .criticalChance(0.01));
 
-    public static final RegistryObject<BaseArmorItem> MYTHRIL_HOOD = register("mythril_hood", ModArmorMaterials.MYTHRIL_HOOD_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MYTHRIL_HOOD = register("mythril_hood", ModArmorMaterials.MYTHRIL_HOOD_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/mythril_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .additionalMana(60)
             .magicDamage(0.15)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> MYTHRIL_HAT = register("mythril_hat", ModArmorMaterials.MYTHRIL_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MYTHRIL_HAT = register("mythril_hat", ModArmorMaterials.MYTHRIL_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/mythril_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .rangedDamage(0.12)
             .criticalChance(0.07));
-    public static final RegistryObject<BaseArmorItem> MYTHRIL_HELMET = register("mythril_helmet", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MYTHRIL_HELMET = register("mythril_helmet", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/mythril_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.08)
             .meleeDamage(0.1));
-    public static final RegistryObject<BaseArmorItem> MYTHRIL_CHESTPLATE = register("mythril_chestplate", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MYTHRIL_CHESTPLATE = register("mythril_chestplate", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/mythril_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .fourClassesDamage(0.07));
-    public static final RegistryObject<BaseArmorItem> MYTHRIL_LEGGINGS = register("mythril_leggings", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MYTHRIL_LEGGINGS = register("mythril_leggings", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/mythril_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.05));
-    public static final RegistryObject<BaseArmorItem> MYTHRIL_BOOTS = register("mythril_boots", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MYTHRIL_BOOTS = register("mythril_boots", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/mythril_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.05));
 
-    public static final RegistryObject<BaseArmorItem> ORICHALCUM_HEADGEAR = register("orichalcum_headgear", ModArmorMaterials.ORICHALCUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ORICHALCUM_HEADGEAR = register("orichalcum_headgear", ModArmorMaterials.ORICHALCUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.18)
             .additionalMana(80)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> ORICHALCUM_MASK = register("orichalcum_mask", ModArmorMaterials.ORICHALCUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ORICHALCUM_MASK = register("orichalcum_mask", ModArmorMaterials.ORICHALCUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .meleeDamage(0.11)
             .attribute(Attributes.ATTACK_SPEED, 0.11, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL))
             .attribute(Attributes.MOVEMENT_SPEED, 0.07, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> ORICHALCUM_HELMET = register("orichalcum_helmet", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ORICHALCUM_HELMET = register("orichalcum_helmet", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.15)
             .attribute(Attributes.MOVEMENT_SPEED, 0.08, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> ORICHALCUM_CHESTPLATE = register("orichalcum_chestplate", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ORICHALCUM_CHESTPLATE = register("orichalcum_chestplate", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.06));
-    public static final RegistryObject<BaseArmorItem> ORICHALCUM_LEGGINGS = register("orichalcum_leggings", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ORICHALCUM_LEGGINGS = register("orichalcum_leggings", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .fourClassesDamage(0.08));
-    public static final RegistryObject<BaseArmorItem> ORICHALCUM_BOOTS = register("orichalcum_boots", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ORICHALCUM_BOOTS = register("orichalcum_boots", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .attribute(Attributes.MOVEMENT_SPEED, 0.11, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
-    public static final RegistryObject<BaseArmorItem> ADAMANTITE_HEADGEAR = register("adamantite_headgear", ModArmorMaterials.ADAMANTITE_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ADAMANTITE_HEADGEAR = register("adamantite_headgear", ModArmorMaterials.ADAMANTITE_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .additionalMana(80)
             .magicDamage(0.12)
             .criticalChance(0.12)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> ADAMANTITE_MASK = register("adamantite_mask", ModArmorMaterials.ADAMANTITE_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ADAMANTITE_MASK = register("adamantite_mask", ModArmorMaterials.ADAMANTITE_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .rangedDamage(0.14)
             .criticalChance(0.1));
-    public static final RegistryObject<BaseArmorItem> ADAMANTITE_HELMET = register("adamantite_helmet", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ADAMANTITE_HELMET = register("adamantite_helmet", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.07)
             .meleeDamage(0.14));
-    public static final RegistryObject<BaseArmorItem> ADAMANTITE_CHESTPLATE = register("adamantite_chestplate", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ADAMANTITE_CHESTPLATE = register("adamantite_chestplate", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .fourClassesDamage(0.08));
-    public static final RegistryObject<BaseArmorItem> ADAMANTITE_LEGGINGS = register("adamantite_leggings", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ADAMANTITE_LEGGINGS = register("adamantite_leggings", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .criticalChance(0.07));
-    public static final RegistryObject<BaseArmorItem> ADAMANTITE_BOOTS = register("adamantite_boots", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> ADAMANTITE_BOOTS = register("adamantite_boots", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .attribute(Attributes.MOVEMENT_SPEED, 0.05, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
-    public static final RegistryObject<BaseArmorItem> TITANIUM_HEADGEAR = register("titanium_headgear", ModArmorMaterials.TITANIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TITANIUM_HEADGEAR = register("titanium_headgear", ModArmorMaterials.TITANIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .magicDamage(0.16)
             .criticalChance(0.07)
             .additionalMana(100)
             .tooltips(1));
-    public static final RegistryObject<BaseArmorItem> TITANIUM_MASK = register("titanium_mask", ModArmorMaterials.TITANIUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TITANIUM_MASK = register("titanium_mask", ModArmorMaterials.TITANIUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .meleeDamage(0.09)
             .criticalChance(0.09)
             .attribute(Attributes.ATTACK_SPEED, 0.09, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> TITANIUM_HELMET = register("titanium_helmet", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TITANIUM_HELMET = register("titanium_helmet", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .rangedDamage(0.16)
             .criticalChance(0.07));
-    public static final RegistryObject<BaseArmorItem> TITANIUM_CHESTPLATE = register("titanium_chestplate", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TITANIUM_CHESTPLATE = register("titanium_chestplate", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .fourClassesDamage(0.04)
             .criticalChance(0.03));
-    public static final RegistryObject<BaseArmorItem> TITANIUM_LEGGINGS = register("titanium_leggings", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TITANIUM_LEGGINGS = register("titanium_leggings", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .fourClassesDamage(0.03)
             .criticalChance(0.03));
-    public static final RegistryObject<BaseArmorItem> TITANIUM_BOOTS = register("titanium_boots", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TITANIUM_BOOTS = register("titanium_boots", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .attribute(Attributes.MOVEMENT_SPEED, 0.06, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
 
-    public static final RegistryObject<BaseArmorItem> CRYSTAL_ASSASSIN_HELMET = register("crystal_assassin_helmet", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CRYSTAL_ASSASSIN_HELMET = register("crystal_assassin_helmet", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/crystal_assassin_armor")
             .rarity(ModRarity.PINK));
-    public static final RegistryObject<BaseArmorItem> CRYSTAL_ASSASSIN_CHESTPLATE = register("crystal_assassin_chestplate", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CRYSTAL_ASSASSIN_CHESTPLATE = register("crystal_assassin_chestplate", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/crystal_assassin_armor")
             .rarity(ModRarity.PINK));
-    public static final RegistryObject<BaseArmorItem> CRYSTAL_ASSASSIN_LEGGINGS = register("crystal_assassin_leggings", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CRYSTAL_ASSASSIN_LEGGINGS = register("crystal_assassin_leggings", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/crystal_assassin_armor")
             .rarity(ModRarity.PINK));
-    public static final RegistryObject<BaseArmorItem> CRYSTAL_ASSASSIN_BOOTS = register("crystal_assassin_boots", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> CRYSTAL_ASSASSIN_BOOTS = register("crystal_assassin_boots", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/crystal_assassin_armor")
             .rarity(ModRarity.PINK));
 
-    public static final RegistryObject<BaseArmorItem> HALLOWED_MASK = register("hallowed_mask", ModArmorMaterials.HALLOWED_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HALLOWED_MASK = register("hallowed_mask", ModArmorMaterials.HALLOWED_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hallowed_armor", true)
             .rarity(ModRarity.PINK));
-    public static final RegistryObject<BaseArmorItem> HALLOWED_HEADGEAR = register("hallowed_headgear", ModArmorMaterials.HALLOWED_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HALLOWED_HEADGEAR = register("hallowed_headgear", ModArmorMaterials.HALLOWED_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hallowed_armor", true)
             .rarity(ModRarity.PINK));
-    public static final RegistryObject<BaseArmorItem> HALLOWED_HOOD = register("hallowed_hood", ModArmorMaterials.HALLOWED_HOOD_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HALLOWED_HOOD = register("hallowed_hood", ModArmorMaterials.HALLOWED_HOOD_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hallowed_armor", true)
             .rarity(ModRarity.PINK));
-    public static final RegistryObject<BaseArmorItem> HALLOWED_HELMET = register("hallowed_helmet", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HALLOWED_HELMET = register("hallowed_helmet", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hallowed_armor", true)
             .rarity(ModRarity.PINK));
-    public static final RegistryObject<BaseArmorItem> HALLOWED_CHESTPLATE = register("hallowed_chestplate", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HALLOWED_CHESTPLATE = register("hallowed_chestplate", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/hallowed_armor", true)
             .rarity(ModRarity.PINK));
-    public static final RegistryObject<BaseArmorItem> HALLOWED_LEGGINGS = register("hallowed_leggings", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HALLOWED_LEGGINGS = register("hallowed_leggings", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/hallowed_armor", true)
             .rarity(ModRarity.PINK));
-    public static final RegistryObject<BaseArmorItem> HALLOWED_BOOTS = register("hallowed_boots", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> HALLOWED_BOOTS = register("hallowed_boots", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/hallowed_armor", true)
             .rarity(ModRarity.PINK));
 
-    public static final RegistryObject<BaseArmorItem> TIKI_MASK = register("tiki_mask", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TIKI_MASK = register("tiki_mask", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.10));
-    public static final RegistryObject<BaseArmorItem> TIKI_SHIRT = register("tiki_shirt", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TIKI_SHIRT = register("tiki_shirt", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.10));
-    public static final RegistryObject<BaseArmorItem> TIKI_LEGGINGS = register("tiki_leggings", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TIKI_LEGGINGS = register("tiki_leggings", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
             .attribute(ConfluenceMagicLib.WHIP_RANGE, 0.1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
-    public static final RegistryObject<BaseArmorItem> TIKI_BOOTS = register("tiki_boots", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TIKI_BOOTS = register("tiki_boots", ModArmorMaterials.TIKI_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/tiki_armor")
             .rarity(ModRarity.LIME)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION))
             .summonDamage(0.10));
 
-    public static final RegistryObject<BaseArmorItem> WIZARD_HAT = register("wizard_hat", ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> WIZARD_HAT = register("wizard_hat", ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/wizard_hat")
             .rarity(ModRarity.GREEN)
             .magicDamage(0.05));
-    public static final RegistryObject<BaseArmorItem> MAGIC_HAT = register("magic_hat", ModArmorMaterials.MAGIC_HAT_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MAGIC_HAT = register("magic_hat", ModArmorMaterials.MAGIC_HAT_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/magic_hat")
             .rarity(ModRarity.GREEN)
             .magicDamage(0.06)
             .criticalChance(0.06));
-    public static final RegistryObject<BaseArmorItem> AMETHYST_ROBE = register("amethyst_robe", ModArmorMaterials.AMETHYST_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> AMETHYST_ROBE = register("amethyst_robe", ModArmorMaterials.AMETHYST_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/amethyst_robe")
             .rarity(ModRarity.WHITE)
             .additionalMana(20)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.05F))
             .tooltips(2));
-    public static final RegistryObject<BaseArmorItem> TOPAZ_ROBE = register("topaz_robe", ModArmorMaterials.TOPAZ_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> TOPAZ_ROBE = register("topaz_robe", ModArmorMaterials.TOPAZ_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/topaz_robe")
             .rarity(ModRarity.WHITE)
             .additionalMana(40)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.07F))
             .tooltips(2));
-    public static final RegistryObject<BaseArmorItem> SAPPHIRE_ROBE = register("sapphire_robe", ModArmorMaterials.SAPPHIRE_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SAPPHIRE_ROBE = register("sapphire_robe", ModArmorMaterials.SAPPHIRE_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/sapphire_robe")
             .rarity(ModRarity.BLUE)
             .additionalMana(40)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.09F))
             .tooltips(2));
-    public static final RegistryObject<BaseArmorItem> JADE_ROBE = register("jade_robe", ModArmorMaterials.EMERALD_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> JADE_ROBE = register("jade_robe", ModArmorMaterials.EMERALD_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/jade_robe")
             .rarity(ModRarity.BLUE)
             .additionalMana(60)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.11F))
             .tooltips(2));
-    public static final RegistryObject<BaseArmorItem> RUBY_ROBE = register("ruby_robe", ModArmorMaterials.RUBY_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> RUBY_ROBE = register("ruby_robe", ModArmorMaterials.RUBY_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/ruby_robe")
             .rarity(ModRarity.BLUE)
             .additionalMana(60)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.13F))
             .tooltips(2));
-    public static final RegistryObject<BaseArmorItem> MYSTIC_ROBE = register("mystic_robe", ModArmorMaterials.MYSTIC_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> MYSTIC_ROBE = register("mystic_robe", ModArmorMaterials.MYSTIC_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/mystic_robe")
             .rarity(ModRarity.BLUE)
             .magicDamage(0.06)
             .criticalChance(0.06)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.1F)));
-    public static final RegistryObject<BaseArmorItem> DIAMOND_ROBE = register("diamond_robe", ModArmorMaterials.DIAMOND_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> DIAMOND_ROBE = register("diamond_robe", ModArmorMaterials.DIAMOND_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/diamond_robe")
             .rarity(ModRarity.GREEN)
             .additionalMana(80)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.15F))
             .tooltips(2));
-    public static final RegistryObject<BaseArmorItem> AMBER_ROBE = register("amber_robe", ModArmorMaterials.AMBER_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> AMBER_ROBE = register("amber_robe", ModArmorMaterials.AMBER_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/amber_robe")
             .rarity(ModRarity.GREEN)
             .additionalMana(60)
             .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.13F))
             .tooltips(2));
 
-    public static final RegistryObject<BaseArmorItem> SOUL_HOOD = register("soul_hood", ModArmorMaterials.SOUL_HOOD_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SOUL_HOOD = register("soul_hood", ModArmorMaterials.SOUL_HOOD_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/soul_robe")
             .rarity(ModRarity.GREEN)
     );
-    public static final RegistryObject<BaseArmorItem> SOUL_ROBE = register("soul_robe", ModArmorMaterials.SOUL_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SOUL_ROBE = register("soul_robe", ModArmorMaterials.SOUL_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/soul_robe")
             .rarity(ModRarity.GREEN)
     );
 
-    public static final RegistryObject<BaseArmorItem> SOULDANCER_HOOD = register("souldancer_hood", ModArmorMaterials.SOULDANCER_HOOD_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SOULDANCER_HOOD = register("souldancer_hood", ModArmorMaterials.SOULDANCER_HOOD_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/souldancer_robe")
             .rarity(ModRarity.BLUE)
     );
-    public static final RegistryObject<BaseArmorItem> SOULDANCER_ROBE = register("souldancer_robe", ModArmorMaterials.SOULDANCER_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> SOULDANCER_ROBE = register("souldancer_robe", ModArmorMaterials.SOULDANCER_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/souldancer_robe")
             .rarity(ModRarity.BLUE)
     );
 
-    public static final RegistryObject<BaseArmorItem> GOGGLES = register("goggles", ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, builder -> {});
-    public static final RegistryObject<BaseArmorItem> GREEN_CAP = register("green_cap", ModArmorMaterials.GREEN_CAP_MATERIAL, ArmorItem.Type.HELMET, builder -> {});
-    public static final RegistryObject<BaseArmorItem> VIKING_HELMET = register("viking_helmet", ModArmorMaterials.VIKING_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> GOGGLES = register("goggles", ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, builder -> {});
+    public static final PortDeferredItem<BaseArmorItem> GREEN_CAP = register("green_cap", ModArmorMaterials.GREEN_CAP_MATERIAL, ArmorItem.Type.HELMET, builder -> {});
+    public static final PortDeferredItem<BaseArmorItem> VIKING_HELMET = register("viking_helmet", ModArmorMaterials.VIKING_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/viking_armor")
             .rarity(ModRarity.BLUE));
-    public static final RegistryObject<BaseArmorItem> FLINX_FUR_COAT = register("flinx_fur_coat", ModArmorMaterials.FLINX_FUR_COAT_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+    public static final PortDeferredItem<BaseArmorItem> FLINX_FUR_COAT = register("flinx_fur_coat", ModArmorMaterials.FLINX_FUR_COAT_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/flinx_fur_coat_armor")
             .rarity(ModRarity.GREEN)
             .summonDamage(0.05)
             .attribute(ConfluenceMagicLib.MINION_CAPACITY, 1, PortAttributeModifier.PortOperation.wrap(AttributeModifier.Operation.ADDITION)));
 
-    private static RegistryObject<BaseArmorItem> register(String name, Holder<ArmorMaterial> material, ArmorItem.Type type, Consumer<BaseArmorItem.Builder> consumer) {
+    private static PortDeferredItem<BaseArmorItem> register(String name, Holder<ArmorMaterial> material, ArmorItem.Type type, Consumer<BaseArmorItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
-            BaseArmorItem.Builder builder = BaseArmorItem.builder(name, material, type);
+            BaseArmorItem.Builder builder = BaseArmorItem.builder(name, material.value(), type);
             consumer.accept(builder);
             return builder.build();
         });
-    }
-
-    public static void register(IEventBus eventBus) {
-        ModArmorMaterials.ARMOR_MATERIALS.register(eventBus);
-        ITEMS.register(eventBus);
     }
 }

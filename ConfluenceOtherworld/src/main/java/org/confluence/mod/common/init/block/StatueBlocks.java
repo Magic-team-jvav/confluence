@@ -3,7 +3,6 @@ package org.confluence.mod.common.init.block;
 import com.mojang.datafixers.DSL;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.Confluence;
@@ -39,11 +37,8 @@ import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.util.DateUtils;
-import org.confluence.terraentity.entity.monster.AbstractMonster;
-import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
-import org.confluence.terraentity.entity.monster.prefab.FlyMonsterPrefab;
-import org.confluence.terraentity.entity.monster.slime.BaseSlime;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.mesdag.portlib.registries.PortBlockRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +48,9 @@ import java.util.function.Supplier;
 import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class StatueBlocks {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, Confluence.MODID);
+    public static void init() {}
+
+    public static final PortBlockRegistration BLOCKS = PortRegisterHandler.block(Confluence.MODID);
     private static List<Supplier<BehaviourStatueBlock>> BEHAVIOUR_STATUES = new ArrayList<>();
 
     public static final RegistryObject<StatueBlock> A_STATUE = register("a_statue");

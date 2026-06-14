@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.potion;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,31 +10,34 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.MobEffectInstanceData;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class EffectPotionItem extends AbstractPotionItem {
     public final MobEffectInstanceData data;
 
-    public EffectPotionItem(Properties properties, Holder<MobEffect> mobEffect, int duration, int amplifier) {
+    public EffectPotionItem(Properties properties, Supplier<MobEffect> mobEffect, int duration, int amplifier) {
         super(properties);
         this.data = new MobEffectInstanceData(mobEffect, duration, amplifier);
     }
 
-    public EffectPotionItem(ModRarity rarity, Holder<MobEffect> mobEffect, int duration) {
-        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, 0);
+    public EffectPotionItem(ModRarity rarity, Supplier<MobEffect> mobEffect, int duration) {
+        this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, 0);
     }
 
-    public EffectPotionItem(ModRarity rarity, Holder<MobEffect> mobEffect, int duration, int amplifier) {
-        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, amplifier);
+    public EffectPotionItem(ModRarity rarity, Supplier<MobEffect> mobEffect, int duration, int amplifier) {
+        this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, amplifier);
     }
 
-    public EffectPotionItem(Holder<MobEffect> mobEffect, int duration) {
-        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, 0);
+    public EffectPotionItem(Supplier<MobEffect> mobEffect, int duration) {
+        this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, 0);
     }
 
-    public EffectPotionItem(Holder<MobEffect> mobEffect, int duration, int amplifier) {
-        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, amplifier);
+    public EffectPotionItem(Supplier<MobEffect> mobEffect, int duration, int amplifier) {
+        this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, amplifier);
     }
 
     @Override
@@ -45,8 +47,8 @@ public class EffectPotionItem extends AbstractPotionItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
         int duration = data.duration();
         String minute = duration % 1200 == 0 ? Integer.toString(duration / 1200) : Float.toString(duration / 1200F);
         tooltipComponents.add(Component.translatable("tooltip.confluence.effect_duration", minute).withStyle(ChatFormatting.GRAY));

@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.GameRules;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -16,6 +17,7 @@ import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.client.event.ModClientEvents;
+import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.event.ItemGroupEvents;
@@ -66,12 +68,15 @@ public final class Confluence {
             ModClientEvents.init();
             EctoMistHelper.init();
             GameClientEvents.init();
-//            container.registerExtensionPoint(IConfigScreenFactory.class, MergedConfigurationScreen::factory);
+            context.registerExtensionPoint(
+                    ConfigScreenHandler.ConfigScreenFactory.class,
+                    () -> new ConfigScreenHandler.ConfigScreenFactory(MergedConfigurationScreen::factory)
+            );
         }
 
         TEEvents.register(eventBus);
-        ModBlocks.register(eventBus);
-        ModItems.register(eventBus);
+        ModBlocks.init(eventBus);
+        ModItems.init();
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);

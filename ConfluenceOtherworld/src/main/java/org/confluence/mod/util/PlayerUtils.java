@@ -57,9 +57,9 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
 import org.joml.Vector3f;
+import org.mesdag.portlib.registries.PortDeferredItem;
 
 import java.util.function.IntFunction;
-import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
@@ -356,7 +356,7 @@ public final class PlayerUtils {
             extraInventory.setCoins(i, ItemStack.EMPTY);
             int index = COIN_2_INDEX.applyAsInt(coins.getItem());
             int count = coins.getCount();
-            Supplier<CoinItem> upgrade;
+            PortDeferredItem<CoinItem> upgrade;
             while (map.addTo(index, count) + count >= UPGRADES_COUNT && (upgrade = INDEX_2_COIN.apply(3 - index).upgrade) != null) {
                 map.addTo(index, -UPGRADES_COUNT);
                 index = COIN_2_INDEX.applyAsInt(upgrade.get());

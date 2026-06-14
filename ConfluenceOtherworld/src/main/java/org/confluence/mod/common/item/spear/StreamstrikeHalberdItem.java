@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.spear;
+package org.confluence.mod.common.item.spear;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;

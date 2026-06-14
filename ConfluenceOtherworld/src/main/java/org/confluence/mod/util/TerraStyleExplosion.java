@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.util;
+package org.confluence.mod.util;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.Util;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.gen.recipe;
+package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;

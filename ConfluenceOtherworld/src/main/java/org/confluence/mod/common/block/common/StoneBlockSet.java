@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.common;
+package org.confluence.mod.common.block.common;
 
 import net.minecraftforge.registries.RegistryObject;
 

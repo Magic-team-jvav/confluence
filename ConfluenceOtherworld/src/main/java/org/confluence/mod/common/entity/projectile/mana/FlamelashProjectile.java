@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.entity.projectile.mana;
+package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

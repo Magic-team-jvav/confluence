@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.init;
+package org.confluence.mod.common.init;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.BuiltInRegistries;

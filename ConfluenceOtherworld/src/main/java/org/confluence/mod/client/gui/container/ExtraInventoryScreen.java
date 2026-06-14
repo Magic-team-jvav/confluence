@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.gui.container;
+package org.confluence.mod.client.gui.container;
 
 import PortLib.extensions.net.minecraft.client.gui.screens.inventory.InventoryScreen.PortInventoryScreenExtension;
 import com.mojang.blaze3d.systems.RenderSystem;

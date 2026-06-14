@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.gen.loot;
+package org.confluence.mod.common.data.gen.loot;
 
 import com.google.common.collect.Streams;
 import net.minecraft.advancements.critereon.*;

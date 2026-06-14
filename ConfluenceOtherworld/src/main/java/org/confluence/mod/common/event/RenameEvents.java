@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.event;
+package org.confluence.mod.common.event;
 
 import org.confluence.lib.api.event.NameFixRegisterEvent;
 

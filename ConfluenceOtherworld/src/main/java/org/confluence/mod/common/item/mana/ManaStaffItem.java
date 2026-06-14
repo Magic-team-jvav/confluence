@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.mana;
+package org.confluence.mod.common.item.mana;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

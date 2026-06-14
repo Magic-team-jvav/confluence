@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.effect.harmful;
+package org.confluence.mod.common.effect.harmful;
 
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;

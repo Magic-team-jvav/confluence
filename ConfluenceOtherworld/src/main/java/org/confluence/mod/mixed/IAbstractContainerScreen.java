@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixed;
+package org.confluence.mod.mixed;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;

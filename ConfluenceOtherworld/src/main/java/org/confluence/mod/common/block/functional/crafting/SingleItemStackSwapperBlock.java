@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.functional.crafting;
+package org.confluence.mod.common.block.functional.crafting;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

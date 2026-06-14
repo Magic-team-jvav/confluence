@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.natural.spreadable.extended;
+package org.confluence.mod.common.block.natural.spreadable.extended;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

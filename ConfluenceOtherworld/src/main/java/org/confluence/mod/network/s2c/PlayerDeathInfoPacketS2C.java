@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.s2c;
+package org.confluence.mod.network.s2c;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.client.gui.screens.inventory;
+package org.confluence.mod.mixin.client.gui.screens.inventory;
 
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import org.confluence.mod.mixed.IAbstractContainerScreen;

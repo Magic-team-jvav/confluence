@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.sword;
+package org.confluence.mod.common.item.sword;
 
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;

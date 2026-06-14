@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.functional;
+package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;

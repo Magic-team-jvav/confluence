@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixed;
+package org.confluence.mod.mixed;
 
 import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;

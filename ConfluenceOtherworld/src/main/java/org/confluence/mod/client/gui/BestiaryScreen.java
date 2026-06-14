@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.gui;
+package org.confluence.mod.client.gui;
 
 import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import PortLib.extensions.net.minecraft.client.gui.screens.inventory.InventoryScreen.PortInventoryScreenExtension;

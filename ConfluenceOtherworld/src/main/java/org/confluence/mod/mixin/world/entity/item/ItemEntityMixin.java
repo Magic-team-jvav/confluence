@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.world.entity.item;
+package org.confluence.mod.mixin.world.entity.item;
 
 import net.minecraft.Util;
 import net.minecraft.core.RegistryAccess;

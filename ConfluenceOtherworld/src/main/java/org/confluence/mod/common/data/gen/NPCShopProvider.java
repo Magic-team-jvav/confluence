@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.gen;
+package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.advancements.critereon.MinMaxBounds;

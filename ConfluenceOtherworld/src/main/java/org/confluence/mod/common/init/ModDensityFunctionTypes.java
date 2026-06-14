@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.init;
+package org.confluence.mod.common.init;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.Registries;

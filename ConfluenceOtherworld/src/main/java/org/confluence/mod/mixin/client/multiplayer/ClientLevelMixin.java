@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.client.multiplayer;
+package org.confluence.mod.mixin.client.multiplayer;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;

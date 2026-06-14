@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.entity.projectile;
+package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

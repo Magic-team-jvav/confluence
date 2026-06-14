@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.task;
+package org.confluence.mod.network.task;
 
 import com.mojang.authlib.GameProfile;
 import io.netty.buffer.ByteBuf;

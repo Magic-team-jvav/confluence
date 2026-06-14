@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.s2c;
+package org.confluence.mod.network.s2c;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.init;
+package org.confluence.mod.common.init;
 
 import it.unimi.dsi.fastutil.ints.IntArrays;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;

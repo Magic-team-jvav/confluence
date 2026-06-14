@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.world.entity;
+package org.confluence.mod.mixin.world.entity;
 
 import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;

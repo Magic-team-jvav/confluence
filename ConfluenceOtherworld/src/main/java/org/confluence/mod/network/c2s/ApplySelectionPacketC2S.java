@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.c2s;
+package org.confluence.mod.network.c2s;
 
 
 import io.netty.buffer.ByteBuf;

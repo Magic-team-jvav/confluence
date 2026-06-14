@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.integration.terra_entity.init;
+package org.confluence.mod.integration.terra_entity.init;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraftforge.registries.DeferredRegister;

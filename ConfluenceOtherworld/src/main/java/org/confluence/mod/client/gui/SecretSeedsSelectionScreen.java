@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.gui;
+package org.confluence.mod.client.gui;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.google.common.collect.Iterables;

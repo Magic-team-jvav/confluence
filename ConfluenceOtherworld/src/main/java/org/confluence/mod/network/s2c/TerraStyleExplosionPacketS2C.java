@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.s2c;
+package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.SectionPos;

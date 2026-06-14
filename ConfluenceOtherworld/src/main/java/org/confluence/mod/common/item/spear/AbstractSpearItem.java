@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.spear;
+package org.confluence.mod.common.item.spear;
 
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.integration.curios;
+package org.confluence.mod.mixin.integration.curios;
 
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.attachment.ExtraInventory;

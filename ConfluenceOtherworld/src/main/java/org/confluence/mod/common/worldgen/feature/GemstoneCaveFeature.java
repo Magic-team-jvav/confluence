@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.worldgen.feature;
+package org.confluence.mod.common.worldgen.feature;
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;

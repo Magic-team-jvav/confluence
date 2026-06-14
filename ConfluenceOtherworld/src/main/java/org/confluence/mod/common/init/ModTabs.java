@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.init;
+package org.confluence.mod.common.init;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;

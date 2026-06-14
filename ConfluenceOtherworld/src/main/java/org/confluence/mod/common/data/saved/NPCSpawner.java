@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.saved;
+package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;

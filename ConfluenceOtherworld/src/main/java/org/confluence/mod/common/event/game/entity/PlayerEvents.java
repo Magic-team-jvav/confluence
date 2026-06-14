@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.event.game.entity;
+package org.confluence.mod.common.event.game.entity;
 
 import PortLib.extensions.net.minecraft.advancements.Advancement.PortAdvancementExtension;
 import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;

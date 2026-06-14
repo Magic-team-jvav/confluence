@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.s2c;
+package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;

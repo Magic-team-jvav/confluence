@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.init;
+package org.confluence.mod.common.init;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;

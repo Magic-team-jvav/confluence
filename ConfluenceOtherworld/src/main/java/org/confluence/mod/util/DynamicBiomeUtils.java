@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.util;
+package org.confluence.mod.util;
 
 import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;

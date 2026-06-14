@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.event;
+package org.confluence.mod.client.event;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event;
+package org.confluence.mod.api.event;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;

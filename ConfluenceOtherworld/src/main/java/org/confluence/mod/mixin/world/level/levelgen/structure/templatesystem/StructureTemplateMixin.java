@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.world.level.levelgen.structure.templatesystem;
+package org.confluence.mod.mixin.world.level.levelgen.structure.templatesystem;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;

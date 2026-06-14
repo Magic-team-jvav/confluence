@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.functional.crafting;
+package org.confluence.mod.common.block.functional.crafting;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.MapCodec;

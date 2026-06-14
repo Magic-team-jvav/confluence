@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.gen;
+package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;

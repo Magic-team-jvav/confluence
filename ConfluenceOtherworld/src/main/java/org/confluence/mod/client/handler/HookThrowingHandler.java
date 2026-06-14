@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.handler;
+package org.confluence.mod.client.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;

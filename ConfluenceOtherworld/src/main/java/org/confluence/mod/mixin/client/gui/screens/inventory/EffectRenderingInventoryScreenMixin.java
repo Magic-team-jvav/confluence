@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.client.gui.screens.inventory;
+package org.confluence.mod.mixin.client.gui.screens.inventory;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.c2s;
+package org.confluence.mod.network.c2s;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;

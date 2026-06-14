@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event;
+package org.confluence.mod.api.event;
 
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.init.armor;
+package org.confluence.mod.common.init.armor;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;

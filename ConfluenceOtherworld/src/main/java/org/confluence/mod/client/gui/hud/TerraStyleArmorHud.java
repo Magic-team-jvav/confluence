@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.gui.hud;
+package org.confluence.mod.client.gui.hud;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

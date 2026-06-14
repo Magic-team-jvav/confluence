@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.common;
+package org.confluence.mod.common.item.common;
 
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.CriteriaTriggers;

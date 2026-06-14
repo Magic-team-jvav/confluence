@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event;
+package org.confluence.mod.api.event;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.common.collect.BiMap;

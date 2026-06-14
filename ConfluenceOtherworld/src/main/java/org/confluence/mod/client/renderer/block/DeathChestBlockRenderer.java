@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.renderer.block;
+package org.confluence.mod.client.renderer.block;
 
 import net.minecraft.Util;
 import net.minecraft.client.renderer.Sheets;

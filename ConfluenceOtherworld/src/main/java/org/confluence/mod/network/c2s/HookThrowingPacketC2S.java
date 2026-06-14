@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.c2s;
+package org.confluence.mod.network.c2s;
 
 import PortLib.extensions.java.util.List.PortListExtension;
 import io.netty.buffer.ByteBuf;

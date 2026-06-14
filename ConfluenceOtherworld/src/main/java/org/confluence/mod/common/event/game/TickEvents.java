@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.event.game;
+package org.confluence.mod.common.event.game;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.map;
+package org.confluence.mod.common.data.map;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;

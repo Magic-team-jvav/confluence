@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.natural.herbs;
+package org.confluence.mod.common.block.natural.herbs;
 
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;

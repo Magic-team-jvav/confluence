@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.gui.hud;
+package org.confluence.mod.client.gui.hud;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Window;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.init.item;
+package org.confluence.mod.common.init.item;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;

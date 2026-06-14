@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.menu;
+package org.confluence.mod.common.menu;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.world.entity.EquipmentSlot;

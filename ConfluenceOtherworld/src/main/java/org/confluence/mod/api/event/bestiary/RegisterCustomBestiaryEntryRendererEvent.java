@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event.bestiary;
+package org.confluence.mod.api.event.bestiary;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.renderer.entity.EntityRenderer;

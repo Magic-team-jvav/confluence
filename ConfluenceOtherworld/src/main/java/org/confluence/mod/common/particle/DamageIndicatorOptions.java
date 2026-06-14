@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.particle;
+package org.confluence.mod.common.particle;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

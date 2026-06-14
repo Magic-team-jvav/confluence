@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.gen.loot;
+package org.confluence.mod.common.data.gen.loot;
 
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.FishingHookPredicate;

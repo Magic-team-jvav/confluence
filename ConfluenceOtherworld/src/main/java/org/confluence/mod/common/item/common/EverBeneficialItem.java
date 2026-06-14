@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.common;
+package org.confluence.mod.common.item.common;
 
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.AttributeInstance.PortAttributeInstanceExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;

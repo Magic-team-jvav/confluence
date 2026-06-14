@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.util;
+package org.confluence.mod.util;
 
 import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.core.HolderLookup;

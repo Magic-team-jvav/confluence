@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.c2s;
+package org.confluence.mod.network.c2s;
 
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;

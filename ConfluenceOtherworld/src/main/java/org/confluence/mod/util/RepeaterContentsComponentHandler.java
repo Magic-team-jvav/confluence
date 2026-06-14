@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.util;
+package org.confluence.mod.util;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.NonNullList;

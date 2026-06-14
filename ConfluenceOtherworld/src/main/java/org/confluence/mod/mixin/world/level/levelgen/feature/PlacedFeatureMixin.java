@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.world.level.levelgen.feature;
+package org.confluence.mod.mixin.world.level.levelgen.feature;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.integration.terra_entity;
+package org.confluence.mod.integration.terra_entity;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraftforge.event.ModifyDefaultComponentsEvent;

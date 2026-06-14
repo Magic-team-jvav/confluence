@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.gen.data_map;
+package org.confluence.mod.common.data.gen.data_map;
 
 import net.minecraft.world.item.Item;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;

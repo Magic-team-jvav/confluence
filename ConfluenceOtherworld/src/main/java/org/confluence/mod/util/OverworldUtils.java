@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.util;
+package org.confluence.mod.util;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.datafixers.util.Pair;

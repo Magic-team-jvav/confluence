@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.effect.biome;
+package org.confluence.mod.client.effect.biome;
 
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;

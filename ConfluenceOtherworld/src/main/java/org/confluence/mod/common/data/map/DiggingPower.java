@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.map;
+package org.confluence.mod.common.data.map;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;

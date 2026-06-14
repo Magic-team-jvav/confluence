@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.common;
+package org.confluence.mod.common.block.common;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;

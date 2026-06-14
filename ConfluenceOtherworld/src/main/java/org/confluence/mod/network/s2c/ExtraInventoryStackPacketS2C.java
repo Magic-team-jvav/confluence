@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.s2c;
+package org.confluence.mod.network.s2c;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;

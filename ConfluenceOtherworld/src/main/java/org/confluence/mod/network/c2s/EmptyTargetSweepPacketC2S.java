@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.c2s;
+package org.confluence.mod.network.c2s;
 
 import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;

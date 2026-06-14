@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event.gameevent;
+package org.confluence.mod.api.event.gameevent;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.eventbus.api.Event;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event.bestiary;
+package org.confluence.mod.api.event.bestiary;
 
 import net.minecraftforge.eventbus.api.Event;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;

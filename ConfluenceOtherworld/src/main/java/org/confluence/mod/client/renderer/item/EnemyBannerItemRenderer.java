@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.renderer.item;
+package org.confluence.mod.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

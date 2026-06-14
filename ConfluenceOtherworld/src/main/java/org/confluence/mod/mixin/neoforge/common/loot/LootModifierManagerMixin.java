@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.neoforge.common.loot;
+package org.confluence.mod.mixin.neoforge.common.loot;
 
 import com.google.gson.JsonElement;
 import com.llamalad7.mixinextras.sugar.Local;

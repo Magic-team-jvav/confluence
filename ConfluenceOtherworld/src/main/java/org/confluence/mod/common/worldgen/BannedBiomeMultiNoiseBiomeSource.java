@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.worldgen;
+package org.confluence.mod.common.worldgen;
 
 import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import net.minecraft.core.BlockPos;

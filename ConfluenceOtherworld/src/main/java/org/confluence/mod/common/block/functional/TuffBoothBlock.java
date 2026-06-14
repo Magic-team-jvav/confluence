@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.functional;
+package org.confluence.mod.common.block.functional;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.entity;
+package org.confluence.mod.common.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

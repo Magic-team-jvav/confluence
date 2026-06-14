@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.handler.bestiary;
+package org.confluence.mod.client.handler.bestiary;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.net.minecraft.nbt.TagParser.PortTagParserExtension;

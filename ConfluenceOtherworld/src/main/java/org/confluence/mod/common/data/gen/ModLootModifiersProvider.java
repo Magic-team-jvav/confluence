@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.gen;
+package org.confluence.mod.common.data.gen;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;

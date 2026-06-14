@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.integration.terra_entity.npc_trade;
+package org.confluence.mod.integration.terra_entity.npc_trade;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.Minecraft;

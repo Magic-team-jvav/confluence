@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.gui.container;
+package org.confluence.mod.client.gui.container;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.client.gui.GuiGraphics;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.entity.projectile.range.arrow;
+package org.confluence.mod.common.entity.projectile.range.arrow;
 
 import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.nbt.CompoundTag;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixed;
+package org.confluence.mod.mixed;
 
 import net.minecraft.server.MinecraftServer;
 import org.confluence.lib.util.LibUtils;

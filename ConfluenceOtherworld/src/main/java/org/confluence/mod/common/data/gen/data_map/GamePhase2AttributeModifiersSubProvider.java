@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.gen.data_map;
+package org.confluence.mod.common.data.gen.data_map;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;

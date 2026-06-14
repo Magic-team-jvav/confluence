@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.client.renderer.entity.layers;
+package org.confluence.mod.mixin.client.renderer.entity.layers;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

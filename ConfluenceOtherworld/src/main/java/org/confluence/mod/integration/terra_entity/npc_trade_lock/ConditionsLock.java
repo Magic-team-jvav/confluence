@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.integration.terra_entity.npc_trade_lock;
+package org.confluence.mod.integration.terra_entity.npc_trade_lock;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

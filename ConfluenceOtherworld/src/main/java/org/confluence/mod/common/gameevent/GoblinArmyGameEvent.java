@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.gameevent;
+package org.confluence.mod.common.gameevent;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

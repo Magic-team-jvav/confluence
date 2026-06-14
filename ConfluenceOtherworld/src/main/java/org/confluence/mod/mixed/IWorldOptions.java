@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixed;
+package org.confluence.mod.mixed;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;

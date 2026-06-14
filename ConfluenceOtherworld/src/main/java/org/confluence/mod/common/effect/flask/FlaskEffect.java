@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.effect.flask;
+package org.confluence.mod.common.effect.flask;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;

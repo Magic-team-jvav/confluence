@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.handler;
+package org.confluence.mod.client.handler;
 
 import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;

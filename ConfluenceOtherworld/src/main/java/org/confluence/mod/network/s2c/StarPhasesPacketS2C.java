@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.s2c;
+package org.confluence.mod.network.s2c;
 
 import com.mojang.datafixers.util.Either;
 import io.netty.buffer.ByteBuf;

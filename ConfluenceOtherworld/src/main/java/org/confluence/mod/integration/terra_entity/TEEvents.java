@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.integration.terra_entity;
+package org.confluence.mod.integration.terra_entity;
 
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.eventbus.api.IEventBus;

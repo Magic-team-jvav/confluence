@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.integration.terra_entity.trail;
+package org.confluence.mod.integration.terra_entity.trail;
 
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;

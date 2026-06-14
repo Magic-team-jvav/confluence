@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.task;
+package org.confluence.mod.network.task;
 
 import net.minecraft.server.MinecraftServer;
 import org.confluence.mod.Confluence;

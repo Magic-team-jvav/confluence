@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.fishing;
+package org.confluence.mod.common.item.fishing;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;

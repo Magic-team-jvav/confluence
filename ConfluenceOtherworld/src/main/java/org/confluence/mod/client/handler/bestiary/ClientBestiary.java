@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.client.handler.bestiary;
+package org.confluence.mod.client.handler.bestiary;
 
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;

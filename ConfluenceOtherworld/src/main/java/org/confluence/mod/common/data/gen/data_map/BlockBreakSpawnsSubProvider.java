@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.gen.data_map;
+package org.confluence.mod.common.data.gen.data_map;
 
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.HolderLookup;

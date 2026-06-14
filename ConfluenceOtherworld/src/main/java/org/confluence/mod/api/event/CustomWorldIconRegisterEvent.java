@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event;
+package org.confluence.mod.api.event;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;

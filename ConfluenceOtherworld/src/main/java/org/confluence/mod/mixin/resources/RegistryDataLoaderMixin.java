@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.resources;
+package org.confluence.mod.mixin.resources;
 
 import com.google.gson.JsonElement;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;

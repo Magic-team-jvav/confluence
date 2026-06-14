@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.capability;
+package org.confluence.mod.common.capability;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.item.ItemStack;

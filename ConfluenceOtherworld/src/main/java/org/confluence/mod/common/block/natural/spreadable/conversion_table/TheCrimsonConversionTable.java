@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.natural.spreadable.conversion_table;
+package org.confluence.mod.common.block.natural.spreadable.conversion_table;
 
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;

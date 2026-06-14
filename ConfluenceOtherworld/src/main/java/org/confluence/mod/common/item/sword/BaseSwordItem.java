@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.sword;
+package org.confluence.mod.common.item.sword;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Holder;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.common;
+package org.confluence.mod.common.item.common;
 
 import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import com.google.common.collect.ImmutableList;

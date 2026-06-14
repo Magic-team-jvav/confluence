@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.world.entity;
+package org.confluence.mod.mixin.world.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

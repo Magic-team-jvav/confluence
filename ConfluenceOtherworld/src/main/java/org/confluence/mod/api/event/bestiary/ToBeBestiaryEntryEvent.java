@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event.bestiary;
+package org.confluence.mod.api.event.bestiary;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingEvent;

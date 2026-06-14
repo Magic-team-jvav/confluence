@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event;
+package org.confluence.mod.api.event;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraftforge.eventbus.api.Event;

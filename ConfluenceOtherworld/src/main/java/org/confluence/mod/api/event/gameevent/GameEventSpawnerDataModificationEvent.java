@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event.gameevent;
+package org.confluence.mod.api.event.gameevent;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

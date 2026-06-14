@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network;
+package org.confluence.mod.network;
 
 import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.worldgen.secret_seed;
+package org.confluence.mod.common.worldgen.secret_seed;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

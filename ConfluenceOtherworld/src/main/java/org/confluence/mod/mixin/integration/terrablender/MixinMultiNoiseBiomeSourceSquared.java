@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.integration.terrablender;
+package org.confluence.mod.mixin.integration.terrablender;
 
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.mojang.datafixers.util.Pair;

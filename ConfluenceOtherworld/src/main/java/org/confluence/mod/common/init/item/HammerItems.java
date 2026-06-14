@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.init.item;
+package org.confluence.mod.common.init.item;
 
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;

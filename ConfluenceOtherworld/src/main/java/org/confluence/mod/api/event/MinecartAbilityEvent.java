@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.api.event;
+package org.confluence.mod.api.event;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;

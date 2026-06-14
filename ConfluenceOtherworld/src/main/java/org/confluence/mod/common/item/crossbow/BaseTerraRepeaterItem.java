@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.item.crossbow;
+package org.confluence.mod.common.item.crossbow;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;

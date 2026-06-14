@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.entity.hook;
+package org.confluence.mod.common.entity.hook;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;

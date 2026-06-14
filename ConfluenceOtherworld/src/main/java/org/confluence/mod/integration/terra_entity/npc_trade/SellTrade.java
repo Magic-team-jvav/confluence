@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.integration.terra_entity.npc_trade;
+package org.confluence.mod.integration.terra_entity.npc_trade;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Decoder;

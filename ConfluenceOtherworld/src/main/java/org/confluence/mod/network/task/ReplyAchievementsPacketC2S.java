@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.task;
+package org.confluence.mod.network.task;
 
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;

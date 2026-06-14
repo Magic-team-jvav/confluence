@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.entity.projectile.bomb;
+package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

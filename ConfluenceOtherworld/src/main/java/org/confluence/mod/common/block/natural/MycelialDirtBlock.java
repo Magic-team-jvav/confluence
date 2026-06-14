@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.natural;
+package org.confluence.mod.common.block.natural;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

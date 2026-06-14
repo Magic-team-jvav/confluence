@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.integration.terra_entity.init;
+package org.confluence.mod.integration.terra_entity.init;
 
 import net.minecraftforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;

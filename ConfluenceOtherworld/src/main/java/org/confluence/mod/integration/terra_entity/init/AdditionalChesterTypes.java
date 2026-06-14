@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.integration.terra_entity.init;
+package org.confluence.mod.integration.terra_entity.init;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleMenuProvider;

@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.block.functional.crafting;
+package org.confluence.mod.common.block.functional.crafting;
 
 import PortLib.extensions.java.util.List.PortListExtension;
 import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;

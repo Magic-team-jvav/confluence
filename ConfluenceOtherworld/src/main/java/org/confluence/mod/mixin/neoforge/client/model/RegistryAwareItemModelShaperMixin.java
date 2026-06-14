@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.mixin.neoforge.client.model;
+package org.confluence.mod.mixin.neoforge.client.model;
 
 import net.minecraft.world.item.Item;
 import org.confluence.mod.common.data.saved.GlobalCloakData;

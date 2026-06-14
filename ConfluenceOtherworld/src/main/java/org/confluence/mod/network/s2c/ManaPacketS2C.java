@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.network.s2c;
+package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;

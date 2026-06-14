@@ -41,6 +41,8 @@ import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
 /// 是否允许特殊横扫是根据[BaseSwordItem.ModifierBuilder#specialSweep]判断的，即下文中的.setSpecialSweep()
 /// 如果不是由BOARD_SWORD定义的，那么需要使用[SwordPrefabs#withSpecialSweep]方法
 public class SwordItems {
+    public static void init() {}
+
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
     // 铂金以上剑参考数值为 泰拉wiki中的伤害÷2后 + 2为基础值

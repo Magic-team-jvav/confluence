@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import com.google.common.base.Supplier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import org.confluence.lib.common.component.ModRarity;
@@ -10,7 +11,6 @@ import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static org.confluence.lib.common.component.ModRarity.*;
 

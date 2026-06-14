@@ -1,17 +1,19 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
+import org.mesdag.portlib.registries.PortDeferredItem;
+import org.mesdag.portlib.registries.PortItemRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
 
 public class QuestedFishes {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Confluence.MODID);
+    public static void init() {}
 
-    public static final RegistryObject<Item> AMANITA_FUNGIFIN = register("amanita_fungifin"), // 毒菌鱼
+    public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
+
+    public static final PortDeferredItem<Item> AMANITA_FUNGIFIN = register("amanita_fungifin"), // 毒菌鱼
             ANGELFISH = register("angelfish"), // 天使鱼
             BATFISH = register("batfish"), // 蝙蝠鱼
             BLOODY_MANOWAR = register("bloody_manowar"), // 血腥战神
@@ -53,7 +55,7 @@ public class QuestedFishes {
             SPIDERFISH = register("spiderfish"), // 蜘蛛鱼
             TUNDRA_TROUT = register("tundra_trout"); // 苔原鳟鱼
 
-    public static RegistryObject<Item> register(String name) {
+    public static PortDeferredItem<Item> register(String name) {
         return ITEMS.register(name, () -> new CustomRarityItem(new Item.Properties().fireResistant(), ModRarity.QUEST));
     }
 }

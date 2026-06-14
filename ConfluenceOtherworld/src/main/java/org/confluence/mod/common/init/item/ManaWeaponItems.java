@@ -1,11 +1,8 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.mana.*;
@@ -16,42 +13,47 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.gun.BeeGunItem;
 import org.confluence.mod.common.item.gun.SpaceGunItem;
 import org.confluence.mod.common.item.mana.*;
+import org.mesdag.portlib.registries.PortDeferredItem;
+import org.mesdag.portlib.registries.PortItemRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
 
 public class ManaWeaponItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Confluence.MODID);
+    public static void init() {}
+
+    public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
     // 魔法武器数值参考为 原数值÷2 +5 为基础值
-    public static final RegistryObject<ManaStaffItem<WandOfSparkingProjectile>> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking", () -> new ManaStaffItem<>(ModRarity.BLUE, WandOfSparkingProjectile::new, 5.6F, 2, 7.0F, 13, 0.14));
-    public static final RegistryObject<ManaStaffItem<WandOfFrostingProjectile>> WAND_OF_FROSTING = ITEMS.register("wand_of_frosting", () -> new ManaStaffItem<>(ModRarity.BLUE, WandOfFrostingProjectile::new, 10.0F, 2, 7.0F, 13, 0.14));
-    public static final RegistryObject<ManaStaffItem<BaseManaStaffProjectileEntity>> RUBY_STAFF = ITEMS.register("ruby_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.RUBY), 15.4F, 7, 9.0F, 15, 0.04));
-    public static final RegistryObject<ManaStaffItem<BaseManaStaffProjectileEntity>> AMBER_STAFF = ITEMS.register("amber_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.AMBER), 15.4F, 7, 9.0F, 15, 0.04));
-    public static final RegistryObject<ManaStaffItem<BaseManaStaffProjectileEntity>> TOPAZ_STAFF = ITEMS.register("topaz_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.TOPAZ), 13.4F, 5, 6.5F, 13, 0.04));
-    public static final RegistryObject<ManaStaffItem<BaseManaStaffProjectileEntity>> JADE_STAFF = ITEMS.register("jade_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.JADE), 14.6F, 6, 8.0F, 14, 0.04));
-    public static final RegistryObject<ManaStaffItem<BaseManaStaffProjectileEntity>> SAPPHIRE_STAFF = ITEMS.register("sapphire_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.SAPPHIRE), 14.2F, 6, 7.5F, 14, 0.04));
-    public static final RegistryObject<ManaStaffItem<BaseManaStaffProjectileEntity>> AMETHYST_STAFF = ITEMS.register("amethyst_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.AMETHYST), 13.0F, 5, 6.0F, 13, 0.04));
-    public static final RegistryObject<ManaStaffItem<BaseManaStaffProjectileEntity>> DIAMOND_STAFF = ITEMS.register("diamond_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.DIAMOND), 16.2F, 8, 9.5F, 15, 0.04));
-    public static final RegistryObject<ManaStaffItem<ThunderZapperProjectile>> THUNDER_ZAPPER = ITEMS.register("thunder_zapper", () -> new ManaStaffItem<>(ModRarity.BLUE, ThunderZapperProjectile::new, 14.8F, 6, 12, 6, 0.04));
-    public static final RegistryObject<CloudRodItem> CRIMSON_ROD = ITEMS.register("crimson_rod", () -> new CloudRodItem(ModRarity.BLUE, player -> new CloudProjectile(ModEntities.BLOOD_CLOUD_PROJECTILE.get(), ModEntities.BLOOD_RAIN_PROJECTILE.get(), player, 3, 2), 8, 30, 12, 3, 0.04));
-    public static final RegistryObject<ManaStaffItem<VilethronProjectile>> VILETHRON = ITEMS.register("vilethron", () -> new ManaStaffItem<>(ModRarity.BLUE, VilethronProjectile::new, 4.5F, 10, 8.0F, 18, 0.04));
-    public static final RegistryObject<ManaStaffItem<HurtnadoProjectile>> WEATHER_PAIN = ITEMS.register("weather_pain", WeatherPainItem::new);
-    public static final RegistryObject<SpaceGunItem> SPACE_GUN = ITEMS.registerItem("space_gun", SpaceGunItem::new);
-    public static final RegistryObject<BeeGunItem> BEE_GUN = ITEMS.registerItem("bee_gun", BeeGunItem::new);
-    public static final RegistryObject<ManaStaffItem<SkullProjectile>> BOOK_OF_SKULLS = ITEMS.register("book_of_skulls", () -> new ManaStaffItem<>(ModRarity.GREEN, SkullProjectile::new, 18.2F, 18, 3.5F, 2, 0.04));
-    public static final RegistryObject<ManaStaffItem<WaterBoltProjectile>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 19.5F, 10, 4.5F, 7, 0.04));
-    public static final RegistryObject<AquaScepterItem> AQUA_SCEPTER = ITEMS.register("aqua_scepter", AquaScepterItem::new);
-    public static final RegistryObject<MagicMissileItem> MAGIC_MISSILE = ITEMS.register("magic_missile", MagicMissileItem::new);
-    public static final RegistryObject<ManaStaffItem<DemonScytheProjectile>> DEMON_SCYTHE = ITEMS.register("demon_scythe", () -> new ManaStaffItem<>(ModRarity.ORANGE, DemonScytheProjectile::new, 25.8f, 14, 0.2F, 3, 0.04));
-    public static final RegistryObject<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 29F, 12, 7.5F, 7, 0.04));
-    public static final RegistryObject<FlamelashItem> FLAMELASH = ITEMS.register("flamelash", FlamelashItem::new);
-    public static final RegistryObject<CloudRodItem> NIMBUS_ROD = ITEMS.register("nimbus_rod", () -> new CloudRodItem(ModRarity.LIGHT_PURPLE, player -> new CloudProjectile(ModEntities.RAIN_CLOUD_PROJECTILE.get(), ModEntities.RAIN_PROJECTILE.get(), player, 2, 5), 15, 30, 16, 3, 0.04).setMaxCloud(2));
-    public static final RegistryObject<ManaStaffItem<BallOfFrostProjectile>> FLOWER_OF_FROST = ITEMS.register("flower_of_frost", () -> new ManaStaffItem<>(ModRarity.PINK, BallOfFrostProjectile::new, 35, 11, 9, 4, 0.04));
-    public static final RegistryObject<ManaStaffItem<MagicDaggerProjectile>> MAGIC_DAGGER = ITEMS.register("magic_dagger", MagicDaggerItem::new);
-    public static final RegistryObject<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = ITEMS.register("crystal_storm", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 23, 5, 16, 3, 0.04));
-    public static final RegistryObject<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = ITEMS.register("cursed_flames", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 32, 9, 10, 5, 0.04));
-    public static final RegistryObject<GoldenShowerItem> GOLDEN_SHOWER = ITEMS.register("golden_shower", GoldenShowerItem::new);
-    public static final RegistryObject<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = ITEMS.register("crystal_vile_shard", CrystalVileShardItem::new);
-    public static final RegistryObject<RainbowRodItem> RAINBOW_ROD = ITEMS.register("rainbow_rod", RainbowRodItem::new);
-    public static final RegistryObject<SkyFractureItem> SKY_FRACTURE = ITEMS.register("sky_fracture", SkyFractureItem::new);
-    public static final RegistryObject<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = ITEMS.register("crystal_serpent", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04)
+    public static final PortDeferredItem<ManaStaffItem<WandOfSparkingProjectile>> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking", () -> new ManaStaffItem<>(ModRarity.BLUE, WandOfSparkingProjectile::new, 5.6F, 2, 7.0F, 13, 0.14));
+    public static final PortDeferredItem<ManaStaffItem<WandOfFrostingProjectile>> WAND_OF_FROSTING = ITEMS.register("wand_of_frosting", () -> new ManaStaffItem<>(ModRarity.BLUE, WandOfFrostingProjectile::new, 10.0F, 2, 7.0F, 13, 0.14));
+    public static final PortDeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> RUBY_STAFF = ITEMS.register("ruby_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.RUBY), 15.4F, 7, 9.0F, 15, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> AMBER_STAFF = ITEMS.register("amber_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.AMBER), 15.4F, 7, 9.0F, 15, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> TOPAZ_STAFF = ITEMS.register("topaz_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.TOPAZ), 13.4F, 5, 6.5F, 13, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> JADE_STAFF = ITEMS.register("jade_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.JADE), 14.6F, 6, 8.0F, 14, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> SAPPHIRE_STAFF = ITEMS.register("sapphire_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.SAPPHIRE), 14.2F, 6, 7.5F, 14, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> AMETHYST_STAFF = ITEMS.register("amethyst_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.AMETHYST), 13.0F, 5, 6.0F, 13, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> DIAMOND_STAFF = ITEMS.register("diamond_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.DIAMOND), 16.2F, 8, 9.5F, 15, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<ThunderZapperProjectile>> THUNDER_ZAPPER = ITEMS.register("thunder_zapper", () -> new ManaStaffItem<>(ModRarity.BLUE, ThunderZapperProjectile::new, 14.8F, 6, 12, 6, 0.04));
+    public static final PortDeferredItem<CloudRodItem> CRIMSON_ROD = ITEMS.register("crimson_rod", () -> new CloudRodItem(ModRarity.BLUE, player -> new CloudProjectile(ModEntities.BLOOD_CLOUD_PROJECTILE.get(), ModEntities.BLOOD_RAIN_PROJECTILE.get(), player, 3, 2), 8, 30, 12, 3, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<VilethronProjectile>> VILETHRON = ITEMS.register("vilethron", () -> new ManaStaffItem<>(ModRarity.BLUE, VilethronProjectile::new, 4.5F, 10, 8.0F, 18, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<HurtnadoProjectile>> WEATHER_PAIN = ITEMS.register("weather_pain", WeatherPainItem::new);
+    public static final PortDeferredItem<SpaceGunItem> SPACE_GUN = ITEMS.register("space_gun", () -> new SpaceGunItem(new Item.Properties()));
+    public static final PortDeferredItem<BeeGunItem> BEE_GUN = ITEMS.register("bee_gun", () -> new BeeGunItem(new Item.Properties()));
+    public static final PortDeferredItem<ManaStaffItem<SkullProjectile>> BOOK_OF_SKULLS = ITEMS.register("book_of_skulls", () -> new ManaStaffItem<>(ModRarity.GREEN, SkullProjectile::new, 18.2F, 18, 3.5F, 2, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<WaterBoltProjectile>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 19.5F, 10, 4.5F, 7, 0.04));
+    public static final PortDeferredItem<AquaScepterItem> AQUA_SCEPTER = ITEMS.register("aqua_scepter", AquaScepterItem::new);
+    public static final PortDeferredItem<MagicMissileItem> MAGIC_MISSILE = ITEMS.register("magic_missile", MagicMissileItem::new);
+    public static final PortDeferredItem<ManaStaffItem<DemonScytheProjectile>> DEMON_SCYTHE = ITEMS.register("demon_scythe", () -> new ManaStaffItem<>(ModRarity.ORANGE, DemonScytheProjectile::new, 25.8f, 14, 0.2F, 3, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 29F, 12, 7.5F, 7, 0.04));
+    public static final PortDeferredItem<FlamelashItem> FLAMELASH = ITEMS.register("flamelash", FlamelashItem::new);
+    public static final PortDeferredItem<CloudRodItem> NIMBUS_ROD = ITEMS.register("nimbus_rod", () -> new CloudRodItem(ModRarity.LIGHT_PURPLE, player -> new CloudProjectile(ModEntities.RAIN_CLOUD_PROJECTILE.get(), ModEntities.RAIN_PROJECTILE.get(), player, 2, 5), 15, 30, 16, 3, 0.04).setMaxCloud(2));
+    public static final PortDeferredItem<ManaStaffItem<BallOfFrostProjectile>> FLOWER_OF_FROST = ITEMS.register("flower_of_frost", () -> new ManaStaffItem<>(ModRarity.PINK, BallOfFrostProjectile::new, 35, 11, 9, 4, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<MagicDaggerProjectile>> MAGIC_DAGGER = ITEMS.register("magic_dagger", MagicDaggerItem::new);
+    public static final PortDeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = ITEMS.register("crystal_storm", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 23, 5, 16, 3, 0.04));
+    public static final PortDeferredItem<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = ITEMS.register("cursed_flames", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 32, 9, 10, 5, 0.04));
+    public static final PortDeferredItem<GoldenShowerItem> GOLDEN_SHOWER = ITEMS.register("golden_shower", GoldenShowerItem::new);
+    public static final PortDeferredItem<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = ITEMS.register("crystal_vile_shard", CrystalVileShardItem::new);
+    public static final PortDeferredItem<RainbowRodItem> RAINBOW_ROD = ITEMS.register("rainbow_rod", RainbowRodItem::new);
+    public static final PortDeferredItem<SkyFractureItem> SKY_FRACTURE = ITEMS.register("sky_fracture", SkyFractureItem::new);
+    public static final PortDeferredItem<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = ITEMS.register("crystal_serpent", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04)
             .withTooltip(Component.translatable("tooltip.item.confluence.crystal_serpent.0").withStyle(ChatFormatting.GRAY)));
 }

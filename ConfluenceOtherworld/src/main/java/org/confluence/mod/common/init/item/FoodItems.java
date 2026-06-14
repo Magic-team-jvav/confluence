@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.item;
 
 import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
+import com.google.common.base.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -28,7 +29,6 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.wrapper.common.PortEffectCures;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static net.minecraft.world.item.Items.BOWL;
 import static net.minecraft.world.item.Items.GLASS_BOTTLE;

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import com.google.common.base.Supplier;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
@@ -8,8 +9,6 @@ import org.confluence.mod.common.init.ModBoatTypes;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
-
-import java.util.function.Supplier;
 
 @SuppressWarnings("all")
 public class BoatItems {

@@ -3,7 +3,6 @@ package org.confluence.mod.common.init.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -12,8 +11,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibEntityUtils;
@@ -24,82 +21,87 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.terra_curio.common.item.MagicMirror;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.registries.PortDeferredItem;
+import org.mesdag.portlib.registries.PortItemRegistration;
+import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.List;
 
 public class ToolItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Confluence.MODID);
+    public static void init() {}
 
-    public static final RegistryObject<HoneyBucketItem> HONEY_BUCKET = ITEMS.register("honey_bucket", HoneyBucketItem::new);
-    public static final RegistryObject<VoidBucketItem> VOID_BUCKET = ITEMS.register("void_bucket", VoidBucketItem::new);
-    public static final RegistryObject<BottomlessBucketItem> BOTTOMLESS_WATER_BUCKET = ITEMS.register("bottomless_water_bucket", () -> new BottomlessBucketItem(Fluids.WATER, ModRarity.LIME));
-    public static final RegistryObject<BottomlessBucketItem> BOTTOMLESS_LAVA_BUCKET = ITEMS.register("bottomless_lava_bucket", () -> new BottomlessBucketItem(Fluids.LAVA, ModRarity.LIME));
-    public static final RegistryObject<BottomlessBucketItem> BOTTOMLESS_HONEY_BUCKET = ITEMS.register("bottomless_honey_bucket", () -> new BottomlessBucketItem(ModFluids.HONEY.fluid().get(), ModRarity.LIME));
-    public static final RegistryObject<BottomlessBucketItem> BOTTOMLESS_SHIMMER_BUCKET = ITEMS.register("bottomless_shimmer_bucket", () -> new BottomlessBucketItem(ModFluids.SHIMMER.fluid().get(), ModRarity.RED));
+    public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    public static final RegistryObject<SpongeItem> SUPER_ABSORBANT_SPONGE = ITEMS.register("super_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "super_absorbant_sponge", 2, state -> state.is(Blocks.WATER) || state.is(ModBlocks.SHIMMER.get())));
-    public static final RegistryObject<SpongeItem> HONEY_ABSORBANT_SPONGE = ITEMS.register("honey_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "honey_absorbant_sponge", 2, state -> state.is(ModBlocks.HONEY.get())));
-    public static final RegistryObject<SpongeItem> LAVA_ABSORBANT_SPONGE = ITEMS.register("lava_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "lava_absorbant_sponge", 2, state -> state.is(Blocks.LAVA)));
-    public static final RegistryObject<SpongeItem> ULTRA_ABSORBANT_SPONGE = ITEMS.register("ultra_absorbant_sponge", () -> new SpongeItem(ModRarity.YELLOW, "ultra_absorbant_sponge", 2, state -> state.is(Blocks.WATER) || state.is(ModBlocks.SHIMMER.get()) || state.is(ModBlocks.HONEY.get()) || state.is(Blocks.LAVA)));
+    public static final PortDeferredItem<HoneyBucketItem> HONEY_BUCKET = ITEMS.register("honey_bucket", HoneyBucketItem::new);
+    public static final PortDeferredItem<VoidBucketItem> VOID_BUCKET = ITEMS.register("void_bucket", VoidBucketItem::new);
+    public static final PortDeferredItem<BottomlessBucketItem> BOTTOMLESS_WATER_BUCKET = ITEMS.register("bottomless_water_bucket", () -> new BottomlessBucketItem(Fluids.WATER, ModRarity.LIME));
+    public static final PortDeferredItem<BottomlessBucketItem> BOTTOMLESS_LAVA_BUCKET = ITEMS.register("bottomless_lava_bucket", () -> new BottomlessBucketItem(Fluids.LAVA, ModRarity.LIME));
+    public static final PortDeferredItem<BottomlessBucketItem> BOTTOMLESS_HONEY_BUCKET = ITEMS.register("bottomless_honey_bucket", () -> new BottomlessBucketItem(ModFluids.HONEY.fluid().get(), ModRarity.LIME));
+    public static final PortDeferredItem<BottomlessBucketItem> BOTTOMLESS_SHIMMER_BUCKET = ITEMS.register("bottomless_shimmer_bucket", () -> new BottomlessBucketItem(ModFluids.SHIMMER.fluid().get(), ModRarity.RED));
 
-    public static final RegistryObject<TooltipItem> GOLDEN_DUNGEON_KEY = ITEMS.register("golden_dungeon_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("golden_dungeon_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> GOLDEN_KEY = ITEMS.register("golden_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("golden_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> SHADOW_KEY = ITEMS.register("shadow_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("shadow_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> TEMPLE_KEY = ITEMS.register("temple_key", () -> new TooltipItem(new Item.Properties(), ModRarity.LIME, TooltipItem.getTooltipsFromString("temple_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<SpongeItem> SUPER_ABSORBANT_SPONGE = ITEMS.register("super_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "super_absorbant_sponge", 2, state -> state.is(Blocks.WATER) || state.is(ModBlocks.SHIMMER.get())));
+    public static final PortDeferredItem<SpongeItem> HONEY_ABSORBANT_SPONGE = ITEMS.register("honey_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "honey_absorbant_sponge", 2, state -> state.is(ModBlocks.HONEY.get())));
+    public static final PortDeferredItem<SpongeItem> LAVA_ABSORBANT_SPONGE = ITEMS.register("lava_absorbant_sponge", () -> new SpongeItem(ModRarity.LIME, "lava_absorbant_sponge", 2, state -> state.is(Blocks.LAVA)));
+    public static final PortDeferredItem<SpongeItem> ULTRA_ABSORBANT_SPONGE = ITEMS.register("ultra_absorbant_sponge", () -> new SpongeItem(ModRarity.YELLOW, "ultra_absorbant_sponge", 2, state -> state.is(Blocks.WATER) || state.is(ModBlocks.SHIMMER.get()) || state.is(ModBlocks.HONEY.get()) || state.is(Blocks.LAVA)));
 
-    public static final RegistryObject<TooltipItem> JUNGLE_KEY = ITEMS.register("jungle_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("jungle_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> CORRUPTION_KEY = ITEMS.register("corruption_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("corruption_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> CRIMSON_KEY = ITEMS.register("crimson_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("crimson_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> HALLOWED_KEY = ITEMS.register("hallowed_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("hallowed_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> FROZEN_KEY = ITEMS.register("frozen_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("frozen_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> DESERT_KEY = ITEMS.register("desert_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("desert_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> OCEAN_KEY = ITEMS.register("ocean_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("ocean_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> UNIVERSE_KEY = ITEMS.register("universe_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("universe_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> RUST_IRON_KEY = ITEMS.register("rust_iron_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("rust_iron_key", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> MECHANIC_SAFE_KEY = ITEMS.register("mechanic_safe_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("mechanic_safe_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> GOLDEN_DUNGEON_KEY = ITEMS.register("golden_dungeon_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("golden_dungeon_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> GOLDEN_KEY = ITEMS.register("golden_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("golden_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> SHADOW_KEY = ITEMS.register("shadow_key", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("shadow_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> TEMPLE_KEY = ITEMS.register("temple_key", () -> new TooltipItem(new Item.Properties(), ModRarity.LIME, TooltipItem.getTooltipsFromString("temple_key", 1, ChatFormatting.GRAY)));
 
-    public static final RegistryObject<TooltipItem> KEY_OF_LIGHT = ITEMS.register("key_of_light", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("key_of_light", 1, ChatFormatting.GRAY)));
-    public static final RegistryObject<TooltipItem> KEY_OF_NIGHT = ITEMS.register("key_of_night", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("key_of_night", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> JUNGLE_KEY = ITEMS.register("jungle_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("jungle_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> CORRUPTION_KEY = ITEMS.register("corruption_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("corruption_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> CRIMSON_KEY = ITEMS.register("crimson_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("crimson_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> HALLOWED_KEY = ITEMS.register("hallowed_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("hallowed_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> FROZEN_KEY = ITEMS.register("frozen_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("frozen_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> DESERT_KEY = ITEMS.register("desert_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("desert_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> OCEAN_KEY = ITEMS.register("ocean_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("ocean_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> UNIVERSE_KEY = ITEMS.register("universe_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("universe_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> RUST_IRON_KEY = ITEMS.register("rust_iron_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("rust_iron_key", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> MECHANIC_SAFE_KEY = ITEMS.register("mechanic_safe_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("mechanic_safe_key", 1, ChatFormatting.GRAY)));
 
-    public static final RegistryObject<WrenchItem> RED_WRENCH = ITEMS.register("red_wrench", () -> new WrenchItem(0xFF0000));
-    public static final RegistryObject<WrenchItem> GREEN_WRENCH = ITEMS.register("green_wrench", () -> new WrenchItem(0x00FF00));
-    public static final RegistryObject<WrenchItem> BLUE_WRENCH = ITEMS.register("blue_wrench", () -> new WrenchItem(0x0000FF));
-    public static final RegistryObject<WrenchItem> YELLOW_WRENCH = ITEMS.register("yellow_wrench", () -> new WrenchItem(0xFFFF00));
-    public static final RegistryObject<WireCutterItem> WIRE_CUTTER = ITEMS.register("wire_cutter", WireCutterItem::new);
+    public static final PortDeferredItem<TooltipItem> KEY_OF_LIGHT = ITEMS.register("key_of_light", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("key_of_light", 1, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> KEY_OF_NIGHT = ITEMS.register("key_of_night", () -> new TooltipItem(new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("key_of_night", 1, ChatFormatting.GRAY)));
 
-    public static final RegistryObject<MagicMirror> ICE_MIRROR = ITEMS.register("ice_mirror", () -> new MagicMirror(ModRarity.BLUE));
-    public static final RegistryObject<MagicConch> MAGIC_CONCH = ITEMS.register("magic_conch", () -> new MagicConch(new Item.Properties().stacksTo(1), ModRarity.BLUE));
-    public static final RegistryObject<DemonConch> DEMON_CONCH = ITEMS.register("demon_conch", DemonConch::new);
+    public static final PortDeferredItem<WrenchItem> RED_WRENCH = ITEMS.register("red_wrench", () -> new WrenchItem(0xFF0000));
+    public static final PortDeferredItem<WrenchItem> GREEN_WRENCH = ITEMS.register("green_wrench", () -> new WrenchItem(0x00FF00));
+    public static final PortDeferredItem<WrenchItem> BLUE_WRENCH = ITEMS.register("blue_wrench", () -> new WrenchItem(0x0000FF));
+    public static final PortDeferredItem<WrenchItem> YELLOW_WRENCH = ITEMS.register("yellow_wrench", () -> new WrenchItem(0xFFFF00));
+    public static final PortDeferredItem<WireCutterItem> WIRE_CUTTER = ITEMS.register("wire_cutter", WireCutterItem::new);
 
-    public static final RegistryObject<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, TooltipItem.getTooltipsFromString("bug_net", 1, ChatFormatting.GRAY), 0.5, living -> LibEntityUtils.isAnimal(living) && !living.getType().is(ModTags.EntityTypes.LAVA_BUG_NET_ALLOWS)));
-    public static final RegistryObject<BugNetItem> LAVAPROOF_BUG_NET = ITEMS.register("lavaproof_bug_net", () -> new BugNetItem(ModRarity.ORANGE, TooltipItem.getTooltipsFromString("lavaproof_bug_net", 1, ChatFormatting.GRAY), 0.5, LibEntityUtils::isAnimal));
-    public static final RegistryObject<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, TooltipItem.getTooltipsFromString("golden_bug_net", 2, ChatFormatting.GRAY), 1.1, LibEntityUtils::isAnimal));
-    public static final RegistryObject<BugNetItem> DEV_BUG_NET = ITEMS.register("dev_bug_net", () -> new BugNetItem(ModRarity.MASTER, TooltipItem.getTooltipsFromString("dev_bug_net", 1, ChatFormatting.GRAY), Double.MAX_VALUE, living -> !(living instanceof Player)));
+    public static final PortDeferredItem<MagicMirror> ICE_MIRROR = ITEMS.register("ice_mirror", () -> new MagicMirror(ModRarity.BLUE));
+    public static final PortDeferredItem<MagicConch> MAGIC_CONCH = ITEMS.register("magic_conch", () -> new MagicConch(new Item.Properties().stacksTo(1), ModRarity.BLUE));
+    public static final PortDeferredItem<DemonConch> DEMON_CONCH = ITEMS.register("demon_conch", DemonConch::new);
 
-    public static final RegistryObject<RopeCoilItem> ROPE_COIL = ITEMS.register("rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.ROPE.get()));
-    public static final RegistryObject<RopeCoilItem> VINE_ROPE_COIL = ITEMS.register("vine_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.VINE_ROPE.get()));
-    public static final RegistryObject<RopeCoilItem> SILK_ROPE_COIL = ITEMS.register("silk_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.SILK_ROPE.get()));
-    public static final RegistryObject<RopeCoilItem> WEB_ROPE_COIL = ITEMS.register("web_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.WEB_ROPE.get()));
+    public static final PortDeferredItem<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, TooltipItem.getTooltipsFromString("bug_net", 1, ChatFormatting.GRAY), 0.5, living -> LibEntityUtils.isAnimal(living) && !living.getType().is(ModTags.EntityTypes.LAVA_BUG_NET_ALLOWS)));
+    public static final PortDeferredItem<BugNetItem> LAVAPROOF_BUG_NET = ITEMS.register("lavaproof_bug_net", () -> new BugNetItem(ModRarity.ORANGE, TooltipItem.getTooltipsFromString("lavaproof_bug_net", 1, ChatFormatting.GRAY), 0.5, LibEntityUtils::isAnimal));
+    public static final PortDeferredItem<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, TooltipItem.getTooltipsFromString("golden_bug_net", 2, ChatFormatting.GRAY), 1.1, LibEntityUtils::isAnimal));
+    public static final PortDeferredItem<BugNetItem> DEV_BUG_NET = ITEMS.register("dev_bug_net", () -> new BugNetItem(ModRarity.MASTER, TooltipItem.getTooltipsFromString("dev_bug_net", 1, ChatFormatting.GRAY), Double.MAX_VALUE, living -> !(living instanceof Player)));
 
-    public static final RegistryObject<TooltipItem> METEOR_COMPASS = ITEMS.register("meteor_compass", () -> new TooltipItem(new Item.Properties().stacksTo(1), ModRarity.BLUE, TooltipItem.getTooltipsFromString("meteor_compass", 1, ChatFormatting.AQUA)));
-    public static final RegistryObject<BinocularsItem> BINOCULARS = ITEMS.register("binoculars", BinocularsItem::new);
-    public static final RegistryObject<NPCInvitationItem> NPC_INVITATION = ITEMS.register("npc_invitation", NPCInvitationItem::new);
-    public static final RegistryObject<DungeonCompass> DUNGEON_COMPASS = ITEMS.register("dungeon_compass", DungeonCompass::new);
+    public static final PortDeferredItem<RopeCoilItem> ROPE_COIL = ITEMS.register("rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.ROPE.get()));
+    public static final PortDeferredItem<RopeCoilItem> VINE_ROPE_COIL = ITEMS.register("vine_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.VINE_ROPE.get()));
+    public static final PortDeferredItem<RopeCoilItem> SILK_ROPE_COIL = ITEMS.register("silk_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.SILK_ROPE.get()));
+    public static final PortDeferredItem<RopeCoilItem> WEB_ROPE_COIL = ITEMS.register("web_rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.WEB_ROPE.get()));
 
-    public static final RegistryObject<MagicDropperItem> EMPTY_DROPPER = ITEMS.register("empty_dropper", () -> new MagicDropperItem(null) {
+    public static final PortDeferredItem<TooltipItem> METEOR_COMPASS = ITEMS.register("meteor_compass", () -> new TooltipItem(new Item.Properties().stacksTo(1), ModRarity.BLUE, TooltipItem.getTooltipsFromString("meteor_compass", 1, ChatFormatting.AQUA)));
+    public static final PortDeferredItem<BinocularsItem> BINOCULARS = ITEMS.register("binoculars", BinocularsItem::new);
+    public static final PortDeferredItem<NPCInvitationItem> NPC_INVITATION = ITEMS.register("npc_invitation", NPCInvitationItem::new);
+    public static final PortDeferredItem<DungeonCompass> DUNGEON_COMPASS = ITEMS.register("dungeon_compass", DungeonCompass::new);
+
+    public static final PortDeferredItem<MagicDropperItem> EMPTY_DROPPER = ITEMS.register("empty_dropper", () -> new MagicDropperItem(null) {
         @Override
         public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.empty_dropper.0"));
         }
     });
-    public static final RegistryObject<MagicDropperItem> MAGIC_SAND_DROPPER = ITEMS.register("magic_sand_dropper", () -> new MagicDropperItem(new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SAND.defaultBlockState())));
-    public static final RegistryObject<MagicDropperItem> MAGIC_HONEY_DROPPER = ITEMS.register("magic_honey_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_HONEY));
-    public static final RegistryObject<MagicDropperItem> MAGIC_LAVA_DROPPER = ITEMS.register("magic_lava_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_LAVA));
-    public static final RegistryObject<MagicDropperItem> MAGIC_WATER_DROPPER = ITEMS.register("magic_water_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_WATER));
+    public static final PortDeferredItem<MagicDropperItem> MAGIC_SAND_DROPPER = ITEMS.register("magic_sand_dropper", () -> new MagicDropperItem(new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SAND.defaultBlockState())));
+    public static final PortDeferredItem<MagicDropperItem> MAGIC_HONEY_DROPPER = ITEMS.register("magic_honey_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_HONEY));
+    public static final PortDeferredItem<MagicDropperItem> MAGIC_LAVA_DROPPER = ITEMS.register("magic_lava_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_LAVA));
+    public static final PortDeferredItem<MagicDropperItem> MAGIC_WATER_DROPPER = ITEMS.register("magic_water_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_WATER));
 
-    public static final RegistryObject<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
-    public static final RegistryObject<GuideToCritterCompanionshipItem> GUIDE_TO_CRITTER_COMPANIONSHIP = ITEMS.register("guide_to_critter_companionship", GuideToCritterCompanionshipItem::new);
-    public static final RegistryObject<GuideToEnvironmentalPreservationItem> GUIDE_TO_ENVIRONMENTAL_PRESERVATION = ITEMS.register("guide_to_environmental_preservation", GuideToEnvironmentalPreservationItem::new);
-    public static final RegistryObject<GuideToPeacefulCoexistenceItem> GUIDE_TO_PEACEFUL_COEXISTENCE = ITEMS.register("guide_to_peaceful_coexistence", GuideToPeacefulCoexistenceItem::new);
-    public static final RegistryObject<StaffOfRegrowth> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", StaffOfRegrowth::new); // 再生法杖
+    public static final PortDeferredItem<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
+    public static final PortDeferredItem<GuideToCritterCompanionshipItem> GUIDE_TO_CRITTER_COMPANIONSHIP = ITEMS.register("guide_to_critter_companionship", GuideToCritterCompanionshipItem::new);
+    public static final PortDeferredItem<GuideToEnvironmentalPreservationItem> GUIDE_TO_ENVIRONMENTAL_PRESERVATION = ITEMS.register("guide_to_environmental_preservation", GuideToEnvironmentalPreservationItem::new);
+    public static final PortDeferredItem<GuideToPeacefulCoexistenceItem> GUIDE_TO_PEACEFUL_COEXISTENCE = ITEMS.register("guide_to_peaceful_coexistence", GuideToPeacefulCoexistenceItem::new);
+    public static final PortDeferredItem<StaffOfRegrowth> STAFF_OF_REGROWTH = ITEMS.register("staff_of_regrowth", StaffOfRegrowth::new); // 再生法杖
 }

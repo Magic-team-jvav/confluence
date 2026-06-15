@@ -13,7 +13,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
@@ -138,6 +137,7 @@ public record FlailComponent(
                     Optional.empty()
             );
     // todo 1/6的几率施加着火
+    // todo 碰水会变回正常链锤
 
     // 风锚
     public static final Supplier<FlailComponent> WIND_ANCHOR =

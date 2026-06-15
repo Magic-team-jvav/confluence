@@ -138,8 +138,14 @@ public class OreBlocks {
     public static final DeferredBlock<Block> CORRUPTION_DEMONITE_ORE = copyBlockRegister("corruption_demonite_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> FLESHIFICATION_DEMONITE_ORE = copyBlockRegister("fleshification_demonite_ore", Blocks.IRON_ORE);
 
-    public static final DeferredBlock<Block> DEMONITE_BLOCK = copyBlockRegister("demonite_block", Blocks.RAW_IRON_BLOCK);
-    public static final DeferredBlock<Block> RAW_DEMONITE_BLOCK = copyBlockRegister("raw_demonite_block", Blocks.IRON_BLOCK);
+    public static final DeferredBlock<Block> DEMONITE_BLOCK = simpleBlockRegister("demonite_block",  () -> new Block(
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .strength(10.0F, ModBlocks.getObsidianBasedExplosionResistance(100))
+    ));
+    public static final DeferredBlock<Block> RAW_DEMONITE_BLOCK = simpleBlockRegister("raw_demonite_block", () -> new Block(
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .strength(10.0F, ModBlocks.getObsidianBasedExplosionResistance(100))
+    ));
 
     public static final DeferredBlock<Block> CRIMTANE_ORE = copyBlockRegister("crimtane_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> DEEPSLATE_CRIMTANE_ORE = copyBlockRegister("deepslate_crimtane_ore", Blocks.DEEPSLATE_IRON_ORE);
@@ -147,10 +153,18 @@ public class OreBlocks {
     public static final DeferredBlock<Block> CORRUPTION_CRIMTANE_ORE = copyBlockRegister("corruption_crimtane_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> FLESHIFICATION_CRIMTANE_ORE = copyBlockRegister("fleshification_crimtane_ore", Blocks.IRON_ORE);
 
-    public static final DeferredBlock<Block> RAW_CRIMTANE_BLOCK = copyBlockRegister("raw_crimtane_block", Blocks.IRON_BLOCK);
-    public static final DeferredBlock<Block> CRIMTANE_BLOCK = copyBlockRegister("crimtane_block", Blocks.RAW_IRON_BLOCK);
-
-    public static final DeferredBlock<Block> HALLOWED_BLOCK = copyBlockRegister("hallowed_block", Blocks.IRON_BLOCK);
+    public static final DeferredBlock<Block> RAW_CRIMTANE_BLOCK = simpleBlockRegister("raw_crimtane_block", () -> new Block(
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .strength(10.0F, ModBlocks.getObsidianBasedExplosionResistance(100))
+    ));
+    public static final DeferredBlock<Block> CRIMTANE_BLOCK = simpleBlockRegister("crimtane_block", () -> new Block(
+            BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)
+                    .strength(10.0F, ModBlocks.getObsidianBasedExplosionResistance(100))
+    ));
+    public static final DeferredBlock<Block> HALLOWED_BLOCK = simpleBlockRegister("hallowed_block", () -> new Block(
+            BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)
+                    .strength(10.0F, ModBlocks.getObsidianBasedExplosionResistance(100))
+    ));
 
     public static final DeferredBlock<ChlorophyteOreBlock> CHLOROPHYTE_ORE = registerWithItem("chlorophyte_ore", ChlorophyteOreBlock::new);
     public static final DeferredBlock<Block> RAW_CHLOROPHYTE_BLOCK = copyBlockRegister("raw_chlorophyte_block", Blocks.IRON_BLOCK);
@@ -194,29 +208,35 @@ public class OreBlocks {
                     .sound(SoundType.STONE)
     ) {});
 
+    // 钴
     public static final DeferredBlock<StepRevealingBlock> DEEPSLATE_COBALT_ORE = simpleBlockRegister("deepslate_cobalt_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(15.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<Block> RAW_COBALT_BLOCK = simpleBlockRegister("raw_cobalt_block");
-    public static final DeferredBlock<Block> COBALT_BLOCK = simpleBlockRegister("cobalt_block");
+    public static final DeferredBlock<Block> RAW_COBALT_BLOCK = simpleBlockRegister("raw_cobalt_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(15.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DeferredBlock<Block> COBALT_BLOCK = simpleBlockRegister("cobalt_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(15.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
 
+    // 钯
     public static final DeferredBlock<StepRevealingBlock> DEEPSLATE_PALLADIUM_ORE = simpleBlockRegister("deepslate_palladium_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(15.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<Block> RAW_PALLADIUM_BLOCK = simpleBlockRegister("raw_palladium_block");
-    public static final DeferredBlock<Block> PALLADIUM_BLOCK = simpleBlockRegister("palladium_block");
+    public static final DeferredBlock<Block> RAW_PALLADIUM_BLOCK = simpleBlockRegister("raw_palladium_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(15.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DeferredBlock<Block> PALLADIUM_BLOCK = simpleBlockRegister("palladium_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(15.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
 
+    // 秘银
     public static final DeferredBlock<StepRevealingBlock> DEEPSLATE_MYTHRIL_ORE = simpleBlockRegister("deepslate_mythril_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(20.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<Block> RAW_MYTHRIL_BLOCK = simpleBlockRegister("raw_mythril_block");
-    public static final DeferredBlock<Block> MYTHRIL_BLOCK = simpleBlockRegister("mythril_block");
+    public static final DeferredBlock<Block> RAW_MYTHRIL_BLOCK = simpleBlockRegister("raw_mythril_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(20.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DeferredBlock<Block> MYTHRIL_BLOCK = simpleBlockRegister("mythril_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(20.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
 
+    // 山铜
     public static final DeferredBlock<StepRevealingBlock> DEEPSLATE_ORICHALCUM_ORE = simpleBlockRegister("deepslate_orichalcum_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(20.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<Block> RAW_ORICHALCUM_BLOCK = simpleBlockRegister("raw_orichalcum_block");
-    public static final DeferredBlock<Block> ORICHALCUM_BLOCK = simpleBlockRegister("orichalcum_block");
+    public static final DeferredBlock<Block> RAW_ORICHALCUM_BLOCK = simpleBlockRegister("raw_orichalcum_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(20.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DeferredBlock<Block> ORICHALCUM_BLOCK = simpleBlockRegister("orichalcum_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(20.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
 
+    // 精金
     public static final DeferredBlock<StepRevealingBlock> DEEPSLATE_ADAMANTITE_ORE = simpleBlockRegister("deepslate_adamantite_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(25.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<Block> RAW_ADAMANTITE_BLOCK = simpleBlockRegister("raw_adamantite_block");
-    public static final DeferredBlock<Block> ADAMANTITE_BLOCK = simpleBlockRegister("adamantite_block");
+    public static final DeferredBlock<Block> RAW_ADAMANTITE_BLOCK = simpleBlockRegister("raw_adamantite_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(25.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DeferredBlock<Block> ADAMANTITE_BLOCK = simpleBlockRegister("adamantite_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(25.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
 
+    // 钛
     public static final DeferredBlock<StepRevealingBlock> DEEPSLATE_TITANIUM_ORE = simpleBlockRegister("deepslate_titanium_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(25.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
-    public static final DeferredBlock<Block> RAW_TITANIUM_BLOCK = simpleBlockRegister("raw_titanium_block");
-    public static final DeferredBlock<Block> TITANIUM_BLOCK = simpleBlockRegister("titanium_block");
+    public static final DeferredBlock<Block> RAW_TITANIUM_BLOCK = simpleBlockRegister("raw_titanium_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(25.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
+    public static final DeferredBlock<Block> TITANIUM_BLOCK = simpleBlockRegister("titanium_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE).strength(25.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
 
     private static DeferredBlock<Block> simpleBlockRegister(String name) {
         DeferredBlock<Block> block = BLOCKS.registerSimpleBlock(name, BlockBehaviour.Properties.of());

@@ -465,7 +465,7 @@ public final class ModTabs {
                         lihzahrd_bricks.accept(DecorativeBlocks.POLISHED_LIHZAHRD.get());
                         lihzahrd_bricks.accept(DecorativeBlocks.LIHZAHRD_TILES.get());
 
-                        CreativeModeTab.Output copper_bricks = GroupItem.belongsTo("granite_bricks", output);
+                        CreativeModeTab.Output copper_bricks = GroupItem.belongsTo("copper_bricks", output);
                         copper_bricks.accept(DecorativeBlocks.CHISELED_COPPER_BRICKS.get());
                         copper_bricks.accept(DecorativeBlocks.COPPER_TILES.get());
 
@@ -490,6 +490,11 @@ public final class ModTabs {
 
                         CreativeModeTab.Output platinum_bricks = GroupItem.belongsTo(DecorativeBlocks.PLATINUM_BRICKS.id, output);
                         platinum_bricks.accept(DecorativeBlocks.CHISELED_PLATINUM_BRICKS.get());
+
+                        CreativeModeTab.Output obsidian_bricks = GroupItem.belongsTo(DecorativeBlocks.OBSIDIAN_BRICKS.id, output);
+                        obsidian_bricks.accept(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.get());
+                        obsidian_bricks.accept(DecorativeBlocks.SMOOTH_OBSIDIAN.get());
+                        obsidian_bricks.accept(DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.get());
 
                         CreativeModeTab.Output marble_bricks = GroupItem.belongsTo(DecorativeBlocks.MARBLE_BRICKS.id, output);
                         marble_bricks.accept(DecorativeBlocks.MARBLE_COLUMN.get());

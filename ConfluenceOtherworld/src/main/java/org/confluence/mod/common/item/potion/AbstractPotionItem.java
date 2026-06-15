@@ -1,5 +1,7 @@
 package org.confluence.mod.common.item.potion;
 
+import PortLib.extensions.java.util.List.PortListExtension;
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
@@ -23,6 +25,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.spreadable.conversion_table.MoistenConversionTable;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.mixed.IMinecraftServer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -35,7 +38,7 @@ public abstract class AbstractPotionItem extends Item {
     }
 
     @Override
-    public int getUseDuration(ItemStack itemStack, LivingEntity entity) {
+    public int getUseDuration(ItemStack itemStack) {
         return 20;
     }
 
@@ -52,25 +55,22 @@ public abstract class AbstractPotionItem extends Item {
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity living) {
-        apply(itemStack, level, living);
-        if (living instanceof Player player && !player.hasInfiniteMaterials()) {
-            itemStack.shrink(1); // 创造模式不消耗
-        }
-        if (CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
-            if (itemStack.isEmpty()) {
-                return getReturnItem();
-            } else {
-                if (living instanceof Player player && !player.hasInfiniteMaterials()) {
-                    ItemStack itemstack = getReturnItem();
-                    if (!player.getInventory().add(itemstack)) {
-                        player.drop(itemstack, false);
-                    }
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
+        apply(stack, level, living);
+        if (living instanceof Player player && !PortPlayerExtension.hasInfiniteMaterials(player)) {
+            stack.shrink(1); // 创造模式不消耗
+            if (CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
+                if (stack.isEmpty()) {
+                    return getReturnItem();
                 }
-                return itemStack;
+                ItemStack itemstack = getReturnItem();
+                if (!player.getInventory().add(itemstack)) {
+                    player.drop(itemstack, false);
+                }
+                return stack;
             }
         }
-        return itemStack.isEmpty() ? ItemStack.EMPTY : itemStack;
+        return stack.isEmpty() ? ItemStack.EMPTY : stack;
     }
 
     protected ItemStack getReturnItem() {
@@ -107,7 +107,7 @@ public abstract class AbstractPotionItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         String key = "tooltip." + stack.getDescriptionId() + ".0";
         if (I18n.exists(key)) {
             tooltipComponents.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
@@ -147,6 +147,6 @@ public abstract class AbstractPotionItem extends Item {
                 }
             }
         }
-        potions.getLast().getA().finishUsingItem(level, player);
+        PortListExtension.getLast(potions).getA().finishUsingItem(level, player);
     }
 }

@@ -1,9 +1,9 @@
 package org.confluence.mod.common.item.sponsor;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +28,7 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 /// 饰品：「无聊之咒·陨志」
 ///
@@ -94,30 +95,24 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
     }
 
     @Override
-    public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-        AttributeModifier modifier = new AttributeModifier(ID, 0.2 * LibUtils.getItemStackNbtNoCopy(stack).getByte("count"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID id, ItemStack stack) {
+        AttributeModifier modifier = new AttributeModifier(id, ID.getPath(), 0.2 * LibUtils.getItemStackNbtNoCopy(stack).getByte("count"), AttributeModifier.Operation.MULTIPLY_TOTAL);
         return ImmutableMultimap.of(
-                LibAttributes.getAttackDamage(), modifier,
-                LibAttributes.getMagicDamage(), modifier,
-                LibAttributes.getRangedDamage(), modifier,
-                LibAttributes.getSummonDamage(), modifier,
-                LibAttributes.getCriticalChance(), modifier
+                LibAttributes.getAttackDamage().value(), modifier,
+                LibAttributes.getMagicDamage().value(), modifier,
+                LibAttributes.getRangedDamage().value(), modifier,
+                LibAttributes.getSummonDamage().value(), modifier,
+                LibAttributes.getCriticalChance().value(), modifier
         );
     }
 
-    @SuppressWarnings({"removal", "UnstableApiUsage"})
     @Override
     public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, int lootingLevel, boolean recentlyHit, ItemStack stack) {
-        return getDropRule(slotContext, source, recentlyHit, stack);
-    }
-
-    @Override
-    public ICurio.DropRule getDropRule(SlotContext slotContext, DamageSource source, boolean recentlyHit, ItemStack stack) {
         return ModSecretSeeds.BOULDER_WORLD.match() ? ICurio.DropRule.ALWAYS_KEEP : ICurio.DropRule.DEFAULT;
     }
 
     private static void savePos(CompoundTag tag, LivingEntity living) {
-        tag.put("currentPos", Vec3.CODEC.encodeStart(NbtOps.INSTANCE, living.position()).getOrThrow());
+        tag.put("currentPos", PortDataResultExtension.getOrThrow(Vec3.CODEC.encodeStart(NbtOps.INSTANCE, living.position())));
     }
 
     private static @Nullable Vec3 readPos(CompoundTag tag) {

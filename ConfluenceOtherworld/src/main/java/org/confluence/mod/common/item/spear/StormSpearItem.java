@@ -7,18 +7,19 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.common.init.ModEntities;
-import software.bernie.geckolib.animation.EasingType;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
+import software.bernie.geckolib.core.animation.EasingType;
 
 public class StormSpearItem extends AbstractSpearItem {
     public static final double knockBackScale = 0.3;
     public static final double knockBackMotionY = 0.1;
 
     public StormSpearItem() {
-        super(new Properties().attributes(attributes(3, 7F)), ModRarity.BLUE, 15, 5, createKeyframes(
+        super(new PortItem.PortProperties().attributes(attributes(3, 7F)), ModRarity.BLUE, 15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.25, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.5, -16, EasingType.EASE_IN_EXPO),

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.mana;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -10,7 +11,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -18,6 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.mana.CloudProjectile;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -29,7 +30,7 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
         super(properties, rarity, factory, damage, manaCost, rawVelocity, cooldown);
     }
 
-    public CloudRodItem(ModRarity rarity, ProjectileFactory<CloudProjectile> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<ItemAttributeModifiers.Builder> consumer) {
+    public CloudRodItem(ModRarity rarity, ProjectileFactory<CloudProjectile> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
         super(rarity, factory, damage, manaCost, rawVelocity, cooldown, consumer);
     }
 
@@ -50,7 +51,7 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
         CompoundTag tag = LibUtils.getItemStackNbtNoCopy(stack);
         ListTag clouds = tag.getList("Clouds", CompoundTag.TAG_INT_ARRAY);
         if (clouds.size() == maxCloud) {
-            UUID removed = NbtUtils.loadUUID(clouds.removeFirst());
+            UUID removed = NbtUtils.loadUUID(PortListExtension.removeFirst(clouds));
             Entity entity = player.serverLevel().getEntity(removed);
             if (entity != null) {
                 entity.discard();

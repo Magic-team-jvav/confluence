@@ -1,11 +1,10 @@
 package org.confluence.mod.common.item.sword.legacy;
 
 
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.item.sword.BaseSwordItem.ModifierBuilder;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -38,7 +37,7 @@ public class SwordPrefabs {
     public static ModifierBuilder withSpecialSweep(float ratio, ModifierBuilder builder) {
         builder.setSpecialSweep();
         if (ratio > 0.0F) {
-            return builder.addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, ratio, AttributeModifier.Operation.ADD_VALUE);
+            return builder.addAttributeModifier(PortAttributesExtension.sweepingDamageRatio(), ratio, PortAttributeModifier.PortOperation.ADD_VALUE);
         }
         return builder;
     }

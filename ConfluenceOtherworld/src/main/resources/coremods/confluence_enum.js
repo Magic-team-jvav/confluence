@@ -1,14 +1,14 @@
-function initializeCoreMod() {
-    var Opcodes = Java.type('org.objectweb.asm.Opcodes');
-    var InsnList = Java.type('org.objectweb.asm.tree.InsnList');
-    var InsnNode = Java.type('org.objectweb.asm.tree.InsnNode');
-    var FieldInsnNode = Java.type('org.objectweb.asm.tree.FieldInsnNode');
-    var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
-    var TypeInsnNode = Java.type('org.objectweb.asm.tree.TypeInsnNode');
-    var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
-    var LdcInsnNode = Java.type('org.objectweb.asm.tree.LdcInsnNode');
-    var FieldNode = Java.type('org.objectweb.asm.tree.FieldNode');
+var Opcodes = Java.type('org.objectweb.asm.Opcodes');
+var InsnList = Java.type('org.objectweb.asm.tree.InsnList');
+var InsnNode = Java.type('org.objectweb.asm.tree.InsnNode');
+var FieldInsnNode = Java.type('org.objectweb.asm.tree.FieldInsnNode');
+var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
+var TypeInsnNode = Java.type('org.objectweb.asm.tree.TypeInsnNode');
+var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
+var LdcInsnNode = Java.type('org.objectweb.asm.tree.LdcInsnNode');
+var FieldNode = Java.type('org.objectweb.asm.tree.FieldNode');
 
+function initializeCoreMod() {
     return {
         'extend_boat_type_enum': {
             'target': {

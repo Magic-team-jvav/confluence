@@ -1,13 +1,13 @@
 package org.confluence.mod.common.item.sword;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,6 +20,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolAction;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
@@ -31,31 +32,27 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.sword.legacy.*;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.init.TEDataComponentTypes;
-import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTags;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.AttributeHolder;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
-public class BaseSwordItem extends SwordItem {
+public class BaseSwordItem extends SwordItem implements IPortItemExtension {
     public @Nullable ModifierBuilder modifier;
     private @Nullable TooltipComponent component;
 
-    public BaseSwordItem(Tier tier, Item.Properties properties) {
-        super(tier, properties);
+    public BaseSwordItem(Tier tier, int rawDamage, float rawSpeed, PortItem.PortProperties properties) {
+        super(tier, rawDamage, rawSpeed, properties);
     }
 
     /// MC白色剑。无效果
@@ -65,11 +62,7 @@ public class BaseSwordItem extends SwordItem {
 
     /// MC带颜色的剑。无效果
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
-        super(tier, new Item.Properties().durability(tier.getUses())
-                .component(ConfluenceMagicLib.MOD_RARITY, rarity)
-                .component(DataComponents.ATTRIBUTE_MODIFIERS,
-                        createAttributes(tier, rawDamage - tier.getAttackDamageBonus() - 1, rawSpeed - 4))
-        );
+        super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), new PortItem.PortProperties().durability(tier.getUses()).component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.modifier = new ModifierBuilder();
     }
 
@@ -78,24 +71,8 @@ public class BaseSwordItem extends SwordItem {
     /// @param modifier 效果修饰器
     /// @see SwordPrefabs 预制体和半预制体
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, ModifierBuilder modifier) {
-        super(tier, modifier.buildProperties(tier, rarity, rawDamage, rawSpeed));
+        super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), modifier.buildProperties(tier, rarity, rawDamage, rawSpeed));
         this.modifier = modifier;
-    }
-
-    public static PortItemAttributeModifiers createAttributes(Tier tier, int attackDamage, float attackSpeed) {
-        return createAttributes(tier, (float) attackDamage, attackSpeed);
-    }
-
-    public static PortItemAttributeModifiers createAttributes(Tier tier, float atackDamage, float attackSpeed) {
-        return PortItemAttributeModifiers.builder().add(
-                Attributes.ATTACK_DAMAGE,
-                new PortAttributeModifier(BASE_ATTACK_DAMAGE_ID, (double) (atackDamage + tier.getAttackDamageBonus()), PortAttributeModifier.PortOperation.ADD_VALUE),
-                PortEquipmentSlotGroup.MAINHAND
-        ).add(
-                Attributes.ATTACK_SPEED,
-                new PortAttributeModifier(BASE_ATTACK_SPEED_ID, (double) attackSpeed, PortAttributeModifier.PortOperation.ADD_VALUE),
-                PortEquipmentSlotGroup.MAINHAND
-        ).build();
     }
 
     @Override
@@ -107,13 +84,12 @@ public class BaseSwordItem extends SwordItem {
     }
 
     public void applyHitEffects(ItemStack weapon, @Nullable Entity attacker, LivingEntity hurter, DamageSource damageSource) {
-        if (modifier != null &&
-                damageSource.is(DamageTypeTags.PANIC_CAUSES)) {
-            EffectStrategyComponent data = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
+        if (modifier != null && damageSource.is(PortTags.DamageTypes.PANIC_CAUSES)) {
+            EffectStrategyComponent data = PortItemStackExtension.getData(weapon, TEDataComponentTypes.EFFECT_STRATEGY);
             if (data != null) {
                 if (attacker instanceof Player player
-                        && damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND)
-                        && damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK)
+                        && damageSource.is(PortTags.DamageTypes.CAN_BREAK_ARMOR_STAND)
+                        && damageSource.is(PortTags.DamageTypes.IS_PLAYER_ATTACK)
                 ) {
                     if (player.getAttackStrengthScale(0.5f) > 0.95f) {
                         data.applyAll(player, hurter);
@@ -145,24 +121,19 @@ public class BaseSwordItem extends SwordItem {
     }
 
     @Override
-    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return ModUtils.supportsEnchantment(stack, enchantment);
     }
 
     @Override
-    public float getAttackDamageBonus(Entity target, float damage, DamageSource damageSource) {
-        if (modifier != null && modifier.attackDamageBonus != null) {
-            return modifier.attackDamageBonus.get(target, damage, damageSource);
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (super.hurtEnemy(stack, target, attacker)) {
+            if (modifier != null && modifier.postHurtEnemy != null) {
+                modifier.postHurtEnemy.accept(stack, target, attacker);
+            }
+            return true;
         }
-        return super.getAttackDamageBonus(target, damage, damageSource);
-    }
-
-    @Override
-    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        super.postHurtEnemy(stack, target, attacker);
-        if (modifier != null && modifier.postHurtEnemy != null) {
-            modifier.postHurtEnemy.accept(stack, target, attacker);
-        }
+        return false;
     }
 
     @Override
@@ -180,7 +151,6 @@ public class BaseSwordItem extends SwordItem {
         protected int modifyCount = 0;
         protected List<Consumer<MutableComponent>> tooltipsModifier = new ArrayList<>();
         protected boolean hasImage;
-        protected IAttackDamageBonus attackDamageBonus;
         protected IPostHurtEnemy postHurtEnemy;
         public IPreLivingDamage preLivingDamage;
 
@@ -195,7 +165,7 @@ public class BaseSwordItem extends SwordItem {
         ///
         /// @see EffectStrategyComponent
         public ModifierBuilder setOnHitEffect(EffectStrategyComponent onHit) {
-            this.modifier.add(p -> p.component(TEDataComponentTypes.EFFECT_STRATEGY, onHit));
+            properties.component(TEDataComponentTypes.EFFECT_STRATEGY, onHit);
             return this;
         }
 
@@ -237,11 +207,6 @@ public class BaseSwordItem extends SwordItem {
         /// @see SwordStrategy
         public ModifierBuilder setInventoryTick(IInventoryTick inventoryTick) {
             this.inventoryTick = inventoryTick;
-            return this;
-        }
-
-        public ModifierBuilder setAttackDamageBonus(IAttackDamageBonus bonus) {
-            this.attackDamageBonus = bonus;
             return this;
         }
 
@@ -299,20 +264,18 @@ public class BaseSwordItem extends SwordItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        EffectStrategyComponent hitEffects = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        EffectStrategyComponent hitEffects = PortItemStackExtension.getData(stack, TEDataComponentTypes.EFFECT_STRATEGY);
         if (hitEffects != null) {
             IEffectStrategy.appendDescription(tooltipComponents, hitEffects.effects(), Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0x969811));
         }
-        SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
+        SwordProjectileComponent data = PortItemStackExtension.getData(stack, ModDataComponentTypes.SWORD_PROJECTILE);
         if (data != null) {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0x57cdfb));
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x" + data.damageFactor()).withColor(0x57cdfb));
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.speed").append(": " + data.baseSpeed()).withColor(0x57cdfb));
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.cooldown").append(": " + data.cooldown()).withColor(0x57cdfb));
-            if (data.trackType().isPresent()) {
-                data.trackType().ifPresent(type -> tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.track_type").append(": ").append(Component.translatable(type.getName())).withColor(0x57cdfb)));
-            }
+            tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj"), 0x57cdfb));
+            tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x" + data.damageFactor()), 0x57cdfb));
+            tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.speed").append(": " + data.baseSpeed()), 0x57cdfb));
+            tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.cooldown").append(": " + data.cooldown()), 0x57cdfb));
+            data.trackType().ifPresent(type -> tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.track_type").append(": ").append(Component.translatable(type.getName())), 0x57cdfb)));
         }
 
         if (modifier != null) {
@@ -355,7 +318,7 @@ public class BaseSwordItem extends SwordItem {
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
+    public boolean canPerformAction(ItemStack stack, ToolAction itemAbility) {
         boolean b = super.canPerformAction(stack, itemAbility);
         if (modifier != null) {
             return b && modifier.canPerformSweep;

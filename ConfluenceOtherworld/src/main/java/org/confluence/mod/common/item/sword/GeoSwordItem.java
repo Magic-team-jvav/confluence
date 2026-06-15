@@ -3,11 +3,12 @@ package org.confluence.mod.common.item.sword;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Tier;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.common.component.ModRarity;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -17,8 +18,8 @@ import java.util.function.Consumer;
 public class GeoSwordItem extends BaseSwordItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public GeoSwordItem(Tier tier, Properties properties) {
-        super(tier, properties);
+    public GeoSwordItem(Tier tier, int rawDamage, float rawSpeed, PortItem.PortProperties properties) {
+        super(tier, rawDamage, rawSpeed, properties);
     }
 
     public GeoSwordItem(Tier tier, int rawDamage, float rawSpeed) {
@@ -42,12 +43,12 @@ public class GeoSwordItem extends BaseSwordItem implements GeoItem {
     }
 
     @Override
-    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-        consumer.accept(new GeoRenderProvider() {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(new IClientItemExtensions() {
             private GeoItemRenderer<GeoSwordItem> renderer;
 
             @Override
-            public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if (renderer == null) {
                     this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(BuiltInRegistries.ITEM.getKey(GeoSwordItem.this)));
                 }

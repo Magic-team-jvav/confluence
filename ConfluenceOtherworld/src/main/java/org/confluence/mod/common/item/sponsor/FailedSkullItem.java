@@ -16,6 +16,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -45,8 +46,8 @@ public class FailedSkullItem extends StandingAndWallBlockItem implements Equipab
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.addAll(TooltipItem.getTooltipsFromString("failed_skull", 1, ChatFormatting.GRAY));
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
     }
 }

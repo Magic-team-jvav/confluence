@@ -12,12 +12,13 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class ManaPotionItem extends AbstractPotionItem {
     private final int amount;
 
     public ManaPotionItem(int amount, ModRarity rarity) {
-        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        super(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.amount = amount;
     }
 
@@ -30,9 +31,9 @@ public class ManaPotionItem extends AbstractPotionItem {
         if (level.isClientSide) return;
         if (living instanceof ServerPlayer serverPlayer) {
             PlayerUtils.receiveMana(serverPlayer, () -> amount);
-            MobEffectInstance instance = serverPlayer.getEffect(ModEffects.MANA_SICKNESS);
+            MobEffectInstance instance = serverPlayer.getEffect(ModEffects.MANA_SICKNESS.get());
             if (instance == null) {
-                instance = new MobEffectInstance(ModEffects.MANA_SICKNESS, EnchantmentUtils.processManaSicknessDuration(serverPlayer, 100));
+                instance = new MobEffectInstance(ModEffects.MANA_SICKNESS.get(), EnchantmentUtils.processManaSicknessDuration(serverPlayer, 100));
             } else {
                 int duration = Math.min(EnchantmentUtils.processManaSicknessDuration(serverPlayer, instance.duration + 100), 200);
                 instance = new MobEffectInstance(instance); // 复制一份，保证能正常更新

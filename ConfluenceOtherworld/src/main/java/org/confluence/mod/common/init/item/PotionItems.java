@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -24,6 +25,7 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class PotionItems {
     public static void init() {}
@@ -51,15 +53,15 @@ public class PotionItems {
     public static final PortDeferredItem<AbstractPotionItem> BUILDER_POTION = ITEMS.register("builder_potion", () -> new EffectPotionItem(ModEffects.BUILDER, 54000));
     public static final PortDeferredItem<AbstractPotionItem> DANGERSENSE_POTION = ITEMS.register("dangersense_potion", () -> new EffectPotionItem(ModEffects.DANGER_SENSE, 4800));
     public static final PortDeferredItem<AbstractPotionItem> ENDURANCE_POTION = ITEMS.register("endurance_potion", () -> new EffectPotionItem(ModEffects.ENDURANCE, 4800));
-    public static final PortDeferredItem<AbstractPotionItem> FEATHERFALL_POTION = ITEMS.register("featherfall_potion", () -> new EffectPotionItem(MobEffects.SLOW_FALLING, 12000));
+    public static final PortDeferredItem<AbstractPotionItem> FEATHERFALL_POTION = ITEMS.register("featherfall_potion", () -> new EffectPotionItem(supplier(MobEffects.SLOW_FALLING), 12000));
     public static final PortDeferredItem<AbstractPotionItem> FLIPPER_POTION = ITEMS.register("flipper_potion", () -> new EffectPotionItem(ModEffects.FLIPPER, 9600));
     public static final PortDeferredItem<AbstractPotionItem> FISHING_POTION = ITEMS.register("fishing_potion", () -> new EffectPotionItem(ModEffects.FISHING, 9600));
-    public static final PortDeferredItem<AbstractPotionItem> GILLS_POTION = ITEMS.register("gills_potion", () -> new EffectPotionItem(MobEffects.WATER_BREATHING, 4800));
+    public static final PortDeferredItem<AbstractPotionItem> GILLS_POTION = ITEMS.register("gills_potion", () -> new EffectPotionItem(supplier(MobEffects.WATER_BREATHING), 4800));
     public static final PortDeferredItem<AbstractPotionItem> GRAVITATION_POTION = ITEMS.register("gravitation_potion", () -> new EffectPotionItem(TCEffects.GRAVITATION, 3600));
     public static final PortDeferredItem<AbstractPotionItem> HEART_REACH_POTION = ITEMS.register("heart_reach_potion", () -> new EffectPotionItem(ModEffects.HEART_REACH, 9600));
     public static final PortDeferredItem<AbstractPotionItem> HUNTER_POTION = ITEMS.register("hunter_potion", () -> new EffectPotionItem(ModEffects.HUNTER, 9600));
     public static final PortDeferredItem<AbstractPotionItem> INFERNO_POTION = ITEMS.register("inferno_potion", () -> new EffectPotionItem(ModEffects.INFERNO, 4800));
-    public static final PortDeferredItem<AbstractPotionItem> INVISIBILITY_POTION = ITEMS.register("invisibility_potion", () -> new EffectPotionItem(MobEffects.INVISIBILITY, 3600));
+    public static final PortDeferredItem<AbstractPotionItem> INVISIBILITY_POTION = ITEMS.register("invisibility_potion", () -> new EffectPotionItem(supplier(MobEffects.INVISIBILITY), 3600));
     public static final PortDeferredItem<AbstractPotionItem> IRON_SKIN_POTION = ITEMS.register("iron_skin_potion", () -> new EffectPotionItem(ModEffects.IRON_SKIN, 9600));
     public static final PortDeferredItem<AbstractPotionItem> LIFEFORCE_POTION = ITEMS.register("lifeforce_potion", () -> new EffectPotionItem(ModEffects.LIFE_FORCE, 9600));
     public static final PortDeferredItem<AbstractPotionItem> LOVE_POTION = ITEMS.register("love_potion", () -> new EffectThrowablePotionItem(ModEffects.LOVE, 600));
@@ -68,12 +70,12 @@ public class PotionItems {
     public static final PortDeferredItem<AbstractPotionItem> GREATER_LUCK_POTION = ITEMS.register("greater_luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000, 2));
     public static final PortDeferredItem<AbstractPotionItem> MANA_REGENERATION_POTION = ITEMS.register("mana_regeneration_potion", () -> new EffectPotionItem(ModEffects.MANA_REGENERATION, 9600));
     public static final PortDeferredItem<AbstractPotionItem> MAGIC_POWER_POTION = ITEMS.register("magic_power_potion", () -> new EffectPotionItem(ModEffects.MAGIC_POWER, 4800));
-    public static final PortDeferredItem<AbstractPotionItem> MINING_POTION = ITEMS.register("mining_potion", () -> new EffectPotionItem(MobEffects.DIG_SPEED, 12000, 1));
-    public static final PortDeferredItem<AbstractPotionItem> NIGHT_OWL_POTION = ITEMS.register("night_owl_potion", () -> new EffectPotionItem(MobEffects.NIGHT_VISION, 6000));
+    public static final PortDeferredItem<AbstractPotionItem> MINING_POTION = ITEMS.register("mining_potion", () -> new EffectPotionItem(supplier(MobEffects.DIG_SPEED), 12000, 1));
+    public static final PortDeferredItem<AbstractPotionItem> NIGHT_OWL_POTION = ITEMS.register("night_owl_potion", () -> new EffectPotionItem(supplier(MobEffects.NIGHT_VISION), 6000));
     public static final PortDeferredItem<AbstractPotionItem> OBSIDIAN_SKIN_POTION = ITEMS.register("obsidian_skin_potion", () -> new EffectPotionItem(ModEffects.OBSIDIAN_SKIN, 7200));
     public static final PortDeferredItem<AbstractPotionItem> RAGE_POTION = ITEMS.register("rage_potion", () -> new EffectPotionItem(ModEffects.RAGE, 4800));
     public static final PortDeferredItem<AbstractPotionItem> RECALL_POTION = ITEMS.register("recall_potion", RecallPotionItem::new);
-    public static final PortDeferredItem<AbstractPotionItem> REGENERATION_POTION = ITEMS.register("regeneration_potion", () -> new EffectPotionItem(MobEffects.REGENERATION, 9600));
+    public static final PortDeferredItem<AbstractPotionItem> REGENERATION_POTION = ITEMS.register("regeneration_potion", () -> new EffectPotionItem(supplier(MobEffects.REGENERATION), 9600));
     public static final PortDeferredItem<AbstractPotionItem> SHINE_POTION = ITEMS.register("shine_potion", () -> new EffectPotionItem(ModEffects.SHINE, 12000) {
         private final boolean noneLoaded = !LibUtils.isModLoaded("sodiumdynamiclights");
 
@@ -86,7 +88,7 @@ public class PotionItems {
         }
     });
     public static final PortDeferredItem<AbstractPotionItem> SPELUNKER_POTION = ITEMS.register("spelunker_potion", () -> new EffectPotionItem(ModEffects.SPELUNKER, 6000));
-    public static final PortDeferredItem<AbstractPotionItem> SWIFTNESS_POTION = ITEMS.register("swiftness_potion", () -> new EffectPotionItem(MobEffects.MOVEMENT_SPEED, 9600));
+    public static final PortDeferredItem<AbstractPotionItem> SWIFTNESS_POTION = ITEMS.register("swiftness_potion", () -> new EffectPotionItem(supplier(MobEffects.MOVEMENT_SPEED), 9600));
     public static final PortDeferredItem<AbstractPotionItem> THORNS_POTION = ITEMS.register("thorns_potion", () -> new EffectPotionItem(ModEffects.THORNS, 9600));
     public static final PortDeferredItem<AbstractPotionItem> TITAN_POTION = ITEMS.register("titan_potion", () -> new EffectPotionItem(ModEffects.TITAN, 9600));
     public static final PortDeferredItem<AbstractPotionItem> WATER_WALKING_POTION = ITEMS.register("water_walking_potion", () -> new EffectPotionItem(ModEffects.WATER_WALKING, 12000));
@@ -120,4 +122,8 @@ public class PotionItems {
     public static final PortDeferredItem<AbstractPotionItem> CALMING_POTION = ITEMS.register("calming_potion", () -> new EffectPotionItem(ModRarity.BLUE, ModEffects.CALM, 14400));
 
     public static final PortDeferredItem<AbstractPotionItem> SATIETY_POTION = ITEMS.register("satiety_potion", () -> new EffectPotionItem(ModRarity.ORANGE, ModEffects.HUNGER_DELAYED, 24000));
+
+    private static Supplier<MobEffect> supplier(MobEffect effect) {
+        return () -> effect;
+    }
 }

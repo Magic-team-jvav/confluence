@@ -16,7 +16,11 @@ public class BaseDyeItem extends CustomRarityItem {
     }
 
     public static int getRGB(ItemStack stack) {
-        return PortItemStackExtension.getDyedColor(stack);
+        int dyedColor = PortItemStackExtension.getDyedColor(stack);
+        if (dyedColor == -1) {
+            return 0xFFFFFF;
+        }
+        return dyedColor;
     }
 
     public static int getARGB(ItemStack stack) {

@@ -14,19 +14,17 @@ import org.confluence.lib.common.item.TooltipItem;
 import java.util.List;
 
 public class KindMisideRingItem extends TooltipItem {
-
     public KindMisideRingItem() {
         super(new Properties(), ModRarity.COMMON, TooltipItem.getTooltipsFromString("kind_miside_ring", 1, ChatFormatting.GRAY));
     }
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (!level.isClientSide) {
-            if (entity instanceof Player player && !player.isCreative() && player.isAlive()) {
-                List<Monster> monsters = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(8));
-                for (Monster ignored : monsters) {
-                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 20, 0, false, false));
-                }
+        if (level.isClientSide) return;
+        if (entity instanceof Player player && !player.isCreative() && player.isAlive()) {
+            List<Monster> monsters = level.getEntitiesOfClass(Monster.class, player.getBoundingBox().inflate(8));
+            for (Monster ignored : monsters) {
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 20, 0, false, false));
             }
         }
     }

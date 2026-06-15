@@ -19,24 +19,24 @@ import java.util.function.Supplier;
 public class EffectPotionItem extends AbstractPotionItem {
     public final MobEffectInstanceData data;
 
-    public EffectPotionItem(Properties properties, Supplier<MobEffect> mobEffect, int duration, int amplifier) {
+    public EffectPotionItem(Properties properties, Supplier<? extends MobEffect> mobEffect, int duration, int amplifier) {
         super(properties);
-        this.data = new MobEffectInstanceData(mobEffect, duration, amplifier);
+        this.data = new MobEffectInstanceData((Supplier<MobEffect>) mobEffect, duration, amplifier);
     }
 
-    public EffectPotionItem(ModRarity rarity, Supplier<MobEffect> mobEffect, int duration) {
+    public EffectPotionItem(ModRarity rarity, Supplier<? extends MobEffect> mobEffect, int duration) {
         this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, 0);
     }
 
-    public EffectPotionItem(ModRarity rarity, Supplier<MobEffect> mobEffect, int duration, int amplifier) {
+    public EffectPotionItem(ModRarity rarity, Supplier<? extends MobEffect> mobEffect, int duration, int amplifier) {
         this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, amplifier);
     }
 
-    public EffectPotionItem(Supplier<MobEffect> mobEffect, int duration) {
+    public EffectPotionItem(Supplier<? extends MobEffect> mobEffect, int duration) {
         this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, 0);
     }
 
-    public EffectPotionItem(Supplier<MobEffect> mobEffect, int duration, int amplifier) {
+    public EffectPotionItem(Supplier<? extends MobEffect> mobEffect, int duration, int amplifier) {
         this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, amplifier);
     }
 

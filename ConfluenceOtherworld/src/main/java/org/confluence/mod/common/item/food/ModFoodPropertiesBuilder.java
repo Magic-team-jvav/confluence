@@ -1,17 +1,21 @@
 package org.confluence.mod.common.item.food;
 
-import com.google.common.collect.ImmutableList;
+import it.unimi.dsi.fastutil.objects.ObjectFloatImmutablePair;
+import it.unimi.dsi.fastutil.objects.ObjectFloatPair;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.diff.IPortFoodProperties;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ModFoodPropertiesBuilder {
-    private final ImmutableList.Builder<FoodProperties.PossibleEffect> effects = ImmutableList.builder();
+    private final List<ObjectFloatPair<Supplier<MobEffectInstance>>> effects = new ArrayList<>();
 
     private int nutrition;
 
@@ -21,7 +25,7 @@ public class ModFoodPropertiesBuilder {
 
     private float eatSeconds;
 
-    private Optional<ItemStack> usingConvertsTo = Optional.empty();
+    private @Nullable ItemStack usingConvertsTo;
 
     public static ModFoodPropertiesBuilder Builder() {
         return new ModFoodPropertiesBuilder();
@@ -43,7 +47,7 @@ public class ModFoodPropertiesBuilder {
     }
 
     public ModFoodPropertiesBuilder usingConvertsTo(ItemStack usingConvertsTo) {
-        this.usingConvertsTo = Optional.of(usingConvertsTo);
+        this.usingConvertsTo = usingConvertsTo;
         return this;
     }
 
@@ -58,7 +62,7 @@ public class ModFoodPropertiesBuilder {
     }
 
     public ModFoodPropertiesBuilder addEffect(Supplier<MobEffectInstance> effect, float probability) {
-        this.effects.add(new FoodProperties.PossibleEffect(effect, probability));
+        this.effects.add(new ObjectFloatImmutablePair<>(effect, probability));
         return this;
     }
 
@@ -71,12 +75,25 @@ public class ModFoodPropertiesBuilder {
     }
 
     public ModFoodPropertiesBuilder useCovertsTo(ItemLike usingConvertsTo) {
-        this.usingConvertsTo = Optional.of(new ItemStack(usingConvertsTo));
+        this.usingConvertsTo = usingConvertsTo.asItem().getDefaultInstance();
         return this;
     }
 
     public FoodProperties build() {
-        return new FoodProperties(nutrition, saturation, canAlwaysEat, eatSeconds, usingConvertsTo, effects.build());
+        FoodProperties.Builder builder = new FoodProperties.Builder()
+                .nutrition(nutrition)
+                .saturationMod(saturation);
+        if (canAlwaysEat) {
+            builder.alwaysEat();
+        }
+        for (ObjectFloatPair<Supplier<MobEffectInstance>> pair : effects) {
+            builder.effect(pair.first(), pair.rightFloat());
+        }
+        FoodProperties properties = builder.build();
+        IPortFoodProperties i = IPortFoodProperties.of(properties);
+        i.portlib$setEatSeconds(eatSeconds);
+        i.portlib$setUsingConvertsTo(usingConvertsTo);
+        return properties;
     }
 
     public record EffectData(MobEffect effect, int duration, int level, float probability) {

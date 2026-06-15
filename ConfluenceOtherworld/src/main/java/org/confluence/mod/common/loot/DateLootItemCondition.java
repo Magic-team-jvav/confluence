@@ -1,5 +1,7 @@
 package org.confluence.mod.common.loot;
 
+import PortLib.extensions.com.mojang.datafixers.util.Either.PortEitherExtension;
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -14,8 +16,11 @@ import org.confluence.mod.util.DateUtils;
 
 import java.util.Calendar;
 
-public record DateLootItemCondition(boolean isLunar, DateStamp fromInclusive,
-                                    DateStamp toInclusive) implements LootItemCondition {
+public record DateLootItemCondition(
+        boolean isLunar,
+        DateStamp fromInclusive,
+        DateStamp toInclusive
+) implements LootItemCondition {
     public static final DateLootItemCondition HALLOWEENS = new DateLootItemCondition(false, new DateStamp(Calendar.OCTOBER, 10), new DateStamp(Calendar.NOVEMBER, 1));
     public static final DateLootItemCondition CHRISTMAS = new DateLootItemCondition(false, new DateStamp(Calendar.DECEMBER, 15), new DateStamp(Calendar.DECEMBER, 31));
     public static final MapCodec<DateLootItemCondition> CODEC = Codec.mapEither(Codec.STRING.xmap(string -> {
@@ -27,10 +32,10 @@ public record DateLootItemCondition(boolean isLunar, DateStamp fromInclusive,
         if (condition == CHRISTMAS) return "christmas";
         throw new IllegalArgumentException("Unknown date " + condition);
     }).fieldOf("preset"), RecordCodecBuilder.<DateLootItemCondition>mapCodec(instance -> instance.group(
-            Codec.BOOL.lenientOptionalFieldOf("is_lunar", false).forGetter(DateLootItemCondition::isLunar),
+            PortCodecExtension.lenientOptionalFieldOf(Codec.BOOL, "is_lunar", false).forGetter(DateLootItemCondition::isLunar),
             DateStamp.CODEC.fieldOf("from_inclusive").forGetter(DateLootItemCondition::fromInclusive),
             DateStamp.CODEC.fieldOf("to_inclusive").forGetter(DateLootItemCondition::toInclusive)
-    ).apply(instance, DateLootItemCondition::new))).xmap(Either::unwrap, Either::right);
+    ).apply(instance, DateLootItemCondition::new))).xmap(PortEitherExtension::unwrap, Either::right);
 
     @Override
     public LootItemConditionType getType() {
@@ -65,8 +70,8 @@ public record DateLootItemCondition(boolean isLunar, DateStamp fromInclusive,
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        return o instanceof DateLootItemCondition that &&
-                that.isLunar() == isLunar && that.fromInclusive().equals(fromInclusive) && that.toInclusive().equals(toInclusive);
+        return o instanceof DateLootItemCondition c &&
+                c.isLunar == isLunar && c.fromInclusive.equals(fromInclusive) && c.toInclusive.equals(toInclusive);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.loot;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,13 +13,17 @@ import org.confluence.mod.common.init.ModLootTables;
 
 import java.util.Objects;
 
-public record GamePhaseLootItemCondition(GamePhase from, boolean fromInclusive, GamePhase to,
-                                         boolean toInclusive) implements LootItemCondition {
+public record GamePhaseLootItemCondition(
+        GamePhase from,
+        boolean fromInclusive,
+        GamePhase to,
+        boolean toInclusive
+) implements LootItemCondition {
     public static final MapCodec<GamePhaseLootItemCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             GamePhase.CODEC.fieldOf("from").forGetter(GamePhaseLootItemCondition::from),
-            Codec.BOOL.lenientOptionalFieldOf("from_inclusive", true).forGetter(GamePhaseLootItemCondition::fromInclusive),
+            PortCodecExtension.lenientOptionalFieldOf(Codec.BOOL, "from_inclusive", true).forGetter(GamePhaseLootItemCondition::fromInclusive),
             GamePhase.CODEC.fieldOf("to").forGetter(GamePhaseLootItemCondition::to),
-            Codec.BOOL.lenientOptionalFieldOf("to_inclusive", true).forGetter(GamePhaseLootItemCondition::toInclusive)
+            PortCodecExtension.lenientOptionalFieldOf(Codec.BOOL, "to_inclusive", true).forGetter(GamePhaseLootItemCondition::toInclusive)
     ).apply(instance, GamePhaseLootItemCondition::new));
 
     @Override
@@ -37,8 +42,8 @@ public record GamePhaseLootItemCondition(GamePhase from, boolean fromInclusive, 
 
     @Override
     public boolean equals(Object o) {
-        return o == this || ((o instanceof GamePhaseLootItemCondition that) &&
-                from == that.from() && fromInclusive == that.fromInclusive() && to == that.to() && toInclusive == that.toInclusive());
+        return o == this || ((o instanceof GamePhaseLootItemCondition c) &&
+                from == c.from && fromInclusive == c.fromInclusive && to == c.to && toInclusive == c.toInclusive);
     }
 
     @Override

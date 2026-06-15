@@ -11,17 +11,18 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.item.PortProjectileItem;
 
 import java.util.List;
 
-public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem {
+public class IceTofuBrickItem extends CustomRarityItem implements PortProjectileItem {
     public IceTofuBrickItem() {
         super(new Properties(), ModRarity.MASTER);
     }
@@ -48,8 +49,8 @@ public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.addAll(TooltipItem.getTooltipsFromString("ice_tofu_brick", 1, ChatFormatting.GRAY));
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
     }
 }

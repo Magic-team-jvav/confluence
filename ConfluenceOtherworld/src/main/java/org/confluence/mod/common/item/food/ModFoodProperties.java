@@ -16,7 +16,7 @@ public class ModFoodProperties {
                 .saturation(saturation)
                 .fast()
                 .alwaysEdible()
-                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 3000), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), 3000), 1.0f)
                 .build();
     }
 

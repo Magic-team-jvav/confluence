@@ -25,8 +25,8 @@ public class SweetSword extends BaseSwordItem {
             }
             effect.update(new MobEffectInstance(
                     effect.getEffect(),
-                    (int) (effect.duration * factor),
-                    (int) (effect.amplifier * factor),
+                    (int) (effect.getDuration() * factor),
+                    (int) (effect.getAmplifier() * factor),
                     effect.isAmbient(),
                     effect.isVisible(),
                     effect.showIcon()

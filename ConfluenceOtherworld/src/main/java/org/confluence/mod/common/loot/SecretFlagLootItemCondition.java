@@ -1,6 +1,6 @@
 package org.confluence.mod.common.loot;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
@@ -11,7 +11,7 @@ public record SecretFlagLootItemCondition(
         long secretFlag,
         boolean flipMatch
 ) implements LootItemCondition, SecretFlagMatcher {
-    public static final MapCodec<SecretFlagLootItemCondition> CODEC = SecretFlagMatcher.createCodec(SecretFlagLootItemCondition::new);
+    public static final Codec<SecretFlagLootItemCondition> CODEC = SecretFlagMatcher.createCodec(SecretFlagLootItemCondition::new);
 
     @Override
     public LootItemConditionType getType() {
@@ -25,8 +25,7 @@ public record SecretFlagLootItemCondition(
 
     @Override
     public boolean equals(Object o) {
-        return this == o || (o instanceof SecretFlagLootItemCondition that &&
-                secretFlag == that.secretFlag && flipMatch == that.flipMatch);
+        return this == o || (o instanceof SecretFlagLootItemCondition c && secretFlag == c.secretFlag && flipMatch == c.flipMatch);
     }
 
     @Override

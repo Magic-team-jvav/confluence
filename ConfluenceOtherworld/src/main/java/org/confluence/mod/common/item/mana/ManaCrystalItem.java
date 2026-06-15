@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.mana;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,15 +27,15 @@ public class ManaCrystalItem extends TooltipItem {
         level.playSound(player, player.blockPosition().above(), ModSoundEvents.MANA_STAR_USE.get(), SoundSource.PLAYERS, 1, 1);
         ItemStack itemStack = player.getItemInHand(hand);
         if (player instanceof ServerPlayer serverPlayer) {
-            ManaStorage data1 = ManaStorage.of(player);
-            if (data1.addStar()) {
+            ManaStorage manaStorage = ManaStorage.of(player);
+            if (manaStorage.addStar()) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                if (!player.hasInfiniteMaterials()) {
+                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
                     itemStack.shrink(1);
                 }
             }
-            EverBeneficial data;
-            if (data1.isStarMaximum() && (data = EverBeneficial.of(serverPlayer)).isLifeCrystalsMaximum() && data.isLifeFruitsMaximum()) {
+            EverBeneficial everBeneficial;
+            if (manaStorage.isStarMaximum() && (everBeneficial = EverBeneficial.of(serverPlayer)).isLifeCrystalsMaximum() && everBeneficial.isLifeFruitsMaximum()) {
                 AchievementUtils.awardAchievement(serverPlayer, "topped_off");
             }
         }

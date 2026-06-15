@@ -52,6 +52,7 @@ public final class ModTiers {
 
     // 给一些无限耐久的物品使用的
     public static final Tier UNBREAKABLE = new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, 10000, 4, 1, 18, Ingredient::of);
+    public static final Tier GRAVE_DIGGERS_TIER = new PoweredTier(40, ModTags.Blocks.NEEDS_2_LEVEL, -1, 5.0F, 2.0F, 14, Ingredient::of);
 
     /// @return 原版Tiers的对应镐力
     public static int getPowerForVanillaTiers(Tiers tiers) {

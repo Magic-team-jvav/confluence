@@ -81,11 +81,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRen
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
-import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
-import org.confluence.mod.client.renderer.item.EnemyBannerItemRenderer;
-import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
-import org.confluence.mod.client.renderer.item.ShortSwordInHandRenderer;
-import org.confluence.mod.client.renderer.item.gun.SimpleGeoItemRenderer;
+import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.common.CommonConfigs;
@@ -226,7 +222,7 @@ public final class ModClientEvents {
         SoulSkillClientHolder.INSTANCE.init();
     }
 
-    public static void registerEntityLayers(PortRegisterLayerDefinitions event) {
+    public static void registerEntityLayers(PortEntityRenderersEvent.PortRegisterLayerDefinitions event) {
         event.registerLayerDefinition(BaseBombEntityModel.LAYER_LOCATION, BaseBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(BouncyBombEntityModel.LAYER_LOCATION, BouncyBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(ScarabBombEntityModel.LAYER_LOCATION, ScarabBombEntityModel::createBodyLayer);
@@ -523,7 +519,7 @@ public final class ModClientEvents {
         event.registerItem(new EnemyBannerItemRenderer(), ModItems.ENEMY_BANNER);
         registerGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
         registerGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
-        GunItems.ITEMS.getEntries().forEach(holder -> registerGunModel(event, Confluence.MODID, holder));
+        GunItems.ITEMS.getEntries().forEach(holder -> registerGunModel(event, Confluence.MODID, holder.get()));
         event.registerMobEffect(ModClientSetups.TRANSLUCENT_EFFECT_ICON, ModEffects.LUCK_EFFECT.get());
     }
 

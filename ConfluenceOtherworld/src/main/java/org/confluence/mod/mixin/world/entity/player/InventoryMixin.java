@@ -94,7 +94,7 @@ public abstract class InventoryMixin {
             consumer.accept(extraInventory);
         } while (!stack.isEmpty() && stack.getCount() < i);
 
-        if (stack.getCount() == i && player.hasInfiniteMaterials()) {
+        if (stack.getCount() == i && PortPlayer.hasInfiniteMaterials(player)) {
             stack.setCount(0);
             return true;
         } else {

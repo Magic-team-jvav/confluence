@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
@@ -16,6 +15,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
@@ -24,15 +24,13 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
 public class LifeCrystalBlock extends HorizontalDirectionalBlock implements EntityBlock {
-    public static final MapCodec<LifeCrystalBlock> CODEC = simpleCodec(LifeCrystalBlock::new);
     private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
 
     public LifeCrystalBlock(Properties properties) {
@@ -66,11 +64,6 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
         return new BEntity(pPos, pState);
     }
 
-    @Override
-    protected MapCodec<LifeCrystalBlock> codec() {
-        return CODEC;
-    }
-
     public static class BEntity extends BlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
@@ -95,7 +88,7 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
         }
 
         @Override
-        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
+        public void initializeClient(Consumer<IClientItemExtensions> consumer) {
             consumer.accept(new SimpleGeoItemRenderer<>(LifeCrystalBlockModel.MODEL, LifeCrystalBlockModel.TEXTURE, null));
         }
 

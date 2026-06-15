@@ -1,8 +1,6 @@
 package org.confluence.mod.common.block.functional;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
@@ -10,14 +8,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -27,8 +24,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -43,7 +38,6 @@ import java.util.Map;
 public class TuffBoothBlock extends BaseEntityBlock {
     public static final EnumProperty<BoothColor> COLOR = EnumProperty.create("color", BoothColor.class);
     public static final BooleanProperty SHOW_NAME = BooleanProperty.create("show_name");
-    public static final MapCodec<TuffBoothBlock> CODEC = simpleCodec(TuffBoothBlock::new);
 
     private static final Map<Item, BoothColor> ITEM_TO_COLOR = new HashMap<>();
     private static final Map<BoothColor, Item> COLOR_TO_ITEM = new HashMap<>();
@@ -85,10 +79,6 @@ public class TuffBoothBlock extends BaseEntityBlock {
         ITEM_TO_COLOR.put(item, color);
         COLOR_TO_ITEM.put(color, item);
     }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {return CODEC;}
-
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {return SHAPE;}
 
@@ -99,27 +89,22 @@ public class TuffBoothBlock extends BaseEntityBlock {
     public RenderShape getRenderShape(BlockState state) {return RenderShape.MODEL;}
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        if (target instanceof BlockHitResult hit) {
-            Vec3 location = hit.getLocation();
-            if (location.y - pos.getY() > 0.5) {
-                BlockEntity be = level.getBlockEntity(pos);
-                if (be instanceof TuffBoothBlockEntity booth) {
-                    ItemStack displayStack = booth.getItemHandler().getStackInSlot(0);
-                    if (!displayStack.isEmpty()) {
-                        return displayStack.copy();
-                    }
-                }
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+        if (level.getBlockEntity(pos) instanceof TuffBoothBlockEntity booth) {
+            ItemStack displayStack = booth.getItemHandler().getStackInSlot(0);
+            if (!displayStack.isEmpty()) {
+                return displayStack.copy();
             }
         }
-        return super.getCloneItemStack(state, target, level, pos, player);
+        return super.getCloneItemStack(level, pos, state);
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (level.isClientSide) return ItemInteractionResult.SUCCESS;
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (level.isClientSide) return InteractionResult.SUCCESS;
         if (!(level.getBlockEntity(pos) instanceof TuffBoothBlockEntity booth))
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
 
         double hitY = hit.getLocation().y - pos.getY();
         if (hitY > 0.5) {
@@ -129,7 +114,7 @@ public class TuffBoothBlock extends BaseEntityBlock {
         }
     }
 
-    private ItemInteractionResult handleItemInteraction(TuffBoothBlockEntity booth, Player player, InteractionHand hand, ItemStack stack) {
+    private InteractionResult handleItemInteraction(TuffBoothBlockEntity booth, Player player, InteractionHand hand, ItemStack stack) {
         IItemHandler handler = booth.getItemHandler();
         ItemStack current = handler.getStackInSlot(0);
 
@@ -138,29 +123,29 @@ public class TuffBoothBlock extends BaseEntityBlock {
             handler.extractItem(0, 1, false);
             handler.insertItem(0, stack.copyWithCount(1), false);
             if (!player.getAbilities().instabuild) stack.shrink(1);
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else if (!current.isEmpty()) {
             popItem(player, handler.extractItem(0, 1, false));
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
-    private ItemInteractionResult handleDecorationInteraction(Level level, BlockPos pos, BlockState state, Player player, ItemStack stack) {
+    private InteractionResult handleDecorationInteraction(Level level, BlockPos pos, BlockState state, Player player, ItemStack stack) {
         boolean isCreative = player.getAbilities().instabuild;
 
         if (stack.isEmpty()) {
             if (state.getValue(SHOW_NAME)) {
                 popItem(player, new ItemStack(Items.NAME_TAG));
                 level.setBlock(pos, state.setValue(SHOW_NAME, false), 3);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
             BoothColor color = state.getValue(COLOR);
             if (color != BoothColor.NONE) {
                 Item carpet = COLOR_TO_ITEM.get(color);
                 if (carpet != null) popItem(player, new ItemStack(carpet));
                 level.setBlock(pos, state.setValue(COLOR, BoothColor.NONE), 3);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         } else {
             BoothColor newColor = ITEM_TO_COLOR.get(stack.getItem());
@@ -174,16 +159,16 @@ public class TuffBoothBlock extends BaseEntityBlock {
                     if (!isCreative) stack.shrink(1);
                     level.setBlock(pos, state.setValue(COLOR, newColor), 3);
                     level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                    return ItemInteractionResult.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             } else if (stack.is(Items.NAME_TAG) && !state.getValue(SHOW_NAME)) {
                 if (!isCreative) stack.shrink(1);
                 level.setBlock(pos, state.setValue(SHOW_NAME, true), 3);
                 level.playSound(null, pos, SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 0.5F, 1.0F);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 
     private void popItem(Player player, ItemStack stack) {
@@ -253,23 +238,23 @@ public class TuffBoothBlock extends BaseEntityBlock {
         public ClientboundBlockEntityDataPacket getUpdatePacket() {return ClientboundBlockEntityDataPacket.create(this);}
 
         @Override
-        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public CompoundTag getUpdateTag() {
             CompoundTag tag = new CompoundTag();
-            saveAdditional(tag, registries);
+            saveAdditional(tag);
             return tag;
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
-            tag.put("inv", itemHandler.serializeNBT(registries));
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
+            tag.put("inv", itemHandler.serializeNBT());
         }
 
         @Override
-        public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
+        public void load(CompoundTag tag) {
+            super.load(tag);
             if (tag.contains("inv")) {
-                itemHandler.deserializeNBT(registries, tag.getCompound("inv"));
+                itemHandler.deserializeNBT(tag.getCompound("inv"));
             }
         }
     }

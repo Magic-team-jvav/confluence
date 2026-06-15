@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 
 public class SignalPressurePlateBlock extends PressurePlateBlock implements EntityBlock, INetworkBlock {
     public SignalPressurePlateBlock(BlockSetType type, Properties properties) {
-        super(type, properties);
+        super(Sensitivity.MOBS, properties, type);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
 
     @Override
     protected int getSignalStrength(Level level, BlockPos pos) {
-        Predicate<Entity> test = EntitySelector.NO_SPECTATORS.and(entity -> !entity.isIgnoringBlockTriggers() && (type.pressurePlateSensitivity() != BlockSetType.PressurePlateSensitivity.MOBS || entity instanceof LivingEntity));
+        Predicate<Entity> test = EntitySelector.NO_SPECTATORS.and(entity -> !entity.isIgnoringBlockTriggers() && entity instanceof LivingEntity);
         try {
             ((LevelAccessor) level).callGetEntities().get(TOUCH_AABB.move(pos), entity -> {
                 if (test.test(entity)) {

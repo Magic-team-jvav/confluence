@@ -1,17 +1,12 @@
 package org.confluence.mod.common.block.functional.crafting;
 
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -20,7 +15,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -51,7 +45,6 @@ import java.util.Optional;
 import static org.confluence.mod.common.menu.CookingPotMenu.RESULT_SLOT;
 
 public class BaseCauldronBlock extends HorizontalDirectionalBlock implements EntityBlock {
-    public static final MapCodec<BaseCauldronBlock> CODEC = simpleCodec(BaseCauldronBlock::new);
     private static final VoxelShape SHAPE = Shapes.or(box(1, 0.016, 1, 15, 8.016, 15), box(1, 10.016, 1, 15, 12.016, 15), box(2, 8.016, 2, 14, 10.016, 14));
 
     public BaseCauldronBlock(Properties properties) {
@@ -60,12 +53,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
     }
 
     @Override
-    protected MapCodec<BaseCauldronBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -75,7 +63,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -87,12 +75,12 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
     }
 
     @Override
-    protected boolean hasAnalogOutputSignal(BlockState state) {
+    public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
@@ -243,30 +231,55 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
         }
 
         @Override
-        protected NonNullList<ItemStack> getItems() {
-            return items;
+        public boolean isEmpty() {
+            return false;
         }
 
         @Override
-        protected void setItems(NonNullList<ItemStack> items) {
-            this.items = items;
+        public void clearContent() {
+
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
+        public ItemStack getItem(int i) {
+            return items.get(i);
+        }
+
+        @Override
+        public ItemStack removeItem(int i, int i1) {
+            return items.remove(i);
+        }
+
+        @Override
+        public ItemStack removeItemNoUpdate(int i) {
+            return items.remove(i);
+        }
+
+        @Override
+        public void setItem(int i, ItemStack itemStack) {
+            items.set(i, itemStack);
+        }
+
+        @Override
+        public boolean stillValid(Player player) {
+            return false;
+        }
+
+        @Override
+        public void load(CompoundTag tag) {
+            super.load(tag);
             this.items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
-            ContainerHelper.loadAllItems(tag, items, registries);
+            ContainerHelper.loadAllItems(tag, items);
             this.cookingProgress = tag.getInt("CookTime");
             this.cookingTotalTime = tag.getInt("CookTimeTotal");
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
             tag.putInt("CookTime", this.cookingProgress);
             tag.putInt("CookTimeTotal", this.cookingTotalTime);
-            ContainerHelper.saveAllItems(tag, this.items, registries);
+            ContainerHelper.saveAllItems(tag, this.items);
         }
 
         @Override
@@ -278,5 +291,6 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
         public int getContainerSize() {
             return items.size();
         }
+
     }
 }

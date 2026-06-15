@@ -30,7 +30,7 @@ public class BlinkingRoyalShimmerlilyBlock extends HorizontalDirectionalWithHori
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         int index = state.getValue(FACING).get2DDataValue();
         return switch (state.getValue(PART)) {
             case BASE -> BASE_SHAPES[index];
@@ -46,12 +46,12 @@ public class BlinkingRoyalShimmerlilyBlock extends HorizontalDirectionalWithHori
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return level.getBlockState(pos.below()).getFluidState().getType().getFluidType() == ModFluids.SHIMMER.type().get();
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (!level.isClientSide() && direction == Direction.DOWN) {
             level.scheduleTick(pos, this, 2);
         }
@@ -59,7 +59,7 @@ public class BlinkingRoyalShimmerlilyBlock extends HorizontalDirectionalWithHori
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canSurvive(state, level, pos)) {
             level.destroyBlock(pos, true);
         }

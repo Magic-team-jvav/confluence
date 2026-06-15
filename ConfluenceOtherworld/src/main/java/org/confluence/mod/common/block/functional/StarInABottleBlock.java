@@ -106,7 +106,7 @@ public class StarInABottleBlock extends LanternBlock implements EntityBlock {
                     Vec3 center = pos.getCenter();
                     for (Player player : serverLevel.players()) {
                         if (player.distanceToSqr(center) < 32 * 32) {
-                            player.addEffect(new MobEffectInstance(ModEffects.STAR_IN_A_BOTTLE, 420));
+                            player.addEffect(new MobEffectInstance(ModEffects.STAR_IN_A_BOTTLE.get(), 420));
                         }
                     }
                 }
@@ -114,7 +114,7 @@ public class StarInABottleBlock extends LanternBlock implements EntityBlock {
         };
     }
 
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         Direction direction = getConnectedDirection(state).getOpposite();
         BlockPos checkPos = pos.relative(direction);
         return (Block.canSupportCenter(level, checkPos, direction.getOpposite()) || ((direction == Direction.UP) && level.getBlockState(checkPos).is(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "ropes")))));

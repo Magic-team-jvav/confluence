@@ -22,7 +22,7 @@ import static org.confluence.lib.common.block.StateProperties.SIGNAL;
 
 public class SignalAdapterBlock extends AbstractMechanicalBlock {
     public SignalAdapterBlock() {
-        super(Properties.ofFullCopy(Blocks.REDSTONE_BLOCK));
+        super(Properties.copy(Blocks.REDSTONE_BLOCK));
         registerDefaultState(stateDefinition.any()
                 .setValue(SIGNAL, false) // 同时代表了signal和power(强度15)
                 .setValue(REVERSE, false)); // false代表signal->power;true代表power->signal

@@ -28,7 +28,7 @@ public class SpikeBlock extends Block {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide) {
             float finalDamage = damage;
             if (entity instanceof LivingEntity living) {
@@ -40,13 +40,13 @@ public class SpikeBlock extends Block {
                 if (living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {
                     duration /= 2;
                 }
-                living.addEffect(new MobEffectInstance(ModEffects.BLEEDING, duration));
+                living.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), duration));
             }
         }
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 }

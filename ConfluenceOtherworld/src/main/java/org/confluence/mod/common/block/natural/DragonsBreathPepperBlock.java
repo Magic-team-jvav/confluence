@@ -1,6 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -28,9 +28,6 @@ import java.util.Map;
  * 现在龙果的生长速度等属性暂时与可可果相同，若需修改，overrider randomTick方法
  */
 public class DragonsBreathPepperBlock extends CocoaBlock {
-    @SuppressWarnings("unchecked")
-    public static final MapCodec<CocoaBlock> CODEC = (MapCodec<CocoaBlock>) (MapCodec<?>) simpleCodec(DragonsBreathPepperBlock::new);
-
     private static final Map<Direction, VoxelShape[]> SHAPES = new EnumMap<>(Direction.class);
 
     /**
@@ -64,36 +61,31 @@ public class DragonsBreathPepperBlock extends CocoaBlock {
     }
 
     @Override
-    public MapCodec<CocoaBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         Block block = level.getBlockState(pos.relative(state.getValue(FACING))).getBlock();
         return block == NatureBlocks.VOID_LOG_BLOCKS.LOG.get()
                 || block == NatureBlocks.VOID_LOG_BLOCKS.WOOD.get();
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         return facing == state.getValue(FACING) && !state.canSurvive(level, currentPos)
                 ? Blocks.AIR.defaultBlockState()
                 : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPES.get(state.getValue(FACING))[state.getValue(AGE)];
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPES.get(state.getValue(FACING))[state.getValue(AGE)];
     }
 
     @Override
-    protected List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder params) {
+    public List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder params) {
         int age = state.getValue(AGE);
         int maturity = age;
         int count = 1;//掉一个即可，不改是因为懒了，反正效果一样
@@ -108,7 +100,7 @@ public class DragonsBreathPepperBlock extends CocoaBlock {
         ItemStack stack = FoodItems.END_DRAGON_PEPPER.toStack();
         net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
         tag.putInt("Maturity", maturity);
-        stack.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
+        PortItemStackExtension.setData(stack, ConfluenceMagicLib.NBT, new NbtComponent(tag));
         return stack;
     }
 

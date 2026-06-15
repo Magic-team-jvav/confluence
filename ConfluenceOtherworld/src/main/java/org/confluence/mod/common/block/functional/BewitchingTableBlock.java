@@ -1,11 +1,11 @@
 package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
@@ -24,11 +24,11 @@ import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourPartBlock implements EntityBlock {
@@ -50,15 +50,15 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide) {
             StateProperties.VerticalFourPart part = state.getValue(PART);
             BlockPos basePos = part.isBase() ? pos : StateProperties.VerticalFourPart.getRelatives(part, state.getValue(FACING), pos).get(StateProperties.VerticalFourPart.BASE);
             if (level.getBlockEntity(basePos) instanceof BEntity entity && level.getGameTime() - entity.lastClickTime > 110) {
                 entity.lastClickTime = level.getGameTime();
                 entity.markUpdated();
-                player.addEffect(new MobEffectInstance(ModEffects.BEWITCHED, MobEffectInstance.INFINITE_DURATION));
-                return InteractionResult.SUCCESS_NO_ITEM_USED;
+                player.addEffect(new MobEffectInstance(ModEffects.BEWITCHED.get(), MobEffectInstance.INFINITE_DURATION));
+                return InteractionResult.SUCCESS;
             }
         }
         return InteractionResult.SUCCESS;
@@ -81,7 +81,7 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
@@ -96,26 +96,26 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
+        public void load(CompoundTag tag) {
+            super.load(tag);
             this.lastClickTime = tag.getLong("LastClickTime");
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
             tag.putLong("LastClickTime", lastClickTime);
         }
 
         @Override
-        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public CompoundTag getUpdateTag() {
             CompoundTag tag = new CompoundTag();
             tag.putLong("LastClickTime", lastClickTime);
             return tag;
         }
 
         @Override
-        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        public void handleUpdateTag(CompoundTag tag) {
             this.lastClickTime = tag.getLong("LastClickTime");
         }
 

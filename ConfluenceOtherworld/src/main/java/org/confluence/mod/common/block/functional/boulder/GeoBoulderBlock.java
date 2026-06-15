@@ -9,15 +9,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -57,7 +57,7 @@ public class GeoBoulderBlock extends BoulderBlock {
         }
 
         @Override
-        public void registerControllers(ControllerRegistrar controllers) {}
+        public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -73,12 +73,12 @@ public class GeoBoulderBlock extends BoulderBlock {
         }
 
         @Override
-        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-            consumer.accept(new SimpleGeoItemRenderer<BItem>(LifeCrystalBlockModel.MODEL, LifeCrystalBlockModel.TEXTURE, null));
+        public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+            consumer.accept(new SimpleGeoItemRenderer<>(LifeCrystalBlockModel.MODEL, LifeCrystalBlockModel.TEXTURE, null));
         }
 
         @Override
-        public void registerControllers(ControllerRegistrar controllers) {}
+        public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {

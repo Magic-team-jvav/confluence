@@ -18,8 +18,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terraentity.entity.boss.QueenBee;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 
 public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     protected static final VoxelShape SHAPE_UPPER = box(0, 0, 0, 16, 8, 16);
@@ -30,14 +28,14 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canSurvive(state, level, pos)) {
             level.destroyBlock(pos, false);
         }
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         if (state.getValue(PART).isBase()) {
             BlockPos below = pos.below();
             return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
@@ -48,7 +46,7 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         level.scheduleTick(pos, this, 1);
         return state;
     }
@@ -62,12 +60,12 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return state.getValue(PART).isBase() ? SHAPE_LOWER : SHAPE_UPPER;
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (context instanceof EntityCollisionContext entityCollisionContext) {
             return entityCollisionContext.getEntity() instanceof Projectile ? Shapes.empty() : Shapes.block();
         }
@@ -75,14 +73,14 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof Projectile) {
             level.destroyBlock(pos, false);
         }
     }
 
     @Override
-    protected void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
+    public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
         level.destroyBlock(hit.getBlockPos(), false);
     }
 }

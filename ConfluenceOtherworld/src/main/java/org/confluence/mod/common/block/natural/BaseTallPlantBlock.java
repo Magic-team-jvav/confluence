@@ -31,7 +31,7 @@ public class BaseTallPlantBlock extends DoublePlantBlock {
     private transient Set<Block> cache;
 
     public BaseTallPlantBlock(Block... survive) {
-        this(Properties.ofFullCopy(Blocks.TALL_GRASS).replaceable(), Arrays.stream(survive).toList());
+        this(Properties.copy(Blocks.TALL_GRASS).replaceable(), Arrays.stream(survive).toList());
     }
 
     public BaseTallPlantBlock(Properties prop, List<Block> survive) {

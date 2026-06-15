@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -14,15 +13,8 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 
 public class EvaporativeCloudBlock extends BaseEntityBlock {
-    public static final MapCodec<EvaporativeCloudBlock> CODEC = simpleCodec(EvaporativeCloudBlock::new);
-
     public EvaporativeCloudBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<EvaporativeCloudBlock> codec() {
-        return CODEC;
     }
 
     @Nullable
@@ -46,11 +38,11 @@ public class EvaporativeCloudBlock extends BaseEntityBlock {
         });
     }
 
-    protected float getShadeBrightness(BlockState p_308911_, BlockGetter p_308952_, BlockPos p_308918_) {
+    public float getShadeBrightness(BlockState p_308911_, BlockGetter p_308952_, BlockPos p_308918_) {
         return 1.0F;
     }
 
-    protected boolean propagatesSkylightDown(BlockState p_309084_, BlockGetter p_309133_, BlockPos p_309097_) {
+    public boolean propagatesSkylightDown(BlockState p_309084_, BlockGetter p_309133_, BlockPos p_309097_) {
         return true;
     }
 

@@ -49,14 +49,14 @@ public class CandyBlock extends Block {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         return facingState.is(this)
                 ? state.setValue(PROPERTY_BY_DIRECTION.get(facing), false)
                 : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
-    protected BlockState rotate(BlockState state, Rotation rot) {
+    public BlockState rotate(BlockState state, Rotation rot) {
         BlockState result = state;
         for (Direction dir : LibUtils.DIRECTIONS) {
             if (PROPERTY_BY_DIRECTION.containsKey(dir)) {
@@ -67,7 +67,7 @@ public class CandyBlock extends Block {
     }
 
     @Override
-    protected BlockState mirror(BlockState state, Mirror mirror) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
         BlockState result = state;
         for (Direction dir : LibUtils.DIRECTIONS) {
             if (PROPERTY_BY_DIRECTION.containsKey(dir)) {

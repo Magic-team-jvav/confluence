@@ -16,7 +16,7 @@ import static org.confluence.lib.common.block.StateProperties.HorizontalTwoPart.
 
 public class AdamantiteForgeBlock extends HardmodeForgeBlock {
     public AdamantiteForgeBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERITE_BLOCK).lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 7).noOcclusion());
+        super(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 7).noOcclusion());
     }
 
     @Override

@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ThinIceBlock extends IceBlock {
     public ThinIceBlock() {
-        super(Properties.ofFullCopy(Blocks.PACKED_ICE));
+        super(Properties.copy(Blocks.PACKED_ICE));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ThinIceBlock extends IceBlock {
         Level level = living.level();
         if (!level.isClientSide) {
             BlockPos.betweenClosedStream(living.getBoundingBox().move(0.0, -0.5, 0.0)).forEach(pos -> {
-                if (pos.equals(blockPos) || level.getBlockState(pos).is(NatureBlocks.THIN_ICE_BLOCK)) {
+                if (pos.equals(blockPos) || level.getBlockState(pos).is(NatureBlocks.THIN_ICE_BLOCK.get())) {
                     level.destroyBlock(pos, true, living);
                 }
             });

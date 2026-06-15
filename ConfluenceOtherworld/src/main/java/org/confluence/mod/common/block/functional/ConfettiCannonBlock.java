@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -23,7 +22,6 @@ import java.util.Map;
 // todo
 public class ConfettiCannonBlock extends HorizontalDirectionalBlock implements EntityBlock, INetworkBlock {
     public static final IntegerProperty PITCH_30 = IntegerProperty.create("pitch_30", 0, 6);
-    public static final MapCodec<ConfettiCannonBlock> CODEC = simpleCodec(ConfettiCannonBlock::new);
 
     public ConfettiCannonBlock(Properties properties) {
         super(properties);
@@ -33,11 +31,6 @@ public class ConfettiCannonBlock extends HorizontalDirectionalBlock implements E
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, PITCH_30);
-    }
-
-    @Override
-    protected MapCodec<ConfettiCannonBlock> codec() {
-        return CODEC;
     }
 
     @Override

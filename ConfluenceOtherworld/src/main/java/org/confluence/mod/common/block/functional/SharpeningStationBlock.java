@@ -1,8 +1,8 @@
 package org.confluence.mod.common.block.functional;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +20,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModEffects;
 
 public class SharpeningStationBlock extends HorizontalDirectionalBlock {
-    public static final MapCodec<SharpeningStationBlock> CODEC = simpleCodec(SharpeningStationBlock::new);
     private static final VoxelShape X_AXIS_SHAPE = Shapes.or(
             box(5, 2, 2, 11, 14, 14),
             box(2, 0, 0, 14, 4, 16)
@@ -52,14 +51,9 @@ public class SharpeningStationBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    protected MapCodec<SharpeningStationBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide) {
-            player.addEffect(new MobEffectInstance(ModEffects.SHARPENED, MobEffectInstance.INFINITE_DURATION));
+            player.addEffect(new MobEffectInstance(ModEffects.SHARPENED.get(), MobEffectInstance.INFINITE_DURATION));
         }
         return InteractionResult.SUCCESS;
     }

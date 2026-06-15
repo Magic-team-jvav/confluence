@@ -8,6 +8,6 @@ import org.jetbrains.annotations.Nullable;
 public class AshConversionTable extends ConversionTable {
     @Override
     protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
-        return source.is(NatureBlocks.ASH_BLOCK) ? NatureBlocks.ASH_GRASS_BLOCK.get() : null;
+        return source.is(NatureBlocks.ASH_BLOCK.get()) ? NatureBlocks.ASH_GRASS_BLOCK.get() : null;
     }
 }

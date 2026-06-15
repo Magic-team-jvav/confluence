@@ -2,6 +2,7 @@ package org.confluence.mod.common.block.functional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -29,7 +30,7 @@ public class TimersBlock extends AbstractMechanicalBlock {
     private final int duration;
 
     public TimersBlock(int duration) {
-        super(Properties.ofFullCopy(Blocks.COMPARATOR));
+        super(Properties.copy(Blocks.COMPARATOR));
         if (duration <= 0) throw new RuntimeException("Duration cannot less equal 0!");
         this.duration = duration;
         registerDefaultState(stateDefinition.any().setValue(DRIVE, false).setValue(SIGNAL, false));
@@ -41,15 +42,15 @@ public class TimersBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        if (skipInteraction(pPlayer.getMainHandItem())) return InteractionResult.PASS;
-        if (!pLevel.isClientSide && pPlayer.isCrouching()) {
-            pState = pState.cycle(DRIVE);
-            if (!pState.getValue(DRIVE)) { // 使网络收到负脉冲
-                pState = pState.setValue(SIGNAL, false);
-                execute(pState, (ServerLevel) pLevel, pPos, false);
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (skipInteraction(player.getMainHandItem())) return InteractionResult.PASS;
+        if (!level.isClientSide && player.isCrouching()) {
+            state = state.cycle(DRIVE);
+            if (!state.getValue(DRIVE)) { // 使网络收到负脉冲
+                state = state.setValue(SIGNAL, false);
+                execute(state, (ServerLevel) level, pos, false);
             }
-            pLevel.setBlockAndUpdate(pPos, pState);
+            level.setBlockAndUpdate(pos, state);
         }
         return InteractionResult.SUCCESS;
     }
@@ -65,7 +66,7 @@ public class TimersBlock extends AbstractMechanicalBlock {
     public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {}
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.or(
                 Block.box(0.0, 11.0, 0.0, 16.0, 16.0, 16.0),
                 Block.box(0.5, 4.0, 0.5, 15.5, 11.0, 15.5),

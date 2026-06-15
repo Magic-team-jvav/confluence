@@ -13,7 +13,7 @@ public class EnchantedBricksBlock extends Block {
     }
 
     @Override
-    protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-        return player.getMainHandItem().is(HammerItems.PWNHAMMER) ? super.getDestroyProgress(state, player, level, pos) : 0;
+    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+        return player.getMainHandItem().is(HammerItems.PWNHAMMER.get()) ? super.getDestroyProgress(state, player, level, pos) : 0;
     }
 }

@@ -3,7 +3,6 @@ package org.confluence.mod.common.block.common;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -19,12 +18,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.entity.player.PortPlayer;
 
 public class LihzahrdDoorBlock extends DoorBlock {
     public static final BooleanProperty UNLOCKED = StateProperties.UNLOCKED;
 
-    public LihzahrdDoorBlock(BlockSetType type, Properties properties) {
-        super(type, properties);
+    public LihzahrdDoorBlock(Properties properties, BlockSetType type) {
+        super(properties, type);
         registerDefaultState(defaultBlockState().setValue(UNLOCKED, false));
     }
 
@@ -44,7 +44,20 @@ public class LihzahrdDoorBlock extends DoorBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        // 手持钥匙解锁
+        if (!level.isClientSide && stack.is(ToolItems.TEMPLE_KEY.get()) && !state.getValue(UNLOCKED)) {
+            level.setBlock(pos, state.setValue(UNLOCKED, true), Block.UPDATE_IMMEDIATE | Block.UPDATE_CLIENTS);
+            level.gameEvent(player, isOpen(state) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+            if (!PortPlayer.hasInfiniteMaterials(player)) {
+                stack.shrink(1);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        // 已解锁时开关门
         if (state.getValue(UNLOCKED)) {
             state = state.cycle(OPEN);
             level.setBlock(pos, state, Block.UPDATE_IMMEDIATE | Block.UPDATE_CLIENTS);
@@ -52,19 +65,7 @@ public class LihzahrdDoorBlock extends DoorBlock {
             level.gameEvent(player, isOpen(state) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        return InteractionResult.PASS;
-    }
 
-    @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!level.isClientSide && stack.is(ToolItems.TEMPLE_KEY) && !state.getValue(UNLOCKED)) {
-            level.setBlock(pos, state.setValue(UNLOCKED, true), Block.UPDATE_IMMEDIATE | Block.UPDATE_CLIENTS);
-            level.gameEvent(player, isOpen(state) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
-            if (!player.hasInfiniteMaterials()) {
-                stack.shrink(1);
-            }
-            return ItemInteractionResult.SUCCESS;
-        }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 }

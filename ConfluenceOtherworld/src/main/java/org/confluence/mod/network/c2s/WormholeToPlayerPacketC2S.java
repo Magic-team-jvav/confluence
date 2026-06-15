@@ -2,7 +2,6 @@ package org.confluence.mod.network.c2s;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,6 +12,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.UUID;
@@ -37,7 +37,7 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements I
         if (target != null && PlayerSpecialData.of(player).getTeam() == PlayerSpecialData.of(target).getTeam()) {
             ItemStack potion = getWormholePotion(player);
             if (potion.isEmpty()) return;
-            if (!player.hasInfiniteMaterials()) potion.shrink(1);
+            if (!PortPlayer.hasInfiniteMaterials(player)) potion.shrink(1);
             teleport(player, target);
         }
     }

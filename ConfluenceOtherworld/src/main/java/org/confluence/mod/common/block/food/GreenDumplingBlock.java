@@ -7,7 +7,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -61,22 +60,22 @@ public class GreenDumplingBlock extends Block {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!stack.is(FoodItems.GREEN_DUMPLING.get())) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        }
-        int currentPiece = state.getValue(PIECE);
-        if (currentPiece >= 4) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        if (!player.isCreative()) stack.shrink(1);
-        level.playSound(null, pos, SoundEvents.SLIME_BLOCK_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-        level.setBlockAndUpdate(pos, state.setValue(PIECE, currentPiece + 1));
-        level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-        return ItemInteractionResult.SUCCESS;
-    }
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
 
-    @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (player.hasEffect(ModEffects.CHOKING)) {
+        if (stack.is(FoodItems.GREEN_DUMPLING.get())) {
+            int currentPiece = state.getValue(PIECE);
+            if (currentPiece < 4) {
+                if (!player.isCreative()) stack.shrink(1);
+                level.playSound(null, pos, SoundEvents.SLIME_BLOCK_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.setBlockAndUpdate(pos, state.setValue(PIECE, currentPiece + 1));
+                level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        }
+
+        if (player.hasEffect(ModEffects.CHOKING.get())) {
             if (!level.isClientSide) {
                 player.sendSystemMessage(Component.translatable("message.confluence.choking"));
             }
@@ -96,9 +95,9 @@ public class GreenDumplingBlock extends Block {
         ItemStack itemStack = player.getItemInHand(InteractionHand.MAIN_HAND);
         if (!player.canEat(false)) return InteractionResult.PASS;
         player.getFoodData().eat(3, 0.25F);
-        player.addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 6000, 1));
-        player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
-        player.addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED, 1000));
+        player.addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), 6000, 1));
+        player.addEffect(new MobEffectInstance(ModEffects.CHOKING.get(), 2400));
+        player.addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED.get(), 1000));
         player.playSound(SoundEvents.GENERIC_EAT);
         int pieceCount = state.getValue(PIECE);
         level.gameEvent(player, GameEvent.EAT, pos);
@@ -114,7 +113,7 @@ public class GreenDumplingBlock extends Block {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         return facing == Direction.DOWN && !state.canSurvive(level, currentPos)
                 ? Blocks.AIR.defaultBlockState()
                 : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
@@ -126,7 +125,7 @@ public class GreenDumplingBlock extends Block {
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos below = pos.below();
         return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
     }

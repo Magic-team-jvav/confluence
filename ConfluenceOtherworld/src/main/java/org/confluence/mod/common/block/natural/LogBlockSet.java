@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
+import com.google.common.base.Supplier;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
@@ -35,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.confluence.mod.common.init.block.ModBlocks.registerWithItem;

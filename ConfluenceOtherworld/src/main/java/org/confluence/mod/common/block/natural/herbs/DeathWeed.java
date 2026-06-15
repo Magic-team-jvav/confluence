@@ -23,7 +23,7 @@ public class DeathWeed extends BaseHerbBlock {
     public static final IntegerProperty PROP_LIGHT = IntegerProperty.create("level", 0, 7);
 
     public DeathWeed() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).randomTicks().lightLevel(value -> value.getValue(AGE) == MAX_AGE ? value.getValue(PROP_LIGHT) : 0));
+        super(BlockBehaviour.Properties.copy(Blocks.DANDELION).randomTicks().lightLevel(value -> value.getValue(AGE) == MAX_AGE ? value.getValue(PROP_LIGHT) : 0));
     }
 
     @Override

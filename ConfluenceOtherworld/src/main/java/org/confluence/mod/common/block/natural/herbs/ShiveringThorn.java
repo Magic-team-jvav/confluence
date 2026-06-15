@@ -21,7 +21,7 @@ public class ShiveringThorn extends BaseHerbBlock {
     public static final IntegerProperty PROP_LIGHT = IntegerProperty.create("level", 0, 6);
 
     public ShiveringThorn() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.DANDELION).randomTicks());
+        super(BlockBehaviour.Properties.copy(Blocks.DANDELION).randomTicks());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -22,15 +23,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.GunItems;
+import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.init.item.SpearItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.entity.boss.BrainOfCthulhu;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class CrimsonHeartBlock extends Block {
@@ -75,7 +74,7 @@ public class CrimsonHeartBlock extends Block {
             }
 
             if (count != 2) {
-                Component component = Component.translatable("event.confluence.crimson_heart_broken." + count).withColor(GlobalColors.MESSAGE.get());
+                Component component = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.crimson_heart_broken." + count), GlobalColors.MESSAGE.get());
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
             }
 
@@ -99,7 +98,7 @@ public class CrimsonHeartBlock extends Block {
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.block();
     }
 }

@@ -13,7 +13,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class OpalOreBlock extends BrushableBlock {
     public OpalOreBlock() {
-        super(NatureBlocks.DIATOMACEOUS.get(), SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED, BlockBehaviour.Properties.of().strength(3.0F, 3.0F).pushReaction(PushReaction.BLOCK));
+        super(NatureBlocks.DIATOMACEOUS.get(), BlockBehaviour.Properties.of().strength(3.0F, 3.0F).pushReaction(PushReaction.BLOCK), SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.block.common;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -9,7 +10,7 @@ import org.confluence.mod.common.init.block.ModBlocks;
 
 import javax.annotation.Nullable;
 
-public class VoidBlock extends LiquidBlock implements net.minecraft.world.level.block.EntityBlock {
+public class VoidBlock extends LiquidBlock implements EntityBlock {
     public VoidBlock(FlowingFluid fluid, Properties properties) {
         super(fluid, properties);
     }

@@ -1,8 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -28,10 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ThornBlock extends PipeBlock {
-    public static final MapCodec<ThornBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.FLOAT.fieldOf("damage_amount").forGetter(block -> block.damageAmount),
-            Block.CODEC.fieldOf("ground_block").forGetter(block -> block.ground)
-    ).apply(instance, ThornBlock::new));
     public static final IntegerProperty PROP_AGE = IntegerProperty.create("age", 0, 7);
 
     protected final float damageAmount;
@@ -42,12 +35,6 @@ public class ThornBlock extends PipeBlock {
         this.damageAmount = damageAmount;
         this.ground = ground;
         this.registerDefaultState(this.stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, false));
-    }
-
-    @Override
-    @NotNull
-    protected MapCodec<? extends PipeBlock> codec() {
-        return CODEC;
     }
 
     @Nullable

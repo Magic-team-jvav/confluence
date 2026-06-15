@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 
 public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     public DeathChestBlock() {
-        super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), ChestBlocks.DEATH_CHEST_ENTITY::get, null);
+        super(Properties.copy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), ChestBlocks.DEATH_CHEST_ENTITY::get, null);
     }
 
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {

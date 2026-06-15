@@ -27,7 +27,7 @@ public class ChlorophyteOreBlock extends Block {
     }
 
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!GlobalCloakData.INSTANCE.isRevealed(state)) return;
         if (level.random.nextInt(10000) != 0) return;
         for (int i = 0; i < 4; i++) {
@@ -42,7 +42,7 @@ public class ChlorophyteOreBlock extends Block {
             if (section.confluence$getBlockCounts().chlorophyte > 125) {
                 continue;
             }
-            if (level.isLoaded(relative) && (relState.is(Blocks.MUD) || (relState.is(NatureBlocks.JUNGLE_GRASS_BLOCK) && !level.canSeeSky(relative)))) {
+            if (level.isLoaded(relative) && (relState.is(Blocks.MUD) || (relState.is(NatureBlocks.JUNGLE_GRASS_BLOCK.get()) && !level.canSeeSky(relative)))) {
                 if (level.setBlockAndUpdate(relative, defaultBlockState())) break;
             }
         }

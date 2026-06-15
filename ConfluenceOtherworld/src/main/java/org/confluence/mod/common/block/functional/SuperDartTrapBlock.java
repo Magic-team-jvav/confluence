@@ -29,7 +29,7 @@ public class SuperDartTrapBlock extends DartTrapBlock {
         arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
         arrow.addEffect(new MobEffectInstance(MobEffects.POISON, LibUtils.switchByDifficulty(pLevel, pPos, 300, 600, 750), 2));
         if (ModSecretSeeds.NO_TRAPS.match(pLevel)) {
-            arrow.addEffect(new MobEffectInstance(ModEffects.BLEEDING, 2400, 2));
+            arrow.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), 2400, 2));
         }
         arrow.setBaseDamage(LibUtils.switchByDifficulty(pLevel, pPos, 16, 32, 48));
         arrow.shoot(direction.getStepX(), direction.getStepY(), direction.getStepZ(), 3.0F, 0.0F);

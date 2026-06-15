@@ -19,7 +19,7 @@ public class HellStoneBlock extends Block {
 
     public HellStoneBlock(boolean lava) {
         this(lava, BlockBehaviour.Properties
-                .ofFullCopy(Blocks.ANCIENT_DEBRIS)
+                .copy(Blocks.ANCIENT_DEBRIS)
                 .mapColor(MapColor.COLOR_RED)
                 .lightLevel(value -> 10)
                 .strength(12.0F, 1200.0F)
@@ -42,7 +42,7 @@ public class HellStoneBlock extends Block {
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (lava && !level.isClientSide && !player.hasInfiniteMaterials()) {
+        if (lava && !level.isClientSide && !PortPlayer.hasInfiniteMaterials(player)) {
             level.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
         }
     }

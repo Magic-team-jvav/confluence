@@ -20,27 +20,27 @@ public class CrimsonVenusFlytrapBlock extends Block {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide) entity.hurt(level.damageSources().magic(), 2.0F);
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState stateBelow = level.getBlockState(pos.below());
         return isGrassBlock(stateBelow);
     }
 
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!state.canSurvive(level, pos)) level.destroyBlock(pos, true);
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (!state.canSurvive(level, currentPos)) level.scheduleTick(currentPos, this, 1);
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     private boolean isGrassBlock(BlockState blockState) {
-        return blockState.is(NatureBlocks.CRIMSON_GRASS_BLOCK) || blockState.is(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK);
+        return blockState.is(NatureBlocks.CRIMSON_GRASS_BLOCK.get()) || blockState.is(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK.get());
     }
 }

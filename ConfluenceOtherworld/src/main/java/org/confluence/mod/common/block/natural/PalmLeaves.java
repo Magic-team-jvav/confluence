@@ -5,7 +5,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -24,8 +23,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
 
 public class PalmLeaves extends LeavesBlock {
     public static final EnumProperty<SlabType> TYPE = BlockStateProperties.SLAB_TYPE;
@@ -47,7 +44,7 @@ public class PalmLeaves extends LeavesBlock {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return switch (state.getValue(TYPE)) {
             case DOUBLE -> Shapes.block();
             case TOP -> TOP_AABB;
@@ -56,18 +53,18 @@ public class PalmLeaves extends LeavesBlock {
     }
 
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         level.scheduleTick(pos, this, 2);
         super.randomTick(state, level, pos, random);
     }
 
     @Override
-    protected boolean isRandomlyTicking(BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return !state.getValue(PERSISTENT);
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         level.setBlock(pos, updateDistance(state, level, pos), Block.UPDATE_ALL);
     }
 
@@ -90,7 +87,7 @@ public class PalmLeaves extends LeavesBlock {
     }
 
     @Override
-    protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
         ItemStack itemstack = useContext.getItemInHand();
         SlabType slabtype = state.getValue(TYPE);
         if (slabtype == SlabType.DOUBLE || !itemstack.is(asItem())) {
@@ -112,13 +109,13 @@ public class PalmLeaves extends LeavesBlock {
     }
 
     @Override
-    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
-        return state.getValue(TYPE) != SlabType.DOUBLE && super.canPlaceLiquid(player, level, pos, state, fluid);
+    public boolean canPlaceLiquid(BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
+        return state.getValue(TYPE) != SlabType.DOUBLE && super.canPlaceLiquid(level, pos, state, fluid);
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
-        return pathComputationType == PathComputationType.WATER && state.getFluidState().is(FluidTags.WATER);
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+        return type == PathComputationType.WATER && state.getFluidState().is(FluidTags.WATER);
     }
 
     private static BlockState updateDistance(BlockState state, LevelAccessor level, BlockPos pos) {

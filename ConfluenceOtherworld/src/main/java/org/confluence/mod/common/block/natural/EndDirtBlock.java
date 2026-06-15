@@ -16,7 +16,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 public class EndDirtBlock extends Block implements BonemealableBlock {
 
     public EndDirtBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.COLOR_LIGHT_GRAY));
+        super(BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(MapColor.COLOR_LIGHT_GRAY));
     }
 
 

@@ -5,7 +5,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +16,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.BlastingRecipe;
@@ -45,6 +43,7 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.recipe.EnhancedForgeRecipe;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeHolder;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -58,7 +57,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -70,12 +69,12 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
     }
 
     @Override
-    protected boolean hasAnalogOutputSignal(BlockState state) {
+    public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
@@ -117,7 +116,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         if (hasItem && !forgeMatched) {
             ItemStack lastInput = itemStacks[entity.lastCheckSlot];
-            RecipeHolder<BlastingRecipe> recipeholder;
+            PortRecipeHolder<BlastingRecipe> recipeholder;
             SingleRecipeInput recipeInput;
             if (!lastInput.isEmpty() &&
                     (recipeholder = entity.blasting.getRecipeFor(recipeInput = new SingleRecipeInput(lastInput), level).orElse(null)) != null &&
@@ -154,7 +153,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
     }
 
     protected <T extends EnhancedForgeRecipe> boolean isForgeMatched(Level level, BEntity<T> entity, ItemStack[] itemStacks, boolean[] data) {
-        RecipeHolder<T> recipeholder = entity.forge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
+        PortRecipeHolder<T> recipeholder = entity.forge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
         if (recipeholder != null) {
             if (!entity.isLit() && entity.canForgeBurn(recipeholder)) {
                 data[0] = entity.doUpdateStatus();
@@ -561,11 +560,11 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
+        public void load(CompoundTag tag) {
+            super.load(tag);
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 this.items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
-                ContainerHelper.loadAllItems(tag, items, registries);
+                ContainerHelper.loadAllItems(tag, items);
                 this.litTime = tag.getInt("BurnTime");
                 this.cookingProgress = tag.getInt("CookTime");
                 this.cookingTotalTime = tag.getInt("CookTimeTotal");
@@ -579,13 +578,13 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 tag.putInt("BurnTime", this.litTime);
                 tag.putInt("CookTime", this.cookingProgress);
                 tag.putInt("CookTimeTotal", this.cookingTotalTime);
-                ContainerHelper.saveAllItems(tag, this.items, registries);
+                ContainerHelper.saveAllItems(tag, this.items);
                 CompoundTag compoundtag = new CompoundTag();
                 recipesUsed.forEach((id, amount) -> compoundtag.putInt(id.toString(), amount));
                 tag.put("RecipesUsed", compoundtag);

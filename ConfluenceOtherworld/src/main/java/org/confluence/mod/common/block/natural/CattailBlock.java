@@ -161,7 +161,7 @@ public class CattailBlock extends Block implements SimpleWaterloggedBlock, Bonem
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClientSide) {
         BlockPos.MutableBlockPos topPos = pos.mutable();
         while (level.getBlockState(topPos.above()).is(this)) topPos.move(Direction.UP);
         BlockState topState = level.getBlockState(topPos);

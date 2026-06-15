@@ -2,11 +2,8 @@ package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -67,7 +64,7 @@ public class LostPaperBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(pos.below());
         return belowState.isFaceSturdy(level, belowPos, Direction.UP);
@@ -84,13 +81,13 @@ public class LostPaperBlock extends Block implements EntityBlock {
 
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (!state.canSurvive(level, pos)) level.scheduleTick(pos, this, 1);
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!state.canSurvive(level, pos)) {
             level.destroyBlock(pos, true);
         }
@@ -123,16 +120,16 @@ public class LostPaperBlock extends Block implements EntityBlock {
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
+        public void load(CompoundTag tag) {
+            super.load(tag);
             if (tag.contains("LootTable", Tag.TAG_STRING)) {
                 this.lootTable = ResourceLocation.tryParse(tag.getString("LootTable"));
             }
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
             if (lootTable != null) {
                 tag.putString("LootTable", lootTable.toString());
             }
@@ -142,7 +139,8 @@ public class LostPaperBlock extends Block implements EntityBlock {
             if (!(level instanceof ServerLevel serverLevel)) return;
             int count = layer + 1;
             if (lootTable != null) {
-                LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, lootTable));
+                ResourceLocation resourcelocation = this.getLootTable();
+                LootTable table = serverLevel.getServer().getLootData().getLootTable(resourcelocation);
                 if (table != LootTable.EMPTY) {
                     LootParams params = new LootParams.Builder(serverLevel)
                             .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))

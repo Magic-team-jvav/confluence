@@ -9,6 +9,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.block.natural.spreadable.SpreadingGrassBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -19,7 +21,7 @@ import java.util.function.IntUnaryOperator;
 
 public class MushroomGrassBlock extends SpreadingGrassBlock implements BonemealableBlock {
     public MushroomGrassBlock() {
-        super(ISpreadable.Type.GLOWING, Properties.ofFullCopy(Blocks.MUD));
+        super(ISpreadable.Type.GLOWING, Properties.copy(Blocks.MUD));
     }
 
     @Override
@@ -33,8 +35,8 @@ public class MushroomGrassBlock extends SpreadingGrassBlock implements Bonemeala
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        return level.getBlockState(pos.above()).isAir();
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState, boolean b) {
+        return levelReader.getBlockState(blockPos.above()).isAir();
     }
 
     @Override
@@ -63,9 +65,8 @@ public class MushroomGrassBlock extends SpreadingGrassBlock implements Bonemeala
         tryPlaceBlock.accept(glowingMushroomVine, dy -> -dy);
     }
 
-    @Override
-    public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
-        if (itemAbility == net.minecraftforge.common.ItemAbilities.SHOVEL_FLATTEN) {
+    public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction, boolean simulate) {
+        if (toolAction == ToolActions.SHOVEL_FLATTEN) {
             return NatureBlocks.MUSHROOM_PATH.get().defaultBlockState();
         }
         return null;

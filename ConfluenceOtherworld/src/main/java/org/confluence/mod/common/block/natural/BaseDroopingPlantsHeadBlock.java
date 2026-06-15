@@ -1,11 +1,7 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,17 +28,6 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     public static final EnumProperty<VinePart> PART = EnumProperty.create("part", VinePart.class);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final MapCodec<BaseDroopingPlantsHeadBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.INT.fieldOf("side").forGetter(b -> b.side),
-            Codec.INT.fieldOf("max_age").forGetter(b -> b.maxAgeValue),
-            Direction.CODEC.fieldOf("growth_direction").forGetter(b -> b.growthDirection),
-            Codec.BOOL.fieldOf("is_natural_growth").forGetter(b -> b.isNaturalGrowth),
-            Codec.BOOL.fieldOf("is_climbable").forGetter(b -> b.isClimbable),
-            BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("attached_block")
-                    .forGetter(b -> b.attachedBlocksSupplier.get()),
-            Codec.INT.fieldOf("light_level").forGetter(b -> b.lightLevel)
-    ).apply(instance, (side, maxAge, growthDirection, isNatural, isClimbable, blocks, lightLevel) ->
-            new BaseDroopingPlantsHeadBlock(side, maxAge, growthDirection, isNatural, isClimbable, () -> blocks, lightLevel)));
 
     protected final int side;
     protected final int maxAgeValue;
@@ -127,11 +112,6 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     }
 
     @Override
-    protected MapCodec<? extends BaseDroopingPlantsHeadBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -155,7 +135,7 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     }
 
     @Override
-    protected boolean isRandomlyTicking(BlockState state) {
+    public boolean isRandomlyTicking(BlockState state) {
         return this.isNaturalGrowth && state.getValue(AGE) < this.maxAgeValue;
     }
 
@@ -185,7 +165,7 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     }
 
     @Override
-    protected FluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
@@ -199,7 +179,7 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClientSide) {
         return state.getValue(AGE) < this.maxAgeValue;
     }
 

@@ -1,17 +1,14 @@
 package org.confluence.mod.common.block.common;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
-import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -19,19 +16,20 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -41,16 +39,12 @@ import org.mesdag.portlib.network.chat.PortComponentSerialization;
 import java.util.*;
 
 public class MuralBlock extends HorizontalDirectionalBlock implements EntityBlock {
-    public static final MapCodec<MuralBlock> CODEC = simpleCodec(MuralBlock::new);
     private static final Map<BlockPos, BlockEntity> BE_CACHE = new HashMap<>();
 
     public MuralBlock(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.WEST));
     }
-
-    @Override
-    protected MapCodec<MuralBlock> codec() {return CODEC;}
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -72,9 +66,22 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         int height = muralEntity.getMuralHeight();
         if (width == -1 || height == -1) return;
 
-        ItemLore lore = stack.get(DataComponents.LORE);
-        if (lore != null && !lore.lines().isEmpty()) {
-            muralEntity.setLore(new ArrayList<>(lore.lines()));
+        // 从 NBT 获取 lore
+        CompoundTag displayTag = stack.getTagElement("display");
+        if (displayTag != null && displayTag.contains("Lore", Tag.TAG_LIST)) {
+            ListTag loreTag = displayTag.getList("Lore", Tag.TAG_STRING);
+            if (!loreTag.isEmpty()) {
+                List<Component> loreList = new ArrayList<>();
+                for (int i = 0; i < loreTag.size(); i++) {
+                    try {
+                        Component comp = Component.Serializer.fromJson(loreTag.getString(i));
+                        if (comp != null) loreList.add(comp);
+                    } catch (Exception ignored) {}
+                }
+                if (!loreList.isEmpty()) {
+                    muralEntity.setLore(loreList);
+                }
+            }
         }
 
         GroupItem.BelongsTo group = PortItemStackExtension.getData(stack, ConfluenceMagicLib.BELONGS_TO_GROUP);
@@ -108,7 +115,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
 
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity be, ItemStack tool) {
-        boolean hasSilkTouch = PortEnchantmentHelperExtension.getEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.SILK_TOUCH), player) > 0;
+        boolean hasSilkTouch = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, tool) > 0;
         if (hasSilkTouch) {
             ItemStack dropStack = new ItemStack(this);
             BlockEntity headBeToSave = null;
@@ -165,7 +172,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
         ItemStack stack = new ItemStack(this);
         if (level.getBlockEntity(pos) instanceof BEntity muralEntity) {
             BlockEntity headBeToSave = null;
@@ -185,7 +192,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
 
             if (headBeToSave != null) {
                 headBeToSave.setChanged();
-                headBeToSave.saveToItem(stack, level.registryAccess());
+                headBeToSave.saveToItem(stack);
                 if (headBeToSave instanceof BEntity b) {
                     b.restoreItemComponents(stack);
                 }
@@ -240,11 +247,10 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         Direction facing = context.getHorizontalDirection();
         int width = 1, height = 1;
         ItemStack stack = context.getItemInHand();
-        CustomData customData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
-        if (customData != null) {
-            CompoundTag tag = customData.copyTag();
-            if (tag.contains("muralWidth")) width = tag.getInt("muralWidth");
-            if (tag.contains("muralHeight")) height = tag.getInt("muralHeight");
+        CompoundTag beTag = BlockItem.getBlockEntityData(stack);
+        if (beTag != null) {
+            if (beTag.contains("muralWidth")) width = beTag.getInt("muralWidth");
+            if (beTag.contains("muralHeight")) height = beTag.getInt("muralHeight");
         }
         if (width == -1 || height == -1) return defaultBlockState().setValue(FACING, facing);
         int xOffset = -facing.getStepZ();
@@ -304,10 +310,15 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
 
         public void restoreItemComponents(ItemStack stack) {
             if (lore != null && !lore.isEmpty()) {
-                stack.set(DataComponents.LORE, new ItemLore(lore));
+                ListTag loreTag = new ListTag();
+                for (Component comp : lore) {
+                    loreTag.add(StringTag.valueOf(Component.Serializer.toJson(comp)));
+                }
+                CompoundTag displayTag = stack.getOrCreateTagElement("display");
+                displayTag.put("Lore", loreTag);
             }
             if (belongsToGroup != null) {
-                stack.set(ConfluenceMagicLib.BELONGS_TO_GROUP, belongsToGroup);
+                PortItemStackExtension.setData(stack, ConfluenceMagicLib.BELONGS_TO_GROUP, belongsToGroup);
             }
         }
 
@@ -323,14 +334,14 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             if (lore != null && !lore.isEmpty()) {
                 ListTag loreTag = new ListTag();
                 for (Component comp : lore) {
-                    PortComponentSerialization.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), comp)
+                    PortComponentSerialization.CODEC.encodeStart(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), comp)
                             .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to encode lore: " + err))
                             .ifPresent(loreTag::add);
                 }
                 tag.put("lore", loreTag);
             }
             if (belongsToGroup != null) {
-                GroupItem.BelongsTo.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), belongsToGroup)
+                GroupItem.BelongsTo.CODEC.encodeStart(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), belongsToGroup)
                         .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to encode belongsToGroup: " + err))
                         .ifPresent(groupTag -> tag.put("belongs_to_group", groupTag));
             }
@@ -359,7 +370,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                 ListTag loreTag = tag.getList("lore", Tag.TAG_COMPOUND);
                 List<Component> loreList = new ArrayList<>();
                 for (Tag value : loreTag) {
-                    PortComponentSerialization.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), value)
+                    PortComponentSerialization.CODEC.parse(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), value)
                             .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to decode lore: " + err))
                             .ifPresent(loreList::add);
                 }
@@ -369,7 +380,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             }
 
             if (tag.contains("belongs_to_group")) {
-                GroupItem.BelongsTo.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag.get("belongs_to_group"))
+                GroupItem.BelongsTo.CODEC.parse(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), tag.get("belongs_to_group"))
                         .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to decode belongsToGroup: " + err))
                         .ifPresent(group -> this.belongsToGroup = group);
             } else {
@@ -377,29 +388,36 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             }
         }
 
+        @Nullable
+        private HolderLookup.Provider getRegistries() {
+            if (level != null) {
+                return level.registryAccess();
+            }
+            return null;
+        }
 
         @Override
-        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public CompoundTag getUpdateTag() {
             CompoundTag tag = new CompoundTag();
-            encodeForNetwork(tag, registries);
+            encodeForNetwork(tag, Objects.requireNonNull(getRegistries()));
             return tag;
         }
 
         @Override
-        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
-            decode(tag, registries);
+        public void handleUpdateTag(CompoundTag tag) {
+            decode(tag, Objects.requireNonNull(getRegistries()));
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
-            decode(tag, registries);
+        public void load(CompoundTag tag) {
+            super.load(tag);
+            decode(tag, Objects.requireNonNull(getRegistries()));
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
-            encodeForPersistence(tag, registries);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
+            encodeForPersistence(tag, Objects.requireNonNull(getRegistries()));
         }
 
         @Override
@@ -411,22 +429,22 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
     public record MuralData(float x, float y, float z, float roll, float scale, Optional<Icon> icon,
                             Optional<Text> text) {
         public static final Codec<MuralData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                Codec.FLOAT.lenientOptionalFieldOf("x", 0.0F).forGetter(MuralData::x),
-                Codec.FLOAT.lenientOptionalFieldOf("y", 0.0F).forGetter(MuralData::y),
-                Codec.FLOAT.lenientOptionalFieldOf("z", 0.0F).forGetter(MuralData::z),
-                Codec.FLOAT.lenientOptionalFieldOf("roll", 0.0F).forGetter(MuralData::roll),
-                Codec.FLOAT.lenientOptionalFieldOf("scale", 1.0F).forGetter(MuralData::scale),
-                Icon.CODEC.lenientOptionalFieldOf("icon").forGetter(MuralData::icon),
-                Text.CODEC.lenientOptionalFieldOf("text").forGetter(MuralData::text)
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"x", 0.0F).forGetter(MuralData::x),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"y", 0.0F).forGetter(MuralData::y),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"z", 0.0F).forGetter(MuralData::z),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"roll", 0.0F).forGetter(MuralData::roll),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"scale", 1.0F).forGetter(MuralData::scale),
+                PortCodecExtension.lenientOptionalFieldOf(Icon.CODEC, "icon").forGetter(MuralData::icon),
+                PortCodecExtension.lenientOptionalFieldOf(Text.CODEC, "text").forGetter(MuralData::text)
         ).apply(instance, MuralData::new));
         public static final Codec<List<MuralData>> LIST_CODEC = CODEC.listOf();
 
         public static Tag encode(Optional<List<MuralData>> datas, HolderLookup.Provider registries) {
-            return datas.flatMap(data -> LIST_CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), data).result()).orElseGet(ListTag::new);
+            return datas.flatMap(data -> LIST_CODEC.encodeStart(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), data).result()).orElseGet(ListTag::new);
         }
 
         public static Optional<List<MuralData>> decode(ListTag tag, HolderLookup.Provider registries) {
-            return LIST_CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag).result();
+            return LIST_CODEC.parse(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), tag).result();
         }
     }
 
@@ -434,14 +452,14 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                        int uWidth, int vHeight, int textureWidth, int textureHeight) {
         public static final Codec<Icon> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ResourceLocation.CODEC.fieldOf("atlasLocation").forGetter(Icon::atlasLocation),
-                Codec.INT.lenientOptionalFieldOf("x", 0).forGetter(Icon::x),
-                Codec.INT.lenientOptionalFieldOf("y", 0).forGetter(Icon::y),
-                Codec.FLOAT.lenientOptionalFieldOf("uOffset", 0.0F).forGetter(Icon::uOffset),
-                Codec.FLOAT.lenientOptionalFieldOf("vOffset", 0.0F).forGetter(Icon::vOffset),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "x", 0).forGetter(Icon::x),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "y", 0).forGetter(Icon::y),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "uOffset", 0.0F).forGetter(Icon::uOffset),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "vOffset", 0.0F).forGetter(Icon::vOffset),
                 Codec.INT.fieldOf("uWidth").forGetter(Icon::uWidth),
                 Codec.INT.fieldOf("vHeight").forGetter(Icon::vHeight),
-                Codec.INT.lenientOptionalFieldOf("textureWidth", 256).forGetter(Icon::textureWidth),
-                Codec.INT.lenientOptionalFieldOf("textureHeight", 256).forGetter(Icon::textureHeight)
+                PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "textureWidth", 256).forGetter(Icon::textureWidth),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "textureHeight", 256).forGetter(Icon::textureHeight)
         ).apply(instance, Icon::new));
     }
 
@@ -449,11 +467,11 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                        boolean dropShadow) {
         public static final Codec<Text> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 PortComponentSerialization.CODEC.fieldOf("component").forGetter(Text::component),
-                Codec.FLOAT.lenientOptionalFieldOf("x", 0.0F).forGetter(Text::x),
-                Codec.FLOAT.lenientOptionalFieldOf("y", 0.0F).forGetter(Text::y),
-                Codec.INT.lenientOptionalFieldOf("color", -1).forGetter(Text::color),
-                Codec.INT.lenientOptionalFieldOf("backgroundColor", 0).forGetter(Text::backgroundColor),
-                Codec.BOOL.lenientOptionalFieldOf("dropShadow", false).forGetter(Text::dropShadow)
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "x", 0.0F).forGetter(Text::x),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "y", 0.0F).forGetter(Text::y),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "color", -1).forGetter(Text::color),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "backgroundColor", 0).forGetter(Text::backgroundColor),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.BOOL, "dropShadow", false).forGetter(Text::dropShadow)
         ).apply(instance, Text::new));
     }
 }

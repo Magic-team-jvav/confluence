@@ -1,11 +1,11 @@
 package org.confluence.mod.common.block.common;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
@@ -36,13 +36,11 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 public class TombstoneBlock extends HorizontalDirectionalBlock implements EntityBlock, SimpleWaterloggedBlock {
-    public static final MapCodec<TombstoneBlock> CODEC = simpleCodec(TombstoneBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape SHAPE = box(4, 0, 4, 12, 14, 12);
 
@@ -52,7 +50,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     public TombstoneBlock() {
-        this(BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_STONE));
+        this(BlockBehaviour.Properties.copy(Blocks.SMOOTH_STONE));
     }
 
     @Override
@@ -77,13 +75,13 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos below = pos.below();
         return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -105,7 +103,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof BEntity entity) {
             if (level.isClientSide) {
                 return InteractionResult.PASS;
@@ -120,7 +118,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     @Override
-    protected FluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
@@ -138,11 +136,6 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return LibUtils.getTicker(blockEntityType, ModBlocks.TOMBSTONE_ENTITY.get(), BEntity::tick);
-    }
-
-    @Override
-    protected MapCodec<TombstoneBlock> codec() {
-        return CODEC;
     }
 
     @Override

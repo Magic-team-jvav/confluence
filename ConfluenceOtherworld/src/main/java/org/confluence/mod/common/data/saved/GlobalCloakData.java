@@ -8,9 +8,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -26,6 +23,9 @@ import org.confluence.mod.api.event.RegisterCloakDataEvent;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.network.s2c.GlobalCloakSyncPacketS2C;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -89,7 +89,7 @@ public enum GlobalCloakData implements IGlobalData {
     private void fromBlock(BlockState source, BlockState target) {
         blockMap.put(source, new BooleanObjectMutablePair<>(true, target));
 
-        backupProperties.put(source, BlockBehaviour.Properties.ofFullCopy(source.getBlock()));
+        backupProperties.put(source, BlockBehaviour.Properties.copy(source.getBlock()));
         replaceProperties(source, target);
 
         Item sourceItem = source.getBlock().asItem();

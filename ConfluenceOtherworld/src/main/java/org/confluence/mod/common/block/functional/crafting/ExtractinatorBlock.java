@@ -24,7 +24,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.renderer.block.ExtractinatorBlockRenderer;
-import org.confluence.mod.client.renderer.item.gun.SimpleGeoItemRenderer;
+import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.FunctionalBlocks;

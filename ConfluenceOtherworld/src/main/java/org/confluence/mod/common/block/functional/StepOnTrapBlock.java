@@ -25,7 +25,7 @@ public class StepOnTrapBlock extends Block {
         @Override
         protected void onStep(Level level, BlockPos pos, BlockState state, Entity entity) {
             if (!level.isClientSide && entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(ModEffects.SHIMMER, MobEffectInstance.INFINITE_DURATION));
+                living.addEffect(new MobEffectInstance(ModEffects.SHIMMER.get(), MobEffectInstance.INFINITE_DURATION));
             }
         }
 
@@ -42,7 +42,7 @@ public class StepOnTrapBlock extends Block {
                 if (living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {
                     duration /= 2;
                 }
-                living.addEffect(new MobEffectInstance(TCEffects.GRAVITATION, duration, 1));
+                living.addEffect(new MobEffectInstance(TCEffects.GRAVITATION.get(), duration, 1));
             }
         }
     };
@@ -67,7 +67,7 @@ public class StepOnTrapBlock extends Block {
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return behaviour.getCollisionShape(state, level, pos, context);
     }
 

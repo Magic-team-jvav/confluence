@@ -5,7 +5,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SaplingBlock;
-import net.minecraft.world.level.block.grower.TreeGrower;
+import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,7 +18,7 @@ public class BaseSaplingBlock extends SaplingBlock {
     private final TagKey<Block> tags;
 
     @SafeVarargs
-    public BaseSaplingBlock(TreeGrower grower, Properties properties, @Nullable TagKey<Block> tags, Supplier<? extends Block>... blocks) {
+    public BaseSaplingBlock(AbstractTreeGrower grower, Properties properties, @Nullable TagKey<Block> tags, Supplier<? extends Block>... blocks) {
         super(grower, properties);
         this.blocksSupplier = blocks;
         this.tags = tags;

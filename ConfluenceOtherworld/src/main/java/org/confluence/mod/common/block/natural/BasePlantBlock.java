@@ -34,7 +34,7 @@ public class BasePlantBlock extends BushBlock {
     private transient Set<Block> cache;
 
     public BasePlantBlock(Block... survive) {
-        this(Properties.ofFullCopy(Blocks.DANDELION).replaceable(), Arrays.stream(survive).toList());
+        this(Properties.copy(Blocks.DANDELION).replaceable(), Arrays.stream(survive).toList());
     }
 
     public BasePlantBlock(Properties prop, List<Block> survive) {

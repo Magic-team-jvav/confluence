@@ -34,7 +34,7 @@ public class LifeCampfireBlock extends CampfireBlock {
                         Vec3 center = pos.getCenter();
                         for (Player player : serverLevel.players()) {
                             if (player.distanceToSqr(center) < 32 * 32) {
-                                player.addEffect(new MobEffectInstance(ModEffects.COZY_FIRE, 420));
+                                player.addEffect(new MobEffectInstance(ModEffects.COZY_FIRE.get(), 420));
                             }
                         }
                     }

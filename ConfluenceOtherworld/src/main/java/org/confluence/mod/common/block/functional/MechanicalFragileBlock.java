@@ -49,7 +49,7 @@ public class MechanicalFragileBlock extends AbstractMechanicalBlock implements I
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return simulatorBlock.get().getShape(level, pos, context);
     }
 

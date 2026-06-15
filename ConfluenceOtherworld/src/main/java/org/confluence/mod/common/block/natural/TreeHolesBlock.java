@@ -1,14 +1,13 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
+import PortLib.extensions.net.minecraft.world.containers.PortContainersExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +30,6 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
 public class TreeHolesBlock extends BaseEntityBlock {
-    public static final MapCodec<TreeHolesBlock> CODEC = simpleCodec(TreeHolesBlock::new);
     protected static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     public TreeHolesBlock(Properties properties) {
@@ -40,7 +38,7 @@ public class TreeHolesBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -53,18 +51,18 @@ public class TreeHolesBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        Containers.dropContentsOnDestroy(state, newState, level, pos);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        PortContainersExtension.dropContentsOnDestroy(state, newState, level, pos);
         super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
         return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(level.getBlockEntity(pos));
     }
 
     @Override
-    protected boolean hasAnalogOutputSignal(BlockState state) {
+    public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 
@@ -78,11 +76,6 @@ public class TreeHolesBlock extends BaseEntityBlock {
         return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
     }
 
-    @Override
-    protected MapCodec<TreeHolesBlock> codec() {
-        return CODEC;
-    }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
@@ -90,7 +83,7 @@ public class TreeHolesBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
@@ -102,19 +95,19 @@ public class TreeHolesBlock extends BaseEntityBlock {
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
+        public void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
             if (!this.trySaveLootTable(tag)) {
-                ContainerHelper.saveAllItems(tag, this.items, registries);
+                ContainerHelper.saveAllItems(tag, this.items);
             }
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
+        public void load(CompoundTag tag) {
+            super.load(tag);
             this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
             if (!this.tryLoadLootTable(tag)) {
-                ContainerHelper.loadAllItems(tag, this.items, registries);
+                ContainerHelper.loadAllItems(tag, this.items);
             }
         }
 

@@ -27,7 +27,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.client.renderer.block.SkyMillBlockRenderer;
-import org.confluence.mod.client.renderer.item.gun.SimpleGeoItemRenderer;
+import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.SkyMillMenu;
 import org.confluence.mod.util.ClientUtils;

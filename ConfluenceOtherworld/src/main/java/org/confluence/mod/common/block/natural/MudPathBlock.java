@@ -35,7 +35,7 @@ public class MudPathBlock extends DirtPathBlock {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         turnToMud(null, state, level, pos);
     }
 }

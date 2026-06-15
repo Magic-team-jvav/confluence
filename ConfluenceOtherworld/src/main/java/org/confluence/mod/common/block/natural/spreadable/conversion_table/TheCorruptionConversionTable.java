@@ -64,7 +64,7 @@ public class TheCorruptionConversionTable extends ConversionTable {
         if (!hardmode) return null;
 
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.EBONSTONE.get();
-        if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_EBONSTONE.get();
+        if (holder.is(Tags.Blocks.COBBLESTONE)) return NatureBlocks.COBBLED_EBONSTONE.get();
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return OreBlocks.CORRUPTION_REDSTONE_ORE.get();
         if (holder.is(Tags.Blocks.ORES_COAL)) return OreBlocks.CORRUPTION_COAL_ORE.get();
         if (holder.is(Tags.Blocks.ORES_LAPIS)) return OreBlocks.CORRUPTION_LAPIS_ORE.get();

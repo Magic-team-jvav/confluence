@@ -3,8 +3,6 @@ package org.confluence.mod.common.block.functional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -27,11 +25,6 @@ import org.jetbrains.annotations.Nullable;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
 public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implements EntityBlock, INetworkBlock {
-    public static final MapCodec<BehaviourPressurePlateBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Behaviour.CODEC.fieldOf("behaviour").forGetter(block -> block.behaviour),
-            propertiesCodec(),
-            BlockSetType.CODEC.fieldOf("block_set_type").forGetter(block -> block.type)
-    ).apply(instance, BehaviourPressurePlateBlock::new));
     public static final Behaviour PLAYER = Behaviour.register(Confluence.asResource("player"), new Behaviour() {
         @Override
         protected int getSignalStrength(Level level, BlockPos blockPos) {
@@ -67,11 +60,6 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new AbstractMechanicalBlock.BEntity(blockPos, blockState);
-    }
-
-    @Override
-    protected MapCodec<BehaviourPressurePlateBlock> codec() {
-        return CODEC;
     }
 
     @Override

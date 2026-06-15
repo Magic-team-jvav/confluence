@@ -14,7 +14,7 @@ public class JungleConversionTable extends ConversionTable {
     protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
         Block block = source.getBlock();
         if (block == Blocks.TALL_GRASS) {
-            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.SHORT_GRASS : Blocks.AIR;
+            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.GRASS : Blocks.AIR;
         }
         if (block == Blocks.MUD) return NatureBlocks.JUNGLE_GRASS_BLOCK.get();
         if (block instanceof CattailBlock && block != NatureBlocks.JUNGLE_CATTAIL_BLOCK.get()) {

@@ -38,7 +38,7 @@ public class DetonatorBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return state.getValue(StateProperties.DRIVE) ? DRIVE : Shapes.block();
     }
 
@@ -60,7 +60,7 @@ public class DetonatorBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(StateProperties.DRIVE)) {
             if (!level.getEntitiesOfClass(LivingEntity.class, TOUCH_AABB.move(pos), PREDICATE).isEmpty() ||
                     (level.getBlockEntity(pos) instanceof BEntity entity && entity.getOrCreateNetworkNode().hasSignal(pos))

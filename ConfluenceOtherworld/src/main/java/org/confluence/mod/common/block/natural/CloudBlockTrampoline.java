@@ -60,7 +60,7 @@ public class CloudBlockTrampoline extends CloudBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL) {
             for (Map.Entry<Direction, BooleanProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
                 BlockPos adjacentPos = currentPos.relative(entry.getKey());

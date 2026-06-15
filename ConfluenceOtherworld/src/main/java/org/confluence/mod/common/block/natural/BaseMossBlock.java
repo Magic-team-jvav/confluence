@@ -1,8 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,10 +21,6 @@ import org.confluence.mod.common.init.ModTags;
 import java.util.function.ToIntFunction;
 
 public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, SimpleWaterloggedBlock {
-    public static final MapCodec<BaseMossBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            Codec.INT.fieldOf("light_level").forGetter(block -> block.lightLevel),
-            propertiesCodec()
-    ).apply(instance, BaseMossBlock::new));
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     protected final int lightLevel;
@@ -40,7 +33,7 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -48,7 +41,7 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
     }
 
     @Override
-    protected FluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
@@ -57,7 +50,7 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
     }
 
     @Override
-    protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
         return !useContext.getItemInHand().is(ModTags.Items.MOSS_ITEM) || super.canBeReplaced(state, useContext);
     }
 
@@ -67,12 +60,12 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
     }
 
     @Override
-    protected boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
         return state.getFluidState().isEmpty();
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClientSide) {
         return Direction.stream().anyMatch(p_153316_ -> spreader.canSpreadInAnyDirection(state, level, pos, p_153316_.getOpposite()));
     }
 
@@ -89,10 +82,5 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
     @Override
     public MultifaceSpreader getSpreader() {
         return this.spreader;
-    }
-
-    @Override
-    protected MapCodec<BaseMossBlock> codec() {
-        return CODEC;
     }
 }

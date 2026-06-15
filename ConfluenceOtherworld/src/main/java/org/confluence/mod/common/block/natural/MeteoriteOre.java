@@ -12,13 +12,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class MeteoriteOre extends Block {
     public MeteoriteOre() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).requiresCorrectToolForDrops());
+        super(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).requiresCorrectToolForDrops());
     }
 
     @Override
     public void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
         if (level.isClientSide) return;
-        entity.igniteForTicks(100);
+        entity.setRemainingFireTicks(100);
     }
 
     @Override

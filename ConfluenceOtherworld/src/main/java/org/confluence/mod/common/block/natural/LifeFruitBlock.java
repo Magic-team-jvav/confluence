@@ -26,29 +26,29 @@ public class LifeFruitBlock extends Block {
     public static final int CLASSIC_CHANCE = 1000;
 
     public LifeFruitBlock() {
-        super(Properties.ofFullCopy(Blocks.SHORT_GRASS));
+        super(Properties.copy(Blocks.GRASS));
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof Projectile) {
             level.destroyBlock(pos, true, LibEntityUtils.getOwner(entity));
         }
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return level.getBlockState(pos.below()).is(NatureBlocks.JUNGLE_GRASS_BLOCK);
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return level.getBlockState(pos.below()).is(NatureBlocks.JUNGLE_GRASS_BLOCK.get());
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (!state.canSurvive(level, pos)) level.scheduleTick(pos, this, 1);
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!state.canSurvive(level, pos)) {
             level.destroyBlock(pos, true);
         }
@@ -66,7 +66,7 @@ public class LifeFruitBlock extends Block {
             Long2ObjectMap<ChunkAccess> map = new Long2ObjectArrayMap<>();
             for (BlockPos blockPos : BlockPos.betweenClosed(pos.offset(-range, -range, -range), pos.offset(range, range, range))) {
                 ChunkAccess access = map.computeIfAbsent(ChunkPos.asLong(blockPos), l -> LibUtils.getChunkIfLoaded(level, ChunkPos.getX(l), ChunkPos.getZ(l)));
-                if (access != null && access.getBlockState(blockPos).is(NatureBlocks.LIFE_FRUIT)) {
+                if (access != null && access.getBlockState(blockPos).is(NatureBlocks.LIFE_FRUIT.get())) {
                     return false;
                 }
             }

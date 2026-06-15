@@ -1,7 +1,5 @@
 package org.confluence.mod.common.block.common;
 
-import com.mojang.serialization.MapCodec;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.sounds.SoundEvents;
@@ -19,17 +17,16 @@ import org.confluence.terra_curio.common.effect.HoneyEffect;
 import java.util.Map;
 
 public class HoneyCauldronBlock extends AbstractCauldronBlock {
-    public static final MapCodec<HoneyCauldronBlock> CODEC = simpleCodec(HoneyCauldronBlock::new);
-    public static final CauldronInteraction.InteractionMap INTERACTION_MAP = Util.make(CauldronInteraction.newInteractionMap("confluence_honey"), map -> {
-        Map<Item, CauldronInteraction> interactionMap = map.map();
-        interactionMap.put(Items.BUCKET, (blockState, level, blockPos, player, hand, itemStack) -> CauldronInteraction.fillBucket(
+    public static final Map<Item, CauldronInteraction> INTERACTION_MAP = CauldronInteraction.newInteractionMap();
+    static {
+        INTERACTION_MAP.put(Items.BUCKET, (blockState, level, blockPos, player, hand, itemStack) -> CauldronInteraction.fillBucket(
                 blockState, level, blockPos, player, hand, itemStack,
                 ToolItems.HONEY_BUCKET.get().getDefaultInstance(),
                 blockState1 -> true,
                 SoundEvents.BUCKET_FILL
         ));
-        CauldronInteraction.addDefaultInteractions(interactionMap);
-    });
+        CauldronInteraction.addDefaultInteractions(INTERACTION_MAP);
+    }
     public static final CauldronInteraction FILL_HONEY = (blockState, level, blockPos, player, hand, itemStack) -> CauldronInteraction.emptyBucket(
             level, blockPos, player, hand, itemStack,
             ModBlocks.HONEY_CAULDRON.get().defaultBlockState(),
@@ -38,11 +35,6 @@ public class HoneyCauldronBlock extends AbstractCauldronBlock {
 
     public HoneyCauldronBlock(Properties properties) {
         super(properties, INTERACTION_MAP);
-    }
-
-    @Override
-    public MapCodec<HoneyCauldronBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -56,14 +48,14 @@ public class HoneyCauldronBlock extends AbstractCauldronBlock {
     }
 
     @Override
-    protected void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
+    public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         if (!level.isClientSide && isEntityInsideContent(blockState, blockPos, entity) && entity instanceof LivingEntity living) {
             HoneyEffect.applyHoneyEffect(living);
         }
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos blockPos) {
         return 3;
     }
 }

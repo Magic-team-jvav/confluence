@@ -18,8 +18,8 @@ public class PooBlock extends Block {
 
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-        if (entity instanceof LivingEntity living && !living.hasEffect(ModEffects.STINKY)) {
-            living.addEffect(new MobEffectInstance(ModEffects.STINKY, 60));
+        if (entity instanceof LivingEntity living && !living.hasEffect(ModEffects.STINKY.get())) {
+            living.addEffect(new MobEffectInstance(ModEffects.STINKY.get(), 60));
             level.playSound(null, pos, SoundEvents.MUD_STEP, SoundSource.BLOCKS);
         }
     }

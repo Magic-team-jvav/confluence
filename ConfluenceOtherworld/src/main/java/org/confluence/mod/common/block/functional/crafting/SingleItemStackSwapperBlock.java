@@ -1,10 +1,11 @@
 package org.confluence.mod.common.block.functional.crafting;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -47,29 +48,30 @@ public class SingleItemStackSwapperBlock extends Block {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             ItemStack result = function.apply(stack);
             if (!result.isEmpty()) {
                 player.addItem(result);
-                if (!player.hasInfiniteMaterials()) {
+                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
                     stack.shrink(shrink);
                 }
-                return ItemInteractionResult.CONSUME;
+                return InteractionResult.CONSUME;
             }
         } else if (FMLEnvironment.dist.isClient()) {
             ((MinecraftAccessor) Minecraft.getInstance()).setRightClickDelay(1);
         }
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override
-    protected BlockState rotate(BlockState state, Rotation rot) {
+    public BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
-    protected BlockState mirror(BlockState state, Mirror mirror) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
         return rotate(state, mirror.getRotation(state.getValue(FACING)));
     }
 }

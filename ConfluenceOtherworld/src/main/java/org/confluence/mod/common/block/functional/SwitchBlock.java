@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -43,7 +44,7 @@ public class SwitchBlock extends AbstractMechanicalBlock {
     private static final VoxelShape EAST_SHAPE = box(0, 4, 4, 2, 12, 12);
 
     public SwitchBlock() {
-        super(Properties.ofFullCopy(Blocks.LEVER));
+        super(Properties.copy(Blocks.LEVER));
         registerDefaultState(stateDefinition.any()
                 .setValue(SIGNAL, false)
                 .setValue(FACING, Direction.NORTH)
@@ -111,16 +112,16 @@ public class SwitchBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        if (skipInteraction(pPlayer.getMainHandItem())) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (skipInteraction(player.getMainHandItem())) {
             return InteractionResult.PASS;
         }
-        if (!pLevel.isClientSide) {
-            pState = pState.cycle(SIGNAL);
-            pLevel.setBlockAndUpdate(pPos, pState);
-            boolean signal = pState.getValue(SIGNAL);
-            pLevel.playSound(null, pPos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, signal ? 0.6F : 0.5F);
-            execute(pState, (ServerLevel) pLevel, pPos, signal);
+        if (!level.isClientSide) {
+            state = state.cycle(SIGNAL);
+            level.setBlockAndUpdate(pos, state);
+            boolean signal = state.getValue(SIGNAL);
+            level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, signal ? 0.6F : 0.5F);
+            execute(state, (ServerLevel) level, pos, signal);
         }
         return InteractionResult.SUCCESS;
     }

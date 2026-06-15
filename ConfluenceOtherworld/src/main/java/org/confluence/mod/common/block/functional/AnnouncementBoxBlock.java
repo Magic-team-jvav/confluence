@@ -3,15 +3,13 @@ package org.confluence.mod.common.block.functional;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -39,7 +37,7 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
     public static final WoodType WOOD_TYPE = WoodType.register(new WoodType(Confluence.MODID + ":announcement_box", BLOCK_SET_TYPE));
 
     public AnnouncementBoxBlock(Properties properties) {
-        super(WOOD_TYPE, properties);
+        super(properties, WOOD_TYPE);
     }
 
     @Override
@@ -54,11 +52,12 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (skipInteraction(player.getMainHandItem())) {
-            return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (skipInteraction(stack)) {
+            return InteractionResult.PASS;
         }
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        return super.use(state, level, pos, player, hand, hitResult);
     }
 
     @Override
@@ -71,7 +70,7 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
 
     public static class Wall extends WallSignBlock implements INetworkBlock {
         public Wall(Properties properties) {
-            super(WOOD_TYPE, properties);
+            super(properties, WOOD_TYPE);
         }
 
         @Override
@@ -86,11 +85,12 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
         }
 
         @Override
-        protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-            if (skipInteraction(player.getMainHandItem())) {
-                return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+        public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+            ItemStack stack = player.getItemInHand(hand);
+            if (skipInteraction(stack)) {
+                return InteractionResult.PASS;
             }
-            return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+            return super.use(state, level, pos, player, hand, hitResult);
         }
 
         @Override
@@ -126,15 +126,15 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
+        public void load(CompoundTag tag) {
+            super.load(tag);
             deserializePoses(tag, "connectedPoses", connectedPoses);
             deserializePoses(tag, "relativePoses", relativePoses);
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
             serializePoses(tag, "connectedPoses", connectedPoses);
             serializePoses(tag, "relativePoses", relativePoses);
         }
@@ -145,12 +145,12 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
         }
 
         @Override
-        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public CompoundTag getUpdateTag() {
             return serializePoses(new CompoundTag(), "connectedPoses", connectedPoses);
         }
 
         @Override
-        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        public void handleUpdateTag(CompoundTag tag) {
             deserializePoses(tag, "connectedPoses", connectedPoses);
         }
 

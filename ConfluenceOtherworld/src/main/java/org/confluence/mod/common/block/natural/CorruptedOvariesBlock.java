@@ -43,19 +43,19 @@ public class CorruptedOvariesBlock extends Block {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!state.canSurvive(level, pos)) level.destroyBlock(pos, false);
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (!state.canSurvive(level, pos)) level.scheduleTick(pos, this, 1);
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState stateBelow = level.getBlockState(pos.below());
-        return stateBelow.is(NatureBlocks.CORRUPT_GRASS_BLOCK) || stateBelow.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK);
+        return stateBelow.is(NatureBlocks.CORRUPT_GRASS_BLOCK.get()) || stateBelow.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get());
     }
 }

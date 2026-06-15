@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,7 +21,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class RemainsBlock extends DirectionalBlock implements SimpleWaterloggedBlock {
     private static final VoxelShape SHAPE = box(2, 0, 2, 14, 12, 14);
-    private static final MapCodec<RemainsBlock> CODEC = simpleCodec(RemainsBlock::new);
     protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty IS_FACE_STURDY = BooleanProperty.create("is_face_sturdy");
 
@@ -35,7 +33,7 @@ public class RemainsBlock extends DirectionalBlock implements SimpleWaterloggedB
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -55,7 +53,7 @@ public class RemainsBlock extends DirectionalBlock implements SimpleWaterloggedB
     }
 
     @Override
-    protected FluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
@@ -65,13 +63,8 @@ public class RemainsBlock extends DirectionalBlock implements SimpleWaterloggedB
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.empty();
-    }
-
-    @Override
-    protected MapCodec<RemainsBlock> codec() {
-        return CODEC;
     }
 
     @Override

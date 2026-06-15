@@ -11,7 +11,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -65,7 +65,8 @@ public class LunarCoralWallFanBlock extends CoralWallFanBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             boolean waterLogged = state.getValue(WATERLOGGED);
             int humidity = state.getValue(HUMIDITY);
@@ -77,15 +78,15 @@ public class LunarCoralWallFanBlock extends CoralWallFanBlock {
                 ItemStack bottle = (stack.is(Items.POTION)) ? new ItemStack(Items.GLASS_BOTTLE) : PotionItems.BOTTLE.toStack();
                 player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, bottle));
                 level.playSound(null, pos, SoundEvents.MUD_STEP, SoundSource.BLOCKS, 1.0F, 1.0F);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if ((humidity > 0) && (stack.is(ToolItems.SUPER_ABSORBANT_SPONGE) || stack.is(ToolItems.ULTRA_ABSORBANT_SPONGE))) {
                 level.setBlock(pos, state.setValue(HUMIDITY, humidity - 1).setValue(WATERLOGGED, waterLogged), 2);
                 level.playSound(null, pos, SoundEvents.BRUSH_GENERIC, SoundSource.BLOCKS, 1.0F, 1.0F);
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return InteractionResult.PASS;
     }
 
     protected static boolean scanForWater(BlockState state, BlockGetter level, BlockPos pos) {
@@ -103,7 +104,7 @@ public class LunarCoralWallFanBlock extends CoralWallFanBlock {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         boolean waterLogged = state.getValue(WATERLOGGED);
         if (scanForWater(state, level, pos)) {
             int humidity = state.getValue(HUMIDITY);
@@ -121,7 +122,7 @@ public class LunarCoralWallFanBlock extends CoralWallFanBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (facing == Direction.DOWN && !state.canSurvive(level, currentPos)) {
             return Blocks.AIR.defaultBlockState();
         } else {

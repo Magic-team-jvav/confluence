@@ -4,7 +4,6 @@ import com.google.common.base.Supplier;
 import com.mojang.datafixers.DSL;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -33,7 +32,6 @@ import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 
 import static net.minecraft.world.level.block.Blocks.*;
@@ -402,17 +400,20 @@ public class NatureBlocks {
     public static final PortDeferredBlock<CloudWeaverBlock> CLOUDWEAVER = registerWithItem("cloudweaver", () -> new CloudWeaverBlock(BlockBehaviour.Properties.copy(Blocks.DANDELION).offsetType(BlockBehaviour.OffsetType.NONE)));
     public static final PortDeferredBlock<FloatingWheatBlock> FLOATING_WHEAT = registerWithItem("floating_wheat", () -> new FloatingWheatBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT).offsetType(BlockBehaviour.OffsetType.NONE)));
 
-    public static final PortDeferredBlock<BalloonMelonBlock> BALLOON_MELON = registerWithItem("balloon_melon", BalloonMelonBlock::new);
+    public static final PortDeferredBlock<BalloonMelonBlock> BALLOON_MELON = registerWithItem("balloon_melon", () -> new BalloonMelonBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_LIGHT_GREEN)
+            .strength(0.1F)
+            .sound(SoundType.WOOD)
+            .pushReaction(PushReaction.DESTROY)));
     public static final PortDeferredBlock<BalloonAttachedStemBlock> ATTACHED_BALLOON_STEM = registerWithoutItem("attached_balloon_stem", () -> new BalloonAttachedStemBlock(
-            BALLOON_MELON.getKey(),
-            Confluence.asResourceKey(Registries.BLOCK, "balloon_stem"),
-            Objects.requireNonNull(FoodItems.BALLOON_SEED.getKey()),
+            BALLOON_MELON.get(),
+            FoodItems.BALLOON_SEED,
             BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)
     ));
     public static final PortDeferredBlock<BalloonStemBlock> BALLOON_STEM = registerWithoutItem("balloon_stem", () -> new BalloonStemBlock(
-            BALLOON_MELON.getKey(),
-            ATTACHED_BALLOON_STEM.getKey(),
-            Objects.requireNonNull(FoodItems.BALLOON_SEED.getKey())
+            BALLOON_MELON.get(),
+            ATTACHED_BALLOON_STEM.get(),
+            FoodItems.BALLOON_SEED
     ));
 
     // 枝杈

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -23,13 +22,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 
 public class HangingMyceliumBlock extends Block implements SimpleWaterloggedBlock {
-    public static final MapCodec<HangingMyceliumBlock> CODEC = simpleCodec(HangingMyceliumBlock::new);
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape SHAPE = Block.box(2.0F, 10.0F, 2.0F, 14.0F, 16.0F, 14.0F);
-
-    public MapCodec<HangingMyceliumBlock> codec() {
-        return CODEC;
-    }
 
     public HangingMyceliumBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -40,7 +34,7 @@ public class HangingMyceliumBlock extends Block implements SimpleWaterloggedBloc
         stateBuilder.add(WATERLOGGED);
     }
 
-    protected FluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
@@ -55,17 +49,17 @@ public class HangingMyceliumBlock extends Block implements SimpleWaterloggedBloc
         }
     }
 
-    protected boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader levelReader, BlockPos pos) {
         BlockPos blockpos = pos.above();
         BlockState blockstate = levelReader.getBlockState(blockpos);
         return blockstate.isFaceSturdy(levelReader, blockpos, Direction.DOWN);
     }
 
-    protected VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
+    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
         return SHAPE;
     }
 
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor levelAccessor, BlockPos pos, BlockPos pos2) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor levelAccessor, BlockPos pos, BlockPos pos2) {
         if (direction == Direction.UP && !this.canSurvive(state, levelAccessor, pos)) {
             return Blocks.AIR.defaultBlockState();
         } else {

@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.feature.PlantPatchFeature;
+import org.mesdag.portlib.PortLib;
 
 import java.util.List;
 import java.util.Map;
@@ -70,7 +70,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (!facingState.is(TargetBlock)) {
             return state.setValue(PROPERTY_BY_DIRECTION.get(facing), true);
         }
@@ -78,7 +78,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    protected BlockState rotate(BlockState state, Rotation rot) {
+    public BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.NORTH)), state.getValue(NORTH))
                 .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.SOUTH)), state.getValue(SOUTH))
                 .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.EAST)), state.getValue(EAST))
@@ -88,7 +88,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    protected BlockState mirror(BlockState state, Mirror mirror) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
         return state.setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.NORTH)), state.getValue(NORTH))
                 .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.SOUTH)), state.getValue(SOUTH))
                 .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.EAST)), state.getValue(EAST))
@@ -98,7 +98,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
         return level.getBlockState(pos.above()).isAir();
     }
 
@@ -136,12 +136,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public BonemealableBlock.Type getType() {
-        return BonemealableBlock.Type.NEIGHBOR_SPREADER;
-    }
-
-    @Override
-    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (level.dimension() == Level.NETHER) {
             if (state.is(NatureBlocks.MOISTENED_RED_SAND_BLOCK.get())) {
                 level.setBlock(pos, Blocks.RED_SAND.defaultBlockState(), 3);
@@ -149,7 +144,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
                 level.setBlock(pos, Blocks.SAND.defaultBlockState(), 3);
             }
             level.levelEvent(2009, pos, 0);
-            level.playSound(null, pos, SoundEvents.WET_SPONGE_DRIES, SoundSource.BLOCKS, 1.0F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
+            level.playSound(null, pos, PortLib.WET_SPONGE_DRIES.get(), SoundSource.BLOCKS, 1.0F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
         }
     }
 }

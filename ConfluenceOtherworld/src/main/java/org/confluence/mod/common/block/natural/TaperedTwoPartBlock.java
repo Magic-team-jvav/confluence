@@ -50,7 +50,7 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -69,7 +69,7 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canSurvive(state, level, pos)) {
             level.destroyBlock(pos, false);
         }
@@ -88,7 +88,7 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         VoxelShape shape = switch (state.getValue(PART)) {
             case BASE -> BASE_SHAPE;
             case TIP_MERGE, TIP_SINGLE ->
@@ -99,7 +99,7 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return isValidTaperedPlacement(level, pos, state.getValue(TIP_DIRECTION));
     }
 
@@ -113,22 +113,22 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     }
 
     @Override
-    protected FluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    protected VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+    public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
         return Shapes.empty();
     }
 
     @Override
-    protected boolean isCollisionShapeFullBlock(BlockState state, BlockGetter level, BlockPos pos) {
+    public boolean isCollisionShapeFullBlock(BlockState state, BlockGetter level, BlockPos pos) {
         return false;
     }
 
     @Override
-    protected float getMaxHorizontalOffset() {
+    public float getMaxHorizontalOffset() {
         return 0.125F;
     }
 

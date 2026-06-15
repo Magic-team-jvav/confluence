@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,7 +17,6 @@ import org.confluence.mod.common.block.common.SimpleShimmerImmersedBlock;
 import org.confluence.mod.common.init.ModFluids;
 
 public class ShimmerCoralTubeBlock extends PipeBlock implements SimpleShimmerImmersedBlock {
-    public static final MapCodec<ShimmerCoralTubeBlock> CODEC = simpleCodec(ShimmerCoralTubeBlock::new);
     public static final BooleanProperty SHIMMER_IMMERSED = ModBlockStateProperties.SHIMMER_IMMERSED;
 
     public ShimmerCoralTubeBlock(Properties properties) {
@@ -31,11 +29,6 @@ public class ShimmerCoralTubeBlock extends PipeBlock implements SimpleShimmerImm
                 .setValue(UP, false)
                 .setValue(DOWN, false)
                 .setValue(SHIMMER_IMMERSED, false));
-    }
-
-    @Override
-    protected MapCodec<? extends PipeBlock> codec() {
-        return CODEC;
     }
 
     private boolean shouldConnectTo(BlockState state, Direction face, BlockGetter level, BlockPos pos) {
@@ -60,7 +53,7 @@ public class ShimmerCoralTubeBlock extends PipeBlock implements SimpleShimmerImm
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         if (state.getValue(SHIMMER_IMMERSED)) {
             level.scheduleTick(currentPos, ModFluids.SHIMMER.fluid().get(), ModFluids.SHIMMER.fluid().get().getTickDelay(level));
         }
@@ -73,7 +66,7 @@ public class ShimmerCoralTubeBlock extends PipeBlock implements SimpleShimmerImm
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
         return false;
     }
 

@@ -56,7 +56,7 @@ public class TheHallowConversionTable extends ConversionTable {
         if (!hardmode) return null;
 
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.PEARLSTONE.get();
-        if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_PEARLSTONE.get();
+        if (holder.is(Tags.Blocks.COBBLESTONE)) return NatureBlocks.COBBLED_PEARLSTONE.get();
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) {
             return OreBlocks.SANCTIFICATION_REDSTONE_ORE.get();
         }

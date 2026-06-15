@@ -3,7 +3,6 @@ package org.confluence.mod.common.block.natural;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -216,8 +215,8 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider r) {
-            super.saveAdditional(tag, r);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
             ListTag links = new ListTag();
             linkedPositions.forEach((d, p) -> {
                 CompoundTag e = new CompoundTag();
@@ -239,8 +238,8 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider r) {
-            super.loadAdditional(tag, r);
+        public void load(CompoundTag tag) {
+            super.load(tag);
             linkedPositions.clear();
             if (tag.contains("Links")) {
                 ListTag list = tag.getList("Links", Tag.TAG_COMPOUND);

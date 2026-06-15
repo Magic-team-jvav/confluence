@@ -15,7 +15,7 @@ import static org.confluence.lib.common.block.StateProperties.HorizontalTwoPart.
 
 public class TitaniumForgeBlock extends HardmodeForgeBlock {
     public TitaniumForgeBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERITE_BLOCK).lightLevel(state -> state.getValue(LIT) ? 15 : 7).noOcclusion());
+        super(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).lightLevel(state -> state.getValue(LIT) ? 15 : 7).noOcclusion());
     }
 
     @Override

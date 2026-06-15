@@ -17,7 +17,7 @@ public class EndGrassBlock extends Block {
     private final Supplier<? extends Block> degenerateTo;
 
     public EndGrassBlock(Supplier<? extends Block> degenerateTo) {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY).randomTicks());
+        super(BlockBehaviour.Properties.copy(Blocks.DIRT).mapColor(MapColor.COLOR_LIGHT_GRAY).randomTicks());
         this.degenerateTo = degenerateTo;
     }
 

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -65,7 +66,7 @@ public class MagicMailBox extends Block {
         if (state.getValue(SNOWY) && item instanceof ShovelItem) {
             level.setBlock(pos, state.setValue(SNOWY, false), 3);
             level.playSound(null, pos, SoundEvents.SNOW_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
-            heldItem.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+            PortItemStackExtension.hurtAndBreak(heldItem, 1, player,  EquipmentSlot.MAINHAND);
             return;
         }
         if (!state.getValue(SNOWY) && (item == Items.SNOWBALL || item == Items.SNOW || item == Items.SNOW_BLOCK)) {
@@ -88,7 +89,7 @@ public class MagicMailBox extends Block {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         if (state.getValue(SNOWY)) {
             return switch (state.getValue(FACING)) {
                 case NORTH -> SHAPES[1];

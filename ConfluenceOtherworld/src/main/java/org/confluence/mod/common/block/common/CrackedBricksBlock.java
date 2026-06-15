@@ -15,20 +15,21 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.diff.IPortBlock;
 
-public class CrackedBricksBlock extends Block {
+public class CrackedBricksBlock extends Block implements IPortBlock {
     public CrackedBricksBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         scheduleTick(level, pos);
-        return super.playerWillDestroy(level, pos, state, player);
+        super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override
-    protected void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
+    public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
         scheduleTick(level, hit.getBlockPos());
     }
 
@@ -38,14 +39,8 @@ public class CrackedBricksBlock extends Block {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         level.destroyBlock(pos, false);
-    }
-
-    @Override
-    public void onDestroyedByPushReaction(BlockState state, Level level, BlockPos pos, Direction pushDirection, FluidState fluid) {
-        scheduleTick(level, pos);
-        super.onDestroyedByPushReaction(state, level, pos, pushDirection, fluid);
     }
 
     @Override
@@ -57,6 +52,12 @@ public class CrackedBricksBlock extends Block {
     }
 
     @Override
+    public void onDestroyedByPushReaction(BlockState state, Level level, BlockPos pos, Direction pushDirection, FluidState fluid) {
+        scheduleTick(level, pos);
+        IPortBlock.super.onDestroyedByPushReaction(state, level, pos, pushDirection, fluid);
+    }
+
+    @Override
     public @Nullable PushReaction getPistonPushReaction(BlockState state) {
         return PushReaction.DESTROY;
     }
@@ -65,5 +66,9 @@ public class CrackedBricksBlock extends Block {
         for (BlockPos blockPos : BlockPos.betweenClosed(pos.offset(-7, -7, -7), pos.offset(7, 7, 7))) {
             level.scheduleTick(blockPos, this, 1);
         }
+    }
+
+    @Override
+    public void portlib$setRenderPropertiesInternal(Object properties) {
     }
 }

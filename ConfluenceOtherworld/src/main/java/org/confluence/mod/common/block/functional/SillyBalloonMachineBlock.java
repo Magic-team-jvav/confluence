@@ -42,7 +42,7 @@ public class SillyBalloonMachineBlock extends Block implements EntityBlock, INet
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         onNodeRemove(state, level, pos, newState);
         super.onRemove(state, level, pos, newState, movedByPiston);
     }

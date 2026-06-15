@@ -20,7 +20,7 @@ public class PureConversionTable extends ConversionTable {
         Block block = source.getBlock();
 
         if (block == Blocks.TALL_GRASS) {
-            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.SHORT_GRASS : Blocks.AIR;
+            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.GRASS_BLOCK : Blocks.AIR;
         }
         if (block instanceof CattailBlock && block != NatureBlocks.CATTAIL_BLOCK.get()) {
             return NatureBlocks.CATTAIL_BLOCK.get();
@@ -34,7 +34,7 @@ public class PureConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_JUNGLE_GRASS_BLOCK)) {
             return NatureBlocks.JUNGLE_GRASS_BLOCK.get();
         }
-        if (holder.is(ModTags.Blocks.PURE_CONVERSION_SHORT_GRASS)) return Blocks.SHORT_GRASS;
+        if (holder.is(ModTags.Blocks.PURE_CONVERSION_SHORT_GRASS)) return Blocks.GRASS_BLOCK;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_PACKED_ICE)) return Blocks.PACKED_ICE;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_ICE)) return Blocks.ICE;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SAND)) return Blocks.SAND;
@@ -48,7 +48,7 @@ public class PureConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_CACTUS)) return Blocks.CACTUS;
 
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return Blocks.STONE;
-        if (holder.is(Tags.Blocks.COBBLESTONES)) return Blocks.COBBLESTONE;
+        if (holder.is(Tags.Blocks.COBBLESTONE)) return Blocks.COBBLESTONE;
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return Blocks.REDSTONE_ORE;
         if (holder.is(Tags.Blocks.ORES_COAL)) return Blocks.COAL_ORE;
         if (holder.is(Tags.Blocks.ORES_LAPIS)) return Blocks.LAPIS_ORE;

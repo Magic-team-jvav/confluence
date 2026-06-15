@@ -50,7 +50,7 @@ public class FragileBlock extends Block implements ILibSimulatorBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (!level.isClientSide() && !state.getValue(StateProperties.IS_SUPPORTING)) {
             BlockState blockState = level.getBlockState(pos.relative(state.getValue(BlockStateProperties.FACING)));
             if (!blockState.hasProperty(StateProperties.IS_SUPPORTING)) {
@@ -61,7 +61,7 @@ public class FragileBlock extends Block implements ILibSimulatorBlock {
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return simulatorBlock.get().getShape(level, pos, context);
     }
 

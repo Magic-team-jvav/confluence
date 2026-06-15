@@ -3,6 +3,7 @@ package org.confluence.mod.common.block.functional.crafting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -14,15 +15,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -37,12 +38,12 @@ public class CookingPotBlock extends BaseCauldronBlock {
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return (this == FunctionalBlocks.CAULDRON.get()) ? RenderShape.MODEL : RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -69,6 +70,11 @@ public class CookingPotBlock extends BaseCauldronBlock {
         }
 
         @Override
+        public boolean stillValid(Player player) {
+            return super.stillValid(player);
+        }
+
+        @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
         @Override
@@ -85,26 +91,26 @@ public class CookingPotBlock extends BaseCauldronBlock {
         }
 
         @Override
-        public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
-
-        @Override
-        public AnimatableInstanceCache getAnimatableInstanceCache() {
-            return CACHE;
-        }
-
-        @Override
-        public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-            consumer.accept(new GeoRenderProvider() {
+        public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+            consumer.accept(new IClientItemExtensions() {
                 private GeoItemRenderer<BItem> renderer;
 
                 @Override
-                public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
+                public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                     if (renderer == null) {
                         this.renderer = new GeoItemRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot")));
                     }
                     return renderer;
                 }
             });
+        }
+
+        @Override
+        public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+        @Override
+        public AnimatableInstanceCache getAnimatableInstanceCache() {
+            return CACHE;
         }
     }
 }

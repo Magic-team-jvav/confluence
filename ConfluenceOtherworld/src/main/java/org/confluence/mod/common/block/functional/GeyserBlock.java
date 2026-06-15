@@ -29,7 +29,7 @@ public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
     private static final VoxelShape SHAPE_CEIL = Shapes.box(0.0625, 0.5, 0.0625, 0.9375, 1.0, 0.9375);
 
     public GeyserBlock() {
-        super(Properties.ofFullCopy(Blocks.STONE));
+        super(Properties.copy(Blocks.STONE));
         registerDefaultState(stateDefinition.any().setValue(IS_FLOOR, true).setValue(StateProperties.DRIVE, false));
     }
 

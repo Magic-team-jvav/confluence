@@ -3,21 +3,19 @@ package org.confluence.mod.common.block.common;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -28,16 +26,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 public class BaseChestBlock extends ChestBlock {
@@ -46,7 +44,7 @@ public class BaseChestBlock extends ChestBlock {
     private final Key key;
 
     public BaseChestBlock(@Nullable Key key) {
-        this(Properties.ofFullCopy(Blocks.CHEST), ChestBlocks.BASE_CHEST_ENTITY::get, key);
+        this(Properties.copy(Blocks.CHEST), ChestBlocks.BASE_CHEST_ENTITY::get, key);
     }
 
     public BaseChestBlock(Properties properties, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, @Nullable Key key) {
@@ -66,7 +64,7 @@ public class BaseChestBlock extends ChestBlock {
     }
 
     @Override
-    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
         ItemStack stack = asItem().getDefaultInstance();
         setupComponent(stack, state.getValue(UNLOCKED));
         return Collections.singletonList(stack);
@@ -78,8 +76,7 @@ public class BaseChestBlock extends ChestBlock {
     }
 
     @Nullable
-    @Override
-    protected Direction candidatePartnerFacing(BlockPlaceContext context, Direction direction) {
+    private Direction candidatePartnerFacing(BlockPlaceContext context, Direction direction) {
         BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos().relative(direction));
         if (blockstate.is(this) && blockstate.getValue(UNLOCKED) == unlocked(context.getItemInHand())) {
             return blockstate.getValue(TYPE) == ChestType.SINGLE ? blockstate.getValue(FACING) : null;
@@ -89,30 +86,65 @@ public class BaseChestBlock extends ChestBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return super.getStateForPlacement(context).setValue(UNLOCKED, unlocked(context.getItemInHand()));
+        ChestType chesttype = ChestType.SINGLE;
+        Direction direction = context.getHorizontalDirection().getOpposite();
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        boolean flag = context.isSecondaryUseActive();
+        Direction direction1 = context.getClickedFace();
+
+        if (direction1.getAxis().isHorizontal() && flag) {
+            Direction direction2 = this.candidatePartnerFacing(context, direction1.getOpposite());
+            if (direction2 != null && direction2.getAxis() != direction1.getAxis()) {
+                direction = direction2;
+                chesttype = direction2.getCounterClockWise() == direction1.getOpposite() ? ChestType.RIGHT : ChestType.LEFT;
+            }
+        }
+
+        if (chesttype == ChestType.SINGLE && !flag) {
+            if (direction == this.candidatePartnerFacing(context, direction.getClockWise())) {
+                chesttype = ChestType.LEFT;
+            } else if (direction == this.candidatePartnerFacing(context, direction.getCounterClockWise())) {
+                chesttype = ChestType.RIGHT;
+            }
+        }
+
+        return this.defaultBlockState()
+                .setValue(FACING, direction)
+                .setValue(TYPE, chesttype)
+                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER)
+                .setValue(UNLOCKED, unlocked(context.getItemInHand()));
     }
 
     protected boolean unlocked(ItemStack stack) {
-        return stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY).properties().getOrDefault("unlocked", "true").equals("true");
+        CompoundTag tag = stack.getTag();
+        if (tag != null && tag.contains("BlockStateTag")) {
+            CompoundTag blockStateTag = tag.getCompound("BlockStateTag");
+            return blockStateTag.getString("unlocked").equals("true");
+        }
+        return true;
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
+
         if (!state.getValue(UNLOCKED)) {
             if (key != null && !key.useKeyOn(stack, state, level, pos, player, hand, hitResult)) {
-                return ItemInteractionResult.FAIL;
+                return InteractionResult.FAIL;
             }
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
+
         if (player instanceof ServerPlayer serverPlayer) {
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, stack);
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+
+        return InteractionResult.PASS;
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
+    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+        ItemStack stack = super.getCloneItemStack(level, pos, state);
         setupComponent(stack, state.getValue(UNLOCKED));
         return stack;
     }
@@ -123,21 +155,25 @@ public class BaseChestBlock extends ChestBlock {
     }
 
     @Override
-    protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
         return state.getValue(UNLOCKED) ? super.getDestroyProgress(state, player, level, pos) : 0;
     }
 
     public static void setupComponent(ItemStack stack, boolean unlocked) {
-        stack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", unlocked ? "true" : "false")));
+        CompoundTag tag = stack.getOrCreateTag();
+        CompoundTag blockStateTag = tag.contains("BlockStateTag") ? tag.getCompound("BlockStateTag") : new CompoundTag();
+        blockStateTag.putString("unlocked", unlocked ? "true" : "false");
+        tag.put("BlockStateTag", blockStateTag);
     }
 
     public static class BItem extends BlockItem {
         public BItem(Block block, Properties properties) {
-            super(block, properties.component(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", "true"))));
+            super(block, properties);
         }
 
         @Override
-        public void onCraftedPostProcess(ItemStack stack, Level level) {
+        public void onCraftedBy(ItemStack stack, Level level, Player player) {
+            super.onCraftedBy(stack, level, player);
             setupComponent(stack, true);
         }
     }

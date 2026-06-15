@@ -61,7 +61,7 @@ public class TheCrimsonConversionTable extends ConversionTable {
         if (!hardmode) return null;
 
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.CRIMSTONE.get();
-        if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_CRIMSTONE.get();
+        if (holder.is(Tags.Blocks.COBBLESTONE)) return NatureBlocks.COBBLED_CRIMSTONE.get();
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) {
             return OreBlocks.FLESHIFICATION_REDSTONE_ORE.get();
         }

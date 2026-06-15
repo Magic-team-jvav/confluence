@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +22,7 @@ public class JungleHiveBlock extends Block {
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
 
     public JungleHiveBlock() {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.BEEHIVE));
+        super(BlockBehaviour.Properties.copy(Blocks.BEEHIVE));
         registerDefaultState(stateDefinition.any().setValue(NATURAL, false));
     }
 
@@ -32,7 +33,7 @@ public class JungleHiveBlock extends Block {
 
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-        if (level.isClientSide || player.hasInfiniteMaterials() || !state.getValue(NATURAL)) return;
+        if (level.isClientSide || PortPlayerExtension.hasInfiniteMaterials(player) || !state.getValue(NATURAL)) return;
         int randomNumber = level.random.nextInt(3);
         if (randomNumber == 0) {
             level.setBlockAndUpdate(pos, ModBlocks.HONEY.get().defaultBlockState());

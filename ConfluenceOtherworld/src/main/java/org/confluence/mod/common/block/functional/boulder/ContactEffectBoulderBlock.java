@@ -37,7 +37,7 @@ public class ContactEffectBoulderBlock extends BoulderBlock {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         contactEffect.effect(state, level, pos, entity);
     }
 

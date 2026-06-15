@@ -1,14 +1,12 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -22,10 +20,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import org.confluence.lib.util.LibUtils;
 
 public class BranchesBlock extends PipeBlock {
-    public static final MapCodec<BranchesBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            TagKey.codec(Registries.BLOCK).fieldOf("attachable").forGetter(block -> block.attachable),
-            TagKey.codec(Registries.BLOCK).fieldOf("supporting").forGetter(block -> block.supporting)
-    ).apply(instance, BranchesBlock::new));
 
     public static final int DECAY_DISTANCE = 12;
     public static final IntegerProperty DISTANCE = IntegerProperty.create("distance", 1, DECAY_DISTANCE);
@@ -54,7 +48,7 @@ public class BranchesBlock extends PipeBlock {
     }
 
     @Override
-    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         BlockState newState = this.updateAllProperties(state, level, currentPos);
         if (newState.getValue(DISTANCE) == DECAY_DISTANCE && !newState.canSurvive(level, currentPos)) {
             level.scheduleTick(currentPos, this, 1);
@@ -84,14 +78,14 @@ public class BranchesBlock extends PipeBlock {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(DISTANCE) == DECAY_DISTANCE && !state.canSurvive(level, pos)) {
             level.destroyBlock(pos, true);
         }
     }
 
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState below = level.getBlockState(pos.below());
         if (below.is(this) || below.is(supporting)) return true;
         int currentDist = state.getValue(DISTANCE);
@@ -108,12 +102,7 @@ public class BranchesBlock extends PipeBlock {
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
         return false;
-    }
-
-    @Override
-    protected MapCodec<? extends PipeBlock> codec() {
-        return CODEC;
     }
 }

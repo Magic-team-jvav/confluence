@@ -1,8 +1,8 @@
 package org.confluence.mod.common.block.functional;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
@@ -20,7 +20,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModEffects;
 
 public class AmmoBoxBlock extends HorizontalDirectionalBlock {
-    public static final MapCodec<AmmoBoxBlock> CODEC = simpleCodec(AmmoBoxBlock::new);
     private static final VoxelShape SHAPE = Shapes.or(
             box(2, 0, 2, 14, 6, 14),
             box(1, 6, 1, 15, 9, 15)
@@ -48,14 +47,9 @@ public class AmmoBoxBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    protected MapCodec<AmmoBoxBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!level.isClientSide) {
-            player.addEffect(new MobEffectInstance(ModEffects.AMMO_BOX, MobEffectInstance.INFINITE_DURATION));
+            player.addEffect(new MobEffectInstance(ModEffects.AMMO_BOX.get(), MobEffectInstance.INFINITE_DURATION));
         }
         return InteractionResult.SUCCESS;
     }

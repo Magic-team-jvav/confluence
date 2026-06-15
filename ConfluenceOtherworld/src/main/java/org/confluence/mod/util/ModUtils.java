@@ -354,7 +354,7 @@ public final class ModUtils {
                 (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX))
         ) {
             if (player instanceof ServerPlayer serverPlayer && LootComponent.open(serverPlayer, onSlot)) {
-                if (!serverPlayer.hasInfiniteMaterials()) {
+                if (!serverPortPlayer.hasInfiniteMaterials(player)) {
                     if (carried.is(ToolItems.GOLDEN_DUNGEON_KEY)) {
                         carried.shrink(1);
                     }

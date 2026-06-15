@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -23,7 +22,6 @@ import org.confluence.mod.common.init.ModTags;
 import javax.annotation.Nullable;
 
 public class CoinPileBlock extends FallingBlock {
-    public static final MapCodec<CoinPileBlock> CODEC = simpleCodec(CoinPileBlock::new);
     public static final BooleanProperty ISBASE = BooleanProperty.create("isbase");
     public static final IntegerProperty HEAPS = IntegerProperty.create("heaps", 1, 12);
     protected static final VoxelShape ONE_CUBE = box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0);
@@ -85,11 +83,6 @@ public class CoinPileBlock extends FallingBlock {
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState Below = level.getBlockState(pos.below());
         return isCoinPileBlock(Below) || !Below.isAir();
-    }
-
-    @Override
-    protected MapCodec<CoinPileBlock> codec() {
-        return CODEC;
     }
 
     @Override

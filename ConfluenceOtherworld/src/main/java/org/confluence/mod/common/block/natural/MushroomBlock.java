@@ -33,7 +33,7 @@ public class MushroomBlock extends BasePlantBlock implements ISpreadable, Boneme
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-        if (state.is(NatureBlocks.GLOWING_MUSHROOM)) {
+        if (state.is(NatureBlocks.GLOWING_MUSHROOM.get())) {
             return 7;
         }
         return 0;
@@ -45,8 +45,8 @@ public class MushroomBlock extends BasePlantBlock implements ISpreadable, Boneme
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        return state.is(NatureBlocks.GLOWING_MUSHROOM) || state.is(NatureBlocks.LIFE_MUSHROOM.get());
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
+        return state.is(NatureBlocks.GLOWING_MUSHROOM.get()) || state.is(NatureBlocks.LIFE_MUSHROOM.get());
     }
 
     @Override

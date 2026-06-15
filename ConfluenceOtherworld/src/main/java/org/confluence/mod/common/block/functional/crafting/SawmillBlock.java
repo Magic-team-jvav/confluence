@@ -2,6 +2,7 @@ package org.confluence.mod.common.block.functional.crafting;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
@@ -37,7 +38,7 @@ public class SawmillBlock extends HorizontalDirectionalWithHorizontalTwoPartBloc
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
@@ -47,7 +48,7 @@ public class SawmillBlock extends HorizontalDirectionalWithHorizontalTwoPartBloc
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         int index = state.getValue(FACING).get2DDataValue();
         return state.getValue(PART).isBase() ? SHAPES_BASE[index] : SHAPES_RIGHT[index];
     }

@@ -11,11 +11,10 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraftforge.common.ForgeHooks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.Set;
-
-import static net.neoforged.neoforge.common.net.minecraftforge.common.CommonHooks.fireCropGrowPost;
 
 public abstract class BaseCropBlock extends CropBlock {
     public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 7);
@@ -58,19 +57,19 @@ public abstract class BaseCropBlock extends CropBlock {
     }
 
     @Override
-    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!level.isAreaLoaded(pos, 3)) return;
         if (level.getRawBrightness(pos, 0) >= 9) {
             int i = getAge(state);
             if (i < getMaxAge()) {
-                float f = getGrowthSpeed(state, level, pos);
+                float f = getGrowthSpeed(state.getBlock(), level, pos);
                 BlockState belowState = level.getBlockState(pos.below());
                 if (belowState.is(NatureBlocks.RAIN_CLOUD_BLOCK.get())) {
                     f *= 3.0F;
                 }
-                if (net.minecraftforge.common.CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / f) + 1) == 0)) {
+                if (ForgeHooks.onCropsGrowPre(level, pos, state, random.nextInt((int) (25.0F / f) + 1) == 0)) {
                     level.setBlock(pos, getStateForAge(i + 1), 2);
-                    fireCropGrowPost(level, pos, state);
+                    ForgeHooks.onCropsGrowPost(level, pos, state);
                 }
             }
         }

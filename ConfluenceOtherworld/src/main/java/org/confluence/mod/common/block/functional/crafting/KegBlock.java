@@ -1,10 +1,10 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import com.mojang.serialization.MapCodec;
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -20,9 +20,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.PortItemInteractionResult;
 
 public class KegBlock extends HorizontalDirectionalBlock {
-    public static final MapCodec<KegBlock> CODEC = simpleCodec(KegBlock::new);
     private static final VoxelShape X_AXIS_SHAPE = Shapes.or(
             box(1, 5.5, 3, 15, 15.5, 13),
             box(10.5, 5, 2.5, 12.5, 9, 13.5),
@@ -69,20 +69,16 @@ public class KegBlock extends HorizontalDirectionalBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
         if (stack.is(PotionItems.MUG)) {
-            if (level.isClientSide) return ItemInteractionResult.SUCCESS;
+            if (level.isClientSide) return InteractionResult.SUCCESS;
             player.addItem(PotionItems.ALE.toStack());
-            if (!player.hasInfiniteMaterials()) {
+            if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
                 stack.shrink(1);
             }
-            return ItemInteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-    }
-
-    @Override
-    protected MapCodec<KegBlock> codec() {
-        return CODEC;
+        return PortItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION.result();
     }
 }

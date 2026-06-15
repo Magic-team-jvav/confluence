@@ -25,7 +25,7 @@ public class AshPathBlock extends DirtPathBlock {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         BlockState blockstate = pushEntitiesUp(state, NatureBlocks.ASH_BLOCK.get().defaultBlockState(), level, pos);
         level.setBlockAndUpdate(pos, blockstate);
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(null, blockstate));

@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -22,15 +22,16 @@ public class ChlorophyteExtractinatorBlock extends HorizontalDirectionalWithHori
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level instanceof ServerLevel serverLevel) {
             ItemStack itemStack = player.getItemInHand(hand);
             ExtractinatorData data = itemStack.getItemHolder().getData(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR);
-            if (data == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            if (data == null) return InteractionResult.PASS;
             ExtractinatorData.extract(level, pos, player, hand, serverLevel, itemStack, data);
         } else if (LibUtils.isPhysicalClient()) {
             ((MinecraftAccessor) Minecraft.getInstance()).setRightClickDelay(1);
         }
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
+
 }

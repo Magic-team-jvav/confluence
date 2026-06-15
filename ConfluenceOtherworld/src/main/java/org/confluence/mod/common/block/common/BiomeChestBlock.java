@@ -11,7 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -27,11 +27,15 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.entity.player.PortPlayer;
 
 import java.util.function.Predicate;
 
@@ -40,7 +44,7 @@ public class BiomeChestBlock extends ChestBlock {
     private final Predicate<ItemStack> isKey;
 
     public BiomeChestBlock(Predicate<ItemStack> isKey) {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST).explosionResistance(18000), ChestBlocks.BIOME_CHEST_ENTITY::get);
+        super(BlockBehaviour.Properties.copy(Blocks.CHEST).explosionResistance(18000), ChestBlocks.BIOME_CHEST_ENTITY::get);
         this.isKey = isKey;
         registerDefaultState(defaultBlockState().setValue(UNLOCKED, false));
     }
@@ -61,21 +65,23 @@ public class BiomeChestBlock extends ChestBlock {
     }
 
     @Override
-    protected @Nullable Direction candidatePartnerFacing(BlockPlaceContext context, Direction direction) {
-        return null; // 不能合并
-    }
-
-    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState state = super.getStateForPlacement(context);
-        if (context.getPlayer() == null || !context.getPlayer().isCreative()) {
-            return state.setValue(UNLOCKED, true);
-        }
-        return state;
+        // 禁用合并，直接返回单箱状态
+        Direction direction = context.getHorizontalDirection().getOpposite();
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+        boolean unlocked = context.getPlayer() == null || !context.getPlayer().isCreative();
+
+        return this.defaultBlockState()
+                .setValue(FACING, direction)
+                .setValue(TYPE, ChestType.SINGLE)
+                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER)
+                .setValue(UNLOCKED, unlocked);
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
+
         if (player instanceof ServerPlayer serverPlayer && isKey.test(stack) && !state.getValue(UNLOCKED)) {
             level.setBlock(pos, state.setValue(UNLOCKED, true), Block.UPDATE_ALL);
             serverPlayer.level().playSound(null, pos, SoundEvents.CHAIN_BREAK, SoundSource.BLOCKS);
@@ -85,13 +91,19 @@ public class BiomeChestBlock extends ChestBlock {
                     new BlockParticleOption(ParticleTypes.BLOCK, Blocks.CHAIN.defaultBlockState()),
                     posX, pos.getY() + 0.5, posZ, 200, 0.0625, 0.0625, 0.0625, 0.15
             );
-            if (!player.hasInfiniteMaterials()) {
+            if (!PortPlayer.hasInfiniteMaterials(player)) {
                 stack.shrink(1);
             }
             AchievementUtils.awardAchievement(serverPlayer, "big_booty");
-            return ItemInteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+
+        // 已解锁时让 ChestBlock 处理
+        if (state.getValue(UNLOCKED)) {
+            return InteractionResult.PASS;
+        }
+
+        return InteractionResult.PASS;
     }
 
     @Override
@@ -100,7 +112,7 @@ public class BiomeChestBlock extends ChestBlock {
     }
 
     @Override
-    protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
         return state.getValue(UNLOCKED) ? super.getDestroyProgress(state, player, level, pos) : 0;
     }
 

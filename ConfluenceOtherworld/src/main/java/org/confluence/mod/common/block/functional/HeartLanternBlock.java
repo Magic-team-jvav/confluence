@@ -105,7 +105,7 @@ public class HeartLanternBlock extends LanternBlock implements EntityBlock {
                     Vec3 center = pos.getCenter();
                     for (Player player : serverLevel.players()) {
                         if (player.distanceToSqr(center) < 32 * 32) {
-                            player.addEffect(new MobEffectInstance(ModEffects.HEART_LANTERN, 420));
+                            player.addEffect(new MobEffectInstance(ModEffects.HEART_LANTERN.get(), 420));
                         }
                     }
                 }

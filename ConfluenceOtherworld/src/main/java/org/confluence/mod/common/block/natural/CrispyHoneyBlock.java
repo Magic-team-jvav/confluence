@@ -38,7 +38,7 @@ public class CrispyHoneyBlock extends Block {
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         if (level instanceof ServerLevel serverLevel && ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel)) {
-            entity.igniteForSeconds(5.0F);
+            entity.setRemainingFireTicks(100);
         }
     }
 

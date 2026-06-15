@@ -60,7 +60,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
             .build());
 
     public BaseHerbBlock() {
-        super(Properties.ofFullCopy(Blocks.DANDELION).randomTicks());
+        super(Properties.copy(Blocks.DANDELION).randomTicks());
     }
 
     public BaseHerbBlock(Properties prop) {

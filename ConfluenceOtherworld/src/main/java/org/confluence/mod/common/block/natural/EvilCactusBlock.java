@@ -14,10 +14,8 @@ public class EvilCactusBlock extends CactusBlock {
         super(properties);
     }
 
-    // 牢镜的码，出事找牢镜
-    // 目测仅将原版仙人掌方块实例修改为标签了
     @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             BlockState blockstate = level.getBlockState(pos.relative(direction));
             if (blockstate.isSolid() || level.getFluidState(pos.relative(direction)).is(FluidTags.LAVA)) {
@@ -26,11 +24,6 @@ public class EvilCactusBlock extends CactusBlock {
         }
 
         BlockState blockstate1 = level.getBlockState(pos.below());
-        PortTriState soilDecision = blockstate1.canSustainPlant(level, pos.below(), Direction.UP, state);
-        if (!soilDecision.isDefault()) {
-            return soilDecision.isTrue();
-        } else {
-            return (blockstate1.is(ModTags.Blocks.CACTUS) || blockstate1.is(BlockTags.SAND)) && !level.getBlockState(pos.above()).liquid();
-        }
+        return (blockstate1.is(ModTags.Blocks.CACTUS) || blockstate1.is(BlockTags.SAND)) && !level.getBlockState(pos.above()).liquid();
     }
 }

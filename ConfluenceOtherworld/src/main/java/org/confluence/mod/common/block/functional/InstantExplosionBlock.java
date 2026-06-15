@@ -10,7 +10,7 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 
 public class InstantExplosionBlock extends AbstractMechanicalBlock {
     public InstantExplosionBlock() {
-        super(Properties.ofFullCopy(Blocks.TNT));
+        super(Properties.copy(Blocks.TNT));
     }
 
     @Override

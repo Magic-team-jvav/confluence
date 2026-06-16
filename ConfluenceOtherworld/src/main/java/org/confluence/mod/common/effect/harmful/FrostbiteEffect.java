@@ -1,23 +1,22 @@
-package org.confluence.mod.common.effect.harmful;
+﻿package org.confluence.mod.common.effect.harmful;
 
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.common.EffectCure;
 import org.confluence.lib.util.LibUtils;
+import org.mesdag.portlib.wrapper.common.PortEffectCure;
+import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
 import java.util.Set;
 
-public class FrostbiteEffect extends MobEffect {
+public class FrostbiteEffect extends PortMobEffect {
     public FrostbiteEffect() {
         super(MobEffectCategory.HARMFUL, 0x39C5BB);
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
+    public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         livingEntity.hurt(livingEntity.damageSources().freeze(), 2);
-        return true;
     }
 
     @Override
@@ -26,7 +25,7 @@ public class FrostbiteEffect extends MobEffect {
     }
 
     @Override
-    public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
+    public void fillEffectCures(Set<PortEffectCure> cures, MobEffectInstance effectInstance) {
         super.fillEffectCures(cures, effectInstance);
         cures.add(LibUtils.DENY_HEAL);
     }

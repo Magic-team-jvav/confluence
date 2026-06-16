@@ -1,13 +1,14 @@
 ﻿package org.confluence.mod.common.effect.flask;
 
+import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
 import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.init.ModEffects;
 import org.mesdag.portlib.wrapper.common.PortEffectCure;
 import org.mesdag.portlib.wrapper.common.PortTags;
@@ -42,14 +43,16 @@ public abstract class FlaskEffect extends PortMobEffect {
         }
     }
 
-    public static boolean cloneFlaskEffects(ServerPlayer old, ServerPlayer neo) {
-
-        return false;
+    /// 保留下来的flask effect
+    public static void cloneFlaskEffects(Player old, Player neo) {
+        for (MobEffectInstance instance : old.getActiveEffects()) {
+            neo.forceAddEffect(instance, null);
+        }
     }
 
-    public static void removeAnotherFlaskEffects(MobEffectInstance mobEffectInstance, LivingEntity living) {
-        if (mobEffectInstance.getCures().contains(ModEffects.FLASK)) {
-            living.removeEffectsCuredBy(ModEffects.FLASK);
+    public static void removeAnotherFlaskEffects(MobEffectInstance instance, LivingEntity living) {
+        if (PortMobEffectInstanceExtension.getCures(instance).contains(ModEffects.FLASK)) {
+            PortLivingEntityExtension.removeEffectsCuredBy(living, ModEffects.FLASK);
         }
     }
 }

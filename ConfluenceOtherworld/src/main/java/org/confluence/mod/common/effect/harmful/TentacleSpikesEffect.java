@@ -1,18 +1,17 @@
 package org.confluence.mod.common.effect.harmful;
 
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
-public class TentacleSpikesEffect extends MobEffect {
+public class TentacleSpikesEffect extends PortMobEffect {
     public TentacleSpikesEffect() {
         super(MobEffectCategory.HARMFUL, 0xFF0000);
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
+    public void applyEffectTick(LivingEntity pLivingEntity, int pAmplifier) {
         pLivingEntity.hurt(pLivingEntity.level().damageSources().magic(), pAmplifier + 2.0F);
-        return true;
     }
 
     @Override

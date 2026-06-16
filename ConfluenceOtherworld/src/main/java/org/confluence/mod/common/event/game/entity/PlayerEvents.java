@@ -17,7 +17,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -55,6 +54,7 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
@@ -347,11 +347,7 @@ public final class PlayerEvents {
         Player old = event.getOriginal();
         Player neo = event.getEntity();
 
-        /// 保留下来的flask effect
-        /// @see org.confluence.mod.common.effect.flask.FlaskEffect#cloneFlaskEffects
-        for (MobEffectInstance activeEffect : old.getActiveEffects()) {
-            neo.forceAddEffect(activeEffect, null);
-        }
+        FlaskEffect.cloneFlaskEffects(old, neo);
     }
 
     private static void respawn(PlayerEvent.PlayerRespawnEvent event) {

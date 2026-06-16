@@ -1,5 +1,6 @@
 package org.confluence.mod.util;
 
+import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -340,7 +341,8 @@ public final class ModUtils {
 
     /// 决定护士是否能治疗
     public static boolean isDebuff(MobEffectInstance instance) {
-        return instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && !instance.getCures().contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
+        return instance.getEffect().getCategory() == MobEffectCategory.HARMFUL &&
+                !PortMobEffectInstanceExtension.getCures(instance).contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
     }
 
     public static boolean isSwitchableEffect(MobEffectInstance instance) {

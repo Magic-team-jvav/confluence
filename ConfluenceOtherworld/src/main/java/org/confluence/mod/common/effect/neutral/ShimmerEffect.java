@@ -1,7 +1,6 @@
 package org.confluence.mod.common.effect.neutral;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -13,14 +12,15 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
+import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
-public class ShimmerEffect extends MobEffect {
+public class ShimmerEffect extends PortMobEffect {
     public ShimmerEffect() {
         super(MobEffectCategory.NEUTRAL, 0xFF96FF);
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity living, int amplifier) {
+    public boolean applyEffectTick1211(LivingEntity living, int amplifier) {
         Level level = living.level();
         if (level.isClientSide) return true;
         if (living.position().y < level.getMinBuildHeight() + 5) return false;
@@ -37,7 +37,7 @@ public class ShimmerEffect extends MobEffect {
         });
         if (amplifier > 0) {
             if (shouldExpire) {
-                MobEffectInstance effect = living.getEffect(ModEffects.SHIMMER);
+                MobEffectInstance effect = living.getEffect(ModEffects.SHIMMER.get());
                 if (effect != null) effect.amplifier = 0;
             }
             return true;
@@ -51,9 +51,9 @@ public class ShimmerEffect extends MobEffect {
     }
 
     public static void applyShimmerEffect(LivingEntity living) {
-        if (!living.level().isClientSide && living.getEyeInFluidType() == ModFluids.SHIMMER.type().get() && !living.hasEffect(ModEffects.SHIMMER)) {
-            if (living.isCrouching() || !TCUtils.getValue(living, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER)) {
-                living.addEffect(new MobEffectInstance(ModEffects.SHIMMER, MobEffectInstance.INFINITE_DURATION));
+        if (!living.level().isClientSide && living.getEyeInFluidType() == ModFluids.SHIMMER.type().get() && !living.hasEffect(ModEffects.SHIMMER.get())) {
+            if (living.isCrouching() || !TCUtils.getValue(living, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER.get())) {
+                living.addEffect(new MobEffectInstance(ModEffects.SHIMMER.get(), MobEffectInstance.INFINITE_DURATION));
             }
         }
     }

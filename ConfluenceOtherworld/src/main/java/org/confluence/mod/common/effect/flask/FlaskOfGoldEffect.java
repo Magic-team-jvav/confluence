@@ -13,6 +13,6 @@ public class FlaskOfGoldEffect extends FlaskEffect {
 
     @Override
     public void doMeleeAttack(LivingEntity attacker, LivingEntity victim, int amplifier, DamageSource damageSource, float amount) {
-        victim.addEffect(new MobEffectInstance(ModEffects.MIDAS, 40));
+        victim.addEffect(new MobEffectInstance(ModEffects.MIDAS.get(), 40));
     }
 }

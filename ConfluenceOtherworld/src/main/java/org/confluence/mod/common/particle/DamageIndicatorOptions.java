@@ -5,12 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.chat.Component;
-import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -19,35 +14,43 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModParticleTypes;
-import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.chat.PortComponentSerialization;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.core.particles.PortParticleOptions;
 
 import java.util.Objects;
 
 // 除了显示数字还能显示“美味...” “致命失误！”
 @ScheduledForMove(since = "1.2.0", inVersion = "2.0.0")
-public record DamageIndicatorOptions(
-        Component text,
-        boolean big,
-        Type type
-) implements ParticleOptions {
-    @Override
-    public ParticleType<DamageIndicatorOptions> getType() {
-        return ModParticleTypes.DAMAGE_INDICATOR.get();
-    }
-
+public final class DamageIndicatorOptions extends PortParticleOptions {
     public static final MapCodec<DamageIndicatorOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            PortComponentSerialization.CODEC.fieldOf("text").forGetter(DamageIndicatorOptions::text),
-            Codec.BOOL.fieldOf("big").forGetter(DamageIndicatorOptions::big),
-            Type.CODEC.fieldOf("type").forGetter(DamageIndicatorOptions::type)
+        PortComponentSerialization.CODEC.fieldOf("text").forGetter(DamageIndicatorOptions::text),
+        Codec.BOOL.fieldOf("big").forGetter(DamageIndicatorOptions::big),
+        Type.CODEC.fieldOf("type").forGetter(DamageIndicatorOptions::type)
     ).apply(instance, DamageIndicatorOptions::new));
 
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, DamageIndicatorOptions> STREAM_CODEC = PortStreamCodec.composite(
-            PortComponentSerialization.STREAM_CODEC, DamageIndicatorOptions::text,
-            PortByteBufCodecs.BOOL, DamageIndicatorOptions::big,
-            Type.STREAM_CODEC, DamageIndicatorOptions::type,
-            DamageIndicatorOptions::new
+        PortComponentSerialization.STREAM_CODEC, DamageIndicatorOptions::text,
+        PortByteBufCodecs.BOOL, DamageIndicatorOptions::big,
+        Type.STREAM_CODEC, DamageIndicatorOptions::type,
+        DamageIndicatorOptions::new
     );
+    private final Component text;
+    private final boolean big;
+    private final Type type;
+
+    public DamageIndicatorOptions(
+        Component text,
+        boolean big,
+        Type type
+    ) {
+        super(ModParticleTypes.DAMAGE_INDICATOR.get(), CODEC, STREAM_CODEC);
+        this.text = text;
+        this.big = big;
+        this.type = type;
+    }
 
     public static void sendDamageParticle(ServerLevel level, DamageSource damageSource, float amount, LivingEntity victim) {
         if (damageSource.is(DamageTypes.GENERIC_KILL)) return;
@@ -86,6 +89,42 @@ public record DamageIndicatorOptions(
             level.sendParticles(new DamageIndicatorOptions(component, false, Type.HEAL), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
         }
     }
+
+    public Component text() {
+        return text;
+    }
+
+    public boolean big() {
+        return big;
+    }
+
+    public Type type() {
+        return type;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (DamageIndicatorOptions) obj;
+        return Objects.equals(this.text, that.text) &&
+               this.big == that.big &&
+               Objects.equals(this.type, that.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(text, big, type);
+    }
+
+    @Override
+    public String toString() {
+        return "DamageIndicatorOptions[" +
+               "text=" + text + ", " +
+               "big=" + big + ", " +
+               "type=" + type + ']';
+    }
+
 
     public enum Type {
         DAMAGE,

@@ -1,12 +1,10 @@
 package org.confluence.mod.common.data.saved;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +15,9 @@ import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// [怪物图鉴](https://terraria.wiki.gg/zh/wiki/%E6%80%AA%E7%89%A9%E5%9B%BE%E9%89%B4)
 public class BestiaryEntry {
@@ -28,7 +29,7 @@ public class BestiaryEntry {
             Codec.FLOAT.fieldOf("attack_damage").forGetter(entry -> entry.attackDamage),
             Codec.FLOAT.fieldOf("armor").forGetter(entry -> entry.armor),
             Codec.INT.fieldOf("drops").forGetter(entry -> entry.drops),
-            Codec.FLOAT.lenientOptionalFieldOf("unlocked_progress", 1F).forGetter(entry -> entry.unlockedProgress)
+            PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "unlocked_progress", 1F).forGetter(entry -> entry.unlockedProgress)
     ).apply(instance, BestiaryEntry::new));
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, BestiaryEntry> STREAM_CODEC = LibStreamCodecUtils.composite(
             PortByteBufCodecs.registry(Registries.ENTITY_TYPE), entry -> entry.type,

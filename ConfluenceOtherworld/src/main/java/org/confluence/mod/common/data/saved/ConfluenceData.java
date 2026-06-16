@@ -3,7 +3,6 @@ package org.confluence.mod.common.data.saved;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -41,7 +40,7 @@ public final class ConfluenceData extends SavedData {
         }
     }
 
-    ConfluenceData(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
+    ConfluenceData(CompoundTag nbt) {
         this.initialized = nbt.getBoolean("initialized");
         this.windSpeed.x = nbt.getFloat("windSpeedX");
         this.windSpeed.z = nbt.getFloat("windSpeedZ");
@@ -56,7 +55,7 @@ public final class ConfluenceData extends SavedData {
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
-        ConfluenceData data = serverLevel.getDataStorage().computeIfAbsent(new Factory<>(ConfluenceData::new, ConfluenceData::new), Confluence.MODID);
+        ConfluenceData data = serverLevel.getDataStorage().computeIfAbsent(ConfluenceData::new, ConfluenceData::new, Confluence.MODID);
         initialize(serverLevel, data);
         return data;
     }
@@ -84,7 +83,7 @@ public final class ConfluenceData extends SavedData {
     }
 
     @Override
-    public @NotNull CompoundTag save(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
+    public @NotNull CompoundTag save(CompoundTag nbt) {
         nbt.putBoolean("initialized", initialized);
         nbt.putFloat("windSpeedX", windSpeed.x);
         nbt.putFloat("windSpeedZ", windSpeed.z);

@@ -1,5 +1,9 @@
 ﻿package org.confluence.mod.common.data.saved;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
+import PortLib.extensions.net.minecraft.core.BlockPos.PortBlockPosExtension;
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -18,7 +22,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
@@ -59,12 +62,6 @@ import org.confluence.mod.mixin.integration.terraentity.AnglerNPCMixin;
 import org.confluence.mod.mixin.integration.terraentity.MechanicNPCMixin;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terraentity.api.event.NPCEvent;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.entity.npc.AnglerNPC;
-import org.confluence.terraentity.entity.npc.TravelingMerchantNPC;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TENpcEntities;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -80,12 +77,12 @@ public enum NPCSpawner implements IGlobalData {
         @Override
         public <T> DataResult<Pair<Map<Region, Object2BooleanMap<EntityType<?>>>, T>> decode(DynamicOps<T> ops, T input) {
             Map<Region, Object2BooleanMap<EntityType<?>>> map = new HashMap<>();
-            ops.getMap(input).ifSuccess(map2 -> map2.entries().forEach(pair -> {
-                Region region = new Region(new ChunkPos(Long.parseLong(ops.getStringValue(pair.getFirst()).getOrThrow())));
+            PortDataResultExtension.ifSuccess(ops.getMap(input), map2 -> map2.entries().forEach(pair -> {
+                Region region = new Region(new ChunkPos(Long.parseLong(PortDataResultExtension.getOrThrow(ops.getStringValue(pair.getFirst())))));
                 Object2BooleanMap<EntityType<?>> map1 = new Object2BooleanOpenHashMap<>();
-                ops.getMap(pair.getSecond()).getOrThrow().entries().forEach(pair1 -> {
-                    EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(ops.getStringValue(pair1.getFirst()).getOrThrow()));
-                    boolean spawned = ops.getBooleanValue(pair1.getSecond()).getOrThrow();
+                PortDataResultExtension.getOrThrow(ops.getMap(pair.getSecond())).entries().forEach(pair1 -> {
+                    EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(PortDataResultExtension.getOrThrow(ops.getStringValue(pair1.getFirst()))));
+                    boolean spawned = PortDataResultExtension.getOrThrow(ops.getBooleanValue(pair1.getSecond()));
                     map1.put(entityType, spawned);
                 });
                 map.put(region, map1);
@@ -108,7 +105,7 @@ public enum NPCSpawner implements IGlobalData {
     };
     public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC_V1 = LibCodecUtils.notStringKeyMap(
             "region", Region.CODEC,
-            "alive", ExtraCodecs.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec())
+            "alive", PortCodecExtension.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec())
     );
     public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf()
             .xmap(ObjectOpenHashSet::new, ObjectArrayList::new);
@@ -226,11 +223,11 @@ public enum NPCSpawner implements IGlobalData {
             MutableComponent message;
             if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
                 if (living.isLieDown()) return; // 渔夫未解锁时死亡不会广播死亡消息
-                message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
+                message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.npc.left", living.getName()), GlobalColors.NPC_SLAIN.get());
             } else if (living instanceof TravelingMerchantNPC) {
-                message = Component.translatable("event.confluence.traveling_merchant.departed", living.getName()).withColor(GlobalColors.NPC_ARRIVED.get());
+                message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.traveling_merchant.departed", living.getName()), GlobalColors.NPC_ARRIVED.get());
             } else {
-                message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
+                message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName()), GlobalColors.NPC_SLAIN.get());
             }
             broadcastMessageToRegion(living.level(), living, message);
         }
@@ -240,18 +237,18 @@ public enum NPCSpawner implements IGlobalData {
     public void decode(CompoundTag tag) {
         int version = tag.getInt("Version");
         if (version == 0) {
-            NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_alive"))
-                    .ifSuccess(result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
-            NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_spawned"))
-                    .ifSuccess(result -> this.npcSpawned = new ObjectOpenHashSet<>(result));
+            PortDataResultExtension.ifSuccess(NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_alive")),
+                    result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
+            PortDataResultExtension.ifSuccess(NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("npc_spawned")),
+                    result -> this.npcSpawned = new ObjectOpenHashSet<>(result));
             this.isAdvancedCombatTechniquesUsed = tag.getBoolean("advanced_combat_techniques");
             this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("advanced_combat_techniques_volume_two");
             this.isPeddlersSatchelUsed = tag.getBoolean("peddlers_satchel");
         } else if (version == CURRENT_VERSION) {
-            NPC_ALIVE_CODEC_V1.parse(NbtOps.INSTANCE, tag.get("NpcAlive"))
-                    .ifSuccess(result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
-            NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcSpawned"))
-                    .ifSuccess(result -> this.npcSpawned = result);
+            PortDataResultExtension.ifSuccess(NPC_ALIVE_CODEC_V1.parse(NbtOps.INSTANCE, tag.get("NpcAlive")),
+                    result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
+            PortDataResultExtension.ifSuccess(NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcSpawned")),
+                    result -> this.npcSpawned = result);
             this.isAdvancedCombatTechniquesUsed = tag.getBoolean("AdvancedCombatTechniquesUsed");
             this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("AdvancedCombatTechniquesVolumeTwoUsed");
             this.isPeddlersSatchelUsed = tag.getBoolean("PeddlersSatchelUsed");
@@ -269,10 +266,10 @@ public enum NPCSpawner implements IGlobalData {
                 iterator.remove();
             }
         }
-        NPC_ALIVE_CODEC_V1.encodeStart(NbtOps.INSTANCE, npcAlive)
-                .ifSuccess(nbt -> tag.put("NpcAlive", nbt));
-        NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned)
-                .ifSuccess(nbt -> tag.put("NpcSpawned", nbt));
+        PortDataResultExtension.ifSuccess(NPC_ALIVE_CODEC_V1.encodeStart(NbtOps.INSTANCE, npcAlive),
+                nbt -> tag.put("NpcAlive", nbt));
+        PortDataResultExtension.ifSuccess(NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned),
+                nbt -> tag.put("NpcSpawned", nbt));
         tag.putBoolean("AdvancedCombatTechniquesUsed", isAdvancedCombatTechniquesUsed);
         tag.putBoolean("AdvancedCombatTechniquesVolumeTwoUsed", isAdvancedCombatTechniquesVolumeTwoUsed);
         tag.putBoolean("PeddlersSatchelUsed", isPeddlersSatchelUsed);
@@ -634,7 +631,7 @@ public enum NPCSpawner implements IGlobalData {
                 int j2 = i2 % (i * 2 + 1);
                 int k2 = i2 / (i * 2 + 1);
                 blockPos = PlayerRespawnLogic.getOverworldRespawnPos(level, pos.getX() + j2 - i, pos.getZ() + k2 - i);
-                if (blockPos != null && level.noCollision(npc, aabb.move(blockPos.getBottomCenter()))) {
+                if (blockPos != null && level.noCollision(npc, aabb.move(PortBlockPosExtension.getBottomCenter(blockPos)))) {
                     return blockPos;
                 }
             }
@@ -642,11 +639,11 @@ public enum NPCSpawner implements IGlobalData {
             blockPos = pos;
         }
 
-        while (!level.noCollision(npc, aabb.move(blockPos.getBottomCenter())) && blockPos.getY() < level.getMaxBuildHeight() - 1) {
+        while (!level.noCollision(npc, aabb.move(PortBlockPosExtension.getBottomCenter(blockPos))) && blockPos.getY() < level.getMaxBuildHeight() - 1) {
             blockPos = blockPos.above();
         }
 
-        while (level.noCollision(npc, aabb.move(blockPos.below().getBottomCenter())) && blockPos.getY() > level.getMinBuildHeight() + 1) {
+        while (level.noCollision(npc, aabb.move(PortBlockPosExtension.getBottomCenter(blockPos.below()))) && blockPos.getY() > level.getMinBuildHeight() + 1) {
             blockPos = blockPos.below();
         }
 

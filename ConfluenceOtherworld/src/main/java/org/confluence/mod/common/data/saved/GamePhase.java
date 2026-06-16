@@ -2,11 +2,12 @@ package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
+import net.minecraftforge.common.IExtensibleEnum;
 import org.jetbrains.annotations.NotNull;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Locale;
 import java.util.function.IntFunction;
@@ -19,7 +20,6 @@ import java.util.function.IntFunction;
 /// PLANTERA:世花后
 /// GOLEM:石巨人后
 /// MOON_LORD:月后
-@NetworkedEnum(NetworkedEnum.NetworkCheck.BIDIRECTIONAL)
 public enum GamePhase implements StringRepresentable, IExtensibleEnum {
     BEFORE_SKELETRON(0),
     AFTER_SKELETRON(100),
@@ -29,7 +29,7 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
     GOLEM(500),
     MOON_LORD(600);
 
-    public static final Codec<GamePhase> CODEC = StringRepresentable.fromValues(GamePhase::values);
+    public static final Codec<GamePhase> CODEC = StringRepresentable.fromEnum(GamePhase::values);
     public static final IntFunction<GamePhase> BY_ORDER = ByIdMap.sparse(GamePhase::getOrder, values(), AFTER_SKELETRON);
     public static final PortStreamCodec<ByteBuf, GamePhase> STREAM_CODEC = PortByteBufCodecs.idMapper(BY_ORDER, GamePhase::getOrder);
     private final int order;
@@ -69,7 +69,7 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
         return BY_ORDER.apply(order);
     }
 
-    public static ExtensionInfo getExtensionInfo() {
-        return ExtensionInfo.nonExtended(GamePhase.class);
+    public static GamePhase create(String name, int order) {
+        throw new IllegalStateException("Enum not extended");
     }
 }

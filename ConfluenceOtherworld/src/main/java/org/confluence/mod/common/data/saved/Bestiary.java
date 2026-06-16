@@ -1,11 +1,11 @@
 package org.confluence.mod.common.data.saved;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.MinecraftServer;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.MinecraftForge;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
@@ -28,6 +27,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
+import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.Map;
 import java.util.function.Predicate;
@@ -51,14 +51,14 @@ public enum Bestiary implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        CODEC.parse(NbtOps.INSTANCE, tag.get("entries"))
-                .ifSuccess(result -> this.entries = new Object2ObjectOpenHashMap<>(result));
+        PortDataResultExtension.ifSuccess(CODEC.parse(NbtOps.INSTANCE, tag.get("entries")),
+                result -> this.entries = new Object2ObjectOpenHashMap<>(result));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        CODEC.encodeStart(NbtOps.INSTANCE, entries)
-                .ifSuccess(nbt -> tag.put("entries", nbt));
+        PortDataResultExtension.ifSuccess(CODEC.encodeStart(NbtOps.INSTANCE, entries),
+                nbt -> tag.put("entries", nbt));
     }
 
     @Override
@@ -90,7 +90,7 @@ public enum Bestiary implements IGlobalData {
             AttributeMap map = living.getAttributes();
             entry.maxHealth = getAttributeBaseValue(map, Attributes.MAX_HEALTH);
             entry.knockbackResistance = getAttributeBaseValue(map, Attributes.KNOCKBACK_RESISTANCE);
-            entry.attackDamage = getAttributeBaseValue(map, LibAttributes.getAttackDamage());
+            entry.attackDamage = getAttributeBaseValue(map, LibAttributes.getAttackDamage().value());
             entry.armor = getAttributeBaseValue(map, Attributes.ARMOR);
             entry.drops = living instanceof Enemy ? (int) ModUtils.getLivingBaseMoneyDrops(living, living.level()) : 0;
             return entry;
@@ -130,7 +130,7 @@ public enum Bestiary implements IGlobalData {
         return entries.containsKey(RegisterBestiaryKeyEvent.getKey(living));
     }
 
-    private static float getAttributeBaseValue(AttributeMap map, Holder<Attribute> attribute) {
+    private static float getAttributeBaseValue(AttributeMap map, Attribute attribute) {
         AttributeInstance instance = map.getInstance(attribute);
         return instance == null ? 0.0F : (float) instance.getBaseValue();
     }
@@ -141,6 +141,7 @@ public enum Bestiary implements IGlobalData {
 
     public static boolean canBeSeenAsBestiaryEntry(LivingEntity living) {
         return isAvailableType(living.getType(), living.level()) &&
-                (living.getType().is(ModTags.EntityTypes.BESTIARY_WHITELIST) || !MinecraftForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled());
+                (living.getType().is(ModTags.EntityTypes.BESTIARY_WHITELIST) ||
+                        !PortEventHandler.postEventWithReturn(new ToBeBestiaryEntryEvent(living)).isCanceled());
     }
 }

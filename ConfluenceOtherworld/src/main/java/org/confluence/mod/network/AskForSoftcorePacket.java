@@ -5,7 +5,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.AskForSoftcoreLayer;
@@ -21,10 +20,10 @@ public record AskForSoftcorePacket(boolean accept) implements IPortPacket {
 
     @Override
     public void handle(Context context) {
-        if (context.player() instanceof ServerPlayer serverPlayer) {
-            c2s(serverPlayer);
-        } else if (context.player() != null) {
-            s2c(context.player());
+        if (context.player() instanceof ServerPlayer player) {
+            c2s(player);
+        } else {
+            s2c();
         }
     }
 
@@ -33,7 +32,7 @@ public record AskForSoftcorePacket(boolean accept) implements IPortPacket {
         return ID;
     }
 
-    public void s2c(Player player) {
+    public void s2c() {
         AskForSoftcoreLayer.setAskForSoftcoreLayer(true);
     }
 

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -11,8 +12,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.entity.npc.house.House;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -67,14 +66,14 @@ public enum HouseHandler implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data"))
-                .ifSuccess(result -> this.data = new Object2ObjectOpenHashMap<>(result));
+        PortDataResultExtension.ifSuccess(DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data")),
+                result -> this.data = new Object2ObjectOpenHashMap<>(result));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        DATA_CODEC.encodeStart(NbtOps.INSTANCE, data)
-                .ifSuccess(nbt -> tag.put("data", nbt));
+        PortDataResultExtension.ifSuccess(DATA_CODEC.encodeStart(NbtOps.INSTANCE, data),
+                nbt -> tag.put("data", nbt));
     }
 
     @Override

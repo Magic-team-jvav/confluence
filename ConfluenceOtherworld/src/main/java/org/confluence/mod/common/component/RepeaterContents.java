@@ -19,13 +19,14 @@ import java.util.stream.Stream;
 public final class RepeaterContents implements TooltipComponent {
     public static final RepeaterContents EMPTY = new RepeaterContents(NonNullList.create(), 64);
     public static final Codec<RepeaterContents> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                    Codec.list(ItemStack.CODEC).fieldOf("items").forGetter(RepeaterContents::asItems),
-                    Codec.INT.fieldOf("maxItemCapacity").forGetter(RepeaterContents::getMaxItemCapacity))
-            .apply(instance, RepeaterContents::new));
+            ItemStack.CODEC.listOf().fieldOf("items").forGetter(RepeaterContents::asItems),
+            Codec.INT.fieldOf("maxItemCapacity").forGetter(RepeaterContents::getMaxItemCapacity)
+    ).apply(instance, RepeaterContents::new));
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, RepeaterContents> STREAM_CODEC = PortStreamCodec.composite(
             PortItemStackExtension.listStreamCodec(), RepeaterContents::asItems,
             PortByteBufCodecs.INT, RepeaterContents::getMaxItemCapacity,
-            RepeaterContents::new);
+            RepeaterContents::new
+    );
     private final int maxItemCapacity;
     private final NonNullList<ItemStack> items;
     private final int hashCode;
@@ -110,11 +111,11 @@ public final class RepeaterContents implements TooltipComponent {
     }
 
     public Stream<ItemStack> stream() {
-        return this.items.stream().map(ItemStack::copy);
+        return items.stream().map(ItemStack::copy);
     }
 
     public Stream<ItemStack> nonEmptyStream() {
-        return this.items.stream().filter(p_331322_ -> !p_331322_.isEmpty()).map(ItemStack::copy);
+        return items.stream().filter(stack -> !stack.isEmpty()).map(ItemStack::copy);
     }
 
     public Iterable<ItemStack> nonEmptyItems() {
@@ -138,7 +139,7 @@ public final class RepeaterContents implements TooltipComponent {
 
     public ItemStack getStackInSlot(int slot) {
         validateSlotIndex(slot);
-        return this.items.get(slot).copy();
+        return items.get(slot).copy();
     }
 
     private void validateSlotIndex(int slot) {

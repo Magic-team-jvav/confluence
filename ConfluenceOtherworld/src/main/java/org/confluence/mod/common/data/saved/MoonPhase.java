@@ -5,7 +5,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 
 import java.util.Locale;
-import java.util.function.Function;
 
 public enum MoonPhase implements StringRepresentable {
     /// 满月
@@ -26,7 +25,7 @@ public enum MoonPhase implements StringRepresentable {
     WAXING_GIBBOUS;
 
     public static final MoonPhase[] MOON_PHASES = values();
-    public static final Codec<MoonPhase> CODEC = new StringRepresentable.EnumCodec<>(MOON_PHASES, StringRepresentable.createNameLookup(MOON_PHASES, Function.identity()));
+    public static final Codec<MoonPhase> CODEC = StringRepresentable.fromEnum(() -> MOON_PHASES);
 
     @Override
     public String getSerializedName() {

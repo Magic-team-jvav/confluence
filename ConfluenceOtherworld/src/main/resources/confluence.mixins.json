@@ -76,6 +76,7 @@
         "world.item.ItemUtilsMixin",
         "world.item.PotionItemMixin",
         "world.item.ProjectileWeaponItemMixin",
+        "world.item.SnowballItemMixin",
         "world.item.crafting.RecipeManagerMixin",
         "world.level.LevelAccessor",
         "world.level.LevelMixin",

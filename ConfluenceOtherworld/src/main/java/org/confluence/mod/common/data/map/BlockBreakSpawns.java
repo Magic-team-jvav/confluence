@@ -1,5 +1,8 @@
 package org.confluence.mod.common.data.map;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
+import PortLib.extensions.net.minecraft.core.HolderSet.PortHolderSetExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -29,7 +32,7 @@ public record BlockBreakSpawns(List<Spawn> spawns) {
     public static final Codec<BlockBreakSpawns> CODEC = Spawn.CODEC.listOf().xmap(BlockBreakSpawns::new, BlockBreakSpawns::spawns);
 
     public static void spawn(ServerLevel level, BlockPos pos, Holder<Block> holder) {
-        BlockBreakSpawns data = holder.getData(ModDataMaps.BLOCK_BREAK_SPAWNS);
+        BlockBreakSpawns data = PortHolderExtension.getData(holder, ModDataMaps.BLOCK_BREAK_SPAWNS);
         if (data == null) return;
         Holder<Biome> biome = level.getBiome(pos);
         for (Spawn spawn : data.spawns) {
@@ -55,9 +58,9 @@ public record BlockBreakSpawns(List<Spawn> spawns) {
     public static class Spawn {
         public static final Codec<Spawn> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 SimpleWeightedRandomList.wrappedCodec(BuiltInRegistries.ENTITY_TYPE.byNameCodec()).fieldOf("types").forGetter(Spawn::types),
-                HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false).lenientOptionalFieldOf("biomes", HolderSet.empty()).forGetter(Spawn::biomes),
-                ExtraCodecs.POSITIVE_FLOAT.lenientOptionalFieldOf("chance", 1.0F).forGetter(Spawn::chance),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("maxAmount", 0x3F3F3F3F).forGetter(Spawn::maxAmount)
+                PortCodecExtension.lenientOptionalFieldOf(HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false), "biomes", PortHolderSetExtension.empty()).forGetter(Spawn::biomes),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_FLOAT, "chance", 1.0F).forGetter(Spawn::chance),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "maxAmount", 0x3F3F3F3F).forGetter(Spawn::maxAmount)
         ).apply(instance, Spawn::new));
         private final SimpleWeightedRandomList<EntityType<?>> types;
         private final HolderSet<Biome> biomes;
@@ -91,7 +94,7 @@ public record BlockBreakSpawns(List<Spawn> spawns) {
 
         public boolean containsType(EntityType<?> type) {
             if (cachedTypes == null) {
-                this.cachedTypes = types.unwrap().stream().map(WeightedEntry.Wrapper::data).collect(Collectors.toSet());
+                this.cachedTypes = types.unwrap().stream().map(WeightedEntry.Wrapper::getData).collect(Collectors.toSet());
             }
             return cachedTypes.contains(type);
         }

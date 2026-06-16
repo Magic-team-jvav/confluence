@@ -1,7 +1,6 @@
 package org.confluence.mod.network;
 
 import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
-import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +10,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.Team;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortPacket {
@@ -33,10 +33,11 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortP
 
     @Override
     public void handle(Context context) {
-        if (context.player() instanceof ServerPlayer serverPlayer) {
-            c2s(serverPlayer);
-        } else if (context.player() != null) {
-            s2c(context.player());
+        Player player = context.player();
+        if (player instanceof ServerPlayer sp) {
+            c2s(sp);
+        } else if (player != null) {
+            s2c(player);
         }
     }
 

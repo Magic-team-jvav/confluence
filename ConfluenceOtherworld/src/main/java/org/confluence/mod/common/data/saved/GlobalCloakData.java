@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectMutablePair;
@@ -15,7 +17,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fml.ModLoader;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibStreamCodecUtils;
@@ -23,6 +24,7 @@ import org.confluence.mod.api.event.RegisterCloakDataEvent;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.network.s2c.GlobalCloakSyncPacketS2C;
+import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -38,7 +40,7 @@ public enum GlobalCloakData implements IGlobalData {
             "source", BlockState.CODEC,
             "pair", LibCodecUtils.booleanObjectPair("cloaked", "target", BlockState.CODEC)
     );
-    public static final Codec<Map<Item, BooleanObjectPair<Item>>> ITEM_MAP_CODEC = Codec.lazyInitialized(() -> {
+    public static final Codec<Map<Item, BooleanObjectPair<Item>>> ITEM_MAP_CODEC = PortCodecExtension.lazyInitialized(() -> {
         Codec<Item> codec = BuiltInRegistries.ITEM.byNameCodec();
         return LibCodecUtils.notStringKeyMap(
                 "source", codec,
@@ -83,7 +85,7 @@ public enum GlobalCloakData implements IGlobalData {
 
         fromBlock(OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState(), Blocks.MUD.defaultBlockState());
 
-        ModLoader.postEvent(new RegisterCloakDataEvent(this::fromBlock));
+        PortEventHandler.postEvent(new RegisterCloakDataEvent(this::fromBlock));
     }
 
     private void fromBlock(BlockState source, BlockState target) {
@@ -147,10 +149,10 @@ public enum GlobalCloakData implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap"))
-                .ifSuccess(result -> this.blockMap = new IdentityHashMap<>(result));
-        ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap"))
-                .ifSuccess(result -> this.itemMap = new IdentityHashMap<>(result));
+        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")),
+                result -> this.blockMap = new IdentityHashMap<>(result));
+        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")),
+                result -> this.itemMap = new IdentityHashMap<>(result));
         this.version = tag.getInt("Version");
 
         rollbackAllProperties();
@@ -158,10 +160,10 @@ public enum GlobalCloakData implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
-        BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap)
-                .ifSuccess(nbt -> tag.put("BlockMap", nbt));
-        ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap)
-                .ifSuccess(nbt -> tag.put("ItemMap", nbt));
+        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap),
+                nbt -> tag.put("BlockMap", nbt));
+        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap),
+                nbt -> tag.put("ItemMap", nbt));
         tag.putInt("Version", version);
     }
 

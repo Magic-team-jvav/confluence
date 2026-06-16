@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -16,7 +17,6 @@ import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -25,7 +25,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.BaseCommandBlock;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -168,9 +167,9 @@ public final class ModCommands {
                         .then(Commands.literal("item").then(Commands.argument("color", IntegerArgumentType.integer()).executes(context -> {
                             if (context.getSource().getEntityOrException() instanceof Player player) {
                                 int color = IntegerArgumentType.getInteger(context, "color");
-                                ItemStack itemStack = PaintItems.PAINT.get().getDefaultInstance();
-                                itemStack.set(DataComponents.DYED_COLOR, new DyedItemColor(color, true));
-                                player.getInventory().add(itemStack);
+                                ItemStack stack = PaintItems.PAINT.get().getDefaultInstance();
+                                PortItemStackExtension.setDyedColor(stack, color);
+                                player.getInventory().add(stack);
                                 return 1;
                             }
                             return 0;

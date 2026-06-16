@@ -69,6 +69,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.BiomeModifiers;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
@@ -109,7 +110,7 @@ public class ModDataProvider {
             .add(Registries.ENCHANTMENT, Enchantments::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, ConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, PlacedFeatures::bootstrap)
-            .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifierz::bootstrap)
+            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifierz::bootstrap)
             .add(Registries.CONFIGURED_CARVER, ConfiguredWorldCarvers::bootstrap)
             .add(Registries.WORLD_PRESET, WorldPresetz::bootstrap);
 

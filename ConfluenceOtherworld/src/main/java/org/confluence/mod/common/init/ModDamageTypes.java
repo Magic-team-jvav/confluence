@@ -6,9 +6,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.Confluence;
-import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
 @ScheduledForMove(since = "1.2.0", inVersion = "2.0.0")
@@ -35,11 +35,10 @@ public final class ModDamageTypes {
     }
 
     public static DamageSource of(Level level, ResourceKey<DamageType> key, @Nullable Entity direct, @Nullable Entity causing) {
-        return level.damageSources().source(key, direct, causing);
+        return LibUtils.damageSource(level, key, direct, causing);
     }
 
     public static void bootstrap(BootstapContext<DamageType> context) {
-        TETags.DamageTypes.createDamageTypes(context);
         damageType(context, ACID_VENOM, DamageScaling.ALWAYS, 10);
         damageType(context, BOULDER, DamageScaling.ALWAYS, 5);
         damageType(context, CURSED_INFERNO, DamageScaling.ALWAYS, 10, DamageEffects.BURNING);

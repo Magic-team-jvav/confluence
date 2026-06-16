@@ -92,7 +92,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
                     }
                     level.playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
                     if (serverPlayer != null) {
-                        ModAdvancements.CriterionTriggerz.SHIMMER_TRANSMUTATION.get().trigger(serverPlayer, self);
+                        ModAdvancements.SHIMMER_TRANSMUTATION.get().trigger(serverPlayer, self);
                     }
                 }
             }

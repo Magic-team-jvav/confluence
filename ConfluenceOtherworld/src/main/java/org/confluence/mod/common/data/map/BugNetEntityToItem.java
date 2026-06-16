@@ -1,5 +1,8 @@
 package org.confluence.mod.common.data.map;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.java.util.List.PortListExtension;
+import PortLib.extensions.net.minecraft.advancements.critereon.EntityPredicate.PortEntityPredicateExtension;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -16,14 +19,14 @@ import java.util.function.Function;
 
 public record BugNetEntityToItem(List<Tuple<EntityPredicate, ItemStack>> list) {
     public static final EntityPredicate EMPTY_PREDICATE = EntityPredicate.Builder.entity().build();
-    public static final Codec<BugNetEntityToItem> CODEC = Codec.lazyInitialized(() -> {
+    public static final Codec<BugNetEntityToItem> CODEC = PortCodecExtension.lazyInitialized(() -> {
         Codec<Tuple<EntityPredicate, ItemStack>> codec = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.CODEC.lenientOptionalFieldOf("predicate", EMPTY_PREDICATE).forGetter(Tuple::getA),
+                PortCodecExtension.lenientOptionalFieldOf(PortEntityPredicateExtension.codec(), "predicate", EMPTY_PREDICATE).forGetter(Tuple::getA),
                 ItemStack.CODEC.fieldOf("result").forGetter(Tuple::getB)
         ).apply(instance, Tuple::new));
         return Codec.either(codec.listOf(), codec).xmap(
                 either -> either.map(Function.identity(), List::of),
-                tuples -> tuples.size() == 1 ? Either.right(tuples.getFirst()) : Either.left(tuples)
+                tuples -> tuples.size() == 1 ? Either.right(PortListExtension.getFirst(tuples)) : Either.left(tuples)
         ).xmap(BugNetEntityToItem::new, BugNetEntityToItem::list);
     });
 

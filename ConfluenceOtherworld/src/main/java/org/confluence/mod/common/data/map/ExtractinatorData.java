@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.map;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -59,8 +61,8 @@ public record ExtractinatorData(List<Pool> pools) {
     }
 
     public static void addTooltip(Holder<Item> holder, List<Component> toolTip) {
-        if (holder.getData(ModDataMaps.EXTRACTINATOR) != null ||
-                holder.getData(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR) != null
+        if (PortHolderExtension.getData(holder, ModDataMaps.EXTRACTINATOR) != null ||
+                PortHolderExtension.getData(holder, ModDataMaps.CHLOROPHYTE_EXTRACTINATOR) != null
         ) {
             toolTip.add(Component.translatable("tooltip.item.confluence.can_be_extractinated.0").withStyle(ChatFormatting.GRAY));
         }
@@ -73,10 +75,10 @@ public record ExtractinatorData(List<Pool> pools) {
             Weight weight
     ) implements WeightedEntry {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                BuiltInRegistries.ITEM.byNameCodec().lenientOptionalFieldOf("item", Items.AIR).forGetter(entry -> entry.item),
-                Codec.INT.lenientOptionalFieldOf("min_count", 1).forGetter(entry -> entry.minCount),
-                Codec.INT.lenientOptionalFieldOf("max_count", 1).forGetter(entry -> entry.maxCount),
-                Weight.CODEC.lenientOptionalFieldOf("weight", Weight.of(1)).forGetter(Entry::getWeight)
+                PortCodecExtension.lenientOptionalFieldOf(BuiltInRegistries.ITEM.byNameCodec(), "item", Items.AIR).forGetter(entry -> entry.item),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "min_count", 1).forGetter(entry -> entry.minCount),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "max_count", 1).forGetter(entry -> entry.maxCount),
+                PortCodecExtension.lenientOptionalFieldOf(Weight.CODEC, "weight", Weight.of(1)).forGetter(Entry::getWeight)
         ).apply(instance, Entry::new));
 
         public Entry {
@@ -125,8 +127,8 @@ public record ExtractinatorData(List<Pool> pools) {
 
     public static class Pool {
         public static final Codec<Pool> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("min_roll", 1).forGetter(pool -> pool.minRoll),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_roll", 1).forGetter(pool -> pool.maxRoll),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "min_roll", 1).forGetter(pool -> pool.minRoll),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "max_roll", 1).forGetter(pool -> pool.maxRoll),
                 Entry.CODEC.listOf().fieldOf("entries").forGetter(pool -> pool.entries)
         ).apply(instance, Pool::new));
         public final int minRoll;

@@ -200,8 +200,8 @@ dependencies {
 
 //    implementation jarJar(files('libs/LanguageFixer.jar'))
 
-    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
-    implementation jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-forge', version: '[0.3.3,)')
+//    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
+//    implementation jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-forge', version: '[0.3.3,)')
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.3"))
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'

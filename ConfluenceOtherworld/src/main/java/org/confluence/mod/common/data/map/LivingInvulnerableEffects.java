@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.map;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.net.minecraft.world.effect.MobEffect.PortMobEffectExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
@@ -18,8 +20,8 @@ import java.util.Locale;
 
 public record LivingInvulnerableEffects(HolderSet<MobEffect> effects, List<Category> categories) {
     public static final Codec<LivingInvulnerableEffects> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            HolderSetCodec.create(Registries.MOB_EFFECT, MobEffect.CODEC, false).fieldOf("effects").forGetter(LivingInvulnerableEffects::effects),
-            Category.CODEC.listOf().lenientOptionalFieldOf("category", List.of()).forGetter(LivingInvulnerableEffects::categories)
+            HolderSetCodec.create(Registries.MOB_EFFECT, PortMobEffectExtension.codec(), false).fieldOf("effects").forGetter(LivingInvulnerableEffects::effects),
+            PortCodecExtension.lenientOptionalFieldOf(Category.CODEC.listOf(), "category", List.of()).forGetter(LivingInvulnerableEffects::categories)
     ).apply(instance, LivingInvulnerableEffects::new));
 
     public LivingInvulnerableEffects(HolderSet<MobEffect> effects, Category... categories) {

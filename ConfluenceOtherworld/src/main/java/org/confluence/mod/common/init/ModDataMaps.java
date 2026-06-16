@@ -15,23 +15,25 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.map.*;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.datamap.PortAdvancedDataMapType;
+import org.mesdag.portlib.datamap.PortDataMapType;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public final class ModDataMaps {
-    private static List<DataMapType<?, ?>> types = new LinkedList<>();
+    private static List<PortDataMapType<?, ?>> types = new LinkedList<>();
     private static final boolean jei = LoadingModList.get().getModFileById("jei") != null;
 
-    public static final DataMapType<Item, ValueComponent> VALUE = register("value", Registries.ITEM, ValueComponent.CODEC, true);
-    public static final DataMapType<Item, ExtractinatorData> EXTRACTINATOR = register("extractinator", Registries.ITEM, ExtractinatorData.CODEC, jei);
-    public static final DataMapType<Item, ExtractinatorData> CHLOROPHYTE_EXTRACTINATOR = register("chlorophyte_extractinator", Registries.ITEM, ExtractinatorData.CODEC, jei);
-    public static final DataMapType<Item, DiggingPower> DIGGING_POWER = register("digging_power", Registries.ITEM, DiggingPower.CODEC, true);
-    public static final DataMapType<EntityType<?>, TreasureBagDrop> TREASURE_BAG = register("treasure_bag", Registries.ENTITY_TYPE, TreasureBagDrop.CODEC, false);
-    public static final DataMapType<EntityType<?>, ImmunityDataMap> IMMUNITY = register("immunity", Registries.ENTITY_TYPE, ImmunityDataMap.CODEC, true);
-    public static final DataMapType<EntityType<?>, BugNetEntityToItem> BUG_NET_ENTITY_TO_ITEM = register("bug_net_entity_to_item", Registries.ENTITY_TYPE, BugNetEntityToItem.CODEC, false);
-    public static final DataMapType<EntityType<?>, LivingInvulnerableEffects> LIVING_INVULNERABLE_EFFECTS = register("living_invulnerable_effects", Registries.ENTITY_TYPE, LivingInvulnerableEffects.CODEC, true);
-    public static final AdvancedDataMapType<EntityType<?>, GamePhase2AttributeModifiers, GamePhase2AttributeModifiers.Remover> GAME_PHASE_2_ATTRIBUTE_MODIFIERS = register(
+    public static final PortDataMapType<Item, ValueComponent> VALUE = register("value", Registries.ITEM, ValueComponent.CODEC, true);
+    public static final PortDataMapType<Item, ExtractinatorData> EXTRACTINATOR = register("extractinator", Registries.ITEM, ExtractinatorData.CODEC, jei);
+    public static final PortDataMapType<Item, ExtractinatorData> CHLOROPHYTE_EXTRACTINATOR = register("chlorophyte_extractinator", Registries.ITEM, ExtractinatorData.CODEC, jei);
+    public static final PortDataMapType<Item, DiggingPower> DIGGING_POWER = register("digging_power", Registries.ITEM, DiggingPower.CODEC, true);
+    public static final PortDataMapType<EntityType<?>, TreasureBagDrop> TREASURE_BAG = register("treasure_bag", Registries.ENTITY_TYPE, TreasureBagDrop.CODEC, false);
+    public static final PortDataMapType<EntityType<?>, ImmunityDataMap> IMMUNITY = register("immunity", Registries.ENTITY_TYPE, ImmunityDataMap.CODEC, true);
+    public static final PortDataMapType<EntityType<?>, BugNetEntityToItem> BUG_NET_ENTITY_TO_ITEM = register("bug_net_entity_to_item", Registries.ENTITY_TYPE, BugNetEntityToItem.CODEC, false);
+    public static final PortDataMapType<EntityType<?>, LivingInvulnerableEffects> LIVING_INVULNERABLE_EFFECTS = register("living_invulnerable_effects", Registries.ENTITY_TYPE, LivingInvulnerableEffects.CODEC, true);
+    public static final PortAdvancedDataMapType<EntityType<?>, GamePhase2AttributeModifiers, GamePhase2AttributeModifiers.Remover> GAME_PHASE_2_ATTRIBUTE_MODIFIERS = register(
             "game_phase_2_attribute_modifiers",
             Registries.ENTITY_TYPE,
             GamePhase2AttributeModifiers.CODEC,
@@ -39,43 +41,43 @@ public final class ModDataMaps {
             new GamePhase2AttributeModifiers.Merger(),
             false
     );
-    public static final DataMapType<EntityType<?>, PresetBestiaryEntry> BESTIARY_ENTRY = register("bestiary", Registries.ENTITY_TYPE, PresetBestiaryEntry.CODEC, false); // 交由Bestiary统一同步
-    public static final DataMapType<EntityType<?>, Integer> BANNER_UNLOCK_REQUIRED = register("banner_unlock_required", Registries.ENTITY_TYPE, ExtraCodecs.NON_NEGATIVE_INT, true);
-    public static final DataMapType<Block, BlockBreakSpawns> BLOCK_BREAK_SPAWNS = register("block_break_spawns", Registries.BLOCK, BlockBreakSpawns.CODEC, false);
+    public static final PortDataMapType<EntityType<?>, PresetBestiaryEntry> BESTIARY_ENTRY = register("bestiary", Registries.ENTITY_TYPE, PresetBestiaryEntry.CODEC, false); // 交由Bestiary统一同步
+    public static final PortDataMapType<EntityType<?>, Integer> BANNER_UNLOCK_REQUIRED = register("banner_unlock_required", Registries.ENTITY_TYPE, ExtraCodecs.NON_NEGATIVE_INT, true);
+    public static final PortDataMapType<Block, BlockBreakSpawns> BLOCK_BREAK_SPAWNS = register("block_break_spawns", Registries.BLOCK, BlockBreakSpawns.CODEC, false);
 
-    private static <R, T> DataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {
-        DataMapType.Builder<T, R> builder = DataMapType.builder(Confluence.asResource(path), resourceKey, codec);
+    private static <R, T> PortDataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {
+        PortDataMapType.Builder<T, R> builder = PortDataMapType.builder(Confluence.asResource(path), resourceKey, codec);
         if (synced) builder.synced(codec, false);
-        DataMapType<R, T> type = builder.build();
+        PortDataMapType<R, T> type = builder.build();
         types.add(type);
         return type;
     }
 
-    private static <R, T, VR extends DataMapValueRemover<R, T>> AdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, @Nullable DataMapValueMerger<R, T> merger, boolean synced) {
-        AdvancedDataMapType.Builder<T, R, VR> builder = AdvancedDataMapType.builder(Confluence.asResource(path), resourceKey, codec).remover(removerCodec);
+    private static <R, T, VR extends DataMapValueRemover<R, T>> PortAdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, @Nullable DataMapValueMerger<R, T> merger, boolean synced) {
+        PortAdvancedDataMapType.Builder<T, R, VR> builder = PortAdvancedDataMapType.builder(Confluence.asResource(path), resourceKey, codec).remover(removerCodec);
         if (merger != null) builder.merger(merger);
         if (synced) builder.synced(codec, false);
-        AdvancedDataMapType<R, T, VR> type = builder.build();
+        PortAdvancedDataMapType<R, T, VR> type = builder.build();
         types.add(type);
         return type;
     }
 
-    private static <R, T, VR extends DataMapValueRemover<R, T>> AdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, boolean synced) {
+    private static <R, T, VR extends DataMapValueRemover<R, T>> PortAdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, boolean synced) {
         return register(path, resourceKey, codec, removerCodec, null, synced);
     }
 
     public static void registerDataMapTypes(RegisterDataMapTypesEvent event) {
-        for (DataMapType<?, ?> type : types) {
+        for (PortDataMapType<?, ?> type : types) {
             event.register(type);
         }
         types = null;
     }
 
-    public static <T> @Nullable T getEntityData(DataMapType<EntityType<?>, T> type, Entity entity) {
+    public static <T> @Nullable T getEntityData(PortDataMapType<EntityType<?>, T> type, Entity entity) {
         return getEntityData(type, entity.getType());
     }
 
-    public static <T> @Nullable T getEntityData(DataMapType<EntityType<?>, T> type, EntityType<?> entityType) {
+    public static <T> @Nullable T getEntityData(PortDataMapType<EntityType<?>, T> type, EntityType<?> entityType) {
         return BuiltInRegistries.ENTITY_TYPE.getData(type, entityType.builtInRegistryHolder().unwrapKey().orElseThrow());
     }
 }

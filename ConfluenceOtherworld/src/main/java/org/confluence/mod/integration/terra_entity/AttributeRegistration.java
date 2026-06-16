@@ -4,22 +4,22 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+import org.mesdag.portlib.event.entity.PortEntityAttributeModificationEvent;
 
-class AttributeRegistration {
-    private final EntityAttributeModificationEvent event;
+public class AttributeRegistration {
+    private final PortEntityAttributeModificationEvent event;
     private Holder<Attribute> current;
 
-    AttributeRegistration(EntityAttributeModificationEvent event) {
+    public AttributeRegistration(PortEntityAttributeModificationEvent event) {
         this.event = event;
     }
 
-    AttributeRegistration set(Holder<Attribute> attribute) {
+    public AttributeRegistration set(Holder<Attribute> attribute) {
         this.current = attribute;
         return this;
     }
 
-    AttributeRegistration register(EntityType<? extends LivingEntity> type, double value) {
+    public AttributeRegistration register(EntityType<? extends LivingEntity> type, double value) {
         event.add(type, current, value);
         return this;
     }

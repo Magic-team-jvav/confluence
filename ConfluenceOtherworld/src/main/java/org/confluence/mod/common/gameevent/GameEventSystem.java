@@ -18,7 +18,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fml.ModLoader;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
@@ -28,6 +27,7 @@ import org.confluence.mod.api.event.gameevent.CustomGameEventRegisterEvent;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.network.s2c.GameEventSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.*;
 
@@ -45,7 +45,7 @@ public enum GameEventSystem implements IGlobalData {
         map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
         map.put(PumpkinMoonGameEvent.KEY, PumpkinMoonGameEvent.INSTANCE);
         map.put(BoulderRainGameEvent.KEY, BoulderRainGameEvent.INSTANCE);
-        ModLoader.postEvent(new CustomGameEventRegisterEvent(map));
+        PortEventHandler.postEvent(new CustomGameEventRegisterEvent(map));
     });
     private transient int startedEventAmount;
     private transient int startedNonEnvEventAmount;

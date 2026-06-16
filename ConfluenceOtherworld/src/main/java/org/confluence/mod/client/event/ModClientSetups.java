@@ -1,10 +1,10 @@
 package org.confluence.mod.client.event;
 
 import PortLib.extensions.net.minecraft.client.resources.model.ModelResourceLocation.PortModelResourceLocationExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -57,7 +57,9 @@ import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.client.renderer.item.MutableRenderTypeItemExtension;
+import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModArmPoses;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -67,14 +69,12 @@ import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.mixed.IPlayer;
-import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 
 import java.awt.*;
-import java.util.Iterator;
 import java.util.Map;
 
 public final class ModClientSetups {
@@ -212,21 +212,23 @@ public final class ModClientSetups {
         return false;
     };
     static final IItemDecorator REPEATER_AMMO = (guiGraphics, font, itemStack, x, y) -> {
-        if (itemStack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
-            Iterator<ItemStack> itemIterator = handler.getAllItemIterator();
-            if (itemIterator.hasNext()) {
-                ItemStack stack = itemIterator.next();
-                if (!stack.isEmpty()) {
-                    PoseStack pose = guiGraphics.pose();
-                    pose.pushPose();
-                    pose.translate(x + 8, y + 8, 100);
-                    pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
-                    pose.translate(-7, -9, 0);
-                    guiGraphics.renderItem(stack, 0, 0);
-                    pose.popPose();
-                }
-            }
-        }
+        RepeaterContents data = PortItemStackExtension.getDataOrDefault(itemStack, ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
+        // todo
+//        if (itemStack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
+//            Iterator<ItemStack> itemIterator = handler.getAllItemIterator();
+//            if (itemIterator.hasNext()) {
+//                ItemStack stack = itemIterator.next();
+//                if (!stack.isEmpty()) {
+//                    PoseStack pose = guiGraphics.pose();
+//                    pose.pushPose();
+//                    pose.translate(x + 8, y + 8, 100);
+//                    pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
+//                    pose.translate(-7, -9, 0);
+//                    guiGraphics.renderItem(stack, 0, 0);
+//                    pose.popPose();
+//                }
+//            }
+//        }
         return false;
     };
 

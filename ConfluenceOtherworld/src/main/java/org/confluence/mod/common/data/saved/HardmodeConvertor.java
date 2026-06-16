@@ -1,5 +1,9 @@
 package org.confluence.mod.common.data.saved;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
+import PortLib.extensions.java.util.List.PortListExtension;
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
@@ -23,7 +27,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
@@ -49,13 +53,13 @@ import java.util.function.Function;
 /// [困难模式转换](https://terraria.wiki.gg/zh/wiki/%E5%9B%B0%E9%9A%BE%E6%A8%A1%E5%BC%8F%E8%BD%AC%E6%8D%A2)
 public enum HardmodeConvertor implements IGlobalData {
     INSTANCE;
-    public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> SANCTIFICATION_CODEC = Codec.lazyInitialized(() -> {
+    public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> SANCTIFICATION_CODEC = PortCodecExtension.lazyInitialized(() -> {
         Codec<BlockPosColumn[][]> codec = new Codec<>() {
             @Override
             public <T> DataResult<Pair<BlockPosColumn[][], T>> decode(DynamicOps<T> ops, T input) {
                 BlockPosColumn[][] columns = new BlockPosColumn[16][16];
                 MutableInt counter = new MutableInt();
-                ops.getLongStream(input).getOrThrow().forEach(l -> {
+                PortDataResultExtension.getOrThrow(ops.getLongStream(input)).forEach(l -> {
                     int i = counter.getAndIncrement();
                     int x = i / 16;
                     int z = i % 16;
@@ -96,7 +100,7 @@ public enum HardmodeConvertor implements IGlobalData {
         print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);
         CompletableFuture.supplyAsync(() -> {
             ServerLevel overworld = OverworldUtils.getLevel(server);
-            BlockPos startPos = server.getWorldData().overworldData().getSpawnPos().atY(overworld.getMinBuildHeight());
+            BlockPos startPos = server.overworld().getSharedSpawnPos().atY(overworld.getMinBuildHeight());
             int height = overworld.getMaxBuildHeight() - overworld.getMinBuildHeight(), startRadius = 32, thickness = 64;
             return generateConicalCylinder(startPos, height, startRadius, startRadius + height, thickness);
         }, Util.backgroundExecutor()).thenAccept(list -> {
@@ -126,8 +130,8 @@ public enum HardmodeConvertor implements IGlobalData {
                     AchievementUtils.awardAchievement(player, "its_hard");
                 }
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), LibUtils.isDev());
-                print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
-                print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);
+                print(server, PortMutableComponentExtension.withColor(Component.translatable("event.confluence.hardmode_conversion.finished"), GlobalColors.MESSAGE.get()), true);
+                print(server, PortMutableComponentExtension.withColor(Component.translatable("event.confluence.hardmode_conversion.welcome"), GlobalColors.EVENT.get()), true);
                 MinecraftForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
             }
             this.started = false;
@@ -150,7 +154,7 @@ public enum HardmodeConvertor implements IGlobalData {
                 });
                 Confluence.LOGGER.debug("Hardmode conversion took {}", stopwatch.stop());
             } else if (serverLevel.getGameTime() % 5 == 0 && serverLevel.getServer().getPlayerList().getPlayers().stream().noneMatch(Entity::isRemoved)) {
-                Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
+                Tuple<ChunkPos, BlockPosColumn[][]> entry = PortListExtension.getFirst(sanctification);
                 ChunkPos chunkPos = entry.getA();
 
                 boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
@@ -158,7 +162,7 @@ public enum HardmodeConvertor implements IGlobalData {
                 boolean refilled = refill(serverLevel, chunkPos, entry.getB());
                 if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
 
-                if (refilled) sanctification.removeFirst();
+                if (refilled) PortListExtension.removeFirst(sanctification);
             }
         }
     }
@@ -256,8 +260,8 @@ public enum HardmodeConvertor implements IGlobalData {
     @Override
     public void decode(CompoundTag tag) {
         this.shouldContinue = false;
-        SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, tag.get("sanctification"))
-                .ifSuccess(result -> this.sanctification = new LinkedList<>(result));
+        PortDataResultExtension.ifSuccess(SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, tag.get("sanctification")),
+                result -> this.sanctification = new LinkedList<>(result));
         this.started = tag.getBoolean("started");
         this.completed = tag.getBoolean("completed");
         this.shouldContinue = true;
@@ -266,8 +270,8 @@ public enum HardmodeConvertor implements IGlobalData {
     @Override
     public void encode(CompoundTag tag) {
         this.shouldContinue = false;
-        SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification)
-                .ifSuccess(nbt -> tag.put("sanctification", nbt));
+        PortDataResultExtension.ifSuccess(SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification),
+                nbt -> tag.put("sanctification", nbt));
         tag.putBoolean("started", started);
         tag.putBoolean("completed", completed);
         this.shouldContinue = true;

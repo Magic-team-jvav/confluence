@@ -34,7 +34,6 @@ import org.confluence.mod.common.event.game.entity.PlayerEvents;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.mesdag.portlib.network.PortNetworkHandler;
 import org.slf4j.Logger;
@@ -74,14 +73,13 @@ public final class Confluence {
             );
         }
 
-        TEEvents.register(eventBus);
         ModBlocks.init(eventBus);
         ModItems.init();
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);
         ModEnchantments.register(eventBus);
-        ModAdvancements.register(eventBus);
+        ModAdvancements.init();
 
         ModCustomRegistries.init();
         ModTrackTypeProviderTypes.init();
@@ -110,7 +108,7 @@ public final class Confluence {
 
     public static void registerGameRules() {
         if (SPREADABLE_CHANCE == null) {
-            SPREADABLE_CHANCE = GameRules.register(new GameRules.Type<>(
+            SPREADABLE_CHANCE = GameRules.register("confluenceSpreadableChance", GameRules.Category.MISC, new GameRules.Type<>(
                     () -> IntegerArgumentType.integer(0, 100),
                     type -> new GameRules.IntegerValue(type, 10),
                     (server, value) -> {},

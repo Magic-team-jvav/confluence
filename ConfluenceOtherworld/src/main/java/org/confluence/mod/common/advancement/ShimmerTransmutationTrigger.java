@@ -1,40 +1,39 @@
 package org.confluence.mod.common.advancement;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.critereon.ContextAwarePredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import com.google.gson.JsonObject;
+import net.minecraft.advancements.critereon.*;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
+import org.confluence.mod.Confluence;
 
 public class ShimmerTransmutationTrigger extends SimpleCriterionTrigger<ShimmerTransmutationTrigger.TriggerInstance> {
+    public static final ResourceLocation ID = Confluence.asResource("shimmer_transmutation");
+
     public void trigger(ServerPlayer pPlayer, Entity entity) {
         trigger(pPlayer, instance -> instance.matches(pPlayer, entity));
     }
 
     @Override
-    public @NotNull Codec<TriggerInstance> codec() {
-        return TriggerInstance.CODEC;
+    protected TriggerInstance createInstance(JsonObject json, ContextAwarePredicate predicate, DeserializationContext deserializationContext) {
+        return new TriggerInstance(predicate, EntityPredicate.fromJson(json.get("entity")));
     }
 
-    public record TriggerInstance(Optional<ContextAwarePredicate> player,
-                                  Optional<EntityPredicate> entity) implements SimpleInstance {
-        public static final Codec<TriggerInstance> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(TriggerInstance::player),
-                EntityPredicate.CODEC.optionalFieldOf("entity").forGetter(TriggerInstance::entity)
-        ).apply(instance, TriggerInstance::new));
+    @Override
+    public ResourceLocation getId() {
+        return ID;
+    }
 
-        public boolean matches(ServerPlayer serverPlayer, Entity itemEntity) {
-            return entity.isEmpty() || entity.get().matches(serverPlayer, itemEntity);
+    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+        private final EntityPredicate entity;
+
+        public TriggerInstance(ContextAwarePredicate player, EntityPredicate entity) {
+            super(ID, player);
+            this.entity = entity;
         }
 
-        @Override
-        public @NotNull Optional<ContextAwarePredicate> player() {
-            return player;
+        public boolean matches(ServerPlayer serverPlayer, Entity itemEntity) {
+            return entity.matches(serverPlayer, itemEntity);
         }
     }
 }

@@ -4,17 +4,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.fml.ModList;
@@ -23,7 +19,6 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.resource.PathPackResources;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
@@ -35,7 +30,6 @@ import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
-import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.InverseEnderMan;
 import org.confluence.mod.common.entity.InverseEntityType;
@@ -43,21 +37,19 @@ import org.confluence.mod.common.entity.RainbowSheep;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
-import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
-import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
-import org.confluence.mod.integration.terra_entity.TEEvents;
+import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.common.init.item.DispenserRegistration;
+import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.integration.terra_entity.TEHelper;
-import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
 import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -65,14 +57,12 @@ import org.confluence.terra_curio.common.init.TCTabs;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.PortEntityAttributeCreationEvent;
-import org.mesdag.portlib.event.entity.PortEntityAttributeModificationEvent;
 import org.mesdag.portlib.event.entity.PortRegisterSpawnPlacementsEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLCommonSetupEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLLoadCompleteEvent;
 import org.mesdag.portlib.event.other.PortAddPackFindersEvent;
 import org.mesdag.portlib.event.other.PortBlockEntityTypeAddBlocksEvent;
 import org.mesdag.portlib.event.other.PortBuildCreativeModeTabContentsEvent;
-import org.mesdag.portlib.event.other.PortModifyDefaultComponentsEvent;
 
 import java.util.function.Function;
 
@@ -86,14 +76,12 @@ public final class ModEvents {
         PortEventHandler.addListener(ModEvents::addPackFinders);
 //        PortEventHandler.addListener(ModEvents::registerConfigurationTasks);
         PortEventHandler.addListener(ModEvents::entityAttributeCreation);
-        PortEventHandler.addListener(ModEvents::entityAttributeModification);
         PortEventHandler.addListener(ModEvents::registerUnitType);
         PortEventHandler.addListener(ModEvents::registerOtherType);
         PortEventHandler.addListener(ModEvents::registerAccessoriesComponentUnitValueTypeLocalSync);
         PortEventHandler.addListener(PortEventPriority.LOW, ModEvents::buildCreativeModeTabContents);
         PortEventHandler.addListener(ModEvents::blockEntityTypeAddBlocks);
-        PortEventHandler.addListener(ModEvents::modifyDefaultComponents);
-        PortEventHandler.addListener(ModEvents::registerCapabilities);
+//        PortEventHandler.addListener(ModEvents::registerCapabilities);
         PortEventHandler.addListener(PortEventPriority.LOW, ModEvents::registerSpawnReplacements);
         PortEventHandler.addListener(ModEvents::registerBestiaryKey);
         PortEventHandler.addListener(ModEvents::registerEvilMaterialReplaces);
@@ -213,9 +201,88 @@ public final class ModEvents {
         event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
     }
 
-    private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
-        TEEvents.modifyAttributes(event);
-    }
+// todo   private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
+//        new AttributeRegistration(event)
+//                .set(LibAttributes.getArmorPenetration())
+//                .register(TEBossEntities.QUEEN_BEE.get(), 2)
+//                .register(TEBossEntities.SKELETRON.get(), 4)
+//                .register(TEBossEntities.SKELETRON_HAND.get(), 4)
+//                .register(TEBossEntities.HILL_OF_FLESH.get(), 4)
+//                .register(TEBossEntities.WALL_OF_FLESH.get(), 6)
+//                // 肉后
+//                .register(TEMonsterEntities.PIXIE.get(), 8)
+//                .register(TEMonsterEntities.WYVERN.get(), 8)
+//                .register(TEMonsterEntities.WRAITH.get(), 8)
+//                .register(TEMonsterEntities.POSSESS_ARMOR.get(), 8)
+//                .register(TEMonsterEntities.CORRUPT_SLIME.get(), 8)
+//                .register(TEMonsterEntities.LUMINOUS_SLIME.get(), 8)
+//                .register(TEMonsterEntities.CRIMSLIME.get(), 8)
+//                .register(TEMonsterEntities.WOODEN_MIMIC.get(), 8)
+//                .register(TEMonsterEntities.GOLDEN_MIMIC.get(), 8)
+//                .register(TEMonsterEntities.SHADOW_MIMIC.get(), 8)
+//                .register(TEMonsterEntities.ICE_MIMIC.get(), 8)
+//                .register(TEMonsterEntities.CRIMSON_MIMIC.get(), 8)
+//                .register(TEMonsterEntities.CORRUPT_MIMIC.get(), 8)
+//                .register(TEMonsterEntities.HALLOWED_MIMIC.get(), 8)
+//                .register(TEMonsterEntities.JUNGLE_MIMIC.get(), 8)
+//
+//                .register(TEMonsterEntities.MUMMY.get(), 8)
+//                .register(TEMonsterEntities.DARK_MUMMY.get(), 8)
+//                .register(TEMonsterEntities.BLOOD_MUMMY.get(), 8)
+//                .register(TEMonsterEntities.LIGHT_MUMMY.get(), 8)
+//                .register(TEMonsterEntities.DARK_LAMIA.get(), 8)
+//                .register(TEMonsterEntities.LIGHT_LAMIA.get(), 8)
+//                .register(TEMonsterEntities.DERPLING.get(), 8)
+//                .register(TEMonsterEntities.HERPLING.get(), 8)
+//                .register(TEMonsterEntities.GHOUL.get(), 8)
+//                .register(TEMonsterEntities.VILE_GHOUL.get(), 8)
+//                .register(TEMonsterEntities.TAINTED_GHOUL.get(), 8)
+//                .register(TEMonsterEntities.DREAMER_GHOUL.get(), 8)
+//                .register(TEMonsterEntities.SAND_POACHER.get(), 8)
+//
+//                .register(TEBossEntities.RETINAZER.get(), 8)
+//                .register(TEBossEntities.SPAZMATISM.get(), 8)
+//                .register(TEBossEntities.PLANTERA.get(), 8)
+//                .register(TEBossEntities.PLANTERA_TENTACLE.get(), 8)
+//                .register(TEBossEntities.PLANTERA_HOOK.get(), 8)
+//
+//
+//                .set(Attributes.ARMOR_TOUGHNESS)
+//                .register(TEMonsterEntities.PIXIE.get(), 2)
+//                .register(TEMonsterEntities.WYVERN.get(), 2)
+//                .register(TEMonsterEntities.CORRUPT_SLIME.get(), 2)
+//                .register(TEMonsterEntities.LUMINOUS_SLIME.get(), 2)
+//                .register(TEMonsterEntities.CRIMSLIME.get(), 2)
+//                .register(TEMonsterEntities.WOODEN_MIMIC.get(), 2)
+//                .register(TEMonsterEntities.GOLDEN_MIMIC.get(), 2)
+//                .register(TEMonsterEntities.SHADOW_MIMIC.get(), 2)
+//                .register(TEMonsterEntities.ICE_MIMIC.get(), 2)
+//                .register(TEMonsterEntities.CRIMSON_MIMIC.get(), 2)
+//                .register(TEMonsterEntities.CORRUPT_MIMIC.get(), 2)
+//                .register(TEMonsterEntities.HALLOWED_MIMIC.get(), 2)
+//                .register(TEMonsterEntities.JUNGLE_MIMIC.get(), 2)
+//
+//                .register(TEMonsterEntities.MUMMY.get(), 2)
+//                .register(TEMonsterEntities.DARK_MUMMY.get(), 2)
+//                .register(TEMonsterEntities.BLOOD_MUMMY.get(), 2)
+//                .register(TEMonsterEntities.LIGHT_MUMMY.get(), 2)
+//                .register(TEMonsterEntities.DARK_LAMIA.get(), 2)
+//                .register(TEMonsterEntities.LIGHT_LAMIA.get(), 2)
+//                .register(TEMonsterEntities.DERPLING.get(), 2)
+//                .register(TEMonsterEntities.HERPLING.get(), 2)
+//                .register(TEMonsterEntities.GHOUL.get(), 2)
+//                .register(TEMonsterEntities.VILE_GHOUL.get(), 2)
+//                .register(TEMonsterEntities.TAINTED_GHOUL.get(), 2)
+//                .register(TEMonsterEntities.DREAMER_GHOUL.get(), 2)
+//                .register(TEMonsterEntities.SAND_POACHER.get(), 2)
+//
+//                .register(TEBossEntities.RETINAZER.get(), 2)
+//                .register(TEBossEntities.SPAZMATISM.get(), 2)
+//                .register(TEBossEntities.PLANTERA.get(), 2)
+//                .register(TEBossEntities.PLANTERA_TENTACLE.get(), 2)
+//                .register(TEBossEntities.PLANTERA_HOOK.get(), 2)
+//        ;
+//    }
 
     private static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {
         event.register(AccessoryItems.LUCKY$COIN);
@@ -263,44 +330,25 @@ public final class ModEvents {
         event.modify(BlockEntityType.CAMPFIRE, FunctionalBlocks.LIFE_CAMPFIRE.get());
     }
 
-    private static void modifyDefaultComponents(PortModifyDefaultComponentsEvent event) {
-        TEItemComponentModify.modifyDefaultComponents(event);
-        event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, LibUtils.MAX_STACK_SIZE));
-    }
-
-    private static void registerCapabilities(PortRegisterCapabilitiesEvent event) {
-        CrossbowItems.ITEMS.getEntries().stream().map(DeferredHolder::get).filter(BaseTerraRepeaterItem.class::isInstance).map(BaseTerraRepeaterItem.class::cast).forEach(item -> event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) ->
-                new RepeaterContentsComponentHandler(stack, ModDataComponentTypes.REPEATER_CONTENTS.get(), item.getCapacity()), item
-        ));
-        event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
-            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {
-                return null;
-            }
-            Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
-            return container == null ? null : new InvWrapper(container);
-        }, ChestBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new));
-
-//        List<BlockEntityType<? extends BaseContainerBlockEntity>> invBlockEntities = List.of(
-//                FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(),
-//                FunctionalBlocks.CAULDRON_ENTITY.get(),
-//                FunctionalBlocks.TREE_HOLES_ENTITY.get()
+//    private static void registerCapabilities(PortRegisterCapabilitiesEvent event) {
+//        event.registerBlock(ForgeCapabilities.ITEM_HANDLER, (level, pos, state, blockEntity, side) -> {
+//            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {
+//                return null;
+//            }
+//            Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
+//            return container == null ? null : new InvWrapper(container);
+//        }, ChestBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new));
+//
+//        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FunctionalBlocks.HELLFORGE_ENTITY.get(), SidedInvWrapper::new);
+//
+//        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBottomlessBucketWrapper(stack),
+//                ToolItems.BOTTOMLESS_WATER_BUCKET,
+//                ToolItems.BOTTOMLESS_LAVA_BUCKET,
+//                ToolItems.BOTTOMLESS_HONEY_BUCKET,
+//                ToolItems.BOTTOMLESS_SHIMMER_BUCKET
 //        );
-//        for (BlockEntityType<? extends BaseContainerBlockEntity> type : invBlockEntities) {
-//            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, type, (container, side) -> new InvWrapper(container));
-//        }
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FunctionalBlocks.HELLFORGE_ENTITY.get(), SidedInvWrapper::new);
-
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBottomlessBucketWrapper(stack),
-                ToolItems.BOTTOMLESS_WATER_BUCKET,
-                ToolItems.BOTTOMLESS_LAVA_BUCKET,
-                ToolItems.BOTTOMLESS_HONEY_BUCKET,
-                ToolItems.BOTTOMLESS_SHIMMER_BUCKET
-        );
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ToolItems.HONEY_BUCKET);
-
-
-//        event.registerEntity(Capabilities.ItemHandler.ENTITY, EntityType.PLAYER, (player, context) -> player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-    }
+//        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ToolItems.HONEY_BUCKET);
+//    }
 
     private static void registerSpawnReplacements(PortRegisterSpawnPlacementsEvent event) {
         event.register(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
@@ -309,7 +357,7 @@ public final class ModEvents {
                 return y > 30 && y < 260 && LibDateUtils.isDay(level) && serverLevel.canSeeSky(pos);
             }
             return false;
-        }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        }, PortRegisterSpawnPlacementsEvent.PortOperation.REPLACE);
         event.register(ModEntities.INVERSE_ENDERMAN.get(), InverseEntityType.ON_CEIL, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, InverseEnderMan::checkInverseEnderManSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         PortEventHandler.postEvent(new RegisterBestiaryKeyEvent()); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件

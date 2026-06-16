@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
+import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
+import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -21,7 +23,6 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public enum MeteoriteTracker {
         if (spawnAtNextNight && LibDateUtils.getDayTime(level) == LibDateUtils._00$00) {
             this.spawnAtNextNight = false;
             generateLandingDetail(level, Mth.randomBetweenInclusive(level.random, 200, 400));
-            Component message = Component.translatable("event.confluence.meteorite.ready").withColor(GlobalColors.EVENT.get());
+            Component message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.meteorite.ready"), GlobalColors.EVENT.get());
             level.getServer().getPlayerList().broadcastSystemMessage(message, false);
         }
         if (tickUntilLanding == 0) {
@@ -81,12 +82,12 @@ public enum MeteoriteTracker {
         List<ServerPlayer> players = new ArrayList<>(level.players());
         ChunkHolder chunkHolder;
         ChunkMap chunkMap = level.getChunkSource().chunkMap;
+        int dist = level.getChunkSource().chunkMap.getDistanceManager().playerTicketManager.viewDistance;
         do {
             if (!players.isEmpty()) {
                 Iterator<ServerPlayer> iterator = players.iterator();
                 while (iterator.hasNext()) {
                     ServerPlayer player = iterator.next();
-                    int dist = player.requestedViewDistance();
                     int cx = SectionPos.blockToSectionCoord(player.getX());
                     int cz = SectionPos.blockToSectionCoord(player.getZ());
                     boolean removal = false;
@@ -135,13 +136,14 @@ public enum MeteoriteTracker {
         boolean placed = false;
         if (withForceChunk) level.setChunkForced(chunkX, chunkZ, true);
         try {
-            level.registryAccess().holderOrThrow(METEORITE).value().place(level, level.getChunkSource().getGenerator(), level.random, origin);
+            PortHolderLookupExtension.Provider.holderOrThrow(level.registryAccess(), METEORITE)
+                    .value().place(level, level.getChunkSource().getGenerator(), level.random, origin);
             placed = true;
         } catch (Exception ignored) {}
         if (withForceChunk) level.setChunkForced(chunkX, chunkZ, false);
 
         if (placed) {
-            Component message = Component.translatable("event.confluence.meteorite").withColor(GlobalColors.MESSAGE.get());
+            Component message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.meteorite"), GlobalColors.MESSAGE.get());
             level.getServer().getPlayerList().broadcastSystemMessage(message, false);
             Confluence.LOGGER.debug("A meteorite has been landed, which at [{}]", origin.toShortString());
         }

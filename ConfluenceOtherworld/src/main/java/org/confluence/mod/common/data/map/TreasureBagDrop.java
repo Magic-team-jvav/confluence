@@ -1,9 +1,8 @@
 package org.confluence.mod.common.data.map;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,15 +15,16 @@ import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.jetbrains.annotations.Nullable;
 
 public record TreasureBagDrop(Item item) {
-    public static final Codec<TreasureBagDrop> CODEC = BuiltInRegistries.ITEM.byNameCodec().xmap(TreasureBagDrop::new, TreasureBagDrop::item);
+    public static final Codec<TreasureBagDrop> CODEC = BuiltInRegistries.ITEM.byNameCodec()
+            .xmap(TreasureBagDrop::new, TreasureBagDrop::item);
 
     public static @Nullable ItemStack getTreasureBag(LivingEntity living) {
         if (!(living.level() instanceof ServerLevel serverLevel)) return null;
         TreasureBagDrop data = ModDataMaps.getEntityData(ModDataMaps.TREASURE_BAG, living);
         if (data == null || !(data.item() instanceof TreasureBagItem item)) return null;
-        ItemStack itemStack = item.getDefaultInstance();
+        ItemStack stack = item.getDefaultInstance();
         ResourceLocation lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel, living.blockPosition()));
-        itemStack.set(ModDataComponentTypes.LOOT, new LootComponent(ResourceKey.create(Registries.LOOT_TABLE, lootTable)));
-        return itemStack;
+        PortItemStackExtension.setData(stack, ModDataComponentTypes.LOOT, new LootComponent(lootTable));
+        return stack;
     }
 }

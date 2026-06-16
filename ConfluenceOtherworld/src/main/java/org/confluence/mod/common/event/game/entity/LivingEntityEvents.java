@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.game.entity;
+﻿package org.confluence.mod.common.event.game.entity;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
@@ -43,6 +43,7 @@ import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
+import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
@@ -167,7 +168,7 @@ public final class LivingEntityEvents {
                     GuideVooDooDollItem.summon(npc, level, npc.getRandom().nextBoolean(), () -> null);
                 }
             }
-            if (victim.hasEffect(ModEffects.BLOOD_BUTCHERED)) {
+            if (victim.hasEffect(ModEffects.BLOOD_BUTCHERED.get())) {
                 NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, victim);
             }
             DeathMotionPacketS2C.sendToAll(victim);
@@ -220,6 +221,7 @@ public final class LivingEntityEvents {
 
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
         ModUtils.applyCursedSkullDebuff(attacker, victim);
+        ThornsEffect.onMobHurt(victim, damageSource, amount);
 
         if (attacker instanceof ServerPlayer player) {
             EnchantmentUtils.dropsStar(player, victim, damageSource);

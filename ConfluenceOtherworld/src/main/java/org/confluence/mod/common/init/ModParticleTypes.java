@@ -2,8 +2,6 @@ package org.confluence.mod.common.init;
 
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.particle.WholeItemParticleOptions;
@@ -12,8 +10,9 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 
 public final class ModParticleTypes {
-    public static final DeferredRegister<ParticleType<?>> TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Confluence.MODID);
-    private static final PortParticleTypeRegistration PARTICLES = PortRegisterHandler.particleType(Confluence.MODID);
+    public static void init() {}
+
+    public static final PortParticleTypeRegistration PARTICLES = PortRegisterHandler.particleType(Confluence.MODID);
 
     public static final PortRegistryEntry<ParticleType<?>, ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = PARTICLES.register("damage_indicator", true, DamageIndicatorOptions.CODEC, DamageIndicatorOptions.STREAM_CODEC);
     public static final PortRegistryEntry<ParticleType<?>, ParticleType<WholeItemParticleOptions>> WHOLE_ITEM = PARTICLES.register("whole_item", true, WholeItemParticleOptions.CODEC, WholeItemParticleOptions.STREAM_CODEC);

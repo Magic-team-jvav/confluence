@@ -13,10 +13,9 @@ public class ThornsEffect extends MobEffect {   //荆棘 给予伤害来源反�
         super(MobEffectCategory.BENEFICIAL, 0x00FF00);
     }
 
-    @Override
-    public void onMobHurt(LivingEntity self, int amplifier, DamageSource damageSource, float amount) {
+    public static void onMobHurt(LivingEntity self, DamageSource damageSource, float amount) {
         Entity attacker = damageSource.getEntity();
-        if (attacker != null && self != attacker && self.hasEffect(ModEffects.THORNS) && !damageSource.is(DamageTypes.THORNS)) {
+        if (attacker != null && self != attacker && self.hasEffect(ModEffects.THORNS.get()) && !damageSource.is(DamageTypes.THORNS)) {
             attacker.hurt(attacker.damageSources().thorns(self), amount);
         }
     }

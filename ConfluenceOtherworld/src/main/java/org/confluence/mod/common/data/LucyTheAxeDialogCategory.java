@@ -1,25 +1,27 @@
 package org.confluence.mod.common.data;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.util.ExtraCodecs;
 import org.confluence.lib.common.data.SingleJsonFileReloadListener;
 import org.confluence.mod.Confluence;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Map;
 
 public record LucyTheAxeDialogCategory(int entries, boolean cycle) {
     public static final Codec<LucyTheAxeDialogCategory> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ExtraCodecs.POSITIVE_INT.fieldOf("entries").forGetter(LucyTheAxeDialogCategory::entries),
-            Codec.BOOL.lenientOptionalFieldOf("cycle", false).forGetter(LucyTheAxeDialogCategory::cycle)
+            PortCodecExtension.lenientOptionalFieldOf(Codec.BOOL, "cycle", false).forGetter(LucyTheAxeDialogCategory::cycle)
     ).apply(instance, LucyTheAxeDialogCategory::new));
     public static final PortStreamCodec<ByteBuf, LucyTheAxeDialogCategory> STREAM_CODEC = PortStreamCodec.composite(
             PortByteBufCodecs.VAR_INT, LucyTheAxeDialogCategory::entries,
@@ -45,7 +47,7 @@ public record LucyTheAxeDialogCategory(int entries, boolean cycle) {
         protected void apply(Map<ResourceLocation, JsonElement> resourceList) {
             ImmutableMap.Builder<ResourceLocation, LucyTheAxeDialogCategory> builder = ImmutableMap.builder();
             for (Map.Entry<ResourceLocation, JsonElement> entry : resourceList.entrySet()) {
-                builder.put(entry.getKey(), LucyTheAxeDialogCategory.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).getOrThrow());
+                builder.put(entry.getKey(), PortDataResultExtension.getOrThrow(LucyTheAxeDialogCategory.CODEC.parse(JsonOps.INSTANCE, entry.getValue())));
             }
             this.categories = builder.build();
         }

@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.saved;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.IExtensibleEnum;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.gameevent.*;
 
@@ -61,7 +62,7 @@ public enum SpecificMoonVariant implements IExtensibleEnum {
         return resourceKeyListMap.getOrDefault(key, List.of());
     }
 
-    public static ExtensionInfo getExtensionInfo() {
-        return ExtensionInfo.nonExtended(SpecificMoonVariant.class);
+    public static SpecificMoonVariant create(String enumName, String name, ResourceKey<? extends GameEvent> associatedEventKey) {
+        throw new IllegalStateException("Enum not extended");
     }
 }

@@ -10,7 +10,6 @@ import com.llamalad7.mixinextras.sugar.Local;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -28,7 +27,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.natural.ThinIceBlock;
-import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
@@ -53,10 +51,10 @@ import java.util.Map;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity {
     @Shadow
-    public abstract Map<Holder<MobEffect>, MobEffectInstance> getActiveEffectsMap();
+    public abstract Map<MobEffect, MobEffectInstance> getActiveEffectsMap();
 
     @Shadow
-    public abstract ItemStack getLastArmorItem(EquipmentSlot slot);
+    protected abstract ItemStack getLastArmorItem(EquipmentSlot slot);
 
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
@@ -97,7 +95,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @Inject(method = "checkFallDamage", at = @At("HEAD"), cancellable = true)
     private void fall(CallbackInfo ci, @Local(argsOnly = true) double motionY, @Local(argsOnly = true) BlockState blockState, @Local(argsOnly = true) BlockPos blockPos) {
         LivingEntity self = confluence$self();
-        if (fallDistance >= 2.5F && blockState.is(NatureBlocks.THIN_ICE_BLOCK)) {
+        if (fallDistance >= 2.5F && blockState.is(NatureBlocks.THIN_ICE_BLOCK.get())) {
             if (TCUtils.isIceSafe(self)) return;
             ThinIceBlock.fall(self, blockPos);
             super.checkFallDamage(motionY, false, blockState, blockPos);
@@ -120,7 +118,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
             ShimmerEffect.applyShimmerEffect(self);
             instance = instance.add(0, -0.03, 0);
         }
-        if (self.hasEffect(ModEffects.FLIPPER)) {
+        if (self.hasEffect(ModEffects.FLIPPER.get())) {
             return original.call(instance, 0.96, 0.96, 0.96);
         }
         return original.call(instance, factorX, factorY, factorZ);
@@ -132,11 +130,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
             return !original;
         }
         return original;
-    }
-
-    @WrapWithCondition(method = "triggerOnDeathMobEffects", at = @At(value = "INVOKE", target = "Ljava/util/Map;clear()V"))
-    private boolean cacheFlasks(Map<Holder<MobEffect>, MobEffectInstance> instance) {
-        return FlaskEffect.saveFlaskEffects(instance);
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
@@ -154,18 +147,18 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
         return original || (confluence$self() instanceof Player player && !player.isCrouching() && BaseHookItem.hasAnyHooked(player));
     }
 
-    @WrapWithCondition(method = "onEffectUpdated", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;addAttributeModifiers(Lnet/minecraft/world/entity/ai/attributes/AttributeMap;I)V"))
-    private boolean shouldAdd(MobEffect mobEffect, AttributeMap entry, int i, @Local(argsOnly = true) MobEffectInstance instance) {
-        return IMobEffectInstance.of(instance).confluence$isEnabled();
+    @WrapWithCondition(method = "onEffectUpdated", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;addAttributeModifiers(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/ai/attributes/AttributeMap;I)V"))
+    private boolean shouldAdd(MobEffect instance, LivingEntity livingEntity, AttributeMap attributeMap, int amplifier, @Local(argsOnly = true) MobEffectInstance effectInstance) {
+        return IMobEffectInstance.of(effectInstance).confluence$isEnabled();
     }
 
     @WrapMethod(method = "hasEffect")
-    private boolean hasEffect(Holder<MobEffect> effect, Operation<Boolean> original) {
+    private boolean hasEffect(MobEffect effect, Operation<Boolean> original) {
         return ILivingEntity.hasEffect(getActiveEffectsMap(), effect);
     }
 
     @WrapMethod(method = "getEffect")
-    private MobEffectInstance getEffect(Holder<MobEffect> effect, Operation<MobEffectInstance> original) {
+    private MobEffectInstance getEffect(MobEffect effect, Operation<MobEffectInstance> original) {
         return ILivingEntity.getEffect(getActiveEffectsMap(), effect);
     }
 
@@ -174,7 +167,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
         if (confluence$self() instanceof ServerPlayer player) {
             for (Map.Entry<EquipmentSlot, ItemStack> entry : equipments.entrySet()) {
                 EquipmentSlot slot = entry.getKey();
-                if (EquipmentSlotGroup.ARMOR.test(slot) && !ItemStack.isSameItem(entry.getValue(), getLastArmorItem(slot))) {
+                if (slot.isArmor() && !ItemStack.isSameItem(entry.getValue(), getLastArmorItem(slot))) {
                     PlayerSpecialData.of(player).flushArmorSetBonus(player);
                     FlushArmorSetBonusPacketS2C.sendToPlayersTrackingTarget(player);
                     break;

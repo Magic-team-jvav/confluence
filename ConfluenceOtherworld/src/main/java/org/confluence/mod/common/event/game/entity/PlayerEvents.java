@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.game.entity;
+﻿package org.confluence.mod.common.event.game.entity;
 
 import PortLib.extensions.net.minecraft.advancements.Advancement.PortAdvancementExtension;
 import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
@@ -97,7 +97,13 @@ public final class PlayerEvents {
     public static void init() {
         PortEventHandler.addListener(PlayerEvents::loggedIn);
         PortEventHandler.addListener(PlayerEvents::loggedOut);
+        PortEventHandler.addListener(PlayerEvents::interact$LeftClickBlock);
+        PortEventHandler.addListener(PlayerEvents::interact$RightClickBlock);
+        PortEventHandler.addListener(PlayerEvents::interact$EntityInteract);
+        PortEventHandler.addListener(PlayerEvents::itemEntityPickup$Pre);
+        PortEventHandler.addListener(PlayerEvents::itemEntityPickup$Post);
         PortEventHandler.addListener(PlayerEvents::itemFished);
+        PortEventHandler.addListener(PlayerEvents::interact$RightClickItem);
         PortEventHandler.addListener(PlayerEvents::useItemOnBlock);
         PortEventHandler.addListener(PlayerEvents::attackEntity);
         PortEventHandler.addListener(PlayerEvents::respawn);
@@ -106,19 +112,21 @@ public final class PlayerEvents {
         PortEventHandler.addListener(PlayerEvents::advancementProgress);
         PortEventHandler.addListener(PlayerEvents::startTracking);
         PortEventHandler.addListener(PlayerEvents::changedDimension);
+        PortEventHandler.addListener(PlayerEvents::container$Close);
         PortEventHandler.addListener(PlayerEvents::canSleep);
         PortEventHandler.addListener(PlayerEvents::canContinueSleeping);
         PortEventHandler.addListener(PlayerEvents::canSpawnPhantom);
         PortEventHandler.addListener(PlayerEvents::naturalHeal);
         PortEventHandler.addListener(PlayerEvents::onBonemeal);
         PortEventHandler.addListener(PlayerEvents::afterFlushArmorSetBonus);
+        PortEventHandler.addListener(PlayerEvents::switchItemFunction$Post);
         PortEventHandler.addListener(PlayerEvents::rightClickRailBlock);
         PortEventHandler.addListener(PlayerEvents::dismountOnMinecart);
         PortEventHandler.addListener(PortEventPriority.HIGHEST, PlayerEvents::getArmorSetBonus);
         PortEventHandler.addListener(PlayerEvents::customPickupRange);
     }
 
-    public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+    private static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         PlayerUtils.syncSavedData(player);
         BoulderWorld.forceSetAccessory(player);
@@ -134,10 +142,9 @@ public final class PlayerEvents {
         if (ModUtils.shouldDisplayTeam()) {
             Team team = PlayerSpecialData.of(player).getTeam();
             if (team != Team.WHITE) {
-                Component msg = PortMutableComponentExtension.withColor(Component.translatable(
+                player.server.getPlayerList().broadcastSystemMessage(PortMutableComponentExtension.withColor(Component.translatable(
                         "message.confluence.join_team", player.getName(), team.getLowerCaseName()
-                ), team.getColor().getTextColor());
-                player.server.getPlayerList().broadcastSystemMessage(msg, false);
+                ), team.getColor().getTextColor()), false);
             }
         }
 
@@ -150,7 +157,7 @@ public final class PlayerEvents {
         PlayerUtils.askForSoftcore(player);
     }
 
-    public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+    private static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         GameEventSystem.INSTANCE.clearAll(player);
@@ -158,7 +165,7 @@ public final class PlayerEvents {
         CommonConfigs.reset();
     }
 
-    public static void interact$LeftClickBlock(PortPlayerInteractEvent.PortLeftClickBlock event) {
+    private static void interact$LeftClickBlock(PortPlayerInteractEvent.PortLeftClickBlock event) {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         if (event.getAction() == PortPlayerInteractEvent.PortLeftClickBlock.PortAction.START) {
@@ -166,7 +173,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void interact$RightClickBlock(PortPlayerInteractEvent.PortRightClickBlock event) {
+    private static void interact$RightClickBlock(PortPlayerInteractEvent.PortRightClickBlock event) {
         Player player = event.getEntity();
         Level level = event.getLevel();
         BlockPos blockPos = event.getPos();
@@ -224,7 +231,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void interact$EntityInteract(PortPlayerInteractEvent.PortEntityInteract event) {
+    private static void interact$EntityInteract(PortPlayerInteractEvent.PortEntityInteract event) {
         if (event.getEntity() instanceof ServerPlayer player &&
                 event.getTarget() instanceof LivingEntity living
         ) healChocking:{
@@ -239,7 +246,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void itemEntityPickup$Pre(PortItemEntityPickupEvent.PortPre event) {
+    private static void itemEntityPickup$Pre(PortItemEntityPickupEvent.PortPre event) {
         ServerPlayer player = (ServerPlayer) event.getPlayer();
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = itemEntity.getItem();
@@ -274,7 +281,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void itemEntityPickup$Post(PortItemEntityPickupEvent.PortPost event) {
+    private static void itemEntityPickup$Post(PortItemEntityPickupEvent.PortPost event) {
         ServerPlayer player = (ServerPlayer) event.getPlayer();
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = event.getOriginalStack();
@@ -282,7 +289,7 @@ public final class PlayerEvents {
         LucyTheAxe.onPickup(player, itemStack);
     }
 
-    public static void itemFished(PortItemFishedEvent event) {
+    private static void itemFished(PortItemFishedEvent event) {
         Player player = event.getEntity();
 
         if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
@@ -291,7 +298,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void interact$RightClickItem(PortPlayerInteractEvent.PortRightClickItem event) {
+    private static void interact$RightClickItem(PortPlayerInteractEvent.PortRightClickItem event) {
         Player player = event.getEntity();
         if (player.isSpectator()) return;
         ItemStack stack = event.getItemStack();
@@ -305,7 +312,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void useItemOnBlock(PortUseItemOnBlockEvent event) {
+    private static void useItemOnBlock(PortUseItemOnBlockEvent event) {
         ItemStack stack = event.getItemStack();
         Player player = event.getPlayer();
         if (player != null && stack.is(Items.GLASS_BOTTLE)) {
@@ -325,7 +332,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void attackEntity(PortAttackEntityEvent event) {
+    private static void attackEntity(PortAttackEntityEvent event) {
         Player player = event.getEntity();
         if (player instanceof ServerPlayer serverPlayer) {
             AccessoryItems.applyLuckyCoin(serverPlayer, event.getTarget());
@@ -336,18 +343,18 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
-    public static void clone(PlayerEvent.Clone event) {
+    private static void clone(PlayerEvent.Clone event) {
         Player old = event.getOriginal();
         Player neo = event.getEntity();
 
         /// 保留下来的flask effect
-        /// @see org.confluence.mod.common.effect.flask.FlaskEffect#saveFlaskEffects
+        /// @see org.confluence.mod.common.effect.flask.FlaskEffect#cloneFlaskEffects
         for (MobEffectInstance activeEffect : old.getActiveEffects()) {
             neo.forceAddEffect(activeEffect, null);
         }
     }
 
-    public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
+    private static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         EverBeneficial everBeneficial = EverBeneficial.of(player);
         EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, player);
@@ -365,14 +372,14 @@ public final class PlayerEvents {
         }
     }
 
-    public static void harvestCheck(PlayerEvent.HarvestCheck event) {
+    private static void harvestCheck(PlayerEvent.HarvestCheck event) {
         ItemStack itemStack = event.getEntity().getMainHandItem();
         if (!itemStack.isEmpty() && itemStack.is(ItemTags.PICKAXES)) {
             event.setCanHarvest(ModTiers.isCorrectToolForDrops(DiggingPower.getPower(itemStack), itemStack, event.getTargetBlock()));
         }
     }
 
-    public static void advancementEarn(PortAdvancementEvent.PortAdvancementEarnEvent event) {
+    private static void advancementEarn(PortAdvancementEvent.PortAdvancementEarnEvent event) {
         PortAdvancementHolder advancement = event.getAdvancement();
         ServerPlayer player = (ServerPlayer) event.getEntity();
         DisplayInfo display = advancement.value().getDisplay();
@@ -381,7 +388,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void advancementProgress(PortAdvancementEvent.PortAdvancementProgressEvent event) {
+    private static void advancementProgress(PortAdvancementEvent.PortAdvancementProgressEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         if (!LibEntityUtils.isSingleplayerOwner(player) &&
                 AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
@@ -390,7 +397,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void startTracking(PlayerEvent.StartTracking event) {
+    private static void startTracking(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof ServerPlayer target) {
             ServerPlayer sendTo = (ServerPlayer) event.getEntity();
             PlayerUtils.flushLocalData(sendTo, target);
@@ -399,13 +406,13 @@ public final class PlayerEvents {
         }
     }
 
-    public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+    private static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         PlayerUtils.flushLocalData(player, player);
         PlayerUtils.syncPlayerData(player);
     }
 
-    public static void container$Close(PortPlayerContainerEvent.PortClose event) {
+    private static void container$Close(PortPlayerContainerEvent.PortClose event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         IMinecraftServer server = IMinecraftServer.of(player.server);
         if (!server.confluence$matchesSecretFlag(IWorldOptions.HARDMODE)) return;
@@ -453,7 +460,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void canSleep(PortCanPlayerSleepEvent event) {
+    private static void canSleep(PortCanPlayerSleepEvent event) {
         if (BloodMoonGameEvent.INSTANCE.started()) {
             event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
         } else if (ModSecretSeeds.NEVER_SLEEP.match(event.getEntity().server)) {
@@ -461,13 +468,13 @@ public final class PlayerEvents {
         }
     }
 
-    public static void canContinueSleeping(PortCanContinueSleepingEvent event) {
+    private static void canContinueSleeping(PortCanContinueSleepingEvent event) {
         if (event.mayContinueSleeping() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setContinueSleeping(false);
         }
     }
 
-    public static void canSpawnPhantom(PortPlayerSpawnPhantomsEvent event) {
+    private static void canSpawnPhantom(PortPlayerSpawnPhantomsEvent event) {
         if (ModSecretSeeds.NEVER_SLEEP.match(((ServerPlayer) event.getEntity()).server)) {
             event.setResult(PortPlayerSpawnPhantomsEvent.Result.ALLOW);
         }
@@ -476,13 +483,13 @@ public final class PlayerEvents {
     /// 阻止自然回血的药水效果，已改为使用EffectCure，并提取到Lib了
     ///
     /// [LibGameEvents#playerNaturalHeal]
-    public static void naturalHeal(PlayerNaturalHealEvent event) {
+    private static void naturalHeal(PlayerNaturalHealEvent event) {
         if (PlayerUtils.skipHealIfOnFire(event.getEntity())) {
             event.setCanceled(true);
         }
     }
 
-    public static void onBonemeal(PortBonemealEvent event) {
+    private static void onBonemeal(PortBonemealEvent event) {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
@@ -525,14 +532,14 @@ public final class PlayerEvents {
         }
     }
 
-    public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
+    private static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             PlayerUtils.flushPrimitiveValueData(player);
         }
     }
 
 
-    public static void switchItemFunction$Post(SwitchItemFunctionEvent.Post event) {
+    private static void switchItemFunction$Post(SwitchItemFunctionEvent.Post event) {
         Player player = event.getEntity();
         if (player instanceof ServerPlayer serverPlayer) {
             VisibilityPacketS2C.sendEcho(serverPlayer);
@@ -548,7 +555,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void rightClickRailBlock(MinecartAbilityEvent.RightClickRailBlock event) {
+    private static void rightClickRailBlock(MinecartAbilityEvent.RightClickRailBlock event) {
         AbstractMinecart minecart = event.getMinecart();
         if (minecart != null) return;
 
@@ -569,13 +576,13 @@ public final class PlayerEvents {
         }
     }
 
-    public static void dismountOnMinecart(MinecartAbilityEvent.DismountOnMinecart event) {
+    private static void dismountOnMinecart(MinecartAbilityEvent.DismountOnMinecart event) {
         if (event.getMinecartItem() == null && event.getMinecart().getMinecartType() == AbstractMinecart.Type.RIDEABLE) {
             event.setMinecartItem(IAbstractMinecart.of(event.getMinecart()).confluence$getDropItem().getDefaultInstance());
         }
     }
 
-    public static void getArmorSetBonus(GetArmorSetBonusDataEvent event) {
+    private static void getArmorSetBonus(GetArmorSetBonusDataEvent event) {
         ArmorSetBonusKey key = event.getKey();
         if (key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
             if (key.chest() == ArmorItems.WIZARD_HAT.get()) {
@@ -586,7 +593,7 @@ public final class PlayerEvents {
         }
     }
 
-    public static void customPickupRange(CustomPickupRangeEvent event) {
+    private static void customPickupRange(CustomPickupRangeEvent event) {
         Player player = event.getEntity();
         event.addRange(PlayerUtils.MANA_RANGE, TCUtils.getValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.PROVIDE_MANA));
         event.addRange(PlayerUtils.COIN_RANGE, TCUtils.getValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.COINS));

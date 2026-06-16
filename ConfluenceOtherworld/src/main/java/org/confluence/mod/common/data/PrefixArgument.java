@@ -11,8 +11,9 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
-import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
-import net.minecraftforge.server.command.CommandUtils;
+import net.minecraft.locale.Language;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 
 import java.util.Collection;
@@ -21,7 +22,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 public record PrefixArgument(String group) implements ArgumentType<ModPrefix> {
-    private static final Dynamic2CommandExceptionType INVALID_PREFIX = new Dynamic2CommandExceptionType((found, constants) -> CommandUtils.makeTranslatableWithFallback("commands.confluence.arguments.prefix.invalid", constants, found));
+    private static final Dynamic2CommandExceptionType INVALID_PREFIX = new Dynamic2CommandExceptionType((found, constants) -> {
+        String key = "commands.confluence.arguments.prefix.invalid";
+        String fallback = Language.getInstance().getOrDefault(key);
+        return Component.translatableWithFallback(key, fallback, constants, found);
+    });
 
     @Override
     public ModPrefix parse(StringReader reader) throws CommandSyntaxException {
@@ -52,12 +57,12 @@ public record PrefixArgument(String group) implements ArgumentType<ModPrefix> {
 
     public static class Info implements ArgumentTypeInfo<PrefixArgument, Info.Template> {
         @Override
-        public void serializeToNetwork(Template template, PortRegistryFriendlyByteBuf buffer) {
+        public void serializeToNetwork(Template template, FriendlyByteBuf buffer) {
             buffer.writeUtf(template.group);
         }
 
         @Override
-        public Template deserializeFromNetwork(PortRegistryFriendlyByteBuf buffer) {
+        public Template deserializeFromNetwork(FriendlyByteBuf buffer) {
             return new Template(buffer.readUtf());
         }
 

@@ -20,7 +20,6 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.lib.util.function.ints.ToIntFunction4;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Optional;
 

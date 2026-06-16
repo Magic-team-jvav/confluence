@@ -13,7 +13,7 @@ public class ArcheryEffect extends MobEffect {
     }
 
     public static float apply(LivingEntity victim, DamageSource damageSource, float amount) {
-        if (damageSource.is(DamageTypes.ARROW) && victim.hasEffect(ModEffects.ARCHERY)) {
+        if (damageSource.is(DamageTypes.ARROW) && victim.hasEffect(ModEffects.ARCHERY.get())) {
             return amount * 1.1F;
         }
         return amount;

@@ -10,16 +10,15 @@ public class HeartLanternEffect extends MobEffect {
     }
 
     @Override
-    public boolean shouldApplyEffectTickThisTick(int tickCount, int amplifier) {
+    public boolean isDurationEffectTick(int tickCount, int amplifier) {
         int interval = 20 >> amplifier;
         return interval <= 1 || tickCount % interval == 0;
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
+    public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         if (livingEntity.getHealth() < livingEntity.getMaxHealth()) {
             livingEntity.heal(0.2F);
         }
-        return true;
     }
 }

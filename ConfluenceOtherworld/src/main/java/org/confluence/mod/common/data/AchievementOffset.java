@@ -3,7 +3,7 @@ package org.confluence.mod.common.data;
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import org.confluence.lib.util.LibStreamCodecUtils;
@@ -35,7 +35,7 @@ public record AchievementOffset(float x, float y, boolean hideLink, Category cat
 
         public static final Category[] CATEGORIES = values();
         public static final Codec<Category> CODEC = StringRepresentable.fromEnum(() -> CATEGORIES);
-        public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Category> STREAM_CODEC = LibStreamCodecUtils.fromEnum(CATEGORIES);
+        public static final PortStreamCodec<FriendlyByteBuf, Category> STREAM_CODEC = LibStreamCodecUtils.fromEnum(CATEGORIES);
 
         @Override
         public String getSerializedName() {

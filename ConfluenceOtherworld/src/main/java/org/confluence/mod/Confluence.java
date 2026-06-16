@@ -95,7 +95,7 @@ public final class Confluence {
         ModAttachmentTypes.init();
         ModEffects.EFFECTS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
-        ModParticleTypes.TYPES.register(eventBus);
+        ModParticleTypes.init();
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);

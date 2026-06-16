@@ -14,7 +14,7 @@ public class AromaticSatiationEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(@NotNull LivingEntity livingEntity, int amplifier) {
+    public void applyEffectTick(@NotNull LivingEntity livingEntity, int amplifier) {
         if (livingEntity instanceof Player player) {
             FoodData foodData = player.getFoodData();
 
@@ -25,17 +25,15 @@ public class AromaticSatiationEffect extends MobEffect {
             if (currentFood < 20) {
                 int newFood = Math.min(currentFood + totalRecovery, 20);
                 foodData.setFoodLevel(newFood);
-                if (newFood < 20) return true;
             } else {
                 float nextSaturation = Mth.clamp(currentSaturation + (float) totalRecovery, 0.0F, 20.0F);
                 foodData.setSaturation(nextSaturation);
             }
         }
-        return true;
     }
 
     @Override
-    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration % 20 == 0;
     }
 }

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.effect.beneficial;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -14,16 +15,15 @@ public class InfernoEffect extends MolangParticleMobEffect {  //狱火 点燃周
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
+    public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
         for (Entity entity : livingEntity.level().getEntities(livingEntity, new AABB(livingEntity.blockPosition()).inflate(5.0))) {
             if (entity instanceof Enemy && entity instanceof LivingEntity)
-                entity.igniteForTicks((amplifier + 1) * 100);
+                PortEntityExtension.igniteForTicks(entity, (amplifier + 1) * 100);
         }
-        return true;
     }
 
     @Override
-    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration % (amplifier + 1) * 100 == 0;
     }
 }

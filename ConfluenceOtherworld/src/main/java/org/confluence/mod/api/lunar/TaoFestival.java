@@ -3,34 +3,50 @@ package org.confluence.mod.api.lunar;
 /**
  * 道历节日
  *
- * @param name   名称
- * @param remark 备注
  * @author 6tail
  */
-public record TaoFestival(String name, String remark) {
+public class TaoFestival {
 
-    public TaoFestival(String name, String remark) {
-        this.name = name;
-        this.remark = null == remark ? "" : remark;
-    }
+  /**
+   * 名称
+   */
+  private final String name;
 
-    public TaoFestival(String name) {
-        this(name, null);
-    }
+  /**
+   * 备注
+   */
+  private final String remark;
 
-    @Override
-    public String toString() {
-        return name;
-    }
+  public TaoFestival(String name, String remark) {
+    this.name = name;
+    this.remark = null == remark ? "" : remark;
+  }
 
-    public String toFullString() {
-        StringBuilder s = new StringBuilder();
-        s.append(name);
-        if (null != remark && remark.length() > 0) {
-            s.append("[");
-            s.append(remark);
-            s.append("]");
-        }
-        return s.toString();
+  public TaoFestival(String name) {
+    this(name, null);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getRemark() {
+    return remark;
+  }
+
+  @Override
+  public String toString() {
+    return name;
+  }
+
+  public String toFullString() {
+    StringBuilder s = new StringBuilder();
+    s.append(name);
+    if (null != remark && remark.length() > 0) {
+      s.append("[");
+      s.append(remark);
+      s.append("]");
     }
+    return s.toString();
+  }
 }

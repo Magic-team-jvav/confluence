@@ -472,6 +472,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(FROZEN_GEL_BLOCK.get());
         dropSelf(BLUE_GEL_BLOCK.get());
         dropSelf(PINK_GEL_BLOCK.get());
+        dropSelf(FLESH_BLOCK.get());
+        dropSelf(LESION_BLOCK.get());
         dropSelf(SUN_PLATE.FULL.get());
         dropSelf(SUN_PLATE.SLAB.get());
         dropSelf(SUN_PLATE.STAIRS.get());

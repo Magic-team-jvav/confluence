@@ -1,0 +1,82 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/flesh_block_1",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_2",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_3",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_4",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_5",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_6",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_7",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_8",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_9",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_10",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_11",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_12",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_13",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_14",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_15",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_16",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_17",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_18",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/flesh_block_19",
+                "weight": 1
+            }
+        ]
+    }
+}

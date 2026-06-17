@@ -318,6 +318,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GREEN_CANDY_BLOCK.get(),
                 RED_CANDY_BLOCK.get(),
 
+                LESION_BLOCK.get(),
+                FLESH_BLOCK.get(),
+
                 SUN_PLATE.FULL.get(),
                 SUN_PLATE.SLAB.get(),
                 SUN_PLATE.STAIRS.get(),
@@ -869,6 +872,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 GREEN_CANDY_BLOCK.get(),
                 RED_CANDY_BLOCK.get(),
+
+                FLESH_BLOCK.get(),
+                LESION_BLOCK.get(),
 
                 SUN_PLATE.FULL.get(),
                 SUN_PLATE.SLAB.get(),

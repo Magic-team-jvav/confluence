@@ -20,11 +20,13 @@ import org.mesdag.portlib.wrapper.world.item.PortItem;
 import java.util.function.Supplier;
 
 /// 掘墓者铲子
+///
 /// 继承 BaseShovelItem，使用 BaseHammerItem.hammerMineBlock 方法实现 3x3 挖掘
+///
 /// 挖掘等级：铁（NEEDS_2_LEVEL）
+///
 /// 特点：对柔软方块挖掘特别快
 public class GraveDiggersShovel extends BaseShovelItem {
-    // 需要 2 次敲击的方块
     private static final Supplier<Reference2IntMap<Block>> FAST_BLOCKS_HITS = Suppliers.memoize(() -> {
         Reference2IntMap<Block> map = new Reference2IntOpenHashMap<>();
         // 2 次敲击的方块（1秒）

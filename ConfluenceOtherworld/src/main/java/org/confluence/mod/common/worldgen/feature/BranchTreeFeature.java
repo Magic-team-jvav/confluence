@@ -43,7 +43,7 @@ public class BranchTreeFeature extends Feature<BranchTreeFeature.Config> {
         Block trunkBlock = trunkBlockState.getBlock();
         int height = config.height + random.nextInt(HEIGHT_VARIATION);
         int branchY = height / 2;
-        int branchLayers = config.branchHeight;
+        int branchLayers = config.branchLayer;
         List<BlockPos> branchRoot = new ArrayList<>();
         List<BlockPos> branchList = new ArrayList<>();
         branchRoot.add(basePos.above(branchY));
@@ -194,12 +194,12 @@ public class BranchTreeFeature extends Feature<BranchTreeFeature.Config> {
     }
 
     public record Config(BlockStateProvider trunk, BlockStateProvider branch, int height,
-                         int branchHeight) implements FeatureConfiguration {
+                         int branchLayer) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("branch_block").forGetter(Config::branch),
                 Codec.INT.fieldOf("height").forGetter(Config::height),
-                Codec.INT.fieldOf("branch_height").forGetter(Config::branchHeight)
+                Codec.INT.fieldOf("branch_layer").forGetter(Config::branchLayer)
         ).apply(instance, Config::new));
     }
 }

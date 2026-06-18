@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.mesdag.portlib.PortLib;
+import org.mesdag.portlib.wrapper.sounds.PortSoundEvents;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -116,7 +116,7 @@ public class SpreadableMoistenedSandBlock extends Block implements ISpreadable {
             }
 
             level.levelEvent(2009, pos, 0);
-            level.playSound(null, pos, PortLib.WET_SPONGE_DRIES.get(), SoundSource.BLOCKS, 1.0F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
+            level.playSound(null, pos, PortSoundEvents.WET_SPONGE_DRIES.get(), SoundSource.BLOCKS, 1.0F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
         }
     }
 }

@@ -1,16 +1,11 @@
 package org.confluence.mod.common.capability;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import org.confluence.mod.common.item.common.BottomlessBucketItem;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class FluidBottomlessBucketWrapper implements IFluidHandlerItem {
     protected final ItemStack container;
 
@@ -25,7 +20,7 @@ public class FluidBottomlessBucketWrapper implements IFluidHandlerItem {
 
     public FluidStack getFluid() {
         if (container.getItem() instanceof BottomlessBucketItem bucketItem) {
-            return new FluidStack(bucketItem.content, FluidType.BUCKET_VOLUME);
+            return new FluidStack(bucketItem.getFluid(), FluidType.BUCKET_VOLUME);
         }
         return FluidStack.EMPTY;
     }

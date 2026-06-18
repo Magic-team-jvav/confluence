@@ -193,31 +193,28 @@ dependencies {
     modImplementation("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}-forge")
     jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}-forge")
 
-//    modImplementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
+    modImplementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 
     modImplementation("top.theillusivec4.curios:curios-forge:${curios_version}")
-    modImplementation('com.github.glitchfiend:TerraBlender-forge:' + minecraft_version + '-' + terrablender_version)
+    // 只作为辅助开发
+    modRuntimeOnly('com.github.glitchfiend:TerraBlender-forge:' + minecraft_version + '-' + terrablender_version)
 
 //    implementation jarJar(files('libs/LanguageFixer.jar'))
 
-//    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
-//    implementation jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-forge', version: '[0.3.3,)')
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.3"))
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    interfaceInjectionData("org.mesdag.portlib:PortLib:${portlib_version}:interfaceinjection@json")
+    interfaceInjectionData("org.mesdag.portlib:PortLib:${portlib_version}")
 }
 
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
     config "${mod_id}.mixins.json"
-    config "${mod_id}.integration.citadel.mixins.json"
-    config "${mod_id}.integration.lithium.mixins.json"
 }
 
 jar {
     manifest.attributes([
-            "MixinConfigs": "${mod_id}.mixins.json,${mod_id}.integration.citadel.mixins.json,${mod_id}.integration.lithium.mixins.json"
+            "MixinConfigs": "${mod_id}.mixins.json"
     ])
 }
 

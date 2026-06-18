@@ -328,7 +328,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             ItemStack itemstack = getItem(index);
             boolean flag = stack.isEmpty() || !PortItemStackExtension.isSameItemSameComponents(itemstack, stack);
             getItems().set(index, stack);
-            stack.limitSize(getMaxStackSize(stack));
+            stack.limitSize(getMaxStackSize());
             if (index < 4 && flag) {
                 resetCookTime();
                 setChanged();

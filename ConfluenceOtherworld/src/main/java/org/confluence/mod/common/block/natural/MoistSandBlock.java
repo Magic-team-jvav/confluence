@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.feature.PlantPatchFeature;
-import org.mesdag.portlib.PortLib;
+import org.mesdag.portlib.wrapper.sounds.PortSoundEvents;
 
 import java.util.List;
 import java.util.Map;
@@ -144,7 +144,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
                 level.setBlock(pos, Blocks.SAND.defaultBlockState(), 3);
             }
             level.levelEvent(2009, pos, 0);
-            level.playSound(null, pos, PortLib.WET_SPONGE_DRIES.get(), SoundSource.BLOCKS, 1.0F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
+            level.playSound(null, pos, PortSoundEvents.WET_SPONGE_DRIES.get(), SoundSource.BLOCKS, 1.0F, (1.0F + level.getRandom().nextFloat() * 0.2F) * 0.7F);
         }
     }
 }

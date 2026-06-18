@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.saved;
+package org.confluence.mod.common.data.saved;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;

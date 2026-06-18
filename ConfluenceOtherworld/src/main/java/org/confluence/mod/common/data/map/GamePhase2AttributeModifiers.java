@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.map;
+package org.confluence.mod.common.data.map;
 
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attribute.PortAttributeExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.AttributeInstance.PortAttributeInstanceExtension;

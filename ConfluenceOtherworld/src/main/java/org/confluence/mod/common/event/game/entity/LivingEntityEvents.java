@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.event.game.entity;
+package org.confluence.mod.common.event.game.entity;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;

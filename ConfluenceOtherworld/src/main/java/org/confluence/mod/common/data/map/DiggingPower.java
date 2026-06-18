@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.data.map;
+package org.confluence.mod.common.data.map;
 
 import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import com.mojang.serialization.Codec;

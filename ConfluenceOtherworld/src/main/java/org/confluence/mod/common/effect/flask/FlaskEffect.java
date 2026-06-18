@@ -1,4 +1,4 @@
-﻿package org.confluence.mod.common.effect.flask;
+package org.confluence.mod.common.effect.flask;
 
 import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
 import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;

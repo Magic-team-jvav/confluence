@@ -223,6 +223,20 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.GOLD_GOLDFISH.get(),
                 FoodItems.GOLDEN_CARP.get()
         );
+        tag(ModTags.Items.GRAVESTONE).add(
+                ModBlocks.TOMBSTONE.asItem(),
+                ModBlocks.GRAVE_MARKER.asItem(),
+                ModBlocks.CROSS_GRAVE_MARKER.asItem(),
+                ModBlocks.HEADSTONE.asItem(),
+                ModBlocks.GRAVESTONE.asItem(),
+                ModBlocks.OBELISK.asItem(),
+                ModBlocks.GOLDEN_TOMBSTONE.asItem(),
+                ModBlocks.GOLDEN_GRAVE_MARKER.asItem(),
+                ModBlocks.GOLDEN_CROSS_GRAVE_MARKER.asItem(),
+                ModBlocks.GOLDEN_HEADSTONE.asItem(),
+                ModBlocks.GOLDEN_GRAVESTONE.asItem()
+        );
+
         tag(ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE).add(
                 MaterialItems.SHADOW_SCALE.get(),
                 MaterialItems.TISSUE_SAMPLE.get()

@@ -35,7 +35,7 @@ public class ChlorophytePartisanItem extends AbstractSpearItem {
         if (last) {
             SpearProjectileComponent component = SpearProjectileComponent.SPORE_CLOUD_PROJ.get();
             SporeCloudProjectile projectile = new SporeCloudProjectile(
-                    ModEntities.SPORE_CLOUD_PROJECTILE.get(), level);
+                    ModEntities.SPORE_CLOUD.get(), level);
             projectile.setOwner(owner);
             projectile.setWeapon(owner.getMainHandItem());
             projectile.setProjComponent(component, owner);

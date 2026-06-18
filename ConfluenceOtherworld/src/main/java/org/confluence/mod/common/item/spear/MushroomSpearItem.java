@@ -116,7 +116,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
     private void spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos,
                                  SpearProjectileComponent component, Vec3 direction) {
         MushroomProjectile projectile = new MushroomProjectile(
-                ModEntities.MUSHROOM_PROJECTILE.get(), level);
+                ModEntities.MUSHROOM.get(), level);
         projectile.setOwner(owner);
         projectile.setWeapon(owner.getMainHandItem());
         projectile.setProjComponent(component, owner);

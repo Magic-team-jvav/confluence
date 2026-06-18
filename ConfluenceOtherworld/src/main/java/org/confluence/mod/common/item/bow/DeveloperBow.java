@@ -4,6 +4,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
+import org.confluence.mod.common.entity.projectile.arrow.DeveloperArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.portlib.wrapper.world.item.PortItem;
 
@@ -16,12 +17,6 @@ public class DeveloperBow extends BaseTerraBowItem {
 
     @Override
     public BaseArrowEntity createCustomArrow(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
-        return new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, ammo, weapon) {
-            @Override public double getBaseDamage() { return 9999; }
-            @Override protected void onHit(LivingEntity owner, LivingEntity target, boolean fullPull) { target.setRemainingFireTicks(target.getRemainingFireTicks() + 200 - tickCount); }
-            @Override protected float getSpeedFactor() { return 2.0; }
-            @Override protected int getPenetrationCount() { return 9999; }
-            @Override public double getDefaultGravity() { return 0; }
-        };
+        return new DeveloperArrowEntity(ModEntities.DEVELOPER_ARROW.get(), shooter, ammo, weapon);
     }
 }

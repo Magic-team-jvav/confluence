@@ -43,7 +43,7 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public FallingStarItemEntity(Level level, Vec3 pos) {
-        this(ModEntities.FALLING_STAR_ITEM_ENTITY.get(), level);
+        this(ModEntities.FALLING_STAR.get(), level);
         setPos(pos);
         setDeltaMovement(level.random.nextDouble(), -8.0, level.random.nextDouble());
         setItem(MaterialItems.FALLING_STAR.get().getDefaultInstance());

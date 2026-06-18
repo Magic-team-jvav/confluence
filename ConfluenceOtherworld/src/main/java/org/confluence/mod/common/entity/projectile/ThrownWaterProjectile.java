@@ -21,7 +21,7 @@ public class ThrownWaterProjectile extends ThrowableItemProjectile {
     }
 
     public ThrownWaterProjectile(LivingEntity shooter, ISpreadable.Type type) {
-        super(ModEntities.THROWN_WATER_PROJECTILE.get(), shooter, shooter.level());
+        super(ModEntities.THROWN_WATER.get(), shooter, shooter.level());
         this.type = type;
     }
 

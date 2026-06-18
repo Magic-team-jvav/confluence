@@ -27,7 +27,7 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
     }
 
     public HurtnadoProjectile(LivingEntity living) {
-        this(ModEntities.HURTNADO_PROJECTILE.get(), living.level());
+        this(ModEntities.HURTNADO.get(), living.level());
     }
 
     @Override

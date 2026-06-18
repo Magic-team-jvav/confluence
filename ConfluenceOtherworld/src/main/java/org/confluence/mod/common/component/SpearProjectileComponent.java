@@ -72,7 +72,7 @@ public record SpearProjectileComponent(
     public static final Supplier<SpearProjectileComponent> STORM_SPEAR_PROJ =
             () -> new SpearProjectileComponent(1.5f, 0.1f, 1.0f, 40, 0.0f, 15,
                     ModSoundEvents.FROZEN_ARROW.getId(),
-                    ModEntities.STORM_SPEAR_SHOT_PROJECTILE.getId(),
+                    ModEntities.STORM_SPEAR_SHOT.getId(),
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.empty(), Optional.empty());
 
@@ -121,7 +121,7 @@ public record SpearProjectileComponent(
     public static final Supplier<SpearProjectileComponent> GHASTLY_PROJECTILE =
             () -> new SpearProjectileComponent(0.9f, 0.5f, 1.0f, 10, 0.0f, 15,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.GHASTLY_PROJECTILE.getId(),
+                    ModEntities.GHASTLY.getId(),
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.of(Integer.MAX_VALUE), Optional.empty());
 

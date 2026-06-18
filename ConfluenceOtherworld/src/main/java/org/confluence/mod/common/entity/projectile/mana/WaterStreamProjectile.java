@@ -16,7 +16,7 @@ public class WaterStreamProjectile extends AbstractManaProjectile {
     }
 
     public WaterStreamProjectile(LivingEntity living) {
-        this(ModEntities.WATER_STREAM_PROJECTILE.get(), living.level());
+        this(ModEntities.WATER_STREAM.get(), living.level());
     }
 
     @Override

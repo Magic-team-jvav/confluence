@@ -21,7 +21,7 @@ public class RainbowProjectile extends BaseDraggingProjectile {
     }
 
     public RainbowProjectile(LivingEntity living) {
-        this(ModEntities.RAINBOW_PROJECTILE.get(), living.level());
+        this(ModEntities.RAINBOW.get(), living.level());
     }
 
     @Override

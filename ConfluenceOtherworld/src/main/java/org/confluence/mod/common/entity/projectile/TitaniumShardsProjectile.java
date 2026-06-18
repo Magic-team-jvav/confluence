@@ -14,7 +14,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +39,7 @@ public class TitaniumShardsProjectile extends Projectile {
     }
 
     public TitaniumShardsProjectile(Player player) {
-        this(ModEntities.TITANIUM_SHARDS_PROJECTILE.get(), player.level());
+        this(ModEntities.TITANIUM_SHARDS.get(), player.level());
         setPos(player.position());
         setOwner(player);
     }

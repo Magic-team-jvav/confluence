@@ -20,7 +20,7 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
     }
 
     public CursedFlamesProjectile(LivingEntity living) {
-        this(ModEntities.CURSED_FLAMES_PROJECTILE.get(), living.level());
+        this(ModEntities.CURSED_FLAMES.get(), living.level());
     }
 
     @Override

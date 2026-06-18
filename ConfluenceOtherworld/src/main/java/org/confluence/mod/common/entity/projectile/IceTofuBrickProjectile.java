@@ -22,11 +22,11 @@ public class IceTofuBrickProjectile extends ThrowableItemProjectile {
     }
 
     public IceTofuBrickProjectile(double x, double y, double z, Level level) {
-        super(ModEntities.ICE_TOFU_BRICK_PROJECTILE.get(), x, y, z, level);
+        super(ModEntities.ICE_TOFU_BRICK.get(), x, y, z, level);
     }
 
     public IceTofuBrickProjectile(LivingEntity shooter, Level level) {
-        super(ModEntities.ICE_TOFU_BRICK_PROJECTILE.get(), shooter, level);
+        super(ModEntities.ICE_TOFU_BRICK.get(), shooter, level);
     }
 
     @Override

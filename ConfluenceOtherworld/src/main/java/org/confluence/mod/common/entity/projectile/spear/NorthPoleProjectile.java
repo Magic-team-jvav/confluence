@@ -80,7 +80,7 @@ public class NorthPoleProjectile extends SpearProjectile {
 
     private void spawnSubProjectile() {
         NorthPoleSubProjectile sub = new NorthPoleSubProjectile(
-                ModEntities.NORTH_POLE_SUB_PROJECTILE.get(), level());
+                ModEntities.NORTH_POLE_SUB.get(), level());
         sub.setOwner(getOwner());
         sub.setWeapon(getWeaponItem());
         if (projComponent != null) {

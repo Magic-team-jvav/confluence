@@ -15,7 +15,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
@@ -30,7 +29,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
     }
 
     public SuperSpikyBallProjectile(Level level) {
-        super(ModEntities.SUPER_SPIKY_BALL_PROJECTILE.get(), level);
+        super(ModEntities.SUPER_SPIKY_BALL.get(), level);
     }
 
     @Override

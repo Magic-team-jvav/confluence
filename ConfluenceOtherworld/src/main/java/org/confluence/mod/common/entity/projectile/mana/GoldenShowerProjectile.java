@@ -19,7 +19,7 @@ public class GoldenShowerProjectile extends AbstractManaProjectile {
     }
 
     public GoldenShowerProjectile(LivingEntity living) {
-        this(ModEntities.GOLDEN_SHOWER_PROJECTILE.get(), living.level());
+        this(ModEntities.GOLDEN_SHOWER.get(), living.level());
     }
 
     @Override

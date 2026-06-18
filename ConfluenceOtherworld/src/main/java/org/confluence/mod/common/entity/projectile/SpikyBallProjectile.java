@@ -14,7 +14,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 
@@ -30,7 +29,7 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
     }
 
     public SpikyBallProjectile(LivingEntity shooter) {
-        super(ModEntities.SPIKY_BALL_PROJECTILE.get(), shooter.level());
+        super(ModEntities.SPIKY_BALL.get(), shooter.level());
         setPos(shooter.getX(), shooter.getEyeY() - 0.1F, shooter.getZ());
         setOwner(shooter);
     }

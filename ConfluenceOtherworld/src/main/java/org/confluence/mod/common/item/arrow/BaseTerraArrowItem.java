@@ -21,7 +21,7 @@ public class BaseTerraArrowItem extends ArrowItem {
     }
 
     protected EntityType<? extends BaseArrowEntity> getEntityType() {
-        return ModEntities.ARROW_PROJECTILE.get();
+        return ModEntities.BASE_ARROW.get();
     }
 
     @Override

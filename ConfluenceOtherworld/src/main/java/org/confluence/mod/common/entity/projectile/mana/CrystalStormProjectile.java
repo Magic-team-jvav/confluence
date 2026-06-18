@@ -15,7 +15,7 @@ public class CrystalStormProjectile extends AbstractManaProjectile {
     }
 
     public CrystalStormProjectile(LivingEntity living) {
-        this(ModEntities.CRYSTAL_STORM_PROJECTILE.get(), living.level());
+        this(ModEntities.CRYSTAL_STORM.get(), living.level());
     }
 
     @Override

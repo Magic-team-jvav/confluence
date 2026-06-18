@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CrystalVileShardProjectileRenderer extends GeoNegativeVolumeRenderer<CrystalVileShardProjectile> {
     public CrystalVileShardProjectileRenderer(EntityRendererProvider.Context context) {
-        super(context, ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.getId(), false);
+        super(context, ModEntities.CRYSTAL_VILE_SHARD.getId(), false);
         setBoneToGlow(List.of("Outline"), List.of("Internal"));
     }
 

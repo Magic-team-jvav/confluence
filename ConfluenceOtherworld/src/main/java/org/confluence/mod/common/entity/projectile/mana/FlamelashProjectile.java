@@ -27,7 +27,7 @@ public class FlamelashProjectile extends BaseDraggingProjectile {
     }
 
     public FlamelashProjectile(LivingEntity living) {
-        this(ModEntities.FLAMELASH_PROJECTILE.get(), living.level());
+        this(ModEntities.FLAMELASH.get(), living.level());
     }
 
     @Override

@@ -10,7 +10,7 @@ import org.confluence.mod.common.init.ModEntities;
 
 public class MagicDaggerRenderer extends GeoNegativeVolumeRenderer<MagicDaggerProjectile> {
     public MagicDaggerRenderer(EntityRendererProvider.Context context) {
-        super(context, ModEntities.MAGIC_DAGGER_PROJECTILE.getId(), false);
+        super(context, ModEntities.MAGIC_DAGGER.getId(), false);
     }
 
     @Override

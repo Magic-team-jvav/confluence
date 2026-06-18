@@ -20,16 +20,16 @@ import org.jetbrains.annotations.Nullable;
  * 对飞行单位造成1.5倍伤害
  * 使用 DriveAwayArrowIntegration 处理飞行途中和命中驱离逻辑
  */
-public class DriveAwayArrow extends BaseArrowEntity {
+public class DriveAwayArrowEntity extends BaseArrowEntity {
 
     private boolean hittingFlyingTarget = false;
 
-    public DriveAwayArrow(EntityType<? extends DriveAwayArrow> entityType, Level level) {
+    public DriveAwayArrowEntity(EntityType<? extends DriveAwayArrowEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public DriveAwayArrow(EntityType<? extends DriveAwayArrow> entityType, LivingEntity owner,
-                          ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
+    public DriveAwayArrowEntity(EntityType<? extends DriveAwayArrowEntity> entityType, LivingEntity owner,
+                                ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
         super(entityType, owner, pickupItemStack, firedFromWeapon);
     }
 
@@ -94,6 +94,6 @@ public class DriveAwayArrow extends BaseArrowEntity {
 
     public static BaseArrowEntity create(EntityType<? extends AbstractArrow> type, LivingEntity shooter,
                                          ItemStack pickupItemStack, ItemStack firedFromWeapon) {
-        return new DriveAwayArrow((EntityType<? extends DriveAwayArrow>) type, shooter, pickupItemStack, firedFromWeapon);
+        return new DriveAwayArrowEntity((EntityType<? extends DriveAwayArrowEntity>) type, shooter, pickupItemStack, firedFromWeapon);
     }
 }

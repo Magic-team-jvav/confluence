@@ -15,11 +15,11 @@ public class VilethronProjectile extends StripedProjectile {
     }
 
     public VilethronProjectile(LivingEntity living) {
-        super(ModEntities.VILETHRON_PROJECTILE.get(), living);
+        super(ModEntities.VILETHRON.get(), living);
     }
 
     public VilethronProjectile(LivingEntity living, Vec3 pos) {
-        super(ModEntities.VILETHRON_PROJECTILE.get(), living, pos);
+        super(ModEntities.VILETHRON.get(), living, pos);
     }
 
     @Override

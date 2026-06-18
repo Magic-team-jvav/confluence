@@ -18,7 +18,7 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
     }
 
     public BallOfFireProjectile(LivingEntity living) {
-        this(ModEntities.BALL_OF_FIRE_PROJECTILE.get(), living.level());
+        this(ModEntities.BALL_OF_FIRE.get(), living.level());
     }
 
     @Override

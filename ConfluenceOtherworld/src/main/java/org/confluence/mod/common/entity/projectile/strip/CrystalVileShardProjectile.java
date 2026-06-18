@@ -22,12 +22,12 @@ public class CrystalVileShardProjectile extends StripedProjectile implements Geo
     }
 
     public CrystalVileShardProjectile(LivingEntity living) {
-        super(ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get(), living);
+        super(ModEntities.CRYSTAL_VILE_SHARD.get(), living);
         init();
     }
 
     public CrystalVileShardProjectile(LivingEntity living, Vec3 pos) {
-        super(ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get(), living, pos);
+        super(ModEntities.CRYSTAL_VILE_SHARD.get(), living, pos);
         init();
     }
 

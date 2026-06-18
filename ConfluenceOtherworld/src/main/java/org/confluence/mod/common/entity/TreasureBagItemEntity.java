@@ -28,7 +28,7 @@ public class TreasureBagItemEntity extends ItemEntity {
     }
 
     public TreasureBagItemEntity(Level level, Vec3 pos, ItemStack itemStack, @Nullable Player player) {
-        this(ModEntities.TREASURE_BAG_ITEM_ENTITY.get(), level);
+        this(ModEntities.TREASURE_BAG.get(), level);
         setPos(pos);
         setDeltaMovement(level.random.nextDouble() * 0.2 - 0.1, 0.2, level.random.nextDouble() * 0.2 - 0.1);
         setItem(itemStack);

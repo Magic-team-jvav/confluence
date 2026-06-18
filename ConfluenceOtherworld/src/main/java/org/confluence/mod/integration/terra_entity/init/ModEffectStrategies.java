@@ -70,13 +70,13 @@ public final class ModEffectStrategies {
      * 魔光剑
      */
     private static final RegistryObject LIGHTS_BANE_EFFECT = createEffect("lights_bane",
-            ON_HIT_PROJECTILE.apply((level) -> ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f)));
+            ON_HIT_PROJECTILE.apply((level) -> ModEntities.LIGHTS_BANE.get().create(level).addAttackDamage(7f)));
 
     /**
      * 养蜂人
      */
     private static final RegistryObject BEE_KEEPER_EFFECT = createEffect("bee_keeper",
-            ON_HIT_PROJECTILE_COUNT.apply((level) -> ModEntities.BEE_PROJECTILE.get().create(level).addAttackDamage(2), 3));
+            ON_HIT_PROJECTILE_COUNT.apply((level) -> ModEntities.BEE.get().create(level).addAttackDamage(2), 3));
 
     /**
      * 稻草人

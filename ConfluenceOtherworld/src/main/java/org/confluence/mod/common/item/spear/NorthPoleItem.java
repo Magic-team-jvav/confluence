@@ -35,7 +35,7 @@ public class NorthPoleItem extends AbstractSpearItem {
         if (last) {
             SpearProjectileComponent component = SpearProjectileComponent.NORTH_POLE_PROJ.get();
             NorthPoleProjectile projectile = new NorthPoleProjectile(
-                    ModEntities.NORTH_POLE_PROJECTILE.get(), level);
+                    ModEntities.NORTH_POLE.get(), level);
             projectile.setOwner(owner);
             projectile.setWeapon(owner.getMainHandItem());
             projectile.setProjComponent(component, owner);

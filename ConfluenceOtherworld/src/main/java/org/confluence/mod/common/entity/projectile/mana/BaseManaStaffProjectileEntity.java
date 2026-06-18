@@ -19,7 +19,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.FloatRGB;
-import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.particlestorm.data.molang.MolangExp;
@@ -38,7 +37,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     }
 
     public BaseManaStaffProjectileEntity(LivingEntity living, Variant variant) {
-        this(ModEntities.BASE_MANA_STAFF_PROJECTILE.get(), living, living.level(), variant);
+        this(ModEntities.BASE_MANA_STAFF.get(), living, living.level(), variant);
     }
 
     public BaseManaStaffProjectileEntity(EntityType<? extends BaseManaStaffProjectileEntity> entityType, LivingEntity living, Level level, Variant variant) {

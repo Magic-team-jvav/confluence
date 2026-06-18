@@ -55,12 +55,10 @@ public class BaseArrowEntity extends PortAbstractArrow {
         init();
     }
 
-    private void init() {
+    protected void init() {
         this.autoDiscardTick = getAutoDiscardTick();
         IAbstractArrow.of(this).confluence$setDamageNotAffectedBySpeedBonus(true);
     }
-
-    // region getters
 
     @Override
     public double getDefaultGravity() {
@@ -69,10 +67,6 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     protected int getLuminance() {
         return 0;
-    }
-
-    protected float getSpeedFactor() {
-        return 1;
     }
 
     protected int getPenetrationCount() {
@@ -93,8 +87,6 @@ public class BaseArrowEntity extends PortAbstractArrow {
         return null;
     }
 
-    // endregion
-
     public boolean hasAutoDiscard() {
         return autoDiscardTick < 1200;
     }
@@ -105,14 +97,8 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     @Override
     public void onAddedToWorld() {
-        if (getDefaultGravity() == 0) this.setNoGravity(true);
+        if (getDefaultGravity() == 0) setNoGravity(true);
         super.onAddedToWorld();
-    }
-
-    @Override
-    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
-        super.shoot(x, y, z, velocity, inaccuracy);
-        this.setDeltaMovement(getDeltaMovement().scale(getSpeedFactor()));
     }
 
     protected float capMaxSpeed(float length) {
@@ -154,29 +140,35 @@ public class BaseArrowEntity extends PortAbstractArrow {
             return;
         }
         if (!havenBeen.add(living.getUUID())) return;
-        Entity owner = this.getOwner();
-        DamageSource damagesource = this.damageSources().arrow(this, owner != null ? owner : this);
-        if (entity.hurt(damagesource, getCalculatedDamage())) {
-            this.playSound(getSound(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-            this.doPostHurtEffects(living);
-            if (!this.level().isClientSide) living.setArrowCount(living.getArrowCount() + 1);
-            this.doKnockback(living, damagesource);
-            if (!this.level().isClientSide && owner instanceof LivingEntity) {
-                PortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), entity, damagesource);
+        DamageSource damageSource = getDamageSource();
+        if (entity.hurt(damageSource, getCalculatedDamage())) {
+            playSound(getSound(), 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
+            doPostHurtEffects(living);
+            if (!level().isClientSide) {
+                living.setArrowCount(living.getArrowCount() + 1);
             }
-            if (living != owner && living instanceof Player && owner instanceof ServerPlayer player && !this.isSilent()) {
+            doKnockback(living, damageSource);
+            Entity owner = getOwner();
+            if (!level().isClientSide && owner instanceof LivingEntity) {
+                PortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), entity, damageSource);
+            }
+            if (living != owner && living instanceof Player && owner instanceof ServerPlayer player && !isSilent()) {
                 player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
             }
             penetrate++;
             if (!canPenetrate()) discard();
         } else {
-            this.setDeltaMovement(this.getDeltaMovement().scale(-0.1D));
-            this.setYRot(this.getYRot() + 180.0F);
+            setDeltaMovement(getDeltaMovement().scale(-0.1D));
+            setYRot(getYRot() + 180.0F);
             this.yRotO += 180.0F;
-            if (!this.level().isClientSide && this.getDeltaMovement().lengthSqr() < 1.0E-7D) {
-                if (this.pickup == Pickup.ALLOWED) this.spawnAtLocation(this.getPickupItem(), 0.1F);
+            if (!level().isClientSide && getDeltaMovement().lengthSqr() < 1.0E-7D) {
+                if (pickup == Pickup.ALLOWED) spawnAtLocation(getPickupItem(), 0.1F);
             }
         }
+    }
+
+    protected DamageSource getDamageSource() {
+        return damageSources().arrow(this, getOwner());
     }
 
     @Override
@@ -189,7 +181,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     protected void onHit(LivingEntity owner, LivingEntity target, boolean fullPull) {}
 
-    private static SoundEvent getSound() {
+    protected SoundEvent getSound() {
         return SoundEvents.TRIDENT_HIT_GROUND;
     }
 
@@ -219,6 +211,6 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) && !this.havenBeen.contains(target.getUUID());
+        return super.canHitEntity(target) && !havenBeen.contains(target.getUUID());
     }
 }

@@ -20,14 +20,14 @@ public class CrystalChargeProjectile extends AbstractManaProjectile {
     }
 
     public CrystalChargeProjectile(LivingEntity living) {
-        this(ModEntities.CRYSTAL_CHARGE_1_PROJECTILE.get(), living.level());
+        this(ModEntities.CRYSTAL_CHARGE_1.get(), living.level());
     }
 
     @Override
     public void baseTick() {
         super.baseTick();
 
-        if (getType() == ModEntities.CRYSTAL_CHARGE_1_PROJECTILE.get()) {
+        if (getType() == ModEntities.CRYSTAL_CHARGE_1.get()) {
             doSimpleMove();
         } else {
             setDeltaMovement(getDeltaMovement().scale(0.96));
@@ -39,7 +39,7 @@ public class CrystalChargeProjectile extends AbstractManaProjectile {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        if (getType() == ModEntities.CRYSTAL_CHARGE_1_PROJECTILE.get()) {
+        if (getType() == ModEntities.CRYSTAL_CHARGE_1.get()) {
             doSplit();
         }
     }
@@ -47,7 +47,7 @@ public class CrystalChargeProjectile extends AbstractManaProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (doHurtAndKnockback(result.getEntity(), 0.44, 0.2)) {
-            if (getType() == ModEntities.CRYSTAL_CHARGE_1_PROJECTILE.get()) {
+            if (getType() == ModEntities.CRYSTAL_CHARGE_1.get()) {
                 doSplit();
             }
         }
@@ -55,7 +55,7 @@ public class CrystalChargeProjectile extends AbstractManaProjectile {
 
     @Override
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
-        if (getType() == ModEntities.CRYSTAL_CHARGE_2_PROJECTILE.get()) {
+        if (getType() == ModEntities.CRYSTAL_CHARGE_2.get()) {
             knockbackStrength *= 0.8;
             knockbackMotionY *= 0.8;
         }
@@ -70,7 +70,7 @@ public class CrystalChargeProjectile extends AbstractManaProjectile {
         Entity owner = getOwner();
         Vec3 vec3 = getDeltaMovement();
         for (int i = 0; i < amount; i++) {
-            CrystalChargeProjectile projectile = new CrystalChargeProjectile(ModEntities.CRYSTAL_CHARGE_2_PROJECTILE.get(), level());
+            CrystalChargeProjectile projectile = new CrystalChargeProjectile(ModEntities.CRYSTAL_CHARGE_2.get(), level());
             projectile.setPos(getX(), getY(), getZ());
             projectile.setDamage(damage);
             projectile.setDefaultVelocity(velocity);

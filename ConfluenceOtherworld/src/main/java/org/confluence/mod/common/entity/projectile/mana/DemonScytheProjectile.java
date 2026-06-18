@@ -19,7 +19,7 @@ public class DemonScytheProjectile extends AbstractManaProjectile implements IAx
     }
 
     public DemonScytheProjectile(LivingEntity living) {
-        this(ModEntities.DEMON_SCYTHE_PROJECTILE.get(), living.level());
+        this(ModEntities.DEMON_SCYTHE.get(), living.level());
     }
 
     @Override

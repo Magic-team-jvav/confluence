@@ -34,7 +34,7 @@ public class SkullProjectile extends AbstractManaProjectile {
     }
 
     public SkullProjectile(LivingEntity living) {
-        this(ModEntities.SKULL_PROJECTILE.get(), living.level());
+        this(ModEntities.SKULL.get(), living.level());
     }
 
     @Override

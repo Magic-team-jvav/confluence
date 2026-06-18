@@ -17,7 +17,7 @@ public class WaterBoltProjectile extends AbstractManaProjectile {
     }
 
     public WaterBoltProjectile(LivingEntity living) {
-        this(ModEntities.WATER_BOLT_PROJECTILE.get(), living.level());
+        this(ModEntities.WATER_BOLT.get(), living.level());
     }
 
     @Override

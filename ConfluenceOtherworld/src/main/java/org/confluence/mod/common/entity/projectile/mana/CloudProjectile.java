@@ -147,7 +147,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
             ResourceLocation type = ResourceLocation.tryParse(compound.getString("RainType"));
             this.rainType = (EntityType<? extends RainProjectile>) BuiltInRegistries.ENTITY_TYPE.get(type);
         } catch (Exception ignored) {
-            this.rainType = ModEntities.BLOOD_RAIN_PROJECTILE.get();
+            this.rainType = ModEntities.BLOOD_RAIN.get();
         }
         this.duration = compound.getInt("Duration");
     }

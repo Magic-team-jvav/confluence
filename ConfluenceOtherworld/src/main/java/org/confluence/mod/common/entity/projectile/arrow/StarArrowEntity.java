@@ -30,8 +30,9 @@ public class StarArrowEntity extends BaseArrowEntity {
     }
 
     @Override
-    protected float getSpeedFactor() {
-        return 0.8f;
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+        super.shoot(x, y, z, velocity, inaccuracy);
+        setDeltaMovement(getDeltaMovement().scale(0.8));
     }
 
     @Override

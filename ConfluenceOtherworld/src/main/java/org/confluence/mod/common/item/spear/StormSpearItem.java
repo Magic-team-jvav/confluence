@@ -38,7 +38,7 @@ public class StormSpearItem extends AbstractSpearItem {
         if (last) {
             SpearProjectileComponent component = SpearProjectileComponent.STORM_SPEAR_PROJ.get();
             StormSpearProjectile projectile = new StormSpearProjectile(
-                    ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), level);
+                    ModEntities.STORM_SPEAR_SHOT.get(), level);
 
             projectile.setOwner(owner);
             projectile.setWeapon(owner.getMainHandItem());

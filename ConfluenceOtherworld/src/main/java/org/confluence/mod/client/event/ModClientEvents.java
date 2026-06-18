@@ -313,23 +313,23 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LAVA_BOMB.get(), LavaBombEntityRenderer::new);
         event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
 
-        event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
-        event.registerEntityRenderer(CRYSTAL_VILE_SHARD_PROJECTILE.get(), CrystalVileShardProjectileRenderer::new);
-        event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), HurtnadoProjectileRenderer::new);
-        event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(WATER_BOLT_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);
+        event.registerEntityRenderer(VILETHRON.get(), VilethronProjectileRenderer::new);
+        event.registerEntityRenderer(CRYSTAL_VILE_SHARD.get(), CrystalVileShardProjectileRenderer::new);
+        event.registerEntityRenderer(HURTNADO.get(), HurtnadoProjectileRenderer::new);
+        event.registerEntityRenderer(WATER_STREAM.get(), NoopRenderer::new);
+        event.registerEntityRenderer(WATER_BOLT.get(), NoopRenderer::new);
+        event.registerEntityRenderer(BALL_OF_FIRE.get(), NoopRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, new IceBladeSwordProjectileModel(context.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
-        event.registerEntityRenderer(STAR_FURY_PROJECTILE.get(), StarFuryProjectileRenderer::new);
-        event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, new EnchantedSwordProjectileModel(context.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
-        event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
-        event.registerEntityRenderer(GRASS_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, null, null));
-        event.registerEntityRenderer(BEE_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
-        event.registerEntityRenderer(NIGHTS_EDGE_PROJECTILE.get(), NightEdgeProjectileRenderer::new);
+        event.registerEntityRenderer(ICE_BLADE_SWORD.get(), context -> new ForwardProjRenderer<>(context, new IceBladeSwordProjectileModel(context.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
+        event.registerEntityRenderer(STAR_FURY.get(), StarFuryProjectileRenderer::new);
+        event.registerEntityRenderer(ENCHANTED_SWORD.get(), context -> new ForwardProjRenderer<>(context, new EnchantedSwordProjectileModel(context.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
+        event.registerEntityRenderer(LIGHTS_BANE.get(), LightsBaneProjectileRenderer::new);
+        event.registerEntityRenderer(GRASS.get(), context -> new ForwardProjRenderer<>(context, null, null));
+        event.registerEntityRenderer(BEE.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
+        event.registerEntityRenderer(NIGHTS_EDGE.get(), NightEdgeProjectileRenderer::new);
 
-        event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(BASE_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
         event.registerEntityRenderer(HELL_BAT_ARROW.get(), context -> new GeoArrowRenderer(context, TEMonsterEntities.HELL_BAT.getId(), 0.5f, 0));
         event.registerEntityRenderer(DRIVE_AWAY_ARROW.get(), TerraArrowRenderer::new);
@@ -356,49 +356,49 @@ public final class ModClientEvents {
         event.registerEntityRenderer(RAINBOW_BOULDER.get(), RainbowBoulderRenderer::new);
         event.registerEntityRenderer(LIFECRYSTAL_BOULDER.get(), LifecrystalBoulderRenderer::new);
         event.registerEntityRenderer(BOULDER_3X.get(), BoulderRenderer::new);
-        event.registerEntityRenderer(THROWN_KNIVE_PROJECTILE.get(), ThrownKniveProjectileRenderer::new);
-        event.registerEntityRenderer(BONE_THROWN_KNIVE_PROJECTILE.get(), BoneThrownKniveProjectileRenderer::new);
-        event.registerEntityRenderer(FROST_DAGGERFISH_PROJECTILE.get(), FrostDaggerfishProjectileRenderer::new);
-        event.registerEntityRenderer(DUNGEON_DEMON_BONE_PROJECTILE.get(), DungeonDemonBoneProjectileRenderer::new);
-        event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), SpearRenderer::new);
-        event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
-        event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), SpikyBallProjectileRenderer::new);
-        event.registerEntityRenderer(THROWN_WATER_PROJECTILE.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(MAGIC_DAGGER_PROJECTILE.get(), MagicDaggerRenderer::new);
-        event.registerEntityRenderer(CRYSTAL_STORM_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(CURSED_FLAMES_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(FLOWER_PETAL_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(TITANIUM_SHARDS_PROJECTILE.get(), TitaniumShardsProjectileRenderer::new);
-        event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
-        event.registerEntityRenderer(TREASURE_BAG_ITEM_ENTITY.get(), TreasureBagRenderer::new);
+        event.registerEntityRenderer(THROWN_KNIVE.get(), ThrownKniveProjectileRenderer::new);
+        event.registerEntityRenderer(BONE_THROWN_KNIVE.get(), BoneThrownKniveProjectileRenderer::new);
+        event.registerEntityRenderer(FROST_DAGGERFISH.get(), FrostDaggerfishProjectileRenderer::new);
+        event.registerEntityRenderer(DUNGEON_DEMON_BONE.get(), DungeonDemonBoneProjectileRenderer::new);
+        event.registerEntityRenderer(JAVELIN.get(), SpearRenderer::new);
+        event.registerEntityRenderer(SHURIKEN.get(), ShurikenProjectileRenderer::new);
+        event.registerEntityRenderer(SPIKY_BALL.get(), SpikyBallProjectileRenderer::new);
+        event.registerEntityRenderer(THROWN_WATER.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(MAGIC_DAGGER.get(), MagicDaggerRenderer::new);
+        event.registerEntityRenderer(CRYSTAL_STORM.get(), NoopRenderer::new);
+        event.registerEntityRenderer(CURSED_FLAMES.get(), NoopRenderer::new);
+        event.registerEntityRenderer(FLOWER_PETAL.get(), NoopRenderer::new);
+        event.registerEntityRenderer(TITANIUM_SHARDS.get(), TitaniumShardsProjectileRenderer::new);
+        event.registerEntityRenderer(FALLING_STAR.get(), FallingStarRenderer::new);
+        event.registerEntityRenderer(TREASURE_BAG.get(), TreasureBagRenderer::new);
         event.registerEntityRenderer(COIN_PORTAL.get(), NoopRenderer::new);
         event.registerEntityRenderer(THROWN_POWDER.get(), NoopRenderer::new);
         event.registerEntityRenderer(ROPE_COILS.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ICE_TOFU_BRICK.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
         event.registerEntityRenderer(FLAME_CLOUD.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(SUPER_SPIKY_BALL_PROJECTILE.get(), SuperSpikyBallProjectileRenderer::new);
+        event.registerEntityRenderer(SUPER_SPIKY_BALL.get(), SuperSpikyBallProjectileRenderer::new);
         event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(DEMON_SCYTHE_PROJECTILE.get(), DemonScytheProjectileRenderer::new);
-        event.registerEntityRenderer(SKULL_PROJECTILE.get(), SkullProjectileRenderer::new);
-        event.registerEntityRenderer(BLOOD_CLOUD_PROJECTILE.get(), context -> new GeoNegativeVolumeRenderer<>(context, new BloodCloudProjectileModel(), false, 2, -0.2F));
-        event.registerEntityRenderer(BLOOD_RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.BLOOD_RAIN));
-        event.registerEntityRenderer(RAIN_CLOUD_PROJECTILE.get(), context -> new GeoNegativeVolumeRenderer<>(context, new RainCloudProjectileModel(), false, 2, -0.2F));
-        event.registerEntityRenderer(RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.RAIN));
-        event.registerEntityRenderer(STORM_SPEAR_SHOT_PROJECTILE.get(), context -> new SpearProjectileRenderer(context, StormSpearProjectile.LAYER_LOCATION));
-        event.registerEntityRenderer(SPORE_CLOUD_PROJECTILE.get(), NoopRenderer::new);//todo 贴图模型粒子
-        event.registerEntityRenderer(NORTH_POLE_PROJECTILE.get(), context -> new SpearProjectileRenderer(context, NorthPoleProjectile.LAYER_LOCATION));
-        event.registerEntityRenderer(NORTH_POLE_SUB_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(GHASTLY_PROJECTILE.get(), context -> new SpearProjectileRenderer(context, GhastlyProjectile.LAYER_LOCATION));
-        event.registerEntityRenderer(MUSHROOM_PROJECTILE.get(), context -> new SpearProjectileRenderer(context, MushroomProjectile.LAYER_LOCATION));
-        event.registerEntityRenderer(GOLDEN_SHOWER_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(MAGIC_MISSILE_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(FLAMELASH_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(RAINBOW_PROJECTILE.get(), NoopRenderer::new); // todo 粒子
-        event.registerEntityRenderer(SKY_FRACTURE_PROJECTILE.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(CRYSTAL_CHARGE_1_PROJECTILE.get(), NoopRenderer::new); // todo 粒子
-        event.registerEntityRenderer(CRYSTAL_CHARGE_2_PROJECTILE.get(), NoopRenderer::new); // todo 粒子
+        event.registerEntityRenderer(BALL_OF_FROST.get(), NoopRenderer::new);
+        event.registerEntityRenderer(DEMON_SCYTHE.get(), DemonScytheProjectileRenderer::new);
+        event.registerEntityRenderer(SKULL.get(), SkullProjectileRenderer::new);
+        event.registerEntityRenderer(BLOOD_CLOUD.get(), context -> new GeoNegativeVolumeRenderer<>(context, new BloodCloudProjectileModel(), false, 2, -0.2F));
+        event.registerEntityRenderer(BLOOD_RAIN.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.BLOOD_RAIN));
+        event.registerEntityRenderer(RAIN_CLOUD.get(), context -> new GeoNegativeVolumeRenderer<>(context, new RainCloudProjectileModel(), false, 2, -0.2F));
+        event.registerEntityRenderer(RAIN.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.RAIN));
+        event.registerEntityRenderer(STORM_SPEAR_SHOT.get(), context -> new SpearProjectileRenderer(context, StormSpearProjectile.LAYER_LOCATION));
+        event.registerEntityRenderer(SPORE_CLOUD.get(), NoopRenderer::new);//todo 贴图模型粒子
+        event.registerEntityRenderer(NORTH_POLE.get(), context -> new SpearProjectileRenderer(context, NorthPoleProjectile.LAYER_LOCATION));
+        event.registerEntityRenderer(NORTH_POLE_SUB.get(), NoopRenderer::new);
+        event.registerEntityRenderer(GHASTLY.get(), context -> new SpearProjectileRenderer(context, GhastlyProjectile.LAYER_LOCATION));
+        event.registerEntityRenderer(MUSHROOM.get(), context -> new SpearProjectileRenderer(context, MushroomProjectile.LAYER_LOCATION));
+        event.registerEntityRenderer(GOLDEN_SHOWER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(MAGIC_MISSILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(FLAMELASH.get(), NoopRenderer::new);
+        event.registerEntityRenderer(RAINBOW.get(), NoopRenderer::new); // todo 粒子
+        event.registerEntityRenderer(SKY_FRACTURE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(CRYSTAL_CHARGE_1.get(), NoopRenderer::new); // todo 粒子
+        event.registerEntityRenderer(CRYSTAL_CHARGE_2.get(), NoopRenderer::new); // todo 粒子
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);

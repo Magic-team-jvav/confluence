@@ -27,7 +27,7 @@ public class FlowerPetalProjectile extends Projectile {
     }
 
     public FlowerPetalProjectile(Player player) {
-        super(ModEntities.FLOWER_PETAL_PROJECTILE.get(), player.level());
+        super(ModEntities.FLOWER_PETAL.get(), player.level());
         setOwner(player);
         setNoGravity(true);
     }

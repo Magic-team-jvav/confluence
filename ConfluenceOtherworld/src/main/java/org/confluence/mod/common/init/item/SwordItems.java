@@ -171,7 +171,7 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER, BOARD_SWORD.apply(1.0F)
             .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 7, PortAttributeModifier.PortOperation.ADD_VALUE).hasImage()
             .modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
-                    1, 0.3f, 1, 50, 0f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                    1, 0.3f, 1, 50, 0f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(),
                     Optional.of(new SimpleTrack(Mth.HALF_PI, 0.8f, 0.2f, Optional.empty(), 0.1)),
                     ForwardGeneration.of(0, 0), Optional.empty()
             ))));

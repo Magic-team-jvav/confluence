@@ -580,7 +580,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getDamageSource();
 
         @Nullable Entity direct = damageSource.getDirectEntity();
-        if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get()) {
+        if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD.get()) {
             event.setPenetration(event.getPenetration() + CrystalVileShardItem.ARMOR_PENETRATION);
         }
 

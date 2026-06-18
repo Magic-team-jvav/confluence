@@ -90,7 +90,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
     /// @return 已生成的弹射物实例
     private GhastlyProjectile spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction, SpearProjectileComponent component) {
         GhastlyProjectile projectile = new GhastlyProjectile(
-                ModEntities.GHASTLY_PROJECTILE.get(), level);
+                ModEntities.GHASTLY.get(), level);
         projectile.setOwner(owner);
         projectile.setWeapon(owner.getMainHandItem());
         // setProjComponent 自动从 owner 获取基础攻击伤害

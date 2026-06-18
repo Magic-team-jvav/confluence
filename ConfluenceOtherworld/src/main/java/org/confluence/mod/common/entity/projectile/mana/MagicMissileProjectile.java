@@ -21,7 +21,7 @@ public class MagicMissileProjectile extends BaseDraggingProjectile {
     }
 
     public MagicMissileProjectile(LivingEntity living) {
-        this(ModEntities.MAGIC_MISSILE_PROJECTILE.get(), living.level());
+        this(ModEntities.MAGIC_MISSILE.get(), living.level());
     }
 
     @Override

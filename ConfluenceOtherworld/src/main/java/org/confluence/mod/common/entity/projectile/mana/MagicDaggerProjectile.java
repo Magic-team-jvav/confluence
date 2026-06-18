@@ -10,7 +10,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
@@ -27,7 +26,7 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
     }
 
     public MagicDaggerProjectile(LivingEntity living) {
-        super(ModEntities.MAGIC_DAGGER_PROJECTILE.get(), living.level());
+        super(ModEntities.MAGIC_DAGGER.get(), living.level());
     }
 
     @Override

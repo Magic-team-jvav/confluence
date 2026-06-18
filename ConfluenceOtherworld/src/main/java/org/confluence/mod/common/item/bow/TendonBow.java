@@ -18,7 +18,7 @@ public class TendonBow extends BaseTerraBowItem {
 
     @Override
     public BaseArrowEntity createCustomArrow(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
-        return new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, ammo, weapon) {
+        return new BaseArrowEntity(ModEntities.BASE_ARROW.get(), shooter, ammo, weapon) {
             @Override
             protected void onHit(LivingEntity owner, LivingEntity target, boolean fullPull) {
                 if (!fullPull) return;

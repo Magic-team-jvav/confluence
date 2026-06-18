@@ -64,37 +64,37 @@ public record SwordProjectileComponent(
 
     public static final Supplier<SwordProjectileComponent> ICE_PROJ =
             () -> new SwordProjectileComponent(1.0f, 0.6f, 0.9f, 40, 0, 15,
-                    ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD_PROJECTILE.getId(),
+                    ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD.getId(),
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.empty());
 
     public static final Supplier<SwordProjectileComponent> STAR_FURY_PROJ =
             () -> new SwordProjectileComponent(1.5f, 1.5f, 0.9f, 100, 0, 15,
-                    ModSoundEvents.STAR.getId(), ModEntities.STAR_FURY_PROJECTILE.getId(),
+                    ModSoundEvents.STAR.getId(), ModEntities.STAR_FURY.getId(),
                     Optional.empty(), new AboveFallenGeneration(30, 30, 10, 1, 20, 5),
                     Optional.empty());
 
     public static final Supplier<SwordProjectileComponent> ENCHANTED_SWORD_PROJ =
             () -> new SwordProjectileComponent(1.0f, 0.8f, 0.9f, 40, 0, 10,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(),
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.empty());
 
     public static final Supplier<SwordProjectileComponent> GRASS_PROJ =
             () -> new SwordProjectileComponent(0.25f, 0.8f, 0.9f, 20, 0, 10,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS_PROJECTILE.getId(),
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS.getId(),
                     Optional.empty(), ForwardGeneration.of(0, 20),
                     Optional.of(EffectStrategyComponent.of(TimePossibilityAmplifierEffect.of("grass_effect", MobEffects.POISON, 100, 1, 0.5f))));
 
     public static final Supplier<SwordProjectileComponent> NIGHT_PROJ =
             () -> new SwordProjectileComponent(1, 0.8f, 0.9f, 20, 0, 10,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHTS_EDGE_PROJECTILE.getId(),
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHTS_EDGE.getId(),
                     Optional.empty(), ForwardGeneration.of(0, 20),
                     Optional.empty());
 
     public static final Supplier<SwordProjectileComponent> LIGHTS_BANE_PROJ =
             () -> new SwordProjectileComponent(1.0f, 0.8f, 0.9f, 100, 0f, 20,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.LIGHTS_BANE_PROJECTILE.getId(),
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.LIGHTS_BANE.getId(),
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.empty());
 

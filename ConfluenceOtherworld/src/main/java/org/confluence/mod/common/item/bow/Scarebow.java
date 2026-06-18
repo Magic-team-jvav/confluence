@@ -4,7 +4,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
-import org.confluence.mod.common.entity.projectile.arrow.DriveAwayArrow;
+import org.confluence.mod.common.entity.projectile.arrow.DriveAwayArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.portlib.wrapper.world.item.PortItem;
 
@@ -17,6 +17,6 @@ public class Scarebow extends BaseTerraBowItem {
 
     @Override
     public BaseArrowEntity createCustomArrow(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
-        return DriveAwayArrow.create(ModEntities.DRIVE_AWAY_ARROW.get(), shooter, ammo.copyWithCount(1), weapon);
+        return DriveAwayArrowEntity.create(ModEntities.DRIVE_AWAY_ARROW.get(), shooter, ammo.copyWithCount(1), weapon);
     }
 }

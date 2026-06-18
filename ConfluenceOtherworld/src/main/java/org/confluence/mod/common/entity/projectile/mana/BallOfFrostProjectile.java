@@ -20,7 +20,7 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
     }
 
     public BallOfFrostProjectile(LivingEntity living) {
-        super(ModEntities.BALL_OF_FROST_PROJECTILE.get(), living.level());
+        super(ModEntities.BALL_OF_FROST.get(), living.level());
     }
 
     @Override

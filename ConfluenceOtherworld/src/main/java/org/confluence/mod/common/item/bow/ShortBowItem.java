@@ -2,14 +2,14 @@ package org.confluence.mod.common.item.bow;
 
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.mixed.IAbstractArrow;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class ShortBowItem extends BaseTerraBowItem {
     public static final int MAX_DRAW_DURATION = 5; // 满蓄力时间为5 tick
 
     public ShortBowItem(float baseDamage, int durability) {
-        super(baseDamage, new BaseTerraArrowItem.ModifyArrowBuilder().setDuration(durability));
+        super(baseDamage, new PortItem.PortProperties().durability(durability));
     }
 
     public float getShortPowerForTime(int pCharge) {

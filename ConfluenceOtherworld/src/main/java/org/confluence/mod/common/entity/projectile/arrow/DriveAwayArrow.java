@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile.range.arrow;
+package org.confluence.mod.common.entity.projectile.arrow;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.terraentity.entity.monster.Harpy;
 import org.confluence.terraentity.utils.DriveAwaySystem.DriveAwayArrowIntegration;
 import org.jetbrains.annotations.Nullable;
@@ -30,10 +29,8 @@ public class DriveAwayArrow extends BaseArrowEntity {
     }
 
     public DriveAwayArrow(EntityType<? extends DriveAwayArrow> entityType, LivingEntity owner,
-                          ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon,
-                          @Nullable BaseTerraArrowItem arrow,
-                          BaseTerraArrowItem.ModifyArrowBuilder modifyConsumer) {
-        super(entityType, owner, pickupItemStack, firedFromWeapon, arrow, modifyConsumer);
+                          ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
+        super(entityType, owner, pickupItemStack, firedFromWeapon);
     }
 
     @Override
@@ -95,14 +92,8 @@ public class DriveAwayArrow extends BaseArrowEntity {
         DriveAwayArrowIntegration.clearArrowTrackingData(this);
     }
 
-    /**
-     * 工厂方法，用于 BaseTerraArrowItem.EntityTransform
-     * 匹配 ArrowFactory 接口：(type, shooter, pickupItemStack, firedFromWeapon, arrow, modifyConsumer)
-     */
     public static BaseArrowEntity create(EntityType<? extends AbstractArrow> type, LivingEntity shooter,
-                                         ItemStack pickupItemStack, ItemStack firedFromWeapon,
-                                         @Nullable BaseTerraArrowItem arrow,
-                                         BaseTerraArrowItem.ModifyArrowBuilder modifyConsumer) {
-        return new DriveAwayArrow((EntityType<? extends DriveAwayArrow>) type, shooter, pickupItemStack, firedFromWeapon, arrow, modifyConsumer);
+                                         ItemStack pickupItemStack, ItemStack firedFromWeapon) {
+        return new DriveAwayArrow((EntityType<? extends DriveAwayArrow>) type, shooter, pickupItemStack, firedFromWeapon);
     }
 }

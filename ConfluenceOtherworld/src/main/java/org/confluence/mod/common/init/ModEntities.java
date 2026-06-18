@@ -19,13 +19,10 @@ import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
 import org.confluence.mod.common.entity.projectile.*;
+import org.confluence.mod.common.entity.projectile.arrow.*;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.entity.projectile.boulder.*;
 import org.confluence.mod.common.entity.projectile.mana.*;
-import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
-import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
-import org.confluence.mod.common.entity.projectile.range.arrow.DriveAwayArrow;
-import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
 import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
@@ -105,9 +102,18 @@ public final class ModEntities {
 
     // 弓箭
     public static final RegistryObject<EntityType<BaseArrowEntity>> ARROW_PROJECTILE = register("arrow_projectile", id -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
-    public static final RegistryObject<EntityType<BeeArrow>> BEE_ARROW = register("bee_arrow_projectile", id -> EntityType.Builder.<BeeArrow>of(BeeArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<BeeArrowEntity>> BEE_ARROW = register("bee_arrow_projectile", id -> EntityType.Builder.<BeeArrowEntity>of(BeeArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<HellBatArrowEntity>> HELL_BAT_ARROW = register("hell_bat_arrow_projectile", id -> EntityType.Builder.<HellBatArrowEntity>of(HellBatArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<DriveAwayArrow>> DRIVE_AWAY_ARROW = register("drive_away_arrow", id -> EntityType.Builder.<DriveAwayArrow>of(DriveAwayArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<FlamingArrowEntity>> FLAMING_ARROW = register("flaming_arrow_projectile", id -> EntityType.Builder.<FlamingArrowEntity>of(FlamingArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<UnholyArrowEntity>> UNHOLY_ARROW = register("unholy_arrow_projectile", id -> EntityType.Builder.<UnholyArrowEntity>of(UnholyArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<StarArrowEntity>> STAR_ARROW = register("star_arrow_projectile", id -> EntityType.Builder.<StarArrowEntity>of(StarArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<HellfireArrowEntity>> HELLFIRE_ARROW = register("hellfire_arrow_projectile", id -> EntityType.Builder.<HellfireArrowEntity>of(HellfireArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<FrostburnArrowEntity>> FROSTBURN_ARROW = register("frostburn_arrow_projectile", id -> EntityType.Builder.<FrostburnArrowEntity>of(FrostburnArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<BoneArrowEntity>> BONE_ARROW = register("bone_arrow_projectile", id -> EntityType.Builder.<BoneArrowEntity>of(BoneArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<ShimmerArrowEntity>> SHIMMER_ARROW = register("shimmer_arrow_projectile", id -> EntityType.Builder.<ShimmerArrowEntity>of(ShimmerArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<FossilArrowEntity>> FOSSIL_ARROW = register("fossil_arrow_projectile", id -> EntityType.Builder.<FossilArrowEntity>of(FossilArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<FlyFishArrowEntity>> FLY_FISH_ARROW = register("fly_fish_arrow_projectile", id -> EntityType.Builder.<FlyFishArrowEntity>of(FlyFishArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
 
     // 其它
     public static final RegistryObject<EntityType<BoulderEntity>> BOULDER = register("boulder", id -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));

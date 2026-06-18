@@ -4,6 +4,7 @@ import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtens
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -36,16 +37,17 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.lib.util.EnchantmentUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
 import org.confluence.mod.common.component.RepeaterContents;
-import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
+import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.mixed.IAbstractArrow;
@@ -62,7 +64,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowProjectileWeaponItem<BaseTerraRepeaterItem>, ILeftClickStateItem, IPortCrossbowItemExtension {
+public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickStateItem, IPortCrossbowItemExtension {
     public static final List<Component> TOOLTIP = TooltipItem.getTooltipsFromString("repeater", 2, ChatFormatting.GRAY);
 
     public static final String ATTACK_SPEED_TEXT = "attribute.name.repeater.attack_speed";
@@ -131,8 +133,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
      */
     private final AmmunitionRestrictions ammunitionRestrictions;
 
-    private final BaseArrowEntity.Builder arrowModifier;
-    private final BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder;
+    private final ModifyArrowBuilder modifyArrowBuilder;
 
     /**
      * 构造连弩
@@ -142,7 +143,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
      * @param modifyArrowBuilder 箭矢修改构建器
      * @param repeaterBuilder    连弩构建器
      */
-    public BaseTerraRepeaterItem(Properties properties, float baseDamage, BaseTerraArrowItem.ModifyArrowBuilder modifyArrowBuilder, Builder repeaterBuilder) {
+    public BaseTerraRepeaterItem(Properties properties, float baseDamage, ModifyArrowBuilder modifyArrowBuilder, Builder repeaterBuilder) {
         super(modifyArrowBuilder.buildProperties(properties.stacksTo(1)
                 .component(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.fromItems(repeaterBuilder.capacity))
                 .attributes(ItemAttributeModifiers.builder().add(Attributes.ATTACK_KNOCKBACK,
@@ -160,8 +161,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         this.baseConcurrentAngle = repeaterBuilder.concurrentAngle;
         this.baseConcurrentInterval = repeaterBuilder.concurrentInterval;
         this.baseDamage = baseDamage;
-        this.arrowModifier = new BaseArrowEntity.Builder();
-        modifyArrowBuilder.modifyArrowBuilder.forEach(m -> m.accept(this.arrowModifier));
         this.modifyArrowBuilder = modifyArrowBuilder;
     }
 
@@ -170,7 +169,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     /// @param baseDamage            基础伤害
     /// @param bowModifyArrowBuilder 箭矢修改构建器
     /// @param repeaterBuilder       连弩构建器
-    public BaseTerraRepeaterItem(float baseDamage, BaseTerraArrowItem.ModifyArrowBuilder bowModifyArrowBuilder, Builder repeaterBuilder) {
+    public BaseTerraRepeaterItem(float baseDamage, ModifyArrowBuilder bowModifyArrowBuilder, Builder repeaterBuilder) {
         this(new Properties(), baseDamage, bowModifyArrowBuilder, repeaterBuilder);
     }
 
@@ -632,40 +631,23 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         return false;
     }
 
-    @Override
-    public BaseTerraArrowItem.ModifyArrowBuilder getModifyArrowBuilder() {
-        return modifyArrowBuilder;
-    }
-
-    @Override
-    public BaseArrowEntity.Builder getArrowModifier() {
-        return arrowModifier;
+    public void modifyArrowEntity(BaseArrowEntity entity) {
+        modifyArrowBuilder.applyModifiers(entity);
     }
 
     @Override
     public void appendHoverText(ItemStack weapon, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        BaseTerraArrowItem.addDamageHoverText(tooltipComponents, modifyArrowBuilder, baseDamage);
-        // 箭矢容量
         tooltipComponents.add(tooltip(ARROW_CAPACITY_TEXT).append(getTotalSize(weapon).getItemsTotalCount() + "/" + baseCapacity).withStyle(ChatFormatting.DARK_GRAY));
-        // 箭矢速度
         tooltipComponents.add(tooltip(ATTACK_SPEED_TEXT).append(String.valueOf(baseArrowSpeed)).withStyle(ChatFormatting.DARK_GRAY));
-        // 击退
         tooltipComponents.add(tooltip(KNOCKBACK_TEXT).append(String.valueOf(baseKnockback)).withStyle(ChatFormatting.DARK_GRAY));
         if (!IRandomCount.is(baseBurstCount, 1)) {
-            // 连发个数
             tooltipComponents.add(tooltip(TORRENT_COUNT_TEXT).append(IRandomCount.getString(baseBurstCount)).withStyle(ChatFormatting.DARK_GRAY));
         }
         if (!IRandomCount.is(baseConcurrentCount, 1)) {
-            // 并发个数
             tooltipComponents.add(tooltip(CONCURRENCY_COUNT_TEXT).append(IRandomCount.getString(baseConcurrentCount)).withStyle(ChatFormatting.DARK_GRAY));
         }
-        // 射击间隔
         tooltipComponents.add(tooltip(FIRING_INTERVAL_TEXT).append(String.valueOf(baseShootInterval / 20f)).withStyle(ChatFormatting.DARK_GRAY));
-        // 装填速度
         tooltipComponents.add(tooltip(RELOAD_SPEED_TEXT).append(String.valueOf(baseReloadSpeed / 20f)).withStyle(ChatFormatting.DARK_GRAY));
-        BaseTerraArrowItem.addHitEffectHoverText(weapon, tooltipComponents);
-        BaseTerraArrowItem.addFullPullHitEffectHoverText(weapon, tooltipComponents);
-        BaseTerraArrowItem.addEntityTransformHoverText(tooltipComponents, modifyArrowBuilder, arrowModifier);
         tooltipComponents.addAll(TOOLTIP);
     }
 
@@ -810,5 +792,39 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
     @FunctionalInterface
     public interface AmmunitionRestrictions {
         boolean test(ItemStack ammunitionStack, ItemStack weaponStack);
+    }
+
+    public static class ModifyArrowBuilder {
+        public List<java.util.function.UnaryOperator<org.mesdag.portlib.wrapper.world.item.PortItem.PortProperties>> modifyProperties = new java.util.ArrayList<>();
+        public List<java.util.function.Consumer<BaseArrowEntity>> modifyArrowBuilder = new java.util.ArrayList<>();
+        public int multiShoot = 1;
+        public java.util.function.Predicate<net.minecraft.world.item.ItemStack> canMultiShoot = ammo -> false;
+        public float inaccuracy;
+
+        public void applyModifiers(BaseArrowEntity modifyArrow) {
+            modifyArrowBuilder.forEach(m -> m.accept(modifyArrow));
+        }
+
+        public ModifyArrowBuilder setUnBreakable() {
+            this.modifyProperties.add(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
+            return this;
+        }
+
+        public ModifyArrowBuilder setRarity(ModRarity rarity) {
+            this.modifyProperties.add(p -> p.component(ConfluenceMagicLib.MOD_RARITY, rarity));
+            return this;
+        }
+
+        public ModifyArrowBuilder setInaccuracy(float inaccuracy) {
+            this.inaccuracy = inaccuracy;
+            return this;
+        }
+
+        public org.mesdag.portlib.wrapper.world.item.PortItem.PortProperties buildProperties(org.mesdag.portlib.wrapper.world.item.PortItem.PortProperties properties) {
+            for (java.util.function.UnaryOperator<org.mesdag.portlib.wrapper.world.item.PortItem.PortProperties> f : modifyProperties) {
+                f.apply(properties);
+            }
+            return properties;
+        }
     }
 }

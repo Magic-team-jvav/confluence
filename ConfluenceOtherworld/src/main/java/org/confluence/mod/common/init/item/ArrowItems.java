@@ -1,9 +1,7 @@
 package org.confluence.mod.common.init.item;
 
-import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
-import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
+import org.confluence.mod.common.item.arrow.*;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -14,40 +12,13 @@ public class ArrowItems {
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    public static final PortDeferredItem<BaseTerraArrowItem> FLAMING_ARROW = ITEMS.register("flaming_arrow", () -> new BaseTerraArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Factory.create("textures/entity/arrow/flaming_arrow.png", () -> new BaseArrowEntity.Builder().setParticleId(Confluence.asResource("flaming_arrow_flame"))
-                    .setDamage(4.4f).setCauseFire(10 * 20).setLuminance(12))
-    ));
-    public static final PortDeferredItem<BaseTerraArrowItem> UNHOLY_ARROW = ITEMS.register("unholy_arrow", () -> new BaseTerraArrowItem(ModRarity.BLUE,
-            BaseArrowEntity.Factory.create("textures/entity/arrow/unholy_arrow.png", () -> new BaseArrowEntity.Builder()
-                    .setDamage(5.4f).setPenetration(5).setKnockBack(1.5f))
-    ));
-    public static final PortDeferredItem<BaseTerraArrowItem> STAR_ARROW = ITEMS.register("star_arrow", () -> new BaseTerraArrowItem(ModRarity.BLUE,
-            BaseArrowEntity.Factory.create("textures/entity/arrow/star_arrow.png", () -> new BaseArrowEntity.Builder().setParticleId(Confluence.asResource("falling_star"))
-                    .setDamage(5f).setPenetration(99).setKnockBack(2).setSpeedFactor(0.8f).setAutoDiscard(50).setGravity(0).setLuminance(8))
-    ));
-    public static final PortDeferredItem<BaseTerraArrowItem> HELLFIRE_ARROW = ITEMS.register("hellfire_arrow", () -> new BaseTerraArrowItem(ModRarity.GREEN,
-            BaseArrowEntity.Factory.create("textures/entity/arrow/hellfire_arrow.png", () -> new BaseArrowEntity.Builder().setParticleId(Confluence.asResource("ball_of_fire_trail"))
-                    .setDamage(5.6f).setCauseFire(5 * 20).addOnHitEffect(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get()).setLuminance(8))
-    ));
-    public static final PortDeferredItem<BaseTerraArrowItem> FROSTBURN_ARROW = ITEMS.register("frostburn_arrow", () -> new BaseTerraArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Factory.create("textures/entity/arrow/frostburn_arrow.png", () -> new BaseArrowEntity.Builder().setParticleId(Confluence.asResource("frost_projectile"))
-                    .setDamage(4.4f).addOnHitEffect(TEEffectStrategies.Components.FROST_BURN_EFFECT.get()).setLuminance(5))
-    ));
-    public static final PortDeferredItem<BaseTerraArrowItem> BONE_ARROW = ITEMS.register("bone_arrow", () -> new BaseTerraArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Factory.create("textures/entity/arrow/bone_arrow.png", () -> new BaseArrowEntity.Builder()
-                    .setDamage(4.6f).setKnockBack(1.75F))
-    ));
-    public static final PortDeferredItem<BaseTerraArrowItem> SHIMMER_ARROW = ITEMS.register("shimmer_arrow", () -> new BaseTerraArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Factory.create("textures/entity/arrow/shimmer_arrow.png", () -> new BaseArrowEntity.Builder()
-                    .setDamage(5.4f).setKnockBack(1.5F).setGravity(-0.05F).setAutoDiscard(1200))
-    ));
-    public static final PortDeferredItem<BaseTerraArrowItem> FOSSIL_ARROW = ITEMS.register("fossil_arrow", () -> new BaseTerraArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Factory.create("textures/entity/arrow/fossil_arrow.png", () -> new BaseArrowEntity.Builder()
-                    .setDamage(4.4f).setPenetration(2))
-    ));
-    public static final PortDeferredItem<BaseTerraArrowItem> FLY_FISH_ARROW = ITEMS.register("fly_fish_arrow", () -> new BaseTerraArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Factory.create("textures/entity/arrow/fly_fish_arrow.png", () -> new BaseArrowEntity.Builder()
-                    .setDamage(4.2f).setDamageInRain(3).setSpeedUpInRain(1.5f).setSpeedInertiaInWater(0.8f))
-    ));
+    public static final PortDeferredItem<FlamingArrowItem> FLAMING_ARROW = ITEMS.register("flaming_arrow", FlamingArrowItem::new);
+    public static final PortDeferredItem<UnholyArrowItem> UNHOLY_ARROW = ITEMS.register("unholy_arrow", UnholyArrowItem::new);
+    public static final PortDeferredItem<StarArrowItem> STAR_ARROW = ITEMS.register("star_arrow", StarArrowItem::new);
+    public static final PortDeferredItem<HellfireArrowItem> HELLFIRE_ARROW = ITEMS.register("hellfire_arrow", HellfireArrowItem::new);
+    public static final PortDeferredItem<FrostburnArrowItem> FROSTBURN_ARROW = ITEMS.register("frostburn_arrow", FrostburnArrowItem::new);
+    public static final PortDeferredItem<BoneArrowItem> BONE_ARROW = ITEMS.register("bone_arrow", BoneArrowItem::new);
+    public static final PortDeferredItem<ShimmerArrowItem> SHIMMER_ARROW = ITEMS.register("shimmer_arrow", ShimmerArrowItem::new);
+    public static final PortDeferredItem<FossilArrowItem> FOSSIL_ARROW = ITEMS.register("fossil_arrow", FossilArrowItem::new);
+    public static final PortDeferredItem<FlyFishArrowItem> FLY_FISH_ARROW = ITEMS.register("fly_fish_arrow", FlyFishArrowItem::new);
 }

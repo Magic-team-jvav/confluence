@@ -5,7 +5,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
+import org.confluence.mod.common.entity.projectile.arrow.HellBatArrowEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {

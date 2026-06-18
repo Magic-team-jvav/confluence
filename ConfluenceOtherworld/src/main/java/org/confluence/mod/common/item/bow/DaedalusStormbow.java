@@ -6,10 +6,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.common.generation.variant.AboveFallenGeneration;
-import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -18,7 +19,7 @@ public class DaedalusStormbow extends BaseTerraBowItem {
     private final IGeneration generation = new AboveFallenGeneration(30, 60, 25, 2, 25, 5);
 
     public DaedalusStormbow(float baseDamage, ModRarity rarity) {
-        super(baseDamage, new BaseTerraArrowItem.ModifyArrowBuilder().setRarity(rarity));
+        super(baseDamage, new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 
     @Override

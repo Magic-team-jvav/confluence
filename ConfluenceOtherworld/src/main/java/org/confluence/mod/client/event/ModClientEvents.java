@@ -333,6 +333,15 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
         event.registerEntityRenderer(HELL_BAT_ARROW.get(), context -> new GeoArrowRenderer(context, TEMonsterEntities.HELL_BAT.getId(), 0.5f, 0));
         event.registerEntityRenderer(DRIVE_AWAY_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(FLAMING_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(UNHOLY_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(STAR_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(HELLFIRE_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(FROSTBURN_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(BONE_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(SHIMMER_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(FOSSIL_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(FLY_FISH_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);

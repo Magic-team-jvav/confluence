@@ -26,6 +26,7 @@ import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
+import org.confluence.mod.common.entity.projectile.Flail.*;
 import org.confluence.mod.integration.sable.SableHelper;
 
 /// Fast Link:
@@ -173,6 +174,9 @@ public final class ModEntities {
 
     // 连枷
     public static final DeferredHolder<EntityType<?>, EntityType<BaseFlailEntity>> FLAIL_ENTITY = ENTITIES.register("flail", id -> EntityType.Builder.<BaseFlailEntity>of(BaseFlailEntity::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(6).noSave().build(id.toString()));
+
+    // 连枷投射物
+    public static final DeferredHolder<EntityType<?>, EntityType<FlowerProjectile>> FLOWER_PROJECTILE = ENTITIES.register("flower_projectile", id -> EntityType.Builder.<FlowerProjectile>of(FlowerProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).noSave().build(id.toString()));
 
     // 矿车
     public static final DeferredHolder<EntityType<?>, EntityType<BaseMinecartEntity>> VANILLA_MINECART = registerMinecart("vanilla_minecart", BaseMinecartEntity::new);

@@ -29,21 +29,31 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
  * 使用 Geo 模型渲染弹球；链条使用 {@link BlockRenderDispatcher#renderSingleBlock} 逐段渲染。
  */
 public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
-    private static final ResourceLocation DEFAULT_TEXTURE = Confluence.asResource("textures/entity/flail/flail.png");
-    private static final ResourceLocation DEFAULT_MODEL = Confluence.asResource("geo/entity/flail/flail.geo.json");
+    private static final ResourceLocation DEFAULT_BALL_TEXTURE = Confluence.asResource("textures/entity/flail/flail.png");
+    private static final ResourceLocation DEFAULT_BALL_MODEL = Confluence.asResource("geo/entity/flail/flail.geo.json");
 
     private final BlockRenderDispatcher dispatcher;
 
     public BaseFlailRenderer(EntityRendererProvider.Context context) {
-        super(context, new FlailGeoModel(DEFAULT_MODEL, DEFAULT_TEXTURE));
+        super(context, new FlailGeoModel(DEFAULT_BALL_MODEL, DEFAULT_BALL_TEXTURE));
         this.dispatcher = context.getBlockRenderDispatcher();
     }
 
-    private static ResourceLocation resolveModel(@Nullable FlailComponent comp) {
+    /** 解析弹球 Geo 模型路径（优先使用 FlailComponent 自定义值） */
+    private static ResourceLocation resolveBallModel(@Nullable FlailComponent comp) {
         if (comp != null && comp.modelLocation().isPresent()) {
             return comp.modelLocation().get();
         }
-        return DEFAULT_MODEL;
+        return DEFAULT_BALL_MODEL;
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(BaseFlailEntity entity) {
+        FlailComponent comp = entity.getComponent();
+        if (comp != null && comp.ballTexture() != null) {
+            return comp.ballTexture();
+        }
+        return DEFAULT_BALL_TEXTURE;
     }
 
     /**
@@ -66,13 +76,6 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
             return frustum.isVisible(new AABB(ballPos.x, ballPos.y, ballPos.z, handPos.x, handPos.y, handPos.z));
         }
         return false;
-    }
-
-    @Override
-    public ResourceLocation getTextureLocation(BaseFlailEntity entity) {
-        FlailComponent comp = entity.getComponent();
-        if (comp != null && comp.chainTexture() != null) return comp.chainTexture();
-        return DEFAULT_TEXTURE;
     }
 
     @Override
@@ -103,8 +106,17 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         }
 
         FlailGeoModel model = (FlailGeoModel) getGeoModel();
-        model.model = resolveModel(component);
+        model.model = resolveBallModel(component);
         model.texture = getTextureLocation(entity);
+
+        // 预验证 Geo 模型是否存在，缺失时退回默认
+        try {
+            model.getBakedModel(model.model);
+        } catch (RuntimeException e) {
+            model.model = DEFAULT_BALL_MODEL;
+            model.texture = DEFAULT_BALL_TEXTURE;
+        }
+
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
         poseStack.popPose();
 
@@ -119,6 +131,8 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
      */
     private void renderChain(BaseFlailEntity entity, Player owner, PoseStack poseStack,
                              MultiBufferSource bufferSource, int packedLight, float partialTick, int phase) {
+        // 使用插值后的渲染位置计算偏移（与 PoseStack 原点一致，避免链条抖动）
+        Vec3 renderPos = entity.getPosition(partialTick);
         Vec3 ballPos = entity.getBoundingBox().getCenter();
 
         // 链条起点：根据阶段使用不同偏移
@@ -130,13 +144,19 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         if (distance < 0.2) return;
 
         Vec3 dir = diff.normalize();
+
+        // 帧间方向平滑：防止球体瞬移导致链条手部端抖动（如 THROWN↔STAY 切换时）
+        if (entity.smoothedChainDir != null) {
+            dir = entity.smoothedChainDir.lerp(dir, 0.35);
+        }
+        entity.smoothedChainDir = dir;
         BlockState chain = getChain(entity);
         int skyLight = LightTexture.pack(10, LightTexture.sky(packedLight));
 
         poseStack.pushPose();
 
-        // 平移到链条起点
-        Vec3 offset = chainStart.subtract(entity.position());
+        // 平移到链条起点（renderPos 与 PoseStack 当前原点一致）
+        Vec3 offset = chainStart.subtract(renderPos);
         poseStack.translate(offset.x, offset.y, offset.z);
 
         // 对齐局部 +Y 轴到链条方向（hand → ball）

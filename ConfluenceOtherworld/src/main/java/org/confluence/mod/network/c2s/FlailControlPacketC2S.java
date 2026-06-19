@@ -9,7 +9,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.FlailComponent;
-import org.confluence.mod.common.entity.flail.BaseFlailEntity;
+import org.confluence.mod.common.entity.flail.*;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 
@@ -71,6 +71,11 @@ public final class FlailControlPacketC2S implements IPacketC2S {
                     var entity = projType.create(player.level());
                     if (!(entity instanceof BaseFlailEntity flail)) return;
                     flail.init(player, stack, component);
+                    // 注入物品绑定的攻击策略
+                    FlailAttackStrategy strategy = ((BaseFlailItem) stack.getItem()).getAttackStrategy();
+                    if (strategy != null) {
+                        flail.setAttackStrategy(strategy);
+                    }
                     player.level().addFreshEntity(flail);
                     player.swing(InteractionHand.MAIN_HAND, true);
                 } else if (existing.getPhase() == BaseFlailEntity.PHASE_THROWN

@@ -40,7 +40,7 @@ import java.util.function.Supplier;
  * @param maxBounces   最大反弹次数，耗尽后落地
  * @param soundEvent   音效 ResourceLocation
  * @param projType      弹射物实体类ResourceLocation
- * @param chainTexture  弹球纹理 ResourceLocation
+ * @param ballTexture   弹球纹理 ResourceLocation
  * @param modelLocation 弹球 Geo 模型路径（可选，为空时使用默认 flail.geo.json）
  * @param hitEffect     击中特效（可选）
  */
@@ -56,7 +56,7 @@ public record FlailComponent(
         int maxBounces,
         ResourceLocation soundEvent,
         ResourceLocation projType,
-        ResourceLocation chainTexture,
+        ResourceLocation ballTexture,
         Optional<ResourceLocation> modelLocation,
         Optional<EffectStrategyComponent> hitEffect
 ) implements DataComponentType<FlailComponent> {
@@ -75,7 +75,7 @@ public record FlailComponent(
             Codec.INT.optionalFieldOf("maxBounces", 3).forGetter(FlailComponent::maxBounces),
             ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(FlailComponent::soundEvent),
             ResourceLocation.CODEC.fieldOf("projType").forGetter(FlailComponent::projType),
-            ResourceLocation.CODEC.fieldOf("chainTexture").forGetter(FlailComponent::chainTexture),
+            ResourceLocation.CODEC.fieldOf("ballTexture").forGetter(FlailComponent::ballTexture),
             ResourceLocation.CODEC.optionalFieldOf("modelLocation").forGetter(FlailComponent::modelLocation),
             EffectStrategyComponent.CODEC.optionalFieldOf("hitEffect").forGetter(FlailComponent::hitEffect)
     ).apply(instance, FlailComponent::new));
@@ -277,6 +277,25 @@ public record FlailComponent(
             );
     // todo 4/5的几率施加困惑
 
+    //花之力
+    public static final Supplier<FlailComponent> FLOWER_POWER =
+            () -> new FlailComponent(
+                    67.0f,
+                    1.2f,
+                    1.5f,
+                    1.3f,
+                    26.0f,
+                    1.0f,
+                    0.2f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/flower_power.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/flower_power.geo.json")),
+                    Optional.empty()
+            );
+
     public SoundEvent getSoundEvent() {
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);
     }
@@ -308,7 +327,7 @@ public record FlailComponent(
                     maxBounces == other.maxBounces &&
                     soundEvent.equals(other.soundEvent) &&
                     projType.equals(other.projType) &&
-                    chainTexture.equals(other.chainTexture) &&
+                    ballTexture.equals(other.ballTexture) &&
                     hitEffect.equals(other.hitEffect);
         }
         return false;
@@ -327,7 +346,7 @@ public record FlailComponent(
         result = 31 * result + maxBounces;
         result = 31 * result + soundEvent.hashCode();
         result = 31 * result + projType.hashCode();
-        result = 31 * result + chainTexture.hashCode();
+        result = 31 * result + ballTexture.hashCode();
         result = 31 * result + hitEffect.hashCode();
         return result;
     }

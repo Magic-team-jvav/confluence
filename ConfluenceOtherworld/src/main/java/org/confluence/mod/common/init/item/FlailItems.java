@@ -6,6 +6,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
+import org.confluence.mod.common.item.flail.FlowerPowerItem;
 
 /**
  * 连枷物品注册
@@ -52,4 +53,7 @@ public class FlailItems {
     public static final DeferredItem<BaseFlailItem> DAO_OF_POW = ITEMS.register("dao_of_pow", () ->
             new BaseFlailItem(FlailComponent.DAO_OF_POW.get(), ModRarity.PINK));
 
+    /** 花之力 */
+    public static final DeferredItem<FlowerPowerItem> FLOWER_POWER  = ITEMS.register("flower_power", () ->
+            new FlowerPowerItem(FlailComponent.FLOWER_POWER.get(), ModRarity.BLUE));
 }

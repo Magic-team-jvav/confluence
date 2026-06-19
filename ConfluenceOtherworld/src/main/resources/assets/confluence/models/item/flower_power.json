@@ -1,0 +1,29 @@
+{
+    "loader": "neoforge:separate_transforms",
+    "base": {
+        "parent": "builtin/entity",
+        "textures": {
+            "particle": "confluence:item/flail/flower_power"
+        }
+    },
+    "perspectives": {
+        "fixed": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/flail/flower_power"
+            }
+        },
+        "ground": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/flail/flower_power"
+            }
+        },
+        "gui": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/flail/flower_power"
+            }
+        }
+    }
+}

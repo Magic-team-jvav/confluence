@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.language.*;
+import org.confluence.mod.common.entity.projectile.Flail.*;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -1748,6 +1749,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.SKY_FRACTURE_PROJECTILE.get(), "裂天剑");
         add(ModEntities.CRYSTAL_CHARGE_1_PROJECTILE.get(), "爆炸水晶1");
         add(ModEntities.CRYSTAL_CHARGE_2_PROJECTILE.get(), "爆炸水晶2");
+        add(ModEntities.FLOWER_PROJECTILE.get(),"花瓣");
 
 
         //region blocks
@@ -3186,6 +3188,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FlailItems.BLUE_MOON.get(), "蓝月");
         add(FlailItems.SUNFURY.get(), "阳炎之怒");
         add(FlailItems.DAO_OF_POW.get(), "太极连枷");
+        add(FlailItems.FLOWER_POWER.get(),"花之力");
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");

@@ -16,7 +16,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.client.renderer.item.BaseFlailItemRenderer;
 import org.confluence.mod.common.component.FlailComponent;
-import org.confluence.mod.common.entity.flail.BaseFlailEntity;
+import org.confluence.mod.common.entity.flail.*;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -76,6 +76,11 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
             if (!(entity instanceof BaseFlailEntity flail))
                 return InteractionResultHolder.fail(stack);
             flail.init(player, stack, comp);
+            // 注入专属攻击策略（子类可覆盖 getAttackStrategy() 返回非空值）
+            FlailAttackStrategy strategy = getAttackStrategy();
+            if (strategy != null) {
+                flail.setAttackStrategy(strategy);
+            }
             level.addFreshEntity(flail);
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     comp.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -100,6 +105,17 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
                 player.getBoundingBox().inflate(30),
                 e -> e.getOwner() == player
         ).stream().findFirst().orElse(null);
+    }
+
+    /**
+     * 返回此连枷物品绑定的攻击策略。
+     * 默认返回 {@code null}，表示使用实体自身的默认策略。
+     * 子类（如守卫者链球、猪鲨链球）可覆盖此方法返回专属策略实例。
+     * @return 攻击策略，null 表示不覆盖实体默认策略
+     */
+    @Nullable
+    public FlailAttackStrategy getAttackStrategy() {
+        return null;
     }
 
     /**

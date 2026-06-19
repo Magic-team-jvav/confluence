@@ -26,6 +26,7 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.enchantment.TurbineEnchantments;
+
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
@@ -83,8 +84,17 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
      * 上一帧的阶段，用于检测阶段切换
      */
     private int previousPhase = -1;
+    /**
+     * 渲染用：帧间平滑后的链条方向，由 {@code BaseFlailRenderer} 逐帧 lerp 更新
+     */
+    public Vec3 smoothedChainDir = null;
     @Nullable
     private FlailComponent cachedComponent;
+    /**
+     * 攻击策略，控制各阶段的额外攻击行为（如发射激光、追踪泡泡）。
+     * 子类可在构造函数中覆盖以绑定专属策略。
+     */
+    protected FlailAttackStrategy attackStrategy = FlailAttackStrategy.NULL;
     private final AnimatableInstanceCache animatableCache = GeckoLibUtil.createInstanceCache(this);
 
     /**
@@ -92,6 +102,17 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
      */
     public int getSpinTickCounter() {
         return spinTickCounter;
+    }
+
+    /** 获取当前攻击策略 */
+    @NotNull
+    public FlailAttackStrategy getAttackStrategy() {
+        return attackStrategy;
+    }
+
+    /** 设置攻击策略（通常在 {@link #init} 之前调用） */
+    public void setAttackStrategy(@NotNull FlailAttackStrategy attackStrategy) {
+        this.attackStrategy = attackStrategy;
     }
 
     public BaseFlailEntity(EntityType<? extends BaseFlailEntity> entityType, Level level) {
@@ -204,10 +225,22 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         this.noPhysics = false; // 默认启用碰撞，tickSpin 内部覆写为 true
         switch (phase) {
-            case PHASE_SPIN -> tickSpin(player, component);
-            case PHASE_THROWN -> tickThrown(player, component);
-            case PHASE_STAY -> tickStay(player, component);
-            case PHASE_RETRACT -> tickRetract(player, component);
+            case PHASE_SPIN -> {
+                tickSpin(player, component);
+                attackStrategy.onSpinTick(this, player, component);
+            }
+            case PHASE_THROWN -> {
+                tickThrown(player, component);
+                attackStrategy.onThrownTick(this, player, component);
+            }
+            case PHASE_STAY -> {
+                tickStay(player, component);
+                attackStrategy.onStayTick(this, player, component);
+            }
+            case PHASE_RETRACT -> {
+                tickRetract(player, component);
+                attackStrategy.onRetractTick(this, player, component);
+            }
         }
 
         if (!level().isClientSide() && hitCooldown <= 0) {
@@ -217,6 +250,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         // 所有阶段：玩家超出最大距离时自动收回（仅服务端判断）
         if (!level().isClientSide() && phase != PHASE_RETRACT
                 && position().distanceToSqr(player.position()) > component.maxDistance() * component.maxDistance()) {
+            if (phase == PHASE_THROWN) {
+                attackStrategy.onThrownToRetract(this, player, component);
+            }
             setPhase(PHASE_RETRACT);
         }
 
@@ -285,6 +321,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         // 速度过低直接收回（仅服务端判断）
         if (!level().isClientSide() && motion.lengthSqr() < 0.1) {
+            attackStrategy.onThrownToRetract(this, player, component);
             setPhase(PHASE_RETRACT);
             return;
         }
@@ -312,6 +349,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         // 反弹次数耗尽 或 反射后速度过低 → 直接收回（仅服务端判断）
         if (!level().isClientSide() && (bounceCount >= component.maxBounces() || motion.lengthSqr() < 0.1)) {
+            attackStrategy.onThrownToRetract(this, player, component);
             setPhase(PHASE_RETRACT);
             return;
         }
@@ -324,7 +362,6 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     }
 
     private void tickStay(Player player, FlailComponent component) {
-        setNoGravity(true);
         // 手动施加重力并使用 move() 进行碰撞位移
         Vec3 motion = getDeltaMovement().add(0, -component.gravity(), 0);
         setDeltaMovement(motion);
@@ -337,10 +374,10 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         move(MoverType.SELF, motion);
 
-        // 着地时清零垂直速度 + 施加水平摩擦，防止重力累积导致永不收回
+        // 着地时清零垂直速度 + 施加水平摩擦
         if (onGround()) {
             Vec3 vel = getDeltaMovement();
-            setDeltaMovement(new Vec3(vel.x * 0.5, vel.y, vel.z * 0.5));
+            setDeltaMovement(new Vec3(vel.x * 0.5, 0.0, vel.z * 0.5));
         }
 
         stayDuration++;
@@ -374,6 +411,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             case PHASE_SPIN -> 0.6f;
             case PHASE_THROWN -> 1.0f;
             case PHASE_STAY -> 0.5f;
+            case PHASE_RETRACT -> 1.0f;
             default -> 0.0f;
         };
         if (damageMultiplier <= 0) return;
@@ -405,6 +443,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             return;
         }
 
+        // 通知策略：命中实体
+        if (firstHit != null) {
+            attackStrategy.onHitEntity(this, player, component, firstHit);
+        }
+
         float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
         hitCooldown = phase == PHASE_THROWN ? 3 : (int) Math.max(4, 8 / (1.0F + turbineBonus));
         if (!(player instanceof ServerPlayer serverPlayer) || windBurstCooldown > 0 || firstHit == null) {
@@ -422,6 +465,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     public void launch(Player player) {
         FlailComponent component = getComponent();
         if (component == null) return;
+        attackStrategy.onLaunch(this, player, component);
 
         setPhase(PHASE_THROWN);
         bounceCount = 0;
@@ -457,6 +501,18 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     public void forceRetract() {
         setPhase(PHASE_RETRACT);
         playerDropped = false;
+    }
+
+    @Override
+    public void remove(@NotNull RemovalReason reason) {
+        Entity owner = getOwner();
+        if (!level().isClientSide() && owner instanceof Player player) {
+            FlailComponent component = getComponent();
+            if (component != null) {
+                attackStrategy.onDiscard(this, player, component);
+            }
+        }
+        super.remove(reason);
     }
 
     private boolean isHoldingFlail(@NotNull Player player) {

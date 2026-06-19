@@ -10,16 +10,17 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.WormholeHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.item.PotionItems;
 
 import java.util.UUID;
 
-public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements IPacketC2S {
+public record WormholeToPlayerPacketC2S(UUID targetPlayerId, ByMod byMod) implements IPacketC2S {
     public static final Type<WormholeToPlayerPacketC2S> TYPE = Confluence.createType("wormhole_to_player");
     public static final StreamCodec<FriendlyByteBuf, WormholeToPlayerPacketC2S> STREAM_CODEC = StreamCodec.composite(
-            LibStreamCodecUtils.UUID, WormholeToPlayerPacketC2S::playerId,
+            LibStreamCodecUtils.UUID, WormholeToPlayerPacketC2S::targetPlayerId,
             ByMod.STREAM_CODEC, WormholeToPlayerPacketC2S::byMod,
             WormholeToPlayerPacketC2S::new
     );
@@ -32,13 +33,14 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements I
     @Override
     public void work(ServerPlayer player) {
         if (!byMod.enabled()) return;
-        ServerPlayer target = player.server.getPlayerList().getPlayer(playerId);
-        if (target != null && PlayerSpecialData.of(player).getTeam() == PlayerSpecialData.of(target).getTeam()) {
-            ItemStack potion = getWormholePotion(player);
-            if (potion.isEmpty()) return;
-            if (!player.hasInfiniteMaterials()) potion.shrink(1);
-            teleport(player, target);
+        ServerPlayer target = player.server.getPlayerList().getPlayer(targetPlayerId);
+        if (target == null || WormholeHandler.judgment(target, player)) {
+            return;
         }
+        ItemStack potion = getWormholePotion(player);
+        if (potion.isEmpty()) return;
+        if (!player.hasInfiniteMaterials()) potion.shrink(1);
+        teleport(player, target);
     }
 
     public static boolean isTrackable(ServerPlayer trackingPlayer, ServerPlayer trackedPlayer) {
@@ -50,21 +52,28 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements I
         ItemStack stack = inventory.offhand.getFirst();
         if (!stack.isEmpty() && stack.is(PotionItems.WORMHOLE_POTION)) {
             return stack;
-        } else {
-            for (ItemStack itemStack : inventory.items) {
-                if (!itemStack.isEmpty() && itemStack.is(PotionItems.WORMHOLE_POTION)) {
-                    return itemStack;
-                }
-            }
-            return ItemStack.EMPTY;
         }
+
+        for (ItemStack itemStack : inventory.items) {
+            if (!itemStack.isEmpty() && itemStack.is(PotionItems.WORMHOLE_POTION)) {
+                return itemStack;
+            }
+        }
+
+        return ItemStack.EMPTY;
     }
 
     private void teleport(ServerPlayer serverPlayer, ServerPlayer target) {
-        serverPlayer.teleportTo(serverPlayer.serverLevel(), target.getX(), target.getY(), target.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
+        serverPlayer.teleportTo(target.serverLevel(), target.getX(), target.getY(), target.getZ(), serverPlayer.getViewYRot(0), serverPlayer.getViewXRot(0));
     }
 
     public enum ByMod {
+        DEFAULT {
+            @Override
+            public boolean enabled() {
+                return true;
+            }
+        },
         FTB_CHUNKS {
             @Override
             public boolean enabled() {

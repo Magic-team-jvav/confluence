@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.client.gui.container.WormholeScreen;
+ import org.confluence.mod.common.CommonConfigs;
 
 public class WormholePotionItem extends AbstractPotionItem {
     public WormholePotionItem(Properties properties) {
@@ -22,5 +23,29 @@ public class WormholePotionItem extends AbstractPotionItem {
 
     public static void applyClient() {
         Minecraft.getInstance().setScreen(WormholeScreen.INSTANCE);
+    }
+
+    @Override
+    public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity living) {
+        apply(itemStack, level, living);
+        if (!CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
+            return itemStack.isEmpty() ? ItemStack.EMPTY : itemStack;
+        }
+
+        if (itemStack.isEmpty()) {
+            return getReturnItem();
+        }
+
+        if (!(living instanceof Player player) || player.hasInfiniteMaterials()) {
+            return itemStack;
+        }
+
+        ItemStack itemstack = getReturnItem();
+        if (player.getInventory().add(itemstack)) {
+            return itemStack;
+        }
+
+        player.drop(itemstack, false);
+        return itemStack;
     }
 }

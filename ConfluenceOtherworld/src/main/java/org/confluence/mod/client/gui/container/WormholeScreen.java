@@ -3,7 +3,6 @@ package org.confluence.mod.client.gui.container;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Optionull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -11,20 +10,22 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.PlayerInfo;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.scores.PlayerTeam;
 import net.neoforged.neoforge.common.extensions.ILevelExtension;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WormholeHandler;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.network.c2s.WormholeRequestPlayerDataPacketC2S;
+import org.confluence.mod.network.c2s.WormholeToPlayerPacketC2S;
 import org.confluence.mod.network.s2c.WormholePlayerDataSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
@@ -35,6 +36,7 @@ public class WormholeScreen extends Screen {
     public static final ResourceLocation BACKGROUND_TEXTURE = Confluence.asResource("textures/gui/container/wormhole.png");
     private static final Entry[] ENTRIES = new Entry[4];
     private static final List<Pair<WormholePlayerDataSyncPacketS2C.Data, PlayerInfo>> PLAYER_LIST = new ArrayList<>();
+    public static final Map<ResourceLocation, ResourceLocation> DIMENSION_TEXTURES = new HashMap<>();
     public static final WormholeScreen INSTANCE = new WormholeScreen();
     public static final int TEXTURE_WIDTH = 192;
     public static final int TEXTURE_HEIGHT = 169;
@@ -135,21 +137,14 @@ public class WormholeScreen extends Screen {
         guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, 0, WIDTH, HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         guiGraphics.blit(BACKGROUND_TEXTURE, x + 180, y + 7, 180, 107, 5, 5, TEXTURE_WIDTH, TEXTURE_HEIGHT);
         guiGraphics.blit(BACKGROUND_TEXTURE, x + 180, y + 94, 180, 117, 5, 5, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        int scrollBarHeight = 80 / totalPages;
+        int scrollBarHeight = totalPages <= 0 ? 80 : 80 / totalPages;
         int scrollBarY = y + 13 + scrollBarHeight * page;
-        guiGraphics.blit(ResourceLocation.parse("aaaaa"), x + 181, scrollBarY, 3, scrollBarHeight, 181, 113, 3, 3, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-    }
-
-    private List<PlayerInfo> getPlayerInfo(LocalPlayer localPlayer) {
-        return localPlayer.connection.getListedOnlinePlayers().stream()
-                .sorted(Comparator.<PlayerInfo>comparingInt(playerInfo -> playerInfo.getGameMode() == GameType.SPECTATOR ? 1 : 0)
-                        .thenComparing(playerInfo -> Optionull.mapOrDefault(playerInfo.getTeam(), PlayerTeam::getName, ""))
-                        .thenComparing(playerInfo -> playerInfo.getProfile().getName(), String::compareToIgnoreCase)
-                ).limit(80L).toList();
+        guiGraphics.blit(BACKGROUND_TEXTURE, x + 181, scrollBarY, 3, scrollBarHeight, 181, 113, 3, 3, TEXTURE_WIDTH, TEXTURE_HEIGHT);
     }
 
     public static class Entry extends AbstractWidget {
         public static final ResourceLocation TEAM_ICON = Confluence.asResource("team/icon");
+        private static final ResourceLocation WORMHOLE_POTION_STROKE = Confluence.asResource("container/wormhole/wormhole_potion_stroke");
         private final Font font;
         private final Minecraft minecraft;
         private boolean isAvailable;
@@ -190,8 +185,6 @@ public class WormholeScreen extends Screen {
             }
             int x = this.getX();
             int y = this.getY();
-            int width = getWidth();
-            int height = getHeight();
             int uOffset = 7;
             int vOffset = 107 + (isAvailable ? 0 : height + 1);
             guiGraphics.blit(BACKGROUND_TEXTURE, x, y, uOffset, vOffset, width, height, TEXTURE_WIDTH, TEXTURE_HEIGHT);
@@ -220,20 +213,54 @@ public class WormholeScreen extends Screen {
             int txtY = y + (height - 6) / 2;
             Component txt = display;
             guiGraphics.drawString(font, txt, txtX, txtY, 0xffffffff);
-            Component extraTxt;
-            if (playerData.levelResourceKey() == minecraft.player.level().dimension()) {
-                extraTxt = Component.literal("%, dm".formatted(WormholeHandler.distanceToSqr(minecraft.player, playerData, false)));
+
+            ResourceKey<Level> levelResourceKey = playerData.levelResourceKey();
+            if (levelResourceKey == minecraft.player.level().dimension()) {
+                Component distanceTxt = Component.literal("%, dm".formatted(WormholeHandler.distanceToSqr(minecraft.player, playerData, false)));
+                int distanceTxtX = x + width - 22 - font.width(distanceTxt);
+                guiGraphics.drawString(font, distanceTxt, distanceTxtX, txtY, 0xffffffff);
             } else {
-                extraTxt = levelResourceKeyDescription;
+                ResourceLocation levelResourceKeyRl = levelResourceKey.location();
+                if (DIMENSION_TEXTURES.containsKey(levelResourceKeyRl)) {
+                    int dimensionX = x + width - 36;
+                    int dimensionY = y + 2;
+                    guiGraphics.blitSprite(DIMENSION_TEXTURES.get(levelResourceKeyRl), dimensionX, dimensionY, 16, 16);
+                } else {
+                    Component dimensionTxt = levelResourceKeyDescription;
+                    int dimensionTxtX = x + width - 22 - font.width(dimensionTxt);
+                    guiGraphics.drawString(font, dimensionTxt, dimensionTxtX, txtY, 0xffffffff);
+                }
             }
-            int extraTxtX = x + width - 22 - font.width(extraTxt);
-            guiGraphics.drawString(font, extraTxt, extraTxtX, txtY, 0xffffffff);
 
             if (isAvailable) {
                 int itemX = x + width - 18;
                 int itemY = y + 2;
-                guiGraphics.renderItem(WORMHOLE_POTION_STACK, itemX, itemY);
+                guiGraphics.renderFakeItem(WORMHOLE_POTION_STACK, itemX, itemY);
+                int itemStrokeX = itemX - 1;
+                int itemStrokeY = itemY - 1;
+                if (isHovered(guiGraphics, mouseX, mouseY, itemStrokeX, itemStrokeY, 18, 18)) {
+                    guiGraphics.blitSprite(WORMHOLE_POTION_STROKE, itemStrokeX, itemStrokeY, 18, 18);
+                }
             }
+        }
+
+        @Override
+        public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            int itemX = getX() + width - 19;
+            int itemY = getY() + 1;
+            if (isFocused() || (mouseX >= itemX && mouseY >= itemY && mouseX < itemX + 18 && mouseY < itemY + 18)) {
+                PacketDistributor.sendToServer(new WormholeToPlayerPacketC2S(playerData.uuid(), WormholeToPlayerPacketC2S.ByMod.DEFAULT));
+                INSTANCE.onClose();
+            }
+            return super.mouseClicked(mouseX, mouseY, button);
+        }
+
+        private static boolean isHovered(GuiGraphics guiGraphics, int mouseX, int mouseY, int itemX, int itemY, int width, int height) {
+            return guiGraphics.containsPointInScissor(mouseX, mouseY) &&
+                    mouseX >= itemX &&
+                    mouseY >= itemY &&
+                    mouseX < itemX + width &&
+                    mouseY < itemY + height;
         }
 
         public String getLevelResourceKeyDescriptionKey() {

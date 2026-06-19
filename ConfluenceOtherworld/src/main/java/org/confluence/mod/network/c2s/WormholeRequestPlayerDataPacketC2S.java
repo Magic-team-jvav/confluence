@@ -3,10 +3,8 @@ package org.confluence.mod.network.c2s;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
-import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WormholeHandler;
 

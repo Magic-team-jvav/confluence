@@ -552,4 +552,6 @@ public final class GameClientEvents {
     public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
         ClientPacketHandler.setLuminance(event.getEntity(), event.getData());
     }
+
+
 }

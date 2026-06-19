@@ -13,6 +13,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.client.handler.WormholeHandler;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.init.ModCommands;
@@ -23,8 +24,10 @@ import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PrefixUtils;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class GameEvents {

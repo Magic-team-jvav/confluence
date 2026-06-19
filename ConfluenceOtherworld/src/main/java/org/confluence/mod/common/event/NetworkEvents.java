@@ -48,6 +48,7 @@ public final class NetworkEvents {
                 .playToClient(SyncEnemyBannerEntriesPacketS2C.TYPE, SyncEnemyBannerEntriesPacketS2C.STREAM_CODEC, SyncEnemyBannerEntriesPacketS2C::handle)
                 .playToClient(AchievementsDataSyncPacketS2C.TYPE, AchievementsDataSyncPacketS2C.STREAM_CODEC, AchievementsDataSyncPacketS2C::handle)
                 .playToClient(DragonChargePlayerConfigPacketS2C.TYPE, DragonChargePlayerConfigPacketS2C.STREAM_CODEC, DragonChargePlayerConfigPacketS2C::handle)
+                .playToClient(WormholePlayerDataSyncPacketS2C.TYPE, WormholePlayerDataSyncPacketS2C.STREAM_CODEC, WormholePlayerDataSyncPacketS2C::handle)
 
                 .playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle)
                 .playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle)
@@ -64,6 +65,7 @@ public final class NetworkEvents {
                 .playToServer(SwordProjectilePacketC2S.TYPE, SwordProjectilePacketC2S.STREAM_CODEC, SwordProjectilePacketC2S::handle)
                 .playToServer(FlailControlPacketC2S.TYPE, FlailControlPacketC2S.STREAM_CODEC, FlailControlPacketC2S::handle)
                 .playToServer(GiveBannerPacketC2S.TYPE, GiveBannerPacketC2S.STREAM_CODEC, GiveBannerPacketC2S::handle)
+                .playToServer(WormholeRequestPlayerDataPacketC2S.TYPE, WormholeRequestPlayerDataPacketC2S.STREAM_CODEC, WormholeRequestPlayerDataPacketC2S::handle)
 
                 .playBidirectional(TeamPacket.TYPE, TeamPacket.STREAM_CODEC, TeamPacket::handle)
                 .playBidirectional(AskForSoftcorePacket.TYPE, AskForSoftcorePacket.STREAM_CODEC, AskForSoftcorePacket::handle)

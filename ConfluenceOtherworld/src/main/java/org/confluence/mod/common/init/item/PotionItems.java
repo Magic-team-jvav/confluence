@@ -10,6 +10,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
@@ -100,7 +101,7 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> RANDOM_TELEPORT_POTION = ITEMS.register("random_teleport_potion", RandomTeleportPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> CRATE_POTION = ITEMS.register("crate_potion", () -> new EffectPotionItem(ModEffects.CRATE, 4800));
     public static final DeferredItem<AbstractPotionItem> STINK_POTION = ITEMS.register("stink_potion", () -> new EffectThrowablePotionItem(ModRarity.WHITE, ModEffects.STINKY, 600));
-    public static final DeferredItem<CustomRarityItem> WORMHOLE_POTION = ITEMS.register("wormhole_potion", () -> new CustomRarityItem(new Item.Properties().stacksTo(16), ModRarity.BLUE));
+    public static final DeferredItem<WormholePotionItem> WORMHOLE_POTION = ITEMS.register("wormhole_potion", () -> new WormholePotionItem(new Item.Properties().stacksTo(16).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
     public static final DeferredItem<AbstractPotionItem> AMMO_RESERVATION_POTION = ITEMS.register("ammo_reservation_potion", () -> new EffectPotionItem(ModEffects.AMMO_BOX, 9600));
     public static final DeferredItem<AbstractPotionItem> SUMMONING_POTION = ITEMS.register("summoning_potion", () -> new EffectPotionItem(ModEffects.SUMMONING, 9600));
     public static final DeferredItem<AbstractPotionItem> SHIMMER_POTION = ITEMS.register("shimmer_potion", () -> new EffectPotionItem(ModEffects.SHIMMER, 1200, 1));

@@ -1,17 +1,19 @@
 package org.confluence.mod.common.block.functional;
 
+import PortLib.extensions.net.minecraft.advancements.critereon.ItemPredicate.PortItemPredicateExtension;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.RegistryOps;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +31,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 import java.util.Iterator;
 import java.util.Optional;
+import java.util.Set;
 
 public class LockBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -54,22 +57,25 @@ public class LockBlock extends Block implements EntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof BEntity entity) {
-            if (entity.matchTool.isEmpty() || entity.matchTool.get().test(stack)) {
+            ItemStack stack = player.getItemInHand(hand);
+            if (entity.matchTool.isEmpty() || entity.matchTool.get().matches(stack)) {
                 if (level.destroyBlock(pos, false, player)) {
                     BlockPos relative = pos.relative(state.getValue(BlockStateProperties.FACING));
                     if (level.getBlockState(relative).getDestroySpeed(level, relative) != -1) {
                         level.destroyBlock(relative, false, player);
                         if (entity.consumeTool) {
                             stack.shrink(1);
-                            return ItemInteractionResult.CONSUME;
+                            return InteractionResult.CONSUME;
                         }
-                        return ItemInteractionResult.CONSUME_PARTIAL;
+                        return InteractionResult.CONSUME_PARTIAL;
                     }
                 }
             } else {
-                entity.matchTool.get().items().ifPresent(holders -> {
+                TagKey<Item> tag = entity.matchTool.get().tag;
+                if (tag != null) {
+                    HolderSet<Item> holders = BuiltInRegistries.ITEM.getOrCreateTag(tag);
                     MutableComponent itemsNeed = Component.translatable("message.confluence.lock.need");
                     Component or = Component.translatable("message.confluence.lock.or");
                     Iterator<Holder<Item>> iterator = holders.iterator();
@@ -78,11 +84,23 @@ public class LockBlock extends Block implements EntityBlock {
                         if (iterator.hasNext()) itemsNeed.append(or);
                     }
                     player.displayClientMessage(itemsNeed, true);
-                });
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                } else {
+                    Set<Item> items = entity.matchTool.get().items;
+                    if (items != null) {
+                        MutableComponent itemsNeed = Component.translatable("message.confluence.lock.need");
+                        Component or = Component.translatable("message.confluence.lock.or");
+                        Iterator<Item> iterator = items.iterator();
+                        while (iterator.hasNext()) {
+                            itemsNeed.append(iterator.next().getDescription());
+                            if (iterator.hasNext()) itemsNeed.append(or);
+                        }
+                        player.displayClientMessage(itemsNeed, true);
+                    }
+                }
+                return InteractionResult.PASS;
             }
         }
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     public static class BEntity extends BlockEntity {
@@ -94,16 +112,16 @@ public class LockBlock extends Block implements EntityBlock {
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
-            this.matchTool = ItemPredicate.CODEC.parse(RegistryOps.create(NbtOps.INSTANCE, registries), tag.get("MatchTool")).result();
+        public void load(CompoundTag tag) {
+            super.load(tag);
+            this.matchTool = PortItemPredicateExtension.codec().parse(NbtOps.INSTANCE, tag.get("MatchTool")).result();
             this.consumeTool = tag.getBoolean("ConsumeTool");
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
-            matchTool.flatMap(predicate -> ItemPredicate.CODEC.encodeStart(RegistryOps.create(NbtOps.INSTANCE, registries), predicate).result()).ifPresent(nbt -> tag.put("MatchTool", nbt));
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
+            matchTool.flatMap(predicate -> PortItemPredicateExtension.codec().encodeStart(NbtOps.INSTANCE, predicate).result()).ifPresent(nbt -> tag.put("MatchTool", nbt));
             tag.putBoolean("ConsumeTool", consumeTool);
         }
     }

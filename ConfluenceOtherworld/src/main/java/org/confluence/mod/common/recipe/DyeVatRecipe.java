@@ -2,8 +2,6 @@ package org.confluence.mod.common.recipe;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -13,6 +11,8 @@ import org.confluence.lib.common.recipe.MenuRecipeInput;
 import org.confluence.lib.common.recipe.SimpleRecipeSerializer;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public class DyeVatRecipe extends AbstractAmountRecipe<MenuRecipeInput> {
     public DyeVatRecipe(ItemStack result, NonNullList<Ingredient> ingredients) {
@@ -51,7 +51,7 @@ public class DyeVatRecipe extends AbstractAmountRecipe<MenuRecipeInput> {
         }
 
         @Override
-        protected StreamCodec<PortRegistryFriendlyByteBuf, DyeVatRecipe> getStreamCodec() {
+        protected PortStreamCodec<PortRegistryFriendlyByteBuf, DyeVatRecipe> getStreamCodec() {
             return AbstractAmountRecipe.shapelessSerializerSteamCodec(DyeVatRecipe::new);
         }
     }

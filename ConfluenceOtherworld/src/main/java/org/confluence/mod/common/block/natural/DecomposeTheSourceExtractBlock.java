@@ -23,8 +23,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.terraentity.entity.monster.AbstractMonster;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;

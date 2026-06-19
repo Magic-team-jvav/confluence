@@ -1,6 +1,7 @@
 package org.confluence.mod.util;
 
 import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,6 +21,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -34,6 +36,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -48,13 +51,13 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.TerraGuns;
 import org.confluence.mod.api.event.EffectSwitchableCheckEvent;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
@@ -75,8 +78,10 @@ import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.Map;
 import java.util.Set;
@@ -84,7 +89,7 @@ import java.util.Set;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
 public final class ModUtils {
-    public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraGuns.MODID);
+    public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraFurniture.MODID);
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {
@@ -114,7 +119,7 @@ public final class ModUtils {
     }
 
     public static boolean isWaterBottle(ItemStack stack) {
-        return stack.is(PotionItems.BOTTLED_WATER.get()) || stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
+        return stack.is(PotionItems.BOTTLED_WATER.get()) || PotionUtils.getPotion(stack).equals(Potions.WATER);
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss, boolean onSurface) {
@@ -177,7 +182,7 @@ public final class ModUtils {
     public static void enemyDropMoney(LivingEntity living, ServerLevel level) {
         double amount = getLivingBaseMoneyDrops(living, level);
 
-        if (living.hasEffect(ModEffects.MIDAS)) {
+        if (living.hasEffect(ModEffects.MIDAS.get())) {
             amount *= Mth.nextDouble(living.getRandom(), 1.1, 1.49);
         }
         if (IMinecraftServer.isHardmode(level.getServer())) {
@@ -191,7 +196,7 @@ public final class ModUtils {
     }
 
     public static double getLivingBaseMoneyDrops(LivingEntity living, Level level) {
-        AttributeInstance attack = living.getAttribute(LibAttributes.getAttackDamage());
+        AttributeInstance attack = living.getAttribute(LibAttributes.getAttackDamage().value());
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
         double healthFactor = living.getMaxHealth() * 0.15;
@@ -207,7 +212,7 @@ public final class ModUtils {
             EntityType<?> type = attacker.getType();
             if (type == TEMonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
                 boolean master = LibUtils.isMaster(level, living.blockPosition());
-                Holder<MobEffect> debuff;
+                MobEffect debuff;
                 float min;
                 int i = attacker.getRandom().nextInt(81);
                 if (i < 11) {
@@ -217,13 +222,13 @@ public final class ModUtils {
                     debuff = MobEffects.BLINDNESS;
                     min = master ? 3.75F : 3.0F;
                 } else if (i < 24) {
-                    debuff = ModEffects.CURSED;
+                    debuff = ModEffects.CURSED.get();
                     min = master ? 0.94F : 0.75F;
                 } else if (i < 35) {
-                    debuff = ModEffects.BLEEDING;
+                    debuff = ModEffects.BLEEDING.get();
                     min = master ? 9.38F : 7.5F;
                 } else if (i < 37) {
-                    debuff = TCEffects.CONFUSED;
+                    debuff = TCEffects.CONFUSED.get();
                     min = master ? 1.88F : 1.5F;
                 } else if (i < 48) {
                     debuff = MobEffects.MOVEMENT_SLOWDOWN;
@@ -232,10 +237,10 @@ public final class ModUtils {
                     debuff = MobEffects.WEAKNESS;
                     min = master ? 14.06F : 11.25F;
                 } else if (i < 70) {
-                    debuff = ModEffects.SILENCED;
+                    debuff = ModEffects.SILENCED.get();
                     min = master ? 1.88F : 1.5F;
                 } else {
-                    debuff = ModEffects.BROKEN_ARMOR;
+                    debuff = ModEffects.BROKEN_ARMOR.get();
                     min = master ? 12.19F : 9.75F;
                 }
                 living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
@@ -245,7 +250,7 @@ public final class ModUtils {
 
     public static void applyCursedSkullDebuff(@Nullable Entity attacker, LivingEntity living) {
         if (attacker != null && attacker.getType() == TEMonsterEntities.CURSED_SKULL.get() && attacker.getRandom().nextFloat() < 0.33F) {
-            living.addEffect(new MobEffectInstance(ModEffects.CURSED, 80));
+            living.addEffect(new MobEffectInstance(ModEffects.CURSED.get(), 80));
         }
     }
 
@@ -291,16 +296,11 @@ public final class ModUtils {
     }
 
     public static void registerCauldronInteractions() {
-        CauldronInteraction.INTERACTIONS.values().forEach(map -> {
-            Map<Item, CauldronInteraction> interactionMap = map.map();
-            interactionMap.put(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), CauldronInteraction.FILL_WATER);
-            interactionMap.put(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), CauldronInteraction.FILL_LAVA);
-            interactionMap.put(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
-            interactionMap.put(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), AetheriumCauldronBlock.FILL_AETHERIUM);
-            interactionMap.put(ToolItems.HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
-            interactionMap.put(NatureBlocks.AETHERIUM_BLOCK.asItem(), AetheriumCauldronBlock.FILL_AETHERIUM);
-        });
-        CauldronInteraction.EMPTY.map().put(PotionItems.BOTTLED_WATER.get(), (state, level, pos, player, hand, stack) -> {
+        defaulted(CauldronInteraction.EMPTY);
+        defaulted(CauldronInteraction.WATER);
+        defaulted(CauldronInteraction.LAVA);
+        defaulted(CauldronInteraction.POWDER_SNOW);
+        CauldronInteraction.EMPTY.put(PotionItems.BOTTLED_WATER.get(), (state, level, pos, player, hand, stack) -> {
             if (!level.isClientSide) {
                 Item item = stack.getItem();
                 player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));
@@ -310,9 +310,9 @@ public final class ModUtils {
                 level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                 level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
             }
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.SUCCESS;
         });
-        CauldronInteraction.WATER.map().put(PotionItems.BOTTLE.get(), (state, level, pos, player, hand, stack) -> {
+        CauldronInteraction.WATER.put(PotionItems.BOTTLE.get(), (state, level, pos, player, hand, stack) -> {
             if (!level.isClientSide) {
                 Item item = stack.getItem();
                 player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLED_WATER.toStack()));
@@ -322,11 +322,11 @@ public final class ModUtils {
                 level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
                 level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
             }
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.SUCCESS;
         });
-        CauldronInteraction.WATER.map().put(PotionItems.BOTTLED_WATER.get(), (state, level, pos, player, hand, stack) -> {
+        CauldronInteraction.WATER.put(PotionItems.BOTTLED_WATER.get(), (state, level, pos, player, hand, stack) -> {
             if (state.getValue(LayeredCauldronBlock.LEVEL) == 3) {
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return InteractionResult.PASS;
             } else if (!level.isClientSide) {
                 player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));
                 player.awardStat(Stats.USE_CAULDRON);
@@ -335,8 +335,17 @@ public final class ModUtils {
                 level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
                 level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
             }
-            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.SUCCESS;
         });
+    }
+
+    private static void defaulted(Map<Item, CauldronInteraction> map) {
+        map.put(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), CauldronInteraction.FILL_WATER);
+        map.put(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), CauldronInteraction.FILL_LAVA);
+        map.put(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
+        map.put(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), AetheriumCauldronBlock.FILL_AETHERIUM);
+        map.put(ToolItems.HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
+        map.put(NatureBlocks.AETHERIUM_BLOCK.asItem(), AetheriumCauldronBlock.FILL_AETHERIUM);
     }
 
     /// 决定护士是否能治疗
@@ -346,9 +355,9 @@ public final class ModUtils {
     }
 
     public static boolean isSwitchableEffect(MobEffectInstance instance) {
-        MobEffect effect = instance.getEffect().value();
+        MobEffect effect = instance.getEffect();
         boolean switchable = effect == TCEffects.GRAVITATION.get() ? instance.getAmplifier() <= 0 : effect.isBeneficial();
-        return NeoForge.EVENT_BUS.post(new EffectSwitchableCheckEvent(instance, switchable)).isSwitchable();
+        return PortEventHandler.postEventWithReturn(new EffectSwitchableCheckEvent(instance, switchable)).isSwitchable();
     }
 
     public static boolean useKey(ItemStack carried, ItemStack onSlot, Player player) {
@@ -356,7 +365,7 @@ public final class ModUtils {
                 (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX))
         ) {
             if (player instanceof ServerPlayer serverPlayer && LootComponent.open(serverPlayer, onSlot)) {
-                if (!serverPortPlayer.hasInfiniteMaterials(player)) {
+                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
                     if (carried.is(ToolItems.GOLDEN_DUNGEON_KEY)) {
                         carried.shrink(1);
                     }

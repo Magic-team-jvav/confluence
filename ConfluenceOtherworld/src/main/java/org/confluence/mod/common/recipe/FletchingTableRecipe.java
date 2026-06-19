@@ -1,29 +1,34 @@
 package org.confluence.mod.common.recipe;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
+import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.recipe.SimpleRecipeSerializer;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.FletchingTableMenu;
-import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipe;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
-public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> {
+public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Input> {
     private final ItemStack result;
     private final Ingredient tail;
     private final Ingredient body;
     private final Ingredient head;
     private final NonNullList<Ingredient> ingredients;
+    private ResourceLocation id;
 
     public FletchingTableRecipe(ItemStack result, Ingredient tail, Ingredient body, Ingredient head) {
         this.result = result;
@@ -31,6 +36,16 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
         this.body = body;
         this.head = head;
         this.ingredients = NonNullList.of(Ingredient.EMPTY, tail, body, head);
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(ResourceLocation id) {
+        this.id = id;
     }
 
     @Override
@@ -56,7 +71,7 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
     }
 
     @Override
-    public ItemStack assemble(Input input, HolderLookup.Provider registries) {
+    public ItemStack assemble(Input input, RegistryAccess registryAccess) {
         return result.copy();
     }
 
@@ -66,7 +81,7 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
     }
 
     @Override
-    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return result;
     }
 
@@ -84,37 +99,26 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
         @Override
         protected MapCodec<FletchingTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
-                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
-                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
+                    PortItemStackExtension.strictCodec().fieldOf("result").forGetter(recipe -> recipe.result),
+                    PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
+                    PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
+                    PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
             ).apply(instance, FletchingTableRecipe::new));
         }
 
         @Override
-        protected StreamCodec<PortRegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
-            return new StreamCodec<>() {
-                @Override
-                public FletchingTableRecipe decode(PortRegistryFriendlyByteBuf buffer) {
-                    ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-                    Ingredient tail = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-                    Ingredient body = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-                    Ingredient head = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-                    return new FletchingTableRecipe(itemstack, tail, body, head);
-                }
-
-                @Override
-                public void encode(PortRegistryFriendlyByteBuf buffer, FletchingTableRecipe recipe) {
-                    ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tail);
-                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.body);
-                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.head);
-                }
-            };
+        protected PortStreamCodec<PortRegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
+            return PortStreamCodec.composite(
+                    PortItemStackExtension.streamCodec(), recipe -> recipe.result,
+                    PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.tail,
+                    PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.body,
+                    PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.head,
+                    FletchingTableRecipe::new
+            );
         }
     }
 
-    public static class Input extends SimpleContainer implements RecipeInput {
+    public static class Input extends SimpleContainer implements PortRecipeInput {
         private final FletchingTableMenu menu;
 
         public Input(FletchingTableMenu menu) {

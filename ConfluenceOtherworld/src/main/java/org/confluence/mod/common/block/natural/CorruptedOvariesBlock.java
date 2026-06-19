@@ -16,8 +16,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.terraentity.init.TEEffects;
 
 public class CorruptedOvariesBlock extends Block {
     public CorruptedOvariesBlock() {
@@ -25,7 +25,7 @@ public class CorruptedOvariesBlock extends Block {
     }
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity living) {
             if (!living.getItemBySlot(EquipmentSlot.LEGS).isEmpty()) return;
             entity.makeStuckInBlock(state, new Vec3(0.8F, 0.75, 0.8F));
@@ -35,7 +35,7 @@ public class CorruptedOvariesBlock extends Block {
                 if (d0 >= 0.003F || d1 >= 0.003F) {
                     entity.hurt(level.damageSources().magic(), 3.0F);
                     if (living.getRandom().nextFloat() < 0.15F) {
-                        living.addEffect(new MobEffectInstance(TEEffects.DEMONIC_THOUGHTS, 200));
+                        living.addEffect(new MobEffectInstance(ModEffects.DEMONIC_THOUGHTS.get(), 200));
                     }
                 }
             }

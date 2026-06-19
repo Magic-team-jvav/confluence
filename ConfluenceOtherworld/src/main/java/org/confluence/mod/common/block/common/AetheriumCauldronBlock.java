@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.common;
 
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -22,7 +23,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.mesdag.portlib.wrapper.world.PortItemInteractionResult;
-import org.mesdag.portlib.wrapper.world.entity.player.PortPlayer;
 
 import java.util.Map;
 
@@ -32,7 +32,7 @@ public class AetheriumCauldronBlock extends AbstractCauldronBlock {
         if (!level.isClientSide) {
             boolean bottomless = itemStack.is(ModTags.Items.BOTTOMLESS);
             ItemStack filledStack = bottomless ? itemStack : NatureBlocks.AETHERIUM_BLOCK.toStack();
-            if (!bottomless && !PortPlayer.hasInfiniteMaterials(player)) {
+            if (!bottomless && !PortPlayerExtension.hasInfiniteMaterials(player)) {
                 itemStack.shrink(1);
             }
             player.awardStat(Stats.FILL_CAULDRON);
@@ -77,8 +77,8 @@ public class AetheriumCauldronBlock extends AbstractCauldronBlock {
         }
 
         if (!level.isClientSide) {
-            ItemStack filledStack = NatureBlocks.AETHERIUM_BLOCK.get().toStack();
-            if (PortPlayer.hasInfiniteMaterials(player)) {
+            ItemStack filledStack = NatureBlocks.AETHERIUM_BLOCK.toStack();
+            if (PortPlayerExtension.hasInfiniteMaterials(player)) {
                 if (!player.getInventory().contains(filledStack)) {
                     player.getInventory().add(filledStack);
                 }

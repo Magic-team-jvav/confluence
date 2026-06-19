@@ -1,15 +1,15 @@
 package org.confluence.mod.common.recipe;
 
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
+import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -18,12 +18,16 @@ import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.SimpleRecipeSerializer;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.AlchemyTableMenu;
-import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipe;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
-public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
+public class AlchemyTableRecipe implements PortRecipe<AlchemyTableRecipe.Input> {
     private final ItemStack result;
     private final Ingredient base;
     private final NonNullList<Ingredient> ingredients;
+    private ResourceLocation id;
 
     public AlchemyTableRecipe(ItemStack result, Ingredient base, NonNullList<Ingredient> ingredients) {
         if (ingredients.size() > 6) {
@@ -32,6 +36,16 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         this.result = result;
         this.base = base;
         this.ingredients = ingredients;
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(ResourceLocation id) {
+        this.id = id;
     }
 
     public Ingredient getBase() {
@@ -49,8 +63,8 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
     }
 
     @Override
-    public ItemStack assemble(Input input, HolderLookup.Provider registries) {
-        return getResultItem(null).copy();
+    public ItemStack assemble(Input input, RegistryAccess registryAccess) {
+        return getResultItem(registryAccess).copy();
     }
 
     @Override
@@ -59,7 +73,7 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
     }
 
     @Override
-    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return result;
     }
 
@@ -77,22 +91,22 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         @Override
         protected MapCodec<AlchemyTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                    Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(recipe -> recipe.base),
+                    PortItemStackExtension.strictCodec().fieldOf("result").forGetter(recipe -> recipe.result),
+                    PortIngredientExtension.codecNonempty().fieldOf("base").forGetter(recipe -> recipe.base),
                     AbstractAmountRecipe.INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients)
             ).apply(instance, AlchemyTableRecipe::new));
         }
 
         @Override
-        protected StreamCodec<PortRegistryFriendlyByteBuf, AlchemyTableRecipe> getStreamCodec() {
-            return new StreamCodec<>() {
+        protected PortStreamCodec<PortRegistryFriendlyByteBuf, AlchemyTableRecipe> getStreamCodec() {
+            return new PortStreamCodec<>() {
                 @Override
                 public AlchemyTableRecipe decode(PortRegistryFriendlyByteBuf buffer) {
                     int size = buffer.readVarInt();
                     NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
-                    nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
-                    ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-                    Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+                    nonnulllist.replaceAll(ignore -> PortIngredientExtension.contentsStreamCodec().decode(buffer));
+                    ItemStack itemstack = PortItemStackExtension.streamCodec().decode(buffer);
+                    Ingredient input = PortIngredientExtension.contentsStreamCodec().decode(buffer);
                     return new AlchemyTableRecipe(itemstack, input, nonnulllist);
                 }
 
@@ -100,16 +114,16 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
                 public void encode(PortRegistryFriendlyByteBuf buffer, AlchemyTableRecipe recipe) {
                     buffer.writeVarInt(recipe.ingredients.size());
                     for (Ingredient ingredient : recipe.ingredients) {
-                        Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
+                        PortIngredientExtension.contentsStreamCodec().encode(buffer, ingredient);
                     }
-                    ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.base);
+                    PortItemStackExtension.streamCodec().encode(buffer, recipe.result);
+                    PortIngredientExtension.contentsStreamCodec().encode(buffer, recipe.base);
                 }
             };
         }
     }
 
-    public static class Input extends SimpleContainer implements RecipeInput {
+    public static class Input extends SimpleContainer implements PortRecipeInput {
         private final AlchemyTableMenu menu;
         private final SimpleContainer materials = new SimpleContainer(6);
 

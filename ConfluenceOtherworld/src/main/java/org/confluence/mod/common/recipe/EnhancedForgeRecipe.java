@@ -1,19 +1,22 @@
 package org.confluence.mod.common.recipe;
 
+import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
+import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.datafixers.util.Function5;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeInput;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.AmountIngredient;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
-public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<RecipeInput> {
+public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecipeInput> {
     protected final float experience;
     protected final int cookingTime;
     protected final boolean requiresFuel;
@@ -44,22 +47,22 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<RecipeInp
 
     public static <R extends EnhancedForgeRecipe> MapCodec<R> codec(Factory<R> factory) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                PortItemStackExtension.strictCodec().fieldOf("result").forGetter(recipe -> recipe.result),
                 INGREDIENTS_CODEC.forGetter(R::getIngredients),
-                Codec.FLOAT.lenientOptionalFieldOf("experience", 0.0F).forGetter(R::getExperience),
-                Codec.INT.lenientOptionalFieldOf("cookingtime", 100).forGetter(R::getCookingTime),
-                Codec.BOOL.lenientOptionalFieldOf("requires_fuel", false).forGetter(R::isRequiresFuel)
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "experience", 0.0F).forGetter(R::getExperience),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "cookingtime", 100).forGetter(R::getCookingTime),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.BOOL, "requires_fuel", false).forGetter(R::isRequiresFuel)
         ).apply(instance, factory));
     }
 
-    public static <R extends EnhancedForgeRecipe> StreamCodec<PortRegistryFriendlyByteBuf, R> streamCodec(Factory<R> factory) {
-        return new StreamCodec<>() {
+    public static <R extends EnhancedForgeRecipe> PortStreamCodec<PortRegistryFriendlyByteBuf, R> streamCodec(Factory<R> factory) {
+        return new PortStreamCodec<>() {
             @Override
             public R decode(PortRegistryFriendlyByteBuf buffer) {
                 int size = buffer.readVarInt();
                 NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
-                nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
-                ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
+                nonnulllist.replaceAll(ignore -> PortIngredientExtension.contentsStreamCodec().decode(buffer));
+                ItemStack itemstack = PortItemStackExtension.streamCodec().decode(buffer);
                 return factory.create(itemstack, nonnulllist, buffer.readFloat(), buffer.readVarInt(), buffer.readBoolean());
             }
 
@@ -67,9 +70,9 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<RecipeInp
             public void encode(PortRegistryFriendlyByteBuf buffer, R recipe) {
                 buffer.writeVarInt(recipe.ingredients.size());
                 for (Ingredient ingredient : recipe.ingredients) {
-                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
+                    PortIngredientExtension.contentsStreamCodec().encode(buffer, ingredient);
                 }
-                ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+                PortItemStackExtension.streamCodec().encode(buffer, recipe.result);
                 buffer.writeFloat(recipe.experience);
                 buffer.writeVarInt(recipe.cookingTime);
                 buffer.writeBoolean(recipe.requiresFuel);

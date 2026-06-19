@@ -43,7 +43,9 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.recipe.EnhancedForgeRecipe;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeHolder;
+import org.mesdag.portlib.wrapper.world.inventory.PortRecipeCraftingHolder;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortSingleRecipeInput;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -116,20 +118,20 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         if (hasItem && !forgeMatched) {
             ItemStack lastInput = itemStacks[entity.lastCheckSlot];
-            PortRecipeHolder<BlastingRecipe> recipeholder;
-            SingleRecipeInput recipeInput;
+            BlastingRecipe recipe;
+            PortSingleRecipeInput recipeInput;
             if (!lastInput.isEmpty() &&
-                    (recipeholder = entity.blasting.getRecipeFor(recipeInput = new SingleRecipeInput(lastInput), level).orElse(null)) != null &&
-                    recipeholder.value().matches(recipeInput, level)
+                    (recipe = entity.blasting.getRecipeFor(recipeInput = new PortSingleRecipeInput(lastInput), level).orElse(null)) != null &&
+                    recipe.matches(recipeInput, level)
             ) {
-                entity.doBlasting(recipeholder, lastInput, data);
+                entity.doBlasting(recipe, lastInput, data);
             } else {
                 for (int i = 0; i < itemStacks.length; i++) {
                     ItemStack input = itemStacks[i];
                     if (input.isEmpty()) continue;
-                    recipeholder = entity.blasting.getRecipeFor(new SingleRecipeInput(input), level).orElse(null);
-                    if (recipeholder != null) {
-                        entity.doBlasting(recipeholder, input, data);
+                    recipe = entity.blasting.getRecipeFor(new PortSingleRecipeInput(input), level).orElse(null);
+                    if (recipe != null) {
+                        entity.doBlasting(recipe, input, data);
                         entity.lastCheckSlot = i;
                         break;
                     }
@@ -153,13 +155,13 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
     }
 
     protected <T extends EnhancedForgeRecipe> boolean isForgeMatched(Level level, BEntity<T> entity, ItemStack[] itemStacks, boolean[] data) {
-        PortRecipeHolder<T> recipeholder = entity.forge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
-        if (recipeholder != null) {
-            if (!entity.isLit() && entity.canForgeBurn(recipeholder)) {
+        T recipe = entity.forge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
+        if (recipe != null) {
+            if (!entity.isLit() && entity.canForgeBurn(recipe)) {
                 data[0] = entity.doUpdateStatus();
             }
-            if (entity.canForgeBurn(recipeholder)) {
-                if (entity.doUpdateProgress(recipeholder, entity::burnForge)) {
+            if (entity.canForgeBurn(recipe)) {
+                if (entity.doUpdateProgress(recipe, entity::burnForge)) {
                     data[0] = true;
                 }
             }
@@ -170,7 +172,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
     protected abstract BlockEntityType<? extends BEntity<?>> getBlockEntityType();
 
-    public static abstract class BEntity<T extends EnhancedForgeRecipe> extends BaseContainerBlockEntity implements WorldlyContainer, RecipeCraftingHolder {
+    public static abstract class BEntity<T extends EnhancedForgeRecipe> extends BaseContainerBlockEntity implements WorldlyContainer, PortRecipeCraftingHolder {
         public static final int INPUT_SLOT_1 = 0;
         public static final int INPUT_SLOT_2 = 1;
         public static final int INPUT_SLOT_3 = 2;
@@ -232,8 +234,8 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             }
         };
         protected final Object2IntOpenHashMap<ResourceLocation> recipesUsed = new Object2IntOpenHashMap<>();
-        protected final RecipeManager.CachedCheck<RecipeInput, T> forge;
-        protected final RecipeManager.CachedCheck<SingleRecipeInput, BlastingRecipe> blasting;
+        protected final RecipeManager.CachedCheck<PortRecipeInput, T> forge;
+        protected final RecipeManager.CachedCheck<Container, BlastingRecipe> blasting;
         protected final ItemStack[] itemStacks = new ItemStack[4];
         protected int lastCheckSlot = 0;
         protected BEntity<?> basePart = null;
@@ -246,30 +248,30 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         protected abstract RecipeType<T> getRecipeType();
 
-        protected static <R extends EnhancedForgeRecipe> RecipeManager.CachedCheck<RecipeInput, R> createCachedCheck(RecipeType<R> recipeType) {
+        protected static <R extends EnhancedForgeRecipe> RecipeManager.CachedCheck<PortRecipeInput, R> createCachedCheck(RecipeType<R> recipeType) {
             return new RecipeManager.CachedCheck<>() {
                 @Nullable
-                private RecipeHolder<R> lastRecipe;
+                private R lastRecipe;
                 private int lastIngredientCount = 0;
 
                 @Override
-                public Optional<RecipeHolder<R>> getRecipeFor(RecipeInput recipeInput, Level level) {
+                public Optional<R> getRecipeFor(PortRecipeInput recipeInput, Level level) {
                     int count = 0;
                     for (int i = 0; i < recipeInput.size(); i++) {
                         if (!recipeInput.getItem(i).isEmpty()) count++;
                     }
                     if (count == 0) return Optional.empty();
 
-                    if (lastRecipe != null && lastRecipe.value().matches(recipeInput, level)) {
+                    if (lastRecipe != null && lastRecipe.matches(recipeInput, level)) {
                         if (count == lastIngredientCount) {
                             return Optional.of(lastRecipe);
                         }
                         this.lastIngredientCount = count;
                     }
 
-                    Optional<RecipeHolder<R>> recipe = level.getRecipeManager().byType(recipeType).stream()
-                            .filter(holder -> holder.value().matches(recipeInput, level))
-                            .max(Comparator.comparingInt(holder -> holder.value().ingredients.size()));
+                    Optional<R> recipe = level.getRecipeManager().getRecipeFor(recipeType, recipeInput, level).stream()
+                            .filter(holder -> holder.matches(recipeInput, level))
+                            .max(Comparator.comparingInt(holder -> holder.ingredients.size()));
                     if (recipe.isPresent()) {
                         this.lastRecipe = recipe.get();
                         return recipe;
@@ -279,19 +281,19 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             };
         }
 
-        protected void doBlasting(RecipeHolder<BlastingRecipe> recipeholder, ItemStack lastInput, boolean[] data) {
-            if (!isLit() && canBlastingBurn(recipeholder, lastInput)) {
+        protected void doBlasting(BlastingRecipe recipe, ItemStack lastInput, boolean[] data) {
+            if (!isLit() && canBlastingBurn(recipe, lastInput)) {
                 data[0] = doUpdateStatus();
             }
-            if (canBlastingBurn(recipeholder, lastInput)) {
-                if (doUpdateProgress(recipeholder, recipeHolder -> burnBlasting(recipeHolder, lastInput))) {
+            if (canBlastingBurn(recipe, lastInput)) {
+                if (doUpdateProgress(recipe, recipeHolder -> burnBlasting(recipeHolder, lastInput))) {
                     data[0] = true;
                 }
             }
             data[1] = true;
         }
 
-        protected <R extends Recipe<?>> boolean doUpdateProgress(RecipeHolder<R> recipeholder, Predicate<RecipeHolder<R>> predicate) {
+        protected <R extends Recipe<?>> boolean doUpdateProgress(R recipeholder, Predicate<R> predicate) {
             if (++getBasePart().cookingProgress >= cookingTotalTime) {
                 getBasePart().cookingProgress = 0;
                 if (!isLit()) {
@@ -348,9 +350,9 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             }
         }
 
-        protected boolean canBlastingBurn(RecipeHolder<BlastingRecipe> recipe, ItemStack input) {
+        protected boolean canBlastingBurn(BlastingRecipe recipe, ItemStack input) {
             if (!input.isEmpty()) {
-                ItemStack neoResult = recipe.value().assemble(new SingleRecipeInput(input), level.registryAccess());
+                ItemStack neoResult = recipe.assemble(new PortSingleRecipeInput(input), level.registryAccess());
                 return canResultInsert(neoResult);
             } else {
                 return false;
@@ -372,9 +374,9 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             }
         }
 
-        protected boolean burnBlasting(RecipeHolder<BlastingRecipe> recipe, ItemStack input) {
+        protected boolean burnBlasting(BlastingRecipe recipe, ItemStack input) {
             if (canBlastingBurn(recipe, input)) {
-                ItemStack neoResult = recipe.value().assemble(new SingleRecipeInput(input), level.registryAccess());
+                ItemStack neoResult = recipe.assemble(new PortSingleRecipeInput(input), level.registryAccess());
                 ItemStack oldResult = getItems().get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     getItems().set(RESULT_SLOT, neoResult.copy());
@@ -393,16 +395,16 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             }
         }
 
-        protected boolean canForgeBurn(RecipeHolder<T> recipe) {
-            if ((!recipe.value().isRequiresFuel() || (useFuel() || isLit() || !getItem(FUEL_SLOT).isEmpty())) && Arrays.stream(itemStacks).anyMatch(itemStack -> !itemStack.isEmpty())) {
-                ItemStack neoResult = recipe.value().getResultItem(level.registryAccess());
+        protected boolean canForgeBurn(T recipe) {
+            if ((!recipe.isRequiresFuel() || (useFuel() || isLit() || !getItem(FUEL_SLOT).isEmpty())) && Arrays.stream(itemStacks).anyMatch(itemStack -> !itemStack.isEmpty())) {
+                ItemStack neoResult = recipe.getResultItem(level.registryAccess());
                 return canResultInsert(neoResult);
             } else {
                 return false;
             }
         }
 
-        protected boolean burnForge(RecipeHolder<T> recipe) {
+        protected boolean burnForge(T recipe) {
             if (canForgeBurn(recipe)) {
                 if (getItems().get(FUEL_SLOT).is(Items.BUCKET)) {
                     for (ItemStack input : itemStacks) {
@@ -411,7 +413,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
                         }
                     }
                 }
-                ItemStack neoResult = recipe.value().assembleAndExtract(new ArrayRecipeInput(itemStacks), level.registryAccess());
+                ItemStack neoResult = recipe.assembleAndExtract(new ArrayRecipeInput(itemStacks), level.registryAccess());
                 ItemStack oldResult = getItems().get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     getItems().set(RESULT_SLOT, neoResult.copy());
@@ -452,7 +454,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         protected int getTotalCookTime() {
             if (level == null) return 100;
             int time = forge.getRecipeFor(new ArrayRecipeInput(getItemStacks()), level)
-                    .map(holder -> holder.value().getCookingTime()).orElse(100);
+                    .map(EnhancedForgeRecipe::getCookingTime).orElse(100);
             return getItems().get(FUEL_SLOT).isEmpty() ? time * 8 : time;
         }
 
@@ -480,7 +482,6 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             return getItems().size();
         }
 
-        @Override
         protected NonNullList<ItemStack> getItems() {
             return getBasePart().items;
         }
@@ -500,7 +501,6 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             return basePart;
         }
 
-        @Override
         protected void setItems(NonNullList<ItemStack> items) {
             getBasePart().items = items;
         }
@@ -527,11 +527,11 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         public void getRecipesToAwardAndPopExperience(ServerLevel level, Vec3 popVec) {
             for (Object2IntMap.Entry<ResourceLocation> entry : recipesUsed.object2IntEntrySet()) {
-                level.getRecipeManager().byKey(entry.getKey()).ifPresent(recipeHolder -> {
-                    if (recipeHolder.value() instanceof EnhancedForgeRecipe recipe) {
-                        createExperience(level, popVec, entry.getIntValue(), recipe.getExperience());
-                    } else if (recipeHolder.value() instanceof BlastingRecipe recipe) {
-                        createExperience(level, popVec, entry.getIntValue(), recipe.getExperience());
+                level.getRecipeManager().byKey(entry.getKey()).ifPresent(recipe -> {
+                    if (recipe instanceof EnhancedForgeRecipe r) {
+                        createExperience(level, popVec, entry.getIntValue(), r.getExperience());
+                    } else if (recipe instanceof BlastingRecipe r) {
+                        createExperience(level, popVec, entry.getIntValue(), r.getExperience());
                     }
                 });
             }
@@ -548,14 +548,14 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         }
 
         @Override
-        public void setRecipeUsed(@Nullable RecipeHolder<?> recipe) {
+        public void setRecipeUsed(@Nullable Recipe<?> recipe) {
             if (recipe != null) {
-                recipesUsed.addTo(recipe.id(), 1);
+                recipesUsed.addTo(recipe.getId(), 1);
             }
         }
 
         @Override
-        public @Nullable RecipeHolder<?> getRecipeUsed() {
+        public @Nullable Recipe<?> getRecipeUsed() {
             return null;
         }
 

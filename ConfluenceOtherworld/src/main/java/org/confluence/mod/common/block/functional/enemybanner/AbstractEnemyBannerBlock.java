@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
@@ -36,7 +37,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.component.PortDataComponentMap;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 
@@ -64,9 +65,9 @@ public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
         return level.getBlockEntity(pos) instanceof AbstractEnemyBannerBlock.BEntity entity
-                ? entity.getItem() : super.getCloneItemStack(level, pos, state);
+                ? entity.getItem() : super.getCloneItemStack(state, target, level, pos, player);
     }
 
     @Override
@@ -127,24 +128,8 @@ public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
 
         public ItemStack getItem() {
             ItemStack stack = ModItems.ENEMY_BANNER.toStack();
-            stack.applyComponents(collectComponents());
+            LibUtils.updateItemStackNbt(stack, tag -> tag.putString(TAG_ENTRY_KEY, entryKey));
             return stack;
-        }
-
-        @Override
-        protected void applyImplicitComponents(DataComponentInput componentInput) {
-            NbtComponent component = componentInput.get(ConfluenceMagicLib.NBT);
-            this.entryKey = component == null ? DEFAULT_ENTRY_KEY : component.nbt().getString(TAG_ENTRY_KEY);
-        }
-
-        @Override
-        protected void collectImplicitComponents(PortDataComponentMap.PortBuilder components) {
-            components.set(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(TAG_ENTRY_KEY, entryKey)));
-        }
-
-        @Override
-        public void removeComponentsFromTag(CompoundTag tag) {
-            tag.remove(TAG_ENTRY_KEY);
         }
 
         public static void serverTick(Level level, BlockPos pos, BlockState state, BEntity entity) {
@@ -169,7 +154,7 @@ public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
             super(
                     ModBlocks.ENEMY_BANNER.get(),
                     ModBlocks.WALL_ENEMY_BANNER.get(),
-                    new Properties()
+                    new PortItem.PortProperties()
                             .component(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(TAG_ENTRY_KEY, DEFAULT_ENTRY_KEY)))
                             .component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
                     Direction.DOWN

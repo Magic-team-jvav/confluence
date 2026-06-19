@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.map;
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.java.util.List.PortListExtension;
 import PortLib.extensions.net.minecraft.advancements.critereon.EntityPredicate.PortEntityPredicateExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -22,7 +23,7 @@ public record BugNetEntityToItem(List<Tuple<EntityPredicate, ItemStack>> list) {
     public static final Codec<BugNetEntityToItem> CODEC = PortCodecExtension.lazyInitialized(() -> {
         Codec<Tuple<EntityPredicate, ItemStack>> codec = RecordCodecBuilder.create(instance -> instance.group(
                 PortCodecExtension.lenientOptionalFieldOf(PortEntityPredicateExtension.codec(), "predicate", EMPTY_PREDICATE).forGetter(Tuple::getA),
-                ItemStack.CODEC.fieldOf("result").forGetter(Tuple::getB)
+                PortItemStackExtension.codec().fieldOf("result").forGetter(Tuple::getB)
         ).apply(instance, Tuple::new));
         return Codec.either(codec.listOf(), codec).xmap(
                 either -> either.map(Function.identity(), List::of),

@@ -13,8 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.terraentity.entity.monster.LittleHornet;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import javax.annotation.Nullable;
 

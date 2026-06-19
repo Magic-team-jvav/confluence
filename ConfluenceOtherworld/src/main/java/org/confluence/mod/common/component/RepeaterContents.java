@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 public final class RepeaterContents implements TooltipComponent {
     public static final RepeaterContents EMPTY = new RepeaterContents(NonNullList.create(), 64);
     public static final Codec<RepeaterContents> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            ItemStack.CODEC.listOf().fieldOf("items").forGetter(RepeaterContents::asItems),
+            PortItemStackExtension.codec().listOf().fieldOf("items").forGetter(RepeaterContents::asItems),
             Codec.INT.fieldOf("maxItemCapacity").forGetter(RepeaterContents::getMaxItemCapacity)
     ).apply(instance, RepeaterContents::new));
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, RepeaterContents> STREAM_CODEC = PortStreamCodec.composite(

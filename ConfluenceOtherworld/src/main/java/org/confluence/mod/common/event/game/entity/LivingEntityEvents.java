@@ -135,7 +135,7 @@ public final class LivingEntityEvents {
                 ) ModUtils.enemyDropMoney(victim, level);
                 Bestiary.INSTANCE.updateEntry(victim, true);
             }
-            if (attacker != null && attacker.getType().is(TETags.EntityTypes.CORRUPT)) {
+            if (attacker != null && attacker.getType().is(ModTags.EntityTypes.CORRUPT)) {
                 NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, victim);
             }
             if (victim instanceof Boss boss && boss.shouldShowMessage()) {

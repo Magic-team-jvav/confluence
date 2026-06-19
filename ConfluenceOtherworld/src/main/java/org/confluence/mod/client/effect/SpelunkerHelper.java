@@ -1,5 +1,7 @@
 package org.confluence.mod.client.effect;
 
+import PortLib.extensions.java.util.List.PortListExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -24,6 +26,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
+import nowebsite.makertechno.the_trackers.api.component.ComponentBuilder;
+import nowebsite.makertechno.the_trackers.api.component.StaticComponent;
+import nowebsite.makertechno.the_trackers.core.track.TrackersMonitor;
+import nowebsite.makertechno.the_trackers.core.track.WorldSingletonTracker;
+import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
@@ -31,6 +38,9 @@ import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.lwjgl.opengl.GL11;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
+import org.mesdag.portlib.registries.PortDeferredBlock;
+import org.mesdag.portlib.registries.PortDeferredItem;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.*;
 
@@ -79,7 +89,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 Codec.INT.fieldOf("color").forGetter(Entry::color),
                 Codec.BOOL.fieldOf("showText").forGetter(Entry::showText),
                 ShowType.CODEC.fieldOf("showType").forGetter(Entry::showType),
-                ItemStack.CODEC.fieldOf("showItem").forGetter(Entry::showItem),
+                PortItemStackExtension.codec().fieldOf("showItem").forGetter(Entry::showItem),
                 ResourceLocation.CODEC.fieldOf("showIcon").forGetter(Entry::showIcon),
                 Codec.BOOL.fieldOf("isLocation").forGetter(Entry::isLocation)
         ).apply(builder, Entry::new));
@@ -266,7 +276,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putWithSpecialIconTarget(LIFE_FRUIT.get(), 0xe8c314, true, ShowType.SPELUNKER, "life_fruit");
 
         // 箱子
-        for (DeferredBlock<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
+        for (PortDeferredBlock<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
             putTargetWithItemRender(normalChest.get(), 0xe8c314, true, ShowType.SPELUNKER, Items.CHEST);
         }
         putTargetWithItemRender(Blocks.CHEST, 0xe8c314, true, ShowType.SPELUNKER, Items.CHEST);
@@ -374,7 +384,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
     }
 
     /// 咱汇流用的，材料部分
-    private void putMaterialTarget(Block block, int rgb, boolean always, ShowType showType, DeferredItem<?> item) {
+    private void putMaterialTarget(Block block, int rgb, boolean always, ShowType showType, PortDeferredItem<?> item) {
         targets.put(block, new Entry(rgb, always, showType, ItemStack.EMPTY, getResource(item.get(), "item/materials/"), true));
     }
 
@@ -415,9 +425,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     if (targets.containsKey(block) &&  /*&&//有目标且
                             (!centerCache.containsKey(pos) ||//未已缓存或
                                     centerCache.containsKey(pos) && player.level().getBlockState(pos).is(Blocks.AIR))*/
-                            (targets.get(block).showType == ShowType.SPELUNKER && player.hasEffect(ModEffects.SPELUNKER) ||
-                                    targets.get(block).showType == ShowType.DANGER && player.hasEffect(ModEffects.DANGER_SENSE)) ||
-                            blockState.is(Tags.Blocks.ORES) && player.hasEffect(ModEffects.SPELUNKER) // 显示所有带矿物标签的方块
+                            (targets.get(block).showType == ShowType.SPELUNKER && player.hasEffect(ModEffects.SPELUNKER.get()) ||
+                                    targets.get(block).showType == ShowType.DANGER && player.hasEffect(ModEffects.DANGER_SENSE.get())) ||
+                            blockState.is(PortTags.Blocks.ORES) && player.hasEffect(ModEffects.SPELUNKER.get()) // 显示所有带矿物标签的方块
                     ) { // 已缓存但为空
                         blockMap.computeIfAbsent(block, k1 -> new ArrayList<>()).add(pos.immutable());
                     }
@@ -453,7 +463,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
             if (target != null) {
                 rgb = target.color();
             } else {
-                rgb = n.getKey().defaultBlockState().getMapColor(player.level(), n.getValue().getFirst()).calculateRGBColor(MapColor.Brightness.HIGH);
+                rgb = n.getKey().defaultBlockState().getMapColor(player.level(), PortListExtension.getFirst(n.getValue())).calculateRGBColor(MapColor.Brightness.HIGH);
             }
             if (n.getValue() == null) return;
             int r = rgb >> 16 & 0xFF;
@@ -480,8 +490,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     }
                 }
 
-                if ((target != null && target.showType == ShowType.SPELUNKER) || n.getKey().defaultBlockState().is(Tags.Blocks.ORES)) { // 矿透方块
-                    if (!player.hasEffect(ModEffects.SPELUNKER)) continue;
+                if ((target != null && target.showType == ShowType.SPELUNKER) || n.getKey().defaultBlockState().is(PortTags.Blocks.ORES)) { // 矿透方块
+                    if (!player.hasEffect(ModEffects.SPELUNKER.get())) continue;
                     // todo 可以优化
                     for (BlockPos centerPos : centers.get(n.getKey())) { // 否则查找所有的中心块
                         double distance = centerPos.distSqr(blockPos);
@@ -500,7 +510,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
                     }
                 } else if (target != null && target.showType == ShowType.DANGER) { // 危险方块
-                    if (!player.hasEffect(ModEffects.DANGER_SENSE)) continue;
+                    if (!player.hasEffect(ModEffects.DANGER_SENSE.get())) continue;
                     centerCacheFrame.put(blockPos, n.getKey()); // 渲染所有危险方块
                 }
 
@@ -518,11 +528,12 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     boolean south = !(player.level().getBlockState(blockPos.south()).getBlock() == self);
                     boolean east = !(player.level().getBlockState(blockPos.east()).getBlock() == self);
                     boolean west = !(player.level().getBlockState(blockPos.west()).getBlock() == self);
-                    if (up || down || north || south || east || west)
-                        renderDebugBlock(buffer, blockPos, size, r, g, b, a, up, down, north, south, east, west);
+                    if (up || down || north || south || east || west) {
+                        LibRenderUtils.renderDebugBlock(buffer, blockPos, size, r, g, b, a, up, down, north, south, east, west);
+                    }
                 } else {
                     cachedPointers.values().forEach(controller -> controller.component.setVisible(false));
-                    renderDebugBlock(buffer, blockPos, size, r, g, b, a);
+                    LibRenderUtils.renderDebugBlock(buffer, blockPos, size, r, g, b, a);
                 }
             }
             centerCacheFrame.keySet().forEach(pos -> tryComputePointers(pos, target));

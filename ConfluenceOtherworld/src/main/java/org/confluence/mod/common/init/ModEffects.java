@@ -151,6 +151,7 @@ public final class ModEffects {
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5));
     public static final RegistryObject<MobEffect> ENEMY_BANNER = EFFECTS.register("enemy_banner", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0000));
     public static final RegistryObject<MobEffect> AROMATIC_SATIATION = EFFECTS.register("aromatic_satiation", AromaticSatiationEffect::new);
+    public static final RegistryObject<MobEffect> DEMONIC_THOUGHTS = EFFECTS.register("demonic_toughts", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x5d478b));
 
     // 药剂
     public static final RegistryObject<FlaskEffect> WEAPON_IMBUE_FIRE = EFFECTS.register("weapon_imbue_fire", FlaskOfFireEffect::new);

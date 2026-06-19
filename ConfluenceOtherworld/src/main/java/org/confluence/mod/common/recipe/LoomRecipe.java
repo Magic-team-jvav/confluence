@@ -3,21 +3,21 @@ package org.confluence.mod.common.recipe;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
 import org.confluence.lib.common.recipe.SimpleRecipeSerializer;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortShapedRecipePattern;
 
 public class LoomRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
-    public LoomRecipe(ItemStack result, ShapedRecipePattern pattern) {
+    public LoomRecipe(ItemStack result, PortShapedRecipePattern pattern) {
         super(result, pattern);
     }
 
@@ -25,7 +25,7 @@ public class LoomRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
         super(result, ingredients);
     }
 
-    public LoomRecipe(ItemStack result, Either<ShapedRecipePattern, NonNullList<Ingredient>> either) {
+    public LoomRecipe(ItemStack result, Either<PortShapedRecipePattern, NonNullList<Ingredient>> either) {
         super(result, either);
     }
 
@@ -56,7 +56,7 @@ public class LoomRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
         }
 
         @Override
-        protected StreamCodec<PortRegistryFriendlyByteBuf, LoomRecipe> getStreamCodec() {
+        protected PortStreamCodec<PortRegistryFriendlyByteBuf, LoomRecipe> getStreamCodec() {
             return eitherSerializerStreamCodec(LoomRecipe::new);
         }
     }

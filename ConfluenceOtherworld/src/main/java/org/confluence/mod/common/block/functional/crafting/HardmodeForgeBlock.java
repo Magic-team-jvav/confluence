@@ -8,11 +8,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -27,6 +26,7 @@ import org.confluence.mod.common.recipe.EnhancedForgeRecipe;
 import org.confluence.mod.common.recipe.HardmodeForgeRecipe;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
 public class HardmodeForgeBlock extends EnhancedForgeBlock {
     public HardmodeForgeBlock(Properties properties) {
@@ -46,9 +46,9 @@ public class HardmodeForgeBlock extends EnhancedForgeBlock {
     @SuppressWarnings("unchecked")
     @Override
     protected <T extends EnhancedForgeRecipe> boolean isForgeMatched(Level level, EnhancedForgeBlock.BEntity<T> entity, ItemStack[] itemStacks, boolean[] data) {
-        RecipeHolder<T> recipeholder = null;
+        T recipeholder = null;
         if (entity instanceof BEntity bEntity) {
-            recipeholder = (RecipeHolder<T>) bEntity.hellforge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
+            recipeholder = (T) bEntity.hellforge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
         }
         if (recipeholder == null) {
             recipeholder = entity.forge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
@@ -78,7 +78,7 @@ public class HardmodeForgeBlock extends EnhancedForgeBlock {
     }
 
     public static class BEntity extends EnhancedForgeBlock.BEntity<HardmodeForgeRecipe> {
-        protected final RecipeManager.CachedCheck<RecipeInput, HellforgeRecipe> hellforge;
+        protected final RecipeManager.CachedCheck<PortRecipeInput, HellforgeRecipe> hellforge;
 
         public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.HARDMODE_FORGE_ENTITY.get(), pos, blockState);
@@ -103,8 +103,40 @@ public class HardmodeForgeBlock extends EnhancedForgeBlock {
         @Override
         protected int getTotalCookTime() {
             int time = forge.getRecipeFor(new ArrayRecipeInput(getItemStacks()), level)
-                    .map(holder -> holder.value().getCookingTime()).orElse(50);
+                    .map(EnhancedForgeRecipe::getCookingTime).orElse(50);
             return items.get(FUEL_SLOT).isEmpty() ? time * 4 : time;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return items.isEmpty();
+        }
+
+        @Override
+        public ItemStack getItem(int slot) {
+            return items.get(slot);
+        }
+
+        @Override
+        public ItemStack removeItem(int slot, int amount) {
+            ItemStack stack = items.get(slot);
+            stack.shrink(amount);
+            return stack.isEmpty() ? ItemStack.EMPTY : stack;
+        }
+
+        @Override
+        public ItemStack removeItemNoUpdate(int slot) {
+            return items.remove(slot);
+        }
+
+        @Override
+        public boolean stillValid(Player player) {
+            return true;
+        }
+
+        @Override
+        public void clearContent() {
+            items.clear();
         }
     }
 }

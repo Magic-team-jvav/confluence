@@ -2,8 +2,6 @@ package org.confluence.mod.common.recipe;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -11,6 +9,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import org.confluence.lib.common.recipe.SimpleRecipeSerializer;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public class HellforgeRecipe extends EnhancedForgeRecipe {
     public HellforgeRecipe(ItemStack result, NonNullList<Ingredient> ingredients, float experience, int cookingTime, boolean requiresFuel) {
@@ -44,7 +44,7 @@ public class HellforgeRecipe extends EnhancedForgeRecipe {
         }
 
         @Override
-        protected StreamCodec<PortRegistryFriendlyByteBuf, HellforgeRecipe> getStreamCodec() {
+        protected PortStreamCodec<PortRegistryFriendlyByteBuf, HellforgeRecipe> getStreamCodec() {
             return EnhancedForgeRecipe.streamCodec(HellforgeRecipe::new);
         }
     }

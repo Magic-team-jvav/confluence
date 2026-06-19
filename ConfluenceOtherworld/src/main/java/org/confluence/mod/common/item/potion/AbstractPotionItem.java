@@ -54,23 +54,30 @@ public abstract class AbstractPotionItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity living) {
         apply(itemStack, level, living);
+
         if (living instanceof Player player && !player.hasInfiniteMaterials()) {
             itemStack.shrink(1); // 创造模式不消耗
         }
-        if (CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
-            if (itemStack.isEmpty()) {
-                return getReturnItem();
-            } else {
-                if (living instanceof Player player && !player.hasInfiniteMaterials()) {
-                    ItemStack itemstack = getReturnItem();
-                    if (!player.getInventory().add(itemstack)) {
-                        player.drop(itemstack, false);
-                    }
-                }
-                return itemStack;
-            }
+
+        if (!CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
+            return itemStack.isEmpty() ? ItemStack.EMPTY : itemStack;
         }
-        return itemStack.isEmpty() ? ItemStack.EMPTY : itemStack;
+
+        if (itemStack.isEmpty()) {
+            return getReturnItem();
+        }
+
+        if (!(living instanceof Player player) || player.hasInfiniteMaterials()) {
+            return itemStack;
+        }
+
+        ItemStack itemstack = getReturnItem();
+        if (player.getInventory().add(itemstack)) {
+            return itemStack;
+        }
+
+        player.drop(itemstack, false);
+        return itemStack;
     }
 
     protected ItemStack getReturnItem() {

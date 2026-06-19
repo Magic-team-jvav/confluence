@@ -1,5 +1,6 @@
 {
     "loader": "neoforge:separate_transforms",
+    "gui_light": "front",
     "base": {
         "parent": "builtin/entity",
         "textures": {

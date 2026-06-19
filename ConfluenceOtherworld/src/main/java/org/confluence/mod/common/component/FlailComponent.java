@@ -100,7 +100,7 @@ public record FlailComponent(
             );
 
     /** 链球 MACE 预制参数（测试用）*/
-    public static final Supplier<FlailComponent> MACE =
+    public static final Supplier<FlailComponent> MACE_TEST =
             () -> new FlailComponent(
                     11.0f,
                     1.2f,
@@ -108,6 +108,25 @@ public record FlailComponent(
                     0.3f,
                     8.0f,
                     0.3f,
+                    0.05f,
+                    0.3f,
+                    3,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                    ModEntities.FLAIL_ENTITY.getId(),
+                    Confluence.asResource("textures/entity/flail/mace.png"),
+                    Optional.of(Confluence.asResource("geo/entity/flail/mace.geo.json")),
+                    Optional.empty()
+            );
+
+    /** 链锤*/
+    public static final Supplier<FlailComponent> MACE =
+            () -> new FlailComponent(
+                    11.0f,
+                    1.2f,
+                    1.2f,
+                    1.2f,
+                    8.0f,
+                    1.0f,
                     0.05f,
                     0.3f,
                     3,

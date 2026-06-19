@@ -419,7 +419,6 @@ public class ModDataProvider {
             herb(context, VOID_GRASS, 180, NatureBlocks.VOID_GRASS.get());
             herb(context, TALL_VOID_GRASS, 180, NatureBlocks.TALL_VOID_GRASS.get());
             herb(context, INVERSE_GRASS, 180, NatureBlocks.INVERSE_GRASS.get());
-            herb(context, TALL_INVERSE_GRASS, 180, NatureBlocks.TALL_INVERSE_GRASS.get());
             herb(context, SILVER_GRASS, 180, NatureBlocks.SILVER_GRASS.get());
             herb(context, TALL_SILVER_GRASS, 180, NatureBlocks.TALL_SILVER_GRASS.get());
             herb(context, VOID_VIOLET, 180, NatureBlocks.VOID_VIOLET.get());
@@ -428,6 +427,8 @@ public class ModDataProvider {
             herb(context, ASH_GRASS, 180, NatureBlocks.ASH_GRASS.get());
             herb(context, JUNGLE_ROSE, 16, NatureBlocks.JUNGLE_ROSE.get());
             herb(context, NATURES_GIFT, 4, NatureBlocks.NATURES_GIFT.get());
+
+            inverseHerb(context, TALL_INVERSE_GRASS, 180, NatureBlocks.TALL_INVERSE_GRASS.get());
 
             droopingVineTree(context, ModFeatures.Configured.YELLOW_WILLOW_TREE, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LOG.get(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LEAVES.get(), NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), 6);
 
@@ -741,6 +742,10 @@ public class ModDataProvider {
 
         private static void herb(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int tries, Block herbBlock) {
             register(context, key, Feature.RANDOM_PATCH, new RandomPatchConfiguration(tries, 7, 3, direct(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(herbBlock)), BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(Blocks.AIR)))));
+        }
+
+        private static void inverseHerb(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int tries, Block herbBlock) {
+            register(context, key, ModFeatures.RANDOM_INVERSE_TALL_PLANT.get(), new RandomInverseTallPlantFeature.Config(tries, 7, BlockStateProvider.simple(herbBlock)));
         }
 
         private static void simple(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block block) {

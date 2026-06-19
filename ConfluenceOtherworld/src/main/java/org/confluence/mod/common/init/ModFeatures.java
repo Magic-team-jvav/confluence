@@ -69,6 +69,7 @@ public final class ModFeatures {
     public static final Supplier<DetonatorFeature> DETONATOR_FEATURE = FEATURES.register("detonator", () -> new DetonatorFeature(DetonatorFeature.Config.CODEC));
     public static final Supplier<PlantPatchFeature> PLANT_PATCH = FEATURES.register("plant_patch", () -> new PlantPatchFeature(PlantPatchFeature.Config.CODEC)); // todo 使用
     public static final Supplier<LayerFeature> LAYER = FEATURES.register("layer", () -> new LayerFeature(LayerFeature.Config.CODEC));
+    public static final Supplier<RandomInverseTallPlantFeature> RANDOM_INVERSE_TALL_PLANT = FEATURES.register("random_inverse_tall_plant", () -> new RandomInverseTallPlantFeature(RandomInverseTallPlantFeature.Config.CODEC));
 
     public static final Supplier<PlacementModifierType<SecretFlagPlacement>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacement.CODEC);
 

@@ -649,7 +649,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 VOID_GRASS_BLOCK.get(),
                 INVERSE_GRASS_BLOCK.get(),
                 MOONLIT_GRASS_BLOCK.get(),
-                END_DIRT.get()
+                END_DIRT.get(),
+                END_MUD.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
@@ -1041,7 +1042,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 INVERSE_GRASS_BLOCK.get(),
                 MOONLIT_GRASS_BLOCK.get(),
                 SMALL_STONE_PILES.get(),
-                END_DIRT.get()
+                END_DIRT.get(),
+                END_MUD.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_METEORITE,

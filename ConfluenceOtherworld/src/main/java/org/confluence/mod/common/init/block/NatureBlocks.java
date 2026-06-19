@@ -255,6 +255,7 @@ public class NatureBlocks {
 
     // 末地 - 通用
     public static final DeferredBlock<Block> END_DIRT = registerWithItem("end_dirt", EndDirtBlock::new);
+    public static final DeferredBlock<Block> END_MUD = registerWithItem("end_mud", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_PURPLE)));
     public static final DeferredBlock<PassableGlowingBlock> VOID_WEAVE = registerWithItem("void_weave", () -> new PassableGlowingBlock(BlockBehaviour.Properties.ofFullCopy(GLASS).mapColor(MapColor.COLOR_PURPLE)));
     public static final DeferredBlock<Block> VOID_CRYSTAL_BLOCK = registerWithItem("void_crystal_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(AMETHYST_BLOCK)));
     public static final DeferredBlock<BuddingVoidCrystal> BUDDING_VOID_CRYSTAL = registerWithItem("budding_void_crystal", () -> new BuddingVoidCrystal(BlockBehaviour.Properties.ofFullCopy(AMETHYST_BLOCK).randomTicks()));

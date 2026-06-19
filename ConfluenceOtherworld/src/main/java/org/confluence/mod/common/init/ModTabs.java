@@ -199,6 +199,7 @@ public final class ModTabs {
 
                         CreativeModeTab.Output end = GroupItem.belongsTo("end", output);
                         end.accept(NatureBlocks.END_DIRT);
+                        end.accept(NatureBlocks.END_MUD);
                         end.accept(NatureBlocks.VOID_WEAVE);
                         end.accept(NatureBlocks.VOID_GRASS_BLOCK);
                         end.accept(NatureBlocks.VOID_GRASS);

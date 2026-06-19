@@ -719,6 +719,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(HALLOW_TAPERED_BLOCK.get());
 
         dropSelf(END_DIRT.get());
+        dropSelf(END_MUD.get());
 
         dropSelf(VOID_TREE_ROOT_BLOCK.get());
 

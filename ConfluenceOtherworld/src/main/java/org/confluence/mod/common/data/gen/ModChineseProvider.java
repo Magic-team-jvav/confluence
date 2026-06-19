@@ -2155,6 +2155,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_GRASS.get(), "灰烬草");
 
         add(NatureBlocks.END_DIRT.get(), "终末土");
+        add(NatureBlocks.END_MUD.get(), "末地淤泥");
         add(NatureBlocks.VOID_WEAVE.get(), "虚空构造体");
         add(NatureBlocks.VOID_CRYSTAL_BLOCK.get(), "虚空水晶块");
         add(NatureBlocks.BUDDING_VOID_CRYSTAL.get(), "虚空水晶母岩");

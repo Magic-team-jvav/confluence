@@ -54,7 +54,7 @@ public class WaystonesHelper {
     public static final DeferredBlock<Block> HALLOW_PYLON = register("hallow_pylon", DyeColor.LIGHT_BLUE, (world, pos, biome) -> biome.is(ModTags.Biomes.THE_HALLOW));
     public static final DeferredBlock<Block> MUSHROOM_PYLON = register("mushroom_pylon", DyeColor.PURPLE, (world, pos, biome) -> biome.is(ModBiomes.GLOWING_MUSHROOM));
     public static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", DyeColor.BROWN, (world, pos, biome) -> true);
-    // todo 地狱晶塔 // todo 以太晶塔
+    // todo 地狱晶塔 // todo 以太晶塔+晶塔微光转换配方
     public static final Supplier<BlockEntityType<PylonBlock.BEntity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.BEntity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
     private static DeferredBlock<Block> register(String name, BlockBehaviour.Properties properties, PylonBlock.Survive survive) {
@@ -92,10 +92,6 @@ public class WaystonesHelper {
 
     public static void itemTag(Function<TagKey<Item>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item>> consumer) {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> wip = consumer.apply(LibTags.Items.WIP);
-        wip.addOptional(JUNGLE_PYLON.getId());
-        wip.addOptional(HALLOW_PYLON.getId());
-        wip.addOptional(MUSHROOM_PYLON.getId());
-        wip.addOptional(UNIVERSAL_PYLON.getId());
     }
 
     public static void blockTags(Function<TagKey<Block>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block>> consumer) {

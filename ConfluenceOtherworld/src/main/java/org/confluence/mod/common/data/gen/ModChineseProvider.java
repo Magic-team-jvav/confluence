@@ -2147,6 +2147,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.PURPLE_PACKED_ICE.get(), "紫浮冰块");
         add(NatureBlocks.CRIMSON_GRASS_BLOCK.get(), "猩红草方块");
         add(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK.get(), "猩红丛林草方块");
+        add(NatureBlocks.PUPIL_BLOCK.get(), "瞳孔块");
+        add(NatureBlocks.EYEBALL_BLOCK.get(), "眼球块");
         add(NatureBlocks.MUSHROOM_GRASS_BLOCK.get(), "蘑菇草方块");
         add(NatureBlocks.JUNGLE_GRASS_BLOCK.get(), "丛林草方块");
         add(NatureBlocks.JUNGLE_PATH.get(), "丛林草径");

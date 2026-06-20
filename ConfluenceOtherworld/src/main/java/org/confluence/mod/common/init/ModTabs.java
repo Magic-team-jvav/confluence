@@ -143,6 +143,8 @@ public final class ModTabs {
                         crimson.accept(NatureBlocks.CRIMSON_TAPERED_BLOCK);
                         crimson.accept(ModItems.CRIMSON_CATTAIL);
                         crimson.accept(NatureBlocks.CRIMSON_DROOPING_VINE);
+                        crimson.accept(NatureBlocks.PUPIL_BLOCK);
+                        crimson.accept(NatureBlocks.EYEBALL_BLOCK);
 
                         CreativeModeTab.Output mushroom = GroupItem.belongsTo("mushroom", output);
                         mushroom.accept(NatureBlocks.MUSHROOM_GRASS_BLOCK);

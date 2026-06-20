@@ -154,7 +154,8 @@ public class NatureBlocks {
     public static final DeferredBlock<CrimsonHeartBlock> CRIMSON_HEART = registerWithoutItem("crimson_heart", CrimsonHeartBlock::new);
     public static final DeferredBlock<EvilCactusBlock> CRIMSON_CACTUS = registerWithItem("crimson_cactus", () -> new EvilCactusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).mapColor(MapColor.COLOR_RED)));
     public static final DeferredBlock<TaperedTwoPartBlock> CRIMSON_TAPERED_BLOCK = registerWithItem("crimson_tapered_block", TaperedTwoPartBlock::new);
-
+    public static final DeferredBlock<Block> PUPIL_BLOCK = registerWithItem("pupil_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE).mapColor(MapColor.COLOR_PURPLE)));
+    public static final DeferredBlock<Block> EYEBALL_BLOCK = registerWithItem("eyeball_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE).mapColor(MapColor.COLOR_GRAY)));
     // 蘑菇地
     public static final DeferredBlock<MushroomGrassBlock> MUSHROOM_GRASS_BLOCK = registerWithItem("mushroom_grass_block", MushroomGrassBlock::new);
     public static final DeferredBlock<MushroomBlock> GLOWING_MUSHROOM = registerWithoutItem("glowing_mushroom", () -> new MushroomBlock(ISpreadable.Type.GLOWING, MUSHROOM_GRASS_BLOCK.get())); // 发光蘑菇

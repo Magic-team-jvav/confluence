@@ -4561,6 +4561,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.HALLOWED_CROWN.get(), "神圣王冠");
         add(VanityArmorItems.WIZARDS_HAT.get(), "巫师的帽子");
         add(VanityArmorItems.PEDDLERS_HAT.get(), "商贩帽");
+        add(VanityArmorItems.RUNE_HAT.get(), "符文帽");
+        add(VanityArmorItems.RUNE_ROBE.get(), "符文长袍");
        // add(VanityArmorItems.BUCKET_HAT.get(), "水桶帽");
         add(VanityArmorItems.DYE.get(), "染料");
         add(VanityArmorItems.RED_DYE.get(), "红染料");

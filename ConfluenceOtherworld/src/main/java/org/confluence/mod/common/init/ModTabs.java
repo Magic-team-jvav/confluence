@@ -1623,6 +1623,8 @@ public final class ModTabs {
                         output.accept(VanityArmorItems.HALLOWED_CROWN.get());
                         output.accept(VanityArmorItems.WIZARDS_HAT.get());
                         output.accept(VanityArmorItems.PEDDLERS_HAT.get());
+                        output.accept(VanityArmorItems.RUNE_HAT.get());
+                        output.accept(VanityArmorItems.RUNE_ROBE.get());
                        // output.accept(VanityArmorItems.BUCKET_HAT.get());
                         output.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(ArmorItems.FLINX_FUR_COAT.get());

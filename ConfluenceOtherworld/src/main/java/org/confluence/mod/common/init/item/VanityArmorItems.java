@@ -83,6 +83,8 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> WIZARDS_HAT = registerVanityArmor("wizards_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> PEDDLERS_HAT = registerVanityArmor("peddlers_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
     // public static final DeferredItem<BaseVanityArmorItem> BUCKET_HAT = registerVanityArmor("bucket_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> RUNE_HAT = registerVanityArmor("rune_hat", "vanity_armor/rune_set", ArmorItem.Type.HELMET, ModRarity.PINK);
+    public static final DeferredItem<BaseVanityArmorItem> RUNE_ROBE = registerVanityArmor("rune_robe", "vanity_armor/rune_set", ArmorItem.Type.CHESTPLATE, ModRarity.PINK);
     public static final DeferredItem<BaseDyeItem> DYE = registerColoredDye("dye", 0x39C5BB);
     public static final DeferredItem<BaseDyeItem> RED_DYE = registerColoredDye("red_dye", 0xDB0909);
     public static final DeferredItem<BaseDyeItem> BRIGHT_RED_DYE = registerColoredDye("bright_red_dye", 0xFF4F4F);

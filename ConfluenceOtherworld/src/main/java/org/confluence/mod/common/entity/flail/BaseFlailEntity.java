@@ -266,9 +266,6 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
         spinAngle += component.getSpinSpeed(player) * (1.0F + turbineBonus);
 
-        // 抖动根本原因
-        if (level().isClientSide()) return;
-
         Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F, new Vec3(0.25, 0.25, -0.2));
         // 与 getPalmPosition 保持一致，使用身体朝向而非头部朝向
         float yawRad = (float) Math.toRadians(player.yBodyRot);

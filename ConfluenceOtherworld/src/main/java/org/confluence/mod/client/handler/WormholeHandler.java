@@ -37,6 +37,10 @@ import java.util.function.ToIntFunction;
 public final class WormholeHandler {
     public static final String WORMHOLE_DIMENSION_PATH = "textures/gui/sprites/container/wormhole/dimension";
 
+    public static void openScreen(){
+        Minecraft.getInstance().setScreen(WormholeScreen.INSTANCE);
+    }
+
     public static void work(WormholePlayerDataSyncPacketS2C packet) {
         LocalPlayer localPlayer = Minecraft.getInstance().player;
         ClientPacketListener connection = localPlayer.connection;

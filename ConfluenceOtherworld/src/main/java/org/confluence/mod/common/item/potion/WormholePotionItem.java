@@ -6,7 +6,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.client.gui.container.WormholeScreen;
- import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.client.handler.WormholeHandler;
+import org.confluence.mod.common.CommonConfigs;
 
 public class WormholePotionItem extends AbstractPotionItem {
     public WormholePotionItem(Properties properties) {
@@ -18,11 +19,7 @@ public class WormholePotionItem extends AbstractPotionItem {
         if (!level.isClientSide() || !(living instanceof Player player)) {
             return;
         }
-        applyClient();
-    }
-
-    public static void applyClient() {
-        Minecraft.getInstance().setScreen(WormholeScreen.INSTANCE);
+        WormholeHandler.openScreen();
     }
 
     @Override

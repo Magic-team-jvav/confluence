@@ -1,18 +1,18 @@
 package org.confluence.mod.client.renderer.entity.flail;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
@@ -20,23 +20,22 @@ import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.util.HandPositionUtils;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 /**
  * <h1>连枷渲染器</h1>
- * 使用 Geo 模型渲染弹球；链条使用 {@link BlockRenderDispatcher#renderSingleBlock} 逐段渲染。
+ * 使用 Geo 模型渲染弹球；链条使用顶点渲染交叉平面模型。
  */
 public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
     private static final ResourceLocation DEFAULT_BALL_TEXTURE = Confluence.asResource("textures/entity/flail/flail.png");
     private static final ResourceLocation DEFAULT_BALL_MODEL = Confluence.asResource("geo/entity/flail/flail.geo.json");
-
-    private final BlockRenderDispatcher dispatcher;
+    private static final ResourceLocation DEFAULT_CHAIN_TEXTURE = Confluence.asResource("textures/entity/flail/flail_chain.png");
 
     public BaseFlailRenderer(EntityRendererProvider.Context context) {
         super(context, new FlailGeoModel(DEFAULT_BALL_MODEL, DEFAULT_BALL_TEXTURE));
-        this.dispatcher = context.getBlockRenderDispatcher();
     }
 
     /** 解析弹球 Geo 模型路径（优先使用 FlailComponent 自定义值） */
@@ -56,11 +55,23 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         return DEFAULT_BALL_TEXTURE;
     }
 
-    /**
-     * 子类可覆写以自定义链条方块外观
-     */
-    protected BlockState getChain(BaseFlailEntity entity) {
-        return Blocks.CHAIN.defaultBlockState();
+    /** 从弹球贴图路径推导锁链贴图，不存在时回退到 flail_chain.png */
+    private static ResourceLocation resolveChainTexture(BaseFlailEntity entity) {
+        FlailComponent comp = entity.getComponent();
+        if (comp != null && comp.ballTexture() != null) {
+            String path = comp.ballTexture().getPath();
+            String name = path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'));
+            ResourceLocation derived = Confluence.asResource("textures/entity/flail/" + name + "_chain.png");
+            if (resourceExists(derived)) {
+                return derived;
+            }
+        }
+        return DEFAULT_CHAIN_TEXTURE;
+    }
+
+    /** 检查指定 ResourceLocation 的资源是否存在 */
+    private static boolean resourceExists(ResourceLocation location) {
+        return Minecraft.getInstance().getResourceManager().getResource(location).isPresent();
     }
 
     @Override
@@ -150,7 +161,7 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
             dir = entity.smoothedChainDir.lerp(dir, 0.35);
         }
         entity.smoothedChainDir = dir;
-        BlockState chain = getChain(entity);
+        ResourceLocation chainTexture = resolveChainTexture(entity);
         int skyLight = LightTexture.pack(10, LightTexture.sky(packedLight));
 
         poseStack.pushPose();
@@ -162,42 +173,79 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         // 对齐局部 +Y 轴到链条方向（hand → ball）
         poseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI - (float) Math.atan2(dir.z, dir.x)));
         poseStack.mulPose(Axis.XP.rotation((float) Math.acos(Mth.clamp(dir.y, -1.0, 1.0))));
-        poseStack.translate(-0.5, 0.0, -0.5);
 
+        // 顶点几何已以原点为中心，无需方块模型的 translate(-0.5, 0, -0.5) 居中
         float segLength = 1.0f;
         int fullSegments = (int) distance;
         float remainder = (float) (distance - fullSegments);
 
-        // 阈值处理：余量太小时向整数段借位，避免末端过于细碎
-        if (remainder < 0.1F && fullSegments > 0) {
-            fullSegments--;
-            remainder += segLength;
-        }
-
-        // ========== 手部末端密集填充（密度大，每段独立 pushPose/popPose 隔离） ==========
-        int microSegments = Math.max(2, (int) (remainder / 0.25f));
-        float microLength = remainder / microSegments;
-
-        for (int i = 0; i < microSegments; i++) {
+        // ========== 手部端点2格等比缩短渲染 ==========
+        // 从手部起取至多2格，等比数列（首项1.0，公比0.5）反向放置：小段靠手，大段靠外
+        float handEndLength = Math.min(2.0f, (float) distance);
+        float geomSegLen = 1.0f;
+        float pos = handEndLength;
+        while (pos > 0.001f) {
+            float actualLen = Math.min(geomSegLen, pos);
+            pos -= actualLen;
             poseStack.pushPose();
-            poseStack.translate(0.0, i * microLength, 0.0);
-            poseStack.scale(1.0F, microLength / segLength, 1.0F);
-            dispatcher.renderSingleBlock(chain, poseStack, bufferSource, skyLight, OverlayTexture.NO_OVERLAY);
+            poseStack.translate(0.0, pos, 0.0);
+            poseStack.scale(1.0F, actualLen / segLength, 1.0F);
+            renderChainSegment(poseStack, bufferSource, chainTexture, skyLight);
             poseStack.popPose();
+            geomSegLen *= 0.5f;
         }
-        // 跨越微段区域，进入主体段起点
-        poseStack.translate(0.0, remainder, 0.0);
+        poseStack.translate(0.0, handEndLength, 0.0);
 
-        // ========== 中间主体段（密度小，累积平移无需 pushPose） ==========
-        for (int i = 0; i < fullSegments; i++) {
-            dispatcher.renderSingleBlock(chain, poseStack, bufferSource, skyLight, OverlayTexture.NO_OVERLAY);
+        // ========== 中间主体段 ==========
+        int middleSegments = fullSegments >= 2 ? fullSegments - 2 : 0;
+        for (int i = 0; i < middleSegments; i++) {
+            renderChainSegment(poseStack, bufferSource, chainTexture, skyLight);
             poseStack.translate(0.0, segLength, 0.0);
+        }
+
+        // ========== 链球端余量（非整数段） ==========
+        if (remainder > 0.001f && fullSegments >= 2) {
+            poseStack.pushPose();
+            poseStack.scale(1.0F, remainder / segLength, 1.0F);
+            renderChainSegment(poseStack, bufferSource, chainTexture, skyLight);
+            poseStack.popPose();
         }
 
         poseStack.popPose();
     }
+    //顶点渲染一段交叉平面锁链（对应 models/chain/flail_chain.json 的 X 形结构）。
+    private static void renderChainSegment(PoseStack poseStack, MultiBufferSource buffer,
+                                           ResourceLocation texture, int skyLight) {
+        VertexConsumer vc = buffer.getBuffer(RenderType.entityCutoutNoCull(texture));
+        PoseStack.Pose pose = poseStack.last();
+        Matrix4f m = pose.pose();
 
-    // ── 内部 GeoModel（贴图可动态更新） ──
+        float hw = 1.5f / 16f;
+        float u0 = 3f / 16f;
+        float u1 = 6f / 16f;
+
+        for (int plane = 0; plane < 2; plane++) {
+            float angle = (float) (Math.PI / 4 + plane * Math.PI / 2);
+            float cx = (float) Math.cos(angle) * hw;
+            float cz = (float) Math.sin(angle) * hw;
+            float nx = (float) Math.cos(angle);
+            float nz = (float) Math.sin(angle);
+
+            // 正面
+            vc.addVertex(m, -cx, 0, -cz).setColor(-1).setUv(u0, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(skyLight).setNormal(pose, nx, 0, nz);
+            vc.addVertex(m,  cx, 0,  cz).setColor(-1).setUv(u1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(skyLight).setNormal(pose, nx, 0, nz);
+            vc.addVertex(m,  cx, 1,  cz).setColor(-1).setUv(u1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(skyLight).setNormal(pose, nx, 0, nz);
+            vc.addVertex(m, -cx, 1, -cz).setColor(-1).setUv(u0, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(skyLight).setNormal(pose, nx, 0, nz);
+
+            // 反面
+            vc.addVertex(m,  cx, 0,  cz).setColor(-1).setUv(u0, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(skyLight).setNormal(pose, -nx, 0, -nz);
+            vc.addVertex(m, -cx, 0, -cz).setColor(-1).setUv(u1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(skyLight).setNormal(pose, -nx, 0, -nz);
+            vc.addVertex(m, -cx, 1, -cz).setColor(-1).setUv(u1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(skyLight).setNormal(pose, -nx, 0, -nz);
+            vc.addVertex(m,  cx, 1,  cz).setColor(-1).setUv(u0, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(skyLight).setNormal(pose, -nx, 0, -nz);
+        }
+    }
+
+    // ── FlailGeoModel ──
 
     private static class FlailGeoModel extends GeoModel<BaseFlailEntity> {
         ResourceLocation model;
@@ -208,19 +256,8 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
             this.texture = texture;
         }
 
-        @Override
-        public ResourceLocation getModelResource(BaseFlailEntity animatable) {
-            return model;
-        }
-
-        @Override
-        public ResourceLocation getTextureResource(BaseFlailEntity animatable) {
-            return texture;
-        }
-
-        @Override
-        public ResourceLocation getAnimationResource(BaseFlailEntity animatable) {
-            return null;
-        }
+        @Override public ResourceLocation getModelResource(BaseFlailEntity a) { return model; }
+        @Override public ResourceLocation getTextureResource(BaseFlailEntity a) { return texture; }
+        @Override public ResourceLocation getAnimationResource(BaseFlailEntity a) { return null; }
     }
 }

@@ -5,9 +5,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 /// @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
 public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider implements SyntheticLootTableProvider {
     public AddEntityLootConfluenceSubProvider(HolderLookup.Provider registries) {
-        super(FeatureFlags.REGISTRY.allFlags(), registries);
+        super(FeatureFlags.REGISTRY.allFlags());
     }
 
     public List<AddedEntityLoot> getAddedEntitiesLoot() {
@@ -57,7 +57,6 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                                         .when(LootItemRandomChanceCondition.randomChance(1.0f))
                                         .when(DamageSourceCondition.hasDamageSource(
                                                 DamageSourcePredicate.Builder.damageType()
-                                                        .isDirect(true)
                                                         .direct(EntityPredicate.Builder.entity()
                                                                 .of(EntityType.PLAYER)
                                                         )
@@ -66,16 +65,11 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                 )
         ));
         LootItemCondition.Builder playerHasSmeltsLootEnchantment = LootItemEntityPropertyCondition.hasProperties(
-                LootContext.EntityTarget.DIRECT_ATTACKER,
+                LootContext.EntityTarget.KILLER_PLAYER,
                 EntityPredicate.Builder.entity()
                         .equipment(
                                 EntityEquipmentPredicate.Builder.equipment()
-                                        .mainhand(ItemPredicate.Builder.item()
-                                                .withSubPredicate(ItemSubPredicates.ENCHANTMENTS, ItemEnchantmentsPredicate.enchantments(
-                                                                List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(EnchantmentTags.SMELTS_LOOT), MinMaxBounds.Ints.atLeast(1)))
-                                                        )
-                                                )
-                                        )
+                                        .mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FIRE_ASPECT, MinMaxBounds.Ints.atLeast(1))).build()).build()
                         )
         );
         entries.add(new AddedEntityLoot(EntityType.FROG,

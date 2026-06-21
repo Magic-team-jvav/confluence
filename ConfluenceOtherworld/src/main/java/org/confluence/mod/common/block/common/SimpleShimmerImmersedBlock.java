@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.ModFluids;
 
 import javax.annotation.Nullable;
@@ -25,9 +26,9 @@ public interface SimpleShimmerImmersedBlock extends BucketPickup, LiquidBlockCon
 
     @Override
     default boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState) {
-        if (!state.getValue(ModBlockStateProperties.SHIMMER_IMMERSED) && fluidState.getType() == ModFluids.SHIMMER.fluid().get()) {
+        if (!state.getValue(StateProperties.SHIMMER_IMMERSED) && fluidState.getType() == ModFluids.SHIMMER.fluid().get()) {
             if (!level.isClientSide()) {
-                level.setBlock(pos, state.setValue(ModBlockStateProperties.SHIMMER_IMMERSED, true), 3);
+                level.setBlock(pos, state.setValue(StateProperties.SHIMMER_IMMERSED, true), 3);
                 level.scheduleTick(pos, fluidState.getType(), fluidState.getType().getTickDelay(level));
             }
             return true;

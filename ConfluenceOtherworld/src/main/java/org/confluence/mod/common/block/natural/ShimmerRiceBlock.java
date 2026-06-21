@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.FluidState;
-import org.confluence.mod.common.block.common.ModBlockStateProperties;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.block.common.SimpleShimmerImmersedBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class ShimmerRiceBlock extends Block implements SimpleShimmerImmersedBlock {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_7;
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
-    public static final BooleanProperty SHIMMER_IMMERSED = ModBlockStateProperties.SHIMMER_IMMERSED;
+    public static final BooleanProperty SHIMMER_IMMERSED = StateProperties.SHIMMER_IMMERSED;
 
     public ShimmerRiceBlock(Properties properties) {
         super(properties.lightLevel(state -> state.getValue(SHIMMER_IMMERSED) ? 10 : 0));

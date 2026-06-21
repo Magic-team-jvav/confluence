@@ -63,13 +63,13 @@ public class BoulderBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pNeighborBlock, BlockPos pNeighborPos, boolean pMovedByPiston) {
-        if (!pLevel.isClientSide) {
-            if (pLevel.hasNeighborSignal(pPos)) {
-                execute(pState, (ServerLevel) pLevel, pPos, true);
-            } else if (pLevel.getBlockEntity(pPos) instanceof INetworkEntity entity) {
-                BlockState below = pLevel.getBlockState(pPos.below());
-                if (below.isAir()) onExecute(pState, (ServerLevel) pLevel, pPos, -1, entity);
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+        if (!level.isClientSide) {
+            if (level.hasNeighborSignal(pos)) {
+                execute(state, (ServerLevel) level, pos, true);
+            } else if (level.getBlockEntity(pos) instanceof INetworkEntity entity) {
+                BlockState below = level.getBlockState(pos.below());
+                if (below.isAir()) onExecute(state, (ServerLevel) level, pos, -1, entity);
             }
         }
     }

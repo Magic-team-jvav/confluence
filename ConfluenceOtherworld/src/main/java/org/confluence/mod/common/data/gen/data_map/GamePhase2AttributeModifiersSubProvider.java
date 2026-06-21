@@ -3,7 +3,6 @@ package org.confluence.mod.common.data.gen.data_map;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
@@ -12,9 +11,7 @@ import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
-import org.confluence.terraentity.init.entity.TEAnimals;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.Map;
 import java.util.Objects;
@@ -23,30 +20,30 @@ public final class GamePhase2AttributeModifiersSubProvider {
     private static final ResourceLocation id = Confluence.asResource("game_phase_modifier");
 
     private static final AttributeModifiersValue VANILLA_MINECRAFT_MONSTER_ENHANCEMENT = AttributeModifiersValue.builder()
-            .add(LibAttributes.getAttackDamage(), id, 2.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(Attributes.MAX_HEALTH, id, 2.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(Attributes.ARMOR, id, 2.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(LibAttributes.getAttackDamage().value(), id, 2.8, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+            .add(Attributes.MAX_HEALTH, id, 2.8, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+            .add(Attributes.ARMOR, id, 2.8, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
             .build();
 
     private static final AttributeModifiersValue INCREASE_FRIENDLY_CREATURE_HEALTH = AttributeModifiersValue.builder()
-            .add(Attributes.MAX_HEALTH, id, 5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(Attributes.MAX_HEALTH, id, 5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
             .build();
 
     private static final AttributeModifiersValue NORMAL_CHANGE_1 = AttributeModifiersValue.builder()
-            .add(Attributes.MAX_HEALTH, id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(LibAttributes.getAttackDamage(), id, -0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(Attributes.MAX_HEALTH, id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+            .add(LibAttributes.getAttackDamage().value(), id, -0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
             .build();
 
     private static final AttributeModifiersValue NORMAL_CHANGE_2 = AttributeModifiersValue.builder()
-            .add(Attributes.MAX_HEALTH, id, 1.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(LibAttributes.getAttackDamage(), id, 0.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(Attributes.MAX_HEALTH, id, 1.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+            .add(LibAttributes.getAttackDamage().value(), id, 0.8, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+            .add(Attributes.ARMOR, id, 1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
             .build();
 
     private static final AttributeModifiersValue NORMAL_CHANGE_3 = AttributeModifiersValue.builder()
-            .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(LibAttributes.getAttackDamage(), id, 1.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(Attributes.MAX_HEALTH, id, 2.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+            .add(LibAttributes.getAttackDamage().value(), id, 1.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+            .add(Attributes.ARMOR, id, 2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
             .build();
 
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
@@ -91,36 +88,36 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(TEMonsterEntities.BLUE_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 4.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 4.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 3.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 5.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 4.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 5.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 4.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.GREEN_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 7.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 6.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 7.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 6.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 8.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 11, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 8.8, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 11, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.ICE_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 3.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 4.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 3.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.PURPLE_SLIME, Map.of(
@@ -150,14 +147,14 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(TEMonsterEntities.CAVE_BAT, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 3.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 4.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 3.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEAnimals.CRAB, Map.of(
@@ -177,9 +174,9 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(TEMonsterEntities.DARK_CASTER, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 1.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 0.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 1.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 0.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.DEMON, Map.of(
@@ -213,14 +210,14 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(TEMonsterEntities.GIANT_WORM, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 3.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 4.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 3.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 4.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 3.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.GOBLIN_SCOUT, Map.of(
@@ -275,14 +272,14 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(TEMonsterEntities.SPORE_BAT, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 3.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 4.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 3.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.SPORE_SKELETON, Map.of(
@@ -307,14 +304,14 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(TEMonsterEntities.FLYING_FISH, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 3.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 4.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(LibAttributes.getAttackDamage(), id, 3.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 4.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 3.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.GOBLIN_ARCHER, Map.of(
@@ -353,14 +350,14 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 // MC原版敌对怪物
                 .add(EntityType.ZOMBIE.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 1.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(EntityType.VINDICATOR.builtInRegistryHolder(), Map.of(
@@ -374,7 +371,7 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(EntityType.CREEPER.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(EntityType.ELDER_GUARDIAN.builtInRegistryHolder(), Map.of(
@@ -394,14 +391,14 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(EntityType.HUSK.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 1.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(EntityType.MAGMA_CUBE.builtInRegistryHolder(), Map.of(
@@ -448,38 +445,38 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(EntityType.ZOGLIN.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 1.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(EntityType.ZOMBIE_VILLAGER.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 1.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(EntityType.DROWNED.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 1.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(EntityType.ENDERMAN.builtInRegistryHolder(), Map.of(
@@ -496,14 +493,14 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(EntityType.ZOMBIFIED_PIGLIN.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 1.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(LibAttributes.getAttackDamage().value(), id, 2.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 // NPC
@@ -579,13 +576,13 @@ public final class GamePhase2AttributeModifiersSubProvider {
 //                ))
 //                .add(EntityType.WOLF.builtInRegistryHolder(), Map.of(
 //                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(LibAttributes.getAttackDamage(), id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+//                                .add(LibAttributes.getAttackDamage().value(), id, 2.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
+//                                .add(Attributes.MAX_HEALTH, id, 3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
 //                                .build()
 //                ))
 //                .add(EntityType.IRON_GOLEM.builtInRegistryHolder(), Map.of(
 //                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(LibAttributes.getAttackDamage(), id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+//                                .add(LibAttributes.getAttackDamage().value(), id, 2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
 //                                .build()
 //                ))
 //                .add(EntityType.HORSE.builtInRegistryHolder(), Map.of(

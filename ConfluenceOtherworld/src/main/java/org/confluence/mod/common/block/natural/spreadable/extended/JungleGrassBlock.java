@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.natural.spreadable.extended;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.ToolAction;
@@ -46,7 +48,7 @@ public class JungleGrassBlock extends SpreadingGrassBlock implements Bonemealabl
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
         return true;
     }
 
@@ -58,7 +60,7 @@ public class JungleGrassBlock extends SpreadingGrassBlock implements Bonemealabl
     @Override
     public void performBonemeal(ServerLevel serverLevel, RandomSource random, BlockPos pos, BlockState state) {
         BlockPos startPos = pos.above();
-        BlockState shortGrassState = Blocks.SHORT_GRASS.defaultBlockState();
+        BlockState shortGrassState = Blocks.GRASS.defaultBlockState();
         Optional<Holder.Reference<PlacedFeature>> grassFeatureOpt = serverLevel.registryAccess()
                 .registryOrThrow(Registries.PLACED_FEATURE)
                 .getHolder(VegetationPlacements.GRASS_BONEMEAL);
@@ -91,7 +93,12 @@ public class JungleGrassBlock extends SpreadingGrassBlock implements Bonemealabl
                     if (flowerFeatures.isEmpty()) {
                         continue;
                     }
-                    featureHolder = ((RandomPatchConfiguration) flowerFeatures.getFirst().config()).feature();
+                    FeatureConfiguration config = PortListExtension.getFirst(flowerFeatures).config();
+                    if (config instanceof RandomPatchConfiguration randomPatch) {
+                        featureHolder = randomPatch.feature();
+                    } else {
+                        continue;
+                    }
                 } else {
                     if (grassFeatureOpt.isEmpty()) {
                         continue;

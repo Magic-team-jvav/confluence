@@ -26,7 +26,6 @@ import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.item.TESummonItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -227,12 +226,12 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
         }
     }
 
-    protected @NotNull ResourceKey<LootTable> getResourceKey(EntityType<?> entityType) {
+    protected ResourceKey<LootTable> getResourceKey(EntityType<?> entityType) {
         var path = getPath(entityType);
         return Confluence.asResourceKey(Registries.LOOT_TABLE, path);
     }
 
-    public @NotNull String getPath(EntityType<?> entityType) {
+    public String getPath(EntityType<?> entityType) {
         return "with/" + entityType.getDefaultLootTable().location().getPath();
     }
 

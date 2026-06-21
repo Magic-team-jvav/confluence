@@ -37,7 +37,7 @@ public final class TickEvents {
         PortEventHandler.addListener(TickEvents::serverTick$Post);
     }
 
-    public static void levelTick$Post(PortLevelTickEvent.PortPost event) {
+    public static void levelTick$Post(PortLevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
             return;
         }
@@ -64,7 +64,7 @@ public final class TickEvents {
         HardmodeConvertor.INSTANCE.scheduleRefill(level);
     }
 
-    public static void playerTick$Post(PortPlayerTickEvent.PortPost event) {
+    public static void playerTick$Post(PortPlayerTickEvent.Post event) {
         Player entity = event.getEntity();
         long gameTime = entity.level().getGameTime();
         if (entity instanceof ServerPlayer player) {
@@ -91,11 +91,11 @@ public final class TickEvents {
         }
     }
 
-    public static void entityTick$Post(PortEntityTickEvent.PortPost event) {
+    public static void entityTick$Post(PortEntityTickEvent.Post event) {
         Immunity.tick(event.getEntity());
     }
 
-    public static void serverTick$Post(PortServerTickEvent.PortPost event) {
+    public static void serverTick$Post(PortServerTickEvent.Post event) {
         PathService.INSTANCE.pathFindingTick();
     }
 }

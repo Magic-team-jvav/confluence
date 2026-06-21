@@ -14,14 +14,12 @@ import net.minecraft.world.level.material.MapColor;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class EndDirtBlock extends Block implements BonemealableBlock {
-
     public EndDirtBlock() {
         super(BlockBehaviour.Properties.copy(Blocks.SAND).mapColor(MapColor.COLOR_LIGHT_GRAY));
     }
 
-
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
         if (level.getBlockState(pos.above()).propagatesSkylightDown(level, pos)) {
             for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1))) {
                 if (level.getBlockState(blockpos).is(NatureBlocks.VOID_GRASS_BLOCK.get())) {
@@ -52,10 +50,5 @@ public class EndDirtBlock extends Block implements BonemealableBlock {
         if (flag) {
             level.setBlock(pos, NatureBlocks.VOID_GRASS_BLOCK.get().defaultBlockState(), 3);
         }
-    }
-
-    @Override
-    public BonemealableBlock.Type getType() {
-        return BonemealableBlock.Type.NEIGHBOR_SPREADER;
     }
 }

@@ -83,15 +83,15 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
         if (!level.isAreaLoaded(pos, 1)) return;
         int i = getAge(state);
         if (i < getMaxAge()) {
-            if (net.minecraftforge.common.CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / 0.7F) + 1) == 0)) {
+            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, pos, state, random.nextInt((int) (25.0F / 0.7F) + 1) == 0)) {
                 level.setBlockAndUpdate(pos, getStateForAge(i + 1));
-                net.minecraftforge.common.CommonHooks.fireCropGrowPost(level, pos, state);
+                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, pos, state);
             }
         }
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, boolean isClient) {
         return false;
     }
 

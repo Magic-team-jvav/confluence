@@ -1,35 +1,23 @@
 package org.confluence.mod.common.component;
 
+import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.util.ClientUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.component.PortDataComponentType;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.List;
 
-public record ValueComponent(int value) implements DataComponentType<ValueComponent> {
+public record ValueComponent(int value) {
     public static final Codec<ValueComponent> CODEC = Codec.INT.xmap(ValueComponent::new, ValueComponent::value);
     public static final PortStreamCodec<ByteBuf, ValueComponent> STREAM_CODEC = PortByteBufCodecs.INT.map(ValueComponent::new, ValueComponent::value);
-
-    @Override
-    public @Nullable Codec<ValueComponent> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public @NotNull StreamCodec<? super PortRegistryFriendlyByteBuf, ValueComponent> streamCodec() {
-        return STREAM_CODEC;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -41,14 +29,14 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
         return value;
     }
 
-    public static int getValue(ItemStack itemStack, int defaultValue, boolean prototype) {
-        DataComponentType<ValueComponent> type = ModDataComponentTypes.VALUE.get();
-        ValueComponent value = prototype ? itemStack.getPrototype().get(type) : itemStack.get(type);
+    public static int getValue(ItemStack stack, int defaultValue, boolean prototype) {
+        PortDataComponentType<ValueComponent> type = ModDataComponentTypes.VALUE.get();
+        ValueComponent value = prototype ? stack.getPrototypeData().get(type) : stack.getData(type);
         if (value == null) {
-            value = itemStack.getItemHolder().getData(ModDataMaps.VALUE);
-            return (value == null ? defaultValue : value.value()) * itemStack.getCount();
+            value = PortHolderExtension.getData(stack.getItemHolder(), ModDataMaps.VALUE);
+            return (value == null ? defaultValue : value.value()) * stack.getCount();
         }
-        return value.value() * itemStack.getCount();
+        return value.value() * stack.getCount();
     }
 
     public static int getValue(ItemStack itemStack, int defaultValue) {

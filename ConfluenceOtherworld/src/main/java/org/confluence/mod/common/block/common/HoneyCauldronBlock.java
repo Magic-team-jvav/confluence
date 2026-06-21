@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.common;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.sounds.SoundEvents;
@@ -17,16 +18,15 @@ import org.confluence.terra_curio.common.effect.HoneyEffect;
 import java.util.Map;
 
 public class HoneyCauldronBlock extends AbstractCauldronBlock {
-    public static final Map<Item, CauldronInteraction> INTERACTION_MAP = CauldronInteraction.newInteractionMap();
-    static {
-        INTERACTION_MAP.put(Items.BUCKET, (blockState, level, blockPos, player, hand, itemStack) -> CauldronInteraction.fillBucket(
+    public static final Map<Item, CauldronInteraction> INTERACTION_MAP = Util.make(CauldronInteraction.newInteractionMap(), map -> {
+        map.put(Items.BUCKET, (blockState, level, blockPos, player, hand, itemStack) -> CauldronInteraction.fillBucket(
                 blockState, level, blockPos, player, hand, itemStack,
                 ToolItems.HONEY_BUCKET.get().getDefaultInstance(),
-                blockState1 -> true,
+                state -> true,
                 SoundEvents.BUCKET_FILL
         ));
-        CauldronInteraction.addDefaultInteractions(INTERACTION_MAP);
-    }
+        CauldronInteraction.addDefaultInteractions(map);
+    });
     public static final CauldronInteraction FILL_HONEY = (blockState, level, blockPos, player, hand, itemStack) -> CauldronInteraction.emptyBucket(
             level, blockPos, player, hand, itemStack,
             ModBlocks.HONEY_CAULDRON.get().defaultBlockState(),

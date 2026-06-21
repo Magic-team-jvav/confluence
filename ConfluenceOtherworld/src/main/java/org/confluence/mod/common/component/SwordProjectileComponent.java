@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.api.EffectStrategyComponent;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.generation.variant.AboveFallenGeneration;

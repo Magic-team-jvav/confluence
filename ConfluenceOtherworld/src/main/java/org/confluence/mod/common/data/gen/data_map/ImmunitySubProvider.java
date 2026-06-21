@@ -6,10 +6,10 @@ import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.common.init.TCEntities;
-import org.confluence.terraentity.init.entity.TEProjectileEntities;
+import org.mesdag.portlib.datamap.PortDataMapProvider;
 
 public final class ImmunitySubProvider {
-    public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<ImmunityDataMap, EntityType<?>>> appender) {
+    public static void gather(ModDataMapProvider.Appender<PortDataMapProvider.Builder<ImmunityDataMap, EntityType<?>>> appender) {
         appender.create()
                 .add(ModEntities.VILETHRON, new ImmunityDataMap(Immunity.Type.STATIC, 5), false)
                 .add(ModEntities.CRYSTAL_VILE_SHARD, new ImmunityDataMap(Immunity.Type.STATIC, 5), false)

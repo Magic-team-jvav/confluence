@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen.data_map;
 
+import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -13,10 +14,7 @@ import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.confluence.terraentity.init.TEEffects;
-import org.confluence.terraentity.init.entity.TEAnimals;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.mesdag.portlib.datamap.PortDataMapProvider;
 
 import java.util.Objects;
 
@@ -142,19 +140,19 @@ public final class LivingInvulnerableEffectsSubProvider {
         ;
     }
 
-    public static class Builder extends DataMapProvider.Builder<LivingInvulnerableEffects, EntityType<?>> {
+    public static class Builder extends PortDataMapProvider.Builder<LivingInvulnerableEffects, EntityType<?>> {
         public Builder() {
             super(ModDataMaps.LIVING_INVULNERABLE_EFFECTS);
         }
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, HolderSet<MobEffect> effects, LivingInvulnerableEffects.Category... categories) {
-            super.add(Objects.requireNonNull(holder.getKey()), new LivingInvulnerableEffects(effects, categories), false);
+        public Builder add(Holder<EntityType<?>> holder, HolderSet<MobEffect> effects, LivingInvulnerableEffects.Category... categories) {
+            super.add(Objects.requireNonNull(PortHolderExtension.getKey(holder)), new LivingInvulnerableEffects(effects, categories), false);
             return this;
         }
 
         @SafeVarargs
-        public final Builder add(IHolderExtension<EntityType<?>> holder, Holder<MobEffect>... effects) {
-            super.add(Objects.requireNonNull(holder.getKey()), new LivingInvulnerableEffects(HolderSet.direct(effects)), false);
+        public final Builder add(Holder<EntityType<?>> holder, Holder<MobEffect>... effects) {
+            super.add(Objects.requireNonNull(PortHolderExtension.getKey(holder)), new LivingInvulnerableEffects(HolderSet.direct(effects)), false);
             return this;
         }
 

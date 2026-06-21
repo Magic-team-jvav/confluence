@@ -22,6 +22,7 @@ import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.item.PortItem;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -84,7 +85,7 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public BItem(LifeCrystalBlock pBlock) {
-            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
+            super(pBlock, new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
         }
 
         @Override

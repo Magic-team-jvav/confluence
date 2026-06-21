@@ -3,7 +3,6 @@ package org.confluence.mod.common.block.functional;
 import com.mojang.datafixers.util.Function3;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -106,7 +105,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         behaviour.tick(state, level, pos, random);
     }
 
@@ -121,15 +120,15 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
-            ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.saveAdditional(tag, registries);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
+            ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.saveAdditional(tag);
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.loadAdditional(tag, registries);
-            ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.loadAdditional(tag, registries);
+        public void load(CompoundTag tag) {
+            super.load(tag);
+            ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.loadAdditional(tag);
 
         }
 
@@ -168,9 +167,9 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
             return null;
         }
 
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {}
+        protected void saveAdditional(CompoundTag tag) {}
 
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {}
+        protected void loadAdditional(CompoundTag tag) {}
     }
 
     public static class SummonBehaviour<E extends net.minecraft.world.entity.Entity> extends Behaviour {
@@ -224,7 +223,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        protected void saveAdditional(CompoundTag tag) {
             ListTag listTag = new ListTag();
             for (UUID entity : entities) {
                 listTag.add(NbtUtils.createUUID(entity));
@@ -233,7 +232,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         }
 
         @Override
-        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        protected void loadAdditional(CompoundTag tag) {
             entities.clear();
             for (Tag entity : tag.getList("entities", Tag.TAG_INT_ARRAY)) {
                 entities.add(NbtUtils.loadUUID(entity));

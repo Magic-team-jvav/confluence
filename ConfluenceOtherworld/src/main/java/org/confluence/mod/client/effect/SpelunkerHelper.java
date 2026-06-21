@@ -586,7 +586,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
     protected void afterRender(PoseStack poseStack) {}
 
     public static void renderLevel(PortRenderLevelStageEvent event, LocalPlayer player) {
-        if (event.getStage() != PortRenderLevelStageEvent.PortStage.AFTER_TRANSLUCENT_BLOCKS)
+        if (event.getStage() != PortRenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS)
             return;
         SpelunkerHelper blockGen = SpelunkerHelper.getSingleton();
         // 效果消失，清除缓存

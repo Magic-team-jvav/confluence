@@ -58,10 +58,16 @@ public interface INetworkEntity {
             ListTag listTag = compoundTag.getList(key, Tag.TAG_COMPOUND);
             int color = Integer.parseInt(key);
             Set<BlockPos> posSet = new HashSet<>();
-            listTag.forEach(tag -> {
-                BlockPos offset = NbtUtils.readBlockPos((CompoundTag) tag, "offset").orElse(BlockPos.ZERO);
+            for (int i = 0; i < listTag.size(); i++) {
+                CompoundTag tag = listTag.getCompound(i);
+                BlockPos offset;
+                if (tag.contains("offset", Tag.TAG_COMPOUND)) {
+                    offset = NbtUtils.readBlockPos(tag.getCompound("offset"));
+                } else {
+                    offset = BlockPos.ZERO;
+                }
                 posSet.add(getSelf().getBlockPos().offset(offset.getX(), offset.getY(), offset.getZ()));
-            });
+            }
             map.put(color, posSet);
         }
     }

@@ -11,12 +11,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.EffectStrategyComponent;
+import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.api.ITrackType;
+import org.confluence.mod.common.generation.variant.ForwardGeneration;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Optional;
@@ -49,7 +49,7 @@ public record SpearProjectileComponent(
         IGeneration generation,
         Optional<Integer> pierceCount,
         Optional<EffectStrategyComponent> hitEffect
-) implements DataComponentType<SpearProjectileComponent> {
+) {
 
     public static final Codec<SpearProjectileComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("damageFactor").forGetter(SpearProjectileComponent::damageFactor),
@@ -132,16 +132,6 @@ public record SpearProjectileComponent(
     public static final PortStreamCodec<ByteBuf, SpearProjectileComponent> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
 
     @Override
-    public @Nullable Codec<SpearProjectileComponent> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public @NotNull StreamCodec<? super PortRegistryFriendlyByteBuf, SpearProjectileComponent> streamCodec() {
-        return STREAM_CODEC;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (o == this) return true;
         if (o instanceof SpearProjectileComponent other) {
@@ -183,7 +173,7 @@ public record SpearProjectileComponent(
      */
     public float getVelocity(LivingEntity living) {
         float velocity = baseSpeed();
-        AttributeInstance attributeInstance = living.getAttribute(LibAttributes.getRangedVelocity());
+        AttributeInstance attributeInstance = living.getAttribute(LibAttributes.getRangedVelocity().value());
         if (attributeInstance != null) return velocity * (float) attributeInstance.getValue();
         return velocity;
     }

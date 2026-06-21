@@ -1,10 +1,7 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -25,9 +22,6 @@ import java.util.List;
 import java.util.Set;
 
 public class BasePlantBlock extends BushBlock {
-    public static final MapCodec<BasePlantBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(propertiesCodec(),
-            BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("ground").forGetter(block -> block.survive)
-    ).apply(instance, BasePlantBlock::new));
     protected static final VoxelShape SHAPE = box(2, 0, 2, 14, 13, 14);
 
     protected final List<Block> survive;
@@ -40,11 +34,6 @@ public class BasePlantBlock extends BushBlock {
     public BasePlantBlock(Properties prop, List<Block> survive) {
         super(prop);
         this.survive = survive;
-    }
-
-    @Override
-    protected MapCodec<BasePlantBlock> codec() {
-        return CODEC;
     }
 
     @Override

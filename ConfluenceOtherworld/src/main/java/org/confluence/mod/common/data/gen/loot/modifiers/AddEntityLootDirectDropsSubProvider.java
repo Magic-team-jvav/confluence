@@ -5,7 +5,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.jetbrains.annotations.NotNull;
 
 /// Generates loot tables into EMI's direct_drop registry i.e. minecraft/direct_drops/entities/bat.json
 public final class AddEntityLootDirectDropsSubProvider extends AddEntityLootConfluenceSubProvider {
@@ -14,16 +13,16 @@ public final class AddEntityLootDirectDropsSubProvider extends AddEntityLootConf
     }
 
     @Override
-    public @NotNull String getPath(EntityType<?> entityType) {
+    public String getPath(EntityType<?> entityType) {
         return getEntityTypeKey(entityType).getPath();
     }
 
     @Override
-    protected @NotNull ResourceKey<LootTable> getResourceKey(EntityType<?> entityType) {
+    protected ResourceKey<LootTable> getResourceKey(EntityType<?> entityType) {
         return entityType.getDefaultLootTable();
     }
 
-    private @NotNull ResourceLocation getEntityTypeKey(EntityType<?> entityType) {
+    private ResourceLocation getEntityTypeKey(EntityType<?> entityType) {
         return entityType.getDefaultLootTable().location();
     }
 }

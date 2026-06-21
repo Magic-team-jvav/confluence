@@ -63,7 +63,6 @@ import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeHolder;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -193,9 +192,9 @@ public class AltarBlock extends BaseEntityBlock {
                     entity.markUpdated();
                 }
             } else {
-                List<PortRecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level);
+                List<AltarRecipe> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level);
                 if (recipes.isEmpty()) return;
-                AltarRecipe recipe = PortListExtension.getFirst(recipes).value();
+                AltarRecipe recipe = PortListExtension.getFirst(recipes);
                 ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
                 LibEntityUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 entity.playAnimation(serverLevel, pos);

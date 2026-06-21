@@ -16,7 +16,7 @@ import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.terraentity.init.entity.TEAnimals;
+import org.mesdag.portlib.datamap.PortDataMapProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +67,7 @@ public final class BlockBreakSpawnsSubProvider {
                 .pop();
     }
 
-    public static class Builder extends DataMapProvider.Builder<BlockBreakSpawns, Block> {
+    public static class Builder extends PortDataMapProvider.Builder<BlockBreakSpawns, Block> {
         public Builder() {
             super(ModDataMaps.BLOCK_BREAK_SPAWNS);
         }

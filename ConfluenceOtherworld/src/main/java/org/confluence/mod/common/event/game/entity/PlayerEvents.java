@@ -165,15 +165,15 @@ public final class PlayerEvents {
         CommonConfigs.reset();
     }
 
-    private static void interact$LeftClickBlock(PortPlayerInteractEvent.PortLeftClickBlock event) {
+    private static void interact$LeftClickBlock(PortPlayerInteractEvent.LeftClickBlock event) {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
-        if (event.getAction() == PortPlayerInteractEvent.PortLeftClickBlock.PortAction.START) {
+        if (event.getAction() == PortPlayerInteractEvent.LeftClickBlock.PortAction.START) {
             AltarBlock.onLeftClick(level.getBlockState(pos), level, pos, event.getEntity());
         }
     }
 
-    private static void interact$RightClickBlock(PortPlayerInteractEvent.PortRightClickBlock event) {
+    private static void interact$RightClickBlock(PortPlayerInteractEvent.RightClickBlock event) {
         Player player = event.getEntity();
         Level level = event.getLevel();
         BlockPos blockPos = event.getPos();
@@ -231,7 +231,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void interact$EntityInteract(PortPlayerInteractEvent.PortEntityInteract event) {
+    private static void interact$EntityInteract(PortPlayerInteractEvent.EntityInteract event) {
         if (event.getEntity() instanceof ServerPlayer player &&
                 event.getTarget() instanceof LivingEntity living
         ) healChocking:{
@@ -246,7 +246,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void itemEntityPickup$Pre(PortItemEntityPickupEvent.PortPre event) {
+    private static void itemEntityPickup$Pre(PortItemEntityPickupEvent.Pre event) {
         ServerPlayer player = (ServerPlayer) event.getPlayer();
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = itemEntity.getItem();
@@ -281,7 +281,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void itemEntityPickup$Post(PortItemEntityPickupEvent.PortPost event) {
+    private static void itemEntityPickup$Post(PortItemEntityPickupEvent.Post event) {
         ServerPlayer player = (ServerPlayer) event.getPlayer();
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = event.getOriginalStack();
@@ -298,7 +298,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void interact$RightClickItem(PortPlayerInteractEvent.PortRightClickItem event) {
+    private static void interact$RightClickItem(PortPlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
         if (player.isSpectator()) return;
         ItemStack stack = event.getItemStack();
@@ -375,7 +375,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void advancementEarn(PortAdvancementEvent.PortAdvancementEarnEvent event) {
+    private static void advancementEarn(PortAdvancementEvent.AdvancementEarnEvent event) {
         PortAdvancementHolder advancement = event.getAdvancement();
         ServerPlayer player = (ServerPlayer) event.getEntity();
         DisplayInfo display = advancement.value().getDisplay();
@@ -384,7 +384,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void advancementProgress(PortAdvancementEvent.PortAdvancementProgressEvent event) {
+    private static void advancementProgress(PortAdvancementEvent.AdvancementProgressEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         if (!LibEntityUtils.isSingleplayerOwner(player) &&
                 AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
@@ -408,7 +408,7 @@ public final class PlayerEvents {
         PlayerUtils.syncPlayerData(player);
     }
 
-    private static void container$Close(PortPlayerContainerEvent.PortClose event) {
+    private static void container$Close(PortPlayerContainerEvent.Close event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         IMinecraftServer server = IMinecraftServer.of(player.server);
         if (!server.confluence$matchesSecretFlag(IWorldOptions.HARDMODE)) return;

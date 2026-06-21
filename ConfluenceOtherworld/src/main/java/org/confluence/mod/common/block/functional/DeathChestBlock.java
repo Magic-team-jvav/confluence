@@ -4,13 +4,13 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -68,11 +68,11 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     }
 
     @Override
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        if (skipInteraction(pPlayer.getMainHandItem())) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (skipInteraction(player.getMainHandItem())) {
             return InteractionResult.PASS;
         }
-        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
+        return super.use(state, level, pos, player, hand, hitResult);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
 
         @Override
         public void unpackLootTable(@Nullable Player player) {
-            if (getLootTable() != null) {
+            if (lootTable != null) {
                 for (int i = 0; i < getContainerSize(); i++) {
                     if (getItems().get(i).isEmpty()) {
                         getItems().set(i, VanityArmorItems.DEAD_MANS_SWEATER.get().getDefaultInstance());
@@ -162,26 +162,26 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
 
         @Override
-        public void loadAdditional(CompoundTag tag, HolderLookup.Provider registryLookup) {
-            super.loadAdditional(tag, registryLookup);
+        public void load(CompoundTag tag) {
+            super.load(tag);
             deserializePoses(tag, "connectedPoses", connectedPoses);
             deserializePoses(tag, "relativePoses", relativePoses);
         }
 
         @Override
-        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-            super.saveAdditional(tag, registries);
+        protected void saveAdditional(CompoundTag tag) {
+            super.saveAdditional(tag);
             serializePoses(tag, "connectedPoses", connectedPoses);
             serializePoses(tag, "relativePoses", relativePoses);
         }
 
         @Override
-        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        public CompoundTag getUpdateTag() {
             return serializePoses(new CompoundTag(), "connectedPoses", connectedPoses);
         }
 
         @Override
-        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        public void handleUpdateTag(CompoundTag tag) {
             deserializePoses(tag, "connectedPoses", connectedPoses);
         }
 

@@ -2,7 +2,6 @@ package org.confluence.mod.common.data.gen.data_map;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModTags;
@@ -10,9 +9,11 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.BaitItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
+import org.mesdag.portlib.datamap.PortDataMapProvider;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 public final class ExtractinatorSubProvider {
-    public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<ExtractinatorData, Item>> appender) {
+    public static void gather(ModDataMapProvider.Appender<PortDataMapProvider.Builder<ExtractinatorData, Item>> appender) {
         appender.create()
                 .add(ModTags.Items.DESERT_FOSSIL, ExtractinatorData.builder()
                         .withPool(extractCommon())
@@ -20,7 +21,7 @@ public final class ExtractinatorSubProvider {
                                 .add(ExtractinatorData.Entry.of(MaterialItems.STURDY_FOSSIL, 1, 1))
                                 .add(ExtractinatorData.Entry.empty(9))
                         ).build(), false)
-                .add(Tags.Items.GRAVELS, ExtractinatorData.builder()
+                .add(PortTags.Items.GRAVELS, ExtractinatorData.builder()
                         .withPool(gravelsCommon())
                         .withPool(ExtractinatorData.Pool.builder()
                                 .add(ExtractinatorData.Entry.of(Items.FLINT, 1, 1))

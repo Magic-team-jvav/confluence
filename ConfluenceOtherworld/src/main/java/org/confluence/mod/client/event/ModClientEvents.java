@@ -222,7 +222,7 @@ public final class ModClientEvents {
         SoulSkillClientHolder.INSTANCE.init();
     }
 
-    public static void registerEntityLayers(PortEntityRenderersEvent.PortRegisterLayerDefinitions event) {
+    public static void registerEntityLayers(PortEntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(BaseBombEntityModel.LAYER_LOCATION, BaseBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(BouncyBombEntityModel.LAYER_LOCATION, BouncyBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(ScarabBombEntityModel.LAYER_LOCATION, ScarabBombEntityModel::createBodyLayer);
@@ -291,7 +291,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(RainbowSheepFurModel.LAYER_LOCATION, RainbowSheepFurModel::createFurLayer);
     }
 
-    public static void registerEntityRenderers(PortEntityRenderersEvent.PortRegisterRenderers event) {
+    public static void registerEntityRenderers(PortEntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new); // 牢枕专用
         event.registerEntityRenderer(BOMB_ENTITY.get(), BaseBombEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
@@ -472,7 +472,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(ModBlocks.ENEMY_BANNER_ENTITY.get(), EnemyBannerBlockRenderer::new);
     }
 
-    public static void registerBlockColors(PortRegisterColorHandlersEvent.PortBlock event) {
+    public static void registerBlockColors(PortRegisterColorHandlersEvent.Block event) {
         event.register(ModClientSetups.HALLOW_LEAVES_COLOR, NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get());
         event.register(ModClientSetups.VOID_LEAVES_COLOR, NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get());
         event.register(ModClientSetups.VOID_WEAVE_COLOR, NatureBlocks.VOID_WEAVE.get());
@@ -481,7 +481,7 @@ public final class ModClientEvents {
         event.register((state, level, pos, tintIndex) -> level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
     }
 
-    public static void registerItemColors(PortRegisterColorHandlersEvent.PortItem event) {
+    public static void registerItemColors(PortRegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> VOID_B.get(), NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get());
         event.register((pStack, pTintIndex) -> ColoredItem.getRGBA(pStack), MaterialItems.GEL.get());
         event.register((pStack, pTintIndex) -> GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
@@ -575,7 +575,7 @@ public final class ModClientEvents {
         event.register(ModClientSetups.ENTITY_BLOOD_ATLAS, Confluence.asResource("entity_blood"));
     }
 
-    public static void model$ModifyBakingResult(PortModelEvent.PortModifyBakingResult event) {
+    public static void model$ModifyBakingResult(PortModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
 
         ModClientSetups.asCustomModel(modelRegistry,

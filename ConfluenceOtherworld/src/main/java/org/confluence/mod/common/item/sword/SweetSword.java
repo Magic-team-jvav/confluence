@@ -13,7 +13,7 @@ public class SweetSword extends BaseSwordItem {
         super(tier, rarity, rawDamage, rawSpeed, modifierBuilder);
     }
 
-    public static void applyEffects(PortMobEffectEvent.PortApplicable event) {
+    public static void applyEffects(PortMobEffectEvent.Applicable event) {
         LivingEntity entity = event.getEntity();
         if (entity.hasEffect(ModEffects.DELICIOUS.get())) {
             MobEffectInstance effect = event.getEffectInstance();

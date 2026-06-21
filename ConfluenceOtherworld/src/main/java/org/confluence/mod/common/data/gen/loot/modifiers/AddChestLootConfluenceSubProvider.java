@@ -2,10 +2,8 @@ package org.confluence.mod.common.data.gen.loot.modifiers;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -14,7 +12,6 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.ListOperation;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetLoreFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNameFunction;
@@ -23,7 +20,6 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,21 +116,21 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
         ));
         entries.add(new AddedChestLoot(BuiltInLootTables.RUINED_PORTAL,
                 LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.MYSTERIOUS_NOTE).apply(
-                        SetLoreFunction.setLore().setMode(ListOperation.ReplaceAll.INSTANCE)
+                        SetLoreFunction.setLore().setReplace(true)
                                 .addLine(Component.translatable("lore.confluence.mysterious_note.handwriting_0").withStyle(ChatFormatting.DARK_GRAY))
                                 .addLine(Component.translatable("lore.confluence.mysterious_note_structure_2_0").withStyle(style -> style.withItalic(false).withColor(ChatFormatting.GRAY)))
                                 .addLine(Component.literal(" ").append(Component.literal("3").withStyle(style -> style.withFont(Confluence.asResource("paper_image")).withItalic(false).withColor(0xFFFFFF))))
                                 .addLine(Component.literal("                       ").append(Component.literal("4").withStyle(style -> style.withFont(Confluence.asResource("paper_image")).withItalic(false).withColor(0xFFFFFF))))
                                 .addLine(Component.literal("                             ").append(Blocks.AMETHYST_BLOCK.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
-                                .addLine(Component.literal("                             ").append(Blocks.CHISELED_TUFF.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
+                                .addLine(Component.literal("                             ").append(Blocks./* todo CHISELED_TUFF*/TUFF.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
                                 .addLine(Component.empty())
                                 .addLine(Component.literal("                        ").append(Blocks.CRYING_OBSIDIAN.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
                                 .addLine(Component.empty())
-                                .addLine(Component.literal("                        ").append(Blocks.CHISELED_TUFF.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
+                                .addLine(Component.literal("                        ").append(Blocks./* todo CHISELED_TUFF*/TUFF.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
                                 .addLine(Component.empty())
                                 .addLine(Component.empty())
                 ).apply(
-                        SetNameFunction.setName(Component.translatable("item.confluence.mysterious_note.name_structure_1"), SetNameFunction.Target.CUSTOM_NAME)
+                        SetNameFunction.setName(Component.translatable("item.confluence.mysterious_note.name_structure_1"))
                 )))
         ));
         entries.add(new AddedChestLoot(
@@ -258,19 +254,19 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
         );
 
         entries.add(new AddedChestLoot(
-                ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/corridor")),
+                ResourceLocation.withDefaultNamespace("chests/trial_chambers/corridor"),
                 trialChambersCorridor
         ));
         entries.add(new AddedChestLoot(
-                ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/entrance")),
+                ResourceLocation.withDefaultNamespace("chests/trial_chambers/entrance"),
                 trialChambersCorridor
         ));
         entries.add(new AddedChestLoot(
-                ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/intersection")),
+                ResourceLocation.withDefaultNamespace("chests/trial_chambers/intersection"),
                 trialChambersCorridor
         ));
         entries.add(new AddedChestLoot(
-                ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/intersection_barrel")),
+                ResourceLocation.withDefaultNamespace("chests/trial_chambers/intersection_barrel"),
                 LootTable.lootTable().withPool(
                         LootPool.lootPool().setRolls(UniformGenerator.between(2, 2))
                                 .add(LootItem.lootTableItem(Items.BREAD)
@@ -325,11 +321,11 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))));
 
         entries.add(new AddedChestLoot(
-                ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/reward")),
+                ResourceLocation.withDefaultNamespace("chests/trial_chambers/reward"),
                 trialChambersReward
         ));
         entries.add(new AddedChestLoot(
-                ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/reward_ominous")),
+                ResourceLocation.withDefaultNamespace("chests/trial_chambers/reward_ominous"),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(4, 4))
                                 .add(LootItem.lootTableItem(PotionItems.THORNS_POTION)
@@ -375,7 +371,7 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))))
         ));
         entries.add(new AddedChestLoot(
-                ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/supply")),
+                ResourceLocation.withDefaultNamespace("chests/trial_chambers/supply"),
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
                                 .add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
@@ -389,7 +385,7 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(15, 25)))))
         ));
         entries.add(new AddedChestLoot(
-                ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/village/village_savanna_house")),
+                ResourceLocation.withDefaultNamespace("chests/village/village_savanna_house"),
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
                                 .add(LootItem.lootTableItem(BowItems.HUNTING_BOW)
@@ -399,17 +395,16 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
         return entries;
     }
 
-    protected @NotNull ResourceKey<LootTable> getResourceKey(ResourceKey<LootTable> lootTable) {
-        var path = getPath(lootTable);
-        return Confluence.asResourceKey(Registries.LOOT_TABLE, path);
+    protected ResourceLocation getResourceKey(ResourceLocation lootTable) {
+        return Confluence.asResource(getPath(lootTable));
     }
 
-    public @NotNull String getPath(ResourceKey<LootTable> lootTable) {
-        return "with/" + lootTable.location().getPath();
+    public String getPath(ResourceLocation lootTable) {
+        return "with/" + lootTable.getPath();
     }
 
     @Override
-    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
         var entries = getAddedEntitiesLoot();
         for (var entry : entries) {
             output.accept(getResourceKey(entry.lootTable), entry.lootTableBuilder);
@@ -426,6 +421,6 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
         return paths;
     }
 
-    public record AddedChestLoot(ResourceKey<LootTable> lootTable,
+    public record AddedChestLoot(ResourceLocation lootTable,
                                  LootTable.Builder lootTableBuilder) {}
 }

@@ -5,7 +5,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.biome.Biomes;
@@ -20,11 +19,9 @@ import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.gen.loot.BlockSubProvider;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -36,7 +33,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
     private final HolderLookup.Provider provider;
 
     public AddBlockLootConfluenceSubProvider(HolderLookup.Provider provider) {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
         this.provider = provider;
     }
 
@@ -83,10 +80,10 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
                                 ).add(LootItem.lootTableItem(ModItems.JUNGLE_GRASS_SEED)
                                         .when(LootItemRandomChanceCondition.randomChance(0.02f))
                                         .when(AnyOfCondition.anyOf(
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.JUNGLE).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.LUSH_CAVES).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.SPARSE_JUNGLE).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.BAMBOO_JUNGLE).get()))
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.JUNGLE)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.LUSH_CAVES)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.SPARSE_JUNGLE)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.BAMBOO_JUNGLE))
                                         )))
                 )
         ));
@@ -110,10 +107,10 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
                                 ).add(LootItem.lootTableItem(ModItems.JUNGLE_GRASS_SEED)
                                         .when(LootItemRandomChanceCondition.randomChance(0.02f))
                                         .when(AnyOfCondition.anyOf(
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.JUNGLE).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.LUSH_CAVES).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.SPARSE_JUNGLE).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.BAMBOO_JUNGLE).get()))
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.JUNGLE)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.LUSH_CAVES)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.SPARSE_JUNGLE)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.BAMBOO_JUNGLE))
                                         )))
                 )
         ));
@@ -128,7 +125,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
                                 )
                 )
         ));
-        entries.add(new AddedBlockLoot(Blocks.SHORT_GRASS,
+        entries.add(new AddedBlockLoot(Blocks.GRASS,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
                                 .when(this.doesNotHaveShearsOrSilkTouch())
@@ -137,10 +134,10 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
                                 ).add(LootItem.lootTableItem(ModItems.JUNGLE_GRASS_SEED)
                                         .when(LootItemRandomChanceCondition.randomChance(0.02f))
                                         .when(AnyOfCondition.anyOf(
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.JUNGLE).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.LUSH_CAVES).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.SPARSE_JUNGLE).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.BAMBOO_JUNGLE).get()))
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.JUNGLE)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.LUSH_CAVES)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.SPARSE_JUNGLE)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.BAMBOO_JUNGLE))
                                         )))
                 )
         ));
@@ -164,10 +161,10 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
                                 ).add(LootItem.lootTableItem(ModItems.JUNGLE_GRASS_SEED)
                                         .when(LootItemRandomChanceCondition.randomChance(0.02f))
                                         .when(AnyOfCondition.anyOf(
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.JUNGLE).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.LUSH_CAVES).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.SPARSE_JUNGLE).get())),
-                                                LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(biomes.get(Biomes.BAMBOO_JUNGLE).get()))
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.JUNGLE)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.LUSH_CAVES)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.SPARSE_JUNGLE)),
+                                                LocationCheck.checkLocation(LocationPredicate.Builder.location().setBiome(Biomes.BAMBOO_JUNGLE))
                                         )))
                 )
         ));
@@ -175,7 +172,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
     }
 
     private LootItemCondition.Builder hasShearsOrSilkTouch() {
-        return BlockSubProvider.HAS_SHEARS.or(this.hasSilkTouch());
+        return HAS_SHEARS.or(HAS_SILK_TOUCH);
     }
 
     private LootItemCondition.Builder doesNotHaveShearsOrSilkTouch() {
@@ -183,7 +180,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
     }
 
     @Override
-    protected @NotNull Iterable<Block> getKnownBlocks() {
+    protected Iterable<Block> getKnownBlocks() {
         var entries = getAddedBlocksLoot();
         List<Block> blocks = new ArrayList<>();
         for (var entry : entries) {
@@ -200,17 +197,18 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         }
     }
 
-    public void generate(@NotNull BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+    @Override
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
         this.generate();
-        Set<ResourceKey<LootTable>> set = new HashSet();
+        Set<ResourceLocation> set = new HashSet<>();
         for (var block : this.getKnownBlocks()) {
             if (block.isEnabled(this.enabledFeatures)) {
-                ResourceKey<LootTable> originalResourceKey = block.getLootTable();
+                ResourceLocation originalResourceKey = block.getLootTable();
                 var resourceKey = getResourceKey(originalResourceKey);
                 if (originalResourceKey != BuiltInLootTables.EMPTY && set.add(originalResourceKey)) {
                     LootTable.Builder loottable$builder = this.map.remove(originalResourceKey);
                     if (loottable$builder == null) {
-                        throw new IllegalStateException(String.format(Locale.ROOT, "Missing loottable '%s' for '%s'", originalResourceKey.location(), BuiltInRegistries.BLOCK.getKey(block)));
+                        throw new IllegalStateException(String.format(Locale.ROOT, "Missing loottable '%s' for '%s'", originalResourceKey, BuiltInRegistries.BLOCK.getKey(block)));
                     }
 
                     output.accept(resourceKey, loottable$builder);
@@ -223,8 +221,8 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         }
     }
 
-    protected ResourceKey<LootTable> getResourceKey(ResourceKey<LootTable> originalResourceKey) {
-        return Confluence.asResourceKey(Registries.LOOT_TABLE, getPath(originalResourceKey.location()));
+    protected ResourceLocation getResourceKey(ResourceLocation originalResourceKey) {
+        return Confluence.asResource(getPath(originalResourceKey));
     }
 
     public String getPath(ResourceLocation location) {
@@ -236,7 +234,7 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
         var entries = getAddedBlocksLoot();
         List<String> paths = new ArrayList<>();
         for (var entry : entries) {
-            paths.add(Confluence.asResource(getPath(entry.block.getLootTable().location())).toString());
+            paths.add(Confluence.asResource(getPath(entry.block.getLootTable())).toString());
         }
         return paths;
     }

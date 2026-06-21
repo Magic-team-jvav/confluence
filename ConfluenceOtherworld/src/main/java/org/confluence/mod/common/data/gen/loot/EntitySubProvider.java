@@ -48,7 +48,6 @@ import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TEPetItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -1295,7 +1294,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
 
 
     @Override
-    protected @NotNull Stream<EntityType<?>> getKnownEntityTypes() {
+    protected Stream<EntityType<?>> getKnownEntityTypes() {
         return Streams.concat(
                 ModEntities.ENTITIES.getEntries().stream(),
                 TEEntities.getEntities().map(DeferredRegister::getEntries).flatMap(Collection::stream)

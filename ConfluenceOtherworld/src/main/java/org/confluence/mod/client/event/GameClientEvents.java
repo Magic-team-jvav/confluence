@@ -137,7 +137,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::cancelSwap);
     }
 
-    private static void clientTick$Pre(PortClientTickEvent.PortPre event) {
+    private static void clientTick$Pre(PortClientTickEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player == null) return;
@@ -165,7 +165,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void clientTick$Post(PortClientTickEvent.PortPost event) {
+    private static void clientTick$Post(PortClientTickEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
 
@@ -220,12 +220,12 @@ public final class GameClientEvents {
     }
 
 
-    private static void clientPlayerNetwork$LoggingIn(PortClientPlayerNetworkEvent.PortLoggingIn event) {
+    private static void clientPlayerNetwork$LoggingIn(PortClientPlayerNetworkEvent.LoggingIn event) {
         WeatherHandler.initialize(event.getPlayer());
     }
 
 
-    private static void clientPlayerNetwork$LoggingOut(PortClientPlayerNetworkEvent.PortLoggingOut event) {
+    private static void clientPlayerNetwork$LoggingOut(PortClientPlayerNetworkEvent.LoggingOut event) {
         WeatherHandler.reset();
         MeteorLandingHandler.reset();
         LocalBrushData.reset();
@@ -240,7 +240,7 @@ public final class GameClientEvents {
     }
 
 
-    private static void input$InteractionKeyMappingTriggered(PortInputEvent.PortInteractionKeyMappingTriggered event) {
+    private static void input$InteractionKeyMappingTriggered(PortInputEvent.InteractionKeyMappingTriggered event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
@@ -273,7 +273,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void input$MouseScrolling(PortInputEvent.PortMouseScrollingEvent event) {
+    private static void input$MouseScrolling(PortInputEvent.MouseScrollingEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         double scrollDeltaY = event.getScrollDeltaY();
@@ -282,7 +282,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void renderGuiOverlay$Pre(PortRenderGuiLayerEvent.PortPre event) {
+    private static void renderGuiOverlay$Pre(PortRenderGuiLayerEvent.Pre event) {
         ResourceLocation name = event.getName();
         if ((ClientConfigs.terraStyleHealth && VanillaGuiOverlay.PLAYER_HEALTH.id().equals(name)) ||
                 (ClientConfigs.terraStyleFood && VanillaGuiOverlay.FOOD_LEVEL.id().equals(name)) ||
@@ -293,7 +293,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void gatherComponents(PortRenderTooltipEvent.PortGatherComponents event) {
+    private static void gatherComponents(PortRenderTooltipEvent.GatherComponents event) {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
@@ -347,12 +347,12 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
         if (player == null) return;
         SpelunkerHelper.renderLevel(event, player);
-        if (event.getStage() == PortRenderLevelStageEvent.PortStage.AFTER_SKY) {
+        if (event.getStage() == PortRenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event);
             MeteorLandingHandler.render(event);
             ClientGameEventSystem.afterRenderSky(event, player);
             ClientBiomeEffectSystem.renderSky(player, event);
-        } else if (event.getStage() == PortRenderLevelStageEvent.PortStage.AFTER_PARTICLES) {
+        } else if (event.getStage() == PortRenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
@@ -360,17 +360,17 @@ public final class GameClientEvents {
         }
     }
 
-    private static void screen$Render$Post(PortScreenEvent.PortRender.PortPost event) {
+    private static void screen$Render$Post(PortScreenEvent.PortRender.Post event) {
         LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
     }
 
-    private static void renderGui$Post(PortRenderGuiEvent.PortPost event) {
+    private static void renderGui$Post(PortRenderGuiEvent.Post event) {
         if (Minecraft.getInstance().screen == null) {
             LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
         }
     }
 
-    private static void screen$Init$Post(PortScreenEvent.PortInit.PortPost event) {
+    private static void screen$Init$Post(PortScreenEvent.PortInit.Post event) {
         Screen screen = event.getScreen();
         boolean isInventoryScreen = screen instanceof InventoryScreen;
         // 额外槽
@@ -406,7 +406,7 @@ public final class GameClientEvents {
 //        }
     }
 
-    private static void renderLiving$Post(PortRenderLivingEvent.PortPost<?, ?> event) {
+    private static void renderLiving$Post(PortRenderLivingEvent.Post<?, ?> event) {
         LivingEntity living = event.getEntity();
         boolean dead = living.isDeadOrDying();
         IClientLivingEntity i = IClientLivingEntity.of(living);
@@ -432,7 +432,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void renderPlayer$Pre(PortRenderPlayerEvent.PortPre event) {
+    private static void renderPlayer$Pre(PortRenderPlayerEvent.Pre event) {
         ZombieArmRenderer.getInstance().render(event.getRenderer(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getEntity(), event.getPartialTick());
     }
 
@@ -512,14 +512,14 @@ public final class GameClientEvents {
         }
     }
 
-    private static void playerInteract$LeftClickEmpty(PortPlayerInteractEvent.PortLeftClickEmpty event) {
+    private static void playerInteract$LeftClickEmpty(PortPlayerInteractEvent.LeftClickEmpty event) {
         Player player = event.getEntity();
         if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }
     }
 
-    private static void playerInteract$LeftClickBlock(PortPlayerInteractEvent.PortLeftClickBlock event) {
+    private static void playerInteract$LeftClickBlock(PortPlayerInteractEvent.LeftClickBlock event) {
         Player player = event.getEntity();
         if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
@@ -544,7 +544,7 @@ public final class GameClientEvents {
         ClientPacketHandler.setLuminance(event.getEntity(), event.getData());
     }
 
-    private static void gunShot(PortClientTickEvent.PortPost event) {
+    private static void gunShot(PortClientTickEvent.Post event) {
         KeyMapping shoot = ModKeyBindings.GUN_SHOOT.get();
         if (shoot.isDown()) {
             LocalPlayer player = Minecraft.getInstance().player;
@@ -567,7 +567,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void cancelSwap(PortInputEvent.PortInteractionKeyMappingTriggered event) {
+    private static void cancelSwap(PortInputEvent.InteractionKeyMappingTriggered event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null && player.getItemInHand(event.getHand()).getItem() instanceof BaseGun) {
             event.setSwingHand(false);

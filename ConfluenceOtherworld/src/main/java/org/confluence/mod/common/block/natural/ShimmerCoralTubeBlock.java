@@ -12,12 +12,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import org.confluence.mod.common.block.common.ModBlockStateProperties;
 import org.confluence.mod.common.block.common.SimpleShimmerImmersedBlock;
 import org.confluence.mod.common.init.ModFluids;
 
 public class ShimmerCoralTubeBlock extends PipeBlock implements SimpleShimmerImmersedBlock {
-    public static final BooleanProperty SHIMMER_IMMERSED = ModBlockStateProperties.SHIMMER_IMMERSED;
+    public static final BooleanProperty SHIMMER_IMMERSED = SimpleShimmerImmersedBlock.SHIMMER_IMMERSED;
 
     public ShimmerCoralTubeBlock(Properties properties) {
         super(0.1875F, properties.lightLevel(state -> state.getValue(SHIMMER_IMMERSED) ? 10 : 0));

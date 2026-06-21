@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.mod.common.util.TrapDamageHelper;
 
@@ -62,7 +63,7 @@ public class ContactEffectBoulderBlock extends BoulderBlock {
                 if (entity instanceof LivingEntity living) {
                     damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
                 }
-                entity.hurt(level.damageSources().source(damageTypeResourceKey), damage);
+                entity.hurt(LibUtils.damageSource(level, damageTypeResourceKey), damage);
             };
         }
 

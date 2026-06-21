@@ -55,7 +55,7 @@ public class EctoMistHelper {
         return effectiveTombstones >= 7;
     }
 
-    public static void fogColor(PortViewportEvent.PortComputeFogColor event) {
+    public static void fogColor(PortViewportEvent.ComputeFogColor event) {
         if (isGraveyard()) {
             if (ectoMistStep > 0.0F) {
                 ectoMistStep -= 0.5F / Minecraft.getInstance().getFps();
@@ -75,7 +75,7 @@ public class EctoMistHelper {
         }
     }
 
-    public static void renderFog(PortViewportEvent.PortRenderFog event) {
+    public static void renderFog(PortViewportEvent.RenderFog event) {
         if (isGraveyard()) {
             float exp = (float) EasingType.exp(ectoMistStep);
             lastStart = Math.max(ClientConfigs.minEctoMistEffectRadius, 28.0F / (effectiveTombstones - 6));

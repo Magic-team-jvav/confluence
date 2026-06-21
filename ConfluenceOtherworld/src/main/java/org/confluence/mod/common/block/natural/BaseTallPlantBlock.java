@@ -1,10 +1,8 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import PortLib.extensions.net.minecraft.world.level.block.state.properties.DoubleBlockHalf.PortDoubleBlockHalfExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -23,10 +21,6 @@ import java.util.List;
 import java.util.Set;
 
 public class BaseTallPlantBlock extends DoublePlantBlock {
-    public static final MapCodec<BaseTallPlantBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(propertiesCodec(),
-            BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("ground").forGetter(block -> block.survive)
-    ).apply(instance, BaseTallPlantBlock::new));
-
     protected final List<Block> survive;
     private transient Set<Block> cache;
 
@@ -64,7 +58,7 @@ public class BaseTallPlantBlock extends DoublePlantBlock {
 
     @Override
     public BlockState updateShape(BlockState originState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        if (facing == originState.getValue(HALF).getDirectionToOther())
+        if (facing == PortDoubleBlockHalfExtension.getDirectionToOther(originState.getValue(HALF)))
             return (facingState.is(originState.getBlock()) && (facingState.getValue(HALF) != originState.getValue(HALF))) ? originState : Blocks.AIR.defaultBlockState();
         if ((originState.getValue(HALF) == DoubleBlockHalf.LOWER) && !canSurvive(originState, level, currentPos))
             return Blocks.AIR.defaultBlockState();
@@ -72,7 +66,7 @@ public class BaseTallPlantBlock extends DoublePlantBlock {
     }
 
     @Override
-    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide) {
             BlockPos abovePos = pos.above();
             BlockState aboveState = level.getBlockState(abovePos);
@@ -82,6 +76,5 @@ public class BaseTallPlantBlock extends DoublePlantBlock {
             }
         }
         super.playerWillDestroy(level, pos, state, player);
-        return state;
     }
 }

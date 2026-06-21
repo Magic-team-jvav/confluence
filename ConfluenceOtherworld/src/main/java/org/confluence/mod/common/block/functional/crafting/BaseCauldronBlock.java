@@ -179,9 +179,9 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
             boolean hasItem = !itemStacks[0].isEmpty() || !itemStacks[1].isEmpty() || !itemStacks[2].isEmpty() || !itemStacks[3].isEmpty();
             if (hasItem) {
                 CookingPotRecipe.Input input = new CookingPotRecipe.Input(itemStacks, blockEntity.getItem(CookingPotMenu.CONTAINER_SLOT), heatSource);
-                Optional<RecipeHolder<CookingPotRecipe>> recipeFor = blockEntity.cachedCheck.getRecipeFor(input, level);
+                Optional<CookingPotRecipe> recipeFor = blockEntity.cachedCheck.getRecipeFor(input, level);
                 if (recipeFor.isPresent()) {
-                    CookingPotRecipe recipe = recipeFor.get().value();
+                    CookingPotRecipe recipe = recipeFor.get();
                     if (canResultInsert(blockEntity.items, blockEntity.getMaxStackSize(), recipe.getResultItem(null))) {
                         blockEntity.cookingTotalTime = recipe.getCookingTime();
                         if (++blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {

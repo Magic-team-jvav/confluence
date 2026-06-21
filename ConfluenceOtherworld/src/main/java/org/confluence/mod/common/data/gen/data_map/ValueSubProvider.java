@@ -5,18 +5,17 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.block.common.RelicBlock;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
-import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terraentity.init.item.*;
+import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.registries.PortDeferredBlock;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 public final class ValueSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
@@ -96,7 +95,7 @@ public final class ValueSubProvider {
                 .add(Items.FEATHER, 2)
                 .add(Items.LEATHER, 2)
                 .add(Items.TOTEM_OF_UNDYING, silver10)
-                .add(Tags.Items.MUSIC_DISCS, silver5)
+                .add(PortTags.Items.MUSIC_DISCS, silver5)
                 .add(Items.ENCHANTED_BOOK, silver10);
         builder
                 .add(Items.COPPER_BLOCK, 150 * 9)
@@ -1215,10 +1214,10 @@ public final class ValueSubProvider {
                 .add(Items.GOLDEN_HORSE_ARMOR, silver20 - silver1 + 8)
                 .add(Items.DIAMOND_HORSE_ARMOR, silver50 + silver10)
                 .add(Items.TRIDENT, gold2)
-                .add(Items.MACE, gold2 + silver20 + silver20)
-                .add(Items.HEAVY_CORE, gold2)
-                .add(Items.BREEZE_ROD, silver20)
-                .add(Items.WIND_CHARGE, silver5)
+//                .add(Items.MACE, gold2 + silver20 + silver20)
+//                .add(Items.HEAVY_CORE, gold2)
+//                .add(Items.BREEZE_ROD, silver20)
+//                .add(Items.WIND_CHARGE, silver5)
                 .add(Items.CROSSBOW, silver2)
                 .add(Items.FLINT, 10)
                 .add(Items.WHEAT, 10)
@@ -1234,9 +1233,9 @@ public final class ValueSubProvider {
                 .add(Items.BUCKET, 450)
                 .add(Items.INK_SAC, silver5)
                 .add(Items.GLOW_INK_SAC, silver10)
-                .add(Items.ARMADILLO_SCUTE, silver10)
-                .add(Items.WOLF_ARMOR, silver10 + silver50)
-                .add(Items.TURTLE_SCUTE, silver10)
+//                .add(Items.ARMADILLO_SCUTE, silver10)
+//                .add(Items.WOLF_ARMOR, silver10 + silver50)
+//                .add(Items.TURTLE_SCUTE, silver10)
                 .add(Items.TURTLE_HELMET, silver50)
                 .add(Items.TURTLE_EGG, 2000)
                 .add(Items.SNIFFER_EGG, 3000)
@@ -2016,35 +2015,35 @@ public final class ValueSubProvider {
                 .add(Blocks.DARK_OAK_TRAPDOOR, 10)
                 .add(Blocks.BIRCH_TRAPDOOR, 10)
                 .add(Blocks.CHERRY_TRAPDOOR, 10)
-                .add(Blocks.COPPER_TRAPDOOR, 10)
+//                .add(Blocks.COPPER_TRAPDOOR, 10)
                 .add(Blocks.CRIMSON_TRAPDOOR, 10)
-                .add(Blocks.EXPOSED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.EXPOSED_COPPER_TRAPDOOR, 10)
                 .add(Blocks.IRON_TRAPDOOR, 10)
                 .add(Blocks.JUNGLE_TRAPDOOR, 10)
                 .add(Blocks.OAK_TRAPDOOR, 10)
                 .add(Blocks.SPRUCE_TRAPDOOR, 10)
                 .add(Blocks.WARPED_TRAPDOOR, 10)
-                .add(Blocks.WAXED_COPPER_TRAPDOOR, 10)
-                .add(Blocks.WAXED_OXIDIZED_COPPER_TRAPDOOR, 10)
-                .add(Blocks.WAXED_WEATHERED_COPPER_TRAPDOOR, 10)
-                .add(Blocks.WEATHERED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.WAXED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.WAXED_OXIDIZED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.WAXED_WEATHERED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.WEATHERED_COPPER_TRAPDOOR, 10)
                 .add(Blocks.ACACIA_TRAPDOOR, 10)
                 .add(Blocks.BAMBOO_TRAPDOOR, 10)
                 .add(Blocks.DARK_OAK_TRAPDOOR, 10)
                 .add(Blocks.BIRCH_TRAPDOOR, 10)
                 .add(Blocks.CHERRY_TRAPDOOR, 10)
-                .add(Blocks.COPPER_TRAPDOOR, 10)
+//                .add(Blocks.COPPER_TRAPDOOR, 10)
                 .add(Blocks.CRIMSON_TRAPDOOR, 10)
-                .add(Blocks.EXPOSED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.EXPOSED_COPPER_TRAPDOOR, 10)
                 .add(Blocks.IRON_TRAPDOOR, 10)
                 .add(Blocks.JUNGLE_TRAPDOOR, 10)
                 .add(Blocks.OAK_TRAPDOOR, 10)
                 .add(Blocks.SPRUCE_TRAPDOOR, 10)
                 .add(Blocks.WARPED_TRAPDOOR, 10)
-                .add(Blocks.WAXED_COPPER_TRAPDOOR, 10)
-                .add(Blocks.WAXED_OXIDIZED_COPPER_TRAPDOOR, 10)
-                .add(Blocks.WAXED_WEATHERED_COPPER_TRAPDOOR, 10)
-                .add(Blocks.WEATHERED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.WAXED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.WAXED_OXIDIZED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.WAXED_WEATHERED_COPPER_TRAPDOOR, 10)
+//                .add(Blocks.WEATHERED_COPPER_TRAPDOOR, 10)
         ;
         // 气球
         builder
@@ -2129,7 +2128,7 @@ public final class ValueSubProvider {
 
     }
 
-    public static class Builder extends DataMapProvider.Builder<ValueComponent, Item> {
+    public static class Builder extends PortDataMapProvider.Builder<ValueComponent, Item> {
         public Builder() {
             super(ModDataMaps.VALUE);
         }

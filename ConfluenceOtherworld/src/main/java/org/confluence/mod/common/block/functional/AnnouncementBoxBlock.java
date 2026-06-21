@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -182,7 +183,7 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
 
         public static void sendMessages(ServerLevel pLevel, BlockPos pPos, Component[] messages) {
             for (Component text : messages) {
-                if (text.getContents() == PlainTextContents.EMPTY) continue;
+                if (text.getContents() == ComponentContents.EMPTY) continue;
                 Vec3 center = pPos.getCenter();
                 int square = Mth.square(CommonConfigs.ANNOUNCEMENT_BOX_DISTANCE.get());
                 for (Player player : pLevel.players()) {

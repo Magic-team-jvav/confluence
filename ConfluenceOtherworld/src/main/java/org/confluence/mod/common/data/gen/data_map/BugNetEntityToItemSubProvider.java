@@ -1,6 +1,8 @@
 package org.confluence.mod.common.data.gen.data_map;
 
+import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.core.Holder;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -9,7 +11,7 @@ import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BugNetEntityToItem;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.item.BaitItems;
-import org.confluence.terraentity.init.entity.TEAnimals;
+import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.registries.PortDeferredItem;
 
 import java.util.Collections;
@@ -71,18 +73,18 @@ public final class BugNetEntityToItemSubProvider {
         return new Tuple<>(EntityPredicate.Builder.entity().subPredicate(new IntVariantEntitySubPredicate(variant)).build(), item.toStack());
     }
 
-    public static class Builder extends DataMapProvider.Builder<BugNetEntityToItem, EntityType<?>> {
+    public static class Builder extends PortDataMapProvider.Builder<BugNetEntityToItem, EntityType<?>> {
         public Builder() {
             super(ModDataMaps.BUG_NET_ENTITY_TO_ITEM);
         }
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, PortDeferredItem<?> item) {
-            super.add(Objects.requireNonNull(holder.getKey()), new BugNetEntityToItem(Collections.singletonList(new Tuple<>(BugNetEntityToItem.EMPTY_PREDICATE, item.toStack()))), false);
+        public Builder add(Holder<EntityType<?>> holder, PortDeferredItem<?> item) {
+            super.add(Objects.requireNonNull(PortHolderExtension.getKey(holder)), new BugNetEntityToItem(Collections.singletonList(new Tuple<>(BugNetEntityToItem.EMPTY_PREDICATE, item.toStack()))), false);
             return this;
         }
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, List<Tuple<EntityPredicate, ItemStack>> list) {
-            super.add(Objects.requireNonNull(holder.getKey()), new BugNetEntityToItem(list), false);
+        public Builder add(Holder<EntityType<?>> holder, List<Tuple<EntityPredicate, ItemStack>> list) {
+            super.add(Objects.requireNonNull(PortHolderExtension.getKey(holder)), new BugNetEntityToItem(list), false);
             return this;
         }
     }

@@ -8,7 +8,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -105,38 +104,6 @@ public class HardmodeForgeBlock extends EnhancedForgeBlock {
             int time = forge.getRecipeFor(new ArrayRecipeInput(getItemStacks()), level)
                     .map(EnhancedForgeRecipe::getCookingTime).orElse(50);
             return items.get(FUEL_SLOT).isEmpty() ? time * 4 : time;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return items.isEmpty();
-        }
-
-        @Override
-        public ItemStack getItem(int slot) {
-            return items.get(slot);
-        }
-
-        @Override
-        public ItemStack removeItem(int slot, int amount) {
-            ItemStack stack = items.get(slot);
-            stack.shrink(amount);
-            return stack.isEmpty() ? ItemStack.EMPTY : stack;
-        }
-
-        @Override
-        public ItemStack removeItemNoUpdate(int slot) {
-            return items.remove(slot);
-        }
-
-        @Override
-        public boolean stillValid(Player player) {
-            return true;
-        }
-
-        @Override
-        public void clearContent() {
-            items.clear();
         }
     }
 }

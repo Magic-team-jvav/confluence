@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.functional.crafting;
 
+import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +26,7 @@ public class ChlorophyteExtractinatorBlock extends HorizontalDirectionalWithHori
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level instanceof ServerLevel serverLevel) {
             ItemStack itemStack = player.getItemInHand(hand);
-            ExtractinatorData data = itemStack.getItemHolder().getData(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR);
+            ExtractinatorData data = PortHolderExtension.getData(itemStack.getItemHolder(), ModDataMaps.CHLOROPHYTE_EXTRACTINATOR);
             if (data == null) return InteractionResult.PASS;
             ExtractinatorData.extract(level, pos, player, hand, serverLevel, itemStack, data);
         } else if (LibUtils.isPhysicalClient()) {

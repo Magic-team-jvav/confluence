@@ -590,5 +590,37 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
                 tag.put("RecipesUsed", compoundtag);
             }
         }
+
+        @Override
+        public boolean isEmpty() {
+            return items.isEmpty();
+        }
+
+        @Override
+        public ItemStack getItem(int slot) {
+            return items.get(slot);
+        }
+
+        @Override
+        public ItemStack removeItem(int slot, int amount) {
+            ItemStack stack = items.get(slot);
+            stack.shrink(amount);
+            return stack.isEmpty() ? ItemStack.EMPTY : stack;
+        }
+
+        @Override
+        public ItemStack removeItemNoUpdate(int slot) {
+            return items.remove(slot);
+        }
+
+        @Override
+        public boolean stillValid(Player player) {
+            return true;
+        }
+
+        @Override
+        public void clearContent() {
+            items.clear();
+        }
     }
 }

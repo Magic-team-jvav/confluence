@@ -210,7 +210,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void damage$Pre(PortLivingDamageEvent.PortPre event) {
+    private static void damage$Pre(PortLivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();
@@ -244,7 +244,7 @@ public final class LivingEntityEvents {
         event.setNewDamage(amount);
     }
 
-    private static void damage$Post(PortLivingDamageEvent.PortPost event) {
+    private static void damage$Post(PortLivingDamageEvent.Post event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();
@@ -276,17 +276,17 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void mobEffect$Applicable(PortMobEffectEvent.PortApplicable event) {
-        if (event.getResult() == PortMobEffectEvent.PortApplicable.Result.DEFAULT && !(event.getEntity() instanceof Player)) {
+    private static void mobEffect$Applicable(PortMobEffectEvent.Applicable event) {
+        if (event.getResult() == PortMobEffectEvent.Applicable.Result.DEFAULT && !(event.getEntity() instanceof Player)) {
             Holder<MobEffect> effect = MobEffectHolder.wrap(event.getEffectInstance().getEffect());
             if (LivingInvulnerableEffects.isInvulnerableTo(event.getEntity(), effect)) {
-                event.setPortResult(PortMobEffectEvent.PortApplicable.PortResult.DO_NOT_APPLY);
+                event.setPortResult(PortMobEffectEvent.Applicable.PortResult.DO_NOT_APPLY);
             }
         }
         SweetSword.applyEffects(event);
     }
 
-    private static void mobEffect$Added(PortMobEffectEvent.PortAdded event) {
+    private static void mobEffect$Added(PortMobEffectEvent.Added event) {
         MobEffectInstance instance = event.getEffectInstance();
         if (event.getEffectSource() != null) {
             ModEffects.onLoveEffectAdd(instance, event.getEntity(), event.getEffectSource());
@@ -300,7 +300,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void mobEffect$Remove(PortMobEffectEvent.PortRemove event) {
+    private static void mobEffect$Remove(PortMobEffectEvent.Remove event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
         if (effectInstance == null) return;
         ModEffects.onLuckEffectRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.amplifier);
@@ -460,7 +460,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void useItem$Start(PortLivingEntityUseItemEvent.PortStart event) {
+    private static void useItem$Start(PortLivingEntityUseItemEvent.Start event) {
         LivingEntity living = event.getEntity();
         if (!living.level().isClientSide && living.hasEffect(ModEffects.CHOKING.get())) {
             ItemStack itemStack = event.getItem();
@@ -471,7 +471,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void useItem$Finish(PortLivingEntityUseItemEvent.PortFinish event) {
+    private static void useItem$Finish(PortLivingEntityUseItemEvent.Finish event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         ItemStack itemStack = event.getItem();
         RandomSource random = player.getRandom();
@@ -498,24 +498,24 @@ public final class LivingEntityEvents {
 
     }
 
-    private static void mobSpawn$PositionCheck(PortMobSpawnEvent.PortPositionCheck event) {
+    private static void mobSpawn$PositionCheck(PortMobSpawnEvent.PositionCheck event) {
         if (event.getSpawnType() != MobSpawnType.NATURAL) return;
         Mob mob = event.getEntity();
-        if (event.getResult() != PortMobSpawnEvent.PortPositionCheck.PortResult.FAIL.unwrap() && (
+        if (event.getResult() != PortMobSpawnEvent.PositionCheck.PortResult.FAIL.unwrap() && (
                 DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) ||
                         GameEventSystem.shouldDenyNatureSpawn()
         )) {
-            event.setResult(PortMobSpawnEvent.PortPositionCheck.PortResult.FAIL.unwrap());
+            event.setResult(PortMobSpawnEvent.PositionCheck.PortResult.FAIL.unwrap());
         }
         if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
             if (iSection != null && iSection.confluence$isGraveyard()) {
-                event.setResult(PortMobSpawnEvent.PortPositionCheck.PortResult.SUCCEED.unwrap());
+                event.setResult(PortMobSpawnEvent.PositionCheck.PortResult.SUCCEED.unwrap());
             }
         }
     }
 
-    private static void mobSpawn$SpawnPlacementCheck(PortMobSpawnEvent.PortSpawnPlacementCheck event) {
+    private static void mobSpawn$SpawnPlacementCheck(PortMobSpawnEvent.SpawnPlacementCheck event) {
         if (event.getSpawnType() == MobSpawnType.NATURAL && !event.getPlacementCheckResult()) {
             EntityType<?> entityType = event.getEntityType();
 //            if (entityType == TEMonsterEntities.GHOST.get()) {
@@ -527,7 +527,7 @@ public final class LivingEntityEvents {
             if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
                 ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
                 if (iSection != null && iSection.confluence$isGraveyard()) {
-                    event.setResult(PortMobSpawnEvent.PortSpawnPlacementCheck.PortResult.SUCCEED.unwrap());
+                    event.setResult(PortMobSpawnEvent.SpawnPlacementCheck.PortResult.SUCCEED.unwrap());
                 }
             }
         }

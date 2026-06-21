@@ -3,6 +3,7 @@ package org.confluence.mod.common.block.functional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -46,12 +47,12 @@ public class SignalAdapterBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        if (skipInteraction(pPlayer.getMainHandItem())) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (skipInteraction(player.getMainHandItem())) {
             return InteractionResult.PASS;
         }
-        if (!pLevel.isClientSide && pPlayer.isCrouching()) {
-            pLevel.setBlockAndUpdate(pPos, pState.cycle(REVERSE));
+        if (!level.isClientSide && player.isCrouching()) {
+            level.setBlockAndUpdate(pos, state.cycle(REVERSE));
         }
         return InteractionResult.SUCCESS;
     }

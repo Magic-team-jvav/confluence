@@ -49,12 +49,12 @@ public final class LevelEvents {
         PortEventHandler.addListener(LevelEvents::modifyCustomSpawners);
     }
 
-    private static void explosion$Detonate(PortExplosionEvent.PortDetonate event) {
+    private static void explosion$Detonate(PortExplosionEvent.Detonate event) {
         BaseBombEntity.itemInvulnerableToExplosion(event.getExplosion().getDirectSourceEntity(), event.getAffectedEntities());
         NoTraps.entityInvulnerableToExplosion(event.getLevel(), event.getAffectedEntities());
     }
 
-    private static void block$ToolModification(PortBlockEvent.PortBlockToolModificationEvent event) {
+    private static void block$ToolModification(PortBlockEvent.BlockToolModificationEvent event) {
         if (PortItemAbilities.AXE_STRIP == event.getItemAbility()) {
             BlockState originalState = event.getState();
             Block block = LogBlockSet.WRAPPED_STRIP_TABLE.get(originalState.getBlock());
@@ -80,7 +80,7 @@ public final class LevelEvents {
         }
     }
 
-    private static void chunkWatch$Watch(PortChunkWatchEvent.PortWatch event) {
+    private static void chunkWatch$Watch(PortChunkWatchEvent.Watch event) {
         BrushData data = ChunkBrushData.of(event.getLevel()).getDataMap().get(event.getPos());
         if (data != null && !data.colors().isEmpty()) {
             data.ensureValid(event.getLevel());
@@ -88,7 +88,7 @@ public final class LevelEvents {
         }
     }
 
-    private static void block$Break(PortBlockEvent.PortBreakEvent event) {
+    private static void block$Break(PortBlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         BlockState state = event.getState();
         if (!PlayerSpecialData.of(player).isCouldDamageEnvironment() && state.is(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION)) {
@@ -109,7 +109,7 @@ public final class LevelEvents {
         }
     }
 
-    private static void farmlandTrample(PortBlockEvent.PortFarmlandTrampleEvent event) {
+    private static void farmlandTrample(PortBlockEvent.FarmlandTrampleEvent event) {
         if (event.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldDamageEnvironment()) {
             event.setCanceled(true);
         }

@@ -168,9 +168,9 @@ public class DecorativeBlocks {
                             .requiresCorrectToolForDrops()
                             .lightLevel(value -> 10))
             .full(props -> new HellStoneBlock(true, props))
-            .stair(HellStoneBlock::hotStair)
-            .slab(HellStoneBlock::hotSlab)
-            .wall(HellStoneBlock::hotWall)
+            .stair(HellStoneBlock.BStair::new)
+            .slab(HellStoneBlock.BSlab::new)
+            .wall(HellStoneBlock.BWall::new)
             .itemProperties(new Item.Properties().fireResistant().stacksTo(64))
             .stonecutting()
             .build();
@@ -324,7 +324,7 @@ public class DecorativeBlocks {
             SoundEvents.STONE_BUTTON_CLICK_OFF,
             SoundEvents.STONE_BUTTON_CLICK_ON
     ));
-    public static final PortDeferredBlock<LihzahrdDoorBlock> LIHZAHRD_DOOR = registerWithItem("lihzahrd_door", () -> new LihzahrdDoorBlock(LIHZAHRD, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).requiresCorrectToolForDrops().noOcclusion().strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F)).pushReaction(PushReaction.BLOCK)));
+    public static final PortDeferredBlock<LihzahrdDoorBlock> LIHZAHRD_DOOR = registerWithItem("lihzahrd_door", () -> new LihzahrdDoorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).requiresCorrectToolForDrops().noOcclusion().strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F)).pushReaction(PushReaction.BLOCK), LIHZAHRD));
     public static final DecoBlockSet LIHZAHRD_BRICKS = DecoBlockSet.builder("lihzahrd_bricks", () -> BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).requiresCorrectToolForDrops().strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F))).stonecutting().build();
 
 

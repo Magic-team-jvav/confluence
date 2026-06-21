@@ -1,5 +1,6 @@
 package org.confluence.mod.common.capability;
 
+import PortLib.extensions.net.minecraftforge.fluids.FluidStack.PortFluidStackExtension;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidType;
@@ -53,7 +54,7 @@ public class FluidBottomlessBucketWrapper implements IFluidHandlerItem {
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
         FluidStack fluidStack = getFluid();
-        if (!fluidStack.isEmpty() && FluidStack.isSameFluidSameComponents(fluidStack, resource)) {
+        if (!fluidStack.isEmpty() && PortFluidStackExtension.isSameFluidSameComponents(fluidStack, resource)) {
             return fluidStack;
         }
         return FluidStack.EMPTY;

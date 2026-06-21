@@ -31,7 +31,7 @@ public class InverseTallPlantBlock extends BaseTallPlantBlock {
     }
 
     @Override
-    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
         if (!level.isClientSide) {
             BlockPos belowPos = pos.below();
             BlockState aboveState = level.getBlockState(belowPos);
@@ -41,7 +41,6 @@ public class InverseTallPlantBlock extends BaseTallPlantBlock {
             }
         }
         super.playerWillDestroy(level, pos, state, player);
-        return state;
     }
 
     @Override

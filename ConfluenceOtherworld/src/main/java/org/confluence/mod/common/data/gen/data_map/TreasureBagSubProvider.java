@@ -4,10 +4,10 @@ import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.TreasureBagDrop;
 import org.confluence.mod.common.init.item.TreasureBagItems;
-import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.mesdag.portlib.datamap.PortDataMapProvider;
 
 public final class TreasureBagSubProvider {
-    public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<TreasureBagDrop, EntityType<?>>> appender) {
+    public static void gather(ModDataMapProvider.Appender<PortDataMapProvider.Builder<TreasureBagDrop, EntityType<?>>> appender) {
         appender.create()
                 .add(TEBossEntities.KING_SLIME, new TreasureBagDrop(TreasureBagItems.KING_SLIME_TREASURE_BAG.get()), false)
                 .add(TEBossEntities.EYE_OF_CTHULHU, new TreasureBagDrop(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get()), false)

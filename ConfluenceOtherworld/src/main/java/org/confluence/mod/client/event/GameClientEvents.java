@@ -77,6 +77,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.map.ExtractinatorData;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -85,7 +86,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
@@ -93,8 +93,8 @@ import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
-import org.confluence.mod.network.c2s.FlailControlPacketC2S;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
+import org.confluence.mod.network.c2s.FlailControlPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.network.c2s.SwordProjectilePacketC2S;
 import org.confluence.mod.util.*;
@@ -170,6 +170,7 @@ public final class GameClientEvents {
             DropletsHandler.handle(minecraft, player);
             DeathAnimUtils.handle(player.clientLevel);
             LucyTheAxeHandler.handle(player.getId());
+            ParticleHandler.handle(player);
             if (minecraft.options.keyAttack.isDown() &&
                     player.getMainHandItem().getItem() instanceof BaseSwordItem sword &&
                     !player.getCooldowns().isOnCooldown(sword)

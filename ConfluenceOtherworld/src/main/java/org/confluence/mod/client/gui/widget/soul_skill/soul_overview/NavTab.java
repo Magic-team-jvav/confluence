@@ -2,6 +2,7 @@ package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;
@@ -23,7 +24,7 @@ public class NavTab extends OverviewNavButton {
      * 通过已注册的分类信息构建
      */
     public NavTab(SoulOverviewScreen screen, SkillCategory category, int x, int y) {
-        super(screen, x, y, SIZE, SIZE, Component.empty());
+        super(screen, x, y, SIZE, SIZE, CommonComponents.EMPTY);
         this.category = category;
         this.color = category.color;
         setTooltip(Tooltip.create(Component.empty()));

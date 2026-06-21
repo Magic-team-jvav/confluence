@@ -5,6 +5,7 @@ import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.Po
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
@@ -281,7 +282,7 @@ public class BaseSwordItem extends SwordItem implements IPortItemExtension {
         if (modifier != null) {
             for (int i = 0; i < modifier.tooltipsModifier.size(); i++) {
                 if (i == 0) {
-                    tooltipComponents.add(Component.empty());
+                    tooltipComponents.add(CommonComponents.EMPTY);
                 }
                 var it = modifier.tooltipsModifier.get(i);
                 MutableComponent component = Component.translatable("tooltip.item.confluence." + BuiltInRegistries.ITEM.getKey(this).getPath() + "." + i).withStyle(style -> style.withColor(0x666666).withItalic(true));

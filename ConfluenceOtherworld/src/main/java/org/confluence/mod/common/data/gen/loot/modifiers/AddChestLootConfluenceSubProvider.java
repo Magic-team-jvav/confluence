@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen.loot.modifiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -123,12 +124,12 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                                 .addLine(Component.literal("                       ").append(Component.literal("4").withStyle(style -> style.withFont(Confluence.asResource("paper_image")).withItalic(false).withColor(0xFFFFFF))))
                                 .addLine(Component.literal("                             ").append(Blocks.AMETHYST_BLOCK.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
                                 .addLine(Component.literal("                             ").append(Blocks./* todo CHISELED_TUFF*/TUFF.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
-                                .addLine(Component.empty())
+                                .addLine(CommonComponents.EMPTY)
                                 .addLine(Component.literal("                        ").append(Blocks.CRYING_OBSIDIAN.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
-                                .addLine(Component.empty())
+                                .addLine(CommonComponents.EMPTY)
                                 .addLine(Component.literal("                        ").append(Blocks./* todo CHISELED_TUFF*/TUFF.getName().withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("uniform")).withItalic(false).withColor(0x3A2509))))
-                                .addLine(Component.empty())
-                                .addLine(Component.empty())
+                                .addLine(CommonComponents.EMPTY)
+                                .addLine(CommonComponents.EMPTY)
                 ).apply(
                         SetNameFunction.setName(Component.translatable("item.confluence.mysterious_note.name_structure_1"))
                 )))

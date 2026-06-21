@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.map;
 
-import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -26,7 +25,7 @@ public record DiggingPower(int power) {
 
     public static int getPower(ItemStack stack, Holder<Item> holder) {
         int power = -1;
-        DiggingPower diggingPower = PortHolderExtension.getData(holder, ModDataMaps.DIGGING_POWER);
+        DiggingPower diggingPower = holder.getData(ModDataMaps.DIGGING_POWER);
         if (diggingPower == null) {
             if (stack.getItem() instanceof TieredItem tieredItem) {
                 Tier tier = tieredItem.getTier();

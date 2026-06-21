@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.mana;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,7 +29,7 @@ public class ManaCrystalItem extends TooltipItem {
             ManaStorage manaStorage = ManaStorage.of(player);
             if (manaStorage.addStar()) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+                if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
             }

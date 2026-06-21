@@ -2,7 +2,6 @@ package org.confluence.mod.common.attachment;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.common.collect.Iterables;
 import net.minecraft.core.BlockPos;
@@ -288,7 +287,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
     }
 
     public static PlayerSpecialData of(Player player) {
-        return PortEntityExtension.getAttach(player, ModAttachmentTypes.SPECIAL_DATA);
+        return player.getAttach(ModAttachmentTypes.SPECIAL_DATA);
     }
 
     public static void resetSomeData(Player player) {

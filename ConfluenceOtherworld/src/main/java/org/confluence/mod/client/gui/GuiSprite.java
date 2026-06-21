@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -103,7 +102,7 @@ public class GuiSprite {
     }
 
     public void render(GuiGraphics guiGraphics) {
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, sprite, sprite.textureW(), sprite.textureH(), u, v, x, y, w, h);
+        guiGraphics.blitSprite(sprite, sprite.textureW(), sprite.textureH(), u, v, x, y, w, h);
     }
 
     public void render(GuiGraphics guiGraphics, float partialTick) {
@@ -137,6 +136,6 @@ public class GuiSprite {
     }
 
     public void renderAligned(GuiGraphics guiGraphics, int alignX, int alignY) {
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, sprite, sprite.textureW(), sprite.textureH(), u, v, x + (alignX - w) / 2, y + (alignY - h) / 2, w, h);
+        guiGraphics.blitSprite(sprite, sprite.textureW(), sprite.textureH(), u, v, x + (alignX - w) / 2, y + (alignY - h) / 2, w, h);
     }
 }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import com.google.common.collect.Streams;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -37,7 +36,7 @@ public class BossSummoningItem extends TooltipItem {
             if (Streams.stream(serverLevel.getAllEntities()).anyMatch(entity -> entity.getType() == mob.getType())) {
                 return InteractionResultHolder.fail(itemStack);
             }
-            if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+            if (!player.hasInfiniteMaterials()) {
                 itemStack.shrink(1);
             }
             mob.setPos(

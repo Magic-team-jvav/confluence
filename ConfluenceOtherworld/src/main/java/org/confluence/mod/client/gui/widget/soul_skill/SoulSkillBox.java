@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.widget.soul_skill;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -102,19 +101,19 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     public static void renderBox(GuiGraphics guiGraphics, int x, int y) {
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOX, x, y - 2, BOX_SIZE, BOX_SIZE);
+        guiGraphics.blitSprite(BOX, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderBoxActivate(GuiGraphics guiGraphics, int x, int y) {
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOX_ACTIVATE, x, y - 2, BOX_SIZE, BOX_SIZE);
+        guiGraphics.blitSprite(BOX_ACTIVATE, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderBoxSelect(GuiGraphics guiGraphics, int x, int y) {
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOX_SELECT, x, y - 2, BOX_SIZE, BOX_SIZE);
+        guiGraphics.blitSprite(BOX_SELECT, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderBoxActivateFlame(GuiGraphics guiGraphics, int x, int y) {
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOX_ACTIVATE_FLAME, x, y - 2, BOX_SIZE, BOX_SIZE);
+        guiGraphics.blitSprite(BOX_ACTIVATE_FLAME, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     public static void renderSkillIcon(GuiGraphics guiGraphics, SoulSkillStack skillStack, int x, int y) {
@@ -122,11 +121,11 @@ public class SoulSkillBox extends AbstractWidget {
             return;
         }
         // TODO 需要添加CD渲染
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, skillStack.getSoulSkill().icon(), x, y, SKILL_SIZE, SKILL_SIZE);
+        guiGraphics.blitSprite(skillStack.getSoulSkill().icon(), x, y, SKILL_SIZE, SKILL_SIZE);
     }
 
     public static void renderBoxGray(GuiGraphics guiGraphics, int x, int y) {
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, SoulSkillBox.BOX_GRAY, x, y, BOX_GRAY_SIZE, BOX_GRAY_SIZE);
+        guiGraphics.blitSprite(SoulSkillBox.BOX_GRAY, x, y, BOX_GRAY_SIZE, BOX_GRAY_SIZE);
     }
 
     public static void drawSkillStackName(GuiGraphics guiGraphics, Font font, int x, int y, SoulSkillStack currentSkillStack, boolean isCenter) {

@@ -1,7 +1,6 @@
 package org.confluence.mod.client.event;
 
 import PortLib.extensions.net.minecraft.client.resources.model.ModelResourceLocation.PortModelResourceLocationExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -212,7 +211,7 @@ public final class ModClientSetups {
         return false;
     };
     static final IItemDecorator REPEATER_AMMO = (guiGraphics, font, itemStack, x, y) -> {
-        RepeaterContents data = PortItemStackExtension.getDataOrDefault(itemStack, ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
+        RepeaterContents data = itemStack.getDataOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
         // todo
 //        if (itemStack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
 //            Iterator<ItemStack> itemIterator = handler.getAllItemIterator();

@@ -2,7 +2,6 @@ package org.confluence.mod.common.block.common;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -83,7 +82,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             }
         }
 
-        GroupItem.BelongsTo group = PortItemStackExtension.getData(stack, ConfluenceMagicLib.BELONGS_TO_GROUP);
+        GroupItem.BelongsTo group = stack.getData(ConfluenceMagicLib.BELONGS_TO_GROUP);
         if (group != null) {
             muralEntity.setBelongsToGroup(group);
         }
@@ -316,7 +315,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                 displayTag.put("Lore", loreTag);
             }
             if (belongsToGroup != null) {
-                PortItemStackExtension.setData(stack, ConfluenceMagicLib.BELONGS_TO_GROUP, belongsToGroup);
+                stack.setData(ConfluenceMagicLib.BELONGS_TO_GROUP, belongsToGroup);
             }
         }
 

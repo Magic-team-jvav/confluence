@@ -1,9 +1,7 @@
 package org.confluence.mod.common.event.game.entity;
 
 import PortLib.extensions.net.minecraft.advancements.Advancement.PortAdvancementExtension;
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import PortLib.extensions.net.minecraft.util.ParticleUtils.PortParticleUtilsExtension;
-import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -142,9 +140,9 @@ public final class PlayerEvents {
         if (ModUtils.shouldDisplayTeam()) {
             Team team = PlayerSpecialData.of(player).getTeam();
             if (team != Team.WHITE) {
-                player.server.getPlayerList().broadcastSystemMessage(PortMutableComponentExtension.withColor(Component.translatable(
+                player.server.getPlayerList().broadcastSystemMessage(Component.translatable(
                         "message.confluence.join_team", player.getName(), team.getLowerCaseName()
-                ), team.getColor().getTextColor()), false);
+                ).withColor(team.getColor().getTextColor()), false);
             }
         }
 
@@ -254,7 +252,7 @@ public final class PlayerEvents {
             if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
                 Item gel = MaterialItems.GEL.get();
                 if (!itemStack.is(gel)) break autoStackGelsColor;
-                int defaultMaxStackSize = PortItemExtension.getDefaultMaxStackSize(gel);
+                int defaultMaxStackSize = gel.getDefaultMaxStackSize();
                 for (ItemStack stack : player.getInventory().items) {
                     if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
                         ColoredItem.setRGBA(itemStack, ColoredItem.getRGBA(stack));

@@ -2,7 +2,6 @@ package org.confluence.mod.util;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import PortLib.extensions.net.minecraft.advancements.AdvancementProgress.PortAdvancementProgressExtension;
-import PortLib.extensions.net.minecraft.util.datafix.DataFixTypes.PortDataFixTypesExtension;
 import com.google.common.collect.Streams;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -112,7 +111,7 @@ public final class AchievementUtils {
 
     public static Codec<Map<ResourceLocation, AdvancementProgress>> getCodecClientOnly() {
         Codec<Map<ResourceLocation, AdvancementProgress>> dataCodec = Codec.unboundedMap(ResourceLocation.CODEC, AchievementProgress.CODEC);
-        return PortDataFixTypesExtension.wrapCodec(DataFixTypes.ADVANCEMENTS, dataCodec, LibClientUtils.getDataFixer(), 1343);
+        return DataFixTypes.ADVANCEMENTS.wrapCodec(dataCodec, LibClientUtils.getDataFixer(), 1343);
     }
 
     public static void setData(ServerPlayer player) {

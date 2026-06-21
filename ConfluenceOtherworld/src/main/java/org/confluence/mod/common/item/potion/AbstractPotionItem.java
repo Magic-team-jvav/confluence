@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.potion;
 
 import PortLib.extensions.java.util.List.PortListExtension;
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
@@ -57,7 +56,7 @@ public abstract class AbstractPotionItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity living) {
         apply(stack, level, living);
-        if (living instanceof Player player && !PortPlayerExtension.hasInfiniteMaterials(player)) {
+        if (living instanceof Player player && !player.hasInfiniteMaterials()) {
             stack.shrink(1); // 创造模式不消耗
             if (CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
                 if (stack.isEmpty()) {

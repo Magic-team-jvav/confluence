@@ -2,7 +2,6 @@ package org.confluence.mod.common.attachment;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
-import PortLib.extensions.net.minecraft.world.level.Level.PortLevelExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
@@ -117,6 +116,6 @@ public class ChunkDropletsData implements IPortNBTSerializable<CompoundTag> {
     }
 
     public static ChunkDropletsData of(Level level) {
-        return PortLevelExtension.getAttach(level, ModAttachmentTypes.CHUNK_DROPLETS_DATA);
+        return level.getAttach(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
     }
 }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -74,7 +73,7 @@ public class VoidCrystalItem extends Item {
     private void markPosition(ItemStack stack, CompoundTag tag, BlockPos pos, Direction face, @Nullable Player player, Level level) {
         tag.putLong("FirstPos", pos.asLong());
         tag.putInt("FirstFace", face.get3DDataValue());
-        PortItemStackExtension.setData(stack, ConfluenceMagicLib.NBT, new NbtComponent(tag));
+        stack.setData(ConfluenceMagicLib.NBT, new NbtComponent(tag));
 
         if (player != null) {
             player.displayClientMessage(Component.translatable("chat.confluence.crystal_marked").withStyle(ChatFormatting.AQUA), true);
@@ -132,9 +131,9 @@ public class VoidCrystalItem extends Item {
             workingTag.remove("FirstFace");
         }
         if (workingTag.isEmpty()) {
-            PortItemStackExtension.removeData(stack, ConfluenceMagicLib.NBT);
+            stack.removeData(ConfluenceMagicLib.NBT);
         } else {
-            PortItemStackExtension.setData(stack, ConfluenceMagicLib.NBT, new NbtComponent(workingTag));
+            stack.setData(ConfluenceMagicLib.NBT, new NbtComponent(workingTag));
         }
     }
 

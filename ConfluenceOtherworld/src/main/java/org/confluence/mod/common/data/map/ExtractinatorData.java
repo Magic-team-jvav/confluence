@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.map;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -61,8 +60,8 @@ public record ExtractinatorData(List<Pool> pools) {
     }
 
     public static void addTooltip(Holder<Item> holder, List<Component> toolTip) {
-        if (PortHolderExtension.getData(holder, ModDataMaps.EXTRACTINATOR) != null ||
-                PortHolderExtension.getData(holder, ModDataMaps.CHLOROPHYTE_EXTRACTINATOR) != null
+        if (holder.getData(ModDataMaps.EXTRACTINATOR) != null ||
+                holder.getData(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR) != null
         ) {
             toolTip.add(Component.translatable("tooltip.item.confluence.can_be_extractinated.0").withStyle(ChatFormatting.GRAY));
         }

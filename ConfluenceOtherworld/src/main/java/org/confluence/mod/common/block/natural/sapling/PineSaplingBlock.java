@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural.sapling;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -33,7 +32,7 @@ public class PineSaplingBlock extends SaplingBlock {
 
             if (!level.isClientSide) {
                 level.setBlockAndUpdate(pos, NatureBlocks.PRUNED_PINE_SAPLING.get().defaultBlockState());
-                PortItemStackExtension.hurtAndBreak(stack, 1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+                stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
                 level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
             return InteractionResult.sidedSuccess(level.isClientSide);

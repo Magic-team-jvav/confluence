@@ -1,6 +1,5 @@
 package org.confluence.mod.common.effect.harmful;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.AttributeInstance.PortAttributeInstanceExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +31,7 @@ public class WaterCandleEffect extends PortMobEffect {
             double amount = (amplifier + 1) * (living.getY() >= OverworldUtils.getSpaceY() ? 0.8 : 0.17);
             AttributeModifier modifier = instance.getModifier(uuid);
             if (modifier == null || modifier.getAmount() != amount) {
-                PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(uuid, name, amount, AttributeModifier.Operation.ADDITION));
+                instance.addOrReplacePermanentModifier(new AttributeModifier(uuid, name, amount, AttributeModifier.Operation.ADDITION));
             }
         }
     }

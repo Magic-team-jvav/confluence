@@ -1,6 +1,5 @@
 package org.confluence.mod.client.renderer.item;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -39,8 +38,8 @@ public class LucyTheAxeDialogRenderer {
 
         delayed = guiGraphics -> {
             int y1 = (int) y - 5;
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, background, (int) x - 4, y1, textW + 8, minecraft.font.lineHeight + 9);
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, tail, (int) itemX + 8, y1 + 17, 8, 8);
+            guiGraphics.blitSprite(background, (int) x - 4, y1, textW + 8, minecraft.font.lineHeight + 9);
+            guiGraphics.blitSprite(tail, (int) itemX + 8, y1 + 17, 8, 8);
 
             minecraft.font.renderText(
                     text, x, y, COLOR, false, matrix,

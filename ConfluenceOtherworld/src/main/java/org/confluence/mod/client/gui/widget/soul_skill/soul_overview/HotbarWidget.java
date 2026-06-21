@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -49,15 +48,15 @@ public class HotbarWidget extends AbstractWidget {
         if (slots.isEmpty()) {
             return;
         }
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOTTOM_BOX_HEAD, getX(), getY(), 16, 32);
+        guiGraphics.blitSprite(BOTTOM_BOX_HEAD, getX(), getY(), 16, 32);
         int x = getX() + 16;
         if (slots.size() > 1) {
             for (int i = 1; i < slots.size(); i++) {
-                PortGuiGraphicsExtension.blitSprite(guiGraphics, BOTTOM_BOX_CENTRE, x, getY(), 20, 32);
+                guiGraphics.blitSprite(BOTTOM_BOX_CENTRE, x, getY(), 20, 32);
                 x += 20;
             }
         }
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, BOTTOM_BOX_TAIL, x, getY(), 16, 32);
+        guiGraphics.blitSprite(BOTTOM_BOX_TAIL, x, getY(), 16, 32);
     }
 
     @Override

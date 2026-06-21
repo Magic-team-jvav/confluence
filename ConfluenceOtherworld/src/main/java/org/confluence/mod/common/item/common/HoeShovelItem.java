@@ -46,7 +46,7 @@ public class HoeShovelItem extends DiggerItem {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        ToolMode toolMode = PortItemStackExtension.getData(context.getItemInHand(), ConfluenceMagicLib.TOOL_MODE);
+        ToolMode toolMode = context.getItemInHand().getData(ConfluenceMagicLib.TOOL_MODE);
         if (toolMode == null || toolMode.mode() == 0) {
             return Items.NETHERITE_SHOVEL.useOn(context);
         } else {
@@ -72,7 +72,7 @@ public class HoeShovelItem extends DiggerItem {
 
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction itemAbility) {
-        ToolMode toolMode = PortItemStackExtension.getData(stack, ConfluenceMagicLib.TOOL_MODE.get());
+        ToolMode toolMode = stack.getData(ConfluenceMagicLib.TOOL_MODE.get());
         if (toolMode == null || toolMode.mode() == 0) {
             return ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(itemAbility);
         }

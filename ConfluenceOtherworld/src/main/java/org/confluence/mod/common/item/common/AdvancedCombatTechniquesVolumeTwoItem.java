@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -38,11 +36,11 @@ public class AdvancedCombatTechniquesVolumeTwoItem extends TooltipItem {
                     NPCSpawner.applyAdvancedCombatTechniques(npc, id);
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });
-                MutableComponent component = PortMutableComponentExtension.withColor(Component.translatable("message.confluence.advancement_combat_techniques"), GlobalColors.MESSAGE.get());
+                MutableComponent component = Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.get());
                 for (ServerPlayer serverPlayer : serverLevel.getServer().getPlayerList().getPlayers()) {
                     serverPlayer.sendSystemMessage(component);
                 }
-                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+                if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
             }

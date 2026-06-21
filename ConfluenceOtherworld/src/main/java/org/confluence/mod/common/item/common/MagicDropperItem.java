@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
@@ -44,7 +43,7 @@ public class MagicDropperItem extends Item {
             }
             DropletsSyncPacketS2C.sendToPlayersTrackingChunk(level, chunkPos, data.getDataMap(player, true));
 
-            if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+            if (!player.hasInfiniteMaterials()) {
                 context.getItemInHand().shrink(1);
             }
         }

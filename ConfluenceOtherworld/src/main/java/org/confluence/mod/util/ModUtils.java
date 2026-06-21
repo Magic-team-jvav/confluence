@@ -1,7 +1,6 @@
 package org.confluence.mod.util;
 
 import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -365,7 +364,7 @@ public final class ModUtils {
                 (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX))
         ) {
             if (player instanceof ServerPlayer serverPlayer && LootComponent.open(serverPlayer, onSlot)) {
-                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+                if (!player.hasInfiniteMaterials()) {
                     if (carried.is(ToolItems.GOLDEN_DUNGEON_KEY)) {
                         carried.shrink(1);
                     }

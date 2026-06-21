@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import PortLib.extensions.net.minecraft.client.gui.screens.inventory.InventoryScreen.PortInventoryScreenExtension;
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -337,12 +336,12 @@ public class BestiaryScreen extends Screen {
     }
 
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, BACKGROUND, textureW, textureH, 0, 0, leftPos, topPos, imageWidth, imageHeight);
+        guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 0, 0, leftPos, topPos, imageWidth, imageHeight);
 
         int x1 = leftPos + renderedEntryX;
         int y1 = topPos + renderedEntryY;
         for (ClientBestiaryEntry entry : renderedEntries) {
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, BACKGROUND, textureW, textureH, 220, 0, x1, y1, 36, 36);
+            guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 220, 0, x1, y1, 36, 36);
             if (entry.isLocked()) {
                 renderFilter(guiGraphics, FilterEntry.UNKNOWN, x1, y1, 36, 36);
             } else {
@@ -438,7 +437,7 @@ public class BestiaryScreen extends Screen {
             y1 = topPos + 10;
             // 背景图
             PortSprite sprite = showedEntry.background;
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, sprite, sprite.textureW(), sprite.textureH(), 0, 0, x1, y1, 48, 48);
+            guiGraphics.blitSprite(sprite, sprite.textureW(), sprite.textureH(), 0, 0, x1, y1, 48, 48);
             // 实体
             LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
             if (living != null) {
@@ -447,14 +446,14 @@ public class BestiaryScreen extends Screen {
             // 稀有度
             pose.pushPose();
             pose.translate(0, 0, 180);
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, BACKGROUND, textureW, textureH, 221, 53, x1, y1, 23, 7);
+            guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 221, 53, x1, y1, 23, 7);
             for (int i = 0; i < showedEntry.rarity; i++) {
                 if (i == 0) {
                     // 大星
-                    PortGuiGraphicsExtension.blitSprite(guiGraphics, BACKGROUND, textureW, textureH, 222, 61, x1 + 1, y1 + 1, 5, 5);
+                    guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 222, 61, x1 + 1, y1 + 1, 5, 5);
                 } else {
                     // 小星
-                    PortGuiGraphicsExtension.blitSprite(guiGraphics, BACKGROUND, textureW, textureH, 227, 61, x1 + 2 + i * 4, y1 + 1, 4, 5);
+                    guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 227, 61, x1 + 2 + i * 4, y1 + 1, 4, 5);
                 }
             }
             pose.popPose();
@@ -523,7 +522,7 @@ public class BestiaryScreen extends Screen {
     private void renderFilter(GuiGraphics guiGraphics, FilterEntry filter, int x, int y, int alignX, int alignY) {
         RenderSystem.enableBlend();
         PortSprite sprite = filter.sprite == null ? FILTERS : filter.sprite;
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, sprite, 256, 256, filter.u(), filter.v(), x + (alignX - filter.w()) / 2, y + (alignY - filter.h()) / 2, filter.w(), filter.h());
+        guiGraphics.blitSprite(sprite, 256, 256, filter.u(), filter.v(), x + (alignX - filter.w()) / 2, y + (alignY - filter.h()) / 2, filter.w(), filter.h());
         RenderSystem.disableBlend();
     }
 

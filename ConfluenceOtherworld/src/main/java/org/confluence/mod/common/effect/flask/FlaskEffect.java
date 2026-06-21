@@ -52,7 +52,7 @@ public abstract class FlaskEffect extends PortMobEffect {
 
     public static void removeAnotherFlaskEffects(MobEffectInstance instance, LivingEntity living) {
         if (PortMobEffectInstanceExtension.getCures(instance).contains(ModEffects.FLASK)) {
-            PortLivingEntityExtension.removeEffectsCuredBy(living, ModEffects.FLASK);
+            living.removeEffectsCuredBy(ModEffects.FLASK);
         }
     }
 }

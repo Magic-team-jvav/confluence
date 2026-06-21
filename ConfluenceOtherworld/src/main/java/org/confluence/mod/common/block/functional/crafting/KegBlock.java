@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -74,7 +73,7 @@ public class KegBlock extends HorizontalDirectionalBlock {
         if (stack.is(PotionItems.MUG)) {
             if (level.isClientSide) return InteractionResult.SUCCESS;
             player.addItem(PotionItems.ALE.toStack());
-            if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+            if (!player.hasInfiniteMaterials()) {
                 stack.shrink(1);
             }
             return InteractionResult.CONSUME;

@@ -1,6 +1,5 @@
 package org.confluence.mod.util;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -94,15 +93,15 @@ public final class ClientUtils {
         float blueLow = (colorLow & 0xFF) / 255.0F;
         if (part >= 1) {
             RenderSystem.setShaderColor(red, green, blue, 1.0F);
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, icon, size, size, iconX, iconY, x, y, 9, 9);
+            guiGraphics.blitSprite(icon, size, size, iconX, iconY, x, y, 9, 9);
         }
         if (part >= 2) {
             RenderSystem.setShaderColor(redLow, greenLow, blueLow, 1.0F);
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, icon, size, size, iconX + partDis, iconY, x, y, 9, 9);
+            guiGraphics.blitSprite(icon, size, size, iconX + partDis, iconY, x, y, 9, 9);
         }
         if (part >= 3) {
             RenderSystem.setShaderColor(redHigh, greenHigh, blueHigh, 1.0F);
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, icon, size, size, iconX + partDis * 2, iconY, x, y, 9, 9);
+            guiGraphics.blitSprite(icon, size, size, iconX + partDis * 2, iconY, x, y, 9, 9);
         }
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
@@ -159,7 +158,7 @@ public final class ClientUtils {
         if (max / 2 > (float) backCount) {backCount++;}
         if (current > (float) heartCount) {heartCount++;}
         for (int i = 0; i < backCount && i < 10 && background; i++) {
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, texture, size, size, 60, uvY, (x + i * 8) + ((backCount < 10 && !left) ? ((10 - backCount) * 8) : 0), y, 9, 9);
+            guiGraphics.blitSprite(texture, size, size, 60, uvY, (x + i * 8) + ((backCount < 10 && !left) ? ((10 - backCount) * 8) : 0), y, 9, 9);
         }
         int lineCount = heartCount / 20;
         int drawCount;

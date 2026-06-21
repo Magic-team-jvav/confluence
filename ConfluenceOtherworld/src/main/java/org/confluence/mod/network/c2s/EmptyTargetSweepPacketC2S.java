@@ -1,6 +1,5 @@
 package org.confluence.mod.network.c2s;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -43,7 +42,7 @@ public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
             float attackDamage = event.getAttackDamage();
             DamageSource source = player.damageSources().playerAttack(player);
             for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, BaseSwordItem.getSpecialSweepArea(player))) {
-                double entityReachSq = Mth.square(PortPlayerExtension.entityInteractionRange(player));
+                double entityReachSq = Mth.square(player.entityInteractionRange());
                 if (target != player &&
                         !player.isAlliedTo(target) &&
                         (!(target instanceof ArmorStand) || !((ArmorStand) target).isMarker()) &&

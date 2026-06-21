@@ -223,7 +223,7 @@ public enum NPCSpawner implements IGlobalData {
             MutableComponent message;
             if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
                 if (living.isLieDown()) return; // 渔夫未解锁时死亡不会广播死亡消息
-                message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.npc.left", living.getName()), GlobalColors.NPC_SLAIN.get());
+                message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             } else if (living instanceof TravelingMerchantNPC) {
                 message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.traveling_merchant.departed", living.getName()), GlobalColors.NPC_ARRIVED.get());
             } else {
@@ -631,7 +631,7 @@ public enum NPCSpawner implements IGlobalData {
                 int j2 = i2 % (i * 2 + 1);
                 int k2 = i2 / (i * 2 + 1);
                 blockPos = PlayerRespawnLogic.getOverworldRespawnPos(level, pos.getX() + j2 - i, pos.getZ() + k2 - i);
-                if (blockPos != null && level.noCollision(npc, aabb.move(PortBlockPosExtension.getBottomCenter(blockPos)))) {
+                if (blockPos != null && level.noCollision(npc, aabb.move(blockPos.getBottomCenter()))) {
                     return blockPos;
                 }
             }
@@ -639,7 +639,7 @@ public enum NPCSpawner implements IGlobalData {
             blockPos = pos;
         }
 
-        while (!level.noCollision(npc, aabb.move(PortBlockPosExtension.getBottomCenter(blockPos))) && blockPos.getY() < level.getMaxBuildHeight() - 1) {
+        while (!level.noCollision(npc, aabb.move(blockPos.getBottomCenter())) && blockPos.getY() < level.getMaxBuildHeight() - 1) {
             blockPos = blockPos.above();
         }
 

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.paint;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.common.collect.Iterables;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +14,7 @@ public class PaintItem extends Item {
     }
 
     public static int getRGB(ItemStack stack) {
-        int dyedColor = PortItemStackExtension.getDyedColor(stack);
+        int dyedColor = stack.getDyedColor();
         if (dyedColor == -1) {
             return 0xFFFFFF;
         }
@@ -28,7 +26,7 @@ public class PaintItem extends Item {
     }
 
     public static void setRGB(ItemStack stack, int rgb) {
-        PortItemStackExtension.setDyedColor(stack, rgb);
+        stack.setDyedColor(rgb);
     }
 
     public static int useAndGetRGB(Player player) {
@@ -37,7 +35,7 @@ public class PaintItem extends Item {
             assert stack != null;
             if (!stack.isEmpty() && stack.getItem() instanceof PaintItem) {
                 int rgb = getRGB(stack);
-                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+                if (!player.hasInfiniteMaterials()) {
                     stack.shrink(1);
                 }
                 return rgb;

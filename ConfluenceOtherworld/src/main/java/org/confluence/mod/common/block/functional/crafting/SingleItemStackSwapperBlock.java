@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -54,7 +53,7 @@ public class SingleItemStackSwapperBlock extends Block {
             ItemStack result = function.apply(stack);
             if (!result.isEmpty()) {
                 player.addItem(result);
-                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+                if (!player.hasInfiniteMaterials()) {
                     stack.shrink(shrink);
                 }
                 return InteractionResult.CONSUME;

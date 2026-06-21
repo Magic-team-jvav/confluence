@@ -1,6 +1,5 @@
 package org.confluence.mod.client.renderer.entity;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -22,7 +21,7 @@ public class EmptyEntityRenderer extends EntityRenderer<EmptyEntity> {
 
     @Override
     public void render(EmptyEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        this.thunderboltVFX.render(entity.getPosition(partialTick), PortEntityExtension.getRandom(entity), poseStack, bufferSource, packedLight);
+        this.thunderboltVFX.render(entity.getPosition(partialTick), entity.getRandom(), poseStack, bufferSource, packedLight);
     }
 
     @Override

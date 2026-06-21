@@ -1,6 +1,5 @@
 package org.confluence.mod.common.attachment;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.common.PlayerContainer;
 import org.confluence.mod.common.block.functional.SafeBlock;
@@ -26,6 +25,6 @@ public class PlayerSafeContainer extends PlayerContainer<SafeBlock.BEntity> {
     }
 
     public static PlayerSafeContainer of(Player player) {
-        return PortEntityExtension.getAttach(player, ModAttachmentTypes.SAFE);
+        return player.getAttach(ModAttachmentTypes.SAFE);
     }
 }

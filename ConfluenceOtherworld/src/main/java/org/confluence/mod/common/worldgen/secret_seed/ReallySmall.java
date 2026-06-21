@@ -1,6 +1,5 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.AttributeInstance.PortAttributeInstanceExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -46,19 +45,19 @@ public class ReallySmall extends SecretSeed {
         AttributeModifier div16 = new AttributeModifier(UUID, ID.getPath(), -0.9375, AttributeModifier.Operation.MULTIPLY_TOTAL);
         AttributeModifier div8 = new AttributeModifier(UUID, ID.getPath(), -0.875, AttributeModifier.Operation.MULTIPLY_TOTAL);
         if (instance != null) {
-            PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, div16);
+            instance.addOrReplacePermanentModifier(div16);
         }
         instance = player.getAttribute(Attributes.MOVEMENT_SPEED);
         if (instance != null) {
-            PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, div8);
+            instance.addOrReplacePermanentModifier(div8);
         }
         instance = player.getAttribute(Attributes.JUMP_STRENGTH);
         if (instance != null) {
-            PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, div8);
+            instance.addOrReplacePermanentModifier(div8);
         }
         instance = player.getAttribute(PortAttributesExtension.gravity().value());
         if (instance != null) {
-            PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, div8);
+            instance.addOrReplacePermanentModifier(div8);
         }
     }
 }

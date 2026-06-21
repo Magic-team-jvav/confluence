@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.map;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +23,7 @@ public record TreasureBagDrop(Item item) {
         if (data == null || !(data.item() instanceof TreasureBagItem item)) return null;
         ItemStack stack = item.getDefaultInstance();
         ResourceLocation lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel, living.blockPosition()));
-        PortItemStackExtension.setData(stack, ModDataComponentTypes.LOOT, new LootComponent(lootTable));
+        stack.setData(ModDataComponentTypes.LOOT, new LootComponent(lootTable));
         return stack;
     }
 }

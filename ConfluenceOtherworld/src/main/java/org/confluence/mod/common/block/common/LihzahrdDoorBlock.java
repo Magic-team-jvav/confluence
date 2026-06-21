@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.common;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -51,7 +50,7 @@ public class LihzahrdDoorBlock extends DoorBlock {
         if (!level.isClientSide && stack.is(ToolItems.TEMPLE_KEY.get()) && !state.getValue(UNLOCKED)) {
             level.setBlock(pos, state.setValue(UNLOCKED, true), Block.UPDATE_IMMEDIATE | Block.UPDATE_CLIENTS);
             level.gameEvent(player, isOpen(state) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
-            if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+            if (!player.hasInfiniteMaterials()) {
                 stack.shrink(1);
             }
             return InteractionResult.SUCCESS;

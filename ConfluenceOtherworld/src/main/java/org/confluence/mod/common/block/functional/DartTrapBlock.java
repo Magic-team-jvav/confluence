@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional;
 
-import PortLib.extensions.net.minecraft.world.entity.projectile.AbstractArrow.PortAbstractArrowExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -32,7 +31,7 @@ public class DartTrapBlock extends AbstractDispenserMechanicalBlock {
         double y = pos.getY() + 0.5 + 0.7 * direction.getStepY();
         double z = pos.getZ() + 0.5 + 0.7 * direction.getStepZ();
         Arrow arrow = new Arrow(level, x, y, z);
-        PortAbstractArrowExtension.setup(arrow, PICKUP_ITEM_STACK, null);
+        arrow.setup(PICKUP_ITEM_STACK, null);
         arrow.setCustomName(NAME);
         arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
         arrow.addEffect(new MobEffectInstance(MobEffects.POISON, LibUtils.switchByDifficulty(level, pos, 300, 600, 750), 1));

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -82,7 +80,7 @@ public class BaseHammerItem extends DiggerItem {
             }
             destroyCount += iteForBlocks(level, player, pos, xOff, yOff, zOff, state.getDestroyProgress(player, level, pos) * 1.5F, stack);
             if (state.getDestroyProgress(player, level, pos) != 0.0F) {
-                PortItemStackExtension.hurtAndBreak(stack, destroyCount, entity, EquipmentSlot.MAINHAND);
+                stack.hurtAndBreak(destroyCount, entity, EquipmentSlot.MAINHAND);
             }
         }
     }
@@ -109,7 +107,7 @@ public class BaseHammerItem extends DiggerItem {
         float targetSpeed = targetState.getDestroySpeed(level, pos);
         boolean flag1 = targetState.canHarvestBlock(level, pos, player);
         boolean flag2 = speedOff > 0 ? targetSpeed >= 0 && speedOff >= targetSpeed : targetSpeed >= speedOff;
-        boolean flag3 = PortPlayerExtension.hasInfiniteMaterials(player);
+        boolean flag3 = player.hasInfiniteMaterials();
         if (flag1 && flag2 || flag3) {
             level.destroyBlock(pos, false, player);
             if (flag1) {

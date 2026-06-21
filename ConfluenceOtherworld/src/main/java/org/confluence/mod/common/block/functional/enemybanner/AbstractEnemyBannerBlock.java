@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.enemybanner;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -168,7 +167,7 @@ public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
         }
 
         public static String getEntryKey(ItemStack stack) {
-            NbtComponent component = PortItemStackExtension.getData(stack, ConfluenceMagicLib.NBT);
+            NbtComponent component = stack.getData(ConfluenceMagicLib.NBT);
             if (component == null) return DEFAULT_ENTRY_KEY;
             return component.nbt().getString(TAG_ENTRY_KEY);
         }

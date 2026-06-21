@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.potion;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -47,7 +46,7 @@ public class EffectThrowablePotionItem extends EffectPotionItem {
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
-        if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+        if (!player.hasInfiniteMaterials()) {
             stack.shrink(1);
         }
 

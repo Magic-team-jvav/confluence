@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -74,7 +73,7 @@ public class CrimsonHeartBlock extends Block {
             }
 
             if (count != 2) {
-                Component component = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.crimson_heart_broken." + count), GlobalColors.MESSAGE.get());
+                Component component = Component.translatable("event.confluence.crimson_heart_broken." + count).withColor(GlobalColors.MESSAGE.get());
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
             }
 

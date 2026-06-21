@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.google.common.base.Supplier;
 import net.minecraft.util.Mth;
@@ -48,8 +47,8 @@ public class SwordItems {
     // 铂金以上剑参考数值为 泰拉wiki中的伤害÷2后 + 2为基础值
     // 普通短剑
     public static final PortDeferredItem<BaseSwordItem> COPPER_SHORT_SWORD = register("copper_short_sword", ModTiers.COPPER, 2, 3, ModRarity.WHITE, SHORT_SWORD.get()
-            .addTooltip(p -> PortMutableComponentExtension.withColor(p, 0x984c11))
-            .addTooltip(p -> PortMutableComponentExtension.withColor(p, 0x984c11)));
+            .addTooltip(p -> p.withColor(0x984c11))
+            .addTooltip(p -> p.withColor(0x984c11)));
     public static final PortDeferredItem<BaseSwordItem> TIN_SHORT_SWORD = register("tin_short_sword", ModTiers.TIN, 2, 3, SHORT_SWORD.get());
     public static final PortDeferredItem<BaseSwordItem> IRON_SHORT_SWORD = register("iron_short_sword", ModTiers.IRON, 4, 3, SHORT_SWORD.get());
     public static final PortDeferredItem<BaseSwordItem> LEAD_SHORT_SWORD = register("lead_short_sword", ModTiers.LEAD, 4, 3, SHORT_SWORD.get());
@@ -58,13 +57,13 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> GOLDEN_SHORT_SWORD = register("golden_short_sword", ModTiers.GOLD, 6, 3, SHORT_SWORD.get());
     public static final PortDeferredItem<BaseSwordItem> PLATINUM_SHORT_SWORD = register("platinum_short_sword", ModTiers.PLATINUM, 7, 3, SHORT_SWORD.get());
     public static final PortDeferredItem<BaseSwordItem> BREATHING_REED = register("breathing_reed", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, SHORT_SWORD.get()
-            .addTooltip(p -> PortMutableComponentExtension.withColor(p, 11184810)));
+            .addTooltip(p -> p.withColor(11184810)));
     public static final PortDeferredItem<BaseSwordItem> GLADIUS = register("gladius", ModTiers.UNBREAKABLE, 6, 3, SHORT_SWORD.get());
     public static final PortDeferredItem<BaseSwordItem> UMBRELLA = register("umbrella", () -> new GeoSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, UMBRELLA_SWORD.get()
-            .addTooltip(p -> PortMutableComponentExtension.withColor(p, 11184810))
+            .addTooltip(p -> p.withColor(11184810))
             .unbreakable()));
     public static final PortDeferredItem<BaseSwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", () -> new GeoSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, UMBRELLA_SWORD.get()
-            .addTooltip(p -> PortMutableComponentExtension.withColor(p, 11184810))
+            .addTooltip(p -> p.withColor(11184810))
             .unbreakable()));
 
     // 普通宽剑 默认横扫*1.5
@@ -145,9 +144,9 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.BLUE, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.ICE_PROJ).hasImage()));
     public static final PortDeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.0F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
-            .apply(SwordProjectileComponent.STAR_FURY_PROJ).addTooltip(p -> PortMutableComponentExtension.withColor(p, 0xe44189)).addTooltip(p -> PortMutableComponentExtension.withColor(p, 0xe44189))));
+            .apply(SwordProjectileComponent.STAR_FURY_PROJ).addTooltip(p -> p.withColor(0xe44189)).addTooltip(p -> p.withColor(0xe44189))));
     public static final PortDeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 9, 2.0F, ModRarity.ORANGE, withSpecialSweep(0.8F, PROJ_SWORD
-            .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> PortMutableComponentExtension.withColor(p, 0x4156e4)).addTooltip(p -> PortMutableComponentExtension.withColor(p, 0x4156e4))));
+            .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4))));
     public static final PortDeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.GRASS_PROJ).hasImage()
             .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 2, PortAttributeModifier.PortOperation.ADD_VALUE)));
@@ -179,7 +178,7 @@ public class SwordItems {
     // 赞助者物品
     public static final PortDeferredItem<BaseSwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword", () -> new SweetSword(ModTiers.UNBREAKABLE, ModRarity.EXPERT, 2, 1, new BaseSwordItem.ModifierBuilder()));
     public static final PortDeferredItem<BaseSwordItem> SWEET_SWORD = register("sweet_sword", () -> new SweetSword(ModTiers.UNBREAKABLE, ModRarity.EXPERT, 6, 2, new BaseSwordItem.ModifierBuilder()
-            .addTooltip(p -> PortMutableComponentExtension.withColor(p, 0xe44189))
+            .addTooltip(p -> p.withColor(0xe44189))
             .modifyProperties(p -> {
                 FoodProperties properties = new FoodProperties.Builder().nutrition(1).saturationMod(1)
                         .effect(() -> new MobEffectInstance(ModEffects.DELICIOUS.get(), 200), 1.0f)

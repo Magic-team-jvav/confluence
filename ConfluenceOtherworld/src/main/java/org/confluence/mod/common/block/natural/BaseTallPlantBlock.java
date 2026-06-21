@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import PortLib.extensions.net.minecraft.world.level.block.state.properties.DoubleBlockHalf.PortDoubleBlockHalfExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -58,7 +57,7 @@ public class BaseTallPlantBlock extends DoublePlantBlock {
 
     @Override
     public BlockState updateShape(BlockState originState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        if (facing == PortDoubleBlockHalfExtension.getDirectionToOther(originState.getValue(HALF)))
+        if (facing == originState.getValue(HALF).getDirectionToOther())
             return (facingState.is(originState.getBlock()) && (facingState.getValue(HALF) != originState.getValue(HALF))) ? originState : Blocks.AIR.defaultBlockState();
         if ((originState.getValue(HALF) == DoubleBlockHalf.LOWER) && !canSurvive(originState, level, currentPos))
             return Blocks.AIR.defaultBlockState();

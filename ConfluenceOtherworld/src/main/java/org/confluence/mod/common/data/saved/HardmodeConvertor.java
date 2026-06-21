@@ -130,7 +130,7 @@ public enum HardmodeConvertor implements IGlobalData {
                     AchievementUtils.awardAchievement(player, "its_hard");
                 }
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), LibUtils.isDev());
-                print(server, PortMutableComponentExtension.withColor(Component.translatable("event.confluence.hardmode_conversion.finished"), GlobalColors.MESSAGE.get()), true);
+                print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
                 print(server, PortMutableComponentExtension.withColor(Component.translatable("event.confluence.hardmode_conversion.welcome"), GlobalColors.EVENT.get()), true);
                 MinecraftForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
             }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.fishing;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -115,7 +114,7 @@ public class BaitItem extends Item implements IBait {
                 if (entity == null) return InteractionResultHolder.pass(stack);
 
                 consumer.accept(entity);
-                PortItemStackExtension.consume(stack, 1, player);
+                stack.consume(1, player);
                 player.awardStat(Stats.ITEM_USED.get(this));
                 level.gameEvent(player, GameEvent.ENTITY_PLACE, entity.position());
                 return InteractionResultHolder.consume(stack);

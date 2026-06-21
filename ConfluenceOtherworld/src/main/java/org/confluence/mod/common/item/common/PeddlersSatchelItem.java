@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -29,11 +27,11 @@ public class PeddlersSatchelItem extends TooltipItem {
         if (level instanceof ServerLevel serverLevel) {
             if (!NPCSpawner.INSTANCE.isPeddlersSatchelUsed()) {
                 NPCSpawner.INSTANCE.setPeddlersSatchelUsed(true);
-                MutableComponent component = PortMutableComponentExtension.withColor(Component.translatable("message.confluence.peddlers_satchel"), GlobalColors.MESSAGE.get());
+                MutableComponent component = Component.translatable("message.confluence.peddlers_satchel").withColor(GlobalColors.MESSAGE.get());
                 for (ServerPlayer serverPlayer : serverLevel.getServer().getPlayerList().getPlayers()) {
                     serverPlayer.sendSystemMessage(component);
                 }
-                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+                if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
             }

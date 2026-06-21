@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -100,7 +99,7 @@ public class DragonsBreathPepperBlock extends CocoaBlock {
         ItemStack stack = FoodItems.END_DRAGON_PEPPER.toStack();
         net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
         tag.putInt("Maturity", maturity);
-        PortItemStackExtension.setData(stack, ConfluenceMagicLib.NBT, new NbtComponent(tag));
+        stack.setData(ConfluenceMagicLib.NBT, new NbtComponent(tag));
         return stack;
     }
 

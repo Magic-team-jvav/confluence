@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.sword;
 
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import it.unimi.dsi.fastutil.floats.FloatConsumer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,8 +24,8 @@ public class StarSteelSword extends BaseSwordItem {
 
     public StarSteelSword() {
         super(ModTiers.UNBREAKABLE, ModRarity.BLUE, 9, 2.2F, new BaseSwordItem.ModifierBuilder()
-                .addTooltip(p -> PortMutableComponentExtension.withColor(p, 0xc0e8ff))
-                .addTooltip(p -> PortMutableComponentExtension.withColor(p, 0xc0e8ff)));
+                .addTooltip(p -> p.withColor(0xc0e8ff))
+                .addTooltip(p -> p.withColor(0xc0e8ff)));
     }
 
     public static void onManaStarPickup(Player player) {

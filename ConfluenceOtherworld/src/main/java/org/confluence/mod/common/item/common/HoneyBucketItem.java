@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -31,7 +30,7 @@ public class HoneyBucketItem extends BucketItem {
             CriteriaTriggers.CONSUME_ITEM.trigger(serverplayer, stack);
             serverplayer.awardStat(Stats.ITEM_USED.get(this));
         }
-        if (living instanceof Player player && !PortPlayerExtension.hasInfiniteMaterials(player)) {
+        if (living instanceof Player player && !player.hasInfiniteMaterials()) {
             stack.shrink(1);
         }
         return stack.isEmpty() ? new ItemStack(Items.BUCKET) : stack;

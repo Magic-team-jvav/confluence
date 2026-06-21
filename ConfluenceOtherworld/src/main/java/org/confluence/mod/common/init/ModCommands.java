@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
@@ -168,7 +167,7 @@ public final class ModCommands {
                             if (context.getSource().getEntityOrException() instanceof Player player) {
                                 int color = IntegerArgumentType.getInteger(context, "color");
                                 ItemStack stack = PaintItems.PAINT.get().getDefaultInstance();
-                                PortItemStackExtension.setDyedColor(stack, color);
+                                stack.setDyedColor(color);
                                 player.getInventory().add(stack);
                                 return 1;
                             }

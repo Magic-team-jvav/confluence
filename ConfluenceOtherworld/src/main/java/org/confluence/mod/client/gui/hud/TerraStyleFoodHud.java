@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -66,7 +65,7 @@ public class TerraStyleFoodHud implements PortGuiLayer {
                 int heightFood = guiGraphics.guiHeight() - ((ForgeGui) minecraft.gui).rightHeight;
                 ((ForgeGui) minecraft.gui).rightHeight += 10;
                 for (int i = 0; i < 10; i++) {
-                    PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, OVERLAY_SIZE, 60, 30, (widthFood + i * 8), heightFood, 9, 9);
+                    guiGraphics.blitSprite(ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, OVERLAY_SIZE, 60, 30, (widthFood + i * 8), heightFood, 9, 9);
                 }
                 if (hunger) {
                     draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 20, 30, false, 1, 20);

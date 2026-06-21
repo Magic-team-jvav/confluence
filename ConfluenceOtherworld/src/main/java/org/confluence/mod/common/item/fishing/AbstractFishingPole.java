@@ -70,7 +70,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
                 int i = player.fishing.retrieve(stack);
                 consumeBait(player, stack);
                 ItemStack original = stack.copy();
-                PortItemStackExtension.hurtAndBreak(stack, i, player, PortLivingEntityExtension.getSlotForHand(hand));
+                stack.hurtAndBreak(i, player, PortLivingEntityExtension.getSlotForHand(hand));
                 if (stack.isEmpty()) {
                     net.minecraftforge.event.ForgeEventFactory.onPlayerDestroyItem(player, original, hand);
                 }

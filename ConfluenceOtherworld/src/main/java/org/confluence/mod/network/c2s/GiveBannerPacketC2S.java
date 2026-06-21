@@ -1,6 +1,5 @@
 package org.confluence.mod.network.c2s;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,7 +30,7 @@ public record GiveBannerPacketC2S(String key) implements IPortPacket.C2S {
         BestiaryEntry entry = Bestiary.INSTANCE.getEntries().get(key);
         if (entry != null && entry.isCompleted()) {
             ItemStack stack = ModItems.ENEMY_BANNER.get().getDefaultInstance();
-            PortItemStackExtension.setData(stack, ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(AbstractEnemyBannerBlock.TAG_ENTRY_KEY, key)));
+            stack.setData(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(AbstractEnemyBannerBlock.TAG_ENTRY_KEY, key)));
             player.addItem(stack);
         }
     }

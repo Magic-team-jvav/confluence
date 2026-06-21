@@ -1,6 +1,5 @@
 package org.confluence.mod.common.component;
 
-import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.ChatFormatting;
@@ -33,7 +32,7 @@ public record ValueComponent(int value) {
         PortDataComponentType<ValueComponent> type = ModDataComponentTypes.VALUE.get();
         ValueComponent value = prototype ? stack.getPrototypeData().get(type) : stack.getData(type);
         if (value == null) {
-            value = PortHolderExtension.getData(stack.getItemHolder(), ModDataMaps.VALUE);
+            value = stack.getItemHolder().getData(ModDataMaps.VALUE);
             return (value == null ? defaultValue : value.value()) * stack.getCount();
         }
         return value.value() * stack.getCount();

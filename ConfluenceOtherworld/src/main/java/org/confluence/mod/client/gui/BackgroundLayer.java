@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
@@ -151,14 +150,14 @@ public enum BackgroundLayer {
                     poseStack.pushPose();
                     float halfSunSize = sunSize * 0.5F;
                     poseStack.translate(sunPos.x - halfSunSize, sunPos.y - halfSunSize, 0);
-                    PortGuiGraphicsExtension.blitSprite(guiGraphics, sun, 0, 0, sunSize, sunSize);
+                    guiGraphics.blitSprite(sun, 0, 0, sunSize, sunSize);
                     timeOfDay = Mth.lerp(sunPos.x / width, 0.25F, 0.75F);
                     poseStack.popPose();
                 } else {
                     poseStack.pushPose();
                     float halfMoonSize = moonSize * 0.5F;
                     poseStack.translate(moonPos.x - halfMoonSize, moonPos.y - halfMoonSize, 0);
-                    PortGuiGraphicsExtension.blitSprite(guiGraphics, moon, 0, 0, moonSize, moonSize);
+                    guiGraphics.blitSprite(moon, 0, 0, moonSize, moonSize);
                     float delta = moonPos.x / width;
                     if (delta < 0.5F) {
                         timeOfDay = Mth.lerp(delta * 2, 0.75F, 1);
@@ -174,7 +173,7 @@ public enum BackgroundLayer {
                 poseStack.translate(width * 0.5F, height + halfSunSize, 0);
                 poseStack.mulPose(rotation);
                 poseStack.translate(-halfSunSize, height - halfSunSize, 0);
-                PortGuiGraphicsExtension.blitSprite(guiGraphics, sun, 0, 0, sunSize, sunSize);
+                guiGraphics.blitSprite(sun, 0, 0, sunSize, sunSize);
                 Matrix4f pose = poseStack.last().pose();
                 sunPos.set(pose.m30(), pose.m31());
                 poseStack.popPose();
@@ -184,7 +183,7 @@ public enum BackgroundLayer {
                 poseStack.translate(width * 0.5F, height + halfMoonSize, 0);
                 poseStack.mulPose(rotation);
                 poseStack.translate(-halfMoonSize, -halfMoonSize - height, 0);
-                PortGuiGraphicsExtension.blitSprite(guiGraphics, moon, 0, 0, moonSize, moonSize);
+                guiGraphics.blitSprite(moon, 0, 0, moonSize, moonSize);
                 pose = poseStack.last().pose();
                 moonPos.set(pose.m30(), pose.m31());
                 poseStack.popPose();
@@ -319,7 +318,7 @@ public enum BackgroundLayer {
                 float screenY = y * scale;
                 guiGraphics.pose().translate(screenX, screenY, 0);
                 guiGraphics.pose().scale(scale, scale, 1.0f);
-                PortGuiGraphicsExtension.blitSprite(guiGraphics, sprite, textureW, textureH, u, v, 0, 0, w, h);
+                guiGraphics.blitSprite(sprite, textureW, textureH, u, v, 0, 0, w, h);
                 guiGraphics.pose().popPose();
                 RenderSystem.setShaderColor(1, 1, 1, 1);
                 if (shader != null) {
@@ -390,10 +389,10 @@ public enum BackgroundLayer {
         if ((float) guiGraphics.guiWidth() / guiGraphics.guiHeight() > (float) sprite.textureW() / sprite.textureH()) {
             int i = Mth.ceil((float) guiGraphics.guiWidth() / w);
             for (int j = 0; j < i; j++) {
-                PortGuiGraphicsExtension.blitSprite(guiGraphics, sprite, w * j, 0, w, guiGraphics.guiHeight());
+                guiGraphics.blitSprite(sprite, w * j, 0, w, guiGraphics.guiHeight());
             }
         } else {
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, sprite, 0, 0, w, guiGraphics.guiHeight());
+            guiGraphics.blitSprite(sprite, 0, 0, w, guiGraphics.guiHeight());
         }
     }
 
@@ -407,10 +406,10 @@ public enum BackgroundLayer {
         if ((float) guiGraphics.guiWidth() / guiGraphics.guiHeight() > (float) sprite.textureW() / sprite.textureH()) {
             int i = Mth.ceil((float) guiGraphics.guiWidth() / w);
             for (int j = -1; j < i; j++) {
-                PortGuiGraphicsExtension.blitSprite(guiGraphics, sprite, w * j, 0, w, guiGraphics.guiHeight());
+                guiGraphics.blitSprite(sprite, w * j, 0, w, guiGraphics.guiHeight());
             }
         } else {
-            PortGuiGraphicsExtension.blitSprite(guiGraphics, sprite, 0, 0, w, guiGraphics.guiHeight());
+            guiGraphics.blitSprite(sprite, 0, 0, w, guiGraphics.guiHeight());
         }
         guiGraphics.pose().popPose();
         return x;

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -78,7 +77,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (level instanceof ServerLevel serverLevel) {
             ItemStack itemStack = player.getItemInHand(hand);
-            ExtractinatorData data = PortHolderExtension.getData(itemStack.getItemHolder(), ModDataMaps.EXTRACTINATOR);
+            ExtractinatorData data = itemStack.getItemHolder().getData(ModDataMaps.EXTRACTINATOR);
             if (data == null) return InteractionResult.PASS;
             ExtractinatorData.extract(level, pos, player, hand, serverLevel, itemStack, data);
         } else if (LibUtils.isPhysicalClient()) {

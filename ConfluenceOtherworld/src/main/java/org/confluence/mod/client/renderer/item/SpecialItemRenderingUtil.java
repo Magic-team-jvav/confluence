@@ -1,6 +1,5 @@
 package org.confluence.mod.client.renderer.item;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -29,7 +28,7 @@ public final class SpecialItemRenderingUtil {
     }
 
     public static void repeaterArrowRenderer(ItemRenderer itemRenderer, LivingEntity entity, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, Player player, ItemStack stack) {
-        RepeaterContents repeaterContents = PortItemStackExtension.getDataOrDefault(stack, ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
+        RepeaterContents repeaterContents = stack.getDataOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
         if (repeaterContents.isEmpty()) {
             return;
         }

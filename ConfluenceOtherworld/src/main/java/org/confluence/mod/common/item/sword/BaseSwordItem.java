@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.sword;
 
 import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
@@ -86,7 +85,7 @@ public class BaseSwordItem extends SwordItem implements IPortItemExtension {
 
     public void applyHitEffects(ItemStack weapon, @Nullable Entity attacker, LivingEntity hurter, DamageSource damageSource) {
         if (modifier != null && damageSource.is(PortTags.DamageTypes.PANIC_CAUSES)) {
-            EffectStrategyComponent data = PortItemStackExtension.getData(weapon, TEDataComponentTypes.EFFECT_STRATEGY);
+            EffectStrategyComponent data = weapon.getData(TEDataComponentTypes.EFFECT_STRATEGY);
             if (data != null) {
                 if (attacker instanceof Player player
                         && damageSource.is(PortTags.DamageTypes.CAN_BREAK_ARMOR_STAND)
@@ -266,11 +265,11 @@ public class BaseSwordItem extends SwordItem implements IPortItemExtension {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        EffectStrategyComponent hitEffects = PortItemStackExtension.getData(stack, TEDataComponentTypes.EFFECT_STRATEGY);
+        EffectStrategyComponent hitEffects = stack.getData(TEDataComponentTypes.EFFECT_STRATEGY);
         if (hitEffects != null) {
             IEffectStrategy.appendDescription(tooltipComponents, hitEffects.effects(), Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0x969811));
         }
-        SwordProjectileComponent data = PortItemStackExtension.getData(stack, ModDataComponentTypes.SWORD_PROJECTILE);
+        SwordProjectileComponent data = stack.getData(ModDataComponentTypes.SWORD_PROJECTILE);
         if (data != null) {
             tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj"), 0x57cdfb));
             tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x" + data.damageFactor()), 0x57cdfb));

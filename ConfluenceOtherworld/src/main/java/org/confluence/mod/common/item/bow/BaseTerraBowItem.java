@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.bow;
 
 import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -107,7 +106,7 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
                 level.addFreshEntity(projectile);
             }
 
-            PortItemStackExtension.hurtAndBreak(weapon, getDurabilityUse(itemstack), shooter, PortLivingEntityExtension.getSlotForHand(hand));
+            weapon.hurtAndBreak(getDurabilityUse(itemstack), shooter, PortLivingEntityExtension.getSlotForHand(hand));
             if (weapon.isEmpty()) {
                 break;
             }

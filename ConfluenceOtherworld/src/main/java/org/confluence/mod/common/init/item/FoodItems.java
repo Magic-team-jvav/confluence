@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
 import com.google.common.base.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
@@ -255,7 +254,7 @@ public class FoodItems {
             "carton_of_milk", ModRarity.GREEN,
             () -> ModFoodProperties.wellFedProperties(24000, 4, 1.5f),
             20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK,
-            builder -> builder.setFinishUsingCallback((stack, level, living) -> PortLivingEntityExtension.removeEffectsCuredBy(living, PortEffectCures.MILK))
+            builder -> builder.setFinishUsingCallback((stack, level, living) -> living.removeEffectsCuredBy(PortEffectCures.MILK))
     ); //卡通牛奶
     public static final PortDeferredItem<BaseFoodItem> TEACUP = registerDrinkingFood("teacup", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(6000, 4, 1.5f), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //一小杯茶

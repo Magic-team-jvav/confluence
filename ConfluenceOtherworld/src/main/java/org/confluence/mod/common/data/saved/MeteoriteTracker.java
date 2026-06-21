@@ -43,7 +43,7 @@ public enum MeteoriteTracker {
         if (spawnAtNextNight && LibDateUtils.getDayTime(level) == LibDateUtils._00$00) {
             this.spawnAtNextNight = false;
             generateLandingDetail(level, Mth.randomBetweenInclusive(level.random, 200, 400));
-            Component message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.meteorite.ready"), GlobalColors.EVENT.get());
+            Component message = Component.translatable("event.confluence.meteorite.ready").withColor(GlobalColors.EVENT.get());
             level.getServer().getPlayerList().broadcastSystemMessage(message, false);
         }
         if (tickUntilLanding == 0) {

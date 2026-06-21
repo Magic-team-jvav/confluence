@@ -1,7 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,7 +34,7 @@ public class HellStoneBlock extends Block {
     public void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
         if (entity instanceof LivingEntity) {
             entity.hurt(level.damageSources().hotFloor(), 2.5F);
-            PortEntityExtension.igniteForTicks(entity, 60);
+            entity.igniteForTicks(60);
         }
         super.stepOn(level, blockPos, blockState, entity);
     }
@@ -44,7 +42,7 @@ public class HellStoneBlock extends Block {
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (lava && !level.isClientSide && !PortPlayerExtension.hasInfiniteMaterials(player)) {
+        if (lava && !level.isClientSide && !player.hasInfiniteMaterials()) {
             level.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
         }
     }
@@ -58,7 +56,7 @@ public class HellStoneBlock extends Block {
         public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
             if (entity instanceof LivingEntity) {
                 entity.hurt(level.damageSources().hotFloor(), 2.5F);
-                PortEntityExtension.igniteForTicks(entity, 60);
+                entity.igniteForTicks(60);
             }
             super.stepOn(level, pos, state, entity);
         }
@@ -73,7 +71,7 @@ public class HellStoneBlock extends Block {
         public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
             if (entity instanceof LivingEntity) {
                 entity.hurt(level.damageSources().hotFloor(), 2.5F);
-                PortEntityExtension.igniteForTicks(entity, 60);
+                entity.igniteForTicks(60);
             }
             super.stepOn(level, pos, state, entity);
         }
@@ -88,7 +86,7 @@ public class HellStoneBlock extends Block {
         public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
             if (entity instanceof LivingEntity) {
                 entity.hurt(level.damageSources().hotFloor(), 2.5F);
-                PortEntityExtension.igniteForTicks(entity, 60);
+                entity.igniteForTicks(60);
             }
             super.stepOn(level, pos, state, entity);
         }

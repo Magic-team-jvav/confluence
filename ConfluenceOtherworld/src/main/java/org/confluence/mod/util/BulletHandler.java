@@ -1,6 +1,5 @@
 package org.confluence.mod.util;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -40,9 +39,9 @@ public class BulletHandler {
     /// 判断某个子弹是否与枪兼容
     public static boolean isCompatible(Player player, ItemStack ammo, ItemStack gun) {
         boolean selected = ammo.getItem() instanceof BaseBullet;
-        if (PortItemStackExtension.is(gun, GunItems.BLOWGUN))
+        if (gun.is(GunItems.BLOWGUN))
             selected = ammo.is(ModTags.Items.SEED_AMMO);
-        if (PortItemStackExtension.is(gun, GunItems.SNOWBALL_CANNON))
+        if (gun.is(GunItems.SNOWBALL_CANNON))
             selected = ammo.is(ModTags.Items.SNOW_AMMO);
 
         GunEvent.AmmoSelectionEvent ammoSelectionEvent = new GunEvent.AmmoSelectionEvent(player, (BaseGun) gun.getItem(), ammo, selected);

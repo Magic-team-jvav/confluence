@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
@@ -141,7 +140,7 @@ public class StaffOfRegrowth extends CustomRarityItem {
     // 再生法杖/再生之斧 时运
     public static void increaseDrops(Entity breaker, ItemStack stack, Stream<ItemStack> drops) {
         int l = stack.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
-        RandomSource random = PortEntityExtension.getRandom(breaker);
+        RandomSource random = breaker.getRandom();
         drops.forEach(drop -> {
             int increase = random.nextIntBetweenInclusive(0, 2);
             drop.grow(increase);

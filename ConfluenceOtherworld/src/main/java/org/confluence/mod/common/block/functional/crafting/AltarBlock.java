@@ -1,8 +1,6 @@
 package org.confluence.mod.common.block.functional.crafting;
 
 import PortLib.extensions.java.util.List.PortListExtension;
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -132,9 +130,9 @@ public class AltarBlock extends BaseEntityBlock {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             if (data.increaseRevealStep()) {
-                Component msg = PortMutableComponentExtension.withColor(Component.translatable(
+                Component msg = Component.translatable(
                         "event.confluence.reveal_step" + data.getRevealStep()
-                ), GlobalColors.MESSAGE.get());
+                ).withColor(GlobalColors.MESSAGE.get());
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(msg, false);
             }
             if (tool.is(HammerItems.PWNHAMMER.get())) {
@@ -210,7 +208,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     public static boolean hurtPlayerIfBrokenNotAllowed(Player player, BlockState blockState) {
-        if (!PortPlayerExtension.hasInfiniteMaterials(player) &&
+        if (!player.hasInfiniteMaterials() &&
                 blockState.getBlock() instanceof AltarBlock &&
                 !player.getMainHandItem().is(ModTags.Items.ABLE_TO_DESTROY_ALTAR)
         ) {

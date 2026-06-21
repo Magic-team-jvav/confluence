@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -50,15 +49,15 @@ public class TerraStyleManaHud implements PortGuiLayer {
                 float ts;
                 for (int i = 0; i < maxManaCount; i++) {
                     currentManaToBlit = currentMana - (i + 1) * 20;
-                    PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 0, 34, widthMana, heightMana + i * 12, 17, 16);
+                    guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 0, 34, widthMana, heightMana + i * 12, 17, 16);
                     if (currentManaToBlit >= 0) {
-                        PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 18, 34, widthMana + 2, heightMana + i * 12, 13, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 18, 34, widthMana + 2, heightMana + i * 12, 13, 16);
                     } else if (currentManaToBlit + 20 >= 0) {
                         ts = (currentManaToBlit + 20) / 20.0F;
                         guiGraphics.pose().pushPose();
                         guiGraphics.pose().translate(widthMana + 2 + 6.5F * (1 - ts), heightMana + i * 12 + 8.5F * (1 - ts), 0.0F);
                         guiGraphics.pose().scale(ts, ts, 1.0F);
-                        PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 18, 34, 0, 0, 13, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, 18, 34, 0, 0, 13, 16);
                         guiGraphics.pose().popPose();
                     }
                 }

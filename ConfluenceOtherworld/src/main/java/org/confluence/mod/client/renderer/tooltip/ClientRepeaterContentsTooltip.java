@@ -1,6 +1,5 @@
 package org.confluence.mod.client.renderer.tooltip;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -41,7 +40,7 @@ public class ClientRepeaterContentsTooltip implements ClientTooltipComponent {
                 int x1 = x + i1 * 18 + 1;
                 int y1 = y + l * 20 + 1;
                 if (i1 > 4) {
-                    PortGuiGraphicsExtension.blitSprite(guiGraphics, ELLIPSIS_SPRITE, x1 + 5, y1 + 8, 9, 3);
+                    guiGraphics.blitSprite(ELLIPSIS_SPRITE, x1 + 5, y1 + 8, 9, 3);
                     break f;
                 }
                 this.renderSlot(x1, y1, k++, guiGraphics, font);

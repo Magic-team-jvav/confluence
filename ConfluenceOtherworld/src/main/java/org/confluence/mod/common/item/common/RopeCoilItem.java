@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.sounds.SoundEvents;
@@ -37,7 +36,7 @@ public class RopeCoilItem extends Item implements PortProjectileItem {
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
-        PortItemStackExtension.consume(stack, 1, player);
+        stack.consume(1, player);
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 

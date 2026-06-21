@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -44,7 +43,7 @@ public class WhitePumpkinBlock extends PumpkinBlock {
         ItemEntity seeds = new ItemEntity(level, pos.getX() + 0.5 + facing.getStepX() * 0.65, pos.getY() + 0.1, pos.getZ() + 0.5 + facing.getStepZ() * 0.65, new ItemStack(FoodItems.WHITE_PUMPKIN_SEED.get(), 4));
         seeds.setDeltaMovement(0.05 * facing.getStepX() + level.random.nextDouble() * 0.02, 0.05, 0.05 * facing.getStepZ() + level.random.nextDouble() * 0.02);
         level.addFreshEntity(seeds);
-        PortItemStackExtension.hurtAndBreak(stack, 1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+        stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         level.gameEvent(player, GameEvent.SHEAR, pos);
         player.awardStat(Stats.ITEM_USED.get(Items.SHEARS));
         return InteractionResult.sidedSuccess(false);

@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.container;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -42,6 +41,6 @@ public abstract class EnhanceForgeScreen<M extends EnhancedForgeMenu> extends Ab
             guiGraphics.blit(BACKGROUND, leftPos + 56, topPos + 75, 177, 0, l, 3, 256, 256);
         }
         int j1 = Mth.ceil(menu.getBurnProgress() * 24);
-        PortGuiGraphicsExtension.blitSprite(guiGraphics, BURN_PROGRESS_SPRITE, 24, 16, 0, 0, leftPos + 91, topPos + 34, j1, 16);
+        guiGraphics.blitSprite(BURN_PROGRESS_SPRITE, 24, 16, 0, 0, leftPos + 91, topPos + 34, j1, 16);
     }
 }

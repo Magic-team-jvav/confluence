@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.map;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
 import PortLib.extensions.net.minecraft.core.HolderSet.PortHolderSetExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -32,7 +31,7 @@ public record BlockBreakSpawns(List<Spawn> spawns) {
     public static final Codec<BlockBreakSpawns> CODEC = Spawn.CODEC.listOf().xmap(BlockBreakSpawns::new, BlockBreakSpawns::spawns);
 
     public static void spawn(ServerLevel level, BlockPos pos, Holder<Block> holder) {
-        BlockBreakSpawns data = PortHolderExtension.getData(holder, ModDataMaps.BLOCK_BREAK_SPAWNS);
+        BlockBreakSpawns data = holder.getData(ModDataMaps.BLOCK_BREAK_SPAWNS);
         if (data == null) return;
         Holder<Biome> biome = level.getBiome(pos);
         for (Spawn spawn : data.spawns) {

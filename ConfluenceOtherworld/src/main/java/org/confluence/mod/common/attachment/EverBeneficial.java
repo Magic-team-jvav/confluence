@@ -1,6 +1,5 @@
 package org.confluence.mod.common.attachment;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
@@ -170,6 +169,6 @@ public class EverBeneficial implements IPortNBTSerializable<CompoundTag> {
     }
 
     public static EverBeneficial of(LivingEntity living) {
-        return PortEntityExtension.getAttach(living, ModAttachmentTypes.EVER_BENEFICIAL);
+        return living.getAttach(ModAttachmentTypes.EVER_BENEFICIAL);
     }
 }

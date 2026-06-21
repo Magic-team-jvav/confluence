@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import PortLib.extensions.net.minecraft.client.gui.GuiGraphics.PortGuiGraphicsExtension;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -81,13 +80,13 @@ public class TerraStyleHealthHud implements PortGuiLayer {
                 heartBuff = (typeHeart == 0) ? heartBuff : 0;
                 int heightUV = (typeHeart * 17);
                 if (num == heartNum) {
-                    PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, x, y, 9, 16);
+                    guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, x, y, 9, 16);
                 } else if (num > 0.0F) {
                     float ts = num / heartNum;
                     guiGraphics.pose().pushPose();
                     guiGraphics.pose().translate(x + 4.5F * (1.0F - ts), y + 9.0F * (1.0F - ts), 0.0F);
                     guiGraphics.pose().scale(ts, ts, 1.0F);
-                    PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, 0, 0, 9, 16);
+                    guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, 0, 0, 9, 16);
                     guiGraphics.pose().popPose();
                 }
             }
@@ -108,18 +107,18 @@ public class TerraStyleHealthHud implements PortGuiLayer {
                     blitX = countToBlit * 10 - countLine * 100;
                     blitXFirst = (countHeart / 10 == 0) ? 100 - (countHeart - (countHeart / 10) * 10) * 10 : 0;
                     if (countToBlit % 10 == 0) {
-                        PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 0, heightUV, width + blitX - 1 + blitXFirst, height + blitY, 1, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 0, heightUV, width + blitX - 1 + blitXFirst, height + blitY, 1, 16);
                         if (countToBlit + 1 == countHeart) {
-                            PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
+                            guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
                         } else {
-                            PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
+                            guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
                         }
                     } else if (countToBlit + 1 == countHeart) {
-                        PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
                     } else if ((countToBlit + 1) % 10 == 0) {
-                        PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 31, heightUV, width + blitX + blitXFirst, height + blitY, 12, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 31, heightUV, width + blitX + blitXFirst, height + blitY, 12, 16);
                     } else {
-                        PortGuiGraphicsExtension.blitSprite(guiGraphics, ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
+                        guiGraphics.blitSprite(ModClientSetups.LEGACY_SPRITE, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
                     }
                     type = (countToBlit < lifeFruitHealth) ? 1 : 0;
                     blitHeart(guiGraphics, type, typeHeart, heartNumList.getFloat(countToBlit), width + blitX + blitXFirst + 1, height + blitY, heartBuff);

@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.map;
 
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attribute.PortAttributeExtension;
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.AttributeInstance.PortAttributeInstanceExtension;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
@@ -59,7 +58,7 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
             AttributeInstance instance = living.getAttribute(entry.getKey());
             if (instance == null) continue;
             for (AttributeModifier modifier : entry.getValue()) {
-                PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, modifier);
+                instance.addOrReplacePermanentModifier(modifier);
             }
         }
         living.setHealth(living.getMaxHealth());

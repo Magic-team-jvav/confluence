@@ -54,9 +54,9 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortP
             if (data.getTeam() != team) {
                 Component msg;
                 if (team == Team.WHITE) {
-                    msg = PortMutableComponentExtension.withColor(Component.translatable(
+                    msg = Component.translatable(
                             "message.confluence.leave_team", target.getName()
-                    ), textColor);
+                    ).withColor(textColor);
                 } else {
                     msg = PortMutableComponentExtension.withColor(Component.translatable(
                             "message.confluence.join_team", target.getName(), team.getLowerCaseName()

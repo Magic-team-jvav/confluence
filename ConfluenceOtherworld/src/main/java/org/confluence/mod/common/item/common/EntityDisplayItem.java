@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -30,7 +29,7 @@ public class EntityDisplayItem extends CustomRarityItem {
                 Entity entity = EntityType.loadEntityRecursive(tag, level, Function.identity());
                 if (entity != null) {
                     entity.setPos(context.getClickLocation());
-                    Component customName = PortItemStackExtension.getCustomName(stack);
+                    Component customName = stack.getCustomName();
                     if (customName != null) {
                         entity.setCustomName(customName);
                     }

@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.common;
 
 import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
@@ -16,7 +15,7 @@ public class BaseDyeItem extends CustomRarityItem {
     }
 
     public static int getRGB(ItemStack stack) {
-        int dyedColor = PortItemStackExtension.getDyedColor(stack);
+        int dyedColor = stack.getDyedColor();
         if (dyedColor == -1) {
             return 0xFFFFFF;
         }
@@ -28,6 +27,6 @@ public class BaseDyeItem extends CustomRarityItem {
     }
 
     public static void setRGB(ItemStack stack, int rgb) {
-        PortItemStackExtension.setDyedColor(stack, rgb);
+        stack.setDyedColor(rgb);
     }
 }

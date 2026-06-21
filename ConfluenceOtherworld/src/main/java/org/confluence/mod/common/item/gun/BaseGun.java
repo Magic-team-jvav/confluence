@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.gun;
 
 import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -70,7 +69,7 @@ public class BaseGun extends Item implements GeoItem {
 
     public void shoot(ServerPlayer player, ItemStack bullet, ItemStack gun) {
         ServerLevel serverLevel = player.serverLevel();
-        BulletPropertyComponent bulletComponent = PortItemStackExtension.getData(bullet, ModDataComponentTypes.BULLET_PROPERTY);
+        BulletPropertyComponent bulletComponent = bullet.getData(ModDataComponentTypes.BULLET_PROPERTY);
         if (bulletComponent == null) bulletComponent = BulletPropertyComponent.EMPTY;
 
         AmmoDataContext ammoDataContext = new AmmoDataContext(this.component, bulletComponent, inaccuracy);

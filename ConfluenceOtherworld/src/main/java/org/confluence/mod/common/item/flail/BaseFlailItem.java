@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.flail;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -43,7 +42,7 @@ public class BaseFlailItem extends TooltipItem {
         ItemStack stack = player.getItemInHand(hand);
         if (level.isClientSide()) return InteractionResultHolder.consume(stack);
 
-        FlailComponent comp = PortItemStackExtension.getData(stack, ModDataComponentTypes.FLAIL);
+        FlailComponent comp = stack.getData(ModDataComponentTypes.FLAIL);
         if (comp == null) return InteractionResultHolder.fail(stack);
 
         BaseFlailEntity existing = findExistingFlail(player);

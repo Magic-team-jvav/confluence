@@ -1,5 +1,8 @@
 package org.confluence.mod.client.event;
 
+import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
+import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
+import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
@@ -192,7 +195,7 @@ public final class GameClientEvents {
             }
             //连枷按键检测
             ItemStack mainHandItem = player.getMainHandItem();
-            boolean isFlail = mainHandItem.hasData(ModDataComponentTypes.FLAIL);
+            boolean isFlail = PortItemStackExtension.hasData(mainHandItem, ModDataComponentTypes.FLAIL);
             boolean keyHeld = minecraft.options.keyAttack.isDown();
             if (isFlail) {
                 if (keyHeld && !wasFlailKeyHeld) {
@@ -330,8 +333,8 @@ public final class GameClientEvents {
         LocalPlayer player = (LocalPlayer) event.getEntity();
         boolean cannotMove = player.hasEffect(ModEffects.STONED.get()) || player.hasEffect(ModEffects.FROZEN.get()) || ScryingOrb.spectatingPlayer != null;
         ILocalPlayer.of(player).confluence$setCanMove(!cannotMove);
-        if (!player.hasInfiniteMaterials()) {
-            if (cannotMove || player.hasEffect(ModEffects.SHIMMER.get()) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {
+        if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+            if (cannotMove || player.hasEffect(ModEffects.SHIMMER.get()) || PortEntityExtension.getInBlockState(player).is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {
                 input.jumping = false;
                 input.forwardImpulse = 0.0F;
                 input.leftImpulse = 0.0F;

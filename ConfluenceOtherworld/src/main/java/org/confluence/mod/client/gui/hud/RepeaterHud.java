@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -46,7 +45,7 @@ public class RepeaterHud implements PortGuiLayer {
         if (itemStack.getItem() instanceof BaseTerraRepeaterItem repeaterItem) {
             if (player.isUsingItem() && player.getUseItem().equals(itemStack)) {
                 end = Mth.clamp(igui.confluence$getOldRepeaterCrosshairAngle() + (float) 360 / repeaterItem.getReloadSpeed(player, itemStack), 0, 720);
-            } else if (!PortItemStackExtension.getDataOrDefault(itemStack, ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY).isEmpty()) {
+            } else if (!itemStack.getDataOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY).isEmpty()) {
                 end = 45;
             }
         }
@@ -80,7 +79,7 @@ public class RepeaterHud implements PortGuiLayer {
             return;
         }
 
-        RepeaterContents repeaterContents = PortItemStackExtension.getDataOrDefault(itemStack, ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
+        RepeaterContents repeaterContents = itemStack.getDataOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
         if (repeaterContents.isEmpty()) {
             return;
         }

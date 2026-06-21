@@ -1,6 +1,5 @@
 package org.confluence.mod.network.c2s;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,7 +31,7 @@ public enum ShootPacketC2S implements IPortPacket.C2S {
             baseGun.shoot(player, ammo, gunStack);
             baseGun.fireAnimator(gunStack, player);
 
-            BulletPropertyComponent component = PortItemStackExtension.getData(ammo, ModDataComponentTypes.BULLET_PROPERTY);
+            BulletPropertyComponent component = ammo.getData(ModDataComponentTypes.BULLET_PROPERTY);
             boolean infinity = component != null && component.infinity();
             GunEvent.ShrinkBulletEvent event = new GunEvent.ShrinkBulletEvent(player, baseGun, gunStack, ammo, infinity);
             PortEventHandler.postEvent(event);

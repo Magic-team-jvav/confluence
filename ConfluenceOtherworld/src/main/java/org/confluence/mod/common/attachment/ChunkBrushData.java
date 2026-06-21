@@ -1,6 +1,5 @@
 package org.confluence.mod.common.attachment;
 
-import PortLib.extensions.net.minecraft.world.level.Level.PortLevelExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -67,6 +66,6 @@ public class ChunkBrushData implements IPortNBTSerializable<CompoundTag> {
     }
 
     public static ChunkBrushData of(Level level) {
-        return PortLevelExtension.getAttach(level, ModAttachmentTypes.CHUNK_BRUSH_DATA);
+        return level.getAttach(ModAttachmentTypes.CHUNK_BRUSH_DATA);
     }
 }

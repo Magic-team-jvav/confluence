@@ -1,7 +1,6 @@
 package org.confluence.mod.common.attachment;
 
 import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.HolderLookup;
@@ -475,7 +474,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
     }
 
     public static ExtraInventory of(LivingEntity living) {
-        ExtraInventory extraInventory = PortEntityExtension.getAttach(living, ModAttachmentTypes.EXTRA_INVENTORY);
+        ExtraInventory extraInventory = living.getAttach(ModAttachmentTypes.EXTRA_INVENTORY);
         extraInventory.living = living;
         return extraInventory;
     }

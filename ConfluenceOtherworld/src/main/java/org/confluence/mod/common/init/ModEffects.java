@@ -2,7 +2,6 @@ package org.confluence.mod.common.init;
 
 import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
-import PortLib.extensions.net.minecraftforge.registries.DeferredRegister.PortDeferredRegisterExtension;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
@@ -158,7 +157,7 @@ public final class ModEffects {
     public static final RegistryObject<FlaskEffect> WEAPON_IMBUE_GOLD = EFFECTS.register("weapon_imbue_gold", FlaskOfGoldEffect::new);
 
     private static <T extends MobEffect> RegistryObject<T> register(String name, Function<ResourceLocation, T> function) {
-        return PortDeferredRegisterExtension.register(EFFECTS, name, function);
+        return EFFECTS.register(name, function);
     }
 
     private static double exquisitelyStuffed(int v, double v0, double v1, double v2) {

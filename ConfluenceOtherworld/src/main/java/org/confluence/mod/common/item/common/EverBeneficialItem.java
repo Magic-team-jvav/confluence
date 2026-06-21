@@ -1,8 +1,6 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.AttributeInstance.PortAttributeInstanceExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -42,7 +40,7 @@ public class EverBeneficialItem extends TooltipItem {
         }
         AttributeInstance instance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
         if (instance == null) return;
-        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+        instance.addOrReplacePermanentModifier(new AttributeModifier(
                 id, name,
                 everBeneficial.getUsedLifeCrystals() * 4.0,
                 AttributeModifier.Operation.ADDITION
@@ -52,7 +50,7 @@ public class EverBeneficialItem extends TooltipItem {
     public static final Beneficial LIFE_FRUITS = new Beneficial(Confluence.asResource("life_fruit"), EverBeneficial::increaseFruits, (id, name, player, everBeneficial, isRespawn) -> {
         AttributeInstance instance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
         if (instance == null) return;
-        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+        instance.addOrReplacePermanentModifier(new AttributeModifier(
                 id, name,
                 everBeneficial.getUsedLifeFruits(),
                 AttributeModifier.Operation.ADDITION
@@ -63,7 +61,7 @@ public class EverBeneficialItem extends TooltipItem {
     public static final Beneficial AEGIS_APPLE = new Beneficial(Confluence.asResource("aegis_apple"), EverBeneficial::setAegisAppleUsed, (id, name, player, everBeneficial, isRespawn) -> {
         AttributeInstance instance = player.getAttributes().getInstance(Attributes.ARMOR);
         if (instance == null) return;
-        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+        instance.addOrReplacePermanentModifier(new AttributeModifier(
                 id, name,
                 4.0,
                 AttributeModifier.Operation.ADDITION
@@ -74,7 +72,7 @@ public class EverBeneficialItem extends TooltipItem {
         Confluence.NETWORK_HANDLER.sendToPlayer(player, new RightClickSubtractorPacketS2C((byte) Math.min(value + 1, 4)));
         AttributeInstance instance = player.getAttributes().getInstance(PortAttributesExtension.blockBreakSpeed());
         if (instance == null) return;
-        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+        instance.addOrReplacePermanentModifier(new AttributeModifier(
                 id, name,
                 0.05,
                 AttributeModifier.Operation.MULTIPLY_TOTAL
@@ -84,7 +82,7 @@ public class EverBeneficialItem extends TooltipItem {
     public static final Beneficial GALAXY_PEARL = new Beneficial(Confluence.asResource("galaxy_pearl"), EverBeneficial::setGalaxyPearlUsed, (id, name, player, everBeneficial, isRespawn) -> {
         AttributeInstance instance = player.getAttributes().getInstance(Attributes.LUCK);
         if (instance == null) return;
-        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+        instance.addOrReplacePermanentModifier(new AttributeModifier(
                 id, name,
                 0.03,
                 AttributeModifier.Operation.ADDITION
@@ -96,7 +94,7 @@ public class EverBeneficialItem extends TooltipItem {
     public static final Beneficial ARTISAN_LOAF = new Beneficial(Confluence.asResource("artisan_loaf"), EverBeneficial::setArtisanLoafUsed, (id, name, player, everBeneficial, isRespawn) -> {
         AttributeInstance instance = player.getAttributes().getInstance(PortAttributesExtension.blockInteractionRange());
         if (instance == null) return;
-        PortAttributeInstanceExtension.addOrReplacePermanentModifier(instance, new AttributeModifier(
+        instance.addOrReplacePermanentModifier(new AttributeModifier(
                 id, name,
                 4,
                 AttributeModifier.Operation.ADDITION
@@ -156,7 +154,7 @@ public class EverBeneficialItem extends TooltipItem {
             if (beneficial.pre.test(data)) {
                 beneficial.post.accept(beneficial.id, beneficial.name, serverPlayer, data, false);
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+                if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
             }

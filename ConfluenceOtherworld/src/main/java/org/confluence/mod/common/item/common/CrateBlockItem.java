@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -51,7 +50,7 @@ public class CrateBlockItem extends BlockItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (player instanceof ServerPlayer serverPlayer) {
-            if (!player.isCrouching() && LootComponent.open(serverPlayer, itemStack) && !PortPlayerExtension.hasInfiniteMaterials(player)) {
+            if (!player.isCrouching() && LootComponent.open(serverPlayer, itemStack) && !player.hasInfiniteMaterials()) {
                 itemStack.shrink(1);
             }
         } else {
@@ -66,7 +65,7 @@ public class CrateBlockItem extends BlockItem {
         if (player != null && !player.isCrouching()) {
             ItemStack itemStack = context.getItemInHand();
             if (player instanceof ServerPlayer serverPlayer) {
-                if (LootComponent.open(serverPlayer, itemStack) && !PortPlayerExtension.hasInfiniteMaterials(player)) {
+                if (LootComponent.open(serverPlayer, itemStack) && !player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
             } else {

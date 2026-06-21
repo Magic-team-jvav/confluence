@@ -75,7 +75,7 @@ public class BugNetItem extends TooltipItem {
                     interactionTarget.stopRiding();
                     LibUtils.updateItemStackNbt(itemStack, interactionTarget::save);
                     if (interactionTarget.hasCustomName()) {
-                        PortItemStackExtension.setCustomName(itemStack, interactionTarget.getCustomName());
+                        itemStack.setCustomName(interactionTarget.getCustomName());
                     }
                     PortItemStackExtension.removeData(itemStack, ConfluenceMagicLib.MOD_RARITY);
                 }

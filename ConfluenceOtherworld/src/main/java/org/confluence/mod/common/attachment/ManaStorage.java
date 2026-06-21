@@ -1,6 +1,5 @@
 package org.confluence.mod.common.attachment;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -168,6 +167,6 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
     }
 
     public static ManaStorage of(LivingEntity living) {
-        return PortEntityExtension.getAttach(living, ModAttachmentTypes.MANA_STORAGE);
+        return living.getAttach(ModAttachmentTypes.MANA_STORAGE);
     }
 }

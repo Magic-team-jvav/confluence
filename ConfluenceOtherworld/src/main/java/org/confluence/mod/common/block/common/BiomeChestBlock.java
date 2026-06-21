@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.common;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -91,7 +90,7 @@ public class BiomeChestBlock extends ChestBlock {
                     new BlockParticleOption(ParticleTypes.BLOCK, Blocks.CHAIN.defaultBlockState()),
                     posX, pos.getY() + 0.5, posZ, 200, 0.0625, 0.0625, 0.0625, 0.15
             );
-            if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+            if (!player.hasInfiniteMaterials()) {
                 stack.shrink(1);
             }
             AchievementUtils.awardAchievement(serverPlayer, "big_booty");

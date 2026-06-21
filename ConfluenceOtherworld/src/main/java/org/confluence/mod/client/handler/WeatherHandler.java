@@ -1,7 +1,5 @@
 package org.confluence.mod.client.handler;
 
-import PortLib.extensions.net.minecraft.core.Holder.PortHolderExtension;
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import com.mojang.datafixers.util.Function3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -86,8 +84,8 @@ public final class WeatherHandler {
 
     public static void initialize(Player player) {
         if (BLOCK_PARTICLES.isEmpty()) {
-            for (Holder<Biome> biome : PortEntityExtension.registryAccess(player).registryOrThrow(Registries.BIOME).asHolderIdMap()) {
-                ResourceKey<Biome> key = PortHolderExtension.getKey(biome);
+            for (Holder<Biome> biome : player.registryAccess().registryOrThrow(Registries.BIOME).asHolderIdMap()) {
+                ResourceKey<Biome> key = biome.getKey();
                 if (key == null || !biome.is(BiomeTags.IS_OVERWORLD)) continue;
                 registerBlockParticle(key, map -> {
                     leavesParticles(map);
@@ -139,12 +137,12 @@ public final class WeatherHandler {
     }
 
     public static Map<Block, Context> getBlockParticles(Holder<Biome> biome) {
-        ResourceKey<Biome> key = PortHolderExtension.getKey(biome);
+        ResourceKey<Biome> key = biome.getKey();
         return key == null ? null : BLOCK_PARTICLES.get(key.location());
     }
 
     public static Map<FluidType, ParticleOptions> getFluidParticles(Holder<Biome> biome) {
-        ResourceKey<Biome> key = PortHolderExtension.getKey(biome);
+        ResourceKey<Biome> key = biome.getKey();
         return key == null ? null : FLUID_PARTICLES.get(key.location());
     }
 

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,7 +26,7 @@ public class BestiaryItem extends CustomRarityItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         if (!level.isClientSide) {
-            double reach = Math.max(PortPlayerExtension.entityInteractionRange(player), PortPlayerExtension.blockInteractionRange(player));
+            double reach = Math.max(player.entityInteractionRange(), player.blockInteractionRange());
             double squared = Mth.square(reach);
             Vec3 from = player.getEyePosition(1.0F);
             HitResult hitResult = player.pick(reach, 1.0F, false);

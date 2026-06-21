@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.crossbow;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
@@ -269,7 +268,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
     }
 
     public static boolean isCharged(ItemStack crossbowStack) {
-        RepeaterContents contents = PortItemStackExtension.getData(crossbowStack, ModDataComponentTypes.REPEATER_CONTENTS);
+        RepeaterContents contents = crossbowStack.getData(ModDataComponentTypes.REPEATER_CONTENTS);
         return contents != null && !contents.isEmpty();
     }
 

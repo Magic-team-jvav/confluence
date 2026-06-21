@@ -1,6 +1,5 @@
 package org.confluence.mod.network.c2s;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -63,7 +62,7 @@ public final class FlailControlPacketC2S implements IPortPacket.C2S {
         ItemStack stack = player.getMainHandItem();
         if (!(stack.getItem() instanceof BaseFlailItem)) return;
 
-        FlailComponent component = PortItemStackExtension.getData(stack, ModDataComponentTypes.FLAIL);
+        FlailComponent component = stack.getData(ModDataComponentTypes.FLAIL);
         if (component == null) return;
 
         // 查找现有连枷实体

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.player.Player.PortPlayerExtension;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -38,7 +37,7 @@ public class ThrowableItem<T extends ThrowableItemProjectile> extends CustomRari
             level.addFreshEntity(projectile);
 
             player.awardStat(Stats.ITEM_USED.get(this));
-            if (!PortPlayerExtension.hasInfiniteMaterials(player)) {
+            if (!player.hasInfiniteMaterials()) {
                 itemStack.shrink(1);
             }
         }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init;
 
-import PortLib.extensions.net.minecraftforge.registries.DeferredRegister.PortDeferredRegisterExtension;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -223,6 +222,6 @@ public final class ModEntities {
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, Function<ResourceLocation, EntityType<T>> function) {
-        return PortDeferredRegisterExtension.register(ENTITIES, name, function);
+        return ENTITIES.register(name, function);
     }
 }

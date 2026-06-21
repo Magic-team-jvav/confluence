@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -57,7 +56,7 @@ public class TreasureBagItem extends CustomRarityItem {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            LootComponent component = PortItemStackExtension.getData(stack, ModDataComponentTypes.LOOT);
+            LootComponent component = stack.getData(ModDataComponentTypes.LOOT);
             ResourceLocation table = component == null
                     ? lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition()))
                     : component.value();

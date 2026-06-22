@@ -2,16 +2,24 @@ package org.confluence.mod.common.item.flail;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.client.renderer.item.BaseFlailItemRenderer;
@@ -20,6 +28,8 @@ import org.confluence.mod.common.entity.flail.*;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -44,9 +54,20 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
     public BaseFlailItem(@NotNull FlailComponent flailComponent, @NotNull ModRarity rarity) {
         super(new Properties()
                         .stacksTo(1)
-                        .component(ModDataComponentTypes.FLAIL, flailComponent),
+                        .component(ModDataComponentTypes.FLAIL, flailComponent)
+                        .component(DataComponents.ATTRIBUTE_MODIFIERS, createFlailAttributes(flailComponent)),
                 rarity, "");
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    /** 连枷的 vanilla 属性组件*/
+    private static ItemAttributeModifiers createFlailAttributes(FlailComponent comp) {
+        return ItemAttributeModifiers.builder()
+                .add(LibAttributes.getAttackDamage(),
+                        new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
+                                comp.damageFactor() - 1, AttributeModifier.Operation.ADD_VALUE),
+                        EquipmentSlotGroup.MAINHAND)
+                .build();
     }
 
     /**
@@ -58,6 +79,21 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
      *   <li>STAY 中 → 收回 RETRACT</li>
      * </ul>
      */
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
+                                 @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        FlailComponent comp = stack.get(ModDataComponentTypes.FLAIL);
+        if (comp == null) return;
+
+        tooltipComponents.add(Component.translatable("tooltip.confluence.flail.spin_speed")
+                .append(": " + String.format("%.1f", comp.spinSpeed()))
+                .withColor(0x57cdfb));
+        tooltipComponents.add(Component.translatable("tooltip.confluence.flail.max_distance")
+                .append(": " + String.format("%.1f", comp.maxDistance()))
+                .withColor(0x57cdfb));
+    }
+
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);

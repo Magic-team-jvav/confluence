@@ -60,9 +60,6 @@ public record FlailComponent(
         Optional<ResourceLocation> modelLocation,
         Optional<EffectStrategyComponent> hitEffect
 ) implements DataComponentType<FlailComponent> {
-    // todo 收回时也能造成伤害
-    // todo 兼容词缀，具体看泰拉wiki
-    // todo 武器数值的显示
     public static final Codec<FlailComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("damageFactor").forGetter(FlailComponent::damageFactor),
             Codec.FLOAT.fieldOf("spinRadius").forGetter(FlailComponent::spinRadius),

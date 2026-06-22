@@ -456,6 +456,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.price.copper", "铜 ");
         add("tooltip.price.sell", "卖出：");
 
+        add("tooltip.confluence.flail.spin_speed", "挥舞速度");
+        add("tooltip.confluence.flail.max_distance", "最大距离");
+
         add("tooltip.jei.state_properties", "需要的方块属性：");
         add("tooltip.jei.count_range", "数量：%s-%s");
         add("tooltip.jei.count_exact", "数量：%s");

@@ -465,6 +465,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.price.copper", "Copper ");
         add("tooltip.price.sell", "Sell: ");
 
+        add("tooltip.confluence.flail.spin_speed", "Spin Speed");
+        add("tooltip.confluence.flail.max_distance", "Max Distance");
+
         add("tooltip.jei.state_properties", "Required State Properties:");
         add("tooltip.jei.count_range", "Count: %s-%s");
         add("tooltip.jei.count_exact", "Count: %s");

@@ -520,7 +520,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
                 .add(TEBoomerangItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         tag(ModTags.Items.PREFIX_MELEE_ONLY)
-                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES)
+                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES, ModTags.Items.FLAIL)
                 .add(Items.MACE);
         tag(ModTags.Items.PREFIX_RANGED_ONLY)
                 .addTags(Tags.Items.RANGED_WEAPON_TOOLS, TGTags.GUN)

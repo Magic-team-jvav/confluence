@@ -1,0 +1,17 @@
+{
+  "ambientocclusion": false,
+  "render_type": "cutout_mipped",
+  "textures": {
+    "particle": "confluence:block/glowing_mushroom_moss",
+    "glow_lichen": "confluence:block/glowing_mushroom_moss"
+  },
+  "elements": [
+    {   "from": [ 0, 0, 0.1 ],
+      "to": [ 16, 16, 0.1 ],
+      "faces": {
+        "north": { "uv": [ 16, 0, 0, 16 ], "texture": "#glow_lichen" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#glow_lichen" }
+      }
+    }
+  ]
+}

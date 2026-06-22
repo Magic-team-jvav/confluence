@@ -60,12 +60,14 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
-    /** 连枷的 vanilla 属性组件*/
+    /**
+     * 连枷的 vanilla 属性组件。
+     */
     private static ItemAttributeModifiers createFlailAttributes(FlailComponent comp) {
         return ItemAttributeModifiers.builder()
                 .add(LibAttributes.getAttackDamage(),
                         new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
-                                comp.damageFactor() - 1, AttributeModifier.Operation.ADD_VALUE),
+                                comp.damageFactor() - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
                         EquipmentSlotGroup.MAINHAND)
                 .build();
     }

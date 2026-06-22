@@ -18,9 +18,13 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.confluence.terraentity.registries.hit_effect.variant.PrefabEffect;
+import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
+import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -134,7 +138,7 @@ public record FlailComponent(
                     Optional.empty()
             );
 
-    // 火焰链锤
+    // 火焰链锤 — 1/6 几率着火
     public static final Supplier<FlailComponent> FLAMING_MACE =
             () -> new FlailComponent(
                     11.0f,
@@ -150,10 +154,11 @@ public record FlailComponent(
                     ModEntities.FLAIL_ENTITY.getId(),
                     Confluence.asResource("textures/entity/flail/flaming_mace.png"),
                     Optional.of(Confluence.asResource("geo/entity/flail/flaming_mace.geo.json")),
-                    Optional.empty()
+                    Optional.of(new EffectStrategyComponent(List.of(
+                            new PrefabEffect("flaming_mace_fire",
+                                    ModEffectStrategies.FIRE_3S_1_6)
+                    )))
             );
-    // todo 1/6的几率施加着火
-    // todo 碰水会变回正常链锤
 
     // 风锚
     public static final Supplier<FlailComponent> WIND_ANCHOR =
@@ -253,7 +258,7 @@ public record FlailComponent(
                     Optional.empty()
             );
 
-    // 阳炎之怒
+    // 阳炎之怒 — 1/4 几率着火
     public static final Supplier<FlailComponent> SUNFURY =
             () -> new FlailComponent(
                     34.0f,
@@ -269,11 +274,13 @@ public record FlailComponent(
                     ModEntities.FLAIL_ENTITY.getId(),
                     Confluence.asResource("textures/entity/flail/sunfury.png"),
                     Optional.of(Confluence.asResource("geo/entity/flail/sunfury.geo.json")),
-                    Optional.empty()
+                    Optional.of(new EffectStrategyComponent(List.of(
+                            new PrefabEffect("sunfury_fire",
+                                    ModEffectStrategies.FIRE_3S_1_4)
+                    )))
             );
-    // todo 1/4的几率施加着火 ,初始自带11%暴击率
 
-    // 太极连枷
+    // 太极连枷 — 4/5 几率困惑
     public static final Supplier<FlailComponent> DAO_OF_POW =
             () -> new FlailComponent(
                     52.0f,
@@ -289,9 +296,12 @@ public record FlailComponent(
                     ModEntities.FLAIL_ENTITY.getId(),
                     Confluence.asResource("textures/entity/flail/dao_of_pow.png"),
                     Optional.of(Confluence.asResource("geo/entity/flail/dao_of_pow.geo.json")),
-                    Optional.empty()
+                    Optional.of(new EffectStrategyComponent(List.of(
+                            TimePossibilityAmplifierEffect.of("dao_confused",
+                                    org.confluence.terra_curio.common.init.TCEffects.CONFUSED.getDelegate(),
+                                    40, 0, 0, 0.8f)
+                    )))
             );
-    // todo 4/5的几率施加困惑
 
     //花之力
     public static final Supplier<FlailComponent> FLOWER_POWER =

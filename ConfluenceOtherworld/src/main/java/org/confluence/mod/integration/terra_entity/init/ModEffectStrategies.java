@@ -63,9 +63,11 @@ public final class ModEffectStrategies {
     private static final DeferredHolder<EffectStrategy, EffectStrategy> BAT_FANG_EFFECT = createEffect("bat",
             (owner, entity) -> owner.heal(1));
 
-//    /**着火*/
-//    private static final DeferredHolder<EffectStrategy, EffectStrategy> SET_FIRE_EFFECT = createEffect("set_fire_5_sec",
-//            SET_FIRE.apply(5 * 20, 1f));
+    /** 着火 — 各概率/时长的预制效果 */
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> FIRE_3S_1_6 = createEffect("fire_3s_1_6",
+            SET_FIRE.apply(3 * 20, 1f / 6f));
+    public static final DeferredHolder<EffectStrategy, EffectStrategy> FIRE_3S_1_4 = createEffect("fire_3s_1_4",
+            SET_FIRE.apply(3 * 20, 0.25f));
 
     /**
      * 魔光剑

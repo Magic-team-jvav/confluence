@@ -419,11 +419,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         boolean anyHit = false;
         LivingEntity firstHit = null;
         for (LivingEntity target : entities) {
-            // 基础伤害 × 外部近战加成（排除武器自身 ATTRIBUTE_MODIFIERS 的贡献，避免双重计算）
+            // 基础伤害 × 外部近战加成（前缀/饰品/套装属性由底层自动注入）
             float totalAttack = (float) player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
-            float weaponBonus = component.damageFactor() - 1; // createFlailAttributes 中写入的值
-            float nonWeaponMult = Math.max(1.0F, totalAttack - weaponBonus);
-            float baseDamage = component.damageFactor() * nonWeaponMult;
+            float baseDamage = Math.max(1.0F, totalAttack);
             float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
             float finalDamage = baseDamage * damageMultiplier * (1.0F + turbineBonus);
             DamageSource source = ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player);

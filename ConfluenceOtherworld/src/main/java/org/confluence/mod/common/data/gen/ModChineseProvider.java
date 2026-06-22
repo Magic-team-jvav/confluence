@@ -778,8 +778,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin.0", "潜行右键合并为上级钱币");
         add("tooltip.item.confluence.hardmode_convertor.0", "右击地面将当前世界立刻开始转变为困难模式");
         add("tooltip.item.confluence.life_crystal.0", "最大生命永久增加4");
+        add("tooltip.item.confluence.recall_life_crystal.0", "最大生命永久减少4");
         add("tooltip.item.confluence.life_fruit.0", "最大生命永久增加1");
         add("tooltip.item.confluence.mana_crystal.0", "最大魔力永久增加20");
+        add("tooltip.item.confluence.recall_mana_crystal.0", "最大魔力永久减少20");
         add("tooltip.item.confluence.arcane_crystal.0", "永久提高魔力再生");
         add("tooltip.item.confluence.vital_crystal.0", "永久加速生命再生");
         add("tooltip.item.confluence.aegis_apple.0", "永久提高防御力");
@@ -3479,7 +3481,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.LAVA_BOMB.get(), "熔岩炸弹");
         add(ConsumableItems.HONEY_BOMB.get(), "蜂蜜炸弹");
         add(ConsumableItems.MANA_CRYSTAL.get(), "魔力水晶");
+        add(ConsumableItems.RECALL_MANA_CRYSTAL.get(), "回溯魔力水晶");
         add(ConsumableItems.LIFE_CRYSTAL.get(), "生命水晶");
+        add(ConsumableItems.RECALL_LIFE_CRYSTAL.get(), "回溯生命水晶");
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");

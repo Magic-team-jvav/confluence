@@ -785,6 +785,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin.0", "Sneak and right-click to merge into a primary coin");
         add("tooltip.item.confluence.hardmode_convertor.0", "Right-clicking on the ground immediately turns the current world into Hardmode");
         add("tooltip.item.confluence.life_crystal.0", "Permanently increases maximum life by 4");
+        add("tooltip.item.confluence.recall_life_crystal.0", "Permanently reduces maximum life by 4");
+        add("tooltip.item.confluence.recall_mana_crystal.0", "Permanently reduces maximum mana by 20");
         add("tooltip.item.confluence.life_fruit.0", "Permanently increases maximum life by 1");
         add("tooltip.item.confluence.mana_crystal.0", "Permanently increases maximum mana by 20");
         add("tooltip.item.confluence.arcane_crystal.0", "Permanently increases mana regeneration");

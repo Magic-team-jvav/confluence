@@ -42,6 +42,12 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         return false;
     }
 
+    public boolean decreaseCrystals() {
+        if (lifeCrystals <= -4) return false;
+        this.lifeCrystals--;
+        return true;
+    }
+
     public int getUsedLifeCrystals() {
         return lifeCrystals;
     }

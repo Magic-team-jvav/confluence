@@ -130,6 +130,15 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         return false;
     }
 
+    public boolean decreaseStar() {
+        if (stars <= 1) return false;
+        float oldMax = getMaxMana();
+        this.stars--;
+        this.currentMana = Mth.clamp(currentMana - 20.0F, 0.0F, oldMax);
+        freshMaxMana();
+        return true;
+    }
+
     @ApiStatus.Internal
     public void clearStars() {
         this.stars = 1;

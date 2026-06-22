@@ -17,7 +17,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.common.entity.BestiaryEntryDisplay;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixin.world.entity.EntityAccessor;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.client.gui.components.PortSprite;

@@ -80,6 +80,7 @@ import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.enchantment.SummonItemEffect;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.worldgen.BannedBiomeNoiseBasedChunkGenerator;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;

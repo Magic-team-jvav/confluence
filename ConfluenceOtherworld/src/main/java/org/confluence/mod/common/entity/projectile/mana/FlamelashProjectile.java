@@ -11,7 +11,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraftforge.common.Tags;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.mod.common.item.mana.FlamelashItem;

@@ -9,7 +9,7 @@ import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.mana.BaseManaStaffProjectileEntity.Variant;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.gun.BeeGunItem;
 import org.confluence.mod.common.item.gun.SpaceGunItem;
 import org.confluence.mod.common.item.mana.*;

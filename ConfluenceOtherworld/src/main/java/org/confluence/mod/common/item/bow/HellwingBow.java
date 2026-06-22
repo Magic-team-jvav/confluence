@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.arrow.HellBatArrowEntity;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import static org.confluence.lib.common.component.ModRarity.RED;

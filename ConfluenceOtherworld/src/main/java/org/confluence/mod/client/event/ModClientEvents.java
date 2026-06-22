@@ -119,7 +119,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
-import static org.confluence.mod.common.init.ModEntities.*;
+import static org.confluence.mod.common.init.entity.ModEntities.*;
 
 public final class ModClientEvents {
     public static void init() {

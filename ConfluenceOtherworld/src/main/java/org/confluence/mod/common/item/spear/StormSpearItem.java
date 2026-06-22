@@ -10,7 +10,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.portlib.wrapper.world.item.PortItem;
 import software.bernie.geckolib.core.animation.EasingType;
 

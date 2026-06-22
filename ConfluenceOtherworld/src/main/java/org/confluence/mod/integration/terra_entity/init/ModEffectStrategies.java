@@ -6,7 +6,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.EffectStrategyComponent;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.registries.TERegistries;
 import org.confluence.terraentity.registries.hit_effect.EffectStrategy;

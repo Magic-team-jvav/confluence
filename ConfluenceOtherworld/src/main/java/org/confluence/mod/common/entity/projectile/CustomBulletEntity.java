@@ -10,7 +10,7 @@ import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.GunItems;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.NotNull;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEntityExtension;
 

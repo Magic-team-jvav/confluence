@@ -16,8 +16,8 @@ import org.confluence.mod.common.data.gen.language.*;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCEffects;
 

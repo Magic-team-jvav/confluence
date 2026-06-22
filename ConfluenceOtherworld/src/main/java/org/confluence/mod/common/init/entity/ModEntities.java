@@ -1,10 +1,12 @@
-package org.confluence.mod.common.init;
+package org.confluence.mod.common.init.entity;
 
+import PortLib.extensions.net.minecraftforge.registries.DeferredRegister.PortDeferredRegisterExtension;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.entitiy.EmptyEntity;
@@ -29,13 +31,6 @@ import org.confluence.mod.common.entity.projectile.sword.*;
 
 import java.util.function.Function;
 
-/// Fast Link:
-///
-/// 渲染器 [org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers]
-///
-/// 发包   [org.confluence.mod.common.event.ModEvents#registerPayloadHandlers]
-///
-/// 属性   [org.confluence.mod.common.event.ModEvents#entityAttributeCreation]
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, Confluence.MODID);
 
@@ -222,6 +217,11 @@ public final class ModEntities {
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, Function<ResourceLocation, EntityType<T>> function) {
-        return ENTITIES.register(name, function);
+        return PortDeferredRegisterExtension.register(ENTITIES, name, function);
+    }
+
+    public static void register(IEventBus eventBus) {
+        ENTITIES.register(eventBus);
+        MonstersEntities.ENTITIES.register(eventBus);
     }
 }

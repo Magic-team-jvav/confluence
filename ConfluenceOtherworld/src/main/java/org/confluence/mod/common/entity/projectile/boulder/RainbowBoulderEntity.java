@@ -15,7 +15,7 @@ import net.minecraft.world.phys.*;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.terra_curio.common.TCCommonConfigs;
 import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
 import org.jetbrains.annotations.Nullable;

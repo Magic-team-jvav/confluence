@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class SkyFractureProjectile extends AbstractManaProjectile {
     public SkyFractureProjectile(EntityType<? extends SkyFractureProjectile> entityType, Level level) {

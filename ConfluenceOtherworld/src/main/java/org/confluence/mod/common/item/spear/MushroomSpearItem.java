@@ -12,7 +12,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.MushroomProjectile;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class MushroomSpearItem extends AbstractSpearItem {
     /// 刺击前摇结束时刻（tick），矛从蓄力转为前刺的时间点

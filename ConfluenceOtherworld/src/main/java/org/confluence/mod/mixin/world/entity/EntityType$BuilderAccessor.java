@@ -45,11 +45,11 @@ public interface EntityType$BuilderAccessor<T extends Entity> {
     @Accessor
     EntityDimensions getDimensions();
 
-    @Accessor
-    float getSpawnDimensionsScale();
-
-    @Accessor
-    EntityAttachments.Builder getAttachments();
+//    @Accessor
+//    float getSpawnDimensionsScale();
+//
+//    @Accessor
+//    PortEntityAttachments.Builder getAttachments();
 
     @Accessor
     FeatureFlagSet getRequiredFeatures();

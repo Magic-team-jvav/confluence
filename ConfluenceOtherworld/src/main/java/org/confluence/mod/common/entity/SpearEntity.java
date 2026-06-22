@@ -21,8 +21,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.SpearTrapBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.util.TrapDamageHelper;
 
 /**

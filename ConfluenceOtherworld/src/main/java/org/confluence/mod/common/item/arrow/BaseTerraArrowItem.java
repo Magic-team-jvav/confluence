@@ -10,7 +10,7 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.item.PortItem;

@@ -33,6 +33,7 @@ import org.confluence.mod.common.event.game.entity.LivingEntityEvents;
 import org.confluence.mod.common.event.game.entity.PlayerEvents;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.mesdag.portlib.network.PortNetworkHandler;
@@ -89,7 +90,7 @@ public final class Confluence {
         ModPrefix.initialize();
 
         ModTabs.TABS.register(eventBus);
-        ModEntities.ENTITIES.register(eventBus);
+        ModEntities.register(eventBus);
         ModDataComponentTypes.init();
         ModSoundEvents.EVENTS.register(eventBus);
         ModAttachmentTypes.init();

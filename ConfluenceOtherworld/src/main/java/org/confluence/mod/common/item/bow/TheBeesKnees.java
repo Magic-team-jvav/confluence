@@ -6,7 +6,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.arrow.BeeArrowEntity;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.mesdag.portlib.wrapper.world.item.PortItem;
 

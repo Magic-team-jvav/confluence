@@ -9,7 +9,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 // todo 专家模式下，黄金雨对毁灭者及其探测怪仅造成 75% 伤害。
 public class GoldenShowerProjectile extends AbstractManaProjectile {

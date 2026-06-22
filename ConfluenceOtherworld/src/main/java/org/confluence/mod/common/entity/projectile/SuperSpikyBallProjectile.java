@@ -17,7 +17,7 @@ import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.util.TrapDamageHelper;
 import org.confluence.mod.mixed.Immunity;
 

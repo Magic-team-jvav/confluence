@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class ForTheWorthy extends SecretSeed {
     public static final BlockState LAVA = Blocks.LAVA.defaultBlockState();

@@ -15,8 +15,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.entity.projectile.bomb.BaseGrenadeEntity;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 
 import java.util.List;

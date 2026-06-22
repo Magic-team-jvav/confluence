@@ -17,6 +17,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.generation.variant.ForwardGeneration;
 import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.sword.*;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.mod.common.item.sword.legacy.SwordStrategy;

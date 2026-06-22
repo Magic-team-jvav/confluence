@@ -147,17 +147,20 @@ public final class EnchantmentUtils {
      * @param victim       被击中的实体
      * @param damageSource 伤害来源
      */
-    public static void processFlailWindBurst(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
+    public static boolean processFlailWindBurst(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
+        boolean[] triggered = {false};
         runIterationOnHand(player, stack -> {
             EnchantedItemInUse item = new EnchantedItemInUse(stack, EquipmentSlot.MAINHAND, player);
             runIterationOnItem(stack, (enchantment, level) -> {
                 for (TargetedConditionalEffect<EnchantmentEntityEffect> effect : enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.WIND_BURST_AT_HIT.get())) {
                     if (effect.enchanted() == EnchantmentTarget.ATTACKER) {
                         doPostAttack(effect, player.serverLevel(), level, item, victim, damageSource);
+                        triggered[0] = true;
                     }
                 }
             });
         });
+        return triggered[0];
     }
 
     public static void runIterationOnHand(ServerPlayer player, Consumer<ItemStack> consumer) {

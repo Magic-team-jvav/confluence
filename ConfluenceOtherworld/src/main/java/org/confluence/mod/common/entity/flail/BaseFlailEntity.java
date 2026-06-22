@@ -451,10 +451,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         if (!(player instanceof ServerPlayer serverPlayer) || windBurstCooldown > 0 || firstHit == null) {
             return;
         }
-        EnchantmentUtils.processFlailWindBurst(serverPlayer, firstHit,
-                ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player));
-        windBurstCooldown = 60; // 3 秒冷却
-        serverPlayer.getCooldowns().addCooldown(serverPlayer.getMainHandItem().getItem(), 60);
+        if (EnchantmentUtils.processFlailWindBurst(serverPlayer, firstHit,
+                ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player))) {
+            windBurstCooldown = 60; // 3 秒冷却
+            serverPlayer.getCooldowns().addCooldown(serverPlayer.getMainHandItem().getItem(), 60);
+        }
     }
 
     /**

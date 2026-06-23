@@ -62,8 +62,8 @@ public class CoinPortalEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_AMOUNT, 0);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_AMOUNT, 0);
     }
 
     @Override

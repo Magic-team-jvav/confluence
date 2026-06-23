@@ -17,14 +17,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.HandPositionUtils;
-import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -39,7 +38,7 @@ import org.joml.Vector3f;
  * RETRACT：飞回玩家并消失
  */
 public class BaseFlailEntity extends Projectile implements Immunity {
-    // ── 状态常数 ─
+    // ── 状态常量 ──
     public static final int PHASE_SPIN = 0;
     public static final int PHASE_THROWN = 1;
     public static final int PHASE_STAY = 2;
@@ -82,9 +81,9 @@ public class BaseFlailEntity extends Projectile implements Immunity {
 
     // ── 数据同步 ──
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_PHASE, PHASE_SPIN);
-        builder.define(DATA_SPIN_ANGLE, 0.0F);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_PHASE, PHASE_SPIN);
+        this.entityData.define(DATA_SPIN_ANGLE, 0.0F);
     }
 
     public int getPhase() {
@@ -105,10 +104,10 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         Entity owner = getOwner();
         if (owner instanceof LivingEntity living) {
             ItemStack stack = living.getMainHandItem();
-            cachedComponent = stack.get(ModDataComponentTypes.FLAIL);
+            cachedComponent = stack.getData(ModDataComponentTypes.FLAIL);
             if (cachedComponent != null) return cachedComponent;
             stack = living.getOffhandItem();
-            cachedComponent = stack.get(ModDataComponentTypes.FLAIL);
+            cachedComponent = stack.getData(ModDataComponentTypes.FLAIL);
         }
         return cachedComponent;
     }
@@ -125,11 +124,11 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     }
 
     /**
-     * 方块碰撞处理：RETRACT 阶段击中方块时直接落地
+         * 方块碰撞处理：RETRACT 阶段击中方块时直接落地
      */
     @Override
     protected void onHitBlock(@NotNull BlockHitResult result) {
-        // THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
+            // THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
         if (!level().isClientSide() && getPhase() == PHASE_RETRACT) {
             setPos(result.getLocation());
             playerDrop();
@@ -206,7 +205,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     }
 
     /**
-     * 射线检测前方方块碰撞，返回 null 表示无碰撞
+         * 射线检测前方方块碰撞，返回 null 表示无碰撞
      */
     @Nullable
     private BlockHitResult clipBlock(Vec3 motion) {
@@ -230,7 +229,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
             Vec3 normal = Vec3.atLowerCornerOf(blockHit.getDirection().getNormal());
             setPos(blockHit.getLocation().add(normal.scale(0.1)));
 
-            // 反射速度：仅当朝向墙面时反弹，防浅角度卡墙
+            // 反射速度：仅当朝向墙面时反弹，防浅角度卡住
             double dot = motion.dot(normal);
             if (dot < 0) {
                 motion = motion.subtract(normal.scale(2.0 * dot));
@@ -238,7 +237,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
             motion = motion.scale(0.6);
             setDeltaMovement(motion);
 
-            // 反弹次数耗尽 或 反射后速度过低 → 直接收回（仅服务端判断）
+            // 反弹次数耗尽 或 反射后速度过低 直接收回（仅服务端判断）
             if (!level().isClientSide() && (bounceCount >= component.maxBounces() || motion.lengthSqr() < 0.1)) {
                 setPhase(PHASE_RETRACT);
                 return;
@@ -262,7 +261,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         Vec3 motion = getDeltaMovement().add(0, -component.gravity(), 0);
         setDeltaMovement(motion);
 
-        // 速度过低 → 收回（仅服务端判断，玩家主动丢出时不收回）
+        // 速度过低 收回（仅服务端判断，玩家主动丢出时不收回）
         if (!level().isClientSide() && !playerDropped && getDeltaMovement().lengthSqr() < 0.1) {
             setPhase(PHASE_RETRACT);
             return;
@@ -345,7 +344,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
 
     /**
      * 落地进入 STAY，不因低速自动收回。
-     * <p>用于玩家主动丢出（按 use）以及 RETRACT 途中撞墙落地。
+     * <p>用于玩家主动丢出（按 use）以及 RETRACT 途中撞墙落地。</p>
      */
     public void playerDrop() {
         setPhase(PHASE_STAY);
@@ -364,7 +363,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         ItemStack stack = player.getMainHandItem();
         return !stack.isEmpty()
                 && stack.getItem() instanceof BaseFlailItem
-                && stack.has(ModDataComponentTypes.FLAIL);
+                && stack.hasData(ModDataComponentTypes.FLAIL);
     }
 
     @Override

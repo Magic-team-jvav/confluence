@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile;
 
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,7 +32,7 @@ public class FlowerPetalProjectile extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+    protected void defineSynchedData() {}
 
     @Override
     public void baseTick() {

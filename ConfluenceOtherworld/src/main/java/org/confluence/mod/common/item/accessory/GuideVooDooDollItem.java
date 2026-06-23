@@ -152,7 +152,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
             hof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
         }
         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
-            player.connection.send(new ClientboundSoundPacket(TESounds.WALL_OF_FLESH_ROAR, SoundSource.HOSTILE, player.getX(), player.getY(), player.getZ(), 1, 1, 0));
+            player.connection.send(new ClientboundSoundPacket(ModSoundEvents.WALL_OF_FLESH_ROAR, SoundSource.HOSTILE, player.getX(), player.getY(), player.getZ(), 1, 1, 0));
         }
     }
 

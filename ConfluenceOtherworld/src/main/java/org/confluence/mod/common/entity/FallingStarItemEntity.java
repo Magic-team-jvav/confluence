@@ -52,9 +52,9 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_WAS_ON_GROUND, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_WAS_ON_GROUND, false);
     }
 
     @Override

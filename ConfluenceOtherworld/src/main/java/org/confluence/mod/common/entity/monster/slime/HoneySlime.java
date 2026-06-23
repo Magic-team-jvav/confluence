@@ -19,12 +19,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.terraentity.entity.util.DeathAnimOptions;
 import org.confluence.terraentity.mixin.accessor.SlimeAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class HoneySlime extends Slime implements DeathAnimOptions {
+public class HoneySlime extends Slime {
     public static final int GROW_TIME = 20000;
     private final FloatRGB color;
     private int growTime = GROW_TIME;
@@ -40,7 +39,7 @@ public class HoneySlime extends Slime implements DeathAnimOptions {
 
     public static AttributeSupplier.Builder createSlimeAttributes(float attackDamage, int armor, float maxHealth) {
         return BaseSlime.createMobAttributes()
-                .add(LibAttributes.getAttackDamage(), attackDamage)
+                .add(LibAttributes.getAttackDamage().get(), attackDamage)
                 .add(Attributes.ARMOR, armor)
                 .add(Attributes.MAX_HEALTH, maxHealth);
     }

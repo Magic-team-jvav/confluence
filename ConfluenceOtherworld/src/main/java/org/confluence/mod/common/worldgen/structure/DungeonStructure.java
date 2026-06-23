@@ -38,6 +38,7 @@ import org.confluence.lib.util.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -557,7 +558,7 @@ public class DungeonStructure extends Structure {
                 BoundingBox boundingBox = IStructureStart.of(structureStart).confluence$cachedBoundingBox();
                 boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
                 if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + getUpperBoundsFloor1()) {
-                    level.playSound(null, player.blockPosition(), TESounds.ROAR.get(), SoundSource.HOSTILE);
+                    level.playSound(null, player.blockPosition(), ModSoundEvents.ROAR.get(), SoundSource.HOSTILE);
                     if (shouldAlert) {
                         byte alert = LibEntityUtils.getOrCreatePersistedData(player).getByte("confluence:dungeon_guardian_alert");
                         LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));

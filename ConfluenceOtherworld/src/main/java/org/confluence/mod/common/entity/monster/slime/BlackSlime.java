@@ -18,15 +18,11 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.terraentity.entity.util.DeathAnimOptions;
-import org.confluence.terraentity.init.TEParticles;
-import org.confluence.terraentity.mixin.accessor.SlimeAccessor;
-import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class BlackSlime extends Slime implements DeathAnimOptions {
+public class BlackSlime extends Slime {
     private final FloatRGB color;
 
     public BlackSlime(EntityType<BlackSlime> slime, Level level) {

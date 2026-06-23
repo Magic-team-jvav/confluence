@@ -5,7 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -28,8 +28,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraftforge.common.IShearable;
+import net.minecraftforge.common.IForgeShearable;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -38,7 +37,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class RainbowSheep extends Animal implements IShearable {
+public class RainbowSheep extends Animal implements IForgeShearable {
     private static final int EAT_ANIMATION_TICKS = 40;
     private static final EntityDataAccessor<Boolean> DATA_SHEARED = SynchedEntityData.defineId(RainbowSheep.class, EntityDataSerializers.BOOLEAN);
 
@@ -82,9 +81,9 @@ public class RainbowSheep extends Animal implements IShearable {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_SHEARED, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_SHEARED, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -94,7 +93,7 @@ public class RainbowSheep extends Animal implements IShearable {
     }
 
     @Override
-    public ResourceKey<LootTable> getDefaultLootTable() {
+    public ResourceLocation getDefaultLootTable() {
         if (isSheared()) {
             return getType().getDefaultLootTable();
         }
@@ -130,7 +129,7 @@ public class RainbowSheep extends Animal implements IShearable {
     }
 
     @Override
-    public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos) {
+    public List<ItemStack> onSheared(@Nullable Player player, ItemStack item, Level level, BlockPos pos, int fortune) {
         if (level.isClientSide) {
             return Collections.emptyList();
         }
@@ -155,7 +154,7 @@ public class RainbowSheep extends Animal implements IShearable {
     }
 
     @Override
-    public boolean isShearable(@org.jetbrains.annotations.Nullable Player player, ItemStack item, Level level, BlockPos pos) {
+    public boolean isShearable(ItemStack item, Level level, BlockPos pos) {
         return isAlive() && !isSheared() && !isBaby();
     }
 
@@ -229,8 +228,8 @@ public class RainbowSheep extends Animal implements IShearable {
                 return false;
             }
             BlockPos pos = mob.blockPosition();
-            return level.getBlockState(pos).is(NatureBlocks.HALLOW_GRASS) ||
-                    level.getBlockState(pos.below()).is(NatureBlocks.HALLOW_GRASS_BLOCK);
+            return level.getBlockState(pos).is(NatureBlocks.HALLOW_GRASS.get()) ||
+                    level.getBlockState(pos.below()).is(NatureBlocks.HALLOW_GRASS_BLOCK.get());
         }
 
         @Override
@@ -259,14 +258,14 @@ public class RainbowSheep extends Animal implements IShearable {
             this.eatAnimationTick = Math.max(0, eatAnimationTick - 1);
             if (eatAnimationTick == adjustedTickDelay(4)) {
                 BlockPos pos = mob.blockPosition();
-                if (level.getBlockState(pos).is(NatureBlocks.HALLOW_GRASS)) {
+                if (level.getBlockState(pos).is(NatureBlocks.HALLOW_GRASS.get())) {
                     if (net.minecraftforge.event.ForgeEventFactory.canEntityGrief(level, mob)) {
                         level.destroyBlock(pos, false);
                     }
                     mob.ate();
                 } else {
                     BlockPos below = pos.below();
-                    if (this.level.getBlockState(below).is(NatureBlocks.HALLOW_GRASS_BLOCK)) {
+                    if (this.level.getBlockState(below).is(NatureBlocks.HALLOW_GRASS_BLOCK.get())) {
                         if (net.minecraftforge.event.ForgeEventFactory.canEntityGrief(level, mob)) {
                             int id = Block.getId(NatureBlocks.HALLOW_GRASS_BLOCK.get().defaultBlockState());
                             level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, below, id);

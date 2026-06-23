@@ -98,8 +98,8 @@ public class ThrownPowderEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_TYPE, ISpreadable.Type.PURE.ordinal());
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_TYPE, ISpreadable.Type.PURE.ordinal());
     }
 
     @Override

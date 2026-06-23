@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -33,7 +32,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+    protected void defineSynchedData() {}
 
     @Override
     public void tick() {

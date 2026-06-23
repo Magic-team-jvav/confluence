@@ -5,7 +5,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.mana.MagicDaggerProjectile;
-import org.confluence.terraentity.init.TESounds;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 public class MagicDaggerItem extends ManaStaffItem<MagicDaggerProjectile> {
     public MagicDaggerItem() {
@@ -22,6 +22,6 @@ public class MagicDaggerItem extends ManaStaffItem<MagicDaggerProjectile> {
 
     @Override
     protected SoundEvent getShootSound() {
-        return TESounds.WAVING.get();
+        return ModSoundEvents.WAVING.get();
     }
 }

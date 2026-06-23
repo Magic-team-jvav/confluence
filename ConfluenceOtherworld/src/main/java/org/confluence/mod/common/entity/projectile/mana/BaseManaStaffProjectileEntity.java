@@ -19,6 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.FloatRGB;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.particlestorm.data.molang.MolangExp;
@@ -49,8 +50,8 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder.define(DATA_VARIANT_ID, 0));
+    protected void defineSynchedData() {
+        super.defineSynchedData(this.entityData.define(DATA_VARIANT_ID, 0));
     }
 
     public void setVariant(Variant pVariant) {
@@ -142,7 +143,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return getVariant().gravity;
     }
 

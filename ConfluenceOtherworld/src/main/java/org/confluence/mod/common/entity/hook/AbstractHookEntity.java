@@ -60,8 +60,9 @@ public abstract class AbstractHookEntity extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_HOOK_STATE, 0).define(DATA_POP_VELOCITY, 0.2F);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_HOOK_STATE, 0);
+        this.entityData.define(DATA_POP_VELOCITY, 0.2F);
     }
 
     public HookState getHookState() {

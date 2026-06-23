@@ -45,9 +45,9 @@ public class ScarabBombEntity extends StickyBombEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_OWNER_ID, -1);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_OWNER_ID, -1);
     }
 
     // todo 新粒子

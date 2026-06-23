@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -13,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.util.TrapDamageHelper;
 
@@ -59,7 +59,7 @@ public class RollingCactusBoulderEntity extends BoulderEntity {
         }
 
         @Override
-        protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+        protected void defineSynchedData() {}
 
         @Override
         public void tick() {

@@ -77,7 +77,7 @@ public class BaseSlime extends Slime {
 
     public static AttributeSupplier.Builder createSlimeAttributes(float attackDamage, int armor, float maxHealth) {
         return Mob.createMobAttributes()
-                .add(LibAttributes.getAttackDamage(), attackDamage)
+                .add(LibAttributes.getAttackDamage().get(), attackDamage)
                 .add(Attributes.ARMOR, armor)
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, slimeWaterMoveSpeed)
                 .add(Attributes.MAX_HEALTH, maxHealth);

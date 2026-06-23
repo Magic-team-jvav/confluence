@@ -13,11 +13,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
-import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 
-/// 长条形射弹
+/// 长条形射弹?
 /// 需要设置immunity type为static
 ///
 /// [org.confluence.mod.common.data.gen.data_map.ImmunitySubProvider]
@@ -47,8 +47,9 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder.define(DATA_IS_HEAD, true));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_IS_HEAD, true);
     }
 
     @Override

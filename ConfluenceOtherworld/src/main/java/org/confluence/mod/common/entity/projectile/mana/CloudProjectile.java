@@ -17,8 +17,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
@@ -46,8 +46,9 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder.define(DATA_TARGET_ID, -114514));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_TARGET_ID, -114514);
     }
 
     @Override

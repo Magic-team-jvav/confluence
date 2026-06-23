@@ -13,14 +13,13 @@ import net.minecraft.server.WorldStem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
+import org.confluence.mod.api.entity.IMinion;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.mixed.ILevelLoadingScreen;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.terraentity.api.entity.IMinion;
-import org.confluence.terraentity.api.entity.ISummonMob;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -59,7 +58,7 @@ public abstract class MinecraftMixin {
         if (entity instanceof IMinion || entity instanceof ISummonMob) return;
         GlowingHelper helper = GlowingHelper.INSTANCE;
         // 狩猎药水
-        if (player.hasEffect(ModEffects.HUNTER)) {
+        if (player.hasEffect(ModEffects.HUNTER.get())) {
             // 自定义类别 中立生物不计入其中
             for (Class<? extends Entity> n : helper.hunterCatalog) {
                 if (n.isAssignableFrom(entity.getClass())) {
@@ -90,7 +89,7 @@ public abstract class MinecraftMixin {
         }
 
         // 危险感知药水
-        if (player.hasEffect(ModEffects.DANGER_SENSE)) {
+        if (player.hasEffect(ModEffects.DANGER_SENSE.get())) {
             for (Class<? extends Entity> n : helper.dangerCatalog) {
                 if (n.isAssignableFrom(entity.getClass())) {
                     if (SHOW_DETAIL_SPECULAR.get().isDown()) {

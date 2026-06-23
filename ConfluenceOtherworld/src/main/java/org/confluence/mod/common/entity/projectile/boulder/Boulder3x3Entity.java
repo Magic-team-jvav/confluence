@@ -38,8 +38,9 @@ public class Boulder3x3Entity extends BoulderEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder.define(DATA_FACING, Direction.WEST));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_FACING, Direction.WEST);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class Boulder3x3Entity extends BoulderEntity {
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0.04;
     }
 

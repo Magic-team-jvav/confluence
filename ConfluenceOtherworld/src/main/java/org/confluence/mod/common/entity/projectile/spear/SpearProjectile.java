@@ -1,9 +1,11 @@
 package org.confluence.mod.common.entity.projectile.spear;
 
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -18,12 +20,9 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibMathUtils;
+import org.confluence.mod.api.entity.ICollisionAttackEntity;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.terraentity.api.entity.IAttackableProjectile;
-import org.confluence.terraentity.api.entity.ICollisionAttackEntity;
-import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -32,8 +31,8 @@ import java.util.Comparator;
 /**
  * <h1>长矛弹射物基类</h1>
  * <p>
- * 子类应覆写 {@link #updateMotion()} 方法实现自定义运动曲线，
- * 可选覆写 {@link #getTrailParticle()} 提供拖尾粒子效果。
+ * 子类应覆写{@link #updateMotion()} 方法实现自定义运动曲线，
+ * 可选覆写{@link #getTrailParticle()} 提供拖尾粒子效果。
  */
 public abstract class SpearProjectile extends AbstractHurtingProjectile implements ICollisionAttackEntity {
     // 可调参数
@@ -76,11 +75,11 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
-        builder.define(DATA_INIT_GRAVITY, 0.0F);
-        builder.define(DATA_DIRECTION, new Vector3f());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
+        this.entityData.define(DATA_INIT_GRAVITY, 0.0F);
+        this.entityData.define(DATA_DIRECTION, new Vector3f());
     }
 
     @Override
@@ -125,7 +124,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     protected abstract void updateMotion();
 
     /**
-     * 计算初始速度。默认返回 direction.scale(speed)。
+     * 计算初始速度。默认返回direction.scale(speed)
      * 子类可覆写以实现不同的初始速度计算方式。
      */
     protected Vec3 initVelocity(LivingEntity owner, Vec3 direction, float speed) {
@@ -146,7 +145,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     public void tick() {
         super.tick();
 
-        // 覆盖 AbstractHurtingProjectile.tick() 自动计算的 yRot/xRot，
+        // 覆盖 AbstractHurtingProjectile.tick() 自动计算yRot/xRot
         // 始终使用发射时设定的 direction 作为朝向，避免因 deltaMovement 变化导致模型抖动
         if (direction.lengthSqr() > 0.01) {
             float yaw = (float) Mth.atan2(direction.x, direction.z) * Mth.RAD_TO_DEG;
@@ -231,7 +230,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
 
     /**
      * 计算伤害值。子类可覆写以实现自定义伤害公式。
-     * 默认：基础攻击力 × 组件伤害系数。
+     * 默认：基础攻击伤害× 组件伤害系数
      */
     protected float getDamage() {
         float factor = projComponent != null ? projComponent.damageFactor() : attackDamageFactor;
@@ -248,7 +247,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     }
 
     /**
-     * 处理穿透逻辑。减少剩余穿透次数，归零时销毁。
+     * 处理穿透逻辑。减少剩余穿透次数，归零时销毁
      * 子类（如无限穿透的弹射物）可覆写为空实现。
      */
     protected void applyPenetration() {
@@ -302,21 +301,19 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
      *
      * @param direction 发射方向（应为归一化向量）
      * @param speed     速度大小
-     * @param knockBack 击退值
+     * @param knockBack 击退距离
      */
-    // ===== 渲染元数据（子类覆写以实现一类一物品） =====
+    // ===== 渲染元数据（子类覆写以实现一类一物品）=====
+
+    /** 弹射物模型纹理，默认 null（无模型） */
+    @Nullable
+    public ResourceLocation getProjTexture() {return null;}
 
     /**
-     * 弹射物模型纹理，默认 null（无模型）
+     * 弹射物模型层，默认null
      */
     @Nullable
-    public net.minecraft.resources.ResourceLocation getProjTexture() {return null;}
-
-    /**
-     * 弹射物模型层，默认 null
-     */
-    @Nullable
-    public net.minecraft.client.model.geom.ModelLayerLocation getModelLayer() {return null;}
+    public ModelLayerLocation getModelLayer() {return null;}
 
     /**
      * 飞行轴自旋角度，默认 0
@@ -326,7 +323,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     }
 
     /**
-     * 自旋轴，默认绕 Z 轴。子类可覆写此方法以使用不同的旋转轴
+     * 自旋轴，默认是Z 轴。子类可覆写此方法以使用不同的旋转轴
      */
     public com.mojang.math.Axis getSpinAxis() {
         return com.mojang.math.Axis.ZP;
@@ -446,7 +443,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0;
     }
 

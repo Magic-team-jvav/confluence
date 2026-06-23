@@ -38,8 +38,9 @@ public class SkullProjectile extends AbstractManaProjectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder.define(DATA_TARGET_ID, -114514));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_TARGET_ID, -114514);
     }
 
     @Override

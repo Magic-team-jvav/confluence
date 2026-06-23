@@ -32,9 +32,9 @@ public class LunarHookEntity extends AbstractHookEntity implements VariantHolder
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_VARIANT_ID, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_VARIANT_ID, 0);
     }
 
     @Override

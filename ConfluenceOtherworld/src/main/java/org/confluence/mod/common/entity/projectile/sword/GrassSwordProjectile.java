@@ -41,10 +41,10 @@ public class GrassSwordProjectile extends SwordProjectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_YAW, 0.0f);
-        builder.define(DATA_PITCH, 0.0f);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_YAW, 0.0f);
+        this.entityData.define(DATA_PITCH, 0.0f);
     }
 
     @Override

@@ -34,15 +34,15 @@ public class TreasureBagItemEntity extends ItemEntity {
         setItem(itemStack);
         this.lifespan = itemStack.getEntityLifespan(level);
         if (player != null) {
-            setThrower(player);
+            setThrower(player.getUUID());
             setOwner(player);
         }
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_OWNER, Optional.empty());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_OWNER, Optional.empty());
     }
 
     @Override

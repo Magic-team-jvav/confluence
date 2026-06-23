@@ -17,13 +17,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.api.entity.ICollisionAttackEntity;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.terraentity.api.entity.IAttackableProjectile;
-import org.confluence.terraentity.api.entity.ICollisionAttackEntity;
-import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -88,12 +85,12 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
-        builder.define(DATA_INIT_GRAVITY, 0.0F);
-        builder.define(DATA_DIRECTION, new Vector3f());
-        builder.define(DATA_LIFETIME, lifetime);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
+        this.entityData.define(DATA_INIT_GRAVITY, 0.0F);
+        this.entityData.define(DATA_DIRECTION, new Vector3f());
+        this.entityData.define(DATA_LIFETIME, lifetime);
     }
 
     @Override
@@ -232,7 +229,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             }
 
             LivingEntity hurter;
-            if (LibEntityUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
+            if (LibUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
                 hurter = living;
             } else {
                 return false;
@@ -245,7 +242,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
             if (target.hurt(damageSource, damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
-                LibEntityUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
+                VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
 
                 if (--hitCount <= 0 && !level().isClientSide) {
                     discard();

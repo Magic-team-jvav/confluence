@@ -92,8 +92,8 @@ public class SpearEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_DIRECTION, Direction.NORTH);
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_DIRECTION, Direction.NORTH);
     }
 
     @Override

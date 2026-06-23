@@ -136,8 +136,8 @@ public class AccumulatingEnergyEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(ATTACHED_ENTITY, -1);
+    protected void defineSynchedData() {
+        this.entityData.define(ATTACHED_ENTITY, -1);
     }
 
     @Override

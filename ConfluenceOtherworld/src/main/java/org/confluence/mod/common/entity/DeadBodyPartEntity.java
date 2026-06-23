@@ -3,13 +3,11 @@ package org.confluence.mod.common.entity;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.Boss;
-import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -141,7 +139,7 @@ public class DeadBodyPartEntity extends Entity {
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0.05;
     }
 
@@ -151,7 +149,7 @@ public class DeadBodyPartEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    protected void defineSynchedData() {
 
     }
 

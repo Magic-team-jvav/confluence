@@ -17,6 +17,7 @@ import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.generation.variant.ForwardGeneration;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Optional;
@@ -129,7 +130,7 @@ public record SpearProjectileComponent(
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);
     }
 
-    public static final PortStreamCodec<ByteBuf, SpearProjectileComponent> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
+    public static final PortStreamCodec<ByteBuf, SpearProjectileComponent> STREAM_CODEC = PortByteBufCodecs.fromCodec(CODEC);
 
     @Override
     public boolean equals(Object o) {

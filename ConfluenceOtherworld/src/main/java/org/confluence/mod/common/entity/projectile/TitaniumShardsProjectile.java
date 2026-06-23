@@ -64,7 +64,7 @@ public class TitaniumShardsProjectile extends Projectile {
         if (player == null) {
             if (!synced) return;
             discard();
-        } else if (!player.hasEffect(ModEffects.TITANIUM_BARRIER)) {
+        } else if (!player.hasEffect(ModEffects.TITANIUM_BARRIER.get())) {
             discard();
         }
 

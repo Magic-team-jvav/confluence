@@ -13,8 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.terraentity.init.TESounds;
 import org.jetbrains.annotations.Nullable;
 
 public class GhoulderEntity extends BoulderEntity {
@@ -32,7 +32,7 @@ public class GhoulderEntity extends BoulderEntity {
 
     @Override
     protected void playRemoveSound(ServerLevel serverLevel, BlockPos pos) {
-        serverLevel.playSound(null, pos, TESounds.SOUL_DEATH.get(), SoundSource.BLOCKS, 5.0F, 1.0F);
+        serverLevel.playSound(null, pos, ModSoundEvents.SOUL_DEATH.get(), SoundSource.BLOCKS, 5.0F, 1.0F);
     }
 
     protected void moveAndUpdateNeighbors() {

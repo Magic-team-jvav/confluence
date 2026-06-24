@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.terraentity.mixin.accessor.SlimeAccessor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class HoneySlime extends Slime {
@@ -84,7 +83,7 @@ public class HoneySlime extends Slime {
     }
 
     @Override
-    public void remove(@NotNull RemovalReason removalReason) {
+    public void remove(RemovalReason removalReason) {
         brain.clearMemories();
         setRemoved(removalReason);
 //        invalidateCaps();
@@ -96,7 +95,7 @@ public class HoneySlime extends Slime {
     }
 
     @Override
-    protected @NotNull InteractionResult mobInteract(@NotNull Player pPlayer, @NotNull InteractionHand pHand) {
+    protected InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
         if (level().isClientSide) return super.mobInteract(pPlayer, pHand);
         ItemStack item = pPlayer.getItemInHand(pHand);
         if (getSize() == 3 && item.is(Items.GLASS_BOTTLE)) {

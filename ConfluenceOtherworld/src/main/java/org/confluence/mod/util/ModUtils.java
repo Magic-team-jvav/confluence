@@ -69,6 +69,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.MonstersEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -82,8 +83,10 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.PortEventHandler;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
@@ -209,7 +212,7 @@ public final class ModUtils {
     public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {
         if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
             EntityType<?> type = attacker.getType();
-            if (type == TEMonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
+            if (type == MonstersEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
                 boolean master = LibUtils.isMaster(level, living.blockPosition());
                 MobEffect debuff;
                 float min;
@@ -248,7 +251,7 @@ public final class ModUtils {
     }
 
     public static void applyCursedSkullDebuff(@Nullable Entity attacker, LivingEntity living) {
-        if (attacker != null && attacker.getType() == TEMonsterEntities.CURSED_SKULL.get() && attacker.getRandom().nextFloat() < 0.33F) {
+        if (attacker != null && attacker.getType() == MonstersEntities.CURSED_SKULL.get() && attacker.getRandom().nextFloat() < 0.33F) {
             living.addEffect(new MobEffectInstance(ModEffects.CURSED.get(), 80));
         }
     }
@@ -379,5 +382,34 @@ public final class ModUtils {
     public static boolean shouldDisplayTeam() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         return server != null && !server.isSingleplayer();
+    }
+
+    public static <T> T getRandomByWeightInt(List<T> items, List<Integer> weights) {
+        if (items == null || weights == null || items.size() != weights.size() || items.isEmpty()) {
+            throw new IllegalArgumentException("Items and weights must be non-null, non-empty, and of the same size.");
+        }
+
+        // 计算总权重
+        float totalWeight = 0.0f;
+        for (var weight : weights) {
+            totalWeight += weight;
+        }
+
+        if (totalWeight == 0.0f) {
+            throw new IllegalArgumentException("Total weight cannot be zero.");
+        }
+
+        float randomValue = ThreadLocalRandom.current().nextFloat(0, totalWeight);
+
+        // 遍历物品，累积权重，直到累积权重超过随机数
+        float cumulativeWeight = 0.0f;
+        for (int i = 0; i < items.size(); i++) {
+            cumulativeWeight += weights.get(i);
+            if (cumulativeWeight >= randomValue) {
+                return items.get(i);
+            }
+        }
+        // 理论上不会走到这里
+        throw new IllegalStateException("Failed to find random item.");
     }
 }

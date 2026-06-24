@@ -12,7 +12,6 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
@@ -33,7 +32,7 @@ public class GraniteElemental extends AbstractFSMMonster implements FlyingAnimal
     }
 
     @Override
-    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
+    protected PathNavigation createNavigation(Level level) {
         FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, level);
         flyingpathnavigation.setCanOpenDoors(false);
         return flyingpathnavigation;

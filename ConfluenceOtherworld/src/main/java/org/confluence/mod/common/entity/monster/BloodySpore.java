@@ -18,20 +18,17 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.MonstersEntities;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/**
- * 血腥芽孢
- */
+/// 血腥芽孢
 public class BloodySpore extends Creeper implements GeoEntity {
     private int oldSwell;
     private int swell;
-    private int maxSwell = 30;
+    private final int maxSwell = 30;
 
     public BloodySpore(EntityType<? extends Creeper> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -43,7 +40,7 @@ public class BloodySpore extends Creeper implements GeoEntity {
         return spawnReason == MobSpawnType.NATURAL; // 无视光照
     }
 
-    public static AttributeSupplier.@NotNull Builder createAttributes() {
+    public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(LibAttributes.getAttackDamage().get(), 0.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.25)

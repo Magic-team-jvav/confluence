@@ -21,7 +21,6 @@ import org.confluence.mod.api.entity.IMinion;
 import org.confluence.mod.common.entity.monster.prefab.AbstractPrefab;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -99,7 +98,7 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     }
 
     @Override
-    public void move(@NotNull MoverType pType, @NotNull Vec3 pos) {
+    public void move(MoverType pType, Vec3 pos) {
         this.setPos(this.getX() + pos.x, this.getY() + pos.y, this.getZ() + pos.z);
     }
 
@@ -365,7 +364,7 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if(tag.contains("initPos")) {
             Vector3f initPos = new Vector3f(tag.getFloat("initPosX"), tag.getFloat("initPosY"), tag.getFloat("initPosZ"));
@@ -411,7 +410,7 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     }
 
     @Override
-    public @NotNull AABB getBoundingBoxForCulling() {
+    public AABB getBoundingBoxForCulling() {
         if(this.initPos == null){
             return super.getBoundingBoxForCulling().inflate(10);
         }
@@ -513,7 +512,7 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return ModSoundEvents.THE_HUNGRY_HURT.get();
     }
 

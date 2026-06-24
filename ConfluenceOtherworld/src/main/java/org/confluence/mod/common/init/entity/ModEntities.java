@@ -223,5 +223,6 @@ public final class ModEntities {
     public static void register(IEventBus eventBus) {
         ENTITIES.register(eventBus);
         MonstersEntities.ENTITIES.register(eventBus);
+        ModAi.register(eventBus);
     }
 }

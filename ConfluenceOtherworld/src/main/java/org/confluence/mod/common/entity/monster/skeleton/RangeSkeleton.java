@@ -18,6 +18,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.api.entity.animation.IUseItemAnimatable;
+import org.confluence.mod.common.entity.ai.goal.TERangedAttackGoal;
+import org.confluence.mod.common.entity.animation.BoneStateMachine;
+import org.confluence.mod.common.entity.animation.BoneStates;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.entity.monster.prefab.IAttributeHolder;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -29,22 +33,20 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 
-/**
- * 远程单位
- */
+/// 远程单位
 public class RangeSkeleton extends AbstractSkeleton implements GeoEntity, IUseItemAnimatable<BoneStates>, IAttributeHolder {
-
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    BoneStateMachine<BoneStates> leftArmBoneStateMachine;
-    BoneStateMachine<BoneStates> rightArmBoneStateMachine;
-    boolean dirty = false;
+    private BoneStateMachine<BoneStates> leftArmBoneStateMachine;
+    private BoneStateMachine<BoneStates> rightArmBoneStateMachine;
+    private boolean dirty = false;
 
-    TERangedAttackGoal<RangeSkeleton> teBowGoal = new TERangedAttackGoal<>(this, 1.0, 20, 15.0F);
+    private final TERangedAttackGoal<RangeSkeleton> teBowGoal = new TERangedAttackGoal<>(this, 1.0, 20, 15.0F);
 
     AttributeBuilder builder;
+
     public RangeSkeleton(EntityType<? extends AbstractSkeleton> entityType, Level level, AttributeBuilder builder) {
         super(entityType, level);
-        if(level.isClientSide){
+        if (level.isClientSide) {
             leftArmBoneStateMachine = new BoneStateMachine<>(BoneStates.IDLE);
             rightArmBoneStateMachine = new BoneStateMachine<>(BoneStates.IDLE);
         }
@@ -52,16 +54,15 @@ public class RangeSkeleton extends AbstractSkeleton implements GeoEntity, IUseIt
 //        builder.modify(this);
     }
 
-
     @Override
     protected SoundEvent getStepSound() {
         return SoundEvents.SKELETON_STEP;
     }
 
     @Override
-    public void onAddedToLevel() {
-        super.onAddedToLevel();
-        if(!dirty && !level().isClientSide) {
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        if (!dirty && !level().isClientSide) {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.getMaxHealth());
             this.setHealth(getMaxHealth());
         }
@@ -70,10 +71,9 @@ public class RangeSkeleton extends AbstractSkeleton implements GeoEntity, IUseIt
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if(compound.contains("Health")){
+        if (compound.contains("Health")) {
             dirty = true;
         }
-
     }
 
     @Override
@@ -81,9 +81,7 @@ public class RangeSkeleton extends AbstractSkeleton implements GeoEntity, IUseIt
         if (!this.level().isClientSide) {
             this.goalSelector.removeGoal(this.meleeGoal);
             this.goalSelector.removeGoal(this.teBowGoal);
-            ItemStack itemstack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, (item) -> {
-                return item instanceof BowItem;
-            }));
+            ItemStack itemstack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem));
             if (itemstack.getItem() instanceof BowItem) {
                 int i = this.getHardAttackInterval();
                 if (this.level().getDifficulty() != Difficulty.HARD) {
@@ -100,7 +98,7 @@ public class RangeSkeleton extends AbstractSkeleton implements GeoEntity, IUseIt
 
     @Override
     public float getWalkTargetValue(BlockPos pos) {
-        if(this.builder.spawnWithoutLight){
+        if (this.builder.spawnWithoutLight) {
             return 0;
         }
         return super.getWalkTargetValue(pos);
@@ -156,7 +154,7 @@ public class RangeSkeleton extends AbstractSkeleton implements GeoEntity, IUseIt
 
     @Override
     public Vec3 getVehicleAttachmentPoint(Entity entity) {
-        return super.getVehicleAttachmentPoint(entity).add(0,0.65,0);
+        return super.getVehicleAttachmentPoint(entity).add(0, 0.65, 0);
     }
 
     @Override

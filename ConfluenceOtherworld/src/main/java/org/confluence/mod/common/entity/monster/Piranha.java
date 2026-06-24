@@ -22,7 +22,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -49,7 +48,7 @@ public class Piranha extends WaterAnimal implements Enemy, GeoEntity {
     }
 
     @Nullable
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         this.setAirSupply(this.getMaxAirSupply());
         this.setXRot(0.0F);
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
@@ -84,12 +83,12 @@ public class Piranha extends WaterAnimal implements Enemy, GeoEntity {
     }
 
     @Override
-    public boolean canAttack(@NotNull LivingEntity target) {
+    public boolean canAttack(LivingEntity target) {
         return super.canAttack(target) && target.isInWater();
     }
 
     @Override
-    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
+    protected PathNavigation createNavigation(Level level) {
         return new WaterBoundPathNavigation(this, level);
     }
 
@@ -161,7 +160,7 @@ public class Piranha extends WaterAnimal implements Enemy, GeoEntity {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return ModSoundEvents.ROUTINE_HURT.get();
     }
 
@@ -176,7 +175,7 @@ public class Piranha extends WaterAnimal implements Enemy, GeoEntity {
     }
 
     @Override
-    public void travel(@NotNull Vec3 travelVector) {
+    public void travel(Vec3 travelVector) {
         if (this.isEffectiveAi() && this.isInWater()) {
             this.moveRelative(this.getSpeed(), travelVector);
             this.move(MoverType.SELF, this.getDeltaMovement());

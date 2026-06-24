@@ -26,7 +26,6 @@ import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.entity.monster.prefab.IAttributeHolder;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.MonstersEntities;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -35,7 +34,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 
 public class AbstractMonster extends Monster implements GeoEntity, ICollisionAttackEntity, IAttributeHolder {
-
     protected CollisionProperties collisionProperties = new CollisionProperties(10, 20, 0);
     public AttributeBuilder builder;
     protected boolean dirty = true;
@@ -46,8 +44,8 @@ public class AbstractMonster extends Monster implements GeoEntity, ICollisionAtt
         this.builder = builder;
         if (!level.isClientSide) {
             // 防止重复注册ai
-            this.goalSelector.removeAllGoals(g->true);
-            this.targetSelector.removeAllGoals(t->true);
+            this.goalSelector.removeAllGoals(g -> true);
+            this.targetSelector.removeAllGoals(t -> true);
             this.registerGoals();
         }
         this.navigation = createNavigation(level);
@@ -71,6 +69,7 @@ public class AbstractMonster extends Monster implements GeoEntity, ICollisionAtt
         super.defineSynchedData();
 
     }
+
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
@@ -84,7 +83,7 @@ public class AbstractMonster extends Monster implements GeoEntity, ICollisionAtt
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("dirty")) {
             dirty = false;
@@ -94,26 +93,28 @@ public class AbstractMonster extends Monster implements GeoEntity, ICollisionAtt
 
     @Override
     protected void registerGoals() {
-        if(builder!= null) builder.goals.forEach(g->g.accept(goalSelector,this));
-        if(builder!= null) builder.targets.forEach(t->t.accept(targetSelector,this));
+        if (builder != null) builder.goals.forEach(g -> g.accept(goalSelector, this));
+        if (builder != null) builder.targets.forEach(t -> t.accept(targetSelector, this));
         registerTargetGoal(targetSelector);
     }
 
-    protected void registerTargetGoal(GoalSelector targetSelector){
+    protected void registerTargetGoal(GoalSelector targetSelector) {
 
     }
 
-    public boolean ignoreAttributeModify(){
+    public boolean ignoreAttributeModify() {
         return false;
     }
 
-    public void firstSpawn(){};
+    public void firstSpawn() {}
+
+    ;
 
     @Override
-    public void onAddedToLevel(){
-        super.onAddedToLevel();
-        if(!level().isClientSide && !ignoreAttributeModify()){
-            if(dirty){
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        if (!level().isClientSide && !ignoreAttributeModify()) {
+            if (dirty) {
                 this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.getMaxHealth());
                 this.setHealth(getMaxHealth());
                 firstSpawn();
@@ -121,34 +122,34 @@ public class AbstractMonster extends Monster implements GeoEntity, ICollisionAtt
         }
     }
 
-    public float getAttributeMultiplier(Holder<Attribute> attribute){
+    public float getAttributeMultiplier(Holder<Attribute> attribute) {
         return getMultiple(level(), blockPosition(), attribute);
-
     }
-
 
     public boolean isPushable() {
         return super.isPushable() && builder.pushable;
     }
 
-
     @Override
     protected SoundEvent getDeathSound() {
-        if(builder.deathSound == null) return ModSoundEvents.ROUTINE_DEATH.get();
+        if (builder.deathSound == null) return ModSoundEvents.ROUTINE_DEATH.get();
         return builder.deathSound.get();
     }
+
     @Override
     protected SoundEvent getAmbientSound() {
-        if(builder.ambientSound == null) return super.getAmbientSound();
+        if (builder.ambientSound == null) return super.getAmbientSound();
         return builder.ambientSound.get();
     }
+
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
-        if(builder.hurtSound == null) return ModSoundEvents.ROUTINE_HURT.get();
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
+        if (builder.hurtSound == null) return ModSoundEvents.ROUTINE_HURT.get();
         return builder.hurtSound.get();
     }
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
@@ -156,13 +157,14 @@ public class AbstractMonster extends Monster implements GeoEntity, ICollisionAtt
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        if(builder != null && builder.controller != null)
-            builder.controller.accept(controllers,this);
+        if (builder != null && builder.controller != null) {
+            builder.controller.accept(controllers, this);
+        }
     }
 
     @Override
     protected PathNavigation createNavigation(Level level) {
-        if(builder != null && builder.navigation != null)
+        if (builder != null && builder.navigation != null)
             return builder.navigation.apply(this);
         return super.createNavigation(level);
         /*
@@ -174,23 +176,26 @@ public class AbstractMonster extends Monster implements GeoEntity, ICollisionAtt
         */
     }
 
+    @Override
     public boolean isNoGravity() {
-        if(builder == null)return true;
+        if (builder == null) return true;
         return builder.noGravity;
     }
 
+    @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-        if(builder.spawnWithoutLight){
+        if (builder.spawnWithoutLight) {
             return 0;
         }
         return super.getWalkTargetValue(pos, level);
     }
 
-    public void tick(){
+    @Override
+    public void tick() {
         super.tick();
-        if(builder!=null && builder.ticker!=null) builder.ticker.accept(this);
-        if(!level().isClientSide && builder.attachAttack && isAlive()){
-            doCollisionAttack(e->e instanceof LivingEntity living && canAttack(living) && e.getType() != this.getType() && this.collisionTestAddition(living),
+        if (builder != null && builder.ticker != null) builder.ticker.accept(this);
+        if (!level().isClientSide && builder.attachAttack && isAlive()) {
+            doCollisionAttack(e -> e instanceof LivingEntity living && canAttack(living) && e.getType() != this.getType() && this.collisionTestAddition(living),
                     this::doHurtTarget
             );
         }
@@ -207,10 +212,10 @@ public class AbstractMonster extends Monster implements GeoEntity, ICollisionAtt
     @Override
     public boolean canAttack(LivingEntity entity) {
         return entity.canBeSeenAsEnemy() &&
-                        entity != this &&!(entity instanceof AbstractTerraBossBase);
+                entity != this && !(entity instanceof AbstractTerraBossBase);
     }
 
-    protected boolean collisionTestAddition(LivingEntity entity){
+    protected boolean collisionTestAddition(LivingEntity entity) {
         return !(entity instanceof Enemy);
     }
 

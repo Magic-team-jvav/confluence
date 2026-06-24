@@ -9,18 +9,20 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.goal.LookForwardWanderFlyGoal;
+import org.confluence.mod.common.entity.ai.motion.DashComponent;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
+import org.confluence.mod.mixin.world.entity.EntityAccessor;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class AntlionSwarmer extends AbstractMonster {
-
-    enum state{
+    enum state {
         WONDER,
         ATTACKING
     }
+
     state currentState = state.WONDER;
     int _stateTime = 100;
 
@@ -34,7 +36,7 @@ public class AntlionSwarmer extends AbstractMonster {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(7, new LookForwardWanderFlyGoal(this, 0.3f, 0){
+        this.goalSelector.addGoal(7, new LookForwardWanderFlyGoal(this, 0.3f, 0) {
             @Override
             public boolean canUse() {
                 return currentState == state.WONDER;
@@ -51,11 +53,11 @@ public class AntlionSwarmer extends AbstractMonster {
     @Override
     public void tick() {
         super.tick();
-        if(--stateTime <= 0){
+        if (--stateTime <= 0) {
             stateTime = _stateTime;
-            switch(currentState){
+            switch (currentState) {
                 case WONDER:
-                    if(getTarget() != null) {
+                    if (getTarget() != null) {
                         currentState = state.ATTACKING;
                         dash.setDirection(getTarget().position().subtract(this.position()).normalize());
                         dash.setTargetPos(getTarget().position());
@@ -66,15 +68,15 @@ public class AntlionSwarmer extends AbstractMonster {
                     break;
             }
         }
-        if(getTarget() != null && currentState == state.ATTACKING){
-            this.getLookControl().setLookAt(this.position().add(this.getDeltaMovement().scale(20).add(0,1,0)));
+        if (getTarget() != null && currentState == state.ATTACKING) {
+            this.getLookControl().setLookAt(this.position().add(this.getDeltaMovement().scale(20).add(0, 1, 0)));
             this.setYRot(this.getYHeadRot());
             this.dash.uniformMove(0.2f);
             this.lookControl.setLookAt(dash.targetPos);
         }
     }
 
-    public void move(@NotNull MoverType pType, @NotNull Vec3 motion) {
+    public void move(MoverType pType, Vec3 motion) {
         if (dead) {
             super.move(pType, motion);
             return;
@@ -83,19 +85,19 @@ public class AntlionSwarmer extends AbstractMonster {
         Vec3 collide = ((EntityAccessor) this).callCollide(motion);
         if (collide.x != motion.x) {
             motion = new Vec3(-motion.x, motion.y, motion.z);
-            if(this.currentState == state.ATTACKING){
+            if (this.currentState == state.ATTACKING) {
                 this.currentState = state.WONDER;
             }
         }
         if (collide.y != motion.y) {
-            motion = new Vec3(motion.x, -motion.y , motion.z);
-            if(this.currentState == state.ATTACKING){
+            motion = new Vec3(motion.x, -motion.y, motion.z);
+            if (this.currentState == state.ATTACKING) {
                 this.currentState = state.WONDER;
             }
         }
         if (collide.z != motion.z) {
             motion = new Vec3(motion.x, motion.y, -motion.z);
-            if(this.currentState == state.ATTACKING){
+            if (this.currentState == state.ATTACKING) {
                 this.currentState = state.WONDER;
             }
         }
@@ -103,13 +105,14 @@ public class AntlionSwarmer extends AbstractMonster {
         setDeltaMovement(motion);
         super.move(pType, motion);
     }
+
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return ModSoundEvents.ANTLION_HURT.get();
     }
 
     @Override
-    protected SoundEvent getAmbientSound(){
+    protected SoundEvent getAmbientSound() {
         return ModSoundEvents.ANTLION_SWARMER_FREE.get();
     }
 

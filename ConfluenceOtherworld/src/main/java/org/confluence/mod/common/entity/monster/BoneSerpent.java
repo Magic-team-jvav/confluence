@@ -9,33 +9,31 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.IDiscardWhenRespawnEntity;
+import org.confluence.mod.common.entity.ai.goal.MutableRangeNearestAttackableTargetGoal;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terraentity.entity.ai.goal.MutableRangeNearestAttackableTargetGoal;
-import org.jetbrains.annotations.NotNull;
 
 public class BoneSerpent<S extends BaseWormPart> extends BaseWorm<S> implements IDiscardWhenRespawnEntity {
-
     public BoneSerpent(EntityType<? extends BoneSerpent> type, Level level, AttributeBuilder builder) {
         super(type, level, builder);
         this.segInternal = 2.5f;
     }
+
     @Override
     public int getSegmentCount() {
         return 18;
     }
+
     @Override
     protected void registerGoals() {
-
         this.goalSelector.addGoal(1, new Wyvern.WyvernAttackGoal<>(this, 16));
-        this.goalSelector.addGoal(3, new Wyvern.WyvernRandomStrollGoal<>(this, 20, 0.015f, 0.2f, 6, 150,10,0.9f));
+        this.goalSelector.addGoal(3, new Wyvern.WyvernRandomStrollGoal<>(this, 20, 0.015f, 0.2f, 6, 150, 10, 0.9f));
 
 //        this.targetSelector.addGoal(1,new AccelerateOnSeeingGoal(this,0.25f));
-        this.targetSelector.addGoal(2, new MutableRangeNearestAttackableTargetGoal<>(this, Player.class,false));
+        this.targetSelector.addGoal(2, new MutableRangeNearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
-
-
+    @SuppressWarnings("unchecked")
     @Override
     public S createPart(int index) {
         return (S) createSimplePart(this, index);
@@ -55,13 +53,13 @@ public class BoneSerpent<S extends BaseWormPart> extends BaseWorm<S> implements 
     }
 
     @Override
-    public double wrapWanderHeight(Vec3 pos){
+    public double wrapWanderHeight(Vec3 pos) {
         double y = Math.max(pos.y, 25);
         return y + 7; // 至少离地面10格高
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return ModSoundEvents.TR_SKELETON_HURT.get();
     }
 

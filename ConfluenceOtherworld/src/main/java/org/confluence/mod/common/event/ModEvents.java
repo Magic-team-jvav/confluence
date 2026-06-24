@@ -369,7 +369,7 @@ public final class ModEvents {
 
     private static void registerBestiaryKey(RegisterBestiaryKeyEvent event) {
         Function<Integer, String> i2s = i -> Integer.toString(i);
-        event.register(TEAnimals.JEWEL_BUNNY.get(), RegisterBestiaryKeyEvent.terraVariant(i2s));
+        event.register(TEAnimals.JEWEL_BUNNY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.JEWEL_SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.GRASSHOPPER.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));

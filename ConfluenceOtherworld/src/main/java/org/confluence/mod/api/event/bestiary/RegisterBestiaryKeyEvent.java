@@ -7,7 +7,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.event.IModBusEvent;
-import org.confluence.terraentity.api.entity.IVariant;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -34,9 +33,9 @@ public class RegisterBestiaryKeyEvent extends Event implements IModBusEvent {
         return (type, living) -> type.getDescriptionId() + '.' + toString.apply(living.getVariant());
     }
 
-    public static <V, T extends LivingEntity & IVariant<V>> Factory<T> terraVariant(Function<V, String> toString) {
-        return (type, living) -> type.getDescriptionId() + '.' + toString.apply(living.getTEVariant());
-    }
+//    public static <V, T extends LivingEntity & IVariant<V>> Factory<T> terraVariant(Function<V, String> toString) {
+//        return (type, living) -> type.getDescriptionId() + '.' + toString.apply(living.getTEVariant());
+//    }
 
     @FunctionalInterface
     public interface Factory<T extends Entity> {

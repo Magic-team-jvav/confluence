@@ -30,7 +30,6 @@ import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.BaseBullet;
-import org.jetbrains.annotations.NotNull;
 import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class BaseBulletEntity extends Projectile {
     }
 
     @Override
-    public boolean hurt(@NotNull DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         return !this.isInvulnerableTo(source);
     }
 
@@ -141,7 +140,7 @@ public class BaseBulletEntity extends Projectile {
     }
 
     @Override
-    public void recreateFromPacket(@NotNull ClientboundAddEntityPacket packet) {
+    public void recreateFromPacket(ClientboundAddEntityPacket packet) {
         super.recreateFromPacket(packet);
         Vec3 vec3 = new Vec3(packet.getXa(), packet.getYa(), packet.getZa());
         this.setDeltaMovement(vec3);
@@ -154,7 +153,7 @@ public class BaseBulletEntity extends Projectile {
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
 
         if (compound.contains("ColorID", CompoundTag.TAG_STRING)) {
@@ -184,7 +183,7 @@ public class BaseBulletEntity extends Projectile {
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
 
         compound.putString("ColorID", this.getColorID());
@@ -299,7 +298,7 @@ public class BaseBulletEntity extends Projectile {
     }
 
     @Override
-    protected void onHitEntity(@NotNull EntityHitResult result) {
+    protected void onHitEntity(EntityHitResult result) {
         if (PortEventHandler.postEventWithReturn(new BulletEvent.HitEvent.Entity(this, this.getBullet(), result)).isCanceled())
             return;
 
@@ -333,7 +332,7 @@ public class BaseBulletEntity extends Projectile {
     }
 
     @Override
-    protected void onHitBlock(@NotNull BlockHitResult result) {
+    protected void onHitBlock(BlockHitResult result) {
         if (PortEventHandler.postEventWithReturn(new BulletEvent.HitEvent.Block(this, this.getBullet(), result)).isCanceled())
             return;
 

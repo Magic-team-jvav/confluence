@@ -15,16 +15,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/**
- * 血爬虫
- */
+/// 血爬虫
 public class BloodCrawler extends Spider implements GeoEntity {
     private static final int ATTACK_DAMAGE = 15;
     private static final int MAX_HEALTH = 31;
@@ -71,7 +68,7 @@ public class BloodCrawler extends Spider implements GeoEntity {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return ModSoundEvents.BLOOD_CRAWLER_HURT.get();
     }
 

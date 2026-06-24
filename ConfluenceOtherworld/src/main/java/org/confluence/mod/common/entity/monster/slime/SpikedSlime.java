@@ -22,7 +22,6 @@ import org.confluence.terraentity.entity.boss.KingSlime;
 import org.confluence.terraentity.entity.proj.SlimeSpikeProjectile;
 import org.confluence.terraentity.init.entity.TEProjectileEntities;
 import org.confluence.terraentity.utils.TEUtils;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -69,7 +68,7 @@ public class SpikedSlime extends BaseSlime implements GeoEntity {
         }
 
         @Override
-        protected @NotNull BTNode createBehaviorTree() {
+        protected BTNode createBehaviorTree() {
             return BTFactory.infinite(BTFactory.selector()
                     // 游走
                     .addWithCondition(Condition.not(new TargetExistCondition(mob)), BTFactory.infinite(this.createWonderBehavior()))

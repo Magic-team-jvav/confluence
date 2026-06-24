@@ -24,9 +24,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.api.entity.animation.IUseItemAnimatable;
+import org.confluence.mod.common.entity.ai.goal.TERangedAttackGoal;
+import org.confluence.mod.common.entity.animation.BoneStateMachine;
+import org.confluence.mod.common.entity.animation.BoneStates;
 import org.confluence.mod.common.entity.monster.AbstractMonster;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -40,10 +43,9 @@ import java.util.ConcurrentModificationException;
  * 人形怪，可以远程攻击也可以近战，根据手中物品决定
  */
 public class HumanoidMonster extends AbstractMonster implements RangedAttackMob, IUseItemAnimatable<BoneStates> {
-
-    BoneStateMachine<BoneStates> leftArmBoneStateMachine;
-    BoneStateMachine<BoneStates> rightArmBoneStateMachine;
-    AttributeBuilder builder;
+    private BoneStateMachine<BoneStates> leftArmBoneStateMachine;
+    private BoneStateMachine<BoneStates> rightArmBoneStateMachine;
+    private final AttributeBuilder builder;
     protected final TERangedAttackGoal<?> bowGoal = this.createBowGoal();
     protected final Goal meleeGoal = this.createMeleeGoal();
 
@@ -52,7 +54,7 @@ public class HumanoidMonster extends AbstractMonster implements RangedAttackMob,
     public HumanoidMonster(EntityType<? extends HumanoidMonster> entityType, Level level, AttributeBuilder builder) {
         super(entityType, level, builder);
         this.reassessWeaponGoal();
-        if(level.isClientSide){
+        if (level.isClientSide) {
             leftArmBoneStateMachine = new BoneStateMachine<>(BoneStates.IDLE);
             rightArmBoneStateMachine = new BoneStateMachine<>(BoneStates.IDLE);
         }
@@ -85,7 +87,7 @@ public class HumanoidMonster extends AbstractMonster implements RangedAttackMob,
     }
 
     @Override
-    public boolean doHurtTarget(@NotNull Entity entity) {
+    public boolean doHurtTarget(Entity entity) {
         this.swing(InteractionHand.MAIN_HAND, true);
         try {
             return super.doHurtTarget(entity);
@@ -140,16 +142,16 @@ public class HumanoidMonster extends AbstractMonster implements RangedAttackMob,
     }
 
     @Override
-    protected void populateDefaultEquipmentSlots(@NotNull RandomSource random, @NotNull DifficultyInstance difficulty) {
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
         super.populateDefaultEquipmentSlots(random, difficulty);
-        if(builder instanceof HumanoidMonster.HumanoidBuilder builder1){
+        if (builder instanceof HumanoidMonster.HumanoidBuilder builder1) {
             this.setItemSlot(EquipmentSlot.MAINHAND, builder1.mainHand);
         }
     }
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         spawnGroupData = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
         RandomSource randomsource = level.getRandom();
         this.populateDefaultEquipmentSlots(randomsource, difficulty);
@@ -220,7 +222,7 @@ public class HumanoidMonster extends AbstractMonster implements RangedAttackMob,
     }
 
     @Override
-    public void performRangedAttack(@NotNull LivingEntity target, float distanceFactor) {
+    public void performRangedAttack(LivingEntity target, float distanceFactor) {
         ItemStack weapon = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem));
         ItemStack itemstack1 = this.getProjectile(weapon);
         AbstractArrow abstractarrow = this.getArrow(itemstack1, distanceFactor, weapon);
@@ -232,7 +234,7 @@ public class HumanoidMonster extends AbstractMonster implements RangedAttackMob,
         double d1 = target.getY(0.3333333333333333) - abstractarrow.getY();
         double d2 = target.getZ() - this.getZ();
         double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-        abstractarrow.shoot(d0, d1 + d3 * 0.20000000298023224, d2, 1.6F, (float)(14 - this.level().getDifficulty().getId() * 4));
+        abstractarrow.shoot(d0, d1 + d3 * 0.20000000298023224, d2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
         this.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         this.level().addFreshEntity(abstractarrow);
     }
@@ -242,18 +244,18 @@ public class HumanoidMonster extends AbstractMonster implements RangedAttackMob,
     }
 
     @Override
-    public boolean canFireProjectileWeapon(@NotNull ProjectileWeaponItem projectileWeapon) {
+    public boolean canFireProjectileWeapon(ProjectileWeaponItem projectileWeapon) {
         return projectileWeapon == Items.BOW;
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.reassessWeaponGoal();
     }
 
     @Override
-    public void setItemSlot(@NotNull EquipmentSlot slot, @NotNull ItemStack stack) {
+    public void setItemSlot(EquipmentSlot slot, ItemStack stack) {
         super.setItemSlot(slot, stack);
         if (!this.level().isClientSide) {
             this.reassessWeaponGoal();
@@ -265,22 +267,22 @@ public class HumanoidMonster extends AbstractMonster implements RangedAttackMob,
     }
 
     @Override
-    public boolean isChargingCrossbow() { return false; }
+    public boolean isChargingCrossbow() {return false;}
 
     @Override
-    public int getChargingTicks() { return 0; }
+    public int getChargingTicks() {return 0;}
 
     @Override
-    public BoneStateMachine<BoneStates> getLeftArmBoneStateMachine() { return leftArmBoneStateMachine; }
+    public BoneStateMachine<BoneStates> getLeftArmBoneStateMachine() {return leftArmBoneStateMachine;}
 
     @Override
-    public BoneStateMachine<BoneStates> getRightArmBoneStateMachine() { return rightArmBoneStateMachine; }
+    public BoneStateMachine<BoneStates> getRightArmBoneStateMachine() {return rightArmBoneStateMachine;}
 
     @Override
-    public boolean isLieDown() { return false; }
+    public boolean isLieDown() {return false;}
 
     @Override
-    public @NotNull Vec3 getVehicleAttachmentPoint(Entity entity) {
+    public Vec3 getVehicleAttachmentPoint(Entity entity) {
         return super.getVehicleAttachmentPoint(entity).add(0, 0.65, 0);
     }
 

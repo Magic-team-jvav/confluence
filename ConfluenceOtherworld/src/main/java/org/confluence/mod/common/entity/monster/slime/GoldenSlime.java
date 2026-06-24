@@ -13,7 +13,6 @@ import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.terraentity.init.TEParticles;
 import org.confluence.terraentity.mixin.accessor.SlimeAccessor;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 public class GoldenSlime extends Slime {
@@ -81,7 +80,7 @@ public class GoldenSlime extends Slime {
     }
 
     @Override
-    public void remove(@NotNull RemovalReason removalReason) {
+    public void remove(RemovalReason removalReason) {
         brain.clearMemories();
         setRemoved(removalReason);
 //        invalidateCaps();

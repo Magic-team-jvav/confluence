@@ -27,7 +27,6 @@ import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.mod.common.entity.ai.goal.AccelerateOnSeeingGoal;
 import org.confluence.mod.common.entity.monster.prefab.AbstractPrefab;
 import org.confluence.mod.common.init.entity.MonstersEntities;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -83,7 +82,7 @@ public class Nymph extends AbstractMonster {
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         isTamed = tag.getBoolean("isTamed");
         this.setTamed(isTamed);

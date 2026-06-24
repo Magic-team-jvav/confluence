@@ -23,7 +23,6 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.entity.IMinion;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixin.world.entity.EntityAccessor;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -66,7 +65,7 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
         this.entityData.define(DATA_OWNER_UUID, Optional.empty());
     }
 
-    public @NotNull DemonEyeVariant getVariant() {
+    public DemonEyeVariant getVariant() {
         return DemonEyeVariant.byId(entityData.get(DATA_VARIANT_ID));
     }
 
@@ -81,14 +80,14 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt(VARIANT_KEY, this.getVariant().id);
         minion_saveData(pCompound);
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setVariant(DemonEyeVariant.byId(pCompound.getInt(VARIANT_KEY)));
         minion_readData(pCompound);
@@ -105,7 +104,7 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
     }
 
     @Override
-    protected void checkFallDamage(double pY, boolean pOnGround, @NotNull BlockState pState, @NotNull BlockPos pPos) {
+    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
     }
 
     @Override
@@ -114,10 +113,10 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
     }
 
     @Override
-    public void push(@NotNull Entity pEntity) {
+    public void push(Entity pEntity) {
     }
 
-    public void move(@NotNull MoverType pType, @NotNull Vec3 motion) {
+    public void move(MoverType pType, Vec3 motion) {
         if (dead) {
             super.move(pType, motion);
             return;
@@ -167,7 +166,7 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return ModSoundEvents.ROUTINE_HURT.get();
     }
 

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -11,18 +12,29 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.api.entity.ISharedFlagControllerHolder;
+import org.confluence.mod.api.entity.SharedFlagController;
+import org.confluence.mod.common.entity.ai.goal.MutableRangeNearestAttackableTargetGoal;
+import org.confluence.mod.common.entity.ai.goal.behavior.BTCommonRoot;
+import org.confluence.mod.common.entity.ai.goal.behavior.BTFactory;
+import org.confluence.mod.common.entity.ai.goal.behavior.BTNode;
+import org.confluence.mod.common.entity.ai.goal.behavior.BTRoot;
+import org.confluence.mod.common.entity.ai.goal.behavior.composite.SequenceNode;
+import org.confluence.mod.common.entity.ai.goal.behavior.condition.Condition;
+import org.confluence.mod.common.entity.ai.goal.behavior.condition.TargetExistCondition;
+import org.confluence.mod.common.entity.ai.goal.behavior.leaf.AnimCtrlAction;
+import org.confluence.mod.common.entity.ai.goal.behavior.leaf.JumpAttackAction;
+import org.confluence.mod.common.entity.ai.goal.behavior.leaf.LookAtTargetAction;
+import org.confluence.mod.common.entity.ai.goal.behavior.leaf.SetAttributeAction;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.function.Function;
 
-/**
- * 普通宝箱怪 */
+/// 普通宝箱怪
 public class WoodenMimic extends AbstractMonster implements ISharedFlagControllerHolder {
-
     protected static final EntityDataAccessor<Integer> DATA_SHARE_FLAG = SynchedEntityData.defineId(WoodenMimic.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Integer> DATA_IDLE_ANGLE = SynchedEntityData.defineId(WoodenMimic.class, EntityDataSerializers.INT);
     protected static final RawAnimation stand = RawAnimation.begin().thenLoop("Closed state");
@@ -74,8 +86,8 @@ public class WoodenMimic extends AbstractMonster implements ISharedFlagControlle
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if(key == DATA_SHARE_FLAG ){
-            if(!this.sharedFlagController.getFlag(openFlag)) {
+        if (key == DATA_SHARE_FLAG) {
+            if (!this.sharedFlagController.getFlag(openFlag)) {
                 this.setYBodyRot(this.entityData.get(DATA_IDLE_ANGLE));
                 this.setYHeadRot(this.entityData.get(DATA_IDLE_ANGLE));
             }
@@ -85,7 +97,7 @@ public class WoodenMimic extends AbstractMonster implements ISharedFlagControlle
     @Override
     public void tick() {
         super.tick();
-        if(this.level().isClientSide) {
+        if (this.level().isClientSide) {
 //            this.setYRot(0);
             this.setYBodyRot(this.getYHeadRot());
 
@@ -101,7 +113,7 @@ public class WoodenMimic extends AbstractMonster implements ISharedFlagControlle
         @Override
         public BTNode createWonderBehavior() {
             return BTFactory.sequence()
-                    .addChild(new SetAttributeAction(this.mob, Attributes.GRAVITY, 0.08))
+                    .addChild(new SetAttributeAction(this.mob, PortAttributesExtension.gravity().value(), 0.08))
                     .addChild(BTFactory.wait(1000))
                     ;
         }
@@ -130,18 +142,20 @@ public class WoodenMimic extends AbstractMonster implements ISharedFlagControlle
                     .addChild(BTFactory.infinite(
                             this.createActualAttackBehavior(waitActionFunction)
                     ))
-            ;
+                    ;
 
         }
 
         private static class AdjustRotateAction extends BTNode {
             Mob mob;
+
             public AdjustRotateAction(Mob mob) {
                 this.mob = mob;
             }
+
             @Override
             public BTStatus execute() {
-                this.mob.setDeltaMovement(0,0.3f, 0);
+                this.mob.setDeltaMovement(0, 0.3f, 0);
                 int angle = this.mob.getRandom().nextInt(4) * 90;
                 this.mob.moveTo(this.mob.blockPosition(), angle, 0);
                 this.mob.getEntityData().set(DATA_IDLE_ANGLE, angle);
@@ -150,16 +164,16 @@ public class WoodenMimic extends AbstractMonster implements ISharedFlagControlle
             }
         }
 
-        protected SequenceNode createActualAttackBehavior(Function<Integer, BTNode> waitActionFunction){
+        protected SequenceNode createActualAttackBehavior(Function<Integer, BTNode> waitActionFunction) {
             BTNode waitAction = waitActionFunction.apply(15);
             return BTFactory.sequence()
                     .addChild(new SetAttributeAction(this.mob, Attributes.FOLLOW_RANGE, 16))
                     .addChild(BTFactory.repeater(2, BTFactory.sequence()
                             .addChild(waitAction)
-                            .addChild(doJump(1,0))
+                            .addChild(doJump(1, 0))
                     ))
                     .addChild(waitAction)
-                    .addChild(doJump(1.5f,0.5f))
+                    .addChild(doJump(1.5f, 0.5f))
                     .addChild(waitAction);
         }
 
@@ -172,25 +186,24 @@ public class WoodenMimic extends AbstractMonster implements ISharedFlagControlle
                     .addChild(new AnimCtrlAction<>(this.mob, "Controller", "open", this.mob.openFlag, true))
                     ;
         }
-
-
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Controller", 5, state-> state.setAndContinue(stand))
+        controllers.add(new AnimationController<>(this, "Controller", 5, state -> state.setAndContinue(stand))
                 .triggerableAnim("open", open)
                 .triggerableAnim("close", close)
                 .triggerableAnim("jump", jump)
-
         );
     }
+
     @Override
     protected SoundEvent getDeathSound() {
         return ModSoundEvents.SOUL_DEATH.get();
     }
+
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return ModSoundEvents.METAL_HURT.get();
     }
 }

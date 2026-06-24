@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.monster.prefab.AbstractPrefab;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * 克脑召唤的飞眼怪
@@ -101,7 +100,7 @@ public class VisualNeuron extends AbstractMonster{
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
 
     }
@@ -123,7 +122,7 @@ public class VisualNeuron extends AbstractMonster{
         return ModSoundEvents.VISUAL_NEURON_DEATH.get();
     }
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource pDamageSource) {
+    protected SoundEvent getHurtSound(DamageSource pDamageSource) {
         return ModSoundEvents.VISUAL_NEURON_HURT.get();
     }
 

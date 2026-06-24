@@ -24,19 +24,16 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.HandPositionUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-/**
- * <h1>连枷弹射物基类</h1>
- * 支持五阶段状态机：SPIN->THROWN->STAY->RETRACT
- * <p>
- * SPIN：绕玩家肩部 Z 轴圆周挥舞，造成 60% 伤害<br>
- * THROWN：沿视线方向发射，造成 100% 伤害，无限穿透<br>
- * STAY：受重力停留地面，造成 50% 伤害<br>
- * RETRACT：飞回玩家并消失
- */
+/// # 连枷弹射物基类
+/// 支持五阶段状态机：SPIN->THROWN->STAY->RETRACT
+///
+/// SPIN：绕玩家肩部 Z 轴圆周挥舞，造成 60% 伤害
+/// THROWN：沿视线方向发射，造成 100% 伤害，无限穿透
+/// STAY：受重力停留地面，造成 50% 伤害
+/// RETRACT：飞回玩家并消失
 public class BaseFlailEntity extends Projectile implements Immunity {
     // ── 状态常量 ──
     public static final int PHASE_SPIN = 0;
@@ -64,10 +61,8 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         setNoGravity(true);
     }
 
-    /**
-     * 由物品调用，设置弹射物所有者、连枷组件和初始位置
-     */
-    public void init(@NotNull Player owner, ItemStack weapon, @NotNull FlailComponent component) {
+    /// 由物品调用，设置弹射物所有者、连枷组件和初始位置
+    public void init(Player owner, ItemStack weapon, FlailComponent component) {
         setOwner(owner);
         this.cachedComponent = component;
         Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
@@ -112,10 +107,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         return cachedComponent;
     }
 
-    /**
-     * 线段 a 的纯世界方向：玩家面朝水平方向，不含公转偏移
-     */
-    @NotNull
+    /// 线段 a 的纯世界方向：玩家面朝水平方向，不含公转偏移
     public Vector3f getSpinAxis() {
         Entity owner = getOwner();
         if (owner == null) return new Vector3f(0, 0, 1);
@@ -123,12 +115,10 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         return new Vector3f(-(float) Math.sin(yawRad), 0, (float) Math.cos(yawRad));
     }
 
-    /**
-         * 方块碰撞处理：RETRACT 阶段击中方块时直接落地
-     */
+    /// 方块碰撞处理：RETRACT 阶段击中方块时直接落地
     @Override
-    protected void onHitBlock(@NotNull BlockHitResult result) {
-            // THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
+    protected void onHitBlock(BlockHitResult result) {
+        // THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
         if (!level().isClientSide() && getPhase() == PHASE_RETRACT) {
             setPos(result.getLocation());
             playerDrop();
@@ -204,9 +194,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         }
     }
 
-    /**
-         * 射线检测前方方块碰撞，返回 null 表示无碰撞
-     */
+    /// 射线检测前方方块碰撞，返回 null 表示无碰撞
     @Nullable
     private BlockHitResult clipBlock(Vec3 motion) {
         Vec3 start = position();
@@ -324,9 +312,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         }
     }
 
-    /**
-     * SPIN 切换THROWN
-     */
+    /// SPIN 切换THROWN
     public void launch(Player player) {
         FlailComponent component = getComponent();
         if (component == null) return;
@@ -342,10 +328,9 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         setDeltaMovement(look.scale(velocity));
     }
 
-    /**
-     * 落地进入 STAY，不因低速自动收回。
-     * <p>用于玩家主动丢出（按 use）以及 RETRACT 途中撞墙落地。</p>
-     */
+    /// 落地进入 STAY，不因低速自动收回。
+    ///
+    /// 用于玩家主动丢出（按 use）以及 RETRACT 途中撞墙落地。
     public void playerDrop() {
         setPhase(PHASE_STAY);
         Vec3 motion = getDeltaMovement();
@@ -359,7 +344,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         playerDropped = false;
     }
 
-    private boolean isHoldingFlail(@NotNull Player player) {
+    private boolean isHoldingFlail(Player player) {
         ItemStack stack = player.getMainHandItem();
         return !stack.isEmpty()
                 && stack.getItem() instanceof BaseFlailItem
@@ -385,7 +370,6 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     }
 
     @Override
-    @NotNull
     public EntityDimensions getDimensions(Pose pose) {
         return EntityDimensions.fixed(0.75f, 0.75f);
     }

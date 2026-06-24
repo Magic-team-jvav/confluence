@@ -14,7 +14,6 @@ import org.confluence.terraentity.api.entity.IOBBProjectile;
 import org.confluence.terraentity.entity.ai.keyframe.Keyframe;
 import org.confluence.terraentity.entity.ai.keyframe.animation.Vec3KeyframeAnimation;
 import org.confluence.terraentity.utils.OBB;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 
 import java.util.List;
@@ -74,7 +73,7 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
     }
 
     @Override
-    public @NotNull AABB getBoundingBoxForCulling() {
+    public AABB getBoundingBoxForCulling() {
         return super.getBoundingBoxForCulling().inflate(3); // 让第一人称可以看到刀光
     }
 

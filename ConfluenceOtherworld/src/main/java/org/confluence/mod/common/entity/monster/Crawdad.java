@@ -15,7 +15,6 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -68,24 +67,24 @@ public class Crawdad extends AbstractMonster implements IVanillaVariant<Integer>
 
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag pCompound) {
+    public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("Variant", this.getVariant());
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag pCompound) {
+    public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         this.setVariant(pCompound.getInt("Variant"));
     }
 
     @Override
-    public void setVariant(@NotNull Integer integer) {
+    public void setVariant(Integer integer) {
         this.entityData.set(DATA_VARIANT_ID, integer);
     }
 
     @Override
-    public @NotNull Integer getVariant() {
+    public Integer getVariant() {
         return this.entityData.get(DATA_VARIANT_ID);
     }
 

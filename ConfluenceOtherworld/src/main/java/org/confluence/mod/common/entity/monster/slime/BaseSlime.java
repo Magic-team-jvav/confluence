@@ -31,7 +31,6 @@ import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.entity.MonstersEntities;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
@@ -191,7 +190,7 @@ public class BaseSlime extends Slime {
     }
 
     @Override
-    public void remove(@NotNull RemovalReason removalReason) {
+    public void remove(RemovalReason removalReason) {
         brain.clearMemories();
         setRemoved(removalReason);
         invalidateCaps();
@@ -219,7 +218,7 @@ public class BaseSlime extends Slime {
     }
 
     @Override
-    protected void dealDamage(@NotNull LivingEntity pLivingEntity) {
+    protected void dealDamage(LivingEntity pLivingEntity) {
         if (this.isAlive() && this.isWithinMeleeAttackRange(pLivingEntity) && this.hasLineOfSight(pLivingEntity) && pLivingEntity.hurt(damageSources().mobAttack(this), getAttackDamage())) {
             playSound(SoundEvents.SLIME_ATTACK, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
             DamageSource damagesource = this.damageSources().mobAttack(this);

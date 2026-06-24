@@ -17,6 +17,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.entity.PartEntity;
+import org.confluence.mod.api.entity.IHeightControlMob;
+import org.confluence.mod.api.entity.IWorm;
+import org.confluence.mod.common.entity.ai.goal.AccelerateOnSeeingGoal;
+import org.confluence.mod.common.entity.ai.goal.ComeAndBackDashAttackGoal;
+import org.confluence.mod.common.entity.ai.goal.WormRandomWanderGoal;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +38,7 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
 
     public BaseWorm(EntityType<? extends BaseWorm> type, Level level, AttributeBuilder builder) {
         super(type, level, builder);
-        this.collisionProperties = new CollisionProperties(3,3,0);
+        this.collisionProperties = new CollisionProperties(3, 3, 0);
         this.bodySegments = this.initParts();
         this.noPhysics = true;
         this.noCulling = true;
@@ -41,7 +46,7 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
 
     public abstract T createPart(int index);
 
-    public static BaseWormPart createSimplePart(BaseWorm worm, int index){
+    public static BaseWormPart createSimplePart(BaseWorm worm, int index) {
         return new BaseWormPart(worm, index);
     }
 
@@ -57,16 +62,16 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
             }
 
             @Override
-            public double wrapWanderHeight(Vec3 pos){
+            public double wrapWanderHeight(Vec3 pos) {
                 return Math.min(pos.y, 20);
             }
 
             @Override
-            public boolean isAttackableHeight(float originalHeight){
+            public boolean isAttackableHeight(float originalHeight) {
                 return originalHeight < 50;
             }
 
-            protected boolean canFly(){
+            protected boolean canFly() {
                 return false;
             }
         };
@@ -75,34 +80,34 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new ComeAndBackDashAttackGoal<>(this, 16, this.getMoveSpeedModifier()){
+        this.goalSelector.addGoal(1, new ComeAndBackDashAttackGoal<>(this, 16, this.getMoveSpeedModifier()) {
             @Override
             public boolean canUse() {
-                if(!this.worm.canFly()){
+                if (!this.worm.canFly()) {
                     return super.canUse() && BaseWorm.this.timeToDive > 0;
                 }
                 return super.canUse();
             }
         });
-        this.goalSelector.addGoal(5, new WormRandomWanderGoal<>(this, 30){
+        this.goalSelector.addGoal(5, new WormRandomWanderGoal<>(this, 30) {
             @Override
             public boolean canUse() {
-                if(!this.worm.canFly()){
+                if (!this.worm.canFly()) {
                     return super.canUse() || BaseWorm.this.timeToDive < 0;
                 }
                 return super.canUse();
             }
         });
 
-        this.targetSelector.addGoal(1,new AccelerateOnSeeingGoal(this,0.25f));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class,false, LivingEntity::canBeSeenAsEnemy));
+        this.targetSelector.addGoal(1, new AccelerateOnSeeingGoal(this, 0.25f));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, LivingEntity::canBeSeenAsEnemy));
     }
 
-    protected float getMoveSpeedModifier(){
+    protected float getMoveSpeedModifier() {
         return 1.0f;
     }
 
-    protected boolean canFly(){
+    protected boolean canFly() {
         return true;
     }
 
@@ -113,14 +118,14 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
     @Override
     public void tick() {
         super.tick();
-        if(this.isInWall()){
+        if (this.isInWall()) {
             this.timeToDive = 200;
-        }else{
+        } else {
             --this.timeToDive;
         }
-        if(!isAlive()) {
+        if (!isAlive()) {
             this.noPhysics = false;
-            addDeltaMovement(new Vec3(0,-0.05f,0));
+            addDeltaMovement(new Vec3(0, -0.05f, 0));
 //            return;
         }
 
@@ -142,10 +147,11 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
 
     @Override
     protected void tickDeath() {
-        if(this.onGround()) {
+        if (this.onGround()) {
             super.tickDeath();
         }
     }
+
     @Override
     public boolean isMultipartEntity() {
         return true;
@@ -154,21 +160,19 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
     @Override
     public boolean hurt(DamageSource source, float amount) {
 
-        if(this.getHealth() <= 0) return false;
+        if (this.getHealth() <= 0) return false;
         return super.hurt(source, amount);
     }
 
     @Override
     public @Nullable PartEntity<?>[] getParts() {
         return IWorm.super.getWormParts();
-//        return bodySegments.toArray(new PartEntity[0]);
     }
 
     @Override
     public void die(DamageSource damageSource) {
-        this.setDeltaMovement(0,0,0);
+        this.setDeltaMovement(0, 0, 0);
         super.die(damageSource);
-
     }
 
     @Override
@@ -184,12 +188,12 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
 
     @Override
     public boolean isInWall() {
-        float f = this.getDefaultDimensions(Pose.STANDING).width() * 0.8F;
-        AABB aabb = AABB.ofSize(this.getEyePosition(), (double)f, 1.0E-6, (double)f);
+        float f = this.getDimensions(Pose.STANDING).width() * 0.8F;
+        AABB aabb = AABB.ofSize(this.getEyePosition(), (double) f, 1.0E-6, (double) f);
         return BlockPos.betweenClosedStream(aabb).anyMatch((p_201942_) -> {
             BlockState blockstate = this.level().getBlockState(p_201942_);
 
-            return !blockstate.isAir() && blockstate.isSuffocating(this.level(), p_201942_) && Shapes.joinIsNotEmpty(blockstate.getCollisionShape(this.level(), p_201942_).move((double)p_201942_.getX(), (double)p_201942_.getY(), (double)p_201942_.getZ()), Shapes.create(aabb), BooleanOp.AND);
+            return !blockstate.isAir() && blockstate.isSuffocating(this.level(), p_201942_) && Shapes.joinIsNotEmpty(blockstate.getCollisionShape(this.level(), p_201942_).move((double) p_201942_.getX(), (double) p_201942_.getY(), (double) p_201942_.getZ()), Shapes.create(aabb), BooleanOp.AND);
         });
     }
 
@@ -199,18 +203,18 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
     }
 
     @Override
-    public void onRemovedFromLevel() {
-        super.onRemovedFromLevel();
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
         this.onWormRemovedFromLevel();
     }
 
     @Override
-    public double wrapWanderHeight(Vec3 pos){
+    public double wrapWanderHeight(Vec3 pos) {
         return pos.y;
     }
 
     @Override
-    public boolean isAttackableHeight(float originalHeight){
+    public boolean isAttackableHeight(float originalHeight) {
         return true;
     }
 
@@ -218,5 +222,4 @@ public abstract class BaseWorm<T extends BaseWormPart> extends AbstractMonster i
     public List<T> getBodySegments() {
         return this.bodySegments;
     }
-
 }

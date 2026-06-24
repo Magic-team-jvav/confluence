@@ -18,7 +18,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.common.LibAttributes;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -52,7 +51,7 @@ public class BlackSlime extends Slime {
     }
 
     @Override
-    public void remove(@NotNull RemovalReason removalReason) {
+    public void remove(RemovalReason removalReason) {
         if (getSize() == 2) {
             brain.clearMemories();
             setRemoved(removalReason);
@@ -113,7 +112,7 @@ public class BlackSlime extends Slime {
     }
 
     @Override
-    protected void dealDamage(@NotNull LivingEntity pLivingEntity) {
+    protected void dealDamage(LivingEntity pLivingEntity) {
         if (isAlive()) {
             int i = getSize();
             if (distanceToSqr(pLivingEntity) < 0.6 * (double)i * 0.6 * (double)i && hasLineOfSight(pLivingEntity) && pLivingEntity.hurt(damageSources().mobAttack(this), getAttackDamage())) {
@@ -128,7 +127,7 @@ public class BlackSlime extends Slime {
         }
     }
     @Override
-    public @NotNull Component getName() {
+    public Component getName() {
         if (!hasCustomName()){
             int size = getSize();
             if (size == 1) return Component.translatable("entity.terra_entity.baby_slime");

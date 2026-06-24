@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.jetbrains.annotations.NotNull;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEntityExtension;
 
 public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier, IPortEntityExtension {
@@ -39,7 +38,7 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("GravityBullet", 10)) {
             ItemStack itemStack = ItemStack.of(compound.getCompound("GravityBullet"));
@@ -50,7 +49,7 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.put("GravityBullet", this.getBulletStack().save(new CompoundTag()));
     }

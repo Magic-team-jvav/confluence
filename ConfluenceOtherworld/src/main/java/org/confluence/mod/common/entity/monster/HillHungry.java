@@ -9,7 +9,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
 
 // 必须注册新的实体类型才能在客户端使用类型推断
 public class HillHungry extends TheHungry {
@@ -21,7 +20,7 @@ public class HillHungry extends TheHungry {
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("mouth_index")) {
             index = tag.getInt("mouth_index");
@@ -42,7 +41,7 @@ public class HillHungry extends TheHungry {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return ModSoundEvents.THE_HUNGRY_HURT.get();
     }
 

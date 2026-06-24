@@ -3,7 +3,6 @@ package org.confluence.mod.common.entity.monster.demoneye;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.IntFunction;
 
@@ -49,7 +48,7 @@ public enum DemonEyeVariant implements StringRepresentable {
         return BY_ID.apply(pId);
     }
 
-    public @NotNull String getSerializedName() {
+    public String getSerializedName() {
         return name;
     }
 

@@ -10,7 +10,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -25,7 +24,7 @@ public class Wraith extends HumanoidMonster {
     }
 
     @Override
-    protected @NotNull PathNavigation createNavigation(@NotNull Level level) {
+    protected PathNavigation createNavigation(Level level) {
         FlyingPathNavigation navigation = new FlyingPathNavigation(this, level);
         navigation.setCanOpenDoors(false);
         navigation.setCanPassDoors(true);
@@ -47,12 +46,12 @@ public class Wraith extends HumanoidMonster {
     }
 
     @Override
-    public boolean causeFallDamage(float fallDistance, float multiplier, @NotNull DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 
     @Override
-    protected void checkFallDamage(double y, boolean onGround, @NotNull BlockState state, @NotNull net.minecraft.core.BlockPos pos) {}
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, net.minecraft.core.BlockPos pos) {}
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -61,12 +60,12 @@ public class Wraith extends HumanoidMonster {
     }
 
     @Override
-    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return ModSoundEvents.ROUTINE_HURT.get();
     }
 
     @Override
-    protected @NotNull SoundEvent getDeathSound() {
+    protected SoundEvent getDeathSound() {
         return ModSoundEvents.SOUL_DEATH.get();
     }
 

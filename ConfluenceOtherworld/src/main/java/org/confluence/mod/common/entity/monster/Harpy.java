@@ -14,7 +14,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
@@ -77,7 +76,7 @@ public class Harpy extends AbstractMonster {
 
     }
 
-    public void move(@NotNull MoverType pType, @NotNull Vec3 motion) {
+    public void move(MoverType pType, Vec3 motion) {
         if (dead) {
             super.move(pType, motion);
             return;
@@ -97,7 +96,7 @@ public class Harpy extends AbstractMonster {
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
         return ModSoundEvents.ROUTINE_HURT.get();
     }
 

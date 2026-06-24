@@ -19,7 +19,7 @@ public record LootComponent(ResourceLocation value) {
     public static final PortStreamCodec<ByteBuf, LootComponent> STREAM_CODEC = PortResourceLocationExtension.streamCodec().map(LootComponent::new, LootComponent::value);
 
     public static boolean open(ServerPlayer player, ItemStack stack) {
-        LootComponent lootComponent = stack.getData(ModDataComponentTypes.LOOT);
+        LootComponent lootComponent = stack.get(ModDataComponentTypes.LOOT);
         if (lootComponent != null) {
             LootParams lootparams = new LootParams.Builder(player.serverLevel())
                     .withParameter(LootContextParams.ORIGIN, player.position())

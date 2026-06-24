@@ -82,7 +82,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             }
         }
 
-        GroupItem.BelongsTo group = stack.getData(ConfluenceMagicLib.BELONGS_TO_GROUP);
+        GroupItem.BelongsTo group = stack.get(ConfluenceMagicLib.BELONGS_TO_GROUP);
         if (group != null) {
             muralEntity.setBelongsToGroup(group);
         }
@@ -315,7 +315,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                 displayTag.put("Lore", loreTag);
             }
             if (belongsToGroup != null) {
-                stack.setData(ConfluenceMagicLib.BELONGS_TO_GROUP, belongsToGroup);
+                stack.set(ConfluenceMagicLib.BELONGS_TO_GROUP, belongsToGroup);
             }
         }
 

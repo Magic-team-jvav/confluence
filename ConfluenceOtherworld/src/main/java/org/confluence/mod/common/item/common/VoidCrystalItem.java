@@ -73,7 +73,7 @@ public class VoidCrystalItem extends Item {
     private void markPosition(ItemStack stack, CompoundTag tag, BlockPos pos, Direction face, @Nullable Player player, Level level) {
         tag.putLong("FirstPos", pos.asLong());
         tag.putInt("FirstFace", face.get3DDataValue());
-        stack.setData(ConfluenceMagicLib.NBT, new NbtComponent(tag));
+        stack.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
 
         if (player != null) {
             player.displayClientMessage(Component.translatable("chat.confluence.crystal_marked").withStyle(ChatFormatting.AQUA), true);
@@ -131,9 +131,9 @@ public class VoidCrystalItem extends Item {
             workingTag.remove("FirstFace");
         }
         if (workingTag.isEmpty()) {
-            stack.removeData(ConfluenceMagicLib.NBT);
+            stack.remove(ConfluenceMagicLib.NBT);
         } else {
-            stack.setData(ConfluenceMagicLib.NBT, new NbtComponent(workingTag));
+            stack.set(ConfluenceMagicLib.NBT, new NbtComponent(workingTag));
         }
     }
 

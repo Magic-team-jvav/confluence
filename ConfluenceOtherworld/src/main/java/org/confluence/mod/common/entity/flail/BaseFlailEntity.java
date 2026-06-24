@@ -104,10 +104,10 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         Entity owner = getOwner();
         if (owner instanceof LivingEntity living) {
             ItemStack stack = living.getMainHandItem();
-            cachedComponent = stack.getData(ModDataComponentTypes.FLAIL);
+            cachedComponent = stack.get(ModDataComponentTypes.FLAIL);
             if (cachedComponent != null) return cachedComponent;
             stack = living.getOffhandItem();
-            cachedComponent = stack.getData(ModDataComponentTypes.FLAIL);
+            cachedComponent = stack.get(ModDataComponentTypes.FLAIL);
         }
         return cachedComponent;
     }
@@ -363,7 +363,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         ItemStack stack = player.getMainHandItem();
         return !stack.isEmpty()
                 && stack.getItem() instanceof BaseFlailItem
-                && stack.hasData(ModDataComponentTypes.FLAIL);
+                && stack.has(ModDataComponentTypes.FLAIL);
     }
 
     @Override

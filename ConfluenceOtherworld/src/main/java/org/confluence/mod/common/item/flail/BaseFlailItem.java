@@ -42,7 +42,7 @@ public class BaseFlailItem extends TooltipItem {
         ItemStack stack = player.getItemInHand(hand);
         if (level.isClientSide()) return InteractionResultHolder.consume(stack);
 
-        FlailComponent comp = stack.getData(ModDataComponentTypes.FLAIL);
+        FlailComponent comp = stack.get(ModDataComponentTypes.FLAIL);
         if (comp == null) return InteractionResultHolder.fail(stack);
 
         BaseFlailEntity existing = findExistingFlail(player);

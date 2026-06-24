@@ -269,7 +269,7 @@ public class BaseSwordItem extends SwordItem implements IPortItemExtension {
         if (hitEffects != null) {
             IEffectStrategy.appendDescription(tooltipComponents, hitEffects.effects(), Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0x969811));
         }
-        SwordProjectileComponent data = stack.getData(ModDataComponentTypes.SWORD_PROJECTILE);
+        SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
         if (data != null) {
             tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj"), 0x57cdfb));
             tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x" + data.damageFactor()), 0x57cdfb));

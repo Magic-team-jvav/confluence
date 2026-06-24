@@ -6,19 +6,19 @@ import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.SpawnPlacementType;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.mixin.world.entity.EntityType$BuilderAccessor;
+import org.mesdag.portlib.wrapper.world.entity.PortSpawnPlacementType;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 public class InverseEntityType<E extends Entity> extends EntityType<E> {
-    public static final SpawnPlacementType ON_CEIL = new SpawnPlacementType() {
+    public static final PortSpawnPlacementType ON_CEIL = new PortSpawnPlacementType("confluence_on_cell") {
         @Override
         public boolean isSpawnPositionOk(LevelReader level, BlockPos pos, @Nullable EntityType<?> type) {
             if (type == null || !level.getWorldBorder().isWithinBounds(pos)) {
@@ -53,8 +53,7 @@ public class InverseEntityType<E extends Entity> extends EntityType<E> {
                 accessor.isFireImmune(),
                 accessor.isCanSpawnFarFromPlayer(),
                 accessor.getImmuneTo(),
-                accessor.getDimensions().withAttachments(accessor.getAttachments()),
-                accessor.getSpawnDimensionsScale(),
+                accessor.getDimensions(),
                 accessor.getClientTrackingRange(),
                 accessor.getUpdateInterval(),
                 accessor.getRequiredFeatures(),

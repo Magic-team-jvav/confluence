@@ -56,7 +56,7 @@ public class TreasureBagItem extends CustomRarityItem {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            LootComponent component = stack.getData(ModDataComponentTypes.LOOT);
+            LootComponent component = stack.get(ModDataComponentTypes.LOOT);
             ResourceLocation table = component == null
                     ? lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition()))
                     : component.value();

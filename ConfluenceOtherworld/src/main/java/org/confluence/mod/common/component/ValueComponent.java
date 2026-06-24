@@ -30,7 +30,7 @@ public record ValueComponent(int value) {
 
     public static int getValue(ItemStack stack, int defaultValue, boolean prototype) {
         PortDataComponentType<ValueComponent> type = ModDataComponentTypes.VALUE.get();
-        ValueComponent value = prototype ? stack.getPrototypeData().get(type) : stack.getData(type);
+        ValueComponent value = prototype ? stack.getPrototype().get(type) : stack.get(type);
         if (value == null) {
             value = stack.getItemHolder().getData(ModDataMaps.VALUE);
             return (value == null ? defaultValue : value.value()) * stack.getCount();

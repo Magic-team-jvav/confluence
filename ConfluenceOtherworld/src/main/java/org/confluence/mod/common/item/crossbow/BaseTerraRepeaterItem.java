@@ -268,7 +268,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
     }
 
     public static boolean isCharged(ItemStack crossbowStack) {
-        RepeaterContents contents = crossbowStack.getData(ModDataComponentTypes.REPEATER_CONTENTS);
+        RepeaterContents contents = crossbowStack.get(ModDataComponentTypes.REPEATER_CONTENTS);
         return contents != null && !contents.isEmpty();
     }
 

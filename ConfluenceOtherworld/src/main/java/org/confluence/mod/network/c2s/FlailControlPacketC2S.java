@@ -62,7 +62,7 @@ public final class FlailControlPacketC2S implements IPortPacket.C2S {
         ItemStack stack = player.getMainHandItem();
         if (!(stack.getItem() instanceof BaseFlailItem)) return;
 
-        FlailComponent component = stack.getData(ModDataComponentTypes.FLAIL);
+        FlailComponent component = stack.get(ModDataComponentTypes.FLAIL);
         if (component == null) return;
 
         // 查找现有连枷实体

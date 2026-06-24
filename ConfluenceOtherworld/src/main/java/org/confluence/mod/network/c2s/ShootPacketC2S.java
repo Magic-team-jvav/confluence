@@ -31,7 +31,7 @@ public enum ShootPacketC2S implements IPortPacket.C2S {
             baseGun.shoot(player, ammo, gunStack);
             baseGun.fireAnimator(gunStack, player);
 
-            BulletPropertyComponent component = ammo.getData(ModDataComponentTypes.BULLET_PROPERTY);
+            BulletPropertyComponent component = ammo.get(ModDataComponentTypes.BULLET_PROPERTY);
             boolean infinity = component != null && component.infinity();
             GunEvent.ShrinkBulletEvent event = new GunEvent.ShrinkBulletEvent(player, baseGun, gunStack, ammo, infinity);
             PortEventHandler.postEvent(event);

@@ -23,7 +23,7 @@ public record TreasureBagDrop(Item item) {
         if (data == null || !(data.item() instanceof TreasureBagItem item)) return null;
         ItemStack stack = item.getDefaultInstance();
         ResourceLocation lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel, living.blockPosition()));
-        stack.setData(ModDataComponentTypes.LOOT, new LootComponent(lootTable));
+        stack.set(ModDataComponentTypes.LOOT, new LootComponent(lootTable));
         return stack;
     }
 }

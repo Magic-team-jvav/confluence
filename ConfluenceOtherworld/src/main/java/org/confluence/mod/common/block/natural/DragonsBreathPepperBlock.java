@@ -99,7 +99,7 @@ public class DragonsBreathPepperBlock extends CocoaBlock {
         ItemStack stack = FoodItems.END_DRAGON_PEPPER.toStack();
         net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
         tag.putInt("Maturity", maturity);
-        stack.setData(ConfluenceMagicLib.NBT, new NbtComponent(tag));
+        stack.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
         return stack;
     }
 

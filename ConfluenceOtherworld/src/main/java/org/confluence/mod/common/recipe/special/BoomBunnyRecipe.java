@@ -67,9 +67,9 @@ public class BoomBunnyRecipe extends ShapelessRecipe {
             tag = tag.copy();
             tag.putString(Entity.ID_TAG, BuiltInRegistries.ENTITY_TYPE.getKey(TEAnimals.EXPLOSIVE_BUNNY.get()).toString());
             tag.putUUID(Entity.UUID_TAG, Mth.createInsecureUUID());
-            assemble.setData(ConfluenceMagicLib.NBT, new NbtComponent(tag));
+            assemble.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
             assemble.setCustomName(stack.getCustomName());
-            assemble.removeData(ConfluenceMagicLib.MOD_RARITY);
+            assemble.remove(ConfluenceMagicLib.MOD_RARITY);
             break;
         }
         return assemble;

@@ -28,7 +28,7 @@ public final class SpecialItemRenderingUtil {
     }
 
     public static void repeaterArrowRenderer(ItemRenderer itemRenderer, LivingEntity entity, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, Player player, ItemStack stack) {
-        RepeaterContents repeaterContents = stack.getDataOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
+        RepeaterContents repeaterContents = stack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
         if (repeaterContents.isEmpty()) {
             return;
         }

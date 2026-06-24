@@ -54,6 +54,7 @@ import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -249,8 +250,8 @@ public final class ModCommands {
                             if (cannotBeReforged(source, player)) return 0;
                             ItemStack itemStack = player.getMainHandItem();
                             PrefixUtils.unknown(itemStack);
-                            LibUtils.resetDataComponent(itemStack, ConfluenceMagicLib.MOD_RARITY.get());
-                            LibUtils.resetDataComponent(itemStack, ModDataComponentTypes.VALUE.get());
+                            LibUtils.resetDataComponent(itemStack, ConfluenceMagicLib.MOD_RARITY);
+                            LibUtils.resetDataComponent(itemStack, ModDataComponentTypes.VALUE);
                             source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.clear.success"), false);
                             return 1;
                         }))
@@ -312,7 +313,7 @@ public final class ModCommands {
         return builder;
     }
 
-    private static boolean cannotBeReforged(CommandSourceStack source, ServerPlayer player) {
+    private static boolean cannotBeReforged(CommandSourceStack source, @Nullable ServerPlayer player) {
         if (player == null) return true;
         if (!PrefixUtils.couldReforge(player.getMainHandItem())) {
             source.sendFailure(Component.translatable("commands.confluence.reforge.cannot_be_reforged").withStyle(ChatFormatting.RED));
@@ -322,7 +323,7 @@ public final class ModCommands {
     }
 
     @Contract("_, null -> true")
-    private static boolean unknownPrefixType(CommandSourceStack source, PrefixComponent prefix) {
+    private static boolean unknownPrefixType(CommandSourceStack source, @Nullable PrefixComponent prefix) {
         if (prefix == null) {
             source.sendFailure(Component.translatable("commands.confluence.reforge.unknown_prefix_type").withStyle(ChatFormatting.RED));
             return true;

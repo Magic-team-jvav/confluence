@@ -72,7 +72,7 @@ public class BaseHamaxeItem extends DiggerItem {
 
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miningEntity) {
-        ToolMode toolMode = stack.getData(ConfluenceMagicLib.TOOL_MODE);
+        ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE);
         if (toolMode == null || toolMode.mode() == 0) {
             BaseHammerItem.hammerMineBlock(stack, level, state, pos, miningEntity);
         }
@@ -111,7 +111,7 @@ public class BaseHamaxeItem extends DiggerItem {
     }
 
     public Component getModeName(ItemStack stack) {
-        ToolMode toolMode = stack.getData(ConfluenceMagicLib.TOOL_MODE.get());
+        ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE);
         if (toolMode != null && toolMode.mode() == 1) {
             return Component.translatable("message.confluence.hamaxe.mode.1").withStyle(ChatFormatting.WHITE);
         }

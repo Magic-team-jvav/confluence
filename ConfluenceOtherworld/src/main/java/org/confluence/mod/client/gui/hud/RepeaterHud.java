@@ -45,7 +45,7 @@ public class RepeaterHud implements PortGuiLayer {
         if (itemStack.getItem() instanceof BaseTerraRepeaterItem repeaterItem) {
             if (player.isUsingItem() && player.getUseItem().equals(itemStack)) {
                 end = Mth.clamp(igui.confluence$getOldRepeaterCrosshairAngle() + (float) 360 / repeaterItem.getReloadSpeed(player, itemStack), 0, 720);
-            } else if (!itemStack.getDataOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY).isEmpty()) {
+            } else if (!itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY).isEmpty()) {
                 end = 45;
             }
         }
@@ -79,7 +79,7 @@ public class RepeaterHud implements PortGuiLayer {
             return;
         }
 
-        RepeaterContents repeaterContents = itemStack.getDataOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
+        RepeaterContents repeaterContents = itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
         if (repeaterContents.isEmpty()) {
             return;
         }

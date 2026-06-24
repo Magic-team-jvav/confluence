@@ -211,7 +211,7 @@ public final class ModClientSetups {
         return false;
     };
     static final IItemDecorator REPEATER_AMMO = (guiGraphics, font, itemStack, x, y) -> {
-        RepeaterContents data = itemStack.getDataOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
+        RepeaterContents data = itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
         // todo
 //        if (itemStack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
 //            Iterator<ItemStack> itemIterator = handler.getAllItemIterator();

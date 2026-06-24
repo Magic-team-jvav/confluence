@@ -46,7 +46,7 @@ public class HoeShovelItem extends DiggerItem {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        ToolMode toolMode = context.getItemInHand().getData(ConfluenceMagicLib.TOOL_MODE);
+        ToolMode toolMode = context.getItemInHand().get(ConfluenceMagicLib.TOOL_MODE);
         if (toolMode == null || toolMode.mode() == 0) {
             return Items.NETHERITE_SHOVEL.useOn(context);
         } else {
@@ -72,7 +72,7 @@ public class HoeShovelItem extends DiggerItem {
 
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction itemAbility) {
-        ToolMode toolMode = stack.getData(ConfluenceMagicLib.TOOL_MODE.get());
+        ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE);
         if (toolMode == null || toolMode.mode() == 0) {
             return ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(itemAbility);
         }
@@ -80,7 +80,7 @@ public class HoeShovelItem extends DiggerItem {
     }
 
     public Component getModeName(ItemStack stack) {
-        ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE.get());
+        ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE);
         if (toolMode != null && toolMode.mode() == 1) {
             return Component.translatable("message.confluence.hoe_shovel.mode.1").withStyle(ChatFormatting.WHITE);
         }

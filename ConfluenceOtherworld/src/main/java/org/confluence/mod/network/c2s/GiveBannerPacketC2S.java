@@ -30,7 +30,7 @@ public record GiveBannerPacketC2S(String key) implements IPortPacket.C2S {
         BestiaryEntry entry = Bestiary.INSTANCE.getEntries().get(key);
         if (entry != null && entry.isCompleted()) {
             ItemStack stack = ModItems.ENEMY_BANNER.get().getDefaultInstance();
-            stack.setData(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(AbstractEnemyBannerBlock.TAG_ENTRY_KEY, key)));
+            stack.set(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(AbstractEnemyBannerBlock.TAG_ENTRY_KEY, key)));
             player.addItem(stack);
         }
     }

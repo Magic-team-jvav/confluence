@@ -192,7 +192,7 @@ public final class GameClientEvents {
             }
             //连枷按键检测
             ItemStack mainHandItem = player.getMainHandItem();
-            boolean isFlail = mainHandItem.hasData(ModDataComponentTypes.FLAIL);
+            boolean isFlail = mainHandItem.has(ModDataComponentTypes.FLAIL);
             boolean keyHeld = minecraft.options.keyAttack.isDown();
             if (isFlail) {
                 if (keyHeld && !wasFlailKeyHeld) {

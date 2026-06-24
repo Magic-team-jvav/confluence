@@ -198,8 +198,6 @@ public record FlailComponent(
                     Optional.of(Confluence.asResource("geo/entity/flail/guardian_flail.geo.json")),
                     Optional.empty()
             );
-    // todo 链球停留在地面时会对周围的一个敌人发射守卫者激光
-
     // 守卫链球
     public static final Supplier<FlailComponent> ANCIENT_GUARDIAN_FLAIL =
             () -> new FlailComponent(
@@ -218,7 +216,6 @@ public record FlailComponent(
                     Optional.of(Confluence.asResource("geo/entity/flail/ancient_guardian_flail.geo.json")),
                     Optional.empty()
             );
-    // todo 链球停留在地面时会对周围的三个敌人发射守卫者激光
 
 
     // 血肉之球

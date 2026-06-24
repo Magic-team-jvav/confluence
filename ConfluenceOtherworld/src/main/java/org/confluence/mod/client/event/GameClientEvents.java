@@ -191,6 +191,7 @@ public final class GameClientEvents {
             HouseSelectHud.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
             ClientBiomeEffectSystem.tick(player);
+            ClientBeamCache.tick();
             if (ScryingOrb.spectatingPlayer != null && !ScryingOrb.spectatingPlayer.isAlive()) {
                 ScryingOrb.changeTarget(minecraft.level, player);
             }

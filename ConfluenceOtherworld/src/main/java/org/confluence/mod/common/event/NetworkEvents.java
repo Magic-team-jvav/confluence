@@ -49,6 +49,7 @@ public final class NetworkEvents {
                 .playToClient(AchievementsDataSyncPacketS2C.TYPE, AchievementsDataSyncPacketS2C.STREAM_CODEC, AchievementsDataSyncPacketS2C::handle)
                 .playToClient(DragonChargePlayerConfigPacketS2C.TYPE, DragonChargePlayerConfigPacketS2C.STREAM_CODEC, DragonChargePlayerConfigPacketS2C::handle)
                 .playToClient(WormholePlayerDataSyncPacketS2C.TYPE, WormholePlayerDataSyncPacketS2C.STREAM_CODEC, WormholePlayerDataSyncPacketS2C::handle)
+                .playToClient(GuardianFlailBeamPacketS2C.TYPE, GuardianFlailBeamPacketS2C.STREAM_CODEC, GuardianFlailBeamPacketS2C::handle)
 
                 .playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle)
                 .playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle)

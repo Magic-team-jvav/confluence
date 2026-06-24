@@ -5,8 +5,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.FlailComponent;
+import org.confluence.mod.common.item.flail.AncientGuardianFlailItem;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.flail.FlowerPowerItem;
+import org.confluence.mod.common.item.flail.GuardianFlailItem;
 
 /**
  * 连枷物品注册
@@ -26,12 +28,12 @@ public class FlailItems {
             new BaseFlailItem(FlailComponent.WIND_ANCHOR.get(), ModRarity.BLUE));
 
     /** 守卫链球 */
-    public static final DeferredItem<BaseFlailItem> GUARDIAN_FLAIL  = ITEMS.register("guardian_flail", () ->
-            new BaseFlailItem(FlailComponent.GUARDIAN_FLAIL.get(), ModRarity.GREEN));
+    public static final DeferredItem<GuardianFlailItem> GUARDIAN_FLAIL  = ITEMS.register("guardian_flail", () ->
+            new GuardianFlailItem(FlailComponent.GUARDIAN_FLAIL.get(), ModRarity.GREEN));
 
     /** 远古守卫链球 */
-    public static final DeferredItem<BaseFlailItem> ANCIENT_GUARDIAN_FLAIL  = ITEMS.register("ancient_guardian_flail", () ->
-            new BaseFlailItem(FlailComponent.ANCIENT_GUARDIAN_FLAIL.get(), ModRarity.ORANGE));
+    public static final DeferredItem<AncientGuardianFlailItem> ANCIENT_GUARDIAN_FLAIL  = ITEMS.register("ancient_guardian_flail", () ->
+            new AncientGuardianFlailItem(FlailComponent.ANCIENT_GUARDIAN_FLAIL.get(), ModRarity.ORANGE));
 
     /** 链球 */
     public static final DeferredItem<BaseFlailItem> BALL_O_HURT = ITEMS.register("ball_o_hurt", () ->

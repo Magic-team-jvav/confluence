@@ -133,6 +133,9 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
 
         // ── 渲染链条 ──
         renderChain(entity, owner, poseStack, bufferSource, packedLight, partialTick, phase);
+
+        // ── 渲染守卫者激光束 ──
+        GuardianFlailBeamRenderer.renderGuardianBeams(entity, poseStack, bufferSource, partialTick);
     }
 
     /**

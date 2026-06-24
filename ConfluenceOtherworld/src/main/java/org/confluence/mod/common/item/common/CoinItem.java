@@ -19,7 +19,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.registries.PortDeferredItem;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class CoinItem extends BlockItem {
     public final @Nullable PortDeferredItem<CoinItem> upgrade;
 
     public CoinItem(Block block, ModRarity rarity, @Nullable PortDeferredItem<CoinItem> upgrade, int maxStackSize) {
-        super(block, new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity).fireResistant().stacksTo(maxStackSize));
+        super(block, new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity).fireResistant().stacksTo(maxStackSize));
         this.upgrade = upgrade;
     }
 

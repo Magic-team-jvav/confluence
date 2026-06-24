@@ -19,7 +19,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.Optional;
@@ -31,14 +30,14 @@ public class BaseHammerItem extends DiggerItem {
     private boolean hasImage;
 
     public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        this(tier, rawDamage, rawSpeed, new PortItem.PortProperties(), rarity);
+        this(tier, rawDamage, rawSpeed, new Properties(), rarity);
     }
 
-    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, ModRarity rarity) {
+    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 
-    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
+    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.defaultModifiers = ModItems.mergeModifiers(defaultModifiers, consumer);
     }

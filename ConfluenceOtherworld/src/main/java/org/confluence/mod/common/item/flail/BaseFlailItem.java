@@ -18,7 +18,6 @@ import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 /// # 连枷物品基类
 /// 继承 [TooltipItem]，通过 [#use(Level,Player,InteractionHand)] 触发连枷攻击。
@@ -28,8 +27,8 @@ import org.mesdag.portlib.wrapper.world.item.PortItem;
 /// 用法：直接 new BaseFlailItem(flailComponent, rarity) 即可，
 /// 不需要 `ModifierBuilder` 或 `FlailPrefabs`。
 public class BaseFlailItem extends TooltipItem {
-    public BaseFlailItem(@NotNull FlailComponent flailComponent, @NotNull ModRarity rarity) {
-        super(new PortItem.PortProperties().stacksTo(1).component(ModDataComponentTypes.FLAIL, flailComponent), rarity, "");
+    public BaseFlailItem(FlailComponent flailComponent, ModRarity rarity) {
+        super(new Properties().stacksTo(1).component(ModDataComponentTypes.FLAIL, flailComponent), rarity, "");
     }
 
     /// 右键触发连枷状态机：

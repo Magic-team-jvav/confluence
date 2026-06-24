@@ -8,14 +8,13 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.effect.harmful.PotionSicknessEffect;
 import org.confluence.mod.common.init.ModEffects;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class HealingPotionItem extends AbstractPotionItem {
     private final int amount;
     private final int sickNessDuration;
 
     public HealingPotionItem(int amount, ModRarity rarity, int sickNessDuration) {
-        super(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.amount = amount;
         this.sickNessDuration = sickNessDuration;
     }

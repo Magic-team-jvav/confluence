@@ -24,7 +24,6 @@ import org.mesdag.portlib.wrapper.common.PortItemAbilities;
 import org.mesdag.portlib.wrapper.common.PortItemAbility;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import javax.annotation.Nullable;
@@ -44,7 +43,7 @@ public class GardenShearsItem extends ShearsItem {
             PortItemAbilities.AXE_STRIP
     ).map(PortItemAbility::unwrap).collect(Collectors.toCollection(Sets::newIdentityHashSet));
 
-    public GardenShearsItem(PortItem.PortProperties properties, ModRarity rarity) {
+    public GardenShearsItem(Properties properties, ModRarity rarity) {
         super(properties
                 .stacksTo(1)
 //                .component(DataComponents.TOOL, ShearsItem.createToolProperties())

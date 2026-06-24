@@ -8,13 +8,12 @@ import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.arrow.BeeArrowEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import static org.confluence.lib.common.component.ModRarity.YELLOW;
 
 public class TheBeesKnees extends BaseTerraBowItem {
     public TheBeesKnees() {
-        super(6.7F, new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, YELLOW));
+        super(6.7F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, YELLOW));
     }
 
     @Override

@@ -38,7 +38,6 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortItemExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.AttributeHolder;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class BaseSwordItem extends SwordItem implements IPortItemExtension {
     public @Nullable ModifierBuilder modifier;
     private @Nullable TooltipComponent component;
 
-    public BaseSwordItem(Tier tier, int rawDamage, float rawSpeed, PortItem.PortProperties properties) {
+    public BaseSwordItem(Tier tier, int rawDamage, float rawSpeed, Properties properties) {
         super(tier, rawDamage, rawSpeed, properties);
     }
 
@@ -62,7 +61,7 @@ public class BaseSwordItem extends SwordItem implements IPortItemExtension {
 
     /// MC带颜色的剑。无效果
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
-        super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), new PortItem.PortProperties().durability(tier.getUses()).component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), new Properties().durability(tier.getUses()).component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.modifier = new ModifierBuilder();
     }
 
@@ -145,7 +144,7 @@ public class BaseSwordItem extends SwordItem implements IPortItemExtension {
         public boolean canPerformSweep = true;
         public boolean specialSweep = false;
 
-        protected PortItem.PortProperties properties = new PortItem.PortProperties();
+        protected Properties properties = new Properties();
         protected IInventoryTick inventoryTick;
         protected final PortItemAttributeModifiers.PortBuilder attributeModifiersBuilder = PortItemAttributeModifiers.builder();
         protected int modifyCount = 0;
@@ -220,7 +219,7 @@ public class BaseSwordItem extends SwordItem implements IPortItemExtension {
             return this;
         }
 
-        public ModifierBuilder modifyProperties(Consumer<PortItem.PortProperties> modifier) {
+        public ModifierBuilder modifyProperties(Consumer<Properties> modifier) {
             modifier.accept(properties);
             return this;
         }

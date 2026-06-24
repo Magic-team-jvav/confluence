@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item;
 
-import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -23,12 +22,12 @@ public class BaseBullet extends Item {
 
     public BaseBullet(Properties properties, float damage, float velocity, float velocityMultiplier, float knockback, ModRarity rarity, int penetrate, boolean infinity) {
         super(setup(properties, damage, velocity, velocityMultiplier, knockback, rarity, penetrate, infinity));
-        this.component = PortItemExtension.Properties.getComponent(properties, ModDataComponentTypes.BULLET_PROPERTY);
+        this.component = properties.getComponent(ModDataComponentTypes.BULLET_PROPERTY);
     }
 
     private static Properties setup(Properties properties, float damage, float velocity, float velocityMultiplier, float knockback, ModRarity rarity, int penetrate, boolean infinity) {
         BulletPropertyComponent component = new BulletPropertyComponent(damage, velocity, velocityMultiplier, knockback, penetrate, rarity, infinity);
-        PortItemExtension.Properties.component(properties, ModDataComponentTypes.BULLET_PROPERTY, component);
+        properties.component(ModDataComponentTypes.BULLET_PROPERTY, component);
         return properties.stacksTo(9999);
     }
 

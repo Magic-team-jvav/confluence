@@ -20,7 +20,6 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class CrateBlockItem extends BlockItem {
     private final List<Component> commonTooltips;
 
     public CrateBlockItem(Block block, ResourceLocation lootTable) {
-        super(block, new PortItem.PortProperties().fireResistant().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)));
+        super(block, new Properties().fireResistant().component(ModDataComponentTypes.LOOT, new LootComponent(lootTable)));
         this.commonTooltips = createCommonTooltips();
     }
 

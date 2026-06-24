@@ -7,12 +7,11 @@ import net.minecraft.world.entity.LivingEntity;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModEffects;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import software.bernie.geckolib.core.animation.EasingType;
 
 public class DarkLanceItem extends AbstractSpearItem {
     public DarkLanceItem() {
-        super(new PortItem.PortProperties().attributes(attributes(6, 17F)), ModRarity.ORANGE, 10, 3, createKeyframes(
+        super(new Properties().attributes(attributes(6, 17F)), ModRarity.ORANGE, 10, 3, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.17, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.33, -16, EasingType.EASE_IN_EXPO),

@@ -18,7 +18,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -62,7 +61,7 @@ public class RedPotionItem extends AbstractPotionItem {
     }
 
     public RedPotionItem() {
-        super(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED));
     }
 
     @Override

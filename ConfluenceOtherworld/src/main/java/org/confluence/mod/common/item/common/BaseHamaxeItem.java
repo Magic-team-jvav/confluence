@@ -30,7 +30,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.List;
@@ -41,12 +40,12 @@ public class BaseHamaxeItem extends DiggerItem {
     private @Nullable TooltipComponent component;
     private boolean hasImage;
 
-    public BaseHamaxeItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, ModRarity rarity) {
+    public BaseHamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0)));
     }
 
-    public BaseHamaxeItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
+    public BaseHamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0)));
         this.defaultModifiers = ModItems.mergeModifiers(defaultModifiers, consumer);

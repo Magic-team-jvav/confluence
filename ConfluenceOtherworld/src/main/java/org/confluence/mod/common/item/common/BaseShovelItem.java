@@ -8,18 +8,17 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.ModUtils;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class BaseShovelItem extends ShovelItem {
-    public BaseShovelItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties) {
+    public BaseShovelItem(Tier tier, float rawDamage, float rawSpeed, Properties properties) {
         super(tier, ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), properties);
     }
 
     public BaseShovelItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        this(tier, rawDamage, rawSpeed, new PortItem.PortProperties(), rarity);
+        this(tier, rawDamage, rawSpeed, new Properties(), rarity);
     }
 
-    public BaseShovelItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, ModRarity rarity) {
+    public BaseShovelItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(tier, ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 

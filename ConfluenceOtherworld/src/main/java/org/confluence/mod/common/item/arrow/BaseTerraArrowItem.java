@@ -13,10 +13,9 @@ import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class BaseTerraArrowItem extends ArrowItem {
-    public BaseTerraArrowItem(PortItem.PortProperties properties) {
+    public BaseTerraArrowItem(Properties properties) {
         super(properties);
     }
 

@@ -15,17 +15,16 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.ModUtils;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.function.Consumer;
 
 public class BasePickaxeAxeItem extends DiggerItem {
-    public BasePickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, ModRarity rarity) {
+    public BasePickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 
-    public BasePickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
+    public BasePickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.defaultModifiers = ModItems.mergeModifiers(defaultModifiers, consumer);
     }

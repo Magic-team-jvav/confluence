@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.armor;
 
-import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -18,7 +17,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
 import org.confluence.mod.common.init.armor.ModArmorMaterials;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -33,17 +31,17 @@ public class BaseVanityArmorItem extends BaseArmorItem implements GeoItem {
     protected final String name;
 
     public BaseVanityArmorItem(String name, ArmorItem.Type type, ModRarity rarity) {
-        this(name, ModArmorMaterials.VANITY_ARMOR_MATERIALS.get(), type, new PortItem.PortProperties(), rarity);
+        this(name, ModArmorMaterials.VANITY_ARMOR_MATERIALS.get(), type, new Properties(), rarity);
     }
 
     public BaseVanityArmorItem(String name, ArmorMaterial material, ArmorItem.Type type, ModRarity rarity) {
-        this(name, material, type, new PortItem.PortProperties(), rarity);
+        this(name, material, type, new Properties(), rarity);
     }
 
-    public BaseVanityArmorItem(String name, ArmorMaterial material, ArmorItem.Type type, PortItem.PortProperties properties, ModRarity rarity) {
+    public BaseVanityArmorItem(String name, ArmorMaterial material, ArmorItem.Type type, Properties properties, ModRarity rarity) {
         super(material, type, properties.stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.name = name;
-        PortItemAttributeModifiers attributes = PortItemExtension.Properties.getAttributes(properties);
+        PortItemAttributeModifiers attributes = properties.getAttributes();
         if (attributes != null) {
             this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
                     .putAll(defaultModifiers)

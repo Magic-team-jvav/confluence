@@ -28,7 +28,6 @@ import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +40,7 @@ public class BaitItem extends Item implements IBait {
     private final Consumer<Entity> consumer;
 
     public BaitItem(ModRarity rarity, float bonus, @Nullable Supplier<? extends EntityType<?>> supplier, Consumer<Entity> consumer) {
-        super(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity).stacksTo(9999));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity).stacksTo(9999));
         this.bonus = bonus;
         this.supplier = supplier;
         this.consumer = consumer;

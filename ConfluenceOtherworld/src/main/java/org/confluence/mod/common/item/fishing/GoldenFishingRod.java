@@ -11,13 +11,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class GoldenFishingRod extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("golden_fishing");
 
     public GoldenFishingRod() {
-        super(new PortItem.PortProperties().unbreakable(), ModRarity.ORANGE);
+        super(new Properties().unbreakable(), ModRarity.ORANGE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
     }
 

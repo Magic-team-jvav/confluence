@@ -5,7 +5,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Tier;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.common.component.ModRarity;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -18,7 +17,7 @@ import java.util.function.Consumer;
 public class GeoSwordItem extends BaseSwordItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public GeoSwordItem(Tier tier, int rawDamage, float rawSpeed, PortItem.PortProperties properties) {
+    public GeoSwordItem(Tier tier, int rawDamage, float rawSpeed, Properties properties) {
         super(tier, rawDamage, rawSpeed, properties);
     }
 

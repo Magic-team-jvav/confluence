@@ -15,7 +15,6 @@ import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.BaseHammerItem;
 import org.confluence.mod.common.item.common.BaseShovelItem;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.function.Supplier;
 
@@ -76,7 +75,7 @@ public class GraveDiggersShovel extends BaseShovelItem {
         return map;
     });
 
-    public GraveDiggersShovel(float rawDamage, float rawSpeed, PortItem.PortProperties properties, ModRarity rarity) {
+    public GraveDiggersShovel(float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(ModTiers.GRAVE_DIGGERS_TIER, rawDamage, rawSpeed, properties, rarity);
     }
 

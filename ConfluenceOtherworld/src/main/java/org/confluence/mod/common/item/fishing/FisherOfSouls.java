@@ -11,13 +11,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class FisherOfSouls extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("fisher_of_souls");
 
     public FisherOfSouls() {
-        super(new PortItem.PortProperties().unbreakable(), ModRarity.BLUE);
+        super(new Properties().unbreakable(), ModRarity.BLUE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
     }
 

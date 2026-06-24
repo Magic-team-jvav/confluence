@@ -13,7 +13,6 @@ import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import static org.confluence.mod.common.entity.minecart.BaseMinecartEntity.*;
 
@@ -23,14 +22,14 @@ public class MinecartItems {
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    public static final PortDeferredItem<BaseMinecartItem> MECHANICAL_CART = ITEMS.register("mechanical_cart", () -> new BaseMinecartItem(new PortItem.PortProperties().fireResistant(), ModRarity.EXPERT, Types.MECHANICAL, MechanicalCartEntity::new));
+    public static final PortDeferredItem<BaseMinecartItem> MECHANICAL_CART = ITEMS.register("mechanical_cart", () -> new BaseMinecartItem(new Item.Properties().fireResistant(), ModRarity.EXPERT, Types.MECHANICAL, MechanicalCartEntity::new));
     public static final PortDeferredItem<BaseMinecartItem> DESERT_MINECART = registerGeneric("desert_minecart", Types.DESERT, Variant.DESERT);
-    public static final PortDeferredItem<BaseMinecartItem> MINECARP = ITEMS.register("minecarp", () -> new BaseMinecartItem(new PortItem.PortProperties(), ModRarity.BLUE, Types.MINECARP, MinecarpEntity::new));
+    public static final PortDeferredItem<BaseMinecartItem> MINECARP = ITEMS.register("minecarp", () -> new BaseMinecartItem(new Item.Properties(), ModRarity.BLUE, Types.MINECARP, MinecarpEntity::new));
     public static final PortDeferredItem<BaseMinecartItem> BEE_MINECART = registerGeneric("bee_minecart", Types.BEE, Variant.BEE);
     public static final PortDeferredItem<BaseMinecartItem> LADYBUG_MINECART = registerGeneric("ladybug_minecart", Types.LADYBUG, Variant.LADYBUG);
     public static final PortDeferredItem<BaseMinecartItem> PIGRON_MINECART = registerGeneric("pigron_minecart", Types.PIGRON, Variant.PIGRON);
     public static final PortDeferredItem<BaseMinecartItem> SUNFLOWER_MINECART = registerGeneric("sunflower_minecart", Types.SUNFLOWER, Variant.SUNFLOWER);
-    public static final PortDeferredItem<BaseMinecartItem> DEMONIC_HELLCART = ITEMS.register("demonic_hellcart", () -> new BaseMinecartItem(new PortItem.PortProperties(), ModRarity.BLUE, Types.DEMONIC, DemonicHellcartEntity::new));
+    public static final PortDeferredItem<BaseMinecartItem> DEMONIC_HELLCART = ITEMS.register("demonic_hellcart", () -> new BaseMinecartItem(new Item.Properties(), ModRarity.BLUE, Types.DEMONIC, DemonicHellcartEntity::new));
     public static final PortDeferredItem<BaseMinecartItem> SHROOM_MINECART = registerGeneric("shroom_minecart", Types.SHROOM, Variant.SHROOM);
     public static final PortDeferredItem<BaseMinecartItem> AMETHYST_MINECART = registerGeneric("amethyst_minecart", Types.AMETHYST, Variant.AMETHYST);
     public static final PortDeferredItem<BaseMinecartItem> TOPAZ_MINECART = registerGeneric("topaz_minecart", Types.TOPAZ, Variant.TOPAZ);
@@ -40,17 +39,17 @@ public class MinecartItems {
     public static final PortDeferredItem<BaseMinecartItem> DIAMOND_MINECART = registerGeneric("diamond_minecart", Types.DIAMOND, Variant.DIAMOND);
     public static final PortDeferredItem<BaseMinecartItem> AMBER_MINECART = registerGeneric("amber_minecart", Types.AMBER, Variant.AMBER);
     public static final PortDeferredItem<BaseMinecartItem> BEETLE_MINECART = registerGeneric("beetle_minecart", Types.BEETLE, Variant.BEETLE);
-    public static final PortDeferredItem<BaseMinecartItem> MEOWMERE_MINECART = ITEMS.register("meowmere", () -> new BaseMinecartItem(new PortItem.PortProperties(), ModRarity.RED, Types.MEOWMERE, MeowmereMinecartEntity::new));
+    public static final PortDeferredItem<BaseMinecartItem> MEOWMERE_MINECART = ITEMS.register("meowmere", () -> new BaseMinecartItem(new Item.Properties(), ModRarity.RED, Types.MEOWMERE, MeowmereMinecartEntity::new));
     public static final PortDeferredItem<BaseMinecartItem> PARTY_WAGON = registerGeneric("party_wagon", Types.PARTY, Variant.PARTY);
     public static final PortDeferredItem<BaseMinecartItem> THE_DUTCHMAN = registerGeneric("the_dutchman", Types.DUTCHMAN, Variant.DUTCHMAN);
     public static final PortDeferredItem<BaseMinecartItem> STEAMPUNK_MINECART = registerGeneric("steampunk_minecart", Types.STEAMPUNK, Variant.STEAMPUNK);
     public static final PortDeferredItem<BaseMinecartItem> COFFIN_MINECART = registerGeneric("coffin_minecart", Types.COFFIN, Variant.COFFIN);
-    public static final PortDeferredItem<BaseMinecartItem> DIGGING_MOLECART = ITEMS.register("digging_molecart", () -> new BaseMinecartItem(new PortItem.PortProperties(), ModRarity.BLUE, Types.MOLECART, DiggingMolecartEntity::new));
-    public static final PortDeferredItem<BaseMinecartItem> FART_KART = ITEMS.register("fart_kart", () -> new BaseMinecartItem(new PortItem.PortProperties(), ModRarity.GREEN, Types.FART, (level, x, y, z, abilities) -> new GenericMinecartEntity(level, x, y, z, abilities, Variant.FART)));
-    public static final PortDeferredItem<BaseMinecartItem> TERRA_FART_KART = ITEMS.register("terra_fart_kart", () -> new BaseMinecartItem(new PortItem.PortProperties(), ModRarity.YELLOW, Types.TERRA_FART, (level, x, y, z, abilities) -> new GenericMinecartEntity(level, x, y, z, abilities, Variant.TERRA_FART)));
+    public static final PortDeferredItem<BaseMinecartItem> DIGGING_MOLECART = ITEMS.register("digging_molecart", () -> new BaseMinecartItem(new Item.Properties(), ModRarity.BLUE, Types.MOLECART, DiggingMolecartEntity::new));
+    public static final PortDeferredItem<BaseMinecartItem> FART_KART = ITEMS.register("fart_kart", () -> new BaseMinecartItem(new Item.Properties(), ModRarity.GREEN, Types.FART, (level, x, y, z, abilities) -> new GenericMinecartEntity(level, x, y, z, abilities, Variant.FART)));
+    public static final PortDeferredItem<BaseMinecartItem> TERRA_FART_KART = ITEMS.register("terra_fart_kart", () -> new BaseMinecartItem(new Item.Properties(), ModRarity.YELLOW, Types.TERRA_FART, (level, x, y, z, abilities) -> new GenericMinecartEntity(level, x, y, z, abilities, Variant.TERRA_FART)));
 
     private static PortDeferredItem<BaseMinecartItem> registerGeneric(String name, Abilities<GenericMinecartEntity> abilities, Variant variant) {
-        return ITEMS.register(name, () -> new BaseMinecartItem(new PortItem.PortProperties(), ModRarity.BLUE, abilities, (level, x, y, z, abilities1) -> new GenericMinecartEntity(level, x, y, z, abilities1, variant)));
+        return ITEMS.register(name, () -> new BaseMinecartItem(new Item.Properties(), ModRarity.BLUE, abilities, (level, x, y, z, abilities1) -> new GenericMinecartEntity(level, x, y, z, abilities1, variant)));
     }
 
     public static class Types {

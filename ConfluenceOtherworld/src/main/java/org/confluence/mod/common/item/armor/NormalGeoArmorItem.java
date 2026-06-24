@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.armor;
 
-import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +31,7 @@ public class NormalGeoArmorItem extends BaseArmorItem implements GeoItem {
     }
 
     public NormalGeoArmorItem(String name, ModRarity rarity, ArmorMaterial material, Type type, Properties properties) {
-        super(material, type, PortItemExtension.Properties.component(properties, ConfluenceMagicLib.MOD_RARITY, rarity));
+        super(material, type, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.name = name;
     }
 

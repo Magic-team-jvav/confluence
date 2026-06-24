@@ -18,7 +18,6 @@ import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.mesdag.portlib.wrapper.common.extensions.IPortBowItemExtension;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 
@@ -26,10 +25,10 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
     private final float baseDamage;
 
     public BaseTerraBowItem(float baseDamage) {
-        this(baseDamage, new PortItem.PortProperties());
+        this(baseDamage, new Properties());
     }
 
-    public BaseTerraBowItem(float baseDamage, PortItem.PortProperties properties) {
+    public BaseTerraBowItem(float baseDamage, Properties properties) {
         super(properties.stacksTo(1));
         this.baseDamage = baseDamage;
     }

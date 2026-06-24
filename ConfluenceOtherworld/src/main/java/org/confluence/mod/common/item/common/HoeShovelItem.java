@@ -25,14 +25,13 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 public class HoeShovelItem extends DiggerItem {
-    public HoeShovelItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
+    public HoeShovelItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_HOE_SHOVEL, properties
                 .component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0)));

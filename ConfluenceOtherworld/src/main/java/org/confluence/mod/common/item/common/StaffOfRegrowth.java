@@ -35,7 +35,6 @@ import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.diff.Diff;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +45,7 @@ public class StaffOfRegrowth extends CustomRarityItem {
     private @Nullable TooltipComponent component;
 
     public StaffOfRegrowth() {
-        super(new PortItem.PortProperties().stacksTo(1), ModRarity.GREEN);
+        super(new Properties().stacksTo(1), ModRarity.GREEN);
         this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
                 .put(LibAttributes.getAttackDamage().value(), new AttributeModifier(
                         PortAttributeModifier.rl2uuid(ModItems.BASE_ATTACK_DAMAGE_ID),

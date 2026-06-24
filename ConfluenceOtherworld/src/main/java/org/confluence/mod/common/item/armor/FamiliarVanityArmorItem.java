@@ -13,7 +13,6 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.function.Consumer;
 
@@ -26,7 +25,7 @@ public class FamiliarVanityArmorItem extends BaseVanityArmorItem {
         super(DEFAULT_NAME, material, type, ModRarity.WHITE);
     }
 
-    public FamiliarVanityArmorItem(ArmorMaterial material, Type type, PortItem.PortProperties properties) {
+    public FamiliarVanityArmorItem(ArmorMaterial material, Type type, Properties properties) {
         super(DEFAULT_NAME, material, type, properties, ModRarity.WHITE);
     }
 

@@ -20,13 +20,12 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 
 public class RightClickLootItem extends CustomRarityItem {
     public RightClickLootItem(ModRarity rarity, ResourceLocation lootTable) {
-        super(new PortItem.PortProperties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)), rarity);
+        super(new Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)), rarity);
     }
 
     @Override

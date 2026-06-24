@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -167,7 +166,7 @@ public class MaterialItems {
     public static final PortDeferredItem<Item> SOUL_OF_MIGHT = ITEMS.register("soul_of_might", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_might", 1, ChatFormatting.GRAY)));
     public static final PortDeferredItem<Item> SOUL_OF_SIGHT = ITEMS.register("soul_of_sight", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_sight", 1, ChatFormatting.GRAY)));
     public static final PortDeferredItem<Item> SOUL_OF_BRIGHT = ITEMS.register("soul_of_bright", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_bright", 1, ChatFormatting.GRAY)));
-    public static final PortDeferredItem<Item> CRYSTAL_SHARDS = ITEMS.register("crystal_shards", () -> new BlockItem(NatureBlocks.CRYSTAL_SHARDS.get(), PortItemExtension.Properties.component(new Item.Properties(), ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
+    public static final PortDeferredItem<Item> CRYSTAL_SHARDS = ITEMS.register("crystal_shards", () -> new BlockItem(NatureBlocks.CRYSTAL_SHARDS.get(), new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
     //    public static final PortDeferredItem<Item> CURSED_FLAME = ITEMS.register("cursed_flame", CursedFlameItem::new);
     public static final PortDeferredItem<Item> ICHOR = register("ichor", ModRarity.ORANGE);
     public static final PortDeferredItem<Item> PIXIE_DUST = register("pixie_dust", ModRarity.BLUE);

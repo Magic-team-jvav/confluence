@@ -40,7 +40,6 @@ import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.function.Consumer;
@@ -50,15 +49,15 @@ public abstract class AbstractFishingPole extends FishingRodItem {
     public static final String HAS_BAIT_KEY = "HasBait";
     protected PortItemAttributeModifiers modifiers;
 
-    public AbstractFishingPole(PortItem.PortProperties properties) {
+    public AbstractFishingPole(Properties properties) {
         super(properties.stacksTo(1));
     }
 
     public AbstractFishingPole(ModRarity rarity) {
-        this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 
-    public AbstractFishingPole(PortItem.PortProperties properties, ModRarity rarity) {
+    public AbstractFishingPole(Properties properties, ModRarity rarity) {
         this(properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 

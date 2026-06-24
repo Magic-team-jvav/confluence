@@ -24,11 +24,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.confluence.mod.common.entity.ai.goal.AccelerateOnSeeingGoal;
 import org.confluence.mod.common.entity.monster.prefab.AbstractPrefab;
 import org.confluence.mod.common.init.entity.MonstersEntities;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -49,9 +49,10 @@ public class Nymph extends AbstractMonster {
     private UUID conversionStarter;
     private int conversionTime;
 
-    private static final EntityDataAccessor<Boolean> DATA_CONVERTING_ID = SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);;
-    private static final EntityDataAccessor<Boolean> DATA_TRIGGER =  SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DATA_TAMED =  SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_CONVERTING_ID = SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);
+    ;
+    private static final EntityDataAccessor<Boolean> DATA_TRIGGER = SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_TAMED = SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);
 
     public Nymph(EntityType<? extends Monster> type, Level level) {
         super(type, level, new AbstractPrefab().getPrefab());
@@ -60,11 +61,11 @@ public class Nymph extends AbstractMonster {
     }
 
     @Override
-    protected EntityDimensions getDefaultDimensions(Pose pose) {
-        if(!this.isTrigger() && !isTamed) {
-            return super.getDefaultDimensions(pose).scale(1, 0.75f).withEyeHeight(1.05f);
+    public EntityDimensions getDimensions(Pose pose) {
+        if (!isTrigger() && !isTamed) {
+            return super.getDimensions(pose).scale(1, 0.75F).withEyeHeight(1.05F);
         }
-        return super.getDefaultDimensions(pose);
+        return super.getDimensions(pose);
     }
 
     @Override
@@ -74,7 +75,6 @@ public class Nymph extends AbstractMonster {
         this.entityData.define(DATA_CONVERTING_ID, false);
         this.entityData.define(DATA_TAMED, false);
     }
-
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -92,9 +92,9 @@ public class Nymph extends AbstractMonster {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if(key == DATA_TRIGGER) {
+        if (key == DATA_TRIGGER) {
             refreshDimensions();
-        }else if(key == DATA_TAMED){
+        } else if (key == DATA_TAMED) {
             this.isTamed = this.entityData.get(DATA_TAMED);
             refreshDimensions();
         }
@@ -102,14 +102,14 @@ public class Nymph extends AbstractMonster {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 0.6D, true){
+        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 0.6D, true) {
             @Override
             public boolean canUse() {
                 return !Nymph.this.isTamed && super.canUse() && delayTime > 20;
             }
         });
         this.lookAtPlayerGoal = new NymphLookAtPlayerGoal(this, Player.class, 10f);
-        this.goalSelector.addGoal(5, new RandomStrollGoal(this,1.0f,10,true){
+        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0f, 10, true) {
             @Override
             public boolean canUse() {
                 return Nymph.this.isTamed && super.canUse();
@@ -125,13 +125,13 @@ public class Nymph extends AbstractMonster {
 //            }
 //        });
 
-        this.targetSelector.addGoal(1,new AccelerateOnSeeingGoal(this,0.25f){
+        this.targetSelector.addGoal(1, new AccelerateOnSeeingGoal(this, 0.25f) {
             @Override
             public boolean canUse() {
                 return !Nymph.this.isTamed && super.canUse() && delayTime > 20;
             }
         });
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class,false, LivingEntity::canBeSeenAsEnemy){
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, LivingEntity::canBeSeenAsEnemy) {
             @Override
             public boolean canUse() {
                 return super.canUse() && tickCount > 50;
@@ -140,21 +140,18 @@ public class Nymph extends AbstractMonster {
     }
 
     public static class NymphLookAtPlayerGoal extends LookAtPlayerGoal {
-
         public NymphLookAtPlayerGoal(Mob mob, Class<? extends LivingEntity> lookAtType, float lookDistance) {
             super(mob, lookAtType, lookDistance, 1);
         }
 
-        private Entity getLook(){
+        private Entity getLook() {
             return lookAt;
         }
-
     }
 
-    protected Entity getLook(){
-        return lookAtPlayerGoal == null? null : lookAtPlayerGoal.getLook();
+    protected Entity getLook() {
+        return lookAtPlayerGoal == null ? null : lookAtPlayerGoal.getLook();
     }
-
 
     public boolean isTrigger() {
         return this.entityData.get(DATA_TRIGGER);
@@ -165,15 +162,16 @@ public class Nymph extends AbstractMonster {
     }
 
     @Override
-    public void tick(){
+    public void tick() {
         super.tick();
 
-        if(!level().isClientSide){
-            if(getTarget() != null && tickCount > 50){
-                // 有目标且距离小于5时准备变异                if(distanceToSqr(getTarget()) < 25)
+        if (!level().isClientSide) {
+            if (getTarget() != null && tickCount > 50) {
+                // 有目标,且距离小于5,时准备变异
+                if (distanceToSqr(getTarget()) < 25)
                     setTrigger(!isTamed);
             }
-            if(!this.isTrigger()) {
+            if (!this.isTrigger()) {
                 this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(5);
                 this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.25f);
                 // 未变异时眼睛朝向
@@ -182,18 +180,19 @@ public class Nymph extends AbstractMonster {
                     delayTime = 0;
 
                 } else {
-                    if(!isTamed())
+                    if (!isTamed())
                         setYRot(getYHeadRot());
                 }
                 setSprinting(false);
-            }else{
+            } else {
                 this.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(32);
 
                 delayTime++;
 
-                // 变异后恢复计数                if(getTarget() == null){
+                // 变异后恢复计时
+                if (getTarget() == null) {
                     recoverTime++;
-                    if(recoverTime > _recoverTime){
+                    if (recoverTime > _recoverTime) {
                         setTrigger(false);
                         recoverTime = 0;
                         delayTime = 0;
@@ -209,10 +208,9 @@ public class Nymph extends AbstractMonster {
             if (this.conversionTime <= 0 && ForgeEventFactory.canLivingConvert(this, MonstersEntities.NYMPH.get(), (timer) -> {
                 this.conversionTime = timer;
             })) {
-                this.finishConversion((ServerLevel)this.level());
+                this.finishConversion((ServerLevel) this.level());
             }
         }
-
     }
 
     private int getConversionProgress() {
@@ -227,7 +225,7 @@ public class Nymph extends AbstractMonster {
             serverLevel.levelEvent(null, 1027, this.blockPosition(), 0);
         }
         this.setTamed(true);
-        setTrigger( false);
+        setTrigger(false);
         ForgeEventFactory.onLivingConvert(this, this);
     }
 
@@ -248,19 +246,16 @@ public class Nymph extends AbstractMonster {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.is(Items.GOLDEN_APPLE)) {
-            if (this.hasEffect(MobEffects.WEAKNESS) && !this.isTamed) {
+            if (hasEffect(MobEffects.WEAKNESS) && !this.isTamed) {
                 itemstack.consume(1, player);
-                if (!this.level().isClientSide) {
-                    this.startConverting(player.getUUID(), initConversionTime());
+                if (!level().isClientSide) {
+                    startConverting(player.getUUID(), initConversionTime());
                 }
-
                 return InteractionResult.SUCCESS;
-            } else {
-                return InteractionResult.CONSUME;
             }
-        } else {
-            return super.mobInteract(player, hand);
+            return InteractionResult.CONSUME;
         }
+        return super.mobInteract(player, hand);
     }
 
     protected int initConversionTime() {
@@ -269,7 +264,7 @@ public class Nymph extends AbstractMonster {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
-        this.entityData.set(DATA_TAMED, false, true);
+        entityData.set(DATA_TAMED, false, true);
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
 
@@ -279,21 +274,19 @@ public class Nymph extends AbstractMonster {
         this.getEntityData().set(DATA_CONVERTING_ID, true);
         this.removeEffect(MobEffects.WEAKNESS);
         this.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, villagerConversionTime, Math.min(this.level().getDifficulty().getId() - 1, 0)));
-        this.level().broadcastEntityEvent(this, (byte)16);
+        this.level().broadcastEntityEvent(this, (byte) 16);
     }
 
 
-    RawAnimation sit = RawAnimation.begin().thenLoop("sit");
-    RawAnimation dash = RawAnimation.begin().thenLoop("dash");
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<GeoAnimatable>(this, "controller", 10, state->{
-            if(isTamed){
-
+        RawAnimation sit = RawAnimation.begin().thenLoop("sit");
+        RawAnimation dash = RawAnimation.begin().thenLoop("dash");
+        controllers.add(new AnimationController<>(this, "controller", 10, state -> {
+            if (isTamed) {
                 return state.setAndContinue(state.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
             }
-            if(!isTrigger()){
+            if (!isTrigger()) {
                 return state.setAndContinue(sit);
             }
             return state.setAndContinue(dash);
@@ -312,7 +305,7 @@ public class Nymph extends AbstractMonster {
     }
 
     @Override
-    public boolean canBeLeashed() {
+    public boolean canBeLeashed(Player player) {
         return isTamed;
     }
 
@@ -321,6 +314,7 @@ public class Nymph extends AbstractMonster {
         return super.canBeSeenAsEnemy() && !isTamed;
     }
 
+    @Override
     protected Vec3 getLeashOffset() {
         return new Vec3(-0.3, this.getEyeHeight() * 0.5f, this.getBbWidth() * 0.1F);
     }

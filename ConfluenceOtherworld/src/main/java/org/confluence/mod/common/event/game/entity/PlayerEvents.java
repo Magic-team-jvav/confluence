@@ -55,12 +55,14 @@ import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
+import org.confluence.mod.common.entity.monster.WoodenMimic;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.MonstersEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
@@ -428,7 +430,7 @@ public final class PlayerEvents {
             }
             if (key == null) break mimic;
             if (key.is(ToolItems.KEY_OF_LIGHT.get())) {
-                WoodenMimic mimic = TEMonsterEntities.HALLOWED_MIMIC.get().create(level);
+                WoodenMimic mimic = MonstersEntities.HALLOWED_MIMIC.get().create(level);
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
                 }
@@ -441,9 +443,9 @@ public final class PlayerEvents {
                 }
                 WoodenMimic mimic;
                 if (summonCorruption) {
-                    mimic = TEMonsterEntities.CORRUPT_MIMIC.get().create(level);
+                    mimic = MonstersEntities.CORRUPT_MIMIC.get().create(level);
                 } else {
-                    mimic = TEMonsterEntities.CRIMSON_MIMIC.get().create(level);
+                    mimic = MonstersEntities.CRIMSON_MIMIC.get().create(level);
                 }
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);

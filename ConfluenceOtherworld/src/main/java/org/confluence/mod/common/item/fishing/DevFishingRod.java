@@ -7,11 +7,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class DevFishingRod extends AbstractFishingPole {
     public DevFishingRod() {
-        super(new PortItem.PortProperties().unbreakable(), ModRarity.MASTER);
+        super(new Properties().unbreakable(), ModRarity.MASTER);
     }
 
     @Override

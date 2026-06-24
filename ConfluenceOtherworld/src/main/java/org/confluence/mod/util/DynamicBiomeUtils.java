@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
-import net.minecraftforge.common.Tags;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.lib.util.consumer.shorts.ShortConsumer2;
@@ -28,6 +27,7 @@ import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IPalettedContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -52,7 +52,7 @@ public final class DynamicBiomeUtils {
             .put(block -> block.is(Blocks.SUNFLOWER), (count, counter) -> counter.sunflower += count)
             .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (count, counter) -> counter.tomb += count)
             .put(block -> block.is(OreBlocks.CHLOROPHYTE_ORE.get()), (count, counter) -> counter.chlorophyte += count)
-            .put(block -> block.getFluidState().is(Tags.Fluids.WATER), (count, counter) -> counter.water += count)
+            .put(block -> block.getFluidState().is(PortTags.Fluids.WATER), (count, counter) -> counter.water += count)
             .build();
 
     /// 动态群系的优先级，数字小的优先级高

@@ -5,6 +5,7 @@ import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import org.confluence.mod.common.entity.monster.WoodenMimic;
 
 public class CustomMimicSummonKeyEvent extends PlayerEvent {
     private final ItemStack key;

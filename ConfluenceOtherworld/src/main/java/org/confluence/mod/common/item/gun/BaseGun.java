@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.gun;
 
-import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -176,7 +175,7 @@ public class BaseGun extends Item implements GeoItem {
         private int maxBullets = 1;
         private int manaCost = 0;
         private BulletEntityFactory bulletEntityFactory = null;
-        private Item.Properties properties = new Item.Properties();
+        private Item.Properties properties = new Properties();
 
         public Builder(int cooldown, float damage, float velocity) {
             this.cooldown = cooldown;
@@ -237,7 +236,7 @@ public class BaseGun extends Item implements GeoItem {
 
         private Item.Properties buildProperties() {
             GunPropertyComponent component = new GunPropertyComponent(cooldown, damage, velocity, knockback, critical, penetrate, rarity);
-            PortItemExtension.Properties.component(properties, ModDataComponentTypes.GUN_PROPERTY, component);
+            properties.component(ModDataComponentTypes.GUN_PROPERTY, component);
             return properties.stacksTo(1);
         }
 

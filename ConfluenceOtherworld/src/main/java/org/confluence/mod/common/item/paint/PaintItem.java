@@ -6,11 +6,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class PaintItem extends Item {
     public PaintItem(int rgb) {
-        super(new PortItem.PortProperties().stacksTo(99).dyedColor(rgb, true));
+        super(new Properties().stacksTo(99).dyedColor(rgb, true));
     }
 
     public static int getRGB(ItemStack stack) {

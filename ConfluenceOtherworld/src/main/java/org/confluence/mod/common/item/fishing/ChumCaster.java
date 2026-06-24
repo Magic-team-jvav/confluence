@@ -11,13 +11,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class ChumCaster extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("chum_caster");
 
     public ChumCaster() {
-        super(new PortItem.PortProperties().unbreakable(), ModRarity.GREEN);
+        super(new Properties().unbreakable(), ModRarity.GREEN);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.25, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
     }
 

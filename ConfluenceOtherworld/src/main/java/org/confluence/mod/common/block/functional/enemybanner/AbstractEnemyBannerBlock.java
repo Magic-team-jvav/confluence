@@ -36,7 +36,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 
@@ -153,7 +152,7 @@ public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
             super(
                     ModBlocks.ENEMY_BANNER.get(),
                     ModBlocks.WALL_ENEMY_BANNER.get(),
-                    new PortItem.PortProperties()
+                    new Item.Properties()
                             .component(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(TAG_ENTRY_KEY, DEFAULT_ENTRY_KEY)))
                             .component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
                     Direction.DOWN

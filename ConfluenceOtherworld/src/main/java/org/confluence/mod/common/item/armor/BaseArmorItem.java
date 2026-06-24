@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.armor;
 
-import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -28,7 +27,6 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import org.mesdag.portlib.wrapper.world.item.PortArmorMaterial;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +69,7 @@ public class BaseArmorItem extends ArmorItem {
         private final String name;
         private final ArmorMaterial material;
         private final ArmorItem.Type type;
-        private final PortItem.PortProperties properties = new PortItem.PortProperties();
+        private final Properties properties = new Properties();
         private String geoName = null;
         private ModRarity rarity = ModRarity.WHITE;
         private int lineCount = 0;
@@ -97,7 +95,7 @@ public class BaseArmorItem extends ArmorItem {
             return id;
         }
 
-        public Builder properties(Consumer<PortItem.PortProperties> consumer) {
+        public Builder properties(Consumer<Properties> consumer) {
             consumer.accept(properties);
             return this;
         }
@@ -187,10 +185,10 @@ public class BaseArmorItem extends ArmorItem {
             if (durability > 0) {
                 properties.durability(durability);
             } else {
-                PortItemExtension.Properties.unbreakable(properties);
+                properties.unbreakable();
             }
             if (types != null) {
-                PortItemExtension.Properties.component(properties, ModDataComponentTypes.ARMOR_BONUS, new PrimitiveValueComponent(types));
+                properties.component(ModDataComponentTypes.ARMOR_BONUS, new PrimitiveValueComponent(types));
             }
             BaseArmorItem item;
             if (geoName != null) {

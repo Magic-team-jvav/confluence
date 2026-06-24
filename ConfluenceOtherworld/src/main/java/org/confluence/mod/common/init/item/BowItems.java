@@ -8,7 +8,6 @@ import org.confluence.mod.common.item.bow.*;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 /// 弓箭位置修正参考[ArrowInBowRenderer]
 public class BowItems {
@@ -74,6 +73,6 @@ public class BowItems {
 
     /// 注册有耐久的弓
     public static PortDeferredItem<BaseTerraBowItem> register(String name, float damage, int durability) {
-        return register(name, () -> new BaseTerraBowItem(damage, new PortItem.PortProperties().durability(durability)));
+        return register(name, () -> new BaseTerraBowItem(damage, new Item.Properties().durability(durability)));
     }
 }

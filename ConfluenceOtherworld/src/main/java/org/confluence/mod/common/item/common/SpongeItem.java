@@ -17,7 +17,6 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.function.Predicate;
@@ -26,7 +25,7 @@ public class SpongeItem extends TooltipItem {
     private final Predicate<BlockState> fluidPredicate;
 
     public SpongeItem(ModRarity rarity, String name, int blockInteractionRange, Predicate<BlockState> fluidPredicate) {
-        super(new PortItem.PortProperties().stacksTo(1).attributes(PortItemAttributeModifiers.builder()
+        super(new Properties().stacksTo(1).attributes(PortItemAttributeModifiers.builder()
                 .add(PortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(
                         Confluence.asResource(name), blockInteractionRange, PortAttributeModifier.PortOperation.ADD_VALUE
                 ), PortEquipmentSlotGroup.MAINHAND)

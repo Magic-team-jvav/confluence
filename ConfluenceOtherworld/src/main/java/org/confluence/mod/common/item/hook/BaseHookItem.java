@@ -15,7 +15,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class BaseHookItem extends Item {
     protected final int amount;
@@ -24,7 +23,7 @@ public class BaseHookItem extends Item {
     protected final HookType type;
     protected final HookEntityFactory factory;
 
-    public BaseHookItem(PortItem.PortProperties properties, ModRarity rarity, int amount, float range, float velocity, HookType type, HookEntityFactory factory) {
+    public BaseHookItem(Properties properties, ModRarity rarity, int amount, float range, float velocity, HookType type, HookEntityFactory factory) {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY, rarity).stacksTo(1));
         this.amount = amount;
         this.range = range;
@@ -34,7 +33,7 @@ public class BaseHookItem extends Item {
     }
 
     public BaseHookItem(ModRarity rarity, int amount, float range, float velocity, HookType type, HookEntityFactory factory) {
-        this(new PortItem.PortProperties(), rarity, amount, range, velocity, type, factory);
+        this(new Properties(), rarity, amount, range, velocity, type, factory);
     }
 
     public int getHookAmount() {

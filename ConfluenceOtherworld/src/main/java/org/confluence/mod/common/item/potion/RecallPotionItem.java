@@ -8,11 +8,10 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCSoundEvents;
 import org.confluence.terra_curio.common.item.MagicMirror;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class RecallPotionItem extends AbstractPotionItem {
     public RecallPotionItem() {
-        super(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
     }
 
     @Override

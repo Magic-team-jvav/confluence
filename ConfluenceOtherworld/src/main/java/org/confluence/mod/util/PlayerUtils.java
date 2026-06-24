@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.ToolActions;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.util.LibDateUtils;
@@ -438,7 +439,7 @@ public final class PlayerUtils {
         if (!player.isAutoSpinAttack()) {
             ItemStack stack = player.getMainHandItem();
             if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
-            return stack.canPerformAction(net.minecraftforge.common.ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
+            return stack.canPerformAction(ToolActions.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
         }
         return false;
     }

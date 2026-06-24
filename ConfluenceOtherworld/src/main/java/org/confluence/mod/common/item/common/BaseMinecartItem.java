@@ -9,14 +9,13 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 @SuppressWarnings("rawtypes")
 public class BaseMinecartItem extends MinecartItem {
     private final BaseMinecartEntity.Abilities abilities;
     private final MinecartFactory factory;
 
-    public BaseMinecartItem(PortItem.PortProperties properties, ModRarity rarity, BaseMinecartEntity.Abilities abilities, MinecartFactory factory) {
+    public BaseMinecartItem(Properties properties, ModRarity rarity, BaseMinecartEntity.Abilities abilities, MinecartFactory factory) {
         super(AbstractMinecart.Type.RIDEABLE, properties.stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.abilities = abilities;
         this.factory = factory;

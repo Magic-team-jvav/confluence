@@ -11,13 +11,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class HotlineFishingHookItem extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("hotline_fishing_hook");
 
     public HotlineFishingHookItem() {
-        super(new PortItem.PortProperties().unbreakable().fireResistant(), ModRarity.ORANGE);
+        super(new Properties().unbreakable().fireResistant(), ModRarity.ORANGE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.45, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
     }
 

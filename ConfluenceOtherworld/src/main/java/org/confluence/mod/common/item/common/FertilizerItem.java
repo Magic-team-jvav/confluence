@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 
 public class FertilizerItem extends Item {
     public FertilizerItem() {
-        super(new Item.Properties());
+        super(new Properties());
     }
 
     @Override

@@ -10,7 +10,6 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.common.generation.variant.AboveFallenGeneration;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -19,7 +18,7 @@ public class DaedalusStormbow extends BaseTerraBowItem {
     private final IGeneration generation = new AboveFallenGeneration(30, 60, 25, 2, 25, 5);
 
     public DaedalusStormbow(float baseDamage, ModRarity rarity) {
-        super(baseDamage, new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        super(baseDamage, new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 
     @Override

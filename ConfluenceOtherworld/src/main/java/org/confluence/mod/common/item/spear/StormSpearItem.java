@@ -11,7 +11,6 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import software.bernie.geckolib.core.animation.EasingType;
 
 public class StormSpearItem extends AbstractSpearItem {
@@ -19,7 +18,7 @@ public class StormSpearItem extends AbstractSpearItem {
     public static final double knockBackMotionY = 0.1;
 
     public StormSpearItem() {
-        super(new PortItem.PortProperties().attributes(attributes(3, 7F)), ModRarity.BLUE, 15, 5, createKeyframes(
+        super(new Properties().attributes(attributes(3, 7F)), ModRarity.BLUE, 15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.25, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.5, -16, EasingType.EASE_IN_EXPO),

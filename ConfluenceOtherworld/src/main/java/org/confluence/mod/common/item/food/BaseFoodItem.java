@@ -20,7 +20,6 @@ import org.confluence.lib.util.consumer.Consumer3;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class BaseFoodItem extends Item {
     }
 
     public static Builder builder() {
-        return new Builder(new PortItem.PortProperties());
+        return new Builder(new Properties());
     }
 
     @Override
@@ -79,7 +78,7 @@ public class BaseFoodItem extends Item {
     }
 
     public static class Builder {
-        private final PortItem.PortProperties properties;
+        private final Properties properties;
         private Function<ItemStack, Integer> duration = duration -> 0;
         private Function<Void, SoundEvent> drinkingSoundType = sound -> SoundEvents.EMPTY;
         private Function<Void, SoundEvent> eatingSoundType = sound -> SoundEvents.EMPTY;
@@ -88,10 +87,10 @@ public class BaseFoodItem extends Item {
         private Consumer3<ItemStack, Level, LivingEntity> finishUsingCallback;
 
         public Builder() {
-            this.properties = new PortItem.PortProperties();
+            this.properties = new Properties();
         }
 
-        public Builder(PortItem.PortProperties properties) {
+        public Builder(Properties properties) {
             this.properties = properties;
         }
 

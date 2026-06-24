@@ -6,13 +6,12 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.arrow.DriveAwayArrowEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import static org.confluence.lib.common.component.ModRarity.BLUE;
 
 public class Scarebow extends BaseTerraBowItem {
     public Scarebow() {
-        super(3.5F, new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, BLUE));
+        super(3.5F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, BLUE));
     }
 
     @Override

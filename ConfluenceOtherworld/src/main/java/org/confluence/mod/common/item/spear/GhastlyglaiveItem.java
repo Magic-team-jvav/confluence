@@ -13,7 +13,6 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.GhastlyProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import software.bernie.geckolib.core.animation.EasingType;
 
 import java.util.Comparator;
@@ -26,7 +25,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
     private static final double SPAWN_RADIUS = 5.0;
 
     public GhastlyglaiveItem() {
-        super(new PortItem.PortProperties().attributes(attributes(6, 30F)), ModRarity.LIME, 10, 3, createKeyframes(
+        super(new Properties().attributes(attributes(6, 30F)), ModRarity.LIME, 10, 3, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.17, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.33, -16, EasingType.EASE_IN_EXPO),

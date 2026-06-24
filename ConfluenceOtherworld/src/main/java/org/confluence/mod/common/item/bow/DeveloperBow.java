@@ -6,13 +6,12 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.arrow.DeveloperArrowEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import static org.confluence.lib.common.component.ModRarity.MASTER;
 
 public class DeveloperBow extends BaseTerraBowItem {
     public DeveloperBow() {
-        super(9999F, new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, MASTER));
+        super(9999F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, MASTER));
     }
 
     @Override

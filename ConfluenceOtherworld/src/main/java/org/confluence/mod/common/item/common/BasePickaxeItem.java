@@ -11,7 +11,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.Optional;
@@ -22,14 +21,14 @@ public class BasePickaxeItem extends PickaxeItem {
     private boolean hasImage;
 
     public BasePickaxeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        this(tier, rawDamage, rawSpeed, new PortItem.PortProperties(), rarity);
+        this(tier, rawDamage, rawSpeed, new Properties(), rarity);
     }
 
-    public BasePickaxeItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, ModRarity rarity) {
+    public BasePickaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 
-    public BasePickaxeItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
+    public BasePickaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
         super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.defaultModifiers = ModItems.mergeModifiers(defaultModifiers, consumer);
     }

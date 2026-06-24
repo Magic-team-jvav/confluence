@@ -8,18 +8,17 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.ModUtils;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class BaseHoeItem extends HoeItem {
-    public BaseHoeItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties) {
+    public BaseHoeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties) {
         super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), properties);
     }
 
     public BaseHoeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        this(tier, rawDamage, rawSpeed, new PortItem.PortProperties(), rarity);
+        this(tier, rawDamage, rawSpeed, new Properties(), rarity);
     }
 
-    public BaseHoeItem(Tier tier, float rawDamage, float rawSpeed, PortItem.PortProperties properties, ModRarity rarity) {
+    public BaseHoeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }
 

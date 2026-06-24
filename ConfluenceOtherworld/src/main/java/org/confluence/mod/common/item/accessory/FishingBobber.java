@@ -8,13 +8,12 @@ import org.confluence.terra_curio.api.primitive.FloatValue;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class FishingBobber extends BaseCurioItem {
     public final CurioFishingHook.Variant variant;
 
     public FishingBobber(CurioFishingHook.Variant variant) {
-        super(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE).component(TCDataComponentTypes.ACCESSORIES, PrimitiveValueComponent.entry(AccessoryItems.FISHING$POWER, new FloatValue(10.0F))));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE).component(TCDataComponentTypes.ACCESSORIES, PrimitiveValueComponent.entry(AccessoryItems.FISHING$POWER, new FloatValue(10.0F))));
         this.variant = variant;
     }
 }

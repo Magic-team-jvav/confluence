@@ -17,7 +17,6 @@ import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.ArrayList;
@@ -134,7 +133,7 @@ public class VanityArmorItems {
         return ITEMS.register(name, () -> new BaseVanityArmorItem("vanity_armor/" + name, type, rarity));
     }
 
-    private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String name, String geoName, ArmorMaterial material, ArmorItem.Type type, PortItem.PortProperties properties, ModRarity rarity) {
+    private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String name, String geoName, ArmorMaterial material, ArmorItem.Type type, Item.Properties properties, ModRarity rarity) {
         return ITEMS.register(name, () -> new BaseVanityArmorItem(geoName, material, type, properties, rarity));
     }
 
@@ -142,7 +141,7 @@ public class VanityArmorItems {
         return ITEMS.register(name, id -> {
             PortItemAttributeModifiers.PortBuilder builder = PortItemAttributeModifiers.builder();
             consumer.accept(id, builder);
-            return new BaseVanityArmorItem(geoName, material, type, new PortItem.PortProperties().attributes(builder.build()), rarity);
+            return new BaseVanityArmorItem(geoName, material, type, new Item.Properties().attributes(builder.build()), rarity);
         });
     }
 }

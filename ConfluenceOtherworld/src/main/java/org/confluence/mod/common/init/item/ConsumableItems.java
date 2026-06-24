@@ -24,7 +24,6 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.wrapper.common.PortTags;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class ConsumableItems {
     public static void init() {}
@@ -107,8 +106,8 @@ public class ConsumableItems {
         return biome.is(PortTags.Biomes.IS_SNOWY) || biome.is(PortTags.Biomes.IS_ICY);
     }, Deerclops::new, BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.AQUA)));
 
-    public static final PortDeferredItem<TooltipItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new TooltipItem(new PortItem.PortProperties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("golden_lock_box", 2, ChatFormatting.GRAY)));
-    public static final PortDeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new PortItem.PortProperties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("golden_lock_box", 2, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));
 
     public static final PortDeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("blood_tear", 2, ChatFormatting.GRAY), BloodMoonGameEvent.KEY));
     public static final PortDeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("goblin_battle_standard", 1, ChatFormatting.GRAY), GoblinArmyGameEvent.KEY));

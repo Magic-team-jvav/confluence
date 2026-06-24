@@ -1,13 +1,12 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.item.Item.PortItemExtension;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 
 public class BaseDyeItem extends CustomRarityItem {
     public BaseDyeItem(Properties properties, ModRarity rarity, int rgb) {
-        super(PortItemExtension.Properties.dyedColor(properties, rgb, true), rarity);
+        super(properties.dyedColor(rgb, true), rarity);
     }
 
     public BaseDyeItem(ModRarity rarity, int rgb) {

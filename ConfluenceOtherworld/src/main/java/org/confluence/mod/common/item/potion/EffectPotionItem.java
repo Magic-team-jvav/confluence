@@ -11,7 +11,6 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.MobEffectInstanceData;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -25,19 +24,19 @@ public class EffectPotionItem extends AbstractPotionItem {
     }
 
     public EffectPotionItem(ModRarity rarity, Supplier<? extends MobEffect> mobEffect, int duration) {
-        this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, 0);
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, 0);
     }
 
     public EffectPotionItem(ModRarity rarity, Supplier<? extends MobEffect> mobEffect, int duration, int amplifier) {
-        this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, amplifier);
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, amplifier);
     }
 
     public EffectPotionItem(Supplier<? extends MobEffect> mobEffect, int duration) {
-        this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, 0);
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, 0);
     }
 
     public EffectPotionItem(Supplier<? extends MobEffect> mobEffect, int duration, int amplifier) {
-        this(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, amplifier);
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, amplifier);
     }
 
     @Override

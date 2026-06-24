@@ -21,7 +21,7 @@ public class ScryingOrb extends Item {
     public static Player spectatingPlayer;
 
     public ScryingOrb() {
-        super(new Item.Properties());
+        super(new Properties());
     }
 
     @Override

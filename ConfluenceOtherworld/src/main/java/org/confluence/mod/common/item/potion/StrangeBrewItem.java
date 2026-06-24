@@ -10,11 +10,10 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.ILivingEntity;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class StrangeBrewItem extends AbstractPotionItem {
     public StrangeBrewItem() {
-        super(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE));
     }
 
     @Override

@@ -794,7 +794,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
     }
 
     public static class ModifyArrowBuilder {
-        public List<java.util.function.UnaryOperator<org.mesdag.portlib.wrapper.world.item.PortItem.PortProperties>> modifyProperties = new java.util.ArrayList<>();
+        public List<java.util.function.UnaryOperator<org.mesdag.portlib.wrapper.world.item.Properties>> modifyProperties = new java.util.ArrayList<>();
         public List<java.util.function.Consumer<BaseArrowEntity>> modifyArrowBuilder = new java.util.ArrayList<>();
         public int multiShoot = 1;
         public java.util.function.Predicate<net.minecraft.world.item.ItemStack> canMultiShoot = ammo -> false;
@@ -819,8 +819,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
             return this;
         }
 
-        public org.mesdag.portlib.wrapper.world.item.PortItem.PortProperties buildProperties(org.mesdag.portlib.wrapper.world.item.PortItem.PortProperties properties) {
-            for (java.util.function.UnaryOperator<org.mesdag.portlib.wrapper.world.item.PortItem.PortProperties> f : modifyProperties) {
+        public org.mesdag.portlib.wrapper.world.item.Properties buildProperties(org.mesdag.portlib.wrapper.world.item.Properties properties) {
+            for (java.util.function.UnaryOperator<org.mesdag.portlib.wrapper.world.item.Properties> f : modifyProperties) {
                 f.apply(properties);
             }
             return properties;

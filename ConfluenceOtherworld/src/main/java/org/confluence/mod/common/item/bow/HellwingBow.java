@@ -6,13 +6,12 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.arrow.HellBatArrowEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 import static org.confluence.lib.common.component.ModRarity.RED;
 
 public class HellwingBow extends BaseTerraBowItem {
     public HellwingBow() {
-        super(7.5F, new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, RED));
+        super(7.5F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, RED));
     }
 
     @Override

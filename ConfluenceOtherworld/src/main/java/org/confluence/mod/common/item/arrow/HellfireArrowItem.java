@@ -7,11 +7,10 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.arrow.HellfireArrowEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class HellfireArrowItem extends BaseTerraArrowItem {
     public HellfireArrowItem() {
-        super(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
     }
 
     @Override

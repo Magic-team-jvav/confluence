@@ -12,13 +12,12 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 
 public class ManaPotionItem extends AbstractPotionItem {
     private final int amount;
 
     public ManaPotionItem(int amount, ModRarity rarity) {
-        super(new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.amount = amount;
     }
 

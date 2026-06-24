@@ -40,7 +40,6 @@ import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.Map;
@@ -132,7 +131,7 @@ public final class ModItems {
     public static final PortDeferredItem<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN.get(), ModRarity.ORANGE, ModItems.GOLD_COIN, 100));
     public static final PortDeferredItem<CoinItem> GOLD_COIN = ITEMS.register("gold_coin", () -> new CoinItem(ModBlocks.GOLD_COIN.get(), ModRarity.LIGHT_PURPLE, ModItems.PLATINUM_COIN, 100));
     public static final PortDeferredItem<CoinItem> PLATINUM_COIN = ITEMS.register("platinum_coin", () -> new CoinItem(ModBlocks.PLATINUM_COIN.get(), ModRarity.CYAN, null, MAX_STACK_SIZE));
-    public static final PortDeferredItem<Item> EMERALD_COIN = ITEMS.register("emerald_coin", () -> new BlockItem(ModBlocks.EMERALD_COIN.get(), new PortItem.PortProperties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE).stacksTo(MAX_STACK_SIZE)));
+    public static final PortDeferredItem<Item> EMERALD_COIN = ITEMS.register("emerald_coin", () -> new BlockItem(ModBlocks.EMERALD_COIN.get(), new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE).stacksTo(MAX_STACK_SIZE)));
 
     public static final PortDeferredItem<Item> WHOOPIE_CUSHION = ITEMS.registerSimpleItem("whoopie_cushion", new Item.Properties().stacksTo(1));
 
@@ -197,8 +196,8 @@ public final class ModItems {
 
     public static final PortDeferredItem<ForgeSpawnEggItem> RAINBOW_SHEEP_SPAWN_EGG = ITEMS.register("rainbow_sheep_spawn_egg", () -> new ForgeSpawnEggItem(ModEntities.RAINBOW_SHEEP, 0xFFFFFF, 0xFFFFFF, new Item.Properties()));
 
-    public static PortItem.PortProperties unbreakable() {
-        return new PortItem.PortProperties().unbreakable();
+    public static Item.Properties unbreakable() {
+        return new Item.Properties().unbreakable();
     }
 
     public static Consumer<PortItemAttributeModifiers.PortBuilder> attributes(double blockInteractionRange, double attackKnockback) {

@@ -30,7 +30,10 @@ import org.confluence.mod.network.s2c.WormholePlayerDataSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WormholeScreen extends Screen {
     public static final ResourceLocation BACKGROUND_TEXTURE = Confluence.asResource("textures/gui/container/wormhole.png");
@@ -103,7 +106,7 @@ public class WormholeScreen extends Screen {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if (totalPages > 0) {
-            setPage((getPage() + (int) mouseY) % totalPages);
+            setPage((getPage() + (int) mouseY));
         }
         return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
     }
@@ -150,10 +153,10 @@ public class WormholeScreen extends Screen {
         private boolean isAvailable;
         private @Nullable Pair<WormholePlayerDataSyncPacketS2C.Data, PlayerInfo> data;
         private static final ItemStack WORMHOLE_POTION_STACK = PotionItems.WORMHOLE_POTION.toStack();
-        private WormholePlayerDataSyncPacketS2C.Data playerData;
-        private PlayerInfo playerInfo;
-        private Component display;
-        private Component levelResourceKeyDescription;
+        private @Nullable WormholePlayerDataSyncPacketS2C.Data playerData;
+        private @Nullable PlayerInfo playerInfo;
+        private @Nullable Component display;
+        private @Nullable Component levelResourceKeyDescription;
 
         public Entry() {
             super(0, 0, 170, 20, Component.empty());
@@ -166,6 +169,10 @@ public class WormholeScreen extends Screen {
         public void setPlayerData(@Nullable Pair<WormholePlayerDataSyncPacketS2C.Data, PlayerInfo> data) {
             this.data = data;
             if (data == null) {
+                playerData = null;
+                playerInfo = null;
+                display = null;
+                levelResourceKeyDescription = null;
                 return;
             }
             playerInfo = data.getSecond();
@@ -180,7 +187,7 @@ public class WormholeScreen extends Screen {
 
         @Override
         protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-            if (data == null) {
+            if (data == null || playerData == null || playerInfo == null || display == null || levelResourceKeyDescription == null) {
                 return;
             }
             int x = this.getX();
@@ -246,10 +253,14 @@ public class WormholeScreen extends Screen {
 
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
+            if (data == null || playerData == null) {
+                return false;
+            }
             int itemX = getX() + width - 19;
             int itemY = getY() + 1;
             if (isFocused() || (mouseX >= itemX && mouseY >= itemY && mouseX < itemX + 18 && mouseY < itemY + 18)) {
-                PacketDistributor.sendToServer(new WormholeToPlayerPacketC2S(playerData.uuid(), WormholeToPlayerPacketC2S.ByMod.DEFAULT));
+                WormholeToPlayerPacketC2S payload = new WormholeToPlayerPacketC2S(playerData.uuid(), WormholeToPlayerPacketC2S.ByMod.DEFAULT);
+                PacketDistributor.sendToServer(payload);
                 INSTANCE.onClose();
             }
             return super.mouseClicked(mouseX, mouseY, button);
@@ -264,20 +275,24 @@ public class WormholeScreen extends Screen {
         }
 
         public String getLevelResourceKeyDescriptionKey() {
+            if (playerData == null) return "";
             return playerData.levelResourceKey().location().toLanguageKey(ILevelExtension.TRANSLATION_PREFIX);
         }
 
         public Component getLevelResourceKeyDescription() {
+            if (playerData == null) return Component.empty();
             return Component.translatableWithFallback(getLevelResourceKeyDescriptionKey(), playerData.levelResourceKey().location().toString());
         }
 
-        public Component getNameForDisplay(PlayerInfo playerInfo) {
+        public Component getNameForDisplay(@Nullable PlayerInfo playerInfo) {
+            if (playerInfo == null) return Component.empty();
             return playerInfo.getTabListDisplayName() != null
                     ? this.decorateName(playerInfo, playerInfo.getTabListDisplayName().copy())
                     : this.decorateName(playerInfo, PlayerTeam.formatNameForTeam(playerInfo.getTeam(), Component.literal(playerInfo.getProfile().getName())));
         }
 
-        private Component decorateName(PlayerInfo playerInfo, MutableComponent name) {
+        private Component decorateName(@Nullable PlayerInfo playerInfo, @Nullable MutableComponent name) {
+            if (playerInfo == null || name == null) return Component.empty();
             return playerInfo.getGameMode() == GameType.SPECTATOR ? name.withStyle(ChatFormatting.ITALIC) : name;
         }
 

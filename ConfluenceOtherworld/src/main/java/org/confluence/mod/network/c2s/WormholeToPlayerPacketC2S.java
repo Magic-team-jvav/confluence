@@ -31,16 +31,40 @@ public record WormholeToPlayerPacketC2S(UUID targetPlayerId, ByMod byMod) implem
     }
 
     @Override
-    public void work(ServerPlayer player) {
+    public void work(ServerPlayer sourcePlayer) {
         if (!byMod.enabled()) return;
-        ServerPlayer target = player.server.getPlayerList().getPlayer(targetPlayerId);
-        if (target == null || WormholeHandler.judgment(target, player)) {
+        ServerPlayer target = sourcePlayer.server.getPlayerList().getPlayer(targetPlayerId);
+        if (target == null) {
             return;
         }
-        ItemStack potion = getWormholePotion(player);
-        if (potion.isEmpty()) return;
-        if (!player.hasInfiniteMaterials()) potion.shrink(1);
-        teleport(player, target);
+
+        if (!WormholeHandler.judgment(sourcePlayer, target)) {
+            return;
+        }
+
+        ItemStack potion = getWormholePotion(sourcePlayer);
+        if (potion.isEmpty()) {
+            return;
+        }
+
+        if (sourcePlayer.hasInfiniteMaterials()) {
+            teleport(sourcePlayer, target);
+            return;
+        }
+
+        potion.shrink(1);
+        teleport(sourcePlayer, target);
+
+        if (!CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
+            return;
+        }
+
+        ItemStack itemstack = PotionItems.BOTTLE.toStack();
+        if (sourcePlayer.getInventory().add(itemstack)) {
+            return;
+        }
+
+        sourcePlayer.drop(itemstack, false);
     }
 
     public static boolean isTrackable(ServerPlayer trackingPlayer, ServerPlayer trackedPlayer) {
@@ -50,12 +74,16 @@ public record WormholeToPlayerPacketC2S(UUID targetPlayerId, ByMod byMod) implem
     private static ItemStack getWormholePotion(ServerPlayer serverPlayer) {
         Inventory inventory = serverPlayer.getInventory();
         ItemStack stack = inventory.offhand.getFirst();
-        if (!stack.isEmpty() && stack.is(PotionItems.WORMHOLE_POTION)) {
+
+        if (stack.is(PotionItems.WORMHOLE_POTION)) {
             return stack;
         }
 
         for (ItemStack itemStack : inventory.items) {
-            if (!itemStack.isEmpty() && itemStack.is(PotionItems.WORMHOLE_POTION)) {
+            if (itemStack.isEmpty()) {
+                continue;
+            }
+            if (itemStack.is(PotionItems.WORMHOLE_POTION)) {
                 return itemStack;
             }
         }
@@ -64,7 +92,7 @@ public record WormholeToPlayerPacketC2S(UUID targetPlayerId, ByMod byMod) implem
     }
 
     private void teleport(ServerPlayer serverPlayer, ServerPlayer target) {
-        serverPlayer.teleportTo(target.serverLevel(), target.getX(), target.getY(), target.getZ(), serverPlayer.getViewYRot(0), serverPlayer.getViewXRot(0));
+        serverPlayer.teleportTo(target.serverLevel(), target.getX(), target.getY(), target.getZ(), serverPlayer.getViewYRot(1), serverPlayer.getViewXRot(1));
     }
 
     public enum ByMod {

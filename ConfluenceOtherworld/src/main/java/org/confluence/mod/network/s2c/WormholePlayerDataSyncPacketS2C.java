@@ -13,11 +13,14 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.WormholeHandler;
+import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.Team;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public record WormholePlayerDataSyncPacketS2C(
@@ -35,7 +38,7 @@ public record WormholePlayerDataSyncPacketS2C(
 
     @Override
     public void work(Player player) {
-        WormholeHandler.work(this);
+        WormholeHandlerClient.work(this);
     }
 
     public static <T extends Player> void sendToClient(ServerPlayer serverPlayer, List<T> player) {

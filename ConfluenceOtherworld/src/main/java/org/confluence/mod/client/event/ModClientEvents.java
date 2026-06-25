@@ -53,7 +53,7 @@ import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.client.handler.StarPhaseHandler;
-import org.confluence.mod.client.handler.WormholeHandler;
+import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
@@ -626,7 +626,7 @@ public final class ModClientEvents {
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(ClientBestiary.getInstance());
         event.registerReloadListener(LucyTheAxeDialogCategory.Loader.getInstance());
-        event.registerReloadListener(WormholeHandler::reload);
+        event.registerReloadListener(WormholeHandlerClient::reload);
     }
 
     @SubscribeEvent

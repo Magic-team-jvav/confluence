@@ -19,19 +19,18 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.api.entity.animation.IUseItemAnimatable;
-import org.confluence.mod.common.entity.ai.goal.TERangedAttackGoal;
-import org.confluence.mod.common.entity.animation.BoneStateMachine;
-import org.confluence.mod.common.entity.animation.BoneStates;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.entity.monster.prefab.IAttributeHolder;
+import org.confluence.mod.util.entity.ai.goal.TERangedAttackGoal;
+import org.confluence.mod.util.entity.animation.BoneStateMachine;
+import org.confluence.mod.util.entity.animation.BoneStates;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.util.GeckoLibUtil;
-
-import javax.annotation.Nullable;
 
 /// 远程单位
 public class RangeSkeleton extends AbstractSkeleton implements GeoEntity, IUseItemAnimatable<BoneStates>, IAttributeHolder {
@@ -83,9 +82,9 @@ public class RangeSkeleton extends AbstractSkeleton implements GeoEntity, IUseIt
             this.goalSelector.removeGoal(this.teBowGoal);
             ItemStack itemstack = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof BowItem));
             if (itemstack.getItem() instanceof BowItem) {
-                int i = this.getHardAttackInterval();
+                int i = /*this.getHardAttackInterval()*/20;
                 if (this.level().getDifficulty() != Difficulty.HARD) {
-                    i = this.getAttackInterval();
+                    i = /*this.getAttackInterval()*/40;
                 }
 
                 this.teBowGoal.setMinAttackInterval(i);
@@ -158,9 +157,9 @@ public class RangeSkeleton extends AbstractSkeleton implements GeoEntity, IUseIt
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
-        spawnGroupData = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
-        this.setLeftHanded(false);
-        return spawnGroupData;
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+        setLeftHanded(false);
+        return spawnData;
     }
 }

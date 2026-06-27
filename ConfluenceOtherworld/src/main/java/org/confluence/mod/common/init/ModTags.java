@@ -498,6 +498,7 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> NPC_INVULNERABLE_TO_PLAYER = register("npc_invulnerable_to_player"); // 能够免疫玩家伤害的NPC
 
         public static final TagKey<EntityType<?>> CORRUPT = register("corrupt");
+        public static final TagKey<EntityType<?>> FLESH_ALLIANCE = register("flesh_alliance");
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

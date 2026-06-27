@@ -18,10 +18,10 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.IDiscardWhenRespawnEntity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.entity.IHeightControlMob;
-import org.confluence.mod.common.entity.ai.goal.ComeAndBackDashAttackGoal;
-import org.confluence.mod.common.entity.ai.goal.MutableRangeNearestAttackableTargetGoal;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.util.entity.ai.goal.ComeAndBackDashAttackGoal;
+import org.confluence.mod.util.entity.ai.goal.MutableRangeNearestAttackableTargetGoal;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.EnumSet;

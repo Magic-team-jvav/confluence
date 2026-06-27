@@ -1,6 +1,6 @@
 package org.confluence.mod.api.entity.animation;
 
-import org.confluence.mod.common.entity.animation.BoneStateMachine;
+import org.confluence.mod.util.entity.animation.BoneStateMachine;
 
 /// 手臂动画控制信息传输接口
 public interface IUseItemAnimatable<S> {

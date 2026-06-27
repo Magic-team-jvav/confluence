@@ -16,7 +16,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.VanityArmorItems;
-import org.confluence.mod.common.util.TrapDamageHelper;
+import org.confluence.mod.util.TrapDamageHelper;
 
 public class SpikeBlock extends Block {
     public static final VoxelShape SHAPE = box(1, 1, 1, 15.0, 15.0, 15.0);

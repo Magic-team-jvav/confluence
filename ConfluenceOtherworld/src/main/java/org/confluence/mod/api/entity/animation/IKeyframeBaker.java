@@ -1,6 +1,6 @@
 package org.confluence.mod.api.entity.animation;
 
-import org.confluence.mod.common.entity.ai.keyframe.Keyframe;
+import org.confluence.mod.util.entity.ai.keyframe.Keyframe;
 
 import java.util.List;
 

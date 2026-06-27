@@ -3,7 +3,7 @@ package org.confluence.mod.api.event;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.event.IModBusEvent;
-import org.confluence.mod.common.entity.ai.goal.behavior.BTNode;
+import org.confluence.mod.util.entity.ai.goal.behavior.BTNode;
 
 import java.util.function.Supplier;
 

@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.IGeneration;
-import org.confluence.mod.common.generation.variant.AboveFallenGeneration;
+import org.confluence.mod.util.generation.variant.AboveFallenGeneration;
 
 import javax.annotation.Nullable;
 import java.util.List;

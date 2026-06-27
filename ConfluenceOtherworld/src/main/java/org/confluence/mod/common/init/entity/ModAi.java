@@ -11,10 +11,10 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.ai.brain.sensor.NPCHostilesSensor;
-import org.confluence.mod.common.entity.ai.brain.sensor.NPCNearbyOthersSensor;
-import org.confluence.mod.common.entity.ai.brain.sensor.NPCNearestVisibleAllianceSensor;
-import org.confluence.mod.common.entity.ai.brain.sensor.NPCNurseTargetSensor;
+import org.confluence.mod.util.entity.ai.brain.sensor.NPCHostilesSensor;
+import org.confluence.mod.util.entity.ai.brain.sensor.NPCNearbyOthersSensor;
+import org.confluence.mod.util.entity.ai.brain.sensor.NPCNearestVisibleAllianceSensor;
+import org.confluence.mod.util.entity.ai.brain.sensor.NPCNurseTargetSensor;
 
 import java.util.List;
 import java.util.Optional;

@@ -4,8 +4,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.eventbus.api.IEventBus;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.generation.GenerationProvider;
-import org.confluence.mod.common.track.TrackTypeProvider;
+import org.confluence.mod.util.generation.GenerationProvider;
+import org.confluence.mod.util.track.TrackTypeProvider;
 import org.mesdag.portlib.registries.PortCustomRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 

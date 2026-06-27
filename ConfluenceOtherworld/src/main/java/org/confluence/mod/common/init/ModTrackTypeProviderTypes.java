@@ -4,9 +4,9 @@ import com.mojang.serialization.MapCodec;
 import net.minecraftforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.ITrackType;
-import org.confluence.mod.common.track.TrackTypeProvider;
-import org.confluence.mod.common.track.variant.BasisTrack;
-import org.confluence.mod.common.track.variant.SimpleTrack;
+import org.confluence.mod.util.track.TrackTypeProvider;
+import org.confluence.mod.util.track.variant.BasisTrack;
+import org.confluence.mod.util.track.variant.SimpleTrack;
 
 import java.util.function.Supplier;
 

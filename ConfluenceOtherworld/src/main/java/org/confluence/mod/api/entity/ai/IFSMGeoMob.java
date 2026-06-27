@@ -2,6 +2,8 @@ package org.confluence.mod.api.entity.ai;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.entity.Entity;
+import org.confluence.mod.util.entity.ai.fsm.CircleMobSkills;
+import org.confluence.mod.util.entity.ai.fsm.MobSkill;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -10,9 +12,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-/**
- * 适配Geo动画的状态机接口
- */
+/// 适配Geo动画的状态机接口
 public interface IFSMGeoMob extends GeoEntity {
 
     CircleMobSkills getSkills();

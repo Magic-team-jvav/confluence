@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.api.ITrackType;
-import org.confluence.mod.common.track.variant.BasisTrack;
+import org.confluence.mod.util.track.variant.BasisTrack;
 import org.jetbrains.annotations.Nullable;
 
 public class BeeArrowEntity extends BaseArrowEntity {

@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.common.generation.GenerationProvider;
 import org.confluence.mod.common.init.ModCustomRegistries;
+import org.confluence.mod.util.generation.GenerationProvider;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;

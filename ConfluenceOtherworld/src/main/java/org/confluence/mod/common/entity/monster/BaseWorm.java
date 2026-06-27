@@ -19,10 +19,10 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.entity.PartEntity;
 import org.confluence.mod.api.entity.IHeightControlMob;
 import org.confluence.mod.api.entity.IWorm;
-import org.confluence.mod.common.entity.ai.goal.AccelerateOnSeeingGoal;
-import org.confluence.mod.common.entity.ai.goal.ComeAndBackDashAttackGoal;
-import org.confluence.mod.common.entity.ai.goal.WormRandomWanderGoal;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
+import org.confluence.mod.util.entity.ai.goal.AccelerateOnSeeingGoal;
+import org.confluence.mod.util.entity.ai.goal.ComeAndBackDashAttackGoal;
+import org.confluence.mod.util.entity.ai.goal.WormRandomWanderGoal;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

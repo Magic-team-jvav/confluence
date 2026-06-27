@@ -9,8 +9,8 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.AnimationProcessor;
 
-public class ModGeckoLibUtils {
-    public static void stopAndPlayAnim(GeoItem geoItem, ItemStack itemStack, ServerPlayer serverPlayer, String controllerName, @Nullable String animName) {
+public final class ModGeckoLibUtils {
+    public static void stopAndPlayAnim(GeoItem geoItem, ItemStack itemStack, ServerPlayer serverPlayer, @Nullable String controllerName, @Nullable String animName) {
         if (controllerName == null || animName == null) return;
         long orAssignId = GeoItem.getOrAssignId(itemStack, serverPlayer.serverLevel());
         AnimatableManager<GeoAnimatable> animatableManager = geoItem.getAnimatableInstanceCache().getManagerForId(orAssignId);

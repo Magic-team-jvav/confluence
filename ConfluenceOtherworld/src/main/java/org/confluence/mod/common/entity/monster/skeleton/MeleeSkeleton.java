@@ -20,11 +20,8 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 
 public class MeleeSkeleton extends RangeSkeleton {
-
-
     public MeleeSkeleton(EntityType<? extends AbstractSkeleton> entityType, Level level, AttributeBuilder builder) {
         super(entityType, level, builder);
-
     }
 
     @Override
@@ -33,9 +30,7 @@ public class MeleeSkeleton extends RangeSkeleton {
     }
 
     @Override
-    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
-
-    }
+    protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {}
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
@@ -55,6 +50,7 @@ public class MeleeSkeleton extends RangeSkeleton {
         this.swing(InteractionHand.MAIN_HAND, true);
         return super.doHurtTarget(entity);
     }
+
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
         return ModSoundEvents.TR_SKELETON_HURT.get();
@@ -67,11 +63,10 @@ public class MeleeSkeleton extends RangeSkeleton {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Walk/Idle", 5, state ->{
+        controllers.add(new AnimationController<>(this, "Walk/Idle", 5, state -> {
             state.setControllerSpeed(2f);
             return state.setAndContinue(state.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
-        }
-        ));
+        }));
     }
 
     @Override
@@ -79,5 +74,4 @@ public class MeleeSkeleton extends RangeSkeleton {
         if (effectInstance.is(() -> MobEffects.POISON)) return false;
         return super.addEffect(effectInstance, entity);
     }
-
 }

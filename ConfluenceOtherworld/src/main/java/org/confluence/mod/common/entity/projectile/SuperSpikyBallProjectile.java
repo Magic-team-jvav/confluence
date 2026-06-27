@@ -17,8 +17,8 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.util.TrapDamageHelper;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.TrapDamageHelper;
 
 public class SuperSpikyBallProjectile extends Projectile implements Immunity, IAxisZRotate, IBouncy {
     public final Rotate rotate = new Rotate();

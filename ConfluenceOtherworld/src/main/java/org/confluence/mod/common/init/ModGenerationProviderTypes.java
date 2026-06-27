@@ -5,10 +5,10 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.IGeneration;
-import org.confluence.mod.common.generation.GenerationProvider;
-import org.confluence.mod.common.generation.variant.AboveFallenGeneration;
-import org.confluence.mod.common.generation.variant.ForwardGeneration;
-import org.confluence.mod.common.generation.variant.StillGeneration;
+import org.confluence.mod.util.generation.GenerationProvider;
+import org.confluence.mod.util.generation.variant.AboveFallenGeneration;
+import org.confluence.mod.util.generation.variant.ForwardGeneration;
+import org.confluence.mod.util.generation.variant.StillGeneration;
 
 /// 注册追踪编解码器的类型
 public final class ModGenerationProviderTypes {

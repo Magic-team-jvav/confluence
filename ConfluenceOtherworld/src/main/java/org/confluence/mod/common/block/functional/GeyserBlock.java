@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.confluence.mod.common.util.TrapDamageHelper;
+import org.confluence.mod.util.TrapDamageHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉

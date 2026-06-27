@@ -9,11 +9,11 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.ai.goal.LookForwardWanderFlyGoal;
-import org.confluence.mod.common.entity.ai.motion.DashComponent;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixin.world.entity.EntityAccessor;
+import org.confluence.mod.util.entity.ai.goal.LookForwardWanderFlyGoal;
+import org.confluence.mod.util.entity.ai.motion.DashComponent;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 

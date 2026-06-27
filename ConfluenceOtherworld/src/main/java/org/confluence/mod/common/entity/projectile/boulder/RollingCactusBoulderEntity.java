@@ -14,7 +14,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.util.TrapDamageHelper;
+import org.confluence.mod.util.TrapDamageHelper;
 
 public class RollingCactusBoulderEntity extends BoulderEntity {
     public RollingCactusBoulderEntity(EntityType<? extends BoulderEntity> entityType, Level pLevel) {

@@ -4,14 +4,14 @@ import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.Po
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.entity.ai.goal.behavior.BTFactory;
-import org.confluence.mod.common.entity.ai.goal.behavior.BTNode;
-import org.confluence.mod.common.entity.ai.goal.behavior.BTRoot;
-import org.confluence.mod.common.entity.ai.goal.behavior.composite.ParallelNode;
-import org.confluence.mod.common.entity.ai.goal.behavior.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.goal.behavior.composite.WeightNode;
-import org.confluence.mod.common.entity.ai.goal.behavior.condition.HealthLowerThanCondition;
-import org.confluence.mod.common.entity.ai.goal.behavior.leaf.*;
+import org.confluence.mod.util.entity.ai.goal.behavior.BTFactory;
+import org.confluence.mod.util.entity.ai.goal.behavior.BTNode;
+import org.confluence.mod.util.entity.ai.goal.behavior.BTRoot;
+import org.confluence.mod.util.entity.ai.goal.behavior.composite.ParallelNode;
+import org.confluence.mod.util.entity.ai.goal.behavior.composite.SequenceNode;
+import org.confluence.mod.util.entity.ai.goal.behavior.composite.WeightNode;
+import org.confluence.mod.util.entity.ai.goal.behavior.condition.HealthLowerThanCondition;
+import org.confluence.mod.util.entity.ai.goal.behavior.leaf.*;
 
 import java.util.function.Function;
 

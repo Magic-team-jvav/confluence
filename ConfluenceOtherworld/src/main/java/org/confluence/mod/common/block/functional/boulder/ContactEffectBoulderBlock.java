@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.MobEffectInstanceData;
-import org.confluence.mod.common.util.TrapDamageHelper;
+import org.confluence.mod.util.TrapDamageHelper;
 
 import java.util.function.Function;
 

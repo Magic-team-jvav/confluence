@@ -14,10 +14,10 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.EffectStrategyComponent;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.api.ITrackType;
-import org.confluence.mod.common.generation.variant.AboveFallenGeneration;
-import org.confluence.mod.common.generation.variant.ForwardGeneration;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.util.generation.variant.AboveFallenGeneration;
+import org.confluence.mod.util.generation.variant.ForwardGeneration;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 

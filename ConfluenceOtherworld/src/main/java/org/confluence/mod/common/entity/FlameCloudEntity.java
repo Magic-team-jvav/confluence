@@ -12,7 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.VanityArmorItems;
-import org.confluence.mod.common.util.TrapDamageHelper;
+import org.confluence.mod.util.TrapDamageHelper;
 
 public class FlameCloudEntity extends Entity {
     public FlameCloudEntity(EntityType<FlameCloudEntity> entityType, Level level) {

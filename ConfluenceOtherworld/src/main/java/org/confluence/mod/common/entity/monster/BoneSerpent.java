@@ -9,9 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.IDiscardWhenRespawnEntity;
-import org.confluence.mod.common.entity.ai.goal.MutableRangeNearestAttackableTargetGoal;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.util.entity.ai.goal.MutableRangeNearestAttackableTargetGoal;
 
 public class BoneSerpent<S extends BaseWormPart> extends BaseWorm<S> implements IDiscardWhenRespawnEntity {
     public BoneSerpent(EntityType<? extends BoneSerpent> type, Level level, AttributeBuilder builder) {

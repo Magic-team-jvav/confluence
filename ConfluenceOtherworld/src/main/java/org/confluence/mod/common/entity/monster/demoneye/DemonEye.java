@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.entity.IMinion;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixin.world.entity.EntityAccessor;
@@ -55,7 +56,6 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
         super(entityType, level);
         this.moveTargetPoint = Vec3.ZERO;
         this.xpReward = 5;
-
     }
 
     @Override
@@ -65,10 +65,12 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
         this.entityData.define(DATA_OWNER_UUID, Optional.empty());
     }
 
+    @Override
     public DemonEyeVariant getVariant() {
         return DemonEyeVariant.byId(entityData.get(DATA_VARIANT_ID));
     }
 
+    @Override
     public void setVariant(DemonEyeVariant pVariant) {
         entityData.set(DATA_VARIANT_ID, pVariant.id);
         AttributeMap attributeMap = getAttributes();
@@ -116,6 +118,7 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
     public void push(Entity pEntity) {
     }
 
+    @Override
     public void move(MoverType pType, Vec3 motion) {
         if (dead) {
             super.move(pType, motion);
@@ -148,7 +151,7 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
         setTarget(level().getNearestPlayer(pos.x, pos.y, pos.z, 40, true));
         super.tick();
         // 在super.tick()结束后更新面向方向即可覆盖原版AI
-        TEUtils.updateEntityRotation(this, this.getDeltaMovement().multiply(1, -1, 1));
+        LibEntityUtils.updateEntityRotation(this, this.getDeltaMovement().multiply(1, -1, 1));
 
         if (owner != null)
             setTarget(owner.getTarget());
@@ -171,8 +174,8 @@ public class DemonEye extends Monster implements Enemy, VariantHolder<DemonEyeVa
     }
 
     @Override
-    public void onAddedToLevel() {
-        super.onAddedToLevel();
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
         setNoGravity(true);
     }
 

@@ -34,8 +34,8 @@ import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.util.TrapDamageHelper;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
+import org.confluence.mod.util.TrapDamageHelper;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 

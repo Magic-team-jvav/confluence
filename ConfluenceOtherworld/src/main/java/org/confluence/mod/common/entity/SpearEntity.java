@@ -23,7 +23,7 @@ import org.confluence.mod.common.block.functional.SpearTrapBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.util.TrapDamageHelper;
+import org.confluence.mod.util.TrapDamageHelper;
 
 /**
  * 长矛机关的发射物

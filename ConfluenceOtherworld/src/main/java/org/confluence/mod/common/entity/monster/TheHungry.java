@@ -17,10 +17,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.entity.IMinion;
 import org.confluence.mod.common.entity.monster.prefab.AbstractPrefab;
 import org.confluence.mod.common.entity.monster.prefab.AttributeBuilder;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.MonstersEntities;
 import org.joml.Vector3f;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -50,28 +53,28 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     float forwardSpeed = 0.25f; // 向前速度
     float forwardFreq = 0.15f; // 向前频率
     float backSpeed = 0.15f; // 返回起始点速度
-    float backLen = this.getTarget()==null?5:10;  // 距离起始点方向的距离
+    float backLen = this.getTarget() == null ? 5 : 10;  // 距离起始点方向的距离
     float minDis = 8.0f; // 距离起始点的最小距离
     float maxDis = 64.0f; // 距离起始点的最大距离
     float v_speed = 1.15f;   // 回到起始方向的速度
     int switchTime = 5; // 切换方向的时间
 
-    private static final EntityDataAccessor<Vector3f> DATA_TRIGGER =  SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Vector3f> DATA_TRIGGER = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.VECTOR3);
     private static final EntityDataAccessor<Boolean> DATA_IS_FREE = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.BOOLEAN);
 
     public TheHungry(EntityType<? extends Monster> type, Level level, AttributeBuilder builder) {
-        super(type, level, builder.setController((state,e)->{
+        super(type, level, builder.setController((state, e) -> {
             state.add(DefaultAnimations.genericIdleController(e));
         }));
         int ranDir = this.getRandom().nextInt(7);
         this.minDis += ranDir;
         this.maxDis += ranDir;
         this.noPhysics = true;
-        this.collisionProperties = new CollisionProperties(5,20,0.3f);
+        this.collisionProperties = new CollisionProperties(5, 20, 0.3f);
     }
 
-    public TheHungry(Level level,boolean isFree) {
-        this(TEMonsterEntities.THE_HUNGRY.get(), level,new AbstractPrefab().getPrefab());
+    public TheHungry(Level level, boolean isFree) {
+        this(MonstersEntities.THE_HUNGRY.get(), level, new AbstractPrefab().getPrefab());
         this.setFree(isFree);
     }
 
@@ -92,7 +95,7 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if(pSource.getEntity()!= null && pSource.getEntity().getType().is(TETags.EntityTypes.FLESH_ALLIANCE))
+        if (pSource.getEntity() != null && pSource.getEntity().getType().is(ModTags.EntityTypes.FLESH_ALLIANCE))
             return false;
         return super.hurt(pSource, pAmount);
     }
@@ -102,13 +105,14 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
         this.setPos(this.getX() + pos.x, this.getY() + pos.y, this.getZ() + pos.z);
     }
 
-    public float getMaxDis(){
+    public float getMaxDis() {
         return maxDis;
     }
 
     /**
      * 检查是否超出反圆形范围
      * 水平方向距离限制最短，垂直方向范围更大
+     *
      * @return true表示超出范围，需要回退
      */
     private boolean isOutOfRange() {
@@ -125,12 +129,12 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
 
     @Override
     public boolean canAttack(LivingEntity entity) {
-        if(this.owner == null)
+        if (this.owner == null)
             return super.canAttack(entity);
         else return this.owner.canAttack(entity);
     }
 
-    protected Vec3 initDirection(LivingEntity owner){
+    protected Vec3 initDirection(LivingEntity owner) {
         return owner.getForward().normalize();
     }
 
@@ -149,15 +153,15 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
         phase = (phase + 1) % _phase;
 
         if (!this.level().isClientSide) {
-            if (this.owner instanceof LivingEntity wall && !this.isFree) {
-                Vec3 testDir = this.initDirection(wall);
+            if (this.owner != null && !this.isFree) {
+                Vec3 testDir = this.initDirection(owner);
                 if (this.initDir == null || !this.initDir.equals(testDir)) {
                     initDir = testDir;
                 }
             } else if (this.isFree) {
                 Vec3 pos = position();
                 setTarget(this.level().getNearestPlayer(pos.x, pos.y, pos.z, 40, true));
-                TEUtils.updateEntityRotation(this, this.getDeltaMovement().multiply(1, -1, 1));
+                LibEntityUtils.updateEntityRotation(this, this.getDeltaMovement().multiply(1, -1, 1));
             }
         }
 
@@ -366,12 +370,12 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if(tag.contains("initPos")) {
+        if (tag.contains("initPos")) {
             Vector3f initPos = new Vector3f(tag.getFloat("initPosX"), tag.getFloat("initPosY"), tag.getFloat("initPosZ"));
             this.entityData.set(DATA_TRIGGER, initPos);
             this.initPos = new Vec3(initPos);
         }
-        if(tag.contains("isFree")) {
+        if (tag.contains("isFree")) {
             this.entityData.set(DATA_IS_FREE, tag.getBoolean("isFree"));
             this.isFree = tag.getBoolean("isFree");
         }
@@ -381,7 +385,7 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        if(initPos!= null) {
+        if (initPos != null) {
             tag.putFloat("initPosX", (float) initPos.x);
             tag.putFloat("initPosY", (float) initPos.y);
             tag.putFloat("initPosZ", (float) initPos.z);
@@ -393,7 +397,7 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if(level().isClientSide) {
+        if (level().isClientSide) {
             if (key == DATA_TRIGGER) {
                 this.initPos = new Vec3(this.entityData.get(DATA_TRIGGER));
             }
@@ -404,14 +408,14 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     }
 
     @Override
-    public void onAddedToLevel(){
-        super.onAddedToLevel();
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
         setNoGravity(true);
     }
 
     @Override
     public AABB getBoundingBoxForCulling() {
-        if(this.initPos == null){
+        if (this.initPos == null) {
             return super.getBoundingBoxForCulling().inflate(10);
         }
         return new AABB(this.position(), this.initPos);
@@ -422,7 +426,7 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
         super.die(damageSource);
 
         boolean flag = this.owner instanceof WallOfFlesh && this.owner.isAlive();
-        if (owner instanceof WallOfFlesh &&!level().isClientSide && flag && !this.isFree && this.getInitPos() != null) {
+        if (owner instanceof WallOfFlesh && !level().isClientSide && flag && !this.isFree && this.getInitPos() != null) {
             TheHungry hungry = new TheHungry(level(), true) {
                 @Override
                 protected boolean shouldDropLoot() {
@@ -437,25 +441,25 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
         }
     }
 
-    public Vec3 getInitPos(){
+    public Vec3 getInitPos() {
         return initPos;
     }
 
-    public void setInitPos(Vector3f initPos){
-        if(!isFree) {
+    public void setInitPos(Vector3f initPos) {
+        if (!isFree) {
             this.entityData.set(DATA_TRIGGER, initPos);
             this.initPos = new Vec3(initPos);
         }
     }
 
     // 对于不是运动的情景，不需要更新服务端位置
-    public void setClientInitPos(Vector3f initPos){
-        if(needLastPos) this.lastInitPos = this.initPos;
+    public void setClientInitPos(Vector3f initPos) {
+        if (needLastPos) this.lastInitPos = this.initPos;
         this.initPos = new Vec3(initPos);
     }
 
-    public Vec3 getDir(){
-        return this.owner instanceof WallOfFlesh wall?wall.getForward():Vec3.ZERO;
+    public Vec3 getDir() {
+        return this.owner instanceof WallOfFlesh wall ? wall.getForward() : Vec3.ZERO;
     }
 
     protected static final EntityDataAccessor<Optional<UUID>> DATA_OWNER_UUID = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -473,8 +477,8 @@ public class TheHungry extends AbstractMonster implements IMinion, Boss.BossPart
     }
 
     @Override
-    public boolean shouldBeSaved(){
-        if(owner!=null){
+    public boolean shouldBeSaved() {
+        if (owner != null) {
             return owner.shouldBeSaved();
         }
         return super.shouldBeSaved();

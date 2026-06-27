@@ -4,8 +4,8 @@ import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModCustomRegistries;
-import org.confluence.mod.common.track.TrackTypeProvider;
-import org.confluence.mod.common.track.variant.SimpleTrack;
+import org.confluence.mod.util.track.TrackTypeProvider;
+import org.confluence.mod.util.track.variant.SimpleTrack;
 
 /// # 跟踪方式
 public interface ITrackType {

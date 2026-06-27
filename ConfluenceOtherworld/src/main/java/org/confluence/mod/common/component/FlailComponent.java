@@ -1,377 +1,257 @@
 package org.confluence.mod.common.component;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.registries.hit_effect.variant.PrefabEffect;
-import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
-import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.function.BiConsumer;
 
 /**
- * <h1>连枷弹射物组</h1>
- * 存储连枷的所有数据驱动参数，通过 Codec 持久化到物品 DataComponent
- *
- * @param damageFactor 伤害系数基于玩家基础攻击力的倍率
- * @param spinRadius   挥舞半径SPIN 阶段绕肩部画圆的半径
- * @param spinSpeed    挥舞角速度每 tick 增加的角度，弧度
- * @param throwSpeed   投掷速度THROWN 阶段的初始速度
- * @param maxDistance  最大抛出距离超过此距离自RETRACT
- * @param retractSpeed 收回速度
- * @param gravity      重力加速度
- * // @param cooldown     冷却时间 tick
- * @param bounceFactor 反弹能量衰减系数，范围 0.3~0.9
- * @param maxBounces   最大反弹次数，耗尽后落地
- * @param soundEvent   音效 ResourceLocation
- * @param projType      弹射物实体类ResourceLocation
- * @param ballTexture   弹球纹理 ResourceLocation
- * @param modelLocation 弹球 Geo 模型路径（可选，为空时使用默认 flail.geo.json）
- * @param hitEffect     击中特效（可选）
+ * <h1>连枷参数</h1>
+ * 存储连枷的所有数据驱动参数，使用 Builder 模式构建。
+ * <p>
+ * 与 1.21 DataComponent 解耦，纯 POJO，兼容 1.20.1 移植。
  */
-public record FlailComponent(
-        float damageFactor,
-        float spinRadius,
-        float spinSpeed,
-        float throwSpeed,
-        float maxDistance,
-        float retractSpeed,
-        float gravity,
-        float bounceFactor,
-        int maxBounces,
-        ResourceLocation soundEvent,
-        ResourceLocation projType,
-        ResourceLocation ballTexture,
-        Optional<ResourceLocation> modelLocation,
-        Optional<EffectStrategyComponent> hitEffect
-) implements DataComponentType<FlailComponent> {
-    public static final Codec<FlailComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.FLOAT.fieldOf("damageFactor").forGetter(FlailComponent::damageFactor),
-            Codec.FLOAT.fieldOf("spinRadius").forGetter(FlailComponent::spinRadius),
-            Codec.FLOAT.fieldOf("spinSpeed").forGetter(FlailComponent::spinSpeed),
-            Codec.FLOAT.fieldOf("throwSpeed").forGetter(FlailComponent::throwSpeed),
-            Codec.FLOAT.fieldOf("maxDistance").forGetter(FlailComponent::maxDistance),
-            Codec.FLOAT.fieldOf("retractSpeed").forGetter(FlailComponent::retractSpeed),
-            Codec.FLOAT.fieldOf("gravity").forGetter(FlailComponent::gravity),
-            Codec.FLOAT.optionalFieldOf("bounceFactor", 0.3F).forGetter(FlailComponent::bounceFactor),
-            Codec.INT.optionalFieldOf("maxBounces", 3).forGetter(FlailComponent::maxBounces),
-            ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(FlailComponent::soundEvent),
-            ResourceLocation.CODEC.fieldOf("projType").forGetter(FlailComponent::projType),
-            ResourceLocation.CODEC.fieldOf("ballTexture").forGetter(FlailComponent::ballTexture),
-            ResourceLocation.CODEC.optionalFieldOf("modelLocation").forGetter(FlailComponent::modelLocation),
-            EffectStrategyComponent.CODEC.optionalFieldOf("hitEffect").forGetter(FlailComponent::hitEffect)
-    ).apply(instance, FlailComponent::new));
+public class FlailComponent {
+    public final float damageFactor;
+    public final float spinRadius;
+    public final float spinSpeed;
+    public final float throwSpeed;
+    public final float maxDistance;
+    public final float retractSpeed;
+    public final float gravity;
+    public final float bounceFactor;
+    public final int maxBounces;
+    public final ResourceLocation soundEvent;
+    public final ResourceLocation projType;
+    public final ResourceLocation ballTexture;
+    public final ResourceLocation modelLocation; // null = 默认模型
 
-    /** 致伤球 Ball O' Hurt 预制数据 */
-    public static final Supplier<FlailComponent> BALL_O_HURT =
-            () -> new FlailComponent(
-                    17.0f,
-                    1.2f,
-                    1.5f,
-                    1.3f,
-                    11.0f,
-                    1.0f,
-                    0.2f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/ball_o_hurt.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/ball_o_hurt.geo.json")),
-                    Optional.empty()
-            );
+    /** 击中实体时的回调，null 表示无特殊效果 */
+    public final BiConsumer<Player, LivingEntity> onHit;
 
-    /** 链球 MACE 预制参数（测试用）*/
-    public static final Supplier<FlailComponent> MACE_TEST =
-            () -> new FlailComponent(
-                    11.0f,
-                    1.2f,
-                    0.1f,
-                    0.3f,
-                    8.0f,
-                    0.3f,
-                    0.05f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/mace.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/mace.geo.json")),
-                    Optional.empty()
-            );
+    private FlailComponent(Builder b) {
+        this.damageFactor = b.damageFactor;
+        this.spinRadius = b.spinRadius;
+        this.spinSpeed = b.spinSpeed;
+        this.throwSpeed = b.throwSpeed;
+        this.maxDistance = b.maxDistance;
+        this.retractSpeed = b.retractSpeed;
+        this.gravity = b.gravity;
+        this.bounceFactor = b.bounceFactor;
+        this.maxBounces = b.maxBounces;
+        this.soundEvent = b.soundEvent;
+        this.projType = b.projType;
+        this.ballTexture = b.ballTexture;
+        this.modelLocation = b.modelLocation;
+        this.onHit = b.onHit;
+    }
 
-    /** 链锤*/
-    public static final Supplier<FlailComponent> MACE =
-            () -> new FlailComponent(
-                    11.0f,
-                    1.2f,
-                    1.2f,
-                    1.2f,
-                    8.0f,
-                    1.0f,
-                    0.05f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/mace.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/mace.geo.json")),
-                    Optional.empty()
-            );
+    // ── 预定义连枷 ──
 
-    // 火焰链锤 — 1/6 几率着火
-    public static final Supplier<FlailComponent> FLAMING_MACE =
-            () -> new FlailComponent(
-                    11.0f,
-                    1.2f,
-                    1.2f,
-                    1.2f,
-                    8.0f,
-                    1.0f,
-                    0.05f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/flaming_mace.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/flaming_mace.geo.json")),
-                    Optional.of(new EffectStrategyComponent(List.of(
-                            new PrefabEffect("flaming_mace_fire",
-                                    ModEffectStrategies.FIRE_3S_1_6)
-                    )))
-            );
+    /** 链锤 */
+    public static final FlailComponent MACE = new Builder()
+            .damageFactor(11)
+            .spinRadius(1.2f)
+            .spinSpeed(1.2f)
+            .throwSpeed(1.2f)
+            .maxDistance(8)
+            .retractSpeed(1)
+            .gravity(0.05f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/mace.png"))
+            .model(Confluence.asResource("geo/entity/flail/mace.geo.json"))
+            .build();
 
-    // 风锚
-    public static final Supplier<FlailComponent> WIND_ANCHOR =
-            () -> new FlailComponent(
-                    13.0f,
-                    1.2f,
-                    0.9f,
-                    1.0f,
-                    10.0f,
-                    0.9f,
-                    0.05f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/wind_anchor.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/wind_anchor.geo.json")),
-                    Optional.empty()
-            );
-    // todo 掷出击中敌人会产生只持续3秒的HURTNADO_PROJECTILE
+    /** 火焰链锤 — 1/6 几率着火 */
+    public static final FlailComponent FLAMING_MACE = new Builder()
+            .damageFactor(11)
+            .spinRadius(1.2f)
+            .spinSpeed(1.2f)
+            .throwSpeed(1.2f)
+            .maxDistance(8)
+            .retractSpeed(1)
+            .gravity(0.05f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/flaming_mace.png"))
+            .model(Confluence.asResource("geo/entity/flail/flaming_mace.geo.json"))
+            .onHit((player, target) -> {
+                if (target.getRandom().nextFloat() < 1f / 6f) {
+                    target.setRemainingFireTicks(60);
+                }
+            })
+            .build();
 
-    // 守卫链球
-    public static final Supplier<FlailComponent> GUARDIAN_FLAIL =
-            () -> new FlailComponent(
-                    15.0f,
-                    1.3f,
-                    1.3f,
-                    1.3f,
-                    11.0f,
-                    1.2f,
-                    0.04f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/guardian_flail.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/guardian_flail.geo.json")),
-                    Optional.empty()
-            );
-    // 守卫链球
-    public static final Supplier<FlailComponent> ANCIENT_GUARDIAN_FLAIL =
-            () -> new FlailComponent(
-                    15.0f,
-                    1.3f,
-                    1.3f,
-                    1.3f,
-                    14.0f,
-                    1.2f,
-                    0.04f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/ancient_guardian_flail.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/ancient_guardian_flail.geo.json")),
-                    Optional.empty()
-            );
+    /** 风锚 */
+    public static final FlailComponent WIND_ANCHOR = new Builder()
+            .damageFactor(13)
+            .spinRadius(1.2f)
+            .spinSpeed(0.9f)
+            .throwSpeed(1)
+            .maxDistance(10)
+            .retractSpeed(0.9f)
+            .gravity(0.05f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/wind_anchor.png"))
+            .model(Confluence.asResource("geo/entity/flail/wind_anchor.geo.json"))
+            .build();
 
+    /** 守卫链球 */
+    public static final FlailComponent GUARDIAN_FLAIL = new Builder()
+            .damageFactor(15)
+            .spinRadius(1.3f)
+            .spinSpeed(1.3f)
+            .throwSpeed(1.3f)
+            .maxDistance(11)
+            .retractSpeed(1.2f)
+            .gravity(0.04f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/guardian_flail.png"))
+            .model(Confluence.asResource("geo/entity/flail/guardian_flail.geo.json"))
+            .build();
 
-    // 血肉之球
-    public static final Supplier<FlailComponent> THE_MEATBALL =
-            () -> new FlailComponent(
-                    19.0f,
-                    1.2f,
-                    1.5f,
-                    1.3f,
-                    13.0f,
-                    1.0f,
-                    0.2f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/the_meatball.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/the_meatball.geo.json")),
-                    Optional.empty()
-            );
-    // 蓝月
-    public static final Supplier<FlailComponent> BLUE_MOON =
-            () -> new FlailComponent(
-                    29.0f,
-                    1.2f,
-                    1.5f,
-                    1.3f,
-                    20.0f,
-                    1.0f,
-                    0.2f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/blue_moon.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/blue_moon.geo.json")),
-                    Optional.empty()
-            );
+    /** 远古守卫链球 */
+    public static final FlailComponent ANCIENT_GUARDIAN_FLAIL = new Builder()
+            .damageFactor(15).spinRadius(1.3f).spinSpeed(1.3f)
+            .throwSpeed(1.3f).maxDistance(14).retractSpeed(1.2f).gravity(0.04f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/ancient_guardian_flail.png"))
+            .model(Confluence.asResource("geo/entity/flail/ancient_guardian_flail.geo.json"))
+            .build();
 
-    // 阳炎之怒 — 1/4 几率着火
-    public static final Supplier<FlailComponent> SUNFURY =
-            () -> new FlailComponent(
-                    34.0f,
-                    1.2f,
-                    1.5f,
-                    1.3f,
-                    23.0f,
-                    1.0f,
-                    0.2f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/sunfury.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/sunfury.geo.json")),
-                    Optional.of(new EffectStrategyComponent(List.of(
-                            new PrefabEffect("sunfury_fire",
-                                    ModEffectStrategies.FIRE_3S_1_4)
-                    )))
-            );
+    /** 致伤球 */
+    public static final FlailComponent BALL_O_HURT = new Builder()
+            .damageFactor(17)
+            .spinRadius(1.2f)
+            .spinSpeed(1.5f)
+            .throwSpeed(1.3f)
+            .maxDistance(11)
+            .retractSpeed(1)
+            .gravity(0.2f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/ball_o_hurt.png"))
+            .model(Confluence.asResource("geo/entity/flail/ball_o_hurt.geo.json"))
+            .build();
 
-    // 太极连枷 — 4/5 几率困惑
-    public static final Supplier<FlailComponent> DAO_OF_POW =
-            () -> new FlailComponent(
-                    52.0f,
-                    1.2f,
-                    1.5f,
-                    1.3f,
-                    26.0f,
-                    1.0f,
-                    0.2f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/dao_of_pow.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/dao_of_pow.geo.json")),
-                    Optional.of(new EffectStrategyComponent(List.of(
-                            TimePossibilityAmplifierEffect.of("dao_confused",
-                                    org.confluence.terra_curio.common.init.TCEffects.CONFUSED.getDelegate(),
-                                    40, 0, 0, 0.8f)
-                    )))
-            );
+    /** 血肉之球 */
+    public static final FlailComponent THE_MEATBALL = new Builder()
+            .damageFactor(19)
+            .spinRadius(1.2f)
+            .spinSpeed(1.5f)
+            .throwSpeed(1.3f)
+            .maxDistance(13)
+            .retractSpeed(1)
+            .gravity(0.2f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/the_meatball.png"))
+            .model(Confluence.asResource("geo/entity/flail/the_meatball.geo.json"))
+            .build();
 
-    //花之力
-    public static final Supplier<FlailComponent> FLOWER_POWER =
-            () -> new FlailComponent(
-                    67.0f,
-                    1.2f,
-                    1.5f,
-                    1.3f,
-                    26.0f,
-                    1.0f,
-                    0.2f,
-                    0.3f,
-                    3,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/flail/flower_power.png"),
-                    Optional.of(Confluence.asResource("geo/entity/flail/flower_power.geo.json")),
-                    Optional.empty()
-            );
+    /** 蓝月 */
+    public static final FlailComponent BLUE_MOON = new Builder()
+            .damageFactor(29)
+            .spinRadius(1.2f)
+            .spinSpeed(1.5f)
+            .throwSpeed(1.3f)
+            .maxDistance(20)
+            .retractSpeed(1)
+            .gravity(0.2f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/blue_moon.png"))
+            .model(Confluence.asResource("geo/entity/flail/blue_moon.geo.json"))
+            .build();
+
+    /** 阳炎之怒 — 1/4 几率着火 */
+    public static final FlailComponent SUNFURY = new Builder()
+            .damageFactor(34)
+            .spinRadius(1.2f)
+            .spinSpeed(1.5f)
+            .throwSpeed(1.3f)
+            .maxDistance(23)
+            .retractSpeed(1)
+            .gravity(0.2f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/sunfury.png"))
+            .model(Confluence.asResource("geo/entity/flail/sunfury.geo.json"))
+            .onHit((player, target) -> {
+                if (target.getRandom().nextFloat() < 1f / 4f) {
+                    target.setRemainingFireTicks(60);
+                }
+            })
+            .build();
+
+    /** 太极连枷 — 4/5 几率困惑 */
+    public static final FlailComponent DAO_OF_POW = new Builder()
+            .damageFactor(52)
+            .spinRadius(1.2f)
+            .spinSpeed(1.5f)
+            .throwSpeed(1.3f)
+            .maxDistance(26)
+            .retractSpeed(1)
+            .gravity(0.2f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/dao_of_pow.png"))
+            .model(Confluence.asResource("geo/entity/flail/dao_of_pow.geo.json"))
+            .onHit((player, target) -> {
+                if (target.getRandom().nextFloat() < 0.8f) {
+                    target.addEffect(new net.minecraft.world.effect.MobEffectInstance(
+                            org.confluence.terra_curio.common.init.TCEffects.CONFUSED.getDelegate(), 40, 0));
+                }
+            })
+            .build();
+
+    /** 花之力 */
+    public static final FlailComponent FLOWER_POWER = new Builder()
+            .damageFactor(67)
+            .spinRadius(1.2f)
+            .spinSpeed(1.5f)
+            .throwSpeed(1.3f)
+            .maxDistance(26)
+            .retractSpeed(1)
+            .gravity(0.2f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/flower_power.png"))
+            .model(Confluence.asResource("geo/entity/flail/flower_power.geo.json"))
+            .build();
+
+    /** 滴滴怪致残者 */
+    public static final FlailComponent DRIPPLER_CRIPPLER = new Builder()
+            .damageFactor(55)
+            .spinRadius(1.2f)
+            .spinSpeed(1.5f)
+            .throwSpeed(1.3f)
+            .maxDistance(10)
+            .retractSpeed(1)
+            .gravity(0.2f)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/drippler_crippler.png"))
+            .model(Confluence.asResource("geo/entity/flail/drippler_crippler.geo.json"))
+            .build();
+
+    // ── 工具方法 ──
 
     public SoundEvent getSoundEvent() {
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);
-    }
-
-    public static final StreamCodec<ByteBuf, FlailComponent> STREAM_CODEC = ByteBufCodecs.fromCodec(CODEC);
-
-    @Override
-    public @Nullable Codec<FlailComponent> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, FlailComponent> streamCodec() {
-        return STREAM_CODEC;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) return true;
-        if (o instanceof FlailComponent other) {
-            return damageFactor == other.damageFactor &&
-                    spinRadius == other.spinRadius &&
-                    spinSpeed == other.spinSpeed &&
-                    throwSpeed == other.throwSpeed &&
-                    maxDistance == other.maxDistance &&
-                    retractSpeed == other.retractSpeed &&
-                    gravity == other.gravity &&
-                    bounceFactor == other.bounceFactor &&
-                    maxBounces == other.maxBounces &&
-                    soundEvent.equals(other.soundEvent) &&
-                    projType.equals(other.projType) &&
-                    ballTexture.equals(other.ballTexture) &&
-                    hitEffect.equals(other.hitEffect);
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Float.hashCode(damageFactor);
-        result = 31 * result + Float.hashCode(spinRadius);
-        result = 31 * result + Float.hashCode(spinSpeed);
-        result = 31 * result + Float.hashCode(throwSpeed);
-        result = 31 * result + Float.hashCode(maxDistance);
-        result = 31 * result + Float.hashCode(retractSpeed);
-        result = 31 * result + Float.hashCode(gravity);
-        result = 31 * result + Float.hashCode(bounceFactor);
-        result = 31 * result + maxBounces;
-        result = 31 * result + soundEvent.hashCode();
-        result = 31 * result + projType.hashCode();
-        result = 31 * result + ballTexture.hashCode();
-        result = 31 * result + hitEffect.hashCode();
-        return result;
     }
 
     /** 获取修正后的投掷速度（受远程速度属性影响） */
@@ -387,5 +267,43 @@ public record FlailComponent(
         AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
         if (instance != null) return spinSpeed * (float) instance.getValue() / 4.0f;
         return spinSpeed;
+    }
+
+    // ── Builder ──
+
+    public static class Builder {
+        float damageFactor;
+        float spinRadius = 1.2f;
+        float spinSpeed = 1.2f;
+        float throwSpeed = 1.2f;
+        float maxDistance = 10;
+        float retractSpeed = 1;
+        float gravity = 0.05f;
+        float bounceFactor = 0.3f;
+        int maxBounces = 3;
+        ResourceLocation soundEvent;
+        ResourceLocation projType;
+        ResourceLocation ballTexture;
+        ResourceLocation modelLocation;
+        BiConsumer<Player, LivingEntity> onHit;
+
+        public Builder damageFactor(float v) { this.damageFactor = v; return this; }
+        public Builder spinRadius(float v) { this.spinRadius = v; return this; }
+        public Builder spinSpeed(float v) { this.spinSpeed = v; return this; }
+        public Builder throwSpeed(float v) { this.throwSpeed = v; return this; }
+        public Builder maxDistance(float v) { this.maxDistance = v; return this; }
+        public Builder retractSpeed(float v) { this.retractSpeed = v; return this; }
+        public Builder gravity(float v) { this.gravity = v; return this; }
+        public Builder bounceFactor(float v) { this.bounceFactor = v; return this; }
+        public Builder maxBounces(int v) { this.maxBounces = v; return this; }
+        public Builder sound(ResourceLocation v) { this.soundEvent = v; return this; }
+        public Builder projType(ResourceLocation v) { this.projType = v; return this; }
+        public Builder texture(ResourceLocation v) { this.ballTexture = v; return this; }
+        public Builder model(ResourceLocation v) { this.modelLocation = v; return this; }
+        public Builder onHit(BiConsumer<Player, LivingEntity> v) { this.onHit = v; return this; }
+
+        public FlailComponent build() {
+            return new FlailComponent(this);
+        }
     }
 }

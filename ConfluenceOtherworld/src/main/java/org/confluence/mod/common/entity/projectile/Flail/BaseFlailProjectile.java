@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -28,13 +29,13 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
  * <h1>连枷子投射物抽象基类</h1>
- * 由 {@link FlailAttackStrategy} 在连枷状态机各阶段生成的附属投射物基类。
+ * 由 {@link FlailStrategy} 在连枷状态机各阶段生成的附属投射物基类。
  * <p>
  * 子类需重写 {@link #subTick()} 实现自定义行为，并在构造函数中调用
  * {@link #BaseFlailProjectile(EntityType, Level, BaseFlailEntity, Player)} 传入父连枷和持有者。
  *
  * @see BaseFlailEntity
- * @see FlailAttackStrategy
+ * @see FlailStrategy
  */
 public abstract class BaseFlailProjectile extends Projectile implements GeoAnimatable {
     /** 渲染模式 */
@@ -206,8 +207,10 @@ public abstract class BaseFlailProjectile extends Projectile implements GeoAnima
         if (hitResult.getType() == HitResult.Type.ENTITY) {
             onHitEntity((EntityHitResult) hitResult);
         } else if (hitResult.getType() == HitResult.Type.BLOCK) {
-            discard();
-            return;
+            if (!onProjectileBlockHit((BlockHitResult) hitResult)) {
+                discard();
+                return;
+            }
         }
 
         this.move(MoverType.SELF, this.getDeltaMovement());
@@ -244,6 +247,16 @@ public abstract class BaseFlailProjectile extends Projectile implements GeoAnima
      * <p>默认空实现，由子类决定伤害计算和效果施加。
      */
     protected void onHitLiving(@NotNull LivingEntity target) {}
+
+    /**
+     * 子类重写以处理命中方块的行为（如弹跳）。
+     * <p>默认命中方块后移除投射物。返回 {@code true} 可阻止默认移除行为，子类应在此方法中自行处理反弹逻辑。
+     * @param hitResult 方块碰撞结果
+     * @return true 表示已处理（阻止移除），false 执行默认移除
+     */
+    protected boolean onProjectileBlockHit(@NotNull BlockHitResult hitResult) {
+        return false;
+    }
 
     /**
      * 快捷方法：使投射物面朝速度方向。

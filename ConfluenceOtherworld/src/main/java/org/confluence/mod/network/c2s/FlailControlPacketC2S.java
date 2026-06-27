@@ -9,9 +9,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.FlailComponent;
-import org.confluence.mod.common.entity.flail.*;
-import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
+import org.confluence.mod.common.item.flail.FlailStrategy;
 
 /**
  * <h1>连枷控制包C2S</h1>
@@ -54,9 +54,9 @@ public final class FlailControlPacketC2S implements IPacketC2S {
     @Override
     public void work(ServerPlayer player) {
         ItemStack stack = player.getMainHandItem();
-        if (!(stack.getItem() instanceof BaseFlailItem)) return;
+        if (!(stack.getItem() instanceof BaseFlailItem flailItem)) return;
 
-        FlailComponent component = stack.get(ModDataComponentTypes.FLAIL);
+        FlailComponent component = flailItem.getComponent();
         if (component == null) return;
 
         // 查找现有连枷实体
@@ -66,13 +66,13 @@ public final class FlailControlPacketC2S implements IPacketC2S {
             case HOLD -> {
                 if (existing == null) {
                     // 创建新连枷并开始 SPIN
-                    var projType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.get(component.projType());
+                    var projType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.get(component.projType);
                     if (projType == null) return;
                     var entity = projType.create(player.level());
                     if (!(entity instanceof BaseFlailEntity flail)) return;
                     flail.init(player, stack, component);
                     // 注入物品绑定的攻击策略
-                    FlailAttackStrategy strategy = ((BaseFlailItem) stack.getItem()).getAttackStrategy();
+                    FlailStrategy strategy = ((BaseFlailItem) stack.getItem()).getAttackStrategy();
                     if (strategy != null) {
                         flail.setAttackStrategy(strategy);
                     }

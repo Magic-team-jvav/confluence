@@ -177,6 +177,7 @@ public final class ModEntities {
 
     // 连枷投射物
     public static final DeferredHolder<EntityType<?>, EntityType<FlowerProjectile>> FLOWER_PROJECTILE = ENTITIES.register("flower_projectile", id -> EntityType.Builder.<FlowerProjectile>of(FlowerProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).noSave().build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<DripplerCripplerProjectile>> DRIPPLER_CRIPPLER_PROJECTILE = ENTITIES.register("drippler_crippler_projectile", id -> EntityType.Builder.<DripplerCripplerProjectile>of(DripplerCripplerProjectile::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(4).noSave().build(id.toString()));
 
     // 矿车
     public static final DeferredHolder<EntityType<?>, EntityType<BaseMinecartEntity>> VANILLA_MINECART = registerMinecart("vanilla_minecart", BaseMinecartEntity::new);

@@ -4,7 +4,6 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.component.SpearProjectileComponent;
@@ -25,5 +24,4 @@ public final class ModDataComponentTypes {
     public static final Supplier<DataComponentType<SpearProjectileComponent>> SPEAR_PROJECTILE = TYPES.registerComponentType("spear_projectile", builder -> builder.persistent(SpearProjectileComponent.CODEC).networkSynchronized(SpearProjectileComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.registerComponentType("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.registerComponentType("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
-    public static final Supplier<DataComponentType<FlailComponent>> FLAIL = TYPES.registerComponentType("flail", builder -> builder.persistent(FlailComponent.CODEC).networkSynchronized(FlailComponent.STREAM_CODEC));
 }

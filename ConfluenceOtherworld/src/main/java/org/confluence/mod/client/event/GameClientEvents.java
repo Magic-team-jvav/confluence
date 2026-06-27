@@ -77,7 +77,6 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.map.ExtractinatorData;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -109,6 +108,7 @@ import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.event.GeoRenderEvent;
+import org.confluence.mod.common.item.flail.BaseFlailItem;
 
 import java.util.Iterator;
 import java.util.List;
@@ -178,7 +178,7 @@ public final class GameClientEvents {
                 SwordProjectilePacketC2S.sendToServer();
             }
             //连枷按键检测
-            boolean isFlail = player.getMainHandItem().has(ModDataComponentTypes.FLAIL);
+            boolean isFlail = player.getMainHandItem().getItem() instanceof BaseFlailItem;
             boolean keyHeld = minecraft.options.keyAttack.isDown();
             if (isFlail) {
                 if (keyHeld && !wasFlailKeyHeld) {

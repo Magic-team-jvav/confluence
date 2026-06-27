@@ -414,6 +414,7 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(FLAIL_ENTITY.get(), BaseFlailRenderer::new);
         event.registerEntityRenderer(FLOWER_PROJECTILE.get(), FlailProjectileRenderer::new);
+        event.registerEntityRenderer(DRIPPLER_CRIPPLER_PROJECTILE.get(), FlailProjectileRenderer::new);
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
         event.registerEntityRenderer(VANILLA_MINECART.get(), provider);

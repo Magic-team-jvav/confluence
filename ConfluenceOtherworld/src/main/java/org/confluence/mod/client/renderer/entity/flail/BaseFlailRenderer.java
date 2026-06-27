@@ -40,8 +40,8 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
 
     /** 解析弹球 Geo 模型路径（优先使用 FlailComponent 自定义值） */
     private static ResourceLocation resolveBallModel(@Nullable FlailComponent comp) {
-        if (comp != null && comp.modelLocation().isPresent()) {
-            return comp.modelLocation().get();
+        if (comp != null && comp.modelLocation != null) {
+            return comp.modelLocation;
         }
         return DEFAULT_BALL_MODEL;
     }
@@ -49,8 +49,8 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
     @Override
     public ResourceLocation getTextureLocation(BaseFlailEntity entity) {
         FlailComponent comp = entity.getComponent();
-        if (comp != null && comp.ballTexture() != null) {
-            return comp.ballTexture();
+        if (comp != null && comp.ballTexture != null) {
+            return comp.ballTexture;
         }
         return DEFAULT_BALL_TEXTURE;
     }
@@ -58,8 +58,8 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
     /** 从弹球贴图路径推导锁链贴图，不存在时回退到 flail_chain.png */
     private static ResourceLocation resolveChainTexture(BaseFlailEntity entity) {
         FlailComponent comp = entity.getComponent();
-        if (comp != null && comp.ballTexture() != null) {
-            String path = comp.ballTexture().getPath();
+        if (comp != null && comp.ballTexture != null) {
+            String path = comp.ballTexture.getPath();
             String name = path.substring(path.lastIndexOf('/') + 1, path.lastIndexOf('.'));
             ResourceLocation derived = Confluence.asResource("textures/entity/flail/" + name + "_chain.png");
             if (resourceExists(derived)) {

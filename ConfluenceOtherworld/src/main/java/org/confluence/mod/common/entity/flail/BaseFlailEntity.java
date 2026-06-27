@@ -25,10 +25,9 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.enchantment.TurbineEnchantments;
-
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
+import org.confluence.mod.common.item.flail.FlailStrategy;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.HandPositionUtils;
@@ -93,7 +92,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
      * 攻击策略，控制各阶段的额外攻击行为（如发射激光、追踪泡泡）。
      * 子类可在构造函数中覆盖以绑定专属策略。
      */
-    protected FlailAttackStrategy attackStrategy = FlailAttackStrategy.NULL;
+    protected FlailStrategy attackStrategy = FlailStrategy.NULL;
     private final AnimatableInstanceCache animatableCache = GeckoLibUtil.createInstanceCache(this);
 
     /**
@@ -105,12 +104,12 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
     /** 获取当前攻击策略 */
     @NotNull
-    public FlailAttackStrategy getAttackStrategy() {
+    public FlailStrategy getAttackStrategy() {
         return attackStrategy;
     }
 
     /** 设置攻击策略（通常在 {@link #init} 之前调用） */
-    public void setAttackStrategy(@NotNull FlailAttackStrategy attackStrategy) {
+    public void setAttackStrategy(@NotNull FlailStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
     }
 
@@ -158,10 +157,14 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             return cachedComponent;
         }
         ItemStack stack = living.getMainHandItem();
-        cachedComponent = stack.get(ModDataComponentTypes.FLAIL);
-        if (cachedComponent != null) return cachedComponent;
+        if (stack.getItem() instanceof BaseFlailItem flailItem) {
+            cachedComponent = flailItem.getComponent();
+            if (cachedComponent != null) return cachedComponent;
+        }
         stack = living.getOffhandItem();
-        cachedComponent = stack.get(ModDataComponentTypes.FLAIL);
+        if (stack.getItem() instanceof BaseFlailItem flailItem) {
+            cachedComponent = flailItem.getComponent();
+        }
         return cachedComponent;
     }
 
@@ -248,7 +251,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         // 所有阶段：玩家超出最大距离时自动收回（仅服务端判断）
         if (!level().isClientSide() && phase != PHASE_RETRACT
-                && position().distanceToSqr(player.position()) > component.maxDistance() * component.maxDistance()) {
+                && position().distanceToSqr(player.position()) > component.maxDistance * component.maxDistance) {
             if (phase == PHASE_THROWN) {
                 attackStrategy.onThrownToRetract(this, player, component);
             }
@@ -270,7 +273,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         float yawRad = (float) Math.toRadians(player.yBodyRot);
         float cosYaw = (float) Math.cos(yawRad);
         float sinYaw = (float) Math.sin(yawRad);
-        double r = component.spinRadius();
+        double r = component.spinRadius;
         double localY = r * Math.sin(spinAngle);
         double localZ = r * Math.cos(spinAngle);
         // MC 坐标系：forward = (-sin(yaw), 0, cos(yaw))
@@ -344,7 +347,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         setDeltaMovement(motion);
 
         // 反弹次数耗尽 或 反射后速度过低 → 直接收回（仅服务端判断）
-        if (!level().isClientSide() && (bounceCount >= component.maxBounces() || motion.lengthSqr() < 0.1)) {
+        if (!level().isClientSide() && (bounceCount >= component.maxBounces || motion.lengthSqr() < 0.1)) {
             attackStrategy.onThrownToRetract(this, player, component);
             setPhase(PHASE_RETRACT);
             return;
@@ -359,7 +362,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
     private void tickStay(Player player, FlailComponent component) {
         // 手动施加重力并使用 move() 进行碰撞位移
-        Vec3 motion = getDeltaMovement().add(0, -component.gravity(), 0);
+        Vec3 motion = getDeltaMovement().add(0, -component.gravity, 0);
         setDeltaMovement(motion);
 
         // 速度过低 → 收回（仅服务端判断，玩家主动丢出时不收回）
@@ -392,13 +395,13 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         // 面朝玩家
         faceDirection(toOwner);
         Vec3 dir = toOwner.normalize();
-        Vec3 motion = dir.scale(component.retractSpeed());
+        Vec3 motion = dir.scale(component.retractSpeed);
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
 
         // 卡墙时瞬移绕过方块
         if (horizontalCollision || verticalCollision) {
-            setPos(position().add(dir.scale(component.retractSpeed() * 2)));
+            setPos(position().add(dir.scale(component.retractSpeed * 2)));
         }
     }
 
@@ -430,7 +433,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
                 if (!anyHit) firstHit = target;
                 anyHit = true;
                 VectorUtils.knockBackA2B(this, target, 0.3f, 0.15f);
-                component.hitEffect().ifPresent(effect -> effect.applyAll(player, target));
+                if (component.onHit != null) {
+                    component.onHit.accept(player, target);
+                }
                 if (level() instanceof ServerLevel serverLevel) {
                     EnchantmentHelper.doPostAttackEffects(serverLevel, target, source);
                 }
@@ -478,7 +483,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         // 修正投掷方向：使几何中心在 maxDistance 处命中视角射线
         // C0 + dir × maxDist = eye + look × maxDist  ⇒  dir = normalize((eye - C0) + look × maxDist)
         Vec3 eye = player.getEyePosition(1.0F);
-        Vec3 targetDir = look.scale(component.maxDistance()).add(eye.subtract(palm));
+        Vec3 targetDir = look.scale(component.maxDistance).add(eye.subtract(palm));
         Vec3 launchDir = targetDir.normalize();
 
         float velocity = component.getVelocity(player) * (1.0F + TurbineEnchantments.getBonus(player, spinTickCounter));
@@ -517,8 +522,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     private boolean isHoldingFlail(@NotNull Player player) {
         ItemStack stack = player.getMainHandItem();
         return !stack.isEmpty()
-                && stack.getItem() instanceof BaseFlailItem
-                && stack.has(ModDataComponentTypes.FLAIL);
+                && stack.getItem() instanceof BaseFlailItem;
     }
 
     @Override

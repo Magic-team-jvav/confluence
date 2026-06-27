@@ -17,11 +17,11 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.common.component.BulletPropertyComponent;
 import org.confluence.mod.common.component.GunPropertyComponent;
+import org.confluence.mod.common.data.AmmoDataContext;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.entity.projectile.CustomBulletEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.util.AmmoDataContext;
-import org.confluence.mod.util.ModGeckoLibUtils;
+import org.confluence.mod.util.ModGunUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.PortEventHandler;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -135,15 +135,15 @@ public class BaseGun extends Item implements GeoItem {
     }
 
     public void fireAnimator(ItemStack itemStack, ServerPlayer serverPlayer) {
-        ModGeckoLibUtils.stopAndPlayAnim(this, itemStack, serverPlayer, "gun", "gun_fire");
+        ModGunUtils.stopAndPlayAnim(this, itemStack, serverPlayer, "gun", "gun_fire");
     }
 
     public void pickAnimator(ItemStack itemStack, ServerPlayer serverPlayer) {
-        ModGeckoLibUtils.stopAndPlayAnim(this, itemStack, serverPlayer, "gun", "gun_pick");
+        ModGunUtils.stopAndPlayAnim(this, itemStack, serverPlayer, "gun", "gun_pick");
     }
 
     public void reloadAnimator(ItemStack itemStack, ServerPlayer serverPlayer) {
-        ModGeckoLibUtils.stopAndPlayAnim(this, itemStack, serverPlayer, "gun", "gun_reload");
+        ModGunUtils.stopAndPlayAnim(this, itemStack, serverPlayer, "gun", "gun_reload");
     }
 
     @Override

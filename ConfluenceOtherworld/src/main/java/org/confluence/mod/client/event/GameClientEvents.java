@@ -554,7 +554,7 @@ public final class GameClientEvents {
 
                 GunEvent.UseGunEvent useGunEvent = new GunEvent.UseGunEvent(player, baseGun, baseGun.getCooldown());
                 PortEventHandler.postEvent(useGunEvent);
-                if (useGunEvent.isCanceled() || !BulletHandler.canShoot(player, mainHandItem))
+                if (useGunEvent.isCanceled() || !ModGunUtils.canShoot(player, mainHandItem))
                     return;
 
                 player.playSound(GunSounds.getSound(mainHandItem), 1f, 1f);

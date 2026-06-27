@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.Event;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.item.BaseBullet;
 
-public class BulletEvent extends Event {
+public abstract class BulletEvent extends Event {
     private final BaseBulletEntity bulletEntity;
     private final BaseBullet bullet;
 

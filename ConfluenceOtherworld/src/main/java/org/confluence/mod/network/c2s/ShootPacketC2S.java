@@ -10,7 +10,7 @@ import org.confluence.mod.common.component.BulletPropertyComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.gun.BaseGun;
-import org.confluence.mod.util.BulletHandler;
+import org.confluence.mod.util.ModGunUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -25,7 +25,7 @@ public enum ShootPacketC2S implements IPortPacket.C2S {
     public void work(ServerPlayer player) {
         ItemStack gunStack = player.getMainHandItem();
         if (gunStack.getItem() instanceof BaseGun baseGun) {
-            ItemStack ammo = BulletHandler.getAmmo(player, gunStack);
+            ItemStack ammo = ModGunUtils.getAmmo(player, gunStack);
             ammo = ammo.equals(ItemStack.EMPTY) ? GunItems.EMPTY_BULLET.get().getDefaultInstance() : ammo;
 
             baseGun.shoot(player, ammo, gunStack);

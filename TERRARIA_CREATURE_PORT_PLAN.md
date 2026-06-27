@@ -1,0 +1,862 @@
+# 泰拉瑞亚生物复刻计划表
+
+> 状态: 草案 | 日期: 2026-06-27 | 目标平台: Minecraft Forge 1.20.1
+>
+> 架构决策: **完全抛弃 TerraEntity 模块，在 ConfluenceOtherworld 中全量重写。**
+
+---
+
+## 一、模块职责
+
+```
+Confluence-Magic-Lib/          # 共享库 —— 属性、伤害类型、Boss 标记接口
+├── api/entity/
+│   ├── Boss                  # Boss 标记接口（已存在）
+│   └── IDiscardWhenRespawnEntity
+├── common/
+│   ├── LibAttributes          # 自定义属性: crit_chance, ranged_damage, dodge_chance, summon_damage 等
+│   └── LibDamageTypes
+└── (网络、粒子、颜色工具等)
+
+PortLib/                       # Forge/NeoForge 抽象层
+├── PortAttachmentType         # 数据附着
+├── PortNetworkHandler         # 网络通道
+├── PortCustomRegistration     # 自定义注册系统
+├── IPortItemExtension         # 接口注入
+└── (事件封装、Mixin 等)
+
+ConfluenceOtherworld/          # 主模组 —— 一切内容
+├── common/
+│   ├── entity/                # 【新】生物实现（全部在此重写）
+│   │   ├── boss/              #   Boss 实体
+│   │   ├── monster/           #   怪物实体
+│   │   ├── summon/            #   召唤物实体
+│   │   ├── npc/               #   NPC 实体
+│   │   ├── animal/            #   动物实体
+│   │   └── projectile/        #   弹射物实体（合并原 TerraEntity 弹射物）
+│   ├── entity/ai/             # 【新】AI 系统
+│   │   ├── fsm/               #   FSM 状态机
+│   │   ├── goal/              #   通用 AI Goal
+│   │   └── skill/             #   Boss 技能组件
+│   ├── entity/api/            # 【新】生物 API 接口（实体间契约）
+│   ├── init/entity/           # 【扩】实体注册（集中管理）
+│   ├── attachment/            # Player attachment（召唤栏位等）
+│   ├── network/               # 网络包（已有 c2s/ s2c/）
+│   └── ...
+├── client/
+│   └── entity/                # 【新】生物渲染
+│       ├── renderer/          #   渲染器
+│       ├── model/             #   模型
+│       └── animation/         #   动画系统
+└── data/
+    └── entity_definition/     # 【新】数据驱动生物定义（JSON/datapack）
+```
+
+**TerraEntity、TerraCurio、TerraFurniture 均不参与新架构，仅作旧代码参考。**
+
+---
+
+## 二、API 接口设计
+
+全部定义在 `ConfluenceOtherworld/common/entity/api/` 下。
+
+### 2.1 核心接口
+
+```java
+// === Boss 生物 ===
+// 继承自 Confluence-Magic-Lib 的 Boss 标记
+public interface ConfluenceBoss extends Boss {
+    BossPhase getCurrentPhase();
+    SkillManager<?> getSkillManager();
+    BossBarProperties getBossBar();     // 颜色、分段、动画配置
+    default boolean isExpert() { return false; }
+    default boolean isMaster() { return false; }
+}
+
+// === Boss 部件（多部件 Boss 的子实体） ===
+public interface BossPart extends Boss.BossPart {
+    ConfluenceBoss getMaster();
+    void syncFromMaster();
+}
+
+// === 召唤物 ===
+public interface SummonCreature extends OwnableEntity {
+    SummonType getSummonType();         // MINION / SENTRY / PET
+    int getSlotCost();
+    default float getSummonDamage() { return (float) getAsMob().getAttributeValue(LibAttributes.getSummonDamage()); }
+    private Mob getAsMob() { return (Mob) this; }
+}
+
+// === 蠕虫分段 ===
+public interface WormSegment {
+    int getSegmentIndex();
+    WormSegment getPrev();
+    WormSegment getNext();
+    void updateSegmentPosition();
+}
+
+// === 碰撞伤害（触碰到即造成伤害） ===
+public interface CollisionAttack {
+    AABB getCollisionBounds();
+    boolean canCollisionHurt(Entity target);
+    float getCollisionDamage();
+    int getCollisionCooldownTicks();
+}
+```
+
+### 2.2 变体系统
+
+不定义自己的变体接口。直接使用 Minecraft 内置的 `VariantHolder<T>`:
+
+```java
+// vanilla: net.minecraft.world.entity.VariantHolder<T>
+// - getVariant() / setVariant(T)
+// - 变体数据通过 EntityDataAccessor<int> (ordinal) 同步
+// - 纹理路径由 Variant 枚举自身的 getTexture() 提供，Render 直接调用
+
+// 示例：内部枚举 Variant 实现 StringRepresentable，携带纹理路径
+public class Bunny extends Animal implements VariantHolder<Bunny.Variant> {
+
+    public enum Variant implements StringRepresentable {
+        NORMAL, JEWEL, EXPLOSIVE;
+
+        @Override public String getSerializedName() { return name().toLowerCase(Locale.ROOT); }
+
+        public ResourceLocation getTexture() {
+            return switch (this) {
+                case JEWEL -> tex("golden_bunny");
+                case EXPLOSIVE -> tex("explosive_bunny");
+                default -> tex("bunny");
+            };
+        }
+    }
+}
+```
+
+### 2.3 AI 技能接口
+
+```java
+// === 技能（Boss / FSM 怪物的单个行为单元） ===
+public interface MobSkill<T extends Mob> {
+    String id();
+    int durationTicks();
+    int cooldownTicks();
+    boolean canExecute(T mob);
+    void onStart(T mob);
+    void onTick(T mob, int elapsedTicks);
+    void onEnd(T mob);
+    default int priority() { return 0; }
+}
+
+// === Boss 阶段 ===
+public interface BossPhase {
+    String name();
+    float healthThreshold();            // 触发血量百分比 [0.0, 1.0]
+    List<MobSkill<?>> skills();
+    default AttributeModifier[] phaseModifiers() { return new AttributeModifier[0]; }
+}
+```
+
+---
+
+## 三、实体继承体系
+
+全部写在 `ConfluenceOtherworld/common/entity/` 下。
+
+```
+Mob (vanilla)
+├── Monster (vanilla)
+│   ├── BaseBoss                     ← Boss 基类
+│   │   ├── KingSlime
+│   │   ├── EyeOfCthulhu
+│   │   ├── EaterOfWorlds            implements WormSegment (root)
+│   │   ├── BrainOfCthulhu
+│   │   ├── Deerclops
+│   │   ├── QueenBee
+│   │   ├── Skeletron                (主控体，管理 Hands)
+│   │   ├── WallOfFlesh              (主控体，管理 Mouth/Eyes)
+│   │   ├── TheTwins
+│   │   ├── SkeletronPrime           (主控体，管理四臂)
+│   │   ├── TheDestroyer             implements WormSegment (root)
+│   │   ├── Plantera                  (主控体，管理 Hooks/Tentacles)
+│   │   ├── DungeonGuardian
+│   │   └── LunaticCultist
+│   │
+│   ├── BaseMonster                  ← 普通怪物基类
+│   │   ├── BaseSlime                ← 史莱姆族基类
+│   │   │   ├── GreenSlime, BlueSlime, RedSlime
+│   │   │   ├── PurpleSlime, YellowSlime, BlackSlime
+│   │   │   ├── MotherSlime, BabySlime
+│   │   │   ├── JungleSlime, IceSlime, SandSlime, LavaSlime
+│   │   │   ├── SpikedSlime
+│   │   │   └── QueenSlime (extends BaseBoss instead)
+│   │   │
+│   │   ├── BaseFlyingMonster        ← 飞行怪物基类
+│   │   │   ├── DemonEye 变种 (CataractEye, DialatedEye, GreenEye, PurpleEye, WanderingEye)
+│   │   │   ├── Harpy
+│   │   │   ├── CaveBat / JungleBat / HellBat / IceBat / GiantBat
+│   │   │   ├── Pixie, Wraith
+│   │   │   ├── EaterOfSouls, Crimera
+│   │   │   └── CursedSkull
+│   │   │
+│   │   ├── BaseWormMonster          ← 蠕虫怪物基类 implements WormSegment
+│   │   │   ├── Wyvern, ArchWyvern
+│   │   │   ├── Devourer, WorldFeeder
+│   │   │   └── BoneSerpent
+│   │   │
+│   │   ├── BaseCasterMonster        ← 法术怪物基类
+│   │   │   ├── DarkCaster
+│   │   │   ├── FireImp, Demon, VoodooDemon
+│   │   │   ├── Tim
+│   │   │   ├── Necromancer, RaggedCaster, Diabolist
+│   │   │   └── GoblinSorcerer
+│   │   │
+│   │   └── HumanoidMonster          ← 人形怪物
+│   │       ├── Zombie 变种 (普通/Armed/Slimed/Pincushion/Twiggy/Swamp/Raincoat/Blood/Eskimo/Bald)
+│   │       ├── Skeleton 变种 (普通/Short/Big/Hoplite/Armored/AngryBones/BoneThrower)
+│   │       ├── FaceMonster
+│   │       └── Paladin, BoneLee
+│   │
+│   └── PlantMonster                  ← 植物型怪物
+│       ├── ManEater, Snatcher
+│       └── PlanteraTentacle (BossPart)
+│
+├── TamableAnimal (vanilla)
+│   └── BaseSummon                    ← 召唤物基类 implements SummonCreature
+│       ├── MinionSummon              ← 随从（跟随+攻击）
+│       │   ├── SlimeMinion, HornetMinion, ImpMinion
+│       │   ├── SwordMinion (多阶)
+│       │   ├── Terraprisma, StardustDragon
+│       │   └── FinchMinion
+│       ├── SentrySummon              ← 哨兵（定点驻守）
+│       └── PetSummon                 ← 宠物（纯装饰/照明）
+│           ├── Chester, PiggyBank
+│           └── FairyPet, GlowingSnail
+│
+├── PathfinderMob (vanilla)
+│   └── BaseNPC                       ← NPC 基类
+│       ├── Guide, Merchant, Nurse, Demolitionist
+│       ├── ArmsDealer, Dryad, GoblinTinkerer, Mechanic
+│       ├── Angler, Stylist, Painter, DyeTrader
+│       ├── WitchDoctor, TaxCollector, Clothier
+│       └── TravelingMerchant
+│
+└── Animal (vanilla)
+    └── BaseCritter                    ← 小动物基类
+        ├── Bunny (普通/Jewel/Explosive)  implements VariantHolder<XXAnimal.Variant>
+        ├── Bird (Blue/Cardinal/Gold)     implements VariantHolder<XXAnimal.Variant>
+        ├── Squirrel / JewelSquirrel
+        ├── Duck, Crab, Scorpion, Worm
+        ├── Butterfly 变种               implements VariantHolder<XXAnimal.Variant>
+        ├── Dragonfly, Grasshopper
+        └── Fairy (ambient)
+```
+
+---
+
+## 四、AI 系统设计
+
+### 4.1 统一 AI 架构：全 BehaviorTree
+
+所有生物 — 从最简的史莱姆到最复杂的月亮领主 — 统一使用 **BehaviorTree** 作为唯一的 AI 框架。不另设 FSM、不直接用 Forge Goal。
+
+- **简单生物** → 1-3 个节点的极简 BT
+- **中等怪物** → 带条件分支的 BT
+- **Boss** → 多阶段 Selector 驱动的大型 BT
+
+### 4.2 BehaviorTree 架构
+
+#### 4.2.1 节点类型
+
+```
+BTNode (抽象基类)
+├── CompositeNode (组合节点 —— 控制子节点执行顺序)
+│   ├── SelectorNode      # OR：依次尝试，任一成功则成功（优先级选择）
+│   ├── SequenceNode      # AND：依次执行，任一失败则失败
+│   ├── ParallelNode      # 并行执行所有子节点
+│   │   ├── Policy.REQUIRE_ONE   # 任一完成即结束
+│   │   └── Policy.REQUIRE_ALL   # 全部完成才结束
+│   └── WeightNode        # 加权随机选择子节点
+│
+├── DecorationNode (装饰节点 —— 修改单个子节点的行为)
+│   ├── ConditionNode     # if(condition) → then, else
+│   ├── InterruptNode     # 条件满足时中断当前子树
+│   ├── InverterNode      # 取反
+│   ├── RepeaterNode      # 循环 N 次
+│   ├── RepeatUntilNode   # 循环直到条件成立
+│   └── TimeControlNode   # 限制子节点执行时长
+│
+├── Condition (条件节点 —— 检查状态，节点本身无状态)
+│   ├── TargetExistCondition      # 有攻击目标
+│   ├── DistanceLowerThanCondition # 目标距离 < X
+│   ├── HealthLowerThanCondition  # 血量 < X%
+│   ├── AngleLowerThanCondition   # 夹角 < X 度
+│   ├── TimeCondition             # 时间周期
+│   ├── NavigationCondition       # 导航状态
+│   ├── AndCondition / OrCondition / NotCondition  # 布尔组合
+│   └── (自定义条件可按需扩展)
+│
+└── Leaf (叶子节点 —— 执行具体行为)
+    ├── MoveToTargetAction     # 向目标移动
+    ├── FlyTowardTargetAction  # 飞向目标
+    ├── DashAction             # 冲刺
+    ├── JumpForwardAction      # 向前跳跃
+    ├── LandRandomStrollAction # 地面漫步
+    ├── ShootAction            # 发射弹射物
+    ├── JumpAttackAction       # 跳跃攻击
+    ├── TrackTargetAction      # 跟踪瞄准目标
+    ├── WaitAction             # 等待 N tick
+    ├── AnimCtrlAction         # 控制动画播放
+    ├── SyncFlagAction         # 同步标记位（驱动客户端动画/渲染）
+    ├── SyncAction             # 同步自定义数据
+    ├── SetAttributeAction     # 修改属性
+    ├── SetNoPhysicsAction     # 无碰撞/无重力模式
+    ├── TeleportAction         # 传送到指定位置
+    └── BurrowAction           # 钻入/钻出地面（沙鲨等）
+```
+
+#### 4.2.2 BT 构建器 (BTFactory)
+
+```java
+// fluent DSL 构建行为树
+BTRoot<MyBoss> root = BTFactory.selector()
+    // Phase 1: 有目标时战斗
+    .addWithCondition(new TargetExistCondition(mob), BTFactory.sequence()
+        .addChild(new RoarAnim(mob))        // 咆哮动画
+        .addChild(BTFactory.selector()
+            // 近战分支：距离 < 4
+            .addWithCondition(new DistanceLowerThanCondition(mob, 4),
+                BTFactory.withTimer(15, new MeleeAttack()))
+            // 远程分支：否则
+            .addChild(BTFactory.withTimer(10, new RangedAttack())))
+        .addChild(new MoveToTargetAction(mob, 3, 20)))  // 持续靠近目标
+    // Phase 2: 无目标时漫游
+    .addChild(BTFactory.infinite(
+        new LandRandomStrollAction(mob, 1.0f, 50)))
+    .build();
+```
+
+#### 4.2.3 Blackboard (共享内存)
+
+行为树节点间通过 `Blackboard` 共享状态：
+
+```java
+public interface IBlackboardHolder {
+    Blackboard getBlackboard();
+}
+
+// 用法示例
+blackboard.put(KeyType.STAGE, 2);                 // 写入阶段号
+blackboard.put(KeyType.LAST_TELEPORT_TIME, tick);  // 写入时间戳
+int stage = blackboard.get(KeyType.STAGE);          // 读取
+```
+
+#### 4.2.4 BTNode 执行周期
+
+每个 tick 调用 `BTNode.execute()`，返回三种状态：
+
+| BTStatus | 含义 | 行为 |
+|----------|------|------|
+| `SUCCESS` | 节点成功完成 | 父节点决定下一步（Selector 停止，Sequence 继续） |
+| `FAILURE` | 节点失败 | 父节点换下一个子节点或向上传递失败 |
+| `RUNNING` | 仍在执行中 | 下个 tick 继续调用同一节点 |
+
+---
+
+### 4.3 BT 与 Forge 系统的衔接
+
+`BTRoot` 实现为 Forge 的 `Goal`，注册到最高优先级（优先级 0），始终活跃：
+
+```java
+public abstract class BTRoot<T extends Mob> extends Goal {
+    protected T mob;
+    protected BTNode rootNode;
+
+    @Override
+    public boolean canUse() { return true; }  // BT 永远占用控制权
+
+    @Override
+    public void tick() { rootNode.execute(); }
+}
+
+// 基类构造函数中注册
+this.goalSelector.addGoal(0, this.createBT());
+```
+
+目标选择（找谁打）从条件节点驱动，不依赖 vanilla `targetSelector`：
+
+```java
+// 条件: 有目标 → 战斗分支; 否则 → 漫游分支
+.addWithCondition(new TargetExistCondition(mob), combatSubtree())
+.addChild(idleSubtree())
+```
+
+这样所有决策都在一棵树内完成。
+
+---
+
+### 4.4 Boss 阶段管理
+
+通过 BehaviorTree 的条件节点实现阶段切换，不需要单独的 PhaseManager：
+
+```java
+BTFactory.selector()
+    // Expert 专属阶段
+    .addWithCondition(AndCondition.of(
+        new HealthLowerThanCondition(mob, 0.05f),
+        new ExpertCondition(mob)), expertSkills())
+    // Phase 4: 25% → 0%，狂暴
+    .addWithCondition(new HealthLowerThanCondition(mob, 0.25f), ragePhaseSkills())
+    // Phase 3: 50% → 25%
+    .addWithCondition(new HealthLowerThanCondition(mob, 0.5f), phase3Skills())
+    // Phase 2: 75% → 50%
+    .addWithCondition(new HealthLowerThanCondition(mob, 0.75f), phase2Skills())
+    // Phase 1: 100% → 75%，默认
+    .addChild(phase1Skills());
+```
+
+条件节点从上到下评估，第一个满足条件的分支生效。血量低于阈值后自动"跌落"到对应阶段。
+
+---
+
+### 4.5 极简 BT：最简单的生物也走 BT
+
+每个生物的 `createBT()` 返回其行为树。简单生物只需几行：
+
+```java
+// === 史莱姆（最简单） ===
+BTFactory.selector()
+    .addWithCondition(new HasTargetCondition(mob),   // 有目标/受伤→追
+        BTFactory.sequence()
+            .addChild(new SlimeJumpGoal(mob, targetDir)) // 跳跃攻击
+            .addWithTimer(15, new SyncFlagAction(mob, ATTACK_FLAG)))
+    .addChild(BTFactory.sequence()                   // 无目标→漫游
+        .addWithTimer(40 + randomTicks(), new SlimeBounceGoal(mob, randomDir)));
+
+// === 蝙蝠 ===
+BTFactory.selector()
+    .addWithCondition(new HasTargetCondition(mob),
+        BTFactory.sequence()
+            .addWithTimer(20, new FlutterTowardTarget(mob))
+            .addChild(new WaitAction(10)))
+    .addChild(new FlutterWanderGoal(mob));
+
+// === 鸟（小动物） ===
+BTFactory.selector()
+    .addWithCondition(new PlayerCloseCondition(mob, 5),
+        new FleeFlyGoal(mob))                       // 玩家靠近→飞走
+    .addChild(new IdleStandGoal(mob));               // 否则静止
+```
+
+没有 FSM、没有专门为简单怪准备的子类系统——所有生物都用同一套 BT 节点库。
+
+### 4.6 泰拉瑞亚 AI 类型 → BehaviorTree 映射
+
+以下基于泰拉瑞亚 125 种内置 AI 类型，归类为可复用的 BT/FGoal 模式：
+
+#### 4.6.1 可复用 BT 模式（一族怪物共享同一套 BT 模板）
+
+| Terraria AI ID | 名称 | 复刻方式 | 对应 BT/Goal 模板 |
+|---------------|------|----------|-------------------|
+| 1 | 史莱姆 AI | BT | Selector(HasTarget→JumpAttack / SlimeBounceWander)， 条件: 受伤/夜间→切换追踪 |
+| 2 | 恶魔眼 AI | BT | Selector(HasTarget→Sequence(CircleAroundTarget + ChargeAttack) / FlyWander) |
+| 3 | 战士 AI | BT | Selector(HasTarget→Sequence(MoveToTarget + MeleeAttack) / RandomStroll) —— 最常见 |
+| 5 | 飞行 AI | BT | Selector(HasTarget→Sequence(FlyTowardTarget + CircleAroundTarget) / FlyWander) |
+| 6 | 蠕虫 AI | BT | Selector(HasTarget→WormDigChase / WireIdle)，头→体→尾联动，穿透方块 |
+| 7 | 被动 AI | BT | Selector(PlayerClose→FleeRandom / RandomStroll) —— NPC/小动物 |
+| 8 | 法师 AI | BT | Sequence(ShootAction×3 → TeleportAction → Repeat)，InterruptNode(受伤时中断) |
+| 10 | 诅咒骷髅头 AI | BT | Parallel(CircleAroundTarget + ShootAction)，保持距离 |
+| 13 | 植物 AI | BT | Selector(AttachedToBlock→PlantReachTowardPlayer / DieWithoutBlock) |
+| 14 | 蝙蝠 AI | BT | Selector(HasTarget→Sequence(FlutterTowardTarget + Wait) / FlutterWander) |
+| 16 | 游泳 AI | BT | Selector(PlayerInWater→BurstTowardPlayer / SwimWander) |
+| 17 | 秃鹰 AI | BT | Selector(Player接近/Hurt→SwitchToFlyingBT / IdleStand) |
+| 18 | 水母 AI | BT | Selector(PlayerInWater→BurstTowardPlayer / FloatWander) |
+| 22 | 悬停 AI | BT | Selector(HasTarget→Sequence(HoverMoveToTarget + MeleeAttack) / HoverWander) |
+| 24 | 鸟 AI | BT | Selector(PlayerClose→FleeFly / IdleStand) |
+| 25 | 宝箱怪 AI | BT | Selector(PlayerClose→Sequence(JumpAttack + Slam) / MimicIdle) |
+| 26 | 独角兽 AI | BT | Selector(HasTarget→Sequence(AccelerateMove + JumpLeap) / WalkWander) |
+| 38 | 雪人 AI | BT | Selector(HasTarget→Sequence(JumpMove + MeleeAttack) / RandomStroll) |
+| 39 | 陆龟 AI | BT | Sequence(CrawlApproach → LeapToTarget) |
+| 40 | 蜘蛛 AI | BT | Selector(OnWall→WallCrawlTowardTarget / Selector(HasTarget→战士BT / RandomStroll)) |
+| 41 | 蹦蹦兽 AI | BT | Selector(HasTarget→Sequence(BounceHigh → LandOnTarget) / BounceWander) |
+| 44 | 飞鱼 AI | BT | LinearDashTowardTarget |
+| 56 | 地牢幽魂 AI | BT | AccelerateChargeTowardTarget |
+| 74 | 流星火怪 AI | BT | PhaseThroughBlocks + ChargeTowardTarget |
+| 87 | 生物群落宝箱怪 AI | BT | Selector(PlayerClose→Sequence(Jump+Leap+Slam) / Idle，宝箱怪升级版) |
+| 91 | 花岗精 AI | BT | Selector(DistanceFar→PhaseThroughBlocks + FloatTowardTarget / FloatTowardTarget) |
+| 103 | 沙鲨 AI | BT | Selector(PlayerClose→BurrowOut + LeapAttack / StayBurrowed) |
+| 122 | 海盗诅咒 AI | BT | FloatThroughBlocks + ChaseTarget |
+
+#### 4.6.2 Boss 专属 BT（每个 Boss 独立实现）
+
+| Terraria AI ID | Boss | 核心 BT 结构 |
+|---------------|------|-------------|
+| 4 | 克苏鲁之眼 | Sequence(HoverAbovePlayer → Charge → Repeat)，低血量 Parallel(Spin + Charge) |
+| 11 + 12 | 骷髅王 | Head: Parallel(CirclePlayer + FloatAbove)，Hands: SyncWithHead + SwipeAttack |
+| 15 | 史莱姆王 | Selector(JumpToPlayer → TeleportWhenStuck)，条件: 受伤→SpawnBlueSlime |
+| 27 + 28 + 29 | 血肉墙 | 主体: LinearSweep(水平推进)，眼睛: Parallel(Float + ShootAtPlayer)，饿鬼: AttachToParent + ReachTowardPlayer |
+| 30 + 31 | 双子魔眼 | 激光眼: Selector(HoverShoot / ChargeShoot)，魔焰眼: Selector(HoverShoot / FlamethrowerCharge) |
+| 32-36 | 机械骷髅王 | 头部: Head AI，四臂各独立 BT (SawDash / ViceGrab / CannonBomb / LaserShoot)，暴怒模式切换 |
+| 37 | 毁灭者 | WormDig + Parallel(ShootFromBody + DeployProbes) |
+| 43 | 蜂王 | Selector(HoverAbovePlayer+Shoot / HorizontalDash / VerticalDash) |
+| 45-48 | 石巨人 | 身体: Selector(Jump + LaserEye)，拳头: FlyToPlayer+ReturnToBody，游离头: FloatShoot |
+| 51-53 | 世纪之花 | Phase1: ChaseThroughBlocks + ShootPetal，Phase2: AggressiveChase + SpawnTentacles |
+| 54 + 55 | 克苏鲁之脑 | Phase1: Teleport+SpawnCreepers，Phase2: Reveal+Charge |
+| 69 | 猪龙鱼公爵 | 多阶段冲撞+召唤龙卷+召唤鲨鱼龙 |
+| 76 | 火星飞碟 | Parallel(CirclePlayer + DeathRay + TurretShoot) |
+| 77-79 + 81 + 82 | 月亮领主 | 头/手/心脏各独立 BT，心脏无敌直到手被击败，真眼环绕射击 |
+| 84 | 拜月教邪教徒 | Selector(Teleport+ShootMultiple / SummonPhantomDragon / SummonAncientLight) |
+| 120 | 光之女皇 | Selector(HoverShootMultiAttack / Charge) 快速循环 |
+| 121 | 史莱姆皇后 | Selector(Jump+Slam / Hover+ShootGel / SpawnMinions) |
+| 123 | 独眼巨鹿 | BT(接近+近战/远程冰刺/冲撞选择，破坏箱子行为) |
+
+#### 4.6.3 小动物/环境生物（全 BT）
+
+| Terraria AI ID | 类型 | BT 结构 |
+|---------------|------|---------|
+| 64 | 萤火虫 | Sequence(RandomFloat + GlowToggle) |
+| 65 | 蝴蝶 | RandomFlyWander |
+| 66 | 被动蠕虫 | PassiveCrawlWander |
+| 67 | 蜗牛 | Selector(OnWall→WallCrawl / GroundCrawl) |
+| 68 | 鸭 | Selector(PlayerClose→FleeFly / InWater→SwimWander / LandWander) |
+| 112 | 仙灵 | Selector(TreasureNearby→FloatTowardTreasure / FollowPlayer) |
+| 114 | 蜻蜓 | Sequence(WaypointFly → Wait → WaypointFly) |
+| 115 | 瓢虫 | Selector(Flying→FlyWander / LandCrawlWander) |
+| 116 | 水黾 | Selector(OnWater→WaterSlide / LandJumpWander) |
+
+---
+
+## 五、渲染架构
+
+### 5.1 技术栈
+
+- **GeckoLib** — 模型加载 + 骨骼动画
+- **Minecraft VariantHolder<XX.Variant>** — 生物变体（内部枚举 + getTexture()）
+- **自定义 BossBar 渲染** — 纹理/颜色/分段动画
+- **粒子系统** — 复用 ConfluenceOtherworld 已有的 ParticleStorm 集成
+
+### 5.2 渲染器基类
+
+```java
+// 通用生物渲染器
+public class GeoNormalRenderer<T extends Mob & GeoEntity> extends GeoEntityRenderer<T> {
+    float scale;
+    float offsetY;
+    float rotX;         // 飞行生物前倾
+    boolean motionAnim; // 是否启用移动动画
+}
+
+// Boss 专用渲染器
+public class GeoBossRenderer<T extends BaseBoss & GeoEntity> extends GeoNormalRenderer<T> {
+    // Boss 特殊效果：发光、半透明、残影、阶段切换着色
+}
+```
+
+### 5.3 变体纹理映射
+
+```java
+// 纹理路径由 Variant 枚举自提供，Renderer 直接委托
+public class BunnyRenderer extends GeoNormalRenderer<Bunny> {
+
+    @Override
+    public ResourceLocation getTextureLocation(Bunny bunny) {
+        return bunny.getVariant().getTexture();
+    }
+}
+```
+
+---
+
+## 六、实体注册架构
+
+### 6.1 集中注册
+
+```java
+// ConfluenceOtherworld/common/init/entity/ModEntities.java
+public final class ModEntities {
+    public static final DeferredRegister<EntityType<?>> ENTITIES =
+        DeferredRegister.create(Registries.ENTITY_TYPE, Confluence.MODID);
+
+    // 按类别分文件注册，避免单文件过大
+    public static void register(IEventBus bus) {
+        BossEntities.register(ENTITIES);
+        MonsterEntities.register(ENTITIES);
+        SummonEntities.register(ENTITIES);
+        NPCEntities.register(ENTITIES);
+        CritterEntities.register(ENTITIES);
+        ProjectileEntities.register(ENTITIES);
+        ENTITIES.register(bus);
+    }
+}
+```
+
+### 6.2 每个类别独立文件
+
+```
+init/entity/
+├── ModEntities.java          # 总入口
+├── BossEntities.java         # Boss 注册 + 属性 + 渲染器
+├── MonsterEntities.java      # 怪物注册
+├── SummonEntities.java       # 召唤物注册
+├── NPCEntities.java          # NPC 注册
+├── CritterEntities.java      # 动物/小动物注册
+└── ProjectileEntities.java   # 弹射物注册
+```
+
+---
+
+## 七、网络同步
+
+使用已有的 `PortNetworkHandler`，在 `ConfluenceOtherworld/common/network/` 下新增：
+
+| 包名 | 方向 | 用途 |
+|------|------|------|
+| BossPhaseChangePacket | S→C | Boss 阶段切换 + 特效指令 |
+| SkillSyncPacket | S→C | 技能开始/结束 + 参数（弹射物朝向/速度） |
+| SummonSlotSyncPacket | S→C | 玩家召唤栏位状态 |
+| BossBarCustomPacket | S→C | 自定义 BossBar 渲染数据 |
+| NPCTradeSyncPacket | S→C | NPC 商品列表 |
+| NPCChatPacket | S→C | NPC 对话气泡 |
+
+---
+
+## 八、玩家附着数据 (Attachments)
+
+使用 PortLib 的 `PortAttachmentType`:
+
+| Attachment | 存储内容 |
+|------------|----------|
+| SUMMONER_SLOTS | 当前召唤物 ID 列表 + 已用栏位 + 最大栏位 |
+| SENTRY_SLOTS | 哨兵 ID 列表 |
+| BOSS_COOLDOWNS | 玩家级 Boss 召唤冷却 |
+| NPC_HAPPINESS | 对各 NPC 的好感度/价格系数 |
+| BESTIARY | 已击杀生物记录 |
+
+---
+
+## 九、复刻优先级
+
+### P0 — 架构与基类（2-3 周）
+
+- [ ] BehaviorTree 引擎：BTNode / 组合节点 (Selector, Sequence, Parallel) / 装饰节点 / 条件节点 / 叶子节点 / Blackboard
+- [ ] BTFactory DSL：流畅的树构建器
+- [ ] BaseBoss：基于 BT 的 Boss 基类（碰撞攻击、多部件支持、BossBar、阶段条件）
+- [ ] BaseMonster + 子类 BaseSlime / BaseFlyingMonster / BaseWormMonster / BaseCasterMonster（均基于 BT）
+- [ ] BaseSummon：主人跟随、传送、目标选择、召唤伤害计算
+- [ ] BaseNPC：房屋检测、对话、交易、心情
+- [ ] BaseCritter：小动物基类
+- [ ] 完整注册流程 + 第一只测试生物（GreenSlime）跑通全链路
+
+### P1 — 核心怪物（3-4 周）
+
+- [ ] 全部史莱姆变体 (15 种)
+- [ ] 全部恶魔眼变体 (9 种，含 Wandering Eye 的昼夜机制)
+- [ ] 基础僵尸变体 (10 种)
+- [ ] 基础骷髅变体 (8 种)
+
+### P2 — Boss 实现（4-6 周）
+
+- [ ] KingSlime（传送 + 分裂）
+- [ ] EyeOfCthulhu（冲撞 + 旋转 + Servant 召唤）
+- [ ] EaterOfWorlds（多段蠕虫 + 分裂）
+- [ ] BrainOfCthulhu（分身 + Creeper 环绕）
+- [ ] QueenBee（冲撞 + 毒刺 + 小蜜蜂召唤）
+- [ ] Skeletron（双手 + 头部旋转）
+- [ ] WallOfFlesh（横向推进 + Hungry + 激光）
+- [ ] TheTwins（双 Boss 独立 AI）
+- [ ] SkeletronPrime（四臂）
+- [ ] TheDestroyer（长蠕虫 + Probe 无人机）
+- [ ] Plantera（双阶段 + 触手 + 钩爪）
+- [ ] DungeonGuardian（一击必杀）
+- [ ] LunaticCultist（分身 + 幻影龙）
+
+### P3 — 生态群落怪物（3-4 周）
+
+- [ ] 丛林: Hornet, ManEater, GiantTortoise, Derpling, GiantFlyingFox
+- [ ] 地狱: FireImp, Demon/VoodooDemon, BoneSerpent
+- [ ] 腐化/血腥: Corruptor, Devourer, BloodCrawler, FaceMonster, BloodFeeder, Slimer
+- [ ] 神圣: Unicorn, Gastropod, LightMummy, ChaosElemental, EnchantedSword
+- [ ] 地牢: BlazingWheel, SpikeBall, Paladin, BoneLee, Necromancer, Diabolist, RaggedCaster
+- [ ] 飞行族: 全部蝙蝠变体, IceBat, GiantBat, ArchWyvern
+
+### P4 — NPC 与深度系统（2-3 周）
+
+- [ ] 全部 16 个 NPC + 房屋系统 + 心情/价格系数
+- [ ] 召唤物体系：StardustDragon, Terraprisma, 多阶剑等
+- [ ] 专家/大师模式适配（Boss 额外阶段 + 额外掉落）
+- [ ] 数据驱动生物定义（JSON datapack 格式，简单怪物可配置化）
+
+### P5 — 打磨（1-2 周）
+
+- [ ] 粒子特效补全（Boss 登场/死亡/阶段切换特效）
+- [ ] 音效注册与播放
+- [ ] 性能优化（AI tick 频率控制、LOD 渲染距离）
+- [ ] 战利品表 + 掉落物
+
+---
+
+## 十、从旧代码中可复用的部分
+
+虽然完全重写，但以下旧代码的**设计思路和数值**可以直接参考：
+
+| 旧位置 (TerraEntity) | 可复用内容 | 复用方式 |
+|----------------------|-----------|----------|
+| `entity/boss/` 下各 Boss | 技能顺序、阶段划分逻辑、碰撞箱大小 | 参考代码逻辑，重新实现 |
+| `entity/ai/fsm/CircleMobSkills.java` | FSM 循环调度算法 | 参考设计，简化重写 |
+| `TEBossEntities.java` | Boss 属性值（攻击/血量/护甲/击退抗性） | 直接复用数值 |
+| `ISummonMob.java` | 召唤物跟随距离、传送逻辑、目标选择规则 | 参考逻辑，拆分为多个独立组件 |
+| `GeoNormalRenderer.java` | 渲染器参数结构（scale/offsetY/rotX） | 复用参数设计 |
+| `init/TEAttachments.java` | Attachment 数据结构 | 复用字段定义 |
+| TEBossEntities 的注册数值 (`AttBuilder`) | Boss 的攻击力/生命值/护甲 | 直接复用数值常量 |
+
+---
+
+## 十一、技术选择
+
+| 项目 | 选择 | 理由 |
+|------|------|------|
+| 骨骼动画 | GeckoLib 4.x | 项目已深度集成，动画资源丰富 |
+| 实体渲染 | GeckoLib GeoEntityRenderer | 已验证的渲染管线 |
+| 网络通信 | PortNetworkHandler → Forge SimpleChannel | 已有基础设施 |
+| 数据附着 | PortAttachmentType | 已有基础设施 |
+| 变体系统 | Vanilla VariantHolder\<T\> | Minecraft 原生 API，不需要自己造 |
+| AI 框架 | 统一自研 BehaviorTree | 从史莱姆到月亮领主，全部走同一套 BT 系统 |
+| 数据驱动 | JSON datapack | 简单怪物可配置化，Boss 保持 Java 实现 |
+| 粒子 | ParticleStorm (已集成) | 项目已集成 |
+
+---
+
+## 十二、兔兔复刻经验总结
+
+基于首个生物（兔兔族）的实际复刻过程，总结出以下可复用的模式与注意事项。
+
+### 12.1 变体设计
+
+- 使用 `VariantHolder<XX.Variant>`，Variant 是实体内部枚举，实现 `StringRepresentable`
+- **Variant 只承载视觉信息**：`modelPath()` 和 `texturePath()` 两个方法，StringRepresentable 处理序列化
+- 禁止在 Variant 里放 `isHostile()`、`isJewel()` 等行为判断——行为归实体子类
+- 纹理/模型不同→改 Variant；AI 不同→建子类；生成规则不同→建新 EntityType
+
+```java
+public enum Variant implements StringRepresentable {
+    NORMAL, ...;
+    public String getSerializedName() { return name().toLowerCase(Locale.ROOT); }
+    public ResourceLocation modelPath() { ... }
+    public ResourceLocation texturePath() { ... }
+}
+```
+
+### 12.2 实体类继承分层
+
+```
+BaseCritter (GeoEntity + BT 抽象方法)
+├── Bunny      (flee BT)              — 被动变体：NORMAL, GOLD, PARTY, SLIMED, XMAS, EXPLOSIVE
+├── JewelBunny (flee BT, 构造时随机宝石) — AMETHYST~DIAMOND
+└── HostileBunny (attack BT)          — CORRUPT, VICIOUS
+```
+
+- 每个子类重写 `createBT()` 返回自己的行为树
+- 属性通过 `static AttributeSupplier.Builder createAttributes()` 定义，在 ModEvents 中注册
+- 爆炸等特殊死亡效果在 `die()` 中检查 Variant 处理
+
+### 12.3 BehaviorTree 节点复用
+
+最简小动物只需 4 种叶子节点：
+
+| 节点 | 用途 |
+|------|------|
+| `PanicFleeAction(mob, speed)` | 远离玩家逃跑 |
+| `RandomStrollAction(mob, speed, range)` | 随机漫步 |
+| `WaitAction(ticks)` | 原地等待 |
+| `MoveToTargetAction(mob, speed, closeEnough)` | 追击目标 |
+| `PlayerCloseCondition(mob, range)` | 玩家在范围内？ |
+
+组合模式：`Selector(Sequence(Condition, Action), Sequence(Wait, Stroll))` 覆盖绝大多数小动物需求。
+
+### 12.4 多模型渲染
+
+变体对应不同 geo 模型时，**不**在 Renderer 里直接改 `this.model`。写一个自定义 GeoModel 委托给变体对应的模型：
+
+```java
+public class BunnyGeoModel extends DefaultedEntityGeoModel<Bunny> {
+    private final Map<ResourceLocation, GeoNormalModel<Bunny>> cache = new HashMap<>();
+
+    @Override public ResourceLocation getModelResource(Bunny b) { return b.getVariant().modelPath(); }
+    @Override public ResourceLocation getTextureResource(Bunny b) { return b.getVariant().texturePath(); }
+    @Override public void setCustomAnimations(Bunny b, long id, AnimationState<Bunny> s) {
+        cache.computeIfAbsent(b.getVariant().modelPath(), ...).setCustomAnimations(b, id, s);
+    }
+}
+```
+
+`GeoModel.getBakedModel(ResourceLocation)` 自动按路径缓存，不同变体自然隔离。Renderer 保持简洁。
+
+### 12.5 注册模式
+
+- EntityType 在 `CritterEntities.java` 中内联一行注册（`PortDeferredRegisterExtension.register`），不提取 register helper
+- 属性/生成规则/渲染器直接在 `ModEvents` / `ModClientEvents` 中内联，**不在 CritterEntities 中封装事件注册方法**
+
+```java
+// CritterEntities — 只放 EntityType
+public static final RegistryObject<EntityType<Bunny>> BUNNY = PortDeferredRegisterExtension.register(
+    ENTITIES, "bunny", id -> EntityType.Builder.of(Bunny::new, CREATURE).sized(0.4F, 0.5F).clientTrackingRange(10).build(id.toString()));
+
+// ModEvents — 内联属性
+event.put(CritterEntities.BUNNY.get(), Bunny.createAttributes().build());
+
+// ModClientEvents — 内联渲染器
+event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);
+```
+
+### 12.6 1.20.1 API 陷阱
+
+| 错误写法 | 正确写法 | 原因 |
+|----------|---------|------|
+| `defineSynchedData(Builder)` | `defineSynchedData()` 无参 | 1.20.1 无 Builder 参数 |
+| `PathType.WATER` | `BlockPathTypes.WATER` | Parchment 映射名，jar 中真实类名 |
+| `onAddedToLevel()` | 构造函数中初始化 | 1.20.1 方法名不同，构造时更简洁 |
+| `import geckolib.animatable.instance.*` | `import geckolib.core.animatable.instance.*` | GeckoLib 4.8.3 core 子包 |
+
+### 12.7 GeckoLib 4.8.3 包结构速查
+
+```
+# 有 core. 前缀
+software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
+software.bernie.geckolib.core.animation.AnimatableManager
+software.bernie.geckolib.core.animation.AnimationController / AnimationState / RawAnimation
+
+# 无 core. 前缀
+software.bernie.geckolib.animatable.GeoEntity       ← 注意！不在 core 里
+software.bernie.geckolib.cache.object.{BakedGeoModel, GeoBone}
+software.bernie.geckolib.constant.{DataTickets, DefaultAnimations}
+software.bernie.geckolib.model.{GeoModel, DefaultedEntityGeoModel}
+software.bernie.geckolib.model.data.EntityModelData
+software.bernie.geckolib.renderer.GeoEntityRenderer
+software.bernie.geckolib.util.GeckoLibUtil
+```
+
+### 12.8 @NotNull 策略
+
+每个包放 `package-info.java`：
+```java
+@javax.annotation.ParametersAreNonnullByDefault
+@net.minecraft.MethodsReturnNonnullByDefault
+package org.confluence.mod.common.entity.animal;
+```
+
+方法签名不加 `@NotNull`，仅在确实可返回 null 的地方加 `@javax.annotation.Nullable`。
+
+---
+
+## 附录: 模块依赖
+
+```
+PortLib (Forge/NeoForge 抽象层)
+  ↑
+Confluence-Magic-Lib (共享属性、Boss 标记、工具类)
+  ↑
+ConfluenceOtherworld (所有内容：物品、方块、世界生成、实体、渲染、NPC)
+  ↑
+  ├── GeckoLib (实体动画)
+  └── ParticleStorm (粒子特效)
+```

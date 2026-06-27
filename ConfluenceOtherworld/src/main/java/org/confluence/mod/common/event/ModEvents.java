@@ -7,8 +7,11 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -34,6 +37,9 @@ import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.InverseEnderMan;
 import org.confluence.mod.common.entity.InverseEntityType;
 import org.confluence.mod.common.entity.RainbowSheep;
+import org.confluence.mod.common.entity.animal.Bunny;
+import org.confluence.mod.common.entity.animal.HostileBunny;
+import org.confluence.mod.common.entity.monster.DemonEye;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
@@ -43,7 +49,9 @@ import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.entity.MonstersEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -203,6 +211,10 @@ public final class ModEvents {
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
         event.put(ModEntities.RAINBOW_SHEEP.get(), RainbowSheep.createAttributes().build());
         event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
+        event.put(CritterEntities.BUNNY.get(), Bunny.createAttributes().build());
+        event.put(CritterEntities.JEWEL_BUNNY.get(), Bunny.createAttributes().build());
+        event.put(CritterEntities.HOSTILE_BUNNY.get(), HostileBunny.createAttributes().build());
+        event.put(MonstersEntities.DEMON_EYE.get(), DemonEye.createAttributes().build());
     }
 
 // todo   private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
@@ -363,6 +375,14 @@ public final class ModEvents {
             return false;
         }, PortRegisterSpawnPlacementsEvent.PortOperation.REPLACE);
         event.register(ModEntities.INVERSE_ENDERMAN.get(), InverseEntityType.ON_CEIL, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, InverseEnderMan::checkInverseEnderManSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(CritterEntities.BUNNY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        event.register(CritterEntities.JEWEL_BUNNY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+
+        // DemonEye: 夜晚地表飞行怪
+        event.register(MonstersEntities.DEMON_EYE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
+            if (level.isDay() || pos.getY() < 60) return false;
+            return level.canSeeSky(pos) && Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
+        });
 
         PortEventHandler.postEvent(new RegisterBestiaryKeyEvent()); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
     }
@@ -381,11 +401,8 @@ public final class ModEvents {
         event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.SCORPION.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEMonsterEntities.DEMON_EYE.get(), (type, eye) -> {
+        event.register(MonstersEntities.DEMON_EYE.get(), (type, eye) -> {
             String key = type.getDescriptionId() + '.';
-            if (eye.minion_getOwnerUUID() != null) {
-                return key + "minion";
-            }
             return key + eye.getVariant().getSerializedName();
         });
         event.register(EntityType.ZOMBIE, ((type, zombie) -> {

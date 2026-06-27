@@ -42,6 +42,8 @@ import org.confluence.mod.client.effect.connected.ModelSwapper;
 import org.confluence.mod.client.effect.connected.StitchedSprite;
 import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
+import org.confluence.mod.client.entity.renderer.BunnyRenderer;
+import org.confluence.mod.client.entity.renderer.DemonEyeRenderer;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
@@ -94,6 +96,7 @@ import org.confluence.mod.common.entity.projectile.spear.NorthPoleProjectile;
 import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
@@ -444,6 +447,12 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(RAINBOW_SHEEP.get(), RainbowSheepRenderer::new);
         event.registerEntityRenderer(INVERSE_ENDERMAN.get(), EndermanRenderer::new);
+
+        // Critter renderers
+        event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);
+        event.registerEntityRenderer(CritterEntities.JEWEL_BUNNY.get(), BunnyRenderer::new);
+        event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), BunnyRenderer::new);
+        event.registerEntityRenderer(MonstersEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
 
         event.registerEntityRenderer(ACCUMULATING_ENERGY.get(), NoopRenderer::new);
 

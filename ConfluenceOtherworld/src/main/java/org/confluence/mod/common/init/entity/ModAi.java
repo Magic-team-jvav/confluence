@@ -46,7 +46,6 @@ public class ModAi {
 
         public static void register(IEventBus bus) {
             MEMORY_MODULES.register(bus);
-
         }
     }
 
@@ -55,7 +54,6 @@ public class ModAi {
             .changeActivityAt(0, Activity.WORK)
             .changeActivityAt(12000, Activities.STAY_HOME)
             .build());
-
 
     public static class Sensors {
         public static RegistryObject<SensorType<NPCHostilesSensor<AbstractTerraNPC>>> NPC_HOSTILES_SENSOR = SENSORS.register("npc_hostiles_sensor", () -> new SensorType<>(() -> new NPCHostilesSensor<>(10)));

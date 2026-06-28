@@ -4,7 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -12,14 +12,12 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
-import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -27,15 +25,12 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TESummonItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
 
 import java.util.function.BiConsumer;
 
 public record ChestSubProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
     @Override
-    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
         HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         // VanillaChestLoot
         EnchantRandomlyFunction.Builder manaEnchantmentBuilder = new EnchantRandomlyFunction.Builder()
@@ -56,7 +51,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
                         .add(LootItem.lootTableItem(SpearItems.SPEAR))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.WOOD_BOOMERANG))
+                        .add(LootItem.lootTableItem(BoomerangItems.WOOD_BOOMERANG))
                         .add(LootItem.lootTableItem(GunItems.BLOWGUN))
                         .add(LootItem.lootTableItem(TCItems.AGLET))
                         .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
@@ -70,7 +65,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/living_wood_chests"), initialWorldSurfaceCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.WOOD_BOOMERANG))
+                        .add(LootItem.lootTableItem(BoomerangItems.WOOD_BOOMERANG))
                         .add(LootItem.lootTableItem(GunItems.BLOWGUN))
                         .add(LootItem.lootTableItem(TCItems.AGLET))
                         .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
@@ -84,7 +79,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.FINCH_STAFF))
+                        .add(LootItem.lootTableItem(SummonItems.FINCH_STAFF))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
@@ -123,7 +118,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS).setWeight(15))
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES).setWeight(15))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE).setWeight(15))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG).setWeight(15))
+                        .add(LootItem.lootTableItem(BoomerangItems.ICE_BOOMERANG).setWeight(15))
                         .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON).setWeight(15))
                         .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(5))
                 )
@@ -139,7 +134,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS).setWeight(15))
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES).setWeight(15))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE).setWeight(15))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG).setWeight(15))
+                        .add(LootItem.lootTableItem(BoomerangItems.ICE_BOOMERANG).setWeight(15))
                         .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON).setWeight(15))
                         .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(5))
                 )
@@ -392,7 +387,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
                         .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE))
                         .add(LootItem.lootTableItem(GunItems.HAND_GUN))
-                        .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
+                        .add(LootItem.lootTableItem(YoyoItems.VALOR))
                         .add(LootItem.lootTableItem(TCItems.RAM_RUNE))
                 )
                 .withPool(LootPool.lootPool()

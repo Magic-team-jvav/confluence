@@ -6,7 +6,7 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -60,7 +60,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /// 生成单个NPC单个配方
 ///
@@ -70,13 +70,13 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     private static final boolean ENABLE_DEBUG_SHOPS = false;
     private final PackOutput.PathProvider npcShopPathProvider;
 
-    public NPCShopProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
-        super(output, lookup);
+    public NPCShopProvider(PackOutput output) {
+        super(output);
         this.npcShopPathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "npc/shop");
     }
 
     @Override
-    public void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
+    public void buildRecipes(Consumer<FinishedRecipe> writer) {
         SecretFlagLock theCorruptionWorldLock = new SecretFlagLock(IWorldOptions.THE_CORRUPTION);
         SecretFlagLock theCrimsonWorldLock = new SecretFlagLock(IWorldOptions.THE_CRIMSON);
         SecretFlagLock hardmodeLock = new SecretFlagLock(IWorldOptions.HARDMODE);

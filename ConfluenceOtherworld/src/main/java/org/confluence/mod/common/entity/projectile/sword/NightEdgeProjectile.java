@@ -116,13 +116,6 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
         }
         this.setDeltaMovement(Vec3.ZERO);
         this.updateObb();
-
-
-    }
-
-    public void onAddedToLevel() {
-        super.onAddedToLevel();
-
     }
 
 

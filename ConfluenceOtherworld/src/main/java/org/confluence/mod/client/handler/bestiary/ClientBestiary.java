@@ -1,5 +1,7 @@
 package org.confluence.mod.client.handler.bestiary;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
+import PortLib.extensions.net.minecraft.client.searchtree.SearchTree.PortSearchTreeExtension;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,12 +22,14 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.ModLoader;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryFilterEvent;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
+import org.mesdag.portlib.wrapper.resource.PortContextAwareReloadListener;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -34,7 +38,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
-public class ClientBestiary extends ContextAwareReloadListener {
+public class ClientBestiary extends PortContextAwareReloadListener {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static ClientBestiary INSTANCE;
 
@@ -46,7 +50,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
     private Map<String, ClientBestiaryEntry> entries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> backupEntries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> sortedEntries = Maps.newLinkedHashMap();
-    private CompletableFuture<SearchTree<Map.Entry<String, ClientBestiaryEntry>>> searchTree = CompletableFuture.completedFuture(SearchTree.empty());
+    private CompletableFuture<SearchTree<Map.Entry<String, ClientBestiaryEntry>>> searchTree = CompletableFuture.completedFuture(PortSearchTreeExtension.empty());
 
     private Level currentLevel;
 
@@ -84,7 +88,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
         Map<String, ClientBestiaryEntry> map = Maps.newHashMap();
         Map<String, ClientBestiaryEntry> backup = Maps.newHashMap();
         for (Map.Entry<String, JsonElement> entry : resourceList.entrySet()) {
-            ClientBestiaryEntry.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).ifSuccess(result -> {
+            PortDataResultExtension.ifSuccess(ClientBestiaryEntry.CODEC.parse(JsonOps.INSTANCE, entry.getValue()), result -> {
                 result.key = entry.getKey();
                 if (entries != null) {
                     ClientBestiaryEntry entry1 = entries.get(result.key);
@@ -103,7 +107,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
     }
 
     public void registerCustomFilter() {
-        ModLoader.postEvent(new RegisterBestiaryFilterEvent(FilterEntry::register));
+        PortEventHandler.postEvent(new RegisterBestiaryFilterEvent(FilterEntry::register));
         Object2BooleanMap<FilterEntry> map = new Object2BooleanLinkedOpenHashMap<>();
         FilterEntry.PRESETS.values().stream().sorted(Comparator.comparingInt(FilterEntry::getOrder)).forEachOrdered(filter -> map.put(filter, true));
         map.put(FilterEntry.IF_UNLOCKED, false);
@@ -151,7 +155,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
                 .sorted(comparator).filter(entry -> filter(entry.getValue()))
                 .forEachOrdered(entry -> sorted.put(entry.getKey(), entry.getValue()));
         this.sortedEntries = sorted;
-        this.searchTree = CompletableFuture.supplyAsync(() -> SearchTree.plainText(
+        this.searchTree = CompletableFuture.supplyAsync(() -> PortSearchTreeExtension.plainText(
                 sortedEntries.entrySet().stream().filter(entry -> !entry.getValue().isLocked()).toList(),
                 entry -> Stream.of(
                         entry.getKey(),
@@ -255,7 +259,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
         return entries.get(key);
     }
 
-    public enum SortType implements TranslatableEnum {
+    public enum SortType implements PortTranslatableEnum {
         UNLOCKS(Comparator.comparingInt(entry -> entry.getValue().isLocked() ? 1 : 0)),
         BESTIARY_ID(Comparator.comparingInt(entry -> entry.getValue().order)),
         NAME(Comparator.comparing(entry -> entry.getValue().description.getString())),

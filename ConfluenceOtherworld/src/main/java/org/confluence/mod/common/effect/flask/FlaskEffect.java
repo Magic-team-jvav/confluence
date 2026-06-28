@@ -1,7 +1,6 @@
 package org.confluence.mod.common.effect.flask;
 
 import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
-import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -34,7 +33,7 @@ public abstract class FlaskEffect extends PortMobEffect {
     public abstract void doMeleeAttack(LivingEntity attacker, LivingEntity victim, int amplifier, DamageSource damageSource, float amount);
 
     public static void onLivingDamage(LivingEntity victim, Entity attacker, DamageSource damageSource, float amount) {
-        if (attacker instanceof LivingEntity living && PortLivingEntityExtension.getWeaponItem(living).is(PortTags.Items.MELEE_WEAPON_TOOLS)) {
+        if (attacker instanceof LivingEntity living && living.getWeaponItem().is(PortTags.Items.MELEE_WEAPON_TOOLS)) {
             for (MobEffectInstance activeEffect : living.getActiveEffects()) {
                 if (activeEffect.getEffect() instanceof FlaskEffect flaskEffect) {
                     flaskEffect.doMeleeAttack(living, victim, activeEffect.getAmplifier(), damageSource, amount);

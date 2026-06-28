@@ -1,25 +1,18 @@
 package org.confluence.mod.common.data.gen;
 
-import com.google.common.collect.Multimap;
-import com.mojang.serialization.Lifecycle;
+import com.google.common.collect.Maps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.MappedRegistry;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.WritableRegistry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.RandomSequence;
 import net.minecraft.world.level.levelgen.RandomSupport;
+import net.minecraft.world.level.storage.loot.LootDataType;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import org.confluence.mod.common.data.gen.loot.modifiers.AddBlockLootDirectDropsSubProvider;
@@ -62,54 +55,27 @@ public class EMILootDirectDropsProvider implements DataProvider {
         return this.subProviders;
     }
 
-    private static ResourceLocation sequenceIdForLootTable(ResourceKey<LootTable> lootTable) {
-        return lootTable.location();
-    }
-
-    protected void validate(WritableRegistry<LootTable> lootTables, ValidationContext validationcontext) {
-        lootTables.entrySet().forEach((entry) -> {
-            LootTable lootTable = entry.getValue();
-            ResourceKey<LootTable> key = entry.getKey();
-            lootTable.validate(
-                    validationcontext.setParams(lootTable.getParamSet())
-                            .enterElement("{" + key.location() + "}", key)
-            );
-        });
-    }
-
     private CompletableFuture<?> run(CachedOutput output, HolderLookup.Provider provider) {
-        WritableRegistry<LootTable> lootTables = new MappedRegistry(Registries.LOOT_TABLE, Lifecycle.experimental());
-        Map<RandomSupport.Seed128bit, ResourceLocation> map = new Object2ObjectOpenHashMap();
-        this.getTables().forEach((entry) -> {
-            entry.provider().apply(provider).generate((key, builder) -> {
-                ResourceLocation resourcelocation = sequenceIdForLootTable(key);
-                ResourceLocation seedKey = map.put(RandomSequence.seedForKey(resourcelocation), resourcelocation);
+        Map<ResourceLocation, LootTable> lootTables = Maps.newHashMap();
+        Map<RandomSupport.Seed128bit, ResourceLocation> map = new Object2ObjectOpenHashMap<>();
+        getTables().forEach(entry -> {
+            entry.provider().apply(provider).generate((id, builder) -> {
+                ResourceLocation seedKey = map.put(RandomSequence.seedForKey(id), id);
                 if (seedKey != null) {
                     String seed = String.valueOf(seedKey);
-                    Util.logAndPauseIfInIde("Loot table random sequence seed collision on " + seed + " and " + key.location());
+                    Util.logAndPauseIfInIde("Loot table random sequence seed collision on " + seed + " and " + id);
                 }
 
-                LootTable loottable = builder.setParamSet(entry.paramSet).build();
-                lootTables.register(key, loottable, RegistrationInfo.BUILT_IN);
+                LootTable table = builder.setParamSet(entry.paramSet).build();
+                lootTables.put(id, table);
             });
         });
-        var problemreporter$Collector = new ProblemReporter.Collector();
-        var lootTablesProvider = (new RegistryAccess.ImmutableRegistryAccess(List.of(lootTables))).freeze().asGetterLookup();
-        var validationcontext = new ValidationContext(problemreporter$Collector, LootContextParamSets.ALL_PARAMS, lootTablesProvider);
-        this.validate(lootTables, validationcontext);
-        Multimap<String, String> multimap = problemreporter$Collector.get();
-        if (!multimap.isEmpty()) {
-            multimap.forEach((file, error) -> {
-                LOGGER.warn("Found validation problem in {}: {}", file, error);
-            });
-//            throw new IllegalStateException("Failed to validate loot tables, see logs");
-            LOGGER.warn("Failed to validate loot tables, see logs");
-        }
-        return CompletableFuture.allOf(lootTables.entrySet().stream().map((entry) -> {
-            ResourceKey<LootTable> resourcekey1 = entry.getKey();
-            LootTable loottable = entry.getValue();
-            Path path = this.pathProvider.json(resourcekey1.location());
-            return DataProvider.saveStable(output, provider, LootTable.DIRECT_CODEC, loottable, path);
+
+        return CompletableFuture.allOf(lootTables.entrySet().stream().map(entry -> {
+            ResourceLocation id = entry.getKey();
+            LootTable table = entry.getValue();
+            Path path = pathProvider.json(id);
+            return DataProvider.saveStable(output, LootDataType.TABLE.parser().toJsonTree(table), path);
         }).toArray(CompletableFuture[]::new));
     }
 
@@ -118,6 +84,5 @@ public class EMILootDirectDropsProvider implements DataProvider {
         return "EMILoot Direct Drops";
     }
 
-    public record SubProviderEntry(Function<HolderLookup.Provider, LootTableSubProvider> provider,
-                                   LootContextParamSet paramSet) {}
+    public record SubProviderEntry(Function<HolderLookup.Provider, LootTableSubProvider> provider, LootContextParamSet paramSet) {}
 }

@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.menu.AmountResultSlot;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
 import org.confluence.mod.common.init.ModMenuTypes;
@@ -59,9 +58,9 @@ public class DyeVatMenu extends AbstractContainerMenu {
         access.execute((level, pos) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 ItemStack itemStack = ItemStack.EMPTY;
-                DyeVatRecipe recipe = level.getRecipeManager().getRecipeFor(ModRecipes.DYE_VAT_TYPE.get(), input, level).map(RecipeHolder::value).orElse(null);
+                DyeVatRecipe recipe = level.getRecipeManager().getRecipeFor(ModRecipes.DYE_VAT_TYPE.get(), input, level).orElse(null);
                 if (recipe != null) {
-                    itemStack = recipe.getResultItem(null).copy();
+                    itemStack = recipe.getResultItem(player.registryAccess()).copy();
                     resultSlot.setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);

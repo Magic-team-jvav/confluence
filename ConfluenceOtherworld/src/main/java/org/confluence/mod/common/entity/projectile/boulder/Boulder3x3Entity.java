@@ -47,7 +47,7 @@ public class Boulder3x3Entity extends BoulderEntity {
     protected void moveAndUpdateNeighbors() {
         Vec3 vec3 = getDeltaMovement();
         setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
-        move(MoverType.SELF, vec3.add(0, -getGravity(), 0));
+        move(MoverType.SELF, vec3.add(0, -getGravity1211(), 0));
         Vec3 motion = getDeltaMovement();
         if (motion.x != vec3.x || motion.y != vec3.y || motion.z != vec3.z) {
             ArrayList<BlockPos> toDestroy = new ArrayList<>();

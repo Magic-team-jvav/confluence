@@ -1,10 +1,8 @@
 package org.confluence.mod.common.data.gen;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -13,13 +11,14 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.data.gen.language.*;
-import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCEffects;
+import org.mesdag.portlib.registries.PortBlockRegistration;
+import org.mesdag.portlib.registries.PortItemRegistration;
 
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
@@ -47,18 +46,18 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        var dimensionsLookup = registries.lookup(Registries.DIMENSION_TYPE);
-        dimensionsLookup.ifPresent(dimensionTypeRegistryLookup -> addDefaultRegistryTranslations(dimensionTypeRegistryLookup, Registries.DIMENSION_TYPE.location().getPath()));
-
-        var fluidLookup = registries.lookup(Registries.FLUID);
-        fluidLookup.ifPresent(fluidRegistryLookup -> addDefaultRegistryTranslations(fluidRegistryLookup, Registries.FLUID.location().getPath()));
-
-        var biomeLookup = registries.lookup(Registries.BIOME);
-        biomeLookup.ifPresent(biomeRegistryLookup -> addDefaultRegistryTranslations(biomeRegistryLookup, Registries.BIOME.location().getPath()));
-
-        for (var moonPhase : MoonPhase.values()) {
-            add(moonPhase.getSerializedName(), formatString(moonPhase.name()));
-        }
+//        var dimensionsLookup = registries.lookup(Registries.DIMENSION_TYPE);
+//        dimensionsLookup.ifPresent(dimensionTypeRegistryLookup -> addDefaultRegistryTranslations(dimensionTypeRegistryLookup, Registries.DIMENSION_TYPE.location().getPath()));
+//
+//        var fluidLookup = registries.lookup(Registries.FLUID);
+//        fluidLookup.ifPresent(fluidRegistryLookup -> addDefaultRegistryTranslations(fluidRegistryLookup, Registries.FLUID.location().getPath()));
+//
+//        var biomeLookup = registries.lookup(Registries.BIOME);
+//        biomeLookup.ifPresent(biomeRegistryLookup -> addDefaultRegistryTranslations(biomeRegistryLookup, Registries.BIOME.location().getPath()));
+//
+//        for (var moonPhase : MoonPhase.values()) {
+//            add(moonPhase.getSerializedName(), formatString(moonPhase.name()));
+//        }
 
         add("confluence.trade_lock.drawer.position.title", "Position");
         add("confluence.trade_lock.drawer.position.and", "and");
@@ -1766,14 +1765,14 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(TCEffects.GRAVITATION.get(), "Press UP to reverse gravity");
         addEffect(TCEffects.PALADINS_SHIELD.get(), "25% of damage taken will be redirected to another player");
 
-        addEffect(TEEffects.DEMONIC_THOUGHTS.get(), "Being inflicted with Demonic Thoughts again spawns Eater of Souls");
-        addEffect(TEEffects.SUMMON_FOCUS.get(), "Minions deal additional damage");
-        addEffect(TEEffects.HELLFIRE.get(), "Losing life");
-        addEffect(TEEffects.FROST_BURN.get(), "Losing life; Cannot regenerate life");
-        addEffect(TEEffects.CRIMSON_STORM.get(), "You are trapped in the storm, there is no escape.");
-        addEffect(TEEffects.HORRIFIED.get(), "You have seen something nasty, there is no escape.");
-        addEffect(TEEffects.THE_TONGUE.get(), "You are being sucked into the mouth");
-        addEffect(TEEffects.SCARED.get(), "Like a bird startled by the sound of a bow, fleeing in all directions");
+        addEffect(ModEffects.DEMONIC_THOUGHTS.get(), "Being inflicted with Demonic Thoughts again spawns Eater of Souls");
+        addEffect(ModEffects.SUMMON_FOCUS.get(), "Minions deal additional damage");
+        addEffect(ModEffects.HELLFIRE.get(), "Losing life");
+        addEffect(ModEffects.FROST_BURN.get(), "Losing life; Cannot regenerate life");
+        addEffect(ModEffects.CRIMSON_STORM.get(), "You are trapped in the storm, there is no escape.");
+        addEffect(ModEffects.HORRIFIED.get(), "You have seen something nasty, there is no escape.");
+        addEffect(ModEffects.THE_TONGUE.get(), "You are being sucked into the mouth");
+        addEffect(ModEffects.SCARED.get(), "Like a bird startled by the sound of a bow, fleeing in all directions");
 
         add("item.confluence.spawn_eggs", "%s Spawn Egg");
 
@@ -1783,14 +1782,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
     }
 
-    private void addDefaultRegistryTranslations(HolderLookup.RegistryLookup<?> dimensions, String dimensionsPath) {
-        dimensions.listElements().forEach(dimension -> {
-            var key = dimension.getKey();
-            if (key == null) return;
-            ResourceLocation location = key.location();
-            add(String.format("%s.%s", dimensionsPath, location.toLanguageKey()), formatLocation(location));
-        });
-    }
+//    private void addDefaultRegistryTranslations(HolderLookup.RegistryLookup<?> dimensions, String dimensionsPath) {
+//        dimensions.listElements().forEach(dimension -> {
+//            var key = dimension.getKey();
+//            if (key == null) return;
+//            ResourceLocation location = key.location();
+//            add(String.format("%s.%s", dimensionsPath, location.toLanguageKey()), formatLocation(location));
+//        });
+//    }
 
     @Override
     public void add(String key, String value) {
@@ -1807,19 +1806,19 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip." + effect.getDescriptionId() + ".0", tooltip);
     }
 
-    private String formatLocation(ResourceLocation location) {
-        return RecipeDrawerUtils.formatLocationPath(location);
-    }
+//    private String formatLocation(ResourceLocation location) {
+//        return RecipeDrawerUtils.formatLocationPath(location);
+//    }
+//
+//    private String formatString(String name) {
+//        return RecipeDrawerUtils.formatString(name);
+//    }
 
-    private String formatString(String name) {
-        return RecipeDrawerUtils.formatString(name);
-    }
-
-    private void addAll(DeferredRegister.Items register) {
+    private void addAll(PortItemRegistration register) {
         register.getEntries().forEach(item -> add(item.get(), LibUtils.toTitleCase(item.getId().getPath())));
     }
 
-    private void addAll(DeferredRegister.Blocks register) {
+    private void addAll(PortBlockRegistration register) {
         register.getEntries().forEach(block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath())));
     }
 }

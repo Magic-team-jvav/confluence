@@ -11,6 +11,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -19,6 +20,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
         super(output, provider, Confluence.MODID, existingFileHelper);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(Tags.Biomes.IS_ICY).add(
@@ -100,21 +102,21 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
         );
         tag(ModTags.Biomes.IS_FOREST).addTags(
                 // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
-                Tags.Biomes.IS_FOREST,
+                PortTags.Biomes.IS_FOREST,
                 Tags.Biomes.IS_PLAINS,
-                Tags.Biomes.IS_TAIGA,
-                Tags.Biomes.IS_SAVANNA,
-                Tags.Biomes.IS_WINDSWEPT,
-                Tags.Biomes.IS_OLD_GROWTH,
+                PortTags.Biomes.IS_TAIGA,
+                PortTags.Biomes.IS_SAVANNA,
+                PortTags.Biomes.IS_WINDSWEPT,
+                PortTags.Biomes.IS_OLD_GROWTH,
                 Tags.Biomes.IS_SWAMP,
-                Tags.Biomes.IS_STONY_SHORES
+                PortTags.Biomes.IS_STONY_SHORES
         );
         tag(ModTags.Biomes.IS_FOREST)
                 // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
                 .add(Biomes.DRIPSTONE_CAVES,
                         Biomes.DEEP_DARK
                 );
-        tag(Tags.Biomes.IS_OVERWORLD).add(
+        tag(PortTags.Biomes.IS_OVERWORLD).add(
                 ModBiomes.THE_CORRUPTION,
                 ModBiomes.THE_CORRUPTION_DESERT,
                 ModBiomes.THE_CORRUPTION_TUNDRA,
@@ -129,14 +131,14 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
 
                 ModBiomes.GLOWING_MUSHROOM
         );
-        tag(Tags.Biomes.IS_NETHER).add(
+        tag(PortTags.Biomes.IS_NETHER).add(
                 ModBiomes.ASH_FOREST,
                 ModBiomes.ASH_WASTELAND
         );
-        tag(Tags.Biomes.IS_NETHER_FOREST).add(ModBiomes.ASH_FOREST);
+        tag(PortTags.Biomes.IS_NETHER_FOREST).add(ModBiomes.ASH_FOREST);
         tag(ModTags.Biomes.VANITY_TREES_REPLACEABLE)
                 .add(Biomes.PLAINS, Biomes.FOREST, Biomes.FLOWER_FOREST)
-                .addTag(Tags.Biomes.IS_BIRCH_FOREST);
+                .addTag(PortTags.Biomes.IS_BIRCH_FOREST);
         tag(BiomeTags.IS_END).add(
                 ModBiomes.CHORUS_FOREST,
                 ModBiomes.CHORUS_PLAINS,

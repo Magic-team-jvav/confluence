@@ -3,9 +3,8 @@ package org.confluence.mod.common.data.gen;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.ObjectIntImmutablePair;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
     private final PackOutput.PathProvider pathProvider;
@@ -25,25 +24,24 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
 
     protected ModAchievementOffsetProvider(
             PackOutput output,
-            CompletableFuture<HolderLookup.Provider> lookup,
             PackOutput.Target target,
             Codec<Map<ResourceLocation, AchievementOffset>> codec
     ) {
-        super(output, lookup);
+        super(output);
         this.codec = codec;
         this.pathProvider = output.createPathProvider(target, "");
     }
 
-    public static ModAchievementOffsetProvider client(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
+    public static ModAchievementOffsetProvider client(PackOutput output) {
         return new ModAchievementOffsetProvider(
-                output, lookup, PackOutput.Target.RESOURCE_PACK,
+                output, PackOutput.Target.RESOURCE_PACK,
                 Codec.unboundedMap(ResourceLocation.CODEC, AchievementOffset.CLIENT_CODEC)
         );
     }
 
-    public static ModAchievementOffsetProvider server(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
+    public static ModAchievementOffsetProvider server(PackOutput output) {
         return new ModAchievementOffsetProvider(
-                output, lookup, PackOutput.Target.DATA_PACK,
+                output, PackOutput.Target.DATA_PACK,
                 Codec.unboundedMap(ResourceLocation.CODEC, AchievementOffset.SERVER_CODEC)
         );
     }
@@ -51,7 +49,7 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
     /// Collector Explorer
     /// Slayer    Challenger
     @Override
-    protected void buildRecipes(RecipeOutput recipeOutput) {
+    protected void buildRecipes(Consumer<FinishedRecipe> writer) {
         recipe(codec, pathProvider().json(Confluence.asResource("achievement_offset"))).addRecipe(new Builder()
                 // Collector
                 .push(true, true)

@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.api.entity.ICollisionAttackEntity;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -182,7 +183,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
                         .subtract(position())
                         .normalize()
                         .scale(velocity.length());
-                double angle = TEUtils.angleBetween(velocity, dir);
+                double angle = LibMathUtils.angleBetween(velocity, dir);
                 setDeltaMovement(projComponent.trackType().get()
                         .calDeltaMovement(velocity, dir, angle));
                 velocity = getDeltaMovement();
@@ -359,8 +360,8 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     // ===== 初始化 =====
 
     @Override
-    public void onAddedToLevel() {
-        super.onAddedToLevel();
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
         var owner1 = getOwner();
         if (owner1 instanceof LivingEntity owner) {
             AttributeInstance instance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);

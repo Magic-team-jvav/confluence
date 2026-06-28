@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.SkyMillMenu;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
@@ -69,7 +68,7 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
             int i = leftPos + RECIPES_X;
             int j = topPos + RECIPES_Y;
             int k = startIndex + SCROLLER_WIDTH;
-            List<RecipeHolder<SkyMillRecipe>> list = menu.getRecipes();
+            List<SkyMillRecipe> list = menu.getRecipes();
 
             for (int l = startIndex; l < k && l < menu.getNumRecipes(); ++l) {
                 int i1 = l - startIndex;

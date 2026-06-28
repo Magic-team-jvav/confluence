@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.world.entity;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
@@ -54,7 +53,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     public abstract Map<MobEffect, MobEffectInstance> getActiveEffectsMap();
 
     @Shadow
-    protected abstract ItemStack getLastArmorItem(EquipmentSlot slot);
+    public abstract ItemStack getLastArmorItem(EquipmentSlot slot);
 
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
@@ -126,7 +125,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
 
     @ModifyExpressionValue(method = "handleOnClimbable", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSuppressingSlidingDownLadder()Z"))
     private boolean checkRope(boolean original) {
-        if (PortEntityExtension.getInBlockState(this).is(ModTags.Blocks.ROPE)) {
+        if (getInBlockState().is(ModTags.Blocks.ROPE)) {
             return !original;
         }
         return original;

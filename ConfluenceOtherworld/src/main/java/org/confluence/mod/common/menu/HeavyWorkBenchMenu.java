@@ -22,11 +22,10 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentRecipeInput, HeavyWorkBenchRecipe, HeavyWorkBenchMenu.ResultSlot, EnvironmentLevelAccess> {
-    private List<RecipeHolder<CraftingRecipe>> craftingRecipes = new ArrayList<>();
+    private List<CraftingRecipe> craftingRecipes = List.of();
 
     public HeavyWorkBenchMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, EnvironmentLevelAccess.empty());
@@ -57,9 +56,9 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         if (index == -1) return result.getItem(0);
         int recipesSize = recipes.size();
         if (index < recipesSize) {
-            return recipes.get(index).value().getResultItem(player.registryAccess());
+            return recipes.get(index).getResultItem(player.registryAccess());
         }
-        return craftingRecipes.get(index - recipesSize).value().getResultItem(player.registryAccess());
+        return craftingRecipes.get(index - recipesSize).getResultItem(player.registryAccess());
     }
 
     @Override
@@ -68,15 +67,15 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         if (index == -1) return result.getItem(0);
         int recipesSize = recipes.size();
         if (index < recipesSize) {
-            return recipes.get(index).value().getResultItem(player.registryAccess());
+            return recipes.get(index).getResultItem(player.registryAccess());
         }
-        return craftingRecipes.get(index - recipesSize).value().getResultItem(player.registryAccess());
+        return craftingRecipes.get(index - recipesSize).getResultItem(player.registryAccess());
     }
 
     @Override
     public void slotsChanged(Container container) {
         this.craftingRecipes = player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, input.asCraftingInput(true), player.level()).stream().filter(holder -> {
-            Class<?> clazz = holder.value().getClass();
+            Class<?> clazz = holder.getClass();
             return clazz == ShapedRecipe.class || clazz == ShapelessRecipe.class;
         }).toList();
         this.recipes = player.level().getRecipeManager().getRecipesFor(recipeType, input, player.level());
@@ -88,11 +87,11 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                 if (!recipes.isEmpty() || !craftingRecipes.isEmpty()) {
                     if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
                     if (recipes.isEmpty()) {
-                        CraftingRecipe recipe = craftingRecipes.get(selectedRecipeIndex.get()).value();
+                        CraftingRecipe recipe = craftingRecipes.get(selectedRecipeIndex.get());
                         itemStack = recipe.getResultItem(player.registryAccess()).copy();
                         resultSlot.setAltRecipe(recipe);
                     } else {
-                        HeavyWorkBenchRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
+                        HeavyWorkBenchRecipe recipe = recipes.get(selectedRecipeIndex.get());
                         itemStack = recipe.getResultItem(player.registryAccess()).copy();
                         resultSlot.setCurrentRecipe(recipe);
                     }
@@ -115,12 +114,12 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                 int recipesSize = recipes.size();
                 ItemStack itemStack;
                 if (index < recipesSize) {
-                    HeavyWorkBenchRecipe recipe = recipes.get(index).value();
+                    HeavyWorkBenchRecipe recipe = recipes.get(index);
                     itemStack = recipe.getResultItem(player.registryAccess());
                     if (!itemStack.isItemEnabled(player.level().enabledFeatures())) break inner;
                     resultSlot.setCurrentRecipe(recipe);
                 } else {
-                    CraftingRecipe recipe = craftingRecipes.get(index - recipesSize).value();
+                    CraftingRecipe recipe = craftingRecipes.get(index - recipesSize);
                     itemStack = recipe.getResultItem(player.registryAccess());
                     if (!itemStack.isItemEnabled(player.level().enabledFeatures())) break inner;
                     resultSlot.setAltRecipe(recipe);

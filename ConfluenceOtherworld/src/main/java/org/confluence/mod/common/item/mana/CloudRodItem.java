@@ -30,7 +30,7 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
         super(properties, rarity, factory, damage, manaCost, rawVelocity, cooldown);
     }
 
-    public CloudRodItem(ModRarity rarity, ProjectileFactory<CloudProjectile> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
+    public CloudRodItem(ModRarity rarity, ProjectileFactory<CloudProjectile> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<PortItemAttributeModifiers.Builder> consumer) {
         super(rarity, factory, damage, manaCost, rawVelocity, cooldown, consumer);
     }
 

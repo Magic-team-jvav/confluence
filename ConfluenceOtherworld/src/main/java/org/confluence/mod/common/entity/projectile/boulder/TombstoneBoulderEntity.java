@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -63,13 +64,13 @@ public class TombstoneBoulderEntity extends BoulderEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.put("text", SignText.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, text).getOrThrow());
+        PortDataResultExtension.ifSuccess(SignText.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, text), result -> tag.put("text", result));
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.text = SignText.DIRECT_CODEC.parse(NbtOps.INSTANCE, tag.get("text")).getOrThrow();
+        PortDataResultExtension.ifSuccess(SignText.DIRECT_CODEC.parse(NbtOps.INSTANCE, tag.get("text")), result -> this.text = result);
     }
 
     public static void createTombstoneEntity(LivingEntity living) {

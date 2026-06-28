@@ -7,17 +7,15 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class HellBatArrowEntity extends BaseArrowEntity implements GeoEntity {
-
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public HellBatArrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
@@ -50,11 +48,10 @@ public class HellBatArrowEntity extends BaseArrowEntity implements GeoEntity {
         }
     }
 
-    static RawAnimation fly = RawAnimation.begin().thenLoop("fly");
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<GeoAnimatable>(this, "fly", 0, state -> {
+        RawAnimation fly = RawAnimation.begin().thenLoop("fly");
+        controllers.add(new AnimationController<>(this, "fly", 0, state -> {
             if (!this.inGround) {
                 state.setControllerSpeed(3f);
                 return state.setAndContinue(fly);

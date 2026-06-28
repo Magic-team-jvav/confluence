@@ -136,8 +136,8 @@ public abstract class AbstractFishingPole extends FishingRodItem {
 
     public abstract FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus);
 
-    protected void addAttributeModifiers(Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
-        PortItemAttributeModifiers.PortBuilder builder = PortItemAttributeModifiers.builder();
+    protected void addAttributeModifiers(Consumer<PortItemAttributeModifiers.Builder> consumer) {
+        PortItemAttributeModifiers.Builder builder = PortItemAttributeModifiers.builder();
         consumer.accept(builder);
         this.modifiers = builder.build();
     }

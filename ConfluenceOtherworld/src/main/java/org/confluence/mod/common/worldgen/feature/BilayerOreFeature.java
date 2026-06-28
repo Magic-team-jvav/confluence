@@ -93,6 +93,24 @@ public class BilayerOreFeature extends Feature<BilayerOreFeature.Config> {
                 BlockStateProvider.CODEC.fieldOf("outer_ore").forGetter(Config::outerOre),
                 TagKey.codec(Registries.BLOCK).optionalFieldOf("replace_tag").forGetter(BilayerOreFeature.Config::replaceTag)
         ).apply(instance, Config::new));
+
+        public Config(
+                int innerCount,
+                int innerCountMore,
+                BlockStateProvider innerOre,
+                BlockStateProvider outerOre,
+                TagKey<Block> replaceTag
+        ) {
+            this(innerCount, innerCountMore, innerOre, innerOre, Optional.of(replaceTag));
+        }
+
+        public Config(
+                int innerCount,
+                int innerCountMore,
+                BlockStateProvider innerOre,
+                BlockStateProvider outerOre
+        ) {
+            this(innerCount, innerCountMore, innerOre, innerOre, Optional.empty());
+        }
     }
 }
-

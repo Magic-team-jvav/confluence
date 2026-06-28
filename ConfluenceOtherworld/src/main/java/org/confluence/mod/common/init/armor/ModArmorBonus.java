@@ -1,11 +1,11 @@
 package org.confluence.mod.common.init.armor;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,9 +25,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fml.ModLoader;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
@@ -47,9 +44,10 @@ import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.init.TEEffects;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.entity.living.PortLivingBreatheEvent;
+import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.HashMap;
@@ -89,7 +87,7 @@ public final class ModArmorBonus {
     public static final ValueType.UnitType LAVA$IMMUNE = ValueType.UnitType.of(Confluence.asResource("lava_immune"));
     public static final ValueType.IntegerType DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA = ValueType.IntegerType.of(Confluence.asResource("durability_repair_amount_per_second_in_lava"), IntegerValue.GET_MAX, 0);
     public static final ValueType.IntegerType FORTUNE = ValueType.IntegerType.of(Confluence.asResource("fortune"), AS_ENCHANTMENT_INT_CR, 0);
-    public static final ValueType<Object2IntMap<Holder<MobEffect>>, EnhanceEffectDuration> ENHANCE$EFFECT$DURATION = ValueType.create(Confluence.asResource("enhance_effect_duration"), EnhanceEffectDuration.MERGE, EnhanceEffectDuration.CODEC, Object2IntMaps.emptyMap(), EnhanceEffectDuration::new);
+    public static final ValueType<Object2IntMap<MobEffect>, EnhanceEffectDuration> ENHANCE$EFFECT$DURATION = ValueType.create(Confluence.asResource("enhance_effect_duration"), EnhanceEffectDuration.MERGE, EnhanceEffectDuration.CODEC, Object2IntMaps.emptyMap(), EnhanceEffectDuration::new);
     // endregion
 
     // region key
@@ -100,12 +98,12 @@ public final class ModArmorBonus {
     @SuppressWarnings("all")
     public static void registerArmorSetBonus() {
         register("mining_set", 1, MINING_HELMET, MINING_CHESTPLATE, MINING_LEGGINGS, MINING_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BLOCK_BREAK_SPEED, key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(PortAttributesExtension.blockBreakSpeed(), key.id, 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
         });
         register("plank_set", 1, PLANK_HELMET, PLANK_CHESTPLATE, PLANK_LEGGINGS, PLANK_BOOTS, armor(1));
         register("ash_set", 1, ASH_HELMET, ASH_CHESTPLATE, ASH_LEGGINGS, ASH_BOOTS, key -> {
             key.of(TCItems.LAVA$HURT$REDUCE, 0.5F);
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BURNING_TIME, key.id, -0.35, PortAttributeModifier.PortOperation.ADD_VALUE));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(PortAttributesExtension.burningTime(), key.id, -0.35, PortAttributeModifier.PortOperation.ADD_VALUE));
         });
         register("snow_set", 1, SNOW_CAPS, SNOW_SUITS, INSULATED_PANTS, INSULATED_SHOES, key -> {
             key.unit(TCItems.FROZEN$IMMUNE);
@@ -142,7 +140,7 @@ public final class ModArmorBonus {
         register("spelunker_set", 2, SPELUNKER_HELMET, SPELUNKER_CHESTPLATE, SPELUNKER_LEGGINGS, SPELUNKER_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.MINION_CAPACITY, key.id, 1, PortAttributeModifier.PortOperation.ADD_VALUE));
             // todo 蜡烛粒子
-            key.of(ENHANCE$EFFECT$DURATION, Object2IntMaps.singleton(ModEffects.SPELUNKER, 2400));
+            key.of(ENHANCE$EFFECT$DURATION, Object2IntMaps.singleton(ModEffects.SPELUNKER.get(), 2400));
         });
         register("splendid_robe_set", 1, SPLENDID_COLLAR, SPLENDID_ROBE, SPLENDID_LEGGINGS, SPLENDID_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL));
@@ -173,7 +171,7 @@ public final class ModArmorBonus {
         register("gladiator_set", 1, GLADIATOR_HELMET, GLADIATOR_CHESTPLATE, GLADIATOR_LEGGINGS, GLADIATOR_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                     .add(Attributes.KNOCKBACK_RESISTANCE, key.id, 1, PortAttributeModifier.PortOperation.ADD_VALUE)
-                    .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, key.id, 1, PortAttributeModifier.PortOperation.ADD_VALUE)
+                    .add(PortAttributesExtension.explosionKnockbackResistance(), key.id, 1, PortAttributeModifier.PortOperation.ADD_VALUE)
                     .build());
         });
         register("meteor_set", 1, METEOR_HELMET, METEOR_CHESTPLATE, METEOR_LEGGINGS, METEOR_BOOTS, key -> {
@@ -289,7 +287,7 @@ public final class ModArmorBonus {
         /// todo 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
 
-        ModLoader.postEvent(new RegisterArmorSetBonusEvent(ModArmorBonus::register));
+        PortEventHandler.postEvent(new RegisterArmorSetBonusEvent(ModArmorBonus::register));
     }
 
     private static Consumer<ArmorSetBonusKey> armor(double value) {
@@ -364,7 +362,7 @@ public final class ModArmorBonus {
 
     public static @Nullable ArmorSetBonusData getArmorSetBonusData(Player player, ArmorSetBonusKey key) {
         if (key == ArmorSetBonusKey.NONE) return null;
-        return MinecraftForge.EVENT_BUS.post(new GetArmorSetBonusDataEvent(player, key, VALUE_MAP.get(key))).getNeoData();
+        return PortEventHandler.postEventWithReturn(new GetArmorSetBonusDataEvent(player, key, VALUE_MAP.get(key))).getNeoData();
     }
 
     public static Object2ObjectMap<ArmorSetBonusKey, ArmorSetBonusData> getValueMap() {
@@ -452,14 +450,14 @@ public final class ModArmorBonus {
                     break titaniumShards;
                 }
 
-                player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
+                player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER.get(), 200));
                 TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
                 serverPlayer.confluence$setTitaniumShards(projectile);
                 player.level().addFreshEntity(projectile);
             }
         }
-        if (damageSource.is(Tags.DamageTypes.IS_MAGIC) && isArmorSet(player, COLD_CRYSTAL_SET)) {
-            victim.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
+        if (damageSource.is(PortTags.DamageTypes.IS_MAGIC) && isArmorSet(player, COLD_CRYSTAL_SET)) {
+            victim.addEffect(new MobEffectInstance(ModEffects.FROST_BURN.get(), 100));
         }
     }
 

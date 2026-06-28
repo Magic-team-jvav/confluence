@@ -1,6 +1,9 @@
 package org.confluence.mod.common.entity.animal;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
+import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -35,6 +38,8 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
         NORMAL, GOLD, PARTY, SLIMED, XMAS,
         AMETHYST, TOPAZ, SAPPHIRE, EMERALD, RUBY, AMBER, DIAMOND,
         CORRUPT, VICIOUS, EXPLOSIVE;
+
+        public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
 
         @Override
         public String getSerializedName() {
@@ -97,20 +102,13 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("Variant", getVariant().getSerializedName());
+        PortDataResultExtension.ifSuccess(Variant.CODEC.encodeStart(NbtOps.INSTANCE, getVariant()), t -> tag.put("Variant", t));
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        setVariant(parseVariant(tag.getString("Variant")));
-    }
-
-    private static Variant parseVariant(String name) {
-        for (Variant v : Variant.values()) {
-            if (v.getSerializedName().equals(name)) return v;
-        }
-        return Variant.NORMAL;
+        PortDataResultExtension.ifSuccess(Variant.CODEC.decode(NbtOps.INSTANCE, tag.get("Variant")), p -> setVariant(p.getFirst()));
     }
 
     @Override

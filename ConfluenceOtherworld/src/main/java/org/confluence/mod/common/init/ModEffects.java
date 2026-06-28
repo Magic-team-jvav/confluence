@@ -2,6 +2,7 @@ package org.confluence.mod.common.init;
 
 import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
+import PortLib.extensions.net.minecraftforge.registries.DeferredRegister.PortDeferredRegisterExtension;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
@@ -150,14 +151,22 @@ public final class ModEffects {
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5));
     public static final RegistryObject<MobEffect> ENEMY_BANNER = EFFECTS.register("enemy_banner", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0000));
     public static final RegistryObject<MobEffect> AROMATIC_SATIATION = EFFECTS.register("aromatic_satiation", AromaticSatiationEffect::new);
-    public static final RegistryObject<MobEffect> DEMONIC_THOUGHTS = EFFECTS.register("demonic_toughts", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x5d478b));
+    public static final RegistryObject<MobEffect> DEMONIC_THOUGHTS = EFFECTS.register("demonic_toughts", DemonicThoughtsEffect::new);
+    public static final RegistryObject<MobEffect> FROST_BURN = EFFECTS.register("frost_burn", FrostburnEffect::new);
+    public static final RegistryObject<MobEffect> HELLFIRE = EFFECTS.register("hellfire", HellFireEffect::new);
+    public static final RegistryObject<MobEffect> SUMMON_FOCUS = EFFECTS.register("summon_mark", SummonFocusEffect::new);
+    public static final RegistryObject<TheTongueEffect> THE_TONGUE = EFFECTS.register("the_tongue", TheTongueEffect::new);
+    public static final RegistryObject<HorrifiedEffect> HORRIFIED = EFFECTS.register("horrified", HorrifiedEffect::new);
+    public static final RegistryObject<CrimsonStormEffect> CRIMSON_STORM = EFFECTS.register("crimson_storm", CrimsonStormEffect::new);
+    public static final RegistryObject<DriveAwayEffect> SCARED = EFFECTS.register("scared",
+            () -> new DriveAwayEffect(0.3, 200.0, 0.8, 1.2, 1.5, 0.0));
 
     // 药剂
     public static final RegistryObject<FlaskEffect> WEAPON_IMBUE_FIRE = EFFECTS.register("weapon_imbue_fire", FlaskOfFireEffect::new);
     public static final RegistryObject<FlaskEffect> WEAPON_IMBUE_GOLD = EFFECTS.register("weapon_imbue_gold", FlaskOfGoldEffect::new);
 
     private static <T extends MobEffect> RegistryObject<T> register(String name, Function<ResourceLocation, T> function) {
-        return EFFECTS.register(name, function);
+        return PortDeferredRegisterExtension.register(EFFECTS, name, function);
     }
 
     private static double exquisitelyStuffed(int v, double v0, double v1, double v2) {

@@ -45,7 +45,7 @@ public class BaseHamaxeItem extends DiggerItem {
                 .component(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0)));
     }
 
-    public BaseHamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<PortItemAttributeModifiers.PortBuilder> consumer, ModRarity rarity) {
+    public BaseHamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<PortItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0)));
         this.defaultModifiers = ModItems.mergeModifiers(defaultModifiers, consumer);

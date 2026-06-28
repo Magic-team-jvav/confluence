@@ -62,7 +62,7 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.entity.MonstersEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
@@ -430,7 +430,7 @@ public final class PlayerEvents {
             }
             if (key == null) break mimic;
             if (key.is(ToolItems.KEY_OF_LIGHT.get())) {
-                WoodenMimic mimic = MonstersEntities.HALLOWED_MIMIC.get().create(level);
+                WoodenMimic mimic = MonsterEntities.HALLOWED_MIMIC.get().create(level);
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
                 }
@@ -443,9 +443,9 @@ public final class PlayerEvents {
                 }
                 WoodenMimic mimic;
                 if (summonCorruption) {
-                    mimic = MonstersEntities.CORRUPT_MIMIC.get().create(level);
+                    mimic = MonsterEntities.CORRUPT_MIMIC.get().create(level);
                 } else {
-                    mimic = MonstersEntities.CRIMSON_MIMIC.get().create(level);
+                    mimic = MonsterEntities.CRIMSON_MIMIC.get().create(level);
                 }
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);

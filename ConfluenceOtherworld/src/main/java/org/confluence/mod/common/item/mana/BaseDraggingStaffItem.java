@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.mana.BaseDraggingProjectile;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.function.Consumer;
 
@@ -20,7 +21,7 @@ public class BaseDraggingStaffItem<E extends BaseDraggingProjectile> extends Man
         super(properties, rarity, factory, damage, manaCost, rawVelocity, cooldown);
     }
 
-    public BaseDraggingStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<ItemAttributeModifiers.Builder> consumer) {
+    public BaseDraggingStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<PortItemAttributeModifiers.Builder> consumer) {
         super(rarity, factory, damage, manaCost, rawVelocity, cooldown, consumer);
     }
 

@@ -9,7 +9,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.menu.AmountResultSlot;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
@@ -59,9 +58,9 @@ public class CrystalBallMenu extends AbstractContainerMenu {
         access.execute((level, pos) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 ItemStack itemStack = ItemStack.EMPTY;
-                CrystalBallRecipe recipe = level.getRecipeManager().getRecipeFor(ModRecipes.CRYSTAL_BALL_TYPE.get(), input, level).map(RecipeHolder::value).orElse(null);
+                CrystalBallRecipe recipe = level.getRecipeManager().getRecipeFor(ModRecipes.CRYSTAL_BALL_TYPE.get(), input, level).orElse(null);
                 if (recipe != null) {
-                    itemStack = recipe.getResultItem(null).copy();
+                    itemStack = recipe.getResultItem(player.registryAccess()).copy();
                     resultSlot.setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);

@@ -132,8 +132,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     LivingEntity target;
 
     @Override
-    public void onAddedToLevel() {
-        super.onAddedToLevel();
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
         var owner1 = getOwner();
         if (owner1 instanceof LivingEntity owner) {
             AttributeInstance instance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);

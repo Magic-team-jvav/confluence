@@ -22,8 +22,8 @@ public class NorthPoleSubProjectile extends SpearProjectile {
     }
 
     @Override
-    public void onAddedToLevel() {
-        super.onAddedToLevel();
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
         if (!level().isClientSide) {
             EmitterCreationPacketS2C.sendToAll(
                     Confluence.asResource("spore_cloud"),

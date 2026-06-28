@@ -8,7 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.biome.Biome;
@@ -17,8 +17,8 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemDamageFunction;
@@ -28,6 +28,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.holdersets.OrHolderSet;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
@@ -36,37 +37,39 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
 public record FishingSubProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
     @Override
-    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
         HolderLookup.RegistryLookup<Biome> registrylookup = this.registries.lookupOrThrow(Registries.BIOME);
         HolderLookup.RegistryLookup<Structure> registrystrcturelookup = this.registries.lookupOrThrow(Registries.STRUCTURE);
 
-        HolderSet<Biome> isSavana = registrylookup.getOrThrow(Tags.Biomes.IS_SAVANNA);
-        HolderSet<Biome> isJungle = registrylookup.getOrThrow(Tags.Biomes.IS_JUNGLE);
+        HolderSet<Biome> isSavana = registrylookup.getOrThrow(PortTags.Biomes.IS_SAVANNA);
+        HolderSet<Biome> isJungle = registrylookup.getOrThrow(PortTags.Biomes.IS_JUNGLE);
         HolderSet<Biome> isCorruption = registrylookup.getOrThrow(ModTags.Biomes.THE_CORRUPTION);
         HolderSet<Biome> isCrimson = registrylookup.getOrThrow(ModTags.Biomes.THE_CRIMSON);
         HolderSet<Biome> isHallow = registrylookup.getOrThrow(ModTags.Biomes.THE_HALLOW);
         HolderSet<Biome> isMushroom = registrylookup.getOrThrow(Tags.Biomes.IS_MUSHROOM);
-        HolderSet<Biome> isSnowyOrIcy = new OrHolderSet<>(
-                registrylookup.getOrThrow(Tags.Biomes.IS_SNOWY),
-                registrylookup.getOrThrow(Tags.Biomes.IS_ICY)
-        );
-        HolderSet<Biome> isOceanOrBeach = new OrHolderSet<>(
-                registrylookup.getOrThrow(Tags.Biomes.IS_OCEAN),
-                registrylookup.getOrThrow(Tags.Biomes.IS_BEACH)
-        );
-        HolderSet<Biome> isJungleOrLush = new OrHolderSet<>(
+        HolderSet<Biome> isSnowyOrIcy = new OrHolderSet<>(List.of(
+                registrylookup.getOrThrow(PortTags.Biomes.IS_SNOWY),
+                registrylookup.getOrThrow(PortTags.Biomes.IS_ICY)
+        ));
+        HolderSet<Biome> isOceanOrBeach = new OrHolderSet<>(List.of(
+                registrylookup.getOrThrow(PortTags.Biomes.IS_OCEAN),
+                registrylookup.getOrThrow(PortTags.Biomes.IS_BEACH)
+        ));
+        HolderSet<Biome> isJungleOrLush = new OrHolderSet<>(List.of(
                 isJungle,
-                registrylookup.getOrThrow(Tags.Biomes.IS_LUSH)
-        );
-        HolderSet<Biome> isDesertOrBadlands = new OrHolderSet<>(
-                registrylookup.getOrThrow(Tags.Biomes.IS_DESERT),
-                registrylookup.getOrThrow(Tags.Biomes.IS_BADLANDS)
-        );
+                registrylookup.getOrThrow(PortTags.Biomes.IS_LUSH)
+        ));
+        HolderSet<Biome> isDesertOrBadlands = new OrHolderSet<>(List.of(
+                registrylookup.getOrThrow(PortTags.Biomes.IS_DESERT),
+                registrylookup.getOrThrow(PortTags.Biomes.IS_BADLANDS)
+        ));
         MinMaxBounds.Doubles spaceThroughUltra = MinMaxBounds.Doubles.between(OverworldUtils.getSpaceY(), OverworldUtils.getUltraY());
         MinMaxBounds.Doubles caveThroughSpace = MinMaxBounds.Doubles.between(OverworldUtils.getCaveY(), OverworldUtils.getSpaceY());
         MinMaxBounds.Doubles caveThroughSurface = MinMaxBounds.Doubles.between(OverworldUtils.getCaveY(), OverworldUtils.getSurfaceY());
@@ -271,15 +274,15 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
         output.accept(ModLootTables.FISHING, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1.0F))
-                        .add(NestedLootTable.lootTableReference(ModLootTables.JUNK).setWeight(5).setQuality(-1))
-                        .add(NestedLootTable.lootTableReference(ModLootTables.TREASURE)
+                        .add(DynamicLoot.dynamicEntry(ModLootTables.JUNK).setWeight(5).setQuality(-1))
+                        .add(DynamicLoot.dynamicEntry(ModLootTables.TREASURE)
                                 .setWeight(10)
                                 .setQuality(1)
                                 .when(LootItemEntityPropertyCondition.hasProperties(
                                         LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(FishingHookPredicate.inOpenWater(true))
                                 ))
                         )
-                        .add(NestedLootTable.lootTableReference(ModLootTables.FISH).setWeight(85).setQuality(-1))
+                        .add(DynamicLoot.dynamicEntry(ModLootTables.FISH).setWeight(85).setQuality(-1))
                 )
         );
         // 匣子

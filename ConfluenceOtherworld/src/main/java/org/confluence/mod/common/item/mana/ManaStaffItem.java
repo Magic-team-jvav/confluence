@@ -54,7 +54,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         this.cooldown = cooldown;
     }
 
-    public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
+    public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<PortItemAttributeModifiers.Builder> consumer) {
         this(new Properties().stacksTo(1), rarity, factory, damage, manaCost, rawVelocity, cooldown);
         addAttributeModifiers(consumer);
     }

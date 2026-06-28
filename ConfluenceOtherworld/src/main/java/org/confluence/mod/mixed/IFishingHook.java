@@ -1,10 +1,10 @@
 package org.confluence.mod.mixed;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
@@ -22,7 +22,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraftforge.common.Tags;
 import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.ModEffects;
@@ -31,6 +30,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
     void confluence$setIsLavaHook();
@@ -81,10 +81,10 @@ public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
         return params;
     }
 
-    static ResourceKey<LootTable> redirectLootTable(FishingHook self, ResourceKey<LootTable> original) {
-        FluidState fluidState = PortEntityExtension.getInBlockState(self).getFluidState();
+    static ResourceLocation redirectLootTable(FishingHook self, ResourceLocation original) {
+        FluidState fluidState = self.getInBlockState().getFluidState();
         if (fluidState.is(FluidTags.LAVA)) return ModLootTables.FISHING_LAVA;
-        if (fluidState.is(Tags.Fluids.HONEY)) return ModLootTables.FISHING_HONEY;
+        if (fluidState.is(PortTags.Fluids.HONEY)) return ModLootTables.FISHING_HONEY;
         if (self.getType() == EntityType.FISHING_BOBBER) return original;
         return ModLootTables.FISHING;
     }

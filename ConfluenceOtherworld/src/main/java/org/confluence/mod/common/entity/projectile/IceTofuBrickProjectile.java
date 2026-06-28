@@ -12,9 +12,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.terraentity.init.TEEffects;
 
 public class IceTofuBrickProjectile extends ThrowableItemProjectile {
     public IceTofuBrickProjectile(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
@@ -45,8 +45,8 @@ public class IceTofuBrickProjectile extends ThrowableItemProjectile {
         DamageSource source = damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null);
         for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, new AABB(position().add(-1, -1, -1), position().add(1, 1, 1)), living -> !(living instanceof Player))) {
             living.hurt(source, 4);
-            living.addEffect(new MobEffectInstance(TEEffects.FROST_BURN.getDelegate(), 200, 0));
-            living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN.getDelegate(), 200, 1));
+            living.addEffect(new MobEffectInstance(ModEffects.FROST_BURN.get(), 200, 0));
+            living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1));
         }
     }
 

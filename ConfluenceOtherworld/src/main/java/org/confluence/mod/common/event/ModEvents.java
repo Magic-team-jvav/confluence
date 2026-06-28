@@ -40,6 +40,8 @@ import org.confluence.mod.common.entity.RainbowSheep;
 import org.confluence.mod.common.entity.animal.Bunny;
 import org.confluence.mod.common.entity.animal.HostileBunny;
 import org.confluence.mod.common.entity.monster.DemonEye;
+import org.confluence.mod.common.entity.monster.humanoid.Zombie;
+import org.confluence.mod.common.entity.monster.slime.*;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
@@ -51,7 +53,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.entity.MonstersEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -214,7 +216,34 @@ public final class ModEvents {
         event.put(CritterEntities.BUNNY.get(), Bunny.createAttributes().build());
         event.put(CritterEntities.JEWEL_BUNNY.get(), Bunny.createAttributes().build());
         event.put(CritterEntities.HOSTILE_BUNNY.get(), HostileBunny.createAttributes().build());
-        event.put(MonstersEntities.DEMON_EYE.get(), DemonEye.createAttributes().build());
+        event.put(MonsterEntities.DEMON_EYE.get(), DemonEye.createAttributes().build());
+        event.put(MonsterEntities.GREEN_SLIME.get(), BaseSlime.createGreenAttributes().build());
+        event.put(MonsterEntities.BLUE_SLIME.get(), BaseSlime.createBlueAttributes().build());
+        event.put(MonsterEntities.PINK_SLIME.get(), Pinky.createAttributes().build());
+        event.put(MonsterEntities.DUNGEON_SLIME.get(), BaseSlime.createDungeonAttributes().build());
+        event.put(MonsterEntities.CORRUPT_SLIME.get(), CorruptSlime.createAttributes().build());
+        event.put(MonsterEntities.DESERT_SLIME.get(), BaseSlime.createDesertAttributes().build());
+        event.put(MonsterEntities.JUNGLE_SLIME.get(), BaseSlime.createJungleAttributes().build());
+        event.put(MonsterEntities.EVIL_SLIME.get(), BaseSlime.createEvilAttributes().build());
+        event.put(MonsterEntities.ICE_SLIME.get(), IceSlime.createAttributes().build());
+        event.put(MonsterEntities.LAVA_SLIME.get(), LavaSlime.createAttributes().build());
+        event.put(MonsterEntities.LUMINOUS_SLIME.get(), LuminousSlime.createAttributes().build());
+        event.put(MonsterEntities.CRIMSLIME.get(), Crimslime.createAttributes().build());
+        event.put(MonsterEntities.SLIMELING.get(), Slimeling.createAttributes().build());
+        event.put(MonsterEntities.PURPLE_SLIME.get(), BaseSlime.createPurpleAttributes().build());
+        event.put(MonsterEntities.RED_SLIME.get(), BaseSlime.createRedAttributes().build());
+        event.put(MonsterEntities.TROPIC_SLIME.get(), TropicSlime.createAttributes().build());
+        event.put(MonsterEntities.YELLOW_SLIME.get(), BaseSlime.createYellowAttributes().build());
+        event.put(MonsterEntities.GREEN_DUMPLING_SLIME.get(), BaseSlime.createGreenDumplingAttributes().build());
+        event.put(MonsterEntities.SWAMP_SLIME.get(), BaseSlime.createSwampAttributes().build());
+        event.put(MonsterEntities.BLACK_SLIME.get(), BlackSlime.createAttributes().build());
+        event.put(MonsterEntities.HONEY_SLIME.get(), HoneySlime.createAttributes().build());
+        event.put(MonsterEntities.GOLDEN_SLIME.get(), GoldenSlime.createAttributes().build());
+        event.put(MonsterEntities.FLESH_SLIME.get(), FleshSlime.createAttributes().build());
+        event.put(MonsterEntities.SPIKED_SLIME.get(), SpikedSlime.createAttributes().build());
+        event.put(MonsterEntities.SPIKED_JUNGLE_SLIME.get(), SpikedJungleSlime.createAttributes().build());
+        event.put(MonsterEntities.SPIKED_ICE_SLIME.get(), SpikedIceSlime.createAttributes().build());
+        event.put(MonsterEntities.ZOMBIE.get(), Zombie.createAttributes().build());
     }
 
 // todo   private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
@@ -379,9 +408,25 @@ public final class ModEvents {
         event.register(CritterEntities.JEWEL_BUNNY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
 
         // DemonEye: 夜晚地表飞行怪
-        event.register(MonstersEntities.DEMON_EYE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
+        event.register(MonsterEntities.DEMON_EYE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
             if (level.isDay() || pos.getY() < 60) return false;
             return level.canSeeSky(pos) && Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
+        });
+
+        // GreenSlime: 白天森林地表
+        event.register(MonsterEntities.GREEN_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
+            if (!level.isDay() || pos.getY() < 40) return false;
+            return level.canSeeSky(pos) && Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
+        });
+        // BlueSlime: 白天森林/地下
+        event.register(MonsterEntities.BLUE_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
+            if (!level.isDay() || pos.getY() < 0) return false;
+            return Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
+        });
+        // Zombie: 夜晚地表
+        event.register(MonsterEntities.ZOMBIE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
+            if (level.isDay() || pos.getY() < 40) return false;
+            return Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
         });
 
         PortEventHandler.postEvent(new RegisterBestiaryKeyEvent()); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
@@ -401,7 +446,7 @@ public final class ModEvents {
         event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.SCORPION.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(MonstersEntities.DEMON_EYE.get(), (type, eye) -> {
+        event.register(MonsterEntities.DEMON_EYE.get(), (type, eye) -> {
             String key = type.getDescriptionId() + '.';
             return key + eye.getVariant().getSerializedName();
         });

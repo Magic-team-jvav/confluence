@@ -69,7 +69,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.entity.MonstersEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -212,7 +212,7 @@ public final class ModUtils {
     public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {
         if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
             EntityType<?> type = attacker.getType();
-            if (type == MonstersEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
+            if (type == MonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
                 boolean master = LibUtils.isMaster(level, living.blockPosition());
                 MobEffect debuff;
                 float min;
@@ -251,7 +251,7 @@ public final class ModUtils {
     }
 
     public static void applyCursedSkullDebuff(@Nullable Entity attacker, LivingEntity living) {
-        if (attacker != null && attacker.getType() == MonstersEntities.CURSED_SKULL.get() && attacker.getRandom().nextFloat() < 0.33F) {
+        if (attacker != null && attacker.getType() == MonsterEntities.CURSED_SKULL.get() && attacker.getRandom().nextFloat() < 0.33F) {
             living.addEffect(new MobEffectInstance(ModEffects.CURSED.get(), 80));
         }
     }

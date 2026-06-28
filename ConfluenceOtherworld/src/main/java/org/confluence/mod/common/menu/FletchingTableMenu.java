@@ -1,5 +1,6 @@
 package org.confluence.mod.common.menu;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
@@ -15,7 +16,6 @@ import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
@@ -57,14 +57,14 @@ public class FletchingTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void slotsChanged(Container pInventory) {
+    public void slotsChanged(Container container) {
         access.execute((level, pos) -> {
             if (player instanceof ServerPlayer serverPlayer) {
-                List<RecipeHolder<FletchingTableRecipe>> recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.FLETCHING_TABLE_TYPE.get(), input, player.level());
+                List<FletchingTableRecipe> recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.FLETCHING_TABLE_TYPE.get(), input, player.level());
                 ItemStack itemStack = ItemStack.EMPTY;
                 if (!recipes.isEmpty()) {
-                    FletchingTableRecipe recipe = recipes.getFirst().value();
-                    itemStack = recipe.getResultItem(null).copy();
+                    FletchingTableRecipe recipe = PortListExtension.getFirst(recipes);
+                    itemStack = recipe.getResultItem(player.registryAccess()).copy();
                     setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);
@@ -184,11 +184,6 @@ public class FletchingTableMenu extends AbstractContainerMenu {
                 AbstractAmountRecipe.consumeShapeless(input, recipe.getIngredients());
                 input.setChanged();
             }
-        }
-
-        @Override
-        public boolean isFake() {
-            return true;
         }
     }
 }

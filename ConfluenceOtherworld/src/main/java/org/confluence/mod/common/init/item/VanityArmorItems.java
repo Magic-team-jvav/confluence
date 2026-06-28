@@ -137,9 +137,9 @@ public class VanityArmorItems {
         return ITEMS.register(name, () -> new BaseVanityArmorItem(geoName, material, type, properties, rarity));
     }
 
-    private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String name, String geoName, ArmorMaterial material, ArmorItem.Type type, ModRarity rarity, BiConsumer<ResourceLocation, PortItemAttributeModifiers.PortBuilder> consumer) {
+    private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String name, String geoName, ArmorMaterial material, ArmorItem.Type type, ModRarity rarity, BiConsumer<ResourceLocation, PortItemAttributeModifiers.Builder> consumer) {
         return ITEMS.register(name, id -> {
-            PortItemAttributeModifiers.PortBuilder builder = PortItemAttributeModifiers.builder();
+            PortItemAttributeModifiers.Builder builder = PortItemAttributeModifiers.builder();
             consumer.accept(id, builder);
             return new BaseVanityArmorItem(geoName, material, type, new Item.Properties().attributes(builder.build()), rarity);
         });

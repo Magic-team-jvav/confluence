@@ -29,6 +29,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -69,8 +70,8 @@ public enum SlimeRainGameEvent implements GameEvent {
         this.forceStart = false;
         this.haveKingSlime = false;
         this.spawnerData = MinecraftForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 200, 1, 1),
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 300, 1, 1),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.BLUE_SLIME.get(), 200, 1, 1),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.GREEN_SLIME.get(), 300, 1, 1),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.PURPLE_SLIME.get(), 100, 1, 1),
                 new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_SLIME.get(), 1, 1, 1)
         )).create();

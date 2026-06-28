@@ -55,7 +55,6 @@ import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
 import org.joml.Vector3f;
 import org.mesdag.portlib.registries.PortDeferredItem;
@@ -438,7 +437,7 @@ public final class PlayerUtils {
     public static boolean couldPerformEmptyTargetSweep(Player player) {
         if (!player.isAutoSpinAttack()) {
             ItemStack stack = player.getMainHandItem();
-            if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
+//            if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
             return stack.canPerformAction(ToolActions.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
         }
         return false;
@@ -466,7 +465,7 @@ public final class PlayerUtils {
         if (gameTime % 200 == 0) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
             if (iSection != null && iSection.confluence$getBlockCounts().sunflower > 0) {
-                player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 220));
+                player.addEffect(new MobEffectInstance(ModEffects.HAPPY.get(), 220));
             }
         }
     }

@@ -4,6 +4,7 @@ import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -24,8 +25,8 @@ public interface SecretFlagMatcher {
         return IMinecraftServer.matchesSecretFlag(secretFlag()) != flipMatch();
     }
 
-    static <M extends SecretFlagMatcher> Codec<M> createCodec(BiFunction<Long, Boolean, M> factory) {
-        return RecordCodecBuilder.create(instance -> instance.group(
+    static <M extends SecretFlagMatcher> MapCodec<M> createCodec(BiFunction<Long, Boolean, M> factory) {
+        return RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.either(Codec.LONG, Codec.STRING).fieldOf("flag").forGetter(matcher -> Either.left(matcher.secretFlag())),
                 PortCodecExtension.lenientOptionalFieldOf(Codec.BOOL, "flip", false).forGetter(SecretFlagMatcher::flipMatch)
         ).apply(instance, (n, b) -> factory.apply(n.map(Function.identity(), str -> {

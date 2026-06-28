@@ -4,6 +4,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import org.confluence.lib.common.data.gen.CollectRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.recipe.*;
@@ -12,7 +16,9 @@ import org.confluence.mod.common.data.gen.tag.*;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+@Mod.EventBusSubscriber(modid = Confluence.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModDataGenerator {
+    @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();
         PackOutput output = generator.getPackOutput();
@@ -28,7 +34,7 @@ public final class ModDataGenerator {
         generator.addProvider(client, new ModEnUdProvider(output, lookup));
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));
-        generator.addProvider(client, new CollectRecipeProvider(Confluence.asPlainId("client"), output, lookup,
+        generator.addProvider(client, new CollectRecipeProvider(Confluence.asPlainId("client"), output,
                 ModClientBestiaryEntryProvider::new,
                 ModAchievementOffsetProvider::client
         ));
@@ -39,7 +45,7 @@ public final class ModDataGenerator {
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModEntityTypeTagsProvider(output, lookup, helper));
-        generator.addProvider(server, new CollectRecipeProvider(Confluence.asPlainId("server"), output, lookup,
+        generator.addProvider(server, new CollectRecipeProvider(Confluence.asPlainId("server"), output,
                 NPCShopProvider::new,
                 ModRecipeProvider::new,
                 CraftingRecipeProvider::new,

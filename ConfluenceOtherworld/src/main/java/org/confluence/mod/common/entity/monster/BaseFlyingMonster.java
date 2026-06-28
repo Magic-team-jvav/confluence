@@ -11,14 +11,8 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class BaseFlyingMonster extends Monster implements GeoEntity {
-    protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+public abstract class BaseFlyingMonster extends BaseMonster {
     public BaseFlyingMonster(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.moveControl = new FlyingMoveControl(this, 10, false);
@@ -26,13 +20,6 @@ public abstract class BaseFlyingMonster extends Monster implements GeoEntity {
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
     }
-
-    @Override
-    protected void registerGoals() {
-        this.goalSelector.addGoal(0, createBT());
-    }
-
-    protected abstract BTRoot createBT();
 
     @Override
     protected PathNavigation createNavigation(Level level) {
@@ -59,7 +46,4 @@ public abstract class BaseFlyingMonster extends Monster implements GeoEntity {
 
     @Override
     public boolean isPushable() { return false; }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() { return cache; }
 }

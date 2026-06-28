@@ -9,8 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.item.GunItems;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEntityExtension;
 
 public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier, IPortEntityExtension {
@@ -26,7 +26,7 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
     }
 
     public CustomBulletEntity(EntityType<? extends BaseBulletEntity> type, LivingEntity owner, float gravity, ItemStack bullet) {
-        super(type, owner, GunItems.EMPTY_BULLET.get().getDefaultInstance());
+        super(type, owner, GunItems.EMPTY_BULLET.toStack());
         this.gravity = gravity;
         this.entityData.set(GRAVITY_BULLET, bullet);
     }

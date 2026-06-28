@@ -1,6 +1,5 @@
 package org.confluence.mod.common.menu;
 
-import com.google.common.collect.Lists;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -14,7 +13,6 @@ import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.menu.AmountResultSlot;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
@@ -37,7 +35,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     private final AmountResultSlot<SkyMillRecipe> resultSlot;
     private final ResultContainer result = new ResultContainer();
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
-    private List<RecipeHolder<SkyMillRecipe>> recipes = Lists.newArrayList();
+    private List<SkyMillRecipe> recipes = List.of();
 
     public SkyMillMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, EnvironmentLevelAccess.empty());
@@ -97,7 +95,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
         return selectedRecipeIndex.get();
     }
 
-    public List<RecipeHolder<SkyMillRecipe>> getRecipes() {
+    public List<SkyMillRecipe> getRecipes() {
         return recipes;
     }
 
@@ -132,8 +130,8 @@ public class SkyMillMenu extends AbstractContainerMenu {
                 ItemStack itemStack = ItemStack.EMPTY;
                 if (!recipes.isEmpty()) {
                     if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
-                    SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
-                    itemStack = recipe.getResultItem(null).copy();
+                    SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get());
+                    itemStack = recipe.getResultItem(player.registryAccess()).copy();
                     resultSlot.setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);
@@ -145,8 +143,8 @@ public class SkyMillMenu extends AbstractContainerMenu {
 
     private void setupResultSlot() {
         if (!recipes.isEmpty() && isValidRecipeIndex(selectedRecipeIndex.get())) {
-            SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
-            ItemStack itemStack = recipe.getResultItem(null).copy();
+            SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get());
+            ItemStack itemStack = recipe.getResultItem(player.registryAccess()).copy();
             if (itemStack.isItemEnabled(player.level().enabledFeatures())) {
                 result.setItem(0, itemStack);
                 resultSlot.setCurrentRecipe(recipe);

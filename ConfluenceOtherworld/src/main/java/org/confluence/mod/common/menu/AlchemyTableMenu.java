@@ -1,5 +1,6 @@
 package org.confluence.mod.common.menu;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -14,7 +15,6 @@ import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.common.init.ModMenuTypes;
@@ -68,15 +68,15 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void slotsChanged(Container pInventory) {
+    public void slotsChanged(Container container) {
         access.execute((level, pos) -> {
             if (player instanceof ServerPlayer serverPlayer) {
-                List<RecipeHolder<AlchemyTableRecipe>> recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get(), input, player.level());
+                List<AlchemyTableRecipe> recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get(), input, player.level());
                 ItemStack itemStack = ItemStack.EMPTY;
                 if (!recipes.isEmpty()) {
-                    AlchemyTableRecipe recipe = recipes.stream().max(Comparator.comparingInt(holder -> holder.value().getIngredients().size()))
-                            .orElseGet(recipes::getFirst).value();
-                    itemStack = recipe.getResultItem(null).copy();
+                    AlchemyTableRecipe recipe = recipes.stream().max(Comparator.comparingInt(r -> r.getIngredients().size()))
+                            .orElseGet(() -> PortListExtension.getFirst(recipes));
+                    itemStack = recipe.getResultItem(player.registryAccess()).copy();
                     setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);
@@ -191,11 +191,6 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
                 }
                 input.setChanged();
             }
-        }
-
-        @Override
-        public boolean isFake() {
-            return true;
         }
     }
 }

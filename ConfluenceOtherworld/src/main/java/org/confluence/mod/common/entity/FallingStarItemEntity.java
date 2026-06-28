@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -89,7 +88,7 @@ public class FallingStarItemEntity extends ItemEntity {
                 return;
             }
         }
-        if (!PortEntityExtension.getInBlockState(this).isAir()) {
+        if (!getInBlockState().isAir()) {
             setWasOnGround(true);
             setOnGround(true);
         }

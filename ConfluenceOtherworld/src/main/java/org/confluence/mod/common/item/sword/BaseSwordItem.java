@@ -34,7 +34,6 @@ import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.AttributeHolder;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -46,7 +45,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class BaseSwordItem extends SwordItem implements IPortItemExtension {
+public class BaseSwordItem extends SwordItem {
     public @Nullable ModifierBuilder modifier;
     private @Nullable TooltipComponent component;
 
@@ -146,7 +145,7 @@ public class BaseSwordItem extends SwordItem implements IPortItemExtension {
 
         protected Properties properties = new Properties();
         protected IInventoryTick inventoryTick;
-        protected final PortItemAttributeModifiers.PortBuilder attributeModifiersBuilder = PortItemAttributeModifiers.builder();
+        protected final PortItemAttributeModifiers.Builder attributeModifiersBuilder = PortItemAttributeModifiers.builder();
         protected int modifyCount = 0;
         protected List<Consumer<MutableComponent>> tooltipsModifier = new ArrayList<>();
         protected boolean hasImage;

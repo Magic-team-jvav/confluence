@@ -45,8 +45,9 @@ public class TitaniumShardsProjectile extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_SHARDS_AMOUNT, 7).define(DATA_OWNER_UUID, Optional.empty());
+    protected void defineSynchedData() {
+        entityData.define(DATA_SHARDS_AMOUNT, 7);
+        entityData.define(DATA_OWNER_UUID, Optional.empty());
     }
 
     @Override
@@ -84,7 +85,7 @@ public class TitaniumShardsProjectile extends Projectile {
         if (amount != shardPos.size()) {
             List<Vector3d> shardPos = new ArrayList<>();
             List<Vector3d> shardPosO = new ArrayList<>();
-            double d = Math.TAU / amount;
+            double d = Math.PI * 2 / amount;
             for (int i = 0; i < amount; i++) {
                 Vector3d e = new Vector3d(1 + amount / 10.0, 0, 0).rotateY(d * i);
                 shardPos.add(e);
@@ -128,13 +129,13 @@ public class TitaniumShardsProjectile extends Projectile {
 
     @Override
     public @Nullable Player getOwner() {
-        if (cachedOwner != null && !cachedOwner.isRemoved()) {
-            return (Player) cachedOwner;
-        } else if (ownerUUID != null) {
+        if (cachedOwner != null) {
+            if (!cachedOwner.isRemoved()) {
+                return (Player) cachedOwner;
+            }
             return (Player) (this.cachedOwner = level().getPlayerByUUID(ownerUUID));
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override

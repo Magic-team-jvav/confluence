@@ -14,14 +14,14 @@ import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.loaders.SeparateTransformsModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
+import org.mesdag.portlib.registries.PortDeferredItem;
+import org.mesdag.portlib.registries.PortItemRegistration;
+import org.mesdag.portlib.registries.PortRegistryEntry;
 
 import java.util.*;
 
@@ -94,8 +94,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         ResourceLocation handheldRod = ResourceLocation.withDefaultNamespace("item/handheld_rod");
         ResourceLocation pulling = ResourceLocation.withDefaultNamespace("pulling");
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");
-        for (RegistryObject item : BowItems.ITEMS.getEntries()) {
-            String path = item.getId().getPath();
+        for (PortRegistryEntry<Item, ?> entry : BowItems.ITEMS.getEntries()) {
+            String path = entry.getId().getPath();
             try {
                 ResourceLocation texture = Confluence.asResource("item/bow/" + path);
                 ItemModelBuilder builder = withExistingParent(path, handheldRod).texture("layer0", texture)
@@ -118,13 +118,13 @@ public class ModItemModelProvider extends ItemModelProvider {
             } catch (Exception e) {
                 withExistingParent(path, MISSING_ITEM);
             }
-            skip.add(item.get());
+            skip.add(entry.get());
         }
-        for (RegistryObject item : CrossbowItems.ITEMS.getEntries()) {
-            String path = item.getId().getPath();
-            Item item1 = item.get();
+        for (PortRegistryEntry<Item, ?> entry : CrossbowItems.ITEMS.getEntries()) {
+            String path = entry.getId().getPath();
+            Item item = entry.get();
             try {
-                String path1 = "item/crossbow/" + ((item1 instanceof BaseTerraRepeaterItem ? "repeater/" : "") + path);
+                String path1 = "item/crossbow/" + ((item instanceof BaseTerraRepeaterItem ? "repeater/" : "") + path);
                 ResourceLocation texture = Confluence.asResource(path1);
                 withExistingParent(path, handheldRod).texture("layer0", texture)
                         .transforms()
@@ -139,12 +139,12 @@ public class ModItemModelProvider extends ItemModelProvider {
             } catch (Exception e) {
                 withExistingParent(path, MISSING_ITEM);
             }
-            skip.add(item1);
+            skip.add(item);
         }
 
         // 一般物品
         // tip：MATERIALS的贴图分多个文件夹 "materials/","gem/","ingot/","ore/"，物品多的文件夹放前面提高速度
-        List<Map<DeferredRegister.Items, String[]>> customModels = new ArrayList<>();
+        List<Map<PortItemRegistration, String[]>> customModels = new ArrayList<>();
         customModels.add(createDir(AccessoryItems.ITEMS, "accessory/"));
         customModels.add(createDir(ArmorItems.ITEMS, "armor_item/"));
         customModels.add(createDir(ArrowItems.ITEMS, "arrow/"));
@@ -170,11 +170,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         genModels(customModels, "item/generated");
 
         // 手持物品
-        List<Map<DeferredRegister.Items, String[]>> handheld = new ArrayList<>();
+        List<Map<PortItemRegistration, String[]>> handheld = new ArrayList<>();
         handheld.add(createDir(SwordItems.ITEMS, "sword/"));
         handheld.add(createDir(AxeItems.ITEMS, "axe/"));
         handheld.add(createDir(HammerItems.ITEMS, "hammer/"));
-        handheld.add(createDir(TEBoomerangItems.ITEMS, "boomerang/"));
+        handheld.add(createDir(BoomerangItems.ITEMS, "boomerang/"));
         handheld.add(createDir(PickaxeItems.ITEMS, "pickaxe/"));
         handheld.add(createDir(PickaxeAxeItems.ITEMS, "pickaxe_axe/"));
         handheld.add(createDir(ManaWeaponItems.ITEMS, "mana_staff/"));
@@ -187,13 +187,13 @@ public class ModItemModelProvider extends ItemModelProvider {
         genModels(handheld, "item/handheld");
 
         // 方块物品
-        for (RegistryObject item : ModItems.BLOCK_ITEMS.getEntries()) {
-            Item item1 = item.get();
-            String path = item.getId().getPath();
+        for (PortRegistryEntry<Item, ?> entry : ModItems.BLOCK_ITEMS.getEntries()) {
+            Item item = entry.get();
+            String path = entry.getId().getPath();
             try {
-                if (item1 instanceof SignItem) {
+                if (item instanceof SignItem) {
                     withExistingParent(path, "item/generated").texture("layer0", "confluence:item/sign/" + path);
-                } else if (item1 instanceof BlockItem item2) {
+                } else if (item instanceof BlockItem item2) {
                     Block block = item2.getBlock();
                     if (block instanceof DoorBlock) {
                         withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/decoration/door/" + path));
@@ -218,9 +218,9 @@ public class ModItemModelProvider extends ItemModelProvider {
             }
         }
 
-        for (RegistryObject item : PaintItems.ITEMS.getEntries()) {
-            if (item.get() instanceof PaintItem) {
-                String path = item.getId().getPath();
+        for (PortRegistryEntry<Item, ?> entry : PaintItems.ITEMS.getEntries()) {
+            if (entry.get() instanceof PaintItem) {
+                String path = entry.getId().getPath();
                 if (path.startsWith("deep_")) {
                     withExistingParent(path, Confluence.asResource("item/template_deep_paint"));
                 } else {
@@ -240,7 +240,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     /**
      * 手持高清但是物品栏16x
      */
-    private void separateModel(RegistryObject deferredItem, ModelFile parentModel, String parentPath) {
+    private void separateModel(PortDeferredItem<?> deferredItem, ModelFile parentModel, String parentPath) {
         String path = deferredItem.getId().getPath();
         getBuilder(path).guiLight(BlockModel.GuiLight.FRONT).customLoader((builder, helper) -> {
             ResourceLocation none = Confluence.asResource("");
@@ -258,14 +258,14 @@ public class ModItemModelProvider extends ItemModelProvider {
         skip.add(deferredItem.get());
     }
 
-    private Map<DeferredRegister.Items, String[]> createDir(DeferredRegister.Items reg, String... packPaths) {
+    private Map<PortItemRegistration, String[]> createDir(PortItemRegistration reg, String... packPaths) {
         return Map.of(reg, packPaths);
     }
 
-    private void genModels(List<Map<DeferredRegister.Items, String[]>> list, String parent) {
-        for (Map<DeferredRegister.Items, String[]> map : list) {
-            for (Map.Entry<DeferredRegister.Items, String[]> entry : map.entrySet()) {
-                for (RegistryObject item : entry.getKey().getEntries()) {
+    private void genModels(List<Map<PortItemRegistration, String[]>> list, String parent) {
+        for (Map<PortItemRegistration, String[]> map : list) {
+            for (Map.Entry<PortItemRegistration, String[]> entry : map.entrySet()) {
+                for (PortRegistryEntry<Item, ?> item : entry.getKey().getEntries()) {
                     if (skip.contains(item.get())) continue;
                     String path = item.getId().getPath();
                     boolean exist = false;

@@ -2,19 +2,17 @@ package org.confluence.mod.common.data.gen.loot.modifiers;
 
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
-import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -22,10 +20,10 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.SummonItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.init.item.TESummonItems;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -66,139 +64,71 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
         ));
         LootItemCondition.Builder playerHasSmeltsLootEnchantment = LootItemEntityPropertyCondition.hasProperties(
                 LootContext.EntityTarget.KILLER_PLAYER,
-                EntityPredicate.Builder.entity()
-                        .equipment(
-                                EntityEquipmentPredicate.Builder.equipment()
-                                        .mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FIRE_ASPECT, MinMaxBounds.Ints.atLeast(1))).build()).build()
-                        )
+                EntityPredicate.Builder.entity().equipment(EntityEquipmentPredicate.Builder.equipment().mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FIRE_ASPECT, MinMaxBounds.Ints.atLeast(1))).build()).build())
         );
-        entries.add(new AddedEntityLoot(EntityType.FROG,
-                LootTable.lootTable().withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FoodItems.RAW_FROG)
-                                        .apply(SmeltItemFunction.smelted()
-                                                .when(AnyOfCondition.anyOf(
-                                                        LootItemEntityPropertyCondition.hasProperties(
-                                                                LootContext.EntityTarget.THIS,
-                                                                EntityPredicate.Builder.entity()
-                                                                        .flags(EntityFlagsPredicate.Builder.flags().setOnFire(true))
-                                                        ),
-                                                        playerHasSmeltsLootEnchantment
-                                                ))
-                                        )
-                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(
-                                                this.registries,
-                                                UniformGenerator.between(0.0f, 1.0f)
-                                        ))
-                                )
+        entries.add(new AddedEntityLoot(EntityType.FROG, LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.RAW_FROG)
+                .apply(SmeltItemFunction.smelted().when(AnyOfCondition.anyOf(LootItemEntityPropertyCondition.hasProperties(
+                                LootContext.EntityTarget.THIS,
+                                EntityPredicate.Builder.entity()
+                                        .flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build())
+                        ),
+                        playerHasSmeltsLootEnchantment
+                )))
+                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(
+                        this.registries,
+                        UniformGenerator.between(0.0f, 1.0f)
+                ))
+        ))));
+        entries.add(new AddedEntityLoot(EntityType.PARROT, LootTable.lootTable().withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(FoodItems.RAW_BIRD)
+                        .apply(SmeltItemFunction.smelted().when(AnyOfCondition.anyOf(
+                                LootItemEntityPropertyCondition.hasProperties(
+                                        LootContext.EntityTarget.THIS,
+                                        EntityPredicate.Builder.entity()
+                                                .flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build())
+                                ),
+                                playerHasSmeltsLootEnchantment
+                        )))
+                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(
+                                this.registries,
+                                UniformGenerator.between(0.0f, 1.0f)
+                        ))
                 )
+        )));
+        entries.add(new AddedEntityLoot(EntityType.PIGLIN, LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.DONGDONGS_FLATBREAD).when(LootItemRandomChanceCondition.randomChance(0.004f))))));
+        entries.add(new AddedEntityLoot(EntityType.SKELETON, LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.BONE_SWORD).when(LootItemRandomChanceCondition.randomChance(0.0049f))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.CARTON_OF_MILK).when(LootItemRandomChanceCondition.randomChance(0.0067f))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HOOK).when(LootItemRandomChanceCondition.randomChance(0.04f))))
         ));
-        entries.add(new AddedEntityLoot(EntityType.PARROT,
-                LootTable.lootTable().withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FoodItems.RAW_BIRD)
-                                        .apply(SmeltItemFunction.smelted()
-                                                .when(AnyOfCondition.anyOf(
-                                                        LootItemEntityPropertyCondition.hasProperties(
-                                                                LootContext.EntityTarget.THIS,
-                                                                EntityPredicate.Builder.entity()
-                                                                        .flags(EntityFlagsPredicate.Builder.flags().setOnFire(true))
-                                                        ),
-                                                        playerHasSmeltsLootEnchantment
-                                                ))
-                                        )
-                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(
-                                                this.registries,
-                                                UniformGenerator.between(0.0f, 1.0f)
-                                        ))
-                                )
-                )
+        entries.add(new AddedEntityLoot(EntityType.SLIME, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(DynamicLoot.dynamicEntry(ModLootTables.SLIME_CARRY).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(19)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(6999)))
         ));
-        entries.add(new AddedEntityLoot(EntityType.PIGLIN,
-                LootTable.lootTable().withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FoodItems.DONGDONGS_FLATBREAD)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.004f))
-                                )
-                )
+        entries.add(new AddedEntityLoot(EntityType.WARDEN, LootTable.lootTable().withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(SummonItems.SCULK_WISP_STAFF).setWeight(1))
+                .add(EmptyLootItem.emptyItem().setWeight(4))
+        )));
+        entries.add(new AddedEntityLoot(EntityType.WITHER_SKELETON, LootTable.lootTable().withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(TCItems.HOLY_WATER)
+                        .when(LootItemRandomChanceCondition.randomChance(0.06f))
+                        .when(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().direct(EntityPredicate.Builder.entity().of(EntityType.PLAYER)))))
+        )));
+        entries.add(new AddedEntityLoot(EntityType.ZOMBIE, LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.ZOMBIE_ARM).when(LootItemRandomChanceCondition.randomChance(0.004f))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.SHACKLE).when(LootItemRandomChanceCondition.randomChance(0.02f))))
         ));
-        entries.add(new AddedEntityLoot(EntityType.SKELETON,
-                LootTable.lootTable().withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(SwordItems.BONE_SWORD)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.0049f))
-                                )
-                ).withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FoodItems.CARTON_OF_MILK)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.0067f))
-                                )
-                ).withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(MaterialItems.HOOK)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.04f))
-                                )
-                )
-        ));
-        entries.add(new AddedEntityLoot(EntityType.SLIME,
-                LootTable.lootTable().withPool(
-                        LootPool.lootPool()
-                                .add(NestedLootTable.lootTableReference(
-                                        ModLootTables.SLIME_CARRY
-                                ).setWeight(1))
-                                .add(EmptyLootItem.emptyItem().setWeight(19))
-                ).withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(2))
-                                .add(EmptyLootItem.emptyItem().setWeight(98))
-                ).withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setWeight(1))
-                                .add(EmptyLootItem.emptyItem().setWeight(6999))
-                )
-        ));
-        entries.add(new AddedEntityLoot(EntityType.WARDEN,
-                LootTable.lootTable().withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TESummonItems.SCULK_WISP_STAFF).setWeight(1))
-                                .add(EmptyLootItem.emptyItem().setWeight(4))
-                )
-        ));
-        entries.add(new AddedEntityLoot(EntityType.WITHER_SKELETON,
-                LootTable.lootTable().withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TCItems.HOLY_WATER)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.06f))
-                                        .when(DamageSourceCondition.hasDamageSource(
-                                                DamageSourcePredicate.Builder.damageType()
-                                                        .isDirect(true)
-                                                        .direct(EntityPredicate.Builder.entity()
-                                                                .of(EntityType.PLAYER)
-                                                        )
-                                        ))
-                                )
-                )
-        ));
-        entries.add(new AddedEntityLoot(EntityType.ZOMBIE,
-                LootTable.lootTable().withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(SwordItems.ZOMBIE_ARM)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.004f))
-                                )
-                ).withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TCItems.SHACKLE)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.02f))
-                                )
-                )
-        ));
-        entries.add(new AddedEntityLoot(EntityType.ZOMBIFIED_PIGLIN,
-                LootTable.lootTable().withPool(
-                        LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TCItems.ENERGY_BAR).setWeight(2))
-                                .add(EmptyLootItem.emptyItem().setWeight(98))
-                )
-        ));
+        entries.add(new AddedEntityLoot(EntityType.ZOMBIFIED_PIGLIN, LootTable.lootTable().withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(TCItems.ENERGY_BAR).setWeight(2))
+                .add(EmptyLootItem.emptyItem().setWeight(98))
+        )));
         return entries;
     }
 
@@ -220,25 +150,25 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
         }
     }
 
-    protected ResourceKey<LootTable> getResourceKey(EntityType<?> entityType) {
+    protected ResourceLocation getResourceKey(EntityType<?> entityType) {
         var path = getPath(entityType);
-        return Confluence.asResourceKey(Registries.LOOT_TABLE, path);
+        return Confluence.asResource(path);
     }
 
     public String getPath(EntityType<?> entityType) {
-        return "with/" + entityType.getDefaultLootTable().location().getPath();
+        return "with/" + entityType.getDefaultLootTable().getPath();
     }
 
     @Override
-    public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
         generate();
         EntityLootSubProviderAccessor accessor = (EntityLootSubProviderAccessor) this;
-        Set<ResourceKey<LootTable>> set = new HashSet<>();
+        Set<ResourceLocation> set = new HashSet<>();
         getKnownEntityTypes().map(EntityType::builtInRegistryHolder).forEach(holder -> {
             EntityType<?> entityType = holder.value();
             if (entityType.isEnabled(accessor.getAllowed())) {
                 if (canHaveLootTable(entityType)) {
-                    Map<ResourceKey<LootTable>, LootTable.Builder> map = accessor.getMap().remove(entityType);
+                    Map<ResourceLocation, LootTable.Builder> map = accessor.getMap().remove(entityType);
                     if (map != null) {
                         map.forEach((key, builder) -> {
                             if (!set.add(key)) {
@@ -249,12 +179,12 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                         });
                     }
                 } else {
-                    Map<ResourceKey<LootTable>, LootTable.Builder> map1 = accessor.getMap().remove(entityType);
+                    Map<ResourceLocation, LootTable.Builder> map1 = accessor.getMap().remove(entityType);
                     if (map1 != null) {
                         throw new IllegalStateException(String.format(
                                 Locale.ROOT,
                                 "Weird loottables '%s' for '%s', not a LivingEntity so should not have loot",
-                                map1.keySet().stream().map(p_335190_ -> p_335190_.location().toString()).collect(Collectors.joining(",")),
+                                map1.keySet().stream().map(ResourceLocation::toString).collect(Collectors.joining(",")),
                                 holder.key().location()
                         ));
                     }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -15,7 +14,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.joml.Matrix4f;
@@ -123,7 +121,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     /// common
     protected void doBouncyMove(boolean gravity, Runnable afterBounce, UnaryOperator<Vec3> finalMotion) {
         Vec3 vec3 = getDeltaMovement();
-        move(MoverType.SELF, gravity ? vec3.add(0, -getGravity(), 0) : vec3);
+        move(MoverType.SELF, gravity ? vec3.add(0, -getGravity1211(), 0) : vec3);
         Vec3 motion = getDeltaMovement();
         if (!vec3.equals(motion)) {
             if (motion.x != vec3.x) motion = new Vec3(-vec3.x, vec3.y, vec3.z);
@@ -132,7 +130,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
             afterBounce.run();
         }
         Vec3 apply = finalMotion.apply(motion);
-        setDeltaMovement(gravity ? apply.add(0, -getGravity(), 0) : apply);
+        setDeltaMovement(gravity ? apply.add(0, -getGravity1211(), 0) : apply);
     }
 
     /// client side only
@@ -164,7 +162,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
 
     /// server side only
     protected void doFluidCheck(Predicate<FluidState> predicate) {
-        if (!level().isClientSide && predicate.test(PortEntityExtension.getInBlockState(this).getFluidState())) {
+        if (!level().isClientSide && predicate.test(getInBlockState().getFluidState())) {
             discard();
         }
     }

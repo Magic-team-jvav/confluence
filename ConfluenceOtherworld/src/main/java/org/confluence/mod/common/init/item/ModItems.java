@@ -56,6 +56,7 @@ public final class ModItems {
         AxeItems.init();
         BaitItems.init();
         BoatItems.init();
+        BoomerangItems.init();
         BowItems.init();
         ChainsawItems.init();
         ConsumableItems.init();
@@ -77,17 +78,22 @@ public final class ModItems {
         ManaWeaponItems.init();
         MaterialItems.init();
         MinecartItems.init();
+        MountItems.init();
         PaintItems.init();
+        PetItems.init();
         PickaxeAxeItems.init();
         PickaxeItems.init();
         PotionItems.init();
         QuestedFishes.init();
         ShovelItems.init();
         SpearItems.init();
+        SummonItems.init();
         SwordItems.init();
         ToolItems.init();
         TreasureBagItems.init();
         VanityArmorItems.init();
+        WhipItems.init();
+        YoyoItems.init();
     }
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
@@ -200,7 +206,7 @@ public final class ModItems {
         return new Item.Properties().unbreakable();
     }
 
-    public static Consumer<PortItemAttributeModifiers.PortBuilder> attributes(double blockInteractionRange, double attackKnockback) {
+    public static Consumer<PortItemAttributeModifiers.Builder> attributes(double blockInteractionRange, double attackKnockback) {
         return builder -> {
             if (blockInteractionRange != 0)
                 builder.add(PortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(BASE_BLOCK_INTERACTION_RANGE_ID, blockInteractionRange, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND);
@@ -232,8 +238,8 @@ public final class ModItems {
         return rawDamage - tier.getAttackDamageBonus() - 1;
     }
 
-    public static Multimap<Attribute, AttributeModifier> mergeModifiers(Multimap<Attribute, AttributeModifier> original, Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
-        PortItemAttributeModifiers.PortBuilder builder = PortItemAttributeModifiers.builder();
+    public static Multimap<Attribute, AttributeModifier> mergeModifiers(Multimap<Attribute, AttributeModifier> original, Consumer<PortItemAttributeModifiers.Builder> consumer) {
+        PortItemAttributeModifiers.Builder builder = PortItemAttributeModifiers.builder();
         consumer.accept(builder);
         return ImmutableMultimap.<Attribute, AttributeModifier>builder()
                 .putAll(original)

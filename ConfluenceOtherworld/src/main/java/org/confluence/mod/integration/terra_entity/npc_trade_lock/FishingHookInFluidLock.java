@@ -1,6 +1,5 @@
 package org.confluence.mod.integration.terra_entity.npc_trade_lock;
 
-import PortLib.extensions.net.minecraft.world.entity.Entity.PortEntityExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -30,7 +29,7 @@ public record FishingHookInFluidLock(List<TagKey<Fluid>> tags,
     public boolean canTrade(Player player, ITradeHolder npc, int index) {
         FishingHook fishingHook = player.fishing;
         if (fishingHook == null) return !requiresFishingHook;
-        FluidState fluidState = PortEntityExtension.getInBlockState(fishingHook).getFluidState();
+        FluidState fluidState = fishingHook.getInBlockState().getFluidState();
         return tags.stream().anyMatch(fluidState::is);
     }
 

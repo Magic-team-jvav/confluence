@@ -68,7 +68,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
 
         Vec3 vec3 = doSimpleMove();
         if (!isNoGravity()) {
-            setDeltaMovement(vec3.x, vec3.y - getGravity(), vec3.z);
+            setDeltaMovement(vec3.x, vec3.y - getGravity1211(), vec3.z);
         }
 
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {

@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.terraentity.utils.TEUtils;
+import org.confluence.lib.util.LibUtils;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
@@ -83,7 +83,7 @@ public class SporeCloudProjectile extends SpearProjectile {
         return target.isAlive()
                 && target != getOwner()
                 && target.isPickable()
-                && TEUtils.projectileCanHitEntityTest.test(this, target);
+                && LibUtils.canHitEntity(this, target);
     }
 
     /**

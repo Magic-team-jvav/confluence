@@ -18,7 +18,7 @@ import org.confluence.mod.common.entity.projectile.Flail.DripplerCripplerProject
 import org.confluence.mod.common.entity.projectile.Flail.FlowerProjectile;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.network.s2c.GuardianFlailBeamPacketS2C;
-import org.confluence.terraentity.utils.TEUtils;
+import org.confluence.lib.util.LibUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public interface FlailStrategy {
                     e -> e != player
                             && e.isAlive()
                             && canFlailSee(flail, level, e)
-                            && TEUtils.projectileCanHurtEntityTest.test(flail, e));
+                            && LibUtils.canHitEntity(flail, e));
             if (candidates.isEmpty()) return false;
 
             candidates.sort(Comparator.comparingDouble(e -> e.distanceToSqr(flail)));
@@ -245,7 +245,7 @@ public interface FlailStrategy {
             AABB searchBox = flail.getBoundingBox().inflate(maxDist);
             List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, searchBox,
                     e -> e != player && e.isAlive()
-                            && TEUtils.projectileCanHurtEntityTest.test(flail, e));
+                            && LibUtils.canHitEntity(flail, e));
 
             LivingEntity nearest = targets.stream()
                     .min(Comparator.comparingDouble(e -> e.distanceToSqr(flail)))

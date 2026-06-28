@@ -23,7 +23,6 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terraentity.api.entity.IAttackableProjectile;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.terraentity.api.entity.ICollisionAttackEntity;
-import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -183,7 +182,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
                         .subtract(position())
                         .normalize()
                         .scale(velocity.length());
-                double angle = TEUtils.angleBetween(velocity, dir);
+                double angle = Math.acos(velocity.dot(dir) / velocity.length() / dir.length());;
                 setDeltaMovement(projComponent.trackType().get()
                         .calDeltaMovement(velocity, dir, angle));
                 velocity = getDeltaMovement();
@@ -219,7 +218,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         if (pierceRemaining <= 0) {
             return false;
         }
-        return TEUtils.projectileCanHitEntityTest.test(this, target);
+        return LibUtils.canHitEntity(this, target);
     }
 
     @Override
@@ -261,7 +260,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
      * 造成伤害。编排子方法调用，子类可按需覆写 {@link #getDamage()} / {@link #applyHitEffect} / {@link #applyPenetration()}。
      */
     protected boolean doHurt(Entity target) {
-        if (TEUtils.projectileCanHurtEntityTest.test(this, target)) {
+        if (LibUtils.canHitEntity(this, target)) {
             float damage = getDamage();
             DamageSource damageSource = damageSource();
 

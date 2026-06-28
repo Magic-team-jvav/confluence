@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.flail;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -9,12 +7,10 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -31,7 +27,7 @@ import org.confluence.mod.common.item.flail.FlailStrategy;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.HandPositionUtils;
-import org.confluence.terraentity.utils.TEUtils;
+import org.confluence.lib.util.LibUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -417,7 +413,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         AABB checkBox = getBoundingBox().inflate(0.5);
         List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, checkBox,
-                e -> e != player && e.isAlive() && TEUtils.projectileCanHurtEntityTest.test(this, e));
+                e -> e != player && e.isAlive() && LibUtils.canHitEntity(this, e));
 
         boolean anyHit = false;
         LivingEntity firstHit = null;

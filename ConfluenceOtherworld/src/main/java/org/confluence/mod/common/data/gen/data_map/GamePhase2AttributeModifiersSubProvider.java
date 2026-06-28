@@ -1,22 +1,28 @@
 package org.confluence.mod.common.data.gen.data_map;
 
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModDataMaps;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
+import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.Map;
 import java.util.Objects;
 
+@SuppressWarnings("deprecation")
 public final class GamePhase2AttributeModifiersSubProvider {
     private static final ResourceLocation id = Confluence.asResource("game_phase_modifier");
 
@@ -51,43 +57,43 @@ public final class GamePhase2AttributeModifiersSubProvider {
         appender.create()
                 // 初始数值基础，目标阶段数值除初始数值-1 = 填参值
                 // 泰拉怪物
-                .add(TEMonsterEntities.BLOOD_ZOMBIE, Map.of(
+                .add(MonsterEntities.BLOOD_ZOMBIE, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.ANGER_BONES, Map.of(
+                .add(MonsterEntities.ANGER_BONES, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.SHORT_BONES, Map.of(
+                .add(MonsterEntities.SHORT_BONES, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.BIG_BONES, Map.of(
+                .add(MonsterEntities.BIG_BONES, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.BIG_ANGER_BONES, Map.of(
+                .add(MonsterEntities.BIG_ANGER_BONES, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.BIG_MUSCLE_ANGER_BONES, Map.of(
+                .add(MonsterEntities.BIG_MUSCLE_ANGER_BONES, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.BIG_HELMET_ANGER_BONES, Map.of(
+                .add(MonsterEntities.BIG_HELMET_ANGER_BONES, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.ANTLION_SWARMER, Map.of(
+                .add(MonsterEntities.ANTLION_SWARMER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.GIANT_ANTLION_SWARMER, Map.of(
+                .add(MonsterEntities.GIANT_ANTLION_SWARMER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.LITTLE_HORNET, Map.of(
+                .add(MonsterEntities.LITTLE_HORNET, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.BLACK_SLIME, Map.of(
+                .add(MonsterEntities.BLACK_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.BLUE_SLIME, Map.of(
+                .add(MonsterEntities.BLUE_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 4.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .add(LibAttributes.getAttackDamage().value(), id, 3.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
@@ -99,7 +105,7 @@ public final class GamePhase2AttributeModifiersSubProvider {
                                 .add(Attributes.ARMOR, id, 5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
-                .add(TEMonsterEntities.GREEN_SLIME, Map.of(
+                .add(MonsterEntities.GREEN_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 7.7, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .add(LibAttributes.getAttackDamage().value(), id, 6.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
@@ -109,7 +115,7 @@ public final class GamePhase2AttributeModifiersSubProvider {
                                 .add(LibAttributes.getAttackDamage().value(), id, 11, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
-                .add(TEMonsterEntities.ICE_SLIME, Map.of(
+                .add(MonsterEntities.ICE_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 3.4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .add(LibAttributes.getAttackDamage().value(), id, 2.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
@@ -121,32 +127,32 @@ public final class GamePhase2AttributeModifiersSubProvider {
                                 .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
-                .add(TEMonsterEntities.PURPLE_SLIME, Map.of(
+                .add(MonsterEntities.PURPLE_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.RED_SLIME, Map.of(
+                .add(MonsterEntities.RED_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.YELLOW_SLIME, Map.of(
+                .add(MonsterEntities.YELLOW_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.DESERT_SLIME, Map.of(
+                .add(MonsterEntities.DESERT_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.BLOOD_CRAWLER, Map.of(
+                .add(MonsterEntities.BLOOD_CRAWLER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.PINK_JELLYFISH, Map.of(
+                .add(MonsterEntities.PINK_JELLYFISH, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.BLUE_JELLYFISH, Map.of(
+                .add(MonsterEntities.BLUE_JELLYFISH, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.CAVE_BAT, Map.of(
+                .add(MonsterEntities.CAVE_BAT, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 3.3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .add(LibAttributes.getAttackDamage().value(), id, 2.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
@@ -161,55 +167,55 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TEAnimals.CRAB, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.PIRANHA, Map.of(
+                .add(MonsterEntities.PIRANHA, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.CRIMERA, Map.of(
+                .add(MonsterEntities.CRIMERA, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.CURSED_SKULL, Map.of(
+                .add(MonsterEntities.CURSED_SKULL, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.EATER_OF_SOULS, Map.of(
+                .add(MonsterEntities.EATER_OF_SOULS, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.DARK_CASTER, Map.of(
+                .add(MonsterEntities.DARK_CASTER, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 1.2, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .add(LibAttributes.getAttackDamage().value(), id, 0.6, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
-                .add(TEMonsterEntities.DEMON, Map.of(
+                .add(MonsterEntities.DEMON, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.DEMON_EYE, Map.of(
+                .add(MonsterEntities.DEMON_EYE, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.DEVOURER, Map.of(
+                .add(MonsterEntities.DEVOURER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.DUNGEON_SLIME, Map.of(
+                .add(MonsterEntities.DUNGEON_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.FACE_MONSTER, Map.of(
+                .add(MonsterEntities.FACE_MONSTER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.FIRE_IMP, Map.of(
+                .add(MonsterEntities.FIRE_IMP, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.GHOST, Map.of(
+                .add(MonsterEntities.GHOST, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.CRAWDAD, Map.of(
+                .add(MonsterEntities.CRAWDAD, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.GIANT_SHELLY, Map.of(
+                .add(MonsterEntities.GIANT_SHELLY, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.GIANT_WORM, Map.of(
+                .add(MonsterEntities.GIANT_WORM, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 4.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .add(LibAttributes.getAttackDamage().value(), id, 3.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
@@ -221,57 +227,57 @@ public final class GamePhase2AttributeModifiersSubProvider {
                                 .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
-                .add(TEMonsterEntities.GOBLIN_SCOUT, Map.of(
+                .add(MonsterEntities.GOBLIN_SCOUT, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.GRANITE_ELEMENTAL, Map.of(
+                .add(MonsterEntities.GRANITE_ELEMENTAL, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
-                /*.add(TEMonsterEntities.METEOR_HEAD, Map.of(
+                /*.add(MonsterEntities.METEOR_HEAD, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))*/
-                .add(TEMonsterEntities.HARPY, Map.of(
+                .add(MonsterEntities.HARPY, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.HELL_BAT, Map.of(
+                .add(MonsterEntities.HELL_BAT, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.HORNET, Map.of(
+                .add(MonsterEntities.HORNET, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.ICE_BAT, Map.of(
+                .add(MonsterEntities.ICE_BAT, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.JUNGLE_BAT, Map.of(
+                .add(MonsterEntities.JUNGLE_BAT, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.JUNGLE_SLIME, Map.of(
+                .add(MonsterEntities.JUNGLE_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.LAVA_SLIME, Map.of(
+                .add(MonsterEntities.LAVA_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.SNATCHER, Map.of(
+                .add(MonsterEntities.SNATCHER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.SNATCHER, Map.of(
+                .add(MonsterEntities.SNATCHER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
                 // todo 史莱姆之母↓
-//                .add(TEMonsterEntities., Map.of(
+//                .add(MonsterEntities., Map.of(
 //                        GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
 //                        GamePhase.PLANTERA, NORMAL_CHANGE_2
 //                ))
-                .add(TEMonsterEntities.PINK_SLIME, Map.of(
+                .add(MonsterEntities.PINK_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.SPORE_BAT, Map.of(
+                .add(MonsterEntities.SPORE_BAT, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 3.3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .add(LibAttributes.getAttackDamage().value(), id, 2.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
@@ -283,27 +289,27 @@ public final class GamePhase2AttributeModifiersSubProvider {
                                 .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
-                .add(TEMonsterEntities.SPORE_SKELETON, Map.of(
+                .add(MonsterEntities.SPORE_SKELETON, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.SPORE_ZOMBIE, Map.of(
+                .add(MonsterEntities.SPORE_ZOMBIE, Map.of(
                         GamePhase.PLANTERA, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.TOMB_CRAWLER, Map.of(
+                .add(MonsterEntities.TOMB_CRAWLER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.UNDEAD_VIKING, Map.of(
+                .add(MonsterEntities.UNDEAD_VIKING, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.VOODOO_DEMON, Map.of(
+                .add(MonsterEntities.VOODOO_DEMON, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.DRIPPLER, Map.of(
+                .add(MonsterEntities.DRIPPLER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.FLYING_FISH, Map.of(
+                .add(MonsterEntities.FLYING_FISH, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 3.3, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .add(LibAttributes.getAttackDamage().value(), id, 2.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
@@ -315,35 +321,35 @@ public final class GamePhase2AttributeModifiersSubProvider {
                                 .add(Attributes.ARMOR, id, 4, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
-                .add(TEMonsterEntities.GOBLIN_ARCHER, Map.of(
+                .add(MonsterEntities.GOBLIN_ARCHER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.GOBLIN_PEON, Map.of(
+                .add(MonsterEntities.GOBLIN_PEON, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.GOBLIN_SORCERER, Map.of(
+                .add(MonsterEntities.GOBLIN_SORCERER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.GOBLIN_THIEF, Map.of(
+                .add(MonsterEntities.GOBLIN_THIEF, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
-                )).add(TEMonsterEntities.GOBLIN_WARRIOR, Map.of(
+                )).add(MonsterEntities.GOBLIN_WARRIOR, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
 
-                .add(TEMonsterEntities.MUMMY, Map.of(
+                .add(MonsterEntities.MUMMY, Map.of(
                         GamePhase.PLANTERA, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.DARK_MUMMY, Map.of(
+                .add(MonsterEntities.DARK_MUMMY, Map.of(
                         GamePhase.PLANTERA, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.BLOOD_MUMMY, Map.of(
+                .add(MonsterEntities.BLOOD_MUMMY, Map.of(
                         GamePhase.PLANTERA, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.LIGHT_MUMMY, Map.of(
+                .add(MonsterEntities.LIGHT_MUMMY, Map.of(
                         GamePhase.PLANTERA, NORMAL_CHANGE_1
                 ))
 
@@ -595,18 +601,24 @@ public final class GamePhase2AttributeModifiersSubProvider {
         ;
     }
 
-    public static class Builder extends DataMapProvider.Builder<GamePhase2AttributeModifiers, EntityType<?>> {
+    @SuppressWarnings("unchecked")
+    public static class Builder extends PortDataMapProvider.Builder<GamePhase2AttributeModifiers, EntityType<?>> {
         public Builder() {
             super(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS);
         }
 
-        public final Builder add(IHolderExtension<EntityType<?>> holder, Map<GamePhase, AttributeModifiersValue> map) {
+        public final Builder add(Holder<EntityType<?>> holder, Map<GamePhase, AttributeModifiersValue> map) {
             super.add(Objects.requireNonNull(holder.getKey()), new GamePhase2AttributeModifiers(map), false);
             return this;
         }
 
         public final Builder add(TagKey<EntityType<?>> tagKey, Map<GamePhase, AttributeModifiersValue> map) {
             super.add(tagKey, new GamePhase2AttributeModifiers(map), false);
+            return this;
+        }
+
+        public final Builder add(RegistryObject<? extends EntityType<?>> object, Map<GamePhase, AttributeModifiersValue> map) {
+            super.add((ResourceKey<EntityType<?>>) object.getKey(), new GamePhase2AttributeModifiers(map), false);
             return this;
         }
     }

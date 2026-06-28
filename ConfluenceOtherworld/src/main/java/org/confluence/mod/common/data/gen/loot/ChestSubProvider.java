@@ -47,7 +47,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
         LootPoolSingletonContainer.Builder<?> manaEnchantedBookBuilder = LootItem.lootTableItem(Items.BOOK)
                 .apply(manaEnchantmentBuilder);
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/surface_chests"), initialWorldSurfaceCommon()
+        output.accept(Confluence.asResource("chests/surface_chests"), initialWorldSurfaceCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
                         .add(LootItem.lootTableItem(SpearItems.SPEAR))
@@ -62,7 +62,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/living_wood_chests"), initialWorldSurfaceCommon()
+        output.accept(Confluence.asResource("chests/living_wood_chests"), initialWorldSurfaceCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
                         .add(LootItem.lootTableItem(BoomerangItems.WOOD_BOOMERANG))
@@ -90,7 +90,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/water_chests"), initialWorldUndergroundCommon()
+        output.accept(Confluence.asResource("chests/water_chests"), initialWorldUndergroundCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.BREATHING_REED).setWeight(3))
                         .add(LootItem.lootTableItem(TCItems.FLIPPER).setWeight(3))
@@ -101,7 +101,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
         );
 
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/underground_chests"), initialWorldUndergroundCommon()
+        output.accept(Confluence.asResource("chests/underground_chests"), initialWorldUndergroundCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BAND_OF_REGENERATION).setWeight(3))
                         .add(LootItem.lootTableItem(TCItems.MAGIC_MIRROR).setWeight(3))
@@ -112,7 +112,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/frozen_chests"), initialWorldUndergroundCommon()
+        output.accept(Confluence.asResource("chests/frozen_chests"), initialWorldUndergroundCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLIZZARD_IN_A_BOTTLE).setWeight(15))
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS).setWeight(15))
@@ -128,7 +128,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/cave_frozen_chests"), initialWorldIceCaveCommon()
+        output.accept(Confluence.asResource("chests/cave_frozen_chests"), initialWorldIceCaveCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLIZZARD_IN_A_BOTTLE).setWeight(15))
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS).setWeight(15))
@@ -144,7 +144,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/sandstone_chests"), initialWorldUndergroundCommon()
+        output.accept(Confluence.asResource("chests/sandstone_chests"), initialWorldUndergroundCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.ANCIENT_CHISEL))
                         .add(LootItem.lootTableItem(TCItems.DUNERIDER_BOOTS))
@@ -161,7 +161,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/cave_sandstone_chests"), initialWorldCaveCommon()
+        output.accept(Confluence.asResource("chests/cave_sandstone_chests"), initialWorldCaveCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.ANCIENT_CHISEL))
                         .add(LootItem.lootTableItem(TCItems.DUNERIDER_BOOTS))
@@ -178,7 +178,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/heaven_islands_chests_0"), LootTable.lootTable()
+        output.accept(Confluence.asResource("chests/heaven_islands_chests_0"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LUCKY_HORSESHOE))
                         .add(LootItem.lootTableItem(TCItems.SHINY_RED_BALLOON))
@@ -191,7 +191,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/heaven_islands_chests_1"), LootTable.lootTable()
+        output.accept(Confluence.asResource("chests/heaven_islands_chests_1"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LUCKY_HORSESHOE))
                         .add(LootItem.lootTableItem(TCItems.SHINY_RED_BALLOON))
@@ -211,7 +211,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/ivy_chests"), initialWorldUndergroundCommon()
+        output.accept(Confluence.asResource("chests/ivy_chests"), initialWorldUndergroundCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FLOWER_BOOTS).setWeight(4))
                         .add(LootItem.lootTableItem(TCItems.ANKLET_OF_THE_WIND).setWeight(21))
@@ -226,7 +226,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/living_ivy_chests"), initialWorldUndergroundCommon()
+        output.accept(Confluence.asResource("chests/living_ivy_chests"), initialWorldUndergroundCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FLOWER_BOOTS).setWeight(4))
                         .add(LootItem.lootTableItem(TCItems.ANKLET_OF_THE_WIND).setWeight(21))
@@ -242,7 +242,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/cave_chests"), initialWorldCaveCommon()
+        output.accept(Confluence.asResource("chests/cave_chests"), initialWorldCaveCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BAND_OF_REGENERATION).setWeight(9))
                         .add(LootItem.lootTableItem(TCItems.MAGIC_MIRROR).setWeight(9))
@@ -254,7 +254,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
         // 地牢箱系列
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_chest_armor"), dungeonCommon()
+        output.accept(Confluence.asResource("chests/dungeon_chest_armor"), dungeonCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.DIAMOND_HORSE_ARMOR))
                         .add(LootItem.lootTableItem(Items.SADDLE))
@@ -289,7 +289,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(Items.LEATHER)).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 19)))
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_chest_catch"), dungeonCommon()
+        output.accept(Confluence.asResource("chests/dungeon_chest_catch"), dungeonCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.STINKY_FISH)).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6)))
                 )
@@ -301,7 +301,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_chest_restaurant"), dungeonCommon()
+        output.accept(Confluence.asResource("chests/dungeon_chest_restaurant"), dungeonCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ArmorItems.SILVER_LEGGINGS))
                         .add(LootItem.lootTableItem(ArmorItems.TUNGSTEN_LEGGINGS))
@@ -321,7 +321,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_chest_storage"), dungeonCommon()
+        output.accept(Confluence.asResource("chests/dungeon_chest_storage"), dungeonCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ArmorItems.SILVER_LEGGINGS))
                         .add(LootItem.lootTableItem(ArmorItems.TUNGSTEN_LEGGINGS))
@@ -348,7 +348,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_chest_weapons"), dungeonCommon()
+        output.accept(Confluence.asResource("chests/dungeon_chest_weapons"), dungeonCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.SHIELD))
                         .add(EmptyLootItem.emptyItem())
@@ -380,7 +380,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(manaEnchantedBookBuilder)
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_golden_chest"), initialWorldCaveCommon()
+        output.accept(Confluence.asResource("chests/dungeon_golden_chest"), initialWorldCaveCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COBALT_SHIELD))
                         .add(LootItem.lootTableItem(SwordItems.MURAMASA))
@@ -395,7 +395,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_golden_chest_muramasa"), initialWorldCaveCommon()
+        output.accept(Confluence.asResource("chests/dungeon_golden_chest_muramasa"), initialWorldCaveCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.MURAMASA))
                 )
@@ -407,7 +407,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_golden_chest_residence"), initialWorldCaveCommon()
+        output.accept(Confluence.asResource("chests/dungeon_golden_chest_residence"), initialWorldCaveCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
@@ -429,13 +429,13 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_wooden_chest"), initialWorldCaveCommon()
+        output.accept(Confluence.asResource("chests/dungeon_wooden_chest"), initialWorldCaveCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY))
                 )
         );
         // 下界
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/nether_tower_barrel"), LootTable.lootTable()
+        output.accept(Confluence.asResource("chests/nether_tower_barrel"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.OBSIDIAN)).apply(SetItemCountFunction.setCount(UniformGenerator.between(8, 10)))
                 )
@@ -458,7 +458,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/shadow_chests"), LootTable.lootTable()
+        output.accept(Confluence.asResource("chests/shadow_chests"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FIRE))
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLAMELASH))
@@ -532,7 +532,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
         // 空岛村
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/sky_village_chests"), LootTable.lootTable()
+        output.accept(Confluence.asResource("chests/sky_village_chests"), LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 9))))
                         )

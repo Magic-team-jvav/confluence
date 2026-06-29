@@ -10,12 +10,16 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 public class GunItems {
     public static void init() {}
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
+    public static final List<PortDeferredItem<BaseGun>> GUN_ITEMS = new ArrayList<>();
+    public static final List<PortDeferredItem<BaseBullet>> BULLET_ITEMS = new ArrayList<>();
 
     public static final PortDeferredItem<BaseGun> STAR_CANNON = registerGun("star_cannon", new BaseGun.Builder(4, 14.8f, 1.8f).knockback(0.15f)
             .critical(0.04f)
@@ -52,13 +56,17 @@ public class GunItems {
     public static final PortDeferredItem<BaseBullet> NANO_BULLET = registerBullet("nano_bullet", properties -> new BaseBullet(properties.stacksTo(99), 5.5f, 0.57f, 3, 0.18f, ModRarity.ORANGE, 0, false));
     public static final PortDeferredItem<BaseBullet> ENDLESS_MUSKET_POUCH = registerBullet("endless_musket_pouch", properties -> new BaseBullet(properties.stacksTo(1), 1.5f, 0.5f, 2, 0.1f, ModRarity.GREEN, 0, true));
     public static final PortDeferredItem<BaseBullet> LUMINITE_BULLET = registerBullet("luminite_bullet", properties -> new BaseBullet(properties.stacksTo(99), 6f, 0.25f, 6, 0.15f, ModRarity.CYAN, -1, false));
-    public static final PortDeferredItem<BaseBullet.EmptyBullet> EMPTY_BULLET = ITEMS.register("empty_bullet", () -> new BaseBullet.EmptyBullet(new Item.Properties()));
+    public static final PortDeferredItem<BaseBullet> EMPTY_BULLET = ITEMS.register("empty_bullet", () -> new BaseBullet.EmptyBullet(new Item.Properties()));
 
     private static PortDeferredItem<BaseGun> registerGun(String name, BaseGun.Builder builder) {
-        return ITEMS.register(name, builder::build);
+        PortDeferredItem<BaseGun> item = ITEMS.register(name, builder::build);
+        GUN_ITEMS.add(item);
+        return item;
     }
 
-    private static <T extends Item> PortDeferredItem<T> registerBullet(String name, Function<Item.Properties, T> function) {
-        return ITEMS.register(name, () -> function.apply(new Item.Properties()));
+    private static PortDeferredItem<BaseBullet> registerBullet(String name, Function<Item.Properties, BaseBullet> function) {
+        PortDeferredItem<BaseBullet> item = ITEMS.register(name, () -> function.apply(new Item.Properties()));
+        BULLET_ITEMS.add(item);
+        return item;
     }
 }

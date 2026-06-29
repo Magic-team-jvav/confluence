@@ -1,8 +1,6 @@
 package org.confluence.mod.common.data.gen.loot;
 
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.DamageTypeTags;
@@ -14,6 +12,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.*;
+import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
@@ -46,16 +45,16 @@ import static org.confluence.mod.common.init.item.MaterialItems.RAW_DEMONITE;
 import static org.confluence.mod.common.init.item.MaterialItems.SHADOW_SCALE;
 
 public final class EntitySubProvider extends EntityLootSubProvider {
-    public EntitySubProvider(HolderLookup.Provider registries) {
-        super(FeatureFlags.REGISTRY.allFlags(), registries);
+    public EntitySubProvider() {
+        super(FeatureFlags.REGISTRY.allFlags());
     }
 
     @Override
     public void generate() {
         DateLootItemCondition.Builder halloweens = DateLootItemCondition.builder().from(Calendar.OCTOBER, 10).to(Calendar.NOVEMBER, 1);
         DateLootItemCondition.Builder christmas = DateLootItemCondition.builder().from(Calendar.DECEMBER, 15).to(Calendar.DECEMBER, 31);
-        EnchantedCountIncreaseFunction.Builder random0To1 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F));
-        EnchantedCountIncreaseFunction.Builder random3To4 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(3.0F, 4.0F));
+        EnchantWithLevelsFunction.Builder random0To1 = EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(0.0F, 1.0F));
+        EnchantWithLevelsFunction.Builder random3To4 = EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(3.0F, 4.0F));
         AlternativesEntry.Builder hearts = AlternativesEntry.alternatives(
                 LootItem.lootTableItem(ModItems.HEART).when(AllOfCondition.allOf(halloweens, christmas).invert()),
                 LootItem.lootTableItem(ModItems.CANDY_APPLE).when(halloweens),
@@ -780,12 +779,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get())
-                                .when(AnyOfCondition.anyOf(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity()
+                                .when(AnyOfCondition.anyOf(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.KILLER_PLAYER, EntityPredicate.Builder.entity()
                                         .of(EntityType.PLAYER)
                                         .equipment(EntityEquipmentPredicate.Builder.equipment()
-                                                .mainhand(ItemPredicate.Builder.item()
-                                                        .withSubPredicate(ItemSubPredicates.ENCHANTMENTS, ItemEnchantmentsPredicate.enchantments(
-                                                                List.of(new EnchantmentPredicate(registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FROST_WALKER), MinMaxBounds.Ints.atLeast(1)))))))))))
+                                                .mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FROST_WALKER, MinMaxBounds.Ints.atLeast(1))).build()).build())))))
                         .add(EmptyLootItem.emptyItem().setWeight(14))
                 )
         );
@@ -1157,7 +1154,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .add(LootItem.lootTableItem(Items.MUTTON)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
                         .apply(SmeltItemFunction.smelted().when(shouldSmeltLoot()))
-                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F))));
+                        .apply(EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(0.0F, 1.0F))));
         add(ModEntities.RAINBOW_SHEEP.get(), LootTable.lootTable().withPool(rainbowSheep));
         add(ModEntities.RAINBOW_SHEEP.get(), ModLootTables.SHEEP_RAINBOW_WOOL, LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.RAINBOW_WOOL)))
@@ -1251,7 +1248,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
     }
 
     private LootTable.Builder slimeCommon(int gelColor) {
-        EnchantedCountIncreaseFunction.Builder random0To1 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F));
+        EnchantWithLevelsFunction.Builder random0To1 = EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(0.0F, 1.0F));
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(DynamicLoot.dynamicEntry(ModLootTables.SLIME_CARRY))
@@ -1271,7 +1268,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
 
     private LootTable.Builder goblinCommon() {
         LootItemConditionalFunction.Builder<?> count1To5 = SetItemCountFunction.setCount(UniformGenerator.between(1, 5));
-        EnchantedCountIncreaseFunction.Builder random0To1 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F));
+        EnchantWithLevelsFunction.Builder random0To1 = EnchantWithLevelsFunction.enchantWithLevels(UniformGenerator.between(0.0F, 1.0F));
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.SPIKY_BALL)).apply(count1To5).apply(random0To1)

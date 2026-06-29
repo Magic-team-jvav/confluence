@@ -78,6 +78,7 @@
         "world.item.ProjectileWeaponItemMixin",
         "world.item.SnowballItemMixin",
         "world.item.crafting.RecipeManagerMixin",
+        "world.item.enchantment.ProtectionEnchantmentMixin",
         "world.level.LevelAccessor",
         "world.level.LevelMixin",
         "world.level.biome.TheEndBiomeSourceMixin",

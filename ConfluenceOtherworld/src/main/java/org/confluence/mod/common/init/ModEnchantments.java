@@ -1,84 +1,51 @@
 package org.confluence.mod.common.init;
 
-import com.mojang.serialization.MapCodec;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.Unit;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.enchantment.SummonItemEffect;
-
-import java.util.List;
+import org.confluence.mod.common.enchantment.*;
+import org.confluence.mod.common.init.item.ModItems;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 public final class ModEnchantments {
-    public static final ResourceKey<Enchantment> MANA_REGENERATION = Confluence.asResourceKey(Registries.ENCHANTMENT, "mana_regeneration");
-    public static final ResourceKey<Enchantment> EFFICIENT_MAGIC = Confluence.asResourceKey(Registries.ENCHANTMENT, "efficient_magic");
-    public static final ResourceKey<Enchantment> MANA_MENDING = Confluence.asResourceKey(Registries.ENCHANTMENT, "mana_mending");
-    public static final ResourceKey<Enchantment> CELESTIAL_ABSORPTION = Confluence.asResourceKey(Registries.ENCHANTMENT, "celestial_absorption");
-    public static final ResourceKey<Enchantment> SOOTHED_MANA = Confluence.asResourceKey(Registries.ENCHANTMENT, "soothed_mana");
-    public static final ResourceKey<Enchantment> ARCANE_PROTECTION = Confluence.asResourceKey(Registries.ENCHANTMENT, "arcane_protection");
-    public static final ResourceKey<Enchantment> SPELL_DESPERATION = Confluence.asResourceKey(Registries.ENCHANTMENT, "spell_desperation");
-    public static final ResourceKey<Enchantment> MYSTIC_SURGE = Confluence.asResourceKey(Registries.ENCHANTMENT, "mystic_surge");
+    public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(Registries.ENCHANTMENT, Confluence.MODID);
 
-    public static final class EffectComponentTypes {
-        public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, Confluence.MODID);
+    public static final RegistryObject<Enchantment> MANA_REGENERATION = ENCHANTMENTS.register("mana_regeneration", () -> new ManaIOEnchantment(Categories.ARMOR_N_MANA, SlotGroups.ARMOR_N_MAINHAND, 3));
+    public static final RegistryObject<Enchantment> EFFICIENT_MAGIC = ENCHANTMENTS.register("efficient_magic", () -> new ManaIOEnchantment(Categories.MANA, SlotGroups.MAINHAND, 1));
+    public static final RegistryObject<Enchantment> MANA_MENDING = ENCHANTMENTS.register("mana_mending", ManaMendingEnchantment::new);
+    public static final RegistryObject<Enchantment> CELESTIAL_ABSORPTION = ENCHANTMENTS.register("celestial_absorption", () -> new ManaAffectiveEnchantment(2, (attacker, victim, level) -> {
+        int count = LibMathUtils.multiplyInt(1, 0.1F * level, attacker.getRandom());
+        if (count < 1) return;
+        ItemEntity itemEntity = new ItemEntity(attacker.level(), victim.getX(), victim.getEyeY(), victim.getZ(), ModItems.STAR.toStack(count));
+        itemEntity.setNoPickUpDelay();
+        attacker.level().addFreshEntity(itemEntity);
+    }));
+    public static final RegistryObject<Enchantment> SOOTHED_MANA = ENCHANTMENTS.register("soothed_mana", () -> new ManaAffectiveEnchantment(2, (attacker, victim, level) -> {}));
+    public static final RegistryObject<Enchantment> ARCANE_PROTECTION = ENCHANTMENTS.register("arcane_protection", ArcaneProtectionEnchantment::new);
+    public static final RegistryObject<Enchantment> SPELL_DESPERATION = ENCHANTMENTS.register("spell_desperation", ManaAttackEnchantment::new);
+    public static final RegistryObject<Enchantment> MYSTIC_SURGE = ENCHANTMENTS.register("mystic_surge", ManaAttackEnchantment::new);
 
-        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_REGENERATION =
-                registerCommon("mana_regeneration", LootContextParamSets.ENCHANTED_ENTITY);
-
-        public static final RegistryObject<DataComponentType<Unit>> EFFICIENT_MAGIC =
-                registerUnit("efficient_magic");
-
-        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_MENDING =
-                registerCommon("mana_mending", LootContextParamSets.ENCHANTED_ITEM);
-
-        public static final RegistryObject<DataComponentType<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>> ATTACK_DROPS_MANA =
-                registerTargeted("attack_drops_mana", LootContextParamSets.ENCHANTED_DAMAGE);
-
-        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_SICKNESS_DURATION_REDUCE =
-                registerCommon("mana_sickness_duration_reduce", LootContextParamSets.ENCHANTED_ENTITY);
-
-        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_PROTECTION =
-                registerCommon("mana_protection", LootContextParamSets.ENCHANTED_DAMAGE);
-
-        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> LESS_MANA_MORE_ATTACK =
-                registerCommon("less_mana_more_attack", LootContextParamSets.ENCHANTED_DAMAGE);
-
-        public static final RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MORE_MANA_MORE_ATTACK =
-                registerCommon("more_mana_more_attack", LootContextParamSets.ENCHANTED_DAMAGE);
-
-        private static RegistryObject<DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>>
-        registerCommon(String name, LootContextParamSet paramSet) {
-            return TYPES.register(name, () -> DataComponentType.<List<ConditionalEffect<EnchantmentValueEffect>>>builder().persistent(ConditionalEffect.codec(EnchantmentValueEffect.CODEC, paramSet).listOf()).build());
-        }
-
-        private static RegistryObject<DataComponentType<Unit>>
-        registerUnit(String name) {
-            return TYPES.register(name, () -> DataComponentType.<Unit>builder().persistent(Unit.CODEC).build());
-        }
-
-        private static RegistryObject<DataComponentType<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>>
-        registerTargeted(String name, LootContextParamSet paramSet) {
-            return TYPES.register(name, () -> DataComponentType.<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>builder().persistent(TargetedConditionalEffect.codec(EnchantmentEntityEffect.CODEC, paramSet).listOf()).build());
-        }
+    public static class SlotGroups {
+        public static final EquipmentSlot[] ARMOR_N_MAINHAND = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.MAINHAND};
+        public static final EquipmentSlot[] MAINHAND = new EquipmentSlot[]{EquipmentSlot.MAINHAND};
+        public static final EquipmentSlot[] ANY = EquipmentSlot.values();
+        public static final EquipmentSlot[] ARMOR = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     }
 
-    public static final class EntityEffectTypes {
-        public static final DeferredRegister<MapCodec<? extends EnchantmentEntityEffect>> TYPES = DeferredRegister.create(BuiltInRegistries.ENCHANTMENT_ENTITY_EFFECT_TYPE, Confluence.MODID);
-
-        static {
-            TYPES.register("summon_item", () -> SummonItemEffect.CODEC);
-        }
-    }
-
-    public static void register(IEventBus eventBus) {
-        EffectComponentTypes.TYPES.register(eventBus);
-        EntityEffectTypes.TYPES.register(eventBus);
+    @SuppressWarnings("deprecation")
+    public static class Categories {
+        public static final EnchantmentCategory ARMOR_N_MANA = EnchantmentCategory.create("CONFLUENCE_ARMOR_N_MANA", item -> {
+            Holder<Item> holder = item.builtInRegistryHolder();
+            return holder.is(PortTags.Items.ARMORS) || holder.is(ModTags.Items.MANA_WEAPON);
+        });
+        public static final EnchantmentCategory MANA = EnchantmentCategory.create("CONFLUENCE_MANA", item -> item.builtInRegistryHolder().is(ModTags.Items.MANA_WEAPON));
     }
 }

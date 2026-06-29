@@ -1,8 +1,6 @@
 package org.confluence.mod.util;
 
 import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -12,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
 import org.confluence.lib.util.LibEntityUtils;
@@ -19,6 +18,7 @@ import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.item.sword.SweetSword;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +53,7 @@ public final class EnchantmentUtils {
     }
 
     public static FloatSupplier processEfficientMagic(FloatSupplier sup, ServerPlayer player) {
-        if (LibEntityUtils.anyHandHasItem(player, stack -> false)) {
+        if (LibEntityUtils.anyHandHasItem(player, stack -> EnchantmentHelper.has(stack, ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get()))) {
             ManaStorage manaStorage = ManaStorage.of(player);
             return () -> sup.getAsFloat() * Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
         }
@@ -61,13 +61,15 @@ public final class EnchantmentUtils {
     }
 
     public static void repairPlayerItems(ServerPlayer player, float consumedManaAmount) {
-        Optional<EnchantedItemInUse> optional = Optional.empty();
+        Optional<EnchantedItemInUse> optional = EnchantmentHelper.getRandomItemWith(ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player, ItemStack::isDamaged);
         if (optional.isEmpty()) return;
         ItemStack stack = optional.get().itemStack();
         MutableFloat threshold = new MutableFloat(10);
-        PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyItemFilteredCount(
-                ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player.serverLevel(), level, stack, threshold
-        ));
+        PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+            if (enchantment == ModEnchantments.MANA_MENDING.get()) {
+                threshold.subtract(2);
+            }
+        });
         int delta = (int) (consumedManaAmount - Math.max(0, threshold.floatValue()));
         if (delta > 1) {
             stack.setDamageValue(stack.getDamageValue() - delta);
@@ -88,21 +90,22 @@ public final class EnchantmentUtils {
     }
 
     public static int processManaSicknessDuration(ServerPlayer player, int duration) {
-        MutableFloat ratio = new MutableFloat(1);
-        runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyEntityFilteredValue(
-                ModEnchantments.EffectComponentTypes.MANA_SICKNESS_DURATION_REDUCE.get(), player.serverLevel(), level, stack, player, ratio
-        )));
-        return (int) (duration * Math.max(0, ratio.floatValue()));
+        float ratio = 1 - EnchantmentHelper.getEnchantmentLevel(ModEnchantments.SOOTHED_MANA.get(), player) * 0.1F;
+        return (int) (duration * Math.max(0, ratio));
     }
 
     public static float processManaProtection(ServerPlayer player, DamageSource damageSource, float amount) {
-        if (damageSource.is(DamageTypeTags.BYPASSES_ENCHANTMENTS)) return amount;
+        if (damageSource.is(DamageTypeTags.BYPASSES_ENCHANTMENTS) || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return amount;
+        }
         MutableFloat ratio = new MutableFloat();
         for (EquipmentSlot slot : HUMANOID_ARMOR) {
-            ItemStack itemStack = player.getItemBySlot(slot);
-            PortEnchantmentHelperExtension.runIterationOnItem(itemStack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
-                    ModEnchantments.EffectComponentTypes.MANA_PROTECTION.get(), player.serverLevel(), level, itemStack, player, damageSource, ratio
-            ));
+            ItemStack stack = player.getItemBySlot(slot);
+            PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+                if (enchantment == ModEnchantments.ARCANE_PROTECTION.get()) {
+                    ratio.add(level * 0.05F);
+                }
+            });
         }
         if (ratio.floatValue() <= 0) return amount;
         ManaStorage manaStorage = ManaStorage.of(player);
@@ -115,14 +118,21 @@ public final class EnchantmentUtils {
     }
 
     public static float processMagicAttack(ServerPlayer player, DamageSource damageSource, float amount) {
+        if (!damageSource.is(PortTags.DamageTypes.IS_MAGIC)) {
+            return amount;
+        }
         MutableFloat lm = new MutableFloat();
-        runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
-                ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(), player.serverLevel(), level, stack, player, damageSource, lm
-        )));
+        runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+            if (enchantment == ModEnchantments.SPELL_DESPERATION.get()) {
+                lm.add(0.5F * level);
+            }
+        }));
         MutableFloat mm = new MutableFloat();
-        runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
-                ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), player.serverLevel(), level, stack, player, damageSource, mm
-        )));
+        runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+            if (enchantment == ModEnchantments.MYSTIC_SURGE.get()) {
+                mm.add(0.5F * level);
+            }
+        }));
         if (lm.floatValue() > 0 || mm.floatValue() > 0) {
             ManaStorage manaStorage = ManaStorage.of(player);
             float ratio = manaStorage.getCurrentMana() / manaStorage.getMaxMana();
@@ -131,9 +141,9 @@ public final class EnchantmentUtils {
         return amount;
     }
 
-    public static ItemStack enchantedBook(HolderLookup.RegistryLookup<Enchantment> registryLookup, ResourceKey<Enchantment> key, int level) {
+    public static ItemStack enchantedBook(Enchantment enchantment, int level) {
         ItemStack book = Items.ENCHANTED_BOOK.getDefaultInstance();
-        book.enchant(registryLookup.getOrThrow(key), level);
+        book.enchant(enchantment, level);
         return book;
     }
 

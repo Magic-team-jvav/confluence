@@ -5,7 +5,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.item.GroupItem;
@@ -13,7 +12,6 @@ import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
-import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.util.EnchantmentUtils;
@@ -21,13 +19,9 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_furniture.common.init.TFRegistries;
-import org.confluence.terraentity.init.TEItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TESummonItems;
-import org.confluence.terraentity.init.item.TEWhipItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
+import org.mesdag.portlib.registries.PortBlockRegistration;
+import org.mesdag.portlib.registries.PortItemRegistration;
 
-import java.util.Collection;
 import java.util.List;
 
 
@@ -35,7 +29,7 @@ import java.util.List;
 public final class ModTabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Confluence.MODID);
 
-    public static final RegistryObject NATURAL_BLOCKS = TABS.register("natural_blocks",
+    public static final RegistryObject<CreativeModeTab> NATURAL_BLOCKS = TABS.register("natural_blocks",
             () -> CreativeModeTab.builder().icon(IconItems.NATURE_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.natural_blocks"))
                     .displayItems((parameters, output) -> {
@@ -442,7 +436,7 @@ public final class ModTabs {
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                     .build()
     );
-    public static final RegistryObject BUILDING_BLOCKS = TABS.register("building_blocks",
+    public static final RegistryObject<CreativeModeTab> BUILDING_BLOCKS = TABS.register("building_blocks",
             () -> CreativeModeTab.builder().icon(IconItems.BLOCKS_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.building_blocks"))
                     .displayItems((parameters, output) -> {
@@ -630,7 +624,7 @@ public final class ModTabs {
                     .build()
     );
     /* 家具 */
-    public static final RegistryObject MECHANICAL = TABS.register("mechanical",
+    public static final RegistryObject<CreativeModeTab> MECHANICAL = TABS.register("mechanical",
             () -> CreativeModeTab.builder().icon(IconItems.MECHANICAL_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.mechanical"))
                     .displayItems((parameters, output) -> {
@@ -790,7 +784,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
                     .build());
-    public static final RegistryObject MATERIALS = TABS.register("materials",
+    public static final RegistryObject<CreativeModeTab> MATERIALS = TABS.register("materials",
             () -> CreativeModeTab.builder().icon(IconItems.MATERIAL_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.materials"))
                     .displayItems((parameters, output) -> {
@@ -951,7 +945,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MECHANICAL.getId())
                     .build());
-    public static final RegistryObject MISC = TABS.register("misc",
+    public static final RegistryObject<CreativeModeTab> MISC = TABS.register("misc",
             () -> CreativeModeTab.builder().icon(IconItems.PRECIOUS_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.misc"))
                     .displayItems((parameters, output) -> {
@@ -961,7 +955,8 @@ public final class ModTabs {
 
                         // 如果删掉上边两行就会崩
                         acceptAll(TreasureBagItems.ITEMS, output, "treasure_bag");
-                        acceptAll(ModBlocks.TOMBSTONES.keySet(), GroupItem.belongsTo("tombstone", output));
+                        CreativeModeTab.Output tombstone = GroupItem.belongsTo("tombstone", output);
+                        ModBlocks.TOMBSTONES.keySet().forEach(tombstone::accept);
                         acceptAll(BaitItems.ITEMS, output, "bait");
                         acceptAll(QuestedFishes.ITEMS, output, "quested_fish");
                         acceptAll(CrateBlocks.BLOCKS, output, "crate");
@@ -1081,7 +1076,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MATERIALS.getId())
                     .build());
-    public static final RegistryObject FOOD_AND_POTIONS = TABS.register("food_and_potions",
+    public static final RegistryObject<CreativeModeTab> FOOD_AND_POTIONS = TABS.register("food_and_potions",
             () -> CreativeModeTab.builder().icon(IconItems.POTION_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.food_and_potions"))
                     .displayItems((parameters, output) -> {
@@ -1092,7 +1087,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MISC.getId())
                     .build());
-    public static final RegistryObject TOOLS = TABS.register("tools",
+    public static final RegistryObject<CreativeModeTab> TOOLS = TABS.register("tools",
             () -> CreativeModeTab.builder().icon(IconItems.TOOLS_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.tools"))
                     .displayItems((parameters, output) -> {
@@ -1199,7 +1194,7 @@ public final class ModTabs {
                     .withTabsBefore(FOOD_AND_POTIONS.getId())
                     .build());
     /* 饰品 */
-    public static final RegistryObject ARMORS = TABS.register("armors",
+    public static final RegistryObject<CreativeModeTab> ARMORS = TABS.register("armors",
             () -> CreativeModeTab.builder().icon(IconItems.ARMOR_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.armors"))
                     .displayItems((parameters, output) -> {
@@ -1687,7 +1682,7 @@ public final class ModTabs {
                         mummy_set.accept(VanityArmorItems.MUMMY_SHOES.get());
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
-    public static final RegistryObject WARRIORS = TABS.register("warriors",
+    public static final RegistryObject<CreativeModeTab> WARRIORS = TABS.register("warriors",
             () -> CreativeModeTab.builder().icon(IconItems.MELEE_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
@@ -1767,23 +1762,23 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.WAFFLES_IRON.get());
 
                         CreativeModeTab.Output yoyo = GroupItem.belongsTo("yoyo", output);
-                        yoyo.accept(TEYoyosItems.AMAZON.get());
-                        yoyo.accept(TEYoyosItems.ARTERY.get());
-                        yoyo.accept(TEYoyosItems.CASCADE.get());
-                        yoyo.accept(TEYoyosItems.CODE_1.get());
-                        yoyo.accept(TEYoyosItems.HIVE_FIVE.get());
-                        yoyo.accept(TEYoyosItems.MALAISE.get());
-                        yoyo.accept(TEYoyosItems.RALLY.get());
-                        yoyo.accept(TEYoyosItems.VALOR.get());
-                        yoyo.accept(TEYoyosItems.WOODEN_YOYO.get());
-                        acceptAll(TEBoomerangItems.ITEMS, output, "boomerang");
+                        yoyo.accept(YoyoItems.AMAZON.get());
+                        yoyo.accept(YoyoItems.ARTERY.get());
+                        yoyo.accept(YoyoItems.CASCADE.get());
+                        yoyo.accept(YoyoItems.CODE_1.get());
+                        yoyo.accept(YoyoItems.HIVE_FIVE.get());
+                        yoyo.accept(YoyoItems.MALAISE.get());
+                        yoyo.accept(YoyoItems.RALLY.get());
+                        yoyo.accept(YoyoItems.VALOR.get());
+                        yoyo.accept(YoyoItems.WOODEN_YOYO.get());
+                        acceptAll(BoomerangItems.ITEMS, output, "boomerang");
                         acceptAll(SpearItems.ITEMS, output, "spear");
                         acceptAll(LanceItems.ITEMS, output, "lance");
                         acceptAll(FlailItems.ITEMS, output, "flail");
                     })
                     .withTabsBefore(ARMORS.getId())
                     .build());
-    public static final RegistryObject SHOOTERS = TABS.register("rangers",
+    public static final RegistryObject<CreativeModeTab> SHOOTERS = TABS.register("rangers",
             () -> CreativeModeTab.builder().icon(IconItems.REMOTE_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.rangers"))
                     .displayItems((parameters, output) -> {
@@ -1832,15 +1827,16 @@ public final class ModTabs {
                         acceptAll(ArrowItems.ITEMS, output, "arrow");
 
                         CreativeModeTab.Output gun = GroupItem.belongsTo("gun", output);
-                        acceptAll(GunItems.GUNS, gun);
+                        GunItems.GUN_ITEMS.forEach(gun::accept);
                         acceptAll(GunItems.ITEMS, gun);
                         gun.accept(ManaWeaponItems.BEE_GUN);
                         gun.accept(ManaWeaponItems.SPACE_GUN);
-                        acceptAll(GunItems.BULLETS, output, "bullet");
+                        CreativeModeTab.Output bullet = GroupItem.belongsTo("bullet", output);
+                        GunItems.BULLET_ITEMS.forEach(bullet::accept);
                     })
                     .withTabsBefore(WARRIORS.getId())
                     .build());
-    public static final RegistryObject MAGES = TABS.register("mages",
+    public static final RegistryObject<CreativeModeTab> MAGES = TABS.register("mages",
             () -> CreativeModeTab.builder().icon(IconItems.MAGIC_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.mages"))
                     .displayItems((parameters, output) -> {
@@ -1848,32 +1844,38 @@ public final class ModTabs {
 
                         acceptAll(ManaWeaponItems.ITEMS, output);
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_REGENERATION, 3));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.EFFICIENT_MAGIC, 1));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_MENDING, 3));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.CELESTIAL_ABSORPTION, 2));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOOTHED_MANA, 2));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.ARCANE_PROTECTION, 4));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SPELL_DESPERATION, 2));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MYSTIC_SURGE, 2));
+                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.MANA_REGENERATION.get(), 3));
+                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.EFFICIENT_MAGIC.get(), 1));
+                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.MANA_MENDING.get(), 3));
+                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.CELESTIAL_ABSORPTION.get(), 2));
+                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.SOOTHED_MANA.get(), 2));
+                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.ARCANE_PROTECTION.get(), 4));
+                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.SPELL_DESPERATION.get(), 2));
+                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.MYSTIC_SURGE.get(), 2));
                     })
                     .withTabsBefore(SHOOTERS.getId())
                     .build());
-    public static final RegistryObject SUMMONERS = TABS.register("summoners",
+    public static final RegistryObject<CreativeModeTab> SUMMONERS = TABS.register("summoners",
             () -> CreativeModeTab.builder().icon(IconItems.SUMMON_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.summoners"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
-                        acceptAll(TESummonItems.ITEMS, output);
-                        acceptAll(TEWhipItems.ITEMS, output);
+                        acceptAll(SummonItems.ITEMS, output);
+                        acceptAll(WhipItems.ITEMS, output);
                         acceptAll(LightPetItems.ITEMS, output);
                     })
-                    .withTabsAfter(TEItems.NEO_TERRA.getId())
                     .withTabsBefore(MAGES.getId())
                     .build());
-    /* 生物 */
-    public static final RegistryObject DEVELOPER = TABS.register("developer",
+    public static final RegistryObject<CreativeModeTab> ENTITY = TABS.register("entity",
+            () -> CreativeModeTab.builder().icon(IconItems.ENTITY_ICON::toStack)
+                    .title(Component.translatable("creativetab.confluence.entity"))
+                    .displayItems((parameters, output) -> {
+                        // todo
+                    })
+                    .withTabsBefore(SUMMONERS.getId())
+                    .build());
+    public static final RegistryObject<CreativeModeTab> DEVELOPER = TABS.register("developer",
             () -> CreativeModeTab.builder().icon(IconItems.DEVELOPER_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.developer"))
                     .displayItems((parameters, output) -> {
@@ -1884,31 +1886,31 @@ public final class ModTabs {
                         output.accept(FoodItems.PINK_COLA);
                         output.accept(FoodItems.DONGDONGS_FLATBREAD);
                         output.accept(FoodItems.PIGLIN_STEW);
-                        output.accept(TEBoomerangItems.BeiDou_BOOMERANG);
+                        output.accept(BoomerangItems.BeiDou_BOOMERANG);
                         output.accept(ToolItems.DEV_BUG_NET);
                         output.accept(SwordItems.DEVELOPER_SWORD);
-                        output.accept(TEBoomerangItems.DEVELOPER_BOOMERANG);
+                        output.accept(BoomerangItems.DEVELOPER_BOOMERANG);
                         output.accept(BowItems.DEVELOPER_BOW);
                         output.accept(FishingPoleItems.DEV_FISHING_ROD);
                         output.accept(ModBlocks.TEST);
                         output.accept(ModBlocks.AETHERIUM_CAULDRON);
                         output.accept(ModBlocks.HONEY_CAULDRON);
                     })
-                    .withTabsBefore(TEItems.NEO_TERRA.getId())
+                    .withTabsBefore(ENTITY.getId())
                     .build());
 
-    private static void acceptAll(DeferredRegister.Items register, CreativeModeTab.Output output) {
+    private static void acceptAll(PortItemRegistration register, CreativeModeTab.Output output) {
         register.getEntries().forEach(holder -> output.accept(holder.get()));
     }
 
-    private static void acceptAll(DeferredRegister.Items register, CreativeModeTab.Output output, String group) {
+    private static void acceptAll(PortItemRegistration register, CreativeModeTab.Output output, String group) {
         List<ItemStack> values = register.getEntries().stream()
                 .map(holder -> holder.get().getDefaultInstance())
                 .toList();
         output.accept(GroupItem.of(Confluence.asResource(group), values));
     }
 
-    private static void acceptAll(DeferredRegister.Blocks register, CreativeModeTab.Output output) {
+    private static void acceptAll(PortBlockRegistration register, CreativeModeTab.Output output) {
         register.getEntries().forEach(holder -> {
             Item item = holder.get().asItem();
             if (item != Items.AIR) {
@@ -1917,15 +1919,11 @@ public final class ModTabs {
         });
     }
 
-    private static void acceptAll(DeferredRegister.Blocks register, CreativeModeTab.Output output, String group) {
+    private static void acceptAll(PortBlockRegistration register, CreativeModeTab.Output output, String group) {
         List<ItemStack> values = register.getEntries().stream()
                 .filter(holder -> holder.get().asItem() != Items.AIR)
                 .map(holder -> holder.get().asItem().getDefaultInstance())
                 .toList();
         output.accept(GroupItem.of(Confluence.asResource(group), values));
-    }
-
-    private static <T extends ItemLike> void acceptAll(Collection<? extends RegistryObject> holders, CreativeModeTab.Output output) {
-        holders.forEach(holder -> output.accept(holder.get()));
     }
 }

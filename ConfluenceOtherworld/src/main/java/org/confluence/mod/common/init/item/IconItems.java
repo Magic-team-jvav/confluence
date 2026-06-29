@@ -24,6 +24,7 @@ public class IconItems {
     public static final PortDeferredItem<IconItem> DEVELOPER_ICON = register("developer_icon");
     public static final PortDeferredItem<IconItem> TOOLS_ICON = register("tools_icon");
     public static final PortDeferredItem<IconItem> MECHANICAL_ICON = register("mechanical_icon");
+    public static final PortDeferredItem<IconItem> ENTITY_ICON = register("entity_icon");
 
     public static PortDeferredItem<IconItem> register(String name) {
         return ITEMS.register(name, IconItem::new);

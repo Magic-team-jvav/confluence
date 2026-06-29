@@ -1,14 +1,11 @@
 package org.confluence.mod.common.data.gen.loot;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
@@ -28,22 +25,19 @@ import org.confluence.terra_curio.common.init.TCItems;
 
 import java.util.function.BiConsumer;
 
-public record ChestSubProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
+public final class ChestSubProvider implements LootTableSubProvider {
     @Override
     public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         // VanillaChestLoot
         EnchantRandomlyFunction.Builder manaEnchantmentBuilder = new EnchantRandomlyFunction.Builder()
-                .withOneOf(HolderSet.direct(
-                        registrylookup.getOrThrow(ModEnchantments.MANA_REGENERATION),
-                        registrylookup.getOrThrow(ModEnchantments.EFFICIENT_MAGIC),
-                        registrylookup.getOrThrow(ModEnchantments.MANA_MENDING),
-                        registrylookup.getOrThrow(ModEnchantments.CELESTIAL_ABSORPTION),
-                        registrylookup.getOrThrow(ModEnchantments.SOOTHED_MANA),
-                        registrylookup.getOrThrow(ModEnchantments.ARCANE_PROTECTION),
-                        registrylookup.getOrThrow(ModEnchantments.SPELL_DESPERATION),
-                        registrylookup.getOrThrow(ModEnchantments.MYSTIC_SURGE)
-                ));
+                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
+                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
+                .withEnchantment(ModEnchantments.MANA_MENDING.get())
+                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
+                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
+                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
+                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
+                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get());
         LootPoolSingletonContainer.Builder<?> manaEnchantedBookBuilder = LootItem.lootTableItem(Items.BOOK)
                 .apply(manaEnchantmentBuilder);
 
@@ -236,7 +230,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(FishingPoleItems.FIBERGLASS_FISHING_POLE).setWeight(7))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(NestedLootTable.lootTableReference(ModLootTables.LIVING_MAHOGANY_CARRY).setWeight(2))
+                        .add(DynamicLoot.dynamicEntry(ModLootTables.LIVING_MAHOGANY_CARRY).setWeight(2))
                         .add(LootItem.lootTableItem(MinecartItems.BEE_MINECART))
                         .add(EmptyLootItem.emptyItem().setWeight(7))
                 )
@@ -585,7 +579,6 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
 
     // 困难模式前箱子地下通用
     private LootTable.Builder initialWorldUndergroundCommon() {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.BOMB).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 19))))
@@ -633,22 +626,19 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(
-                                LootItem.lootTableItem(Items.BOOK)
-                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(15.0F)))
-                        )
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(15.0F))))
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withOneOf(HolderSet.direct(
-                                registrylookup.getOrThrow(ModEnchantments.MANA_REGENERATION),
-                                registrylookup.getOrThrow(ModEnchantments.EFFICIENT_MAGIC),
-                                registrylookup.getOrThrow(ModEnchantments.MANA_MENDING),
-                                registrylookup.getOrThrow(ModEnchantments.CELESTIAL_ABSORPTION),
-                                registrylookup.getOrThrow(ModEnchantments.SOOTHED_MANA),
-                                registrylookup.getOrThrow(ModEnchantments.ARCANE_PROTECTION),
-                                registrylookup.getOrThrow(ModEnchantments.SPELL_DESPERATION),
-                                registrylookup.getOrThrow(ModEnchantments.MYSTIC_SURGE))))
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder()
+                                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
+                                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
+                                .withEnchantment(ModEnchantments.MANA_MENDING.get())
+                                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
+                                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
+                                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
+                                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
+                                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get()))
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
@@ -660,7 +650,6 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
 
     // 困难模式前箱子地表通用
     private LootTable.Builder initialWorldSurfaceCommon() {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.THROWING_KNIVE).apply(SetItemCountFunction.setCount(UniformGenerator.between(75, 150))))
@@ -717,20 +706,20 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(
                                 LootItem.lootTableItem(Items.BOOK)
-                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(10.0F)))
+                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(10.0F)))
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(29))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withOneOf(HolderSet.direct(
-                                registrylookup.getOrThrow(ModEnchantments.MANA_REGENERATION),
-                                registrylookup.getOrThrow(ModEnchantments.EFFICIENT_MAGIC),
-                                registrylookup.getOrThrow(ModEnchantments.MANA_MENDING),
-                                registrylookup.getOrThrow(ModEnchantments.CELESTIAL_ABSORPTION),
-                                registrylookup.getOrThrow(ModEnchantments.SOOTHED_MANA),
-                                registrylookup.getOrThrow(ModEnchantments.ARCANE_PROTECTION),
-                                registrylookup.getOrThrow(ModEnchantments.SPELL_DESPERATION),
-                                registrylookup.getOrThrow(ModEnchantments.MYSTIC_SURGE))))
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder()
+                                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
+                                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
+                                .withEnchantment(ModEnchantments.MANA_MENDING.get())
+                                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
+                                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
+                                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
+                                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
+                                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get()))
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
@@ -748,7 +737,6 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
 
     // 困难模式前箱子洞穴通用
     private LootTable.Builder initialWorldCaveCommon() {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8))))
@@ -807,20 +795,20 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(
                                 LootItem.lootTableItem(Items.BOOK)
-                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(20.0F)))
+                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20.0F)))
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(14))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withOneOf(HolderSet.direct(
-                                registrylookup.getOrThrow(ModEnchantments.MANA_REGENERATION),
-                                registrylookup.getOrThrow(ModEnchantments.EFFICIENT_MAGIC),
-                                registrylookup.getOrThrow(ModEnchantments.MANA_MENDING),
-                                registrylookup.getOrThrow(ModEnchantments.CELESTIAL_ABSORPTION),
-                                registrylookup.getOrThrow(ModEnchantments.SOOTHED_MANA),
-                                registrylookup.getOrThrow(ModEnchantments.ARCANE_PROTECTION),
-                                registrylookup.getOrThrow(ModEnchantments.SPELL_DESPERATION),
-                                registrylookup.getOrThrow(ModEnchantments.MYSTIC_SURGE))))
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder()
+                                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
+                                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
+                                .withEnchantment(ModEnchantments.MANA_MENDING.get())
+                                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
+                                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
+                                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
+                                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
+                                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get()))
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
@@ -833,7 +821,6 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
 
     // 困难模式前冰雪洞穴箱
     private LootTable.Builder initialWorldIceCaveCommon() {
-        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8))))
@@ -892,20 +879,20 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(
                                 LootItem.lootTableItem(Items.BOOK)
-                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(20.0F)))
+                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(20.0F)))
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(14))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withOneOf(HolderSet.direct(
-                                registrylookup.getOrThrow(ModEnchantments.MANA_REGENERATION),
-                                registrylookup.getOrThrow(ModEnchantments.EFFICIENT_MAGIC),
-                                registrylookup.getOrThrow(ModEnchantments.MANA_MENDING),
-                                registrylookup.getOrThrow(ModEnchantments.CELESTIAL_ABSORPTION),
-                                registrylookup.getOrThrow(ModEnchantments.SOOTHED_MANA),
-                                registrylookup.getOrThrow(ModEnchantments.ARCANE_PROTECTION),
-                                registrylookup.getOrThrow(ModEnchantments.SPELL_DESPERATION),
-                                registrylookup.getOrThrow(ModEnchantments.MYSTIC_SURGE))))
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder()
+                                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
+                                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
+                                .withEnchantment(ModEnchantments.MANA_MENDING.get())
+                                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
+                                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
+                                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
+                                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
+                                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get()))
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
@@ -953,7 +940,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(
                                 LootItem.lootTableItem(Items.BOOK)
-                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(30.0F)))
+                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30.0F)))
                         )
                 );
     }

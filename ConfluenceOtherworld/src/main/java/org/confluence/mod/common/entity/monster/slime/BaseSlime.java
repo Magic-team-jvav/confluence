@@ -49,8 +49,8 @@ public class BaseSlime extends BaseMonster {
         this.terrariaKbResist = 0;
     }
 
-    protected BaseSlime(EntityType<? extends BaseSlime> type, Level level,
-                        int slimeColor, boolean passiveByDay, float terrariaKbResist) {
+    public BaseSlime(EntityType<? extends BaseSlime> type, Level level,
+                     int slimeColor, boolean passiveByDay, float terrariaKbResist) {
         super(type, level);
         this.slimeColor = slimeColor;
         this.passiveByDay = passiveByDay;

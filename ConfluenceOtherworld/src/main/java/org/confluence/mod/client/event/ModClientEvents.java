@@ -43,6 +43,7 @@ import org.confluence.mod.client.effect.connected.StitchedSprite;
 import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.entity.renderer.BunnyRenderer;
+import org.confluence.mod.client.entity.renderer.CritterRenderer;
 import org.confluence.mod.client.entity.renderer.DemonEyeRenderer;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.client.gui.container.*;
@@ -450,11 +451,34 @@ public final class ModClientEvents {
         event.registerEntityRenderer(RAINBOW_SHEEP.get(), RainbowSheepRenderer::new);
         event.registerEntityRenderer(INVERSE_ENDERMAN.get(), EndermanRenderer::new);
 
-        // Critter renderers
+        // Critter renderers — Bunny 保留自定义模型，其余用 CritterRenderer
         event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.JEWEL_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), BunnyRenderer::new);
-        event.registerEntityRenderer(MonstersEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
+        event.registerEntityRenderer(CritterEntities.BIRD.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.SQUIRREL.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.JEWEL_SQUIRREL.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.DUCK.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.CRAB.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.WORM.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.BUTTERFLY.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.FAIRY.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.GLOWING_SNAIL.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.GRUBBY.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.MAGGOT.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.SCORPION.get(), CritterRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.HARPY.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/harpy")));
+        event.registerEntityRenderer(MonsterEntities.PIXIE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/pixie")));
+        event.registerEntityRenderer(MonsterEntities.EATER_OF_SOULS.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/eater_of_souls")));
+        event.registerEntityRenderer(MonsterEntities.CRIMERA.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/crimera")));
+        event.registerEntityRenderer(MonsterEntities.CURSED_SKULL.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/cursed_skull")));
+        event.registerEntityRenderer(MonsterEntities.SNATCHER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/snatcher")));
+        event.registerEntityRenderer(MonsterEntities.MAN_EATER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/man_eater")));
+        event.registerEntityRenderer(MonsterEntities.SPORE_SKELETON.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/skeleton")));
+        event.registerEntityRenderer(MonsterEntities.WYVERN.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/wyvern")));
+        event.registerEntityRenderer(MonsterEntities.DARK_CASTER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/dark_caster")));
+        event.registerEntityRenderer(MonsterEntities.GOBLIN_SORCERER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/goblin_sorcerer")));
 
         event.registerEntityRenderer(ACCUMULATING_ENERGY.get(), NoopRenderer::new);
 

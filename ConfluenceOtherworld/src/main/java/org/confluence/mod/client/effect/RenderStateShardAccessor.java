@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 
 public class RenderStateShardAccessor extends RenderStateShard {
@@ -32,6 +33,16 @@ public class RenderStateShardAccessor extends RenderStateShard {
                     .setCullState(NO_CULL)
                     .setOverlayState(OVERLAY)
                     .createCompositeState(false));
+
+    public static RenderType createTextOutline(ResourceLocation texture) {
+        return RenderType.create("confluence_outline_text", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, true,
+                RenderType.CompositeState.builder()
+                        .setShaderState(RENDERTYPE_TEXT_SHADER)
+                        .setTextureState(new TextureStateShard(texture, false, false))
+                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                        .setLightmapState(LIGHTMAP)
+                        .createCompositeState(true));
+    }
 
     private RenderStateShardAccessor() {
         super(null, null, null);

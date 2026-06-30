@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
@@ -65,5 +66,13 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         return super.hurt(source, amount);
+    }
+
+    public ResourceLocation getModelPath() {
+        return getType().builtInRegistryHolder().key().location().withPrefix("geo/");
+    }
+
+    public ResourceLocation getTexturePath() {
+        return getType().builtInRegistryHolder().key().location().withPrefix("textures/entity/").withSuffix(".png");
     }
 }

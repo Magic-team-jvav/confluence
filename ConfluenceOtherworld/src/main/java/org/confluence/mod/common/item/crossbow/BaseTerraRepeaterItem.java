@@ -40,7 +40,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.DelayTaskHolder;
-import org.confluence.lib.util.EnchantmentUtils;
+import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
@@ -201,10 +201,10 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
 
     public int getBurstCount(LivingEntity shooter, InteractionHand hand) {
         int processProjectileCount;
-        if (shooter.level() instanceof ServerLevel serverLevel) {
-            ItemStack itemStack = shooter.getItemInHand(hand);
+        if (shooter.level() instanceof ServerLevel) {
+            ItemStack stack = shooter.getItemInHand(hand);
             int count = 1;
-            int level = EnchantmentUtils.getEnchantmentLevel(Enchantments.MULTISHOT, itemStack);
+            int level = LibEnchantmentUtils.getEnchantmentLevel(Enchantments.MULTISHOT, stack);
             processProjectileCount = count - level;
         } else {
             processProjectileCount = 0;

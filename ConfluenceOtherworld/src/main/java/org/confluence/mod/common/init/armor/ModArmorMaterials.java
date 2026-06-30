@@ -34,7 +34,7 @@ public final class ModArmorMaterials {
 
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> VANITY_ARMOR_MATERIALS = ARMOR_MATERIALS.register("vanity_armor_materials", () -> new PortArmorMaterial(
             Map.of(), 0, SoundEventHolder.wrap(SoundEvents.ARMOR_EQUIP_LEATHER), () -> Ingredient.EMPTY,
-            List.of(new PortArmorMaterial.PortLayer(Confluence.asResource("vanity_armor"))), 0.0F, 0.0F)
+            List.of(new PortArmorMaterial.Layer(Confluence.asResource("vanity_armor"))), 0.0F, 0.0F)
     );
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> CACTUS_ARMOR_MATERIALS = registerArmorMaterial("cactus_armor_materials",
             1, 2, 2, 1,
@@ -335,7 +335,7 @@ public final class ModArmorMaterials {
                 enchantmentValue,
                 equipSound,
                 () -> Ingredient.of(fixItem),
-                Collections.singletonList(new PortArmorMaterial.PortLayer(Confluence.asResource(layersName))),
+                Collections.singletonList(new PortArmorMaterial.Layer(Confluence.asResource(layersName))),
                 toughness,
                 knockbackResistance
         ).setName(name));
@@ -357,7 +357,7 @@ public final class ModArmorMaterials {
                 enchantmentValue,
                 equipSound,
                 ingredient,
-                Collections.singletonList(new PortArmorMaterial.PortLayer(Confluence.asResource(layersName))),
+                Collections.singletonList(new PortArmorMaterial.Layer(Confluence.asResource(layersName))),
                 toughness,
                 knockbackResistance
         ).setName(name));
@@ -374,7 +374,7 @@ public final class ModArmorMaterials {
                 enchantmentValue,
                 equipSound,
                 ingredient,
-                Collections.singletonList(new PortArmorMaterial.PortLayer(Confluence.asResource(layersName))),
+                Collections.singletonList(new PortArmorMaterial.Layer(Confluence.asResource(layersName))),
                 toughness,
                 knockbackResistance
         ).setName(name));

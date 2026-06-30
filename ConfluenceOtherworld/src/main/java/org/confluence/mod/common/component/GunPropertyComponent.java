@@ -45,7 +45,7 @@ public record GunPropertyComponent(
             GunPropertyComponent::new
     );
 
-    public static void fastBuilder(PortDataComponentType.PortBuilder<GunPropertyComponent> builder) {
+    public static void fastBuilder(PortDataComponentType.Builder<GunPropertyComponent> builder) {
         builder.persistent(CODEC).networkSynchronized(STREAM_CODEC);
     }
 }

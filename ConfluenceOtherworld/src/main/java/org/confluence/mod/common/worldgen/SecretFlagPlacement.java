@@ -1,6 +1,6 @@
 package org.confluence.mod.common.worldgen;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -12,7 +12,7 @@ import org.confluence.mod.common.init.ModFeatures;
 import java.util.stream.Stream;
 
 public class SecretFlagPlacement extends PlacementModifier implements SecretFlagMatcher {
-    public static final MapCodec<SecretFlagPlacement> CODEC = SecretFlagMatcher.createCodec(SecretFlagPlacement::new);
+    public static final Codec<SecretFlagPlacement> CODEC = SecretFlagMatcher.createCodec(SecretFlagPlacement::new).codec();
 
     private final long flag;
     private final boolean flip;

@@ -8,52 +8,33 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.storage.loot.LootContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.enchantment.ManaAffectiveEnchantment;
 import org.confluence.mod.common.init.ModEnchantments;
-import org.confluence.mod.common.item.sword.SweetSword;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
-
+import java.util.Map;
 
 public final class EnchantmentUtils {
-    public static final EquipmentSlot[] HUMANOID_ARMOR = new EquipmentSlot[]{
-            EquipmentSlot.HEAD,
-            EquipmentSlot.CHEST,
-            EquipmentSlot.LEGS,
-            EquipmentSlot.FEET
-    };
-    public static final EquipmentSlot[] HUMANOID_ARMOR_AND_MAIN_HAND = new EquipmentSlot[]{
-            EquipmentSlot.HEAD,
-            EquipmentSlot.CHEST,
-            EquipmentSlot.LEGS,
-            EquipmentSlot.FEET,
-            EquipmentSlot.MAINHAND
-    };
-
     public static float processManaRegeneration(ServerPlayer player) {
         MutableFloat value = new MutableFloat(1);
-        for (EquipmentSlot slot : HUMANOID_ARMOR_AND_MAIN_HAND) {
+        for (EquipmentSlot slot : LibEnchantmentUtils.SlotGroups.ARMOR_N_MAINHAND) {
             PortEnchantmentHelperExtension.runIterationOnItem(player.getItemBySlot(slot), (enchantment, level) -> {
-                List<ConditionalEffect<EnchantmentValueEffect>> effects = enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.MANA_REGENERATION.get());
-                LootContext context = entityContext(player.serverLevel(), level, player, player.position());
-                SweetSword.applyEffects(effects, context, effect -> value.setValue(effect.process(level, player.getRandom(), value.floatValue())));
+                if (enchantment == ModEnchantments.MANA_REGENERATION.get()) {
+                    value.add(level * 0.1F);
+                }
             });
         }
         return value.floatValue();
     }
 
     public static FloatSupplier processEfficientMagic(FloatSupplier sup, ServerPlayer player) {
-        if (LibEntityUtils.anyHandHasItem(player, stack -> EnchantmentHelper.has(stack, ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get()))) {
+        if (LibEntityUtils.anyHandHasItem(player, stack -> EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.EFFICIENT_MAGIC.get(), stack) > 0)) {
             ManaStorage manaStorage = ManaStorage.of(player);
             return () -> sup.getAsFloat() * Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
         }
@@ -61,9 +42,9 @@ public final class EnchantmentUtils {
     }
 
     public static void repairPlayerItems(ServerPlayer player, float consumedManaAmount) {
-        Optional<EnchantedItemInUse> optional = EnchantmentHelper.getRandomItemWith(ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player, ItemStack::isDamaged);
-        if (optional.isEmpty()) return;
-        ItemStack stack = optional.get().itemStack();
+        Map.Entry<EquipmentSlot, ItemStack> optional = EnchantmentHelper.getRandomItemWith(ModEnchantments.MANA_MENDING.get(), player, ItemStack::isDamaged);
+        if (optional == null) return;
+        ItemStack stack = optional.getValue();
         MutableFloat threshold = new MutableFloat(10);
         PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
             if (enchantment == ModEnchantments.MANA_MENDING.get()) {
@@ -76,17 +57,16 @@ public final class EnchantmentUtils {
         }
     }
 
-    public static void dropsStar(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
-        runIterationOnHand(player, stack -> {
-            EnchantedItemInUse item = new EnchantedItemInUse(stack, EquipmentSlot.MAINHAND, player);
-            PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
-                for (TargetedConditionalEffect<EnchantmentEntityEffect> effect : enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.ATTACK_DROPS_MANA.get())) {
-                    if (effect.enchanted() == EnchantmentTarget.ATTACKER) {
-                        doPostAttack(effect, player.serverLevel(), level, item, victim, damageSource);
-                    }
-                }
-            });
-        });
+    public static void affect(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
+        if (damageSource.is(PortTags.DamageTypes.IS_MAGIC)) {
+            LibEnchantmentUtils.runIterationOnHand(player, stack ->
+                    PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+                        if (enchantment instanceof ManaAffectiveEnchantment ench) {
+                            ench.affect(player, victim, level);
+                        }
+                    })
+            );
+        }
     }
 
     public static int processManaSicknessDuration(ServerPlayer player, int duration) {
@@ -99,7 +79,7 @@ public final class EnchantmentUtils {
             return amount;
         }
         MutableFloat ratio = new MutableFloat();
-        for (EquipmentSlot slot : HUMANOID_ARMOR) {
+        for (EquipmentSlot slot : LibEnchantmentUtils.SlotGroups.ARMOR) {
             ItemStack stack = player.getItemBySlot(slot);
             PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
                 if (enchantment == ModEnchantments.ARCANE_PROTECTION.get()) {
@@ -122,13 +102,13 @@ public final class EnchantmentUtils {
             return amount;
         }
         MutableFloat lm = new MutableFloat();
-        runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+        LibEnchantmentUtils.runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
             if (enchantment == ModEnchantments.SPELL_DESPERATION.get()) {
                 lm.add(0.5F * level);
             }
         }));
         MutableFloat mm = new MutableFloat();
-        runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+        LibEnchantmentUtils.runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
             if (enchantment == ModEnchantments.MYSTIC_SURGE.get()) {
                 mm.add(0.5F * level);
             }
@@ -139,16 +119,5 @@ public final class EnchantmentUtils {
             return amount + amount * ((1 - ratio) * lm.floatValue() + ratio * mm.floatValue());
         }
         return amount;
-    }
-
-    public static ItemStack enchantedBook(Enchantment enchantment, int level) {
-        ItemStack book = Items.ENCHANTED_BOOK.getDefaultInstance();
-        book.enchant(enchantment, level);
-        return book;
-    }
-
-    public static void runIterationOnHand(ServerPlayer player, Consumer<ItemStack> consumer) {
-        consumer.accept(player.getMainHandItem());
-        consumer.accept(player.getOffhandItem());
     }
 }

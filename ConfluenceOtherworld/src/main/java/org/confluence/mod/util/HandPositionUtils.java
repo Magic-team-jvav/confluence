@@ -6,21 +6,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
-
-/**
- * 玩家手部位置计算工具。
- * NeoForge 1.21.1 无现成 API，通过肩膀基准 + 视线方向 + 侧向偏移推算。
- */
+/// 玩家手部位置计算工具。
+/// NeoForge 1.21.1 无现成 API，通过肩膀基准 + 视线方向 + 侧向偏移推算。
 public final class HandPositionUtils {
     private HandPositionUtils() {}
 
-    /**
-     * 获取玩家主手掌（物品实际持握点）的世界坐标。
-     * 手掌在肩膀下方约 12px(0.75格) + 前方 0.4格物品渲染偏移处。
-     * 此位置是 ItemInHandRenderer 中物品的实际渲染原点。
-     */
-    public static Vec3 getPalmPosition(@Nullable Player player, float partialTick) {
+    /// 获取玩家主手掌（物品实际持握点）的世界坐标。
+    /// 手掌在肩膀下方约 12px(0.75格) + 前方 0.4格物品渲染偏移处。
+    /// 此位置是 ItemInHandRenderer 中物品的实际渲染原点。
+    public static Vec3 getPalmPosition(Player player, float partialTick) {
         Vec3 shoulder = player.getEyePosition(partialTick).add(0.0, -0.25, 0.0);
         Vec3 look = player.getViewVector(partialTick);
         Vec3 side = look.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
@@ -52,9 +46,7 @@ public final class HandPositionUtils {
         return palmPos;
     }
 
-    /**
-     * 通用手部（手掌）位置，自动处理 Player 检查。
-     */
+    /// 通用手部（手掌）位置，自动处理 Player 检查。
     public static Vec3 getHandPosition(LivingEntity owner) {
         if (owner instanceof Player player) {
             return getPalmPosition(player, 1.0F);

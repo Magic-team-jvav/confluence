@@ -3,11 +3,11 @@ package org.confluence.mod.common.enchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.MendingEnchantment;
-import org.confluence.mod.common.init.ModEnchantments;
+import org.confluence.lib.util.LibEnchantmentUtils;
 
 public class ManaMendingEnchantment extends AbstractEnchantment {
     public ManaMendingEnchantment() {
-        super(EnchantmentCategory.BREAKABLE, ModEnchantments.SlotGroups.ANY, 3);
+        super(EnchantmentCategory.BREAKABLE, LibEnchantmentUtils.SlotGroups.ANY, 3);
     }
 
     @Override

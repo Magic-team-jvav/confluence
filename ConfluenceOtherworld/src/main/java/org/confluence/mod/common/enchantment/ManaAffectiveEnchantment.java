@@ -3,15 +3,16 @@ package org.confluence.mod.common.enchantment;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.enchantment.Enchantment;
+import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.lib.util.consumer.Consumer3;
 import org.confluence.mod.common.init.ModEnchantments;
 
 public class ManaAffectiveEnchantment extends AbstractEnchantment {
-    private final Consumer3<LivingEntity, Entity, Integer> postAttack;
+    private final Consumer3<LivingEntity, Entity, Integer> affective;
 
-    public ManaAffectiveEnchantment(int maxLevel, Consumer3<LivingEntity, Entity, Integer> postAttack) {
-        super(ModEnchantments.Categories.MANA, ModEnchantments.SlotGroups.MAINHAND, maxLevel);
-        this.postAttack = postAttack;
+    public ManaAffectiveEnchantment(int maxLevel, Consumer3<LivingEntity, Entity, Integer> affective) {
+        super(ModEnchantments.Categories.MANA, LibEnchantmentUtils.SlotGroups.MAINHAND, maxLevel);
+        this.affective = affective;
     }
 
     @Override
@@ -29,8 +30,7 @@ public class ManaAffectiveEnchantment extends AbstractEnchantment {
         return false;
     }
 
-    @Override
-    public void doPostAttack(LivingEntity attacker, Entity target, int level) {
-        postAttack.accept(attacker, target, level);
+    public void affect(LivingEntity attacker, Entity target, int level) {
+        affective.accept(attacker, target, level);
     }
 }

@@ -46,7 +46,7 @@ public record BulletPropertyComponent(
     );
     public static final BulletPropertyComponent EMPTY = new BulletPropertyComponent(0, 0, 1, 0, 0, ModRarity.WHITE, false);
 
-    public static void fastBuilder(PortDataComponentType.PortBuilder<BulletPropertyComponent> builder) {
+    public static void fastBuilder(PortDataComponentType.Builder<BulletPropertyComponent> builder) {
         builder.persistent(CODEC).networkSynchronized(STREAM_CODEC);
     }
 }

@@ -3,11 +3,11 @@ package org.confluence.mod.common.enchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.ProtectionEnchantment;
-import org.confluence.mod.common.init.ModEnchantments;
+import org.confluence.lib.util.LibEnchantmentUtils;
 
 public class ArcaneProtectionEnchantment extends AbstractEnchantment {
     public ArcaneProtectionEnchantment() {
-        super(EnchantmentCategory.ARMOR, ModEnchantments.SlotGroups.ARMOR, 4);
+        super(EnchantmentCategory.ARMOR, LibEnchantmentUtils.SlotGroups.ARMOR, 4);
     }
 
     @Override

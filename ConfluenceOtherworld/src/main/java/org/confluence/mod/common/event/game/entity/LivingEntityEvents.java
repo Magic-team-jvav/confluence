@@ -224,7 +224,7 @@ public final class LivingEntityEvents {
         ThornsEffect.onMobHurt(victim, damageSource, amount);
 
         if (attacker instanceof ServerPlayer player) {
-            EnchantmentUtils.dropsStar(player, victim, damageSource);
+            EnchantmentUtils.affect(player, victim, damageSource);
             amount = EnchantmentUtils.processMagicAttack(player, damageSource, amount);
             amount = TheConstant.applyAttackDamage(player, amount);
             amount = ManaSicknessEffect.process(player, damageSource, amount);

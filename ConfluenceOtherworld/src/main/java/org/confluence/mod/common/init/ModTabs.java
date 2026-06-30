@@ -8,13 +8,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.item.GroupItem;
+import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_furniture.common.init.TFBlocks;
@@ -1844,14 +1844,14 @@ public final class ModTabs {
 
                         acceptAll(ManaWeaponItems.ITEMS, output);
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
-                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.MANA_REGENERATION.get(), 3));
-                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.EFFICIENT_MAGIC.get(), 1));
-                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.MANA_MENDING.get(), 3));
-                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.CELESTIAL_ABSORPTION.get(), 2));
-                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.SOOTHED_MANA.get(), 2));
-                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.ARCANE_PROTECTION.get(), 4));
-                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.SPELL_DESPERATION.get(), 2));
-                        output.accept(EnchantmentUtils.enchantedBook(ModEnchantments.MYSTIC_SURGE.get(), 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MANA_REGENERATION.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.EFFICIENT_MAGIC.get(), 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MANA_MENDING.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.CELESTIAL_ABSORPTION.get(), 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOOTHED_MANA.get(), 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.ARCANE_PROTECTION.get(), 4));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SPELL_DESPERATION.get(), 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MYSTIC_SURGE.get(), 2));
                     })
                     .withTabsBefore(SHOOTERS.getId())
                     .build());

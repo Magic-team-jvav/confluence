@@ -27,7 +27,6 @@ import org.confluence.mod.common.data.saved.DateStamp;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
-import org.confluence.mod.common.init.GunItems;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -41,20 +40,6 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terraentity.TerraEntity;
-import org.confluence.terraentity.api.npc.trade.ITrade;
-import org.confluence.terraentity.api.npc.trade.ITradeLock;
-import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TENpcEntities;
-import org.confluence.terraentity.init.item.TEWhipItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
-import org.confluence.terraentity.registries.npc_trade.TradeProperties;
-import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTable;
-import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
-import org.confluence.terraentity.registries.npc_trade_list.variant.WeightMapGenerator;
-import org.confluence.terraentity.registries.npc_trade_lock.variant.*;
-import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,10 +47,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-/// 生成单个NPC单个配方
-///
-/// @see ITrade 生成配方
-/// @see NPCTradeManager 读取配方
 public class NPCShopProvider extends AbstractRecipeProvider {
     private static final boolean ENABLE_DEBUG_SHOPS = false;
     private final PackOutput.PathProvider npcShopPathProvider;

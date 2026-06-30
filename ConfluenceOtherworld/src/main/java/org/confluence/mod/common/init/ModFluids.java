@@ -10,6 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidInteractionRegistry;
 import org.confluence.lib.common.fluid.FluidTriple;
@@ -17,9 +18,9 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.CritterEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.terraentity.init.entity.TEAnimals;
-import org.confluence.terraentity.init.entity.TENpcEntities;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
 
@@ -44,7 +45,7 @@ public final class ModFluids {
                             SoundEvents.POINTED_DRIPSTONE_DRIP_LAVA_INTO_CAULDRON
                     )
             ).baseProperties(properties -> properties
-                    .block(ModBlocks.VOID)
+                    .block(ModBlocks.VOID::get)
                     .bucket(ToolItems.VOID_BUCKET)
             ).build();
     public static final FluidTriple HONEY = FluidTriple.builder(Confluence.asResource("honey"))
@@ -67,7 +68,7 @@ public final class ModFluids {
                             SoundEvents.POINTED_DRIPSTONE_DRIP_LAVA_INTO_CAULDRON
                     )
             ).baseProperties(properties -> properties
-                    .block(ModBlocks.HONEY)
+                    .block(ModBlocks.HONEY::get)
                     .bucket(ToolItems.HONEY_BUCKET)
             ).build();
     public static final FluidTriple SHIMMER = FluidTriple.builder(Confluence.asResource("shimmer"))
@@ -91,22 +92,22 @@ public final class ModFluids {
                             SoundEvents.POINTED_DRIPSTONE_DRIP_WATER_INTO_CAULDRON
                     )
             ).baseProperties(properties -> properties
-                    .block(ModBlocks.SHIMMER)
+                    .block(ModBlocks.SHIMMER::get)
                     .bucket(() -> Items.AIR)
             ).build();
 
     public static void registerInteraction() {
         FluidInteractionRegistry.addInteraction(HONEY.type().get(), new FluidInteractionRegistry.InteractionInformation(
-                NeoForgeMod.WATER_TYPE.value(), fluidState -> fluidState.isSource() ? Blocks.HONEY_BLOCK.defaultBlockState() : NatureBlocks.THIN_HONEY_BLOCK.get().defaultBlockState()
+                ForgeMod.WATER_TYPE.get(), fluidState -> fluidState.isSource() ? Blocks.HONEY_BLOCK.defaultBlockState() : NatureBlocks.THIN_HONEY_BLOCK.get().defaultBlockState()
         ));
         FluidInteractionRegistry.addInteraction(HONEY.type().get(), new FluidInteractionRegistry.InteractionInformation(
-                NeoForgeMod.LAVA_TYPE.value(), fluidState -> fluidState.isSource() ? DecorativeBlocks.CRISPY_HONEY_BLOCK.get().defaultBlockState() : NatureBlocks.LOOSE_HONEY_BLOCK.get().defaultBlockState()
+                ForgeMod.LAVA_TYPE.get(), fluidState -> fluidState.isSource() ? DecorativeBlocks.CRISPY_HONEY_BLOCK.get().defaultBlockState() : NatureBlocks.LOOSE_HONEY_BLOCK.get().defaultBlockState()
         ));
         FluidInteractionRegistry.addInteraction(SHIMMER.type().get(), new FluidInteractionRegistry.InteractionInformation(
-                NeoForgeMod.WATER_TYPE.value(), fluidState -> fluidState.isSource() ? NatureBlocks.AETHERIUM_BLOCK.get().defaultBlockState() : NatureBlocks.DARK_AETHERIUM_BLOCK.get().defaultBlockState()
+                ForgeMod.WATER_TYPE.get(), fluidState -> fluidState.isSource() ? NatureBlocks.AETHERIUM_BLOCK.get().defaultBlockState() : NatureBlocks.DARK_AETHERIUM_BLOCK.get().defaultBlockState()
         ));
         FluidInteractionRegistry.addInteraction(SHIMMER.type().get(), new FluidInteractionRegistry.InteractionInformation(
-                NeoForgeMod.LAVA_TYPE.value(), fluidState -> fluidState.isSource() ? NatureBlocks.AETHERIUM_BLOCK.get().defaultBlockState() : NatureBlocks.DARK_AETHERIUM_BLOCK.get().defaultBlockState()
+                ForgeMod.LAVA_TYPE.get(), fluidState -> fluidState.isSource() ? NatureBlocks.AETHERIUM_BLOCK.get().defaultBlockState() : NatureBlocks.DARK_AETHERIUM_BLOCK.get().defaultBlockState()
         ));
         FluidInteractionRegistry.addInteraction(SHIMMER.type().get(), new FluidInteractionRegistry.InteractionInformation(
                 HONEY.type().get(), fluidState -> fluidState.isSource() ? NatureBlocks.AETHERIUM_BLOCK.get().defaultBlockState() : NatureBlocks.DARK_AETHERIUM_BLOCK.get().defaultBlockState()
@@ -127,10 +128,10 @@ public final class ModFluids {
         addEntity(EntityType.VEX, EntityType.ALLAY);
         addEntity(entity -> entity instanceof Creeper creeper && creeper.isPowered(), EntityType.CREEPER);
         addEntity(EntityType.MOOSHROOM, EntityType.COW);
-        addEntity(TENpcEntities.ANGLER.get(), TENpcEntities.FEMALE_ANGLER.get());
-        addEntity(TENpcEntities.FEMALE_ANGLER.get(), TENpcEntities.ANGLER.get());
+        addEntity(NpcEntities.ANGLER.get(), NpcEntities.FEMALE_ANGLER.get());
+        addEntity(NpcEntities.FEMALE_ANGLER.get(), NpcEntities.ANGLER.get());
         // 飞灵转化
-        addEntity(ModTags.EntityTypes.FEALING_TRANSMUTATION, TEAnimals.FEALING.get());
+        addEntity(ModTags.EntityTypes.FEALING_TRANSMUTATION, CritterEntities.FEALING.get());
     }
 
     public static void initialize() {}

@@ -12,8 +12,6 @@ import org.confluence.mod.util.generation.variant.StillGeneration;
 
 /// 注册追踪编解码器的类型
 public final class ModGenerationProviderTypes {
-    public static void init() {}
-
     public static final DeferredRegister<GenerationProvider> TYPES = DeferredRegister.create(ModCustomRegistries.Keys.GENERATION_PROVIER, Confluence.MODID);
 
     public static final RegistryObject<GenerationProvider> FORWARD_GENERATION = register("forward", ForwardGeneration.CODEC);

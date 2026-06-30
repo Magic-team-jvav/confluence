@@ -83,8 +83,8 @@ public final class Confluence {
         ModAdvancements.init();
 
         ModCustomRegistries.init();
-        ModTrackTypeProviderTypes.init();
-        ModGenerationProviderTypes.init();
+        ModTrackTypeProviderTypes.TYPES.register(eventBus);
+        ModTradeConditions.TYPES.register(eventBus);
         TFReferences.init();
         ModFluids.initialize();
         ModPrefix.initialize();

@@ -198,6 +198,7 @@ public final class ModClientEvents {
         // npc
 //  todo      event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
+        event.register(ModMenuTypes.NPC_TRADE.get(), NPCTradeScreen::new);
     }
 
     public static void registerGuiLayers(PortRegisterGuiLayersEvent event) {

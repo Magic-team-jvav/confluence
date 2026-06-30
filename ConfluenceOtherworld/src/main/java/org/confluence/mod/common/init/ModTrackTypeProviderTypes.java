@@ -12,8 +12,6 @@ import java.util.function.Supplier;
 
 /// 注册追踪编解码器的类型
 public final class ModTrackTypeProviderTypes {
-    public static void init() {}
-
     public static final DeferredRegister<TrackTypeProvider> TYPES = DeferredRegister.create(ModCustomRegistries.Keys.TRACK_TYPE_PROVIDER, Confluence.MODID);
 
     public static final Supplier<TrackTypeProvider> SIMPLE_TRACK_TYPE = register("simple_track_type", SimpleTrack.CODEC);

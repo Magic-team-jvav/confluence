@@ -12,14 +12,14 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.house.House;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.UUID;
 
-/// 生物模块移到主模块之后使用这个
 public enum HouseHandler implements IGlobalData {
-    @Deprecated
     INSTANCE;
     private static final Codec<Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>>> DATA_CODEC = LibCodecUtils.notStringKeyMap(
             "dimension", ResourceKey.codec(Registries.DIMENSION),
@@ -54,14 +54,29 @@ public enum HouseHandler implements IGlobalData {
         return map1.get(uuid);
     }
 
-    public void setHouse(AbstractTerraNPC npc, House house) {
+    public void setHouse(BaseNPC npc, House house) {
         setHouse(npc.level().dimension(), new NPCSpawner.Region(house.center()), npc.getUUID(), house);
     }
 
-    public @Nullable House getHouse(AbstractTerraNPC npc) {
-        BlockPos pos = npc.getSpawnAtPos();
-        if (pos == null) return null;
-        return getHouse(npc.level().dimension(), new NPCSpawner.Region(pos), npc.getUUID());
+    public @Nullable House getHouse(BaseNPC npc) {
+        return getHouse(npc.level().dimension(), new NPCSpawner.Region(npc.blockPosition()), npc.getUUID());
+    }
+
+    public void removeHouse(ResourceKey<Level> dimension, NPCSpawner.Region region, UUID uuid) {
+        Map<NPCSpawner.Region, Map<UUID, House>> map = data.get(dimension);
+        if (map == null) return;
+        Map<UUID, House> map1 = map.get(region);
+        if (map1 == null) return;
+        map1.remove(uuid);
+    }
+
+    public @Nullable House findHouseAt(ResourceKey<Level> dimension, BlockPos pos) {
+        NPCSpawner.Region region = new NPCSpawner.Region(pos);
+        Map<UUID, House> houses = getOrCreateHouses(dimension, region);
+        for (House house : houses.values()) {
+            if (house.contains(pos)) return house;
+        }
+        return null;
     }
 
     @Override

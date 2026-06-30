@@ -42,6 +42,7 @@ import org.confluence.mod.common.entity.animal.HostileBunny;
 import org.confluence.mod.common.entity.monster.DemonEye;
 import org.confluence.mod.common.entity.monster.humanoid.Zombie;
 import org.confluence.mod.common.entity.monster.slime.*;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
@@ -54,6 +55,7 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -244,6 +246,24 @@ public final class ModEvents {
         event.put(MonsterEntities.SPIKED_JUNGLE_SLIME.get(), SpikedJungleSlime.createAttributes().build());
         event.put(MonsterEntities.SPIKED_ICE_SLIME.get(), SpikedIceSlime.createAttributes().build());
         event.put(MonsterEntities.ZOMBIE.get(), Zombie.createAttributes().build());
+        event.put(NpcEntities.GUIDE.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.MERCHANT.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.NURSE.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.DEMOLITIONIST.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.DYE_TRADER.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.PAINTER.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.DRYAD.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.ARMS_DEALER.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.GOBLIN_TINKERER.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.WITCH_DOCTOR.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.CLOTHIER.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.MECHANIC.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.PARTY_GIRL.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.STYLIST.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.TAX_COLLECTOR.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.TRUFFLE.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.WIZARD.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.ZOOLOGIST.get(), BaseNPC.createAttributes().build());
     }
 
 // todo   private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {

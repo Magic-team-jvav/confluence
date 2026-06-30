@@ -234,12 +234,10 @@ Mob (vanilla)
 │           └── FairyPet, GlowingSnail
 │
 ├── PathfinderMob (vanilla)
-│   └── BaseNPC                       ← NPC 基类
-│       ├── Guide, Merchant, Nurse, Demolitionist
-│       ├── ArmsDealer, Dryad, GoblinTinkerer, Mechanic
-│       ├── Angler, Stylist, Painter, DyeTrader
-│       ├── WitchDoctor, TaxCollector, Clothier
-│       └── TravelingMerchant
+│   └── BaseNPC                       ← NPC 基类（Brain 驱动，非 BT）
+│       ├── SimpleNPC                 ← 默认实现，15 个 NPC
+│       ├── AnglerNPC                 ← 渔夫（任务周期、水中漂浮）
+│       └── TravelingMerchantNPC      ← 旅商（定时消失、随机商品）
 │
 └── Animal (vanilla)
     └── BaseCritter                    ← 小动物基类
@@ -256,13 +254,19 @@ Mob (vanilla)
 
 ## 四、AI 系统设计
 
-### 4.1 统一 AI 架构：全 BehaviorTree
+### 4.1 双 AI 架构：BehaviorTree（怪物） + Brain（NPC）
 
-所有生物 — 从最简的史莱姆到最复杂的月亮领主 — 统一使用 **BehaviorTree** 作为唯一的 AI 框架。不另设 FSM、不直接用 Forge Goal。
+**怪物/Boss** 统一使用 **BehaviorTree** 作为 AI 框架：
 
 - **简单生物** → 1-3 个节点的极简 BT
 - **中等怪物** → 带条件分支的 BT
 - **Boss** → 多阶段 Selector 驱动的大型 BT
+
+**NPC** 保留 Minecraft 原版 **Brain 系统**（Schedule / Memory / Sensor）：
+
+- Schedule 原生支持"白天工作→夜晚回家"的时间驱动切换
+- Memory 处理状态共享（HOME、NEAREST_ENEMY），无需额外 Blackboard
+- Sensor 被动感知环境，非每 tick 扫描
 
 ### 4.2 BehaviorTree 架构
 
@@ -845,6 +849,376 @@ package org.confluence.mod.common.entity.animal;
 ```
 
 方法签名不加 `@NotNull`，仅在确实可返回 null 的地方加 `@javax.annotation.Nullable`。
+
+---
+
+## 十三、NPC 系统设计
+
+> 状态: 草案 | 日期: 2026-06-30
+>
+> NPC 不沿用怪物组的 BehaviorTree，保留 Minecraft 原版 **Brain 系统**。
+> 原因：Schedule（时间表驱动作息）、Memory（状态共享）、Sensor（被动感知）三重机制天然适配社交 NPC，
+> BT 需要大量条件节点模拟，代码臃肿且无法表达"白天工作→夜晚回家"这类时间驱动切换。
+
+### 13.1 继承体系
+
+```
+PathfinderMob (vanilla)
+└── BaseNPC (新)                    ← Brain 驱动 + GeckoLib 人形动画
+    ├── SimpleNPC (新)              ← 默认实现，覆盖 15 个 NPC
+    ├── AnglerNPC (新)              ← 渔夫：任务周期、水中漂浮
+    └── TravelingMerchantNPC (新)   ← 旅商：定时消失、随机商品
+```
+
+区别于 `BaseMonster` 分支——NPC 不主动攻击玩家、不燃烧、需要房屋、依赖条件生成。
+
+### 13.2 Brain 架构
+
+```java
+public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
+
+    // === Brain ===
+    protected Brain<BaseNPC> brain;
+
+    // === Schedule（时间表） ===
+    // 0:00~6:00  IDLE   → 在家待机
+    // 6:00~18:00 WORK   → 出门散步/交互
+    // 18:00~0:00 IDLE   → 回家
+
+    // === Memory（记忆模块） ===
+    // HOME           → GlobalPos  家位置
+    // NEAREST_ENEMY  → LivingEntity  最近威胁
+    // NEAREST_NPC    → LivingEntity  最近友方NPC
+    // WALK_TARGET    → WalkTarget  寻路目标
+
+    // === Sensor（传感器） ===
+    // NearestLivingEntitySensor  感知敌人
+    // NearestNPCSensor           感知其他 NPC
+    // HomeBlockSensor            感知房屋位置
+
+    // === 注入点（子类或外部注册时设置） ===
+    protected Supplier<ItemStack> weaponSupplier;          // 防御武器（null=不攻击）
+    protected BiConsumer<BaseNPC, LivingEntity> onAttack;  // 攻击回调
+
+    @Override
+    protected Brain.Provider<?> brainProvider() {
+        return Brain.provider(memories, sensors);
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        brain.tick((ServerLevel) level(), this);
+    }
+}
+```
+
+### 13.3 Activity 与 Behavior
+
+| Activity | 优先级 | Behavior | 触发条件 |
+|----------|--------|----------|---------|
+| PANIC | 1 (最高) | FleeToHome | 血量 < 30% 或附近有敌对生物 |
+| IDLE | 2 | GoHome | 天黑 或 离家 > 50 格 |
+| WORK | 3 | RandomStrollAroundHome | 白天、心情正常 |
+| WORK | 4 | LookAtNearbyPlayer | 空闲时注视附近玩家 |
+| WORK | 5 | RangedDefend | weaponSupplier != null 且有敌人在视野内 |
+
+每种特殊 NPC 通过 **lambda 注入**而非新建 AI 子类：
+
+```java
+// Nurse：攻击回调用治疗代替
+nurse.onAttack = (npc, target) -> {
+    HealPotionProjectile.shoot(npc, target);
+};
+
+// Demolitionist：投弹回调用手榴弹代替
+demo.weaponSupplier = () -> new ItemStack(ModItems.GRENADE);
+demo.onAttack = (npc, target) -> {
+    BaseGrenadeEntity.throwAt(npc, target);
+};
+```
+
+### 13.4 房屋系统
+
+#### House 数据结构
+
+```java
+public record House(@Nullable UUID uuid, BlockPos min, BlockPos max) {
+    public static final House EMPTY = new House(null, BlockPos.ZERO, BlockPos.ZERO);
+
+    public BlockPos center() {
+        return new BlockPos(
+            (min.getX() + max.getX()) / 2,
+            min.getY() + 2,
+            (min.getZ() + max.getZ()) / 2
+        );
+    }
+
+    public boolean contains(BlockPos pos);
+    public boolean isValid() { return uuid != null; }
+}
+```
+
+- `center` 由 min/max 计算得出，不存储（减少序列化数据）
+- `isValid()` 替代旧的 `isEmpty()`，语义更清晰
+
+#### 存储（HouseHandler）
+
+```
+dimension (Level key)
+  └── region (NPCSpawner.Region)
+        └── npcUUID → House(min, max)
+```
+
+三层嵌套 Map，自带 Region 分桶（天然索引），不再使用旧的 `HouseManager` 全局单例。
+
+#### 房屋验证（HouseValidater）
+
+```
+HouseValidater.scan(Level level, BlockPos start)
+  → BFS flood fill，遇非空气/非 NPC_HOUSE_CONSTITUTE 方块停止
+  → 限制扫描半径 20，体积 60~3000
+  → 验证条件：XZ 跨度 ≥ 3，存在光源(light ≥ 10)，存在桌椅（标签）
+  → 返回 HouseResult(min, max, 有效/错误原因)
+  → 内部缓存（坐标→结果，5 秒 TTL，避免多 NPC 重复扫描）
+```
+
+#### 自动查找
+
+NPC 从当前位置向外扩散采样候选点（而非仅从脚下扫描）：
+
+```
+每 ~600 tick（30秒）：
+  1. 先扫描近处 6 方向（±8 格水平，±3 格垂直）
+  2. 每 1200 tick（60秒）补充 8 个随机采样点（半径 32）
+  3. 找到第一个合法房间 → 存入 HouseHandler + 设置 Brain HOME memory
+  4. 已分配到房屋的 NPC 跳过扫描
+```
+
+#### 手动分配
+
+复用 `HouseSelectPacketC2S` 流程，底层 API 替换：
+
+| 操作 | 旧 API | 新 API |
+|------|--------|--------|
+| 检测 | `IHouseDetector.detect(pos, level)` | `HouseValidater.scan(level, pos)` |
+| 查占用 | `HouseManager.getInstance().isInsideHouse(pos)` | `HouseHandler.INSTANCE` 遍历 Region |
+| 分配 | `HouseManager.getInstance().tryAddHouse(house)` | `HouseHandler.INSTANCE.setHouse(...)` |
+| 删除 | `HouseManager.getInstance().removeHouse(uuid)` | `HouseHandler.INSTANCE.removeHouse(...)` |
+
+#### 走回家 Behavior
+
+```
+walkToHome:
+  1. 没有 HOME memory → 跳过
+  2. 夜晚且离家 > 50 格 → 传送回家
+  3. 其他情况且离家 > 5 格 → 寻路回家
+```
+
+### 13.5 NPC 清单
+
+| NPC | 类 | 武器 | 特殊行为 |
+|-----|-----|------|---------|
+| Guide | SimpleNPC | 无 | 基础 |
+| Merchant | SimpleNPC | 投掷刀 | - |
+| Nurse | SimpleNPC | 无 | onAttack: 向友方投掷治疗药水 |
+| Demolitionist | SimpleNPC | 手榴弹 | onAttack: 投掷手榴弹 |
+| DyeTrader | SimpleNPC | 无 | - |
+| Painter | SimpleNPC | 无 | - |
+| Dryad | SimpleNPC | 无 | - |
+| ArmsDealer | SimpleNPC | 手枪/弩 | RangedDefend (Flintlock) |
+| GoblinTinkerer | SimpleNPC | 无 | 重铸功能，不参与战斗 |
+| WitchDoctor | SimpleNPC | 无 | - |
+| Clothier | SimpleNPC | 无 | - |
+| Mechanic | SimpleNPC | 无 | - |
+| PartyGirl | SimpleNPC | 无 | - |
+| Stylist | SimpleNPC | 无 | - |
+| TaxCollector | SimpleNPC | 无 | - |
+| Truffle | SimpleNPC | 无 | - |
+| Wizard | SimpleNPC | 无 | - |
+| Zoologist | SimpleNPC | 无 | - |
+| Angler | AnglerNPC | 无 | 钓鱼任务周期、水中漂浮、睡眠状态 |
+| TravelingMerchant | TravelingMerchantNPC | 无 | 随机到来、定时离开、商品随机 |
+
+### 13.6 生成条件
+
+由 `NPCSpawner`（ConfluenceOtherworld 已有）管理，每个 NPC 的解锁条件：
+
+| NPC | 条件 |
+|-----|------|
+| Guide | 始终可生成（除世界创建时已有） |
+| Merchant | 玩家背包 ≥ 50 银币 |
+| Nurse | Merchant 已存在 + 玩家最大生命 > 5 心 |
+| Demolitionist | 玩家背包有爆炸物 |
+| ArmsDealer | 玩家背包有枪或子弹 |
+| Dryad | 击败任意 Boss（克眼/世界吞噬者/克脑/骷髅王） |
+| GoblinTinkerer | 击败哥布林入侵 |
+| Mechanic | 在地牢找到 |
+| Angler | 在海洋生物群系找到 |
+| Stylist | 在蜘蛛巢找到 |
+| Painter | 已有 3+ NPC |
+| DyeTrader | 玩家背包有染料材料 |
+| WitchDoctor | 击败蜂王 |
+| TaxCollector | 用净化粉净化 Tortured Soul |
+| Clothier | 击败骷髅王 |
+| TravelingMerchant | 随机，2+ NPC 已存在 |
+| Truffle | 地上发光蘑菇生物群系 |
+| Wizard | 击败肉山后地下找到 |
+| PartyGirl | 已有 14+ NPC |
+| Zoologist | 图鉴进度 ≥ 10% |
+
+### 13.7 移植优先级
+
+| 阶段 | 内容 | 说明 |
+|------|------|------|
+| P0 | BaseNPC + SimpleNPC (Guide) | 基类, Brain/Schedule/Sensor 初始化, GeckoLib 动画, 注册 |
+| P1 | 房屋系统 | House / HouseValidater / HouseHandler 集成 / 自动查找 / 手动分配 |
+| P2 | 交易/对话/心情 | 数据驱动（JSON），从 TerraEntity 迁移数据，接入 BaseNPC |
+| P3 | 全 NPC 注册 + 生成条件 | 逐个注册，NPCSpawner 条件对接，旅商特殊逻辑 |
+| P4 | 客户端渲染 / GUI | NPC 模型、交易 GUI、对话气泡 HUD |
+
+### 13.8 交易条件系统
+
+#### 设计
+
+`PortCustomRegistration` — 注册表 Key 为
+`RegistryKey<Registry<Codec<? extends TradeCondition>>>`，
+注册表存储 `MapCodec<? extends TradeCondition>` 作为值。
+根 Codec 基于 registry id dispatch，支持外部扩展。
+
+```java
+public final class TradeConditionTypes {
+    public static final ResourceKey<Registry<Codec<? extends TradeCondition>>> KEY =
+        ResourceKey.createRegistryKey(Confluence.asResource("trade_condition"));
+
+    public static final PortCustomRegistration<Codec<? extends TradeCondition>> REGISTRY =
+        PortRegisterHandler.custom(Confluence.MODID, KEY, maker -> maker.sync(true));
+
+    // 根 Codec：按 registry id dispatch
+    public static final Codec<TradeCondition> CODEC =
+        REGISTRY.registryCodec().dispatch(TradeCondition::codec, Function.identity());
+}
+
+// 开放式接口（非 sealed）
+public interface TradeCondition {
+
+    boolean test(@Nullable ServerLevel level, @Nullable BaseNPC npc);
+
+    Codec<? extends TradeCondition> codec();
+
+    // 默认组合方法
+    default TradeCondition and(TradeCondition other) { return new AndTradeCondition(this, other); }
+    default TradeCondition or(TradeCondition other)  { return new OrTradeCondition(this, other); }
+    default TradeCondition not()                      { return new NotTradeCondition(this); }
+}
+```
+
+#### 内置条件类型
+
+| 类型 ID | 实现 | 参数 | 评估逻辑 |
+|---------|------|------|---------|
+| `always` | `AlwaysTradeCondition` | 无 | 始终通过 |
+| `hardmode` | `HardmodeTradeCondition` | 无 | `HardmodeConvertor` 已启用 |
+| `any_boss_defeated` | `AnyBossDefeatedTradeCondition` | 无 | `KillBoard.getDefeatedBosses()` 非空 |
+| `boss_defeated` | `BossDefeatedTradeCondition` | `EntityType<?>` | `KillBoard` 记录包含该 Boss |
+| `biome` | `BiomeTradeCondition` | `List<ResourceKey<Biome>>`, `List<TagKey<Biome>>` | NPC 所在 biome 匹配 key 或 tag |
+| `time` | `TimeTradeCondition` | `int from, to`, `boolean exclude` | dayTime 在 `[from, to]` 区间 |
+| `kill_entity` | `KillEntityTradeCondition` | `EntityType<?>` | 玩家击杀统计 > 0 |
+| `mood` | `MoodTradeCondition` | `int value`, `boolean less` | 心情值 ≥ value（`less=true` 则 ≤） |
+| `npc_nearby` | `NPCNearbyTradeCondition` | `EntityType<?>` | 附近存在该类型 NPC |
+| `bestiary` | `BestiaryTradeCondition` | `int count` | 图鉴解锁数 ≥ count |
+| `date` | `DateTradeCondition` | `String preset` 或 `Boolean isLunar, DateStamp from, to` | 农历/公历日期匹配 |
+| `and` | `AndTradeCondition` | `TradeCondition left, right` | left && right |
+| `or` | `OrTradeCondition` | `TradeCondition left, right` | left \|\| right |
+| `not` | `NotTradeCondition` | `TradeCondition inner` | !inner |
+
+#### JSON 示例
+
+```json
+{
+  "offers": [
+    {
+      "item": {"id": "minecraft:torch", "count": 1}
+    },
+    {
+      "item": {"id": "confluence:silver_bullet", "count": 50},
+      "condition": {
+        "type": "and",
+        "left":  {"type": "hardmode"},
+        "right": {"type": "time", "from": 0, "to": 6000}
+      }
+    },
+    {
+      "item": {"id": "confluence:minishark", "count": 1},
+      "condition": {"type": "any_boss_defeated"}
+    }
+  ]
+}
+```
+
+- `condition` 字段为可选，缺失等价于 `"always"`
+- 价格**不写在 JSON 中**，统一从 `ValueComponent` 读取
+
+### 13.9 交易菜单
+
+#### 布局
+
+```
+┌──────────────────────────────────────────────┐
+│ NPC Name                    资金: 12金 34银  │
+├──────────────────────────────────────────────┤
+│  Row0 [ 0][ 1][ 2][ 3][ 4][ 5][ 6][ 7][ 8] │  ↑
+│  Row1 [ 9][10][11][12][13][14][15][16][17]  │  █ 滚动条
+│  Row2 [18][19][20][21][22][23][24][25][26]  │  ↓
+│  Row3 [27][28][29][30][31][32][33][34][35]  │
+├──────────────────────────────────────────────┤
+│  玩家背包  Row0 [36]...[44]                  │
+│            Row1 [45]...[53]                  │
+│            Row2 [54]...[62]                  │
+│  快捷栏    Row3 [63]...[71]                  │
+└──────────────────────────────────────────────┘
+```
+
+- 36 个交易槽位（4×9，对齐玩家背包）
+- 支持滚动条
+- 关闭界面时，`PLAYER_SOLD` 物品**清空**（不持久化）
+
+#### 槽位三态
+
+| 状态 | 含义 | 点击行为（cursor 为空） |
+|------|------|-----------------------|
+| `EMPTY` | 可卖入 | cursor 有物品 → 卖出 |
+| `NPC_ITEM` | NPC 出售品 | 付钱 → 物品到 cursor |
+| `PLAYER_SOLD` | 玩家卖入 | 付原价 → 退款 |
+
+#### 价格公式
+
+| 操作 | 金额 |
+|------|------|
+| 卖出 | `ValueComponent × moodCoef` → 玩家收入 |
+| 买入 | `ValueComponent × 5 × moodCoef` → 玩家支出 |
+| 退款 | 原始卖出价 → 玩家支出（不收 mood 影响） |
+
+`moodCoef` 来自 `NPCMood.getValue()` (0.75 ~ 1.5);
+`ValueComponent` 来自物品 DataComponent。
+
+#### 网络同步
+
+```
+打开界面 → S2C: NPC 商品列表（已过滤条件） + 心情系数 + 余额
+玩家点击 → C2S: (slotIndex, action: BUY / SELL / REFUND)
+服务端   → 验证 → 执行 → S2C: 更新槽位状态 + 余额
+```
+
+#### 物品 Codec
+
+- 使用 `PortItemStackExtension.itemNonAirCodec` 序列化 `ItemStack`（支持数量）
+- 价格读取：`ValueComponent.getValue(itemStack, 0)`（`ValueComponent` 无值返回 0 则不可交易）
+
+#### 交易数据存储
+
+- NPC 的 offers 从 JSON 加载（文件：`data/confluence/npc_trades/<npc_id>.json`）
+- 每个 NPC 类型独立文件
+- 服务端加载后缓存在内存，同步到客户端仅发送通过条件的商品
 
 ---
 

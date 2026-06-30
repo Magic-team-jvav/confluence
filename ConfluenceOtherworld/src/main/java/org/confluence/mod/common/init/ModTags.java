@@ -16,6 +16,11 @@ import org.confluence.mod.Confluence;
 
 public final class ModTags {
     public static class Blocks {
+        // NPC 房屋相关
+        public static final TagKey<Block> NPC_HOUSE_CONSTITUTE = register("npc_house_constitute");
+        public static final TagKey<Block> NPC_HOUSE_CHAIR = register("npc_house_chair");
+        public static final TagKey<Block> NPC_HOUSE_TABLE = register("npc_house_table");
+
         public static final TagKey<Block> NEEDS_1_LEVEL = register("needs_1_level");
         public static final TagKey<Block> NEEDS_2_LEVEL = register("needs_2_level");
         public static final TagKey<Block> NEEDS_3_LEVEL = register("needs_3_level");

@@ -230,6 +230,7 @@ public final class ModEntities {
         ENTITIES.register(eventBus);
         MonsterEntities.ENTITIES.register(eventBus);
         CritterEntities.ENTITIES.register(eventBus);
+        NpcEntities.ENTITIES.register(eventBus);
     }
 
     public static List<DeferredRegister<EntityType<?>>> getEntities() {

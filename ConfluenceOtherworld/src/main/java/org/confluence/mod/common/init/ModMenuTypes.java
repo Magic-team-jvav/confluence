@@ -3,8 +3,10 @@ package org.confluence.mod.common.init;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraftforge.network.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.menu.*;
 
 import java.util.function.Supplier;
@@ -31,4 +33,6 @@ public final class ModMenuTypes {
 
     public static final Supplier<MenuType<NPCTradesForgeMenu>> NPC_TRADES_MENU = TYPES.register("npc_trades", () -> new MenuType<>(NPCTradesForgeMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<NPCReforgeMenu>> REFORGE_MENU = TYPES.register("reforge_menu", () -> new MenuType<>(NPCReforgeMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<NPCTradeMenu>> NPC_TRADE = TYPES.register("npc_trade",
+            () -> IForgeMenuType.create(NPCTradeMenu::fromNetwork));
 }

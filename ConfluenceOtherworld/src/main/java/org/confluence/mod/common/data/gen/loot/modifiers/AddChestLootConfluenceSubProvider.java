@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.gen.loot.modifiers;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -31,7 +30,7 @@ import java.util.function.BiConsumer;
 ///
 /// @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
 public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, SyntheticLootTableProvider {
-    public AddChestLootConfluenceSubProvider(HolderLookup.Provider provider) {}
+    public AddChestLootConfluenceSubProvider() {}
 
     public List<AddedChestLoot> getAddedEntitiesLoot() {
         List<AddedChestLoot> entries = new ArrayList<>();

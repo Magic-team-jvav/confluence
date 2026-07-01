@@ -1,22 +1,28 @@
 package org.confluence.mod.common.data.gen.recipe;
 
+import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.Tags;
@@ -24,6 +30,7 @@ import net.minecraftforge.registries.holdersets.OrHolderSet;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
+import org.confluence.lib.common.recipe.SimpleFinishedRecipe;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
@@ -33,6 +40,8 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_furniture.common.init.TFTags;
+import org.mesdag.portlib.wrapper.common.PortTags;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortShapedRecipePattern;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -43,170 +52,182 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> writer) {
-        EnvironmentLevelAccess.SearchContext searchWater = searchWater(holderLookup);
+    protected void buildRecipes(Consumer<FinishedRecipe> writer, HolderLookup.Provider provider) {
+        EnvironmentLevelAccess.SearchContext searchWater = searchWater(provider);
 
         // 高炉
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.ORES_AMBER), MaterialItems.AMBER.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.ORES_RUBY), MaterialItems.RUBY.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.ORES_TOPAZ), MaterialItems.TOPAZ.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.ORES_JADE), MaterialItems.JADE.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.ORES_SAPPHIRE), MaterialItems.SAPPHIRE.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.ORES_AMETHYST), MaterialItems.AMETHYST.toStack(), 1.0F, 100);
+        RecipeSerializer<?> blasting = RecipeSerializer.BLASTING_RECIPE;
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.ORES_AMBER), MaterialItems.AMBER.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.ORES_RUBY), MaterialItems.RUBY.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.ORES_TOPAZ), MaterialItems.TOPAZ.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.ORES_JADE), MaterialItems.JADE.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.ORES_SAPPHIRE), MaterialItems.SAPPHIRE.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.ORES_AMETHYST), MaterialItems.AMETHYST.toStack(), 1.0F, 100);
 
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.COAL_ORE_SMELTING), Items.COAL.getDefaultInstance(), 0.1F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.COPPER_ORE_SMELTING), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.IRON_ORE_SMELTING), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.GOLD_ORE_SMELTING), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 100);
-        cooking(writer, SmeltingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.COAL_ORE_SMELTING), Items.COAL.getDefaultInstance(), 0.1F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.COPPER_ORE_SMELTING), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.IRON_ORE_SMELTING), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.GOLD_ORE_SMELTING), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 100);
 
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.SILVER_ORE_SMELTING), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.TUNGSTEN_ORE_SMELTING), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.METEORITE_ORE_SMELTING), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.OPAL_ORE), MaterialItems.OPAL.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 100);
-        cooking(writer, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.SILVER_ORE_SMELTING), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.TUNGSTEN_ORE_SMELTING), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(ModTags.Items.METEORITE_ORE_SMELTING), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.OPAL_ORE), MaterialItems.OPAL.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 100);
         // 熔炉
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.ORES_AMBER), MaterialItems.AMBER.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.ORES_RUBY), MaterialItems.RUBY.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.ORES_TOPAZ), MaterialItems.TOPAZ.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.ORES_JADE), MaterialItems.JADE.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.ORES_SAPPHIRE), MaterialItems.SAPPHIRE.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.ORES_AMETHYST), MaterialItems.AMETHYST.toStack(), 1.0F, 200);
+        RecipeSerializer<?> smelting = RecipeSerializer.SMELTING_RECIPE;
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_AMBER), MaterialItems.AMBER.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_RUBY), MaterialItems.RUBY.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_TOPAZ), MaterialItems.TOPAZ.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_JADE), MaterialItems.JADE.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_SAPPHIRE), MaterialItems.SAPPHIRE.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_AMETHYST), MaterialItems.AMETHYST.toStack(), 1.0F, 200);
 
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.COAL_ORE_SMELTING), Items.COAL.getDefaultInstance(), 0.1F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.COPPER_ORE_SMELTING), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.IRON_ORE_SMELTING), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_ORE_SMELTING), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.COAL_ORE_SMELTING), Items.COAL.getDefaultInstance(), 0.1F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.COPPER_ORE_SMELTING), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.IRON_ORE_SMELTING), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_ORE_SMELTING), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 200);
 
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.SILVER_ORE_SMELTING), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.TUNGSTEN_ORE_SMELTING), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.METEORITE_ORE_SMELTING), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.OPAL_ORE), MaterialItems.OPAL.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 200);
-        cooking(writer, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 200);
-        cooking(writer, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.SILVER_ORE_SMELTING), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.TUNGSTEN_ORE_SMELTING), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.METEORITE_ORE_SMELTING), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.OPAL_ORE), MaterialItems.OPAL.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 200);
 
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_EBONSAND_BLOCK), NatureBlocks.EBONSAND.toStack(), 0.15F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_PEARLSAND_BLOCK), NatureBlocks.PEARLSAND.toStack(), 0.15F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_RED_SAND_BLOCK), Items.RED_SAND.getDefaultInstance(), 0.15F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_SAND_BLOCK), Items.SAND.getDefaultInstance(), 0.15F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(Tags.Items.GLASS_BLOCKS_COLORLESS), PotionItems.MUG.toStack(), 1.0F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.DIATOMACEOUS), DecorativeBlocks.PURE_GLASS.toStack(), 0.3F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "gold_nugget_from_gold_cooking", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_EBONSAND_BLOCK), NatureBlocks.EBONSAND.toStack(), 0.15F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_PEARLSAND_BLOCK), NatureBlocks.PEARLSAND.toStack(), 0.15F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_RED_SAND_BLOCK), Items.RED_SAND.getDefaultInstance(), 0.15F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_SAND_BLOCK), Items.SAND.getDefaultInstance(), 0.15F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(PortTags.Items.GLASS_BLOCKS_COLORLESS), PotionItems.MUG.toStack(), 1.0F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(NatureBlocks.DIATOMACEOUS), DecorativeBlocks.PURE_GLASS.toStack(), 0.3F, 200);
+        cooking(writer, smelting, "smelting/", "gold_nugget_from_gold_cooking", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
 
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(DecorativeBlocks.MARBLE_BRICKS.FULL), DecorativeBlocks.CRACKED_MARBLE_BRICKS.toStack(), 0.1F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(DecorativeBlocks.GRANITE_BRICKS.FULL), DecorativeBlocks.CRACKED_GRANITE_BRICKS.toStack(), 0.1F, 200);
-
-
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.2F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 20);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
-
-        cooking(writer, SmeltingRecipe::new, "smelting/", "glass_from_crimsand", Ingredient.of(NatureBlocks.CRIMSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "glass_from_ebonsand", Ingredient.of(NatureBlocks.EBONSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
-        cooking(writer, SmeltingRecipe::new, "smelting/", "glass_from_pearlsand", Ingredient.of(NatureBlocks.PEARLSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
-
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
-
-        cooking(writer, SmeltingRecipe::new, "smelting/", "", Ingredient.of(Items.SOUL_SAND), DecorativeBlocks.SOUL_GLASS.toStack(), 0.1F, 200);
-
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 100);
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 100);
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 100);
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 100);
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 100);
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 100);
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 100);
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 100);
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 10);
-        cooking(writer, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "_from_atlantic_cod", Ingredient.of(FoodItems.ATLANTIC_COD), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 30);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 200);
-        cooking(writer, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(DecorativeBlocks.MARBLE_BRICKS.FULL), DecorativeBlocks.CRACKED_MARBLE_BRICKS.toStack(), 0.1F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(DecorativeBlocks.GRANITE_BRICKS.FULL), DecorativeBlocks.CRACKED_GRANITE_BRICKS.toStack(), 0.1F, 200);
 
 
-        writer.accept(Confluence.asResource("smithing/amber_hook"), new SmithingTransformRecipe(
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.2F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 20);
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+
+        cooking(writer, smelting, "smelting/", "glass_from_crimsand", Ingredient.of(NatureBlocks.CRIMSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
+        cooking(writer, smelting, "smelting/", "glass_from_ebonsand", Ingredient.of(NatureBlocks.EBONSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
+        cooking(writer, smelting, "smelting/", "glass_from_pearlsand", Ingredient.of(NatureBlocks.PEARLSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
+
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
+
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(Items.SOUL_SAND), DecorativeBlocks.SOUL_GLASS.toStack(), 0.1F, 200);
+
+        RecipeSerializer<?> smoking = RecipeSerializer.SMELTING_RECIPE;
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 100);
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 100);
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 100);
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 100);
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 100);
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 100);
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 100);
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 100);
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 10);
+        cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+
+        RecipeSerializer<?> campfireCooking = RecipeSerializer.CAMPFIRE_COOKING_RECIPE;
+        cooking(writer, campfireCooking, "campfire_cooking/", "_from_atlantic_cod", Ingredient.of(FoodItems.ATLANTIC_COD), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 200);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 200);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 200);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 200);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 200);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 200);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.PINE_NUT), FoodItems.ROASTED_PINE_NUT.toStack(), 0.02F, 30);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 200);
+        cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+
+
+        SmithingTransformRecipeBuilder.smithing(
                 Ingredient.of(DecorativeBlocks.AMBER_CHAIN),
                 Ingredient.of(DecorativeBlocks.AMBER_CHAIN),
                 Ingredient.of(DecorativeBlocks.AMBER_BLOCK),
-                HookItems.AMBER_HOOK.toStack()
-        ), null);
-        writer.accept(Confluence.asResource("smithing/topaz_hook"), new SmithingTransformRecipe(
+                RecipeCategory.TOOLS,
+                HookItems.AMBER_HOOK.get()
+        ).save(writer, Confluence.asResource("smithing/amber_hook"));
+        SmithingTransformRecipeBuilder.smithing(
                 Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN),
                 Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN),
                 Ingredient.of(DecorativeBlocks.TOPAZ_BLOCK),
-                HookItems.TOPAZ_HOOK.toStack()
-        ), null);
-        writer.accept(Confluence.asResource("smithing/amethyst_hook"), new SmithingTransformRecipe(
+                RecipeCategory.TOOLS,
+                HookItems.TOPAZ_HOOK.get()
+        ).save(writer, Confluence.asResource("smithing/topaz_hook"));
+        SmithingTransformRecipeBuilder.smithing(
                 Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN),
                 Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN),
                 Ingredient.of(DecorativeBlocks.AMETHYST_BLOCK),
-                HookItems.AMETHYST_HOOK.toStack()
-        ), null);
-        writer.accept(Confluence.asResource("smithing/diamond_hook"), new SmithingTransformRecipe(
+                RecipeCategory.TOOLS,
+                HookItems.AMETHYST_HOOK.get()
+        ).save(writer, Confluence.asResource("smithing/amethyst_hook"));
+        SmithingTransformRecipeBuilder.smithing(
                 Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN),
                 Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN),
                 Ingredient.of(Items.DIAMOND_BLOCK),
-                HookItems.DIAMOND_HOOK.toStack()
-        ), null);
-        writer.accept(Confluence.asResource("smithing/ruby_hook"), new SmithingTransformRecipe(
+                RecipeCategory.TOOLS,
+                HookItems.DIAMOND_HOOK.get()
+        ).save(writer, Confluence.asResource("smithing/diamond_hook"));
+        SmithingTransformRecipeBuilder.smithing(
                 Ingredient.of(DecorativeBlocks.RUBY_CHAIN),
                 Ingredient.of(DecorativeBlocks.RUBY_CHAIN),
                 Ingredient.of(DecorativeBlocks.RUBY_BLOCK),
-                HookItems.RUBY_HOOK.toStack()
-        ), null);
-        writer.accept(Confluence.asResource("smithing/sapphire_hook"), new SmithingTransformRecipe(
+                RecipeCategory.TOOLS,
+                HookItems.RUBY_HOOK.get()
+        ).save(writer, Confluence.asResource("smithing/ruby_hook"));
+        SmithingTransformRecipeBuilder.smithing(
                 Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN),
                 Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN),
                 Ingredient.of(DecorativeBlocks.SAPPHIRE_BLOCK),
-                HookItems.SAPPHIRE_HOOK.toStack()
-        ), null);
-        writer.accept(Confluence.asResource("smithing/grappling_hook"), new SmithingTransformRecipe(
+                RecipeCategory.TOOLS,
+                HookItems.SAPPHIRE_HOOK.get()
+        ).save(writer, Confluence.asResource("smithing/sapphire_hook"));
+        SmithingTransformRecipeBuilder.smithing(
                 Ingredient.of(Items.CHAIN),
                 Ingredient.of(Items.CHAIN),
                 Ingredient.of(MaterialItems.HOOK),
-                HookItems.GRAPPLING_HOOK.toStack()
-        ), null);
+                RecipeCategory.TOOLS,
+                HookItems.GRAPPLING_HOOK.get()
+        ).save(writer, Confluence.asResource("smithing/grappling_hook"));
 
 
         skyMill(writer, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
@@ -221,7 +242,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         skyMill(writer, DecorativeBlocks.SUN_PLATE.SLAB.toStack(2), Ingredient.of(DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(writer, NatureBlocks.CLOUD_BLOCK.toStack(2), Ingredient.of(MaterialItems.WEAVING_CLOUD_COTTON));
         skyMill(writer, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
-        skyMill(writer, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
+        skyMill(writer, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(provider.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(writer, TFBlocks.SKYWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(writer, TFBlocks.DUSKWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.MOON_PLATE.FULL));
         skyMill(writer, DecorativeBlocks.DISC_BLOCK.STAIRS.toStack(), Ingredient.of(DecorativeBlocks.DISC_BLOCK.FULL));
@@ -242,7 +263,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         baseRobe(writer, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_SAPPHIRE), Ingredient.of(ModTags.Items.GEMS_SAPPHIRE), ArmorItems.SAPPHIRE_ROBE.toStack());
         baseRobe(writer, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMETHYST), Ingredient.of(ModTags.Items.GEMS_AMETHYST), ArmorItems.AMETHYST_ROBE.toStack());
         loom(writer, VanityArmorItems.ROBE.toStack(),
-                ShapedRecipePattern.of(
+                PortShapedRecipePattern.of(
                         Map.of(
                                 '#', AmountIngredient.of(3, MaterialItems.SILK),
                                 'a', AmountIngredient.of(2, MaterialItems.SILK)
@@ -255,7 +276,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 )
         );
         loom(writer, ArmorItems.FLINX_FUR_COAT.toStack(),
-                ShapedRecipePattern.of(
+                PortShapedRecipePattern.of(
                         Map.of(
                                 'a', AmountIngredient.of(4, MaterialItems.FLINX_FUR),
                                 'b', AmountIngredient.of(2, MaterialItems.SILK),
@@ -271,7 +292,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
         // 哥布林战旗
         loom(writer, ConsumableItems.GOBLIN_BATTLE_STANDARD.toStack(),
-                ShapedRecipePattern.of(Map.of(
+                PortShapedRecipePattern.of(Map.of(
                                 '#', AmountIngredient.of(3, MaterialItems.TATTERED_CLOTH),
                                 'b', Ingredient.of(MaterialItems.TATTERED_CLOTH),
                                 'a', AmountIngredient.of(2, ItemTags.PLANKS)
@@ -311,7 +332,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(writer, TCItems.CELL_PHONE.toStack(), Ingredient.of(TCItems.PDA), Ingredient.of(ToolItems.ICE_MIRROR));
 
         solidifier(writer, DecorativeBlocks.BLUE_GEL_BLOCK.toStack(),
-                ShapedRecipePattern.of(Map.of(
+                PortShapedRecipePattern.of(Map.of(
                                 '#', Ingredient.of(MaterialItems.GEL)),
                         List.of(
                                 "##",
@@ -320,7 +341,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 )
         );
         solidifier(writer, DecorativeBlocks.PINK_GEL_BLOCK.toStack(),
-                ShapedRecipePattern.of(Map.of(
+                PortShapedRecipePattern.of(Map.of(
                                 '#', Ingredient.of(MaterialItems.PINK_GEL)
                         ),
                         List.of(
@@ -330,7 +351,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 )
         );
         solidifier(writer, DecorativeBlocks.FROZEN_GEL_BLOCK.toStack(),
-                ShapedRecipePattern.of(Map.of(
+                PortShapedRecipePattern.of(Map.of(
                                 '#', Ingredient.of(DecorativeBlocks.BLUE_GEL_BLOCK),
                                 'a', Ingredient.of(Items.BLUE_ICE)
                         ),
@@ -448,9 +469,9 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         crystalBlock(writer, ManaWeaponItems.CURSED_FLAMES.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, ModBlocks.CURSED_FLAME), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(writer, ManaWeaponItems.CRYSTAL_STORM.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.CRYSTAL_SHARDS), AmountIngredient.of(15, MaterialItems.SOUL_OF_LIGHT));
         crystalBlock(writer, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.ICHOR), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
-        crystalBlock(writer, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));
-        crystalBlock(writer, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(holderLookup), false), emptyDropper);
-        crystalBlock(writer, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(holderLookup), false), emptyDropper);
+        crystalBlock(writer, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(PortTags.Items.SANDS));
+        crystalBlock(writer, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(provider), false), emptyDropper);
+        crystalBlock(writer, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(provider), false), emptyDropper);
         crystalBlock(writer, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), emptyDropper);
         crystalBlock(writer, FunctionalBlocks.WATER_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES));
         crystalBlock(writer, FunctionalBlocks.RAINBOW_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), AmountIngredient.of(50, MaterialItems.FALLING_STAR));
@@ -491,195 +512,202 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         dyeVat(writer, VanityArmorItems.BRIGHT_PINK_DYE.toStack(), Ingredient.of(VanityArmorItems.PINK_DYE), silverDye);
     }
 
-    protected <T extends AbstractCookingRecipe> void cooking(writer writer, AbstractCookingRecipe.Factory<T> factory, String prefix, String suffix, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
+    protected void cooking(Consumer<FinishedRecipe> writer, RecipeSerializer<?> serializer, String prefix, String suffix, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
         ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
-        writer.accept(id, factory.create("", CookingBookCategory.MISC, ingredient, result, experience, cookingTime), createAdvancementHolder(writer, id, ingredient));
+        Advancement.Builder advancement = createAdvancementBuilder(id, ingredient);
+        writer.accept(new FinishedRecipe() {
+            @Override
+            public void serializeRecipeData(JsonObject json) {
+                json.addProperty("category", "misc");
+                json.add("ingredient", ingredient.toJson());
+                json.addProperty("result", BuiltInRegistries.ITEM.getKey(result.getItem()).toString());
+                json.addProperty("experience", experience);
+                json.addProperty("cookingtime", cookingTime);
+            }
+
+            @Override
+            public ResourceLocation getId() {
+                return id;
+            }
+
+            @Override
+            public RecipeSerializer<?> getType() {
+                return serializer;
+            }
+
+            @Override
+            public JsonObject serializeAdvancement() {
+                return advancement.serializeToJson();
+            }
+
+            @Override
+            public ResourceLocation getAdvancementId() {
+                return id.withPrefix("recipes/confluence/");
+            }
+        });
     }
 
-    protected void solidifier(writer writer, ItemStack result, ShapedRecipePattern pattern) {
+    protected void solidifier(Consumer<FinishedRecipe> writer, ItemStack result, PortShapedRecipePattern pattern) {
         ResourceLocation id = Confluence.asResource("solidifier/" + getItemName(result.getItem()));
-        writer.accept(id, new SolidifierRecipe(result, pattern), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new SolidifierRecipe(result, pattern)));
     }
 
-    protected void solidifier(writer writer, ItemStack result, Ingredient... ingredients) {
+    protected void solidifier(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("solidifier/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new SolidifierRecipe(result, zingredients), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new SolidifierRecipe(result, zingredients)));
     }
 
 
-    protected void skyMill(writer writer, ItemStack result, Ingredient... ingredients) {
+    protected void skyMill(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
+        skyMill(writer, result, EnvironmentLevelAccess.Matcher.EMPTY, ingredients);
+    }
+
+    protected void skyMill(Consumer<FinishedRecipe> writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
-        writer.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), EnvironmentLevelAccess.Matcher.EMPTY), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment)));
     }
 
-    protected void skyMill(writer writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
-        ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
-        writer.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment), null);
+    protected void workshop(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
+        workshop(writer, result, EnvironmentLevelAccess.Matcher.EMPTY, ingredients);
     }
 
-    protected void workshop(writer writer, ItemStack result, Ingredient... ingredients) {
+    protected void workshop(Consumer<FinishedRecipe> writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("workshop/" + getItemName(result.getItem()));
-        writer.accept(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), EnvironmentLevelAccess.Matcher.EMPTY), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment)));
     }
 
-    protected void workshop(writer writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
-        ResourceLocation id = Confluence.asResource("workshop/" + getItemName(result.getItem()));
-        writer.accept(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment), null);
-    }
-
-    protected void hellforge(writer writer, ItemStack result, float experience, int cookingTime, boolean requiresFuel, Ingredient... ingredients) {
+    protected void hellforge(Consumer<FinishedRecipe> writer, ItemStack result, float experience, int cookingTime, boolean requiresFuel, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("hellforge/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new HellforgeRecipe(result, zingredients, experience, cookingTime, requiresFuel), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new HellforgeRecipe(result, zingredients, experience, cookingTime, requiresFuel)));
     }
 
-    protected void fletchingTable(writer writer, String suffix, ItemStack result, Ingredient tail, Ingredient body, Ingredient head) {
+    protected void fletchingTable(Consumer<FinishedRecipe> writer, String suffix, ItemStack result, Ingredient tail, Ingredient body, Ingredient head) {
         ResourceLocation id = Confluence.asResource("fletching_table/" + getItemName(result.getItem()) + suffix);
-        writer.accept(id, new FletchingTableRecipe(result, tail, body, head), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new FletchingTableRecipe(result, tail, body, head)));
     }
 
-    protected void fletchingTable(writer writer, ItemStack result, Ingredient tail, Ingredient body, Ingredient head) {
-        ResourceLocation id = Confluence.asResource("fletching_table/" + getItemName(result.getItem()));
-        writer.accept(id, new FletchingTableRecipe(result, tail, body, head), null);
+    protected void fletchingTable(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient tail, Ingredient body, Ingredient head) {
+        fletchingTable(writer, "", result, tail, body, head);
     }
 
-    protected void altar(writer writer, ItemStack result, Ingredient... ingredients) {
+    protected void altar(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("altar/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new AltarRecipe(result, zingredients), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new AltarRecipe(result, zingredients)));
     }
 
-    protected void alchemyTable(writer writer, ItemStack result, Ingredient base, Ingredient... ingredients) {
+    protected void alchemyTable(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient base, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("alchemy_table/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new AlchemyTableRecipe(result, base, zingredients), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new AlchemyTableRecipe(result, base, zingredients)));
     }
 
-    protected void crystalBlock(writer writer, ItemStack result, Ingredient... ingredients) {
+    protected void crystalBlock(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
+        crystalBlock(writer, result, EnvironmentLevelAccess.Matcher.EMPTY, ingredients);
+    }
+
+    protected void crystalBlock(Consumer<FinishedRecipe> writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("crystal_block/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new CrystalBallRecipe(result, zingredients, EnvironmentLevelAccess.Matcher.EMPTY), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new CrystalBallRecipe(result, zingredients, environment)));
     }
 
-    protected void crystalBlock(writer writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
-        ResourceLocation id = Confluence.asResource("crystal_block/" + getItemName(result.getItem()));
-        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new CrystalBallRecipe(result, zingredients, environment), null);
-    }
-
-    protected void hardmodeForge(writer writer, ItemStack result, float experience, int cookingTime, boolean requiresFuel, Ingredient... ingredients) {
+    protected void hardmodeForge(Consumer<FinishedRecipe> writer, ItemStack result, float experience, int cookingTime, boolean requiresFuel, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("hardmode_forge/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new HardmodeForgeRecipe(result, zingredients, experience, cookingTime, requiresFuel), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new HardmodeForgeRecipe(result, zingredients, experience, cookingTime, requiresFuel)));
     }
 
-    protected void loom(writer writer, ItemStack result, ShapedRecipePattern pattern) {
+    protected void loom(Consumer<FinishedRecipe> writer, ItemStack result, PortShapedRecipePattern pattern) {
         ResourceLocation id = Confluence.asResource("loom/" + getItemName(result.getItem()));
-        writer.accept(id, new LoomRecipe(result, pattern), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new LoomRecipe(result, pattern)));
     }
 
-    protected void loom(writer writer, ItemStack result, Ingredient... ingredients) {
+    protected void loom(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("loom/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new LoomRecipe(result, zingredients), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new LoomRecipe(result, zingredients)));
     }
 
-    protected void dyeVat(writer writer, ItemStack result, Ingredient... ingredients) {
+    protected void dyeVat(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("dye_vat/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new DyeVatRecipe(result, zingredients), null);
+        writer.accept(new SimpleFinishedRecipe<>(id, new DyeVatRecipe(result, zingredients)));
     }
 
 
-    public static AdvancementHolder createAdvancementHolder(writer writer, ResourceLocation id, NonNullList<Ingredient> ingredients) {
+    public static Advancement.Builder createAdvancementBuilder(ResourceLocation id, NonNullList<Ingredient> ingredients) {
         Set<Item> itemCounter = new HashSet<>();
         Set<TagKey<Item>> tagCounter = new HashSet<>();
-        Advancement.Builder builder = writer.advancement()
+        Advancement.Builder builder = Advancement.Builder.advancement()
                 .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
                 .rewards(AdvancementRewards.Builder.recipe(id))
-                .requirements(AdvancementRequirements.Strategy.OR);
+                .requirements(RequirementsStrategy.OR);
         for (Ingredient ingredient : ingredients) {
-            Ingredient.Value[] values;
-            ICustomIngredient customIngredient = ingredient.getCustomIngredient();
-            if (customIngredient == null) {
-                values = ingredient.getValues();
-            } else {
-                values = customIngredient.getItems().map(Ingredient.ItemValue::new).toArray(Ingredient.Value[]::new);
-            }
-            for (Ingredient.Value value : values) {
-                if (value instanceof Ingredient.ItemValue itemValue) {
-                    Item item = itemValue.itemStack().getItem();
-                    if (itemCounter.contains(item)) continue;
-                    itemCounter.add(item);
-                    builder.addCriterion(getHasName(item), has(item));
-                } else if (value instanceof Ingredient.TagValue tagValue) {
-                    TagKey<Item> tag = tagValue.tag();
-                    if (tagCounter.contains(tag)) continue;
-                    tagCounter.add(tag);
-                    builder.addCriterion("has_tag_" + tag.location().getPath(), has(tag));
-                }
-            }
+            buildIngredient(ingredient, itemCounter, builder, tagCounter);
         }
-        return builder.build(id.withPrefix("recipes/confluence/"));
+        return builder;
     }
 
-    public static AdvancementHolder createAdvancementHolder(writer writer, ResourceLocation id, Ingredient ingredient) {
-        Set<Item> itemCounter = new HashSet<>();
-        Set<TagKey<Item>> tagCounter = new HashSet<>();
-        Advancement.Builder builder = writer.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
-                .rewards(AdvancementRewards.Builder.recipe(id))
-                .requirements(AdvancementRequirements.Strategy.OR);
+    private static void buildIngredient(Ingredient ingredient, Set<Item> itemCounter, Advancement.Builder builder, Set<TagKey<Item>> tagCounter) {
         Ingredient.Value[] values;
-        ICustomIngredient customIngredient = ingredient.getCustomIngredient();
-        if (customIngredient == null) {
-            values = ingredient.getValues();
+        if (ingredient.isVanilla()) {
+            values = ingredient.values;
         } else {
-            values = customIngredient.getItems().map(Ingredient.ItemValue::new).toArray(Ingredient.Value[]::new);
+            values = Arrays.stream(ingredient.getItems()).map(Ingredient.ItemValue::new).toArray(Ingredient.Value[]::new);
         }
         for (Ingredient.Value value : values) {
             if (value instanceof Ingredient.ItemValue itemValue) {
-                Item item = itemValue.itemStack().getItem();
+                Item item = itemValue.getItems().iterator().next().getItem();
                 if (itemCounter.contains(item)) continue;
                 itemCounter.add(item);
                 builder.addCriterion(getHasName(item), has(item));
             } else if (value instanceof Ingredient.TagValue tagValue) {
-                TagKey<Item> tag = tagValue.tag();
+                TagKey<Item> tag = tagValue.tag;
                 if (tagCounter.contains(tag)) continue;
                 tagCounter.add(tag);
                 builder.addCriterion("has_tag_" + tag.location().getPath(), has(tag));
             }
         }
-        return builder.build(id.withPrefix("recipes/confluence/"));
     }
 
-    public static EnvironmentLevelAccess.SearchContext searchWater(HolderLookup.Provider holderLookup) {
+    public static Advancement.Builder createAdvancementBuilder(ResourceLocation id, Ingredient ingredient) {
+        Set<Item> itemCounter = new HashSet<>();
+        Set<TagKey<Item>> tagCounter = new HashSet<>();
+        Advancement.Builder builder = Advancement.Builder.advancement()
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+                .rewards(AdvancementRewards.Builder.recipe(id))
+                .requirements(RequirementsStrategy.OR);
+        buildIngredient(ingredient, itemCounter, builder, tagCounter);
+        return builder;
+    }
+
+    public static EnvironmentLevelAccess.SearchContext searchWater(HolderLookup.Provider provider) {
         return new EnvironmentLevelAccess.SearchContext(2,
-                Optional.of(new OrHolderSet<>(
-                        holderLookup.lookupOrThrow(Registries.BLOCK).getOrThrow(TFTags.SINKS),
+                Optional.of(new OrHolderSet<>(List.of(
+                        provider.lookupOrThrow(Registries.BLOCK).getOrThrow(TFTags.SINKS),
                         HolderSet.direct(Blocks.WATER_CAULDRON.builtInRegistryHolder())
-                )),
-                List.of(new StatePropertiesPredicate(List.of(new StatePropertiesPredicate.PropertyMatcher(
-                        BlockStateProperties.WATERLOGGED.getName(), new StatePropertiesPredicate.ExactMatcher("true")
-                )))),
-                Optional.of(holderLookup.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.WATER))
+                ))),
+                List.of(StatePropertiesPredicate.Builder.properties().hasProperty(BlockStateProperties.WATERLOGGED, true).build()),
+                Optional.of(provider.lookupOrThrow(Registries.FLUID).getOrThrow(PortTags.Fluids.WATER))
         );
     }
 
-    public static EnvironmentLevelAccess.SearchContext searchHoney(HolderLookup.Provider holderLookup) {
+    public static EnvironmentLevelAccess.SearchContext searchHoney(HolderLookup.Provider provider) {
         return new EnvironmentLevelAccess.SearchContext(2,
                 Optional.of(HolderSet.direct(ModBlocks.HONEY_CAULDRON)),
                 List.of(),
-                Optional.of(holderLookup.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.HONEY))
+                Optional.of(provider.lookupOrThrow(Registries.FLUID).getOrThrow(PortTags.Fluids.HONEY))
         );
     }
 
-    public static EnvironmentLevelAccess.SearchContext searchLava(HolderLookup.Provider holderLookup) {
+    public static EnvironmentLevelAccess.SearchContext searchLava(HolderLookup.Provider provider) {
         return new EnvironmentLevelAccess.SearchContext(2,
                 Optional.of(HolderSet.direct(Blocks.LAVA_CAULDRON.builtInRegistryHolder())),
                 List.of(),
-                Optional.of(holderLookup.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.LAVA))
+                Optional.of(provider.lookupOrThrow(Registries.FLUID).getOrThrow(PortTags.Fluids.LAVA))
         );
     }
 
@@ -689,8 +717,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
             "a a"
     );
 
-    protected void baseRobe(writer writer, Ingredient robe, Ingredient gem, Ingredient handle, ItemStack result) {
-        loom(writer, result, ShapedRecipePattern.of(Map.of(
+    protected void baseRobe(Consumer<FinishedRecipe> writer, Ingredient robe, Ingredient gem, Ingredient handle, ItemStack result) {
+        loom(writer, result, PortShapedRecipePattern.of(Map.of(
                 '#', robe,
                 'b', gem,
                 'a', handle

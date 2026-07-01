@@ -5,7 +5,7 @@ import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import org.confluence.mod.common.entity.monster.WoodenMimic;
+import org.confluence.mod.common.entity.monster.BaseMimic;
 
 public class CustomMimicSummonKeyEvent extends PlayerEvent {
     private final ItemStack key;
@@ -31,7 +31,7 @@ public class CustomMimicSummonKeyEvent extends PlayerEvent {
         return blockEntity;
     }
 
-    public static void summon(WoodenMimic mimic, ChestBlockEntity blockEntity) {
+    public static void summon(BaseMimic mimic, ChestBlockEntity blockEntity) {
         mimic.setPos(blockEntity.getBlockPos().getBottomCenter());
         blockEntity.clearContent();
         mimic.level().removeBlock(blockEntity.getBlockPos(), false);

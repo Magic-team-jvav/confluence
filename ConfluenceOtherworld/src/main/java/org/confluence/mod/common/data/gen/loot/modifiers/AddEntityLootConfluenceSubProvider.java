@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.gen.loot.modifiers;
 
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -34,7 +33,7 @@ import java.util.stream.Stream;
 ///
 /// @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
 public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider implements SyntheticLootTableProvider {
-    public AddEntityLootConfluenceSubProvider(HolderLookup.Provider registries) {
+    public AddEntityLootConfluenceSubProvider() {
         super(FeatureFlags.REGISTRY.allFlags());
     }
 

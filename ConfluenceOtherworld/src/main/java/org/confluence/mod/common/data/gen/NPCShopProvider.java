@@ -57,7 +57,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     }
 
     @Override
-    public void buildRecipes(Consumer<FinishedRecipe> writer) {
+    public void buildRecipes(Consumer<FinishedRecipe> writer, HolderLookup.Provider provider) {
         SecretFlagLock theCorruptionWorldLock = new SecretFlagLock(IWorldOptions.THE_CORRUPTION);
         SecretFlagLock theCrimsonWorldLock = new SecretFlagLock(IWorldOptions.THE_CRIMSON);
         SecretFlagLock hardmodeLock = new SecretFlagLock(IWorldOptions.HARDMODE);

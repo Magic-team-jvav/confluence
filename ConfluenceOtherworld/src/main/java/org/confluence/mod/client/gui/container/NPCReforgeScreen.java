@@ -20,15 +20,12 @@ import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terraentity.entity.ai.keyframe.animation.KeyframeAnimation;
 
+@SuppressWarnings("UnstableApiUsage")
 public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/reforge.png");
     private boolean buttonClicked = false;
     private final EvictingQueue<Component> prefixBefore;
-    int clickTime = 500;
-    KeyframeAnimation interpolator;
-
 
     public NPCReforgeScreen(NPCReforgeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -60,22 +57,6 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         }
     }
 
-    protected void containerTick() {
-        clickTime++;
-    }
-
-    protected void init() {
-        super.init();
-        this.interpolator = KeyframeAnimation.builder()
-                .addKeyframe(0, 0)
-                .addKeyframe(15, 55)
-                .addKeyframe(20, 60)
-                .addKeyframe(40, 60)
-                .addKeyframe(45, 65)
-                .addKeyframe(60, 100)
-                .build();
-    }
-
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {}
 
@@ -83,30 +64,6 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
-
-        ItemStack itemStack = menu.getReforgeItem();
-        if (!itemStack.isEmpty()) {
-            PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
-
-            if (prefix != null && clickTime > 0 && clickTime < 60) {
-                double v = interpolator.cal(clickTime + pPartialTick);
-                pGuiGraphics.pose().pushPose();
-
-                MutableComponent component = prefix.getName().append(" ").append(Component.translatable(itemStack.getItem().getDescriptionId()));
-                ModRarity rarity = ModRarity.getRarity(itemStack);
-                if (rarity != null) {
-                    component.withColor(rarity.color());
-                }
-                pGuiGraphics.pose().translate(0, -v * 0.5f, 0);
-                float f = (clickTime / 60.0f);
-                f = f * (1 - f) * 4f;
-                f = Math.min(1, f);
-                pGuiGraphics.color(1, 1, 1, f);
-                pGuiGraphics.drawString(font, component, leftPos + 12, topPos + 40, -1);
-                pGuiGraphics.color(1, 1, 1, 1);
-                pGuiGraphics.pose().popPose();
-            }
-        }
     }
 
     @Override
@@ -125,7 +82,6 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 prefixBefore.add(component);
             }
             this.buttonClicked = true;
-            this.clickTime = 0;
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);

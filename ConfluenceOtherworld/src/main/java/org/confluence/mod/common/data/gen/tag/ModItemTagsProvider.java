@@ -35,6 +35,7 @@ import org.confluence.terraentity.init.item.TESpawnEggItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -121,7 +122,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.ROTTEN_BONE.get()
         );
 
-        tag(Tags.Items.FOODS_RAW_FISH).add(
+        tag(PortTags.Items.FOODS_RAW_FISH).add(
                 FoodItems.SEA_BASS.get(),
                 FoodItems.ATLANTIC_COD.get(),
                 FoodItems.TROUT.get()
@@ -282,7 +283,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.BOTTOMLESS_HONEY_BUCKET.get(),
                 ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get()
         );
-        tag(Tags.Items.FOODS_FRUIT).add(
+        tag(PortTags.Items.FOODS_FRUIT).add(
                 FoodItems.APRICOT.get(), FoodItems.BANANA.get(), FoodItems.CHERRY.get(), FoodItems.COCONUT.get(),
                 FoodItems.DRAGON_FRUIT.get(), FoodItems.GRAPE_FRUIT.get(), FoodItems.LEMON.get(),
                 FoodItems.MANGO.get(), FoodItems.PEACH.get(), FoodItems.PINEAPPLE.get(),
@@ -963,7 +964,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.RAW_BIRD.get(),
                 FoodItems.RAW_DUCK.get()
         );
-        tag(Tags.Items.FOODS_RAW_MEAT).add(
+        tag(PortTags.Items.FOODS_RAW_MEAT).add(
                 FoodItems.RAW_FROG.get(),
                 FoodItems.RAW_SQUIRREL.get(),
                 FoodItems.RAW_BIRD.get(),

@@ -1,9 +1,7 @@
 package org.confluence.mod.common.data.gen.loot.modifiers;
 
 import net.minecraft.advancements.critereon.LocationPredicate;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
@@ -30,11 +28,8 @@ import java.util.function.BiConsumer;
 ///
 /// @see org.confluence.mod.common.data.gen.ModLootModifiersProvider
 public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider implements SyntheticLootTableProvider {
-    private final HolderLookup.Provider provider;
-
-    public AddBlockLootConfluenceSubProvider(HolderLookup.Provider provider) {
+    public AddBlockLootConfluenceSubProvider() {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags());
-        this.provider = provider;
     }
 
     public List<AddedBlockLoot> getAddedBlocksLoot() {
@@ -70,7 +65,6 @@ public class AddBlockLootConfluenceSubProvider extends BlockLootSubProvider impl
                                 )
                 )
         ));
-        var biomes = provider.lookupOrThrow(Registries.BIOME);
         entries.add(new AddedBlockLoot(Blocks.FERN,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()

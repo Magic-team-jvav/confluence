@@ -12,9 +12,9 @@ import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 
-public class CrimsonMimic extends BaseMonster {
+public class BaseMimic extends BaseMonster {
 
-    public CrimsonMimic(EntityType<? extends CrimsonMimic> type, Level level) {
+    public BaseMimic(EntityType<? extends BaseMimic> type, Level level) {
         super(type, level);
     }
 
@@ -29,8 +29,8 @@ public class CrimsonMimic extends BaseMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(CrimsonMimic.this),
-                                new MoveToTargetAction(CrimsonMimic.this, 0.6, 2.0),
+                        SequenceNode.of(new HasTargetCondition(BaseMimic.this),
+                                new MoveToTargetAction(BaseMimic.this, 0.6, 2.0),
                                 new WaitAction(15)),
                         new WaitAction(40));
             }

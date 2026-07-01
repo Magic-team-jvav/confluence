@@ -55,7 +55,7 @@ import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
-import org.confluence.mod.common.entity.monster.WoodenMimic;
+import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
@@ -430,7 +430,7 @@ public final class PlayerEvents {
             }
             if (key == null) break mimic;
             if (key.is(ToolItems.KEY_OF_LIGHT.get())) {
-                WoodenMimic mimic = MonsterEntities.HALLOWED_MIMIC.get().create(level);
+                BaseMimic mimic = MonsterEntities.HALLOWED_MIMIC.get().create(level);
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
                 }
@@ -441,7 +441,7 @@ public final class PlayerEvents {
                 } else {
                     summonCorruption = (level.getGameTime() / 24000L) % 2 == 0;
                 }
-                WoodenMimic mimic;
+                BaseMimic mimic;
                 if (summonCorruption) {
                     mimic = MonsterEntities.CORRUPT_MIMIC.get().create(level);
                 } else {

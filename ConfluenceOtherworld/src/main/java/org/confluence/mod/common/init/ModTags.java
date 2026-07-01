@@ -8,7 +8,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -507,17 +506,6 @@ public final class ModTags {
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);
-        }
-    }
-
-    public static class Enchantments {
-        public static final TagKey<Enchantment> MANA_IO_EXCLUSIVE = register("mana_io_exclusive");
-        public static final TagKey<Enchantment> MENDING_EXCLUSIVE = register("mending_exclusive");
-        public static final TagKey<Enchantment> MANA_AFFECTIVE_EXCLUSIVE = register("mana_affective_exclusive");
-        public static final TagKey<Enchantment> MAGIC_ATTACK_EXCLUSIVE = register("magic_attack_exclusive");
-
-        private static TagKey<Enchantment> register(String id) {
-            return Confluence.asTagKey(Registries.ENCHANTMENT, id);
         }
     }
 

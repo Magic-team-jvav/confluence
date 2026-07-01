@@ -3,7 +3,8 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
@@ -15,8 +16,8 @@ public record KillEntityCondition(EntityType<?> entityType) implements TradeCond
                             .fieldOf("entity").forGetter(KillEntityCondition::entityType)
             ).apply(b, KillEntityCondition::new));
 
-    @Override public boolean test(ServerLevel level, BaseNPC npc) {
-        return true; // TODO: 接入玩家击杀统计
+    @Override public boolean test(ServerPlayer player, BaseNPC npc) {
+        return player.getStats().getValue(Stats.ENTITY_KILLED.get(entityType)) > 0;
     }
     @Override public MapCodec<? extends TradeCondition> codec() { return ModTradeConditions.KILL_ENTITY.get(); }
 }

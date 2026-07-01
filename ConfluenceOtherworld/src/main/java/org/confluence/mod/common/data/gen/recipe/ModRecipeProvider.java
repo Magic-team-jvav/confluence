@@ -242,7 +242,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         skyMill(writer, DecorativeBlocks.SUN_PLATE.SLAB.toStack(2), Ingredient.of(DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(writer, NatureBlocks.CLOUD_BLOCK.toStack(2), Ingredient.of(MaterialItems.WEAVING_CLOUD_COTTON));
         skyMill(writer, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
-        skyMill(writer, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(provider.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
+        skyMill(writer, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(provider.lookupOrThrow(Registries.BIOME).getOrThrow(PortTags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(writer, TFBlocks.SKYWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(writer, TFBlocks.DUSKWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.MOON_PLATE.FULL));
         skyMill(writer, DecorativeBlocks.DISC_BLOCK.STAIRS.toStack(), Ingredient.of(DecorativeBlocks.DISC_BLOCK.FULL));

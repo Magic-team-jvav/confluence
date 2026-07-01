@@ -22,12 +22,14 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public enum MeteoriteTracker {
     INSTANCE;
@@ -151,7 +153,7 @@ public enum MeteoriteTracker {
 
     public void deserialize(CompoundTag nbt) {
         this.spawnAtNextNight = nbt.getBoolean("spawnAtNextNight");
-        this.location = NbtUtils.readBlockPos(nbt, "meteoriteLocation").orElse(BlockPos.ZERO);
+        this.location = Objects.requireNonNullElse(NbtUtils.readBlockPos(nbt.getCompound("meteoriteLocation")), BlockPos.ZERO);
         this.tickUntilLanding = nbt.getInt("tickUtilMeteoriteLanding");
     }
 
@@ -162,7 +164,7 @@ public enum MeteoriteTracker {
     }
 
     public static void spawnMeteor(ServerLevel level) {
-        if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && level.random.nextFloat() < 0.02F) {
+        if (KillBoard.INSTANCE.isAnyDefeated(BossEntities.EATER_OF_WORLDS.get(), BossEntities.BRAIN_OF_CTHULHU.get()) && level.random.nextFloat() < 0.02F) {
             INSTANCE.spawnAtNextNight = true;
         }
     }

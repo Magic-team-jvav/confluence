@@ -2,7 +2,6 @@ package org.confluence.mod.common.attachment;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.common.collect.Iterables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -11,6 +10,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -46,8 +46,8 @@ import java.util.*;
 public class PlayerSpecialData extends PrimitiveValueHolder {
     private @NotNull ArmorSetBonusKey armorSetBonusKey = ArmorSetBonusKey.NONE;
 
-    private ItemStack currentQuestedFish;
-    private ITradeLock currentQuestedFishCondition;
+    private long completedAnglerQuestDay = -1;
+    private int anglerQuestCount;
 
     private boolean couldHurtCritters;
     private boolean couldDamageEnvironment;
@@ -62,8 +62,8 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         super.setToDefaultValue();
         this.armorSetBonusKey = ArmorSetBonusKey.NONE;
 
-        this.currentQuestedFish = ItemStack.EMPTY;
-        this.currentQuestedFishCondition = ITradeLock.alwaysTrue();
+        this.completedAnglerQuestDay = -1;
+        this.anglerQuestCount = 0;
 
         this.couldHurtCritters = true;
         this.couldDamageEnvironment = true;
@@ -75,20 +75,17 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         return armorSetBonusKey;
     }
 
-    public void setCurrentQuestedFish(ItemStack cost, ITradeLock lock) {
-        this.currentQuestedFish = cost;
-        this.currentQuestedFishCondition = lock;
+    public boolean hasCompletedAnglerQuestToday(ServerLevel level) {
+        return completedAnglerQuestDay == level.getGameTime() / 24000;
     }
 
-    public void removeCurrentQuestedFish() {
-        setCurrentQuestedFish(ItemStack.EMPTY, ITradeLock.alwaysTrue());
+    public void markAnglerQuestCompleted(ServerLevel level) {
+        this.completedAnglerQuestDay = level.getGameTime() / 24000;
+        this.anglerQuestCount++;
     }
 
-    public ItemStack getCurrentQuestedFish(Player player) {
-        if (currentQuestedFishCondition.canTrade(player, ITradeHolder.dummy(player), 0)) {
-            return currentQuestedFish;
-        }
-        return ItemStack.EMPTY;
+    public int getAnglerQuestCount() {
+        return anglerQuestCount;
     }
 
     public void setCouldHurtCritters(boolean couldHurtCritters) {
@@ -261,8 +258,8 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         CompoundTag tag = super.serializeNBT(provider);
 
         PortDataResultExtension.ifSuccess(ArmorSetBonusKey.CODEC.encodeStart(ops, armorSetBonusKey), nbt -> tag.put("ArmorBonusKey", nbt));
-        PortDataResultExtension.ifSuccess(PortItemStackExtension.optionalCodec().encodeStart(ops, currentQuestedFish), nbt -> tag.put("CurrentQuestedFish", nbt));
-        ITradeLock.TYPED_CODEC.encodeStart(ops, currentQuestedFishCondition).ifSuccess(nbt -> tag.put("CurrentQuestedFishCondition", nbt));
+        tag.putLong("CompletedAnglerQuestDay", completedAnglerQuestDay);
+        tag.putInt("AnglerQuestCount", anglerQuestCount);
         tag.putBoolean("CouldHurtCritters", couldHurtCritters);
 //        tag.putBoolean("FallenSoulCoreActive", fallenSoulCoreActive);
         PortDataResultExtension.ifSuccess(Team.CODEC.encodeStart(ops, team), nbt -> tag.put("Team", nbt));
@@ -278,8 +275,8 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         if (nbt.contains("ArmorBonusKey")) {
             this.armorSetBonusKey = ArmorSetBonusKey.CODEC.parse(ops, nbt.get("ArmorBonusKey")).result().orElse(ArmorSetBonusKey.NONE);
         }
-        this.currentQuestedFish = PortItemStackExtension.optionalCodec().parse(ops, nbt.get("CurrentQuestedFish")).result().orElse(ItemStack.EMPTY);
-        this.currentQuestedFishCondition = ITradeLock.TYPED_CODEC.parse(ops, nbt.get("CurrentQuestedFishCondition")).result().orElse(ITradeLock.alwaysTrue());
+        this.completedAnglerQuestDay = nbt.getLong("CompletedAnglerQuestDay");
+        this.anglerQuestCount = nbt.getInt("AnglerQuestCount");
         this.couldHurtCritters = nbt.getBoolean("CouldHurtCritters");
 //        this.fallenSoulCoreActive = nbt.getBoolean("FallenSoulCoreActive");
         this.team = Team.CODEC.parse(ops, nbt.get("Team")).result().orElse(Team.WHITE);

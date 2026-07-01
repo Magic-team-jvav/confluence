@@ -2,7 +2,6 @@ package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -11,7 +10,7 @@ import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -37,37 +36,37 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
         if (TYPES == null) {
             TYPES = new EntityType[]{
                     EntityType.PLAYER,
-                    TENpcEntities.GUIDE.get(),
-                    TENpcEntities.MERCHANT.get(),
-                    TENpcEntities.NURSE.get(),
-                    TENpcEntities.DEMOLITIONIST.get(),
-                    TENpcEntities.DRYAD.get(),
-                    TENpcEntities.ARMS_DEALER.get(),
-                    TENpcEntities.CLOTHIER.get(),
-                    TENpcEntities.MECHANIC.get(),
-                    TENpcEntities.GOBLIN_TINKERER.get(),
-                    TENpcEntities.WIZARD.get(),
+                    NpcEntities.GUIDE.get(),
+                    NpcEntities.MERCHANT.get(),
+                    NpcEntities.NURSE.get(),
+                    NpcEntities.DEMOLITIONIST.get(),
+                    NpcEntities.DRYAD.get(),
+                    NpcEntities.ARMS_DEALER.get(),
+                    NpcEntities.CLOTHIER.get(),
+                    NpcEntities.MECHANIC.get(),
+                    NpcEntities.GOBLIN_TINKERER.get(),
+                    NpcEntities.WIZARD.get(),
                     null,
-                    TENpcEntities.TRUFFLE.get(),
+                    NpcEntities.TRUFFLE.get(),
                     null,
-                    TENpcEntities.PARTY_GIRL.get(),
+                    NpcEntities.PARTY_GIRL.get(),
                     null,
-                    TENpcEntities.PAINTER.get(),
-                    TENpcEntities.WITCH_DOCTOR.get(),
+                    NpcEntities.PAINTER.get(),
+                    NpcEntities.WITCH_DOCTOR.get(),
 
                     null,
                     null,
-                    TENpcEntities.TRAVELING_MERCHANT.get(),
-                    TENpcEntities.ANGLER.get(),
+                    NpcEntities.TRAVELING_MERCHANT.get(),
+                    NpcEntities.ANGLER.get(),
                     null,
                     null,
-                    TENpcEntities.ZOOLOGIST.get()
+                    NpcEntities.ZOOLOGIST.get()
             };
         }
         return TYPES;
     }
 
-    public static CustomPacketPayload collectPacket(ServerPlayer player) {
+    public static IPortPacket collectPacket(ServerPlayer player) {
         Object2BooleanMap<EntityType<?>> details = NPCSpawner.INSTANCE.getRegionAliveDetails(new NPCSpawner.Region(player.chunkPosition()));
         boolean[] values = new boolean[size];
         for (int i = 0; i < size; i++) {

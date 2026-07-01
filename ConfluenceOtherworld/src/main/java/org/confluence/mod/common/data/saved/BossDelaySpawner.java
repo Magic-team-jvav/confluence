@@ -8,7 +8,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.Tags;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
@@ -19,6 +18,7 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -125,14 +125,14 @@ public enum BossDelaySpawner {
         if (player.getMaxHealth() < 40 && player.getArmorValue() < 9) return false;
         ServerLevel level = player.serverLevel();
         Holder<Biome> biome = level.getBiome(player.blockPosition());
-        if (!biome.is(Tags.Biomes.IS_SNOWY) && !biome.is(Tags.Biomes.IS_ICY)) return false;
+        if (!biome.is(PortTags.Biomes.IS_SNOWY) && !biome.is(PortTags.Biomes.IS_ICY)) return false;
         int amount = GameEventSystem.INSTANCE.getStartedEventAmount(true, false);
         if (amount != 0 && (amount != 1 || !BloodMoonGameEvent.INSTANCE.started())) {
             return false;
         }
         try {
             level.getEntities().get(new AABB(player.blockPosition()).inflate(80), entity -> {
-                if (entity instanceof AbstractTerraNPC) {
+                if (entity instanceof BaseNPC) {
                     throw new ReturnException();
                 }
             });

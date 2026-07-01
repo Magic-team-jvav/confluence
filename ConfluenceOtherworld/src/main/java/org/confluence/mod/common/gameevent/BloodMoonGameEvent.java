@@ -18,10 +18,10 @@ import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEv
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.BossDelaySpawner;
 import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -53,8 +53,8 @@ public enum BloodMoonGameEvent implements GameEvent {
         this.server = server;
         this.level = OverworldUtils.getLevel(server);
         this.spawnerData = MinecraftForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.DRIPPLER.get(), 150, 1, 1),
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_ZOMBIE.get(), 420, 1, 1)
+                new MobSpawnSettings.SpawnerData(MonsterEntities.DRIPPLER.get(), 150, 1, 1),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.BLOOD_ZOMBIE.get(), 420, 1, 1)
         )).create();
     }
 
@@ -78,7 +78,7 @@ public enum BloodMoonGameEvent implements GameEvent {
         }
         if (LibDateUtils.getDayTime(level) == LibDateUtils._19$30 &&
                 !MoonPhase.NEW_MOON.match(level) &&
-                !BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.EYE_OF_CTHULHU.get())
+                !BossDelaySpawner.INSTANCE.hasSameTypeInQueue(BossEntities.EYE_OF_CTHULHU.get())
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 if (player.getMaxHealth() >= CommonConfigs.BLOOD_MOON_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&

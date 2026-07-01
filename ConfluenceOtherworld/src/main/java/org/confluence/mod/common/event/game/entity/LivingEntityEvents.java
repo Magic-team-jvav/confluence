@@ -152,9 +152,9 @@ public final class LivingEntityEvents {
                     break;
                 }
             }
-            if (victim instanceof AbstractTerraNPC npc) {
+            if (victim instanceof BaseNPC npc) {
                 NPCSpawner.INSTANCE.onNPCRemoved(npc);
-                if (attacker != null && npc.getType() == TENpcEntities.CLOTHIER.get() &&
+                if (attacker != null && npc.getType() == NpcEntities.CLOTHIER.get() &&
                         attacker instanceof Player player &&
                         LibDateUtils.isNight(level) && // 晚上杀死才生成
                         TCUtils.hasType(player, AccessoryItems.CLOTHIER$KILLER)
@@ -164,7 +164,7 @@ public final class LivingEntityEvents {
                     ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
                 }
 
-                if (npc.getType() == TENpcEntities.GUIDE.get() && level.dimension() == OverworldUtils.underworld() && damageSource.is(DamageTypes.LAVA)) {
+                if (npc.getType() == NpcEntities.GUIDE.get() && level.dimension() == OverworldUtils.underworld() && damageSource.is(DamageTypes.LAVA)) {
                     GuideVooDooDollItem.summon(npc, level, npc.getRandom().nextBoolean(), () -> null);
                 }
             }

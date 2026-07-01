@@ -21,6 +21,8 @@ public final class ModTradeConditions {
     public static final RegistryObject<MapCodec<NPCNearbyCondition>> NPC_NEARBY = TYPES.register("npc_nearby", () -> NPCNearbyCondition.CODEC);
     public static final RegistryObject<MapCodec<BestiaryCondition>> BESTIARY = TYPES.register("bestiary", () -> BestiaryCondition.CODEC);
     public static final RegistryObject<MapCodec<DateCondition>> DATE = TYPES.register("date", () -> DateCondition.CODEC);
+    public static final RegistryObject<MapCodec<PositionHeightCondition>> POSITION_HEIGHT = TYPES.register("position_height", () -> PositionHeightCondition.CODEC);
+    public static final RegistryObject<MapCodec<FluidCondition>> FLUID = TYPES.register("fluid", () -> FluidCondition.CODEC);
     public static final RegistryObject<MapCodec<AndCondition>> AND = TYPES.register("and", () -> AndCondition.CODEC);
     public static final RegistryObject<MapCodec<OrCondition>> OR = TYPES.register("or", () -> OrCondition.CODEC);
     public static final RegistryObject<MapCodec<NotCondition>> NOT = TYPES.register("not", () -> NotCondition.CODEC);

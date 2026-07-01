@@ -11,12 +11,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.holdersets.OrHolderSet;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.mesdag.portlib.datamap.PortDataMapProvider;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.List;
 public final class BlockBreakSpawnsSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender, HolderLookup.Provider provider) {
         HolderLookup.RegistryLookup<Biome> biome = provider.lookupOrThrow(Registries.BIOME);
-        HolderSet<Biome> jungleLike = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_JUNGLE), biome.getOrThrow(Tags.Biomes.IS_LUSH));
+        HolderSet<Biome> jungleLike = new OrHolderSet<>(List.of(biome.getOrThrow(PortTags.Biomes.IS_JUNGLE), biome.getOrThrow(PortTags.Biomes.IS_LUSH)));
 
         appender.create()
                 .push(Blocks.SHORT_GRASS)

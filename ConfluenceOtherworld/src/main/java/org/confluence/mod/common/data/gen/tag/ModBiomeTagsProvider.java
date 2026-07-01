@@ -5,7 +5,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModBiomes;
@@ -23,12 +22,12 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
     @SuppressWarnings("unchecked")
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(Tags.Biomes.IS_ICY).add(
+        tag(PortTags.Biomes.IS_ICY).add(
                 ModBiomes.THE_CORRUPTION_TUNDRA,
                 ModBiomes.THE_CRIMSON_TUNDRA,
                 ModBiomes.THE_HALLOW_TUNDRA
         );
-        tag(Tags.Biomes.IS_DESERT).add(
+        tag(PortTags.Biomes.IS_DESERT).add(
                 ModBiomes.THE_CORRUPTION_DESERT,
                 ModBiomes.THE_CRIMSON_DESERT,
                 ModBiomes.THE_HALLOW_DESERT
@@ -103,12 +102,12 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
         tag(ModTags.Biomes.IS_FOREST).addTags(
                 // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
                 PortTags.Biomes.IS_FOREST,
-                Tags.Biomes.IS_PLAINS,
+                PortTags.Biomes.IS_PLAINS,
                 PortTags.Biomes.IS_TAIGA,
                 PortTags.Biomes.IS_SAVANNA,
                 PortTags.Biomes.IS_WINDSWEPT,
                 PortTags.Biomes.IS_OLD_GROWTH,
-                Tags.Biomes.IS_SWAMP,
+                PortTags.Biomes.IS_SWAMP,
                 PortTags.Biomes.IS_STONY_SHORES
         );
         tag(ModTags.Biomes.IS_FOREST)

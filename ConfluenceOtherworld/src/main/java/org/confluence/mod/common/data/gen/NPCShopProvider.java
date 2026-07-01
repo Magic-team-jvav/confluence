@@ -31,6 +31,7 @@ import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
@@ -40,6 +41,7 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,11 +67,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         EnvironmentLock ectoMistLock = new EnvironmentLock(EnvironmentLevelAccess.matcher(null, null, true));
         BiomeLock glowingMushroomLock = BiomeLock.of(ModBiomes.GLOWING_MUSHROOM);
         BiomeLock theHallowLock = BiomeLock.of(ModTags.Biomes.THE_HALLOW);
-        BiomeLock snowyLikeLock = BiomeLock.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY);
-        BiomeLock jungleLikeLock = BiomeLock.of(Tags.Biomes.IS_JUNGLE, Tags.Biomes.IS_LUSH);
+        BiomeLock snowyLikeLock = BiomeLock.of(PortTags.Biomes.IS_SNOWY, PortTags.Biomes.IS_ICY);
+        BiomeLock jungleLikeLock = BiomeLock.of(PortTags.Biomes.IS_JUNGLE, PortTags.Biomes.IS_LUSH);
         BiomeLock forestLock = BiomeLock.of(ModTags.Biomes.IS_FOREST);
-        BiomeLock desertLock = BiomeLock.of(Tags.Biomes.IS_DESERT);
-        BiomeLock oceanLock = BiomeLock.of(Tags.Biomes.IS_OCEAN);
+        BiomeLock desertLock = BiomeLock.of(PortTags.Biomes.IS_DESERT);
+        BiomeLock oceanLock = BiomeLock.of(PortTags.Biomes.IS_OCEAN);
         PositionLock caveThroughSurfaceLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getCaveY(), OverworldUtils.getSurfaceY()));
         PositionLock caveThroughUndergroundLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getCaveY(), OverworldUtils.getUndergroundY()));
         PositionLock surfaceThroughUltraLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getSurfaceY(), OverworldUtils.getUltraY()));
@@ -96,12 +98,12 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
+        shop(NpcEntities.GUIDE.getId()).addRecipe(new Builder()
                 //旅商的
                 //动物学家的              .add(TEWhipItems.LEATHER_WHIP)
                 .build());
 
-        shop(TENpcEntities.DEMOLITIONIST.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.DEMOLITIONIST.getId()).addRecipe(withDefaultPylon()
                 .add(ConsumableItems.GRENADE)
                 .add(ConsumableItems.BOMB)
                 .add(ConsumableItems.DYNAMITE)
@@ -127,7 +129,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.MERCHANT.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.MERCHANT.getId()).addRecipe(withDefaultPylon()
                 .add(ToolItems.BUG_NET)
                 .add(ArmorItems.MINING_HELMET)
                 .add(Blocks.ANVIL)
@@ -172,7 +174,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 // 荧光棒
                 .build());
 
-        shop(TENpcEntities.GOBLIN_TINKERER.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.GOBLIN_TINKERER.getId()).addRecipe(withDefaultPylon()
                 .add(HookItems.GRAPPLING_HOOK)
                 .add(TCItems.ROCKET_BOOTS)
                 .add(TCItems.TOOLBELT)
@@ -184,11 +186,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
                 .build());
 
-        shop(TENpcEntities.NURSE.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.NURSE.getId()).addRecipe(withDefaultPylon()
                 .add(MoneyTradeHealthFull.create())
                 .build());
 
-        shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.ARMS_DEALER.getId()).addRecipe(withDefaultPylon()
                 .add(GunItems.MUSKET_BULLET)
                 .add(GunItems.MUSKET_BULLET, 100)
                 .add(new MoneyTradeItem.Builder()
@@ -237,7 +239,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.DRYAD.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.DRYAD.getId()).addRecipe(withDefaultPylon()
                 .add(ConsumableItems.PURIFICATION_POWDER)
                 .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING)
                 .add(Blocks.OAK_SAPLING)
@@ -278,7 +280,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.DYE_TRADER.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.DYE_TRADER.getId()).addRecipe(withDefaultPylon()
                 .add(FunctionalBlocks.DYE_VAT)
                 .add(VanityArmorItems.SILVER_DYE)
                 .add(VanityArmorItems.BROWN_DYE)
@@ -293,7 +295,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
 
-        shop(TENpcEntities.PAINTER.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.PAINTER.getId()).addRecipe(withDefaultPylon()
                 .add(PaintItems.PAINTBRUSH)
                 .add(PaintItems.PAINT_ROLLER)
                 .add(PaintItems.PAINT_SCRAPER)
@@ -399,10 +401,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .addLootTable(10, ModLootTables.QUESTS_AFTER_10)
                 .addLootTable(75, ModLootTables.QUESTS_AFTER_75)
                 .build())).build();
-        shop(TENpcEntities.ANGLER.getId()).addRecipe(anglerTradeManager);
-        shop(TENpcEntities.FEMALE_ANGLER.getId()).addRecipe(anglerTradeManager);
+        shop(NpcEntities.ANGLER.getId()).addRecipe(anglerTradeManager);
+        // FEMALE_ANGLER not yet implemented in NpcEntities
+        // shop(NpcEntities.FEMALE_ANGLER.getId()).addRecipe(anglerTradeManager);
 
-        shop(TENpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()
                 .add(ToolItems.RED_WRENCH)
                 .add(ToolItems.BLUE_WRENCH)
                 .add(ToolItems.GREEN_WRENCH)
@@ -443,7 +446,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.TRAVELING_MERCHANT.getId()).addRecipe(
+        shop(NpcEntities.TRAVELING_MERCHANT.getId()).addRecipe(
                 new NPCTradeManager(WeightMapGenerator.builder(5) // 这个数字其实无意义，因为旅商是通过事件修改是数量
                         .addTrade(new MoneyTradeItem.Builder().setResult(AccessoryItems.PAINT_SPRAYER).build(), 1)
                         .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.PORTABLE_CEMENT_MIXER).build(), 1)
@@ -461,7 +464,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 )
         );
 
-        shop(TENpcEntities.CLOTHIER.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.CLOTHIER.getId()).addRecipe(withDefaultPylon()
                 .add(VanityArmorItems.FAMILIAR_WIG)
                 .add(VanityArmorItems.FAMILIAR_SHIRT)
                 .add(VanityArmorItems.FAMILIAR_PANTS)
@@ -493,7 +496,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.PARTY_GIRL.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.PARTY_GIRL.getId()).addRecipe(withDefaultPylon()
                 .add(FunctionalBlocks.SILLY_BALLOON_MACHINE)
                 .add(ConsumableItems.SMOKE_BOMB)
                 .add(MaterialItems.CONFETTI)
@@ -519,7 +522,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.WITCH_DOCTOR.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.WITCH_DOCTOR.getId()).addRecipe(withDefaultPylon()
                 .add(GunItems.BLOWGUN)
                 .add(new MoneyTradeItem.Builder()
                         .setResult(FunctionalBlocks.CAULDRON.toStack())
@@ -555,7 +558,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.ZOOLOGIST.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.ZOOLOGIST.getId()).addRecipe(withDefaultPylon()
                 .add(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP)
                 .add(new MoneyTradeItem.Builder()
                         .setResult(TEWhipItems.LEATHER_WHIP.toStack())
@@ -575,7 +578,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .build())
                 .build());
 
-        shop(TENpcEntities.WIZARD.getId()).addRecipe(withDefaultPylon()
+        shop(NpcEntities.WIZARD.getId()).addRecipe(withDefaultPylon()
                 .add(FunctionalBlocks.CRYSTAL_BALL)
                 // 冰雪魔杖
                 .add(PotionItems.GREATER_MANA_POTION)
@@ -622,7 +625,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                                 ITradeLock.and(
                                                         new EnvironmentLock(
                                                                 EnvironmentLevelAccess.matcher(
-                                                                        holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD),
+                                                                        holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(PortTags.Biomes.IS_COLD_OVERWORLD),
                                                                         null,
                                                                         true
                                                                 )
@@ -704,7 +707,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                                                         ModBiomes.GLOWING_MUSHROOM //Test names for modded biomes
                                                                 ),
                                                                 List.of(
-                                                                        Tags.Biomes.IS_JUNGLE,
+                                                                        PortTags.Biomes.IS_JUNGLE,
                                                                         ModTags.Biomes.THE_HALLOW
                                                                 )
                                                         )
@@ -728,7 +731,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                 .setProperties(
                                         TradeProperties.builder().setLock(
                                                 ITradeLock.and(
-                                                        new NPCExistLock(TENpcEntities.GOBLIN_TINKERER.get()),
+                                                        new NPCExistLock(NpcEntities.GOBLIN_TINKERER.get()),
                                                         new NPCExistLock(EntityType.ZOMBIE)
                                                 )
                                         ).build()

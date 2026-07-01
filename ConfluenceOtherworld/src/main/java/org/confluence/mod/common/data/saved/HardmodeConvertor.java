@@ -11,14 +11,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Lifecycle;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundChunksBiomesPacket;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -28,6 +30,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
@@ -197,10 +200,10 @@ public enum HardmodeConvertor implements IGlobalData {
                 }
             }
         }
-        ChunkMap chunkMap = overworld.getChunkSource().chunkMap;
-        for (ServerPlayer player : overworld.players()) {
-            if (player.getChunkTrackingView().contains(chunkPos)) {
-                chunkMap.markChunkPendingToSend(player, chunkPos);
+        if (chunkAccess instanceof LevelChunk chunk) {
+            Long2ObjectMap<ObjectSet<ServerPlayer>> playersPerChunk = overworld.getChunkSource().chunkMap.getDistanceManager().playersPerChunk;
+            for (ServerPlayer player : playersPerChunk.getOrDefault(chunkPos.toLong(), ObjectSet.of())) {
+                player.connection.send(ClientboundChunksBiomesPacket.forChunks(Collections.singletonList(chunk)));
             }
         }
         return true;

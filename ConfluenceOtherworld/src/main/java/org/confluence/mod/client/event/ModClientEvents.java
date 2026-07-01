@@ -91,6 +91,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
+import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.entity.projectile.spear.GhastlyProjectile;
 import org.confluence.mod.common.entity.projectile.spear.MushroomProjectile;
 import org.confluence.mod.common.entity.projectile.spear.NorthPoleProjectile;
@@ -479,6 +480,60 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.WYVERN.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/wyvern")));
         event.registerEntityRenderer(MonsterEntities.DARK_CASTER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/dark_caster")));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_SORCERER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/goblin_sorcerer")));
+        // NPC
+        event.registerEntityRenderer(NpcEntities.GUIDE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/guide")));
+        event.registerEntityRenderer(NpcEntities.MERCHANT.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/merchant")));
+        event.registerEntityRenderer(NpcEntities.NURSE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/nurse")));
+        event.registerEntityRenderer(NpcEntities.DEMOLITIONIST.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/demolitionist")));
+        event.registerEntityRenderer(NpcEntities.DYE_TRADER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/dye_trader")));
+        event.registerEntityRenderer(NpcEntities.PAINTER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/painter")));
+        event.registerEntityRenderer(NpcEntities.DRYAD.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/dryad")));
+        event.registerEntityRenderer(NpcEntities.ARMS_DEALER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/arms_dealer")));
+        event.registerEntityRenderer(NpcEntities.GOBLIN_TINKERER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/goblin_tinkerer")));
+        event.registerEntityRenderer(NpcEntities.WITCH_DOCTOR.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/witch_doctor")));
+        event.registerEntityRenderer(NpcEntities.CLOTHIER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/clothier")));
+        event.registerEntityRenderer(NpcEntities.MECHANIC.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/mechanic")));
+        event.registerEntityRenderer(NpcEntities.PARTY_GIRL.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/party_girl")));
+        event.registerEntityRenderer(NpcEntities.STYLIST.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/stylist")));
+        event.registerEntityRenderer(NpcEntities.TAX_COLLECTOR.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/tax_collector")));
+        event.registerEntityRenderer(NpcEntities.TRUFFLE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/truffle")));
+        event.registerEntityRenderer(NpcEntities.WIZARD.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/wizard")));
+        event.registerEntityRenderer(NpcEntities.ZOOLOGIST.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/zoologist")));
+        event.registerEntityRenderer(NpcEntities.ANGLER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/angler")));
+        event.registerEntityRenderer(NpcEntities.TRAVELING_MERCHANT.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/traveling_merchant")));
+        event.registerEntityRenderer(NpcEntities.OLD_MAN.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/npc/old_man")));
+        // 蝙蝠
+        event.registerEntityRenderer(MonsterEntities.CAVE_BAT.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/cave_bat")));
+        event.registerEntityRenderer(MonsterEntities.JUNGLE_BAT.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/jungle_bat")));
+        event.registerEntityRenderer(MonsterEntities.ICE_BAT.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/ice_bat")));
+        event.registerEntityRenderer(MonsterEntities.GIANT_BAT.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/giant_bat")));
+        event.registerEntityRenderer(MonsterEntities.HELL_BAT.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/hell_bat")));
+        // 陆行怪
+        event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/zombie")));
+        event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/bloody_spore")));
+        event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/blood_crawler")));
+        event.registerEntityRenderer(MonsterEntities.NYMPH.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/nymph")));
+        event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/sand_poacher")));
+        // 水怪
+        event.registerEntityRenderer(MonsterEntities.PIRANHA.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/piranha")));
+        event.registerEntityRenderer(MonsterEntities.ARAPAIMA.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/arapaima")));
+        event.registerEntityRenderer(MonsterEntities.BLUE_JELLYFISH.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/jellyfish")));
+        event.registerEntityRenderer(MonsterEntities.PINK_JELLYFISH.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/jellyfish")));
+        event.registerEntityRenderer(MonsterEntities.GREEN_JELLYFISH.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/jellyfish")));
+        event.registerEntityRenderer(MonsterEntities.SHARK.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/shark")));
+        // 卷壳怪
+        event.registerEntityRenderer(MonsterEntities.GIANT_SHELLY.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/giant_shelly")));
+        event.registerEntityRenderer(MonsterEntities.CRAWDAD.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/crawdad")));
+        // Wraith + Mimics
+        event.registerEntityRenderer(MonsterEntities.WRAITH.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/wraith")));
+        event.registerEntityRenderer(MonsterEntities.WOODEN_MIMIC.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/mimic")));
+        event.registerEntityRenderer(MonsterEntities.GOLDEN_MIMIC.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/mimic")));
+        event.registerEntityRenderer(MonsterEntities.ICE_MIMIC.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/mimic")));
+        event.registerEntityRenderer(MonsterEntities.SHADOW_MIMIC.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/mimic")));
+        event.registerEntityRenderer(MonsterEntities.CRIMSON_MIMIC.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/mimic")));
+        event.registerEntityRenderer(MonsterEntities.CORRUPT_MIMIC.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/mimic")));
+        event.registerEntityRenderer(MonsterEntities.HALLOWED_MIMIC.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/mimic")));
+        event.registerEntityRenderer(MonsterEntities.JUNGLE_MIMIC.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("geo/monster/mimic")));
 
         event.registerEntityRenderer(ACCUMULATING_ENERGY.get(), NoopRenderer::new);
 
@@ -667,6 +722,7 @@ public final class ModClientEvents {
     public static void registerClientReloadListeners(PortRegisterClientReloadListenersEvent event) {
         event.registerReloadListener(ClientBestiary.getInstance());
         event.registerReloadListener(LucyTheAxeDialogCategory.Loader.getInstance());
+        event.registerReloadListener(NPCDialogLoader.getInstance());
     }
 
     public static void registerCustomBestiaryEntryModel(RegisterCustomBestiaryEntryRendererEvent event) {

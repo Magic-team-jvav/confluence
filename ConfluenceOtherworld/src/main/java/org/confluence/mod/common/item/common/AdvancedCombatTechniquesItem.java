@@ -32,7 +32,7 @@ public class AdvancedCombatTechniquesItem extends TooltipItem {
             if (!NPCSpawner.INSTANCE.isAdvancedCombatTechniquesUsed()) {
                 NPCSpawner.INSTANCE.setAdvancedCombatTechniquesUsed(true);
                 ResourceLocation id = Confluence.asResource("advanced_combat_techniques");
-                serverLevel.getEntities().get(EntityTypeTest.forClass(AbstractTerraNPC.class), npc -> {
+                serverLevel.getEntities().get(EntityTypeTest.forClass(BaseNPC.class), npc -> {
                     NPCSpawner.applyAdvancedCombatTechniques(npc, id);
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });

@@ -9,9 +9,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.house.House;
 import org.confluence.terraentity.entity.npc.house.HouseManager;
 import org.confluence.terraentity.entity.npc.house.IHouseDetector;
@@ -49,7 +48,7 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
         if (selected == 0) { // 检测模式
             if (isEmptyHouse) { // 如果是空房子，输出消息
                 player.sendSystemMessage(Component.translatable(detect.message()));
-            } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof AbstractTerraNPC npc) { // 如果不是空房子，获取所有者并告知已被占领
+            } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof BaseNPC npc) { // 如果不是空房子，获取所有者并告知已被占领
                 player.sendSystemMessage(Component.translatable("message.confluence.house_detect.occupied", npc.getType().getDescription(), npc.getDisplayName()));
             } else {
                 HouseManager.getInstance().removeHouse(house.uuid().get());
@@ -62,12 +61,12 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
                 getNpc(player, type, region, npc -> {
                     House house1 = detect.getHouse(npc.getUUID());
                     if (HouseManager.getInstance().tryAddHouse(house1)) {
-                        NPCSpawner.INSTANCE.moveNPCToAnotherRegion(npc, IAbstractTerraNPC.of(npc).confluence$getRegion(), new NPCSpawner.Region(pos));
+                        NPCSpawner.INSTANCE.moveNPCToAnotherRegion(npc, npc.getRegion(), new NPCSpawner.Region(pos));
                         npc.setHouse(house1);
                         player.sendSystemMessage(Component.translatable("tooltip.terra_entity.house_detect.mode.add.success"));
                     }
                 });
-            } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof AbstractTerraNPC npc) { // 不是空房子，可以通过uuid获取到所有者
+            } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof BaseNPC npc) { // 不是空房子，可以通过uuid获取到所有者
                 if (npc.getType() == type) { // 是该NPC的房屋时删除房屋
                     HouseManager.getInstance().removeHouse(npc.getUUID());
                     npc.setHouse(House.EMPTY);
@@ -82,8 +81,8 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
     }
 
     /// 获取在region内的特定type的npc
-    private void getNpc(ServerPlayer player, EntityType<?> type, NPCSpawner.Region region, Consumer<AbstractTerraNPC> ifSuccess) {
-        player.serverLevel().getEntitiesOfClass(AbstractTerraNPC.class, new AABB(pos).inflate(player.requestedViewDistance() * 16)).stream()
+    private void getNpc(ServerPlayer player, EntityType<?> type, NPCSpawner.Region region, Consumer<BaseNPC> ifSuccess) {
+        player.serverLevel().getEntitiesOfClass(BaseNPC.class, new AABB(pos).inflate(player.requestedViewDistance() * 16)).stream()
                 .filter(npc -> npc.getType() == type)
                 .filter(npc -> npc.getSpawnAtPos() != null && region.isOnRegion(npc.getSpawnAtPos()))
                 .min(Comparator.comparingDouble(npc -> npc.distanceToSqr(player)))

@@ -10,10 +10,10 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -99,7 +99,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         tag(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)
                 .addOptionalTag(TETags.EntityTypes.SLIME);
         IntrinsicTagAppender<EntityType<?>> npcInvulnerableToPlayer = tag(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER);
-        for (RegistryObject<? extends EntityType<?>> npc : TENpcEntities.ENTITIES.getEntries()) {
+        for (RegistryObject<? extends EntityType<?>> npc : NpcEntities.ENTITIES.getEntries()) {
             npcInvulnerableToPlayer.add(npc.get());
         }
     }

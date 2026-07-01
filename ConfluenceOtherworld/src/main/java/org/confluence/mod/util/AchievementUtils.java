@@ -35,12 +35,12 @@ import org.confluence.mod.client.gui.AchievementProgress;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IPlayerAdvancements;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.task.ReplyAchievementsPacketC2S;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.diff.mixin.CriterionProgressAccessor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -266,7 +266,7 @@ public final class AchievementUtils {
         tag.putShort("confluence:the_frequent_flyer", (short) total);
     }
 
-    public static void noHobo(AbstractTerraNPC npc, NPCSpawner.Region region) {
+    public static void noHobo(BaseNPC npc, NPCSpawner.Region region) {
         if (npc.level() instanceof ServerLevel serverLevel) {
             for (ServerPlayer player : serverLevel.players()) {
                 if (region.isOnRegion(player.chunkPosition())) {

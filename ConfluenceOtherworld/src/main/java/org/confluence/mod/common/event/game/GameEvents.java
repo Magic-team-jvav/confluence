@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
@@ -68,5 +69,6 @@ public final class GameEvents {
 
     private static void addReloadListener(PortAddReloadListenerEvent event) {
         event.addListener(AchievementOffsetLoader.getInstance());
+        event.addListener(NPCDialogLoader.getInstance());
     }
 }

@@ -1222,6 +1222,164 @@ public interface TradeCondition {
 
 ---
 
+---
+
+## 十四、渔夫钓鱼任务系统 (Angler Quest)
+
+> 状态: 草案 | 日期: 2026-07-01
+>
+> 完全抛弃 TerraEntity 模块的 `DynamicAnglerTradeTask` / `ITradeLock` 体系，
+> 在 ConfluenceOtherworld 中用 `TradeCondition` 全量重写。
+
+### 14.1 Wiki 机制
+
+| 机制 | 值 |
+|------|-----|
+| 任务刷新时间 | 每天黎明 (游戏内 4:30 AM，即 dayTime 4500) |
+| 每玩家每日 | 每人每天可提交一次 |
+| 同一世界 | 所有渔夫共享当天任务鱼 |
+| 任务鱼条件 | 仅在对应环境（群系/高度/流体/世界阶段）可钓到 |
+| 累计奖励 | 5/10/15/20/25/30 次里程碑，150 次后奖励封顶 |
+
+**奖励稀释表：**
+
+| 任务数 | 稀有度倍率 |
+|--------|-----------|
+| 1–50 | 1.0 → 0.5 (每任务 -0.01) |
+| 51–100 | 0.5 → 0.25 (每任务 -0.005) |
+| 101–150 | 0.25 → 0.15 (每任务 -0.002) |
+| 150+ | 固定 0.15 (最佳掉率) |
+
+### 14.2 TradeCondition 签名变更
+
+```
+旧: boolean test(ServerLevel level, BaseNPC npc)
+新: boolean test(ServerPlayer player, BaseNPC npc)
+```
+
+影响 14 个已有 Condition 实现，机械变更——`level` 换 `player.serverLevel()`。
+
+新增条件：
+
+| Condition | 用途 | 参数 |
+|-----------|------|------|
+| `PositionHeightCondition` | Y 高度区间 | `int minY, int maxY` |
+| `FluidCondition` | 钓鱼流体类型 | `TagKey<Fluid> fluid` |
+| `WorldFlagCondition` | 世界标记 | `ResourceKey<WorldFlag> flag` |
+
+### 14.3 世界级数据: AnglerData
+
+```java
+public class AnglerData implements IGlobalData {
+    ItemStack questFish;       // 今日任务鱼
+    long questGameDay;         // 分配时的 gameTime / 24000
+    int selectedIndex;         // 选中 fish 索引（确定性）
+
+    void refreshIfNeeded(ServerLevel level)  // gameDay 变化时重新随机
+    ItemStack getQuestFish()                 // 当前任务鱼
+}
+```
+
+随机逻辑:
+1. 收集候选鱼 → 每条鱼用 `TradeCondition.test(dummyPlayer, anglerNPC)` 过滤
+2. `random.nextInt(candidates.size())` 选一条
+3. 写入 `questFish` + `questGameDay`
+
+### 14.4 玩家级数据: PlayerSpecialData 扩展
+
+```java
+// 新增
+long completedAnglerQuestDay;   // 完成任务的游戏日
+int anglerQuestCount;           // 累计完成数
+
+// 移除 (旧 ITradeLock 体系)
+ItemStack currentQuestedFish;
+ITradeLock currentQuestedFishCondition;
+```
+
+### 14.5 AnglerNPC 实体
+
+```java
+public class AnglerNPC extends BaseNPC {
+    // 交互: 打开 NPCTradeMenu + 任务鱼提示
+    // 日常: 睡眠 (夜晚 / 下雨) / 水中漂浮
+}
+```
+
+在 `NpcEntities` 注册为 `ANGLER`。
+
+### 14.6 钓鱼验证 (AbstractFishingHook)
+
+玩家收杆时:
+1. 查 `AnglerData.getQuestFish()` → 今日任务鱼
+2. 钓上的鱼 == 任务鱼 且 玩家今天未提交 → 标记为任务完成候选
+3. 给钓上的鱼加发光特效 (quest indicator)
+
+### 14.7 交任务 + 奖励
+
+打开 Angler 交易 GUI:
+1. 检查 `PlayerSpecialData.hasCompletedAnglerQuestToday(serverLevel)`
+2. 未完成 + 背包有任务鱼 → 显示提交按钮
+3. 提交:
+   - 扣除任务鱼
+   - `markAnglerQuestCompleted(level)` (completedDay = today, count++)
+   - 里程碑奖励 (count ∈ {5,10,15,20,25,30})
+   - Loot table roll: count<10→`QUESTS_0`, count≥10→`QUESTS_AFTER_10`, count≥75→`QUESTS_AFTER_75`
+   - +金币 + 可能的鱼饵
+
+### 14.8 任务鱼候选池
+
+每条任务鱼绑定一个 `TradeCondition`:
+
+```json
+// data/confluence/npc/angler_quests.json
+{
+  "fish": [
+    {"item": "confluence:slimefish",      "condition": {"type":"and","conditions":[{"type":"biome","tags":["forge:is_forest"]},{"type":"position_height","min_y":70,"max_y":400}]}},
+    {"item": "confluence:bumblebee_tuna", "condition": {"type":"fluid","fluid":"minecraft:honey"}},
+    {"item": "confluence:batfish",        "condition": {"type":"and","conditions":[{"type":"not","condition":{"type":"biome","tags":["confluence:evil"]}},{"type":"position_height","min_y":-64,"max_y":70}]}},
+    ...
+  ]
+}
+```
+
+### 14.9 实现步骤
+
+| 步骤 | 内容 | 状态 |
+|------|------|------|
+| 1 | TradeCondition 签名改为 `(ServerPlayer, BaseNPC)` | ✅ 完成 |
+| 2 | 新增 `PositionHeightCondition` | ✅ 完成 |
+| 3 | 新增 `FluidCondition` | ✅ 完成 |
+| 4 | 新增 `WorldFlagCondition` | ❌ 暂缓 (可用 BiomeCondition.not() 替代) |
+| 5 | 注册新 condition types | ✅ 完成 |
+| 6 | PlayerSpecialData 重构 | ✅ 完成 |
+| 7 | AnglerData + AnglerQuestEntry + AnglerQuestPool | ✅ 完成 |
+| 8 | AnglerNPC 实体类 | ✅ 完成 |
+| 9 | NpcEntities 注册 ANGLER | ✅ 完成 |
+| 10 | ModEvents 注册 AnglerData + AnglerNPC 属性 | ✅ 完成 |
+| 11 | ModClientEvents 注册 AnglerNPC 渲染器 | ✅ 完成 |
+| 12 | 任务鱼池 datagen + 与旧 ITradeLock 解耦 | ⏳ 待实现 |
+
+### 14.10 已创建/修改的文件清单
+
+| 操作 | 文件 |
+|------|------|
+| 修改 | `TradeCondition.java` — 签名 `test(ServerPlayer player, BaseNPC npc)` |
+| 修改 | `conditions/` 下 14 个 condition — 统一签名 + 移除 ServerLevel |
+| 新增 | `conditions/PositionHeightCondition.java` |
+| 新增 | `conditions/FluidCondition.java` |
+| 修改 | `ModTradeConditions.java` — 注册 position_height + fluid |
+| 修改 | `PlayerSpecialData.java` — 移除 ITradeLock 字段，新增 Angler 字段 |
+| 新增 | `data/saved/AnglerData.java` — 世界级每日任务鱼 |
+| 新增 | `data/saved/AnglerQuestEntry.java` — 任务鱼条目 record |
+| 新增 | `data/saved/AnglerQuestPool.java` — 任务鱼候选池 |
+| 新增 | `entity/npc/AnglerNPC.java` — 渔夫 NPC 实体 |
+| 修改 | `NpcEntities.java` — 注册 ANGLER |
+| 修改 | `ModEvents.java` — 注册 AnglerData + AnglerNPC 属性 |
+| 修改 | `ModClientEvents.java` — 注册 AnglerNPC 渲染器 |
+
+---
+
 ## 附录: 模块依赖
 
 ```

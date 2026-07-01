@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -24,7 +25,10 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
+import org.confluence.lib.color.GlobalColors;
+import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
+import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
 import org.confluence.mod.common.entity.npc.house.House;
@@ -67,6 +71,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected NPCMood mood = new NPCMood();
     @Nullable
     protected NPCChat currentChat;
+    protected NPCSpawner.Region region = NPCSpawner.Region.ZERO;
+    protected boolean shouldInteract;
 
     @SuppressWarnings("this-escape")
     public BaseNPC(EntityType<? extends BaseNPC> type, Level level) {
@@ -183,6 +189,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         if (house.isValid()) {
             getBrain().setMemory(MemoryModuleType.HOME,
                     GlobalPos.of(level().dimension(), house.center()));
+            NPCSpawner.Region newRegion = new NPCSpawner.Region(house.center());
+            NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, region, newRegion);
         } else {
             getBrain().eraseMemory(MemoryModuleType.HOME);
         }
@@ -192,11 +200,44 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         return house;
     }
 
+    // === Region ===
+
+    public NPCSpawner.Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(NPCSpawner.Region region) {
+        this.region = region;
+    }
+
+    public boolean shouldInteract() {
+        return shouldInteract;
+    }
+
+    public void setShouldInteract(boolean should) {
+        this.shouldInteract = should;
+    }
+
     // === 交互 ===
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer sp) {
+            // 被"救援"的 NPC 首次交互时，将其正式加入区域
+            if (shouldInteract) {
+                setShouldInteract(false);
+                region = NPCSpawner.getNpcSpawnRegion(sp);
+                NPCSpawner.INSTANCE.setNPCAlive(region, getType(), true);
+                NPCSpawner.INSTANCE.applyBenedictions(this);
+                NPCSpawner.INSTANCE.addSpawned(getType());
+                NPCSpawner.broadcastMessageToRegion(sp.level(), this,
+                        Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName())
+                                .withColor(GlobalColors.NPC_ARRIVED.get()));
+            }
+            // 图鉴记录
+            if (!Bestiary.INSTANCE.containsKey(this)) {
+                Bestiary.INSTANCE.updateEntry(this, false);
+            }
             NetworkHooks.openScreen(sp,
                     new SimpleMenuProvider((id, inv, p) -> new NPCTradeMenu(id, inv, this),
                             getDisplayName()),
@@ -236,6 +277,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             House.CODEC.encodeStart(NbtOps.INSTANCE, house)
                     .result().ifPresent(t -> tag.put("House", t));
         }
+        NPCSpawner.Region.CODEC.encodeStart(NbtOps.INSTANCE, region).ifSuccess(t -> tag.put("confluence:region", t));
+        tag.putBoolean("confluence:should_interact", shouldInteract);
     }
 
     @Override
@@ -245,5 +288,10 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             House.CODEC.parse(NbtOps.INSTANCE, tag.get("House"))
                     .result().ifPresent(this::setHouse);
         }
+        if (tag.contains("confluence:region")) {
+            NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("confluence:region"))
+                    .result().ifPresent(r -> this.region = r);
+        }
+        this.shouldInteract = tag.getBoolean("confluence:should_interact");
     }
 }

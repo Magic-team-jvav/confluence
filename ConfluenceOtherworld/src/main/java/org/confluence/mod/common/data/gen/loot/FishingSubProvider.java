@@ -27,7 +27,6 @@ import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.holdersets.OrHolderSet;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModStructures;
@@ -53,7 +52,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
         HolderSet<Biome> isCorruption = registrylookup.getOrThrow(ModTags.Biomes.THE_CORRUPTION);
         HolderSet<Biome> isCrimson = registrylookup.getOrThrow(ModTags.Biomes.THE_CRIMSON);
         HolderSet<Biome> isHallow = registrylookup.getOrThrow(ModTags.Biomes.THE_HALLOW);
-        HolderSet<Biome> isMushroom = registrylookup.getOrThrow(Tags.Biomes.IS_MUSHROOM);
+        HolderSet<Biome> isMushroom = registrylookup.getOrThrow(PortTags.Biomes.IS_MUSHROOM);
         HolderSet<Biome> isSnowyOrIcy = new OrHolderSet<>(List.of(
                 registrylookup.getOrThrow(PortTags.Biomes.IS_SNOWY),
                 registrylookup.getOrThrow(PortTags.Biomes.IS_ICY)

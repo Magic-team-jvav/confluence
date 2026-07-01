@@ -19,6 +19,7 @@ import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.KillBoardSyncPacketS2C;
@@ -55,9 +56,9 @@ public enum KillBoard implements IGlobalData {
     }
 
     public boolean isAnyMechBossDefeated() {
-        return isDefeated(TEBossEntities.THE_TWINS.get()) ||
-                isDefeated(TEBossEntities.THE_DESTROYER.get()) ||
-                isDefeated(TEBossEntities.SKELETRON_PRIME.get());
+        return isDefeated(BossEntities.THE_TWINS.get()) ||
+                isDefeated(BossEntities.THE_DESTROYER.get()) ||
+                isDefeated(BossEntities.SKELETRON_PRIME.get());
     }
 
     public int countDefeated(EntityType<?>... entityTypes) {
@@ -90,9 +91,9 @@ public enum KillBoard implements IGlobalData {
         if (!defeated) {
             LanternNightGameEvent.INSTANCE.schedule();
         }
-        if (entityType == TEBossEntities.SKELETRON.get()) {
+        if (entityType == BossEntities.SKELETRON.get()) {
             setGamePhase(net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
-        } else if (entityType == TEBossEntities.WALL_OF_FLESH.get() || entityType == TEBossEntities.HILL_OF_FLESH.get()) {
+        } else if (entityType == BossEntities.WALL_OF_FLESH.get() || entityType == BossEntities.HILL_OF_FLESH.get()) {
             setGamePhase(net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
         } else {
             KillBoardSyncPacketS2C.sendToAll();

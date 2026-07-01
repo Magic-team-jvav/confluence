@@ -2,7 +2,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
 import org.confluence.mod.common.init.ModTradeConditions;
@@ -12,8 +12,8 @@ public record NotCondition(TradeCondition inner) implements TradeCondition {
                     TradeCondition.CODEC.fieldOf("inner").forGetter(NotCondition::inner)
             ).apply(b, NotCondition::new));
 
-    @Override public boolean test(ServerLevel level, BaseNPC npc) {
-        return !inner.test(level, npc);
+    @Override public boolean test(ServerPlayer player, BaseNPC npc) {
+        return !inner.test(player, npc);
     }
     @Override public MapCodec<? extends TradeCondition> codec() { return ModTradeConditions.NOT.get(); }
 }

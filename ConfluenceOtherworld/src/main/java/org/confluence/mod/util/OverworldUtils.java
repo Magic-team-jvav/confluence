@@ -26,7 +26,6 @@ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
-import net.minecraftforge.common.Tags;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -34,6 +33,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
 import org.jetbrains.annotations.ApiStatus;
+import org.mesdag.portlib.wrapper.common.PortTags;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
@@ -105,7 +105,7 @@ public final class OverworldUtils {
             }
         }
         if (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.THE_CRIMSON)) {
-            BlockPos spawnPos = server.getWorldData().overworldData().getSpawnPos();
+            BlockPos spawnPos = server.overworld().getSharedSpawnPos();
             if (Mth.lengthSquared(spawnPos.getX() - x, spawnPos.getZ() - z) <= 128 * 128) {
                 replaced = plains;
             }
@@ -195,20 +195,20 @@ public final class OverworldUtils {
     }
 
     public static boolean isDesert(Holder<Biome> holder) {
-        return holder.is(Tags.Biomes.IS_DESERT);
+        return holder.is(PortTags.Biomes.IS_DESERT);
     }
 
     /// 对应泰拉的地表雪原和地下雪原，由于MC的这两个群系不以高度为判据，所以使用的时候请先用该方法判断是否是雪原,再以y轴高度判断
     public static boolean isSnowy(Holder<Biome> holder) {
-        return holder.is(Tags.Biomes.IS_SNOWY) || holder.is(Tags.Biomes.IS_ICY);
+        return holder.is(PortTags.Biomes.IS_SNOWY) || holder.is(PortTags.Biomes.IS_ICY);
     }
 
     public static boolean isOcean(Holder<Biome> holder) {
-        return holder.is(Tags.Biomes.IS_OCEAN);
+        return holder.is(PortTags.Biomes.IS_OCEAN);
     }
 
     public static boolean isJungle(Holder<Biome> holder) {
-        return holder.is(Tags.Biomes.IS_JUNGLE);
+        return holder.is(PortTags.Biomes.IS_JUNGLE);
     }
 
     public static boolean isMushroom(Holder<Biome> holder) {

@@ -397,7 +397,7 @@ public final class PlayerEvents {
         if (event.getTarget() instanceof ServerPlayer target) {
             ServerPlayer sendTo = (ServerPlayer) event.getEntity();
             PlayerUtils.flushLocalData(sendTo, target);
-        } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
+        } else if (event.getTarget() instanceof BaseNPC npc) {
             NPCSpawner.INSTANCE.applyBenedictions(npc);
         }
     }

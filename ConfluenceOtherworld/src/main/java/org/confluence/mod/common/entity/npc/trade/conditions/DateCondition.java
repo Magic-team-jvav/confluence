@@ -3,7 +3,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
 import org.confluence.mod.common.init.ModTradeConditions;
@@ -16,7 +16,7 @@ public record DateCondition(int fromMonth, int fromDay, int toMonth, int toDay) 
                     Codec.INT.fieldOf("to_day").forGetter(DateCondition::toDay)
             ).apply(b, DateCondition::new));
 
-    @Override public boolean test(ServerLevel level, BaseNPC npc) {
+    @Override public boolean test(ServerPlayer player, BaseNPC npc) {
         java.util.Calendar cal = java.util.Calendar.getInstance();
         int month = cal.get(java.util.Calendar.MONTH);
         int day = cal.get(java.util.Calendar.DATE);

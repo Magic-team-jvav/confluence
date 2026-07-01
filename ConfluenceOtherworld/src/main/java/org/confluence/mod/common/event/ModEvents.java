@@ -162,8 +162,9 @@ public final class ModEvents {
                     NPCSpawner.INSTANCE,
                     Bestiary.INSTANCE,
                     GlobalCloakData.INSTANCE,
-                    GameEventSystem.INSTANCE
-//                    HouseHandler.INSTANCE
+                    GameEventSystem.INSTANCE,
+                    HouseHandler.INSTANCE,
+                    AnglerData.INSTANCE
             );
             GlobalCloakData.INSTANCE.initialize();
             PortEventHandler.postEvent(new RegisterEvilMaterialReplacesEvent());
@@ -269,6 +270,40 @@ public final class ModEvents {
         event.put(MonsterEntities.DARK_CASTER.get(), DarkCaster.createAttributes().build());
         event.put(MonsterEntities.GOBLIN_SORCERER.get(), DarkCaster.createAttributes().build());
         event.put(MonsterEntities.ZOMBIE.get(), Zombie.createAttributes().build());
+        // 蝙蝠
+        event.put(MonsterEntities.CAVE_BAT.get(), CaveBat.createAttributes().build());
+        event.put(MonsterEntities.JUNGLE_BAT.get(), CaveBat.createAttributes().build());
+        event.put(MonsterEntities.ICE_BAT.get(), CaveBat.createAttributes().build());
+        event.put(MonsterEntities.GIANT_BAT.get(), CaveBat.createAttributes().build());
+        event.put(MonsterEntities.HELL_BAT.get(), CaveBat.createAttributes().build());
+        // 陆行怪
+        event.put(MonsterEntities.BLOODY_SPORE.get(), BloodySpore.createAttributes().build());
+        event.put(MonsterEntities.BLOOD_CRAWLER.get(), BloodCrawler.createAttributes().build());
+        event.put(MonsterEntities.NYMPH.get(), Nymph.createAttributes().build());
+        event.put(MonsterEntities.SAND_POACHER.get(), SandPoacher.createAttributes().build());
+        // 水怪
+        event.put(MonsterEntities.PIRANHA.get(), Piranha.createAttributes().build());
+        event.put(MonsterEntities.ARAPAIMA.get(), Piranha.createAttributes().build());
+        event.put(MonsterEntities.BLUE_JELLYFISH.get(), JellyFish.createAttributes().build());
+        event.put(MonsterEntities.PINK_JELLYFISH.get(), JellyFish.createAttributes().build());
+        event.put(MonsterEntities.GREEN_JELLYFISH.get(), JellyFish.createAttributes().build());
+        event.put(MonsterEntities.SHARK.get(), Shark.createAttributes().build());
+        // 卷壳怪
+        event.put(MonsterEntities.GIANT_SHELLY.get(), GiantShelly.createAttributes().build());
+        event.put(MonsterEntities.CRAWDAD.get(), Crawdad.createAttributes().build());
+        // Wraith + Mimics
+        event.put(MonsterEntities.WRAITH.get(), Wraith.createAttributes().build());
+        event.put(MonsterEntities.WOODEN_MIMIC.get(), WoodenMimic.createAttributes().build());
+        event.put(MonsterEntities.GOLDEN_MIMIC.get(), WoodenMimic.createAttributes().build());
+        event.put(MonsterEntities.ICE_MIMIC.get(), WoodenMimic.createAttributes().build());
+        event.put(MonsterEntities.SHADOW_MIMIC.get(), WoodenMimic.createAttributes().build());
+        event.put(MonsterEntities.CRIMSON_MIMIC.get(), BaseMimic.createAttributes().build());
+        event.put(MonsterEntities.CORRUPT_MIMIC.get(), BaseMimic.createAttributes().build());
+        event.put(MonsterEntities.HALLOWED_MIMIC.get(), BaseMimic.createAttributes().build());
+        event.put(MonsterEntities.JUNGLE_MIMIC.get(), BaseMimic.createAttributes().build());
+        event.put(NpcEntities.ANGLER.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.TRAVELING_MERCHANT.get(), BaseNPC.createAttributes().build());
+        event.put(NpcEntities.OLD_MAN.get(), BaseNPC.createAttributes().build());
         event.put(NpcEntities.GUIDE.get(), BaseNPC.createAttributes().build());
         event.put(NpcEntities.MERCHANT.get(), BaseNPC.createAttributes().build());
         event.put(NpcEntities.NURSE.get(), BaseNPC.createAttributes().build());

@@ -4,7 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -22,8 +22,13 @@ public record BiomeCondition(List<ResourceKey<Biome>> values,
                             .optionalFieldOf("tags", List.of()).forGetter(BiomeCondition::tags)
             ).apply(b, BiomeCondition::new));
 
-    @Override public boolean test(ServerLevel level, BaseNPC npc) {
-        var biome = level.getBiome(npc.blockPosition());
+    @SafeVarargs
+    public static BiomeCondition of(TagKey<Biome>... tags) {
+        return new BiomeCondition(List.of(), List.of(tags));
+    }
+
+    @Override public boolean test(ServerPlayer player, BaseNPC npc) {
+        var biome = player.serverLevel().getBiome(npc.blockPosition());
         return (values.isEmpty() || values.stream().anyMatch(biome::is))
                 && (tags.isEmpty() || tags.stream().anyMatch(biome::is));
     }

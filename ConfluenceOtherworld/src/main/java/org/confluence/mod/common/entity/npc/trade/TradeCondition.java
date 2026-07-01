@@ -2,7 +2,7 @@ package org.confluence.mod.common.entity.npc.trade;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.conditions.AndCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.NotCondition;
@@ -13,7 +13,7 @@ public interface TradeCondition {
 
     Codec<TradeCondition> CODEC = ModCustomRegistries.TRADE_CONDITIONS.byNameCodec().dispatch(TradeCondition::codec, MapCodec::codec);
 
-    boolean test(ServerLevel level, BaseNPC npc);
+    boolean test(ServerPlayer player, BaseNPC npc);
 
     MapCodec<? extends TradeCondition> codec();
 

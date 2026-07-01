@@ -3,7 +3,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
 import org.confluence.mod.common.init.ModTradeConditions;
@@ -14,7 +14,7 @@ public record MoodCondition(int value, boolean less) implements TradeCondition {
                     Codec.BOOL.optionalFieldOf("less", false).forGetter(MoodCondition::less)
             ).apply(b, MoodCondition::new));
 
-    @Override public boolean test(ServerLevel level, BaseNPC npc) {
+    @Override public boolean test(ServerPlayer player, BaseNPC npc) {
         int mood = npc.getMood().getValue();
         return less ? mood <= value : mood >= value;
     }
